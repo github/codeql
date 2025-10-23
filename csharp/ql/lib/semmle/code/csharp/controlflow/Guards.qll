@@ -207,18 +207,18 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
     Expr getARead() { super.getARead() = result }
   }
 
-  class SsaWriteDefinition extends SsaDefinition instanceof Ssa::ExplicitDefinition {
-    Expr getDefinition() { result = super.getADefinition().getSource() }
+  class SsaExplicitWrite extends SsaDefinition instanceof Ssa::ExplicitDefinition {
+    Expr getValue() { result = super.getADefinition().getSource() }
   }
 
-  class SsaPhiNode extends SsaDefinition instanceof Ssa::PhiNode {
+  class SsaPhiDefinition extends SsaDefinition instanceof Ssa::PhiNode {
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
       super.hasInputFromBlock(inp, bb)
     }
   }
 
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(Ssa::ImplicitParameterDefinition).getParameter() = p
+  class SsaParameterInit extends SsaDefinition instanceof Ssa::ImplicitParameterDefinition {
+    Parameter getParameter() { result = super.getParameter() }
   }
 
   predicate additionalNullCheck(GuardsImpl::PreGuard guard, GuardValue val, Expr e, boolean isNull) {

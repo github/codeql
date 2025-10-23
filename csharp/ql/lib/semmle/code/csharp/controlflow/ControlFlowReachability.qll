@@ -33,13 +33,13 @@ private module ControlFlowInput implements
 
   class SsaDefinition = Ssa::Definition;
 
-  class SsaWriteDefinition extends SsaDefinition instanceof Ssa::ExplicitDefinition {
-    Expr getDefinition() { result = super.getADefinition().getSource() }
+  class SsaExplicitWrite extends SsaDefinition instanceof Ssa::ExplicitDefinition {
+    Expr getValue() { result = super.getADefinition().getSource() }
   }
 
-  class SsaPhiNode = Ssa::PhiNode;
+  class SsaPhiDefinition = Ssa::PhiNode;
 
-  class SsaUncertainDefinition = Ssa::UncertainDefinition;
+  class SsaUncertainWrite = Ssa::UncertainDefinition;
 
   class GuardValue = Guards::GuardValue;
 

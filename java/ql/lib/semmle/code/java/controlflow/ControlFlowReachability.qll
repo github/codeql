@@ -31,16 +31,16 @@ private module ControlFlowInput implements InputSig<Location, ControlFlowNode, B
 
   class SsaDefinition = SSA::SsaVariable;
 
-  class SsaWriteDefinition extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
-    Expr getDefinition() {
+  class SsaExplicitWrite extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
+    Expr getValue() {
       super.getDefiningExpr().(VariableAssign).getSource() = result or
       super.getDefiningExpr().(AssignOp) = result
     }
   }
 
-  class SsaPhiNode = SSA::SsaPhiNode;
+  class SsaPhiDefinition = SSA::SsaPhiNode;
 
-  class SsaUncertainDefinition extends SsaDefinition instanceof SSA::SsaUncertainImplicitUpdate {
+  class SsaUncertainWrite extends SsaDefinition instanceof SSA::SsaUncertainImplicitUpdate {
     SsaDefinition getPriorDefinition() { result = super.getPriorDef() }
   }
 

@@ -56,18 +56,18 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     predicate isLiveAtEndOfBlock(BasicBlock b);
   }
 
-  class SsaWriteDefinition extends SsaDefinition {
-    Expr getDefinition();
+  class SsaExplicitWrite extends SsaDefinition {
+    Expr getValue();
   }
 
-  class SsaPhiNode extends SsaDefinition {
+  class SsaPhiDefinition extends SsaDefinition {
     /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
 
     SsaDefinition getAnInput();
   }
 
-  class SsaUncertainDefinition extends SsaDefinition {
+  class SsaUncertainWrite extends SsaDefinition {
     /**
      * Gets the immediately preceding definition. Since this update is uncertain,
      * the value from the preceding definition might still be valid.
@@ -274,9 +274,9 @@ module Make<
    * If multiple values apply, including a singleton, then we only include the
    * singleton.
    */
-  private predicate ssaHasValue(SsaWriteDefinition def, GuardValue gv) {
+  private predicate ssaHasValue(SsaExplicitWrite def, GuardValue gv) {
     exists(Expr e |
-      def.getDefinition() = e and
+      def.getValue() = e and
       exprHasValue(e, gv) and
       (any(GuardValue gv0 | exprHasValue(e, gv0)).isSingleton() implies gv.isSingleton())
     )
@@ -398,7 +398,7 @@ module Make<
     }
 
     private predicate uncertainStep(SsaDefinition def1, SsaDefinition def2) {
-      def2.(SsaUncertainDefinition).getPriorDefinition() = def1 and
+      def2.(SsaUncertainWrite).getPriorDefinition() = def1 and
       Config::uncertainFlow()
     }
 
@@ -459,7 +459,7 @@ module Make<
 
     pragma[nomagic]
     private predicate phiBlock(BasicBlock bb, SourceVariable v) {
-      exists(SsaPhiNode phi | phi.getBasicBlock() = bb and phi.getSourceVariable() = v)
+      exists(SsaPhiDefinition phi | phi.getBasicBlock() = bb and phi.getSourceVariable() = v)
     }
 
     /** Holds if `def1` in `bb1` may step to `def2` in `bb2`. */
@@ -468,7 +468,7 @@ module Make<
       not Config::barrierEdge(bb1, bb2) and
       not ssaValueBarrierEdge(def1, bb1, bb2) and
       (
-        def2.(SsaPhiNode).hasInputFromBlock(def1, bb1) and bb2 = def2.getBasicBlock()
+        def2.(SsaPhiDefinition).hasInputFromBlock(def1, bb1) and bb2 = def2.getBasicBlock()
         or
         exists(SourceVariable v |
           ssaRelevantAtEndOfBlock(def1, bb1) and
@@ -661,10 +661,10 @@ module Make<
       |
         def.getBasicBlock().dominates(loopEntry)
         or
-        exists(SsaPhiNode phi |
+        exists(SsaPhiDefinition phi |
           phi.definesAt(var, loopEntry, _) and
           phi.getAnInput+() = def and
-          def.(SsaPhiNode).getAnInput*() = phi
+          def.(SsaPhiDefinition).getAnInput*() = phi
         )
       )
     }
@@ -703,7 +703,7 @@ module Make<
       pathEdge(src, bb1, bb2) and
       relevantSplit(src, var, condgv) and
       lastDefInBlock(var, t, bb2) and
-      not t instanceof SsaPhiNode and
+      not t instanceof SsaPhiDefinition and
       (
         exists(GuardValue gv |
           ssaHasValue(t, gv) and
@@ -730,7 +730,7 @@ module Make<
       pathEdge(src, bb1, bb2) and
       relevantSplit(src, var, condgv) and
       lastDefInBlock(var, t2, bb2) and
-      t2.(SsaPhiNode).hasInputFromBlock(t1, bb1) and
+      t2.(SsaPhiDefinition).hasInputFromBlock(t1, bb1) and
       (
         exists(GuardValue gv |
           ssaControlsPathEdge(src, t1, _, gv, bb1, bb2) and
