@@ -202,12 +202,14 @@ module Make<
 
   private newtype TAbstractSingleValue =
     TValueNull() or
-    TValueTrue() or
+    TValueBool(Boolean b) or
     TValueInt(int i) { exists(ConstantExpr c | c.asIntegerValue() = i) or i = 0 } or
     TValueConstant(ConstantValue c) { exists(ConstantExpr ce | ce.asConstantValue() = c) }
 
   private newtype TGuardValue =
-    TValue(TAbstractSingleValue val, Boolean isVal) or
+    TValue(TAbstractSingleValue val, Boolean isVal) {
+      val instanceof TValueBool implies isVal = true
+    } or
     TIntRange(int bound, Boolean upper) {
       exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
       // exclude edge cases to avoid overflow issues when computing duals
@@ -221,7 +223,9 @@ module Make<
     string toString() {
       result = "null" and this instanceof TValueNull
       or
-      result = "true" and this instanceof TValueTrue
+      result = "true" and this = TValueBool(true)
+      or
+      result = "false" and this = TValueBool(false)
       or
       exists(int i | result = i.toString() and this = TValueInt(i))
       or
@@ -242,6 +246,11 @@ module Make<
       exists(AbstractSingleValue val, boolean isVal |
         this = TValue(val, isVal) and
         result = TValue(val, isVal.booleanNot())
+      )
+      or
+      exists(boolean b |
+        this = TValue(TValueBool(b), true) and
+        result = TValue(TValueBool(b.booleanNot()), true)
       )
       or
       exists(int bound, int d, boolean upper |
@@ -275,7 +284,7 @@ module Make<
     int asIntValue() { this = TValue(TValueInt(result), true) }
 
     /** Gets the boolean that this value represents, if any. */
-    boolean asBooleanValue() { this = TValue(TValueTrue(), result) }
+    boolean asBooleanValue() { this = TValue(TValueBool(result), true) }
 
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
@@ -293,9 +302,7 @@ module Make<
 
     /** Gets a textual representation of this value. */
     string toString() {
-      result = this.asBooleanValue().toString()
-      or
-      exists(AbstractSingleValue val | not val instanceof TValueTrue |
+      exists(AbstractSingleValue val |
         this = TValue(val, true) and result = val.toString()
         or
         this = TValue(val, false) and result = "not " + val.toString()
@@ -365,15 +372,10 @@ module Make<
   }
 
   private predicate branchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v) {
-    exists(ConditionalSuccessor s |
-      bb1.getASuccessor(s) = bb2 and
-      exists(AbstractSingleValue val |
-        s instanceof NullnessSuccessor and val = TValueNull()
-        or
-        s instanceof BooleanSuccessor and val = TValueTrue()
-      |
-        v = TValue(val, s.getValue())
-      )
+    exists(ConditionalSuccessor s | bb1.getASuccessor(s) = bb2 |
+      s instanceof NullnessSuccessor and v = TValue(TValueNull(), s.getValue())
+      or
+      s instanceof BooleanSuccessor and v = TValue(TValueBool(s.getValue()), true)
     )
     or
     exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
@@ -503,7 +505,8 @@ module Make<
     or
     exists(NonNullExpr nonnull |
       equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
-      v2.isNonNullValue()
+      v2.isNonNullValue() and
+      not g2 instanceof NonNullExpr // disregard trivial guard
     )
     or
     exists(Case c1, Expr switchExpr |
@@ -799,13 +802,16 @@ module Make<
     }
 
     private predicate impliesStep2(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
-      impliesStep1(g1, v1, g2, v2)
-      or
-      exists(Expr nonnull |
-        exprHasValue(nonnull, v2) and
-        equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
-        v2.isNonNullValue()
-      )
+      (
+        impliesStep1(g1, v1, g2, v2)
+        or
+        exists(Expr nonnull |
+          exprHasValue(nonnull, v2) and
+          equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
+          v2.isNonNullValue()
+        )
+      ) and
+      not exprHasValue(g2, v2) // disregard trivial guard
     }
 
     bindingset[g1, v1]
@@ -969,6 +975,7 @@ module Make<
      * Holds if `def` evaluating to `v` controls the basic block `bb`.
      * That is, execution of `bb` implies that `def` evaluated to `v`.
      */
+    pragma[nomagic]
     predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v) {
       exists(BasicBlock guard, BasicBlock succ |
         ssaControlsBranchEdge(def, guard, succ, v) and
