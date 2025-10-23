@@ -1471,11 +1471,10 @@ nodeEnclosing
 | ExitMethods.cs:42:13:42:30 | call to method ErrorAlways | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:42:13:42:31 | ...; | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:42:25:42:29 | false | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:46:13:46:19 | return ...; | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:48:9:51:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:50:13:50:19 | return ...; | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:54:10:54:11 | enter M7 | ExitMethods.cs:54:10:54:11 | M7 |
@@ -1684,13 +1683,13 @@ nodeEnclosing
 | Finally.cs:23:13:23:38 | ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:23:31:23:36 | "Try2" | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:38:26:39 | [exception: Exception] IOException ex | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:48:26:51 | [exception: Exception] true | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:48:26:51 | true | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:27:9:29:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:28:13:28:18 | throw ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:41:30:42 | [exception: Exception] ArgumentException ex | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:31:9:40:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:32:13:39:13 | try {...} ... | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:33:13:35:13 | {...} | Finally.cs:19:10:19:11 | M2 |
@@ -1701,8 +1700,11 @@ nodeEnclosing
 | Finally.cs:38:17:38:44 | throw ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:38:23:38:43 | object creation of type Exception | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:38:37:38:42 | "Boo!" | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:44:9:47:9 | catch {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:45:9:47:9 | {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:46:13:46:19 | return ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:13:50:40 | call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:50:13:50:41 | ...; | Finally.cs:19:10:19:11 | M2 |
@@ -1718,17 +1720,17 @@ nodeEnclosing
 | Finally.cs:58:13:58:38 | ...; | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:58:31:58:36 | "Try3" | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:38:61:39 | [exception: Exception] IOException ex | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:48:61:51 | [exception: Exception] true | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:48:61:51 | true | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:63:13:63:18 | throw ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:9:67:9 | [exception: Exception] catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:26:65:26 | [exception: Exception] Exception e | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:35:65:35 | [exception: Exception] access to local variable e | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:35:65:43 | [exception: Exception] access to property Message | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:35:65:51 | [exception: Exception] ... != ... | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:48:65:51 | [exception: Exception] null | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:26:65:26 | Exception e | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:35:65:35 | access to local variable e | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:35:65:43 | access to property Message | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:35:65:51 | ... != ... | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:48:65:51 | null | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:66:9:67:9 | {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:70:13:70:40 | call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
@@ -1870,18 +1872,12 @@ nodeEnclosing
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:39 | [exception: Exception] access to local variable e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:39 | [exception: NullReferenceException] access to local variable e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:47 | [exception: Exception] access to property Message | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:47 | [exception: NullReferenceException] access to property Message | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:54 | [exception: Exception] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:39:161:54 | [exception: NullReferenceException] ... == ... | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:52:161:54 | [exception: Exception] "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:52:161:54 | [exception: NullReferenceException] "1" | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:39 | access to local variable e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:47 | access to property Message | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:39:161:54 | ... == ... | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:52:161:54 | "1" | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:17:163:42 | call to method WriteLine | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:17:163:43 | ...; | Finally.cs:147:10:147:11 | M8 |
@@ -1926,10 +1922,8 @@ nodeEnclosing
 | Finally.cs:186:21:186:22 | access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:25:186:47 | throw ...; | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [exception: ExceptionB] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [exception: Exception] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [exception: ExceptionB] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [exception: Exception] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:189:13:191:13 | {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:190:17:190:47 | if (...) ... | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:190:21:190:22 | access to parameter b1 | Finally.cs:176:10:176:11 | M9 |
@@ -4605,10 +4599,8 @@ blockEnclosing
 | ExitMethods.cs:32:10:32:11 | enter M5 | ExitMethods.cs:32:10:32:11 | M5 |
 | ExitMethods.cs:38:10:38:11 | enter M6 | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:38:10:38:11 | exit M6 (normal) | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | [exception: ArgumentException] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:48:9:51:9 | [exception: Exception] catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:54:10:54:11 | enter M7 | ExitMethods.cs:54:10:54:11 | M7 |
 | ExitMethods.cs:60:10:60:11 | enter M8 | ExitMethods.cs:60:10:60:11 | M8 |
@@ -4660,25 +4652,26 @@ blockEnclosing
 | Finally.cs:19:10:19:11 | exit M2 (abnormal) | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:19:10:19:11 | exit M2 (normal) | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:9:29:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:38:26:39 | [exception: Exception] IOException ex | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:27:9:29:9 | {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:9:40:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:41:30:42 | [exception: Exception] ArgumentException ex | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:34:27:34:32 | throw ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:41:9:43:9 | [exception: Exception] catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:44:9:47:9 | catch {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:54:10:54:11 | enter M3 | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | exit M3 | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | exit M3 (abnormal) | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | exit M3 (normal) | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:9:64:9 | [exception: Exception] catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:38:61:39 | [exception: Exception] IOException ex | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:9:67:9 | [exception: Exception] catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:26:65:26 | [exception: Exception] Exception e | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:26:65:26 | Exception e | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:66:9:67:9 | {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:74:10:74:11 | enter M4 | Finally.cs:74:10:74:11 | M4 |
@@ -4726,10 +4719,8 @@ blockEnclosing
 | Finally.cs:158:36:158:36 | 1 | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:21:159:45 | throw ...; | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [exception: Exception] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | [exception: NullReferenceException] catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [exception: Exception] Exception e | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:30:161:30 | [exception: NullReferenceException] Exception e | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:165:13:168:13 | catch {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | ExceptionA |
@@ -4744,9 +4735,8 @@ blockEnclosing
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:25:186:47 | throw ...; | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | [exception: Exception] catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [exception: ExceptionB] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:38:188:39 | [exception: Exception] access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:189:13:191:13 | {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:190:31:190:46 | object creation of type ExceptionC | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:195:10:195:12 | enter M10 | Finally.cs:195:10:195:12 | M10 |

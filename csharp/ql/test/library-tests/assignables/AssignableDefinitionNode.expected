@@ -31,7 +31,7 @@
 | Assignables.cs:69:13:69:17 | ... = ... | Assignables.cs:69:13:69:17 | ... = ... |
 | Assignables.cs:78:22:78:22 | String s | Assignables.cs:78:22:78:22 | String s |
 | Assignables.cs:82:21:82:33 | String temp = ... | Assignables.cs:82:21:82:33 | String temp = ... |
-| Assignables.cs:84:30:84:30 | Exception e | Assignables.cs:84:30:84:30 | [exception: OutOfMemoryException] Exception e |
+| Assignables.cs:84:30:84:30 | Exception e | Assignables.cs:84:30:84:30 | Exception e |
 | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | ... = ... |
 | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | ... = ... |
 | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | ... = ... |

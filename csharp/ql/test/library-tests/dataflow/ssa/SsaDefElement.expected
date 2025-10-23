@@ -272,7 +272,7 @@
 | Test.cs:56:9:56:19 | SSA phi(out) | Test.cs:56:9:56:19 | ...; |
 | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | ... = ... |
 | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:62:16:62:16 | x |
-| Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
+| Test.cs:68:45:68:45 | SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
 | Test.cs:76:24:76:25 | SSA param(b1) | Test.cs:76:24:76:25 | b1 |
 | Test.cs:76:33:76:34 | SSA param(b2) | Test.cs:76:33:76:34 | b2 |
 | Test.cs:76:42:76:43 | SSA param(b3) | Test.cs:76:42:76:43 | b3 |
