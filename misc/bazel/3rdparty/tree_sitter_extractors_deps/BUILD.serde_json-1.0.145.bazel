@@ -75,6 +75,10 @@ rust_library(
             "indexmap",  # powerpc-unknown-linux-gnu
             "preserve_order",  # powerpc-unknown-linux-gnu
         ],
+        "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
+            "indexmap",  # riscv64gc-unknown-linux-gnu
+            "preserve_order",  # riscv64gc-unknown-linux-gnu
+        ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
             "indexmap",  # s390x-unknown-linux-gnu
             "preserve_order",  # s390x-unknown-linux-gnu
@@ -137,12 +141,16 @@ rust_library(
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [],
+        "@rules_rust//rust/platform:wasm32-unknown-emscripten": [],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [],
         "@rules_rust//rust/platform:wasm32-wasip1": [],
+        "@rules_rust//rust/platform:wasm32-wasip1-threads": [],
+        "@rules_rust//rust/platform:wasm32-wasip2": [],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [],
         "@rules_rust//rust/platform:x86_64-apple-ios": [],
         "@rules_rust//rust/platform:x86_64-linux-android": [],
@@ -186,6 +194,9 @@ rust_library(
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
             "@vendor_ts__indexmap-2.11.4//:indexmap",  # powerpc-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
+            "@vendor_ts__indexmap-2.11.4//:indexmap",  # riscv64gc-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
             "@vendor_ts__indexmap-2.11.4//:indexmap",  # s390x-unknown-linux-gnu
@@ -264,6 +275,10 @@ cargo_build_script(
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
             "indexmap",  # powerpc-unknown-linux-gnu
             "preserve_order",  # powerpc-unknown-linux-gnu
+        ],
+        "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
+            "indexmap",  # riscv64gc-unknown-linux-gnu
+            "preserve_order",  # riscv64gc-unknown-linux-gnu
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
             "indexmap",  # s390x-unknown-linux-gnu

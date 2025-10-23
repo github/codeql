@@ -309,7 +309,7 @@ module Impl {
   private predicate parameterDeclInScope(Variable v, VariableScope scope) {
     exists(Callable f |
       v.getParameter() = f.getParamList().getAParamBase() and
-      scope = [f.(Function).getBody(), f.(ClosureExpr).getBody()]
+      scope = f.getBody()
     )
   }
 

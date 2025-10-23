@@ -10,7 +10,7 @@ call.rs:
 #    1|           getIdentifier(): [NameRef] macro_expansion
 #    3|   getItem(1): [Function] fn call_some_functions
 #    3|     getParamList(): [ParamList] ParamList
-#    3|     getBody(): [BlockExpr] { ... }
+#    3|     getFunctionBody(): [BlockExpr] { ... }
 #    3|       getStmtList(): [StmtList] StmtList
 #    4|         getStatement(0): [ExprStmt] ExprStmt
 #    4|           getExpr(): [CallExpr] ...::foo(...)
@@ -129,7 +129,7 @@ included/included.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Function] fn included
 #    1|     getParamList(): [ParamList] ParamList
-#    1|     getBody(): [BlockExpr] { ... }
+#    1|     getFunctionBody(): [BlockExpr] { ... }
 #    1|       getStmtList(): [StmtList] StmtList
 #    2|         getStatement(0): [ExprStmt] ExprStmt
 #    2|           getExpr(): [AssignmentExpr] ... = ...
@@ -178,7 +178,7 @@ macro_expansion.rs:
 #    4|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    4|       getItem(0): [Function] fn foo
 #    4|         getParamList(): [ParamList] ParamList
-#    4|         getBody(): [BlockExpr] { ... }
+#    4|         getFunctionBody(): [BlockExpr] { ... }
 #    4|           getStmtList(): [StmtList] StmtList
 #    5|             getStatement(0): [ExprStmt] ExprStmt
 #    5|               getExpr(): [AssignmentExpr] ... = ...
@@ -194,12 +194,12 @@ macro_expansion.rs:
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
-#    8|                   getBody(): [BlockExpr] { ... }
+#    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_0
 #    8|                 getItem(1): [Function] fn inner_1
 #    8|                   getParamList(): [ParamList] ParamList
-#    8|                   getBody(): [BlockExpr] { ... }
+#    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_1
 #    8|               getParamList(): [ParamList] ParamList
@@ -209,7 +209,7 @@ macro_expansion.rs:
 #    7|                     getSegment(): [PathSegment] repeat
 #    7|                       getIdentifier(): [NameRef] repeat
 #    7|                   getTokenTree(): [TokenTree] TokenTree
-#    8|               getBody(): [BlockExpr] { ... }
+#    8|               getFunctionBody(): [BlockExpr] { ... }
 #    8|                 getStmtList(): [StmtList] StmtList
 #    8|               getName(): [Name] inner
 #   10|             getStatement(2): [ExprStmt] ExprStmt
@@ -230,7 +230,7 @@ macro_expansion.rs:
 #    4|         getVisibility(): [Visibility] Visibility
 #    4|       getItem(1): [Function] fn foo_new
 #    4|         getParamList(): [ParamList] ParamList
-#    4|         getBody(): [BlockExpr] { ... }
+#    4|         getFunctionBody(): [BlockExpr] { ... }
 #    4|           getStmtList(): [StmtList] StmtList
 #    5|             getStatement(0): [ExprStmt] ExprStmt
 #    5|               getExpr(): [AssignmentExpr] ... = ...
@@ -246,12 +246,12 @@ macro_expansion.rs:
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
-#    8|                   getBody(): [BlockExpr] { ... }
+#    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_0
 #    8|                 getItem(1): [Function] fn inner_1
 #    8|                   getParamList(): [ParamList] ParamList
-#    8|                   getBody(): [BlockExpr] { ... }
+#    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_1
 #    8|               getParamList(): [ParamList] ParamList
@@ -261,7 +261,7 @@ macro_expansion.rs:
 #    7|                     getSegment(): [PathSegment] repeat
 #    7|                       getIdentifier(): [NameRef] repeat
 #    7|                   getTokenTree(): [TokenTree] TokenTree
-#    8|               getBody(): [BlockExpr] { ... }
+#    8|               getFunctionBody(): [BlockExpr] { ... }
 #    8|                 getStmtList(): [StmtList] StmtList
 #    8|               getName(): [Name] inner
 #   10|             getStatement(2): [ExprStmt] ExprStmt
@@ -286,7 +286,7 @@ macro_expansion.rs:
 #    3|         getPath(): [Path] add_one
 #    3|           getSegment(): [PathSegment] add_one
 #    3|             getIdentifier(): [NameRef] add_one
-#    4|     getBody(): [BlockExpr] { ... }
+#    4|     getFunctionBody(): [BlockExpr] { ... }
 #    4|       getStmtList(): [StmtList] StmtList
 #    5|         getStatement(0): [ExprStmt] ExprStmt
 #    5|           getExpr(): [AssignmentExpr] ... = ...
@@ -305,7 +305,7 @@ macro_expansion.rs:
 #    7|                 getSegment(): [PathSegment] repeat
 #    7|                   getIdentifier(): [NameRef] repeat
 #    7|               getTokenTree(): [TokenTree] TokenTree
-#    8|           getBody(): [BlockExpr] { ... }
+#    8|           getFunctionBody(): [BlockExpr] { ... }
 #    8|             getStmtList(): [StmtList] StmtList
 #    8|           getName(): [Name] inner
 #   10|         getStatement(2): [ExprStmt] ExprStmt
@@ -330,13 +330,13 @@ macro_expansion.rs:
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_0
 #   16|             getParamList(): [ParamList] ParamList
-#   16|             getBody(): [BlockExpr] { ... }
+#   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_0
 #   16|             getVisibility(): [Visibility] Visibility
 #   16|           getItem(1): [Function] fn bar_0_new
 #   16|             getParamList(): [ParamList] ParamList
-#   16|             getBody(): [BlockExpr] { ... }
+#   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_0_new
 #   16|             getVisibility(): [Visibility] Visibility
@@ -346,7 +346,7 @@ macro_expansion.rs:
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   16|         getBody(): [BlockExpr] { ... }
+#   16|         getFunctionBody(): [BlockExpr] { ... }
 #   16|           getStmtList(): [StmtList] StmtList
 #   16|         getName(): [Name] bar_0
 #   16|         getVisibility(): [Visibility] Visibility
@@ -354,13 +354,13 @@ macro_expansion.rs:
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_1
 #   16|             getParamList(): [ParamList] ParamList
-#   16|             getBody(): [BlockExpr] { ... }
+#   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_1
 #   16|             getVisibility(): [Visibility] Visibility
 #   16|           getItem(1): [Function] fn bar_1_new
 #   16|             getParamList(): [ParamList] ParamList
-#   16|             getBody(): [BlockExpr] { ... }
+#   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_1_new
 #   16|             getVisibility(): [Visibility] Visibility
@@ -370,7 +370,7 @@ macro_expansion.rs:
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   16|         getBody(): [BlockExpr] { ... }
+#   16|         getFunctionBody(): [BlockExpr] { ... }
 #   16|           getStmtList(): [StmtList] StmtList
 #   16|         getName(): [Name] bar_1
 #   16|         getVisibility(): [Visibility] Visibility
@@ -386,7 +386,7 @@ macro_expansion.rs:
 #   15|         getPath(): [Path] add_one
 #   15|           getSegment(): [PathSegment] add_one
 #   15|             getIdentifier(): [NameRef] add_one
-#   16|     getBody(): [BlockExpr] { ... }
+#   16|     getFunctionBody(): [BlockExpr] { ... }
 #   16|       getStmtList(): [StmtList] StmtList
 #   16|     getName(): [Name] bar
 #   16|     getVisibility(): [Visibility] Visibility
@@ -398,7 +398,7 @@ macro_expansion.rs:
 #   18|         getPath(): [Path] erase
 #   18|           getSegment(): [PathSegment] erase
 #   18|             getIdentifier(): [NameRef] erase
-#   19|     getBody(): [BlockExpr] { ... }
+#   19|     getFunctionBody(): [BlockExpr] { ... }
 #   19|       getStmtList(): [StmtList] StmtList
 #   19|     getName(): [Name] baz
 #   19|     getVisibility(): [Visibility] Visibility
@@ -414,7 +414,7 @@ macro_expansion.rs:
 #   32|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   32|           getItem(0): [Function] fn bzz_0
 #   32|             getParamList(): [ParamList] ParamList
-#   32|             getBody(): [BlockExpr] { ... }
+#   32|             getFunctionBody(): [BlockExpr] { ... }
 #   32|               getStmtList(): [StmtList] StmtList
 #   33|                 getStatement(0): [ExprStmt] ExprStmt
 #   33|                   getExpr(): [MacroExpr] MacroExpr
@@ -462,7 +462,7 @@ macro_expansion.rs:
 #   32|             getVisibility(): [Visibility] Visibility
 #   32|           getItem(1): [Function] fn bzz_1
 #   32|             getParamList(): [ParamList] ParamList
-#   32|             getBody(): [BlockExpr] { ... }
+#   32|             getFunctionBody(): [BlockExpr] { ... }
 #   32|               getStmtList(): [StmtList] StmtList
 #   33|                 getStatement(0): [ExprStmt] ExprStmt
 #   33|                   getExpr(): [MacroExpr] MacroExpr
@@ -510,7 +510,7 @@ macro_expansion.rs:
 #   32|             getVisibility(): [Visibility] Visibility
 #   32|           getItem(2): [Function] fn bzz_2
 #   32|             getParamList(): [ParamList] ParamList
-#   32|             getBody(): [BlockExpr] { ... }
+#   32|             getFunctionBody(): [BlockExpr] { ... }
 #   32|               getStmtList(): [StmtList] StmtList
 #   33|                 getStatement(0): [ExprStmt] ExprStmt
 #   33|                   getExpr(): [MacroExpr] MacroExpr
@@ -563,7 +563,7 @@ macro_expansion.rs:
 #   31|               getSegment(): [PathSegment] repeat
 #   31|                 getIdentifier(): [NameRef] repeat
 #   31|             getTokenTree(): [TokenTree] TokenTree
-#   32|         getBody(): [BlockExpr] { ... }
+#   32|         getFunctionBody(): [BlockExpr] { ... }
 #   32|           getStmtList(): [StmtList] StmtList
 #   33|             getStatement(0): [ExprStmt] ExprStmt
 #   33|               getExpr(): [MacroExpr] MacroExpr
@@ -591,7 +591,7 @@ macro_expansion.rs:
 #   44|         getMacroCallExpansion(): [MacroItems] MacroItems
 #   44|           getItem(0): [Function] fn x
 #   44|             getParamList(): [ParamList] ParamList
-#   44|             getBody(): [BlockExpr] { ... }
+#   44|             getFunctionBody(): [BlockExpr] { ... }
 #   44|               getStmtList(): [StmtList] StmtList
 #   44|             getName(): [Name] x
 #   44|             getVisibility(): [Visibility] Visibility
@@ -604,7 +604,7 @@ macro_expansion.rs:
 #   47|     getTokenTree(): [TokenTree] TokenTree
 #   52|   getItem(10): [Function] fn test
 #   52|     getParamList(): [ParamList] ParamList
-#   52|     getBody(): [BlockExpr] { ... }
+#   52|     getFunctionBody(): [BlockExpr] { ... }
 #   52|       getStmtList(): [StmtList] StmtList
 #   53|         getStatement(0): [ExprStmt] ExprStmt
 #   53|           getExpr(): [AssignmentExpr] ... = ...
@@ -688,7 +688,7 @@ macro_expansion.rs:
 #   61|     getMacroCallExpansion(): [MacroItems] MacroItems
 #   61|       getItem(0): [Function] fn included
 #   61|         getParamList(): [ParamList] ParamList
-#   61|         getBody(): [BlockExpr] { ... }
+#   61|         getFunctionBody(): [BlockExpr] { ... }
 #   61|           getStmtList(): [StmtList] StmtList
 #   61|             getStatement(0): [ExprStmt] ExprStmt
 #   61|               getExpr(): [AssignmentExpr] ... = ...
@@ -714,7 +714,7 @@ macro_expansion.rs:
 #   63|         getPath(): [Path] doc
 #   63|           getSegment(): [PathSegment] doc
 #   63|             getIdentifier(): [NameRef] doc
-#   64|     getBody(): [BlockExpr] { ... }
+#   64|     getFunctionBody(): [BlockExpr] { ... }
 #   64|       getStmtList(): [StmtList] StmtList
 #   64|     getName(): [Name] documented
 #   66|   getItem(13): [MacroRules] MacroRules
@@ -722,7 +722,7 @@ macro_expansion.rs:
 #   66|     getTokenTree(): [TokenTree] TokenTree
 #   70|   getItem(14): [Function] fn answer
 #   70|     getParamList(): [ParamList] ParamList
-#   70|     getBody(): [BlockExpr] { ... }
+#   70|     getFunctionBody(): [BlockExpr] { ... }
 #   70|       getStmtList(): [StmtList] StmtList
 #   71|         getStatement(0): [LetStmt] let ... = 42
 #   71|           getInitializer(): [IntegerLiteralExpr] 42
@@ -814,7 +814,7 @@ macro_expansion.rs:
 #   83|                   getName(): [Name] f
 #   83|               getSelfParam(): [SelfParam] SelfParam
 #   83|                 getName(): [Name] self
-#   84|             getBody(): [BlockExpr] { ... }
+#   84|             getFunctionBody(): [BlockExpr] { ... }
 #   84|               getStmtList(): [StmtList] StmtList
 #   84|                 getTailExpr(): [MatchExpr] match self { ... }
 #   83|                   getScrutinee(): [PathExpr,VariableAccess] self
@@ -911,7 +911,7 @@ macro_expansion.rs:
 #   88|                   getName(): [Name] other
 #   88|               getSelfParam(): [SelfParam] SelfParam
 #   88|                 getName(): [Name] self
-#   89|             getBody(): [BlockExpr] { ... }
+#   89|             getFunctionBody(): [BlockExpr] { ... }
 #   89|               getStmtList(): [StmtList] StmtList
 #   89|                 getTailExpr(): [MatchExpr] match ... { ... }
 #   88|                   getScrutinee(): [TupleExpr] TupleExpr
@@ -1041,7 +1041,7 @@ macro_expansion.rs:
 #   99|         getAssocItemList(): [AssocItemList] AssocItemList
 #   99|           getAssocItem(0): [Function] fn my_method
 #   98|             getParamList(): [ParamList] ParamList
-#   99|             getBody(): [BlockExpr] { ... }
+#   99|             getFunctionBody(): [BlockExpr] { ... }
 #   99|               getStmtList(): [StmtList] StmtList
 #   99|                 getTailExpr(): [PathExpr] CONST_MyDeriveUnion
 #   99|                   getPath(): [Path] CONST_MyDeriveUnion
@@ -1128,7 +1128,7 @@ proc_macro.rs:
 #    4|         getPath(): [Path] proc_macro_attribute
 #    4|           getSegment(): [PathSegment] proc_macro_attribute
 #    4|             getIdentifier(): [NameRef] proc_macro_attribute
-#    5|     getBody(): [BlockExpr] { ... }
+#    5|     getFunctionBody(): [BlockExpr] { ... }
 #    5|       getStmtList(): [StmtList] StmtList
 #    6|         getStatement(0): [LetStmt] let ... = ...
 #    6|           getInitializer(): [MethodCallExpr] ... .unwrap()
@@ -1346,7 +1346,7 @@ proc_macro.rs:
 #    9|                     getParam(0): [Param] ...
 #    9|                       getPat(): [IdentPat] i
 #    9|                         getName(): [Name] i
-#    9|                   getBody(): [BlockExpr] { ... }
+#    9|                   getClosureBody(): [BlockExpr] { ... }
 #    9|                     getStmtList(): [StmtList] StmtList
 #   10|                       getStatement(0): [LetStmt] let ... = ...
 #   10|                         getInitializer(): [MethodCallExpr] ast.clone()
@@ -2104,7 +2104,7 @@ proc_macro.rs:
 #   20|         getPath(): [Path] proc_macro_attribute
 #   20|           getSegment(): [PathSegment] proc_macro_attribute
 #   20|             getIdentifier(): [NameRef] proc_macro_attribute
-#   21|     getBody(): [BlockExpr] { ... }
+#   21|     getFunctionBody(): [BlockExpr] { ... }
 #   21|       getStmtList(): [StmtList] StmtList
 #   22|         getStatement(0): [LetStmt] let ... = ...
 #   22|           getInitializer(): [MacroExpr] MacroExpr
@@ -2535,7 +2535,7 @@ proc_macro.rs:
 #   31|         getPath(): [Path] proc_macro_attribute
 #   31|           getSegment(): [PathSegment] proc_macro_attribute
 #   31|             getIdentifier(): [NameRef] proc_macro_attribute
-#   32|     getBody(): [BlockExpr] { ... }
+#   32|     getFunctionBody(): [BlockExpr] { ... }
 #   32|       getStmtList(): [StmtList] StmtList
 #   33|         getTailExpr(): [CallExpr] ...::new(...)
 #   33|           getArgList(): [ArgList] ArgList
@@ -2568,7 +2568,7 @@ proc_macro.rs:
 #   36|           getSegment(): [PathSegment] proc_macro_derive
 #   36|             getIdentifier(): [NameRef] proc_macro_derive
 #   36|         getTokenTree(): [TokenTree] TokenTree
-#   37|     getBody(): [BlockExpr] { ... }
+#   37|     getFunctionBody(): [BlockExpr] { ... }
 #   37|       getStmtList(): [StmtList] StmtList
 #   38|         getStatement(0): [LetStmt] let ... = ...
 #   38|           getInitializer(): [MacroExpr] MacroExpr

@@ -696,7 +696,7 @@ impl Translator<'_> {
             return None;
         }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
-        let body = node.body().and_then(|x| self.emit_expr(&x));
+        let closure_body = node.body().and_then(|x| self.emit_expr(&x));
         let for_binder = node.for_binder().and_then(|x| self.emit_for_binder(&x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
@@ -708,7 +708,7 @@ impl Translator<'_> {
         let label = self.trap.emit(generated::ClosureExpr {
             id: TrapId::Star,
             attrs,
-            body,
+            closure_body,
             for_binder,
             is_async,
             is_const,
@@ -984,7 +984,7 @@ impl Translator<'_> {
         }
         let abi = node.abi().and_then(|x| self.emit_abi(&x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
-        let body = if self.should_skip_bodies() {
+        let function_body = if self.should_skip_bodies() {
             None
         } else {
             node.body().and_then(|x| self.emit_block_expr(&x))
@@ -1006,7 +1006,7 @@ impl Translator<'_> {
             id: TrapId::Star,
             abi,
             attrs,
-            body,
+            function_body,
             generic_param_list,
             is_async,
             is_const,

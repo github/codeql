@@ -30,7 +30,7 @@ module CryptoInput implements InputSig<Language::Location> {
   class UnknownLocation = UnknownDefaultLocation;
 
   string locationToFileBaseNameAndLineNumberString(Location location) {
-    result = location.getFile().getBaseName() + ":" + location.getStartLine()
+    result = location.toString()
   }
 
   LocatableElement dfn_to_element(DataFlow::Node node) {
@@ -55,7 +55,18 @@ final class DefaultRemoteFlowSource = RemoteFlowSource;
 
 private class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedParameterSource {
   GenericUnreferencedParameterSource() {
-    exists(Parameter p | this = p and not exists(p.getAnArgument()))
+    exists(Parameter p |
+      this = p and
+      not exists(p.getAnArgument())
+      // or
+      // // TODO: this is test code which causes regression in unit tests, but will
+      // // find sources where ordinarily a source might be missing
+      // // If all calls to a function occur in a test file, ignore those calls
+      // // and consider the parameter to the function a potential source as well.
+      // forall(Call testCall | testCall.getCallee() = p.getCallable() |
+      //   testCall.getFile().getBaseName().toUpperCase().matches("%TEST%")
+      // )
+    )
   }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
@@ -93,14 +104,74 @@ private class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() {
+import semmle.code.java.frameworks.Properties
+private import semmle.code.configfiles.ConfigFiles
+
+/**
+ * A class to represent constants in Java code, either literals or
+ * values retrieved from properties files.
+ * Java CodeQL does not consider the values of known properties to be literals,
+ * hence we need to model both literals and property calls.
+ */
+class JavaConstant extends Expr {
+  string value;
+
+  JavaConstant() {
+    // If arg 0 in a getProperty call, consider it a literal only if
+    // we haven't resolved it to a known property value, otherwise
+    // use the resolved config value.
+    // If getProperty is used, always assume the default value is potentially used.
+    // CAVEAT/ASSUMPTION: this assumes the literal is immediately known at arg0
+    // of a getProperty call.
+    // also if the properties file is reloaded in a way where the reloaded file
+    // wouldn't have the property but the original does, we would erroneously
+    // consider the literal to be mapped to that property value.
+    exists(ConfigPair p, PropertiesGetPropertyMethodCall c |
+      c.getArgument(0).(Literal).getValue() = p.getNameElement().getName() and
+      value = p.getValueElement().getValue() and
+      this = c
+    )
+    or
+    // in this case, the property value is not known, use the literal property name as the value
+    exists(PropertiesGetPropertyMethodCall c |
+      value = c.getArgument(0).(Literal).getValue() and
+      not exists(ConfigPair p |
+        c.getArgument(0).(Literal).getValue() = p.getNameElement().getName()
+      ) and
+      this = c
+    )
+    or
+    // in this case, there is not propery getter, we just have a literal
+    not exists(PropertiesGetPropertyMethodCall c | c.getArgument(0) = this) and
+    value = this.(Literal).getValue()
+  }
+
+  string getValue() { result = value }
+}
+
+private class ConstantDataSourceLiteral extends Crypto::GenericConstantSourceInstance instanceof JavaConstant
+{
+  ConstantDataSourceLiteral() {
     // TODO: this is an API specific workaround for JCA, as 'EC' is a constant that may be used
     // where typical algorithms are specified, but EC specifically means set up a
     // default curve container, that will later be specified explicitly (or if not a default)
     // curve is used.
     this.getValue() != "EC"
   }
+
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    // TODO: separate config to avoid blowing up data-flow analysis
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override string getAdditionalDescription() { result = this.toString() }
+}
+
+private class ConstantDataSourceArrayInitializer extends Crypto::GenericConstantSourceInstance instanceof ArrayInit
+{
+  ConstantDataSourceArrayInitializer() { this.getAnInit() instanceof Literal }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
@@ -215,7 +286,7 @@ module ArtifactFlowConfig implements DataFlow::ConfigSig {
 
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
-module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
+module ArtifactFlow = TaintTracking::Global<ArtifactFlowConfig>;
 
 // Import library-specific modeling
 import JCA

@@ -4431,7 +4431,7 @@ pub struct ClosureExpr {
     pub id: trap::TrapId<ClosureExpr>,
     pub param_list: Option<trap::Label<ParamList>>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub body: Option<trap::Label<Expr>>,
+    pub closure_body: Option<trap::Label<Expr>>,
     pub for_binder: Option<trap::Label<ForBinder>>,
     pub is_async: bool,
     pub is_const: bool,
@@ -4454,8 +4454,8 @@ impl trap::TrapEntry for ClosureExpr {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("callable_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.body {
-            out.add_tuple("closure_expr_bodies", vec![id.into(), v.into()]);
+        if let Some(v) = self.closure_body {
+            out.add_tuple("closure_expr_closure_bodies", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.for_binder {
             out.add_tuple("closure_expr_for_binders", vec![id.into(), v.into()]);
@@ -10783,7 +10783,7 @@ pub struct Function {
     pub param_list: Option<trap::Label<ParamList>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub abi: Option<trap::Label<Abi>>,
-    pub body: Option<trap::Label<BlockExpr>>,
+    pub function_body: Option<trap::Label<BlockExpr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub is_async: bool,
     pub is_const: bool,
@@ -10812,8 +10812,8 @@ impl trap::TrapEntry for Function {
         if let Some(v) = self.abi {
             out.add_tuple("function_abis", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.body {
-            out.add_tuple("function_bodies", vec![id.into(), v.into()]);
+        if let Some(v) = self.function_body {
+            out.add_tuple("function_function_bodies", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("function_generic_param_lists", vec![id.into(), v.into()]);

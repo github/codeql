@@ -1,0 +1,163 @@
+models
+| 1 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 2 | Source: std::env::args_os; ReturnValue.Element; commandargs |
+| 3 | Source: std::env::current_dir; ReturnValue.Field[core::result::Result::Ok(0)]; commandargs |
+| 4 | Source: std::env::current_exe; ReturnValue.Field[core::result::Result::Ok(0)]; commandargs |
+| 5 | Source: std::env::home_dir; ReturnValue.Field[core::option::Option::Some(0)]; commandargs |
+| 6 | Source: std::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
+| 7 | Source: std::env::var_os; ReturnValue.Field[core::option::Option::Some(0)]; environment |
+| 8 | Summary: <_ as core::iter::traits::iterator::Iterator>::collect; Argument[self].Element; ReturnValue.Element; value |
+| 9 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 10 | Summary: <core::option::Option>::expect; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 11 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 12 | Summary: <core::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 13 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 14 | Summary: <core::str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
+edges
+| test.rs:6:10:6:22 | ...::var | test.rs:6:10:6:30 | ...::var(...) | provenance | Src:MaD:6  |
+| test.rs:7:10:7:25 | ...::var_os | test.rs:7:10:7:33 | ...::var_os(...) | provenance | Src:MaD:7  |
+| test.rs:9:9:9:12 | var1 | test.rs:12:10:12:13 | var1 | provenance |  |
+| test.rs:9:16:9:28 | ...::var | test.rs:9:16:9:36 | ...::var(...) [Ok] | provenance | Src:MaD:6  |
+| test.rs:9:16:9:36 | ...::var(...) [Ok] | test.rs:9:16:9:59 | ... .expect(...) | provenance | MaD:12 |
+| test.rs:9:16:9:59 | ... .expect(...) | test.rs:9:9:9:12 | var1 | provenance |  |
+| test.rs:10:9:10:12 | var2 | test.rs:13:10:13:13 | var2 | provenance |  |
+| test.rs:10:16:10:31 | ...::var_os | test.rs:10:16:10:39 | ...::var_os(...) [Some] | provenance | Src:MaD:7  |
+| test.rs:10:16:10:39 | ...::var_os(...) [Some] | test.rs:10:16:10:48 | ... .unwrap() | provenance | MaD:11 |
+| test.rs:10:16:10:48 | ... .unwrap() | test.rs:10:9:10:12 | var2 | provenance |  |
+| test.rs:27:9:27:12 | args [element] | test.rs:28:20:28:23 | args [element] | provenance |  |
+| test.rs:27:9:27:12 | args [element] | test.rs:29:17:29:20 | args [element] | provenance |  |
+| test.rs:27:29:27:42 | ...::args | test.rs:27:29:27:44 | ...::args(...) [element] | provenance | Src:MaD:1  |
+| test.rs:27:29:27:44 | ...::args(...) [element] | test.rs:27:29:27:54 | ... .collect() [element] | provenance | MaD:8 |
+| test.rs:27:29:27:54 | ... .collect() [element] | test.rs:27:9:27:12 | args [element] | provenance |  |
+| test.rs:28:9:28:15 | my_path [&ref] | test.rs:34:10:34:16 | my_path | provenance |  |
+| test.rs:28:19:28:26 | &... [&ref] | test.rs:28:9:28:15 | my_path [&ref] | provenance |  |
+| test.rs:28:20:28:23 | args [element] | test.rs:28:20:28:26 | args[0] | provenance |  |
+| test.rs:28:20:28:26 | args[0] | test.rs:28:19:28:26 | &... [&ref] | provenance |  |
+| test.rs:29:9:29:12 | arg1 [&ref] | test.rs:35:10:35:13 | arg1 | provenance |  |
+| test.rs:29:16:29:23 | &... [&ref] | test.rs:29:9:29:12 | arg1 [&ref] | provenance |  |
+| test.rs:29:17:29:20 | args [element] | test.rs:29:17:29:23 | args[1] | provenance |  |
+| test.rs:29:17:29:23 | args[1] | test.rs:29:16:29:23 | &... [&ref] | provenance |  |
+| test.rs:30:9:30:12 | arg2 | test.rs:36:10:36:13 | arg2 | provenance |  |
+| test.rs:30:16:30:29 | ...::args | test.rs:30:16:30:31 | ...::args(...) [element] | provenance | Src:MaD:1  |
+| test.rs:30:16:30:31 | ...::args(...) [element] | test.rs:30:16:30:38 | ... .nth(...) [Some] | provenance | MaD:9 |
+| test.rs:30:16:30:38 | ... .nth(...) [Some] | test.rs:30:16:30:47 | ... .unwrap() | provenance | MaD:11 |
+| test.rs:30:16:30:47 | ... .unwrap() | test.rs:30:9:30:12 | arg2 | provenance |  |
+| test.rs:31:9:31:12 | arg3 | test.rs:37:10:37:13 | arg3 | provenance |  |
+| test.rs:31:16:31:32 | ...::args_os | test.rs:31:16:31:34 | ...::args_os(...) [element] | provenance | Src:MaD:2  |
+| test.rs:31:16:31:34 | ...::args_os(...) [element] | test.rs:31:16:31:41 | ... .nth(...) [Some] | provenance | MaD:9 |
+| test.rs:31:16:31:41 | ... .nth(...) [Some] | test.rs:31:16:31:50 | ... .unwrap() | provenance | MaD:11 |
+| test.rs:31:16:31:50 | ... .unwrap() | test.rs:31:9:31:12 | arg3 | provenance |  |
+| test.rs:32:9:32:12 | arg4 | test.rs:38:10:38:13 | arg4 | provenance |  |
+| test.rs:32:16:32:29 | ...::args | test.rs:32:16:32:31 | ...::args(...) [element] | provenance | Src:MaD:1  |
+| test.rs:32:16:32:31 | ...::args(...) [element] | test.rs:32:16:32:38 | ... .nth(...) [Some] | provenance | MaD:9 |
+| test.rs:32:16:32:38 | ... .nth(...) [Some] | test.rs:32:16:32:47 | ... .unwrap() | provenance | MaD:11 |
+| test.rs:32:16:32:47 | ... .unwrap() | test.rs:32:16:32:64 | ... .parse() [Ok] | provenance | MaD:14 |
+| test.rs:32:16:32:64 | ... .parse() [Ok] | test.rs:32:16:32:73 | ... .unwrap() | provenance | MaD:13 |
+| test.rs:32:16:32:73 | ... .unwrap() | test.rs:32:9:32:12 | arg4 | provenance |  |
+| test.rs:40:9:40:11 | arg | test.rs:41:14:41:16 | arg | provenance |  |
+| test.rs:40:16:40:29 | ...::args | test.rs:40:16:40:31 | ...::args(...) [element] | provenance | Src:MaD:1  |
+| test.rs:40:16:40:31 | ...::args(...) [element] | test.rs:40:9:40:11 | arg | provenance |  |
+| test.rs:44:9:44:11 | arg | test.rs:45:14:45:16 | arg | provenance |  |
+| test.rs:44:16:44:32 | ...::args_os | test.rs:44:16:44:34 | ...::args_os(...) [element] | provenance | Src:MaD:2  |
+| test.rs:44:16:44:34 | ...::args_os(...) [element] | test.rs:44:9:44:11 | arg | provenance |  |
+| test.rs:50:9:50:11 | dir | test.rs:54:10:54:12 | dir | provenance |  |
+| test.rs:50:15:50:35 | ...::current_dir | test.rs:50:15:50:37 | ...::current_dir(...) [Ok] | provenance | Src:MaD:3  |
+| test.rs:50:15:50:37 | ...::current_dir(...) [Ok] | test.rs:50:15:50:54 | ... .expect(...) | provenance | MaD:12 |
+| test.rs:50:15:50:54 | ... .expect(...) | test.rs:50:9:50:11 | dir | provenance |  |
+| test.rs:51:9:51:11 | exe | test.rs:55:10:55:12 | exe | provenance |  |
+| test.rs:51:15:51:35 | ...::current_exe | test.rs:51:15:51:37 | ...::current_exe(...) [Ok] | provenance | Src:MaD:4  |
+| test.rs:51:15:51:37 | ...::current_exe(...) [Ok] | test.rs:51:15:51:54 | ... .expect(...) | provenance | MaD:12 |
+| test.rs:51:15:51:54 | ... .expect(...) | test.rs:51:9:51:11 | exe | provenance |  |
+| test.rs:52:9:52:12 | home | test.rs:56:10:56:13 | home | provenance |  |
+| test.rs:52:16:52:33 | ...::home_dir | test.rs:52:16:52:35 | ...::home_dir(...) [Some] | provenance | Src:MaD:5  |
+| test.rs:52:16:52:35 | ...::home_dir(...) [Some] | test.rs:52:16:52:52 | ... .expect(...) | provenance | MaD:10 |
+| test.rs:52:16:52:52 | ... .expect(...) | test.rs:52:9:52:12 | home | provenance |  |
+nodes
+| test.rs:6:10:6:22 | ...::var | semmle.label | ...::var |
+| test.rs:6:10:6:30 | ...::var(...) | semmle.label | ...::var(...) |
+| test.rs:7:10:7:25 | ...::var_os | semmle.label | ...::var_os |
+| test.rs:7:10:7:33 | ...::var_os(...) | semmle.label | ...::var_os(...) |
+| test.rs:9:9:9:12 | var1 | semmle.label | var1 |
+| test.rs:9:16:9:28 | ...::var | semmle.label | ...::var |
+| test.rs:9:16:9:36 | ...::var(...) [Ok] | semmle.label | ...::var(...) [Ok] |
+| test.rs:9:16:9:59 | ... .expect(...) | semmle.label | ... .expect(...) |
+| test.rs:10:9:10:12 | var2 | semmle.label | var2 |
+| test.rs:10:16:10:31 | ...::var_os | semmle.label | ...::var_os |
+| test.rs:10:16:10:39 | ...::var_os(...) [Some] | semmle.label | ...::var_os(...) [Some] |
+| test.rs:10:16:10:48 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:12:10:12:13 | var1 | semmle.label | var1 |
+| test.rs:13:10:13:13 | var2 | semmle.label | var2 |
+| test.rs:27:9:27:12 | args [element] | semmle.label | args [element] |
+| test.rs:27:29:27:42 | ...::args | semmle.label | ...::args |
+| test.rs:27:29:27:44 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| test.rs:27:29:27:54 | ... .collect() [element] | semmle.label | ... .collect() [element] |
+| test.rs:28:9:28:15 | my_path [&ref] | semmle.label | my_path [&ref] |
+| test.rs:28:19:28:26 | &... [&ref] | semmle.label | &... [&ref] |
+| test.rs:28:20:28:23 | args [element] | semmle.label | args [element] |
+| test.rs:28:20:28:26 | args[0] | semmle.label | args[0] |
+| test.rs:29:9:29:12 | arg1 [&ref] | semmle.label | arg1 [&ref] |
+| test.rs:29:16:29:23 | &... [&ref] | semmle.label | &... [&ref] |
+| test.rs:29:17:29:20 | args [element] | semmle.label | args [element] |
+| test.rs:29:17:29:23 | args[1] | semmle.label | args[1] |
+| test.rs:30:9:30:12 | arg2 | semmle.label | arg2 |
+| test.rs:30:16:30:29 | ...::args | semmle.label | ...::args |
+| test.rs:30:16:30:31 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| test.rs:30:16:30:38 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| test.rs:30:16:30:47 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:31:9:31:12 | arg3 | semmle.label | arg3 |
+| test.rs:31:16:31:32 | ...::args_os | semmle.label | ...::args_os |
+| test.rs:31:16:31:34 | ...::args_os(...) [element] | semmle.label | ...::args_os(...) [element] |
+| test.rs:31:16:31:41 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| test.rs:31:16:31:50 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:32:9:32:12 | arg4 | semmle.label | arg4 |
+| test.rs:32:16:32:29 | ...::args | semmle.label | ...::args |
+| test.rs:32:16:32:31 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| test.rs:32:16:32:38 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| test.rs:32:16:32:47 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:32:16:32:64 | ... .parse() [Ok] | semmle.label | ... .parse() [Ok] |
+| test.rs:32:16:32:73 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:34:10:34:16 | my_path | semmle.label | my_path |
+| test.rs:35:10:35:13 | arg1 | semmle.label | arg1 |
+| test.rs:36:10:36:13 | arg2 | semmle.label | arg2 |
+| test.rs:37:10:37:13 | arg3 | semmle.label | arg3 |
+| test.rs:38:10:38:13 | arg4 | semmle.label | arg4 |
+| test.rs:40:9:40:11 | arg | semmle.label | arg |
+| test.rs:40:16:40:29 | ...::args | semmle.label | ...::args |
+| test.rs:40:16:40:31 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| test.rs:41:14:41:16 | arg | semmle.label | arg |
+| test.rs:44:9:44:11 | arg | semmle.label | arg |
+| test.rs:44:16:44:32 | ...::args_os | semmle.label | ...::args_os |
+| test.rs:44:16:44:34 | ...::args_os(...) [element] | semmle.label | ...::args_os(...) [element] |
+| test.rs:45:14:45:16 | arg | semmle.label | arg |
+| test.rs:50:9:50:11 | dir | semmle.label | dir |
+| test.rs:50:15:50:35 | ...::current_dir | semmle.label | ...::current_dir |
+| test.rs:50:15:50:37 | ...::current_dir(...) [Ok] | semmle.label | ...::current_dir(...) [Ok] |
+| test.rs:50:15:50:54 | ... .expect(...) | semmle.label | ... .expect(...) |
+| test.rs:51:9:51:11 | exe | semmle.label | exe |
+| test.rs:51:15:51:35 | ...::current_exe | semmle.label | ...::current_exe |
+| test.rs:51:15:51:37 | ...::current_exe(...) [Ok] | semmle.label | ...::current_exe(...) [Ok] |
+| test.rs:51:15:51:54 | ... .expect(...) | semmle.label | ... .expect(...) |
+| test.rs:52:9:52:12 | home | semmle.label | home |
+| test.rs:52:16:52:33 | ...::home_dir | semmle.label | ...::home_dir |
+| test.rs:52:16:52:35 | ...::home_dir(...) [Some] | semmle.label | ...::home_dir(...) [Some] |
+| test.rs:52:16:52:52 | ... .expect(...) | semmle.label | ... .expect(...) |
+| test.rs:54:10:54:12 | dir | semmle.label | dir |
+| test.rs:55:10:55:12 | exe | semmle.label | exe |
+| test.rs:56:10:56:13 | home | semmle.label | home |
+subpaths
+testFailures
+#select
+| test.rs:6:10:6:30 | ...::var(...) | test.rs:6:10:6:22 | ...::var | test.rs:6:10:6:30 | ...::var(...) | $@ | test.rs:6:10:6:22 | ...::var | ...::var |
+| test.rs:7:10:7:33 | ...::var_os(...) | test.rs:7:10:7:25 | ...::var_os | test.rs:7:10:7:33 | ...::var_os(...) | $@ | test.rs:7:10:7:25 | ...::var_os | ...::var_os |
+| test.rs:12:10:12:13 | var1 | test.rs:9:16:9:28 | ...::var | test.rs:12:10:12:13 | var1 | $@ | test.rs:9:16:9:28 | ...::var | ...::var |
+| test.rs:13:10:13:13 | var2 | test.rs:10:16:10:31 | ...::var_os | test.rs:13:10:13:13 | var2 | $@ | test.rs:10:16:10:31 | ...::var_os | ...::var_os |
+| test.rs:34:10:34:16 | my_path | test.rs:27:29:27:42 | ...::args | test.rs:34:10:34:16 | my_path | $@ | test.rs:27:29:27:42 | ...::args | ...::args |
+| test.rs:35:10:35:13 | arg1 | test.rs:27:29:27:42 | ...::args | test.rs:35:10:35:13 | arg1 | $@ | test.rs:27:29:27:42 | ...::args | ...::args |
+| test.rs:36:10:36:13 | arg2 | test.rs:30:16:30:29 | ...::args | test.rs:36:10:36:13 | arg2 | $@ | test.rs:30:16:30:29 | ...::args | ...::args |
+| test.rs:37:10:37:13 | arg3 | test.rs:31:16:31:32 | ...::args_os | test.rs:37:10:37:13 | arg3 | $@ | test.rs:31:16:31:32 | ...::args_os | ...::args_os |
+| test.rs:38:10:38:13 | arg4 | test.rs:32:16:32:29 | ...::args | test.rs:38:10:38:13 | arg4 | $@ | test.rs:32:16:32:29 | ...::args | ...::args |
+| test.rs:41:14:41:16 | arg | test.rs:40:16:40:29 | ...::args | test.rs:41:14:41:16 | arg | $@ | test.rs:40:16:40:29 | ...::args | ...::args |
+| test.rs:45:14:45:16 | arg | test.rs:44:16:44:32 | ...::args_os | test.rs:45:14:45:16 | arg | $@ | test.rs:44:16:44:32 | ...::args_os | ...::args_os |
+| test.rs:54:10:54:12 | dir | test.rs:50:15:50:35 | ...::current_dir | test.rs:54:10:54:12 | dir | $@ | test.rs:50:15:50:35 | ...::current_dir | ...::current_dir |
+| test.rs:55:10:55:12 | exe | test.rs:51:15:51:35 | ...::current_exe | test.rs:55:10:55:12 | exe | $@ | test.rs:51:15:51:35 | ...::current_exe | ...::current_exe |
+| test.rs:56:10:56:13 | home | test.rs:52:16:52:33 | ...::home_dir | test.rs:56:10:56:13 | home | $@ | test.rs:52:16:52:33 | ...::home_dir | ...::home_dir |

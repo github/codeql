@@ -16,7 +16,7 @@ private import IntegerGuards
 private import NullGuards
 private import semmle.code.java.Collections
 private import semmle.code.java.controlflow.internal.Preconditions
-private import semmle.code.java.controlflow.ControlFlow as Cf
+private import semmle.code.java.controlflow.ControlFlowReachability
 
 /** Gets an expression that may be `null`. */
 Expr nullExpr() { result = nullExpr(_) }
@@ -248,7 +248,7 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
   )
 }
 
-private module NullnessConfig implements Cf::ControlFlow::ConfigSig {
+private module NullnessConfig implements ControlFlowReachability::ConfigSig {
   predicate source(ControlFlowNode node, SsaVariable def) { varMaybeNull(def, node, _, _) }
 
   predicate sink(ControlFlowNode node, SsaVariable def) { varDereference(def, _) = node }
@@ -260,7 +260,7 @@ private module NullnessConfig implements Cf::ControlFlow::ConfigSig {
   predicate uncertainFlow() { none() }
 }
 
-private module NullnessFlow = Cf::ControlFlow::Flow<NullnessConfig>;
+private module NullnessFlow = ControlFlowReachability::Flow<NullnessConfig>;
 
 /**
  * Holds if the dereference of `v` at `va` might be `null`.

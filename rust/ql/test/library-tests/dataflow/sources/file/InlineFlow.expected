@@ -1,0 +1,529 @@
+models
+| 1 | Source: <async_std::fs::file::File>::open; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 2 | Source: <async_std::fs::open_options::OpenOptions>::open; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 3 | Source: <std::fs::DirEntry>::file_name; ReturnValue; file |
+| 4 | Source: <std::fs::DirEntry>::path; ReturnValue; file |
+| 5 | Source: <std::fs::File>::open; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 6 | Source: <std::fs::OpenOptions>::open; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 7 | Source: <tokio::fs::file::File>::open; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 8 | Source: <tokio::fs::open_options::OpenOptions>::open; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 9 | Source: <tokio::fs::read_dir::DirEntry>::file_name; ReturnValue; file |
+| 10 | Source: <tokio::fs::read_dir::DirEntry>::path; ReturnValue; file |
+| 11 | Source: std::fs::read; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 12 | Source: std::fs::read; ReturnValue; file |
+| 13 | Source: std::fs::read_link; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 14 | Source: std::fs::read_to_string; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 15 | Source: std::fs::read_to_string; ReturnValue; file |
+| 16 | Source: tokio::fs::read::read; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 17 | Source: tokio::fs::read_link::read_link; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 18 | Source: tokio::fs::read_to_string::read_to_string; ReturnValue.Future.Field[core::result::Result::Ok(0)]; file |
+| 19 | Summary: <_ as async_std::io::read::ReadExt>::read; Argument[self].Reference; Argument[0].Reference; taint |
+| 20 | Summary: <_ as async_std::io::read::ReadExt>::read; Argument[self]; Argument[0].Reference; taint |
+| 21 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 22 | Summary: <_ as std::io::Read>::bytes; Argument[self]; ReturnValue; taint |
+| 23 | Summary: <_ as std::io::Read>::chain; Argument[0]; ReturnValue; taint |
+| 24 | Summary: <_ as std::io::Read>::chain; Argument[self]; ReturnValue; taint |
+| 25 | Summary: <_ as std::io::Read>::read; Argument[self]; Argument[0].Reference; taint |
+| 26 | Summary: <_ as std::io::Read>::read_exact; Argument[self]; Argument[0].Reference; taint |
+| 27 | Summary: <_ as std::io::Read>::read_to_end; Argument[self]; Argument[0].Reference; taint |
+| 28 | Summary: <_ as std::io::Read>::read_to_string; Argument[self]; Argument[0].Reference; taint |
+| 29 | Summary: <_ as std::io::Read>::take; Argument[self]; ReturnValue; taint |
+| 30 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read; Argument[self]; Argument[0].Reference; taint |
+| 31 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_buf; Argument[self]; Argument[0].Reference; taint |
+| 32 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_exact; Argument[self]; Argument[0].Reference; taint |
+| 33 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_f32; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 34 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_i16; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 35 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_i64_le; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 36 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_to_end; Argument[self]; Argument[0].Reference; taint |
+| 37 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_to_string; Argument[self]; Argument[0].Reference; taint |
+| 38 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_u8; Argument[self]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
+| 39 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 40 | Summary: <std::fs::File as std::io::Read>::read; Argument[self]; Argument[0]; taint |
+| 41 | Summary: <std::fs::File as std::io::Read>::read_to_end; Argument[self]; Argument[0]; taint |
+| 42 | Summary: <std::fs::File as std::io::Read>::read_to_string; Argument[self]; Argument[0]; taint |
+| 43 | Summary: <std::path::PathBuf>::as_path; Argument[self]; ReturnValue; value |
+edges
+| test.rs:12:13:12:18 | buffer | test.rs:13:14:13:19 | buffer | provenance |  |
+| test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:43 | ...::read [Ok] | provenance | Src:MaD:11  |
+| test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
+| test.rs:12:31:12:43 | ...::read [Ok] | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | MaD:12 |
+| test.rs:12:31:12:55 | ...::read(...) [Ok] | test.rs:12:31:12:56 | TryExpr | provenance |  |
+| test.rs:12:31:12:56 | TryExpr | test.rs:12:13:12:18 | buffer | provenance |  |
+| test.rs:17:13:17:18 | buffer | test.rs:18:14:18:19 | buffer | provenance |  |
+| test.rs:17:31:17:38 | ...::read | test.rs:17:31:17:38 | ...::read [Ok] | provenance | Src:MaD:11  |
+| test.rs:17:31:17:38 | ...::read | test.rs:17:31:17:50 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
+| test.rs:17:31:17:38 | ...::read [Ok] | test.rs:17:31:17:50 | ...::read(...) [Ok] | provenance | MaD:12 |
+| test.rs:17:31:17:50 | ...::read(...) [Ok] | test.rs:17:31:17:51 | TryExpr | provenance |  |
+| test.rs:17:31:17:51 | TryExpr | test.rs:17:13:17:18 | buffer | provenance |  |
+| test.rs:22:13:22:18 | buffer | test.rs:23:14:23:19 | buffer | provenance |  |
+| test.rs:22:22:22:39 | ...::read_to_string | test.rs:22:22:22:39 | ...::read_to_string [Ok] | provenance | Src:MaD:14  |
+| test.rs:22:22:22:39 | ...::read_to_string | test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | provenance | Src:MaD:14  |
+| test.rs:22:22:22:39 | ...::read_to_string [Ok] | test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | provenance | MaD:15 |
+| test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | test.rs:22:22:22:52 | TryExpr | provenance |  |
+| test.rs:22:22:22:52 | TryExpr | test.rs:22:13:22:18 | buffer | provenance |  |
+| test.rs:29:13:29:16 | path | test.rs:30:14:30:17 | path | provenance |  |
+| test.rs:29:13:29:16 | path | test.rs:30:14:30:25 | path.clone() | provenance | MaD:21 |
+| test.rs:29:13:29:16 | path | test.rs:31:14:31:17 | path | provenance |  |
+| test.rs:29:13:29:16 | path | test.rs:31:14:31:25 | path.clone() | provenance | MaD:21 |
+| test.rs:29:13:29:16 | path | test.rs:41:14:41:17 | path | provenance |  |
+| test.rs:29:20:29:27 | e.path() | test.rs:29:13:29:16 | path | provenance |  |
+| test.rs:29:22:29:25 | path | test.rs:29:20:29:27 | e.path() | provenance | Src:MaD:4 MaD:4 |
+| test.rs:30:14:30:17 | path | test.rs:30:14:30:25 | path.clone() | provenance | MaD:21 |
+| test.rs:31:14:31:17 | path | test.rs:31:14:31:25 | path.clone() | provenance | MaD:21 |
+| test.rs:31:14:31:25 | path.clone() | test.rs:31:14:31:35 | ... .as_path() | provenance | MaD:43 |
+| test.rs:43:13:43:21 | file_name | test.rs:44:14:44:22 | file_name | provenance |  |
+| test.rs:43:13:43:21 | file_name | test.rs:44:14:44:30 | file_name.clone() | provenance | MaD:21 |
+| test.rs:43:13:43:21 | file_name | test.rs:49:14:49:22 | file_name | provenance |  |
+| test.rs:43:25:43:37 | e.file_name() | test.rs:43:13:43:21 | file_name | provenance |  |
+| test.rs:43:27:43:35 | file_name | test.rs:43:25:43:37 | e.file_name() | provenance | Src:MaD:3 MaD:3 |
+| test.rs:44:14:44:22 | file_name | test.rs:44:14:44:30 | file_name.clone() | provenance | MaD:21 |
+| test.rs:65:13:65:18 | target | test.rs:66:14:66:19 | target | provenance |  |
+| test.rs:65:22:65:34 | ...::read_link | test.rs:65:22:65:49 | ...::read_link(...) [Ok] | provenance | Src:MaD:13  |
+| test.rs:65:22:65:49 | ...::read_link(...) [Ok] | test.rs:65:22:65:50 | TryExpr | provenance |  |
+| test.rs:65:22:65:50 | TryExpr | test.rs:65:13:65:18 | target | provenance |  |
+| test.rs:74:13:74:18 | buffer | test.rs:75:14:75:19 | buffer | provenance |  |
+| test.rs:74:31:74:45 | ...::read | test.rs:74:31:74:57 | ...::read(...) [future, Ok] | provenance | Src:MaD:16  |
+| test.rs:74:31:74:57 | ...::read(...) [future, Ok] | test.rs:74:31:74:63 | await ... [Ok] | provenance |  |
+| test.rs:74:31:74:63 | await ... [Ok] | test.rs:74:31:74:64 | TryExpr | provenance |  |
+| test.rs:74:31:74:64 | TryExpr | test.rs:74:13:74:18 | buffer | provenance |  |
+| test.rs:79:13:79:18 | buffer | test.rs:80:14:80:19 | buffer | provenance |  |
+| test.rs:79:31:79:45 | ...::read | test.rs:79:31:79:57 | ...::read(...) [future, Ok] | provenance | Src:MaD:16  |
+| test.rs:79:31:79:57 | ...::read(...) [future, Ok] | test.rs:79:31:79:63 | await ... [Ok] | provenance |  |
+| test.rs:79:31:79:63 | await ... [Ok] | test.rs:79:31:79:64 | TryExpr | provenance |  |
+| test.rs:79:31:79:64 | TryExpr | test.rs:79:13:79:18 | buffer | provenance |  |
+| test.rs:84:13:84:18 | buffer | test.rs:85:14:85:19 | buffer | provenance |  |
+| test.rs:84:22:84:46 | ...::read_to_string | test.rs:84:22:84:58 | ...::read_to_string(...) [future, Ok] | provenance | Src:MaD:18  |
+| test.rs:84:22:84:58 | ...::read_to_string(...) [future, Ok] | test.rs:84:22:84:64 | await ... [Ok] | provenance |  |
+| test.rs:84:22:84:64 | await ... [Ok] | test.rs:84:22:84:65 | TryExpr | provenance |  |
+| test.rs:84:22:84:65 | TryExpr | test.rs:84:13:84:18 | buffer | provenance |  |
+| test.rs:90:13:90:16 | path | test.rs:92:14:92:17 | path | provenance |  |
+| test.rs:90:20:90:31 | entry.path() | test.rs:90:13:90:16 | path | provenance |  |
+| test.rs:90:26:90:29 | path | test.rs:90:20:90:31 | entry.path() | provenance | Src:MaD:10 MaD:10 |
+| test.rs:90:26:90:29 | path | test.rs:90:20:90:31 | entry.path() | provenance | Src:MaD:10 MaD:10 |
+| test.rs:91:13:91:21 | file_name | test.rs:93:14:93:22 | file_name | provenance |  |
+| test.rs:91:25:91:41 | entry.file_name() | test.rs:91:13:91:21 | file_name | provenance |  |
+| test.rs:91:31:91:39 | file_name | test.rs:91:25:91:41 | entry.file_name() | provenance | Src:MaD:9 MaD:9 |
+| test.rs:91:31:91:39 | file_name | test.rs:91:25:91:41 | entry.file_name() | provenance | Src:MaD:9 MaD:9 |
+| test.rs:97:13:97:18 | target | test.rs:98:14:98:19 | target | provenance |  |
+| test.rs:97:22:97:41 | ...::read_link | test.rs:97:22:97:56 | ...::read_link(...) [future, Ok] | provenance | Src:MaD:17  |
+| test.rs:97:22:97:56 | ...::read_link(...) [future, Ok] | test.rs:97:22:97:62 | await ... [Ok] | provenance |  |
+| test.rs:97:22:97:62 | await ... [Ok] | test.rs:97:22:97:63 | TryExpr | provenance |  |
+| test.rs:97:22:97:63 | TryExpr | test.rs:97:13:97:18 | target | provenance |  |
+| test.rs:107:9:107:16 | mut file | test.rs:111:32:111:42 | [post] &mut buffer | provenance | MaD:40 |
+| test.rs:107:9:107:16 | mut file | test.rs:111:32:111:42 | [post] &mut buffer [&ref] | provenance | MaD:25 |
+| test.rs:107:9:107:16 | mut file | test.rs:117:39:117:49 | [post] &mut buffer | provenance | MaD:41 |
+| test.rs:107:9:107:16 | mut file | test.rs:117:39:117:49 | [post] &mut buffer [&ref] | provenance | MaD:27 |
+| test.rs:107:9:107:16 | mut file | test.rs:123:42:123:52 | [post] &mut buffer | provenance | MaD:42 |
+| test.rs:107:9:107:16 | mut file | test.rs:123:42:123:52 | [post] &mut buffer [&ref] | provenance | MaD:28 |
+| test.rs:107:9:107:16 | mut file | test.rs:129:25:129:35 | [post] &mut buffer [&ref] | provenance | MaD:26 |
+| test.rs:107:9:107:16 | mut file | test.rs:133:17:133:28 | file.bytes() | provenance | MaD:22 |
+| test.rs:107:20:107:38 | ...::open | test.rs:107:20:107:50 | ...::open(...) [Ok] | provenance | Src:MaD:5  |
+| test.rs:107:20:107:50 | ...::open(...) [Ok] | test.rs:107:20:107:51 | TryExpr | provenance |  |
+| test.rs:107:20:107:51 | TryExpr | test.rs:107:9:107:16 | mut file | provenance |  |
+| test.rs:111:32:111:42 | [post] &mut buffer | test.rs:112:15:112:20 | buffer | provenance |  |
+| test.rs:111:32:111:42 | [post] &mut buffer [&ref] | test.rs:111:37:111:42 | [post] buffer | provenance |  |
+| test.rs:111:37:111:42 | [post] buffer | test.rs:112:15:112:20 | buffer | provenance |  |
+| test.rs:112:15:112:20 | buffer | test.rs:112:14:112:20 | &buffer | provenance |  |
+| test.rs:117:39:117:49 | [post] &mut buffer | test.rs:118:15:118:20 | buffer | provenance |  |
+| test.rs:117:39:117:49 | [post] &mut buffer [&ref] | test.rs:117:44:117:49 | [post] buffer | provenance |  |
+| test.rs:117:44:117:49 | [post] buffer | test.rs:118:15:118:20 | buffer | provenance |  |
+| test.rs:118:15:118:20 | buffer | test.rs:118:14:118:20 | &buffer | provenance |  |
+| test.rs:123:42:123:52 | [post] &mut buffer | test.rs:124:15:124:20 | buffer | provenance |  |
+| test.rs:123:42:123:52 | [post] &mut buffer [&ref] | test.rs:123:47:123:52 | [post] buffer | provenance |  |
+| test.rs:123:47:123:52 | [post] buffer | test.rs:124:15:124:20 | buffer | provenance |  |
+| test.rs:124:15:124:20 | buffer | test.rs:124:14:124:20 | &buffer | provenance |  |
+| test.rs:129:25:129:35 | [post] &mut buffer [&ref] | test.rs:129:30:129:35 | [post] buffer | provenance |  |
+| test.rs:129:30:129:35 | [post] buffer | test.rs:130:15:130:20 | buffer | provenance |  |
+| test.rs:130:15:130:20 | buffer | test.rs:130:14:130:20 | &buffer | provenance |  |
+| test.rs:133:17:133:28 | file.bytes() | test.rs:134:14:134:17 | byte | provenance |  |
+| test.rs:140:13:140:18 | mut f1 | test.rs:142:30:142:40 | [post] &mut buffer | provenance | MaD:40 |
+| test.rs:140:13:140:18 | mut f1 | test.rs:142:30:142:40 | [post] &mut buffer [&ref] | provenance | MaD:25 |
+| test.rs:140:22:140:63 | ... .open(...) [Ok] | test.rs:140:22:140:72 | ... .unwrap() | provenance | MaD:39 |
+| test.rs:140:22:140:72 | ... .unwrap() | test.rs:140:13:140:18 | mut f1 | provenance |  |
+| test.rs:140:50:140:53 | open | test.rs:140:22:140:63 | ... .open(...) [Ok] | provenance | Src:MaD:6  |
+| test.rs:142:30:142:40 | [post] &mut buffer | test.rs:143:15:143:20 | buffer | provenance |  |
+| test.rs:142:30:142:40 | [post] &mut buffer [&ref] | test.rs:142:35:142:40 | [post] buffer | provenance |  |
+| test.rs:142:35:142:40 | [post] buffer | test.rs:143:15:143:20 | buffer | provenance |  |
+| test.rs:143:15:143:20 | buffer | test.rs:143:14:143:20 | &buffer | provenance |  |
+| test.rs:147:13:147:18 | mut f2 | test.rs:149:30:149:40 | [post] &mut buffer | provenance | MaD:40 |
+| test.rs:147:13:147:18 | mut f2 | test.rs:149:30:149:40 | [post] &mut buffer [&ref] | provenance | MaD:25 |
+| test.rs:147:22:147:80 | ... .open(...) [Ok] | test.rs:147:22:147:89 | ... .unwrap() | provenance | MaD:39 |
+| test.rs:147:22:147:89 | ... .unwrap() | test.rs:147:13:147:18 | mut f2 | provenance |  |
+| test.rs:147:67:147:70 | open | test.rs:147:22:147:80 | ... .open(...) [Ok] | provenance | Src:MaD:6  |
+| test.rs:149:30:149:40 | [post] &mut buffer | test.rs:150:15:150:20 | buffer | provenance |  |
+| test.rs:149:30:149:40 | [post] &mut buffer [&ref] | test.rs:149:35:149:40 | [post] buffer | provenance |  |
+| test.rs:149:35:149:40 | [post] buffer | test.rs:150:15:150:20 | buffer | provenance |  |
+| test.rs:150:15:150:20 | buffer | test.rs:150:14:150:20 | &buffer | provenance |  |
+| test.rs:154:13:154:18 | mut f3 | test.rs:156:30:156:40 | [post] &mut buffer | provenance | MaD:40 |
+| test.rs:154:13:154:18 | mut f3 | test.rs:156:30:156:40 | [post] &mut buffer [&ref] | provenance | MaD:25 |
+| test.rs:154:22:154:114 | ... .open(...) [Ok] | test.rs:154:22:154:123 | ... .unwrap() | provenance | MaD:39 |
+| test.rs:154:22:154:123 | ... .unwrap() | test.rs:154:13:154:18 | mut f3 | provenance |  |
+| test.rs:154:101:154:104 | open | test.rs:154:22:154:114 | ... .open(...) [Ok] | provenance | Src:MaD:6  |
+| test.rs:156:30:156:40 | [post] &mut buffer | test.rs:157:15:157:20 | buffer | provenance |  |
+| test.rs:156:30:156:40 | [post] &mut buffer [&ref] | test.rs:156:35:156:40 | [post] buffer | provenance |  |
+| test.rs:156:35:156:40 | [post] buffer | test.rs:157:15:157:20 | buffer | provenance |  |
+| test.rs:157:15:157:20 | buffer | test.rs:157:14:157:20 | &buffer | provenance |  |
+| test.rs:164:13:164:17 | file1 | test.rs:166:26:166:43 | file1.chain(...) | provenance | MaD:24 |
+| test.rs:164:21:164:39 | ...::open | test.rs:164:21:164:51 | ...::open(...) [Ok] | provenance | Src:MaD:5  |
+| test.rs:164:21:164:51 | ...::open(...) [Ok] | test.rs:164:21:164:52 | TryExpr | provenance |  |
+| test.rs:164:21:164:52 | TryExpr | test.rs:164:13:164:17 | file1 | provenance |  |
+| test.rs:165:13:165:17 | file2 | test.rs:166:38:166:42 | file2 | provenance |  |
+| test.rs:165:21:165:39 | ...::open | test.rs:165:21:165:59 | ...::open(...) [Ok] | provenance | Src:MaD:5  |
+| test.rs:165:21:165:59 | ...::open(...) [Ok] | test.rs:165:21:165:60 | TryExpr | provenance |  |
+| test.rs:165:21:165:60 | TryExpr | test.rs:165:13:165:17 | file2 | provenance |  |
+| test.rs:166:13:166:22 | mut reader | test.rs:167:31:167:41 | [post] &mut buffer [&ref] | provenance | MaD:28 |
+| test.rs:166:26:166:43 | file1.chain(...) | test.rs:166:13:166:22 | mut reader | provenance |  |
+| test.rs:166:38:166:42 | file2 | test.rs:166:26:166:43 | file1.chain(...) | provenance | MaD:23 |
+| test.rs:167:31:167:41 | [post] &mut buffer [&ref] | test.rs:167:36:167:41 | [post] buffer | provenance |  |
+| test.rs:167:36:167:41 | [post] buffer | test.rs:168:15:168:20 | buffer | provenance |  |
+| test.rs:168:15:168:20 | buffer | test.rs:168:14:168:20 | &buffer | provenance |  |
+| test.rs:173:13:173:17 | file1 | test.rs:174:26:174:40 | file1.take(...) | provenance | MaD:29 |
+| test.rs:173:21:173:39 | ...::open | test.rs:173:21:173:51 | ...::open(...) [Ok] | provenance | Src:MaD:5  |
+| test.rs:173:21:173:51 | ...::open(...) [Ok] | test.rs:173:21:173:52 | TryExpr | provenance |  |
+| test.rs:173:21:173:52 | TryExpr | test.rs:173:13:173:17 | file1 | provenance |  |
+| test.rs:174:13:174:22 | mut reader | test.rs:175:31:175:41 | [post] &mut buffer [&ref] | provenance | MaD:28 |
+| test.rs:174:26:174:40 | file1.take(...) | test.rs:174:13:174:22 | mut reader | provenance |  |
+| test.rs:175:31:175:41 | [post] &mut buffer [&ref] | test.rs:175:36:175:41 | [post] buffer | provenance |  |
+| test.rs:175:36:175:41 | [post] buffer | test.rs:176:15:176:20 | buffer | provenance |  |
+| test.rs:176:15:176:20 | buffer | test.rs:176:14:176:20 | &buffer | provenance |  |
+| test.rs:185:9:185:16 | mut file | test.rs:189:32:189:42 | [post] &mut buffer [&ref] | provenance | MaD:30 |
+| test.rs:185:9:185:16 | mut file | test.rs:195:39:195:49 | [post] &mut buffer [&ref] | provenance | MaD:36 |
+| test.rs:185:9:185:16 | mut file | test.rs:201:42:201:52 | [post] &mut buffer [&ref] | provenance | MaD:37 |
+| test.rs:185:9:185:16 | mut file | test.rs:207:25:207:35 | [post] &mut buffer [&ref] | provenance | MaD:32 |
+| test.rs:185:9:185:16 | mut file | test.rs:212:18:212:31 | file.read_u8() [future, Ok] | provenance | MaD:38 |
+| test.rs:185:9:185:16 | mut file | test.rs:213:18:213:32 | file.read_i16() [future, Ok] | provenance | MaD:34 |
+| test.rs:185:9:185:16 | mut file | test.rs:214:18:214:32 | file.read_f32() [future, Ok] | provenance | MaD:33 |
+| test.rs:185:9:185:16 | mut file | test.rs:215:18:215:35 | file.read_i64_le() [future, Ok] | provenance | MaD:35 |
+| test.rs:185:9:185:16 | mut file | test.rs:224:23:224:33 | [post] &mut buffer [&ref] | provenance | MaD:31 |
+| test.rs:185:20:185:40 | ...::open | test.rs:185:20:185:52 | ...::open(...) [future, Ok] | provenance | Src:MaD:7  |
+| test.rs:185:20:185:52 | ...::open(...) [future, Ok] | test.rs:185:20:185:58 | await ... [Ok] | provenance |  |
+| test.rs:185:20:185:58 | await ... [Ok] | test.rs:185:20:185:59 | TryExpr | provenance |  |
+| test.rs:185:20:185:59 | TryExpr | test.rs:185:9:185:16 | mut file | provenance |  |
+| test.rs:189:32:189:42 | [post] &mut buffer [&ref] | test.rs:189:37:189:42 | [post] buffer | provenance |  |
+| test.rs:189:37:189:42 | [post] buffer | test.rs:190:15:190:20 | buffer | provenance |  |
+| test.rs:190:15:190:20 | buffer | test.rs:190:14:190:20 | &buffer | provenance |  |
+| test.rs:195:39:195:49 | [post] &mut buffer [&ref] | test.rs:195:44:195:49 | [post] buffer | provenance |  |
+| test.rs:195:44:195:49 | [post] buffer | test.rs:196:15:196:20 | buffer | provenance |  |
+| test.rs:196:15:196:20 | buffer | test.rs:196:14:196:20 | &buffer | provenance |  |
+| test.rs:201:42:201:52 | [post] &mut buffer [&ref] | test.rs:201:47:201:52 | [post] buffer | provenance |  |
+| test.rs:201:47:201:52 | [post] buffer | test.rs:202:15:202:20 | buffer | provenance |  |
+| test.rs:202:15:202:20 | buffer | test.rs:202:14:202:20 | &buffer | provenance |  |
+| test.rs:207:25:207:35 | [post] &mut buffer [&ref] | test.rs:207:30:207:35 | [post] buffer | provenance |  |
+| test.rs:207:30:207:35 | [post] buffer | test.rs:208:15:208:20 | buffer | provenance |  |
+| test.rs:208:15:208:20 | buffer | test.rs:208:14:208:20 | &buffer | provenance |  |
+| test.rs:212:13:212:14 | v1 | test.rs:216:14:216:15 | v1 | provenance |  |
+| test.rs:212:18:212:31 | file.read_u8() [future, Ok] | test.rs:212:18:212:37 | await ... [Ok] | provenance |  |
+| test.rs:212:18:212:37 | await ... [Ok] | test.rs:212:18:212:38 | TryExpr | provenance |  |
+| test.rs:212:18:212:38 | TryExpr | test.rs:212:13:212:14 | v1 | provenance |  |
+| test.rs:213:13:213:14 | v2 | test.rs:217:14:217:15 | v2 | provenance |  |
+| test.rs:213:18:213:32 | file.read_i16() [future, Ok] | test.rs:213:18:213:38 | await ... [Ok] | provenance |  |
+| test.rs:213:18:213:38 | await ... [Ok] | test.rs:213:18:213:39 | TryExpr | provenance |  |
+| test.rs:213:18:213:39 | TryExpr | test.rs:213:13:213:14 | v2 | provenance |  |
+| test.rs:214:13:214:14 | v3 | test.rs:218:14:218:15 | v3 | provenance |  |
+| test.rs:214:18:214:32 | file.read_f32() [future, Ok] | test.rs:214:18:214:38 | await ... [Ok] | provenance |  |
+| test.rs:214:18:214:38 | await ... [Ok] | test.rs:214:18:214:39 | TryExpr | provenance |  |
+| test.rs:214:18:214:39 | TryExpr | test.rs:214:13:214:14 | v3 | provenance |  |
+| test.rs:215:13:215:14 | v4 | test.rs:219:14:219:15 | v4 | provenance |  |
+| test.rs:215:18:215:35 | file.read_i64_le() [future, Ok] | test.rs:215:18:215:41 | await ... [Ok] | provenance |  |
+| test.rs:215:18:215:41 | await ... [Ok] | test.rs:215:18:215:42 | TryExpr | provenance |  |
+| test.rs:215:18:215:42 | TryExpr | test.rs:215:13:215:14 | v4 | provenance |  |
+| test.rs:224:23:224:33 | [post] &mut buffer [&ref] | test.rs:224:28:224:33 | [post] buffer | provenance |  |
+| test.rs:224:28:224:33 | [post] buffer | test.rs:225:15:225:20 | buffer | provenance |  |
+| test.rs:225:15:225:20 | buffer | test.rs:225:14:225:20 | &buffer | provenance |  |
+| test.rs:231:13:231:18 | mut f1 | test.rs:233:30:233:40 | [post] &mut buffer [&ref] | provenance | MaD:30 |
+| test.rs:231:22:231:65 | ... .open(...) [future, Ok] | test.rs:231:22:231:71 | await ... [Ok] | provenance |  |
+| test.rs:231:22:231:71 | await ... [Ok] | test.rs:231:22:231:72 | TryExpr | provenance |  |
+| test.rs:231:22:231:72 | TryExpr | test.rs:231:13:231:18 | mut f1 | provenance |  |
+| test.rs:231:52:231:55 | open | test.rs:231:22:231:65 | ... .open(...) [future, Ok] | provenance | Src:MaD:8  |
+| test.rs:233:30:233:40 | [post] &mut buffer [&ref] | test.rs:233:35:233:40 | [post] buffer | provenance |  |
+| test.rs:233:35:233:40 | [post] buffer | test.rs:234:15:234:20 | buffer | provenance |  |
+| test.rs:234:15:234:20 | buffer | test.rs:234:14:234:20 | &buffer | provenance |  |
+| test.rs:262:9:262:16 | mut file | test.rs:266:22:266:25 | file | provenance |  |
+| test.rs:262:9:262:16 | mut file | test.rs:266:32:266:42 | [post] &mut buffer [&ref] | provenance | MaD:19 |
+| test.rs:262:9:262:16 | mut file | test.rs:266:32:266:42 | [post] &mut buffer [&ref] | provenance | MaD:20 |
+| test.rs:262:20:262:44 | ...::open | test.rs:262:20:262:56 | ...::open(...) [future, Ok] | provenance | Src:MaD:1  |
+| test.rs:262:20:262:56 | ...::open(...) [future, Ok] | test.rs:262:20:262:62 | await ... [Ok] | provenance |  |
+| test.rs:262:20:262:62 | await ... [Ok] | test.rs:262:20:262:63 | TryExpr | provenance |  |
+| test.rs:262:20:262:63 | TryExpr | test.rs:262:9:262:16 | mut file | provenance |  |
+| test.rs:266:22:266:25 | file | test.rs:266:32:266:42 | [post] &mut buffer [&ref] | provenance | MaD:19 |
+| test.rs:266:32:266:42 | [post] &mut buffer [&ref] | test.rs:266:37:266:42 | [post] buffer | provenance |  |
+| test.rs:266:37:266:42 | [post] buffer | test.rs:267:15:267:20 | buffer | provenance |  |
+| test.rs:267:15:267:20 | buffer | test.rs:267:14:267:20 | &buffer | provenance |  |
+| test.rs:273:13:273:18 | mut f1 | test.rs:275:22:275:23 | f1 | provenance |  |
+| test.rs:273:13:273:18 | mut f1 | test.rs:275:30:275:40 | [post] &mut buffer [&ref] | provenance | MaD:19 |
+| test.rs:273:13:273:18 | mut f1 | test.rs:275:30:275:40 | [post] &mut buffer [&ref] | provenance | MaD:20 |
+| test.rs:273:22:273:69 | ... .open(...) [future, Ok] | test.rs:273:22:273:75 | await ... [Ok] | provenance |  |
+| test.rs:273:22:273:75 | await ... [Ok] | test.rs:273:22:273:76 | TryExpr | provenance |  |
+| test.rs:273:22:273:76 | TryExpr | test.rs:273:13:273:18 | mut f1 | provenance |  |
+| test.rs:273:56:273:59 | open | test.rs:273:22:273:69 | ... .open(...) [future, Ok] | provenance | Src:MaD:2  |
+| test.rs:275:22:275:23 | f1 | test.rs:275:30:275:40 | [post] &mut buffer [&ref] | provenance | MaD:19 |
+| test.rs:275:30:275:40 | [post] &mut buffer [&ref] | test.rs:275:35:275:40 | [post] buffer | provenance |  |
+| test.rs:275:35:275:40 | [post] buffer | test.rs:276:15:276:20 | buffer | provenance |  |
+| test.rs:276:15:276:20 | buffer | test.rs:276:14:276:20 | &buffer | provenance |  |
+nodes
+| test.rs:12:13:12:18 | buffer | semmle.label | buffer |
+| test.rs:12:31:12:43 | ...::read | semmle.label | ...::read |
+| test.rs:12:31:12:43 | ...::read [Ok] | semmle.label | ...::read [Ok] |
+| test.rs:12:31:12:55 | ...::read(...) [Ok] | semmle.label | ...::read(...) [Ok] |
+| test.rs:12:31:12:56 | TryExpr | semmle.label | TryExpr |
+| test.rs:13:14:13:19 | buffer | semmle.label | buffer |
+| test.rs:17:13:17:18 | buffer | semmle.label | buffer |
+| test.rs:17:31:17:38 | ...::read | semmle.label | ...::read |
+| test.rs:17:31:17:38 | ...::read [Ok] | semmle.label | ...::read [Ok] |
+| test.rs:17:31:17:50 | ...::read(...) [Ok] | semmle.label | ...::read(...) [Ok] |
+| test.rs:17:31:17:51 | TryExpr | semmle.label | TryExpr |
+| test.rs:18:14:18:19 | buffer | semmle.label | buffer |
+| test.rs:22:13:22:18 | buffer | semmle.label | buffer |
+| test.rs:22:22:22:39 | ...::read_to_string | semmle.label | ...::read_to_string |
+| test.rs:22:22:22:39 | ...::read_to_string [Ok] | semmle.label | ...::read_to_string [Ok] |
+| test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | semmle.label | ...::read_to_string(...) [Ok] |
+| test.rs:22:22:22:52 | TryExpr | semmle.label | TryExpr |
+| test.rs:23:14:23:19 | buffer | semmle.label | buffer |
+| test.rs:29:13:29:16 | path | semmle.label | path |
+| test.rs:29:20:29:27 | e.path() | semmle.label | e.path() |
+| test.rs:29:22:29:25 | path | semmle.label | path |
+| test.rs:30:14:30:17 | path | semmle.label | path |
+| test.rs:30:14:30:25 | path.clone() | semmle.label | path.clone() |
+| test.rs:31:14:31:17 | path | semmle.label | path |
+| test.rs:31:14:31:25 | path.clone() | semmle.label | path.clone() |
+| test.rs:31:14:31:35 | ... .as_path() | semmle.label | ... .as_path() |
+| test.rs:41:14:41:17 | path | semmle.label | path |
+| test.rs:43:13:43:21 | file_name | semmle.label | file_name |
+| test.rs:43:25:43:37 | e.file_name() | semmle.label | e.file_name() |
+| test.rs:43:27:43:35 | file_name | semmle.label | file_name |
+| test.rs:44:14:44:22 | file_name | semmle.label | file_name |
+| test.rs:44:14:44:30 | file_name.clone() | semmle.label | file_name.clone() |
+| test.rs:49:14:49:22 | file_name | semmle.label | file_name |
+| test.rs:65:13:65:18 | target | semmle.label | target |
+| test.rs:65:22:65:34 | ...::read_link | semmle.label | ...::read_link |
+| test.rs:65:22:65:49 | ...::read_link(...) [Ok] | semmle.label | ...::read_link(...) [Ok] |
+| test.rs:65:22:65:50 | TryExpr | semmle.label | TryExpr |
+| test.rs:66:14:66:19 | target | semmle.label | target |
+| test.rs:74:13:74:18 | buffer | semmle.label | buffer |
+| test.rs:74:31:74:45 | ...::read | semmle.label | ...::read |
+| test.rs:74:31:74:57 | ...::read(...) [future, Ok] | semmle.label | ...::read(...) [future, Ok] |
+| test.rs:74:31:74:63 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:74:31:74:64 | TryExpr | semmle.label | TryExpr |
+| test.rs:75:14:75:19 | buffer | semmle.label | buffer |
+| test.rs:79:13:79:18 | buffer | semmle.label | buffer |
+| test.rs:79:31:79:45 | ...::read | semmle.label | ...::read |
+| test.rs:79:31:79:57 | ...::read(...) [future, Ok] | semmle.label | ...::read(...) [future, Ok] |
+| test.rs:79:31:79:63 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:79:31:79:64 | TryExpr | semmle.label | TryExpr |
+| test.rs:80:14:80:19 | buffer | semmle.label | buffer |
+| test.rs:84:13:84:18 | buffer | semmle.label | buffer |
+| test.rs:84:22:84:46 | ...::read_to_string | semmle.label | ...::read_to_string |
+| test.rs:84:22:84:58 | ...::read_to_string(...) [future, Ok] | semmle.label | ...::read_to_string(...) [future, Ok] |
+| test.rs:84:22:84:64 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:84:22:84:65 | TryExpr | semmle.label | TryExpr |
+| test.rs:85:14:85:19 | buffer | semmle.label | buffer |
+| test.rs:90:13:90:16 | path | semmle.label | path |
+| test.rs:90:20:90:31 | entry.path() | semmle.label | entry.path() |
+| test.rs:90:26:90:29 | path | semmle.label | path |
+| test.rs:90:26:90:29 | path | semmle.label | path |
+| test.rs:91:13:91:21 | file_name | semmle.label | file_name |
+| test.rs:91:25:91:41 | entry.file_name() | semmle.label | entry.file_name() |
+| test.rs:91:31:91:39 | file_name | semmle.label | file_name |
+| test.rs:91:31:91:39 | file_name | semmle.label | file_name |
+| test.rs:92:14:92:17 | path | semmle.label | path |
+| test.rs:93:14:93:22 | file_name | semmle.label | file_name |
+| test.rs:97:13:97:18 | target | semmle.label | target |
+| test.rs:97:22:97:41 | ...::read_link | semmle.label | ...::read_link |
+| test.rs:97:22:97:56 | ...::read_link(...) [future, Ok] | semmle.label | ...::read_link(...) [future, Ok] |
+| test.rs:97:22:97:62 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:97:22:97:63 | TryExpr | semmle.label | TryExpr |
+| test.rs:98:14:98:19 | target | semmle.label | target |
+| test.rs:107:9:107:16 | mut file | semmle.label | mut file |
+| test.rs:107:20:107:38 | ...::open | semmle.label | ...::open |
+| test.rs:107:20:107:50 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
+| test.rs:107:20:107:51 | TryExpr | semmle.label | TryExpr |
+| test.rs:111:32:111:42 | [post] &mut buffer | semmle.label | [post] &mut buffer |
+| test.rs:111:32:111:42 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:111:37:111:42 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:112:14:112:20 | &buffer | semmle.label | &buffer |
+| test.rs:112:15:112:20 | buffer | semmle.label | buffer |
+| test.rs:117:39:117:49 | [post] &mut buffer | semmle.label | [post] &mut buffer |
+| test.rs:117:39:117:49 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:117:44:117:49 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:118:14:118:20 | &buffer | semmle.label | &buffer |
+| test.rs:118:15:118:20 | buffer | semmle.label | buffer |
+| test.rs:123:42:123:52 | [post] &mut buffer | semmle.label | [post] &mut buffer |
+| test.rs:123:42:123:52 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:123:47:123:52 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:124:14:124:20 | &buffer | semmle.label | &buffer |
+| test.rs:124:15:124:20 | buffer | semmle.label | buffer |
+| test.rs:129:25:129:35 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:129:30:129:35 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:130:14:130:20 | &buffer | semmle.label | &buffer |
+| test.rs:130:15:130:20 | buffer | semmle.label | buffer |
+| test.rs:133:17:133:28 | file.bytes() | semmle.label | file.bytes() |
+| test.rs:134:14:134:17 | byte | semmle.label | byte |
+| test.rs:140:13:140:18 | mut f1 | semmle.label | mut f1 |
+| test.rs:140:22:140:63 | ... .open(...) [Ok] | semmle.label | ... .open(...) [Ok] |
+| test.rs:140:22:140:72 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:140:50:140:53 | open | semmle.label | open |
+| test.rs:142:30:142:40 | [post] &mut buffer | semmle.label | [post] &mut buffer |
+| test.rs:142:30:142:40 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:142:35:142:40 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:143:14:143:20 | &buffer | semmle.label | &buffer |
+| test.rs:143:15:143:20 | buffer | semmle.label | buffer |
+| test.rs:147:13:147:18 | mut f2 | semmle.label | mut f2 |
+| test.rs:147:22:147:80 | ... .open(...) [Ok] | semmle.label | ... .open(...) [Ok] |
+| test.rs:147:22:147:89 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:147:67:147:70 | open | semmle.label | open |
+| test.rs:149:30:149:40 | [post] &mut buffer | semmle.label | [post] &mut buffer |
+| test.rs:149:30:149:40 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:149:35:149:40 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:150:14:150:20 | &buffer | semmle.label | &buffer |
+| test.rs:150:15:150:20 | buffer | semmle.label | buffer |
+| test.rs:154:13:154:18 | mut f3 | semmle.label | mut f3 |
+| test.rs:154:22:154:114 | ... .open(...) [Ok] | semmle.label | ... .open(...) [Ok] |
+| test.rs:154:22:154:123 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:154:101:154:104 | open | semmle.label | open |
+| test.rs:156:30:156:40 | [post] &mut buffer | semmle.label | [post] &mut buffer |
+| test.rs:156:30:156:40 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:156:35:156:40 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:157:14:157:20 | &buffer | semmle.label | &buffer |
+| test.rs:157:15:157:20 | buffer | semmle.label | buffer |
+| test.rs:164:13:164:17 | file1 | semmle.label | file1 |
+| test.rs:164:21:164:39 | ...::open | semmle.label | ...::open |
+| test.rs:164:21:164:51 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
+| test.rs:164:21:164:52 | TryExpr | semmle.label | TryExpr |
+| test.rs:165:13:165:17 | file2 | semmle.label | file2 |
+| test.rs:165:21:165:39 | ...::open | semmle.label | ...::open |
+| test.rs:165:21:165:59 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
+| test.rs:165:21:165:60 | TryExpr | semmle.label | TryExpr |
+| test.rs:166:13:166:22 | mut reader | semmle.label | mut reader |
+| test.rs:166:26:166:43 | file1.chain(...) | semmle.label | file1.chain(...) |
+| test.rs:166:38:166:42 | file2 | semmle.label | file2 |
+| test.rs:167:31:167:41 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:167:36:167:41 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:168:14:168:20 | &buffer | semmle.label | &buffer |
+| test.rs:168:15:168:20 | buffer | semmle.label | buffer |
+| test.rs:173:13:173:17 | file1 | semmle.label | file1 |
+| test.rs:173:21:173:39 | ...::open | semmle.label | ...::open |
+| test.rs:173:21:173:51 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
+| test.rs:173:21:173:52 | TryExpr | semmle.label | TryExpr |
+| test.rs:174:13:174:22 | mut reader | semmle.label | mut reader |
+| test.rs:174:26:174:40 | file1.take(...) | semmle.label | file1.take(...) |
+| test.rs:175:31:175:41 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:175:36:175:41 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:176:14:176:20 | &buffer | semmle.label | &buffer |
+| test.rs:176:15:176:20 | buffer | semmle.label | buffer |
+| test.rs:185:9:185:16 | mut file | semmle.label | mut file |
+| test.rs:185:20:185:40 | ...::open | semmle.label | ...::open |
+| test.rs:185:20:185:52 | ...::open(...) [future, Ok] | semmle.label | ...::open(...) [future, Ok] |
+| test.rs:185:20:185:58 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:185:20:185:59 | TryExpr | semmle.label | TryExpr |
+| test.rs:189:32:189:42 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:189:37:189:42 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:190:14:190:20 | &buffer | semmle.label | &buffer |
+| test.rs:190:15:190:20 | buffer | semmle.label | buffer |
+| test.rs:195:39:195:49 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:195:44:195:49 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:196:14:196:20 | &buffer | semmle.label | &buffer |
+| test.rs:196:15:196:20 | buffer | semmle.label | buffer |
+| test.rs:201:42:201:52 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:201:47:201:52 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:202:14:202:20 | &buffer | semmle.label | &buffer |
+| test.rs:202:15:202:20 | buffer | semmle.label | buffer |
+| test.rs:207:25:207:35 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:207:30:207:35 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:208:14:208:20 | &buffer | semmle.label | &buffer |
+| test.rs:208:15:208:20 | buffer | semmle.label | buffer |
+| test.rs:212:13:212:14 | v1 | semmle.label | v1 |
+| test.rs:212:18:212:31 | file.read_u8() [future, Ok] | semmle.label | file.read_u8() [future, Ok] |
+| test.rs:212:18:212:37 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:212:18:212:38 | TryExpr | semmle.label | TryExpr |
+| test.rs:213:13:213:14 | v2 | semmle.label | v2 |
+| test.rs:213:18:213:32 | file.read_i16() [future, Ok] | semmle.label | file.read_i16() [future, Ok] |
+| test.rs:213:18:213:38 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:213:18:213:39 | TryExpr | semmle.label | TryExpr |
+| test.rs:214:13:214:14 | v3 | semmle.label | v3 |
+| test.rs:214:18:214:32 | file.read_f32() [future, Ok] | semmle.label | file.read_f32() [future, Ok] |
+| test.rs:214:18:214:38 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:214:18:214:39 | TryExpr | semmle.label | TryExpr |
+| test.rs:215:13:215:14 | v4 | semmle.label | v4 |
+| test.rs:215:18:215:35 | file.read_i64_le() [future, Ok] | semmle.label | file.read_i64_le() [future, Ok] |
+| test.rs:215:18:215:41 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:215:18:215:42 | TryExpr | semmle.label | TryExpr |
+| test.rs:216:14:216:15 | v1 | semmle.label | v1 |
+| test.rs:217:14:217:15 | v2 | semmle.label | v2 |
+| test.rs:218:14:218:15 | v3 | semmle.label | v3 |
+| test.rs:219:14:219:15 | v4 | semmle.label | v4 |
+| test.rs:224:23:224:33 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:224:28:224:33 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:225:14:225:20 | &buffer | semmle.label | &buffer |
+| test.rs:225:15:225:20 | buffer | semmle.label | buffer |
+| test.rs:231:13:231:18 | mut f1 | semmle.label | mut f1 |
+| test.rs:231:22:231:65 | ... .open(...) [future, Ok] | semmle.label | ... .open(...) [future, Ok] |
+| test.rs:231:22:231:71 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:231:22:231:72 | TryExpr | semmle.label | TryExpr |
+| test.rs:231:52:231:55 | open | semmle.label | open |
+| test.rs:233:30:233:40 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:233:35:233:40 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:234:14:234:20 | &buffer | semmle.label | &buffer |
+| test.rs:234:15:234:20 | buffer | semmle.label | buffer |
+| test.rs:262:9:262:16 | mut file | semmle.label | mut file |
+| test.rs:262:20:262:44 | ...::open | semmle.label | ...::open |
+| test.rs:262:20:262:56 | ...::open(...) [future, Ok] | semmle.label | ...::open(...) [future, Ok] |
+| test.rs:262:20:262:62 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:262:20:262:63 | TryExpr | semmle.label | TryExpr |
+| test.rs:266:22:266:25 | file | semmle.label | file |
+| test.rs:266:32:266:42 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:266:37:266:42 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:267:14:267:20 | &buffer | semmle.label | &buffer |
+| test.rs:267:15:267:20 | buffer | semmle.label | buffer |
+| test.rs:273:13:273:18 | mut f1 | semmle.label | mut f1 |
+| test.rs:273:22:273:69 | ... .open(...) [future, Ok] | semmle.label | ... .open(...) [future, Ok] |
+| test.rs:273:22:273:75 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:273:22:273:76 | TryExpr | semmle.label | TryExpr |
+| test.rs:273:56:273:59 | open | semmle.label | open |
+| test.rs:275:22:275:23 | f1 | semmle.label | f1 |
+| test.rs:275:30:275:40 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
+| test.rs:275:35:275:40 | [post] buffer | semmle.label | [post] buffer |
+| test.rs:276:14:276:20 | &buffer | semmle.label | &buffer |
+| test.rs:276:15:276:20 | buffer | semmle.label | buffer |
+subpaths
+testFailures
+#select
+| test.rs:13:14:13:19 | buffer | test.rs:12:31:12:43 | ...::read | test.rs:13:14:13:19 | buffer | $@ | test.rs:12:31:12:43 | ...::read | ...::read |
+| test.rs:18:14:18:19 | buffer | test.rs:17:31:17:38 | ...::read | test.rs:18:14:18:19 | buffer | $@ | test.rs:17:31:17:38 | ...::read | ...::read |
+| test.rs:23:14:23:19 | buffer | test.rs:22:22:22:39 | ...::read_to_string | test.rs:23:14:23:19 | buffer | $@ | test.rs:22:22:22:39 | ...::read_to_string | ...::read_to_string |
+| test.rs:30:14:30:25 | path.clone() | test.rs:29:22:29:25 | path | test.rs:30:14:30:25 | path.clone() | $@ | test.rs:29:22:29:25 | path | path |
+| test.rs:31:14:31:35 | ... .as_path() | test.rs:29:22:29:25 | path | test.rs:31:14:31:35 | ... .as_path() | $@ | test.rs:29:22:29:25 | path | path |
+| test.rs:41:14:41:17 | path | test.rs:29:22:29:25 | path | test.rs:41:14:41:17 | path | $@ | test.rs:29:22:29:25 | path | path |
+| test.rs:44:14:44:30 | file_name.clone() | test.rs:43:27:43:35 | file_name | test.rs:44:14:44:30 | file_name.clone() | $@ | test.rs:43:27:43:35 | file_name | file_name |
+| test.rs:49:14:49:22 | file_name | test.rs:43:27:43:35 | file_name | test.rs:49:14:49:22 | file_name | $@ | test.rs:43:27:43:35 | file_name | file_name |
+| test.rs:66:14:66:19 | target | test.rs:65:22:65:34 | ...::read_link | test.rs:66:14:66:19 | target | $@ | test.rs:65:22:65:34 | ...::read_link | ...::read_link |
+| test.rs:75:14:75:19 | buffer | test.rs:74:31:74:45 | ...::read | test.rs:75:14:75:19 | buffer | $@ | test.rs:74:31:74:45 | ...::read | ...::read |
+| test.rs:80:14:80:19 | buffer | test.rs:79:31:79:45 | ...::read | test.rs:80:14:80:19 | buffer | $@ | test.rs:79:31:79:45 | ...::read | ...::read |
+| test.rs:85:14:85:19 | buffer | test.rs:84:22:84:46 | ...::read_to_string | test.rs:85:14:85:19 | buffer | $@ | test.rs:84:22:84:46 | ...::read_to_string | ...::read_to_string |
+| test.rs:92:14:92:17 | path | test.rs:90:26:90:29 | path | test.rs:92:14:92:17 | path | $@ | test.rs:90:26:90:29 | path | path |
+| test.rs:92:14:92:17 | path | test.rs:90:26:90:29 | path | test.rs:92:14:92:17 | path | $@ | test.rs:90:26:90:29 | path | path |
+| test.rs:93:14:93:22 | file_name | test.rs:91:31:91:39 | file_name | test.rs:93:14:93:22 | file_name | $@ | test.rs:91:31:91:39 | file_name | file_name |
+| test.rs:93:14:93:22 | file_name | test.rs:91:31:91:39 | file_name | test.rs:93:14:93:22 | file_name | $@ | test.rs:91:31:91:39 | file_name | file_name |
+| test.rs:98:14:98:19 | target | test.rs:97:22:97:41 | ...::read_link | test.rs:98:14:98:19 | target | $@ | test.rs:97:22:97:41 | ...::read_link | ...::read_link |
+| test.rs:112:14:112:20 | &buffer | test.rs:107:20:107:38 | ...::open | test.rs:112:14:112:20 | &buffer | $@ | test.rs:107:20:107:38 | ...::open | ...::open |
+| test.rs:118:14:118:20 | &buffer | test.rs:107:20:107:38 | ...::open | test.rs:118:14:118:20 | &buffer | $@ | test.rs:107:20:107:38 | ...::open | ...::open |
+| test.rs:124:14:124:20 | &buffer | test.rs:107:20:107:38 | ...::open | test.rs:124:14:124:20 | &buffer | $@ | test.rs:107:20:107:38 | ...::open | ...::open |
+| test.rs:130:14:130:20 | &buffer | test.rs:107:20:107:38 | ...::open | test.rs:130:14:130:20 | &buffer | $@ | test.rs:107:20:107:38 | ...::open | ...::open |
+| test.rs:134:14:134:17 | byte | test.rs:107:20:107:38 | ...::open | test.rs:134:14:134:17 | byte | $@ | test.rs:107:20:107:38 | ...::open | ...::open |
+| test.rs:143:14:143:20 | &buffer | test.rs:140:50:140:53 | open | test.rs:143:14:143:20 | &buffer | $@ | test.rs:140:50:140:53 | open | open |
+| test.rs:150:14:150:20 | &buffer | test.rs:147:67:147:70 | open | test.rs:150:14:150:20 | &buffer | $@ | test.rs:147:67:147:70 | open | open |
+| test.rs:157:14:157:20 | &buffer | test.rs:154:101:154:104 | open | test.rs:157:14:157:20 | &buffer | $@ | test.rs:154:101:154:104 | open | open |
+| test.rs:168:14:168:20 | &buffer | test.rs:164:21:164:39 | ...::open | test.rs:168:14:168:20 | &buffer | $@ | test.rs:164:21:164:39 | ...::open | ...::open |
+| test.rs:168:14:168:20 | &buffer | test.rs:165:21:165:39 | ...::open | test.rs:168:14:168:20 | &buffer | $@ | test.rs:165:21:165:39 | ...::open | ...::open |
+| test.rs:176:14:176:20 | &buffer | test.rs:173:21:173:39 | ...::open | test.rs:176:14:176:20 | &buffer | $@ | test.rs:173:21:173:39 | ...::open | ...::open |
+| test.rs:190:14:190:20 | &buffer | test.rs:185:20:185:40 | ...::open | test.rs:190:14:190:20 | &buffer | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:196:14:196:20 | &buffer | test.rs:185:20:185:40 | ...::open | test.rs:196:14:196:20 | &buffer | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:202:14:202:20 | &buffer | test.rs:185:20:185:40 | ...::open | test.rs:202:14:202:20 | &buffer | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:208:14:208:20 | &buffer | test.rs:185:20:185:40 | ...::open | test.rs:208:14:208:20 | &buffer | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:216:14:216:15 | v1 | test.rs:185:20:185:40 | ...::open | test.rs:216:14:216:15 | v1 | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:217:14:217:15 | v2 | test.rs:185:20:185:40 | ...::open | test.rs:217:14:217:15 | v2 | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:218:14:218:15 | v3 | test.rs:185:20:185:40 | ...::open | test.rs:218:14:218:15 | v3 | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:219:14:219:15 | v4 | test.rs:185:20:185:40 | ...::open | test.rs:219:14:219:15 | v4 | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:225:14:225:20 | &buffer | test.rs:185:20:185:40 | ...::open | test.rs:225:14:225:20 | &buffer | $@ | test.rs:185:20:185:40 | ...::open | ...::open |
+| test.rs:234:14:234:20 | &buffer | test.rs:231:52:231:55 | open | test.rs:234:14:234:20 | &buffer | $@ | test.rs:231:52:231:55 | open | open |
+| test.rs:267:14:267:20 | &buffer | test.rs:262:20:262:44 | ...::open | test.rs:267:14:267:20 | &buffer | $@ | test.rs:262:20:262:44 | ...::open | ...::open |
+| test.rs:276:14:276:20 | &buffer | test.rs:273:56:273:59 | open | test.rs:276:14:276:20 | &buffer | $@ | test.rs:273:56:273:59 | open | open |

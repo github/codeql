@@ -279,7 +279,7 @@ private TypeMention getTypeAnnotation(AstNode n) {
   or
   exists(Function f |
     result = f.getRetType().getTypeRepr() and
-    n = f.getBody()
+    n = f.getFunctionBody()
   )
 }
 
@@ -630,7 +630,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     prefix2.isEmpty()
   )
   or
-  n1.(ClosureExpr).getBody() = n2 and
+  n1.(ClosureExpr).getClosureBody() = n2 and
   prefix1 = closureReturnPath() and
   prefix2.isEmpty()
 }
@@ -2962,7 +2962,7 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
     result = TTuple(ce.getNumberOfParams())
     or
     // Propagate return type annotation to body
-    n = ce.getBody() and
+    n = ce.getClosureBody() and
     result = ce.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
   )
 }

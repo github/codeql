@@ -1,0 +1,212 @@
+models
+| 1 | Source: <_ as warp::filter::Filter>::and_then; Argument[0].Parameter[0..7]; remote |
+| 2 | Source: <_ as warp::filter::Filter>::map; Argument[0].Parameter[0..7]; remote |
+| 3 | Source: <_ as warp::filter::Filter>::then; Argument[0].Parameter[0..7]; remote |
+| 4 | Source: <actix_web::resource::Resource>::to; Argument[0].Parameter[0..7]; remote |
+| 5 | Source: <actix_web::route::Route>::to; Argument[0].Parameter[0..7]; remote |
+| 6 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue.Field[0]; taint |
+| 7 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue.Field[1]; taint |
+| 8 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue.Field[2]; taint |
+| 9 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue; taint |
+| 10 | Summary: <alloc::string::String>::as_bytes; Argument[self]; ReturnValue; value |
+| 11 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+edges
+| test.rs:11:31:11:31 | a | test.rs:13:14:13:14 | a | provenance |  |
+| test.rs:11:31:11:31 | a | test.rs:13:14:13:14 | a | provenance |  |
+| test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:11:31:11:31 | a | test.rs:14:14:14:14 | a | provenance |  |
+| test.rs:11:31:11:31 | a | test.rs:14:14:14:14 | a | provenance |  |
+| test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:11:31:11:31 | a | test.rs:15:14:15:14 | a | provenance |  |
+| test.rs:11:31:11:31 | a | test.rs:15:14:15:14 | a | provenance |  |
+| test.rs:13:14:13:14 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:13:14:13:14 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:14:14:14:14 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:14:14:14:14 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:68:15:68:15 | a | test.rs:70:14:70:14 | a | provenance |  |
+| test.rs:68:15:68:15 | a | test.rs:70:14:70:14 | a | provenance |  |
+| test.rs:98:9:98:31 | ...: ...::Path::<...> | test.rs:100:17:100:33 | path.into_inner() | provenance | MaD:9 |
+| test.rs:98:9:98:31 | ...: ...::Path::<...> | test.rs:100:17:100:33 | path.into_inner() [tuple.0] | provenance | MaD:6 |
+| test.rs:98:9:98:31 | ...: ...::Path::<...> | test.rs:100:17:100:33 | path.into_inner() [tuple.1] | provenance | MaD:7 |
+| test.rs:98:9:98:31 | ...: ...::Path::<...> | test.rs:100:17:100:33 | path.into_inner() [tuple.2] | provenance | MaD:8 |
+| test.rs:100:13:100:13 | a | test.rs:101:14:101:14 | a | provenance |  |
+| test.rs:100:13:100:13 | a | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:100:13:100:13 | a | test.rs:102:14:102:14 | a | provenance |  |
+| test.rs:100:13:100:13 | a | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:100:13:100:13 | a | test.rs:103:14:103:14 | a | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.0] | test.rs:101:14:101:14 | a [tuple.0] | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.0] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:100:13:100:13 | a [tuple.0] | test.rs:102:14:102:14 | a [tuple.0] | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.0] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:100:13:100:13 | a [tuple.0] | test.rs:103:14:103:14 | a | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.1] | test.rs:101:14:101:14 | a [tuple.1] | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.1] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:100:13:100:13 | a [tuple.1] | test.rs:102:14:102:14 | a [tuple.1] | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.1] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:100:13:100:13 | a [tuple.1] | test.rs:103:14:103:14 | a | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.2] | test.rs:101:14:101:14 | a [tuple.2] | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.2] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:100:13:100:13 | a [tuple.2] | test.rs:102:14:102:14 | a [tuple.2] | provenance |  |
+| test.rs:100:13:100:13 | a [tuple.2] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:100:13:100:13 | a [tuple.2] | test.rs:103:14:103:14 | a | provenance |  |
+| test.rs:100:17:100:33 | path.into_inner() | test.rs:100:13:100:13 | a | provenance |  |
+| test.rs:100:17:100:33 | path.into_inner() [tuple.0] | test.rs:100:13:100:13 | a [tuple.0] | provenance |  |
+| test.rs:100:17:100:33 | path.into_inner() [tuple.1] | test.rs:100:13:100:13 | a [tuple.1] | provenance |  |
+| test.rs:100:17:100:33 | path.into_inner() [tuple.2] | test.rs:100:13:100:13 | a [tuple.2] | provenance |  |
+| test.rs:101:14:101:14 | a | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:101:14:101:14 | a [tuple.0] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:101:14:101:14 | a [tuple.1] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:101:14:101:14 | a [tuple.2] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
+| test.rs:102:14:102:14 | a | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:102:14:102:14 | a [tuple.0] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:102:14:102:14 | a [tuple.1] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:102:14:102:14 | a [tuple.2] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
+| test.rs:109:9:109:41 | ...: ...::Path::<...> | test.rs:111:22:111:38 | path.into_inner() [tuple.0] | provenance | MaD:6 |
+| test.rs:109:9:109:41 | ...: ...::Path::<...> | test.rs:111:22:111:38 | path.into_inner() [tuple.1] | provenance | MaD:7 |
+| test.rs:111:13:111:18 | TuplePat [tuple.0] | test.rs:111:14:111:14 | a | provenance |  |
+| test.rs:111:13:111:18 | TuplePat [tuple.1] | test.rs:111:17:111:17 | b | provenance |  |
+| test.rs:111:14:111:14 | a | test.rs:113:14:113:14 | a | provenance |  |
+| test.rs:111:17:111:17 | b | test.rs:114:14:114:14 | b | provenance |  |
+| test.rs:111:22:111:38 | path.into_inner() [tuple.0] | test.rs:111:13:111:18 | TuplePat [tuple.0] | provenance |  |
+| test.rs:111:22:111:38 | path.into_inner() [tuple.1] | test.rs:111:13:111:18 | TuplePat [tuple.1] | provenance |  |
+| test.rs:127:5:127:20 | to | test.rs:129:9:129:31 | ...: ...::Path::<...> | provenance | Src:MaD:4  |
+| test.rs:129:9:129:31 | ...: ...::Path::<...> | test.rs:131:17:131:33 | path.into_inner() | provenance | MaD:9 |
+| test.rs:129:9:129:31 | ...: ...::Path::<...> | test.rs:131:17:131:33 | path.into_inner() [tuple.0] | provenance | MaD:6 |
+| test.rs:129:9:129:31 | ...: ...::Path::<...> | test.rs:131:17:131:33 | path.into_inner() [tuple.1] | provenance | MaD:7 |
+| test.rs:129:9:129:31 | ...: ...::Path::<...> | test.rs:131:17:131:33 | path.into_inner() [tuple.2] | provenance | MaD:8 |
+| test.rs:131:13:131:13 | a | test.rs:132:14:132:14 | a | provenance |  |
+| test.rs:131:13:131:13 | a [tuple.0] | test.rs:132:14:132:14 | a | provenance |  |
+| test.rs:131:13:131:13 | a [tuple.1] | test.rs:132:14:132:14 | a | provenance |  |
+| test.rs:131:13:131:13 | a [tuple.2] | test.rs:132:14:132:14 | a | provenance |  |
+| test.rs:131:17:131:33 | path.into_inner() | test.rs:131:13:131:13 | a | provenance |  |
+| test.rs:131:17:131:33 | path.into_inner() [tuple.0] | test.rs:131:13:131:13 | a [tuple.0] | provenance |  |
+| test.rs:131:17:131:33 | path.into_inner() [tuple.1] | test.rs:131:13:131:13 | a [tuple.1] | provenance |  |
+| test.rs:131:17:131:33 | path.into_inner() [tuple.2] | test.rs:131:13:131:13 | a [tuple.2] | provenance |  |
+| test.rs:139:41:139:42 | to | test.rs:98:9:98:31 | ...: ...::Path::<...> | provenance | Src:MaD:5  |
+| test.rs:140:45:140:46 | to | test.rs:109:9:109:41 | ...: ...::Path::<...> | provenance | Src:MaD:5  |
+| test.rs:242:33:242:35 | map | test.rs:242:38:242:46 | ...: String | provenance | Src:MaD:2  |
+| test.rs:242:33:242:35 | map | test.rs:242:38:242:46 | ...: String | provenance | Src:MaD:2  |
+| test.rs:242:38:242:46 | ...: String | test.rs:244:18:244:18 | a | provenance |  |
+| test.rs:242:38:242:46 | ...: String | test.rs:244:18:244:18 | a | provenance |  |
+| test.rs:250:46:250:49 | then | test.rs:251:25:251:33 | ...: String | provenance | Src:MaD:3  |
+| test.rs:250:46:250:49 | then | test.rs:251:25:251:33 | ...: String | provenance | Src:MaD:3  |
+| test.rs:251:25:251:33 | ...: String | test.rs:252:22:252:22 | a | provenance |  |
+| test.rs:251:25:251:33 | ...: String | test.rs:252:22:252:22 | a | provenance |  |
+| test.rs:259:50:259:57 | and_then | test.rs:260:26:260:32 | ...: u64 | provenance | Src:MaD:1  |
+| test.rs:259:50:259:57 | and_then | test.rs:260:26:260:32 | ...: u64 | provenance | Src:MaD:1  |
+| test.rs:260:26:260:32 | ...: u64 | test.rs:263:22:263:23 | id | provenance |  |
+| test.rs:260:26:260:32 | ...: u64 | test.rs:263:22:263:23 | id | provenance |  |
+| test.rs:272:75:272:77 | map | test.rs:273:15:273:23 | ...: String | provenance | Src:MaD:2  |
+| test.rs:272:75:272:77 | map | test.rs:273:15:273:23 | ...: String | provenance | Src:MaD:2  |
+| test.rs:273:15:273:23 | ...: String | test.rs:275:22:275:22 | a | provenance |  |
+| test.rs:273:15:273:23 | ...: String | test.rs:275:22:275:22 | a | provenance |  |
+nodes
+| test.rs:11:31:11:31 | a | semmle.label | a |
+| test.rs:11:31:11:31 | a | semmle.label | a |
+| test.rs:13:14:13:14 | a | semmle.label | a |
+| test.rs:13:14:13:14 | a | semmle.label | a |
+| test.rs:13:14:13:23 | a.as_str() | semmle.label | a.as_str() |
+| test.rs:13:14:13:23 | a.as_str() | semmle.label | a.as_str() |
+| test.rs:14:14:14:14 | a | semmle.label | a |
+| test.rs:14:14:14:14 | a | semmle.label | a |
+| test.rs:14:14:14:25 | a.as_bytes() | semmle.label | a.as_bytes() |
+| test.rs:14:14:14:25 | a.as_bytes() | semmle.label | a.as_bytes() |
+| test.rs:15:14:15:14 | a | semmle.label | a |
+| test.rs:15:14:15:14 | a | semmle.label | a |
+| test.rs:68:15:68:15 | a | semmle.label | a |
+| test.rs:68:15:68:15 | a | semmle.label | a |
+| test.rs:70:14:70:14 | a | semmle.label | a |
+| test.rs:70:14:70:14 | a | semmle.label | a |
+| test.rs:98:9:98:31 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
+| test.rs:100:13:100:13 | a | semmle.label | a |
+| test.rs:100:13:100:13 | a [tuple.0] | semmle.label | a [tuple.0] |
+| test.rs:100:13:100:13 | a [tuple.1] | semmle.label | a [tuple.1] |
+| test.rs:100:13:100:13 | a [tuple.2] | semmle.label | a [tuple.2] |
+| test.rs:100:17:100:33 | path.into_inner() | semmle.label | path.into_inner() |
+| test.rs:100:17:100:33 | path.into_inner() [tuple.0] | semmle.label | path.into_inner() [tuple.0] |
+| test.rs:100:17:100:33 | path.into_inner() [tuple.1] | semmle.label | path.into_inner() [tuple.1] |
+| test.rs:100:17:100:33 | path.into_inner() [tuple.2] | semmle.label | path.into_inner() [tuple.2] |
+| test.rs:101:14:101:14 | a | semmle.label | a |
+| test.rs:101:14:101:14 | a [tuple.0] | semmle.label | a [tuple.0] |
+| test.rs:101:14:101:14 | a [tuple.1] | semmle.label | a [tuple.1] |
+| test.rs:101:14:101:14 | a [tuple.2] | semmle.label | a [tuple.2] |
+| test.rs:101:14:101:23 | a.as_str() | semmle.label | a.as_str() |
+| test.rs:102:14:102:14 | a | semmle.label | a |
+| test.rs:102:14:102:14 | a [tuple.0] | semmle.label | a [tuple.0] |
+| test.rs:102:14:102:14 | a [tuple.1] | semmle.label | a [tuple.1] |
+| test.rs:102:14:102:14 | a [tuple.2] | semmle.label | a [tuple.2] |
+| test.rs:102:14:102:25 | a.as_bytes() | semmle.label | a.as_bytes() |
+| test.rs:103:14:103:14 | a | semmle.label | a |
+| test.rs:109:9:109:41 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
+| test.rs:111:13:111:18 | TuplePat [tuple.0] | semmle.label | TuplePat [tuple.0] |
+| test.rs:111:13:111:18 | TuplePat [tuple.1] | semmle.label | TuplePat [tuple.1] |
+| test.rs:111:14:111:14 | a | semmle.label | a |
+| test.rs:111:17:111:17 | b | semmle.label | b |
+| test.rs:111:22:111:38 | path.into_inner() [tuple.0] | semmle.label | path.into_inner() [tuple.0] |
+| test.rs:111:22:111:38 | path.into_inner() [tuple.1] | semmle.label | path.into_inner() [tuple.1] |
+| test.rs:113:14:113:14 | a | semmle.label | a |
+| test.rs:114:14:114:14 | b | semmle.label | b |
+| test.rs:127:5:127:20 | to | semmle.label | to |
+| test.rs:129:9:129:31 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
+| test.rs:131:13:131:13 | a | semmle.label | a |
+| test.rs:131:13:131:13 | a [tuple.0] | semmle.label | a [tuple.0] |
+| test.rs:131:13:131:13 | a [tuple.1] | semmle.label | a [tuple.1] |
+| test.rs:131:13:131:13 | a [tuple.2] | semmle.label | a [tuple.2] |
+| test.rs:131:17:131:33 | path.into_inner() | semmle.label | path.into_inner() |
+| test.rs:131:17:131:33 | path.into_inner() [tuple.0] | semmle.label | path.into_inner() [tuple.0] |
+| test.rs:131:17:131:33 | path.into_inner() [tuple.1] | semmle.label | path.into_inner() [tuple.1] |
+| test.rs:131:17:131:33 | path.into_inner() [tuple.2] | semmle.label | path.into_inner() [tuple.2] |
+| test.rs:132:14:132:14 | a | semmle.label | a |
+| test.rs:139:41:139:42 | to | semmle.label | to |
+| test.rs:140:45:140:46 | to | semmle.label | to |
+| test.rs:242:33:242:35 | map | semmle.label | map |
+| test.rs:242:33:242:35 | map | semmle.label | map |
+| test.rs:242:38:242:46 | ...: String | semmle.label | ...: String |
+| test.rs:242:38:242:46 | ...: String | semmle.label | ...: String |
+| test.rs:244:18:244:18 | a | semmle.label | a |
+| test.rs:244:18:244:18 | a | semmle.label | a |
+| test.rs:250:46:250:49 | then | semmle.label | then |
+| test.rs:250:46:250:49 | then | semmle.label | then |
+| test.rs:251:25:251:33 | ...: String | semmle.label | ...: String |
+| test.rs:251:25:251:33 | ...: String | semmle.label | ...: String |
+| test.rs:252:22:252:22 | a | semmle.label | a |
+| test.rs:252:22:252:22 | a | semmle.label | a |
+| test.rs:259:50:259:57 | and_then | semmle.label | and_then |
+| test.rs:259:50:259:57 | and_then | semmle.label | and_then |
+| test.rs:260:26:260:32 | ...: u64 | semmle.label | ...: u64 |
+| test.rs:260:26:260:32 | ...: u64 | semmle.label | ...: u64 |
+| test.rs:263:22:263:23 | id | semmle.label | id |
+| test.rs:263:22:263:23 | id | semmle.label | id |
+| test.rs:272:75:272:77 | map | semmle.label | map |
+| test.rs:272:75:272:77 | map | semmle.label | map |
+| test.rs:273:15:273:23 | ...: String | semmle.label | ...: String |
+| test.rs:273:15:273:23 | ...: String | semmle.label | ...: String |
+| test.rs:275:22:275:22 | a | semmle.label | a |
+| test.rs:275:22:275:22 | a | semmle.label | a |
+subpaths
+testFailures
+#select
+| test.rs:13:14:13:23 | a.as_str() | test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | $@ | test.rs:11:31:11:31 | a | a |
+| test.rs:13:14:13:23 | a.as_str() | test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | $@ | test.rs:11:31:11:31 | a | a |
+| test.rs:14:14:14:25 | a.as_bytes() | test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | $@ | test.rs:11:31:11:31 | a | a |
+| test.rs:14:14:14:25 | a.as_bytes() | test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | $@ | test.rs:11:31:11:31 | a | a |
+| test.rs:15:14:15:14 | a | test.rs:11:31:11:31 | a | test.rs:15:14:15:14 | a | $@ | test.rs:11:31:11:31 | a | a |
+| test.rs:15:14:15:14 | a | test.rs:11:31:11:31 | a | test.rs:15:14:15:14 | a | $@ | test.rs:11:31:11:31 | a | a |
+| test.rs:70:14:70:14 | a | test.rs:68:15:68:15 | a | test.rs:70:14:70:14 | a | $@ | test.rs:68:15:68:15 | a | a |
+| test.rs:70:14:70:14 | a | test.rs:68:15:68:15 | a | test.rs:70:14:70:14 | a | $@ | test.rs:68:15:68:15 | a | a |
+| test.rs:101:14:101:23 | a.as_str() | test.rs:139:41:139:42 | to | test.rs:101:14:101:23 | a.as_str() | $@ | test.rs:139:41:139:42 | to | to |
+| test.rs:102:14:102:25 | a.as_bytes() | test.rs:139:41:139:42 | to | test.rs:102:14:102:25 | a.as_bytes() | $@ | test.rs:139:41:139:42 | to | to |
+| test.rs:103:14:103:14 | a | test.rs:139:41:139:42 | to | test.rs:103:14:103:14 | a | $@ | test.rs:139:41:139:42 | to | to |
+| test.rs:113:14:113:14 | a | test.rs:140:45:140:46 | to | test.rs:113:14:113:14 | a | $@ | test.rs:140:45:140:46 | to | to |
+| test.rs:114:14:114:14 | b | test.rs:140:45:140:46 | to | test.rs:114:14:114:14 | b | $@ | test.rs:140:45:140:46 | to | to |
+| test.rs:132:14:132:14 | a | test.rs:127:5:127:20 | to | test.rs:132:14:132:14 | a | $@ | test.rs:127:5:127:20 | to | to |
+| test.rs:244:18:244:18 | a | test.rs:242:33:242:35 | map | test.rs:244:18:244:18 | a | $@ | test.rs:242:33:242:35 | map | map |
+| test.rs:244:18:244:18 | a | test.rs:242:33:242:35 | map | test.rs:244:18:244:18 | a | $@ | test.rs:242:33:242:35 | map | map |
+| test.rs:252:22:252:22 | a | test.rs:250:46:250:49 | then | test.rs:252:22:252:22 | a | $@ | test.rs:250:46:250:49 | then | then |
+| test.rs:252:22:252:22 | a | test.rs:250:46:250:49 | then | test.rs:252:22:252:22 | a | $@ | test.rs:250:46:250:49 | then | then |
+| test.rs:263:22:263:23 | id | test.rs:259:50:259:57 | and_then | test.rs:263:22:263:23 | id | $@ | test.rs:259:50:259:57 | and_then | and_then |
+| test.rs:263:22:263:23 | id | test.rs:259:50:259:57 | and_then | test.rs:263:22:263:23 | id | $@ | test.rs:259:50:259:57 | and_then | and_then |
+| test.rs:275:22:275:22 | a | test.rs:272:75:272:77 | map | test.rs:275:22:275:22 | a | $@ | test.rs:272:75:272:77 | map | map |
+| test.rs:275:22:275:22 | a | test.rs:272:75:272:77 | map | test.rs:275:22:275:22 | a | $@ | test.rs:272:75:272:77 | map | map |

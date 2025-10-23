@@ -44,6 +44,8 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("StructField", "expr") => "default",
         ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
+        ("Function", "body") => "function_body",
+        ("ClosureExpr", "body") => "closure_body",
         _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
         _ => field_name,
     };

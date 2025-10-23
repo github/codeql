@@ -4,7 +4,6 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision high
  * @id java/weak-cryptographic-algorithm-new-model
  * @tags security
  *       external/cwe/cwe-327

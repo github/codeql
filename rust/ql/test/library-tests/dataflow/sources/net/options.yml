@@ -1,0 +1,12 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - reqwest = { version = "0.12.9", features = ["blocking"] }
+    - hyper = { version = "1.5.2", features = ["full"] }
+    - hyper-util = { version = "0.1.10", features = ["full"] }
+    - http-body-util = { version = "0.1.2" }
+    - http = { version = "1.2.0" }
+    - tokio = { version = "1.43.0", features = ["full"] }
+    - futures = { version = "0.3" }
+    - rustls = { version = "0.23.27" }
+    - futures-rustls = { version = "0.26.0" }
+    - async-std = { version = "1.13.1" }

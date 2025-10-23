@@ -1,0 +1,4 @@
+| WeakHashing.java:15:55:15:83 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
+| WeakHashing.java:18:56:18:95 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
+| WeakHashing.java:21:86:21:90 | HashAlgorithm | Use of unapproved hash algorithm or API: MD5. |
+| WeakHashing.java:24:56:24:62 | HashAlgorithm | Use of unapproved hash algorithm or API: SHA1. |

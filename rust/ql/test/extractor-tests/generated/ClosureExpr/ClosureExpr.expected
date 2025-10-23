@@ -30,6 +30,13 @@ getBody
 | gen_closure_expr.rs:8:5:9:15 | \|...\| ... | gen_closure_expr.rs:9:9:9:15 | YieldExpr |
 | gen_closure_expr.rs:10:5:11:22 | \|...\| ... | gen_closure_expr.rs:11:16:11:22 | YieldExpr |
 | gen_closure_expr.rs:12:5:14:5 | \|...\| ... | gen_closure_expr.rs:12:36:14:5 | { ... } |
+getClosureBody
+| gen_closure_expr.rs:5:5:5:13 | \|...\| ... | gen_closure_expr.rs:5:9:5:13 | ... + ... |
+| gen_closure_expr.rs:6:5:6:34 | \|...\| ... | gen_closure_expr.rs:6:26:6:34 | { ... } |
+| gen_closure_expr.rs:7:5:7:27 | \|...\| ... | gen_closure_expr.rs:7:23:7:27 | ... + ... |
+| gen_closure_expr.rs:8:5:9:15 | \|...\| ... | gen_closure_expr.rs:9:9:9:15 | YieldExpr |
+| gen_closure_expr.rs:10:5:11:22 | \|...\| ... | gen_closure_expr.rs:11:16:11:22 | YieldExpr |
+| gen_closure_expr.rs:12:5:14:5 | \|...\| ... | gen_closure_expr.rs:12:36:14:5 | { ... } |
 getForBinder
 | gen_closure_expr.rs:12:5:14:5 | \|...\| ... | gen_closure_expr.rs:12:5:12:27 | for<...> |
 getRetType
