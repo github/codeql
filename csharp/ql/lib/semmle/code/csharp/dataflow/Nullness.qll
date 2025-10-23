@@ -25,7 +25,7 @@ private import semmle.code.csharp.controlflow.Guards::AbstractValues
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.Test
-private import semmle.code.csharp.controlflow.ControlFlowReachability as Cf
+private import semmle.code.csharp.controlflow.ControlFlowReachability
 
 private Expr maybeNullExpr(Expr reason) {
   G::Internal::nullValue(result) and reason = result
@@ -260,7 +260,7 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn) {
   )
 }
 
-private module NullnessConfig implements Cf::ControlFlowReachability::ConfigSig {
+private module NullnessConfig implements ControlFlowReachability::ConfigSig {
   predicate source(ControlFlow::Node node, Ssa::Definition def) { defMaybeNull(def, node, _, _) }
 
   predicate sink(ControlFlow::Node node, Ssa::Definition def) {
@@ -275,7 +275,7 @@ private module NullnessConfig implements Cf::ControlFlowReachability::ConfigSig 
   predicate uncertainFlow() { none() }
 }
 
-private module NullnessFlow = Cf::ControlFlowReachability::Flow<NullnessConfig>;
+private module NullnessFlow = ControlFlowReachability::Flow<NullnessConfig>;
 
 predicate maybeNullDeref(Dereference d, Ssa::SourceVariable v, string msg, Element reason) {
   exists(
