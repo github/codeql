@@ -5,7 +5,7 @@ overlay[local?]
 module;
 
 import java
-private import codeql.controlflow.ControlFlow
+private import codeql.controlflow.ControlFlowReachability
 private import semmle.code.java.dataflow.SSA as SSA
 private import semmle.code.java.controlflow.Guards as Guards
 
@@ -57,4 +57,4 @@ private module ControlFlowInput implements InputSig<Location, ControlFlowNode, B
   import Guards::Guards_v3::InternalUtil
 }
 
-module ControlFlow = Make<Location, Cfg, ControlFlowInput>;
+module ControlFlowReachability = Make<Location, Cfg, ControlFlowInput>;
