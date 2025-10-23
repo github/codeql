@@ -99,13 +99,15 @@ function RegisterExtractorPack(id)
         if compilerName ~= 'swift-frontend' then
             return nil
         end
-        -- Skip the invocation in case it's not called in `-frontend` mode
-        if compilerArguments.argv[1] ~= '-frontend' then
+        -- Skip the invocation in case it's not called in `-frontend` or `-emit-module` mode
+        if compilerArguments.argv[1] ~= '-frontend' and compilerArguments.argv[1] ~= '-emit-module' then
             return nil
         end
 
         -- Drop the `-frontend` argument
-        table.remove(compilerArguments.argv, 1)
+        if compilerArguments.argv[1] == '-frontend' then
+            table.remove(compilerArguments.argv, 1)
+        end
 
         -- Skip "info" queries in case there is nothing to extract
         if compilerArguments.argv[1] == '-print-target-info' then
