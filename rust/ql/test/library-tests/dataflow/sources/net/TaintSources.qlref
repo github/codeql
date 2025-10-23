@@ -1,0 +1,2 @@
+query: queries/summary/TaintSources.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
