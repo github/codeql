@@ -2730,8 +2730,8 @@ mod if_expr {
             S(2)
         };
 
-        // This code exhibits an explosion in type inference when type information is propagated
-        // from an `if` expression to its branches.
+        // This code would result in an explosion in type inference, if type information was
+        // propagated between branches.
         let x = S(1);
         if b {
             let x = x.m2(); // $ target=m2

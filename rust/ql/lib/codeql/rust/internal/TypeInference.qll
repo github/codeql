@@ -619,7 +619,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     )
   )
   or
-  // an array list expression (`[1, 2, 3]`) has the type of the element
+  // an array list expression with only one element (such as `[1]`) has type from that element
   n1 =
     any(ArrayListExpr ale |
       ale.getAnExpr() = n2 and
