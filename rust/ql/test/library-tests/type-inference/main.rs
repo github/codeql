@@ -758,6 +758,26 @@ mod function_trait_bounds {
         fn assoc(x: Self) -> A;
     }
 
+    impl<T: Default> MyTrait<T> for S2 {
+        fn m1(self) -> T {
+            Default::default() // $ target=default
+        }
+
+        fn assoc(x: Self) -> T {
+            Default::default() // $ target=default
+        }
+    }
+
+    impl MyTrait<i32> for S1 {
+        fn m1(self) -> i32 {
+            0
+        }
+
+        fn assoc(x: Self) -> i32 {
+            0
+        }
+    }
+
     // Type parameter with bound occurs in the root of a parameter type.
 
     fn call_trait_m1<T1, T2: MyTrait<T1> + Copy>(x: T2) -> T1 {
@@ -863,6 +883,8 @@ mod function_trait_bounds {
         println!("{:?}", b);
         let b = call_trait_thing_m1_3(y3); // $ type=b:S2 target=call_trait_thing_m1_3
         println!("{:?}", b);
+        let x = S1::m2(S1); // $ target=m2 $ type=x:i32
+        let y: i32 = S2::m2(S2); // $ target=m2
     }
 }
 
@@ -1576,11 +1598,18 @@ mod implicit_self_borrow {
         fn foo(&self) -> &Self {
             self
         }
+
+        fn bar(&self, x: &Self) -> &Self {
+            self
+        }
     }
 
     pub fn f() {
         let x = MyStruct(S);
         x.foo(); // $ target=foo
+        let x = MyStruct(S);
+        // `&&x` below is Deref coerced to `&x` (see https://doc.rust-lang.org/std/ops/trait.Deref.html#deref-coercion)
+        x.bar(&&x); // $ target=bar
     }
 }
 
