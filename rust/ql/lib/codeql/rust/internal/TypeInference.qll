@@ -910,6 +910,118 @@ private Type getCallExprTypeQualifier(CallExpr ce, TypePath path) {
 }
 
 /**
+ * Provides functionality related to context-based typing of calls.
+ */
+private module ContextTyping {
+  /**
+   * Holds if the return type of the function `f` inside `i` at `path` is type
+   * parameter `tp`, and `tp` does not appear in the type of any parameter of
+   * `f`.
+   *
+   * In this case, the context in which `f` is called may be needed to infer
+   * the instantiation of `tp`.
+   *
+   * This covers functions like `Default::default` and `Vec::new`.
+   */
+  pragma[nomagic]
+  private predicate assocFunctionReturnContextTypedAt(
+    ImplOrTraitItemNode i, Function f, FunctionPosition pos, TypePath path, TypeParameter tp
+  ) {
+    pos.isReturn() and
+    tp = getAssocFunctionTypeAt(f, i, pos, path) and
+    not exists(FunctionPosition nonResPos | not nonResPos.isReturn() |
+      tp = getAssocFunctionTypeAt(f, i, nonResPos, _)
+      or
+      // `Self` types in traits implicitly mention all type parameters of the trait
+      getAssocFunctionTypeAt(f, i, nonResPos, _) = TSelfTypeParameter(i)
+    )
+  }
+
+  /**
+   * A call where the type of the result may have to be inferred from the
+   * context in which the call appears, for example a call like
+   * `Default::default()`.
+   */
+  abstract class ContextTypedCallCand extends AstNode {
+    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+
+    private predicate hasTypeArgument(TypeArgumentPosition apos) {
+      exists(this.getTypeArgument(apos, _))
+    }
+
+    /**
+     * Holds if this call resolves to `target` inside `i`, and the return type
+     * at `pos` and `path` may have to be inferred from the context.
+     */
+    bindingset[this, i, target]
+    predicate isContextTypedAt(
+      ImplOrTraitItemNode i, Function target, TypePath path, FunctionPosition pos
+    ) {
+      exists(TypeParameter tp |
+        assocFunctionReturnContextTypedAt(i, target, pos, path, tp) and
+        // check that no explicit type arguments have been supplied for `tp`
+        not exists(TypeArgumentPosition tapos | this.hasTypeArgument(tapos) |
+          exists(int j |
+            j = tapos.asMethodTypeArgumentPosition() and
+            tp = TTypeParamTypeParameter(target.getGenericParamList().getTypeParam(j))
+          )
+          or
+          TTypeParamTypeParameter(tapos.asTypeParam()) = tp
+        ) and
+        not (
+          tp instanceof TSelfTypeParameter and
+          exists(getCallExprTypeQualifier(this, _))
+        )
+      )
+    }
+  }
+
+  pragma[nomagic]
+  private predicate isContextTyped(AstNode n, TypePath path) { inferType(n, path) = TContextType() }
+
+  pragma[nomagic]
+  private predicate isContextTyped(AstNode n) { isContextTyped(n, _) }
+
+  signature Type inferCallTypeSig(AstNode n, FunctionPosition pos, TypePath path);
+
+  /**
+   * Given a predicate `inferCallType` for inferring the type of a call at a given
+   * position, this module exposes the predicate `check`, which wraps the input
+   * predicate and checks that types are only propagated into arguments when they
+   * are context-typed.
+   */
+  module CheckContextTyping<inferCallTypeSig/3 inferCallType> {
+    pragma[nomagic]
+    private Type inferCallTypeFromContextCand(
+      AstNode n, FunctionPosition pos, TypePath path, TypePath prefix
+    ) {
+      result = inferCallType(n, pos, path) and
+      not pos.isReturn() and
+      isContextTyped(n) and
+      prefix = path
+      or
+      exists(TypePath mid |
+        result = inferCallTypeFromContextCand(n, pos, path, mid) and
+        mid.isSnoc(prefix, _)
+      )
+    }
+
+    pragma[nomagic]
+    Type check(AstNode n, TypePath path) {
+      exists(FunctionPosition pos |
+        result = inferCallType(n, pos, path) and
+        pos.isReturn()
+        or
+        exists(TypePath prefix |
+          result = inferCallTypeFromContextCand(n, pos, path, prefix) and
+          isContextTyped(n, prefix)
+        )
+      )
+    }
+  }
+}
+
+/**
  * Holds if function `f` with the name `name` and the arity `arity` exists in
  * `i`, and the type at position `pos` is `t`.
  */
@@ -1418,20 +1530,20 @@ private module MethodResolution {
      * `derefChain` and the Boolean `borrow`.
      */
     pragma[nomagic]
-    Method resolveCallTarget(string derefChain, boolean borrow) {
+    Method resolveCallTarget(ImplOrTraitItemNode i, string derefChain, boolean borrow) {
       exists(MethodCallCand mcc |
         mcc = MkMethodCallCand(this, derefChain, borrow) and
-        result = mcc.resolveCallTarget()
+        result = mcc.resolveCallTarget(i)
       )
     }
 
     predicate receiverHasImplicitDeref(AstNode receiver) {
-      exists(this.resolveCallTarget(".ref", false)) and
+      exists(this.resolveCallTarget(_, ".ref", false)) and
       receiver = this.getArgument(CallImpl::TSelfArgumentPosition())
     }
 
     predicate receiverHasImplicitBorrow(AstNode receiver) {
-      exists(this.resolveCallTarget("", true)) and
+      exists(this.resolveCallTarget(_, "", true)) and
       receiver = this.getArgument(CallImpl::TSelfArgumentPosition())
     }
   }
@@ -1569,7 +1681,8 @@ private module MethodResolution {
 
     Type getTypeAt(TypePath path) {
       result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, path) and
-      not result = TNeverType()
+      not result = TNeverType() and
+      not result = TContextType()
     }
 
     pragma[nomagic]
@@ -1642,13 +1755,11 @@ private module MethodResolution {
 
     /** Gets a method that matches this method call. */
     pragma[nomagic]
-    Method resolveCallTarget() {
-      exists(ImplOrTraitItemNode i |
-        result = this.resolveCallTargetCand(i) and
-        not FunctionOverloading::functionResolutionDependsOnArgument(i, _, _, _, _)
-      )
+    Method resolveCallTarget(ImplOrTraitItemNode i) {
+      result = this.resolveCallTargetCand(i) and
+      not FunctionOverloading::functionResolutionDependsOnArgument(i, _, _, _, _)
       or
-      MethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, _, result)
+      MethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, i, result)
     }
 
     predicate hasNoBorrow() { borrow = false }
@@ -1918,14 +2029,14 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
 
   final private class MethodCallFinal = MethodResolution::MethodCall;
 
-  class Access extends MethodCallFinal {
+  class Access extends MethodCallFinal, ContextTyping::ContextTypedCallCand {
     Access() {
       // handled in the `OperationMatchingInput` module
       not this instanceof Operation
     }
 
     pragma[nomagic]
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
         arg =
           this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
@@ -1971,12 +2082,14 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
       result = this.getInferredNonSelfType(apos, path)
     }
 
-    Declaration getTarget(string derefChainBorrow) {
+    Declaration getTarget(ImplOrTraitItemNode i, string derefChainBorrow) {
       exists(string derefChain, boolean borrow |
         derefChainBorrow = encodeDerefChainBorrow(derefChain, borrow) and
-        result = this.resolveCallTarget(derefChain, borrow) // mutual recursion; resolving method calls requires resolving types and vice versa
+        result = this.resolveCallTarget(i, derefChain, borrow) // mutual recursion; resolving method calls requires resolving types and vice versa
       )
     }
+
+    Declaration getTarget(string derefChainBorrow) { result = this.getTarget(_, derefChainBorrow) }
   }
 }
 
@@ -1989,7 +2102,14 @@ private Type inferMethodCallType0(
 ) {
   exists(TypePath path0 |
     n = a.getNodeAt(apos) and
-    result = MethodCallMatching::inferAccessType(a, derefChainBorrow, apos, path0)
+    (
+      result = MethodCallMatching::inferAccessType(a, derefChainBorrow, apos, path0)
+      or
+      exists(ImplOrTraitItemNode i |
+        a.isContextTypedAt(i, a.getTarget(i, derefChainBorrow), path0, apos) and
+        result = TContextType()
+      )
+    )
   |
     if
       // index expression `x[i]` desugars to `*x.index(i)`, so we must account for
@@ -2001,16 +2121,11 @@ private Type inferMethodCallType0(
   )
 }
 
-/**
- * Gets the type of `n` at `path`, where `n` is either a method call or an
- * argument/receiver of a method call.
- */
 pragma[nomagic]
-private Type inferMethodCallType(AstNode n, TypePath path) {
-  exists(
-    MethodCallMatchingInput::Access a, MethodCallMatchingInput::AccessPosition apos,
-    string derefChainBorrow, TypePath path0
-  |
+private Type inferMethodCallType1(
+  AstNode n, MethodCallMatchingInput::AccessPosition apos, TypePath path
+) {
+  exists(MethodCallMatchingInput::Access a, string derefChainBorrow, TypePath path0 |
     result = inferMethodCallType0(a, apos, n, derefChainBorrow, path0)
   |
     (
@@ -2031,6 +2146,13 @@ private Type inferMethodCallType(AstNode n, TypePath path) {
     path0.isCons(TRefTypeParameter(), path)
   )
 }
+
+/**
+ * Gets the type of `n` at `path`, where `n` is either a method call or an
+ * argument/receiver of a method call.
+ */
+private predicate inferMethodCallType =
+  ContextTyping::CheckContextTyping<inferMethodCallType1/3>::check/2;
 
 /**
  * Provides logic for resolving calls to non-method items. This includes
@@ -2178,26 +2300,39 @@ private module NonMethodResolution {
       trait = this.(Call).getTrait()
     }
 
+    /**
+     * Gets the target of this call, which can be resolved using only path resolution.
+     */
     pragma[nomagic]
-    private NonMethodFunction resolveCallTargetRec() {
-      result = this.resolveCallTargetBlanketCand(_) and
-      not FunctionOverloading::functionResolutionDependsOnArgument(_, result, _, _, _)
-      or
-      NonMethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, _, result)
-    }
-
-    pragma[nomagic]
-    ItemNode resolveCallTargetNonRec() {
+    ItemNode resolveCallTargetViaPathResolution() {
       not this.(Call).hasTrait() and
       result = this.getPathResolutionResolved() and
       not FunctionOverloading::functionResolutionDependsOnArgument(_, result, _, _, _)
     }
 
+    /**
+     * Gets the target of this call, which can be resolved using type inference.
+     */
+    pragma[nomagic]
+    NonMethodFunction resolveCallTargetViaTypeInference(ImplOrTraitItemNode i) {
+      result = this.resolveCallTargetBlanketCand(i) and
+      not FunctionOverloading::functionResolutionDependsOnArgument(_, result, _, _, _)
+      or
+      NonMethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, i, result)
+    }
+
     pragma[inline]
     ItemNode resolveCallTarget() {
-      result = this.resolveCallTargetNonRec()
+      result = this.resolveCallTargetViaPathResolution()
       or
-      result = this.resolveCallTargetRec()
+      result = this.resolveCallTargetViaTypeInference(_)
+    }
+
+    pragma[nomagic]
+    NonMethodFunction resolveTraitFunctionViaPathResolution(TraitItemNode trait) {
+      this.(Call).hasTrait() and
+      result = this.getPathResolutionResolved() and
+      result = trait.getASuccessor(_)
     }
   }
 
@@ -2433,9 +2568,9 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
     }
   }
 
-  class Access extends NonMethodResolution::NonMethodCall {
+  class Access extends NonMethodResolution::NonMethodCall, ContextTyping::ContextTypedCallCand {
     pragma[nomagic]
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       result = getCallExprTypeArgument(this, apos).resolveTypeAt(path)
     }
 
@@ -2456,12 +2591,26 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
 private module NonMethodCallMatching = Matching<NonMethodCallMatchingInput>;
 
 pragma[nomagic]
-private Type inferNonMethodCallType(AstNode n, TypePath path) {
-  exists(NonMethodCallMatchingInput::Access a, NonMethodCallMatchingInput::AccessPosition apos |
-    n = a.getNodeAt(apos) and
+private Type inferNonMethodCallType0(
+  AstNode n, NonMethodCallMatchingInput::AccessPosition apos, TypePath path
+) {
+  exists(NonMethodCallMatchingInput::Access a | n = a.getNodeAt(apos) |
     result = NonMethodCallMatching::inferAccessType(a, apos, path)
+    or
+    exists(ImplOrTraitItemNode i |
+      a.isContextTypedAt(i,
+        [
+          a.resolveCallTargetViaPathResolution().(NonMethodFunction),
+          a.resolveCallTargetViaTypeInference(i),
+          a.resolveTraitFunctionViaPathResolution(i)
+        ], path, apos) and
+      result = TContextType()
+    )
   )
 }
+
+private predicate inferNonMethodCallType =
+  ContextTyping::CheckContextTyping<inferNonMethodCallType0/3>::check/2;
 
 /**
  * A matching configuration for resolving types of operations like `a + b`.
@@ -2527,7 +2676,7 @@ private module OperationMatchingInput implements MatchingInputSig {
     }
 
     Declaration getTarget() {
-      result = this.resolveCallTarget(_, _) // mutual recursion
+      result = this.resolveCallTarget(_, _, _) // mutual recursion
     }
   }
 }
@@ -2535,12 +2684,17 @@ private module OperationMatchingInput implements MatchingInputSig {
 private module OperationMatching = Matching<OperationMatchingInput>;
 
 pragma[nomagic]
-private Type inferOperationType(AstNode n, TypePath path) {
-  exists(OperationMatchingInput::Access a, OperationMatchingInput::AccessPosition apos |
+private Type inferOperationType0(
+  AstNode n, OperationMatchingInput::AccessPosition apos, TypePath path
+) {
+  exists(OperationMatchingInput::Access a |
     n = a.getNodeAt(apos) and
     result = OperationMatching::inferAccessType(a, apos, path)
   )
 }
+
+private predicate inferOperationType =
+  ContextTyping::CheckContextTyping<inferOperationType0/3>::check/2;
 
 pragma[nomagic]
 private Type getFieldExprLookupType(FieldExpr fe, string name) {
@@ -3215,7 +3369,7 @@ private module Cached {
   /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
   cached
   Addressable resolveCallTarget(Call call) {
-    result = call.(MethodResolution::MethodCall).resolveCallTarget(_, _)
+    result = call.(MethodResolution::MethodCall).resolveCallTarget(_, _, _)
     or
     result = call.(NonMethodResolution::NonMethodCall).resolveCallTarget()
   }
