@@ -1,0 +1,4 @@
+go 1.20
+
+use ./mainmodule
+use ./configmodule

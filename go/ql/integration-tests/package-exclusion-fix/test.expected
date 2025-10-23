@@ -1,0 +1,6 @@
+extractedFiles
+| src/configmodule/config/config.go:0:0:0:0 | src/configmodule/config/config.go |
+| src/configmodule/go.mod:0:0:0:0 | src/configmodule/go.mod |
+| src/mainmodule/app/jobs/worker/worker.go:0:0:0:0 | src/mainmodule/app/jobs/worker/worker.go |
+| src/mainmodule/go.mod:0:0:0:0 | src/mainmodule/go.mod |
+#select
