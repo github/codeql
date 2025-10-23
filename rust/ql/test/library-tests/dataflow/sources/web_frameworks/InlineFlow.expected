@@ -10,31 +10,21 @@ models
 | 9 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue; taint |
 | 10 | Summary: <alloc::string::String>::as_bytes; Argument[self]; ReturnValue; value |
 | 11 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
-| 12 | Summary: <core::str>::as_bytes; Argument[self]; ReturnValue; value |
-| 13 | Summary: <core::str>::as_str; Argument[self]; ReturnValue; value |
 edges
 | test.rs:11:31:11:31 | a | test.rs:13:14:13:14 | a | provenance |  |
 | test.rs:11:31:11:31 | a | test.rs:13:14:13:14 | a | provenance |  |
 | test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
 | test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:13 |
-| test.rs:11:31:11:31 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:11:31:11:31 | a | test.rs:14:14:14:14 | a | provenance |  |
 | test.rs:11:31:11:31 | a | test.rs:14:14:14:14 | a | provenance |  |
 | test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
 | test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:12 |
-| test.rs:11:31:11:31 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:11:31:11:31 | a | test.rs:15:14:15:14 | a | provenance |  |
 | test.rs:11:31:11:31 | a | test.rs:15:14:15:14 | a | provenance |  |
 | test.rs:13:14:13:14 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
 | test.rs:13:14:13:14 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:13:14:13:14 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:13 |
-| test.rs:13:14:13:14 | a | test.rs:13:14:13:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:14:14:14:14 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
 | test.rs:14:14:14:14 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:14:14:14:14 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:12 |
-| test.rs:14:14:14:14 | a | test.rs:14:14:14:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:68:15:68:15 | a | test.rs:70:14:70:14 | a | provenance |  |
 | test.rs:68:15:68:15 | a | test.rs:70:14:70:14 | a | provenance |  |
 | test.rs:98:9:98:31 | ...: ...::Path::<...> | test.rs:100:17:100:33 | path.into_inner() | provenance | MaD:9 |
@@ -43,52 +33,36 @@ edges
 | test.rs:98:9:98:31 | ...: ...::Path::<...> | test.rs:100:17:100:33 | path.into_inner() [tuple.2] | provenance | MaD:8 |
 | test.rs:100:13:100:13 | a | test.rs:101:14:101:14 | a | provenance |  |
 | test.rs:100:13:100:13 | a | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:100:13:100:13 | a | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:100:13:100:13 | a | test.rs:102:14:102:14 | a | provenance |  |
 | test.rs:100:13:100:13 | a | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:100:13:100:13 | a | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:100:13:100:13 | a | test.rs:103:14:103:14 | a | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.0] | test.rs:101:14:101:14 | a [tuple.0] | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.0] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:100:13:100:13 | a [tuple.0] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:100:13:100:13 | a [tuple.0] | test.rs:102:14:102:14 | a [tuple.0] | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.0] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:100:13:100:13 | a [tuple.0] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:100:13:100:13 | a [tuple.0] | test.rs:103:14:103:14 | a | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.1] | test.rs:101:14:101:14 | a [tuple.1] | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.1] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:100:13:100:13 | a [tuple.1] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:100:13:100:13 | a [tuple.1] | test.rs:102:14:102:14 | a [tuple.1] | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.1] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:100:13:100:13 | a [tuple.1] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:100:13:100:13 | a [tuple.1] | test.rs:103:14:103:14 | a | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.2] | test.rs:101:14:101:14 | a [tuple.2] | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.2] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:100:13:100:13 | a [tuple.2] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:100:13:100:13 | a [tuple.2] | test.rs:102:14:102:14 | a [tuple.2] | provenance |  |
 | test.rs:100:13:100:13 | a [tuple.2] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:100:13:100:13 | a [tuple.2] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:100:13:100:13 | a [tuple.2] | test.rs:103:14:103:14 | a | provenance |  |
 | test.rs:100:17:100:33 | path.into_inner() | test.rs:100:13:100:13 | a | provenance |  |
 | test.rs:100:17:100:33 | path.into_inner() [tuple.0] | test.rs:100:13:100:13 | a [tuple.0] | provenance |  |
 | test.rs:100:17:100:33 | path.into_inner() [tuple.1] | test.rs:100:13:100:13 | a [tuple.1] | provenance |  |
 | test.rs:100:17:100:33 | path.into_inner() [tuple.2] | test.rs:100:13:100:13 | a [tuple.2] | provenance |  |
 | test.rs:101:14:101:14 | a | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:101:14:101:14 | a | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:101:14:101:14 | a [tuple.0] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:101:14:101:14 | a [tuple.0] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:101:14:101:14 | a [tuple.1] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:101:14:101:14 | a [tuple.1] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:101:14:101:14 | a [tuple.2] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:11 |
-| test.rs:101:14:101:14 | a [tuple.2] | test.rs:101:14:101:23 | a.as_str() | provenance | MaD:13 |
 | test.rs:102:14:102:14 | a | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:102:14:102:14 | a | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:102:14:102:14 | a [tuple.0] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:102:14:102:14 | a [tuple.0] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:102:14:102:14 | a [tuple.1] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:102:14:102:14 | a [tuple.1] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:102:14:102:14 | a [tuple.2] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:10 |
-| test.rs:102:14:102:14 | a [tuple.2] | test.rs:102:14:102:25 | a.as_bytes() | provenance | MaD:12 |
 | test.rs:109:9:109:41 | ...: ...::Path::<...> | test.rs:111:22:111:38 | path.into_inner() [tuple.0] | provenance | MaD:6 |
 | test.rs:109:9:109:41 | ...: ...::Path::<...> | test.rs:111:22:111:38 | path.into_inner() [tuple.1] | provenance | MaD:7 |
 | test.rs:111:13:111:18 | TuplePat [tuple.0] | test.rs:111:14:111:14 | a | provenance |  |
