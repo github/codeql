@@ -140,12 +140,15 @@ test_EnclosingStmt
 | foreach.js:8:1:8:16 | console.log(sum) | foreach.js:8:1:8:17 | console.log(sum); |
 | foreach.js:8:9:8:11 | log | foreach.js:8:1:8:17 | console.log(sum); |
 | foreach.js:8:13:8:15 | sum | foreach.js:8:1:8:17 | console.log(sum); |
+| functions.js:1:10:1:10 | g | functions.js:1:1:3:1 | functio ...  x+y;\\n} |
 | functions.js:2:12:2:12 | x | functions.js:2:5:2:15 | return x+y; |
 | functions.js:2:12:2:14 | x+y | functions.js:2:5:2:15 | return x+y; |
 | functions.js:2:14:2:14 | y | functions.js:2:5:2:15 | return x+y; |
+| functions.js:5:10:5:10 | h | functions.js:5:1:5:15 | function h() {} |
 | functions.js:7:1:7:1 | k | functions.js:7:1:9:1 | k = fun ... turn;\\n} |
 | functions.js:7:1:9:1 | k = fun ... turn;\\n} | functions.js:7:1:9:1 | k = fun ... turn;\\n} |
 | functions.js:7:5:9:1 | functio ... turn;\\n} | functions.js:7:1:9:1 | k = fun ... turn;\\n} |
+| guardedCatch.js:1:10:1:10 | f | guardedCatch.js:1:1:9:1 | functio ... );\\n\\t}\\n} |
 | guardedCatch.js:3:3:3:3 | g | guardedCatch.js:3:3:3:6 | g(); |
 | guardedCatch.js:3:3:3:5 | g() | guardedCatch.js:3:3:3:6 | g(); |
 | guardedCatch.js:4:11:4:11 | e | guardedCatch.js:4:4:6:2 | catch ( ... !");\\n\\t} |
