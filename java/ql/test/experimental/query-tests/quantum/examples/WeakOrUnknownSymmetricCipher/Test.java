@@ -3,6 +3,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import javax.crypto.SecretKeyFactory;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -73,5 +74,8 @@ public class Test {
         Cipher aesGcmCipher = Cipher.getInstance("AES/GCM/NoPadding");
         aesGcmCipher.init(Cipher.ENCRYPT_MODE, aesKey);
         byte[] aesGcmEncrypted = aesGcmCipher.doFinal(data);
+
+        // GOOD: not a symmetric cipher (Sanity check)
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
     }
 }

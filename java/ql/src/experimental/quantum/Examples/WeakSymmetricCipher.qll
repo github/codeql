@@ -8,7 +8,8 @@ predicate isUnapprovedSymmetricCipher(Crypto::KeyOperationAlgorithmNode alg, str
   exists(KeyOpAlg::AlgorithmType algType |
     algType = alg.getAlgorithmType() and
     msg = "Use of unapproved symmetric cipher algorithm or API: " + algType.toString() + "." and
-    algType != KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
+    algType != KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES()) and
+    algType instanceof KeyOpAlg::TSymmetricCipher
   )
   // NOTE: an org could decide to disallow very specific algorithms as well, shown below
   // (
