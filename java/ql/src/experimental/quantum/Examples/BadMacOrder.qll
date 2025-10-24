@@ -109,7 +109,7 @@ module WrapperArgFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrierOut(DataFlow::Node node) {
     // stop all flow out of a call return
     // TODO: this might be too strict and remove taint flow, need to reassess
-    exists(Call c | c = node.asExpr()) or
+    node.asExpr() instanceof Call or
     node = any(Crypto::FlowAwareElement element).getInputNode()
   }
 
