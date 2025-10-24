@@ -136,7 +136,7 @@
 | Test.cs:46:29:46:32 | out | Test.cs:50:13:50:20 | SSA def(out) | Test.cs:50:13:50:20 | ... = ... |
 | Test.cs:46:29:46:32 | out | Test.cs:54:13:54:20 | SSA def(out) | Test.cs:54:13:54:20 | ... = ... |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | ... = ... |
-| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
+| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
 | Test.cs:78:13:78:13 | x | Test.cs:78:13:78:17 | SSA def(x) | Test.cs:78:13:78:17 | Int32 x = ... |
 | Test.cs:78:13:78:13 | x | Test.cs:108:13:108:17 | SSA def(x) | Test.cs:108:13:108:17 | ... = ... |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | ... = ... |

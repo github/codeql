@@ -25,8 +25,7 @@ private module Cached {
   newtype TSplitKind =
     TInitializerSplitKind() or
     TConditionalCompletionSplitKind() or
-    TAssertionSplitKind() or
-    TExceptionHandlerSplitKind()
+    TAssertionSplitKind()
 
   cached
   newtype TSplit =
@@ -35,8 +34,7 @@ private module Cached {
     TAssertionSplit(AssertionSplitting::Assertion a, int i, boolean success) {
       exists(a.getExpr(i)) and
       success in [false, true]
-    } or
-    TExceptionHandlerSplit(ExceptionClass ec)
+    }
 }
 
 import Cached
@@ -446,182 +444,6 @@ module AssertionSplitting {
     override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
       this.appliesSucc(pred, succ, c) and
       succ = getAnAssertionDescendant(a)
-    }
-  }
-}
-
-module ExceptionHandlerSplitting {
-  private newtype TMatch =
-    TAlways() or
-    TMaybe() or
-    TNever()
-
-  /**
-   * A split for elements belonging to a `catch` clause, which determines the type of
-   * exception to handle. For example, in
-   *
-   * ```csharp
-   * try
-   * {
-   *     if (M() > 0)
-   *         throw new ArgumentException();
-   *     else if (M() < 0)
-   *         throw new ArithmeticException("negative");
-   *     else
-   *         return;
-   * }
-   * catch (ArgumentException e)
-   * {
-   *     Log.Write("M() positive");
-   * }
-   * catch (ArithmeticException e) when (e.Message != null)
-   * {
-   *     Log.Write($"M() {e.Message}");
-   * }
-   * ```
-   *
-   * all control flow nodes in
-   * ```csharp
-   * catch (ArgumentException e)
-   * ```
-   * and
-   * ```csharp
-   * catch (ArithmeticException e) when (e.Message != null)
-   * ```
-   * have two splits: one representing the `try` block throwing an `ArgumentException`,
-   * and one representing the `try` block throwing an `ArithmeticException`.
-   */
-  class ExceptionHandlerSplit extends Split, TExceptionHandlerSplit {
-    private ExceptionClass ec;
-
-    ExceptionHandlerSplit() { this = TExceptionHandlerSplit(ec) }
-
-    /** Gets the exception type that this split represents. */
-    ExceptionClass getExceptionClass() { result = ec }
-
-    override string toString() { result = "exception: " + ec.toString() }
-  }
-
-  private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
-    override int getListOrder() { result = AssertionSplitting::getNextListOrder() }
-
-    override string toString() { result = "ExceptionHandler" }
-  }
-
-  int getNextListOrder() { result = AssertionSplitting::getNextListOrder() + 1 }
-
-  private class ExceptionHandlerSplitImpl extends SplitImpl instanceof ExceptionHandlerSplit {
-    override ExceptionHandlerSplitKind getKind() { any() }
-
-    override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      // Entry into first catch clause
-      exists(Statements::TryStmtTree ts |
-        super.getExceptionClass() = ts.getAThrownException(pred, c)
-      |
-        succ(pred, succ, c) and
-        succ = ts.(TryStmt).getCatchClause(0).(SpecificCatchClause)
-      )
-    }
-
-    override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
-
-    /**
-     * Holds if this split applies to catch clause `scc`. The parameter `match`
-     * indicates whether the catch clause `scc` may match the exception type of
-     * this split.
-     */
-    private predicate appliesToCatchClause(SpecificCatchClause scc, TMatch match) {
-      exists(Statements::TryStmtTree ts, ExceptionClass ec |
-        ec = super.getExceptionClass() and
-        ec = ts.getAThrownException(_, _) and
-        scc = ts.(TryStmt).getACatchClause()
-      |
-        if scc.getCaughtExceptionType() = ec.getABaseType*()
-        then match = TAlways()
-        else
-          if scc.getCaughtExceptionType() = ec.getASubType+()
-          then match = TMaybe()
-          else match = TNever()
-      )
-    }
-
-    /**
-     * Holds if this split applies to control flow element `pred`, where `pred`
-     * is a valid predecessor with completion `c`.
-     */
-    private predicate appliesToPredecessor(AstNode pred, Completion c) {
-      this.appliesTo(pred) and
-      (succ(pred, _, c) or scopeLast(_, pred, c)) and
-      (
-        pred instanceof SpecificCatchClause
-        implies
-        pred =
-          any(SpecificCatchClause scc |
-            if c instanceof MatchingCompletion
-            then
-              exists(TMatch match | this.appliesToCatchClause(scc, match) |
-                c =
-                  any(MatchingCompletion mc |
-                    if mc.isMatch() then match != TNever() else match != TAlways()
-                  )
-              )
-            else (
-              (scc.isLast() and c instanceof ThrowCompletion)
-              implies
-              exists(TMatch match | this.appliesToCatchClause(scc, match) | match != TAlways())
-            )
-          )
-      )
-    }
-
-    /**
-     * Holds if this split applies to `pred`, and `pred` may exit this split
-     * with throw completion `c`, because it belongs to the last `catch` clause
-     * in a `try` statement.
-     */
-    private predicate hasLastExit(AstNode pred, ThrowCompletion c) {
-      this.appliesToPredecessor(pred, c) and
-      exists(TryStmt ts, SpecificCatchClause scc, int last |
-        last(ts.getCatchClause(last), pred, c)
-      |
-        ts.getCatchClause(last) = scc and
-        scc.isLast() and
-        c.getExceptionClass() = super.getExceptionClass()
-      )
-    }
-
-    override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
-      this.appliesToPredecessor(pred, c) and
-      succ(pred, succ, c) and
-      (
-        // Exit out to `catch` clause block
-        first(any(SpecificCatchClause scc).getBlock(), succ)
-        or
-        // Exit out to a general `catch` clause
-        succ instanceof GeneralCatchClause
-        or
-        // Exit out from last `catch` clause (no catch clauses match)
-        this.hasLastExit(pred, c)
-      )
-    }
-
-    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      // Exit out from last `catch` clause (no catch clauses match)
-      this.hasLastExit(last, c) and
-      scopeLast(scope, last, c)
-    }
-
-    override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
-      this.appliesToPredecessor(pred, c) and
-      this.appliesSucc(pred, succ, c) and
-      not first(any(SpecificCatchClause scc).getBlock(), succ) and
-      not succ instanceof GeneralCatchClause and
-      not exists(TryStmt ts, SpecificCatchClause scc, int last |
-        last(ts.getCatchClause(last), pred, c)
-      |
-        ts.getCatchClause(last) = scc and
-        scc.isLast()
-      )
     }
   }
 }

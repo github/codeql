@@ -294,8 +294,6 @@ module ControlFlow {
     }
 
     class Split = Splitting::Split;
-
-    class ExceptionHandlerSplit = Splitting::ExceptionHandlerSplitting::ExceptionHandlerSplit;
   }
 
   class BasicBlock = BBs::BasicBlock;
