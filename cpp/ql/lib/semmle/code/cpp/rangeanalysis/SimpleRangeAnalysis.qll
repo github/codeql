@@ -1213,7 +1213,7 @@ private float getLowerBoundsImpl(Expr expr) {
       // equal to `min(-y + 1,y - 1)`.
       exists(float childLB |
         childLB = getFullyConvertedLowerBounds(remExpr.getAnOperand()) and
-        not childLB >= 0
+        childLB < 0
       |
         result = getFullyConvertedLowerBounds(remExpr.getRightOperand()) - 1
         or
@@ -1425,8 +1425,7 @@ private float getUpperBoundsImpl(Expr expr) {
       // adding `-rhsLB` to the set of upper bounds.
       exists(float rhsLB |
         rhsLB = getFullyConvertedLowerBounds(remExpr.getRightOperand()) and
-        not rhsLB >= 0
-      |
+        rhsLB < 0 and
         result = -rhsLB + 1
       )
     )
@@ -1571,8 +1570,7 @@ private float getPhiLowerBounds(StackVariable v, RangeSsaDefinition phi) {
   exists(VariableAccess access, Expr guard, boolean branch, float defLB, float guardLB |
     phi.isGuardPhi(v, access, guard, branch) and
     lowerBoundFromGuard(guard, access, guardLB, branch) and
-    defLB = getFullyConvertedLowerBounds(access)
-  |
+    defLB = getFullyConvertedLowerBounds(access) and
     // Compute the maximum of `guardLB` and `defLB`.
     if guardLB > defLB then result = guardLB else result = defLB
   )
@@ -1596,8 +1594,7 @@ private float getPhiUpperBounds(StackVariable v, RangeSsaDefinition phi) {
   exists(VariableAccess access, Expr guard, boolean branch, float defUB, float guardUB |
     phi.isGuardPhi(v, access, guard, branch) and
     upperBoundFromGuard(guard, access, guardUB, branch) and
-    defUB = getFullyConvertedUpperBounds(access)
-  |
+    defUB = getFullyConvertedUpperBounds(access) and
     // Compute the minimum of `guardUB` and `defUB`.
     if guardUB < defUB then result = guardUB else result = defUB
   )
@@ -1761,8 +1758,7 @@ private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, bo
 }
 
 /**
- * This predicate simplifies the results returned by
- * `linearBoundFromGuard`.
+ * This predicate simplifies the results returned by `linearBoundFromGuard`.
  */
 private predicate boundFromGuard(
   Expr guard, VariableAccess v, float boundValue, boolean isLowerBound,

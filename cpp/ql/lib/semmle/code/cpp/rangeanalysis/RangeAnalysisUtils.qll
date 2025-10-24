@@ -118,10 +118,10 @@ predicate relOpWithSwap(
  *
  * This allows for the relation to be either as written, or with its
  * arguments reversed; for example, if `rel` is `x < 5` then
- * `relOpWithSwapAndNegate(rel, x, 5, Lesser(), Strict(), true)`,
- * `relOpWithSwapAndNegate(rel, 5, x, Greater(), Strict(), true)`,
- * `relOpWithSwapAndNegate(rel, x, 5, Greater(), Nonstrict(), false)` and
- * `relOpWithSwapAndNegate(rel, 5, x, Lesser(), Nonstrict(), false)` hold.
+ * - `relOpWithSwapAndNegate(rel, x, 5, Lesser(), Strict(), true)`,
+ * - `relOpWithSwapAndNegate(rel, 5, x, Greater(), Strict(), true)`,
+ * - `relOpWithSwapAndNegate(rel, x, 5, Greater(), Nonstrict(), false)` and
+ * - `relOpWithSwapAndNegate(rel, 5, x, Lesser(), Nonstrict(), false)` hold.
  */
 predicate relOpWithSwapAndNegate(
   RelationalOperation rel, Expr a, Expr b, RelationDirection dir, RelationStrictness strict,
