@@ -1770,22 +1770,10 @@ private predicate boundFromGuard(
 ) {
   exists(float p, float q, float r, boolean isLB |
     linearBoundFromGuard(guard, v, p, q, r, isLB, strictness, branch) and
-    boundValue = (r - q) / p
-  |
+    boundValue = (r - q) / p and
     // If the multiplier is negative then the direction of the comparison
     // needs to be flipped.
-    p > 0 and isLowerBound = isLB
-    or
-    p < 0 and isLowerBound = isLB.booleanNot()
-  )
-  or
-  // When `!e` is true, we know that `0 <= e <= 0`
-  exists(float p, float q, Expr e |
-    linearAccess(e, v, p, q) and
-    eqZeroWithNegate(guard, e, true, branch) and
-    boundValue = (0.0 - q) / p and
-    isLowerBound = [false, true] and
-    strictness = Nonstrict()
+    if p < 0 then isLowerBound = isLB.booleanNot() else isLowerBound = isLB
   )
 }
 
@@ -1795,54 +1783,57 @@ private predicate boundFromGuard(
  * lower or upper bound for `v`.
  */
 private predicate linearBoundFromGuard(
-  ComparisonOperation guard, VariableAccess v, float p, float q, float boundValue,
+  Expr guard, VariableAccess v, float p, float q, float r,
   boolean isLowerBound, // Is this a lower or an upper bound?
   RelationStrictness strictness, boolean branch // Which control-flow branch is this bound valid on?
 ) {
-  // For the comparison x < RHS, we create two bounds:
-  //
-  //   1. x < upperbound(RHS)
-  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
-  //
-  exists(Expr lhs, Expr rhs, RelationDirection dir, RelationStrictness st |
-    linearAccess(lhs, v, p, q) and
-    relOpWithSwapAndNegate(guard, lhs, rhs, dir, st, branch)
-  |
-    isLowerBound = directionIsGreater(dir) and
-    strictness = st and
-    getBounds(rhs, boundValue, isLowerBound)
+  exists(Expr lhs | linearAccess(lhs, v, p, q) |
+    // For the comparison x < RHS, we create the following bounds:
+    //   1. x < upperbound(RHS)
+    //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
+    exists(Expr rhs, RelationDirection dir, RelationStrictness st |
+      relOpWithSwapAndNegate(guard, lhs, rhs, dir, st, branch)
+    |
+      isLowerBound = directionIsGreater(dir) and
+      strictness = st and
+      r = getBounds(rhs, isLowerBound)
+      or
+      isLowerBound = directionIsLesser(dir) and
+      strictness = Nonstrict() and
+      r = getExprTypeBounds(rhs, isLowerBound)
+    )
     or
-    isLowerBound = directionIsLesser(dir) and
-    strictness = Nonstrict() and
-    exprTypeBounds(rhs, boundValue, isLowerBound)
-  )
-  or
-  // For x == RHS, we create the following bounds:
-  //
-  //   1. x <= upperbound(RHS)
-  //   2. x >= lowerbound(RHS)
-  //
-  exists(Expr lhs, Expr rhs |
-    linearAccess(lhs, v, p, q) and
-    eqOpWithSwapAndNegate(guard, lhs, rhs, true, branch) and
-    getBounds(rhs, boundValue, isLowerBound) and
+    // For x == RHS, we create the following bounds:
+    //   1. x <= upperbound(RHS)
+    //   2. x >= lowerbound(RHS)
+    exists(Expr rhs |
+      eqOpWithSwapAndNegate(guard, lhs, rhs, true, branch) and
+      r = getBounds(rhs, isLowerBound) and
+      strictness = Nonstrict()
+    )
+    or
+    // When `x` is equal to 0 we create the following bounds:
+    //   1. x <= 0
+    //   2. x >= 0
+    eqZeroWithNegate(guard, lhs, true, branch) and
+    r = 0.0 and
+    isLowerBound = [false, true] and
     strictness = Nonstrict()
   )
-  // x != RHS and !x are handled elsewhere
+}
+
+/** Get the fully converted lower or upper bounds of `expr` based on `isLowerBound`. */
+private float getBounds(Expr expr, boolean isLowerBound) {
+  isLowerBound = true and result = getFullyConvertedLowerBounds(expr)
+  or
+  isLowerBound = false and result = getFullyConvertedUpperBounds(expr)
 }
 
 /** Utility for `linearBoundFromGuard`. */
-private predicate getBounds(Expr expr, float boundValue, boolean isLowerBound) {
-  isLowerBound = true and boundValue = getFullyConvertedLowerBounds(expr)
+private float getExprTypeBounds(Expr expr, boolean isLowerBound) {
+  isLowerBound = true and result = exprMinVal(expr.getFullyConverted())
   or
-  isLowerBound = false and boundValue = getFullyConvertedUpperBounds(expr)
-}
-
-/** Utility for `linearBoundFromGuard`. */
-private predicate exprTypeBounds(Expr expr, float boundValue, boolean isLowerBound) {
-  isLowerBound = true and boundValue = exprMinVal(expr.getFullyConverted())
-  or
-  isLowerBound = false and boundValue = exprMaxVal(expr.getFullyConverted())
+  isLowerBound = false and result = exprMaxVal(expr.getFullyConverted())
 }
 
 /**
