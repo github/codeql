@@ -220,18 +220,6 @@ predicate decryptSink(DataFlow::Node n) {
   )
 }
 
-// /**
-//  * An argument of a target sink or a parent call whose parameter flows to a target sink
-//  */
-// class EncryptOrMacPartialFlowArg extends DataFlow::Node {
-//   DataFlow::Node targetSink;
-//   EncryptOrMacPartialFlowArg() {
-//     encryptWrapperArg(this, targetSink)
-//     or
-//     macWrapperArg(this, targetSink)
-//   }
-//   DataFlow::Node getTargetSink() { result = targetSink }
-// }
 class EncryptOrMacCallArg extends DataFlow::Node {
   boolean isEncryption;
 
