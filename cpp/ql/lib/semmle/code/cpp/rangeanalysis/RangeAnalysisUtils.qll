@@ -1,10 +1,10 @@
 import cpp
 
 /**
- * Describes whether a relation is 'strict' (that is, a `<` or `>`
+ * The strictness of a relation. Either 'strict' (that is, a `<` or `>`
  * relation) or 'non-strict' (a `<=` or `>=` relation).
  */
-newtype RelationStrictness =
+newtype TRelationStrictness =
   /**
    * Represents that a relation is 'strict' (that is, a `<` or `>` relation).
    */
@@ -13,6 +13,19 @@ newtype RelationStrictness =
    * Represents that a relation is 'non-strict' (that is, a `<=` or `>=` relation)
    */
   Nonstrict()
+
+/**
+ * The strictness of a relation. Either 'strict' (that is, a `<` or `>`
+ * relation) or 'non-strict' (a `<=` or `>=` relation).
+ */
+class RelationStrictness extends TRelationStrictness {
+  /** Gets the string representation of this relation strictness. */
+  string toString() {
+    this = Strict() and result = "strict"
+    or
+    this = Nonstrict() and result = "non-strict"
+  }
+}
 
 /**
  * Describes whether a relation is 'greater' (that is, a `>` or `>=`
