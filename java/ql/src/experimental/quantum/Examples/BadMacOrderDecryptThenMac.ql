@@ -1,6 +1,6 @@
 /**
  * @name Bad MAC order: decrypt then mac
- * @description Decryption on cipher text, then MAC on ciopher text, is incorrect order
+ * @description Decryption on cipher text, then MAC on cipher text, is incorrect order
  * @id java/quantum/examples/bad-mac-order-decrypt-then-mac
  * @kind path-problem
  * @problem.severity error
