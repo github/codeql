@@ -524,6 +524,14 @@ private Struct getRangeType(RangeExpr re) {
   result instanceof RangeToInclusiveStruct
 }
 
+private predicate bodyReturns(Expr body, Expr e) {
+  exists(ReturnExpr re, Callable c |
+    e = re.getExpr() and
+    c = re.getEnclosingCallable() and
+    body = c.getBody()
+  )
+}
+
 /**
  * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
  * of `n2` at `prefix2` and type information should propagate in both directions
@@ -540,9 +548,11 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       let.getInitializer() = n2
     )
     or
-    n1 = n2.(IfExpr).getABranch()
-    or
-    n1 = n2.(MatchExpr).getAnArm().getExpr()
+    n2 =
+      any(MatchExpr me |
+        n1 = me.getAnArm().getExpr() and
+        me.getNumberOfArms() = 1
+      )
     or
     exists(LetExpr let |
       n1 = let.getScrutinee() and
@@ -573,6 +583,9 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion()
     or
     n1 = n2.(MacroPat).getMacroCall().getMacroCallExpansion()
+    or
+    bodyReturns(n1, n2) and
+    strictcount(Expr e | bodyReturns(n1, e)) = 1
   )
   or
   (
@@ -606,8 +619,12 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     )
   )
   or
-  // an array list expression (`[1, 2, 3]`) has the type of the first (any) element
-  n1.(ArrayListExpr).getExpr(_) = n2 and
+  // an array list expression with only one element (such as `[1]`) has type from that element
+  n1 =
+    any(ArrayListExpr ale |
+      ale.getAnExpr() = n2 and
+      ale.getNumberOfExprs() = 1
+    ) and
   prefix1 = TypePath::singleton(TArrayTypeParameter()) and
   prefix2.isEmpty()
   or
@@ -635,6 +652,61 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   prefix2.isEmpty()
 }
 
+/**
+ * Holds if `child` is a child of `parent`, and the Rust compiler applies [least
+ * upper bound (LUB) coercion](1) to infer the type of `parent` from the type of
+ * `child`.
+ *
+ * In this case, we want type information to only flow from `child` to `parent`,
+ * to avoid (a) either having to model LUB coercions, or (b) risk combinatorial
+ * explosion in inferred types.
+ *
+ * [1]: https://doc.rust-lang.org/reference/type-coercions.html#r-coerce.least-upper-bound
+ */
+private predicate lubCoercion(AstNode parent, AstNode child, TypePath prefix) {
+  child = parent.(IfExpr).getABranch() and
+  prefix.isEmpty()
+  or
+  parent =
+    any(MatchExpr me |
+      child = me.getAnArm().getExpr() and
+      me.getNumberOfArms() > 1
+    ) and
+  prefix.isEmpty()
+  or
+  parent =
+    any(ArrayListExpr ale |
+      child = ale.getAnExpr() and
+      ale.getNumberOfExprs() > 1
+    ) and
+  prefix = TypePath::singleton(TArrayTypeParameter())
+  or
+  bodyReturns(parent, child) and
+  strictcount(Expr e | bodyReturns(parent, e)) > 1 and
+  prefix.isEmpty()
+}
+
+/**
+ * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
+ * of `n2` at `prefix2`, but type information should only propagate from `n1` to
+ * `n2`.
+ */
+private predicate typeEqualityNonSymmetric(
+  AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2
+) {
+  lubCoercion(n2, n1, prefix2) and
+  prefix1.isEmpty()
+  or
+  exists(AstNode mid, TypePath prefixMid, TypePath suffix |
+    typeEquality(n1, prefixMid, mid, prefix2) or
+    typeEquality(mid, prefix2, n1, prefixMid)
+  |
+    lubCoercion(mid, n2, suffix) and
+    not lubCoercion(mid, n1, _) and
+    prefix1 = prefixMid.append(suffix)
+  )
+}
+
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
   exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
@@ -644,6 +716,8 @@ private Type inferTypeEquality(AstNode n, TypePath path) {
     typeEquality(n, prefix1, n2, prefix2)
     or
     typeEquality(n2, prefix2, n, prefix1)
+    or
+    typeEqualityNonSymmetric(n2, prefix2, n, prefix1)
   )
 }
 
