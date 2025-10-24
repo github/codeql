@@ -53,7 +53,7 @@ class BadMacUse {
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
-        byte[] computedMac = mac.doFinal(plaintext); // $Alert[java/quantum/examples/bad-mac-order-decrypt-to-mac]
+        byte[] computedMac = mac.doFinal(plaintext); // $Alert[java/quantum/examples/bad-mac-order-decrypt-to-mac] 
 
         if (!MessageDigest.isEqual(receivedMac, computedMac)) {
             throw new SecurityException("MAC verification failed");
@@ -128,5 +128,31 @@ class BadMacUse {
         System.arraycopy(ciphertext, 0, output, 0, ciphertext.length);
         System.arraycopy(computedMac, 0, output, ciphertext.length, computedMac.length);
         return output;
+    }
+
+
+    /**
+     * Correct inputs to a decrypt and MAC operation, but the ordering is unsafe. 
+     * The function decrypts THEN computes the MAC on the plaintext.
+     * It should have the MAC computed on the ciphertext first.
+     */
+    public void decryptThenMac(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] input) throws Exception {
+        // Split input into ciphertext and MAC
+        int macLength = 32; // HMAC-SHA256 output length
+        byte[] ciphertext = Arrays.copyOfRange(input, 0, input.length - macLength);
+        byte[] receivedMac = Arrays.copyOfRange(input, input.length - macLength, input.length);
+
+        // Decrypt first (unsafe)
+        byte[] plaintext = decryptUsingWrapper(ciphertext, encryptionKeyBytes, new byte[16]); // $Source
+
+        // Now verify MAC (too late)
+        SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(macKey);
+        byte[] computedMac = mac.doFinal(ciphertext); // $Alert[java/quantum/examples/bad-mac-order-decrypt-then-mac], False positive for Plaintext reuse
+
+        if (!MessageDigest.isEqual(receivedMac, computedMac)) {
+            throw new SecurityException("MAC verification failed");
+        }
     }
 }

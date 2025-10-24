@@ -228,6 +228,7 @@ ql/java/ql/src/experimental/Security/CWE/CWE-665/InsecureRmiJmxEnvironmentConfig
 ql/java/ql/src/experimental/Security/CWE/CWE-755/NFEAndroidDoS.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-759/HashWithoutSalt.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-939/IncorrectURLVerification.ql
+ql/java/ql/src/experimental/quantum/Examples/BadMacOrderDecryptThenMac.ql
 ql/java/ql/src/experimental/quantum/Examples/BadMacOrderDecryptToMac.ql
 ql/java/ql/src/experimental/quantum/Examples/BadMacOrderMacOnEncryptPlaintext.ql
 ql/java/ql/src/experimental/quantum/Examples/BrokenCrypto.ql

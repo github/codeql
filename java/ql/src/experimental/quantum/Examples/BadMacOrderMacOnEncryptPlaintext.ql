@@ -14,7 +14,7 @@ import PlaintextUseAsMacAndCipherInputFlow::PathGraph
 
 from
   PlaintextUseAsMacAndCipherInputFlow::PathNode src,
-  PlaintextUseAsMacAndCipherInputFlow::PathNode sink, InterimArg arg
+  PlaintextUseAsMacAndCipherInputFlow::PathNode sink, EncryptOrMacCallArg arg
 where isPlaintextInEncryptionAndMac(src, sink, arg)
 select sink, src, sink,
   "Incorrect MAC usage: Encryption plaintext also used for MAC. Flow shows plaintext to final use through intermediate mac or encryption operation here $@",

@@ -34,3 +34,4 @@ testFailures
 | BadMacUse.java:63:118:63:127 | // $Source | Missing result: Source |
 | BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | Unexpected result: Source |
 | BadMacUse.java:124:42:124:51 | ciphertext | Unexpected result: Alert |
+| BadMacUse.java:146:95:146:104 | // $Source | Missing result: Source |
