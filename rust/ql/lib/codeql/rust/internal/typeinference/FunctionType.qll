@@ -72,28 +72,54 @@ module FunctionPositionMatchingInput {
 }
 
 private newtype TAssocFunctionType =
-  MkAssocFunctionType(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
-    f = i.getAnAssocItem() and
-    exists(pos.getTypeMention(f))
-  } or
-  MkInheritedAssocFunctionType(
-    Function f, FunctionPosition pos, TypeMention parentMention, TraitItemNode parent,
-    ImplOrTraitItemNode i
-  ) {
-    exists(AssocFunctionType inherited |
-      inherited.appliesTo(f, pos, parent) and
-      f = i.getASuccessor(_)
-    |
-      parent = i.(ImplItemNode).resolveTraitTy() and
-      parentMention = i.(ImplItemNode).getTraitPath()
-      or
-      parent = i.(TraitItemNode).resolveBound(parentMention)
-    )
+  /** An associated function `f` that should be specialized for `i` at `pos`. */
+  MkAssocFunctionType(Function f, ImplOrTraitItemNode i, FunctionPosition pos) {
+    f = i.getASuccessor(_) and exists(pos.getTypeMention(f))
   }
 
+bindingset[condition, constraint, tp]
+private Type traitConstraintTypeAt(
+  TypeMention condition, TypeMention constraint, TypeParameter tp, TypePath path
+) {
+  BaseTypes::conditionSatisfiesConstraintTypeAt(_, condition, constraint,
+    TypePath::singleton(tp).appendInverse(path), result)
+}
+
 /**
- * The type of an associated function at a given position, when viewed as a member
- * of a given trait or `impl` block.
+ * Gets if the type of the function `f` when specialized for `i` at position
+ * `pos` at path `path`
+ */
+pragma[nomagic]
+Type assocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition pos, TypePath path) {
+  exists(MkAssocFunctionType(f, i, pos)) and
+  (
+    // No specialization needed when the function is directly in the trait or
+    // impl block or the declared type is not a type parameter
+    (i.getAnAssocItem() = f or not result instanceof TypeParameter) and
+    result = pos.getTypeMention(f).resolveTypeAt(path)
+    or
+    not i.getAnAssocItem() = f and
+    exists(TypePath prefix, TypePath suffix, TypeParameter tp |
+      path = prefix.append(suffix) and
+      tp = pos.getTypeMention(f).resolveTypeAt(prefix)
+    |
+      if tp = TSelfTypeParameter(_)
+      then result = resolveImplOrTraitType(i, suffix)
+      else
+        exists(TraitItemNode trait, TypeMention condition, TypeMention constraint |
+          trait.getAnAssocItem() = f and
+          BaseTypes::rootTypesSatisfaction(_, TTrait(trait), _, condition, constraint) and
+          result = traitConstraintTypeAt(condition, constraint, tp, suffix)
+        |
+          condition = i.(Trait) or condition = i.(Impl).getSelfTy()
+        )
+    )
+  )
+}
+
+/**
+ * The type of an associated function at a given position, when its implicit
+ * `Self` type parameter is specialized to a given trait or `impl` block.
  *
  * Example:
  *
@@ -126,64 +152,13 @@ private newtype TAssocFunctionType =
  * `self4` | `impl T2 for X` | `X`
  * `self5` | `impl T2 for X` | `X`
  */
-class AssocFunctionType extends TAssocFunctionType {
-  private predicate isFunctionType(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
-    this = MkAssocFunctionType(f, pos, i)
-  }
-
-  private predicate isInheritedFunctionType(
-    Function f, FunctionPosition pos, TypeMention parentMention, TraitItemNode parent,
-    ImplOrTraitItemNode i
-  ) {
-    this = MkInheritedAssocFunctionType(f, pos, parentMention, parent, i)
-  }
-
+class AssocFunctionType extends MkAssocFunctionType {
   /**
    * Holds if this function type applies to the function `f` at position `pos`,
    * when viewed as a member of the `impl` or trait item `i`.
    */
-  predicate appliesTo(Function f, FunctionPosition pos, ImplOrTraitItemNode i) {
-    this.isFunctionType(f, pos, i)
-    or
-    this.isInheritedFunctionType(f, pos, _, _, i)
-  }
-
-  /** Gets the type at the given path. */
-  pragma[nomagic]
-  Type getDeclaredTypeAt(TypePath path) {
-    exists(Function f, FunctionPosition pos |
-      this.isFunctionType(f, pos, _) and
-      result = pos.getTypeMention(f).resolveTypeAt(path)
-    )
-    or
-    exists(
-      Function f, FunctionPosition pos, TypeMention parentMention, TraitItemNode parent,
-      AssocFunctionType parentType, ImplOrTraitItemNode i
-    |
-      this.isInheritedFunctionType(f, pos, parentMention, parent, i) and
-      parentType.appliesTo(f, pos, parent)
-    |
-      result = parentType.getDeclaredTypeAt(path) and
-      not result instanceof TypeParameter
-      or
-      exists(TypePath prefix, TypePath suffix | path = prefix.append(suffix) |
-        parentType.hasSelfTypeParameterAt(prefix) and
-        result = resolveImplOrTraitType(i, suffix)
-        or
-        exists(TypeParameter tp |
-          tp = parentType.getTypeParameterAt(prefix) and
-          result = parentMention.resolveTypeAt(TypePath::singleton(tp).appendInverse(suffix))
-        )
-      )
-    )
-  }
-
-  pragma[nomagic]
-  private TypeParameter getTypeParameterAt(TypePath path) { result = this.getDeclaredTypeAt(path) }
-
-  pragma[nomagic]
-  private predicate hasSelfTypeParameterAt(TypePath path) {
-    this.getTypeParameterAt(path) = TSelfTypeParameter(_)
+  predicate appliesTo(Function f, ImplOrTraitItemNode i, FunctionPosition pos) {
+    this = MkAssocFunctionType(f, i, pos)
   }
 
   /**
@@ -196,7 +171,10 @@ class AssocFunctionType extends TAssocFunctionType {
    * traits when matching.
    */
   Type getTypeAt(TypePath path) {
-    exists(Type t | t = this.getDeclaredTypeAt(path) |
+    exists(Function f, FunctionPosition pos, ImplOrTraitItemNode i, Type t |
+      this.appliesTo(f, i, pos) and
+      t = assocFunctionTypeAt(f, i, pos, path)
+    |
       not t instanceof SelfTypeParameter and
       result = t
       or
@@ -206,7 +184,7 @@ class AssocFunctionType extends TAssocFunctionType {
 
   private TypeMention getTypeMention() {
     exists(Function f, FunctionPosition pos |
-      this.appliesTo(f, pos, _) and
+      this.appliesTo(f, _, pos) and
       result = pos.getTypeMention(f)
     )
   }
@@ -214,20 +192,6 @@ class AssocFunctionType extends TAssocFunctionType {
   string toString() { result = this.getTypeMention().toString() }
 
   Location getLocation() { result = this.getTypeMention().getLocation() }
-}
-
-/**
- * Holds if the type of the function `f` at position `pos` and path `path` inside
- * `i` is `type`.
- */
-pragma[nomagic]
-predicate assocFunctionTypeAt(
-  Function f, ImplOrTraitItemNode i, FunctionPosition pos, TypePath path, Type type
-) {
-  exists(AssocFunctionType aft |
-    aft.appliesTo(f, pos, i) and
-    type = aft.getDeclaredTypeAt(path)
-  )
 }
 
 private Trait getALookupTrait(Type t) {
