@@ -164,3 +164,24 @@ private class HostComparisonSanitizer extends RequestForgerySanitizer {
     this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
   }
 }
+
+/**
+ * A qualifier in a call to a `.matches()` method that is a sanitizer for URL redirects.
+ *
+ * Matches any method call where the method is named `matches`.
+ */
+private predicate isMatchesSanitizer(Guard guard, Expr e, boolean branch) {
+  guard =
+    any(MethodCall method |
+      method.getMethod().getName() = "matches" and
+      e = method.getQualifier() and
+      branch = true
+    )
+}
+
+/**
+ * A qualifier in a call to `.matches()` that is a sanitizer for URL redirects.
+ */
+private class MatchesSanitizer extends RequestForgerySanitizer {
+  MatchesSanitizer() { this = DataFlow::BarrierGuard<isMatchesSanitizer/3>::getABarrierNode() }
+}
