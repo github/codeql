@@ -6727,7 +6727,6 @@
 | System.ComponentModel;PropertyChangingEventHandler;BeginInvoke;(System.Object,System.ComponentModel.PropertyChangingEventArgs,System.AsyncCallback,System.Object);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | System.ComponentModel;PropertyDescriptor;AddValueChanged;(System.Object,System.EventHandler);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.ComponentModel;PropertyDescriptor;GetEditor;(System.Type);Argument[this];ReturnValue;taint;df-generated |
-| System.ComponentModel;PropertyDescriptor;GetValue;(System.Object);Argument[0];ReturnValue;taint;dfc-generated |
 | System.ComponentModel;PropertyDescriptor;RemoveValueChanged;(System.Object,System.EventHandler);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.ComponentModel;PropertyDescriptor;ResetValue;(System.Object);Argument[this];Argument[0];taint;df-generated |
 | System.ComponentModel;PropertyDescriptor;SetValue;(System.Object,System.Object);Argument[0];Argument[this];taint;df-generated |

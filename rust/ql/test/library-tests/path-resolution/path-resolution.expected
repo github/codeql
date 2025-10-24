@@ -7,34 +7,34 @@ mod
 | main.rs:35:9:41:9 | mod m3 |
 | main.rs:45:1:52:1 | mod m4 |
 | main.rs:109:1:113:1 | mod m5 |
-| main.rs:115:1:126:1 | mod m6 |
-| main.rs:128:1:147:1 | mod m7 |
-| main.rs:149:1:203:1 | mod m8 |
-| main.rs:205:1:213:1 | mod m9 |
-| main.rs:215:1:234:1 | mod m10 |
-| main.rs:236:1:273:1 | mod m11 |
-| main.rs:246:5:246:12 | mod f |
-| main.rs:275:1:287:1 | mod m12 |
-| main.rs:289:1:302:1 | mod m13 |
-| main.rs:293:5:301:5 | mod m14 |
-| main.rs:304:1:373:1 | mod m15 |
-| main.rs:375:1:467:1 | mod m16 |
-| main.rs:469:1:519:1 | mod trait_visibility |
-| main.rs:470:5:492:5 | mod m |
-| main.rs:521:1:551:1 | mod m17 |
-| main.rs:553:1:571:1 | mod m18 |
-| main.rs:558:5:570:5 | mod m19 |
-| main.rs:563:9:569:9 | mod m20 |
-| main.rs:573:1:598:1 | mod m21 |
-| main.rs:574:5:580:5 | mod m22 |
-| main.rs:582:5:597:5 | mod m33 |
-| main.rs:600:1:625:1 | mod m23 |
-| main.rs:627:1:695:1 | mod m24 |
-| main.rs:712:1:764:1 | mod associated_types |
-| main.rs:770:1:789:1 | mod impl_with_attribute_macro |
+| main.rs:115:1:127:1 | mod m6 |
+| main.rs:129:1:148:1 | mod m7 |
+| main.rs:150:1:204:1 | mod m8 |
+| main.rs:206:1:214:1 | mod m9 |
+| main.rs:216:1:235:1 | mod m10 |
+| main.rs:237:1:274:1 | mod m11 |
+| main.rs:247:5:247:12 | mod f |
+| main.rs:276:1:288:1 | mod m12 |
+| main.rs:290:1:303:1 | mod m13 |
+| main.rs:294:5:302:5 | mod m14 |
+| main.rs:305:1:374:1 | mod m15 |
+| main.rs:376:1:468:1 | mod m16 |
+| main.rs:470:1:520:1 | mod trait_visibility |
+| main.rs:471:5:493:5 | mod m |
+| main.rs:522:1:552:1 | mod m17 |
+| main.rs:554:1:572:1 | mod m18 |
+| main.rs:559:5:571:5 | mod m19 |
+| main.rs:564:9:570:9 | mod m20 |
+| main.rs:574:1:599:1 | mod m21 |
+| main.rs:575:5:581:5 | mod m22 |
+| main.rs:583:5:598:5 | mod m33 |
+| main.rs:601:1:626:1 | mod m23 |
+| main.rs:628:1:696:1 | mod m24 |
+| main.rs:713:1:765:1 | mod associated_types |
+| main.rs:771:1:790:1 | mod impl_with_attribute_macro |
 | my2/mod.rs:1:1:1:16 | mod nested2 |
-| my2/mod.rs:18:1:18:12 | mod my3 |
-| my2/mod.rs:20:1:21:10 | mod mymod |
+| my2/mod.rs:20:1:20:12 | mod my3 |
+| my2/mod.rs:22:1:23:10 | mod mymod |
 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/nested2.rs:2:5:10:5 | mod nested4 |
 | my2/nested2.rs:13:1:19:1 | mod nested5 |
@@ -61,26 +61,34 @@ resolvePath
 | main.rs:14:5:14:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
 | main.rs:17:5:17:7 | my2 | main.rs:7:1:7:8 | mod my2 |
 | main.rs:17:5:17:18 | ...::nested8_f | my2/nested2.rs:23:9:25:9 | fn f |
+| main.rs:21:9:21:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:26:13:26:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:30:13:30:19 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:31:13:31:13 | f | main.rs:25:9:27:9 | fn f |
 | main.rs:32:13:32:17 | super | main.rs:19:1:43:1 | mod m1 |
 | main.rs:32:13:32:20 | ...::f | main.rs:20:5:22:5 | fn f |
 | main.rs:36:17:36:21 | super | main.rs:24:5:42:5 | mod m2 |
 | main.rs:36:17:36:24 | ...::f | main.rs:25:9:27:9 | fn f |
+| main.rs:38:17:38:23 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:39:17:39:17 | f | main.rs:25:9:27:9 | fn f |
-| main.rs:46:9:46:13 | super | main.rs:1:1:826:2 | SourceFile |
+| main.rs:46:9:46:13 | super | main.rs:1:1:827:2 | SourceFile |
 | main.rs:46:9:46:17 | ...::m1 | main.rs:19:1:43:1 | mod m1 |
 | main.rs:46:9:46:21 | ...::m2 | main.rs:24:5:42:5 | mod m2 |
 | main.rs:46:9:46:24 | ...::g | main.rs:29:9:33:9 | fn g |
+| main.rs:49:9:49:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:50:9:50:9 | g | main.rs:29:9:33:9 | fn g |
+| main.rs:57:5:57:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:62:13:62:14 | m1 | main.rs:19:1:43:1 | mod m1 |
 | main.rs:62:13:62:18 | ...::m2 | main.rs:24:5:42:5 | mod m2 |
 | main.rs:62:13:62:21 | ...::g | main.rs:29:9:33:9 | fn g |
 | main.rs:63:9:63:9 | g | main.rs:29:9:33:9 | fn g |
+| main.rs:66:9:66:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:67:17:67:19 | Foo | main.rs:65:9:65:21 | struct Foo |
 | main.rs:70:13:70:15 | Foo | main.rs:59:5:59:17 | struct Foo |
 | main.rs:72:5:72:5 | f | main.rs:61:5:68:5 | fn f |
-| main.rs:74:5:74:8 | self | main.rs:1:1:826:2 | SourceFile |
+| main.rs:74:5:74:8 | self | main.rs:1:1:827:2 | SourceFile |
 | main.rs:74:5:74:11 | ...::i | main.rs:77:1:89:1 | fn i |
+| main.rs:78:5:78:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:80:13:80:15 | Foo | main.rs:54:1:54:13 | struct Foo |
 | main.rs:84:16:84:18 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:87:17:87:19 | Foo | main.rs:83:9:85:9 | struct Foo |
@@ -93,338 +101,371 @@ resolvePath
 | main.rs:93:57:93:63 | nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
 | main.rs:93:57:93:66 | ...::g | my2/nested2.rs:7:9:9:9 | fn g |
 | main.rs:93:80:93:86 | nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
+| main.rs:104:5:104:11 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:105:5:105:15 | fn_in_macro | main.rs:95:1:101:1 | MacroRules |
+| main.rs:105:18:105:24 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:106:5:106:22 | f_defined_in_macro | main.rs:105:18:105:42 | fn f_defined_in_macro |
-| main.rs:123:13:123:17 | super | main.rs:1:1:826:2 | SourceFile |
-| main.rs:123:13:123:21 | ...::m5 | main.rs:109:1:113:1 | mod m5 |
-| main.rs:124:9:124:9 | f | main.rs:110:5:112:5 | fn f |
-| main.rs:124:9:124:9 | f | main.rs:116:5:118:5 | fn f |
-| main.rs:131:13:131:15 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:134:16:134:18 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:140:19:140:24 | MyEnum | main.rs:129:5:137:5 | enum MyEnum |
-| main.rs:143:17:143:22 | MyEnum | main.rs:129:5:137:5 | enum MyEnum |
-| main.rs:143:17:143:25 | ...::A | main.rs:130:9:132:9 | A |
-| main.rs:144:17:144:22 | MyEnum | main.rs:129:5:137:5 | enum MyEnum |
-| main.rs:144:17:144:25 | ...::B | main.rs:132:12:135:9 | B |
-| main.rs:145:9:145:14 | MyEnum | main.rs:129:5:137:5 | enum MyEnum |
-| main.rs:145:9:145:17 | ...::C | main.rs:135:12:136:9 | C |
-| main.rs:155:13:155:13 | f | main.rs:162:5:164:5 | fn f |
-| main.rs:156:13:156:16 | Self | main.rs:150:5:158:5 | trait MyTrait |
-| main.rs:156:13:156:19 | ...::f | main.rs:151:9:151:20 | fn f |
-| main.rs:167:10:167:16 | MyTrait | main.rs:150:5:158:5 | trait MyTrait |
-| main.rs:167:22:167:29 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:170:13:170:13 | f | main.rs:162:5:164:5 | fn f |
-| main.rs:171:13:171:16 | Self | main.rs:166:5:177:5 | impl MyTrait for MyStruct { ... } |
-| main.rs:171:13:171:19 | ...::g | main.rs:174:9:176:9 | fn g |
-| main.rs:180:10:180:17 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:183:13:183:13 | f | main.rs:162:5:164:5 | fn f |
-| main.rs:189:17:189:24 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:190:9:190:15 | MyTrait | main.rs:150:5:158:5 | trait MyTrait |
-| main.rs:190:9:190:18 | ...::f | main.rs:151:9:151:20 | fn f |
-| main.rs:191:9:191:16 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:191:9:191:19 | ...::f | main.rs:167:33:172:9 | fn f |
-| main.rs:192:10:192:17 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:193:10:193:16 | MyTrait | main.rs:150:5:158:5 | trait MyTrait |
-| main.rs:196:17:196:24 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:198:17:198:24 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:200:9:200:16 | MyStruct | main.rs:160:5:160:22 | struct MyStruct |
-| main.rs:200:9:200:19 | ...::h | main.rs:180:21:184:9 | fn h |
-| main.rs:209:19:209:22 | self | main.rs:205:1:213:1 | mod m9 |
-| main.rs:209:19:209:32 | ...::MyStruct | main.rs:206:5:206:26 | struct MyStruct |
-| main.rs:211:9:211:12 | self | main.rs:205:1:213:1 | mod m9 |
-| main.rs:211:9:211:22 | ...::MyStruct | main.rs:206:5:206:26 | struct MyStruct |
-| main.rs:221:12:221:12 | T | main.rs:218:7:218:7 | T |
-| main.rs:226:12:226:12 | T | main.rs:225:14:225:14 | T |
-| main.rs:228:7:230:7 | MyStruct::<...> | main.rs:216:5:222:5 | struct MyStruct |
-| main.rs:229:9:229:9 | T | main.rs:225:14:225:14 | T |
-| main.rs:232:9:232:16 | MyStruct | main.rs:216:5:222:5 | struct MyStruct |
-| main.rs:242:17:242:19 | Foo | main.rs:237:5:237:21 | struct Foo |
-| main.rs:243:9:243:11 | Foo | main.rs:239:5:239:15 | fn Foo |
-| main.rs:252:9:252:11 | Bar | main.rs:248:5:250:5 | enum Bar |
-| main.rs:252:9:252:19 | ...::FooBar | main.rs:249:9:249:17 | FooBar |
-| main.rs:257:13:257:15 | Foo | main.rs:237:5:237:21 | struct Foo |
-| main.rs:258:17:258:22 | FooBar | main.rs:249:9:249:17 | FooBar |
-| main.rs:259:17:259:22 | FooBar | main.rs:254:5:254:18 | fn FooBar |
-| main.rs:267:9:267:9 | E | main.rs:262:15:265:5 | enum E |
-| main.rs:267:9:267:12 | ...::C | main.rs:264:9:264:9 | C |
-| main.rs:270:17:270:17 | S | main.rs:262:5:262:13 | struct S |
-| main.rs:271:17:271:17 | C | main.rs:264:9:264:9 | C |
-| main.rs:284:16:284:16 | T | main.rs:278:7:278:7 | T |
-| main.rs:285:14:285:17 | Self | main.rs:276:5:286:5 | trait MyParamTrait |
-| main.rs:285:14:285:33 | ...::AssociatedType | main.rs:280:9:280:28 | type AssociatedType |
-| main.rs:294:13:294:16 | zelf | main.rs:0:0:0:0 | Crate(main@0.0.1) |
-| main.rs:294:13:294:21 | ...::m13 | main.rs:289:1:302:1 | mod m13 |
-| main.rs:294:13:294:24 | ...::f | main.rs:290:5:290:17 | fn f |
-| main.rs:294:13:294:24 | ...::f | main.rs:290:19:291:19 | struct f |
-| main.rs:297:17:297:17 | f | main.rs:290:19:291:19 | struct f |
-| main.rs:298:21:298:21 | f | main.rs:290:19:291:19 | struct f |
-| main.rs:299:13:299:13 | f | main.rs:290:5:290:17 | fn f |
-| main.rs:313:9:313:14 | Trait1 | main.rs:305:5:309:5 | trait Trait1 |
-| main.rs:316:13:316:16 | Self | main.rs:311:5:319:5 | trait Trait2 |
-| main.rs:316:13:316:19 | ...::g | main.rs:308:9:308:20 | fn g |
-| main.rs:326:9:326:12 | Self | main.rs:321:5:334:5 | trait Trait3 |
-| main.rs:326:15:326:20 | Trait1 | main.rs:305:5:309:5 | trait Trait1 |
-| main.rs:327:9:327:10 | TT | main.rs:323:9:323:10 | TT |
-| main.rs:327:13:327:18 | Trait1 | main.rs:305:5:309:5 | trait Trait1 |
-| main.rs:329:25:329:26 | TT | main.rs:323:9:323:10 | TT |
-| main.rs:330:13:330:16 | Self | main.rs:321:5:334:5 | trait Trait3 |
-| main.rs:330:13:330:19 | ...::g | main.rs:308:9:308:20 | fn g |
-| main.rs:331:13:331:14 | TT | main.rs:323:9:323:10 | TT |
-| main.rs:331:13:331:17 | ...::g | main.rs:308:9:308:20 | fn g |
-| main.rs:339:10:339:15 | Trait1 | main.rs:305:5:309:5 | trait Trait1 |
-| main.rs:340:11:340:11 | S | main.rs:336:5:336:13 | struct S |
-| main.rs:343:13:343:16 | Self | main.rs:338:5:350:5 | impl Trait1 for S { ... } |
-| main.rs:343:13:343:19 | ...::g | main.rs:347:9:349:9 | fn g |
-| main.rs:353:10:353:15 | Trait2 | main.rs:311:5:319:5 | trait Trait2 |
-| main.rs:354:11:354:11 | S | main.rs:336:5:336:13 | struct S |
-| main.rs:363:17:363:17 | S | main.rs:336:5:336:13 | struct S |
-| main.rs:364:10:364:10 | S | main.rs:336:5:336:13 | struct S |
-| main.rs:365:14:365:19 | Trait1 | main.rs:305:5:309:5 | trait Trait1 |
-| main.rs:367:10:367:10 | S | main.rs:336:5:336:13 | struct S |
-| main.rs:368:14:368:19 | Trait2 | main.rs:311:5:319:5 | trait Trait2 |
-| main.rs:370:9:370:9 | S | main.rs:336:5:336:13 | struct S |
-| main.rs:370:9:370:12 | ...::g | main.rs:347:9:349:9 | fn g |
-| main.rs:380:24:380:24 | T | main.rs:378:7:378:7 | T |
-| main.rs:382:24:382:24 | T | main.rs:378:7:378:7 | T |
-| main.rs:385:24:385:24 | T | main.rs:378:7:378:7 | T |
-| main.rs:386:13:386:16 | Self | main.rs:376:5:392:5 | trait Trait1 |
-| main.rs:386:13:386:19 | ...::g | main.rs:382:9:383:9 | fn g |
-| main.rs:390:18:390:18 | T | main.rs:378:7:378:7 | T |
-| main.rs:398:9:400:9 | Trait1::<...> | main.rs:376:5:392:5 | trait Trait1 |
-| main.rs:399:11:399:11 | T | main.rs:396:7:396:7 | T |
-| main.rs:401:24:401:24 | T | main.rs:396:7:396:7 | T |
-| main.rs:403:13:403:16 | Self | main.rs:394:5:407:5 | trait Trait2 |
-| main.rs:403:13:403:19 | ...::g | main.rs:382:9:383:9 | fn g |
-| main.rs:405:13:405:16 | Self | main.rs:394:5:407:5 | trait Trait2 |
-| main.rs:405:13:405:19 | ...::c | main.rs:390:9:391:9 | Const |
-| main.rs:412:10:414:5 | Trait1::<...> | main.rs:376:5:392:5 | trait Trait1 |
-| main.rs:413:7:413:7 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:415:11:415:11 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:416:24:416:24 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:418:13:418:16 | Self | main.rs:411:5:429:5 | impl Trait1::<...> for S { ... } |
-| main.rs:418:13:418:19 | ...::g | main.rs:422:9:425:9 | fn g |
-| main.rs:422:24:422:24 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:424:13:424:16 | Self | main.rs:411:5:429:5 | impl Trait1::<...> for S { ... } |
-| main.rs:424:13:424:19 | ...::c | main.rs:427:9:428:9 | Const |
-| main.rs:427:18:427:18 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:427:22:427:22 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:432:10:434:5 | Trait2::<...> | main.rs:394:5:407:5 | trait Trait2 |
-| main.rs:433:7:433:7 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:435:11:435:11 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:436:24:436:24 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:438:13:438:16 | Self | main.rs:431:5:440:5 | impl Trait2::<...> for S { ... } |
-| main.rs:445:17:445:17 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:446:10:446:10 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:447:14:449:11 | Trait1::<...> | main.rs:376:5:392:5 | trait Trait1 |
-| main.rs:448:13:448:13 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:451:10:451:10 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:452:14:454:11 | Trait2::<...> | main.rs:394:5:407:5 | trait Trait2 |
-| main.rs:453:13:453:13 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:456:9:456:9 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:456:9:456:12 | ...::g | main.rs:422:9:425:9 | fn g |
-| main.rs:458:9:458:9 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:458:9:458:12 | ...::h | main.rs:385:9:388:9 | fn h |
-| main.rs:460:9:460:9 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:460:9:460:12 | ...::c | main.rs:427:9:428:9 | Const |
-| main.rs:461:10:461:10 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:462:14:464:11 | Trait1::<...> | main.rs:376:5:392:5 | trait Trait1 |
-| main.rs:463:13:463:13 | S | main.rs:409:5:409:13 | struct S |
-| main.rs:481:14:481:16 | Foo | main.rs:471:9:473:9 | trait Foo |
-| main.rs:481:22:481:22 | X | main.rs:479:9:479:21 | struct X |
-| main.rs:487:14:487:16 | Bar | main.rs:475:9:477:9 | trait Bar |
-| main.rs:487:22:487:22 | X | main.rs:479:9:479:21 | struct X |
-| main.rs:494:9:494:9 | m | main.rs:470:5:492:5 | mod m |
-| main.rs:494:9:494:12 | ...::X | main.rs:479:9:479:21 | struct X |
-| main.rs:497:17:497:17 | X | main.rs:479:9:479:21 | struct X |
-| main.rs:500:17:500:17 | m | main.rs:470:5:492:5 | mod m |
-| main.rs:500:17:500:22 | ...::Foo | main.rs:471:9:473:9 | trait Foo |
-| main.rs:501:13:501:13 | X | main.rs:479:9:479:21 | struct X |
-| main.rs:501:13:501:23 | ...::a_method | main.rs:481:26:484:13 | fn a_method |
-| main.rs:505:17:505:17 | m | main.rs:470:5:492:5 | mod m |
-| main.rs:505:17:505:22 | ...::Bar | main.rs:475:9:477:9 | trait Bar |
-| main.rs:506:13:506:13 | X | main.rs:479:9:479:21 | struct X |
-| main.rs:506:13:506:23 | ...::a_method | main.rs:487:26:490:13 | fn a_method |
-| main.rs:510:17:510:17 | m | main.rs:470:5:492:5 | mod m |
-| main.rs:510:17:510:22 | ...::Bar | main.rs:475:9:477:9 | trait Bar |
-| main.rs:511:13:511:13 | X | main.rs:479:9:479:21 | struct X |
-| main.rs:511:13:511:23 | ...::a_method | main.rs:487:26:490:13 | fn a_method |
-| main.rs:516:13:516:13 | m | main.rs:470:5:492:5 | mod m |
-| main.rs:516:13:516:18 | ...::Bar | main.rs:475:9:477:9 | trait Bar |
-| main.rs:516:13:516:28 | ...::a_method | main.rs:476:13:476:31 | fn a_method |
-| main.rs:529:10:529:16 | MyTrait | main.rs:522:5:524:5 | trait MyTrait |
-| main.rs:530:9:530:9 | S | main.rs:526:5:526:13 | struct S |
-| main.rs:538:7:538:13 | MyTrait | main.rs:522:5:524:5 | trait MyTrait |
-| main.rs:539:10:539:10 | T | main.rs:537:10:537:10 | T |
-| main.rs:541:9:541:9 | T | main.rs:537:10:537:10 | T |
-| main.rs:541:9:541:12 | ...::f | main.rs:523:9:523:20 | fn f |
-| main.rs:542:9:542:15 | MyTrait | main.rs:522:5:524:5 | trait MyTrait |
-| main.rs:542:9:542:18 | ...::f | main.rs:523:9:523:20 | fn f |
-| main.rs:547:9:547:9 | g | main.rs:536:5:543:5 | fn g |
-| main.rs:548:11:548:11 | S | main.rs:526:5:526:13 | struct S |
-| main.rs:566:17:566:21 | super | main.rs:558:5:570:5 | mod m19 |
-| main.rs:566:17:566:24 | ...::f | main.rs:559:9:561:9 | fn f |
-| main.rs:567:17:567:21 | super | main.rs:558:5:570:5 | mod m19 |
-| main.rs:567:17:567:28 | ...::super | main.rs:553:1:571:1 | mod m18 |
-| main.rs:567:17:567:31 | ...::f | main.rs:554:5:556:5 | fn f |
-| main.rs:584:13:584:17 | super | main.rs:573:1:598:1 | mod m21 |
-| main.rs:584:13:584:22 | ...::m22 | main.rs:574:5:580:5 | mod m22 |
-| main.rs:584:13:584:30 | ...::MyEnum | main.rs:575:9:577:9 | enum MyEnum |
-| main.rs:585:13:585:16 | self | main.rs:575:9:577:9 | enum MyEnum |
-| main.rs:589:13:589:17 | super | main.rs:573:1:598:1 | mod m21 |
-| main.rs:589:13:589:22 | ...::m22 | main.rs:574:5:580:5 | mod m22 |
-| main.rs:589:13:589:32 | ...::MyStruct | main.rs:579:9:579:28 | struct MyStruct |
-| main.rs:590:13:590:16 | self | main.rs:579:9:579:28 | struct MyStruct |
-| main.rs:594:21:594:26 | MyEnum | main.rs:575:9:577:9 | enum MyEnum |
-| main.rs:594:21:594:29 | ...::A | main.rs:576:13:576:13 | A |
-| main.rs:595:21:595:28 | MyStruct | main.rs:579:9:579:28 | struct MyStruct |
-| main.rs:611:10:613:5 | Trait1::<...> | main.rs:601:5:606:5 | trait Trait1 |
-| main.rs:612:7:612:10 | Self | main.rs:608:5:608:13 | struct S |
-| main.rs:614:11:614:11 | S | main.rs:608:5:608:13 | struct S |
-| main.rs:622:17:622:17 | S | main.rs:608:5:608:13 | struct S |
-| main.rs:638:15:638:15 | T | main.rs:637:26:637:26 | T |
-| main.rs:643:9:643:24 | GenericStruct::<...> | main.rs:636:5:639:5 | struct GenericStruct |
-| main.rs:643:23:643:23 | T | main.rs:642:10:642:10 | T |
-| main.rs:645:9:645:9 | T | main.rs:642:10:642:10 | T |
-| main.rs:645:12:645:17 | TraitA | main.rs:628:5:630:5 | trait TraitA |
-| main.rs:654:9:654:24 | GenericStruct::<...> | main.rs:636:5:639:5 | struct GenericStruct |
-| main.rs:654:23:654:23 | T | main.rs:653:10:653:10 | T |
-| main.rs:656:9:656:9 | T | main.rs:653:10:653:10 | T |
-| main.rs:656:12:656:17 | TraitB | main.rs:632:5:634:5 | trait TraitB |
-| main.rs:657:9:657:9 | T | main.rs:653:10:653:10 | T |
-| main.rs:657:12:657:17 | TraitA | main.rs:628:5:630:5 | trait TraitA |
-| main.rs:668:10:668:15 | TraitA | main.rs:628:5:630:5 | trait TraitA |
-| main.rs:668:21:668:31 | Implementor | main.rs:665:5:665:23 | struct Implementor |
-| main.rs:675:10:675:15 | TraitB | main.rs:632:5:634:5 | trait TraitB |
-| main.rs:675:21:675:31 | Implementor | main.rs:665:5:665:23 | struct Implementor |
-| main.rs:683:24:683:34 | Implementor | main.rs:665:5:665:23 | struct Implementor |
-| main.rs:684:23:684:35 | GenericStruct | main.rs:636:5:639:5 | struct GenericStruct |
-| main.rs:690:9:690:36 | GenericStruct::<...> | main.rs:636:5:639:5 | struct GenericStruct |
-| main.rs:690:9:690:50 | ...::call_trait_a | main.rs:647:9:649:9 | fn call_trait_a |
-| main.rs:690:25:690:35 | Implementor | main.rs:665:5:665:23 | struct Implementor |
-| main.rs:693:9:693:36 | GenericStruct::<...> | main.rs:636:5:639:5 | struct GenericStruct |
-| main.rs:693:9:693:47 | ...::call_both | main.rs:659:9:662:9 | fn call_both |
-| main.rs:693:25:693:35 | Implementor | main.rs:665:5:665:23 | struct Implementor |
-| main.rs:699:3:699:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
-| main.rs:699:3:699:24 | ...::add_suffix | proc_macro.rs:4:1:13:1 | fn add_suffix |
-| main.rs:703:6:703:12 | AStruct | main.rs:702:1:702:17 | struct AStruct |
-| main.rs:705:7:705:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
-| main.rs:705:7:705:28 | ...::add_suffix | proc_macro.rs:4:1:13:1 | fn add_suffix |
-| main.rs:708:7:708:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
-| main.rs:708:7:708:28 | ...::add_suffix | proc_macro.rs:4:1:13:1 | fn add_suffix |
-| main.rs:713:9:713:11 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
-| main.rs:713:9:713:19 | ...::marker | {EXTERNAL LOCATION} | mod marker |
-| main.rs:713:9:713:32 | ...::PhantomData | {EXTERNAL LOCATION} | struct PhantomData |
+| main.rs:111:9:111:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:117:9:117:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:121:9:121:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:124:13:124:17 | super | main.rs:1:1:827:2 | SourceFile |
+| main.rs:124:13:124:21 | ...::m5 | main.rs:109:1:113:1 | mod m5 |
+| main.rs:125:9:125:9 | f | main.rs:110:5:112:5 | fn f |
+| main.rs:125:9:125:9 | f | main.rs:116:5:118:5 | fn f |
+| main.rs:132:13:132:15 | i32 | {EXTERNAL LOCATION} | struct i32 |
+| main.rs:135:16:135:18 | i32 | {EXTERNAL LOCATION} | struct i32 |
+| main.rs:141:19:141:24 | MyEnum | main.rs:130:5:138:5 | enum MyEnum |
+| main.rs:143:9:143:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:144:17:144:22 | MyEnum | main.rs:130:5:138:5 | enum MyEnum |
+| main.rs:144:17:144:25 | ...::A | main.rs:131:9:133:9 | A |
+| main.rs:145:17:145:22 | MyEnum | main.rs:130:5:138:5 | enum MyEnum |
+| main.rs:145:17:145:25 | ...::B | main.rs:133:12:136:9 | B |
+| main.rs:146:9:146:14 | MyEnum | main.rs:130:5:138:5 | enum MyEnum |
+| main.rs:146:9:146:17 | ...::C | main.rs:136:12:137:9 | C |
+| main.rs:155:13:155:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:156:13:156:13 | f | main.rs:163:5:165:5 | fn f |
+| main.rs:157:13:157:16 | Self | main.rs:151:5:159:5 | trait MyTrait |
+| main.rs:157:13:157:19 | ...::f | main.rs:152:9:152:20 | fn f |
+| main.rs:164:9:164:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:168:10:168:16 | MyTrait | main.rs:151:5:159:5 | trait MyTrait |
+| main.rs:168:22:168:29 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:170:13:170:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:171:13:171:13 | f | main.rs:163:5:165:5 | fn f |
+| main.rs:172:13:172:16 | Self | main.rs:167:5:178:5 | impl MyTrait for MyStruct { ... } |
+| main.rs:172:13:172:19 | ...::g | main.rs:175:9:177:9 | fn g |
+| main.rs:176:13:176:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:181:10:181:17 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:183:13:183:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:184:13:184:13 | f | main.rs:163:5:165:5 | fn f |
+| main.rs:190:17:190:24 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:191:9:191:15 | MyTrait | main.rs:151:5:159:5 | trait MyTrait |
+| main.rs:191:9:191:18 | ...::f | main.rs:152:9:152:20 | fn f |
+| main.rs:192:9:192:16 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:192:9:192:19 | ...::f | main.rs:168:33:173:9 | fn f |
+| main.rs:193:10:193:17 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:194:10:194:16 | MyTrait | main.rs:151:5:159:5 | trait MyTrait |
+| main.rs:197:17:197:24 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:199:17:199:24 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:201:9:201:16 | MyStruct | main.rs:161:5:161:22 | struct MyStruct |
+| main.rs:201:9:201:19 | ...::h | main.rs:181:21:185:9 | fn h |
+| main.rs:210:19:210:22 | self | main.rs:206:1:214:1 | mod m9 |
+| main.rs:210:19:210:32 | ...::MyStruct | main.rs:207:5:207:26 | struct MyStruct |
+| main.rs:211:9:211:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:212:9:212:12 | self | main.rs:206:1:214:1 | mod m9 |
+| main.rs:212:9:212:22 | ...::MyStruct | main.rs:207:5:207:26 | struct MyStruct |
+| main.rs:222:12:222:12 | T | main.rs:219:7:219:7 | T |
+| main.rs:227:12:227:12 | T | main.rs:226:14:226:14 | T |
+| main.rs:229:7:231:7 | MyStruct::<...> | main.rs:217:5:223:5 | struct MyStruct |
+| main.rs:230:9:230:9 | T | main.rs:226:14:226:14 | T |
+| main.rs:233:9:233:16 | MyStruct | main.rs:217:5:223:5 | struct MyStruct |
+| main.rs:243:17:243:19 | Foo | main.rs:238:5:238:21 | struct Foo |
+| main.rs:244:9:244:11 | Foo | main.rs:240:5:240:15 | fn Foo |
+| main.rs:253:9:253:11 | Bar | main.rs:249:5:251:5 | enum Bar |
+| main.rs:253:9:253:19 | ...::FooBar | main.rs:250:9:250:17 | FooBar |
+| main.rs:258:13:258:15 | Foo | main.rs:238:5:238:21 | struct Foo |
+| main.rs:259:17:259:22 | FooBar | main.rs:250:9:250:17 | FooBar |
+| main.rs:260:17:260:22 | FooBar | main.rs:255:5:255:18 | fn FooBar |
+| main.rs:268:9:268:9 | E | main.rs:263:15:266:5 | enum E |
+| main.rs:268:9:268:12 | ...::C | main.rs:265:9:265:9 | C |
+| main.rs:271:17:271:17 | S | main.rs:263:5:263:13 | struct S |
+| main.rs:272:17:272:17 | C | main.rs:265:9:265:9 | C |
+| main.rs:285:16:285:16 | T | main.rs:279:7:279:7 | T |
+| main.rs:286:14:286:17 | Self | main.rs:277:5:287:5 | trait MyParamTrait |
+| main.rs:286:14:286:33 | ...::AssociatedType | main.rs:281:9:281:28 | type AssociatedType |
+| main.rs:295:13:295:16 | zelf | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| main.rs:295:13:295:21 | ...::m13 | main.rs:290:1:303:1 | mod m13 |
+| main.rs:295:13:295:24 | ...::f | main.rs:291:5:291:17 | fn f |
+| main.rs:295:13:295:24 | ...::f | main.rs:291:19:292:19 | struct f |
+| main.rs:298:17:298:17 | f | main.rs:291:19:292:19 | struct f |
+| main.rs:299:21:299:21 | f | main.rs:291:19:292:19 | struct f |
+| main.rs:300:13:300:13 | f | main.rs:291:5:291:17 | fn f |
+| main.rs:314:9:314:14 | Trait1 | main.rs:306:5:310:5 | trait Trait1 |
+| main.rs:316:13:316:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:317:13:317:16 | Self | main.rs:312:5:320:5 | trait Trait2 |
+| main.rs:317:13:317:19 | ...::g | main.rs:309:9:309:20 | fn g |
+| main.rs:327:9:327:12 | Self | main.rs:322:5:335:5 | trait Trait3 |
+| main.rs:327:15:327:20 | Trait1 | main.rs:306:5:310:5 | trait Trait1 |
+| main.rs:328:9:328:10 | TT | main.rs:324:9:324:10 | TT |
+| main.rs:328:13:328:18 | Trait1 | main.rs:306:5:310:5 | trait Trait1 |
+| main.rs:330:25:330:26 | TT | main.rs:324:9:324:10 | TT |
+| main.rs:331:13:331:16 | Self | main.rs:322:5:335:5 | trait Trait3 |
+| main.rs:331:13:331:19 | ...::g | main.rs:309:9:309:20 | fn g |
+| main.rs:332:13:332:14 | TT | main.rs:324:9:324:10 | TT |
+| main.rs:332:13:332:17 | ...::g | main.rs:309:9:309:20 | fn g |
+| main.rs:340:10:340:15 | Trait1 | main.rs:306:5:310:5 | trait Trait1 |
+| main.rs:341:11:341:11 | S | main.rs:337:5:337:13 | struct S |
+| main.rs:343:13:343:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:344:13:344:16 | Self | main.rs:339:5:351:5 | impl Trait1 for S { ... } |
+| main.rs:344:13:344:19 | ...::g | main.rs:348:9:350:9 | fn g |
+| main.rs:349:13:349:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:354:10:354:15 | Trait2 | main.rs:312:5:320:5 | trait Trait2 |
+| main.rs:355:11:355:11 | S | main.rs:337:5:337:13 | struct S |
+| main.rs:357:13:357:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:363:9:363:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:364:17:364:17 | S | main.rs:337:5:337:13 | struct S |
+| main.rs:365:10:365:10 | S | main.rs:337:5:337:13 | struct S |
+| main.rs:366:14:366:19 | Trait1 | main.rs:306:5:310:5 | trait Trait1 |
+| main.rs:368:10:368:10 | S | main.rs:337:5:337:13 | struct S |
+| main.rs:369:14:369:19 | Trait2 | main.rs:312:5:320:5 | trait Trait2 |
+| main.rs:371:9:371:9 | S | main.rs:337:5:337:13 | struct S |
+| main.rs:371:9:371:12 | ...::g | main.rs:348:9:350:9 | fn g |
+| main.rs:381:24:381:24 | T | main.rs:379:7:379:7 | T |
+| main.rs:383:24:383:24 | T | main.rs:379:7:379:7 | T |
+| main.rs:386:24:386:24 | T | main.rs:379:7:379:7 | T |
+| main.rs:387:13:387:16 | Self | main.rs:377:5:393:5 | trait Trait1 |
+| main.rs:387:13:387:19 | ...::g | main.rs:383:9:384:9 | fn g |
+| main.rs:391:18:391:18 | T | main.rs:379:7:379:7 | T |
+| main.rs:399:9:401:9 | Trait1::<...> | main.rs:377:5:393:5 | trait Trait1 |
+| main.rs:400:11:400:11 | T | main.rs:397:7:397:7 | T |
+| main.rs:402:24:402:24 | T | main.rs:397:7:397:7 | T |
+| main.rs:403:13:403:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:404:13:404:16 | Self | main.rs:395:5:408:5 | trait Trait2 |
+| main.rs:404:13:404:19 | ...::g | main.rs:383:9:384:9 | fn g |
+| main.rs:406:13:406:16 | Self | main.rs:395:5:408:5 | trait Trait2 |
+| main.rs:406:13:406:19 | ...::c | main.rs:391:9:392:9 | Const |
+| main.rs:413:10:415:5 | Trait1::<...> | main.rs:377:5:393:5 | trait Trait1 |
+| main.rs:414:7:414:7 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:416:11:416:11 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:417:24:417:24 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:418:13:418:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:419:13:419:16 | Self | main.rs:412:5:430:5 | impl Trait1::<...> for S { ... } |
+| main.rs:419:13:419:19 | ...::g | main.rs:423:9:426:9 | fn g |
+| main.rs:423:24:423:24 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:424:13:424:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:425:13:425:16 | Self | main.rs:412:5:430:5 | impl Trait1::<...> for S { ... } |
+| main.rs:425:13:425:19 | ...::c | main.rs:428:9:429:9 | Const |
+| main.rs:428:18:428:18 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:428:22:428:22 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:433:10:435:5 | Trait2::<...> | main.rs:395:5:408:5 | trait Trait2 |
+| main.rs:434:7:434:7 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:436:11:436:11 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:437:24:437:24 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:438:13:438:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:439:13:439:16 | Self | main.rs:432:5:441:5 | impl Trait2::<...> for S { ... } |
+| main.rs:445:9:445:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:446:17:446:17 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:447:10:447:10 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:448:14:450:11 | Trait1::<...> | main.rs:377:5:393:5 | trait Trait1 |
+| main.rs:449:13:449:13 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:452:10:452:10 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:453:14:455:11 | Trait2::<...> | main.rs:395:5:408:5 | trait Trait2 |
+| main.rs:454:13:454:13 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:457:9:457:9 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:457:9:457:12 | ...::g | main.rs:423:9:426:9 | fn g |
+| main.rs:459:9:459:9 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:459:9:459:12 | ...::h | main.rs:386:9:389:9 | fn h |
+| main.rs:461:9:461:9 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:461:9:461:12 | ...::c | main.rs:428:9:429:9 | Const |
+| main.rs:462:10:462:10 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:463:14:465:11 | Trait1::<...> | main.rs:377:5:393:5 | trait Trait1 |
+| main.rs:464:13:464:13 | S | main.rs:410:5:410:13 | struct S |
+| main.rs:482:14:482:16 | Foo | main.rs:472:9:474:9 | trait Foo |
+| main.rs:482:22:482:22 | X | main.rs:480:9:480:21 | struct X |
+| main.rs:484:17:484:23 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:488:14:488:16 | Bar | main.rs:476:9:478:9 | trait Bar |
+| main.rs:488:22:488:22 | X | main.rs:480:9:480:21 | struct X |
+| main.rs:490:17:490:23 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:495:9:495:9 | m | main.rs:471:5:493:5 | mod m |
+| main.rs:495:9:495:12 | ...::X | main.rs:480:9:480:21 | struct X |
+| main.rs:498:17:498:17 | X | main.rs:480:9:480:21 | struct X |
+| main.rs:501:17:501:17 | m | main.rs:471:5:493:5 | mod m |
+| main.rs:501:17:501:22 | ...::Foo | main.rs:472:9:474:9 | trait Foo |
+| main.rs:502:13:502:13 | X | main.rs:480:9:480:21 | struct X |
+| main.rs:502:13:502:23 | ...::a_method | main.rs:482:26:485:13 | fn a_method |
+| main.rs:506:17:506:17 | m | main.rs:471:5:493:5 | mod m |
+| main.rs:506:17:506:22 | ...::Bar | main.rs:476:9:478:9 | trait Bar |
+| main.rs:507:13:507:13 | X | main.rs:480:9:480:21 | struct X |
+| main.rs:507:13:507:23 | ...::a_method | main.rs:488:26:491:13 | fn a_method |
+| main.rs:511:17:511:17 | m | main.rs:471:5:493:5 | mod m |
+| main.rs:511:17:511:22 | ...::Bar | main.rs:476:9:478:9 | trait Bar |
+| main.rs:512:13:512:13 | X | main.rs:480:9:480:21 | struct X |
+| main.rs:512:13:512:23 | ...::a_method | main.rs:488:26:491:13 | fn a_method |
+| main.rs:517:13:517:13 | m | main.rs:471:5:493:5 | mod m |
+| main.rs:517:13:517:18 | ...::Bar | main.rs:476:9:478:9 | trait Bar |
+| main.rs:517:13:517:28 | ...::a_method | main.rs:477:13:477:31 | fn a_method |
+| main.rs:530:10:530:16 | MyTrait | main.rs:523:5:525:5 | trait MyTrait |
+| main.rs:531:9:531:9 | S | main.rs:527:5:527:13 | struct S |
+| main.rs:533:13:533:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:539:7:539:13 | MyTrait | main.rs:523:5:525:5 | trait MyTrait |
+| main.rs:540:10:540:10 | T | main.rs:538:10:538:10 | T |
+| main.rs:542:9:542:9 | T | main.rs:538:10:538:10 | T |
+| main.rs:542:9:542:12 | ...::f | main.rs:524:9:524:20 | fn f |
+| main.rs:543:9:543:15 | MyTrait | main.rs:523:5:525:5 | trait MyTrait |
+| main.rs:543:9:543:18 | ...::f | main.rs:524:9:524:20 | fn f |
+| main.rs:548:9:548:9 | g | main.rs:537:5:544:5 | fn g |
+| main.rs:549:11:549:11 | S | main.rs:527:5:527:13 | struct S |
+| main.rs:556:9:556:15 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:561:13:561:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:566:17:566:23 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:567:17:567:21 | super | main.rs:559:5:571:5 | mod m19 |
+| main.rs:567:17:567:24 | ...::f | main.rs:560:9:562:9 | fn f |
+| main.rs:568:17:568:21 | super | main.rs:559:5:571:5 | mod m19 |
+| main.rs:568:17:568:28 | ...::super | main.rs:554:1:572:1 | mod m18 |
+| main.rs:568:17:568:31 | ...::f | main.rs:555:5:557:5 | fn f |
+| main.rs:585:13:585:17 | super | main.rs:574:1:599:1 | mod m21 |
+| main.rs:585:13:585:22 | ...::m22 | main.rs:575:5:581:5 | mod m22 |
+| main.rs:585:13:585:30 | ...::MyEnum | main.rs:576:9:578:9 | enum MyEnum |
+| main.rs:586:13:586:16 | self | main.rs:576:9:578:9 | enum MyEnum |
+| main.rs:590:13:590:17 | super | main.rs:574:1:599:1 | mod m21 |
+| main.rs:590:13:590:22 | ...::m22 | main.rs:575:5:581:5 | mod m22 |
+| main.rs:590:13:590:32 | ...::MyStruct | main.rs:580:9:580:28 | struct MyStruct |
+| main.rs:591:13:591:16 | self | main.rs:580:9:580:28 | struct MyStruct |
+| main.rs:595:21:595:26 | MyEnum | main.rs:576:9:578:9 | enum MyEnum |
+| main.rs:595:21:595:29 | ...::A | main.rs:577:13:577:13 | A |
+| main.rs:596:21:596:28 | MyStruct | main.rs:580:9:580:28 | struct MyStruct |
+| main.rs:612:10:614:5 | Trait1::<...> | main.rs:602:5:607:5 | trait Trait1 |
+| main.rs:613:7:613:10 | Self | main.rs:609:5:609:13 | struct S |
+| main.rs:615:11:615:11 | S | main.rs:609:5:609:13 | struct S |
+| main.rs:617:13:617:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:623:17:623:17 | S | main.rs:609:5:609:13 | struct S |
+| main.rs:639:15:639:15 | T | main.rs:638:26:638:26 | T |
+| main.rs:644:9:644:24 | GenericStruct::<...> | main.rs:637:5:640:5 | struct GenericStruct |
+| main.rs:644:23:644:23 | T | main.rs:643:10:643:10 | T |
+| main.rs:646:9:646:9 | T | main.rs:643:10:643:10 | T |
+| main.rs:646:12:646:17 | TraitA | main.rs:629:5:631:5 | trait TraitA |
+| main.rs:655:9:655:24 | GenericStruct::<...> | main.rs:637:5:640:5 | struct GenericStruct |
+| main.rs:655:23:655:23 | T | main.rs:654:10:654:10 | T |
+| main.rs:657:9:657:9 | T | main.rs:654:10:654:10 | T |
+| main.rs:657:12:657:17 | TraitB | main.rs:633:5:635:5 | trait TraitB |
+| main.rs:658:9:658:9 | T | main.rs:654:10:654:10 | T |
+| main.rs:658:12:658:17 | TraitA | main.rs:629:5:631:5 | trait TraitA |
+| main.rs:669:10:669:15 | TraitA | main.rs:629:5:631:5 | trait TraitA |
+| main.rs:669:21:669:31 | Implementor | main.rs:666:5:666:23 | struct Implementor |
+| main.rs:671:13:671:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:676:10:676:15 | TraitB | main.rs:633:5:635:5 | trait TraitB |
+| main.rs:676:21:676:31 | Implementor | main.rs:666:5:666:23 | struct Implementor |
+| main.rs:678:13:678:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| main.rs:684:24:684:34 | Implementor | main.rs:666:5:666:23 | struct Implementor |
+| main.rs:685:23:685:35 | GenericStruct | main.rs:637:5:640:5 | struct GenericStruct |
+| main.rs:691:9:691:36 | GenericStruct::<...> | main.rs:637:5:640:5 | struct GenericStruct |
+| main.rs:691:9:691:50 | ...::call_trait_a | main.rs:648:9:650:9 | fn call_trait_a |
+| main.rs:691:25:691:35 | Implementor | main.rs:666:5:666:23 | struct Implementor |
+| main.rs:694:9:694:36 | GenericStruct::<...> | main.rs:637:5:640:5 | struct GenericStruct |
+| main.rs:694:9:694:47 | ...::call_both | main.rs:660:9:663:9 | fn call_both |
+| main.rs:694:25:694:35 | Implementor | main.rs:666:5:666:23 | struct Implementor |
+| main.rs:700:3:700:12 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
+| main.rs:700:3:700:24 | ...::add_suffix | proc_macro.rs:4:1:13:1 | fn add_suffix |
+| main.rs:704:6:704:12 | AStruct | main.rs:703:1:703:17 | struct AStruct |
+| main.rs:706:7:706:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
+| main.rs:706:7:706:28 | ...::add_suffix | proc_macro.rs:4:1:13:1 | fn add_suffix |
+| main.rs:709:7:709:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
+| main.rs:709:7:709:28 | ...::add_suffix | proc_macro.rs:4:1:13:1 | fn add_suffix |
 | main.rs:714:9:714:11 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
-| main.rs:714:9:714:19 | ...::result | {EXTERNAL LOCATION} | mod result |
-| main.rs:714:9:714:27 | ...::Result | {EXTERNAL LOCATION} | enum Result |
-| main.rs:722:19:722:22 | Self | main.rs:716:5:724:5 | trait Reduce |
-| main.rs:722:19:722:29 | ...::Input | main.rs:717:9:717:19 | type Input |
-| main.rs:723:14:723:46 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
-| main.rs:723:21:723:24 | Self | main.rs:716:5:724:5 | trait Reduce |
-| main.rs:723:21:723:32 | ...::Output | main.rs:718:21:719:20 | type Output |
-| main.rs:723:35:723:38 | Self | main.rs:716:5:724:5 | trait Reduce |
-| main.rs:723:35:723:45 | ...::Error | main.rs:717:21:718:19 | type Error |
-| main.rs:727:17:727:34 | PhantomData::<...> | {EXTERNAL LOCATION} | struct PhantomData |
-| main.rs:727:29:727:33 | Input | main.rs:726:19:726:23 | Input |
+| main.rs:714:9:714:19 | ...::marker | {EXTERNAL LOCATION} | mod marker |
+| main.rs:714:9:714:32 | ...::PhantomData | {EXTERNAL LOCATION} | struct PhantomData |
+| main.rs:715:9:715:11 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:715:9:715:19 | ...::result | {EXTERNAL LOCATION} | mod result |
+| main.rs:715:9:715:27 | ...::Result | {EXTERNAL LOCATION} | enum Result |
+| main.rs:723:19:723:22 | Self | main.rs:717:5:725:5 | trait Reduce |
+| main.rs:723:19:723:29 | ...::Input | main.rs:718:9:718:19 | type Input |
+| main.rs:724:14:724:46 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
+| main.rs:724:21:724:24 | Self | main.rs:717:5:725:5 | trait Reduce |
+| main.rs:724:21:724:32 | ...::Output | main.rs:719:21:720:20 | type Output |
+| main.rs:724:35:724:38 | Self | main.rs:717:5:725:5 | trait Reduce |
+| main.rs:724:35:724:45 | ...::Error | main.rs:718:21:719:19 | type Error |
 | main.rs:728:17:728:34 | PhantomData::<...> | {EXTERNAL LOCATION} | struct PhantomData |
-| main.rs:728:29:728:33 | Error | main.rs:726:26:726:30 | Error |
-| main.rs:735:11:735:16 | Reduce | main.rs:716:5:724:5 | trait Reduce |
-| main.rs:736:13:739:9 | MyImpl::<...> | main.rs:726:5:729:5 | struct MyImpl |
-| main.rs:737:13:737:17 | Input | main.rs:733:13:733:17 | Input |
-| main.rs:738:13:738:17 | Error | main.rs:734:13:734:17 | Error |
-| main.rs:741:22:744:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
-| main.rs:742:13:742:17 | Input | main.rs:733:13:733:17 | Input |
-| main.rs:743:13:743:16 | Self | main.rs:731:5:763:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:743:13:743:23 | ...::Error | main.rs:745:11:749:9 | type Error |
-| main.rs:746:22:748:9 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
-| main.rs:747:11:747:15 | Error | main.rs:734:13:734:17 | Error |
-| main.rs:751:13:751:17 | Input | main.rs:733:13:733:17 | Input |
-| main.rs:756:19:756:22 | Self | main.rs:731:5:763:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:756:19:756:29 | ...::Input | main.rs:741:9:745:9 | type Input |
-| main.rs:757:14:760:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
-| main.rs:758:13:758:16 | Self | main.rs:731:5:763:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:758:13:758:24 | ...::Output | main.rs:749:11:752:9 | type Output |
-| main.rs:759:13:759:16 | Self | main.rs:731:5:763:5 | impl Reduce for MyImpl::<...> { ... } |
-| main.rs:759:13:759:23 | ...::Error | main.rs:745:11:749:9 | type Error |
-| main.rs:766:5:766:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
-| main.rs:766:11:766:14 | self | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
-| main.rs:768:15:768:17 | ztd | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
-| main.rs:768:15:768:25 | ...::string | {EXTERNAL LOCATION} | mod string |
-| main.rs:768:15:768:33 | ...::String | {EXTERNAL LOCATION} | struct String |
-| main.rs:778:7:778:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
-| main.rs:778:7:778:26 | ...::identity | proc_macro.rs:15:1:18:1 | fn identity |
-| main.rs:779:10:779:15 | ATrait | main.rs:774:5:776:5 | trait ATrait |
-| main.rs:779:21:779:23 | i64 | {EXTERNAL LOCATION} | struct i64 |
-| main.rs:781:11:781:13 | i64 | {EXTERNAL LOCATION} | struct i64 |
-| main.rs:787:17:787:19 | Foo | main.rs:772:5:772:15 | struct Foo |
-| main.rs:792:5:792:6 | my | main.rs:1:1:1:7 | mod my |
-| main.rs:792:5:792:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
-| main.rs:792:5:792:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
-| main.rs:792:5:792:32 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
-| main.rs:792:5:792:35 | ...::f | my/nested.rs:3:9:5:9 | fn f |
+| main.rs:728:29:728:33 | Input | main.rs:727:19:727:23 | Input |
+| main.rs:729:17:729:34 | PhantomData::<...> | {EXTERNAL LOCATION} | struct PhantomData |
+| main.rs:729:29:729:33 | Error | main.rs:727:26:727:30 | Error |
+| main.rs:736:11:736:16 | Reduce | main.rs:717:5:725:5 | trait Reduce |
+| main.rs:737:13:740:9 | MyImpl::<...> | main.rs:727:5:730:5 | struct MyImpl |
+| main.rs:738:13:738:17 | Input | main.rs:734:13:734:17 | Input |
+| main.rs:739:13:739:17 | Error | main.rs:735:13:735:17 | Error |
+| main.rs:742:22:745:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
+| main.rs:743:13:743:17 | Input | main.rs:734:13:734:17 | Input |
+| main.rs:744:13:744:16 | Self | main.rs:732:5:764:5 | impl Reduce for MyImpl::<...> { ... } |
+| main.rs:744:13:744:23 | ...::Error | main.rs:746:11:750:9 | type Error |
+| main.rs:747:22:749:9 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
+| main.rs:748:11:748:15 | Error | main.rs:735:13:735:17 | Error |
+| main.rs:752:13:752:17 | Input | main.rs:734:13:734:17 | Input |
+| main.rs:757:19:757:22 | Self | main.rs:732:5:764:5 | impl Reduce for MyImpl::<...> { ... } |
+| main.rs:757:19:757:29 | ...::Input | main.rs:742:9:746:9 | type Input |
+| main.rs:758:14:761:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
+| main.rs:759:13:759:16 | Self | main.rs:732:5:764:5 | impl Reduce for MyImpl::<...> { ... } |
+| main.rs:759:13:759:24 | ...::Output | main.rs:750:11:753:9 | type Output |
+| main.rs:760:13:760:16 | Self | main.rs:732:5:764:5 | impl Reduce for MyImpl::<...> { ... } |
+| main.rs:760:13:760:23 | ...::Error | main.rs:746:11:750:9 | type Error |
+| main.rs:767:5:767:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:767:11:767:14 | self | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:769:15:769:17 | ztd | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| main.rs:769:15:769:25 | ...::string | {EXTERNAL LOCATION} | mod string |
+| main.rs:769:15:769:33 | ...::String | {EXTERNAL LOCATION} | struct String |
+| main.rs:779:7:779:16 | proc_macro | proc_macro.rs:0:0:0:0 | Crate(proc_macro@0.0.1) |
+| main.rs:779:7:779:26 | ...::identity | proc_macro.rs:15:1:18:1 | fn identity |
+| main.rs:780:10:780:15 | ATrait | main.rs:775:5:777:5 | trait ATrait |
+| main.rs:780:21:780:23 | i64 | {EXTERNAL LOCATION} | struct i64 |
+| main.rs:782:11:782:13 | i64 | {EXTERNAL LOCATION} | struct i64 |
+| main.rs:788:17:788:19 | Foo | main.rs:773:5:773:15 | struct Foo |
 | main.rs:793:5:793:6 | my | main.rs:1:1:1:7 | mod my |
-| main.rs:793:5:793:9 | ...::f | my.rs:5:1:7:1 | fn f |
-| main.rs:794:5:794:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
-| main.rs:794:5:794:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
-| main.rs:794:5:794:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
-| main.rs:794:5:794:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:795:5:795:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:796:5:796:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:797:5:797:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
-| main.rs:797:5:797:12 | ...::h | main.rs:56:1:75:1 | fn h |
-| main.rs:798:5:798:6 | m1 | main.rs:19:1:43:1 | mod m1 |
-| main.rs:798:5:798:10 | ...::m2 | main.rs:24:5:42:5 | mod m2 |
-| main.rs:798:5:798:13 | ...::g | main.rs:29:9:33:9 | fn g |
+| main.rs:793:5:793:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
+| main.rs:793:5:793:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
+| main.rs:793:5:793:32 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
+| main.rs:793:5:793:35 | ...::f | my/nested.rs:3:9:5:9 | fn f |
+| main.rs:794:5:794:6 | my | main.rs:1:1:1:7 | mod my |
+| main.rs:794:5:794:9 | ...::f | my.rs:5:1:7:1 | fn f |
+| main.rs:795:5:795:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
+| main.rs:795:5:795:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
+| main.rs:795:5:795:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
+| main.rs:795:5:795:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:796:5:796:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:797:5:797:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
+| main.rs:798:5:798:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| main.rs:798:5:798:12 | ...::h | main.rs:56:1:75:1 | fn h |
 | main.rs:799:5:799:6 | m1 | main.rs:19:1:43:1 | mod m1 |
 | main.rs:799:5:799:10 | ...::m2 | main.rs:24:5:42:5 | mod m2 |
-| main.rs:799:5:799:14 | ...::m3 | main.rs:35:9:41:9 | mod m3 |
-| main.rs:799:5:799:17 | ...::h | main.rs:36:27:40:13 | fn h |
-| main.rs:800:5:800:6 | m4 | main.rs:45:1:52:1 | mod m4 |
-| main.rs:800:5:800:9 | ...::i | main.rs:48:5:51:5 | fn i |
-| main.rs:801:5:801:5 | h | main.rs:56:1:75:1 | fn h |
-| main.rs:802:5:802:11 | f_alias | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:803:5:803:11 | g_alias | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:804:5:804:5 | j | main.rs:103:1:107:1 | fn j |
-| main.rs:805:5:805:6 | m6 | main.rs:115:1:126:1 | mod m6 |
-| main.rs:805:5:805:9 | ...::g | main.rs:120:5:125:5 | fn g |
-| main.rs:806:5:806:6 | m7 | main.rs:128:1:147:1 | mod m7 |
-| main.rs:806:5:806:9 | ...::f | main.rs:139:5:146:5 | fn f |
-| main.rs:807:5:807:6 | m8 | main.rs:149:1:203:1 | mod m8 |
-| main.rs:807:5:807:9 | ...::g | main.rs:187:5:202:5 | fn g |
-| main.rs:808:5:808:6 | m9 | main.rs:205:1:213:1 | mod m9 |
-| main.rs:808:5:808:9 | ...::f | main.rs:208:5:212:5 | fn f |
-| main.rs:809:5:809:7 | m11 | main.rs:236:1:273:1 | mod m11 |
-| main.rs:809:5:809:10 | ...::f | main.rs:241:5:244:5 | fn f |
-| main.rs:810:5:810:7 | m15 | main.rs:304:1:373:1 | mod m15 |
-| main.rs:810:5:810:10 | ...::f | main.rs:360:5:372:5 | fn f |
-| main.rs:811:5:811:7 | m16 | main.rs:375:1:467:1 | mod m16 |
-| main.rs:811:5:811:10 | ...::f | main.rs:442:5:466:5 | fn f |
-| main.rs:812:5:812:20 | trait_visibility | main.rs:469:1:519:1 | mod trait_visibility |
-| main.rs:812:5:812:23 | ...::f | main.rs:496:5:518:5 | fn f |
-| main.rs:813:5:813:7 | m17 | main.rs:521:1:551:1 | mod m17 |
-| main.rs:813:5:813:10 | ...::f | main.rs:545:5:550:5 | fn f |
-| main.rs:814:5:814:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
-| main.rs:814:5:814:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
-| main.rs:815:5:815:11 | nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
-| main.rs:815:5:815:14 | ...::f | my2/nested2.rs:23:9:25:9 | fn f |
-| main.rs:816:5:816:7 | my3 | my2/mod.rs:18:1:18:12 | mod my3 |
-| main.rs:816:5:816:10 | ...::f | my2/my3/mod.rs:1:1:5:1 | fn f |
-| main.rs:817:5:817:12 | nested_f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
-| main.rs:818:5:818:7 | m18 | main.rs:553:1:571:1 | mod m18 |
-| main.rs:818:5:818:12 | ...::m19 | main.rs:558:5:570:5 | mod m19 |
-| main.rs:818:5:818:17 | ...::m20 | main.rs:563:9:569:9 | mod m20 |
-| main.rs:818:5:818:20 | ...::g | main.rs:564:13:568:13 | fn g |
-| main.rs:819:5:819:7 | m23 | main.rs:600:1:625:1 | mod m23 |
-| main.rs:819:5:819:10 | ...::f | main.rs:620:5:624:5 | fn f |
-| main.rs:820:5:820:7 | m24 | main.rs:627:1:695:1 | mod m24 |
-| main.rs:820:5:820:10 | ...::f | main.rs:681:5:694:5 | fn f |
-| main.rs:821:5:821:8 | zelf | main.rs:0:0:0:0 | Crate(main@0.0.1) |
-| main.rs:821:5:821:11 | ...::h | main.rs:56:1:75:1 | fn h |
-| main.rs:822:5:822:13 | z_changed | main.rs:700:1:700:8 | fn z_changed |
-| main.rs:823:5:823:11 | AStruct | main.rs:702:1:702:17 | struct AStruct |
-| main.rs:823:5:823:22 | ...::z_on_type | main.rs:706:5:706:16 | fn z_on_type |
-| main.rs:824:5:824:11 | AStruct | main.rs:702:1:702:17 | struct AStruct |
-| main.rs:825:5:825:29 | impl_with_attribute_macro | main.rs:770:1:789:1 | mod impl_with_attribute_macro |
-| main.rs:825:5:825:35 | ...::test | main.rs:785:5:788:5 | fn test |
+| main.rs:799:5:799:13 | ...::g | main.rs:29:9:33:9 | fn g |
+| main.rs:800:5:800:6 | m1 | main.rs:19:1:43:1 | mod m1 |
+| main.rs:800:5:800:10 | ...::m2 | main.rs:24:5:42:5 | mod m2 |
+| main.rs:800:5:800:14 | ...::m3 | main.rs:35:9:41:9 | mod m3 |
+| main.rs:800:5:800:17 | ...::h | main.rs:36:27:40:13 | fn h |
+| main.rs:801:5:801:6 | m4 | main.rs:45:1:52:1 | mod m4 |
+| main.rs:801:5:801:9 | ...::i | main.rs:48:5:51:5 | fn i |
+| main.rs:802:5:802:5 | h | main.rs:56:1:75:1 | fn h |
+| main.rs:803:5:803:11 | f_alias | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:804:5:804:11 | g_alias | my2/nested2.rs:7:9:9:9 | fn g |
+| main.rs:805:5:805:5 | j | main.rs:103:1:107:1 | fn j |
+| main.rs:806:5:806:6 | m6 | main.rs:115:1:127:1 | mod m6 |
+| main.rs:806:5:806:9 | ...::g | main.rs:120:5:126:5 | fn g |
+| main.rs:807:5:807:6 | m7 | main.rs:129:1:148:1 | mod m7 |
+| main.rs:807:5:807:9 | ...::f | main.rs:140:5:147:5 | fn f |
+| main.rs:808:5:808:6 | m8 | main.rs:150:1:204:1 | mod m8 |
+| main.rs:808:5:808:9 | ...::g | main.rs:188:5:203:5 | fn g |
+| main.rs:809:5:809:6 | m9 | main.rs:206:1:214:1 | mod m9 |
+| main.rs:809:5:809:9 | ...::f | main.rs:209:5:213:5 | fn f |
+| main.rs:810:5:810:7 | m11 | main.rs:237:1:274:1 | mod m11 |
+| main.rs:810:5:810:10 | ...::f | main.rs:242:5:245:5 | fn f |
+| main.rs:811:5:811:7 | m15 | main.rs:305:1:374:1 | mod m15 |
+| main.rs:811:5:811:10 | ...::f | main.rs:361:5:373:5 | fn f |
+| main.rs:812:5:812:7 | m16 | main.rs:376:1:468:1 | mod m16 |
+| main.rs:812:5:812:10 | ...::f | main.rs:443:5:467:5 | fn f |
+| main.rs:813:5:813:20 | trait_visibility | main.rs:470:1:520:1 | mod trait_visibility |
+| main.rs:813:5:813:23 | ...::f | main.rs:497:5:519:5 | fn f |
+| main.rs:814:5:814:7 | m17 | main.rs:522:1:552:1 | mod m17 |
+| main.rs:814:5:814:10 | ...::f | main.rs:546:5:551:5 | fn f |
+| main.rs:815:5:815:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
+| main.rs:815:5:815:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
+| main.rs:816:5:816:11 | nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| main.rs:816:5:816:14 | ...::f | my2/nested2.rs:23:9:25:9 | fn f |
+| main.rs:817:5:817:7 | my3 | my2/mod.rs:20:1:20:12 | mod my3 |
+| main.rs:817:5:817:10 | ...::f | my2/my3/mod.rs:1:1:5:1 | fn f |
+| main.rs:818:5:818:12 | nested_f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
+| main.rs:819:5:819:7 | m18 | main.rs:554:1:572:1 | mod m18 |
+| main.rs:819:5:819:12 | ...::m19 | main.rs:559:5:571:5 | mod m19 |
+| main.rs:819:5:819:17 | ...::m20 | main.rs:564:9:570:9 | mod m20 |
+| main.rs:819:5:819:20 | ...::g | main.rs:565:13:569:13 | fn g |
+| main.rs:820:5:820:7 | m23 | main.rs:601:1:626:1 | mod m23 |
+| main.rs:820:5:820:10 | ...::f | main.rs:621:5:625:5 | fn f |
+| main.rs:821:5:821:7 | m24 | main.rs:628:1:696:1 | mod m24 |
+| main.rs:821:5:821:10 | ...::f | main.rs:682:5:695:5 | fn f |
+| main.rs:822:5:822:8 | zelf | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| main.rs:822:5:822:11 | ...::h | main.rs:56:1:75:1 | fn h |
+| main.rs:823:5:823:13 | z_changed | main.rs:701:1:701:9 | fn z_changed |
+| main.rs:824:5:824:11 | AStruct | main.rs:703:1:703:17 | struct AStruct |
+| main.rs:824:5:824:22 | ...::z_on_type | main.rs:707:5:707:17 | fn z_on_type |
+| main.rs:825:5:825:11 | AStruct | main.rs:703:1:703:17 | struct AStruct |
+| main.rs:826:5:826:29 | impl_with_attribute_macro | main.rs:771:1:790:1 | mod impl_with_attribute_macro |
+| main.rs:826:5:826:35 | ...::test | main.rs:786:5:789:5 | fn test |
+| my2/mod.rs:4:5:4:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | my2/mod.rs:5:5:5:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:5:5:5:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/mod.rs:5:5:5:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
@@ -440,19 +481,31 @@ resolvePath
 | my2/mod.rs:16:5:16:20 | ...::nested5 | my2/nested2.rs:13:1:19:1 | mod nested5 |
 | my2/mod.rs:16:5:16:29 | ...::nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
 | my2/mod.rs:16:5:16:32 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
-| my2/mod.rs:23:9:23:13 | mymod | my2/mod.rs:20:1:21:10 | mod mymod |
-| my2/mod.rs:23:9:23:16 | ...::f | my2/renamed.rs:1:1:1:13 | fn f |
+| my2/mod.rs:18:5:18:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
+| my2/mod.rs:18:5:18:12 | ...::ops | {EXTERNAL LOCATION} | mod ops |
+| my2/mod.rs:18:5:18:19 | ...::Deref | {EXTERNAL LOCATION} | trait Deref |
+| my2/mod.rs:25:9:25:13 | mymod | my2/mod.rs:22:1:23:10 | mod mymod |
+| my2/mod.rs:25:9:25:16 | ...::f | my2/renamed.rs:1:1:1:13 | fn f |
+| my2/my3/mod.rs:2:5:2:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
 | my2/my3/mod.rs:4:5:4:5 | h | main.rs:56:1:75:1 | fn h |
-| my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:23:34 | SourceFile |
-| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:826:2 | SourceFile |
+| my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
+| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:827:2 | SourceFile |
 | my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:56:1:75:1 | fn h |
-| my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:23:34 | SourceFile |
+| my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
 | my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |
-| my2/my3/mod.rs:10:5:10:9 | super | my2/mod.rs:1:1:23:34 | SourceFile |
+| my2/my3/mod.rs:10:5:10:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
 | my2/my3/mod.rs:10:5:10:20 | ...::nested6_f | my2/nested2.rs:15:9:17:9 | fn f |
+| my2/my3/mod.rs:12:5:12:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
+| my2/my3/mod.rs:14:16:14:20 | Deref | {EXTERNAL LOCATION} | trait Deref |
+| my2/nested2.rs:4:13:4:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| my2/nested2.rs:8:13:8:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| my2/nested2.rs:16:13:16:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| my2/nested2.rs:24:13:24:19 | println | {EXTERNAL LOCATION} | MacroRules |
 | my.rs:3:5:3:10 | nested | my.rs:1:1:1:15 | mod nested |
 | my.rs:3:5:3:13 | ...::g | my/nested.rs:19:1:22:1 | fn g |
+| my.rs:6:5:6:11 | println | {EXTERNAL LOCATION} | MacroRules |
+| my.rs:10:5:10:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | my.rs:11:5:11:5 | g | my/nested.rs:19:1:22:1 | fn g |
 | my.rs:18:9:18:11 | my4 | my.rs:14:1:16:1 | mod my4 |
 | my.rs:18:9:18:16 | ...::my5 | my.rs:15:5:15:16 | mod my5 |
@@ -468,29 +521,39 @@ resolvePath
 | my.rs:30:13:30:15 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | my.rs:33:16:33:18 | Err | {EXTERNAL LOCATION} | Err |
 | my.rs:35:5:35:6 | Ok | {EXTERNAL LOCATION} | Ok |
+| my/my4/my5/mod.rs:2:5:2:11 | println | {EXTERNAL LOCATION} | MacroRules |
+| my/nested.rs:4:13:4:19 | println | {EXTERNAL LOCATION} | MacroRules |
+| my/nested.rs:8:13:8:19 | println | {EXTERNAL LOCATION} | MacroRules |
 | my/nested.rs:9:13:9:13 | f | my/nested.rs:3:9:5:9 | fn f |
+| my/nested.rs:14:9:14:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | my/nested.rs:15:9:15:15 | nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
 | my/nested.rs:15:9:15:18 | ...::f | my/nested.rs:3:9:5:9 | fn f |
+| my/nested.rs:20:5:20:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | my/nested.rs:21:5:21:11 | nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
 | my/nested.rs:21:5:21:20 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
 | my/nested.rs:21:5:21:23 | ...::f | my/nested.rs:3:9:5:9 | fn f |
 | proc_macro.rs:1:5:1:14 | proc_macro | {EXTERNAL LOCATION} | Crate(proc_macro@0.0.0) |
 | proc_macro.rs:1:5:1:27 | ...::TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:2:5:2:9 | quote | {EXTERNAL LOCATION} | Crate(quote@1.0.40) |
+| proc_macro.rs:2:5:2:16 | ...::quote | {EXTERNAL LOCATION} | MacroRules |
 | proc_macro.rs:5:25:5:35 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:5:44:5:54 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:5:60:5:70 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:6:16:6:18 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
+| proc_macro.rs:6:16:6:37 | ...::parse_macro_input | {EXTERNAL LOCATION} | MacroRules |
 | proc_macro.rs:6:48:6:50 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
 | proc_macro.rs:6:48:6:58 | ...::LitStr | {EXTERNAL LOCATION} | struct LitStr |
 | proc_macro.rs:6:48:6:58 | ...::parse::<...> | {EXTERNAL LOCATION} | fn parse |
 | proc_macro.rs:7:19:7:21 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
+| proc_macro.rs:7:19:7:40 | ...::parse_macro_input | {EXTERNAL LOCATION} | MacroRules |
 | proc_macro.rs:7:51:7:53 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
 | proc_macro.rs:7:51:7:61 | ...::ItemFn | {EXTERNAL LOCATION} | struct ItemFn |
 | proc_macro.rs:7:51:7:61 | ...::parse::<...> | {EXTERNAL LOCATION} | fn parse |
 | proc_macro.rs:8:21:8:23 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
 | proc_macro.rs:8:21:8:30 | ...::Ident | {EXTERNAL LOCATION} | struct Ident |
 | proc_macro.rs:8:21:8:35 | ...::new | {EXTERNAL LOCATION} | fn new |
+| proc_macro.rs:8:38:8:43 | format | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:9:5:9:9 | quote | {EXTERNAL LOCATION} | MacroRules |
 | proc_macro.rs:16:24:16:34 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:16:43:16:53 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:16:59:16:69 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |

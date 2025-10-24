@@ -943,13 +943,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A list of statements in a block.
+   * A list of statements in a block, with an optional tail expression at the
+   * end that determines the block's value.
    *
    * For example:
    * ```rust
    * {
    *     let x = 1;
    *     let y = 2;
+   *     x + y
    * }
    * //  ^^^^^^^^^
    * ```
@@ -964,11 +966,17 @@ module Raw {
 
     /**
      * Gets the `index`th statement of this statement list (0-based).
+     *
+     * The statements of a `StmtList` do not include any tail expression, which
+     * can be accessed with predicates such as `getTailExpr`.
      */
     Stmt getStatement(int index) { stmt_list_statements(this, index, result) }
 
     /**
      * Gets the tail expression of this statement list, if it exists.
+     *
+     * The tail expression is the expression at the end of a block, that
+     * determines the block's value.
      */
     Expr getTailExpr() { stmt_list_tail_exprs(this, result) }
   }
@@ -1898,9 +1906,9 @@ module Raw {
     override string toString() { result = "ClosureExpr" }
 
     /**
-     * Gets the body of this closure expression, if it exists.
+     * Gets the closure body of this closure expression, if it exists.
      */
-    Expr getBody() { closure_expr_bodies(this, result) }
+    Expr getClosureBody() { closure_expr_closure_bodies(this, result) }
 
     /**
      * Gets the for binder of this closure expression, if it exists.
@@ -4345,9 +4353,9 @@ module Raw {
     Abi getAbi() { function_abis(this, result) }
 
     /**
-     * Gets the body of this function, if it exists.
+     * Gets the function body of this function, if it exists.
      */
-    BlockExpr getBody() { function_bodies(this, result) }
+    BlockExpr getFunctionBody() { function_function_bodies(this, result) }
 
     /**
      * Gets the generic parameter list of this function, if it exists.

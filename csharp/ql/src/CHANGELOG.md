@@ -1,3 +1,14 @@
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+### Minor Analysis Improvements
+
+* The modeling of null guards based on complex pattern expressions has been improved, which in turn improves the query `cs/dereferenced-value-may-be-null` by removing false positives.
+* The query `cs/xmldoc/missing-summary` has been removed from the `code-quality` suite, to align with other languages.
+
 ## 1.4.0
 
 ### Deprecated Queries

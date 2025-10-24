@@ -19,16 +19,21 @@ private module ResolveTest implements TestSig {
     exists(Comment c |
       c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
       c.getCommentText().trim() = text and
-      c.fromSource()
+      c.fromSource() and
+      not text.matches("$%")
     )
   }
 
   private predicate item(ItemNode i, string value) {
     exists(string filepath, int line, boolean inMacro | itemAt(i, filepath, line, inMacro) |
-      commmentAt(value, filepath, line)
-      or
-      not commmentAt(_, filepath, line) and
-      value = i.getName()
+      if i instanceof SourceFile
+      then value = i.getFile().getBaseName()
+      else (
+        commmentAt(value, filepath, line)
+        or
+        not commmentAt(_, filepath, line) and
+        value = i.getName()
+      )
     )
   }
 

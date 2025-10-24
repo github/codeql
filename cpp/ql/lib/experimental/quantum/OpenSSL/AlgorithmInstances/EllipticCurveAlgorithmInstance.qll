@@ -21,7 +21,8 @@ class KnownOpenSslEllipticCurveConstantAlgorithmInstance extends OpenSslAlgorith
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.getInputNode() and
       // Source is `this`
-      src.asExpr() = this and
+      // NOTE: src literals can be ints or strings, so need to consider asExpr and asIndirectExpr
+      this = [src.asExpr(), src.asIndirectExpr()] and
       // This traces to a getter
       KnownOpenSslAlgorithmToAlgorithmValueConsumerFlow::flow(src, sink)
     )
@@ -39,7 +40,7 @@ class KnownOpenSslEllipticCurveConstantAlgorithmInstance extends OpenSslAlgorith
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::EllipticCurveFamilyType getEllipticCurveFamilyType() {
+  override Crypto::EllipticCurveType getEllipticCurveType() {
     if
       Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getParsedEllipticCurveName(), _,
         _)

@@ -1,3 +1,13 @@
+## 5.1.1
+
+No user-facing changes.
+
+## 5.1.0
+
+### New Features
+
+* Initial modeling for the Ruby Grape framework in `Grape.qll` has been added to detect API endpoints, parameters, and headers within Grape API classes.
+
 ## 5.0.4
 
 No user-facing changes.

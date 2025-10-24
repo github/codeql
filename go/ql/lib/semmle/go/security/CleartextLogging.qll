@@ -35,9 +35,7 @@ module CleartextLogging {
 
     predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data-flow edge through structs: a tainted write taints the entire struct.
-      exists(Write write |
-        write.writesField(trg.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, src)
-      )
+      exists(Write write | write.writesField(trg, _, src))
       or
       // taint steps that do not include flow through fields. Field reads would produce FPs due to
       // the additional taint step above that taints whole structs from individual field writes.

@@ -150,7 +150,9 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
     )
   }
 
-  DataFlow::Node getSourceNode(SourceBase source, Private::SummaryComponent sc) { none() }
+  DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source) { none() }
+
+  DataFlow::Node getSourceNode(SourceBase source, Private::SummaryComponentStack s) { none() }
 
   DataFlow::Node getSinkNode(SinkBase sink, Private::SummaryComponent sc) { none() }
 }

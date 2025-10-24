@@ -1,3 +1,11 @@
+## 2.1.2
+
+No user-facing changes.
+
+## 2.1.1
+
+No user-facing changes.
+
 ## 2.1.0
 
 ### Major Analysis Improvements
@@ -10,7 +18,7 @@
 * Data flow is now tracked through the `Promise.try` and `Array.prototype.with` functions.
 * Query `js/index-out-of-bounds` no longer produces a false-positive when a strictly-less-than check overrides a previous less-than-or-equal test.
 * The query `js/remote-property-injection` now detects property injection vulnerabilities through object enumeration patterns such as `Object.keys()`. 
-* The query "Permissive CORS configuration" (`js/cors-permissive-configuration`) has been promoted from experimental and is now part of the default security suite.
+* The query "Permissive CORS configuration" (`js/cors-permissive-configuration`) has been promoted from experimental and is now part of the default security suite. Thank you to @maikypedia who [submitted the original experimental query](https://github.com/github/codeql/pull/14342)!
 
 ## 2.0.3
 

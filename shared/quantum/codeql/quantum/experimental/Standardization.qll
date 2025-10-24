@@ -14,8 +14,9 @@ module Types {
       TSymmetricCipher(TSymmetricCipherType t) or
       TAsymmetricCipher(TAsymmetricCipherType t) or
       TSignature(TSignatureAlgorithmType t) or
+      TMac(TMacAlgorithmType t) or
       TKeyEncapsulation(TKemAlgorithmType t) or
-      TUnknownKeyOperationAlgorithmType()
+      TOtherKeyOperationAlgorithmType()
 
     // Parameterized algorithm types
     newtype TSymmetricCipherType =
@@ -38,6 +39,7 @@ module Types {
       RC5() or
       SEED() or
       SM4() or
+      SKIPJACK() or
       OtherSymmetricCipherType()
 
     newtype TAsymmetricCipherType =
@@ -48,6 +50,7 @@ module Types {
       DSA() or
       ECDSA() or
       EDDSA() or // e.g., ED25519 or ED448
+      HSS_LMS() or // Leighton-Micali Signature
       OtherSignatureAlgorithmType()
 
     newtype TKemAlgorithmType =
@@ -55,10 +58,15 @@ module Types {
       FRODO_KEM() or
       OtherKemAlgorithmType()
 
+    newtype TMacAlgorithmType =
+      HMAC() or
+      CMAC() or
+      OtherMacAlgorithmType()
+
     newtype TCipherStructureType =
       Block() or
       Stream() or
-      UnknownCipherStructureType()
+      OtherCipherStructureType()
 
     class CipherStructureType extends TCipherStructureType {
       string toString() {
@@ -66,7 +74,7 @@ module Types {
         or
         result = "Stream" and this = Stream()
         or
-        result = "Unknown" and this = UnknownCipherStructureType()
+        result = "Unknown" and this = OtherCipherStructureType()
       }
     }
 
@@ -111,9 +119,11 @@ module Types {
       or
       type = SM4() and name = "SM4" and s = Block()
       or
+      type = SKIPJACK() and name = "Skipjack" and s = Block()
+      or
       type = OtherSymmetricCipherType() and
       name = "UnknownSymmetricCipher" and
-      s = UnknownCipherStructureType()
+      s = OtherCipherStructureType()
     }
 
     class AlgorithmType extends TAlgorithm {
@@ -143,8 +153,15 @@ module Types {
         or
         this = TKeyEncapsulation(OtherKemAlgorithmType()) and result = "UnknownKEM"
         or
+        // MAC algorithms
+        this = TMac(HMAC()) and result = "HMAC"
+        or
+        this = TMac(CMAC()) and result = "CMAC"
+        or
+        this = TMac(OtherMacAlgorithmType()) and result = "UnknownMac"
+        or
         // Unknown
-        this = TUnknownKeyOperationAlgorithmType() and result = "Unknown"
+        this = TOtherKeyOperationAlgorithmType() and result = "Unknown"
       }
 
       int getImplicitKeySize() {
@@ -200,7 +217,9 @@ module Types {
       CCM() or // Used in lightweight cryptography (IoT, WPA2)
       SIV() or // Misuse-resistant encryption, used in secure storage
       OCB() or // Efficient AEAD mode
+      KWP() or
       OFB() or
+      PCBC() or
       OtherMode()
 
     class ModeOfOperationType extends TModeOfOperationType {
@@ -305,21 +324,6 @@ module Types {
     }
   }
 
-  newtype TMacType =
-    HMAC() or
-    CMAC() or
-    OtherMacType()
-
-  class MacType extends TMacType {
-    string toString() {
-      this = HMAC() and result = "HMAC"
-      or
-      this = CMAC() and result = "CMAC"
-      or
-      this = OtherMacType() and result = "UnknownMacType"
-    }
-  }
-
   // Key agreement algorithms
   newtype TKeyAgreementType =
     DH() or // Diffie-Hellman
@@ -345,7 +349,7 @@ module Types {
   /**
    * Elliptic curve algorithms
    */
-  newtype TEllipticCurveFamilyType =
+  newtype TEllipticCurveType =
     NIST() or
     SEC() or
     NUMS() or
@@ -358,7 +362,7 @@ module Types {
     ES() or
     OtherEllipticCurveType()
 
-  class EllipticCurveFamilyType extends TEllipticCurveFamilyType {
+  class EllipticCurveType extends TEllipticCurveType {
     string toString() {
       this = NIST() and result = "NIST"
       or
@@ -446,7 +450,7 @@ module Types {
    */
   bindingset[rawName]
   predicate ellipticCurveNameToKnownKeySizeAndFamilyMapping(
-    string rawName, int keySize, TEllipticCurveFamilyType curveFamily
+    string rawName, int keySize, TEllipticCurveType curveFamily
   ) {
     exists(string curveName | curveName = rawName.toUpperCase() |
       isSecCurve(curveName, keySize) and curveFamily = SEC()

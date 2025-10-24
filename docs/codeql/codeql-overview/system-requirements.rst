@@ -42,6 +42,10 @@ For Ruby extraction:
 
 - On Windows, the ``msvcp140.dll`` must be installed and available on the system. This can be installed by downloading the appropriate Microsoft Visual C++ Redistributable for Visual Studio.
 
+For Rust extraction:
+
+- ``rustup`` and ``cargo`` must be installed.
+
 For Java extraction:
 
 - There must be a ``java`` or ``java.exe`` executable available on the ``PATH``, and the ``JAVA_HOME`` environment variable must point to the corresponding JDK's home directory.

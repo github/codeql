@@ -43,8 +43,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            foreach (var l in Locations)
-                trapFile.method_location(this, l);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.method_location, this, Locations);
+            }
 
             PopulateGenerics(trapFile);
             Overrides(trapFile);

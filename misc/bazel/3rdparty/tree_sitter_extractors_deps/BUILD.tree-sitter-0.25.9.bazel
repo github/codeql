@@ -78,12 +78,16 @@ rust_library(
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [],
+        "@rules_rust//rust/platform:wasm32-unknown-emscripten": [],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [],
         "@rules_rust//rust/platform:wasm32-wasip1": [],
+        "@rules_rust//rust/platform:wasm32-wasip1-threads": [],
+        "@rules_rust//rust/platform:wasm32-wasip2": [],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [],
         "@rules_rust//rust/platform:x86_64-apple-ios": [],
         "@rules_rust//rust/platform:x86_64-linux-android": [],
@@ -98,7 +102,7 @@ rust_library(
     }),
     version = "0.25.9",
     deps = [
-        "@vendor_ts__regex-1.11.2//:regex",
+        "@vendor_ts__regex-1.11.3//:regex",
         "@vendor_ts__regex-syntax-0.8.6//:regex_syntax",
         "@vendor_ts__streaming-iterator-0.1.9//:streaming_iterator",
         "@vendor_ts__tree-sitter-0.25.9//:build_script_build",
@@ -163,7 +167,7 @@ cargo_build_script(
     visibility = ["//visibility:private"],
     deps = [
         "@vendor_ts__cc-1.2.37//:cc",
-        "@vendor_ts__serde_json-1.0.143//:serde_json",
+        "@vendor_ts__serde_json-1.0.145//:serde_json",
     ],
 )
 
