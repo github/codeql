@@ -22,7 +22,7 @@ predicate cookieAppendHttpOnlyByDefault() {
   getAValueForCookiePolicyProp("HttpOnly").getValue() = "1"
   or
   // there is an `OnAppendCookie` callback that sets `HttpOnly` to true
-  not OnAppendCookieHttpOnlyTracking::flowTo(_)
+  OnAppendCookieHttpOnlyTracking::flowTo(_)
 }
 
 predicate httpOnlyFalse(ObjectCreation oc) {
@@ -90,7 +90,7 @@ predicate nonHttpOnlyCookieCall(Call c) {
   )
 }
 
-predicate nonHttpOnlyPolicyAssignment(Assignment a, Expr val) {
+predicate nonHttpOnlyCookieBuilderAssignment(Assignment a, Expr val) {
   val.getValue() = "false" and
   exists(PropertyWrite pw |
     (
@@ -111,7 +111,7 @@ where
     or
     exists(Assignment a |
       httpOnlySink = a.getRValue() and
-      nonHttpOnlyPolicyAssignment(a, _)
+      nonHttpOnlyCookieBuilderAssignment(a, _)
     )
   )
 select httpOnlySink, "Cookie attribute 'HttpOnly' is not set to true."
