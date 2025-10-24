@@ -1,2 +1,0 @@
-| Program.cs:8:9:8:49 | call to method Append | Cookie attribute 'Secure' is not set to true. |
-| Program.cs:13:29:13:73 | object creation of type CookieOptions | Cookie attribute 'Secure' is not set to true. |

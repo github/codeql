@@ -1,2 +1,0 @@
-| Program.cs:13:33:13:37 | false | Cookie attribute 'HttpOnly' is not set to true. |
-| Program.cs:20:39:20:43 | false | Cookie attribute 'HttpOnly' is not set to true. |

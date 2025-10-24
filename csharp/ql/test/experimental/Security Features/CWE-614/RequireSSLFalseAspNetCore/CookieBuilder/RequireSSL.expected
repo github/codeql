@@ -1,2 +1,0 @@
-| Program.cs:14:37:14:85 | access to constant None | Cookie attribute 'Secure' is not set to true. |
-| Program.cs:19:43:19:91 | access to constant None | Cookie attribute 'Secure' is not set to true. |
