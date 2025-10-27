@@ -34,10 +34,9 @@ models
 | 33 | Summary: <reqwest::blocking::response::Response>::text; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 34 | Summary: <reqwest::blocking::response::Response>::text_with_charset; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 35 | Summary: <std::io::buffered::bufreader::BufReader>::new; Argument[0]; ReturnValue; taint |
-| 36 | Summary: <std::net::tcp::TcpStream as std::io::Read>::read; Argument[self]; Argument[0].Reference; taint |
-| 37 | Summary: <tokio::net::tcp::stream::TcpStream>::peek; Argument[self]; Argument[0].Reference; taint |
-| 38 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read; Argument[self]; Argument[0].Reference; taint |
-| 39 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read_buf; Argument[self]; Argument[0].Reference; taint |
+| 36 | Summary: <tokio::net::tcp::stream::TcpStream>::peek; Argument[self]; Argument[0].Reference; taint |
+| 37 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read; Argument[self]; Argument[0].Reference; taint |
+| 38 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read_buf; Argument[self]; Argument[0].Reference; taint |
 edges
 | test.rs:11:9:11:22 | remote_string1 | test.rs:12:10:12:23 | remote_string1 | provenance |  |
 | test.rs:11:26:11:47 | ...::get | test.rs:11:26:11:62 | ...::get(...) [Ok] | provenance | Src:MaD:6  |
@@ -107,7 +106,6 @@ edges
 | test.rs:67:31:67:42 | send_request | test.rs:67:24:67:51 | sender.send_request(...) [future, Ok] | provenance | Src:MaD:2  |
 | test.rs:68:11:68:18 | response | test.rs:68:10:68:18 | &response | provenance |  |
 | test.rs:155:13:155:22 | mut stream | test.rs:162:29:162:39 | [post] &mut buffer [&ref] | provenance | MaD:19 |
-| test.rs:155:13:155:22 | mut stream | test.rs:162:29:162:39 | [post] &mut buffer [&ref] | provenance | MaD:36 |
 | test.rs:155:26:155:53 | ...::connect | test.rs:155:26:155:62 | ...::connect(...) [Ok] | provenance | Src:MaD:3  |
 | test.rs:155:26:155:62 | ...::connect(...) [Ok] | test.rs:155:26:155:63 | TryExpr | provenance |  |
 | test.rs:155:26:155:63 | TryExpr | test.rs:155:13:155:22 | mut stream | provenance |  |
@@ -126,10 +124,10 @@ edges
 | test.rs:185:44:185:52 | [post] &mut line [&ref] | test.rs:185:49:185:52 | [post] line | provenance |  |
 | test.rs:185:49:185:52 | [post] line | test.rs:192:35:192:38 | line | provenance |  |
 | test.rs:192:35:192:38 | line | test.rs:192:34:192:38 | &line | provenance |  |
-| test.rs:224:9:224:24 | mut tokio_stream | test.rs:232:35:232:46 | [post] &mut buffer1 [&ref] | provenance | MaD:37 |
+| test.rs:224:9:224:24 | mut tokio_stream | test.rs:232:35:232:46 | [post] &mut buffer1 [&ref] | provenance | MaD:36 |
 | test.rs:224:9:224:24 | mut tokio_stream | test.rs:236:36:236:47 | [post] &mut buffer2 [&ref] | provenance | MaD:21 |
-| test.rs:224:9:224:24 | mut tokio_stream | test.rs:252:41:252:51 | [post] &mut buffer [&ref] | provenance | MaD:38 |
-| test.rs:224:9:224:24 | mut tokio_stream | test.rs:275:45:275:55 | [post] &mut buffer [&ref] | provenance | MaD:39 |
+| test.rs:224:9:224:24 | mut tokio_stream | test.rs:252:41:252:51 | [post] &mut buffer [&ref] | provenance | MaD:37 |
+| test.rs:224:9:224:24 | mut tokio_stream | test.rs:275:45:275:55 | [post] &mut buffer [&ref] | provenance | MaD:38 |
 | test.rs:224:28:224:57 | ...::connect | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | provenance | Src:MaD:5  |
 | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | test.rs:224:28:224:72 | await ... [Ok] | provenance |  |
 | test.rs:224:28:224:72 | await ... [Ok] | test.rs:224:28:224:73 | TryExpr | provenance |  |
