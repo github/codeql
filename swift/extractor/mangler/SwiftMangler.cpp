@@ -40,7 +40,8 @@ std::string_view getTypeKindStr(const swift::TypeBase* type) {
 
 }  // namespace
 
-std::unordered_map<const swift::Decl*, unsigned> SwiftMangler::preloadedExtensionIndexes;
+std::unordered_map<const swift::Decl*, SwiftMangler::ExtensionIndex>
+    SwiftMangler::preloadedExtensionIndexes;
 
 SwiftMangledName SwiftMangler::initMangled(const swift::TypeBase* type) {
   return {getTypeKindStr(type), '_'};
@@ -104,15 +105,15 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
 
   auto parent = getParent(decl);
   auto target = decl->getExtendedType();
-  return initMangled(decl) << fetch(target) << getExtensionIndex(decl, parent);
+  auto index = getExtensionIndex(decl, parent);
+  return initMangled(decl) << fetch(target) << index.index
+                           << (index.kind == ExtensionKind::clang ? "_clang" : "");
 }
 
-unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
-                                         const swift::Decl* parent) {
+SwiftMangler::ExtensionIndex SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
+                                                             const swift::Decl* parent) {
   // to avoid iterating multiple times on the parent of multiple extensions, we preload extension
   // indexes once for each encountered parent into the `preloadedExtensionIndexes` mapping.
-  // Because we mangle declarations only once in a given trap/dispatcher context, we can safely
-  // discard preloaded indexes on use
   if (auto found = SwiftMangler::preloadedExtensionIndexes.find(decl);
       found != SwiftMangler::preloadedExtensionIndexes.end()) {
     return found->second;
@@ -141,8 +142,8 @@ void SwiftMangler::indexExtensions(llvm::ArrayRef<swift::Decl*> siblings) {
   auto index = 0u;
   for (auto sibling : siblings) {
     if (sibling->getKind() == swift::DeclKind::Extension) {
-      SwiftMangler::preloadedExtensionIndexes.emplace(sibling, index);
-      index += 2;
+      SwiftMangler::preloadedExtensionIndexes.try_emplace(sibling, ExtensionKind::swift, index);
+      index++;
     }
   }
 }
@@ -153,15 +154,15 @@ void SwiftMangler::indexClangExtensions(const clang::Module* clangModule,
     return;
   }
 
-  auto index = 1u;
+  auto index = 0u;
   for (const auto& submodule : clangModule->submodules()) {
     if (auto* swiftSubmodule = moduleLoader->getWrapperForModule(submodule)) {
       llvm::SmallVector<swift::Decl*> children;
       swiftSubmodule->getTopLevelDecls(children);
       for (const auto child : children) {
         if (child->getKind() == swift::DeclKind::Extension) {
-          SwiftMangler::preloadedExtensionIndexes.emplace(child, index);
-          index += 2;
+          SwiftMangler::preloadedExtensionIndexes.try_emplace(child, ExtensionKind::clang, index);
+          index++;
         }
       }
     }
