@@ -535,6 +535,37 @@ mod impl_overlap {
         }
     }
 
+    trait MyTrait1 {
+        // MyTrait1::m
+        fn m(&self) {}
+    }
+
+    trait MyTrait2: MyTrait1 {}
+
+    #[derive(Debug)]
+    struct S4;
+
+    impl MyTrait1 for S4 {
+        // <S4_as_MyTrait1>::m
+        fn m(&self) {}
+    }
+
+    impl MyTrait2 for S4 {}
+
+    #[derive(Debug)]
+    struct S5<T5>(T5);
+
+    impl MyTrait1 for S5<i32> {
+        // <S5<i32>_as_MyTrait1>::m
+        fn m(&self) {}
+    }
+
+    impl MyTrait2 for S5<i32> {}
+
+    impl MyTrait1 for S5<bool> {}
+
+    impl MyTrait2 for S5<bool> {}
+
     pub fn f() {
         let x = S1;
         println!("{:?}", x.common_method()); // $ target=S1::common_method
@@ -554,6 +585,13 @@ mod impl_overlap {
         let w = S3(S1);
         println!("{:?}", w.m(x)); // $ target=S3<T>::m
         println!("{:?}", S3::m(&w, x)); // $ target=S3<T>::m
+
+        S4.m(); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S4::m(&S4); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5(0i32).m(); // $ target=<S5<i32>_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5::m(&S5(0i32)); // $ target=<S5<i32>_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5(true).m(); // $ target=MyTrait1::m
+        S5::m(&S5(true)); // $ target=MyTrait1::m
     }
 }
 
