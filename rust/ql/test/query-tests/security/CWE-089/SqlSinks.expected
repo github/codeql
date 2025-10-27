@@ -1,6 +1,0 @@
-| mysql.rs:36:58:36:105 | //... | Missing result: sql-sink |
-| mysql.rs:45:57:45:69 | //... | Missing result: sql-sink |
-| mysql.rs:75:56:75:103 | //... | Missing result: sql-sink |
-| mysql.rs:116:64:116:111 | //... | Missing result: sql-sink |
-| mysql.rs:125:63:125:75 | //... | Missing result: sql-sink |
-| mysql.rs:149:62:149:109 | //... | Missing result: sql-sink |
