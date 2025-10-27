@@ -18,6 +18,7 @@ extensions:
       - ["<core::result::Result>::into_iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::nth", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue.Future.Field[core::option::Option::Some(0)]", "taint", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::next", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::next", "Argument[self].Element", "ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]

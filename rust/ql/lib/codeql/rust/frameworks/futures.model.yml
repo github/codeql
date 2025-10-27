@@ -15,5 +15,4 @@ extensions:
       - ["<_ as futures_util::io::AsyncBufReadExt>::read_until", "Argument[self].Reference", "Argument[1].Reference", "taint", "manual"]
       - ["<_ as futures_util::io::AsyncBufReadExt>::fill_buf", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<_ as futures_util::io::AsyncBufReadExt>::lines", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["<alloc::boxed::Box as core::iter::traits::iterator::Iterator>::next", "Argument[self]", "ReturnValue.Future.Field[core::option::Option::Some(0)]", "taint", "manual"]
       - ["<_ as futures_io::if_std::AsyncBufRead>::poll_fill_buf", "Argument[self].Reference", "ReturnValue.Field[core::task::poll::Poll::Ready(0)].Field[core::result::Result::Ok(0)]", "taint", "manual"]
