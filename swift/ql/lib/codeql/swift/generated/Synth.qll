@@ -21,6 +21,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TAvailabilitySpec(Raw::AvailabilitySpec id) { constructAvailabilitySpec(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TComment(Raw::Comment id) { constructComment(id) } or
     /**
      * INTERNAL: Do not use.
@@ -42,16 +46,6 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TMacroRole(Raw::MacroRole id) { constructMacroRole(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TPlatformVersionAvailabilitySpec(Raw::PlatformVersionAvailabilitySpec id) {
-      constructPlatformVersionAvailabilitySpec(id)
-    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -979,6 +973,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExistentialArchetypeType(Raw::ExistentialArchetypeType id) {
+      constructExistentialArchetypeType(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TExistentialMetatypeType(Raw::ExistentialMetatypeType id) {
       constructExistentialMetatypeType(id)
     } or
@@ -1024,10 +1024,6 @@ module Synth {
     TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) {
       constructOpaqueTypeArchetypeType(id)
     } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1120,11 +1116,6 @@ module Synth {
     TAvailabilityInfo or TAvailabilitySpec or TCallable or TCaseLabelItem or TConditionElement or
         TDecl or TExpr or TKeyPathComponent or TMacroRole or TPattern or TStmt or TStmtCondition or
         TTypeRepr;
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class TAvailabilitySpec = TOtherAvailabilitySpec or TPlatformVersionAvailabilitySpec;
 
   /**
    * INTERNAL: Do not use.
@@ -1400,7 +1391,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocalArchetypeType = TElementArchetypeType or TOpenedArchetypeType;
+  class TLocalArchetypeType = TElementArchetypeType or TExistentialArchetypeType;
 
   /**
    * INTERNAL: Do not use.
@@ -1455,6 +1446,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TAvailabilitySpec`, if possible.
+   */
+  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) { result = TAvailabilitySpec(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TComment`, if possible.
    */
   TComment convertCommentFromRaw(Raw::Element e) { result = TComment(e) }
@@ -1488,22 +1485,6 @@ module Synth {
    * Converts a raw element to a synthesized `TMacroRole`, if possible.
    */
   TMacroRole convertMacroRoleFromRaw(Raw::Element e) { result = TMacroRole(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOtherAvailabilitySpec`, if possible.
-   */
-  TOtherAvailabilitySpec convertOtherAvailabilitySpecFromRaw(Raw::Element e) {
-    result = TOtherAvailabilitySpec(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TPlatformVersionAvailabilitySpec`, if possible.
-   */
-  TPlatformVersionAvailabilitySpec convertPlatformVersionAvailabilitySpecFromRaw(Raw::Element e) {
-    result = TPlatformVersionAvailabilitySpec(e)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -2989,6 +2970,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExistentialArchetypeType`, if possible.
+   */
+  TExistentialArchetypeType convertExistentialArchetypeTypeFromRaw(Raw::Element e) {
+    result = TExistentialArchetypeType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TExistentialMetatypeType`, if possible.
    */
   TExistentialMetatypeType convertExistentialMetatypeTypeFromRaw(Raw::Element e) {
@@ -3059,14 +3048,6 @@ module Synth {
    */
   TOpaqueTypeArchetypeType convertOpaqueTypeArchetypeTypeFromRaw(Raw::Element e) {
     result = TOpaqueTypeArchetypeType(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOpenedArchetypeType`, if possible.
-   */
-  TOpenedArchetypeType convertOpenedArchetypeTypeFromRaw(Raw::Element e) {
-    result = TOpenedArchetypeType(e)
   }
 
   /**
@@ -3237,16 +3218,6 @@ module Synth {
     result = convertStmtConditionFromRaw(e)
     or
     result = convertTypeReprFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TAvailabilitySpec`, if possible.
-   */
-  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) {
-    result = convertOtherAvailabilitySpecFromRaw(e)
-    or
-    result = convertPlatformVersionAvailabilitySpecFromRaw(e)
   }
 
   /**
@@ -4058,7 +4029,7 @@ module Synth {
   TLocalArchetypeType convertLocalArchetypeTypeFromRaw(Raw::Element e) {
     result = convertElementArchetypeTypeFromRaw(e)
     or
-    result = convertOpenedArchetypeTypeFromRaw(e)
+    result = convertExistentialArchetypeTypeFromRaw(e)
   }
 
   /**
@@ -4199,6 +4170,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAvailabilitySpec` to a raw DB element, if possible.
+   */
+  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) { e = TAvailabilitySpec(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TComment` to a raw DB element, if possible.
    */
   Raw::Element convertCommentToRaw(TComment e) { e = TComment(result) }
@@ -4232,22 +4209,6 @@ module Synth {
    * Converts a synthesized `TMacroRole` to a raw DB element, if possible.
    */
   Raw::Element convertMacroRoleToRaw(TMacroRole e) { e = TMacroRole(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TOtherAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertOtherAvailabilitySpecToRaw(TOtherAvailabilitySpec e) {
-    e = TOtherAvailabilitySpec(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TPlatformVersionAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertPlatformVersionAvailabilitySpecToRaw(TPlatformVersionAvailabilitySpec e) {
-    e = TPlatformVersionAvailabilitySpec(result)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -5731,6 +5692,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TExistentialArchetypeType` to a raw DB element, if possible.
+   */
+  Raw::Element convertExistentialArchetypeTypeToRaw(TExistentialArchetypeType e) {
+    e = TExistentialArchetypeType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TExistentialMetatypeType` to a raw DB element, if possible.
    */
   Raw::Element convertExistentialMetatypeTypeToRaw(TExistentialMetatypeType e) {
@@ -5801,14 +5770,6 @@ module Synth {
    */
   Raw::Element convertOpaqueTypeArchetypeTypeToRaw(TOpaqueTypeArchetypeType e) {
     e = TOpaqueTypeArchetypeType(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TOpenedArchetypeType` to a raw DB element, if possible.
-   */
-  Raw::Element convertOpenedArchetypeTypeToRaw(TOpenedArchetypeType e) {
-    e = TOpenedArchetypeType(result)
   }
 
   /**
@@ -5979,16 +5940,6 @@ module Synth {
     result = convertStmtConditionToRaw(e)
     or
     result = convertTypeReprToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) {
-    result = convertOtherAvailabilitySpecToRaw(e)
-    or
-    result = convertPlatformVersionAvailabilitySpecToRaw(e)
   }
 
   /**
@@ -6800,7 +6751,7 @@ module Synth {
   Raw::Element convertLocalArchetypeTypeToRaw(TLocalArchetypeType e) {
     result = convertElementArchetypeTypeToRaw(e)
     or
-    result = convertOpenedArchetypeTypeToRaw(e)
+    result = convertExistentialArchetypeTypeToRaw(e)
   }
 
   /**

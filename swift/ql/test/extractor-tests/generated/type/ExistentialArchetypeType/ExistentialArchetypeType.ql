@@ -3,7 +3,7 @@ import codeql.swift.elements
 import TestUtils
 
 query predicate instances(
-  OpenedArchetypeType x, string getName__label, string getName, string getCanonicalType__label,
+  ExistentialArchetypeType x, string getName__label, string getName, string getCanonicalType__label,
   Type getCanonicalType, string getInterfaceType__label, Type getInterfaceType
 ) {
   toBeTested(x) and
@@ -16,10 +16,10 @@ query predicate instances(
   getInterfaceType = x.getInterfaceType()
 }
 
-query predicate getSuperclass(OpenedArchetypeType x, Type getSuperclass) {
+query predicate getSuperclass(ExistentialArchetypeType x, Type getSuperclass) {
   toBeTested(x) and not x.isUnknown() and getSuperclass = x.getSuperclass()
 }
 
-query predicate getProtocol(OpenedArchetypeType x, int index, ProtocolDecl getProtocol) {
+query predicate getProtocol(ExistentialArchetypeType x, int index, ProtocolDecl getProtocol) {
   toBeTested(x) and not x.isUnknown() and getProtocol = x.getProtocol(index)
 }

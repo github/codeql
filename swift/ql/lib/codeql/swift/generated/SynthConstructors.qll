@@ -4,14 +4,13 @@
  */
 
 import codeql.swift.elements.internal.AvailabilityInfoConstructor
+import codeql.swift.elements.internal.AvailabilitySpecConstructor
 import codeql.swift.elements.internal.CommentConstructor
 import codeql.swift.elements.internal.DbFileConstructor
 import codeql.swift.elements.internal.DbLocationConstructor
 import codeql.swift.elements.internal.DiagnosticsConstructor
 import codeql.swift.elements.internal.KeyPathComponentConstructor
 import codeql.swift.elements.internal.MacroRoleConstructor
-import codeql.swift.elements.internal.OtherAvailabilitySpecConstructor
-import codeql.swift.elements.internal.PlatformVersionAvailabilitySpecConstructor
 import codeql.swift.elements.internal.UnspecifiedElementConstructor
 import codeql.swift.elements.decl.internal.AccessorConstructor
 import codeql.swift.elements.decl.internal.AssociatedTypeDeclConstructor
@@ -224,6 +223,7 @@ import codeql.swift.elements.type.internal.DynamicSelfTypeConstructor
 import codeql.swift.elements.type.internal.ElementArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.EnumTypeConstructor
 import codeql.swift.elements.type.internal.ErrorTypeConstructor
+import codeql.swift.elements.type.internal.ExistentialArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.ExistentialMetatypeTypeConstructor
 import codeql.swift.elements.type.internal.ExistentialTypeConstructor
 import codeql.swift.elements.type.internal.FunctionTypeConstructor
@@ -235,7 +235,6 @@ import codeql.swift.elements.type.internal.LValueTypeConstructor
 import codeql.swift.elements.type.internal.MetatypeTypeConstructor
 import codeql.swift.elements.type.internal.ModuleTypeConstructor
 import codeql.swift.elements.type.internal.OpaqueTypeArchetypeTypeConstructor
-import codeql.swift.elements.type.internal.OpenedArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.OptionalTypeConstructor
 import codeql.swift.elements.type.internal.PackArchetypeTypeConstructor
 import codeql.swift.elements.type.internal.PackElementTypeConstructor
