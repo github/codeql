@@ -287,6 +287,18 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
     g2 = g1.(NullCoalescingExpr).getAnOperand() and
     v1.isNullValue() and
     v2 = v1
+    or
+    exists(Assertion assert, AssertMethod target, int i |
+      assert.getAssertMethod() = target and
+      g1 = assert and
+      v1.getDualValue().isThrowsException() and
+      g2 = assert.getExpr(i)
+    |
+      target.(BooleanAssertMethod).getAnAssertionIndex(v2.asBooleanValue()) = i
+      or
+      target.(NullnessAssertMethod).getAnAssertionIndex(any(boolean isNull | v2.isNullness(isNull))) =
+        i
+    )
   }
 }
 
