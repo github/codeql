@@ -1,3 +1,4 @@
+| examples/Alias.java:16:13:16:13 | y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/Alias.java:16:13:16:13 | y | this expression |
 | examples/C.java:14:9:14:14 | this.y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/C.java:14:9:14:14 | this.y | this expression |
 | examples/C.java:15:9:15:14 | this.y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/C.java:15:9:15:14 | this.y | this expression |
 | examples/C.java:16:9:16:14 | this.y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/C.java:16:9:16:14 | this.y | this expression |
