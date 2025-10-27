@@ -237,8 +237,15 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
       t instanceof MicrosoftAspNetCoreHttpQueryCollection or
       t instanceof MicrosoftAspNetCoreHttpQueryString
     |
-      this.getExpr().(Call).getTarget().getDeclaringType() = t or
-      this.asExpr().(Access).getTarget().getDeclaringType() = t
+      (
+        this.getExpr().(Call).getTarget().getDeclaringType() = t or
+        this.asExpr().(Access).getTarget().getDeclaringType() = t
+      ) and
+      not this.asExpr()
+          .(MemberAccess)
+          .getTarget()
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "HttpRequest",
+            ["Method", "Scheme", "IsHttps", "Protocol"])
     )
     or
     exists(Call c |
