@@ -244,6 +244,53 @@ final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
 final class PhiNode = Impl::PhiNode;
 
+predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
+    getDestVar(upd) = def.getSourceVariable()
+  )
+}
+
+deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    uncertainVariableUpdate(v, _, bb, i)
+  )
+}
+
+predicate ssaImplicitInit(WriteDefinition def) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    hasEntryDef(v, bb) and
+    i = -1
+  )
+}
+
+/**
+ * Holds if the SSA definition of `v` at `def` reaches `redef` without crossing another
+ * SSA definition of `v`.
+ */
+deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
+  Impl::uncertainWriteDefinitionInput(redef, def)
+}
+
+VarRead getAUse(Definition def) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    Impl::ssaDefReachesRead(v, def, bb, i) and
+    result.getControlFlowNode() = bb.getNode(i) and
+    result = v.getAnAccess()
+  )
+}
+
+predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
+  Impl::ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+deprecated predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
+  Impl::phiHasInputFromBlock(phi, inp, bb)
+}
+
 cached
 private module Cached {
   /** Gets the destination variable of an update of a tracked variable. */
@@ -256,15 +303,6 @@ private module Cached {
     )
     or
     result.getAnAccess() = upd.(UnaryAssignExpr).getExpr()
-  }
-
-  cached
-  predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
-      getDestVar(upd) = def.getSourceVariable()
-    )
   }
 
   /*
@@ -486,26 +524,9 @@ private module Cached {
 
   overlay[global]
   cached
-  predicate defUpdatesNamedField(SsaImplicitWrite def, TrackedField f, Callable setter) {
-    f = def.getSourceVariable() and
-    updatesNamedField0(def.getControlFlowNode().asCall(), f, setter)
-  }
-
-  cached
-  deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      uncertainVariableUpdate(v, _, bb, i)
-    )
-  }
-
-  cached
-  predicate ssaImplicitInit(WriteDefinition def) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      hasEntryDef(v, bb) and
-      i = -1
-    )
+  predicate defUpdatesNamedField(SsaImplicitWrite calldef, TrackedField f, Callable setter) {
+    f = calldef.getSourceVariable() and
+    updatesNamedField0(calldef.getControlFlowNode().asCall(), f, setter)
   }
 
   /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
@@ -518,15 +539,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the SSA definition of `v` at `def` reaches `redef` without crossing another
-   * SSA definition of `v`.
-   */
-  cached
-  deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
-    Impl::uncertainWriteDefinitionInput(redef, def)
-  }
-
-  /**
    * Holds if the value defined at `def` can reach `use` without passing through
    * any other uses, but possibly through phi nodes and uncertain implicit updates.
    */
@@ -536,25 +548,6 @@ private module Cached {
       Impl::firstUse(def, bb, i, _) and
       use.getControlFlowNode() = bb.getNode(i)
     )
-  }
-
-  cached
-  VarRead getAUse(Definition def) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(v, def, bb, i) and
-      result.getControlFlowNode() = bb.getNode(i) and
-      result = v.getAnAccess()
-    )
-  }
-
-  cached
-  predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
-    Impl::ssaDefReachesEndOfBlock(bb, def, _)
-  }
-
-  cached
-  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, inp, bb)
   }
 
   cached
@@ -666,7 +659,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     }
   }
 
-  Expr getARead(Definition def) { result = getAUse(def) }
+  Expr getARead(Definition def) { result = def.(SsaDefinition).getARead() }
 
   predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 
