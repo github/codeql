@@ -1160,7 +1160,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate directTypeMatch0(
-        Access a, AccessEnvironment e, Declaration target, DeclarationPosition dpos,
+        Access a, DeclarationPosition dpos, AccessEnvironment e, Declaration target,
         TypePath pathToTypeParam, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
@@ -1177,7 +1177,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          directTypeMatch0(a, e, target, dpos, pathToTypeParam, tp) and
+          directTypeMatch0(a, dpos, e, target, pathToTypeParam, tp) and
           accessDeclarationPositionMatch(apos, dpos) and
           t = a.getInferredType(e, apos, pathToTypeParam.appendInverse(path))
         )
