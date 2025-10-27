@@ -297,7 +297,7 @@ module Make<
      */
     predicate isIntRange(int bound, boolean upper) { this = TIntRange(bound, upper) }
 
-    /** Holds if this value represents throwing an exception. */
+    /** Holds if this value represents throwing an exception (or exiting). */
     predicate isThrowsException() { this = TException(true) }
 
     /** Gets a textual representation of this value. */
@@ -368,12 +368,19 @@ module Make<
     e instanceof NonNullExpr and v.isNonNullValue()
   }
 
+  /** Holds if `t` is an exception-like successor type. */
+  private predicate exceptionLike(SuccessorType t) {
+    t instanceof ExceptionSuccessor or
+    t instanceof ExitSuccessor
+  }
+
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
-    exists(SuccessorType norm, ExceptionSuccessor exc |
+    exists(SuccessorType norm, SuccessorType exc |
       bb1.getASuccessor(norm) = normalSucc and
       bb1.getASuccessor(exc) = excSucc and
       normalSucc != excSucc and
-      not norm instanceof ExceptionSuccessor
+      exceptionLike(exc) and
+      not exceptionLike(norm)
     )
   }
 
