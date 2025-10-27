@@ -31,16 +31,11 @@ Choose a safe publication technique that fits your use case. If the value only n
 </recommendation>
 <example>
 
-<p>In the following example, the value of <code>value</code> is not safely published. The <code>produce</code> method
-  creates a new object and assigns it to the field <code>value</code>. However, the field is not
-  declared as <code>volatile</code>, and there are no synchronization mechanisms in place to ensure
-  that the value is fully constructed before it is published.</p>
+<p>In the following example, the values of <code>value</code> and <code>server_id</code> are not safely published. The constructor creates a new object and assigns it to the field <code>value</code>. However, the field is not declared as <code>volatile</code> or <code>final</code>, and there are no synchronization mechanisms in place to ensure that the value is fully constructed before it is published. A different thread may see the default value <code>null</code>. Similarly, the field <code>server_id</code> may be observed to be <code>0</code>.</p>
 
 <sample src="UnsafePublication.java" />
 
-<p>To fix this example, declare the field <code>value</code> as <code>volatile</code>, or use
-  synchronized blocks or methods to ensure that the value is fully constructed before it is
-  published. We illustrate the latter with the following example:</p>
+<p>To fix this example, we declare the field <code>value</code> as volatile. This will ensure that all changes to the field are visible to all threads. The field <code>server_id</code> is only meant to be written once, so we only need the write inside the constructor to be visible to other threads; declaring it <code>final</code> guarantees this:</p>
 
 <sample src="SafePublication.java" />
 

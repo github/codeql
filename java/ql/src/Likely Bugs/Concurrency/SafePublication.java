@@ -1,11 +1,17 @@
 public class SafePublication {
-    private Object value;
+    private volatile Object value;
+    private final int server_id;
 
-    public synchronized void produce() {
-        value = new Object(); // Safely published using synchronization
+    public SafePublication() {
+        value = new Object(); // Safely published as volatile
+        server_id = 1; // Safely published as final
     }
 
     public synchronized Object getValue() {
         return value;
+    }
+
+    public int getServerId() {
+        return server_id;
     }
 }
