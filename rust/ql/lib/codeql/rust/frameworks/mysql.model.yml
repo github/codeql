@@ -10,10 +10,10 @@ extensions:
       - ["<_ as mysql::conn::queryable::Queryable>::query_first_opt", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_fold", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[0]", "sql-injection", "manual"]
-      - ["<_ as mysql::conn::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[0]", "sql-injection", "manual"]
-      - ["<_ as mysql::conn::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
@@ -30,8 +30,8 @@ extensions:
       - ["<_ as mysql::conn::queryable::Queryable>::exec_fold", "Argument[3].Parameter[1]", "database", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[2].Parameter[1].Field[core::result::Result::Ok(0)]", "database", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::exec_fold_opt", "Argument[3].Parameter[1].Field[core::result::Result::Ok(0)]", "database", "manual"]
-      - ["<_ as mysql::conn::queryable::Queryable>::query_iter", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
-      - ["<_ as mysql::conn::queryable::Queryable>::exec_iter", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::exec_iter", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[1].Parameter[0]", "database", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[1].Parameter[0].Field[core::result::Result::Ok(0)]", "database", "manual"]
       - ["<_ as mysql::conn::queryable::Queryable>::exec_map", "Argument[2].Parameter[0]", "database", "manual"]
