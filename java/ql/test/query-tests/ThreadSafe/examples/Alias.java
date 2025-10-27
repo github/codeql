@@ -13,7 +13,7 @@ public class Alias {
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
-            y = 42; // $ SPURIOUS: Alert
+            y = 42;
         } finally {
             this.lock.unlock();
         }

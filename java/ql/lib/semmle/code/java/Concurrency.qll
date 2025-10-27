@@ -184,16 +184,6 @@ module Monitors {
     locallySynchronizedOnClass(e, m.(ClassMonitor).getClassType())
   }
 
-  /** Holds if `localLock` refers to `lock`. */
-  predicate represents(Field lock, Variable localLock) {
-    lock.getType() instanceof LockType and
-    (
-      localLock = lock
-      or
-      localLock.getInitializer() = lock.getAnAccess()
-    )
-  }
-
   /** Gets the control flow node that must dominate `e` when `e` is synchronized on a lock. */
   ControlFlowNode getNodeToBeDominated(Expr e) {
     // If `e` is the LHS of an assignment, use the control flow node for the assignment
@@ -204,15 +194,38 @@ module Monitors {
     result = e.getControlFlowNode()
   }
 
+  /** A field storing a lock. */
+  class LockField extends Field {
+    LockField() { this.getType() instanceof LockType }
+
+    /** Gets a call to a method locking the lock stored in this field. */
+    MethodCall getLockCall() {
+      result.getQualifier() = this.getRepresentative().getAnAccess() and
+      result = this.getType().(LockType).getLockAccess()
+    }
+
+    /** Gets a call to a method unlocking the lock stored in this field. */
+    MethodCall getUnlockCall() {
+      result.getQualifier() = this.getRepresentative().getAnAccess() and
+      result = this.getType().(LockType).getUnlockAccess()
+    }
+
+    /**
+     * Gets a variable representing this field.
+     * It can be the field itself or a local variable initialized to the field.
+     */
+    private Variable getRepresentative() {
+      result = this
+      or
+      result.getInitializer() = this.getAnAccess()
+    }
+  }
+
   /** Holds if `e` is synchronized on the `Lock` `lock` by a locking call. */
-  predicate locallyLockedOn(Expr e, Field lock) {
-    lock.getType() instanceof LockType and
-    exists(Variable localLock, MethodCall lockCall, MethodCall unlockCall |
-      represents(lock, localLock) and
-      lockCall.getQualifier() = localLock.getAnAccess() and
-      lockCall = lock.getType().(LockType).getLockAccess() and
-      unlockCall.getQualifier() = localLock.getAnAccess() and
-      unlockCall = lock.getType().(LockType).getUnlockAccess()
+  predicate locallyLockedOn(Expr e, LockField lock) {
+    exists(MethodCall lockCall, MethodCall unlockCall |
+      lockCall = lock.getLockCall() and
+      unlockCall = lock.getUnlockCall()
     |
       dominates(lockCall.getControlFlowNode(), unlockCall.getControlFlowNode()) and
       dominates(lockCall.getControlFlowNode(), getNodeToBeDominated(e)) and
