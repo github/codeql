@@ -9,8 +9,8 @@ extensions:
       - ["<_ as mysql_async::queryable::Queryable>::query_fold", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql_async::queryable::Queryable>::query_stream", "Argument[0]", "sql-injection", "manual"]
       - ["<_ as mysql_async::queryable::Queryable>::query_map", "Argument[0]", "sql-injection", "manual"]
-      - ["<mysql_async::conn::Conn as mysql_async::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
-      - ["<mysql_async::conn::Conn as mysql_async::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
@@ -21,8 +21,8 @@ extensions:
       - ["<_ as mysql_async::queryable::Queryable>::exec_first", "ReturnValue.Future.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]", "database", "manual"]
       - ["<_ as mysql_async::queryable::Queryable>::query_fold", "Argument[2].Parameter[1]", "database", "manual"]
       - ["<_ as mysql_async::queryable::Queryable>::exec_fold", "Argument[3].Parameter[1]", "database", "manual"]
-      - ["<mysql_async::conn::Conn as mysql_async::queryable::Queryable>::query_iter", "ReturnValue.Future.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
-      - ["<mysql_async::conn::Conn as mysql_async::queryable::Queryable>::exec_iter", "ReturnValue.Future.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::query_iter", "ReturnValue.Future.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<_ as mysql_async::queryable::Queryable>::exec_iter", "ReturnValue.Future.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
       - ["<_ as mysql_async::queryable::Queryable>::query_map", "Argument[1].Parameter[0]", "database", "manual"]
       - ["<_ as mysql_async::queryable::Queryable>::exec_map", "Argument[2].Parameter[0]", "database", "manual"]
       - ["<mysql_common::row::Row>::get", "ReturnValue.Field[core::option::Option::Some(0)]", "database", "manual"]
