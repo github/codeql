@@ -240,12 +240,6 @@ overlayChangedFiles(
 
 @location = @location_default | @assembly;
 
-@locatable = @declaration_with_accessors | @callable_accessor | @declaration_or_directive
-           | @diagnostic | @extractor_message | @preprocessor_directive | @attribute | @type_mention | @type_parameter_constraints
-           | @declaration_with_accessors | @callable_accessor | @operator | @method
-           | @constructor | @destructor | @field | @local_variable | @parameter | @stmt | @expr
-           | @xmllocatable | @commentline | @commentblock | @asp_element
-
 locations_default(
   unique int id: @location_default,
   int file: @file ref,
