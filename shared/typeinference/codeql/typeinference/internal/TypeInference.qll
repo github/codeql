@@ -1269,7 +1269,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         private newtype TRelevantAccess =
-          MkRelevantAccess(Access a, AccessEnvironment e, AccessPosition apos, TypePath path) {
+          MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e, TypePath path) {
             relevantAccessConstraint(a, e, _, apos, path, _)
           }
 
@@ -1279,11 +1279,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
-          AccessEnvironment e;
           AccessPosition apos;
+          AccessEnvironment e;
           TypePath path;
 
-          RelevantAccess() { this = MkRelevantAccess(a, e, apos, path) }
+          RelevantAccess() { this = MkRelevantAccess(a, apos, e, path) }
 
           Type getTypeAt(TypePath suffix) {
             result = a.getInferredType(e, apos, path.appendInverse(suffix))
@@ -1314,7 +1314,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Type constraint, TypePath path, Type t
         ) {
           exists(RelevantAccess ra |
-            ra = MkRelevantAccess(a, e, apos, prefix) and
+            ra = MkRelevantAccess(a, apos, e, prefix) and
             SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(ra,
               constraint, path, t) and
             constraint = ra.getConstraint(target)

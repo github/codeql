@@ -1812,8 +1812,12 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
     }
 
     pragma[nomagic]
-    private Type getInferredSelfType(string derefChain, boolean borrow, TypePath path) {
-      result = this.getACandidateReceiverTypeAt(derefChain, borrow, path)
+    private Type getInferredSelfType(AccessPosition apos, string derefChainBorrow, TypePath path) {
+      exists(string derefChain, boolean borrow |
+        result = this.getACandidateReceiverTypeAt(derefChain, borrow, path) and
+        derefChainBorrow = encodeDerefChainBorrow(derefChain, borrow) and
+        apos.isSelf()
+      )
     }
 
     pragma[nomagic]
@@ -1839,11 +1843,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
 
     bindingset[derefChainBorrow]
     Type getInferredType(string derefChainBorrow, AccessPosition apos, TypePath path) {
-      exists(string derefChain, boolean borrow |
-        derefChainBorrow = encodeDerefChainBorrow(derefChain, borrow) and
-        apos.isSelf() and
-        result = this.getInferredSelfType(derefChain, borrow, path)
-      )
+      result = this.getInferredSelfType(apos, derefChainBorrow, path)
       or
       result = this.getInferredNonSelfType(apos, path)
     }
