@@ -24,17 +24,12 @@ private module Cached {
   cached
   newtype TSplitKind =
     TInitializerSplitKind() or
-    TConditionalCompletionSplitKind() or
-    TAssertionSplitKind()
+    TConditionalCompletionSplitKind()
 
   cached
   newtype TSplit =
     TInitializerSplit(Constructor c) { InitializerSplitting::constructorInitializes(c, _) } or
-    TConditionalCompletionSplit(ConditionalCompletion c) or
-    TAssertionSplit(AssertionSplitting::Assertion a, int i, boolean success) {
-      exists(a.getExpr(i)) and
-      success in [false, true]
-    }
+    TConditionalCompletionSplit(ConditionalCompletion c)
 }
 
 import Cached
@@ -319,131 +314,4 @@ module ConditionalCompletionSplitting {
   }
 
   int getNextListOrder() { result = InitializerSplitting::getNextListOrder() + 1 }
-}
-
-module AssertionSplitting {
-  import semmle.code.csharp.commons.Assertions
-  private import semmle.code.csharp.ExprOrStmtParent
-
-  private AstNode getAnAssertionDescendant(Assertion a) {
-    result = a
-    or
-    result = getAnAssertionDescendant(a).getAChild()
-  }
-
-  /**
-   * A split for assertions. For example, in
-   *
-   * ```csharp
-   * void M(int i)
-   * {
-   *     Debug.Assert(i >= 0);
-   *     System.Console.WriteLine("i is positive")
-   * }
-   * ```
-   *
-   * we record whether `i >= 0` evaluates to `true` or `false`, and restrict the
-   * edges out of the assertion accordingly.
-   */
-  class AssertionSplit extends Split, TAssertionSplit {
-    Assertion a;
-    boolean success;
-    int i;
-
-    AssertionSplit() { this = TAssertionSplit(a, i, success) }
-
-    /** Gets the assertion. */
-    Assertion getAssertion() { result = a }
-
-    /** Holds if this split represents a successful assertion. */
-    predicate isSuccess() { success = true }
-
-    override string toString() {
-      success = true and result = "assertion success"
-      or
-      success = false and result = "assertion failure"
-    }
-  }
-
-  private class AssertionSplitKind extends SplitKind, TAssertionSplitKind {
-    override int getListOrder() { result = ConditionalCompletionSplitting::getNextListOrder() }
-
-    override predicate isEnabled(AstNode cfe) { this.appliesTo(cfe) }
-
-    override string toString() { result = "Assertion" }
-  }
-
-  int getNextListOrder() { result = ConditionalCompletionSplitting::getNextListOrder() + 1 }
-
-  private class AssertionSplitImpl extends SplitImpl instanceof AssertionSplit {
-    Assertion a;
-    boolean success;
-    int i;
-
-    AssertionSplitImpl() { this = TAssertionSplit(a, i, success) }
-
-    override AssertionSplitKind getKind() { any() }
-
-    override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      exists(AssertMethod m |
-        last(a.getExpr(i), pred, c) and
-        succ(pred, succ, c) and
-        m = a.getAssertMethod() and
-        // The assertion only succeeds when all asserted arguments succeeded, so
-        // we only enter a "success" state after the last argument has succeeded.
-        //
-        // The split is only entered if we are not already in a "failing" state
-        // for one of the previous arguments, which ensures that the "success"
-        // state is only entered when all arguments succeed. This also means
-        // that if multiple arguments fail, then the first failing argument
-        // will determine the exception being thrown by the assertion.
-        if success = true then i = max(int j | exists(a.getExpr(j))) else any()
-      |
-        exists(boolean b | i = m.(BooleanAssertMethod).getAnAssertionIndex(b) |
-          c instanceof TrueCompletion and success = b
-          or
-          c instanceof FalseCompletion and success = b.booleanNot()
-        )
-        or
-        exists(boolean b | i = m.(NullnessAssertMethod).getAnAssertionIndex(b) |
-          c.(NullnessCompletion).isNull() and success = b
-          or
-          c.(NullnessCompletion).isNonNull() and success = b.booleanNot()
-        )
-      )
-    }
-
-    override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
-
-    override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
-      this.appliesTo(pred) and
-      pred = a and
-      succ(pred, succ, c) and
-      (
-        success = true and
-        c instanceof NormalCompletion
-        or
-        success = false and
-        c = assertionCompletion(a, i)
-      )
-    }
-
-    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      this.appliesTo(last) and
-      last = a and
-      scopeLast(scope, last, c) and
-      (
-        success = true and
-        c instanceof NormalCompletion
-        or
-        success = false and
-        c = assertionCompletion(a, i)
-      )
-    }
-
-    override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
-      this.appliesSucc(pred, succ, c) and
-      succ = getAnAssertionDescendant(a)
-    }
-  }
 }
