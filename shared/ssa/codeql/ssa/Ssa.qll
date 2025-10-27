@@ -1761,7 +1761,7 @@ module Make<
      * ```
      * a phi definition for `x` is inserted just before the call `puts x`.
      */
-    class SsaPhiDefinition extends SsaDefinition {
+    class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
       /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
         phiHasInputFromBlockCached(this, inp, bb)
