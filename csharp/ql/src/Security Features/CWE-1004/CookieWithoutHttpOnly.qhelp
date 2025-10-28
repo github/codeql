@@ -51,7 +51,7 @@ In the example below, the <code>httpOnlyCookies</code> attribute is set to <code
 <references>
 
 <li>ASP.Net Core docs: <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.httponly">CookieOptions.HttpOnly Property</a>.</li>
-<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header</li>.
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header.</li>
 <li>Web Forms docs: <a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.httponly(v=vs.110).aspx">HttpCookie.HttpOnly Property</a>.</li>
 <li>Web Forms docs: <a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element</a>.</li>
 <li>PortSwigger: <a href="https://portswigger.net/kb/issues/00500600_cookie-without-httponly-flag-set">Cookie without HttpOnly flag set</a></li>
