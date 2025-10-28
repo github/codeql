@@ -874,7 +874,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * fn foo() -> i32 {}
+   * fn foo() -> i32 { 0 }
    * //       ^^^^^^
    * ```
    */
@@ -1270,7 +1270,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> { 0 }
    * //                                                        ^^^^^^^^
    * ```
    */

@@ -4,6 +4,6 @@ fn test_ret_type_repr() -> () {
     // A return type in a function signature.
     // 
     // For example:
-    fn foo() -> i32 {}
+    fn foo() -> i32 { 0 }
     //       ^^^^^^
 }
