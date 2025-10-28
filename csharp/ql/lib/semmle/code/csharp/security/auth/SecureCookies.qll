@@ -1,9 +1,9 @@
 /**
- * Definitions for detecting insecure and non-httponly cookies.
+ * Definitions for detecting insecure and non-HttpOnly cookies.
  */
 
 import csharp
-import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 /**
  * Holds if the expression is a sensitive string literal or a variable with a sensitive name.
