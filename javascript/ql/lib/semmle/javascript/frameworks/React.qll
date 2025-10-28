@@ -615,7 +615,7 @@ private class UseStateStep extends PreCallGraphStep {
 /**
  * Step through a `useRef` call.
  *
- * It returns a pair of the initial state, and an object with a single property (current) potentially containing an input value.
+ * It returns an object with a single property (`current`) initialized to the initial value.
  *
  * For example:
  * ```js
