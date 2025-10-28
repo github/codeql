@@ -33,7 +33,7 @@ abstract private class DiscardableEntity extends @locatable {
  * The rest use named TRAP IDs.
  */
 overlay[local]
-private class StarEntity = @expr or @stmt;
+private class StarEntity = @expr or @stmt or @diagnostic or @extractor_message;
 
 overlay[discard_entity]
 private predicate discardStarEntity(@locatable e) {
@@ -98,7 +98,9 @@ private class PossibleDiscardableEntity extends DiscardableEntity instanceof @lo
       param_location(this, loc) or
       type_mention_location(this, loc) or
       commentline_location(this, loc) or
-      commentblock_location(this, loc)
+      commentblock_location(this, loc) or
+      diagnostics(this, _, _, _, _, loc) or
+      extractor_messages(this, _, _, _, _, loc, _)
     )
   }
 }
