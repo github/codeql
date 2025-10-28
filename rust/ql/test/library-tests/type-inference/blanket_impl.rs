@@ -184,6 +184,85 @@ mod extension_trait_blanket_impl {
     }
 }
 
+mod blanket_like_impl {
+    #[derive(Debug, Copy, Clone)]
+    struct S1;
+
+    #[derive(Debug, Copy, Clone)]
+    struct S2;
+
+    trait MyTrait1 {
+        // MyTrait1::m1
+        fn m1(self);
+    }
+
+    trait MyTrait2 {
+        // MyTrait2::m2
+        fn m2(self);
+    }
+
+    trait MyTrait3 {
+        // MyTrait3::m3
+        fn m3(self);
+    }
+
+    trait MyTrait4a {
+        // MyTrait4a::m4
+        fn m4(self);
+    }
+
+    trait MyTrait4b {
+        // MyTrait4b::m4
+        fn m4(self);
+    }
+
+    impl MyTrait1 for S1 {
+        // S1::m1
+        fn m1(self) {}
+    }
+
+    impl MyTrait3 for S1 {
+        // S1::m3
+        fn m3(self) {}
+    }
+
+    impl<T: MyTrait1 + Copy> MyTrait2 for &T {
+        // MyTrait2Ref::m2
+        fn m2(self) {
+            self.m1() // $ target=MyTrait1::m1
+        }
+    }
+
+    impl MyTrait2 for &&S1 {
+        // MyTrait2RefRefS1::m2
+        fn m2(self) {
+            self.m1() // $ MISSING: target=S1::m1
+        }
+    }
+
+    impl<T: MyTrait3> MyTrait4a for T {
+        // MyTrait4aBlanket::m4
+        fn m4(self) {
+            self.m3() // $ target=MyTrait3::m3
+        }
+    }
+
+    impl<T> MyTrait4b for &T {
+        // MyTrait4bRef::m4
+        fn m4(self) {}
+    }
+
+    pub fn test_basic_blanket() {
+        let x1 = S1.m1(); // $ target=S1::m1
+        let x2 = (&S1).m2(); // $ target=MyTrait2Ref::m2
+        let x3 = (&&S1).m2(); // $ target=MyTrait2RefRefS1::m2
+        let x4 = S1.m4(); // $ target=MyTrait4aBlanket::m4
+        let x5 = (&S1).m4(); // $ target=MyTrait4bRef::m4
+        let x6 = S2.m4(); // $ target=MyTrait4bRef::m4
+        let x7 = (&S2).m4(); // $ target=MyTrait4bRef::m4
+    }
+}
+
 pub mod sql_exec {
     // a highly simplified model of `MySqlConnection.execute` in SQLx
 

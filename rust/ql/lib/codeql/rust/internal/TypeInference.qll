@@ -901,14 +901,14 @@ private predicate assocFunctionInfo(
 
 /**
  * Holds if function `f` with the name `name` and the arity `arity` exists in
- * blanket implementation `impl` of `trait`, and the type at position
+ * blanket (like) implementation `impl` of `trait`, and the type at position
  * `pos` is `t`.
  *
  * `blanketPath` points to the type `blanketTypeParam` inside `t`, which
  * is the type parameter used in the blanket implementation.
  */
 pragma[nomagic]
-private predicate functionInfoBlanket(
+private predicate functionInfoBlanketLike(
   Function f, string name, int arity, ImplItemNode impl, Trait trait, FunctionPosition pos,
   AssocFunctionType t, TypePath blanketPath, TypeParam blanketTypeParam
 ) {
@@ -1027,19 +1027,20 @@ private module MethodResolution {
 
   /**
    * Holds if method `m` with the name `name` and the arity `arity` exists in
-   * blanket implementation `impl` of `trait`, and the type of the `self`
+   * blanket (like) implementation `impl` of `trait`, and the type of the `self`
    * parameter is `selfType`.
    *
    * `blanketPath` points to the type `blanketTypeParam` inside `selfType`, which
    * is the type parameter used in the blanket implementation.
    */
   pragma[nomagic]
-  private predicate methodInfoBlanket(
+  private predicate methodInfoBlanketLike(
     Method m, string name, int arity, ImplItemNode impl, Trait trait, AssocFunctionType selfType,
     TypePath blanketPath, TypeParam blanketTypeParam
   ) {
     exists(FunctionPosition pos |
-      functionInfoBlanket(m, name, arity, impl, trait, pos, selfType, blanketPath, blanketTypeParam) and
+      functionInfoBlanketLike(m, name, arity, impl, trait, pos, selfType, blanketPath,
+        blanketTypeParam) and
       pos.isSelf()
     )
   }
@@ -1113,8 +1114,8 @@ private module MethodResolution {
   }
 
   /**
-   * Holds if method call `mc` may target a method in blanket implementation `i`
-   * with `self` parameter having type `selfType`.
+   * Holds if method call `mc` may target a method in blanket (like) implementation
+   * `impl` with `self` parameter having type `selfType`.
    *
    * `blanketPath` points to the type `blanketTypeParam` inside `selfType`, which
    * is the type parameter used in the blanket implementation.
@@ -1125,13 +1126,13 @@ private module MethodResolution {
    */
   bindingset[mc]
   pragma[inline_late]
-  private predicate methodCallBlanketCandidate(
+  private predicate methodCallBlanketLikeCandidate(
     MethodCall mc, Method m, ImplItemNode impl, AssocFunctionType self, TypePath blanketPath,
     TypeParam blanketTypeParam
   ) {
     exists(string name, int arity |
       mc.hasNameAndArity(name, arity) and
-      methodInfoBlanket(m, name, arity, impl, _, self, blanketPath, blanketTypeParam)
+      methodInfoBlanketLike(m, name, arity, impl, _, self, blanketPath, blanketTypeParam)
     |
       methodCallVisibleImplTraitCandidate(mc, impl)
       or
@@ -1217,6 +1218,23 @@ private module MethodResolution {
     }
 
     /**
+     * Holds if the method inside blanket-like implementation `impl` with matching name
+     * and arity can be ruled out as a target of this call, either because the candidate
+     * receiver type represented by `derefChain` and `borrow` is incompatible with the `self`
+     * parameter type, or because the blanket constraint is not satisfied.
+     */
+    pragma[nomagic]
+    private predicate hasIncompatibleBlanketLikeTarget(
+      ImplItemNode impl, string derefChain, boolean borrow
+    ) {
+      ReceiverIsNotInstantiationOfBlanketLikeSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this,
+          derefChain, borrow), impl, _)
+      or
+      ReceiverSatisfiesBlanketLikeConstraint::dissatisfiesBlanketConstraint(MkMethodCallCand(this,
+          derefChain, borrow), impl)
+    }
+
+    /**
      * Same as `getACandidateReceiverTypeAt`, but with traits substituted in for types
      * with trait bounds.
      */
@@ -1234,15 +1252,38 @@ private module MethodResolution {
       isComplexRootStripped(strippedTypePath, result)
     }
 
-    bindingset[strippedTypePath, strippedType, derefChain, borrow]
-    private predicate hasNoCompatibleTargetCheck(
+    bindingset[derefChain, borrow, strippedTypePath, strippedType]
+    private predicate hasNoCompatibleNonBlanketLikeTargetCheck(
       string derefChain, boolean borrow, TypePath strippedTypePath, Type strippedType
     ) {
-      // todo: also check that all blanket implementation candidates are incompatible
       forall(ImplOrTraitItemNode i |
         methodCallNonBlanketCandidate(this, _, i, _, strippedTypePath, strippedType)
       |
         this.hasIncompatibleTarget(i, derefChain, borrow)
+      )
+    }
+
+    bindingset[derefChain, borrow, strippedTypePath, strippedType]
+    private predicate hasNoCompatibleTargetCheck(
+      string derefChain, boolean borrow, TypePath strippedTypePath, Type strippedType
+    ) {
+      this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, borrow, strippedTypePath,
+        strippedType) and
+      forall(ImplItemNode i | methodCallBlanketLikeCandidate(this, _, i, _, _, _) |
+        this.hasIncompatibleBlanketLikeTarget(i, derefChain, borrow)
+      )
+    }
+
+    bindingset[derefChain, borrow, strippedTypePath, strippedType]
+    private predicate hasNoCompatibleNonBlanketTargetCheck(
+      string derefChain, boolean borrow, TypePath strippedTypePath, Type strippedType
+    ) {
+      this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, borrow, strippedTypePath,
+        strippedType) and
+      forall(ImplItemNode i |
+        methodCallBlanketLikeCandidate(this, _, i, _, _, _) and not i.isBlanketImplementation()
+      |
+        this.hasIncompatibleBlanketLikeTarget(i, derefChain, borrow)
       )
     }
 
@@ -1256,13 +1297,33 @@ private module MethodResolution {
         this.supportsAutoDerefAndBorrow()
         or
         // needed for the `hasNoCompatibleTarget` check in
-        // `SatisfiesBlanketConstraintInput::hasBlanketCandidate`
+        // `ReceiverSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
         derefChain = ""
       ) and
       exists(TypePath strippedTypePath, Type strippedType |
         not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
         strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
         this.hasNoCompatibleTargetCheck(derefChain, false, strippedTypePath, strippedType)
+      )
+    }
+
+    /**
+     * Holds if the candidate receiver type represented by `derefChain` does not have
+     * a matching non-blanket method target.
+     */
+    pragma[nomagic]
+    predicate hasNoCompatibleNonBlanketTargetNoBorrow(string derefChain) {
+      (
+        this.supportsAutoDerefAndBorrow()
+        or
+        // needed for the `hasNoCompatibleTarget` check in
+        // `ReceiverSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
+        derefChain = ""
+      ) and
+      exists(TypePath strippedTypePath, Type strippedType |
+        not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
+        strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
+        this.hasNoCompatibleNonBlanketTargetCheck(derefChain, false, strippedTypePath, strippedType)
       )
     }
 
@@ -1275,7 +1336,21 @@ private module MethodResolution {
       exists(TypePath strippedTypePath, Type strippedType |
         this.hasNoCompatibleTargetNoBorrow(derefChain) and
         strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
-        this.hasNoCompatibleTargetCheck(derefChain, true, strippedTypePath, strippedType)
+        this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, true, strippedTypePath,
+          strippedType)
+      )
+    }
+
+    /**
+     * Holds if the candidate receiver type represented by `derefChain`, followed
+     * by a borrow, does not have a matching non-blanket method target.
+     */
+    pragma[nomagic]
+    predicate hasNoCompatibleNonBlanketTargetBorrow(string derefChain) {
+      exists(TypePath strippedTypePath, Type strippedType |
+        this.hasNoCompatibleTargetNoBorrow(derefChain) and
+        strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
+        this.hasNoCompatibleNonBlanketTargetCheck(derefChain, true, strippedTypePath, strippedType)
       )
     }
 
@@ -1470,11 +1545,11 @@ private module MethodResolution {
     }
 
     pragma[nomagic]
-    predicate hasNoCompatibleTarget() {
-      mc_.hasNoCompatibleTargetBorrow(derefChain) and
+    predicate hasNoCompatibleNonBlanketTarget() {
+      mc_.hasNoCompatibleNonBlanketTargetBorrow(derefChain) and
       borrow = true
       or
-      mc_.hasNoCompatibleTargetNoBorrow(derefChain) and
+      mc_.hasNoCompatibleNonBlanketTargetNoBorrow(derefChain) and
       borrow = false
     }
 
@@ -1555,20 +1630,20 @@ private module MethodResolution {
     Location getLocation() { result = mc_.getLocation() }
   }
 
-  private module ReceiverSatisfiesBlanketConstraintInput implements
+  private module ReceiverSatisfiesBlanketLikeConstraintInput implements
     BlanketImplementation::SatisfiesBlanketConstraintInputSig<MethodCallCand>
   {
     pragma[nomagic]
     predicate hasBlanketCandidate(
       MethodCallCand mcc, ImplItemNode impl, TypePath blanketPath, TypeParam blanketTypeParam
     ) {
-      exists(MethodCall mc, string name, int arity |
-        mcc.hasSignature(mc, _, _, name, arity) and
-        methodCallBlanketCandidate(mc, _, impl, _, blanketPath, blanketTypeParam) and
+      exists(MethodCall mc |
+        mc = mcc.getMethodCall() and
+        methodCallBlanketLikeCandidate(mc, _, impl, _, blanketPath, blanketTypeParam) and
         // Only apply blanket implementations when no other implementations are possible;
         // this is to account for codebases that use the (unstable) specialization feature
         // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html)
-        mcc.hasNoCompatibleTarget()
+        (mcc.hasNoCompatibleNonBlanketTarget() or not impl.isBlanketImplementation())
       |
         mcc.hasNoBorrow()
         or
@@ -1577,9 +1652,9 @@ private module MethodResolution {
     }
   }
 
-  private module ReceiverSatisfiesBlanketConstraint =
+  private module ReceiverSatisfiesBlanketLikeConstraint =
     BlanketImplementation::SatisfiesBlanketConstraint<MethodCallCand,
-      ReceiverSatisfiesBlanketConstraintInput>;
+      ReceiverSatisfiesBlanketLikeConstraintInput>;
 
   /**
    * A configuration for matching the type of a receiver against the type of
@@ -1600,8 +1675,8 @@ private module MethodResolution {
       |
         methodCallNonBlanketCandidate(mc, m, i, selfType, strippedTypePath, strippedType)
         or
-        methodCallBlanketCandidate(mc, m, i, selfType, _, _) and
-        ReceiverSatisfiesBlanketConstraint::satisfiesBlanketConstraint(mcc, i)
+        methodCallBlanketLikeCandidate(mc, m, i, selfType, _, _) and
+        ReceiverSatisfiesBlanketLikeConstraint::satisfiesBlanketConstraint(mcc, i)
       )
     }
 
@@ -1625,6 +1700,30 @@ private module MethodResolution {
 
   private module ReceiverIsInstantiationOfSelfParam =
     ArgIsInstantiationOf<MethodCallCand, ReceiverIsInstantiationOfSelfParamInput>;
+
+  /**
+   * A configuration for anti-matching the type of a receiver against the type of
+   * a `self` parameter belonging to a blanket (like) implementation.
+   */
+  private module ReceiverIsNotInstantiationOfBlanketLikeSelfParamInput implements
+    IsInstantiationOfInputSig<MethodCallCand, AssocFunctionType>
+  {
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      MethodCallCand mcc, TypeAbstraction abs, AssocFunctionType constraint
+    ) {
+      methodCallBlanketLikeCandidate(mcc.getMethodCall(), _, abs, constraint, _, _) and
+      if abs.(Impl).hasTrait()
+      then
+        // inherent methods take precedence over trait methods, so only allow
+        // trait methods when there are no matching inherent methods
+        mcc.hasNoInherentTarget()
+      else any()
+    }
+  }
+
+  private module ReceiverIsNotInstantiationOfBlanketLikeSelfParam =
+    ArgIsInstantiationOf<MethodCallCand, ReceiverIsNotInstantiationOfBlanketLikeSelfParamInput>;
 
   /**
    * A configuration for matching the type qualifier of a method call
@@ -1678,10 +1777,6 @@ private module MethodResolution {
     ) {
       ReceiverIsInstantiationOfSelfParamInput::potentialInstantiationOf0(mcc, abs, constraint) and
       abs = any(Impl i | not i.hasTrait())
-    }
-
-    predicate relevantConstraint(AssocFunctionType constraint) {
-      methodInfo(_, _, _, _, constraint, _, _)
     }
   }
 
@@ -1948,18 +2043,18 @@ private module NonMethodResolution {
   }
 
   pragma[nomagic]
-  private predicate functionInfoBlanketRelevantPos(
+  private predicate functionInfoBlanketLikeRelevantPos(
     NonMethodFunction f, string name, int arity, ImplItemNode impl, Trait trait,
     FunctionPosition pos, AssocFunctionType t, TypePath blanketPath, TypeParam blanketTypeParam
   ) {
-    functionInfoBlanket(f, name, arity, impl, trait, pos, t, blanketPath, blanketTypeParam) and
+    functionInfoBlanketLike(f, name, arity, impl, trait, pos, t, blanketPath, blanketTypeParam) and
     (
       if pos.isReturn()
       then
         // We only check that the context of the call provides relevant type information
         // when no argument can
         not exists(FunctionPosition pos0 |
-          functionInfoBlanket(f, name, arity, impl, trait, pos0, _, _, _) and
+          functionInfoBlanketLike(f, name, arity, impl, trait, pos0, _, _, _) and
           not pos0.isReturn()
         )
       else any()
@@ -1967,10 +2062,10 @@ private module NonMethodResolution {
   }
 
   pragma[nomagic]
-  private predicate blanketCallTraitCandidate(Element fc, Trait trait) {
+  private predicate blanketLikeCallTraitCandidate(Element fc, Trait trait) {
     exists(string name, int arity |
       fc.(NonMethodCall).hasNameAndArity(name, arity) and
-      functionInfoBlanketRelevantPos(_, name, arity, _, trait, _, _, _, _)
+      functionInfoBlanketLikeRelevantPos(_, name, arity, _, trait, _, _, _, _)
     |
       not fc.(Call).hasTrait()
       or
@@ -1978,7 +2073,7 @@ private module NonMethodResolution {
     )
   }
 
-  private module BlanketTraitIsVisible = TraitIsVisible<blanketCallTraitCandidate/2>;
+  private module BlanketTraitIsVisible = TraitIsVisible<blanketLikeCallTraitCandidate/2>;
 
   /** A (potential) non-method call, `f(x)`. */
   final class NonMethodCall extends CallExpr {
@@ -2037,13 +2132,13 @@ private module NonMethodResolution {
     }
 
     pragma[nomagic]
-    predicate resolveCallTargetBlanketCandidate(
+    predicate resolveCallTargetBlanketLikeCandidate(
       ImplItemNode impl, FunctionPosition pos, TypePath blanketPath, TypeParam blanketTypeParam
     ) {
       exists(string name, int arity, Trait trait, AssocFunctionType t |
         this.hasNameAndArity(name, arity) and
         exists(this.getTypeAt(pos, blanketPath)) and
-        functionInfoBlanketRelevantPos(_, name, arity, impl, trait, pos, t, blanketPath,
+        functionInfoBlanketLikeRelevantPos(_, name, arity, impl, trait, pos, t, blanketPath,
           blanketTypeParam) and
         BlanketTraitIsVisible::traitIsVisible(this, trait)
       )
@@ -2080,7 +2175,7 @@ private module NonMethodResolution {
 
   private newtype TCallAndBlanketPos =
     MkCallAndBlanketPos(NonMethodCall fc, FunctionPosition pos) {
-      fc.resolveCallTargetBlanketCandidate(_, pos, _, _)
+      fc.resolveCallTargetBlanketLikeCandidate(_, pos, _, _)
     }
 
   /** A call tagged with a position. */
@@ -2106,7 +2201,7 @@ private module NonMethodResolution {
     ) {
       exists(NonMethodCall fc, FunctionPosition pos |
         fcp = MkCallAndBlanketPos(fc, pos) and
-        fc.resolveCallTargetBlanketCandidate(impl, pos, blanketPath, blanketTypeParam)
+        fc.resolveCallTargetBlanketLikeCandidate(impl, pos, blanketPath, blanketTypeParam)
       )
     }
   }
@@ -2129,12 +2224,12 @@ private module NonMethodResolution {
       exists(FunctionPosition pos |
         ArgSatisfiesBlanketConstraint::satisfiesBlanketConstraint(fcp, abs) and
         fcp = MkCallAndBlanketPos(_, pos) and
-        functionInfoBlanketRelevantPos(_, _, _, abs, _, pos, constraint, _, _)
+        functionInfoBlanketLikeRelevantPos(_, _, _, abs, _, pos, constraint, _, _)
       )
     }
 
     predicate relevantConstraint(AssocFunctionType constraint) {
-      functionInfoBlanketRelevantPos(_, _, _, _, _, _, constraint, _, _)
+      functionInfoBlanketLikeRelevantPos(_, _, _, _, _, _, constraint, _, _)
     }
   }
 
