@@ -225,8 +225,8 @@ codeql::BuiltinIntegerType TypeTranslator::translateBuiltinIntegerType(
   return entry;
 }
 
-codeql::OpenedArchetypeType TypeTranslator::translateOpenedArchetypeType(
-    const swift::OpenedArchetypeType& type) {
+codeql::ExistentialArchetypeType TypeTranslator::translateExistentialArchetypeType(
+    const swift::ExistentialArchetypeType& type) {
   auto entry = createTypeEntry(type);
   fillArchetypeType(type, entry);
   return entry;

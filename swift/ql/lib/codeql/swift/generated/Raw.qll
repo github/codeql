@@ -161,7 +161,24 @@ module Raw {
    * if #available(iOS 12, *)
    * ```
    */
-  class AvailabilitySpec extends @availability_spec, AstNode { }
+  class AvailabilitySpec extends @availability_spec, AstNode {
+    override string toString() { result = "AvailabilitySpec" }
+
+    /**
+     * Gets the platform of this availability spec, if it exists.
+     */
+    string getPlatform() { availability_spec_platforms(this, result) }
+
+    /**
+     * Gets the version of this availability spec, if it exists.
+     */
+    string getVersion() { availability_spec_versions(this, result) }
+
+    /**
+     * Holds if this availability spec is wildcard.
+     */
+    predicate isWildcard() { availability_spec_is_wildcard(this) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -209,12 +226,14 @@ module Raw {
      *
      * INTERNAL: Do not use.
      *
-     * This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
-     * (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
-     * and 9 for tuple element indexing.
+     * TODO: Swift 6.2 update with UnresolvedApply and Apply
      *
-     * The following values should not appear: 0 for invalid components, 1 for unresolved
-     * properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
+     * This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
+     * (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
+     * and 11 for tuple element indexing.
+     *
+     * The following values should not appear: 0 for invalid components, 2 for unresolved
+     * properties, 3 for unresolved subscripts, 12 for #keyPath dictionary keys, and 13 for
      * implicit IDE code completion data.
      */
     int getKind() { key_path_components(this, result, _) }
@@ -306,34 +325,6 @@ module Raw {
      * These will be present only in certain downgraded databases.
      */
     AstNode getChild(int index) { unspecified_element_children(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A wildcard availability spec `*`
-   */
-  class OtherAvailabilitySpec extends @other_availability_spec, AvailabilitySpec {
-    override string toString() { result = "OtherAvailabilitySpec" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
-   */
-  class PlatformVersionAvailabilitySpec extends @platform_version_availability_spec,
-    AvailabilitySpec
-  {
-    override string toString() { result = "PlatformVersionAvailabilitySpec" }
-
-    /**
-     * Gets the platform of this platform version availability spec.
-     */
-    string getPlatform() { platform_version_availability_specs(this, result, _) }
-
-    /**
-     * Gets the version of this platform version availability spec.
-     */
-    string getVersion() { platform_version_availability_specs(this, _, result) }
   }
 
   /**
@@ -3859,8 +3850,8 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class OpenedArchetypeType extends @opened_archetype_type, LocalArchetypeType {
-    override string toString() { result = "OpenedArchetypeType" }
+  class ExistentialArchetypeType extends @existential_archetype_type, LocalArchetypeType {
+    override string toString() { result = "ExistentialArchetypeType" }
   }
 
   /**

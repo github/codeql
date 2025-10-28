@@ -271,10 +271,6 @@ ql/java/ql/src/external/MostlyDuplicateMethod.ql
 ql/java/ql/src/external/MostlySimilarFile.ql
 ql/java/ql/src/filters/ClassifyFiles.ql
 ql/java/ql/src/meta/frameworks/Coverage.ql
-ql/java/ql/src/meta/ssa/AmbiguousToString.ql
-ql/java/ql/src/meta/ssa/TooFewPhiInputs.ql
-ql/java/ql/src/meta/ssa/UncertainDefWithoutPrior.ql
-ql/java/ql/src/meta/ssa/UseWithoutUniqueSsaVariable.ql
 ql/java/ql/src/utils/modelconverter/ExtractNeutrals.ql
 ql/java/ql/src/utils/modelconverter/ExtractSinks.ql
 ql/java/ql/src/utils/modelconverter/ExtractSources.ql
