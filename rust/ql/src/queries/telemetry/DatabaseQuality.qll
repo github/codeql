@@ -31,11 +31,21 @@ module CallTargetStats implements StatsSig {
 }
 
 module MacroCallTargetStats implements StatsSig {
-  int getNumberOfOk() { result = count(MacroCall c | c.hasMacroCallExpansion()) }
+  int getNumberOfOk() {
+    result =
+      count(MacroCall c |
+        not c.getFile().(ExtractedFile).isSkippedByCompilation() and c.hasMacroCallExpansion()
+      )
+  }
 
   additional predicate isNotOkCall(MacroCall c) { not c.hasMacroCallExpansion() }
 
-  int getNumberOfNotOk() { result = count(MacroCall c | isNotOkCall(c)) }
+  int getNumberOfNotOk() {
+    result =
+      count(MacroCall c |
+        not c.getFile().(ExtractedFile).isSkippedByCompilation() and isNotOkCall(c)
+      )
+  }
 
   string getOkText() { result = "macro calls with call target" }
 
