@@ -111,15 +111,18 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private static IEnumerable<Microsoft.CodeAnalysis.Location> GetLocations(INamedTypeSymbol type)
+        private IEnumerable<Microsoft.CodeAnalysis.Location> GetLocations(INamedTypeSymbol type)
         {
-            return type.Locations
-                .Where(l => l.IsInMetadata)
-                .Concat(type.DeclaringSyntaxReferences
+            var metadataLocations = type.Locations
+                .Where(l => l.IsInMetadata);
+            var sourceLocations = type.DeclaringSyntaxReferences
                     .Select(loc => loc.GetSyntax())
                     .OfType<CSharpSyntaxNode>()
                     .Select(l => l.FixedLocation())
-                );
+                    .Where(Context.IsLocationInContext);
+
+            return metadataLocations
+                .Concat(sourceLocations);
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).BestOrDefault();

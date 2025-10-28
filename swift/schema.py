@@ -486,12 +486,14 @@ class KeyPathComponent(AstNode):
     kind: int | doc("kind of key path component") | desc("""
         INTERNAL: Do not use.
 
-        This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
-        (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
-        and 9 for tuple element indexing.
+        TODO: Swift 6.2 update with UnresolvedApply and Apply
 
-        The following values should not appear: 0 for invalid components, 1 for unresolved
-        properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
+        This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
+        (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
+        and 11 for tuple element indexing.
+
+        The following values should not appear: 0 for invalid components, 2 for unresolved
+        properties, 3 for unresolved subscripts, 12 for #keyPath dictionary keys, and 13 for
         implicit IDE code completion data.
     """)
     subscript_arguments : list[Argument] | child | doc(
@@ -905,20 +907,9 @@ class AvailabilitySpec(AstNode):
     if #available(iOS 12, *)
     ```
     """
-    pass
-
-class PlatformVersionAvailabilitySpec(AvailabilitySpec):
-    """
-    An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
-    """
-    platform: string
-    version: string
-
-class OtherAvailabilitySpec(AvailabilitySpec):
-    """
-    A wildcard availability spec `*`
-    """
-    pass
+    platform: optional[string]
+    version: optional[string]
+    is_wildcard: predicate
 
 class AvailabilityInfo(AstNode):
     """
@@ -1211,7 +1202,7 @@ class PrimaryArchetypeType(ArchetypeType):
 class LocalArchetypeType(ArchetypeType):
     pass
 
-class OpenedArchetypeType(LocalArchetypeType):
+class ExistentialArchetypeType(LocalArchetypeType):
     pass
 
 @qltest.test_with("PackType")

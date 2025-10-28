@@ -357,7 +357,7 @@ class Constructor extends Callable, Member, Attributable, @constructor {
 
   override Constructor getUnboundDeclaration() { constructors(this, _, _, result) }
 
-  override Location getALocation() { constructor_location(this, result) }
+  override Location getALocation() { constructor_location(this.getUnboundDeclaration(), result) }
 
   override predicate fromSource() { Member.super.fromSource() and not this.isCompilerGenerated() }
 
@@ -450,7 +450,7 @@ class Destructor extends Callable, Member, Attributable, @destructor {
 
   override Destructor getUnboundDeclaration() { destructors(this, _, _, result) }
 
-  override Location getALocation() { destructor_location(this, result) }
+  override Location getALocation() { destructor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 
@@ -484,7 +484,7 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
-  override Location getALocation() { operator_location(this, result) }
+  override Location getALocation() { operator_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 

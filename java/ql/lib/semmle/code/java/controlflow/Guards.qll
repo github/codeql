@@ -415,21 +415,21 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
     GuardsInput::Expr getARead() { result = this.getAUse() }
   }
 
-  class SsaWriteDefinition extends SsaDefinition instanceof BaseSsaUpdate {
-    GuardsInput::Expr getDefinition() {
+  class SsaExplicitWrite extends SsaDefinition instanceof BaseSsaUpdate {
+    GuardsInput::Expr getValue() {
       super.getDefiningExpr().(VariableAssign).getSource() = result or
       super.getDefiningExpr().(AssignOp) = result
     }
   }
 
-  class SsaPhiNode extends SsaDefinition instanceof BaseSsaPhiNode {
+  class SsaPhiDefinition extends SsaDefinition instanceof BaseSsaPhiNode {
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
       super.hasInputFromBlock(inp, bb)
     }
   }
 
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(BaseSsaImplicitInit).isParameterDefinition(p)
+  class SsaParameterInit extends SsaDefinition instanceof BaseSsaImplicitInit {
+    Parameter getParameter() { super.isParameterDefinition(result) }
   }
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
@@ -446,21 +446,21 @@ private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
     GuardsInput::Expr getARead() { result = this.getAUse() }
   }
 
-  class SsaWriteDefinition extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
-    GuardsInput::Expr getDefinition() {
+  class SsaExplicitWrite extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
+    GuardsInput::Expr getValue() {
       super.getDefiningExpr().(VariableAssign).getSource() = result or
       super.getDefiningExpr().(AssignOp) = result
     }
   }
 
-  class SsaPhiNode extends SsaDefinition instanceof SSA::SsaPhiNode {
+  class SsaPhiDefinition extends SsaDefinition instanceof SSA::SsaPhiNode {
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
       super.hasInputFromBlock(inp, bb)
     }
   }
 
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(SSA::SsaImplicitInit).isParameterDefinition(p)
+  class SsaParameterInit extends SsaDefinition instanceof SSA::SsaImplicitInit {
+    Parameter getParameter() { super.isParameterDefinition(result) }
   }
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;

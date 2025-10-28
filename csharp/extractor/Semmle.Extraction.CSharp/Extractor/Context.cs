@@ -555,6 +555,21 @@ namespace Semmle.Extraction.CSharp
             scope.InScope(symbol);
 
         /// <summary>
+        /// Gets the locations of the symbol that are either
+        /// (1) In assemblies.
+        /// (2) In the current context.
+        /// </summary>
+        /// <param name="symbol">The symbol</param>
+        /// <returns>List of locations</returns>
+        public IEnumerable<Entities.Location> GetLocations(ISymbol symbol) =>
+            symbol.Locations
+                .Where(l => !l.IsInSource || IsLocationInContext(l))
+                .Select(CreateLocation);
+
+        public bool IsLocationInContext(Location location) =>
+            location.SourceTree == SourceTree;
+
+        /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
         /// based on key <paramref name="key"/>.
         /// </summary>

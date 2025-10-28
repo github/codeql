@@ -26,9 +26,10 @@ namespace Semmle.Extraction.CSharp.Entities
             var parentNs = Namespace.Create(Context, Symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : Symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);
 
-            foreach (var l in Symbol.Locations)
+            if (Context.ExtractLocation(Symbol))
             {
-                WriteLocationToTrap(trapFile.type_location, this, Context.CreateLocation(l));
+                var locations = Context.GetLocations(Symbol);
+                WriteLocationsToTrap(trapFile.type_location, this, locations);
             }
 
             if (IsSourceDeclaration)

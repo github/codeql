@@ -60,8 +60,9 @@ private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(FileSystemPermissionModification mod |
-      sinkDef(sink, mod) and
+    exists(FileSystemPermissionModification mod | sinkDef(sink, mod) |
+      result = sink.getLocation()
+      or
       result = mod.getLocation()
     )
   }

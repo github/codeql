@@ -1,0 +1,91 @@
+edges
+| Test.java:19:38:19:40 | val : byte[] | Test.java:20:16:20:18 | val : byte[] | provenance |  |
+| Test.java:20:16:20:18 | val : byte[] | Test.java:25:15:25:33 | getRandomWrapper1(...) : byte[] | provenance |  |
+| Test.java:20:16:20:18 | val : byte[] | Test.java:32:15:32:33 | getRandomWrapper1(...) : byte[] | provenance |  |
+| Test.java:25:15:25:33 | getRandomWrapper1(...) : byte[] | Test.java:26:16:26:18 | val : byte[] | provenance |  |
+| Test.java:25:15:25:33 | getRandomWrapper1(...) : byte[] | Test.java:27:16:27:18 | val : byte[] | provenance |  |
+| Test.java:26:16:26:18 | val : byte[] | Test.java:36:32:36:40 | iv : byte[] | provenance |  |
+| Test.java:27:16:27:18 | val : byte[] | Test.java:45:21:45:40 | getRandomWrapper2A(...) : byte[] | provenance |  |
+| Test.java:32:15:32:33 | getRandomWrapper1(...) : byte[] | Test.java:33:16:33:18 | val : byte[] | provenance |  |
+| Test.java:33:16:33:18 | val : byte[] | Test.java:54:21:54:40 | getRandomWrapper2b(...) : byte[] | provenance |  |
+| Test.java:33:16:33:18 | val : byte[] | Test.java:63:21:63:40 | getRandomWrapper2b(...) : byte[] | provenance |  |
+| Test.java:33:16:33:18 | val : byte[] | Test.java:72:21:72:40 | getRandomWrapper2b(...) : byte[] | provenance |  |
+| Test.java:36:32:36:40 | iv : byte[] | Test.java:37:54:37:55 | iv : byte[] | provenance |  |
+| Test.java:37:34:37:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:40:47:40:52 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:37:54:37:55 | iv : byte[] | Test.java:37:34:37:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:37:54:37:55 | iv : byte[] | Test.java:37:34:37:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:45:21:45:40 | getRandomWrapper2A(...) : byte[] | Test.java:46:54:46:55 | iv : byte[] | provenance |  |
+| Test.java:46:34:46:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:49:47:49:52 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:46:54:46:55 | iv : byte[] | Test.java:46:34:46:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:46:54:46:55 | iv : byte[] | Test.java:46:34:46:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:54:21:54:40 | getRandomWrapper2b(...) : byte[] | Test.java:55:54:55:55 | iv : byte[] | provenance |  |
+| Test.java:55:34:55:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:58:47:58:52 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:55:54:55:55 | iv : byte[] | Test.java:55:34:55:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:55:54:55:55 | iv : byte[] | Test.java:55:34:55:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:63:21:63:40 | getRandomWrapper2b(...) : byte[] | Test.java:64:54:64:55 | iv : byte[] | provenance |  |
+| Test.java:64:34:64:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:67:47:67:52 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:64:54:64:55 | iv : byte[] | Test.java:64:34:64:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:64:54:64:55 | iv : byte[] | Test.java:64:34:64:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:72:21:72:40 | getRandomWrapper2b(...) : byte[] | Test.java:73:55:73:56 | iv : byte[] | provenance |  |
+| Test.java:73:35:73:57 | new IvParameterSpec(...) : IvParameterSpec | Test.java:76:48:76:54 | ivSpec1 | provenance | Sink:MaD:45890 |
+| Test.java:73:55:73:56 | iv : byte[] | Test.java:73:35:73:57 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:73:55:73:56 | iv : byte[] | Test.java:73:35:73:57 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:73:55:73:56 | iv : byte[] | Test.java:79:55:79:56 | iv : byte[] | provenance |  |
+| Test.java:79:35:79:57 | new IvParameterSpec(...) : IvParameterSpec | Test.java:82:49:82:55 | ivSpec2 | provenance | Sink:MaD:45890 |
+| Test.java:79:55:79:56 | iv : byte[] | Test.java:79:35:79:57 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:79:55:79:56 | iv : byte[] | Test.java:79:35:79:57 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:88:38:88:39 | iv : byte[] | Test.java:89:54:89:55 | iv : byte[] | provenance |  |
+| Test.java:89:34:89:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:93:51:93:56 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:89:34:89:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:96:51:96:56 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:89:54:89:55 | iv : byte[] | Test.java:89:34:89:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:89:54:89:55 | iv : byte[] | Test.java:89:34:89:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+| Test.java:103:38:103:39 | iv : byte[] | Test.java:104:54:104:55 | iv : byte[] | provenance |  |
+| Test.java:104:34:104:56 | new IvParameterSpec(...) : IvParameterSpec | Test.java:107:47:107:52 | ivSpec | provenance | Sink:MaD:45890 |
+| Test.java:104:54:104:55 | iv : byte[] | Test.java:104:34:104:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| Test.java:104:54:104:55 | iv : byte[] | Test.java:104:34:104:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:45920 |
+nodes
+| Test.java:19:38:19:40 | val : byte[] | semmle.label | val : byte[] |
+| Test.java:20:16:20:18 | val : byte[] | semmle.label | val : byte[] |
+| Test.java:25:15:25:33 | getRandomWrapper1(...) : byte[] | semmle.label | getRandomWrapper1(...) : byte[] |
+| Test.java:26:16:26:18 | val : byte[] | semmle.label | val : byte[] |
+| Test.java:27:16:27:18 | val : byte[] | semmle.label | val : byte[] |
+| Test.java:32:15:32:33 | getRandomWrapper1(...) : byte[] | semmle.label | getRandomWrapper1(...) : byte[] |
+| Test.java:33:16:33:18 | val : byte[] | semmle.label | val : byte[] |
+| Test.java:36:32:36:40 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:37:34:37:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:37:54:37:55 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:40:47:40:52 | ivSpec | semmle.label | ivSpec |
+| Test.java:45:21:45:40 | getRandomWrapper2A(...) : byte[] | semmle.label | getRandomWrapper2A(...) : byte[] |
+| Test.java:46:34:46:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:46:54:46:55 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:49:47:49:52 | ivSpec | semmle.label | ivSpec |
+| Test.java:54:21:54:40 | getRandomWrapper2b(...) : byte[] | semmle.label | getRandomWrapper2b(...) : byte[] |
+| Test.java:55:34:55:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:55:54:55:55 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:58:47:58:52 | ivSpec | semmle.label | ivSpec |
+| Test.java:63:21:63:40 | getRandomWrapper2b(...) : byte[] | semmle.label | getRandomWrapper2b(...) : byte[] |
+| Test.java:64:34:64:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:64:54:64:55 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:67:47:67:52 | ivSpec | semmle.label | ivSpec |
+| Test.java:72:21:72:40 | getRandomWrapper2b(...) : byte[] | semmle.label | getRandomWrapper2b(...) : byte[] |
+| Test.java:73:35:73:57 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:73:55:73:56 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:76:48:76:54 | ivSpec1 | semmle.label | ivSpec1 |
+| Test.java:79:35:79:57 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:79:55:79:56 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:82:49:82:55 | ivSpec2 | semmle.label | ivSpec2 |
+| Test.java:88:38:88:39 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:89:34:89:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:89:54:89:55 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:93:51:93:56 | ivSpec | semmle.label | ivSpec |
+| Test.java:96:51:96:56 | ivSpec | semmle.label | ivSpec |
+| Test.java:103:38:103:39 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:104:34:104:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| Test.java:104:54:104:55 | iv : byte[] | semmle.label | iv : byte[] |
+| Test.java:107:47:107:52 | ivSpec | semmle.label | ivSpec |
+subpaths
+#select
+| Test.java:40:47:40:52 | ivSpec | Test.java:19:38:19:40 | val : byte[] | Test.java:40:47:40:52 | ivSpec | Nonce source is reused, see alternate sink $@ | Test.java:49:47:49:52 | Nonce | Nonce |
+| Test.java:49:47:49:52 | ivSpec | Test.java:19:38:19:40 | val : byte[] | Test.java:49:47:49:52 | ivSpec | Nonce source is reused, see alternate sink $@ | Test.java:40:47:40:52 | Nonce | Nonce |
+| Test.java:76:48:76:54 | ivSpec1 | Test.java:19:38:19:40 | val : byte[] | Test.java:76:48:76:54 | ivSpec1 | Nonce source is reused, see alternate sink $@ | Test.java:82:49:82:55 | Nonce | Nonce |
+| Test.java:82:49:82:55 | ivSpec2 | Test.java:19:38:19:40 | val : byte[] | Test.java:82:49:82:55 | ivSpec2 | Nonce source is reused, see alternate sink $@ | Test.java:76:48:76:54 | Nonce | Nonce |

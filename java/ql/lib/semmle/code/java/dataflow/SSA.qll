@@ -336,6 +336,9 @@ class SsaPhiNode extends SsaVariable instanceof PhiNode {
   /** Gets an input to the phi node defining the SSA variable. */
   SsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
 
+  /** Gets an input to the phi node defining the SSA variable. */
+  SsaVariable getAnInput() { this.hasInputFromBlock(result, _) }
+
   /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
   predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb) {
     phiHasInputFromBlock(this, inp, bb)

@@ -7,7 +7,7 @@
 # - What language the change note is for
 # - Whether it's a query or library change (the string `src` or `lib`)
 # - The name of the change note (in kebab-case)
-# - The category of the change.
+# - The category of the change (see https://github.com/github/codeql/blob/main/docs/change-notes.md#change-categories).
 
 # The change note will be created in the `{language}/ql/{subdir}/change-notes` directory, where `subdir` is either `src` or `lib`.
 

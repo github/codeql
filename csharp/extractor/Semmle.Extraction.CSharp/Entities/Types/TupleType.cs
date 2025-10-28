@@ -54,8 +54,8 @@ namespace Semmle.Extraction.CSharp.Entities
             // Note: symbol.Locations seems to be very inconsistent
             // about what locations are available for a tuple type.
             // Sometimes it's the source code, and sometimes it's empty.
-            foreach (var l in Symbol.Locations)
-                WriteLocationToTrap(trapFile.type_location, this, Context.CreateLocation(l));
+            var locations = Context.GetLocations(Symbol);
+            WriteLocationsToTrap(trapFile.type_location, this, locations);
         }
 
         private readonly Lazy<Field?[]> tupleElementsLazy;

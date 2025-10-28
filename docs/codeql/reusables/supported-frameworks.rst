@@ -313,7 +313,6 @@ Rust built-in support
 Provided by the current versions of the
 CodeQL query pack ``codeql/rust-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src>`__)
 and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib>`__).
-All support is experimental.
 
 .. csv-table::
    :header-rows: 1
@@ -337,6 +336,8 @@ All support is experimental.
    `log <https://crates.io/crates/log>`__, Logging library
    `md5 <https://crates.io/crates/md5>`__, Utility library
    `memchr <https://crates.io/crates/memchr>`__, Utility library
+   `mysql <https://crates.io/crates/mysql>`__, Database
+   `mysql_async <https://crates.io/crates/mysql_async>`__, Database
    `once_cell <https://crates.io/crates/once_cell>`__, Utility library
    `poem <https://crates.io/crates/poem>`__, Web framework
    `postgres <https://crates.io/crates/postgres>`__, Database

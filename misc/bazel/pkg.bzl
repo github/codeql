@@ -3,12 +3,11 @@ Wrappers and helpers around `rules_pkg` to build codeql packs.
 """
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
-load("@bazel_skylib//rules:native_binary.bzl", "native_test")
 load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_files", _strip_prefix = "strip_prefix")
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo")
-load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python:defs.bzl", "py_binary", "py_test")
 load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "os_select")
 
 def _make_internal(name):
@@ -366,28 +365,29 @@ def _codeql_pack_install(name, srcs, install_dest = None, build_file_label = Non
     ] if build_file_label else []) + (
         ["--destdir", "\"%s\"" % install_dest] if install_dest else []
     )
-    py_binary(
-        name = name,
+    installer_args = dict(
         srcs = [Label("//misc/bazel/internal:install.py")],
         main = Label("//misc/bazel/internal:install.py"),
         deps = ["@rules_python//python/runfiles"],
         data = data,
         args = args,
     )
+    py_binary(
+        name = name,
+        **installer_args
+    )
 
     # this hack is meant to be an optimization when using install for tests, where
     # the install step is skipped if nothing changed. If the installation directory
     # is somehow messed up, `bazel run` can be used to force install
-    native_test(
+    py_test(
         name = internal("as", "test"),
-        src = name,
         tags = [
             "manual",  # avoid having this picked up by `...`, `:all` or `:*`
             "local",  # make sure installation does not run sandboxed
         ],
-        data = data,
-        args = args,
         size = "small",
+        **installer_args
     )
 
 def codeql_pack_group(name, srcs, visibility = None, skip_installer = False, prefix = "", install_dest = None, build_file_label = None, compression_level = 6):

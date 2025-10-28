@@ -119,8 +119,26 @@ public class SanitizationTests extends HttpServlet {
             String unsafeUri10 = String.format("%s://%s:%s%s", "http", "myserver.com", "80", request.getParameter("baduri10")); // $ Source
             HttpRequest unsafer10 = HttpRequest.newBuilder(new URI(unsafeUri10)).build(); // $ Alert
             client.send(unsafer10, null); // $ Alert
+
+            // GOOD: sanitisation by regexp validation
+            String param10 = request.getParameter("uri10");
+            if (param10.matches("[a-zA-Z0-9_-]+")) {
+                HttpRequest r10 = HttpRequest.newBuilder(new URI(param10)).build();
+                client.send(r10, null);
+            }
+            
+            String param11 = request.getParameter("uri11");
+            validate(param11);
+            HttpRequest r11 = HttpRequest.newBuilder(new URI(param11)).build();
+            client.send(r11, null);
         } catch (Exception e) {
             // TODO: handle exception
+        }
+    }
+
+    private void validate(String s) {
+        if (!s.matches("[a-zA-Z0-9_-]+")) {
+            throw new IllegalArgumentException("Invalid ID");
         }
     }
 }

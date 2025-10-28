@@ -53,21 +53,37 @@ function RegisterExtractorPack(id)
         strip_unsupported_arg(args, '-stack-check', 0)
         strip_unsupported_arg(args, '-experimental-skip-non-inlinable-function-bodies-without-types', 0)
         strip_unsupported_clang_arg(args, '-ivfsstatcache', 1)
+        -- The four args below are removed to workaround version mismatches due to recent versions
+        -- of Xcode defaulting to explicit modules:
+        strip_unsupported_arg(args, '-disable-implicit-swift-modules', 0)
+        strip_unsupported_clang_arg(args, '-fno-implicit-modules', 0)
+        strip_unsupported_clang_arg(args, '-fno-implicit-module-maps', 0)
+        strip_unsupported_arg(args, '-explicit-swift-module-map-file', 1)
     end
 
     -- xcodebuild does not always specify the -resource-dir in which case the compiler falls back
     -- to a resource-dir based on its path. We want to know what is the original resource-dir in
-    -- all cases so that we can patch it with out own
+    -- all cases so that we can patch it with out own. When we see a -resource-dir preceded by
+    -- -Xcc this will be a resource-dir that is passed to clang. We can still obtain the swift
+    -- resource-dir in this case by skipping over the -Xcc that follows it and stripping off the
+    -- clang suffix from the path.
     function find_original_resource_dir(compilerPath, args)
-      local resource_dir_index = indexOf(args, '-resource-dir')
-      if resource_dir_index and args[resource_dir_index + 1] then
-        return args[resource_dir_index + 1]
-      end
-      -- derive -resource-dir based on the compilerPath
-      -- e.g.: /usr/bin/swift-frontend -> /usr/bin/../lib/swift
-      local second_last_slash_index = string.find(compilerPath, "/[^/]*/[^/]*$")
-      local usr_dir = string.sub(compilerPath, 1, second_last_slash_index)
-      return usr_dir .. '/lib/swift'
+        local found = indexOf(args, '-resource-dir')
+        if found and args[found + 1] then
+            if args[found - 1] ~= '-Xcc' then
+                return args[found + 1]
+            elseif args[found + 1] == '-Xcc' and args[found + 2] then
+                local clang_index = string.find(args[found + 2], "/clang$")
+                if clang_index and clang_index - 1 > 0 then
+                    return string.sub(args[found + 2], 1, clang_index - 1)
+                end
+            end
+        end
+        -- derive -resource-dir based on the compilerPath
+        -- e.g.: /usr/bin/swift-frontend -> /usr/bin/../lib/swift
+        local second_last_slash_index = string.find(compilerPath, "/[^/]*/[^/]*$")
+        local usr_dir = string.sub(compilerPath, 1, second_last_slash_index)
+        return usr_dir .. 'lib/swift'
     end
 
     -- replace or add our own resource directory
