@@ -278,7 +278,7 @@ private TypeMention getTypeAnnotation(AstNode n) {
   )
   or
   exists(Function f |
-    result = f.getRetType().getTypeRepr() and
+    result = getReturnTypeMention(f) and
     n = f.getFunctionBody()
   )
 }
@@ -436,8 +436,7 @@ module CertainTypeInference {
     result = inferTupleRootType(n) and
     path.isEmpty()
     or
-    result = inferAsyncBlockExprRootType(n) and
-    path.isEmpty()
+    result = inferBlockExprType(n, path)
     or
     result = inferArrayExprType(n) and
     path.isEmpty()
@@ -1854,7 +1853,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
     }
 
     private Type resolveRetType(TypePath path) {
-      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+      result = getReturnTypeMention(this).resolveTypeAt(path)
     }
 
     pragma[nomagic]
@@ -2798,11 +2797,38 @@ private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
   result.getTypeAlias() = any(FutureTrait ft).getOutputType()
 }
 
+private predicate isReturnExprCfgAncestor(AstNode n) {
+  n instanceof ReturnExpr
+  or
+  exists(AstNode mid |
+    isReturnExprCfgAncestor(mid) and
+    n = mid.getParentNode() and
+    n.getEnclosingCfgScope() = mid.getEnclosingCfgScope()
+  )
+}
+
 pragma[nomagic]
-private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
+predicate isUnitBlockExpr(BlockExpr be) {
+  not be.getStmtList().hasTailExpr() and
+  not isReturnExprCfgAncestor(be)
+}
+
+pragma[nomagic]
+private Type inferBlockExprType(BlockExpr be, TypePath path) {
   // `typeEquality` handles the non-root case
-  exists(abe) and
-  result = getFutureTraitType()
+  if be instanceof AsyncBlockExpr
+  then (
+    path.isEmpty() and
+    result = getFutureTraitType()
+    or
+    isUnitBlockExpr(be) and
+    path = TypePath::singleton(getFutureOutputTypeParameter()) and
+    result instanceof UnitType
+  ) else (
+    isUnitBlockExpr(be) and
+    path.isEmpty() and
+    result instanceof UnitType
+  )
 }
 
 final private class AwaitTarget extends Expr {

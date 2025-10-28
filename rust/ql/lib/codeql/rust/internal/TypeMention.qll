@@ -443,6 +443,30 @@ TypeMention getSelfParamTypeMention(SelfParam self) {
   result = self.getTypeRepr()
 }
 
+/**
+ * An element used to represent the implicit `()` return type of function.
+ */
+class ShorthandReturnTypeMention extends TypeMention instanceof Name {
+  private Function f;
+
+  ShorthandReturnTypeMention() {
+    this = f.getName() and
+    not f.getRetType().hasTypeRepr()
+  }
+
+  override Type resolveTypeAt(TypePath typePath) {
+    typePath.isEmpty() and
+    result instanceof UnitType
+  }
+}
+
+pragma[nomagic]
+TypeMention getReturnTypeMention(Function f) {
+  result.(ShorthandReturnTypeMention) = f.getName()
+  or
+  result = f.getRetType().getTypeRepr()
+}
+
 class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
   private DynTraitType dynType;
 
