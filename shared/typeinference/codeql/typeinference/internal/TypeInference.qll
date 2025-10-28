@@ -705,10 +705,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /**
        * Holds if `app` is _not_ a possible instantiation of `constraint`.
        *
-       * This is a monotonic approximation of `not isInstantiationOf(app, abs, constraint)`;
-       * if, for example, `app` has two different types `t1` and `t2` at the same type path,
-       * and `t1` satisfies `constraint` while `t2` does not, then both `isInstantiationOf`
-       * and `isNotInstantiationOf` will hold.
+       * This is an approximation of `not isInstantiationOf(app, abs, constraint)`, but
+       * defined without a negative occurrence of `isInstantiationOf`.
+       *
+       * Due to the approximation, both `isInstantiationOf` and `isNotInstantiationOf`
+       * can hold for the same values. For example, if `app` has two different types `t1`
+       * and `t2` at the same type path, and `t1` satisfies `constraint` while `t2` does
+       * not, then both `isInstantiationOf` and `isNotInstantiationOf` will hold.
        *
        * Dually, if `app` does not have a type at a required type path, then neither
        * `isInstantiationOf` nor `isNotInstantiationOf` will hold.
@@ -1008,6 +1011,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if `tt` does not satisfy `constraint`.
+       *
+       * This predicate is an approximation of `not hasConstraintMention(tt, constraint)`.
        */
       pragma[nomagic]
       private predicate hasNotConstraintMention(HasTypeTree tt, Type constraint) {
@@ -1085,16 +1090,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /**
        * Holds if the type tree at `tt` does _not_ satisfy the constraint `constraint`.
        *
-       * This is a monotonic approximation of `not satisfiesConstraintType(tt, constraint, _, _)`;
-       * if, for example, `tt` has two different types `t1` and `t2`, and `t1` satisfies
-       * `constraint` while `t2` does not, then both `satisfiesConstraintType` and
-       * `satisfiesNotConstraint` will hold.
+       * This is an approximation of `not satisfiesConstraintType(tt, constraint, _, _)`,
+       * but defined without a negative occurrence of `satisfiesConstraintType`.
+       *
+       * Due to the approximation, both `satisfiesConstraintType` and `dissatisfiesConstraint`
+       * can hold for the same values. For example, if `tt` has two different types `t1`
+       * and `t2`, and `t1` satisfies `constraint` while `t2` does not, then both
+       * `satisfiesConstraintType` and `dissatisfiesConstraint` will hold.
        *
        * Dually, if `tt` does not have a type, then neither `satisfiesConstraintType` nor
-       * `satisfiesNotConstraint` will hold.
+       * `dissatisfiesConstraint` will hold.
        */
       pragma[nomagic]
-      predicate satisfiesNotConstraint(HasTypeTree tt, Type constraint) {
+      predicate dissatisfiesConstraint(HasTypeTree tt, Type constraint) {
         hasNotConstraintMention(tt, constraint) and
         exists(Type t |
           hasTypeConstraint(tt, t, constraint) and

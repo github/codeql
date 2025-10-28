@@ -1230,7 +1230,7 @@ private module MethodResolution {
       ReceiverIsNotInstantiationOfBlanketLikeSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this,
           derefChain, borrow), impl, _)
       or
-      ReceiverSatisfiesBlanketLikeConstraint::satisfiesNotBlanketConstraint(MkMethodCallCand(this,
+      ReceiverSatisfiesBlanketLikeConstraint::dissatisfiesBlanketConstraint(MkMethodCallCand(this,
           derefChain, borrow), impl)
     }
 

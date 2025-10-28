@@ -138,11 +138,11 @@ module SatisfiesBlanketConstraint<
    * constraint of `impl`.
    */
   pragma[nomagic]
-  predicate satisfiesNotBlanketConstraint(ArgumentType at, ImplItemNode impl) {
+  predicate dissatisfiesBlanketConstraint(ArgumentType at, ImplItemNode impl) {
     exists(ArgumentTypeAndBlanketOffset ato, Trait traitBound |
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
-      SatisfiesBlanketConstraint::satisfiesNotConstraint(ato, TTrait(traitBound))
+      SatisfiesBlanketConstraint::dissatisfiesConstraint(ato, TTrait(traitBound))
     )
   }
 }
