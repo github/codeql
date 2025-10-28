@@ -106,8 +106,9 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(NumericNarrowingCastExpr cast |
-      cast.getExpr() = sink.asExpr() and
+    exists(NumericNarrowingCastExpr cast | cast.getExpr() = sink.asExpr() |
+      result = sink.getLocation()
+      or
       result = cast.getLocation()
     )
   }

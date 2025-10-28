@@ -128,7 +128,7 @@ module Config implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(BufferWrite bw | result = bw.getLocation() | isSink(sink, bw, _))
+    exists(BufferWrite bw | result = [bw.getLocation(), sink.getLocation()] | isSink(sink, bw, _))
   }
 }
 
