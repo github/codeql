@@ -84,9 +84,7 @@ ql/csharp/ql/src/Security Features/CWE-838/InappropriateEncoding.ql
 ql/csharp/ql/src/definitions.ql
 ql/csharp/ql/src/experimental/CWE-099/TaintedWebClient.ql
 ql/csharp/ql/src/experimental/CWE-918/RequestForgery.ql
-ql/csharp/ql/src/experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql
 ql/csharp/ql/src/experimental/Security Features/CWE-327/Azure/UnsafeUsageOfClientSideEncryptionVersion.ql
-ql/csharp/ql/src/experimental/Security Features/CWE-614/CookieWithoutSecure.ql
 ql/csharp/ql/src/experimental/Security Features/CWE-759/HashWithoutSalt.ql
 ql/csharp/ql/src/experimental/Security Features/JsonWebTokenHandler/delegated-security-validations-always-return-true.ql
 ql/csharp/ql/src/experimental/Security Features/JsonWebTokenHandler/security-validation-disabled.ql
