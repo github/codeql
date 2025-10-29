@@ -405,6 +405,7 @@ resolvePath
 | main.rs:797:24:797:26 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:798:13:798:16 | Some | {EXTERNAL LOCATION} | Some |
 | main.rs:799:17:799:20 | None | {EXTERNAL LOCATION} | None |
+| main.rs:801:13:801:16 | None | {EXTERNAL LOCATION} | None |
 | main.rs:802:17:802:20 | None | {EXTERNAL LOCATION} | None |
 | main.rs:811:19:811:29 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
 | main.rs:811:26:811:28 | i32 | {EXTERNAL LOCATION} | struct i32 |
@@ -413,6 +414,8 @@ resolvePath
 | main.rs:823:17:823:20 | Some | {EXTERNAL LOCATION} | Some |
 | main.rs:825:13:825:16 | Some | {EXTERNAL LOCATION} | Some |
 | main.rs:830:13:830:16 | Some | {EXTERNAL LOCATION} | Some |
+| main.rs:830:18:830:18 | z | main.rs:817:5:819:12 | Const |
+| main.rs:830:24:830:24 | z | main.rs:817:5:819:12 | Const |
 | main.rs:837:5:837:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:837:5:837:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
 | main.rs:837:5:837:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |

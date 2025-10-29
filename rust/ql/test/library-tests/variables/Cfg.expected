@@ -1865,6 +1865,7 @@ edges
 | main.rs:794:13:794:19 | Some(...) | main.rs:796:13:796:13 | _ | no-match |
 | main.rs:794:18:794:18 | z | main.rs:794:18:794:18 | z |  |
 | main.rs:794:18:794:18 | z | main.rs:795:17:795:17 | z | match |
+| main.rs:794:18:794:18 | z | main.rs:796:13:796:13 | _ | no-match |
 | main.rs:795:17:795:17 | z | main.rs:793:9:797:9 | match x { ... } |  |
 | main.rs:796:13:796:13 | _ | main.rs:796:18:796:18 | 0 | match |
 | main.rs:796:18:796:18 | 0 | main.rs:793:9:797:9 | match x { ... } |  |
