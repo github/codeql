@@ -767,7 +767,7 @@ mod patterns {
         };
         match y { // $ read_access=y1
             N0ne => // n0ne
-                N0ne // $ MISSING: read_access=n0ne
+                N0ne // $ read_access=n0ne
         }
     }
 
@@ -792,7 +792,7 @@ mod patterns {
         };
         match x { // $ read_access=x1
             Some(z) =>
-                z, // $ SPURIOUS: read_access=z
+                z,
             _ => 0
         };
     }
