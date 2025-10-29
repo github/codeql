@@ -733,6 +733,34 @@ fn capture_phi() {
     print_i64(x); // $ read_access=x
 }
 
+mod patterns {
+    #[rustfmt::skip]
+    pub fn test() -> Option<i32> {
+        let x = Some(42); // x
+        let y : Option<i32> = // y1
+            match x { // $ read_access=x
+            Some(y) => { // y2
+                None
+            }
+            None =>
+                None
+        };
+        match y { // $ read_access=y1
+            N0ne => // n0ne
+                N0ne // $ MISSING: read_access=n0ne
+        }
+    }
+
+    #[rustfmt::skip]
+    fn test2() -> Option<i32> {
+        let test_alias = // test_alias
+            test;
+        let test = // test
+            test_alias(); // $ read_access=test_alias
+        test // $ read_access=test
+    }
+}
+
 fn main() {
     immutable_variable();
     mutable_variable();
