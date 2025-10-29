@@ -7,10 +7,12 @@ private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
 private import codeql.dataflowstack.TaintTrackingStack as TTS
-private import TTS::TaintTrackingStackMake<Location, JavaDataFlow, JavaTaintTracking> as TaintTrackingStackFactory
 
-private module TaintTrackingStackInput<TaintTrackingStackFactory::DataFlow::ConfigSig Config>
-  implements TTS::TaintTrackingStackSig<Location, JavaDataFlow, JavaTaintTracking, Config>
+module TaintTrackingStack = TTS::LanguageTaintTracking<Location, JavaDataFlow, JavaTaintTracking>;
+// private import TTS::TaintTrackingStackMake<> as TaintTrackingStackFactory
+
+private module TaintTrackingStackInput<DataFlow::ConfigSig Config>
+  implements TaintTrackingStack::TaintTrackingStackSig<Config>
 {
   private module Flow = TaintTracking::Global<Config>;
 
