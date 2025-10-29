@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 ImportExpr alternative_import(ImportExpr ie) {
   exists(Alias thisalias, Alias otheralias |
@@ -62,7 +63,10 @@ class VersionTest extends ControlFlowNode {
   VersionTest() {
     exists(string name |
       name.matches("%version%") and
-      this.(CompareNode).getAChild+().pointsTo(Module::named("sys").attr(name))
+      this.(CompareNode)
+          .getAChild+()
+          .(ControlFlowNodeWithPointsTo)
+          .pointsTo(Module::named("sys").attr(name))
     )
   }
 

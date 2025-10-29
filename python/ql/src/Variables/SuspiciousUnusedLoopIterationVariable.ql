@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Definition
 
 predicate is_increment(Stmt s) {
@@ -55,7 +56,7 @@ predicate points_to_call_to_range(ControlFlowNode f) {
   )
   or
   /* Handle list(range(...)) and list(list(range(...))) */
-  f.(CallNode).pointsTo().getClass() = ClassValue::list() and
+  f.(CallNode).(ControlFlowNodeWithPointsTo).pointsTo().getClass() = ClassValue::list() and
   points_to_call_to_range(f.(CallNode).getArg(0))
 }
 

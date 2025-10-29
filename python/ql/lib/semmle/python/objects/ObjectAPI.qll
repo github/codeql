@@ -4,6 +4,7 @@
  */
 
 import python
+private import LegacyPointsTo
 private import TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
@@ -704,12 +705,14 @@ abstract class FunctionValue extends CallableValue {
   abstract ClassValue getARaisedType();
 
   /** Gets a call-site from where this function is called as a function */
-  CallNode getAFunctionCall() { result.getFunction().pointsTo() = this }
+  CallNode getAFunctionCall() {
+    result.getFunction().(ControlFlowNodeWithPointsTo).pointsTo() = this
+  }
 
   /** Gets a call-site from where this function is called as a method */
   CallNode getAMethodCall() {
     exists(BoundMethodObjectInternal bm |
-      result.getFunction().pointsTo() = bm and
+      result.getFunction().(ControlFlowNodeWithPointsTo).pointsTo() = bm and
       bm.getFunction() = this
     )
   }
@@ -753,7 +756,7 @@ class PythonFunctionValue extends FunctionValue {
      * explicit return nodes that we can query and get the class of.
      */
 
-    result = this.getAReturnedNode().pointsTo().getClass()
+    result = this.getAReturnedNode().(ControlFlowNodeWithPointsTo).pointsTo().getClass()
   }
 }
 

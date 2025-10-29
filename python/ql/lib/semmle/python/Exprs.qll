@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.internal.CachedStages
@@ -71,7 +72,9 @@ class Expr extends Expr_, AstNode {
    * Gets what this expression might "refer-to" in the given `context`.
    */
   predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
-    this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
+    this.getAFlowNode()
+        .(ControlFlowNodeWithPointsTo)
+        .refersTo(context, obj, cls, origin.getAFlowNode())
   }
 
   /**
@@ -82,7 +85,7 @@ class Expr extends Expr_, AstNode {
    */
   pragma[nomagic]
   predicate refersTo(Object obj, AstNode origin) {
-    this.getAFlowNode().refersTo(obj, origin.getAFlowNode())
+    this.getAFlowNode().(ControlFlowNodeWithPointsTo).refersTo(obj, origin.getAFlowNode())
   }
 
   /**
@@ -96,14 +99,16 @@ class Expr extends Expr_, AstNode {
    * in the given `context`.
    */
   predicate pointsTo(Context context, Value value, AstNode origin) {
-    this.getAFlowNode().pointsTo(context, value, origin.getAFlowNode())
+    this.getAFlowNode()
+        .(ControlFlowNodeWithPointsTo)
+        .pointsTo(context, value, origin.getAFlowNode())
   }
 
   /**
    * Holds if this expression might "point-to" to `value` which is from `origin`.
    */
   predicate pointsTo(Value value, AstNode origin) {
-    this.getAFlowNode().pointsTo(value, origin.getAFlowNode())
+    this.getAFlowNode().(ControlFlowNodeWithPointsTo).pointsTo(value, origin.getAFlowNode())
   }
 
   /**

@@ -1,6 +1,7 @@
 /** INTERNAL - Helper predicates for queries that inspect the comparison of objects using `is`. */
 
 import python
+private import LegacyPointsTo
 
 /** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {
@@ -42,7 +43,7 @@ predicate invalid_to_use_is_portably(ClassValue c) {
 }
 
 /** Holds if the control flow node `f` points to either `True`, `False`, or `None`. */
-predicate simple_constant(ControlFlowNode f) {
+predicate simple_constant(ControlFlowNodeWithPointsTo f) {
   exists(Value val | f.pointsTo(val) |
     val = Value::named("True") or val = Value::named("False") or val = Value::named("None")
   )
@@ -84,7 +85,7 @@ predicate universally_interned_constant(Expr e) {
 }
 
 private predicate comparison_both_types(Compare comp, Cmpop op, ClassValue cls1, ClassValue cls2) {
-  exists(ControlFlowNode op1, ControlFlowNode op2 |
+  exists(ControlFlowNodeWithPointsTo op1, ControlFlowNodeWithPointsTo op2 |
     comparison_using_is(comp, op1, op, op2) or comparison_using_is(comp, op2, op, op1)
   |
     op1.inferredValue().getClass() = cls1 and
@@ -94,7 +95,7 @@ private predicate comparison_both_types(Compare comp, Cmpop op, ClassValue cls1,
 
 private predicate comparison_one_type(Compare comp, Cmpop op, ClassValue cls) {
   not comparison_both_types(comp, _, _, _) and
-  exists(ControlFlowNode operand |
+  exists(ControlFlowNodeWithPointsTo operand |
     comparison_using_is(comp, operand, op, _) or comparison_using_is(comp, _, op, operand)
   |
     operand.inferredValue().getClass() = cls
