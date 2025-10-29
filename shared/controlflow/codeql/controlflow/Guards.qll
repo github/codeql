@@ -785,6 +785,8 @@ module Make<
         baseSsaValueCheck(def, ssaVal, g0, v0)
       |
         impliesStep1(g, v, g0, v0)
+        or
+        additionalImpliesStep(g, v, g0, v0)
       )
     }
 
