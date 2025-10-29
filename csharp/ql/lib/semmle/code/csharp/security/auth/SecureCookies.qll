@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 
 /**
@@ -32,7 +33,15 @@ private module AuthCookieNameConfig implements DataFlow::ConfigSig {
 
   predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
 
-  predicate isSink(DataFlow::Node sink) { exists(Call c | sink.asExpr() = c.getAnArgument()) }
+  predicate isSink(DataFlow::Node sink) {
+    exists(Call c |
+      sink.asExpr() = c.getAnArgument() and
+      (
+        c.getTarget() = any(MicrosoftAspNetCoreHttpResponseCookies cls).getAppendMethod() or
+        c.(ObjectCreation).getType() instanceof SystemWebHttpCookie
+      )
+    )
+  }
 }
 
 /**
