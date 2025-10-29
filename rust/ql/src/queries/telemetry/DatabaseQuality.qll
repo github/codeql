@@ -49,11 +49,11 @@ module MacroCallTargetStats implements StatsSig {
     result = count(MacroCall c | c.getFile() instanceof RelevantFile and c.hasMacroCallExpansion())
   }
 
-  additional predicate isNotOkCall(MacroCall c) { not c.hasMacroCallExpansion() }
-
-  int getNumberOfNotOk() {
-    result = count(MacroCall c | c.getFile() instanceof RelevantFile and isNotOkCall(c))
+  additional predicate isNotOkCall(MacroCall c) {
+    c.getFile() instanceof RelevantFile and not c.hasMacroCallExpansion()
   }
+
+  int getNumberOfNotOk() { result = count(MacroCall c | isNotOkCall(c)) }
 
   string getOkText() { result = "macro calls with call target" }
 
