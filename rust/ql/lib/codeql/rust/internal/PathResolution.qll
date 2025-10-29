@@ -205,7 +205,7 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   final Attr getAttr(string name) {
     result = this.getAnAttr() and
-    result.getMeta().getPath().(RelevantPath).isUnqualified(name)
+    result.getMeta().getPath().(PathExt).isUnqualified(name)
   }
 
   final predicate hasAttr(string name) { exists(this.getAttr(name)) }
@@ -1503,17 +1503,22 @@ private predicate declares(ItemNode item, Namespace ns, string name) {
   )
 }
 
-/** A path that does not access a local variable. */
-class RelevantPath extends Path {
-  RelevantPath() { not this = any(VariableAccess va).(PathExpr).getPath() }
+/**
+ * A `Path` or an `IdentPat`.
+ *
+ * `IdentPat`s are included in order to resolve unqualified references
+ * to constructors in patterns.
+ */
+abstract class PathExt extends AstNode {
+  abstract string getText();
 
   /** Holds if this is an unqualified path with the textual value `name`. */
   pragma[nomagic]
-  predicate isUnqualified(string name) {
-    not exists(this.getQualifier()) and
-    not this = any(UseTreeList list).getAUseTree().getPath().getQualifier*() and
-    name = this.getText()
-  }
+  abstract predicate isUnqualified(string name);
+
+  abstract Path getQualifier();
+
+  abstract string toStringDebug();
 
   /**
    * Holds if this is an unqualified path with the textual value `name` and
@@ -1533,6 +1538,30 @@ class RelevantPath extends Path {
 
   pragma[nomagic]
   predicate isDollarCrate() { this.isUnqualified("$crate", _) }
+}
+
+private class PathExtPath extends PathExt instanceof Path {
+  override string getText() { result = Path.super.getText() }
+
+  override predicate isUnqualified(string name) {
+    not exists(Path.super.getQualifier()) and
+    not this = any(UseTreeList list).getAUseTree().getPath().getQualifier*() and
+    name = Path.super.getText()
+  }
+
+  override Path getQualifier() { result = Path.super.getQualifier() }
+
+  override string toStringDebug() { result = Path.super.toStringDebug() }
+}
+
+private class PathExtIdentPat extends PathExt, IdentPat {
+  override string getText() { result = this.getName().getText() }
+
+  override predicate isUnqualified(string name) { name = this.getText() }
+
+  override Path getQualifier() { none() }
+
+  override string toStringDebug() { result = this.getText() }
 }
 
 private predicate isModule(ItemNode m) { m instanceof Module }
@@ -1558,7 +1587,7 @@ private ItemNode getOuterScope(ItemNode i) {
 pragma[nomagic]
 private predicate unqualifiedPathLookup(ItemNode ancestor, string name, Namespace ns, ItemNode encl) {
   // lookup in the immediately enclosing item
-  exists(RelevantPath path |
+  exists(PathExt path |
     path.isUnqualified(name, encl) and
     ancestor = encl and
     not name = ["crate", "$crate", "super", "self"]
@@ -1594,7 +1623,7 @@ private ItemNode getASuccessor(
 
 private predicate isSourceFile(ItemNode source) { source instanceof SourceFileItemNode }
 
-private predicate hasCratePath(ItemNode i) { any(RelevantPath path).isCratePath(_, i) }
+private predicate hasCratePath(ItemNode i) { any(PathExt path).isCratePath(_, i) }
 
 private predicate hasChild(ItemNode parent, ItemNode child) { child.getImmediateParent() = parent }
 
@@ -1606,7 +1635,7 @@ private predicate sourceFileHasCratePathTc(ItemNode i1, ItemNode i2) =
  * `name` may be looked up inside `ancestor`.
  */
 pragma[nomagic]
-private predicate keywordLookup(ItemNode ancestor, string name, RelevantPath p) {
+private predicate keywordLookup(ItemNode ancestor, string name, PathExt p) {
   // For `crate`, jump directly to the root module
   exists(ItemNode i | p.isCratePath(name, i) |
     ancestor instanceof SourceFile and
@@ -1620,7 +1649,7 @@ private predicate keywordLookup(ItemNode ancestor, string name, RelevantPath p) 
 }
 
 pragma[nomagic]
-private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, SuccessorKind kind) {
+private ItemNode unqualifiedPathLookup(PathExt p, Namespace ns, SuccessorKind kind) {
   exists(ItemNode ancestor, string name |
     result = getASuccessor(ancestor, pragma[only_bind_into](name), ns, kind, _) and
     kind.isInternalOrBoth()
@@ -1635,7 +1664,7 @@ private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns, SuccessorKi
 }
 
 pragma[nomagic]
-private predicate isUnqualifiedSelfPath(RelevantPath path) { path.isUnqualified("Self") }
+private predicate isUnqualifiedSelfPath(PathExt path) { path.isUnqualified("Self") }
 
 /** Provides the input to `TraitIsVisible`. */
 signature predicate relevantTraitVisibleSig(Element element, Trait trait);
@@ -1718,14 +1747,14 @@ private module DollarCrateResolution {
     isDollarCrateSupportedMacroExpansion(_, expansion)
   }
 
-  private predicate isDollarCratePath(RelevantPath p) { p.isDollarCrate() }
+  private predicate isDollarCratePath(PathExt p) { p.isDollarCrate() }
 
-  private predicate isInDollarCrateMacroExpansion(RelevantPath p, AstNode expansion) =
+  private predicate isInDollarCrateMacroExpansion(PathExt p, AstNode expansion) =
     doublyBoundedFastTC(hasParent/2, isDollarCratePath/1, isDollarCrateSupportedMacroExpansion/1)(p,
       expansion)
 
   pragma[nomagic]
-  private predicate isInDollarCrateMacroExpansionFromFile(File macroDefFile, RelevantPath p) {
+  private predicate isInDollarCrateMacroExpansionFromFile(File macroDefFile, PathExt p) {
     exists(Path macroDefPath, AstNode expansion |
       isDollarCrateSupportedMacroExpansion(macroDefPath, expansion) and
       isInDollarCrateMacroExpansion(p, expansion) and
@@ -1740,17 +1769,17 @@ private module DollarCrateResolution {
    * calls.
    */
   pragma[nomagic]
-  predicate resolveDollarCrate(RelevantPath p, CrateItemNode crate) {
+  predicate resolveDollarCrate(PathExt p, CrateItemNode crate) {
     isInDollarCrateMacroExpansionFromFile(crate.getASourceFile().getFile(), p)
   }
 }
 
 pragma[nomagic]
-private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
+private ItemNode resolvePathCand0(PathExt path, Namespace ns) {
   exists(ItemNode res |
     res = unqualifiedPathLookup(path, ns, _) and
     if
-      not any(RelevantPath parent).getQualifier() = path and
+      not any(PathExt parent).getQualifier() = path and
       isUnqualifiedSelfPath(path) and
       res instanceof ImplItemNode
     then result = res.(ImplItemNodeImpl).resolveSelfTyCand()
@@ -1767,7 +1796,7 @@ private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePathCandQualifier(RelevantPath qualifier, RelevantPath path, string name) {
+private ItemNode resolvePathCandQualifier(PathExt qualifier, PathExt path, string name) {
   qualifier = path.getQualifier() and
   result = resolvePathCand(qualifier) and
   name = path.getText()
@@ -1815,9 +1844,7 @@ private predicate checkQualifiedVisibility(
  * qualifier of `path` and `qualifier` resolves to `q`, if any.
  */
 pragma[nomagic]
-private ItemNode resolvePathCandQualified(
-  RelevantPath qualifier, ItemNode q, RelevantPath path, Namespace ns
-) {
+private ItemNode resolvePathCandQualified(PathExt qualifier, ItemNode q, PathExt path, Namespace ns) {
   exists(string name, SuccessorKind kind, UseOption useOpt |
     q = resolvePathCandQualifier(qualifier, path, name) and
     result = getASuccessor(q, name, ns, kind, useOpt) and
@@ -1826,12 +1853,14 @@ private ItemNode resolvePathCandQualified(
 }
 
 /** Holds if path `p` must be looked up in namespace `n`. */
-private predicate pathUsesNamespace(Path p, Namespace n) {
+private predicate pathUsesNamespace(PathExt p, Namespace n) {
   n.isValue() and
   (
     p = any(PathExpr pe).getPath()
     or
     p = any(TupleStructPat tsp).getPath()
+    or
+    p instanceof PathExtIdentPat
   )
   or
   n.isType() and
@@ -1907,7 +1936,7 @@ private predicate macroUseEdge(
  * result in non-monotonic recursion.
  */
 pragma[nomagic]
-private ItemNode resolvePathCand(RelevantPath path) {
+private ItemNode resolvePathCand(PathExt path) {
   exists(Namespace ns |
     result = resolvePathCand0(path, ns) and
     if path = any(ImplItemNode i).getSelfPath()
@@ -1920,7 +1949,10 @@ private ItemNode resolvePathCand(RelevantPath path) {
       else
         if path = any(PathTypeRepr p).getPath()
         then result instanceof TypeItemNode
-        else any()
+        else
+          if path instanceof IdentPat
+          then result instanceof VariantItemNode or result instanceof StructItemNode
+          else any()
   |
     pathUsesNamespace(path, ns)
     or
@@ -1937,7 +1969,7 @@ private ItemNode resolvePathCand(RelevantPath path) {
 }
 
 /** Get a trait that should be visible when `path` resolves to `node`, if any. */
-private Trait getResolvePathTraitUsed(RelevantPath path, AssocItemNode node) {
+private Trait getResolvePathTraitUsed(PathExt path, AssocItemNode node) {
   exists(TypeItemNode type, ImplItemNodeImpl impl |
     node = resolvePathCandQualified(_, type, path, _) and
     typeImplEdge(type, impl, _, _, node, _) and
@@ -1949,9 +1981,8 @@ private predicate pathTraitUsed(Element path, Trait trait) {
   trait = getResolvePathTraitUsed(path, _)
 }
 
-/** Gets the item that `path` resolves to, if any. */
 cached
-ItemNode resolvePath(RelevantPath path) {
+private ItemNode resolvePath0(PathExt path) {
   result = resolvePathCand(path) and
   not path = any(Path parent | exists(resolvePathCand(parent))).getQualifier() and
   (
@@ -1964,29 +1995,40 @@ ItemNode resolvePath(RelevantPath path) {
   or
   // if `path` is the qualifier of a resolvable `parent`, then we should
   // resolve `path` to something consistent with what `parent` resolves to
-  exists(RelevantPath parent |
-    resolvePathCandQualified(path, result, parent, _) = resolvePath(parent)
-  )
+  exists(PathExt parent | resolvePathCandQualified(path, result, parent, _) = resolvePath0(parent))
 }
 
-private predicate isUseTreeSubPath(UseTree tree, RelevantPath path) {
+/**
+ * Holds if `ip` resolves to some constructor.
+ */
+// use `forceLocal` once we implement overlay support
+predicate identPatIsResolvable(IdentPat ip) { exists(resolvePath0(ip)) }
+
+/** Gets the item that `path` resolves to, if any. */
+pragma[nomagic]
+ItemNode resolvePath(PathExt path) {
+  result = resolvePath0(path) and
+  not path = any(VariableAccess va).(PathExpr).getPath()
+}
+
+private predicate isUseTreeSubPath(UseTree tree, PathExt path) {
   path = tree.getPath()
   or
-  exists(RelevantPath mid |
+  exists(PathExt mid |
     isUseTreeSubPath(tree, mid) and
     path = mid.getQualifier()
   )
 }
 
 pragma[nomagic]
-private predicate isUseTreeSubPathUnqualified(UseTree tree, RelevantPath path, string name) {
+private predicate isUseTreeSubPathUnqualified(UseTree tree, PathExt path, string name) {
   isUseTreeSubPath(tree, path) and
   not exists(path.getQualifier()) and
   name = path.getText()
 }
 
 pragma[nomagic]
-private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path, SuccessorKind kind) {
+private ItemNode resolveUseTreeListItem(Use use, UseTree tree, PathExt path, SuccessorKind kind) {
   exists(UseOption useOpt | checkQualifiedVisibility(use, result, kind, useOpt) |
     exists(UseTree midTree, ItemNode mid, string name |
       mid = resolveUseTreeListItem(use, midTree) and
@@ -2003,9 +2045,7 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path
 }
 
 pragma[nomagic]
-private ItemNode resolveUseTreeListItemQualifier(
-  Use use, UseTree tree, RelevantPath path, string name
-) {
+private ItemNode resolveUseTreeListItemQualifier(Use use, UseTree tree, PathExt path, string name) {
   result = resolveUseTreeListItem(use, tree, path.getQualifier(), _) and
   name = path.getText()
 }
@@ -2137,12 +2177,12 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 52
+      startline = 800
     )
   }
 
   predicate debugUnqualifiedPathLookup(
-    RelevantPath p, string name, Namespace ns, ItemNode ancestor, string path
+    PathExt p, string name, Namespace ns, ItemNode ancestor, string path
   ) {
     p = getRelevantLocatable() and
     exists(ItemNode encl |
@@ -2154,7 +2194,7 @@ private module Debug {
 
   predicate debugItemNode(ItemNode item) { item = getRelevantLocatable() }
 
-  ItemNode debugResolvePath(RelevantPath path) {
+  ItemNode debugResolvePath(PathExt path) {
     path = getRelevantLocatable() and
     result = resolvePath(path)
   }

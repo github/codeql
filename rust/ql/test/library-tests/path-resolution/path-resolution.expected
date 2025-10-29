@@ -404,6 +404,7 @@ resolvePath
 | main.rs:796:24:796:26 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:797:13:797:16 | Some | {EXTERNAL LOCATION} | Some |
 | main.rs:798:17:798:20 | None | {EXTERNAL LOCATION} | None |
+| main.rs:800:13:800:16 | None | {EXTERNAL LOCATION} | None |
 | main.rs:801:17:801:20 | None | {EXTERNAL LOCATION} | None |
 | main.rs:810:19:810:29 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
 | main.rs:810:26:810:28 | i32 | {EXTERNAL LOCATION} | struct i32 |

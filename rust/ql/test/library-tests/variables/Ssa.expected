@@ -193,6 +193,7 @@ definition
 | main.rs:732:5:732:13 | <captured exit> x | main.rs:725:13:725:13 | x |
 | main.rs:739:13:739:13 | x | main.rs:739:13:739:13 | x |
 | main.rs:740:13:740:13 | y | main.rs:740:13:740:13 | y |
+| main.rs:749:13:749:16 | N0ne | main.rs:749:13:749:16 | N0ne |
 | main.rs:756:13:756:22 | test_alias | main.rs:756:13:756:22 | test_alias |
 | main.rs:758:13:758:16 | test | main.rs:758:13:758:16 | test |
 read
@@ -400,6 +401,7 @@ read
 | main.rs:732:5:732:13 | <captured exit> x | main.rs:725:13:725:13 | x | main.rs:733:15:733:15 | x |
 | main.rs:739:13:739:13 | x | main.rs:739:13:739:13 | x | main.rs:741:19:741:19 | x |
 | main.rs:740:13:740:13 | y | main.rs:740:13:740:13 | y | main.rs:748:15:748:15 | y |
+| main.rs:749:13:749:16 | N0ne | main.rs:749:13:749:16 | N0ne | main.rs:750:17:750:20 | N0ne |
 | main.rs:756:13:756:22 | test_alias | main.rs:756:13:756:22 | test_alias | main.rs:759:13:759:22 | test_alias |
 | main.rs:758:13:758:16 | test | main.rs:758:13:758:16 | test | main.rs:760:9:760:12 | test |
 firstRead
@@ -565,6 +567,7 @@ firstRead
 | main.rs:732:5:732:13 | <captured exit> x | main.rs:725:13:725:13 | x | main.rs:733:15:733:15 | x |
 | main.rs:739:13:739:13 | x | main.rs:739:13:739:13 | x | main.rs:741:19:741:19 | x |
 | main.rs:740:13:740:13 | y | main.rs:740:13:740:13 | y | main.rs:748:15:748:15 | y |
+| main.rs:749:13:749:16 | N0ne | main.rs:749:13:749:16 | N0ne | main.rs:750:17:750:20 | N0ne |
 | main.rs:756:13:756:22 | test_alias | main.rs:756:13:756:22 | test_alias | main.rs:759:13:759:22 | test_alias |
 | main.rs:758:13:758:16 | test | main.rs:758:13:758:16 | test | main.rs:760:9:760:12 | test |
 adjacentReads

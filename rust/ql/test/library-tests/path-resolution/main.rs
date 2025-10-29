@@ -797,7 +797,7 @@ mod patterns {
             Some(y) => { // $ item=Some
                 None // $ item=None
             }
-            None => // $ MISSING: item=None
+            None => // $ item=None
                 None // $ item=None
         };
         match y {
