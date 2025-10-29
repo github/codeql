@@ -1,13 +1,20 @@
+| Assert.cs:11:27:11:27 | access to local variable s | Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:10:22:10:22 | access to local variable s | no exception |
 | Assert.cs:11:27:11:27 | access to local variable s | Assert.cs:10:22:10:22 | access to local variable s | Assert.cs:10:22:10:22 | access to local variable s | not null |
 | Assert.cs:11:27:11:27 | access to local variable s | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:10:22:10:22 | access to local variable s | true |
+| Assert.cs:18:27:18:27 | access to local variable s | Assert.cs:17:9:17:24 | call to method IsNull | Assert.cs:17:23:17:23 | access to local variable s | no exception |
 | Assert.cs:18:27:18:27 | access to local variable s | Assert.cs:17:23:17:23 | access to local variable s | Assert.cs:17:23:17:23 | access to local variable s | null |
+| Assert.cs:25:27:25:27 | access to local variable s | Assert.cs:24:9:24:27 | call to method IsNotNull | Assert.cs:24:26:24:26 | access to local variable s | no exception |
 | Assert.cs:25:27:25:27 | access to local variable s | Assert.cs:24:26:24:26 | access to local variable s | Assert.cs:24:26:24:26 | access to local variable s | not null |
+| Assert.cs:32:27:32:27 | access to local variable s | Assert.cs:31:9:31:32 | call to method IsTrue | Assert.cs:31:23:31:23 | access to local variable s | no exception |
 | Assert.cs:32:27:32:27 | access to local variable s | Assert.cs:31:23:31:23 | access to local variable s | Assert.cs:31:23:31:23 | access to local variable s | null |
 | Assert.cs:32:27:32:27 | access to local variable s | Assert.cs:31:23:31:31 | ... == ... | Assert.cs:31:23:31:23 | access to local variable s | true |
+| Assert.cs:39:27:39:27 | access to local variable s | Assert.cs:38:9:38:32 | call to method IsTrue | Assert.cs:38:23:38:23 | access to local variable s | no exception |
 | Assert.cs:39:27:39:27 | access to local variable s | Assert.cs:38:23:38:23 | access to local variable s | Assert.cs:38:23:38:23 | access to local variable s | not null |
 | Assert.cs:39:27:39:27 | access to local variable s | Assert.cs:38:23:38:31 | ... != ... | Assert.cs:38:23:38:23 | access to local variable s | true |
+| Assert.cs:46:27:46:27 | access to local variable s | Assert.cs:45:9:45:33 | call to method IsFalse | Assert.cs:45:24:45:24 | access to local variable s | no exception |
 | Assert.cs:46:27:46:27 | access to local variable s | Assert.cs:45:24:45:24 | access to local variable s | Assert.cs:45:24:45:24 | access to local variable s | null |
 | Assert.cs:46:27:46:27 | access to local variable s | Assert.cs:45:24:45:32 | ... != ... | Assert.cs:45:24:45:24 | access to local variable s | false |
+| Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:52:9:52:33 | call to method IsFalse | Assert.cs:52:24:52:24 | access to local variable s | no exception |
 | Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:52:24:52:24 | access to local variable s | Assert.cs:52:24:52:24 | access to local variable s | not null |
 | Assert.cs:53:27:53:27 | access to local variable s | Assert.cs:52:24:52:32 | ... == ... | Assert.cs:52:24:52:24 | access to local variable s | false |
 | Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | Assert.cs:58:20:58:20 | access to parameter b | false |
@@ -26,7 +33,10 @@
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:79:20:79:20 | access to parameter b | null |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:80:24:80:24 | access to local variable s | null |
 | Assert.cs:81:27:81:27 | access to local variable s | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:80:24:80:24 | access to local variable s | false |
+| Assert.cs:94:16:94:17 | access to parameter b1 | Assert.cs:93:9:93:35 | call to method AssertTrueFalse | Assert.cs:93:25:93:26 | access to parameter b1 | no exception |
 | Assert.cs:94:16:94:17 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | Assert.cs:93:25:93:26 | access to parameter b1 | true |
+| Assert.cs:94:23:94:24 | access to parameter b2 | Assert.cs:93:9:93:35 | call to method AssertTrueFalse | Assert.cs:93:29:93:30 | access to parameter b2 | no exception |
+| Assert.cs:94:23:94:24 | access to parameter b2 | Assert.cs:93:9:93:35 | call to method AssertTrueFalse | Assert.cs:93:33:93:34 | access to parameter b2 | no exception |
 | Assert.cs:94:23:94:24 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | Assert.cs:93:29:93:30 | access to parameter b2 | false |
 | Collections.cs:51:17:51:20 | access to parameter args | Collections.cs:49:13:49:22 | access to property Count | Collections.cs:49:13:49:16 | access to parameter args | not 0 |
 | Collections.cs:51:17:51:20 | access to parameter args | Collections.cs:49:13:49:27 | ... == ... | Collections.cs:49:13:49:16 | access to parameter args | false |
