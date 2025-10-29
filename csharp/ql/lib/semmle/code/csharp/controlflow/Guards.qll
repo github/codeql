@@ -442,13 +442,16 @@ class DereferenceableExpr extends Expr {
 
   /** Holds if `guard` suggests that this expression may be `null`. */
   predicate guardSuggestsMaybeNull(Guards::Guard guard) {
-    guard = this.getANullnessNullCheck(_, true)
-    or
-    LogicInput::additionalNullCheck(guard, _, this, true)
-    or
-    guard.isEquality(this, any(Expr n | nullValueImplied(n)), _)
-    or
-    Guards::nullGuard(guard, any(GuardValue v | exists(v.asBooleanValue())), this, true)
+    not nonNullValueImplied(this) and
+    (
+      guard = this.getANullnessNullCheck(_, true)
+      or
+      LogicInput::additionalNullCheck(guard, _, this, true)
+      or
+      guard.isEquality(this, any(Expr n | nullValueImplied(n)), _)
+      or
+      Guards::nullGuard(guard, any(GuardValue v | exists(v.asBooleanValue())), this, true)
+    )
   }
 }
 
