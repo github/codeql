@@ -652,6 +652,51 @@ mod type_parameter_bounds {
     }
 }
 
+mod trait_default_self_type_parameter {
+    // A trait with a type parameter that defaults to `Self`.
+    // trait TraitWithSelfTp<A = Self> {
+    trait TraitWithSelfTp<A = Option<Self>> {
+        // TraitWithSelfTp::get_a
+        fn get_a(&self) -> A;
+    }
+
+    fn get_a<A, T: TraitWithSelfTp<A>>(thing: &T) -> A {
+        thing.get_a() // $ target=TraitWithSelfTp::get_a
+    }
+
+    // The trait bound on `T` uses the default for `A` which contains `Self`
+    fn tp_uses_default<S: TraitWithSelfTp>(thing: S) -> i64 {
+        let _ms = thing.get_a(); // $ target=TraitWithSelfTp::get_a MISSING: type=_ms:T.S
+        0
+    }
+
+    // The supertrait uses the default for `A` which contains `Self`
+    trait SubTraitOfTraitWithSelfTp: TraitWithSelfTp + Sized {}
+
+    fn get_a_through_tp<S: SubTraitOfTraitWithSelfTp>(thing: &S) {
+        // `thing` is a `TraitWithSelfTp` through the trait hierarchy
+        let _ms = get_a(thing); // $ target=get_a MISSING: type=_ms:T.S
+    }
+
+    struct MyStruct {
+        value: i32,
+    }
+
+    // The implementing trait uses the default for `A` which contains `Self`
+    impl TraitWithSelfTp for MyStruct {
+        fn get_a(&self) -> Option<Self> {
+            Some(MyStruct { value: self.value }) // $ fieldof=MyStruct
+        }
+    }
+
+    impl SubTraitOfTraitWithSelfTp for MyStruct {}
+
+    pub fn test() {
+        let s = MyStruct { value: 0 };
+        let _ms = get_a(&s); // $ target=get_a MISSING: type=_ms:T.MyStruct
+    }
+}
+
 mod function_trait_bounds {
     #[derive(Debug, Clone, Copy)]
     struct MyThing<T> {
@@ -2753,6 +2798,7 @@ fn main() {
     method_impl::g(method_impl::Foo {}, method_impl::Foo {}); // $ target=g
     method_non_parametric_impl::f(); // $ target=f
     method_non_parametric_trait_impl::f(); // $ target=f
+    trait_default_self_type_parameter::test(); // $ target=test
     function_trait_bounds::f(); // $ target=f
     associated_type_in_trait::f(); // $ target=f
     generic_enum::f(); // $ target=f
