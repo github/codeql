@@ -48,7 +48,7 @@ For Rust extraction:
 
 For Swift extraction:
 
-- Only macOS is supported.
+- Only macOS is supported as a host platform.
 
 For Java extraction:
 
