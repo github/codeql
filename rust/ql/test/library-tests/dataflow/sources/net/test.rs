@@ -445,9 +445,9 @@ mod futures_rustls {
             sink(&pinned); // $ hasTaintFlow=url
             let mut cx = Context::from_waker(futures::task::noop_waker_ref());
             let bytes_read = pinned.poll_read(&mut cx, &mut buffer);
-            sink(&buffer); // $ MISSING: hasTaintFlow=url
+            sink(&buffer); // $ hasTaintFlow=url
             if let Poll::Ready(Ok(n)) = bytes_read {
-                sink(&buffer[..n]); // $ MISSING: hasTaintFlow=url
+                sink(&buffer[..n]); // $ hasTaintFlow=url
             }
         }
 
