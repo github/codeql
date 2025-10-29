@@ -143,7 +143,11 @@ class NonAliasPathTypeMention extends PathTypeMention {
     )
   }
 
-  private TypeMention getPositionalTypeArgument0(int i) {
+  /**
+   * Gets the positional type argument at index `i` that occurs in this path, if
+   * any.
+   */
+  private TypeMention getPathPositionalTypeArgument(int i) {
     result = this.getSegment().getGenericArgList().getTypeArg(i)
     or
     // `Option::<i32>::Some` is valid in addition to `Option::Some::<i32>`
@@ -155,7 +159,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
    * Gets the type mention that instantiates the implicit `Self` type parameter
    * for this path, if it occurs in the position of a trait bound.
    */
-  private TypeMention getSelfTypeParameter() {
+  private TypeMention getSelfTraitBoundArg() {
     exists(ImplItemNode impl | this = impl.getTraitPath() and result = impl.(Impl).getSelfTy())
     or
     exists(Trait subTrait |
@@ -166,16 +170,10 @@ class NonAliasPathTypeMention extends PathTypeMention {
     exists(TypeParamItemNode tp | this = tp.getABoundPath() and result = tp)
   }
 
-  private Type getPositionalTypeArgument(int i, TypePath path) {
-    result = this.getPositionalTypeArgument0(i).resolveTypeAt(path)
-    or
-    result = this.getDefaultPositionalTypeArgument(i, path)
-  }
-
   private Type getDefaultPositionalTypeArgument(int i, TypePath path) {
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
-    not exists(this.getPositionalTypeArgument0(i)) and
+    not exists(this.getPathPositionalTypeArgument(i)) and
     // Defaults only apply to type mentions in type annotations
     this = any(PathTypeRepr ptp).getPath().getQualifier*() and
     exists(Type ty, TypePath prefix |
@@ -187,9 +185,15 @@ class NonAliasPathTypeMention extends PathTypeMention {
         // be substituted for the type that implements the trait.
         exists(TypePath suffix |
           path = prefix.append(suffix) and
-          result = this.getSelfTypeParameter().resolveTypeAt(suffix)
+          result = this.getSelfTraitBoundArg().resolveTypeAt(suffix)
         )
     )
+  }
+
+  private Type getPositionalTypeArgument(int i, TypePath path) {
+    result = this.getPathPositionalTypeArgument(i).resolveTypeAt(path)
+    or
+    result = this.getDefaultPositionalTypeArgument(i, path)
   }
 
   /**
@@ -282,7 +286,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // When the path refers to a trait, then the implicit `Self` type parameter
     // should be instantiated from the context.
     exists(TypePath suffix |
-      result = this.getSelfTypeParameter().resolveTypeAt(suffix) and
+      result = this.getSelfTraitBoundArg().resolveTypeAt(suffix) and
       typePath = TypePath::cons(TSelfTypeParameter(resolved), suffix)
     )
   }

@@ -654,7 +654,6 @@ mod type_parameter_bounds {
 
 mod trait_default_self_type_parameter {
     // A trait with a type parameter that defaults to `Self`.
-    // trait TraitWithSelfTp<A = Self> {
     trait TraitWithSelfTp<A = Option<Self>> {
         // TraitWithSelfTp::get_a
         fn get_a(&self) -> A;
