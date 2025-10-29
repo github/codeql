@@ -108,12 +108,6 @@ class Expr extends ControlFlowElement, @expr {
    * that uses the result of this expression.
    */
   override Element getParent() { result = ControlFlowElement.super.getParent() }
-
-  /** Holds if the nullable flow state of this expression is not null. */
-  predicate hasNotNullFlowState() { expr_flowstate(this, 1) }
-
-  /** Holds if the nullable flow state of this expression may be null. */
-  predicate hasMaybeNullFlowState() { expr_flowstate(this, 2) }
 }
 
 /**

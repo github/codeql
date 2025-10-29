@@ -67,12 +67,3 @@ query predicate expressionTypes(Expr expr, string type) {
   type = expr.getAnnotatedType().toString() and
   expr.getFile().getBaseName() = "NullableRefTypes.cs"
 }
-
-query predicate exprFlowState(Expr expr, string state) {
-  expr.getFile().getBaseName() = "NullableRefTypes.cs" and
-  (
-    expr.hasMaybeNullFlowState() and state = "Maybe null"
-    or
-    expr.hasNotNullFlowState() and state = "Not null"
-  )
-}

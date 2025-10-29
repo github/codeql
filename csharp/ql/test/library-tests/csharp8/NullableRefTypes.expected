@@ -44,14 +44,10 @@ nonNullExpressions
 | NullableRefTypes.cs:84:21:84:28 | "source" |
 | NullableRefTypes.cs:85:20:85:20 | access to local variable x |
 | NullableRefTypes.cs:85:20:85:21 | ...! |
-| NullableRefTypes.cs:86:9:86:9 | access to local variable y |
 | NullableRefTypes.cs:86:9:86:14 | ... = ... |
 | NullableRefTypes.cs:86:13:86:13 | access to local variable x |
 | NullableRefTypes.cs:86:13:86:14 | ...! |
-| NullableRefTypes.cs:87:9:87:9 | access to local variable x |
-| NullableRefTypes.cs:88:9:88:9 | access to local variable y |
 | NullableRefTypes.cs:88:9:88:14 | ... = ... |
-| NullableRefTypes.cs:88:13:88:13 | access to local variable x |
 | NullableRefTypes.cs:88:13:88:14 | ...! |
 assignableTypes
 | NullableRefTypes.cs:9:14:9:14 | A | NullableRefTypes.cs:6:7:6:13 | MyClass? | ? |
@@ -404,93 +400,3 @@ expressionTypes
 | NullableRefTypes.cs:220:20:220:28 | call to method GetSelf | TestNullableFlowStates? |
 | NullableRefTypes.cs:220:20:220:28 | this access | TestNullableFlowStates |
 | NullableRefTypes.cs:220:20:220:34 | access to field Field | string! |
-exprFlowState
-| NullableRefTypes.cs:13:19:13:22 | null | Maybe null |
-| NullableRefTypes.cs:14:18:14:21 | this access | Not null |
-| NullableRefTypes.cs:17:29:17:32 | null | Maybe null |
-| NullableRefTypes.cs:18:31:18:34 | this access | Not null |
-| NullableRefTypes.cs:19:33:19:36 | this access | Not null |
-| NullableRefTypes.cs:26:44:26:53 | throw ... | Not null |
-| NullableRefTypes.cs:26:50:26:53 | null | Maybe null |
-| NullableRefTypes.cs:27:44:27:53 | throw ... | Not null |
-| NullableRefTypes.cs:27:50:27:53 | null | Maybe null |
-| NullableRefTypes.cs:30:21:30:24 | null | Maybe null |
-| NullableRefTypes.cs:31:20:31:23 | this access | Not null |
-| NullableRefTypes.cs:37:21:37:33 | object creation of type MyClass | Not null |
-| NullableRefTypes.cs:38:22:38:25 | null | Maybe null |
-| NullableRefTypes.cs:39:29:39:29 | access to local variable b | Maybe null |
-| NullableRefTypes.cs:40:30:40:30 | access to local variable b | Maybe null |
-| NullableRefTypes.cs:51:44:51:47 | null | Maybe null |
-| NullableRefTypes.cs:73:22:73:25 | null | Maybe null |
-| NullableRefTypes.cs:74:9:74:20 | call to method GenericFn<MyClass> | Not null |
-| NullableRefTypes.cs:74:19:74:19 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:75:9:75:12 | call to method Q<MyClass> | Not null |
-| NullableRefTypes.cs:75:11:75:11 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:76:16:76:32 | default(...) | Not null |
-| NullableRefTypes.cs:84:21:84:28 | "source" | Not null |
-| NullableRefTypes.cs:85:20:85:20 | access to local variable x | Not null |
-| NullableRefTypes.cs:85:20:85:21 | ...! | Not null |
-| NullableRefTypes.cs:86:9:86:9 | access to local variable y | Not null |
-| NullableRefTypes.cs:86:9:86:14 | ... = ... | Not null |
-| NullableRefTypes.cs:86:13:86:13 | access to local variable x | Not null |
-| NullableRefTypes.cs:86:13:86:14 | ...! | Not null |
-| NullableRefTypes.cs:87:9:87:9 | access to local variable x | Not null |
-| NullableRefTypes.cs:87:9:87:16 | ... = ... | Maybe null |
-| NullableRefTypes.cs:87:13:87:16 | null | Maybe null |
-| NullableRefTypes.cs:88:9:88:9 | access to local variable y | Not null |
-| NullableRefTypes.cs:88:9:88:14 | ... = ... | Not null |
-| NullableRefTypes.cs:88:13:88:13 | access to local variable x | Not null |
-| NullableRefTypes.cs:88:13:88:14 | ...! | Not null |
-| NullableRefTypes.cs:93:21:93:28 | "source" | Not null |
-| NullableRefTypes.cs:94:17:94:17 | access to local variable x | Not null |
-| NullableRefTypes.cs:94:17:94:25 | ... ?? ... | Maybe null |
-| NullableRefTypes.cs:94:22:94:25 | null | Maybe null |
-| NullableRefTypes.cs:95:20:95:20 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:96:9:96:15 | access to type Console | Not null |
-| NullableRefTypes.cs:96:9:96:28 | call to method WriteLine | Not null |
-| NullableRefTypes.cs:96:27:96:27 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:103:52:103:52 | access to parameter r | Not null |
-| NullableRefTypes.cs:104:52:104:52 | access to parameter r | Maybe null |
-| NullableRefTypes.cs:105:61:105:61 | access to parameter r | Maybe null |
-| NullableRefTypes.cs:106:60:106:60 | access to parameter r | Not null |
-| NullableRefTypes.cs:107:59:107:59 | access to parameter r | Not null |
-| NullableRefTypes.cs:108:60:108:60 | access to parameter r | Maybe null |
-| NullableRefTypes.cs:110:58:110:67 | throw ... | Not null |
-| NullableRefTypes.cs:110:64:110:67 | null | Maybe null |
-| NullableRefTypes.cs:113:36:113:43 | access to field Property | Not null |
-| NullableRefTypes.cs:113:36:113:44 | ...! | Not null |
-| NullableRefTypes.cs:181:21:181:31 | call to method MaybeNull | Maybe null |
-| NullableRefTypes.cs:183:9:183:16 | call to method Check | Not null |
-| NullableRefTypes.cs:183:15:183:15 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:185:22:185:22 | 0 | Not null |
-| NullableRefTypes.cs:185:25:185:25 | access to local variable i | Not null |
-| NullableRefTypes.cs:185:25:185:30 | ... < ... | Not null |
-| NullableRefTypes.cs:185:29:185:30 | 10 | Not null |
-| NullableRefTypes.cs:185:33:185:35 | ++... | Not null |
-| NullableRefTypes.cs:185:35:185:35 | access to local variable i | Not null |
-| NullableRefTypes.cs:187:13:187:13 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:187:13:187:35 | ... = ... | Not null |
-| NullableRefTypes.cs:187:17:187:35 | "not null any more" | Not null |
-| NullableRefTypes.cs:190:9:190:16 | call to method Check | Not null |
-| NullableRefTypes.cs:190:15:190:15 | access to local variable x | Maybe null |
-| NullableRefTypes.cs:195:21:195:31 | call to method MaybeNull | Maybe null |
-| NullableRefTypes.cs:199:19:199:41 | object creation of type ArgumentException | Not null |
-| NullableRefTypes.cs:203:13:203:13 | access to local variable y | Maybe null |
-| NullableRefTypes.cs:203:13:203:26 | ... = ... | Not null |
-| NullableRefTypes.cs:203:17:203:26 | "not null" | Not null |
-| NullableRefTypes.cs:206:9:206:16 | call to method Check | Not null |
-| NullableRefTypes.cs:206:15:206:15 | access to local variable y | Not null |
-| NullableRefTypes.cs:211:17:211:17 | access to parameter o | Maybe null |
-| NullableRefTypes.cs:211:17:211:28 | call to method GetType | Maybe null |
-| NullableRefTypes.cs:212:16:212:16 | access to local variable t | Maybe null |
-| NullableRefTypes.cs:212:16:212:27 | call to method ToString | Not null |
-| NullableRefTypes.cs:217:21:217:29 | call to method GetSelf | Maybe null |
-| NullableRefTypes.cs:217:21:217:36 | access to field Field | Maybe null |
-| NullableRefTypes.cs:218:21:218:24 | access to parameter list | Maybe null |
-| NullableRefTypes.cs:218:21:218:28 | access to indexer | Maybe null |
-| NullableRefTypes.cs:218:27:218:27 | 0 | Not null |
-| NullableRefTypes.cs:219:20:219:23 | access to parameter list | Maybe null |
-| NullableRefTypes.cs:219:20:219:26 | access to indexer | Not null |
-| NullableRefTypes.cs:219:25:219:25 | 0 | Not null |
-| NullableRefTypes.cs:220:20:220:28 | call to method GetSelf | Maybe null |
-| NullableRefTypes.cs:220:20:220:34 | access to field Field | Not null |
