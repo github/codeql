@@ -2013,18 +2013,18 @@ inferType
 | main.rs:668:44:668:48 | thing |  | main.rs:668:24:668:41 | S |
 | main.rs:668:61:671:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:669:13:669:15 | _ms |  | {EXTERNAL LOCATION} | Option |
-| main.rs:669:13:669:15 | _ms | T | main.rs:656:5:661:5 | Self [trait TraitWithSelfTp] |
+| main.rs:669:13:669:15 | _ms | T | main.rs:668:24:668:41 | S |
 | main.rs:669:19:669:23 | thing |  | main.rs:668:24:668:41 | S |
 | main.rs:669:19:669:31 | thing.get_a() |  | {EXTERNAL LOCATION} | Option |
-| main.rs:669:19:669:31 | thing.get_a() | T | main.rs:656:5:661:5 | Self [trait TraitWithSelfTp] |
+| main.rs:669:19:669:31 | thing.get_a() | T | main.rs:668:24:668:41 | S |
 | main.rs:670:9:670:9 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:670:9:670:9 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:676:55:676:59 | thing |  | file://:0:0:0:0 | & |
 | main.rs:676:55:676:59 | thing | &T | main.rs:676:25:676:52 | S |
 | main.rs:678:13:678:15 | _ms |  | {EXTERNAL LOCATION} | Option |
-| main.rs:678:13:678:15 | _ms | T | main.rs:656:5:661:5 | Self [trait TraitWithSelfTp] |
+| main.rs:678:13:678:15 | _ms | T | main.rs:676:25:676:52 | S |
 | main.rs:678:19:678:30 | get_a(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:678:19:678:30 | get_a(...) | T | main.rs:656:5:661:5 | Self [trait TraitWithSelfTp] |
+| main.rs:678:19:678:30 | get_a(...) | T | main.rs:676:25:676:52 | S |
 | main.rs:678:25:678:29 | thing |  | file://:0:0:0:0 | & |
 | main.rs:678:25:678:29 | thing | &T | main.rs:676:25:676:52 | S |
 | main.rs:687:18:687:22 | SelfParam |  | file://:0:0:0:0 | & |
@@ -2041,9 +2041,9 @@ inferType
 | main.rs:695:17:695:37 | MyStruct {...} |  | main.rs:681:5:683:5 | MyStruct |
 | main.rs:695:35:695:35 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:696:13:696:15 | _ms |  | {EXTERNAL LOCATION} | Option |
-| main.rs:696:13:696:15 | _ms | T | main.rs:656:5:661:5 | Self [trait TraitWithSelfTp] |
+| main.rs:696:13:696:15 | _ms | T | main.rs:681:5:683:5 | MyStruct |
 | main.rs:696:19:696:27 | get_a(...) |  | {EXTERNAL LOCATION} | Option |
-| main.rs:696:19:696:27 | get_a(...) | T | main.rs:656:5:661:5 | Self [trait TraitWithSelfTp] |
+| main.rs:696:19:696:27 | get_a(...) | T | main.rs:681:5:683:5 | MyStruct |
 | main.rs:696:25:696:26 | &s |  | file://:0:0:0:0 | & |
 | main.rs:696:25:696:26 | &s | &T | main.rs:681:5:683:5 | MyStruct |
 | main.rs:696:26:696:26 | s |  | main.rs:681:5:683:5 | MyStruct |
@@ -4776,7 +4776,6 @@ inferType
 | main.rs:2312:16:2312:21 | self.0 |  | main.rs:2307:10:2307:17 | T |
 | main.rs:2312:31:2312:35 | other |  | main.rs:2305:5:2305:19 | S |
 | main.rs:2312:31:2312:35 | other | T | main.rs:2307:10:2307:17 | T |
-| main.rs:2312:31:2312:37 | other.0 |  | main.rs:2267:5:2272:5 | Self [trait MyAdd] |
 | main.rs:2312:31:2312:37 | other.0 |  | main.rs:2307:10:2307:17 | T |
 | main.rs:2320:19:2320:22 | SelfParam |  | main.rs:2305:5:2305:19 | S |
 | main.rs:2320:19:2320:22 | SelfParam | T | main.rs:2316:10:2316:17 | T |

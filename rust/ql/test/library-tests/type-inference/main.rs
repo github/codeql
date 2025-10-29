@@ -666,7 +666,7 @@ mod trait_default_self_type_parameter {
 
     // The trait bound on `T` uses the default for `A` which contains `Self`
     fn tp_uses_default<S: TraitWithSelfTp>(thing: S) -> i64 {
-        let _ms = thing.get_a(); // $ target=TraitWithSelfTp::get_a MISSING: type=_ms:T.S
+        let _ms = thing.get_a(); // $ target=TraitWithSelfTp::get_a type=_ms:T.S
         0
     }
 
@@ -675,7 +675,7 @@ mod trait_default_self_type_parameter {
 
     fn get_a_through_tp<S: SubTraitOfTraitWithSelfTp>(thing: &S) {
         // `thing` is a `TraitWithSelfTp` through the trait hierarchy
-        let _ms = get_a(thing); // $ target=get_a MISSING: type=_ms:T.S
+        let _ms = get_a(thing); // $ target=get_a type=_ms:T.S
     }
 
     struct MyStruct {
@@ -693,7 +693,7 @@ mod trait_default_self_type_parameter {
 
     pub fn test() {
         let s = MyStruct { value: 0 };
-        let _ms = get_a(&s); // $ target=get_a MISSING: type=_ms:T.MyStruct
+        let _ms = get_a(&s); // $ target=get_a type=_ms:T.MyStruct
     }
 }
 

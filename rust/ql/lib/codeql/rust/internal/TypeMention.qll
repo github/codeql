@@ -151,25 +151,61 @@ class NonAliasPathTypeMention extends PathTypeMention {
     result = this.getQualifier().getSegment().getGenericArgList().getTypeArg(i)
   }
 
-  private TypeMention getPositionalTypeArgument(int i) {
-    result = this.getPositionalTypeArgument0(i)
+  /**
+   * Gets the type mention that instantiates the implicit `Self` type parameter
+   * for this path, if it occurs in the position of a trait bound.
+   */
+  private TypeMention getSelfTypeParameter() {
+    exists(ImplItemNode impl | this = impl.getTraitPath() and result = impl.(Impl).getSelfTy())
     or
+    exists(Trait subTrait |
+      this = subTrait.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() and
+      result.(SelfTypeParameterMention).getTrait() = subTrait
+    )
+    or
+    exists(TypeParamItemNode tp | this = tp.getABoundPath() and result = tp)
+  }
+
+  private Type getPositionalTypeArgument(int i, TypePath path) {
+    result = this.getPositionalTypeArgument0(i).resolveTypeAt(path)
+    or
+    result = this.getDefaultPositionalTypeArgument(i, path)
+  }
+
+  private Type getDefaultPositionalTypeArgument(int i, TypePath path) {
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
     not exists(this.getPositionalTypeArgument0(i)) and
-    result = this.resolveRootType().getTypeParameterDefault(i) and
     // Defaults only apply to type mentions in type annotations
-    this = any(PathTypeRepr ptp).getPath().getQualifier*()
+    this = any(PathTypeRepr ptp).getPath().getQualifier*() and
+    exists(Type ty, TypePath prefix |
+      ty = this.resolveRootType().getTypeParameterDefault(i).resolveTypeAt(prefix) and
+      if not ty = TSelfTypeParameter(resolved)
+      then result = ty and path = prefix
+      else
+        // When a default contains an implicit `Self` type parameter, it should
+        // be substituted for the type that implements the trait.
+        exists(TypePath suffix |
+          path = prefix.append(suffix) and
+          result = this.getSelfTypeParameter().resolveTypeAt(suffix)
+        )
+    )
+  }
+
+  /**
+   * Gets the type for this path for the type parameter `tp` at `path`, when the
+   * type parameter does not correspond directly to a type mention.
+   */
+  private Type getTypeForTypeParameterAt(TypeParameter tp, TypePath path) {
+    exists(int i |
+      result = this.getPositionalTypeArgument(pragma[only_bind_into](i), path) and
+      tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
+    )
   }
 
   /** Gets the type mention in this path for the type parameter `tp`, if any. */
   pragma[nomagic]
   private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
-    exists(int i |
-      result = this.getPositionalTypeArgument(pragma[only_bind_into](i)) and
-      tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
-    )
-    or
     exists(TypeAlias alias |
       result = this.getAnAssocTypeArgument(alias) and
       tp = TAssociatedTypeTypeParameter(alias)
@@ -237,9 +273,17 @@ class NonAliasPathTypeMention extends PathTypeMention {
     typePath.isEmpty() and
     result = this.resolveRootType()
     or
-    exists(TypeParameter tp, TypePath suffix |
-      result = this.getTypeMentionForTypeParameter(tp).resolveTypeAt(suffix) and
-      typePath = TypePath::cons(tp, suffix)
+    exists(TypeParameter tp, TypePath suffix | typePath = TypePath::cons(tp, suffix) |
+      result = this.getTypeForTypeParameterAt(tp, suffix)
+      or
+      result = this.getTypeMentionForTypeParameter(tp).resolveTypeAt(suffix)
+    )
+    or
+    // When the path refers to a trait, then the implicit `Self` type parameter
+    // should be instantiated from the context.
+    exists(TypePath suffix |
+      result = this.getSelfTypeParameter().resolveTypeAt(suffix) and
+      typePath = TypePath::cons(TSelfTypeParameter(resolved), suffix)
     )
   }
 }
@@ -295,6 +339,11 @@ class TraitMention extends TypeMention instanceof TraitItemNode {
   override Type resolveTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result = TTrait(this)
+    or
+    // The implicit `Self` type parameter occurs at the `Self` type parameter
+    // position.
+    typePath = TypePath::singleton(TSelfTypeParameter(this)) and
+    result = TSelfTypeParameter(this)
     or
     exists(TypeAlias alias |
       alias = super.getAnAssocItem() and
