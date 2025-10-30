@@ -342,7 +342,7 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::IntegerType, IntegerTypeTag)
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)
-    MAP(swift::LocatableType, void) // TODO: Swift 6.2
+    MAP(swift::LocatableType, void) // created during type checking and only used for constraint checking
     MAP(swift::SyntaxSugarType, SyntaxSugarTypeTag)
       MAP(swift::UnarySyntaxSugarType, UnarySyntaxSugarTypeTag)
         MAP(swift::ArraySliceType, ArraySliceTypeTag)
