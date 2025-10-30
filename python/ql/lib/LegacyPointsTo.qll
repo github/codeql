@@ -221,3 +221,66 @@ class ModuleWithPointsTo extends Module {
 
   override string getAQlClass() { none() }
 }
+
+/**
+ * An extension of `Function` that provides points-to related methods.
+ */
+class FunctionWithPointsTo extends Function {
+  /** Gets the FunctionObject corresponding to this function */
+  FunctionObject getFunctionObject() { result.getOrigin() = this.getDefinition() }
+
+  override string getAQlClass() { none() }
+}
+
+/**
+ * An extension of `Class` that provides points-to related methods.
+ */
+class ClassWithPointsTo extends Class {
+  /** Gets the ClassObject corresponding to this class */
+  ClassObject getClassObject() { result.getOrigin() = this.getParent() }
+
+  override string getAQlClass() { none() }
+}
+
+Object getLiteralObject(ImmutableLiteral l) {
+  l instanceof IntegerLiteral and
+  (
+    py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, l.(Num).getN())
+    or
+    py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, l.(Num).getN())
+  )
+  or
+  l instanceof FloatLiteral and
+  py_cobjecttypes(result, theFloatType()) and
+  py_cobjectnames(result, l.(Num).getN())
+  or
+  l instanceof ImaginaryLiteral and
+  py_cobjecttypes(result, theComplexType()) and
+  py_cobjectnames(result, l.(Num).getN())
+  or
+  l instanceof NegativeIntegerLiteral and
+  (
+    (py_cobjecttypes(result, theIntType()) or py_cobjecttypes(result, theLongType())) and
+    py_cobjectnames(result, "-" + l.(UnaryExpr).getOperand().(IntegerLiteral).getN())
+  )
+  or
+  l instanceof Bytes and
+  py_cobjecttypes(result, theBytesType()) and
+  py_cobjectnames(result, l.(Bytes).quotedString())
+  or
+  l instanceof Unicode and
+  py_cobjecttypes(result, theUnicodeType()) and
+  py_cobjectnames(result, l.(Unicode).quotedString())
+  or
+  l instanceof True and
+  name_consts(l, "True") and
+  result = theTrueObject()
+  or
+  l instanceof False and
+  name_consts(l, "False") and
+  result = theFalseObject()
+  or
+  l instanceof None and
+  name_consts(l, "None") and
+  result = theNoneObject()
+}

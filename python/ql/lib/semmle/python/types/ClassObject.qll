@@ -89,7 +89,7 @@ class ClassObject extends Object {
   }
 
   /** Gets the scope associated with this class, if it is not a builtin class */
-  Class getPyClass() { result.getClassObject() = this }
+  ClassWithPointsTo getPyClass() { result.getClassObject() = this }
 
   /** Returns an attribute declared on this class (not on a super-class) */
   Object declaredAttribute(string name) {
