@@ -21,6 +21,7 @@
 
 private import python
 private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.Modules
 
 /**
  * An extension of `ControlFlowNode` that provides points-to predicates.
@@ -188,6 +189,22 @@ class ExprWithPointsTo extends Expr {
 
   /** Gets a value that this expression might "point-to". */
   Value pointsTo() { this.pointsTo(result) }
+
+  override string getAQlClass() { none() }
+}
+
+/**
+ * An extension of `Module` that provides points-to related methods.
+ */
+class ModuleWithPointsTo extends Module {
+  /** Gets a name exported by this module, that is the names that will be added to a namespace by 'from this-module import *' */
+  string getAnExport() {
+    py_exports(this, result)
+    or
+    exists(ModuleObjectInternal mod | mod.getSource() = this.getEntryNode() |
+      mod.(ModuleValue).exports(result)
+    )
+  }
 
   override string getAQlClass() { none() }
 }
