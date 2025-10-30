@@ -25,16 +25,16 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
     module TaintFlowOverlayGlobal = AbstractTaintFlowOverlay::Global<Config>;
 
     /**
-     * A Taint tracking implementation without Overlay
+     * A Taint tracking implementation, paramaterized over a DataFlow type
      */
-    signature module TaintTrackingStackSig{
+    signature module TaintTrackingStackSig<AbstractDataFlow::GlobalFlowSig GlobalFlow>{
 
-      Lang::Node getNode(TaintFlowGlobal::PathNode n);
+      Lang::Node getNode(GlobalFlow::PathNode n);
 
-      predicate isSource(TaintFlowGlobal::PathNode n);
+      predicate isSource(GlobalFlow::PathNode n);
 
-      TaintFlowGlobal::PathNode getASuccessor(
-        TaintFlowGlobal::PathNode n
+      GlobalFlow::PathNode getASuccessor(
+        GlobalFlow::PathNode n
       );
 
       Lang::DataFlowCallable getARuntimeTarget(Lang::DataFlowCall call);
@@ -42,41 +42,42 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
       Lang::Node getAnArgumentNode(Lang::DataFlowCall call);
     }
 
-    /**
-     * TODO: Declare a AbstractTaintFlow Signature, and allow consumer to specify either TaintFlowMake or TaintFlowMakeOverlay
-     * depending on the language
-     * 
-     * A Taint tracking implementation with Overlay
-     */
-    signature module TaintTrackingOverlayStackSig<AbstractDF::ConfigSig Config>{
+    //  TODO: Declare a AbstractTaintFlow Signature, and allow consumer to specify either TaintFlowMake or TaintFlowMakeOverlay
+    //  depending on the language
+    //  
+    //  A Taint tracking implementation with Overlay
+    // /
+    // signature module TaintTrackingOverlayStackSig<AbstractDF::ConfigSig Config>{
 
-      Lang::Node getNode(TaintFlowOverlayGlobal::PathNode n);
+    //   Lang::Node getNode(TaintFlowOverlayGlobal::PathNode n);
 
-      predicate isSource(TaintFlowOverlayGlobal::PathNode n);
+    //   predicate isSource(TaintFlowOverlayGlobal::PathNode n);
 
-      TaintFlowOverlayGlobal::PathNode getASuccessor(
-        TaintFlowOverlayGlobal::PathNode n
-      );
+    //   TaintFlowOverlayGlobal::PathNode getASuccessor(
+    //     TaintFlowOverlayGlobal::PathNode n
+    //   );
 
-      Lang::DataFlowCallable getARuntimeTarget(Lang::DataFlowCall call);
+    //   Lang::DataFlowCallable getARuntimeTarget(Lang::DataFlowCall call);
 
-      Lang::Node getAnArgumentNode(Lang::DataFlowCall call);
-    }
+    //   Lang::Node getAnArgumentNode(Lang::DataFlowCall call);
+    // }
   }
 
   module BiStackAnalysis<
     AbstractDF::ConfigSig ConfigA,
-    DataFlowGroup<ConfigA>::TaintTrackingStackSig TaintTrackingStackA,
+    AbstractDataFlow::GlobalFlowSig GlobalFlowA,
+    DataFlowGroup<ConfigA>::TaintTrackingStackSig<GlobalFlowA> TaintTrackingStackA,
     AbstractDF::ConfigSig ConfigB,
-    DataFlowGroup<ConfigB>::TaintTrackingStackSig TaintTrackingStackB>
+    AbstractDataFlow::GlobalFlowSig GlobalFlowB,
+    DataFlowGroup<ConfigB>::TaintTrackingStackSig<GlobalFlowB> TaintTrackingStackB>
   {
-    module FlowA = AbstractTaintFlow::Global<ConfigA>;
+    module FlowA = GlobalFlowA;
 
-    module FlowStackA = FlowStack<ConfigA, TaintTrackingStackA>;
+    module FlowStackA = FlowStack<GlobalFlowA, ConfigA, TaintTrackingStackA>;
 
-    module FlowB = AbstractTaintFlow::Global<ConfigB>;
+    module FlowB = GlobalFlowB;
 
-    module FlowStackB = FlowStack<ConfigB, TaintTrackingStackB>;
+    module FlowStackB = FlowStack<GlobalFlowB, ConfigB, TaintTrackingStackB>;
 
     /**
      * Holds if either the Stack associated with `sourceNodeA` is a subset of the stack associated with `sourceNodeB`
@@ -94,10 +95,10 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
         flowStackA = FlowStackA::createFlowStack(sourceNodeA, sinkNodeA) and
         flowStackB = FlowStackB::createFlowStack(sourceNodeB, sinkNodeB) and
         (
-          BiStackAnalysisImpl<ConfigA, TaintTrackingStackA, ConfigB, TaintTrackingStackB>::flowStackIsSubsetOf(flowStackA,
+          BiStackAnalysisImpl<GlobalFlowA, ConfigA, TaintTrackingStackA, GlobalFlowB, ConfigB, TaintTrackingStackB>::flowStackIsSubsetOf(flowStackA,
             flowStackB)
           or
-          BiStackAnalysisImpl<ConfigB, TaintTrackingStackB, ConfigA, TaintTrackingStackA>::flowStackIsSubsetOf(flowStackB,
+          BiStackAnalysisImpl<GlobalFlowB, ConfigB, TaintTrackingStackB, GlobalFlowA, ConfigA, TaintTrackingStackA>::flowStackIsSubsetOf(flowStackB,
             flowStackA)
         )
       )
@@ -122,10 +123,10 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
         flowStackA = FlowStackA::createFlowStack(sourceNodeA, sinkNodeA) and
         flowStackB = FlowStackB::createFlowStack(sourceNodeB, sinkNodeB) and
         (
-          BiStackAnalysisImpl<ConfigA, TaintTrackingStackA, ConfigB, TaintTrackingStackB>::flowStackIsConvergingTerminatingSubsetOf(flowStackA,
+          BiStackAnalysisImpl<GlobalFlowA, ConfigA, TaintTrackingStackA, GlobalFlowB, ConfigB, TaintTrackingStackB>::flowStackIsConvergingTerminatingSubsetOf(flowStackA,
             flowStackB)
           or
-          BiStackAnalysisImpl<ConfigB, TaintTrackingStackB, ConfigA, TaintTrackingStackA>::flowStackIsConvergingTerminatingSubsetOf(flowStackB,
+          BiStackAnalysisImpl<GlobalFlowB, ConfigB, TaintTrackingStackB, GlobalFlowA, ConfigA, TaintTrackingStackA>::flowStackIsConvergingTerminatingSubsetOf(flowStackB,
             flowStackA)
         )
       )
@@ -138,7 +139,7 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
      * The top of stackA is in stackB and the bottom of stackA is then some successor further down stackB.
      */
     predicate flowStackIsSubsetOf(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB) {
-      BiStackAnalysisImpl<ConfigA, TaintTrackingStackA, ConfigB, TaintTrackingStackB>::flowStackIsSubsetOf(flowStackA,
+      BiStackAnalysisImpl<GlobalFlowA, ConfigA, TaintTrackingStackA, GlobalFlowB, ConfigB, TaintTrackingStackB>::flowStackIsSubsetOf(flowStackA,
         flowStackB)
     }
 
@@ -150,21 +151,23 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
     predicate flowStackIsConvergingTerminatingSubsetOf(
       FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB
     ) {
-      BiStackAnalysisImpl<ConfigA, TaintTrackingStackA, ConfigB, TaintTrackingStackB>::flowStackIsConvergingTerminatingSubsetOf(flowStackA,
+      BiStackAnalysisImpl<GlobalFlowA, ConfigA, TaintTrackingStackA, GlobalFlowB, ConfigB, TaintTrackingStackB>::flowStackIsConvergingTerminatingSubsetOf(flowStackA,
         flowStackB)
     }
   }
 
   private module BiStackAnalysisImpl<
+    AbstractDataFlow::GlobalFlowSig GlobalFlowA,
     AbstractDF::ConfigSig ConfigA,
-    DataFlowGroup<ConfigA>::TaintTrackingStackSig DataFlowStackA,
+    DataFlowGroup<ConfigA>::TaintTrackingStackSig<GlobalFlowA> DataFlowStackA,
+    AbstractDataFlow::GlobalFlowSig GlobalFlowB,
     AbstractDF::ConfigSig ConfigB,
-    DataFlowGroup<ConfigB>::TaintTrackingStackSig DataFlowStackB>
+    DataFlowGroup<ConfigB>::TaintTrackingStackSig<GlobalFlowB> DataFlowStackB>
   {
 
-    module FlowStackA = FlowStack<ConfigA, DataFlowStackA>;
+    module FlowStackA = FlowStack<GlobalFlowA, ConfigA, DataFlowStackA>;
 
-    module FlowStackB = FlowStack<ConfigB, DataFlowStackB>;
+    module FlowStackB = FlowStack<GlobalFlowB, ConfigB, DataFlowStackB>;
 
     /**
      * Holds if stackA is a subset of stackB,
@@ -209,10 +212,11 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
   }
 
   module FlowStack<
+    AbstractDataFlow::GlobalFlowSig GlobalFlow,
     AbstractDF::ConfigSig Config,
-    DataFlowGroup<Config>::TaintTrackingStackSig TaintTrackingStack>
+    DataFlowGroup<Config>::TaintTrackingStackSig<GlobalFlow> TaintTrackingStack>
   {
-    private module Flow = TT::TaintFlowMake<Location, Lang, TTLang>::Global<Config>;
+    private module Flow = GlobalFlow; //TT::TaintFlowMake<Location, Lang, TTLang>::Global<Config>;
 
     /**
      * Determines whether or not the given PathNode is a source
