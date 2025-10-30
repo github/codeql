@@ -450,6 +450,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      *   free in `condition` and `constraint`,
      * - and for every instantiation of the type parameters from `abs` the
      *   resulting `condition` satisifies the constraint given by `constraint`.
+     * - `transitive` corresponds to wether any further constraints satisifed
+     *   through `constraint` also applies to `condition`.
      *
      * Example in C#:
      * ```csharp
@@ -487,7 +489,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * should be empty.
      */
     predicate conditionSatisfiesConstraint(
-      TypeAbstraction abs, TypeMention condition, TypeMention constraint
+      TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
     );
   }
 
@@ -754,13 +756,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private predicate typeCondition(
           Type type, TypeAbstraction abs, TypeMentionTypeTree condition
         ) {
-          conditionSatisfiesConstraint(abs, condition, _) and
+          conditionSatisfiesConstraint(abs, condition, _, _) and
           type = resolveTypeMentionRoot(condition)
         }
 
         pragma[nomagic]
         private predicate typeConstraint(Type type, TypeMentionTypeTree constraint) {
-          conditionSatisfiesConstraint(_, _, constraint) and
+          conditionSatisfiesConstraint(_, _, constraint, _) and
           type = resolveTypeMentionRoot(constraint)
         }
 
@@ -781,12 +783,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeAbstraction abs, TypeMention condition, TypeMention constraint, TypePath path, Type t
       ) {
         // base case
-        conditionSatisfiesConstraint(abs, condition, constraint) and
+        conditionSatisfiesConstraint(abs, condition, constraint, _) and
         constraint.resolveTypeAt(path) = t
         or
         // recursive case
         exists(TypeAbstraction midAbs, TypeMention midConstraint, TypeMention midCondition |
-          conditionSatisfiesConstraint(abs, condition, midConstraint) and
+          conditionSatisfiesConstraint(abs, condition, midConstraint, true) and
           // NOTE: `midAbs` describe the free type variables in `midCondition`, hence
           // we use that for instantiation check.
           IsInstantiationOf<TypeMentionTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
