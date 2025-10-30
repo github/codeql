@@ -196,7 +196,7 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
     AbstractDF::ConfigSig Config,
     DataFlowGroup<Config>::TaintTrackingStackSig<GlobalFlow> TaintTrackingStack>
   {
-    private module Flow = GlobalFlow; //TT::TaintFlowMake<Location, Lang, TTLang>::Global<Config>;
+    private module Flow = GlobalFlow;
 
     /**
      * Determines whether or not the given PathNode is a source
