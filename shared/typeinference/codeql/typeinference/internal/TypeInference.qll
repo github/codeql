@@ -729,7 +729,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     }
 
     /** Provides logic related to base types. */
-    private module BaseTypes {
+    module BaseTypes {
       /**
        * Holds if, when `tm1` is considered an instantiation of `tm2`, then at
        * the type parameter `tp` it has the type `t` at `path`.

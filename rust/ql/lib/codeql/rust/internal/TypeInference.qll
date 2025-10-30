@@ -896,7 +896,7 @@ private predicate assocFunctionInfo(
 ) {
   f = i.getASuccessor(name) and
   arity = f.getParamList().getNumberOfParams() and
-  t.appliesTo(f, pos, i)
+  t.appliesTo(f, i, pos)
 }
 
 /**
@@ -1791,7 +1791,7 @@ private module MethodResolution {
     predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t) {
       exists(TypePath path, Type t0 |
         FunctionOverloading::functionResolutionDependsOnArgument(i, f, pos, path, t0) and
-        t.appliesTo(f, pos, i) and
+        t.appliesTo(f, i, pos) and
         // for now, we do not handle ambiguous targets when one of the types it iself
         // a type parameter; we should be checking the constraints on that type parameter
         // in this case
@@ -2024,7 +2024,7 @@ private module NonMethodResolution {
     ImplItemNode impl, NonMethodFunction implFunction
   ) {
     exists(TypePath path |
-      assocFunctionTypeAt(implFunction, impl, pos, path, type) and
+      type = getAssocFunctionTypeAt(implFunction, impl, pos, path) and
       implFunction.implements(traitFunction) and
       FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos, path, _)
     |
@@ -2238,7 +2238,7 @@ private module NonMethodResolution {
 
   private module NonMethodArgsAreInstantiationsOfInput implements ArgsAreInstantiationsOfInputSig {
     predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t) {
-      t.appliesTo(f, pos, i) and
+      t.appliesTo(f, i, pos) and
       (
         exists(Type t0 |
           // for now, we do not handle ambiguous targets when one of the types it iself

@@ -79,7 +79,7 @@ predicate traitTypeParameterOccurrence(
   TypeParameter tp
 ) {
   f = trait.getASuccessor(functionName) and
-  assocFunctionTypeAt(f, trait, pos, path, tp) and
+  tp = getAssocFunctionTypeAt(f, trait, pos, path) and
   tp = trait.(TraitTypeAbstraction).getATypeParameter()
 }
 
@@ -120,7 +120,7 @@ predicate functionResolutionDependsOnArgument(
   exists(TraitItemNode trait, string functionName |
     implHasSibling(impl, trait) and
     traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
-    assocFunctionTypeAt(f, impl, pos, path, type) and
+    type = getAssocFunctionTypeAt(f, impl, pos, path) and
     f = impl.getASuccessor(functionName) and
     pos.isPosition()
   )
