@@ -1044,6 +1044,7 @@ force_value_exprs(  //dir=expr
 | @dot_self_expr
 | @paren_expr
 | @unresolved_member_chain_result_expr
+| @unsafe_expr
 ;
 
 #keyset[id]
@@ -1691,6 +1692,10 @@ unresolved_type_conversion_exprs(  //dir=expr
 
 unsafe_cast_exprs(  //dir=expr
   unique int id: @unsafe_cast_expr
+);
+
+unsafe_exprs(  //dir=expr
+  unique int id: @unsafe_expr
 );
 
 boolean_literal_exprs(  //dir=expr

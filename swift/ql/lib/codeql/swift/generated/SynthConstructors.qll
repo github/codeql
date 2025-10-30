@@ -163,6 +163,7 @@ import codeql.swift.elements.expr.internal.UnresolvedPatternExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedSpecializeExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedTypeConversionExprConstructor
 import codeql.swift.elements.expr.internal.UnsafeCastExprConstructor
+import codeql.swift.elements.expr.internal.UnsafeExprConstructor
 import codeql.swift.elements.expr.internal.VarargExpansionExprConstructor
 import codeql.swift.elements.pattern.internal.AnyPatternConstructor
 import codeql.swift.elements.pattern.internal.BindingPatternConstructor

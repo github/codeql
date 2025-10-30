@@ -632,6 +632,9 @@ class AutoClosureExpr(ClosureExpr):
 class AwaitExpr(IdentityExpr):
     pass
 
+class UnsafeExpr(IdentityExpr):
+    pass
+
 class BinaryExpr(ApplyExpr):
     pass
 

@@ -2235,6 +2235,18 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnsafeExpr(UnsafeExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nSubExpr |
+      n = 0 and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfBooleanLiteralExpr(
     BooleanLiteralExpr e, int index, string partialPredicateCall
   ) {
@@ -3469,6 +3481,8 @@ private module Impl {
     result = getImmediateChildOfUnresolvedTypeConversionExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnsafeCastExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnsafeExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
     or

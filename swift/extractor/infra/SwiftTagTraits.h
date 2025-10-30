@@ -103,7 +103,7 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::ParenExpr, ParenExprTag)
     MAP(swift::DotSelfExpr, DotSelfExprTag)
     MAP(swift::AwaitExpr, AwaitExprTag)
-    MAP(swift::UnsafeExpr, void) // TODO: Swift 6.2
+    MAP(swift::UnsafeExpr, UnsafeExprTag)
     MAP(swift::BorrowExpr, BorrowExprTag)
     MAP(swift::UnresolvedMemberChainResultExpr, UnresolvedMemberChainResultExprTag)
   MAP(swift::AnyTryExpr, AnyTryExprTag)

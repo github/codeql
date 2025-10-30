@@ -721,6 +721,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUnsafeExpr(Raw::UnsafeExpr id) { constructUnsafeExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TVarargExpansionExpr(Raw::VarargExpansionExpr id) { constructVarargExpansionExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1277,7 +1281,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr or
+        TUnsafeExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -2572,6 +2577,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnsafeExpr`, if possible.
+   */
+  TUnsafeExpr convertUnsafeExprFromRaw(Raw::Element e) { result = TUnsafeExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TVarargExpansionExpr`, if possible.
    */
   TVarargExpansionExpr convertVarargExpansionExprFromRaw(Raw::Element e) {
@@ -3706,6 +3717,8 @@ module Synth {
     result = convertParenExprFromRaw(e)
     or
     result = convertUnresolvedMemberChainResultExprFromRaw(e)
+    or
+    result = convertUnsafeExprFromRaw(e)
   }
 
   /**
@@ -5294,6 +5307,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TUnsafeExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnsafeExprToRaw(TUnsafeExpr e) { e = TUnsafeExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TVarargExpansionExpr` to a raw DB element, if possible.
    */
   Raw::Element convertVarargExpansionExprToRaw(TVarargExpansionExpr e) {
@@ -6428,6 +6447,8 @@ module Synth {
     result = convertParenExprToRaw(e)
     or
     result = convertUnresolvedMemberChainResultExprToRaw(e)
+    or
+    result = convertUnsafeExprToRaw(e)
   }
 
   /**

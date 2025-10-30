@@ -2520,6 +2520,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class UnsafeExpr extends @unsafe_expr, IdentityExpr {
+    override string toString() { result = "UnsafeExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class BooleanLiteralExpr extends @boolean_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "BooleanLiteralExpr" }
 
