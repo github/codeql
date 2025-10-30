@@ -135,19 +135,25 @@ module SqlInjection {
    * Holds if `guard` is an OR expression where both operands compare `node`
    * with string literals when `branch` is true.
    */
-  private predicate stringConstCompareOr(CfgNodes::AstCfgNode guard, Cfg::CfgNode node, boolean branch) {
-    exists(LogicalOrExpr orExpr |
+  private predicate stringConstCompareOr(
+    CfgNodes::AstCfgNode guard, Cfg::CfgNode node, boolean branch
+  ) {
+    exists(LogicalOrExpr orExpr, EqualsOperation eqLeft, EqualsOperation eqRight |
       guard = orExpr.getACfgNode() and
       branch = true and
-      // Both sides of OR must be string constant comparisons of the same node
-      stringConstCompare(orExpr.getLhs().getACfgNode(), node, true) and
-      stringConstCompare(orExpr.getRhs().getACfgNode(), node, true) and
-      // Ensure both sides compare the same node
-      exists(Cfg::CfgNode leftNode, Cfg::CfgNode rightNode |
-        stringConstCompare(orExpr.getLhs().getACfgNode(), leftNode, true) and
-        stringConstCompare(orExpr.getRhs().getACfgNode(), rightNode, true) and
-        leftNode = rightNode and
-        leftNode = node
+      eqLeft.getACfgNode() = orExpr.getLhs().getACfgNode() and
+      eqRight.getACfgNode() = orExpr.getRhs().getACfgNode() and
+      // Both sides must compare the same node against string literals
+      (
+        node = eqLeft.getLhs().getACfgNode() and
+        node = eqRight.getLhs().getACfgNode() and
+        eqLeft.getRhs() instanceof StringLiteralExpr and
+        eqRight.getRhs() instanceof StringLiteralExpr
+        or
+        node = eqLeft.getRhs().getACfgNode() and
+        node = eqRight.getRhs().getACfgNode() and
+        eqLeft.getLhs() instanceof StringLiteralExpr and
+        eqRight.getLhs() instanceof StringLiteralExpr
       )
     )
   }
