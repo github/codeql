@@ -490,15 +490,13 @@ class KeyPathComponent(AstNode):
     kind: int | doc("kind of key path component") | desc("""
         INTERNAL: Do not use.
 
-        TODO: Swift 6.2 update with UnresolvedApply and Apply
+        This is 4 for method or initializer application, 5 for members, 6 for array and dictionary
+        subscripts, 7 for optional forcing (`!`), 8 for optional chaining (`?`), 9 for implicit
+        optional wrapping, 10 for `self`, and 11 for tuple element indexing.
 
-        This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
-        (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
-        and 11 for tuple element indexing.
-
-        The following values should not appear: 0 for invalid components, 2 for unresolved
-        properties, 3 for unresolved subscripts, 12 for #keyPath dictionary keys, and 13 for
-        implicit IDE code completion data.
+        The following values should not appear: 0 for invalid components, 1 for unresolved
+        method or initializer applications, 2 for unresolved members, 3 for unresolved subscripts,
+        12 for #keyPath dictionary keys, and 13 for implicit IDE code completion data.
     """)
     subscript_arguments : list[Argument] | child | doc(
         "arguments to an array or dictionary subscript expression")
