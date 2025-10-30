@@ -697,7 +697,9 @@ abstract class FunctionValue extends CallableValue {
     exists(ClassValue cls, string name |
       cls.declaredAttribute(name) = this and
       name != "__new__" and
-      exists(Expr expr, AstNode origin | expr.pointsTo(this, origin) | not origin instanceof Lambda)
+      exists(ExprWithPointsTo expr, AstNode origin | expr.pointsTo(this, origin) |
+        not origin instanceof Lambda
+      )
     )
   }
 

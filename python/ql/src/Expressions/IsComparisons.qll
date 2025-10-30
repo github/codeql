@@ -76,12 +76,12 @@ private predicate universally_interned_value(Expr e) {
 }
 
 /** Holds if the expression `e` points to an interned constant in CPython. */
-predicate cpython_interned_constant(Expr e) {
+predicate cpython_interned_constant(ExprWithPointsTo e) {
   exists(Expr const | e.pointsTo(_, const) | cpython_interned_value(const))
 }
 
 /** Holds if the expression `e` points to a value that can be reasonably expected to be interned across all implementations of Python. */
-predicate universally_interned_constant(Expr e) {
+predicate universally_interned_constant(ExprWithPointsTo e) {
   exists(Expr const | e.pointsTo(_, const) | universally_interned_value(const))
 }
 
@@ -120,7 +120,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     )
   ) and
   // OK to use 'is' when comparing items from a known set of objects
-  not exists(Expr left, Expr right, Value val |
+  not exists(ExprWithPointsTo left, ExprWithPointsTo right, Value val |
     comp.compares(left, op, right) and
     exists(ImmutableLiteral il | il = val.(ConstantObjectInternal).getLiteral())
   |
@@ -134,7 +134,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     )
   ) and
   // OK to use 'is' when comparing with a member of an enum
-  not exists(Expr left, Expr right, AstNode origin |
+  not exists(ExprWithPointsTo left, ExprWithPointsTo right, AstNode origin |
     comp.compares(left, op, right) and
     enum_member(origin)
   |
