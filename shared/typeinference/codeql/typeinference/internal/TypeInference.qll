@@ -704,14 +704,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /**
        * Holds if `app` is _not_ a possible instantiation of `constraint`.
+       *
+       * This is an approximation of `not isInstantiationOf(app, abs, constraint)`, but
+       * defined without a negative occurrence of `isInstantiationOf`.
+       *
+       * Due to the approximation, both `isInstantiationOf` and `isNotInstantiationOf`
+       * can hold for the same values. For example, if `app` has two different types `t1`
+       * and `t2` at the same type path, and `t1` satisfies `constraint` while `t2` does
+       * not, then both `isInstantiationOf` and `isNotInstantiationOf` will hold.
+       *
+       * Dually, if `app` does not have a type at a required type path, then neither
+       * `isInstantiationOf` nor `isNotInstantiationOf` will hold.
        */
       pragma[nomagic]
       predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint constraint) {
         // `app` and `constraint` differ on a concrete type
-        exists(Type t, TypePath path |
+        exists(Type t, Type t2, TypePath path |
           t = resolveTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
-          app.getTypeAt(path) != t
+          app.getTypeAt(path) = t2 and
+          t2 != t
         )
       }
     }
@@ -793,7 +805,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if its possible for a type with `conditionRoot` at the root to
+       * Holds if it's possible for a type with `conditionRoot` at the root to
        * satisfy a constraint with `constraintRoot` at the root through `abs`,
        * `condition`, and `constraint`.
        */
@@ -997,6 +1009,42 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      /**
+       * Holds if `tt` does not satisfy `constraint`.
+       *
+       * This predicate is an approximation of `not hasConstraintMention(tt, constraint)`.
+       */
+      pragma[nomagic]
+      private predicate hasNotConstraintMention(HasTypeTree tt, Type constraint) {
+        exists(Type type | hasTypeConstraint(tt, type, constraint) |
+          (
+            not useUniversalConditions()
+            or
+            exists(countConstraintImplementations(type, constraint))
+            or
+            forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
+              conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+              resolveTypeMentionRoot(condition) = abs.getATypeParameter()
+            |
+              not constraint = resolveTypeMentionRoot(constraintMention)
+            )
+          ) and
+          (
+            countConstraintImplementations(type, constraint) = 0
+            or
+            not rootTypesSatisfaction(type, constraint, _, _, _)
+            or
+            multipleConstraintImplementations(type, constraint) and
+            forex(TypeAbstraction abs, TypeMention condition |
+              rootTypesSatisfaction(type, constraint, abs, condition, _)
+            |
+              IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isNotInstantiationOf(tt,
+                abs, condition)
+            )
+          )
+        )
+      }
+
       pragma[nomagic]
       private predicate satisfiesConstraintTypeMention0(
         HasTypeTree tt, Type constraint, TypeAbstraction abs, TypeMention sub, TypePath path, Type t
@@ -1037,6 +1085,29 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         or
         hasTypeConstraint(tt, constraint, constraint) and
         t = tt.getTypeAt(path)
+      }
+
+      /**
+       * Holds if the type tree at `tt` does _not_ satisfy the constraint `constraint`.
+       *
+       * This is an approximation of `not satisfiesConstraintType(tt, constraint, _, _)`,
+       * but defined without a negative occurrence of `satisfiesConstraintType`.
+       *
+       * Due to the approximation, both `satisfiesConstraintType` and `dissatisfiesConstraint`
+       * can hold for the same values. For example, if `tt` has two different types `t1`
+       * and `t2`, and `t1` satisfies `constraint` while `t2` does not, then both
+       * `satisfiesConstraintType` and `dissatisfiesConstraint` will hold.
+       *
+       * Dually, if `tt` does not have a type, then neither `satisfiesConstraintType` nor
+       * `dissatisfiesConstraint` will hold.
+       */
+      pragma[nomagic]
+      predicate dissatisfiesConstraint(HasTypeTree tt, Type constraint) {
+        hasNotConstraintMention(tt, constraint) and
+        exists(Type t |
+          hasTypeConstraint(tt, t, constraint) and
+          t != constraint
+        )
       }
     }
 
@@ -1160,7 +1231,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate directTypeMatch0(
-        Access a, AccessEnvironment e, Declaration target, DeclarationPosition dpos,
+        Access a, DeclarationPosition dpos, AccessEnvironment e, Declaration target,
         TypePath pathToTypeParam, TypeParameter tp
       ) {
         not exists(getTypeArgument(a, target, tp, _)) and
@@ -1177,7 +1248,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
-          directTypeMatch0(a, e, target, dpos, pathToTypeParam, tp) and
+          directTypeMatch0(a, dpos, e, target, pathToTypeParam, tp) and
           accessDeclarationPositionMatch(apos, dpos) and
           t = a.getInferredType(e, apos, pathToTypeParam.appendInverse(path))
         )
@@ -1269,7 +1340,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         private newtype TRelevantAccess =
-          MkRelevantAccess(Access a, AccessEnvironment e, AccessPosition apos, TypePath path) {
+          MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e, TypePath path) {
             relevantAccessConstraint(a, e, _, apos, path, _)
           }
 
@@ -1279,11 +1350,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          */
         private class RelevantAccess extends MkRelevantAccess {
           Access a;
-          AccessEnvironment e;
           AccessPosition apos;
+          AccessEnvironment e;
           TypePath path;
 
-          RelevantAccess() { this = MkRelevantAccess(a, e, apos, path) }
+          RelevantAccess() { this = MkRelevantAccess(a, apos, e, path) }
 
           Type getTypeAt(TypePath suffix) {
             result = a.getInferredType(e, apos, path.appendInverse(suffix))
@@ -1314,7 +1385,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Type constraint, TypePath path, Type t
         ) {
           exists(RelevantAccess ra |
-            ra = MkRelevantAccess(a, e, apos, prefix) and
+            ra = MkRelevantAccess(a, apos, e, prefix) and
             SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(ra,
               constraint, path, t) and
             constraint = ra.getConstraint(target)

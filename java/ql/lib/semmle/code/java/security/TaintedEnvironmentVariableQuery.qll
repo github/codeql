@@ -40,8 +40,6 @@ module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
 }
 
 /**

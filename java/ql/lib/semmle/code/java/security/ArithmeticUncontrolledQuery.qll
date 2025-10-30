@@ -25,7 +25,9 @@ module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
   }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(ArithExpr exp | result = exp.getLocation() | overflowSink(exp, sink.asExpr()))
+    exists(ArithExpr exp | result = [exp.getLocation(), sink.getLocation()] |
+      overflowSink(exp, sink.asExpr())
+    )
   }
 }
 
@@ -46,7 +48,9 @@ module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
   }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(ArithExpr exp | result = exp.getLocation() | underflowSink(exp, sink.asExpr()))
+    exists(ArithExpr exp | result = [exp.getLocation(), sink.getLocation()] |
+      underflowSink(exp, sink.asExpr())
+    )
   }
 }
 

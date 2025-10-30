@@ -171,12 +171,10 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
-
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    result = sink.getLocation()
-    or
-    exists(FormattingFunctionCall call, Expr formatString | result = call.getLocation() |
+    exists(FormattingFunctionCall call, Expr formatString |
+      result = [call.getLocation(), sink.getLocation()]
+    |
       isSinkImpl(sink, formatString) and
       call.getArgument(call.getFormatParameterIndex()) = formatString
     )

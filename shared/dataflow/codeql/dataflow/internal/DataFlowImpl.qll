@@ -317,6 +317,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       predicate returnMayFlowThrough(RetNd ret, ReturnKindExt kind);
 
+      /**
+       * Holds if this stage makes use of a store step of content `c` from
+       * `node1` to `node2`.
+       *
+       * `contentType` and `containerType` are the types of the content being
+       * stored, and the type of the resulting container, respectively.
+       */
       predicate storeStepCand(Nd node1, Content c, Nd node2, Type contentType, Type containerType);
 
       predicate readStepCand(Nd n1, Content c, Nd n2);
@@ -486,6 +493,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
+        /**
+         * Holds if a node with type `containerType` is compatible with an
+         * access path with head content `apc`. This is determined by checking
+         * type compatibility against the possible types of nodes that are
+         * targets of store steps with content `apc`.
+         *
+         * Excludes the case where `apc` is compatible with all types.
+         */
         bindingset[apc, containerType]
         pragma[inline_late]
         private predicate compatibleContainer(ApHeadContent apc, Type containerType) {

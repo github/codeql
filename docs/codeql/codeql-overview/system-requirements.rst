@@ -46,6 +46,10 @@ For Rust extraction:
 
 - ``rustup`` and ``cargo`` must be installed.
 
+For Swift extraction:
+
+- Only macOS is supported as a host platform.
+
 For Java extraction:
 
 - There must be a ``java`` or ``java.exe`` executable available on the ``PATH``, and the ``JAVA_HOME`` environment variable must point to the corresponding JDK's home directory.
