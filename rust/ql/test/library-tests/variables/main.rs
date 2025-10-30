@@ -364,7 +364,7 @@ fn match_pattern15() {
     let x = Some(0); // x1
     match x { // $ read_access=x1
             Some(x) // x2
-                => x, // $ read_access=x2 $ SPURIOUS: read_access=x1
+                => x, // $ read_access=x2
             _ => 0
         };
 }
