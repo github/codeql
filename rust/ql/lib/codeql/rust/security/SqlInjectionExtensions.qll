@@ -71,7 +71,7 @@ module SqlInjection {
       // Match dataflow nodes that come from the result of parsing strings to numeric types
       // The parse method is called with a turbofish operator specifying the target type: .parse::<i32>()
       exists(MethodCallExpr parse, string typeName |
-        parse.getNameRef().getText() = "parse" and
+        parse.getIdentifier().getText() = "parse" and
         this.asExpr().getExpr() = parse and
         // Extract the type name from the generic argument list
         typeName = parse.getGenericArgList().toString() and
@@ -175,7 +175,7 @@ module SqlInjection {
       guard = call.getACfgNode() and
       branch = true and
       // Check for contains() method call
-      call.getNameRef().getText() = "contains" and
+      call.getIdentifier().getText() = "contains" and
       // The argument should be the node we're checking
       node = call.getArgList().getAnArg().getACfgNode() and
       // The receiver should be an array/slice/collection of string literals
