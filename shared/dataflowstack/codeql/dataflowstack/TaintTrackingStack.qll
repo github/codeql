@@ -41,26 +41,6 @@ module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, 
 
       Lang::Node getAnArgumentNode(Lang::DataFlowCall call);
     }
-
-    //  TODO: Declare a AbstractTaintFlow Signature, and allow consumer to specify either TaintFlowMake or TaintFlowMakeOverlay
-    //  depending on the language
-    //  
-    //  A Taint tracking implementation with Overlay
-    // /
-    // signature module TaintTrackingOverlayStackSig<AbstractDF::ConfigSig Config>{
-
-    //   Lang::Node getNode(TaintFlowOverlayGlobal::PathNode n);
-
-    //   predicate isSource(TaintFlowOverlayGlobal::PathNode n);
-
-    //   TaintFlowOverlayGlobal::PathNode getASuccessor(
-    //     TaintFlowOverlayGlobal::PathNode n
-    //   );
-
-    //   Lang::DataFlowCallable getARuntimeTarget(Lang::DataFlowCall call);
-
-    //   Lang::Node getAnArgumentNode(Lang::DataFlowCall call);
-    // }
   }
 
   module BiStackAnalysis<
