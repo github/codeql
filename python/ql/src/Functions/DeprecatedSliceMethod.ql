@@ -10,6 +10,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate slice_method_name(string name) {
   name = "__getslice__" or name = "__setslice__" or name = "__delslice__"

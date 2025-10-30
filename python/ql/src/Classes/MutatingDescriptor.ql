@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate mutates_descriptor(ClassObject cls, SelfAttributeStore s) {
   cls.isDescriptorType() and

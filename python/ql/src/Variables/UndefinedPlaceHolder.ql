@@ -13,6 +13,7 @@
 
 import python
 import Variables.MonkeyPatched
+private import LegacyPointsTo
 
 /* Local variable part */
 predicate initialized_as_local(PlaceHolder use) {

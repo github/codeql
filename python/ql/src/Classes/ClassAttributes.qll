@@ -1,5 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 /** A helper class for UndefinedClassAttribute.ql and MaybeUndefinedClassAttribute.ql */
 class CheckClass extends ClassObject {

@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate import_star(ImportStar imp, ModuleValue exporter) {
   exporter.importedAs(imp.getImportedModuleName())

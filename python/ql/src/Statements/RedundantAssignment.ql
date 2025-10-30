@@ -14,7 +14,6 @@
 
 import python
 private import LegacyPointsTo
-private import semmle.python.objects.ObjectAPI
 
 predicate assignment(AssignStmt a, Expr left, Expr right) {
   a.getATarget() = left and a.getValue() = right
