@@ -4,6 +4,7 @@
 
 import javascript
 
+pragma[nomagic]
 private predicate adjacentTokens(Token token1, Token token2) {
   exists(TopLevel top, int index |
     tokeninfo(token1, _, top, index, _) and
