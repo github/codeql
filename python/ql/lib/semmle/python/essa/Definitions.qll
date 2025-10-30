@@ -276,6 +276,17 @@ class ModuleVariable extends SsaSourceVariable instanceof GlobalVariable {
   override CallNode redefinedAtCallSite() { none() }
 }
 
+/** Holds if `f` is an import of the form `from .[...] import ...` and the enclosing scope is an __init__ module */
+private predicate import_from_dot_in_init(ImportExprNode f) {
+  f.getScope() = any(Module m).getInitModule() and
+  (
+    f.getNode().getLevel() = 1 and
+    not exists(f.getNode().getName())
+    or
+    f.getNode().getImportedModuleName() = f.getEnclosingModule().getPackage().getName()
+  )
+}
+
 class NonEscapingGlobalVariable extends ModuleVariable {
   NonEscapingGlobalVariable() {
     this instanceof GlobalVariable and

@@ -7,6 +7,13 @@ import python
 private import semmle.python.internal.CachedStages
 private import LegacyPointsTo
 
+/** Hold if `expr` is a test (a branch) and `use` is within that test */
+predicate test_contains(ControlFlowNode expr, ControlFlowNode use) {
+  expr.getNode() instanceof Expr and
+  expr.isBranch() and
+  expr.getAChild*() = use
+}
+
 cached
 module SsaSource {
   /** Holds if `v` is used as the receiver in a method call. */
