@@ -261,6 +261,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUsingDecl(UsingDecl e, int index, string partialPredicateCall) {
+    exists(int n, int nMember |
+      n = 0 and
+      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      (
+        none()
+        or
+        result = e.getMember(index - n) and
+        partialPredicateCall = "Member(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfEnumElementDecl(
     EnumElementDecl e, int index, string partialPredicateCall
   ) {
@@ -3221,6 +3234,8 @@ private module Impl {
     result = getImmediateChildOfPrecedenceGroupDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfTopLevelCodeDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUsingDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
     or

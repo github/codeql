@@ -273,6 +273,7 @@ unspecified_element_children(
 | @pound_diagnostic_decl
 | @precedence_group_decl
 | @top_level_code_decl
+| @using_decl
 | @value_decl
 ;
 
@@ -423,6 +424,20 @@ precedence_group_decls(  //dir=decl
 top_level_code_decls(  //dir=decl
   unique int id: @top_level_code_decl,
   int body: @brace_stmt_or_none ref
+);
+
+using_decls(  //dir=decl
+  unique int id: @using_decl
+);
+
+#keyset[id]
+using_decl_is_main_actor(  //dir=decl
+  int id: @using_decl ref
+);
+
+#keyset[id]
+using_decl_is_nonisolated(  //dir=decl
+  int id: @using_decl ref
 );
 
 @value_decl =

@@ -241,7 +241,7 @@ MAP(swift::Decl, DeclTag)
   MAP(swift::MissingMemberDecl, MissingMemberDeclTag)
   MAP(swift::PatternBindingDecl, PatternBindingDeclTag)
   MAP(swift::EnumCaseDecl, EnumCaseDeclTag)
-  MAP(swift::UsingDecl, void) // TODO: Swift 6.2
+  MAP(swift::UsingDecl, UsingDeclTag)
   MAP(swift::OperatorDecl, OperatorDeclTag)
     MAP(swift::InfixOperatorDecl, InfixOperatorDeclTag)
     MAP(swift::PrefixOperatorDecl, PrefixOperatorDeclTag)

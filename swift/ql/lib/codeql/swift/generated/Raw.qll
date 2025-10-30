@@ -523,6 +523,23 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class UsingDecl extends @using_decl, Decl {
+    override string toString() { result = "UsingDecl" }
+
+    /**
+     * Holds if this using declaration is main actor.
+     */
+    predicate isMainActor() { using_decl_is_main_actor(this) }
+
+    /**
+     * Holds if this using declaration is nonisolated.
+     */
+    predicate isNonisolated() { using_decl_is_nonisolated(this) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class ValueDecl extends @value_decl, Decl {
     /**
      * Gets the interface type of this value declaration.

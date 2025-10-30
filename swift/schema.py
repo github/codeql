@@ -117,6 +117,10 @@ class GenericContext(Element):
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
+class UsingDecl(Decl):
+    is_main_actor: predicate
+    is_nonisolated: predicate
+
 class ExtensionDecl(GenericContext, Decl):
     extended_type_decl: "NominalTypeDecl"
     protocols: list["ProtocolDecl"]

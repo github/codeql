@@ -43,6 +43,7 @@ import codeql.swift.elements.decl.internal.StructDeclConstructor
 import codeql.swift.elements.decl.internal.SubscriptDeclConstructor
 import codeql.swift.elements.decl.internal.TopLevelCodeDeclConstructor
 import codeql.swift.elements.decl.internal.TypeAliasDeclConstructor
+import codeql.swift.elements.decl.internal.UsingDeclConstructor
 import codeql.swift.elements.expr.internal.AbiSafeConversionExprConstructor
 import codeql.swift.elements.expr.internal.ActorIsolationErasureExprConstructor
 import codeql.swift.elements.expr.internal.AnyHashableErasureExprConstructor

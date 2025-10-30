@@ -137,6 +137,19 @@ codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCase
   return entry;
 }
 
+codeql::UsingDecl DeclTranslator::translateUsingDecl(const swift::UsingDecl& decl) {
+  auto entry = createEntry(decl);
+  switch (decl.getSpecifier()) {
+    case swift::UsingSpecifier::MainActor:
+      entry.is_main_actor = true;
+      break;
+    case swift::UsingSpecifier::Nonisolated:
+      entry.is_nonisolated = true;
+      break;
+  }
+  return entry;
+}
+
 codeql::EnumElementDecl DeclTranslator::translateEnumElementDecl(
     const swift::EnumElementDecl& decl) {
   auto entry = createEntry(decl);

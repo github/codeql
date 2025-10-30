@@ -185,6 +185,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUsingDecl(Raw::UsingDecl id) { constructUsingDecl(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TAbiSafeConversionExpr(Raw::AbiSafeConversionExpr id) { constructAbiSafeConversionExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1171,7 +1175,7 @@ module Synth {
   class TDecl =
     TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
         TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
-        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TUsingDecl or TValueDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1714,6 +1718,12 @@ module Synth {
    * Converts a raw element to a synthesized `TTypeAliasDecl`, if possible.
    */
   TTypeAliasDecl convertTypeAliasDeclFromRaw(Raw::Element e) { result = TTypeAliasDecl(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUsingDecl`, if possible.
+   */
+  TUsingDecl convertUsingDeclFromRaw(Raw::Element e) { result = TUsingDecl(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3380,6 +3390,8 @@ module Synth {
     or
     result = convertTopLevelCodeDeclFromRaw(e)
     or
+    result = convertUsingDeclFromRaw(e)
+    or
     result = convertValueDeclFromRaw(e)
   }
 
@@ -4446,6 +4458,12 @@ module Synth {
    * Converts a synthesized `TTypeAliasDecl` to a raw DB element, if possible.
    */
   Raw::Element convertTypeAliasDeclToRaw(TTypeAliasDecl e) { e = TTypeAliasDecl(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUsingDecl` to a raw DB element, if possible.
+   */
+  Raw::Element convertUsingDeclToRaw(TUsingDecl e) { e = TUsingDecl(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6109,6 +6127,8 @@ module Synth {
     result = convertPrecedenceGroupDeclToRaw(e)
     or
     result = convertTopLevelCodeDeclToRaw(e)
+    or
+    result = convertUsingDeclToRaw(e)
     or
     result = convertValueDeclToRaw(e)
   }

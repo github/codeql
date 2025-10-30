@@ -58,6 +58,7 @@
 /lib/codeql/swift/elements/decl/TopLevelCodeDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/TypeAliasDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/TypeDecl.qll linguist-generated
+/lib/codeql/swift/elements/decl/UsingDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/AbstractStorageDeclImpl.qll linguist-generated
@@ -110,6 +111,8 @@
 /lib/codeql/swift/elements/decl/internal/SubscriptDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TopLevelCodeDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TypeAliasDeclConstructor.qll linguist-generated
+/lib/codeql/swift/elements/decl/internal/UsingDeclConstructor.qll linguist-generated
+/lib/codeql/swift/elements/decl/internal/UsingDeclImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyHashableErasureExpr.qll linguist-generated
@@ -782,6 +785,7 @@
 /lib/codeql/swift/generated/decl/TopLevelCodeDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/TypeAliasDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/TypeDecl.qll linguist-generated
+/lib/codeql/swift/generated/decl/UsingDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/generated/expr/AbiSafeConversionExpr.qll linguist-generated
@@ -1069,6 +1073,7 @@
 /test/extractor-tests/generated/decl/SubscriptDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/TopLevelCodeDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/TypeAliasDecl/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/UsingDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/AppliedPropertyWrapperExpr/AppliedPropertyWrapperExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/Argument/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ArrayExpr/MISSING_SOURCE.txt linguist-generated
