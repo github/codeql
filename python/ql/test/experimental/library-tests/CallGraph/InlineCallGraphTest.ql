@@ -1,6 +1,7 @@
 import python
 import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
+private import LegacyPointsTo
 
 /** Holds when `call` is resolved to `callable` using points-to based call-graph. */
 predicate pointsToCallEdge(CallNode call, Function callable) {
