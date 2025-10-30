@@ -4,7 +4,6 @@
 
 import python
 private import LegacyPointsTo
-import semmle.python.pointsto.PointsTo
 import IDEContextual
 
 private newtype TDefinition =

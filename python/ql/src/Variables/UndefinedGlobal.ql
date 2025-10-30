@@ -14,7 +14,6 @@ import python
 private import LegacyPointsTo
 import Variables.MonkeyPatched
 import Loop
-import semmle.python.pointsto.PointsTo
 
 predicate guarded_against_name_error(Name u) {
   exists(Try t | t.getBody().getAnItem().contains(u) |

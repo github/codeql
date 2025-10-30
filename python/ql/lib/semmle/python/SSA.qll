@@ -1,6 +1,7 @@
 /** SSA library */
 
 import python
+private import LegacyPointsTo
 
 /**
  * A single static assignment variable.

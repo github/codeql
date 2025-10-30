@@ -12,6 +12,8 @@ import python
 import semmle.python.essa.SsaDefinitions
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
+private import semmle.python.types.Object
+private import semmle.python.types.ClassObject
 
 /*
  * The following predicates exist in order to provide

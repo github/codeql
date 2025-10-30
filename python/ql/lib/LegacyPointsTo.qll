@@ -20,8 +20,21 @@
  */
 
 private import python
-private import semmle.python.pointsto.PointsTo
-private import semmle.python.objects.Modules
+import semmle.python.pointsto.Base
+import semmle.python.pointsto.Context
+import semmle.python.pointsto.PointsTo
+import semmle.python.pointsto.PointsToContext
+import semmle.python.objects.ObjectAPI
+import semmle.python.objects.ObjectInternal
+import semmle.python.types.Object
+import semmle.python.types.ClassObject
+import semmle.python.types.FunctionObject
+import semmle.python.types.ModuleObject
+import semmle.python.types.Exceptions
+import semmle.python.types.Properties
+import semmle.python.types.ImportTime
+import semmle.python.types.Descriptors
+import semmle.python.SelfAttribute
 
 /**
  * An extension of `ControlFlowNode` that provides points-to predicates.

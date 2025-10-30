@@ -1,7 +1,6 @@
 import python
 private import LegacyPointsTo
 import semmle.python.dataflow.TaintTracking
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters as Filters
 import semmle.python.dataflow.Legacy
 

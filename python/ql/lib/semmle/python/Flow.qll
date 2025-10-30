@@ -1,6 +1,7 @@
 import python
 private import semmle.python.internal.CachedStages
 private import codeql.controlflow.BasicBlock as BB
+private import LegacyPointsTo
 
 /*
  * Note about matching parent and child nodes and CFG splitting:

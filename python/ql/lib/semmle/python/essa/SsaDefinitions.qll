@@ -5,6 +5,7 @@
 
 import python
 private import semmle.python.internal.CachedStages
+private import LegacyPointsTo
 
 cached
 module SsaSource {

@@ -3,6 +3,7 @@
 import python
 private import LegacyPointsTo
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.objects.ObjectAPI
 
 /** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {

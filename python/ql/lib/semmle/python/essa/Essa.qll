@@ -6,6 +6,8 @@ import python
 private import SsaCompute
 import semmle.python.essa.Definitions
 private import semmle.python.internal.CachedStages
+private import LegacyPointsTo
+private import semmle.python.essa.SsaDefinitions
 
 /** An (enhanced) SSA variable derived from `SsaSourceVariable`. */
 class EssaVariable extends TEssaDefinition {
