@@ -198,16 +198,16 @@ codeql::Accessor DeclTranslator::translateAccessorDecl(const swift::AccessorDecl
       entry.is_unsafe_mutable_address = true;
       break;
     case swift::AccessorKind::DistributedGet:
-      // TODO: Swift 6.2
+      entry.is_distributed_get = true;
       break;
     case swift::AccessorKind::Read2:
-      // TODO: Swift 6.2
+      entry.is_read2 = true;
       break;
     case swift::AccessorKind::Modify2:
-      // TODO: Swift 6.2
+      entry.is_modify2 = true;
       break;
     case swift::AccessorKind::Init:
-      // TODO: Swift 6.2
+      entry.is_init = true;
       break;
   }
   fillFunction(decl, entry);

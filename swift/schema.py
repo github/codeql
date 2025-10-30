@@ -315,6 +315,10 @@ class Accessor(AccessorOrNamedFunction):
     is_modify: predicate | doc('this accessor is a `_modify` coroutine, yielding an inout value of the property')
     is_unsafe_address: predicate | doc('this accessor is an `unsafeAddress` immutable addressor')
     is_unsafe_mutable_address: predicate | doc('this accessor is an `unsafeMutableAddress` mutable addressor')
+    is_distributed_get: predicate | doc('this accessor is a distributed getter')
+    is_read2: predicate | doc('this accessor is a `read` coroutine, yielding a borrowed value of the property')
+    is_modify2: predicate | doc('this accessor is a `modify` coroutine, yielding an inout value of the property')
+    is_init: predicate | doc('this accessor is an `init` accessor')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass

@@ -18,6 +18,14 @@ module Impl {
     decl.isUnsafeAddress() and kind = "unsafeAddress"
     or
     decl.isUnsafeMutableAddress() and kind = "unsafeMutableAddress"
+    or
+    decl.isDistributedGet() and kind = "distributed get"
+    or
+    decl.isRead2() and kind = "read"
+    or
+    decl.isModify2() and kind = "modify"
+    or
+    decl.isInit() and kind = "init"
   }
 
   class Accessor extends Generated::Accessor {

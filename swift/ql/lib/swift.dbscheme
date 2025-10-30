@@ -683,6 +683,26 @@ accessor_is_unsafe_mutable_address(  //dir=decl
   int id: @accessor ref
 );
 
+#keyset[id]
+accessor_is_distributed_get(  //dir=decl
+  int id: @accessor ref
+);
+
+#keyset[id]
+accessor_is_read2(  //dir=decl
+  int id: @accessor ref
+);
+
+#keyset[id]
+accessor_is_modify2(  //dir=decl
+  int id: @accessor ref
+);
+
+#keyset[id]
+accessor_is_init(  //dir=decl
+  int id: @accessor ref
+);
+
 associated_type_decls(  //dir=decl
   unique int id: @associated_type_decl
 );

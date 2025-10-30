@@ -876,6 +876,26 @@ module Raw {
      * Holds if this accessor is an `unsafeMutableAddress` mutable addressor.
      */
     predicate isUnsafeMutableAddress() { accessor_is_unsafe_mutable_address(this) }
+
+    /**
+     * Holds if this accessor is a distributed getter.
+     */
+    predicate isDistributedGet() { accessor_is_distributed_get(this) }
+
+    /**
+     * Holds if this accessor is a `read` coroutine, yielding a borrowed value of the property.
+     */
+    predicate isRead2() { accessor_is_read2(this) }
+
+    /**
+     * Holds if this accessor is a `modify` coroutine, yielding an inout value of the property.
+     */
+    predicate isModify2() { accessor_is_modify2(this) }
+
+    /**
+     * Holds if this accessor is an `init` accessor.
+     */
+    predicate isInit() { accessor_is_init(this) }
   }
 
   /**
