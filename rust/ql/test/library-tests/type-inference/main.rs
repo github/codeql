@@ -2837,6 +2837,33 @@ mod local_function {
     }
 }
 
+mod block_types {
+    #[rustfmt::skip]
+    fn f1(cond: bool) -> i32 {
+        // Block that evaluates to unit
+        let a = { // $ MISSING: type=a:()
+            if cond {
+                return 12;
+            }
+        };
+        0
+    }
+
+    #[rustfmt::skip]
+    fn f2() -> i32 {
+        // Block that does not evaluate to unit
+        let b = 'label: { // $ MISSING: b:i32 SPURIOUS: certainType=b:()
+            break 'label 12;
+        };
+        println!("b: {:?}", b);
+        0
+    }
+
+    fn f3() -> i32 {
+        return 0;
+    } // should only have type `i32`, not `()`
+}
+
 mod blanket_impl;
 mod closure;
 mod dereference;
