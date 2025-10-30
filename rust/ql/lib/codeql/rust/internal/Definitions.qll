@@ -17,8 +17,6 @@ private import codeql.rust.internal.PathResolution
 
 /** An element with an associated definition. */
 abstract class Use extends Locatable {
-  Use() { not this.(AstNode).isFromMacroExpansion() }
-
   /** Gets the definition associated with this element. */
   abstract Definition getDefinition();
 
@@ -37,6 +35,9 @@ private module Cached {
     TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() } or
     TItemNode(ItemNode i)
 
+  pragma[nomagic]
+  private predicate isMacroCallLocation(Location loc) { loc = any(MacroCall m).getLocation() }
+
   /**
    * Gets an element, of kind `kind`, that element `use` uses, if any.
    */
@@ -44,7 +45,7 @@ private module Cached {
   Definition definitionOf(Use use, string kind) {
     result = use.getDefinition() and
     kind = use.getUseType() and
-    not result.getLocation() = any(MacroCall m).getLocation()
+    not isMacroCallLocation(result.getLocation())
   }
 }
 

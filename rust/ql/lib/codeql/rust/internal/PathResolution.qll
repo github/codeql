@@ -4,6 +4,7 @@
 
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
+private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
@@ -66,6 +67,11 @@ class SuccessorKind extends TSuccessorKind {
   }
 }
 
+private ItemNode testgetAChildSuccessor(ItemNode item, string name, SuccessorKind kind) {
+  result = getAChildSuccessor(item, name, kind) and
+  result = Debug::getRelevantLocatable()
+}
+
 pragma[nomagic]
 private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind kind) {
   item = result.getImmediateParent() and
@@ -89,24 +95,6 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
 private module UseOption = Option<Use>;
 
 private class UseOption = UseOption::Option;
-
-/**
- * Holds if `n` is superseded by an attribute macro expansion. That is, `n` is
- * an item or a transitive child of an item with an attribute macro expansion.
- */
-predicate supersededByAttributeMacroExpansion(AstNode n) {
-  n.(Item).hasAttributeMacroExpansion()
-  or
-  exists(AstNode parent |
-    n.getParentNode() = parent and
-    supersededByAttributeMacroExpansion(parent) and
-    // Don't exclude expansions themselves as they supercede other nodes.
-    not n = parent.(Item).getAttributeMacroExpansion() and
-    // Don't consider attributes themselves to be superseded.  E.g., in `#[a] fn
-    // f() {}` the macro expansion supercedes `fn f() {}` but not `#[a]`.
-    not n instanceof Attr
-  )
-}
 
 /**
  * An item that may be referred to by a path, and which is a node in
@@ -188,7 +176,7 @@ predicate supersededByAttributeMacroExpansion(AstNode n) {
 abstract class ItemNode extends Locatable {
   ItemNode() {
     // Exclude items that are superseded by the expansion of an attribute macro.
-    not supersededByAttributeMacroExpansion(this)
+    not AstNodeImpl::supersededByAttributeMacroExpansion(this)
   }
 
   /** Gets the (original) name of this item. */
@@ -1510,6 +1498,8 @@ private predicate declares(ItemNode item, Namespace ns, string name) {
  * to constructors in patterns.
  */
 abstract class PathExt extends AstNode {
+  PathExt() { not AstNodeImpl::supersededByAttributeMacroExpansion(this) }
+
   abstract string getText();
 
   /** Holds if this is an unqualified path with the textual value `name`. */
@@ -1545,7 +1535,10 @@ private class PathExtPath extends PathExt instanceof Path {
 
   override predicate isUnqualified(string name) {
     not exists(Path.super.getQualifier()) and
-    not this = any(UseTreeList list).getAUseTree().getPath().getQualifier*() and
+    not exists(UseTree tree |
+      tree.hasPath() and
+      this = tree.getUseTreeList().getAUseTree().getPath().getQualifier*() // todo: check all getaUseTree
+    ) and
     name = Path.super.getText()
   }
 
@@ -1951,7 +1944,10 @@ private ItemNode resolvePathCand(PathExt path) {
         then result instanceof TypeItemNode
         else
           if path instanceof IdentPat
-          then result instanceof VariantItemNode or result instanceof StructItemNode
+          then
+            result instanceof VariantItemNode or
+            result instanceof StructItemNode or
+            result instanceof ConstItemNode
           else any()
   |
     pathUsesNamespace(path, ns)
@@ -2030,11 +2026,14 @@ private predicate isUseTreeSubPathUnqualified(UseTree tree, PathExt path, string
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree, PathExt path, SuccessorKind kind) {
   exists(UseOption useOpt | checkQualifiedVisibility(use, result, kind, useOpt) |
-    exists(UseTree midTree, ItemNode mid, string name |
+    exists(UseTree midTree, ItemNode mid |
       mid = resolveUseTreeListItem(use, midTree) and
-      tree = midTree.getUseTreeList().getAUseTree() and
-      isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
-      result = mid.getASuccessor(pragma[only_bind_into](name), kind, useOpt)
+      tree = midTree.getUseTreeList().getAUseTree()
+    |
+      exists(string name |
+        isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
+        result = mid.getASuccessor(pragma[only_bind_into](name), kind, useOpt)
+      )
     )
     or
     exists(ItemNode q, string name |
@@ -2042,6 +2041,13 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree, PathExt path, Suc
       result = q.getASuccessor(name, kind, useOpt)
     )
   )
+  // or
+  // // use {std::cmp::Ordering::*, AdjustmentHintsMode::*};
+  // tree = use.getUseTree() and
+  // not tree.hasPath() and
+  // isUseTreeSubPathUnqualified(tree, path, _) and
+  // result = resolvePathCand(path) and
+  // kind.isBoth() // todo
 }
 
 pragma[nomagic]
@@ -2050,14 +2056,47 @@ private ItemNode resolveUseTreeListItemQualifier(Use use, UseTree tree, PathExt 
   name = path.getText()
 }
 
+UseTree getUnqualifiedUseTree(Use use) {
+  result = use.getUseTree()
+  or
+  exists(UseTree mid |
+    mid = use.getUseTree() and
+    not mid.hasPath() and
+    result = mid.getUseTreeList().getAUseTree()
+  )
+}
+
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   exists(Path path | path = tree.getPath() |
-    tree = use.getUseTree() and
+    tree = getUnqualifiedUseTree(use) and
     result = resolvePathCand(path)
     or
     result = resolveUseTreeListItem(use, tree, path, _)
   )
+  or
+  // use foo::{bar, *}
+  exists(UseTree midTree, ItemNode mid |
+    mid = resolveUseTreeListItem(use, midTree) and
+    tree = midTree.getUseTreeList().getAUseTree()
+  |
+    not tree.hasPath() and
+    tree.isGlob() and
+    result = mid
+  )
+  // or
+  // // use {std::cmp::Ordering::*, AdjustmentHintsMode::*};
+  // use.getUseTree() =
+  //   any(UseTree root |
+  //     not root.hasPath() and
+  //     tree = root.getUseTreeList().getAUseTree() and
+  //     result = resolvePathCand(tree.getPath())
+  //   )
+}
+
+private ItemNode testresolveUseTreeListItem(Use use, UseTree tree) {
+  result = resolveUseTreeListItem(use, tree) and
+  use = Debug::getRelevantLocatable()
 }
 
 /** Holds if `use` imports `item` as `name`. */
@@ -2099,6 +2138,28 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
       )
     )
   )
+}
+
+private predicate testussdfeImportEdge(Use use, string name, ItemNode item, SuccessorKind kind) {
+  useImportEdge(use, name, item, kind) and
+  use = Debug::getRelevantLocatable()
+}
+
+pragma[nomagic]
+private predicate testuseImportEdge(Use use, SuccessorKind kind, UseTree tree, ItemNode used) {
+  (if use.hasVisibility() then kind.isBoth() else kind.isInternal()) and
+  use = Debug::getRelevantLocatable() and
+  used = resolveUseTreeListItem(use, tree) //and
+  // not tree.hasUseTreeList() and
+  // tree.isGlob() //and
+  // exists(ItemNode encl, Namespace ns, SuccessorKind kind1, UseOption useOpt |
+  //   encl.getADescendant() = use and
+  //   // item = getASuccessor(used, name, ns, kind1, useOpt) and
+  //   // checkQualifiedVisibility(use, item, kind1, useOpt) and
+  //   // glob imports can be shadowed
+  //   not declares(encl, ns, name) and
+  //   not name = ["super", "self"]
+  // )
 }
 
 /** Holds if `ec` imports `crate` as `name`. */
@@ -2176,8 +2237,12 @@ private module Debug {
   Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/main.rs") and
-      startline = 800
+      // filepath.matches("%/src/tools/rust-analyzer/crates/ide/src/inlay_hints/adjustment.rs") and
+      // startline = [6, 227]
+      // filepath.matches("%/compiler/rustc_middle/src/ty/layout.rs") and
+      // startline = 36
+      filepath.matches("%/cranelift-codegen-943c3c0c33bda67e/out/isle_riscv64.rs") and
+      startline = 11
     )
   }
 
@@ -2192,11 +2257,21 @@ private module Debug {
     path = p.toStringDebug()
   }
 
+  ItemNode debugUnqualifiedPathLookup(PathExt p, Namespace ns, SuccessorKind kind) {
+    p = getRelevantLocatable() and
+    result = unqualifiedPathLookup(p, ns, kind)
+  }
+
   predicate debugItemNode(ItemNode item) { item = getRelevantLocatable() }
 
-  ItemNode debugResolvePath(PathExt path) {
+  ItemNode debugResolvePath(Path path) {
     path = getRelevantLocatable() and
     result = resolvePath(path)
+  }
+
+  predicate debugIdentPatIsResolvable(IdentPat ip) {
+    ip = getRelevantLocatable() and
+    identPatIsResolvable(ip)
   }
 
   predicate debugUseImportEdge(Use use, string name, ItemNode item, SuccessorKind kind) {

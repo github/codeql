@@ -812,6 +812,24 @@ mod patterns {
         let test = test_alias();
         test
     }
+
+    #[rustfmt::skip]
+    const z: i32 // $ item=i32
+        = 0; // constz
+
+    #[rustfmt::skip]
+    fn test3() {
+        let x = Some(0); // $ item=Some
+        match x {
+            Some(x) // $ item=Some
+                => x,
+            _ => 0
+        };
+        match x {
+            Some(z) => z, // $ item=Some item=constz
+            _ => 0
+        };
+    }
 }
 
 fn main() {

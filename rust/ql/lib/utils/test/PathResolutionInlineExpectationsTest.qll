@@ -3,6 +3,7 @@
  */
 
 private import rust
+private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.internal.TypeInference
 private import utils.test.InlineExpectationsTest
@@ -37,13 +38,15 @@ private module ResolveTest implements TestSig {
     )
   }
 
-  predicate hasActualResult(Location location, string element, string tag, string value) {
+  private predicate hasResult(
+    Location location, string element, string tag, string value, boolean inMacro
+  ) {
     exists(AstNode n |
       not n = any(Path parent).getQualifier() and
       location = n.getLocation() and
       n.fromSource() and
       not location.getFile().getAbsolutePath().matches("%proc_macro.rs") and
-      not n.isFromMacroExpansion() and
+      (if n.isFromMacroExpansion() then inMacro = true else inMacro = false) and
       element = n.toString() and
       tag = "item"
     |
@@ -51,6 +54,14 @@ private module ResolveTest implements TestSig {
       or
       item(n.(MethodCallExpr).getStaticTarget(), value)
     )
+  }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    hasResult(location, element, tag, value, false)
+  }
+
+  predicate hasOptionalResult(Location location, string element, string tag, string value) {
+    hasResult(location, element, tag, value, true)
   }
 }
 

@@ -759,6 +759,22 @@ mod patterns {
             test_alias(); // $ read_access=test_alias
         test // $ read_access=test
     }
+
+    const z: i32 = 0;
+
+    #[rustfmt::skip]
+    fn test3() {
+        let x = Some(0); // x1
+        match x { // $ read_access=x1
+            Some(x) // x2
+                => x, // $ read_access=x2 $ SPURIOUS: read_access=x1
+            _ => 0
+        };
+        match x { // $ read_access=x1
+            Some(z) => z,
+            _ => 0
+        };
+    }
 }
 
 fn main() {
