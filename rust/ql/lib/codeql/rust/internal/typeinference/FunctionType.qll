@@ -78,7 +78,7 @@ private newtype TAssocFunctionType =
   }
 
 bindingset[condition, constraint, tp]
-private Type traitConstraintTypeAt(
+private Type getTraitConstraintTypeAt(
   TypeMention condition, TypeMention constraint, TypeParameter tp, TypePath path
 ) {
   BaseTypes::conditionSatisfiesConstraintTypeAt(_, condition, constraint,
@@ -90,7 +90,7 @@ private Type traitConstraintTypeAt(
  * `pos` at path `path`
  */
 pragma[nomagic]
-Type assocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition pos, TypePath path) {
+Type getAssocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition pos, TypePath path) {
   exists(MkAssocFunctionType(f, i, pos)) and
   (
     // No specialization needed when the function is directly in the trait or
@@ -109,7 +109,7 @@ Type assocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition pos
         exists(TraitItemNode trait, TypeMention condition, TypeMention constraint |
           trait.getAnAssocItem() = f and
           BaseTypes::rootTypesSatisfaction(_, TTrait(trait), _, condition, constraint) and
-          result = traitConstraintTypeAt(condition, constraint, tp, suffix)
+          result = getTraitConstraintTypeAt(condition, constraint, tp, suffix)
         |
           condition = i.(Trait) or condition = i.(Impl).getSelfTy()
         )
@@ -173,7 +173,7 @@ class AssocFunctionType extends MkAssocFunctionType {
   Type getTypeAt(TypePath path) {
     exists(Function f, FunctionPosition pos, ImplOrTraitItemNode i, Type t |
       this.appliesTo(f, i, pos) and
-      t = assocFunctionTypeAt(f, i, pos, path)
+      t = getAssocFunctionTypeAt(f, i, pos, path)
     |
       not t instanceof SelfTypeParameter and
       result = t

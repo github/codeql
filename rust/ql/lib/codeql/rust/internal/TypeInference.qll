@@ -2024,7 +2024,7 @@ private module NonMethodResolution {
     ImplItemNode impl, NonMethodFunction implFunction
   ) {
     exists(TypePath path |
-      type = assocFunctionTypeAt(implFunction, impl, pos, path) and
+      type = getAssocFunctionTypeAt(implFunction, impl, pos, path) and
       implFunction.implements(traitFunction) and
       FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos, path, _)
     |
