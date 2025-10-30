@@ -46,7 +46,7 @@ class FunctionPosition extends TFunctionPosition {
     result = f.getParam(this.asPosition()).getTypeRepr()
     or
     this.isReturn() and
-    result = f.getRetType().getTypeRepr()
+    result = getReturnTypeMention(f)
   }
 
   string toString() {
@@ -263,7 +263,10 @@ module ArgIsInstantiationOf<
   final private class ArgFinal = Arg;
 
   private class ArgSubst extends ArgFinal {
-    Type getTypeAt(TypePath path) { result = substituteLookupTraits(super.getTypeAt(path)) }
+    Type getTypeAt(TypePath path) {
+      result = substituteLookupTraits(super.getTypeAt(path)) and
+      not result = TNeverType()
+    }
   }
 
   private module IsInstantiationOfInput implements
@@ -368,10 +371,10 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
       CallAndPos cp, Input::Call call, FunctionPosition pos, int rnk, Function f,
       TypeAbstraction abs, AssocFunctionType constraint
     ) {
-      cp = MkCallAndPos(call, pos) and
+      cp = MkCallAndPos(call, pragma[only_bind_into](pos)) and
       call.hasTargetCand(abs, f) and
-      toCheckRanked(abs, f, pos, rnk) and
-      Input::toCheck(abs, f, pos, constraint)
+      toCheckRanked(abs, f, pragma[only_bind_into](pos), rnk) and
+      Input::toCheck(abs, f, pragma[only_bind_into](pos), constraint)
     }
 
     pragma[nomagic]

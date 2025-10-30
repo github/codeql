@@ -2841,7 +2841,7 @@ mod block_types {
     #[rustfmt::skip]
     fn f1(cond: bool) -> i32 {
         // Block that evaluates to unit
-        let a = { // $ MISSING: type=a:()
+        let a = { // $ type=a:()
             if cond {
                 return 12;
             }
@@ -2852,7 +2852,7 @@ mod block_types {
     #[rustfmt::skip]
     fn f2() -> i32 {
         // Block that does not evaluate to unit
-        let b = 'label: { // $ MISSING: b:i32 SPURIOUS: certainType=b:()
+        let b = 'label: { // $ MISSING: b:i32
             break 'label 12;
         };
         println!("b: {:?}", b);

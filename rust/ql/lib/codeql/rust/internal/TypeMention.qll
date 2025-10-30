@@ -444,7 +444,11 @@ TypeMention getSelfParamTypeMention(SelfParam self) {
 }
 
 /**
- * An element used to represent the implicit `()` return type of function.
+ * An element used to represent the implicit `()` return type of a function.
+ *
+ * Since the implicit type does not appear in the AST, we (somewhat arbitrarily)
+ * choose the name of the function as a type mention. This works because there
+ * is a one-to-one correspondence between a function and its name.
  */
 class ShorthandReturnTypeMention extends TypeMention instanceof Name {
   private Function f;
