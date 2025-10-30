@@ -2,6 +2,7 @@
 
 import python
 private import LegacyPointsTo
+private import semmle.python.objects.ObjectInternal
 
 /** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {
@@ -121,7 +122,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
   // OK to use 'is' when comparing items from a known set of objects
   not exists(Expr left, Expr right, Value val |
     comp.compares(left, op, right) and
-    exists(ImmutableLiteral il | il.getLiteralValue() = val)
+    exists(ImmutableLiteral il | il = val.(ConstantObjectInternal).getLiteral())
   |
     left.pointsTo(val) and right.pointsTo(val)
     or

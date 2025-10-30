@@ -14,6 +14,7 @@
  */
 
 import python
+import semmle.python.objects.ObjectInternal
 import semmle.python.strings
 
 predicate string_format(BinaryExpr operation, StringLiteral str, Value args, AstNode origin) {
@@ -31,7 +32,7 @@ int sequence_length(Value args) {
     not seq.getAnElt() instanceof Starred
   )
   or
-  exists(ImmutableLiteral i | i.getLiteralValue() = args | result = 1)
+  exists(ImmutableLiteral i | i = args.(ConstantObjectInternal).getLiteral() | result = 1)
 }
 
 from
