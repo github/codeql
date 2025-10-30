@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from PropertyValue p, string method_name, FunctionValue method
 where

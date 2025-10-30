@@ -1,5 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 import Util
 
 from SsaSourceVariable var, ControlFlowNode use

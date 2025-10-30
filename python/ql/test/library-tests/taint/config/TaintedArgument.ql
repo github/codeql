@@ -2,6 +2,7 @@ import python
 import semmle.python.dataflow.TaintTracking
 import TaintLib
 import semmle.python.dataflow.Implementation
+private import LegacyPointsTo
 
 from
   TaintTrackingImplementation config, TaintTrackingNode src, CallNode call,

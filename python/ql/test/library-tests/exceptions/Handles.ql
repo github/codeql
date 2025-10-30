@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ExceptFlowNode ex, Value val
 where ex.handledException(val, _, _)
