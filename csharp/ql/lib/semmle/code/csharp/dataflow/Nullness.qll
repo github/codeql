@@ -193,7 +193,7 @@ private predicate defMaybeNull(
   (
     // A variable compared to `null` might be `null`
     exists(G::DereferenceableExpr de | de = def.getARead() |
-      reason = de.getANullCheck(_, true) and
+      de.guardSuggestsMaybeNull(reason) and
       msg = "as suggested by $@ null check" and
       node = def.getControlFlowNode() and
       not de = any(Ssa::PhiNode phi).getARead() and

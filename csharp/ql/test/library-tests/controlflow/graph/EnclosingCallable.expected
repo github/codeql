@@ -371,8 +371,7 @@ nodeEnclosing
 | Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:24:9:27 | null | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:31:9:32 | "" | Assert.cs:7:10:7:11 | M1 |
-| Assert.cs:10:9:10:31 | [assertion failure] call to method Assert | Assert.cs:7:10:7:11 | M1 |
-| Assert.cs:10:9:10:31 | [assertion success] call to method Assert | Assert.cs:7:10:7:11 | M1 |
+| Assert.cs:10:9:10:31 | call to method Assert | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:10:9:10:32 | ...; | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:10:22:10:22 | access to local variable s | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:10:22:10:30 | ... != ... | Assert.cs:7:10:7:11 | M1 |
@@ -392,8 +391,7 @@ nodeEnclosing
 | Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:24:16:27 | null | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:31:16:32 | "" | Assert.cs:14:10:14:11 | M2 |
-| Assert.cs:17:9:17:24 | [assertion failure] call to method IsNull | Assert.cs:14:10:14:11 | M2 |
-| Assert.cs:17:9:17:24 | [assertion success] call to method IsNull | Assert.cs:14:10:14:11 | M2 |
+| Assert.cs:17:9:17:24 | call to method IsNull | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:17:9:17:25 | ...; | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:17:23:17:23 | access to local variable s | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:18:9:18:35 | call to method WriteLine | Assert.cs:14:10:14:11 | M2 |
@@ -411,8 +409,7 @@ nodeEnclosing
 | Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:24:23:27 | null | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:31:23:32 | "" | Assert.cs:21:10:21:11 | M3 |
-| Assert.cs:24:9:24:27 | [assertion failure] call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
-| Assert.cs:24:9:24:27 | [assertion success] call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
+| Assert.cs:24:9:24:27 | call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:24:9:24:28 | ...; | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:24:26:24:26 | access to local variable s | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:25:9:25:35 | call to method WriteLine | Assert.cs:21:10:21:11 | M3 |
@@ -430,8 +427,7 @@ nodeEnclosing
 | Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:24:30:27 | null | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:31:30:32 | "" | Assert.cs:28:10:28:11 | M4 |
-| Assert.cs:31:9:31:32 | [assertion failure] call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
-| Assert.cs:31:9:31:32 | [assertion success] call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
+| Assert.cs:31:9:31:32 | call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:31:9:31:33 | ...; | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:31:23:31:23 | access to local variable s | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:31:23:31:31 | ... == ... | Assert.cs:28:10:28:11 | M4 |
@@ -451,8 +447,7 @@ nodeEnclosing
 | Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:24:37:27 | null | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:31:37:32 | "" | Assert.cs:35:10:35:11 | M5 |
-| Assert.cs:38:9:38:32 | [assertion failure] call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
-| Assert.cs:38:9:38:32 | [assertion success] call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
+| Assert.cs:38:9:38:32 | call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:38:9:38:33 | ...; | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:38:23:38:23 | access to local variable s | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:38:23:38:31 | ... != ... | Assert.cs:35:10:35:11 | M5 |
@@ -472,8 +467,7 @@ nodeEnclosing
 | Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:24:44:27 | null | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:31:44:32 | "" | Assert.cs:42:10:42:11 | M6 |
-| Assert.cs:45:9:45:33 | [assertion failure] call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
-| Assert.cs:45:9:45:33 | [assertion success] call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
+| Assert.cs:45:9:45:33 | call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:45:9:45:34 | ...; | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:45:24:45:24 | access to local variable s | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:45:24:45:32 | ... != ... | Assert.cs:42:10:42:11 | M6 |
@@ -493,8 +487,7 @@ nodeEnclosing
 | Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:24:51:27 | null | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:31:51:32 | "" | Assert.cs:49:10:49:11 | M7 |
-| Assert.cs:52:9:52:33 | [assertion failure] call to method IsFalse | Assert.cs:49:10:49:11 | M7 |
-| Assert.cs:52:9:52:33 | [assertion success] call to method IsFalse | Assert.cs:49:10:49:11 | M7 |
+| Assert.cs:52:9:52:33 | call to method IsFalse | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:52:9:52:34 | ...; | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:52:24:52:24 | access to local variable s | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:52:24:52:32 | ... == ... | Assert.cs:49:10:49:11 | M7 |
@@ -514,13 +507,11 @@ nodeEnclosing
 | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:24:58:27 | null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:31:58:32 | "" | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:9:59:37 | [assertion success] call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:59:9:59:37 | call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:9:59:38 | ...; | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:23:59:23 | access to local variable s | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:23:59:31 | ... != ... | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:23:59:36 | [false] ... && ... | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:23:59:36 | [true] ... && ... | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:28:59:31 | null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:60:9:60:35 | call to method WriteLine | Assert.cs:56:10:56:11 | M8 |
@@ -538,13 +529,11 @@ nodeEnclosing
 | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:24:65:27 | null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:31:65:32 | "" | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:9:66:38 | [assertion success] call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:66:9:66:38 | call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:9:66:39 | ...; | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:24:66:24 | access to local variable s | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:24:66:32 | ... == ... | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:24:66:37 | [false] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:24:66:37 | [true] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:29:66:32 | null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:67:9:67:35 | call to method WriteLine | Assert.cs:63:10:63:11 | M9 |
@@ -562,13 +551,11 @@ nodeEnclosing
 | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:24:72:27 | null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:31:72:32 | "" | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:9:73:37 | [assertion success] call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:73:9:73:37 | call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:9:73:38 | ...; | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:23:73:23 | access to local variable s | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:23:73:31 | ... == ... | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:23:73:36 | [false] ... && ... | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:23:73:36 | [true] ... && ... | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:28:73:31 | null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:74:9:74:35 | call to method WriteLine | Assert.cs:70:10:70:12 | M10 |
@@ -586,13 +573,11 @@ nodeEnclosing
 | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:24:79:27 | null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:31:79:32 | "" | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:9:80:38 | [assertion success] call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:80:9:80:38 | call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:9:80:39 | ...; | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:24:80:24 | access to local variable s | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:24:80:32 | ... != ... | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:24:80:37 | [false] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:24:80:37 | [true] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:29:80:32 | null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:81:9:81:35 | call to method WriteLine | Assert.cs:77:10:77:12 | M11 |
@@ -610,8 +595,7 @@ nodeEnclosing
 | Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:24:86:27 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:31:86:32 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:87:9:87:31 | [assertion failure] call to method Assert | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:87:9:87:31 | [assertion success] call to method Assert | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:87:9:87:31 | call to method Assert | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:87:9:87:32 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:87:22:87:22 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:87:22:87:30 | ... != ... | Assert.cs:84:10:84:12 | M12 |
@@ -626,8 +610,7 @@ nodeEnclosing
 | Assert.cs:90:13:90:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:90:17:90:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:90:24:90:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:91:9:91:24 | [assertion failure] call to method IsNull | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:91:9:91:24 | [assertion success] call to method IsNull | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:91:9:91:24 | call to method IsNull | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:91:9:91:25 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:91:23:91:23 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:92:9:92:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
@@ -640,8 +623,7 @@ nodeEnclosing
 | Assert.cs:94:13:94:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:94:17:94:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:94:24:94:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:95:9:95:27 | [assertion failure] call to method IsNotNull | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:95:9:95:27 | [assertion success] call to method IsNotNull | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:95:9:95:27 | call to method IsNotNull | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:95:9:95:28 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:95:26:95:26 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:96:9:96:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
@@ -654,8 +636,7 @@ nodeEnclosing
 | Assert.cs:98:13:98:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:98:17:98:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:98:24:98:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:99:9:99:32 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:99:9:99:32 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:99:9:99:32 | call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:99:9:99:33 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:99:23:99:23 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:99:23:99:31 | ... == ... | Assert.cs:84:10:84:12 | M12 |
@@ -670,8 +651,7 @@ nodeEnclosing
 | Assert.cs:102:13:102:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:102:17:102:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:102:24:102:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:103:9:103:32 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:103:9:103:32 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:103:9:103:32 | call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:103:9:103:33 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:103:23:103:23 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:103:23:103:31 | ... != ... | Assert.cs:84:10:84:12 | M12 |
@@ -686,8 +666,7 @@ nodeEnclosing
 | Assert.cs:106:13:106:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:106:17:106:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:106:24:106:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:107:9:107:33 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:107:9:107:33 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:107:9:107:33 | call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:107:9:107:34 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:107:24:107:24 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:107:24:107:32 | ... != ... | Assert.cs:84:10:84:12 | M12 |
@@ -702,8 +681,7 @@ nodeEnclosing
 | Assert.cs:110:13:110:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:110:17:110:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:110:24:110:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:111:9:111:33 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:111:9:111:33 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:111:9:111:33 | call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:111:9:111:34 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:111:24:111:24 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:111:24:111:32 | ... == ... | Assert.cs:84:10:84:12 | M12 |
@@ -718,13 +696,11 @@ nodeEnclosing
 | Assert.cs:114:13:114:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:114:17:114:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:114:24:114:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:9:115:37 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:9:115:37 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:9:115:37 | call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:9:115:38 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:23:115:23 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:23:115:31 | ... != ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:23:115:36 | [false] ... && ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:23:115:36 | [true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:28:115:31 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:36:115:36 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:116:9:116:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
@@ -737,16 +713,13 @@ nodeEnclosing
 | Assert.cs:118:13:118:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:118:17:118:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:118:24:118:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:9:119:39 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:9:119:39 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:9:119:39 | call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:9:119:40 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:24:119:24 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:24:119:32 | ... == ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:24:119:38 | [false] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:24:119:38 | [true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:29:119:32 | null | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:37:119:38 | [false] !... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:37:119:38 | [true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:37:119:38 | !... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:38:119:38 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:120:9:120:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:120:9:120:36 | ...; | Assert.cs:84:10:84:12 | M12 |
@@ -758,13 +731,11 @@ nodeEnclosing
 | Assert.cs:122:13:122:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:122:17:122:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:122:24:122:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:9:123:37 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:9:123:37 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:123:9:123:37 | call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:9:123:38 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:23:123:23 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:23:123:31 | ... == ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:23:123:36 | [false] ... && ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:23:123:36 | [true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:28:123:31 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:36:123:36 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:124:9:124:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
@@ -777,16 +748,13 @@ nodeEnclosing
 | Assert.cs:126:13:126:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:126:17:126:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:126:24:126:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:9:127:39 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:9:127:39 | call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:9:127:40 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:24:127:24 | access to local variable s | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:24:127:32 | ... != ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:24:127:38 | [false] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:24:127:38 | [true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:29:127:32 | null | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:37:127:38 | [false] !... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:37:127:38 | [true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:37:127:38 | !... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:38:127:38 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:128:9:128:35 | call to method WriteLine | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:128:9:128:36 | ...; | Assert.cs:84:10:84:12 | M12 |
@@ -801,17 +769,12 @@ nodeEnclosing
 | Assert.cs:138:10:138:12 | exit M13 (abnormal) | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | exit M13 (normal) | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:139:5:142:5 | {...} | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:9:140:35 | [assertion failure] call to method AssertTrueFalse | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:9:140:35 | [assertion success] call to method AssertTrueFalse | Assert.cs:138:10:138:12 | M13 |
+| Assert.cs:140:9:140:35 | call to method AssertTrueFalse | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:140:9:140:35 | this access | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:140:9:140:36 | ...; | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:140:25:140:26 | access to parameter b1 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
+| Assert.cs:140:33:140:34 | access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:141:9:141:15 | return ...; | Assert.cs:138:10:138:12 | M13 |
 | Assignments.cs:1:7:1:17 | call to constructor Object | Assignments.cs:1:7:1:17 | Assignments |
 | Assignments.cs:1:7:1:17 | enter Assignments | Assignments.cs:1:7:1:17 | Assignments |
@@ -1575,7 +1538,7 @@ nodeEnclosing
 | ExitMethods.cs:120:17:120:32 | exit FailingAssertion | ExitMethods.cs:120:17:120:32 | FailingAssertion |
 | ExitMethods.cs:120:17:120:32 | exit FailingAssertion (abnormal) | ExitMethods.cs:120:17:120:32 | FailingAssertion |
 | ExitMethods.cs:121:5:124:5 | {...} | ExitMethods.cs:120:17:120:32 | FailingAssertion |
-| ExitMethods.cs:122:9:122:28 | [assertion failure] call to method IsTrue | ExitMethods.cs:120:17:120:32 | FailingAssertion |
+| ExitMethods.cs:122:9:122:28 | call to method IsTrue | ExitMethods.cs:120:17:120:32 | FailingAssertion |
 | ExitMethods.cs:122:9:122:29 | ...; | ExitMethods.cs:120:17:120:32 | FailingAssertion |
 | ExitMethods.cs:122:23:122:27 | false | ExitMethods.cs:120:17:120:32 | FailingAssertion |
 | ExitMethods.cs:126:17:126:33 | enter FailingAssertion2 | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
@@ -1589,14 +1552,13 @@ nodeEnclosing
 | ExitMethods.cs:132:10:132:20 | exit AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:10:132:20 | exit AssertFalse (abnormal) | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:10:132:20 | exit AssertFalse (normal) | ExitMethods.cs:132:10:132:20 | AssertFalse |
-| ExitMethods.cs:132:33:132:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
-| ExitMethods.cs:132:33:132:49 | [assertion success] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:33:132:49 | call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:48:132:48 | access to parameter b | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:134:17:134:33 | exit FailingAssertion3 | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:134:17:134:33 | exit FailingAssertion3 (abnormal) | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:135:5:138:5 | {...} | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
-| ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
+| ExitMethods.cs:136:9:136:25 | call to method AssertFalse | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:136:9:136:25 | this access | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:136:9:136:26 | ...; | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:136:21:136:24 | true | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
@@ -4250,176 +4212,149 @@ blockEnclosing
 | Assert.cs:5:7:5:17 | enter AssertTests | Assert.cs:5:7:5:17 | AssertTests |
 | Assert.cs:7:10:7:11 | enter M1 | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:7:10:7:11 | exit M1 | Assert.cs:7:10:7:11 | M1 |
+| Assert.cs:7:10:7:11 | exit M1 (abnormal) | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:20:9:32 | ... ? ... : ... | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:24:9:27 | null | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:31:9:32 | "" | Assert.cs:7:10:7:11 | M1 |
-| Assert.cs:10:9:10:31 | [assertion failure] call to method Assert | Assert.cs:7:10:7:11 | M1 |
-| Assert.cs:10:9:10:31 | [assertion success] call to method Assert | Assert.cs:7:10:7:11 | M1 |
+| Assert.cs:11:9:11:36 | ...; | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:14:10:14:11 | enter M2 | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:14:10:14:11 | exit M2 | Assert.cs:14:10:14:11 | M2 |
+| Assert.cs:14:10:14:11 | exit M2 (abnormal) | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:20:16:32 | ... ? ... : ... | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:24:16:27 | null | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:31:16:32 | "" | Assert.cs:14:10:14:11 | M2 |
-| Assert.cs:17:9:17:24 | [assertion failure] call to method IsNull | Assert.cs:14:10:14:11 | M2 |
-| Assert.cs:17:9:17:24 | [assertion success] call to method IsNull | Assert.cs:14:10:14:11 | M2 |
+| Assert.cs:18:9:18:36 | ...; | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:21:10:21:11 | enter M3 | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:21:10:21:11 | exit M3 | Assert.cs:21:10:21:11 | M3 |
+| Assert.cs:21:10:21:11 | exit M3 (abnormal) | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:20:23:32 | ... ? ... : ... | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:24:23:27 | null | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:31:23:32 | "" | Assert.cs:21:10:21:11 | M3 |
-| Assert.cs:24:9:24:27 | [assertion failure] call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
-| Assert.cs:24:9:24:27 | [assertion success] call to method IsNotNull | Assert.cs:21:10:21:11 | M3 |
+| Assert.cs:25:9:25:36 | ...; | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:28:10:28:11 | enter M4 | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:28:10:28:11 | exit M4 | Assert.cs:28:10:28:11 | M4 |
+| Assert.cs:28:10:28:11 | exit M4 (abnormal) | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:20:30:32 | ... ? ... : ... | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:24:30:27 | null | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:31:30:32 | "" | Assert.cs:28:10:28:11 | M4 |
-| Assert.cs:31:9:31:32 | [assertion failure] call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
-| Assert.cs:31:9:31:32 | [assertion success] call to method IsTrue | Assert.cs:28:10:28:11 | M4 |
+| Assert.cs:32:9:32:36 | ...; | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:35:10:35:11 | enter M5 | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:35:10:35:11 | exit M5 | Assert.cs:35:10:35:11 | M5 |
+| Assert.cs:35:10:35:11 | exit M5 (abnormal) | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:20:37:32 | ... ? ... : ... | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:24:37:27 | null | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:31:37:32 | "" | Assert.cs:35:10:35:11 | M5 |
-| Assert.cs:38:9:38:32 | [assertion failure] call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
-| Assert.cs:38:9:38:32 | [assertion success] call to method IsTrue | Assert.cs:35:10:35:11 | M5 |
+| Assert.cs:39:9:39:36 | ...; | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:42:10:42:11 | enter M6 | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:42:10:42:11 | exit M6 | Assert.cs:42:10:42:11 | M6 |
+| Assert.cs:42:10:42:11 | exit M6 (abnormal) | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:20:44:32 | ... ? ... : ... | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:24:44:27 | null | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:31:44:32 | "" | Assert.cs:42:10:42:11 | M6 |
-| Assert.cs:45:9:45:33 | [assertion failure] call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
-| Assert.cs:45:9:45:33 | [assertion success] call to method IsFalse | Assert.cs:42:10:42:11 | M6 |
+| Assert.cs:46:9:46:36 | ...; | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:49:10:49:11 | enter M7 | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:49:10:49:11 | exit M7 | Assert.cs:49:10:49:11 | M7 |
+| Assert.cs:49:10:49:11 | exit M7 (abnormal) | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:20:51:32 | ... ? ... : ... | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:24:51:27 | null | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:31:51:32 | "" | Assert.cs:49:10:49:11 | M7 |
-| Assert.cs:52:9:52:33 | [assertion failure] call to method IsFalse | Assert.cs:49:10:49:11 | M7 |
-| Assert.cs:52:9:52:33 | [assertion success] call to method IsFalse | Assert.cs:49:10:49:11 | M7 |
+| Assert.cs:53:9:53:36 | ...; | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:56:10:56:11 | enter M8 | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:56:10:56:11 | exit M8 | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:56:10:56:11 | exit M8 (abnormal) | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:20:58:32 | ... ? ... : ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:24:58:27 | null | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:31:58:32 | "" | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:9:59:37 | [assertion failure] call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:9:59:37 | [assertion success] call to method IsTrue | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:23:59:36 | [false] ... && ... | Assert.cs:56:10:56:11 | M8 |
-| Assert.cs:59:23:59:36 | [true] ... && ... | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:59:23:59:36 | ... && ... | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:59:36:59:36 | access to parameter b | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:60:9:60:36 | ...; | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:63:10:63:11 | enter M9 | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:63:10:63:11 | exit M9 | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:63:10:63:11 | exit M9 (abnormal) | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:20:65:32 | ... ? ... : ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:24:65:27 | null | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:31:65:32 | "" | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:9:66:38 | [assertion failure] call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:9:66:38 | [assertion success] call to method IsFalse | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:24:66:37 | [false] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
-| Assert.cs:66:24:66:37 | [true] ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:66:24:66:37 | ... \|\| ... | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:66:37:66:37 | access to parameter b | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:67:9:67:36 | ...; | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:70:10:70:12 | enter M10 | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:70:10:70:12 | exit M10 | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:70:10:70:12 | exit M10 (abnormal) | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:20:72:32 | ... ? ... : ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:24:72:27 | null | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:31:72:32 | "" | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:9:73:37 | [assertion failure] call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:9:73:37 | [assertion success] call to method IsTrue | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:23:73:36 | [false] ... && ... | Assert.cs:70:10:70:12 | M10 |
-| Assert.cs:73:23:73:36 | [true] ... && ... | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:73:23:73:36 | ... && ... | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:73:36:73:36 | access to parameter b | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:74:9:74:36 | ...; | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:77:10:77:12 | enter M11 | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:77:10:77:12 | exit M11 | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:77:10:77:12 | exit M11 (abnormal) | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:20:79:32 | ... ? ... : ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:24:79:27 | null | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:31:79:32 | "" | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:9:80:38 | [assertion failure] call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:9:80:38 | [assertion success] call to method IsFalse | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:24:80:37 | [false] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
-| Assert.cs:80:24:80:37 | [true] ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:80:24:80:37 | ... \|\| ... | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:80:37:80:37 | access to parameter b | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:81:9:81:36 | ...; | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:84:10:84:12 | enter M12 | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:84:10:84:12 | exit M12 | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:84:10:84:12 | exit M12 (abnormal) | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:20:86:32 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:24:86:27 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:31:86:32 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:87:9:87:31 | [assertion failure] call to method Assert | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:87:9:87:31 | [assertion success] call to method Assert | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:88:9:88:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:90:13:90:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:90:17:90:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:90:24:90:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:91:9:91:24 | [assertion failure] call to method IsNull | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:91:9:91:24 | [assertion success] call to method IsNull | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:92:9:92:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:94:13:94:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:94:17:94:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:94:24:94:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:95:9:95:27 | [assertion failure] call to method IsNotNull | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:95:9:95:27 | [assertion success] call to method IsNotNull | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:96:9:96:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:98:13:98:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:98:17:98:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:98:24:98:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:99:9:99:32 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:99:9:99:32 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:100:9:100:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:102:13:102:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:102:17:102:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:102:24:102:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:103:9:103:32 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:103:9:103:32 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:104:9:104:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:106:13:106:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:106:17:106:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:106:24:106:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:107:9:107:33 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:107:9:107:33 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:108:9:108:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:110:13:110:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:110:17:110:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:110:24:110:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:111:9:111:33 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:111:9:111:33 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:112:9:112:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:114:13:114:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:114:17:114:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:114:24:114:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:9:115:37 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:9:115:37 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:23:115:36 | [false] ... && ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:115:23:115:36 | [true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:115:23:115:36 | ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:115:36:115:36 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:116:9:116:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:118:13:118:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:118:17:118:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:118:24:118:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:9:119:39 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:9:119:39 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:24:119:38 | [false] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:24:119:38 | [true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:37:119:38 | [false] !... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:119:37:119:38 | [true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:119:24:119:38 | ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:119:38:119:38 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:120:9:120:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:122:13:122:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:122:17:122:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:122:24:122:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:9:123:37 | [assertion failure] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:9:123:37 | [assertion success] call to method IsTrue | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:23:123:36 | [false] ... && ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:123:23:123:36 | [true] ... && ... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:123:23:123:36 | ... && ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:123:36:123:36 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:124:9:124:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:126:13:126:25 | ... ? ... : ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:126:17:126:20 | null | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:126:24:126:25 | "" | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:9:127:39 | [assertion failure] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:9:127:39 | [assertion success] call to method IsFalse | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:24:127:38 | [false] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:24:127:38 | [true] ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:37:127:38 | [false] !... | Assert.cs:84:10:84:12 | M12 |
-| Assert.cs:127:37:127:38 | [true] !... | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:127:24:127:38 | ... \|\| ... | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:127:38:127:38 | access to parameter b | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:128:9:128:36 | ...; | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:131:18:131:32 | enter AssertTrueFalse | Assert.cs:131:18:131:32 | AssertTrueFalse |
 | Assert.cs:138:10:138:12 | enter M13 | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | exit M13 (abnormal) | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:29:140:30 | [assertion failure] access to parameter b2 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:29:140:30 | access to parameter b2 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:33:140:34 | [assertion failure] access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
-| Assert.cs:140:33:140:34 | [assertion success] access to parameter b3 | Assert.cs:138:10:138:12 | M13 |
+| Assert.cs:141:9:141:15 | return ...; | Assert.cs:138:10:138:12 | M13 |
 | Assignments.cs:1:7:1:17 | enter Assignments | Assignments.cs:1:7:1:17 | Assignments |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | M |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | (...) => ... |
@@ -4626,14 +4561,12 @@ blockEnclosing
 | ExitMethods.cs:117:34:117:34 | 0 | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:117:38:117:38 | 1 | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:120:17:120:32 | enter FailingAssertion | ExitMethods.cs:120:17:120:32 | FailingAssertion |
-| ExitMethods.cs:122:9:122:28 | [assertion failure] call to method IsTrue | ExitMethods.cs:120:17:120:32 | FailingAssertion |
 | ExitMethods.cs:126:17:126:33 | enter FailingAssertion2 | ExitMethods.cs:126:17:126:33 | FailingAssertion2 |
 | ExitMethods.cs:132:10:132:20 | enter AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:10:132:20 | exit AssertFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
-| ExitMethods.cs:132:33:132:49 | [assertion failure] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
-| ExitMethods.cs:132:33:132:49 | [assertion success] call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:10:132:20 | exit AssertFalse (abnormal) | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:10:132:20 | exit AssertFalse (normal) | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:134:17:134:33 | enter FailingAssertion3 | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
-| ExitMethods.cs:136:9:136:25 | [assertion failure] call to method AssertFalse | ExitMethods.cs:134:17:134:33 | FailingAssertion3 |
 | ExitMethods.cs:140:17:140:42 | enter ExceptionDispatchInfoThrow | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:140:17:140:42 | exit ExceptionDispatchInfoThrow (abnormal) | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:143:13:143:43 | ...; | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |

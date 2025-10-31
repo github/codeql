@@ -111,19 +111,6 @@ private module Impl {
     }
   }
 
-  private Guard eqFlowCondAbs(
-    Definition def, ExprNode e, int delta, boolean isEq, G::AbstractValue v
-  ) {
-    exists(boolean eqpolarity |
-      result.isEquality(ssaRead(def, delta), e, eqpolarity) and
-      eqpolarity.booleanXor(v.(BooleanValue).getValue()).booleanNot() = isEq
-    )
-    or
-    exists(G::AbstractValue v0 |
-      G::Internal::impliesStep(result, v, eqFlowCondAbs(def, e, delta, isEq, v0), v0)
-    )
-  }
-
   /**
    * Gets a condition that tests whether `def` equals `e + delta`.
    *
@@ -132,9 +119,10 @@ private module Impl {
    * - `isEq = false` : `def != e + delta`
    */
   Guard eqFlowCond(Definition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
-    exists(BooleanValue v |
-      result = eqFlowCondAbs(def, e, delta, isEq, v) and
-      testIsTrue = v.getValue()
+    exists(boolean eqpolarity |
+      result.isEquality(ssaRead(def, delta), e, eqpolarity) and
+      testIsTrue = [false, true] and
+      eqpolarity.booleanXor(testIsTrue).booleanNot() = isEq
     )
   }
 
