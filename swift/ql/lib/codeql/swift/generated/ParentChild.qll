@@ -3103,6 +3103,12 @@ private module Impl {
     none()
   }
 
+  private Element getImmediateChildOfInlineArrayType(
+    InlineArrayType e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
   private Element getImmediateChildOfOpaqueTypeArchetypeType(
     OpaqueTypeArchetypeType e, int index, string partialPredicateCall
   ) {
@@ -3674,6 +3680,8 @@ private module Impl {
     result = getImmediateChildOfBuiltinIntegerType(e, index, partialAccessor)
     or
     result = getImmediateChildOfDictionaryType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInlineArrayType(e, index, partialAccessor)
     or
     result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
     or

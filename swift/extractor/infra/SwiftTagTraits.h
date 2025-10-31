@@ -348,7 +348,7 @@ MAP(swift::TypeBase, TypeTag)
         MAP(swift::ArraySliceType, ArraySliceTypeTag)
         MAP(swift::OptionalType, OptionalTypeTag)
         MAP(swift::VariadicSequenceType, VariadicSequenceTypeTag)
-      MAP(swift::InlineArrayType, void) // TODO: Swift 6.2
+      MAP(swift::InlineArrayType, InlineArrayTypeTag)
       MAP(swift::DictionaryType, DictionaryTypeTag)
 
 MAP(swift::AvailabilitySpec, AvailabilitySpecTag)

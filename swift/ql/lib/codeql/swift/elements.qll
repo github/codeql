@@ -275,6 +275,7 @@ import codeql.swift.elements.type.FunctionType
 import codeql.swift.elements.type.GenericFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.type.InOutType
+import codeql.swift.elements.type.InlineArrayType
 import codeql.swift.elements.type.IntegerType
 import codeql.swift.elements.type.LValueType
 import codeql.swift.elements.type.LocalArchetypeType

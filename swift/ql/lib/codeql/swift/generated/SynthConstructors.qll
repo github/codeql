@@ -232,6 +232,7 @@ import codeql.swift.elements.type.internal.FunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericFunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericTypeParamTypeConstructor
 import codeql.swift.elements.type.internal.InOutTypeConstructor
+import codeql.swift.elements.type.internal.InlineArrayTypeConstructor
 import codeql.swift.elements.type.internal.IntegerTypeConstructor
 import codeql.swift.elements.type.internal.LValueTypeConstructor
 import codeql.swift.elements.type.internal.MetatypeTypeConstructor

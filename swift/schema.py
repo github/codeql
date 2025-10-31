@@ -1192,6 +1192,10 @@ class BuiltinIntegerLiteralType(AnyBuiltinIntegerType):
 class BuiltinIntegerType(AnyBuiltinIntegerType):
     width: optional[int]
 
+class InlineArrayType(SyntaxSugarType):
+    count_type: Type
+    element_type: Type
+
 class DictionaryType(SyntaxSugarType):
     key_type: Type
     value_type: Type

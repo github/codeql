@@ -2520,6 +2520,7 @@ paren_types(  //dir=type
 
 @syntax_sugar_type =
   @dictionary_type
+| @inline_array_type
 | @unary_syntax_sugar_type
 ;
 
@@ -2575,6 +2576,12 @@ dictionary_types(  //dir=type
   unique int id: @dictionary_type,
   int key_type: @type_or_none ref,
   int value_type: @type_or_none ref
+);
+
+inline_array_types(  //dir=type
+  unique int id: @inline_array_type,
+  int count_type: @type_or_none ref,
+  int element_type: @type_or_none ref
 );
 
 @local_archetype_type =

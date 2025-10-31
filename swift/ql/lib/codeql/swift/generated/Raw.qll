@@ -3792,6 +3792,23 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class InlineArrayType extends @inline_array_type, SyntaxSugarType {
+    override string toString() { result = "InlineArrayType" }
+
+    /**
+     * Gets the count type of this inline array type.
+     */
+    Type getCountType() { inline_array_types(this, result, _) }
+
+    /**
+     * Gets the element type of this inline array type.
+     */
+    Type getElementType() { inline_array_types(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class LocalArchetypeType extends @local_archetype_type, ArchetypeType { }
 
   /**

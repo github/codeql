@@ -1013,6 +1013,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TInlineArrayType(Raw::InlineArrayType id) { constructInlineArrayType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TIntegerType(Raw::IntegerType id) { constructIntegerType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1430,7 +1434,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TSyntaxSugarType = TDictionaryType or TUnarySyntaxSugarType;
+  class TSyntaxSugarType = TDictionaryType or TInlineArrayType or TUnarySyntaxSugarType;
 
   /**
    * INTERNAL: Do not use.
@@ -3041,6 +3045,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TInlineArrayType`, if possible.
+   */
+  TInlineArrayType convertInlineArrayTypeFromRaw(Raw::Element e) { result = TInlineArrayType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TIntegerType`, if possible.
    */
   TIntegerType convertIntegerTypeFromRaw(Raw::Element e) { result = TIntegerType(e) }
@@ -4121,6 +4131,8 @@ module Synth {
    */
   TSyntaxSugarType convertSyntaxSugarTypeFromRaw(Raw::Element e) {
     result = convertDictionaryTypeFromRaw(e)
+    or
+    result = convertInlineArrayTypeFromRaw(e)
     or
     result = convertUnarySyntaxSugarTypeFromRaw(e)
   }
@@ -5779,6 +5791,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TInlineArrayType` to a raw DB element, if possible.
+   */
+  Raw::Element convertInlineArrayTypeToRaw(TInlineArrayType e) { e = TInlineArrayType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TIntegerType` to a raw DB element, if possible.
    */
   Raw::Element convertIntegerTypeToRaw(TIntegerType e) { e = TIntegerType(result) }
@@ -6859,6 +6877,8 @@ module Synth {
    */
   Raw::Element convertSyntaxSugarTypeToRaw(TSyntaxSugarType e) {
     result = convertDictionaryTypeToRaw(e)
+    or
+    result = convertInlineArrayTypeToRaw(e)
     or
     result = convertUnarySyntaxSugarTypeToRaw(e)
   }
