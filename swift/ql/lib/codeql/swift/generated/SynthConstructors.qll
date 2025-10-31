@@ -43,6 +43,7 @@ import codeql.swift.elements.decl.internal.StructDeclConstructor
 import codeql.swift.elements.decl.internal.SubscriptDeclConstructor
 import codeql.swift.elements.decl.internal.TopLevelCodeDeclConstructor
 import codeql.swift.elements.decl.internal.TypeAliasDeclConstructor
+import codeql.swift.elements.decl.internal.UsingDeclConstructor
 import codeql.swift.elements.expr.internal.AbiSafeConversionExprConstructor
 import codeql.swift.elements.expr.internal.ActorIsolationErasureExprConstructor
 import codeql.swift.elements.expr.internal.AnyHashableErasureExprConstructor
@@ -163,6 +164,7 @@ import codeql.swift.elements.expr.internal.UnresolvedPatternExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedSpecializeExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedTypeConversionExprConstructor
 import codeql.swift.elements.expr.internal.UnsafeCastExprConstructor
+import codeql.swift.elements.expr.internal.UnsafeExprConstructor
 import codeql.swift.elements.expr.internal.VarargExpansionExprConstructor
 import codeql.swift.elements.pattern.internal.AnyPatternConstructor
 import codeql.swift.elements.pattern.internal.BindingPatternConstructor
@@ -230,6 +232,7 @@ import codeql.swift.elements.type.internal.FunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericFunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericTypeParamTypeConstructor
 import codeql.swift.elements.type.internal.InOutTypeConstructor
+import codeql.swift.elements.type.internal.InlineArrayTypeConstructor
 import codeql.swift.elements.type.internal.IntegerTypeConstructor
 import codeql.swift.elements.type.internal.LValueTypeConstructor
 import codeql.swift.elements.type.internal.MetatypeTypeConstructor

@@ -16,3 +16,10 @@ Task.init {
 }
 let x = 42
 let _ = _borrow x
+
+struct UnsafeType {}
+
+func unsafeFunc(_ y: UnsafeType) {
+    @unsafe let x: UnsafeType = unsafe y
+    let _ = unsafe x
+}

@@ -185,6 +185,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUsingDecl(Raw::UsingDecl id) { constructUsingDecl(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TAbiSafeConversionExpr(Raw::AbiSafeConversionExpr id) { constructAbiSafeConversionExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -721,6 +725,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUnsafeExpr(Raw::UnsafeExpr id) { constructUnsafeExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TVarargExpansionExpr(Raw::VarargExpansionExpr id) { constructVarargExpansionExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1005,6 +1013,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TInlineArrayType(Raw::InlineArrayType id) { constructInlineArrayType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TIntegerType(Raw::IntegerType id) { constructIntegerType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1167,7 +1179,7 @@ module Synth {
   class TDecl =
     TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
         TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
-        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TUsingDecl or TValueDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1277,7 +1289,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr or
+        TUnsafeExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1421,7 +1434,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TSyntaxSugarType = TDictionaryType or TUnarySyntaxSugarType;
+  class TSyntaxSugarType = TDictionaryType or TInlineArrayType or TUnarySyntaxSugarType;
 
   /**
    * INTERNAL: Do not use.
@@ -1709,6 +1722,12 @@ module Synth {
    * Converts a raw element to a synthesized `TTypeAliasDecl`, if possible.
    */
   TTypeAliasDecl convertTypeAliasDeclFromRaw(Raw::Element e) { result = TTypeAliasDecl(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUsingDecl`, if possible.
+   */
+  TUsingDecl convertUsingDeclFromRaw(Raw::Element e) { result = TUsingDecl(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2572,6 +2591,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnsafeExpr`, if possible.
+   */
+  TUnsafeExpr convertUnsafeExprFromRaw(Raw::Element e) { result = TUnsafeExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TVarargExpansionExpr`, if possible.
    */
   TVarargExpansionExpr convertVarargExpansionExprFromRaw(Raw::Element e) {
@@ -3020,6 +3045,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TInlineArrayType`, if possible.
+   */
+  TInlineArrayType convertInlineArrayTypeFromRaw(Raw::Element e) { result = TInlineArrayType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TIntegerType`, if possible.
    */
   TIntegerType convertIntegerTypeFromRaw(Raw::Element e) { result = TIntegerType(e) }
@@ -3369,6 +3400,8 @@ module Synth {
     or
     result = convertTopLevelCodeDeclFromRaw(e)
     or
+    result = convertUsingDeclFromRaw(e)
+    or
     result = convertValueDeclFromRaw(e)
   }
 
@@ -3706,6 +3739,8 @@ module Synth {
     result = convertParenExprFromRaw(e)
     or
     result = convertUnresolvedMemberChainResultExprFromRaw(e)
+    or
+    result = convertUnsafeExprFromRaw(e)
   }
 
   /**
@@ -4097,6 +4132,8 @@ module Synth {
   TSyntaxSugarType convertSyntaxSugarTypeFromRaw(Raw::Element e) {
     result = convertDictionaryTypeFromRaw(e)
     or
+    result = convertInlineArrayTypeFromRaw(e)
+    or
     result = convertUnarySyntaxSugarTypeFromRaw(e)
   }
 
@@ -4433,6 +4470,12 @@ module Synth {
    * Converts a synthesized `TTypeAliasDecl` to a raw DB element, if possible.
    */
   Raw::Element convertTypeAliasDeclToRaw(TTypeAliasDecl e) { e = TTypeAliasDecl(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUsingDecl` to a raw DB element, if possible.
+   */
+  Raw::Element convertUsingDeclToRaw(TUsingDecl e) { e = TUsingDecl(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5294,6 +5337,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TUnsafeExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnsafeExprToRaw(TUnsafeExpr e) { e = TUnsafeExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TVarargExpansionExpr` to a raw DB element, if possible.
    */
   Raw::Element convertVarargExpansionExprToRaw(TVarargExpansionExpr e) {
@@ -5742,6 +5791,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TInlineArrayType` to a raw DB element, if possible.
+   */
+  Raw::Element convertInlineArrayTypeToRaw(TInlineArrayType e) { e = TInlineArrayType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TIntegerType` to a raw DB element, if possible.
    */
   Raw::Element convertIntegerTypeToRaw(TIntegerType e) { e = TIntegerType(result) }
@@ -6091,6 +6146,8 @@ module Synth {
     or
     result = convertTopLevelCodeDeclToRaw(e)
     or
+    result = convertUsingDeclToRaw(e)
+    or
     result = convertValueDeclToRaw(e)
   }
 
@@ -6428,6 +6485,8 @@ module Synth {
     result = convertParenExprToRaw(e)
     or
     result = convertUnresolvedMemberChainResultExprToRaw(e)
+    or
+    result = convertUnsafeExprToRaw(e)
   }
 
   /**
@@ -6818,6 +6877,8 @@ module Synth {
    */
   Raw::Element convertSyntaxSugarTypeToRaw(TSyntaxSugarType e) {
     result = convertDictionaryTypeToRaw(e)
+    or
+    result = convertInlineArrayTypeToRaw(e)
     or
     result = convertUnarySyntaxSugarTypeToRaw(e)
   }

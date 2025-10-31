@@ -137,6 +137,19 @@ codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCase
   return entry;
 }
 
+codeql::UsingDecl DeclTranslator::translateUsingDecl(const swift::UsingDecl& decl) {
+  auto entry = createEntry(decl);
+  switch (decl.getSpecifier()) {
+    case swift::UsingSpecifier::MainActor:
+      entry.is_main_actor = true;
+      break;
+    case swift::UsingSpecifier::Nonisolated:
+      entry.is_nonisolated = true;
+      break;
+  }
+  return entry;
+}
+
 codeql::EnumElementDecl DeclTranslator::translateEnumElementDecl(
     const swift::EnumElementDecl& decl) {
   auto entry = createEntry(decl);
@@ -198,16 +211,16 @@ codeql::Accessor DeclTranslator::translateAccessorDecl(const swift::AccessorDecl
       entry.is_unsafe_mutable_address = true;
       break;
     case swift::AccessorKind::DistributedGet:
-      // TODO: Swift 6.2
+      entry.is_distributed_get = true;
       break;
     case swift::AccessorKind::Read2:
-      // TODO: Swift 6.2
+      entry.is_read2 = true;
       break;
     case swift::AccessorKind::Modify2:
-      // TODO: Swift 6.2
+      entry.is_modify2 = true;
       break;
     case swift::AccessorKind::Init:
-      // TODO: Swift 6.2
+      entry.is_init = true;
       break;
   }
   fillFunction(decl, entry);

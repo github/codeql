@@ -28,6 +28,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
       const swift::UnarySyntaxSugarType& type);
   codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
   codeql::ArraySliceType translateArraySliceType(const swift::ArraySliceType& type);
+  codeql::InlineArrayType translateInlineArrayType(const swift::InlineArrayType& type);
   codeql::DictionaryType translateDictionaryType(const swift::DictionaryType& type);
   codeql::GenericFunctionType translateGenericFunctionType(const swift::GenericFunctionType& type);
   codeql::GenericTypeParamType translateGenericTypeParamType(

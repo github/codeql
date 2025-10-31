@@ -273,7 +273,6 @@ unspecified_element_children(
 | @pound_diagnostic_decl
 | @precedence_group_decl
 | @top_level_code_decl
-| @using_decl
 | @value_decl
 ;
 
@@ -424,20 +423,6 @@ precedence_group_decls(  //dir=decl
 top_level_code_decls(  //dir=decl
   unique int id: @top_level_code_decl,
   int body: @brace_stmt_or_none ref
-);
-
-using_decls(  //dir=decl
-  unique int id: @using_decl
-);
-
-#keyset[id]
-using_decl_is_main_actor(  //dir=decl
-  int id: @using_decl ref
-);
-
-#keyset[id]
-using_decl_is_nonisolated(  //dir=decl
-  int id: @using_decl ref
 );
 
 @value_decl =
@@ -695,26 +680,6 @@ accessor_is_unsafe_address(  //dir=decl
 
 #keyset[id]
 accessor_is_unsafe_mutable_address(  //dir=decl
-  int id: @accessor ref
-);
-
-#keyset[id]
-accessor_is_distributed_get(  //dir=decl
-  int id: @accessor ref
-);
-
-#keyset[id]
-accessor_is_read2(  //dir=decl
-  int id: @accessor ref
-);
-
-#keyset[id]
-accessor_is_modify2(  //dir=decl
-  int id: @accessor ref
-);
-
-#keyset[id]
-accessor_is_init(  //dir=decl
   int id: @accessor ref
 );
 
@@ -1059,7 +1024,6 @@ force_value_exprs(  //dir=expr
 | @dot_self_expr
 | @paren_expr
 | @unresolved_member_chain_result_expr
-| @unsafe_expr
 ;
 
 #keyset[id]
@@ -1707,10 +1671,6 @@ unresolved_type_conversion_exprs(  //dir=expr
 
 unsafe_cast_exprs(  //dir=expr
   unique int id: @unsafe_cast_expr
-);
-
-unsafe_exprs(  //dir=expr
-  unique int id: @unsafe_expr
 );
 
 boolean_literal_exprs(  //dir=expr
@@ -2520,7 +2480,6 @@ paren_types(  //dir=type
 
 @syntax_sugar_type =
   @dictionary_type
-| @inline_array_type
 | @unary_syntax_sugar_type
 ;
 
@@ -2576,12 +2535,6 @@ dictionary_types(  //dir=type
   unique int id: @dictionary_type,
   int key_type: @type_or_none ref,
   int value_type: @type_or_none ref
-);
-
-inline_array_types(  //dir=type
-  unique int id: @inline_array_type,
-  int count_type: @type_or_none ref,
-  int element_type: @type_or_none ref
 );
 
 @local_archetype_type =

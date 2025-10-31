@@ -226,15 +226,13 @@ module Raw {
      *
      * INTERNAL: Do not use.
      *
-     * TODO: Swift 6.2 update with UnresolvedApply and Apply
+     * This is 4 for method or initializer application, 5 for members, 6 for array and dictionary
+     * subscripts, 7 for optional forcing (`!`), 8 for optional chaining (`?`), 9 for implicit
+     * optional wrapping, 10 for `self`, and 11 for tuple element indexing.
      *
-     * This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
-     * (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
-     * and 11 for tuple element indexing.
-     *
-     * The following values should not appear: 0 for invalid components, 2 for unresolved
-     * properties, 3 for unresolved subscripts, 12 for #keyPath dictionary keys, and 13 for
-     * implicit IDE code completion data.
+     * The following values should not appear: 0 for invalid components, 1 for unresolved
+     * method or initializer applications, 2 for unresolved members, 3 for unresolved subscripts,
+     * 12 for #keyPath dictionary keys, and 13 for implicit IDE code completion data.
      */
     int getKind() { key_path_components(this, result, _) }
 
@@ -520,6 +518,23 @@ module Raw {
      * Gets the body of this top level code declaration.
      */
     BraceStmt getBody() { top_level_code_decls(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class UsingDecl extends @using_decl, Decl {
+    override string toString() { result = "UsingDecl" }
+
+    /**
+     * Holds if this using declaration is main actor.
+     */
+    predicate isMainActor() { using_decl_is_main_actor(this) }
+
+    /**
+     * Holds if this using declaration is nonisolated.
+     */
+    predicate isNonisolated() { using_decl_is_nonisolated(this) }
   }
 
   /**
@@ -876,6 +891,26 @@ module Raw {
      * Holds if this accessor is an `unsafeMutableAddress` mutable addressor.
      */
     predicate isUnsafeMutableAddress() { accessor_is_unsafe_mutable_address(this) }
+
+    /**
+     * Holds if this accessor is a distributed getter.
+     */
+    predicate isDistributedGet() { accessor_is_distributed_get(this) }
+
+    /**
+     * Holds if this accessor is a `read` coroutine, yielding a borrowed value of the property.
+     */
+    predicate isRead2() { accessor_is_read2(this) }
+
+    /**
+     * Holds if this accessor is a `modify` coroutine, yielding an inout value of the property.
+     */
+    predicate isModify2() { accessor_is_modify2(this) }
+
+    /**
+     * Holds if this accessor is an `init` accessor.
+     */
+    predicate isInit() { accessor_is_init(this) }
   }
 
   /**
@@ -2502,6 +2537,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class UnsafeExpr extends @unsafe_expr, IdentityExpr {
+    override string toString() { result = "UnsafeExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class BooleanLiteralExpr extends @boolean_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "BooleanLiteralExpr" }
 
@@ -3745,6 +3787,23 @@ module Raw {
      * Gets the value type of this dictionary type.
      */
     Type getValueType() { dictionary_types(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class InlineArrayType extends @inline_array_type, SyntaxSugarType {
+    override string toString() { result = "InlineArrayType" }
+
+    /**
+     * Gets the count type of this inline array type.
+     */
+    Type getCountType() { inline_array_types(this, result, _) }
+
+    /**
+     * Gets the element type of this inline array type.
+     */
+    Type getElementType() { inline_array_types(this, _, result) }
   }
 
   /**
