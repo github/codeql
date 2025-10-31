@@ -50,3 +50,40 @@ private predicate discardLocatable(@locatable locatable) {
     discardableLocatable(file, locatable) and discardableFile(path)
   )
 }
+
+private @file getXmlFile(@xmllocatable locatable) {
+  exists(@location_default location | xmllocations(locatable, location) |
+    locations_default(location, result, _, _, _, _)
+  )
+}
+
+private @file getXmlFileInBase(@xmllocatable locatable) {
+  not isOverlay() and
+  result = getXmlFile(locatable)
+}
+
+/**
+ * Holds if the given `file` was extracted as part of the overlay and was extracted by the HTML/XML
+ * extractor.
+ */
+private predicate overlayXmlExtracted(@file file) {
+  isOverlay() and
+  exists(@xmllocatable locatable |
+    not files(locatable, _) and not xmlNs(locatable, _, _, _) and file = getXmlFile(locatable)
+  )
+}
+
+/**
+ * Holds if the given XML `locatable` should be discarded, because it is part of the overlay base
+ * and is in a file that was also extracted as part of the overlay database.
+ */
+overlay[discard_entity]
+private predicate discardXmlLocatable(@xmllocatable locatable) {
+  exists(@file file | file = getXmlFileInBase(locatable) |
+    exists(string path | files(file, path) | overlayChangedFiles(path))
+    or
+    // The HTML/XML extractor is currently not incremental and may extract more files than those
+    // included in overlayChangedFiles.
+    overlayXmlExtracted(file)
+  )
+}
