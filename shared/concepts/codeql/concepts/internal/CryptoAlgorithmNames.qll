@@ -23,7 +23,8 @@ predicate isStrongHashingAlgorithm(string name) {
       "BLAKE3",
       //
       "DSA", "ED25519", "ES256", "ECDSA256", "ES384", "ECDSA384", "ES512", "ECDSA512", "SHA2",
-      "SHA224", "SHA256", "SHA384", "SHA512", "SHA3", "SHA3224", "SHA3256", "SHA3384", "SHA3512",
+      "SHA224", "SHA256", "SHA384", "SHA512", "SHA512224", "SHA512256", "SHA3", "SHA3224",
+      "SHA3256", "SHA3384", "SHA3512",
       // see https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#cryptography.hazmat.primitives.hashes.SHAKE128
       "SHAKE128", "SHAKE256",
       // see https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#sm3

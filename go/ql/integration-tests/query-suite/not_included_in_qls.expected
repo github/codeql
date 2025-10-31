@@ -14,7 +14,6 @@ ql/go/ql/src/experimental/CWE-203/Timing.ql
 ql/go/ql/src/experimental/CWE-285/PamAuthBypass.ql
 ql/go/ql/src/experimental/CWE-287/ImproperLdapAuth.ql
 ql/go/ql/src/experimental/CWE-321-V2/HardCodedKeys.ql
-ql/go/ql/src/experimental/CWE-327/WeakCryptoAlgorithm.ql
 ql/go/ql/src/experimental/CWE-369/DivideByZero.ql
 ql/go/ql/src/experimental/CWE-400/DatabaseCallInLoop.ql
 ql/go/ql/src/experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql
