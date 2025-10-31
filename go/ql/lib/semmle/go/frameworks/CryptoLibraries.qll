@@ -109,9 +109,9 @@ private module Crypto {
   }
 
   private module Rc4 {
-    private class CipherXORKeyStream extends CryptographicOperation::Range instanceof DataFlow::CallNode
+    private class CipherXorKeyStream extends CryptographicOperation::Range instanceof DataFlow::CallNode
     {
-      CipherXORKeyStream() {
+      CipherXorKeyStream() {
         this.(DataFlow::MethodCallNode)
             .getTarget()
             .hasQualifiedName("crypto/rc4", "Cipher", "XORKeyStream")
@@ -312,26 +312,26 @@ private module Crypto {
   }
 
   private module Cipher {
-    private class NewCBCEncrypter extends StdLibNewEncrypter {
-      NewCBCEncrypter() { this.getTarget().hasQualifiedName("crypto/cipher", "NewCBCEncrypter") }
+    private class NewCbcEncrypter extends StdLibNewEncrypter {
+      NewCbcEncrypter() { this.getTarget().hasQualifiedName("crypto/cipher", "NewCBCEncrypter") }
 
       override BlockMode getMode() { result = "CBC" }
     }
 
-    private class NewCFBEncrypter extends StdLibNewEncrypter {
-      NewCFBEncrypter() { this.getTarget().hasQualifiedName("crypto/cipher", "NewCFBEncrypter") }
+    private class NewCfbEncrypter extends StdLibNewEncrypter {
+      NewCfbEncrypter() { this.getTarget().hasQualifiedName("crypto/cipher", "NewCFBEncrypter") }
 
       override BlockMode getMode() { result = "CFB" }
     }
 
-    private class NewCTR extends StdLibNewEncrypter {
-      NewCTR() { this.getTarget().hasQualifiedName("crypto/cipher", "NewCTR") }
+    private class NewCtr extends StdLibNewEncrypter {
+      NewCtr() { this.getTarget().hasQualifiedName("crypto/cipher", "NewCTR") }
 
       override BlockMode getMode() { result = "CTR" }
     }
 
-    private class NewGCM extends StdLibNewEncrypter {
-      NewGCM() {
+    private class NewGcm extends StdLibNewEncrypter {
+      NewGcm() {
         exists(string name | this.getTarget().hasQualifiedName("crypto/cipher", name) |
           name = ["NewGCM", "NewGCMWithNonceSize", "NewGCMWithRandomNonce", "NewGCMWithTagSize"]
         )
@@ -340,8 +340,8 @@ private module Crypto {
       override BlockMode getMode() { result = "GCM" }
     }
 
-    private class NewOFB extends StdLibNewEncrypter {
-      NewOFB() { this.getTarget().hasQualifiedName("crypto/cipher", "NewOFB") }
+    private class NewOfb extends StdLibNewEncrypter {
+      NewOfb() { this.getTarget().hasQualifiedName("crypto/cipher", "NewOFB") }
 
       override BlockMode getMode() { result = "OFB" }
     }
@@ -373,8 +373,8 @@ private module Crypto {
       }
     }
 
-    private class StreamXORKeyStream extends EncryptionMethodCall {
-      StreamXORKeyStream() {
+    private class StreamXorKeyStream extends EncryptionMethodCall {
+      StreamXorKeyStream() {
         this.(DataFlow::MethodCallNode)
             .getTarget()
             .hasQualifiedName("crypto/cipher", "Stream", "XORKeyStream") and
