@@ -1,6 +1,8 @@
 /**
  * Contains flow steps to model flow through `for..of` loops.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode
@@ -48,12 +50,18 @@ class ForOfLoopStep extends AdditionalFlowInternal {
   ) {
     exists(ForOfStmt stmt |
       pred = getSynthesizedNode(stmt, "for-of-map-key") and
-      contents.asSingleton().asArrayIndex() = 0
+      contents = arrayIndex0()
       or
       pred = getSynthesizedNode(stmt, "for-of-map-value") and
-      contents.asSingleton().asArrayIndex() = 1
+      contents = arrayIndex1()
     |
       succ = DataFlow::lvalueNode(stmt.getLValue())
     )
   }
 }
+
+pragma[nomagic]
+private DataFlow::ContentSet arrayIndex0() { result.asSingleton().asArrayIndex() = 0 }
+
+pragma[nomagic]
+private DataFlow::ContentSet arrayIndex1() { result.asSingleton().asArrayIndex() = 1 }
