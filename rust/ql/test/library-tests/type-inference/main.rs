@@ -586,10 +586,10 @@ mod impl_overlap {
         println!("{:?}", w.m(x)); // $ target=S3<T>::m
         println!("{:?}", S3::m(&w, x)); // $ target=S3<T>::m
 
-        S4.m(); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S4.m(); // $ target=<S4_as_MyTrait1>::m
         S4::m(&S4); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
-        S5(0i32).m(); // $ target=<S5<i32>_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
-        S5::m(&S5(0i32)); // $ target=<S5<i32>_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5(0i32).m(); // $ target=<S5<i32>_as_MyTrait1>::m
+        S5::m(&S5(0i32)); // $ target=<S5<i32>_as_MyTrait1>::m
         S5(true).m(); // $ target=MyTrait1::m
         S5::m(&S5(true)); // $ target=MyTrait1::m
     }
