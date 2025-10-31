@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [React Native](https://facebook.github.io/react-native) code.
  */
+overlay[local?]
+module;
 
 import javascript
 

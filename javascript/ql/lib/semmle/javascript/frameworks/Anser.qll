@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with applications using [anser](https://www.npmjs.com/package/anser).
  */
+overlay[local?]
+module;
 
 import javascript
 

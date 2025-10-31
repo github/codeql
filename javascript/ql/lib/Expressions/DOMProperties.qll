@@ -1,6 +1,8 @@
 /**
  * Provides predicates for working with the DOM type hierarchy.
  */
+overlay[local?]
+module;
 
 import semmle.javascript.Externs
 

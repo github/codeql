@@ -1,6 +1,8 @@
 /**
  * Provides JavaScript-specific definitions for use in the NfaUtils module.
  */
+overlay[local?]
+module;
 
 private import codeql.regex.nfa.NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView

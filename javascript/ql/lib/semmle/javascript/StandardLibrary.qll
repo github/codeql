@@ -1,4 +1,6 @@
 /** Provides classes for working with standard library objects. */
+overlay[local?]
+module;
 
 import javascript
 

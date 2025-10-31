@@ -1,6 +1,8 @@
 /**
  * Contains classes for recognizing array and string inclusion tests.
  */
+overlay[local?]
+module;
 
 private import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides name resolution and propagates type information.
  */
+overlay[local?]
+module;
 
 private import javascript
 
@@ -401,6 +403,7 @@ module NameResolution {
     /**
      * Holds if data should propagate from `node1` to `node2`.
      */
+    overlay[caller?]
     pragma[inline]
     predicate step(Node node1, Node node2) {
       commonStep(node1, node2)

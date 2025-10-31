@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Azure](https://github.com/Azure/azure-sdk-for-node) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 

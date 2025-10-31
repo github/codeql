@@ -2,6 +2,8 @@
  * Provides a flow label for reasoning about URLs with a tainted query and fragment part,
  * which we collectively refer to as the "suffix" of the URL.
  */
+overlay[local?]
+module;
 
 import javascript
 

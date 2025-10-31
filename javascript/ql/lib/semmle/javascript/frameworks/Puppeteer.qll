@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for reasoning about [puppeteer](https://www.npmjs.com/package/puppeteer).
  */
+overlay[local?]
+module;
 
 import javascript
 

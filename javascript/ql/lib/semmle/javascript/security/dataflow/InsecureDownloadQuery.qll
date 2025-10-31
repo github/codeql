@@ -5,6 +5,8 @@
  * `InsecureDownload::Configuration` is needed, otherwise
  * `InsecureDownloadCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import InsecureDownloadCustomizations::InsecureDownload

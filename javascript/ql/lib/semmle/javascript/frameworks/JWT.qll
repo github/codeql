@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JWT libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

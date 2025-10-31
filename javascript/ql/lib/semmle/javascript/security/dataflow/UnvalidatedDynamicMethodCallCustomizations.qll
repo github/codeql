@@ -3,6 +3,8 @@
  * unvalidated dynamic method calls, as well as extension points for
  * adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.Express

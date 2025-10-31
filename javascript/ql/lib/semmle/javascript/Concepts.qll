@@ -3,6 +3,8 @@
  * access or system command execution, for which individual framework libraries
  * provide concrete subclasses.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowArg

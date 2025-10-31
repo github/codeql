@@ -2,6 +2,8 @@
  * Provides aliases for commonly used classes that have different names
  * in the QL libraries for other languages.
  */
+overlay[local?]
+module;
 
 import javascript
 

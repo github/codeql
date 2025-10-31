@@ -1,6 +1,8 @@
 /**
  * Models of npm modules that are used with Express servers.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

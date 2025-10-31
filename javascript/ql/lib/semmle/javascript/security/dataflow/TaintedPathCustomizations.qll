@@ -3,6 +3,8 @@
  * tainted-path vulnerabilities, as well as extension points for
  * adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -194,6 +196,7 @@ module TaintedPath {
      * There are currently four flow labels, representing the different combinations of
      * normalization and absoluteness.
      */
+    overlay[global]
     abstract class PosixPath extends DataFlow::FlowLabel {
       Normalization normalization;
       Relativeness relativeness;

@@ -3,6 +3,8 @@
  *
  * For now, the `URLSearchParams` object is modeled as a `Map` object.
  */
+overlay[local?]
+module;
 
 private import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides taint steps modeling flow through `rxjs` Observable objects.
  */
+overlay[local?]
+module;
 
 private import javascript
 

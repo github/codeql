@@ -3,6 +3,8 @@
  *
  * Provides the internal representation of abstract properties and related predicates.
  */
+overlay[local?]
+module;
 
 import javascript
 private import AbstractValuesImpl

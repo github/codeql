@@ -7,6 +7,8 @@
  * otherwise `HardcodedDataInterpretedAsCodeCustomizations` should be
  * imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import HardcodedDataInterpretedAsCodeCustomizations::HardcodedDataInterpretedAsCode

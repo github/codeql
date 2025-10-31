@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the [prettier](https://www.npmjs.com/package/prettier) library.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [AWS-SDK](https://aws.amazon.com/sdk-for-node-js/) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 

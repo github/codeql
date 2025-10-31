@@ -6,6 +6,8 @@
  * NOTE: The API of this library is not stable yet and may change in
  *       the future.
  */
+overlay[local?]
+module;
 
 import javascript
 private import AngularJS

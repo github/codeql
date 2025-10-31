@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Emscripten-generated code.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.GeneratedCode

@@ -2,6 +2,8 @@
  * Provides a taint-tracking configuration for reasoning about
  * unsafe HTML constructed from library input vulnerabilities.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations::DomBasedXss as DomBasedXss

@@ -1,6 +1,8 @@
 /**
  * Provides models for miscellaneous utility functions in the closure standard library.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -3,6 +3,8 @@
  * cross-window communication with unrestricted origin, as well as
  * extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.SensitiveActions::HeuristicNames

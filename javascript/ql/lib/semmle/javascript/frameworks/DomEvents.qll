@@ -1,6 +1,8 @@
 /**
  * Provides predicates for reasoning about events from the DOM that introduce tainted data.
  */
+overlay[local?]
+module;
 
 import javascript
 

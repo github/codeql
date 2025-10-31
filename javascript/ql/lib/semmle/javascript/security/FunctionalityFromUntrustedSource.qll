@@ -1,6 +1,8 @@
 /**
  * Provides classes for finding functionality that is loaded from untrusted sources and used in script or frame elements.
  */
+overlay[local?]
+module;
 
 import javascript
 

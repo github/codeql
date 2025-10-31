@@ -3,6 +3,8 @@
  * the characters `?` and `#`, which are considered sanitizers for
  * the URL redirection queries.
  */
+overlay[local?]
+module;
 
 import javascript
 

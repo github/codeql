@@ -1,6 +1,8 @@
 /**
  * Models the `execa` library in terms of `FileSystemAccess` and `SystemCommandExecution`.
  */
+overlay[local?]
+module;
 
 import javascript
 
