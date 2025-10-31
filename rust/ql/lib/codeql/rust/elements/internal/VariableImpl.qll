@@ -460,7 +460,12 @@ module Impl {
     VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
   ) {
     name = cand.getName() and
-    scope = [cand.(VariableScope), getEnclosingScope(cand)] and
+    (
+      scope = cand
+      or
+      not cand instanceof VariableScope and
+      scope = getEnclosingScope(cand)
+    ) and
     ord = getPreOrderNumbering(scope, cand) and
     nestLevel = 0
     or
