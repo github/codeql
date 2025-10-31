@@ -29,7 +29,7 @@ final class Const = Impl::Const;
  * For example:
  * ```rust
  * const X: i32 = 42;
- * 
+ *
  * fn main() {
  *     println!("{}", X);
  * }
