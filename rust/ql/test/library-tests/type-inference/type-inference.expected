@@ -6476,8 +6476,11 @@ inferType
 | main.rs:2863:16:2863:16 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2867:11:2867:14 | cond |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2867:30:2875:5 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2868:13:2868:13 | a |  | file://:0:0:0:0 | () |
+| main.rs:2868:17:2872:9 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2869:13:2871:13 | if cond {...} |  | file://:0:0:0:0 | () |
 | main.rs:2869:16:2869:19 | cond |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2869:21:2871:13 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2870:24:2870:25 | 12 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2873:18:2873:26 | "a: {:?}\\n" |  | file://:0:0:0:0 | & |
 | main.rs:2873:18:2873:26 | "a: {:?}\\n" | &T | {EXTERNAL LOCATION} | str |
@@ -6485,6 +6488,7 @@ inferType
 | main.rs:2873:18:2873:29 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2873:18:2873:29 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:2873:18:2873:29 | { ... } |  | file://:0:0:0:0 | () |
+| main.rs:2873:29:2873:29 | a |  | file://:0:0:0:0 | () |
 | main.rs:2874:9:2874:9 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2883:11:2918:1 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2884:5:2884:21 | ...::f(...) |  | file://:0:0:0:0 | () |

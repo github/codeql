@@ -2826,20 +2826,10 @@ private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
   result.getTypeAlias() = any(FutureTrait ft).getOutputType()
 }
 
-private predicate isReturnExprCfgAncestor(AstNode n) {
-  n instanceof ReturnExpr
-  or
-  exists(AstNode mid |
-    isReturnExprCfgAncestor(mid) and
-    n = mid.getParentNode() and
-    n.getEnclosingCfgScope() = mid.getEnclosingCfgScope()
-  )
-}
-
 pragma[nomagic]
 predicate isUnitBlockExpr(BlockExpr be) {
   not be.getStmtList().hasTailExpr() and
-  not isReturnExprCfgAncestor(be) and
+  not be = any(Callable c).getBody() and
   not be.hasLabel()
 }
 

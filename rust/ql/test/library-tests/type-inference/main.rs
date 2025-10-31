@@ -2865,7 +2865,7 @@ mod block_types {
 
     #[rustfmt::skip]
     fn f4(cond: bool) -> i32 {
-        let a = { // $ MISSING: certainType=a:()
+        let a = { // $ certainType=a:()
             if cond {
                 return 12;
             };
