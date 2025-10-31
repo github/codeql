@@ -4,10 +4,11 @@
  */
 
 private import python
+private import LegacyPointsTo
 import semmle.python.dataflow.new.DataFlow
 
 predicate pointsToOrigin(DataFlow::CfgNode pointer, DataFlow::CfgNode origin) {
-  origin.getNode() = pointer.getNode().pointsTo().getOrigin()
+  origin.getNode() = pointer.getNode().(ControlFlowNodeWithPointsTo).pointsTo().getOrigin()
 }
 
 module PointsToConfig implements DataFlow::ConfigSig {

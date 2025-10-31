@@ -3,7 +3,8 @@
  */
 
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 import IDEContextual
 
 private newtype TDefinition =
@@ -36,22 +37,22 @@ private predicate jump_to_defn(ControlFlowNode use, Definition defn) {
   )
   or
   exists(PythonModuleObject mod |
-    use.(ImportExprNode).refersTo(mod) and
+    use.(ImportExprNode).(ControlFlowNodeWithPointsTo).refersTo(mod) and
     defn.getAstNode() = mod.getModule()
   )
   or
   exists(PythonModuleObject mod, string name |
-    use.(ImportMemberNode).getModule(name).refersTo(mod) and
+    use.(ImportMemberNode).getModule(name).(ControlFlowNodeWithPointsTo).refersTo(mod) and
     scope_jump_to_defn_attribute(mod.getModule(), name, defn)
   )
   or
   exists(PackageObject package |
-    use.(ImportExprNode).refersTo(package) and
+    use.(ImportExprNode).(ControlFlowNodeWithPointsTo).refersTo(package) and
     defn.getAstNode() = package.getInitModule().getModule()
   )
   or
   exists(PackageObject package, string name |
-    use.(ImportMemberNode).getModule(name).refersTo(package) and
+    use.(ImportMemberNode).getModule(name).(ControlFlowNodeWithPointsTo).refersTo(package) and
     scope_jump_to_defn_attribute(package.getInitModule().getModule(), name, defn)
   )
   or
@@ -230,7 +231,7 @@ private predicate module_and_name_for_import_star_helper(
   ModuleObject mod, string name, ImportStarNode im_star, ImportStarRefinement def
 ) {
   im_star = def.getDefiningNode() and
-  im_star.getModule().refersTo(mod) and
+  im_star.getModule().(ControlFlowNodeWithPointsTo).refersTo(mod) and
   name = def.getSourceVariable().getName()
 }
 
@@ -239,7 +240,7 @@ pragma[noinline]
 private predicate variable_not_redefined_by_import_star(EssaVariable var, ImportStarRefinement def) {
   var = def.getInput() and
   exists(ModuleObject mod |
-    def.getDefiningNode().(ImportStarNode).getModule().refersTo(mod) and
+    def.getDefiningNode().(ImportStarNode).getModule().(ControlFlowNodeWithPointsTo).refersTo(mod) and
     not mod.exports(var.getSourceVariable().getName())
   )
 }
@@ -352,7 +353,9 @@ private predicate scope_jump_to_defn_attribute(ImportTimeScope s, string name, D
   )
 }
 
-private predicate jump_to_defn_attribute(ControlFlowNode use, string name, Definition defn) {
+private predicate jump_to_defn_attribute(
+  ControlFlowNodeWithPointsTo use, string name, Definition defn
+) {
   /* Local attribute */
   exists(EssaVariable var |
     use = var.getASourceUse() and
@@ -367,7 +370,7 @@ private predicate jump_to_defn_attribute(ControlFlowNode use, string name, Defin
   /* Super attributes */
   exists(AttrNode f, SuperBoundMethod sbm, Object function |
     use = f.getObject(name) and
-    f.refersTo(sbm) and
+    f.(ControlFlowNodeWithPointsTo).refersTo(sbm) and
     function = sbm.getFunction(_) and
     function.getOrigin() = defn.getAstNode()
   )
@@ -408,7 +411,7 @@ private predicate attribute_assignment_jump_to_defn_attribute(
 private predicate sets_attribute(ArgumentRefinement def, string name) {
   exists(CallNode call |
     call = def.getDefiningNode() and
-    call.getFunction().refersTo(Object::builtin("setattr")) and
+    call.getFunction().(ControlFlowNodeWithPointsTo).refersTo(Object::builtin("setattr")) and
     def.getInput().getAUse() = call.getArg(0) and
     call.getArg(1).getNode().(StringLiteral).getText() = name
   )

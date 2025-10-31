@@ -1,5 +1,5 @@
 import python
-private import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 
 /** An unknown type. Not usually visible. */
 class UnknownType extends UnknownClassInternal {

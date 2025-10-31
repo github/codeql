@@ -17,6 +17,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate needs_docstring(Scope s) {
   s.isPublic() and

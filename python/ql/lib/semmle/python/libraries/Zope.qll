@@ -1,7 +1,7 @@
 /** Utilities for handling the zope libraries */
 
 import python
-private import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 /** A method that belongs to a sub-class of `zope.interface.Interface` */
 class ZopeInterfaceMethodValue extends PythonFunctionValue {

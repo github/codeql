@@ -3,9 +3,10 @@
  */
 
 import python
+private import LegacyPointsTo
 import analysis.DefinitionTracking
 
-predicate want_to_have_definition(Expr e) {
+predicate want_to_have_definition(ExprWithPointsTo e) {
   /* not builtin object like len, tuple, etc. */
   not exists(Value builtin | e.pointsTo(builtin) and builtin.isBuiltin()) and
   (

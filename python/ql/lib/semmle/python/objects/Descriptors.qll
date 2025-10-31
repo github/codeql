@@ -5,6 +5,7 @@ private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
+private import semmle.python.pointsto.Context
 
 /** A property object. */
 class PropertyInternal extends ObjectInternal, TProperty {

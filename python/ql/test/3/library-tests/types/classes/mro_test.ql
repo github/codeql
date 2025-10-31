@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ClassObject cls, ClassObject sup
 where not cls.isC()

@@ -11,9 +11,10 @@
  */
 
 import python
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 import Variables.MonkeyPatched
 import Loop
-import semmle.python.pointsto.PointsTo
 
 predicate guarded_against_name_error(Name u) {
   exists(Try t | t.getBody().getAnItem().contains(u) |
@@ -95,7 +96,7 @@ predicate undefined_use(Name u) {
   not contains_unknown_import_star(u.getEnclosingModule()) and
   not use_of_exec(u.getEnclosingModule()) and
   not exists(u.getVariable().getAStore()) and
-  not u.pointsTo(_) and
+  not u.(ExprWithPointsTo).pointsTo(_) and
   not probably_defined_in_loop(u)
 }
 

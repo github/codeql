@@ -14,6 +14,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassValue c
 where not c.isBuiltin() and not c.isContextManager() and exists(c.declaredAttribute("__del__"))

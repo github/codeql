@@ -12,7 +12,7 @@
  */
 
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 predicate rhs_in_expr(ControlFlowNode rhs, Compare cmp) {
   exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs.getNode() |
@@ -20,7 +20,8 @@ predicate rhs_in_expr(ControlFlowNode rhs, Compare cmp) {
   )
 }
 
-from ControlFlowNode non_seq, Compare cmp, Value v, ClassValue cls, ControlFlowNode origin
+from
+  ControlFlowNodeWithPointsTo non_seq, Compare cmp, Value v, ClassValue cls, ControlFlowNode origin
 where
   rhs_in_expr(non_seq, cmp) and
   non_seq.pointsTo(_, v, origin) and

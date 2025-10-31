@@ -1,6 +1,6 @@
 import python
+private import LegacyPointsTo
 import semmle.python.dataflow.TaintTracking
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters as Filters
 import semmle.python.dataflow.Legacy
 
@@ -256,7 +256,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     TaintKind kind, string edgeLabel
   ) {
     this.unprunedStep(src, node, context, path, kind, edgeLabel) and
-    node.getBasicBlock().likelyReachable() and
+    node.getBasicBlock().(BasicBlockWithPointsTo).likelyReachable() and
     not super.isBarrier(node) and
     (
       not path = TNoAttribute()
@@ -374,7 +374,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     exists(ModuleValue m, string name |
       src = TTaintTrackingNode_(_, context, path, kind, this) and
       this.moduleAttributeTainted(m, name, src) and
-      node.asCfgNode().(ImportMemberNode).getModule(name).pointsTo(m)
+      node.asCfgNode().(ImportMemberNode).getModule(name).(ControlFlowNodeWithPointsTo).pointsTo(m)
     )
   }
 
@@ -408,7 +408,9 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
       src = TTaintTrackingNode_(srcnode, context, srcpath, srckind, this) and
       exists(CallNode call, ControlFlowNode arg |
         call = node.asCfgNode() and
-        call.getFunction().pointsTo(ObjectInternal::builtin("getattr")) and
+        call.getFunction()
+            .(ControlFlowNodeWithPointsTo)
+            .pointsTo(ObjectInternal::builtin("getattr")) and
         arg = call.getArg(0) and
         attrname = call.getArg(1).getNode().(StringLiteral).getText() and
         arg = srcnode.asCfgNode()
@@ -515,7 +517,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     TaintTrackingContext caller, TaintTrackingContext callee
   ) {
     exists(ClassValue cls |
-      call.getFunction().pointsTo(cls) and
+      call.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(cls) and
       cls.lookup("__init__") = init
     |
       exists(int arg, TaintKind callerKind, AttributePath callerPath, DataFlow::Node argument |
@@ -682,7 +684,9 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
     TaintTrackingNode src, PhiFunction defn, TaintTrackingContext context, AttributePath path,
     TaintKind kind
   ) {
-    exists(DataFlow::Node srcnode, BasicBlock pred, EssaVariable predvar, DataFlow::Node phi |
+    exists(
+      DataFlow::Node srcnode, BasicBlockWithPointsTo pred, EssaVariable predvar, DataFlow::Node phi
+    |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       defn = phi.asVariable().getDefinition() and
       predvar = defn.getInput(pred) and
@@ -878,7 +882,7 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
         const.getNode() instanceof ImmutableLiteral
       )
       or
-      exists(ControlFlowNode c, ClassValue cls |
+      exists(ControlFlowNodeWithPointsTo c, ClassValue cls |
         Filters::isinstance(test, c, use) and
         c.pointsTo(cls)
       |
@@ -978,7 +982,7 @@ module Implementation {
       tonode.getArg(0) = fromnode
     )
     or
-    tonode.getFunction().pointsTo(ObjectInternal::builtin("reversed")) and
+    tonode.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(ObjectInternal::builtin("reversed")) and
     tonode.getArg(0) = fromnode
   }
 }

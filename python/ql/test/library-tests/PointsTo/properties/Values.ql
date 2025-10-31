@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 import semmle.python.objects.ObjectInternal
 
 string vrepr(Value v) {
@@ -8,6 +9,6 @@ string vrepr(Value v) {
   v = ObjectInternal::boundMethod() and result = "builtin-class method"
 }
 
-from ControlFlowNode f, Context ctx, Value v, ControlFlowNode origin
+from ControlFlowNodeWithPointsTo f, Context ctx, Value v, ControlFlowNode origin
 where f.pointsTo(ctx, v, origin)
 select f.getLocation(), f.toString(), ctx, vrepr(v), vrepr(v.getClass())

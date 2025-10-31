@@ -1,6 +1,7 @@
 import python
+private import LegacyPointsTo
 
-from ControlFlowNode f, Object o, ControlFlowNode x
+from ControlFlowNodeWithPointsTo f, Object o, ControlFlowNode x
 where
   f.refersTo(o, x) and
   f.getLocation().getFile().getBaseName() = "test.py"

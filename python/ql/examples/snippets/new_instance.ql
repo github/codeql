@@ -8,9 +8,10 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from Call new, ClassValue cls
 where
   cls.getName() = "MyClass" and
-  new.getFunc().pointsTo(cls)
+  new.getFunc().(ExprWithPointsTo).pointsTo(cls)
 select new

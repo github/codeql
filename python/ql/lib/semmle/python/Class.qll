@@ -141,9 +141,6 @@ class Class extends Class_, Scope, AstNode {
   /** Gets the metaclass expression */
   Expr getMetaClass() { result = this.getParent().getMetaClass() }
 
-  /** Gets the ClassObject corresponding to this class */
-  ClassObject getClassObject() { result.getOrigin() = this.getParent() }
-
   /** Gets the nth base of this class definition. */
   Expr getBase(int index) { result = this.getParent().getBase(index) }
 

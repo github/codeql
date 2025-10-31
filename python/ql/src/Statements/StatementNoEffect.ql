@@ -13,10 +13,11 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate understood_attribute(Attribute attr, ClassValue cls, ClassValue attr_cls) {
   exists(string name | attr.getName() = name |
-    attr.getObject().pointsTo().getClass() = cls and
+    attr.getObject().(ExprWithPointsTo).pointsTo().getClass() = cls and
     cls.attr(name).getClass() = attr_cls
   )
 }
@@ -30,7 +31,7 @@ predicate side_effecting_attribute(Attribute attr) {
 }
 
 predicate maybe_side_effecting_attribute(Attribute attr) {
-  not understood_attribute(attr, _, _) and not attr.pointsTo(_)
+  not understood_attribute(attr, _, _) and not attr.(ExprWithPointsTo).pointsTo(_)
   or
   side_effecting_attribute(attr)
 }
@@ -68,7 +69,7 @@ predicate side_effecting_binary(Expr b) {
 
 pragma[nomagic]
 private predicate binary_operator_special_method(
-  BinaryExpr b, Expr sub, ClassValue cls, string method_name
+  BinaryExpr b, ExprWithPointsTo sub, ClassValue cls, string method_name
 ) {
   method_name = special_method() and
   sub = b.getLeft() and
@@ -77,7 +78,9 @@ private predicate binary_operator_special_method(
 }
 
 pragma[nomagic]
-private predicate comparison_special_method(Compare b, Expr sub, ClassValue cls, string method_name) {
+private predicate comparison_special_method(
+  Compare b, ExprWithPointsTo sub, ClassValue cls, string method_name
+) {
   exists(Cmpop op |
     b.compares(sub, op, _) and
     method_name = op.getSpecialMethodName()

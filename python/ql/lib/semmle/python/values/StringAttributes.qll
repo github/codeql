@@ -1,6 +1,7 @@
 import python
+private import LegacyPointsTo
 
-predicate string_attribute_all(ControlFlowNode n, string attr) {
+predicate string_attribute_all(ControlFlowNodeWithPointsTo n, string attr) {
   (n.getNode() instanceof Unicode or n.getNode() instanceof Bytes) and
   attr = "const"
   or
@@ -19,18 +20,27 @@ predicate tracked_object(ControlFlowNode obj, string attr) {
   tracked_object_any(obj, attr)
 }
 
-predicate open_file(Object obj) { obj.(CallNode).getFunction().refersTo(Object::builtin("open")) }
+predicate open_file(Object obj) {
+  obj.(CallNode).getFunction().(ControlFlowNodeWithPointsTo).refersTo(Object::builtin("open"))
+}
 
-predicate string_attribute_any(ControlFlowNode n, string attr) {
+predicate string_attribute_any(ControlFlowNodeWithPointsTo n, string attr) {
   attr = "user-input" and
-  exists(Object input | n.(CallNode).getFunction().refersTo(input) |
+  exists(Object input | n.(CallNode).getFunction().(ControlFlowNodeWithPointsTo).refersTo(input) |
     if major_version() = 2
     then input = Object::builtin("raw_input")
     else input = Object::builtin("input")
   )
   or
   attr = "file-input" and
-  exists(Object fd | n.(CallNode).getFunction().(AttrNode).getObject("read").refersTo(fd) |
+  exists(Object fd |
+    n.(CallNode)
+        .getFunction()
+        .(AttrNode)
+        .getObject("read")
+        .(ControlFlowNodeWithPointsTo)
+        .refersTo(fd)
+  |
     open_file(fd)
   )
   or
@@ -65,7 +75,7 @@ ControlFlowNode sequence_for_iterator(ControlFlowNode f) {
 }
 
 pragma[noinline]
-private predicate tracking_step(ControlFlowNode src, ControlFlowNode dest) {
+private predicate tracking_step(ControlFlowNode src, ControlFlowNodeWithPointsTo dest) {
   src = dest.(BinaryExprNode).getAnOperand()
   or
   src = dest.(UnaryExprNode).getOperand()

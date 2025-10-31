@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionValue method
 where

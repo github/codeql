@@ -1,4 +1,6 @@
 import python
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 
 predicate is_import_time(Stmt s) { not s.getScope+() instanceof Function }
 
@@ -21,7 +23,7 @@ predicate circular_import(ModuleValue m1, ModuleValue m2) {
 ModuleValue stmt_imports(ImportingStmt s) {
   exists(string name | result.importedAs(name) and not name = "__main__" |
     name = s.getAnImportedModuleName() and
-    s.getASubExpression().pointsTo(result) and
+    s.getASubExpression().(ExprWithPointsTo).pointsTo(result) and
     not result.isPackage()
   )
 }
@@ -57,7 +59,7 @@ predicate import_time_transitive_import(ModuleValue base, Stmt imp, ModuleValue 
  * Returns import-time usages of module 'm' in module 'enclosing'
  */
 predicate import_time_module_use(ModuleValue m, ModuleValue enclosing, Expr use, string attr) {
-  exists(Expr mod |
+  exists(ExprWithPointsTo mod |
     use.getEnclosingModule() = enclosing.getScope() and
     not use.getScope+() instanceof Function and
     mod.pointsTo(m) and
@@ -90,7 +92,8 @@ predicate is_used_in_annotation(Expr use) {
  */
 predicate is_annotation_with_from_future_import_annotations(Expr use) {
   exists(ImportMember i | i.getScope() = use.getEnclosingModule() |
-    i.getModule().pointsTo().getName() = "__future__" and i.getName() = "annotations"
+    i.getModule().(ExprWithPointsTo).pointsTo().getName() = "__future__" and
+    i.getName() = "annotations"
   ) and
   is_used_in_annotation(use)
 }

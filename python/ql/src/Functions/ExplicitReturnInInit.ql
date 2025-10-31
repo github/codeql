@@ -12,8 +12,9 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from Return r, Expr rv
+from Return r, ExprWithPointsTo rv
 where
   exists(Function init | init.isInitMethod() and r.getScope() = init) and
   r.getValue() = rv and
