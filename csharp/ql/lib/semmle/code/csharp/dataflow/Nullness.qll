@@ -21,7 +21,6 @@ import csharp
 private import ControlFlow
 private import internal.CallableReturns
 private import semmle.code.csharp.controlflow.Guards as G
-private import semmle.code.csharp.controlflow.Guards::AbstractValues
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.Test
@@ -367,9 +366,9 @@ class Dereference extends G::DereferenceableExpr {
     (
       forex(Ssa::Definition def0 | this = def0.getARead() | this.isAlwaysNull0(def0))
       or
-      exists(NullValue nv |
+      exists(G::GuardValue nv |
         this.(G::GuardedExpr).mustHaveValue(nv) and
-        nv.isNull()
+        nv.isNullValue()
       )
     ) and
     not this instanceof G::NullGuardedExpr

@@ -10,8 +10,6 @@ private module Impl {
   private import semmle.code.csharp.controlflow.Guards as G
   private import ControlFlowReachability
 
-  private class BooleanValue = G::AbstractValues::BooleanValue;
-
   private class ExprNode = ControlFlow::Nodes::ExprNode;
 
   private class ExprChildReachability extends ControlFlowReachabilityConfiguration {
@@ -93,7 +91,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::AbstractValue v) {
+    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::GuardValue v) {
       super.controlsBasicBlock(bb, v)
     }
 
@@ -130,7 +128,7 @@ private module Impl {
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
   predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    exists(BooleanValue b | b.getValue() = testIsTrue |
+    exists(G::GuardValue b | b.asBooleanValue() = testIsTrue |
       guard.controlsBasicBlock(controlled.(SsaReadPositionBlock).getBlock(), b)
     )
   }

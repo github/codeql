@@ -227,7 +227,7 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
       e instanceof DereferenceableExpr and
       ct.getAnArgument() = e and
       ct.getAnArgument() = arg and
-      arg = any(NullValue nv | nv.isNonNull()).getAnExpr() and
+      nonNullValueImplied(arg) and
       ck = ct.getComparisonKind() and
       e != arg and
       isNull = false and
@@ -314,7 +314,7 @@ class Guard extends Guards::Guard {
    * In case `cfn` or `sub` access an SSA variable in their left-most qualifier, then
    * so must the other (accessing the same SSA variable).
    */
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, AbstractValue v) {
+  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
     isGuardedByNode(cfn, this, sub, v)
   }
 
@@ -324,26 +324,31 @@ class Guard extends Guards::Guard {
    * Note: This predicate is inlined.
    */
   pragma[inline]
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AbstractValue v) {
+  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, GuardValue v) {
     guardControls(this, cfn.getBasicBlock(), v)
   }
 
   /**
    * Holds if basic block `bb` is guarded by this expression having value `v`.
    */
-  predicate controlsBasicBlock(BasicBlock bb, AbstractValue v) { guardControls(this, bb, v) }
+  predicate controlsBasicBlock(BasicBlock bb, GuardValue v) { guardControls(this, bb, v) }
 
   /**
    * Gets a valid value for this guard. For example, if this guard is a test, then
    * it can have Boolean values `true` and `false`.
    */
-  deprecated AbstractValue getAValue() { isGuard(this, result) }
+  deprecated GuardValue getAValue() { isGuard(this, result) }
 }
 
-class AbstractValue = GuardValue;
+/** DEPRECATED: Use `GuardValue` instead. */
+deprecated class AbstractValue = GuardValue;
 
-/** Provides different types of `AbstractValues`s. */
-module AbstractValues {
+/**
+ * DEPRECATED: Use `GuardValue` member predicates instead.
+ *
+ * Provides different types of `AbstractValues`s.
+ */
+deprecated module AbstractValues {
   class BooleanValue extends AbstractValue {
     BooleanValue() { exists(this.asBooleanValue()) }
 
@@ -368,8 +373,6 @@ module AbstractValues {
     }
   }
 }
-
-private import AbstractValues
 
 /** Gets the value resulting from matching `null` against `pat`. */
 private boolean patternMatchesNull(PatternExpr pat) {
@@ -428,35 +431,11 @@ class DereferenceableExpr extends Expr {
   /** Holds if this expression has a nullable type `T?`. */
   predicate hasNullableType() { isNullableType = true }
 
-  /**
-   * Gets an expression that tests via nullness whether this expression is `null`.
-   *
-   * If the returned expression evaluates to `null` (`v.isNull()`) or evaluates to
-   * non-`null` (`not v.isNull()`), then this expression is guaranteed to be `null`
-   * if `isNull` is true, and non-`null` if `isNull` is false.
-   *
-   * For example, if `x` evaluates to `null` in `x ?? y` then `y` is evaluated, and
-   * `x` is guaranteed to be `null`.
-   */
-  private Expr getANullnessNullCheck(NullValue v, boolean isNull) {
-    exists(NullnessCompletion c | c.isValidFor(this) |
-      result = this and
-      if c.isNull()
-      then (
-        v.isNull() and
-        isNull = true
-      ) else (
-        v.isNonNull() and
-        isNull = false
-      )
-    )
-  }
-
   /** Holds if `guard` suggests that this expression may be `null`. */
   predicate guardSuggestsMaybeNull(Guards::Guard guard) {
     not nonNullValueImplied(this) and
     (
-      guard = this.getANullnessNullCheck(_, true)
+      exists(NullnessCompletion c | c.isValidFor(this) and c.isNull() and guard = this)
       or
       LogicInput::additionalNullCheck(guard, _, this, true)
       or
@@ -513,8 +492,8 @@ class EnumerableCollectionExpr extends Expr {
       )
   }
 
-  private Expr getABooleanEmptinessCheck(BooleanValue v, boolean isEmpty) {
-    exists(boolean branch | branch = v.getValue() |
+  private Expr getABooleanEmptinessCheck(GuardValue v, boolean isEmpty) {
+    exists(boolean branch | branch = v.asBooleanValue() |
       result =
         any(ComparisonTest ct |
           exists(boolean lowerBound |
@@ -578,7 +557,7 @@ class EnumerableCollectionExpr extends Expr {
    * For example, if the expression `x.Length != 0` evaluates to `true` then the
    * expression `x` is guaranteed to be non-empty.
    */
-  Expr getAnEmptinessCheck(AbstractValue v, boolean isEmpty) {
+  Expr getAnEmptinessCheck(GuardValue v, boolean isEmpty) {
     result = this.getABooleanEmptinessCheck(v, isEmpty)
   }
 }
@@ -692,14 +671,14 @@ class GuardedExpr extends AccessOrCallExpr {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Guard getAGuard(Expr sub, AbstractValue v) { isGuardedByExpr(this, result, sub, v) }
+  Guard getAGuard(Expr sub, GuardValue v) { isGuardedByExpr(this, result, sub, v) }
 
   /**
    * Holds if this expression must have abstract value `v`. That is, this
    * expression is guarded by a structurally equal expression having abstract
    * value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) {
+  predicate mustHaveValue(GuardValue v) {
     exists(Guard g | g = this.getAGuard(g, v)) or ssaMustHaveValue(this, v)
   }
 
@@ -713,7 +692,7 @@ class GuardedExpr extends AccessOrCallExpr {
    * variable).
    */
   predicate isGuardedBy(Expr cond, Expr sub, boolean b) {
-    cond = this.getAGuard(sub, any(BooleanValue v | v.getValue() = b))
+    cond = this.getAGuard(sub, any(GuardValue v | v.asBooleanValue() = b))
   }
 }
 
@@ -738,7 +717,7 @@ class GuardedExpr extends AccessOrCallExpr {
 class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
   private Guard g;
   private AccessOrCallExpr sub0;
-  private AbstractValue v0;
+  private GuardValue v0;
 
   GuardedControlFlowNode() { g.controlsNode(this, sub0, v0) }
 
@@ -753,7 +732,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Guard getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, GuardValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -764,7 +743,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * control flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
+  predicate mustHaveValue(GuardValue v) { g = this.getAGuard(g, v) }
 }
 
 /**
@@ -788,7 +767,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
 class GuardedDataFlowNode extends DataFlow::ExprNode {
   private Guard g;
   private AccessOrCallExpr sub0;
-  private AbstractValue v0;
+  private GuardValue v0;
 
   GuardedDataFlowNode() {
     exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
@@ -807,7 +786,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Guard getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, GuardValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -818,17 +797,17 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
    * data flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
+  predicate mustHaveValue(GuardValue v) { g = this.getAGuard(g, v) }
 }
 
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends GuardedExpr {
-  NullGuardedExpr() { this.mustHaveValue(any(NullValue v | v.isNonNull())) }
+  NullGuardedExpr() { this.mustHaveValue(any(GuardValue v | v.isNonNullValue())) }
 }
 
 /** A data flow node guarded by a `null` check. */
 class NullGuardedDataFlowNode extends GuardedDataFlowNode {
-  NullGuardedDataFlowNode() { this.mustHaveValue(any(NullValue v | v.isNonNull())) }
+  NullGuardedDataFlowNode() { this.mustHaveValue(any(GuardValue v | v.isNonNullValue())) }
 }
 
 /** INTERNAL: Do not use. */
@@ -931,7 +910,7 @@ module Internal {
       bao.getAnOperand() = o and
       // The other operand must be provably non-null in order
       // for `only if` to hold
-      o = any(NullValue nv | nv.isNonNull()).getAnExpr() and
+      nonNullValueImplied(o) and
       e != o
     )
   }
@@ -973,7 +952,7 @@ module Internal {
       nonEmptyValue(def.getDefinition().getSource())
     }
 
-    deprecated predicate isGuard(Expr e, AbstractValue val) {
+    deprecated predicate isGuard(Expr e, GuardValue val) {
       (
         e.getType() instanceof BoolType and
         not e instanceof BoolLiteral and
@@ -1207,7 +1186,7 @@ module Internal {
      * Holds if basic block `bb` only is reached when guard `g` has abstract value `v`.
      */
     cached
-    predicate guardControls(Guard g, BasicBlock bb, AbstractValue v) {
+    predicate guardControls(Guard g, BasicBlock bb, GuardValue v) {
       g.(Guards::Guard).valueControls(bb, v)
     }
 
@@ -1220,7 +1199,7 @@ module Internal {
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr0(
       ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
-      AccessOrCallExpr sub, AbstractValue v
+      AccessOrCallExpr sub, GuardValue v
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
       guardedCfn = guarded.getAControlFlowNode() and
@@ -1233,7 +1212,7 @@ module Internal {
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr(
       ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
-      AccessOrCallExpr sub, AbstractValue v
+      AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr0(guardedCfn, guardedBB, guarded, g, sub, v) and
       guardControlsSub(g, guardedBB, sub)
@@ -1242,7 +1221,7 @@ module Internal {
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef0(
       ControlFlow::Node cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
-      ControlFlow::Node subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, AbstractValue v,
+      ControlFlow::Node subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
       Ssa::Definition def
     ) {
       nodeIsGuardedBySameSubExpr(cfn, guardedBB, guarded, g, sub, v) and
@@ -1253,7 +1232,7 @@ module Internal {
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef(
       ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
-      AccessOrCallExpr sub, AbstractValue v, Ssa::Definition def
+      AccessOrCallExpr sub, GuardValue v, Ssa::Definition def
     ) {
       exists(BasicBlock guardedBB, BasicBlock subCfnBB |
         nodeIsGuardedBySameSubExprSsaDef0(guardedCfn, guardedBB, guarded, g, subCfn, subCfnBB, sub,
@@ -1264,7 +1243,7 @@ module Internal {
 
     pragma[noinline]
     private predicate isGuardedByExpr0(
-      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
         nodeIsGuardedBySameSubExpr(cfn, _, guarded, g, sub, v)
@@ -1272,9 +1251,7 @@ module Internal {
     }
 
     cached
-    predicate isGuardedByExpr(
-      AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
-    ) {
+    predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v) {
       isGuardedByExpr0(guarded, g, sub, v) and
       forall(ControlFlow::Node subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(_, guarded, g, subCfn, sub, v, def)
@@ -1285,7 +1262,7 @@ module Internal {
 
     cached
     predicate isGuardedByNode(
-      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
+      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
       forall(ControlFlow::Node subCfn, Ssa::Definition def |
