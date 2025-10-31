@@ -2862,6 +2862,17 @@ mod block_types {
     fn f3() -> i32 {
         return 0;
     } // should only have type `i32`, not `()`
+
+    #[rustfmt::skip]
+    fn f4(cond: bool) -> i32 {
+        let a = { // $ MISSING: certainType=a:()
+            if cond {
+                return 12;
+            };
+        };
+        println!("a: {:?}", a);
+        0
+    }
 }
 
 mod blanket_impl;
