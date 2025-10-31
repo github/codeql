@@ -763,9 +763,15 @@ module API {
         or
         nd = any(DataFlow::FunctionNode fn).getAReturn()
         or
+        nd = any(DataFlow::FunctionNode fn).getExceptionalReturn()
+        or
         nd = any(DataFlow::InvokeNode i).getAnArgument()
         or
         nd = any(DataFlow::InvokeNode i).getASpreadArgument()
+        or
+        nd = any(DataFlow::InvokeNode i).getExceptionalReturn()
+        or
+        nd = any(ThrowStmt stmt).getExpr().flow()
         or
         nd = any(DataFlow::CallNode c).getReceiver()
         or
@@ -776,6 +782,8 @@ module API {
         nd = any(ExportNamedDeclaration decl).getOperand().(DeclStmt).getADecl().getInit().flow()
         or
         nd = any(ExportNamespaceSpecifier spec | exists(spec.getExportedName())).flow()
+        or
+        nd = any(MemberDeclaration m).getInit().flow()
       } or
       MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
