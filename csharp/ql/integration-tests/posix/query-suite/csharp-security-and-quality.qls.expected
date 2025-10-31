@@ -120,6 +120,7 @@ ql/csharp/ql/src/Security Features/CWE-090/LDAPInjection.ql
 ql/csharp/ql/src/Security Features/CWE-091/XMLInjection.ql
 ql/csharp/ql/src/Security Features/CWE-094/CodeInjection.ql
 ql/csharp/ql/src/Security Features/CWE-099/ResourceInjection.ql
+ql/csharp/ql/src/Security Features/CWE-1004/CookieWithoutHttpOnly.ql
 ql/csharp/ql/src/Security Features/CWE-112/MissingXMLValidation.ql
 ql/csharp/ql/src/Security Features/CWE-114/AssemblyPathInjection.ql
 ql/csharp/ql/src/Security Features/CWE-117/LogForging.ql
@@ -140,6 +141,7 @@ ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.q
 ql/csharp/ql/src/Security Features/CWE-548/ASPNetDirectoryListing.ql
 ql/csharp/ql/src/Security Features/CWE-601/UrlRedirect.ql
 ql/csharp/ql/src/Security Features/CWE-611/UntrustedDataInsecureXml.ql
+ql/csharp/ql/src/Security Features/CWE-614/CookieWithoutSecure.ql
 ql/csharp/ql/src/Security Features/CWE-614/RequireSSL.ql
 ql/csharp/ql/src/Security Features/CWE-639/InsecureDirectObjectReference.ql
 ql/csharp/ql/src/Security Features/CWE-643/XPathInjection.ql
