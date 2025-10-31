@@ -44,8 +44,9 @@ private class TypeType extends RefType {
   }
 }
 
-/** A sanitizer that may remove sensitive information from a string before logging.
- * 
+/**
+ * A sanitizer that may remove sensitive information from a string before logging.
+ *
  *  It allows for substring operations taking the first N (or last N, for Kotlin) characters, limited to 7 or fewer.
  */
 private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
@@ -65,7 +66,8 @@ private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
         or
         // Kotlin string operations, which use extension methods (so the string is the first argument)
         (
-          m.hasQualifiedName("kotlin.text", "StringsKt", "substring") and twoArgLimit(mc, limit, true)
+          m.hasQualifiedName("kotlin.text", "StringsKt", "substring") and
+          twoArgLimit(mc, limit, true)
           or
           m.hasQualifiedName("kotlin.text", "StringsKt", ["take", "takeLast"]) and
           singleArgLimit(mc, limit, true)
@@ -76,15 +78,18 @@ private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
   }
 }
 
+/** A predicate to check single-argument method calls for a constant integer below a set limit. */
 bindingset[limit, isKotlin]
-predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
+private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   exists(int argIndex, int staticInt |
     (if isKotlin = true then argIndex = 1 else argIndex = 0) and
     (
       staticInt <= limit and
       staticInt > 0 and
-      mc.getArgument(argIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = staticInt
-      or exists(CompileTimeConstantExpr cte, DataFlow::Node source, DataFlow::Node sink |
+      mc.getArgument(argIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() =
+        staticInt
+      or
+      exists(CompileTimeConstantExpr cte, DataFlow::Node source, DataFlow::Node sink |
         source.asExpr() = cte and
         cte.getIntValue() = staticInt and
         sink.asExpr() = mc.getArgument(argIndex) and
@@ -94,21 +99,23 @@ predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   )
 }
 
+/** A predicate to check two-argument method calls for zero and a constant integer below a set limit. */
 bindingset[limit, isKotlin]
-predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
+private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   exists(int firstArgIndex, int secondArgIndex, int staticInt |
     staticInt <= limit and
     staticInt > 0 and
     (
-      (isKotlin = true and firstArgIndex = 1 and secondArgIndex = 2)
+      isKotlin = true and firstArgIndex = 1 and secondArgIndex = 2
       or
-      (isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1)
-    )
-    and
+      isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
+    ) and
     mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
     (
-      mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = staticInt
-      or exists(CompileTimeConstantExpr cte, DataFlow::Node source, DataFlow::Node sink |
+      mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() =
+        staticInt
+      or
+      exists(CompileTimeConstantExpr cte, DataFlow::Node source, DataFlow::Node sink |
         source.asExpr() = cte and
         cte.getIntValue() = staticInt and
         sink.asExpr() = mc.getArgument(secondArgIndex) and
@@ -118,7 +125,8 @@ predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   )
 }
 
-module IntegerToArgConfig implements DataFlow::ConfigSig {
+/** A data-flow configuration for identifying flow from a constant integer to a use in a method argument. */
+private module IntegerToArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().getUnderlyingExpr() instanceof CompileTimeConstantExpr and
     source.asExpr().getType() instanceof IntegralType and
@@ -127,8 +135,8 @@ module IntegerToArgConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
-      sink.asExpr() = mc.getAnArgument()
-      and sink.asExpr().getType() instanceof IntegralType
+      sink.asExpr() = mc.getAnArgument() and
+      sink.asExpr().getType() instanceof IntegralType
     )
   }
 
@@ -159,4 +167,5 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
 }
 
 module SensitiveLoggerFlow = TaintTracking::Global<SensitiveLoggerConfig>;
+
 module IntegerToArgFlow = TaintTracking::Global<IntegerToArgConfig>;
