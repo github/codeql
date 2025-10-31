@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 /** The metrics for a function */
 class FunctionMetrics extends Function {
@@ -59,7 +60,7 @@ class FunctionMetrics extends Function {
     not non_coupling_method(result) and
     exists(Call call | call.getScope() = this |
       exists(FunctionObject callee | callee.getFunction() = result |
-        call.getAFlowNode().getFunction().refersTo(callee)
+        call.getAFlowNode().getFunction().(ControlFlowNodeWithPointsTo).refersTo(callee)
       )
       or
       exists(Attribute a | call.getFunc() = a |
@@ -123,7 +124,7 @@ class ClassMetrics extends Class {
       )
       or
       exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
-        c.getFunc().refersTo(cls) and
+        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
         cls.getPyClass() = other
       )
     )
@@ -292,7 +293,7 @@ class ModuleMetrics extends Module {
       )
       or
       exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
-        c.getFunc().refersTo(cls) and
+        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
         cls.getPyClass().getEnclosingModule() = other
       )
     )

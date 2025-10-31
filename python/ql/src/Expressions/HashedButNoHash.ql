@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 /*
  * This assumes that any indexing operation where the value is not a sequence or numpy array involves hashing.
@@ -41,13 +42,13 @@ predicate unhashable_subscript(ControlFlowNode f, ClassValue c, ControlFlowNode 
   is_unhashable(f, c, origin) and
   exists(SubscriptNode sub | sub.getIndex() = f |
     exists(Value custom_getitem |
-      sub.getObject().pointsTo(custom_getitem) and
+      sub.getObject().(ControlFlowNodeWithPointsTo).pointsTo(custom_getitem) and
       not has_custom_getitem(custom_getitem)
     )
   )
 }
 
-predicate is_unhashable(ControlFlowNode f, ClassValue cls, ControlFlowNode origin) {
+predicate is_unhashable(ControlFlowNodeWithPointsTo f, ClassValue cls, ControlFlowNode origin) {
   exists(Value v | f.pointsTo(v, origin) and v.getClass() = cls |
     not cls.hasAttribute("__hash__") and not cls.failedInference(_) and cls.isNewStyle()
     or
@@ -71,7 +72,7 @@ predicate is_unhashable(ControlFlowNode f, ClassValue cls, ControlFlowNode origi
 predicate typeerror_is_caught(ControlFlowNode f) {
   exists(Try try |
     try.getBody().contains(f.getNode()) and
-    try.getAHandler().getType().pointsTo(ClassValue::typeError())
+    try.getAHandler().getType().(ExprWithPointsTo).pointsTo(ClassValue::typeError())
   )
 }
 

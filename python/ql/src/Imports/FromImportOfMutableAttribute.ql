@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import semmle.python.filters.Tests
 
 from ImportMember im, ModuleValue m, AttrNode store_attr, string name
@@ -23,7 +24,7 @@ where
   /* variable resulting from import must have a long lifetime */
   not im.getScope() instanceof Function and
   store_attr.isStore() and
-  store_attr.getObject(name).pointsTo(m) and
+  store_attr.getObject(name).(ControlFlowNodeWithPointsTo).pointsTo(m) and
   /* Import not in same module as modification. */
   not im.getEnclosingModule() = store_attr.getScope().getEnclosingModule() and
   /* Modification is not in a test */

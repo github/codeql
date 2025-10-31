@@ -1,12 +1,13 @@
 /** INTERNAL - Methods used by queries that test whether functions are invoked correctly. */
 
 import python
+private import LegacyPointsTo
 import Testing.Mox
 
 private int varargs_length_objectapi(Call call) {
   not exists(call.getStarargs()) and result = 0
   or
-  exists(TupleObject t | call.getStarargs().refersTo(t) | result = t.getLength())
+  exists(TupleObject t | call.getStarargs().(ExprWithPointsTo).refersTo(t) | result = t.getLength())
   or
   result = count(call.getStarargs().(List).getAnElt())
 }
@@ -14,7 +15,7 @@ private int varargs_length_objectapi(Call call) {
 private int varargs_length(Call call) {
   not exists(call.getStarargs()) and result = 0
   or
-  exists(TupleValue t | call.getStarargs().pointsTo(t) | result = t.length())
+  exists(TupleValue t | call.getStarargs().(ExprWithPointsTo).pointsTo(t) | result = t.length())
   or
   result = count(call.getStarargs().(List).getAnElt())
 }

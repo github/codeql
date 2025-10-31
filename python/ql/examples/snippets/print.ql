@@ -6,6 +6,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from AstNode print
 where
@@ -13,5 +14,5 @@ where
   print instanceof Print
   or
   /* Python 3 or with `from __future__ import print_function` */
-  print.(Call).getFunc().pointsTo(Value::named("print"))
+  print.(Call).getFunc().(ExprWithPointsTo).pointsTo(Value::named("print"))
 select print

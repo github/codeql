@@ -1,6 +1,7 @@
 import python
+private import LegacyPointsTo
 
-from int line, ControlFlowNode f, Value v
+from int line, ControlFlowNodeWithPointsTo f, Value v
 where
   any(ExprStmt s).getValue() = f.getNode() and
   line = f.getLocation().getStartLine() and

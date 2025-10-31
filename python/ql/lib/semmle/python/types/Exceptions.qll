@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 /** The subset of ControlFlowNodes which might raise an exception */
 class RaisingNode extends ControlFlowNode {
@@ -30,7 +31,9 @@ class RaisingNode extends ControlFlowNode {
     )
   }
 
-  private predicate quits() { this.(CallNode).getFunction().refersTo(Object::quitter(_)) }
+  private predicate quits() {
+    this.(CallNode).getFunction().(ControlFlowNodeWithPointsTo).refersTo(Object::quitter(_))
+  }
 
   /**
    * Gets the type of an exception that may be raised
@@ -68,7 +71,7 @@ class RaisingNode extends ControlFlowNode {
   private ClassObject localRaisedType_objectapi() {
     result.isSubclassOf(theBaseExceptionType()) and
     (
-      exists(ControlFlowNode ex |
+      exists(ControlFlowNodeWithPointsTo ex |
         ex = this.getExceptionNode() and
         (ex.refersTo(result) or ex.refersTo(_, result, _))
       )
@@ -95,7 +98,7 @@ class RaisingNode extends ControlFlowNode {
   private ClassValue localRaisedType() {
     result.getASuperType() = ClassValue::baseException() and
     (
-      exists(ControlFlowNode ex |
+      exists(ControlFlowNodeWithPointsTo ex |
         ex = this.getExceptionNode() and
         (ex.pointsTo(result) or ex.pointsTo().getClass() = result)
       )
@@ -153,7 +156,9 @@ class RaisingNode extends ControlFlowNode {
       /* Call to an unknown object */
       this.getNode() instanceof Call and
       not exists(FunctionObject func | this = func.getACall()) and
-      not exists(ClassObject known | this.(CallNode).getFunction().refersTo(known))
+      not exists(ClassObject known |
+        this.(CallNode).getFunction().(ControlFlowNodeWithPointsTo).refersTo(known)
+      )
       or
       this.getNode() instanceof Exec
       or
@@ -371,7 +376,7 @@ class ExceptFlowNode extends ControlFlowNode {
    * Gets the type handled by this exception handler.
    * `ExceptionType` in `except ExceptionType as e:`
    */
-  ControlFlowNode getType() {
+  ControlFlowNodeWithPointsTo getType() {
     exists(ExceptStmt ex |
       this.getBasicBlock().dominates(result.getBasicBlock()) and
       ex = this.getNode() and
@@ -470,7 +475,7 @@ class ExceptGroupFlowNode extends ControlFlowNode {
   }
 }
 
-private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
+private ControlFlowNodeWithPointsTo element_from_tuple_objectapi(Object tuple) {
   exists(Tuple t | t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode())
 }
 

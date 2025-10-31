@@ -8,9 +8,10 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ExceptStmt ex, ClassValue cls
 where
   cls.getName() = "MyExceptionClass" and
-  ex.getType().pointsTo(cls)
+  ex.getType().(ExprWithPointsTo).pointsTo(cls)
 select ex

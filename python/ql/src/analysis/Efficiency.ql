@@ -4,6 +4,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import semmle.python.pointsto.PointsTo
 import semmle.python.pointsto.PointsToContext
 
@@ -18,11 +19,11 @@ predicate trivial(ControlFlowNode f) {
 from int interesting_facts, int interesting_facts_in_source, int total_size, float efficiency
 where
   interesting_facts =
-    strictcount(ControlFlowNode f, Object value, ClassObject cls |
+    strictcount(ControlFlowNodeWithPointsTo f, Object value, ClassObject cls |
       f.refersTo(value, cls, _) and not trivial(f)
     ) and
   interesting_facts_in_source =
-    strictcount(ControlFlowNode f, Object value, ClassObject cls |
+    strictcount(ControlFlowNodeWithPointsTo f, Object value, ClassObject cls |
       f.refersTo(value, cls, _) and
       not trivial(f) and
       exists(f.getScope().getEnclosingModule().getFile().getRelativePath())

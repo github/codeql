@@ -10,9 +10,10 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from SubscriptNode store
 where
   store.isStore() and
-  store.getIndex().pointsTo(Value::named("None"))
+  store.getIndex().(ControlFlowNodeWithPointsTo).pointsTo(Value::named("None"))
 select store

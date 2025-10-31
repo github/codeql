@@ -87,6 +87,7 @@
  */
 
 import python
+private import LegacyPointsTo
 private import semmle.python.pointsto.Filters as Filters
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.dataflow.Implementation
@@ -267,7 +268,11 @@ module DictKind {
     Implementation::copyCall(fromnode, tonode) and
     edgeLabel = "dict copy"
     or
-    tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
+    tonode
+        .(CallNode)
+        .getFunction()
+        .(ControlFlowNodeWithPointsTo)
+        .pointsTo(ObjectInternal::builtin("dict")) and
     tonode.(CallNode).getArg(0) = fromnode and
     edgeLabel = "dict() call"
   }
@@ -615,7 +620,7 @@ module DataFlow {
     TCfgNode(ControlFlowNode node)
 
   abstract class Node extends TDataFlowNode {
-    abstract ControlFlowNode asCfgNode();
+    abstract ControlFlowNodeWithPointsTo asCfgNode();
 
     abstract EssaVariable asVariable();
 
@@ -632,7 +637,7 @@ module DataFlow {
   }
 
   class CfgNode extends Node, TCfgNode {
-    override ControlFlowNode asCfgNode() { this = TCfgNode(result) }
+    override ControlFlowNodeWithPointsTo asCfgNode() { this = TCfgNode(result) }
 
     override EssaVariable asVariable() { none() }
 
@@ -647,7 +652,7 @@ module DataFlow {
   }
 
   class EssaNode extends Node, TEssaNode {
-    override ControlFlowNode asCfgNode() { none() }
+    override ControlFlowNodeWithPointsTo asCfgNode() { none() }
 
     override EssaVariable asVariable() { this = TEssaNode(result) }
 
@@ -668,7 +673,11 @@ pragma[noinline]
 private predicate dict_construct(ControlFlowNode itemnode, ControlFlowNode dictnode) {
   dictnode.(DictNode).getAValue() = itemnode
   or
-  dictnode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
+  dictnode
+      .(CallNode)
+      .getFunction()
+      .(ControlFlowNodeWithPointsTo)
+      .pointsTo(ObjectInternal::builtin("dict")) and
   dictnode.(CallNode).getArgByName(_) = itemnode
 }
 
@@ -688,7 +697,7 @@ private predicate sequence_construct(ControlFlowNode itemnode, ControlFlowNode s
 pragma[noinline]
 private predicate sequence_call(ControlFlowNode fromnode, CallNode tonode) {
   tonode.getArg(0) = fromnode and
-  exists(ControlFlowNode cls | cls = tonode.getFunction() |
+  exists(ControlFlowNodeWithPointsTo cls | cls = tonode.getFunction() |
     cls.pointsTo(ObjectInternal::builtin("list"))
     or
     cls.pointsTo(ObjectInternal::builtin("tuple"))
