@@ -92,7 +92,7 @@ class SsaVariable extends @py_ssa_var {
   }
 
   /** Gets the incoming edges for a Phi node, pruned of unlikely edges. */
-  private BasicBlock getAPrunedPredecessorBlockForPhi() {
+  private BasicBlockWithPointsTo getAPrunedPredecessorBlockForPhi() {
     result = this.getAPredecessorBlockForPhi() and
     not result.unlikelySuccessor(this.getDefinition().getBasicBlock())
   }

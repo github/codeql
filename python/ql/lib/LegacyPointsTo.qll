@@ -106,6 +106,24 @@ class ControlFlowNodeWithPointsTo extends ControlFlowNode {
     // for that variable.
     exists(SsaVariable v | v.getAUse() = this | varHasCompletePointsToSet(v))
   }
+
+  /** Whether it is unlikely that this ControlFlowNode can be reached */
+  predicate unlikelyReachable() {
+    not start_bb_likely_reachable(this.getBasicBlock())
+    or
+    exists(BasicBlock b |
+      start_bb_likely_reachable(b) and
+      not end_bb_likely_reachable(b) and
+      // If there is an unlikely successor edge earlier in the BB
+      // than this node, then this node must be unreachable.
+      exists(ControlFlowNode p, int i, int j |
+        p.(RaisingNode).unlikelySuccessor(_) and
+        p = b.getNode(i) and
+        this = b.getNode(j) and
+        i < j
+      )
+    )
+  }
 }
 
 /**
@@ -132,6 +150,45 @@ private predicate varHasCompletePointsToSet(SsaVariable var) {
       varHasCompletePointsToSet(phiInput)
     )
   )
+}
+
+private predicate start_bb_likely_reachable(BasicBlock b) {
+  exists(Scope s | s.getEntryNode() = b.getNode(_))
+  or
+  exists(BasicBlock pred |
+    pred = b.getAPredecessor() and
+    end_bb_likely_reachable(pred) and
+    not pred.getLastNode().(RaisingNode).unlikelySuccessor(b)
+  )
+}
+
+private predicate end_bb_likely_reachable(BasicBlock b) {
+  start_bb_likely_reachable(b) and
+  not exists(ControlFlowNode p, ControlFlowNode s |
+    p.(RaisingNode).unlikelySuccessor(s) and
+    p = b.getNode(_) and
+    s = b.getNode(_) and
+    not p = b.getLastNode()
+  )
+}
+
+/**
+ * An extension of `BasicBlock` that provides points-to related methods.
+ */
+class BasicBlockWithPointsTo extends BasicBlock {
+  /**
+   * Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ.
+   */
+  predicate unlikelySuccessor(BasicBlockWithPointsTo succ) {
+    this.getLastNode().(RaisingNode).unlikelySuccessor(succ.firstNode())
+    or
+    not end_bb_likely_reachable(this) and succ = this.getASuccessor()
+  }
+
+  /**
+   * Whether (as inferred by type inference) this basic block is likely to be reachable.
+   */
+  predicate likelyReachable() { start_bb_likely_reachable(this) }
 }
 
 /**
