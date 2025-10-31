@@ -5,7 +5,6 @@
 
 import python
 private import semmle.python.internal.CachedStages
-private import LegacyPointsTo
 
 /** Hold if `expr` is a test (a branch) and `use` is within that test */
 predicate test_contains(ControlFlowNode expr, ControlFlowNode use) {

@@ -14,7 +14,7 @@
 import python
 private import LegacyPointsTo
 
-from ExceptFlowNode ex, Value t, ClassValue c, ControlFlowNode origin, string what
+from ExceptFlowNodeWithPointsTo ex, Value t, ClassValue c, ControlFlowNode origin, string what
 where
   ex.handledException(t, c, origin) and
   (
