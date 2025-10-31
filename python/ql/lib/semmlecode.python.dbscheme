@@ -530,6 +530,10 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> Fstring.values = 2, expr_list */
 /* <Parent> Fstring = FormattedValue  */
 
+/* <Field> JoinedTemplateString.location = 0, location */
+/* <Field> JoinedTemplateString.parenthesised = 1, bool */
+/* <Field> JoinedTemplateString.strings = 2, TemplateString_list */
+
 /* <Field> KeyValuePair.location = 0, location */
 /* <Field> KeyValuePair.value = 1, expr */
 /* <Field> KeyValuePair.key = 2, expr */
@@ -709,6 +713,16 @@ py_extracted_version(int module : @py_Module ref,
 /* <Field> TemplateDottedNotation.attr = 3, str */
 /* <Field> TemplateDottedNotation.ctx = 4, expr_context */
 
+/* <Field> TemplateString.location = 0, location */
+/* <Field> TemplateString.parenthesised = 1, bool */
+/* <Field> TemplateString.prefix = 2, str */
+/* <Field> TemplateString.values = 3, expr_list */
+/* <Parent> TemplateString = TemplateStringList  */
+
+/* <Field> TemplateStringPart.text = 0, str */
+/* <Field> TemplateStringPart.location = 1, location */
+/* <Parent> TemplateStringList = JoinedTemplateString  */
+
 /* <Field> TemplateWrite.location = 0, location */
 /* <Field> TemplateWrite.value = 1, expr */
 
@@ -834,6 +848,11 @@ py_StringParts(unique int id : @py_StringPart,
 
 py_StringPart_lists(unique int id : @py_StringPart_list,
     unique int parent : @py_Bytes_or_Str ref);
+
+py_TemplateStringParts(unique int id : @py_TemplateStringPart);
+
+py_TemplateString_lists(unique int id : @py_TemplateString_list,
+    unique int parent : @py_JoinedTemplateString ref);
 
 py_aliases(unique int id : @py_alias,
     int parent : @py_alias_list ref,
@@ -1010,7 +1029,9 @@ case @py_expr.kind of
 |   36 = @py_Fstring
 |   37 = @py_FormattedValue
 |   38 = @py_AssignExpr
-|   39 = @py_SpecialOperation;
+|   39 = @py_SpecialOperation
+|   40 = @py_TemplateString
+|   41 = @py_JoinedTemplateString;
 
 case @py_expr_context.kind of
     0 = @py_AugLoad
@@ -1105,13 +1126,13 @@ case @py_unaryop.kind of
 
 @py_expr_context_parent = @py_Attribute | @py_List | @py_Name | @py_PlaceHolder | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_Tuple;
 
-@py_expr_list_parent = @py_Assign | @py_BoolExpr | @py_Call | @py_ClassExpr | @py_Compare | @py_Delete | @py_Fstring | @py_Function | @py_List | @py_Print | @py_Set | @py_SpecialOperation | @py_Tuple | @py_arguments | @py_comprehension;
+@py_expr_list_parent = @py_Assign | @py_BoolExpr | @py_Call | @py_ClassExpr | @py_Compare | @py_Delete | @py_Fstring | @py_Function | @py_List | @py_Print | @py_Set | @py_SpecialOperation | @py_TemplateString | @py_Tuple | @py_arguments | @py_comprehension;
 
 @py_expr_or_stmt = @py_expr | @py_stmt;
 
-@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptGroupStmt | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_ParamSpec | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateWrite | @py_TypeAlias | @py_TypeVar | @py_TypeVarTuple | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
+@py_expr_parent = @py_AnnAssign | @py_Assert | @py_Assign | @py_AssignExpr | @py_Attribute | @py_AugAssign | @py_Await | @py_BinaryExpr | @py_Call | @py_Case | @py_Compare | @py_DictComp | @py_DictUnpacking | @py_ExceptGroupStmt | @py_ExceptStmt | @py_Exec | @py_Expr_stmt | @py_Filter | @py_For | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_GeneratorExp | @py_Guard | @py_If | @py_IfExp | @py_ImportMember | @py_ImportStar | @py_KeyValuePair | @py_ListComp | @py_MatchAsPattern | @py_MatchCapturePattern | @py_MatchClassPattern | @py_MatchKeywordPattern | @py_MatchLiteralPattern | @py_MatchStmt | @py_MatchValuePattern | @py_ParamSpec | @py_Print | @py_Raise | @py_Repr | @py_Return | @py_SetComp | @py_Slice | @py_Starred | @py_Subscript | @py_TemplateDottedNotation | @py_TemplateString_list | @py_TemplateWrite | @py_TypeAlias | @py_TypeVar | @py_TypeVarTuple | @py_UnaryExpr | @py_While | @py_With | @py_Yield | @py_YieldFrom | @py_alias | @py_arguments | @py_comprehension | @py_expr_list | @py_keyword | @py_parameter_list;
 
-@py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_comprehension | @py_expr | @py_keyword | @py_pattern | @py_stmt | @py_type_parameter;
+@py_location_parent = @py_DictUnpacking | @py_KeyValuePair | @py_StringPart | @py_TemplateStringPart | @py_comprehension | @py_expr | @py_keyword | @py_pattern | @py_stmt | @py_type_parameter;
 
 @py_parameter = @py_Name | @py_Tuple;
 
@@ -1125,7 +1146,7 @@ case @py_unaryop.kind of
 
 @py_str_list_parent = @py_Global | @py_Nonlocal;
 
-@py_str_parent = @py_Attribute | @py_Class | @py_ClassExpr | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_ImportExpr | @py_ImportMember | @py_Module | @py_SpecialOperation | @py_Str | @py_StringPart | @py_TemplateDottedNotation | @py_keyword | @py_str_list;
+@py_str_parent = @py_Attribute | @py_Class | @py_ClassExpr | @py_FormattedValue | @py_Function | @py_FunctionExpr | @py_ImportExpr | @py_ImportMember | @py_Module | @py_SpecialOperation | @py_Str | @py_StringPart | @py_TemplateDottedNotation | @py_TemplateString | @py_TemplateStringPart | @py_keyword | @py_str_list;
 
 @py_type_parameter_list_parent = @py_ClassExpr | @py_Function | @py_TypeAlias;
 

@@ -1,0 +1,194 @@
+Module: [1, 0] - [18, 0]
+  body: [
+    Assign: [1, 0] - [1, 14]
+      targets: [
+        Name: [1, 0] - [1, 4]
+          variable: Variable('name', None)
+          ctx: Store
+      ]
+      value:
+        Str: [1, 7] - [1, 14]
+          s: 'World'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [2, 0] - [2, 15]
+      targets: [
+        Name: [2, 0] - [2, 5]
+          variable: Variable('value', None)
+          ctx: Store
+      ]
+      value:
+        Num: [2, 8] - [2, 15]
+          n: 42.5678
+          text: '42.5678'
+    Assign: [3, 0] - [3, 15]
+      targets: [
+        Name: [3, 0] - [3, 5]
+          variable: Variable('first', None)
+          ctx: Store
+      ]
+      value:
+        Str: [3, 8] - [3, 15]
+          s: 'first'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    Assign: [4, 0] - [4, 17]
+      targets: [
+        Name: [4, 0] - [4, 6]
+          variable: Variable('second', None)
+          ctx: Store
+      ]
+      value:
+        Str: [4, 9] - [4, 17]
+          s: 'second'
+          prefix: '"'
+          implicitly_concatenated_parts: None
+    If: [6, 0] - [6, 5]
+      test:
+        Num: [6, 3] - [6, 4]
+          n: 1
+          text: '1'
+      body: [
+        Expr: [7, 4] - [7, 7]
+          value:
+            TemplateString: [7, 4] - [7, 7]
+              prefix: 't"'
+              values: []
+      ]
+      orelse: None
+    If: [8, 0] - [8, 5]
+      test:
+        Num: [8, 3] - [8, 4]
+          n: 2
+          text: '2'
+      body: [
+        Expr: [9, 4] - [9, 21]
+          value:
+            TemplateString: [9, 4] - [9, 21]
+              prefix: 't"'
+              values: [
+                TemplateStringPart: [9, 6] - [9, 13]
+                  text: '"Hello, "'
+                  s: 'Hello, '
+                Name: [9, 14] - [9, 18]
+                  variable: Variable('name', None)
+                  ctx: Load
+                TemplateStringPart: [9, 19] - [9, 20]
+                  text: '"!"'
+                  s: '!'
+              ]
+      ]
+      orelse: None
+    If: [10, 0] - [10, 5]
+      test:
+        Num: [10, 3] - [10, 4]
+          n: 3
+          text: '3'
+      body: [
+        Expr: [11, 4] - [11, 42]
+          value:
+            TemplateString: [11, 4] - [11, 42]
+              prefix: 't"'
+              values: [
+                TemplateStringPart: [11, 6] - [11, 13]
+                  text: '"Value: "'
+                  s: 'Value: '
+                Name: [11, 14] - [11, 19]
+                  variable: Variable('value', None)
+                  ctx: Load
+                TemplateStringPart: [11, 24] - [11, 31]
+                  text: '", Hex: "'
+                  s: ', Hex: '
+                Name: [11, 32] - [11, 37]
+                  variable: Variable('value', None)
+                  ctx: Load
+              ]
+      ]
+      orelse: None
+    If: [12, 0] - [12, 5]
+      test:
+        Num: [12, 3] - [12, 4]
+          n: 4
+          text: '4'
+      body: [
+        Expr: [13, 4] - [13, 29]
+          value:
+            TemplateString: [13, 4] - [13, 29]
+              prefix: 't"'
+              values: [
+                TemplateStringPart: [13, 6] - [13, 28]
+                  text: '"Just a regular string."'
+                  s: 'Just a regular string.'
+              ]
+      ]
+      orelse: None
+    If: [14, 0] - [14, 5]
+      test:
+        Num: [14, 3] - [14, 4]
+          n: 5
+          text: '5'
+      body: [
+        Expr: [15, 4] - [15, 50]
+          value:
+            TemplateString: [15, 4] - [15, 50]
+              prefix: 't"'
+              values: [
+                TemplateStringPart: [15, 6] - [15, 15]
+                  text: '"Multiple "'
+                  s: 'Multiple '
+                Name: [15, 16] - [15, 21]
+                  variable: Variable('first', None)
+                  ctx: Load
+                TemplateStringPart: [15, 22] - [15, 27]
+                  text: '" and "'
+                  s: ' and '
+                Name: [15, 28] - [15, 34]
+                  variable: Variable('second', None)
+                  ctx: Load
+                TemplateStringPart: [15, 35] - [15, 49]
+                  text: '" placeholders."'
+                  s: ' placeholders.'
+              ]
+      ]
+      orelse: None
+    If: [16, 0] - [16, 5]
+      test:
+        Num: [16, 3] - [16, 4]
+          n: 6
+          text: '6'
+      body: [
+        Expr: [17, 4] - [17, 66]
+          value:
+            JoinedTemplateString: [17, 4] - [17, 66]
+              strings: [
+                TemplateString: [17, 4] - [17, 31]
+                  prefix: 't"'
+                  values: [
+                    TemplateStringPart: [17, 6] - [17, 30]
+                      text: '"Implicit concatenation: "'
+                      s: 'Implicit concatenation: '
+                  ]
+                TemplateString: [17, 32] - [17, 49]
+                  prefix: 't"'
+                  values: [
+                    TemplateStringPart: [17, 34] - [17, 41]
+                      text: '"Hello, "'
+                      s: 'Hello, '
+                    Name: [17, 42] - [17, 46]
+                      variable: Variable('name', None)
+                      ctx: Load
+                    TemplateStringPart: [17, 47] - [17, 48]
+                      text: '"!"'
+                      s: '!'
+                  ]
+                TemplateString: [17, 50] - [17, 66]
+                  prefix: 't"'
+                  values: [
+                    TemplateStringPart: [17, 52] - [17, 65]
+                      text: '" How are you?"'
+                      s: ' How are you?'
+                  ]
+              ]
+      ]
+      orelse: None
+  ]
