@@ -6,6 +6,9 @@
  */
 
 private import codeql.rust.elements.internal.generated.Const
+private import codeql.rust.elements.PathExpr
+private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
+private import codeql.rust.internal.PathResolution
 
 /**
  * INTERNAL: This module contains the customizable definition of `Const` and should not
@@ -21,4 +24,34 @@ module Impl {
    * ```
    */
   class Const extends Generated::Const { }
+
+  /**
+   * A constant access.
+   *
+   * For example:
+   * ```rust
+   * const X: i32 = 42;
+   * 
+   * fn main() {
+   *     println!("{}", X);
+   * }
+   * ```
+   */
+  class ConstAccess extends PathExprBaseImpl::PathExprBase {
+    private Const c;
+
+    ConstAccess() {
+      exists(PathExpr pe |
+        pe = this and
+        c = resolvePath(pe.getPath())
+      )
+    }
+
+    /** Gets the constant being accessed. */
+    Const getConst() { result = c }
+
+    override string toStringImpl() { result = c.getName().getText() }
+
+    override string getAPrimaryQlClass() { result = "ConstAccess" }
+  }
 }
