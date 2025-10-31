@@ -16,9 +16,9 @@ fn simple_good_escaped(hay: &str) -> Option<bool> {
 }
 
 fn simple_good_numeric(hay: &str) -> Option<bool> {
-    let user_number = std::env::var("USER").unwrap_or("0".to_string()).parse::<u64>().unwrap_or(0); // $ Source=env
+    let user_number = std::env::var("USER").unwrap_or("0".to_string()).parse::<u64>().unwrap_or(0);
     let regex = format!("foo{}bar", user_number);
-    let re = Regex::new(&regex).unwrap(); // $ SPURIOUS: Alert[rust/regex-injection]=env
+    let re = Regex::new(&regex).unwrap();
     Some(re.is_match(hay))
 }
 

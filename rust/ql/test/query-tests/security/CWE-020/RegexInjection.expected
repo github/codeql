@@ -1,6 +1,5 @@
 #select
 | main.rs:6:25:6:30 | &regex | main.rs:4:20:4:32 | ...::var | main.rs:6:25:6:30 | &regex | This regular expression is constructed from a $@. | main.rs:4:20:4:32 | ...::var | user-provided value |
-| main.rs:21:25:21:30 | &regex | main.rs:19:23:19:35 | ...::var | main.rs:21:25:21:30 | &regex | This regular expression is constructed from a $@. | main.rs:19:23:19:35 | ...::var | user-provided value |
 edges
 | main.rs:4:9:4:16 | username | main.rs:5:25:5:44 | MacroExpr | provenance |  |
 | main.rs:4:20:4:32 | ...::var | main.rs:4:20:4:40 | ...::var(...) [Ok] | provenance | Src:MaD:1  |
@@ -9,28 +8,14 @@ edges
 | main.rs:5:9:5:13 | regex | main.rs:6:26:6:30 | regex | provenance |  |
 | main.rs:5:25:5:44 | ...::format(...) | main.rs:5:25:5:44 | { ... } | provenance |  |
 | main.rs:5:25:5:44 | ...::must_use(...) | main.rs:5:9:5:13 | regex | provenance |  |
-| main.rs:5:25:5:44 | MacroExpr | main.rs:5:25:5:44 | ...::format(...) | provenance | MaD:4 |
-| main.rs:5:25:5:44 | { ... } | main.rs:5:25:5:44 | ...::must_use(...) | provenance | MaD:5 |
+| main.rs:5:25:5:44 | MacroExpr | main.rs:5:25:5:44 | ...::format(...) | provenance | MaD:3 |
+| main.rs:5:25:5:44 | { ... } | main.rs:5:25:5:44 | ...::must_use(...) | provenance | MaD:4 |
 | main.rs:6:26:6:30 | regex | main.rs:6:25:6:30 | &regex | provenance |  |
-| main.rs:19:9:19:19 | user_number | main.rs:20:25:20:47 | MacroExpr | provenance |  |
-| main.rs:19:23:19:35 | ...::var | main.rs:19:23:19:43 | ...::var(...) [Ok] | provenance | Src:MaD:1  |
-| main.rs:19:23:19:43 | ...::var(...) [Ok] | main.rs:19:23:19:70 | ... .unwrap_or(...) | provenance | MaD:2 |
-| main.rs:19:23:19:70 | ... .unwrap_or(...) | main.rs:19:23:19:85 | ... .parse() [Ok] | provenance | MaD:3 |
-| main.rs:19:23:19:70 | ... .unwrap_or(...) | main.rs:19:23:19:85 | ... .parse() [Ok] | provenance | MaD:3 |
-| main.rs:19:23:19:85 | ... .parse() [Ok] | main.rs:19:23:19:98 | ... .unwrap_or(...) | provenance | MaD:2 |
-| main.rs:19:23:19:98 | ... .unwrap_or(...) | main.rs:19:9:19:19 | user_number | provenance |  |
-| main.rs:20:9:20:13 | regex | main.rs:21:26:21:30 | regex | provenance |  |
-| main.rs:20:25:20:47 | ...::format(...) | main.rs:20:25:20:47 | { ... } | provenance |  |
-| main.rs:20:25:20:47 | ...::must_use(...) | main.rs:20:9:20:13 | regex | provenance |  |
-| main.rs:20:25:20:47 | MacroExpr | main.rs:20:25:20:47 | ...::format(...) | provenance | MaD:4 |
-| main.rs:20:25:20:47 | { ... } | main.rs:20:25:20:47 | ...::must_use(...) | provenance | MaD:5 |
-| main.rs:21:26:21:30 | regex | main.rs:21:25:21:30 | &regex | provenance |  |
 models
 | 1 | Source: std::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
 | 2 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 3 | Summary: <core::str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 4 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
-| 5 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+| 3 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 4 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes
 | main.rs:4:9:4:16 | username | semmle.label | username |
 | main.rs:4:20:4:32 | ...::var | semmle.label | ...::var |
@@ -43,17 +28,4 @@ nodes
 | main.rs:5:25:5:44 | { ... } | semmle.label | { ... } |
 | main.rs:6:25:6:30 | &regex | semmle.label | &regex |
 | main.rs:6:26:6:30 | regex | semmle.label | regex |
-| main.rs:19:9:19:19 | user_number | semmle.label | user_number |
-| main.rs:19:23:19:35 | ...::var | semmle.label | ...::var |
-| main.rs:19:23:19:43 | ...::var(...) [Ok] | semmle.label | ...::var(...) [Ok] |
-| main.rs:19:23:19:70 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
-| main.rs:19:23:19:85 | ... .parse() [Ok] | semmle.label | ... .parse() [Ok] |
-| main.rs:19:23:19:98 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
-| main.rs:20:9:20:13 | regex | semmle.label | regex |
-| main.rs:20:25:20:47 | ...::format(...) | semmle.label | ...::format(...) |
-| main.rs:20:25:20:47 | ...::must_use(...) | semmle.label | ...::must_use(...) |
-| main.rs:20:25:20:47 | MacroExpr | semmle.label | MacroExpr |
-| main.rs:20:25:20:47 | { ... } | semmle.label | { ... } |
-| main.rs:21:25:21:30 | &regex | semmle.label | &regex |
-| main.rs:21:26:21:30 | regex | semmle.label | regex |
 subpaths

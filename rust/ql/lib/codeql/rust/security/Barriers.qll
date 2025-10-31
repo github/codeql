@@ -24,3 +24,19 @@ class NumericTypeBarrier extends DataFlow::Node {
     )
   }
 }
+
+/**
+ * A node whose type is an integral (integer) or boolean type, which may be an
+ * appropriate taint flow barrier for some queries.
+ */
+class IntegralOrBooleanTypeBarrier extends DataFlow::Node {
+  IntegralOrBooleanTypeBarrier() {
+    exists(TypeInference::Type t |
+      t = TypeInference::inferType(this.asExpr().getExpr()) and
+      (
+        t.(StructType).getStruct() instanceof IntegralType or
+        t.(StructType).getStruct() instanceof Bool
+      )
+    )
+  }
+}
