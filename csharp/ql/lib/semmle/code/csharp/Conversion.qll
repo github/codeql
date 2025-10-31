@@ -719,6 +719,15 @@ private Type convTypeParameterBase(TypeParameter tp) {
   result = getATypeParameterFromConstraints+(tp)
 }
 
+pragma[noinline]
+private Class typeConstraintToBaseType(TypeParameterConstraints tpc) {
+  tpc.hasValueTypeConstraint() and result instanceof SystemValueTypeClass
+  or
+  result = tpc.getATypeConstraint()
+  or
+  tpc.hasRefTypeConstraint() and result instanceof ObjectType
+}
+
 /**
  * 10.1.5: Candidates for the effective base class of type parameter `tp`.
  *
@@ -731,13 +740,9 @@ private Class effectiveBaseClassCandidate(TypeParameter tp) {
   not hasPrimaryConstraints(tp) and result instanceof ObjectType
   or
   exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
-    tpc.hasValueTypeConstraint() and result instanceof SystemValueTypeClass
-    or
-    result = tpc.getATypeConstraint()
+    result = typeConstraintToBaseType(tpc)
     or
     result = effectiveBaseClassCandidate(tpc.getATypeConstraint())
-    or
-    tpc.hasRefTypeConstraint() and result instanceof ObjectType
   )
 }
 

@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 WriteLocationsToTrap(trapFile.operator_location, this, Locations);
             }
 
-            if (IsSourceDeclaration)
+            if (IsSourceDeclaration && !Context.OnlyScaffold)
             {
                 var declSyntaxReferences = Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).ToArray();
                 foreach (var declaration in declSyntaxReferences.OfType<OperatorDeclarationSyntax>())

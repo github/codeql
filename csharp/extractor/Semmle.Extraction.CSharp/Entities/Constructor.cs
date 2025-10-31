@@ -179,7 +179,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
 
-        private bool MakeSynthetic => IsPrimary || (IsDefault && IsBestSourceLocation);
+        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
