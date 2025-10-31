@@ -256,7 +256,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
     TaintKind kind, string edgeLabel
   ) {
     this.unprunedStep(src, node, context, path, kind, edgeLabel) and
-    node.getBasicBlock().likelyReachable() and
+    node.getBasicBlock().(BasicBlockWithPointsTo).likelyReachable() and
     not super.isBarrier(node) and
     (
       not path = TNoAttribute()
@@ -684,7 +684,9 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
     TaintTrackingNode src, PhiFunction defn, TaintTrackingContext context, AttributePath path,
     TaintKind kind
   ) {
-    exists(DataFlow::Node srcnode, BasicBlock pred, EssaVariable predvar, DataFlow::Node phi |
+    exists(
+      DataFlow::Node srcnode, BasicBlockWithPointsTo pred, EssaVariable predvar, DataFlow::Node phi
+    |
       src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
       defn = phi.asVariable().getDefinition() and
       predvar = defn.getInput(pred) and
