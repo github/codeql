@@ -1,6 +1,8 @@
 private import rust
 private import codeql.rust.controlflow.ControlFlowGraph
+private import codeql.rust.internal.PathResolution as PathResolution
 private import codeql.rust.elements.internal.generated.ParentChild as ParentChild
+private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.elements.internal.PathImpl::Impl as PathImpl
 private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
@@ -101,35 +103,34 @@ module Impl {
    * pattern.
    */
   cached
-  private predicate variableDecl(AstNode definingNode, Name name, string text) {
+  predicate variableDecl(AstNode definingNode, Name name, string text) {
     Cached::ref() and
-    exists(SelfParam sp |
-      name = sp.getName() and
-      definingNode = name and
-      text = name.getText() and
-      // exclude self parameters from functions without a body as these are
-      // trait method declarations without implementations
-      not exists(Function f | not f.hasBody() and f.getSelfParam() = sp)
-    )
-    or
-    exists(IdentPat pat |
-      name = pat.getName() and
-      (
-        definingNode = getOutermostEnclosingOrPat(pat)
-        or
-        not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
-      ) and
-      text = name.getText() and
-      // exclude for now anything starting with an uppercase character, which may be a reference to
-      // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-      // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-      // naming guidelines, which they generally do, but they're not enforced.
-      not text.charAt(0).isUppercase() and
-      // exclude parameters from functions without a body as these are trait method declarations
-      // without implementations
-      not exists(Function f | not f.hasBody() and f.getAParam().getPat() = pat) and
-      // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-      not exists(FnPtrTypeRepr fp | fp.getParamList().getAParam().getPat() = pat)
+    not AstNodeImpl::supersededByAttributeMacroExpansion(definingNode) and
+    (
+      exists(SelfParam sp |
+        name = sp.getName() and
+        definingNode = name and
+        text = name.getText() and
+        // exclude self parameters from functions without a body as these are
+        // trait method declarations without implementations
+        not exists(Function f | not f.hasBody() and f.getSelfParam() = sp)
+      )
+      or
+      exists(IdentPat pat |
+        name = pat.getName() and
+        (
+          definingNode = getOutermostEnclosingOrPat(pat)
+          or
+          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
+        ) and
+        text = name.getText() and
+        not PathResolution::identPatIsResolvable(pat) and
+        // exclude parameters from functions without a body as these are trait method declarations
+        // without implementations
+        not exists(Function f | not f.hasBody() and f.getAParam().getPat() = pat) and
+        // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
+        not exists(FnPtrTypeRepr fp | fp.getParamList().getAParam().getPat() = pat)
+      )
     )
   }
 
@@ -460,7 +461,12 @@ module Impl {
     VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
   ) {
     name = cand.getName() and
-    scope = [cand.(VariableScope), getEnclosingScope(cand)] and
+    (
+      scope = cand.(VariableScope)
+      or
+      not cand instanceof VariableScope and
+      scope = getEnclosingScope(cand)
+    ) and
     ord = getPreOrderNumbering(scope, cand) and
     nestLevel = 0
     or
@@ -470,6 +476,19 @@ module Impl {
       // Use the pre-order number of the inner scope as the number of the access. This allows
       // us to collapse multiple accesses in inner scopes to a single entity
       ord = getPreOrderNumbering(scope, inner)
+    )
+  }
+
+  private predicate testvariableAccessCandInScope(
+    VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
+  ) {
+    // variableAccessCandInScope(cand, scope, name, nestLevel, ord) and
+    cand.getLocation().getStartLine() = 770 and
+    (
+      name = cand.getName() and
+      scope = [cand.(VariableScope), getEnclosingScope(cand)] and
+      ord = getPreOrderNumbering(scope, cand) and
+      nestLevel = 0
     )
   }
 
@@ -650,6 +669,14 @@ module Impl {
     )
   }
 
+  private predicate testvariableReachesCand(
+    VariableScope scope, string name, NestedFunctionOrVariable v, VariableAccessCand cand,
+    int nestLevel
+  ) {
+    variableReachesCand(scope, name, v, cand, nestLevel) and
+    v.getLocation().getStartLine() = [767, 769]
+  }
+
   pragma[nomagic]
   predicate access(string name, NestedFunctionOrVariable v, VariableAccessCand cand) {
     v =
@@ -658,6 +685,11 @@ module Impl {
       |
         v0 order by nestLevel
       )
+  }
+
+  private predicate testaccess(string name, NestedFunctionOrVariable v, VariableAccessCand cand) {
+    access(name, v, cand) and
+    cand.getLocation().getStartLine() = 770
   }
 
   /** A variable access. */

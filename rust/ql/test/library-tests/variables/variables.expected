@@ -1,4 +1,5 @@
 testFailures
+| main.rs:770:23:770:68 | //... | Fixed spurious result: read_access=x1 |
 variable
 | main.rs:5:14:5:14 | s |
 | main.rs:10:14:10:14 | i |
@@ -137,6 +138,14 @@ variable
 | main.rs:725:13:725:13 | x |
 | main.rs:726:13:726:15 | cap |
 | main.rs:726:20:726:20 | b |
+| main.rs:739:13:739:13 | x |
+| main.rs:740:13:740:13 | y |
+| main.rs:742:18:742:18 | y |
+| main.rs:749:13:749:16 | N0ne |
+| main.rs:756:13:756:22 | test_alias |
+| main.rs:758:13:758:16 | test |
+| main.rs:767:13:767:13 | x |
+| main.rs:769:18:769:18 | x |
 variableAccess
 | main.rs:7:20:7:20 | s | main.rs:5:14:5:14 | s |
 | main.rs:12:20:12:20 | i | main.rs:10:14:10:14 | i |
@@ -354,6 +363,14 @@ variableAccess
 | main.rs:729:13:729:13 | x | main.rs:725:13:725:13 | x |
 | main.rs:732:5:732:7 | cap | main.rs:726:13:726:15 | cap |
 | main.rs:733:15:733:15 | x | main.rs:725:13:725:13 | x |
+| main.rs:741:19:741:19 | x | main.rs:739:13:739:13 | x |
+| main.rs:748:15:748:15 | y | main.rs:740:13:740:13 | y |
+| main.rs:750:17:750:20 | N0ne | main.rs:749:13:749:16 | N0ne |
+| main.rs:759:13:759:22 | test_alias | main.rs:756:13:756:22 | test_alias |
+| main.rs:760:9:760:12 | test | main.rs:758:13:758:16 | test |
+| main.rs:768:15:768:15 | x | main.rs:767:13:767:13 | x |
+| main.rs:770:20:770:20 | x | main.rs:769:18:769:18 | x |
+| main.rs:773:15:773:15 | x | main.rs:767:13:767:13 | x |
 variableWriteAccess
 | main.rs:27:5:27:6 | x2 | main.rs:25:13:25:14 | x2 |
 | main.rs:29:5:29:6 | x2 | main.rs:25:13:25:14 | x2 |
@@ -561,6 +578,14 @@ variableReadAccess
 | main.rs:728:20:728:20 | b | main.rs:726:20:726:20 | b |
 | main.rs:732:5:732:7 | cap | main.rs:726:13:726:15 | cap |
 | main.rs:733:15:733:15 | x | main.rs:725:13:725:13 | x |
+| main.rs:741:19:741:19 | x | main.rs:739:13:739:13 | x |
+| main.rs:748:15:748:15 | y | main.rs:740:13:740:13 | y |
+| main.rs:750:17:750:20 | N0ne | main.rs:749:13:749:16 | N0ne |
+| main.rs:759:13:759:22 | test_alias | main.rs:756:13:756:22 | test_alias |
+| main.rs:760:9:760:12 | test | main.rs:758:13:758:16 | test |
+| main.rs:768:15:768:15 | x | main.rs:767:13:767:13 | x |
+| main.rs:770:20:770:20 | x | main.rs:769:18:769:18 | x |
+| main.rs:773:15:773:15 | x | main.rs:767:13:767:13 | x |
 variableInitializer
 | main.rs:20:9:20:10 | x1 | main.rs:20:14:20:16 | "a" |
 | main.rs:25:13:25:14 | x2 | main.rs:25:18:25:18 | 4 |
@@ -632,6 +657,11 @@ variableInitializer
 | main.rs:714:15:714:28 | var_in_macro | main.rs:714:15:714:28 | 0 |
 | main.rs:725:13:725:13 | x | main.rs:725:17:725:19 | 100 |
 | main.rs:726:13:726:15 | cap | main.rs:726:19:731:5 | \|...\| ... |
+| main.rs:739:13:739:13 | x | main.rs:739:17:739:24 | Some(...) |
+| main.rs:740:13:740:13 | y | main.rs:741:13:747:9 | match x { ... } |
+| main.rs:756:13:756:22 | test_alias | main.rs:757:13:757:16 | test |
+| main.rs:758:13:758:16 | test | main.rs:759:13:759:24 | test_alias(...) |
+| main.rs:767:13:767:13 | x | main.rs:767:17:767:23 | Some(...) |
 capturedVariable
 | main.rs:537:9:537:9 | x |
 | main.rs:548:13:548:13 | x |
