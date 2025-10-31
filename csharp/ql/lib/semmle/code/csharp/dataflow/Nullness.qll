@@ -197,7 +197,6 @@ private predicate defMaybeNull(
       msg = "as suggested by $@ null check" and
       node = def.getControlFlowNode() and
       not de = any(Ssa::PhiNode phi).getARead() and
-      strictcount(Element e | e = any(Ssa::Definition def0 | de = def0.getARead()).getElement()) = 1 and
       // Don't use a check as reason if there is a `null` assignment
       // or argument
       not def.(Ssa::ExplicitDefinition).getADefinition().getSource() instanceof MaybeNullExpr and
