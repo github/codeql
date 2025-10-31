@@ -49,8 +49,15 @@ private module GuardsInput implements
     override predicate isNull() { any() }
   }
 
-  private class BooleanConstant extends ConstantExpr instanceof BoolLiteral {
-    override boolean asBooleanValue() { result = super.getBoolValue() }
+  private predicate boolConst(Expr e, boolean b) {
+    e.getType() instanceof BoolType and
+    e.getValue() = b.toString()
+  }
+
+  private class BooleanConstant extends ConstantExpr {
+    BooleanConstant() { boolConst(this, _) }
+
+    override boolean asBooleanValue() { boolConst(this, result) }
   }
 
   private predicate intConst(Expr e, int i) {
