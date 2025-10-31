@@ -34,24 +34,21 @@ class BuiltinType extends Struct {
 /**
  * A numerical type, such as `i64`, `usize`, `f32` or `f64`.
  */
-abstract private class NumericTypeImpl extends BuiltinType {
-}
+abstract private class NumericTypeImpl extends BuiltinType { }
 
 final class NumericType = NumericTypeImpl;
 
 /**
  * An integral numerical type, such as `i64` or `usize`.
  */
-abstract private class IntegralTypeImpl extends NumericTypeImpl {
-}
+abstract private class IntegralTypeImpl extends NumericTypeImpl { }
 
 final class IntegralType = IntegralTypeImpl;
 
 /**
  * A floating-point numerical type, such as `f32` or `f64`.
  */
-abstract private class FloatingPointTypeImpl extends NumericTypeImpl {
-}
+abstract private class FloatingPointTypeImpl extends NumericTypeImpl { }
 
 final class FloatingPointType = FloatingPointTypeImpl;
 

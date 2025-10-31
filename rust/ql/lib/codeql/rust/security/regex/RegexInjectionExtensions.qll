@@ -96,5 +96,6 @@ module RegexInjection {
    * We don't include floating point types in this barrier, as `.` is a special character
    * in regular expressions.
    */
-  private class IntegralOrBooleanTypeBarrier extends Barrier instanceof Barriers::IntegralOrBooleanTypeBarrier { }
+  private class IntegralOrBooleanTypeBarrier extends Barrier instanceof Barriers::IntegralOrBooleanTypeBarrier
+  { }
 }
