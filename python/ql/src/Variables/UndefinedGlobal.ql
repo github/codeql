@@ -12,6 +12,7 @@
 
 import python
 private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 import Variables.MonkeyPatched
 import Loop
 

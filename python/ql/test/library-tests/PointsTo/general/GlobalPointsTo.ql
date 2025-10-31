@@ -1,5 +1,6 @@
 import python
 private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 import interesting
 
 from int line, ControlFlowNodeWithPointsTo f, Object o, ImportTimeScope n

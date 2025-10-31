@@ -11,7 +11,7 @@ import python
  * Escaping globals -- Global variables that have definitions and at least one of those definitions is in another scope.
  */
 
-private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 private import semmle.python.essa.SsaDefinitions
 
 /** A source language variable, to be converted into a set of SSA variables. */

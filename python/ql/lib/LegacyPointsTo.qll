@@ -32,7 +32,6 @@ import semmle.python.types.FunctionObject
 import semmle.python.types.ModuleObject
 import semmle.python.types.Exceptions
 import semmle.python.types.Properties
-import semmle.python.types.ImportTime
 import semmle.python.types.Descriptors
 import semmle.python.SelfAttribute
 
