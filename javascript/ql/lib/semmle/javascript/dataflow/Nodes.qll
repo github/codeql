@@ -791,7 +791,6 @@ ModuleImportNode dependencyModuleImport(Dependency dep) {
  * the given `path`, or accesses `m` as a member on a default or
  * namespace import from `path`.
  */
-overlay[global]
 DataFlow::SourceNode moduleMember(string path, string m) {
   result = moduleImport(path).getAPropertyRead(m)
 }
