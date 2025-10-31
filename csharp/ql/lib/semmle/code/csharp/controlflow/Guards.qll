@@ -374,7 +374,6 @@ deprecated module AbstractValues {
   }
 }
 
-// private import AbstractValues
 /** Gets the value resulting from matching `null` against `pat`. */
 private boolean patternMatchesNull(PatternExpr pat) {
   pat instanceof NullLiteral and result = true
@@ -432,35 +431,11 @@ class DereferenceableExpr extends Expr {
   /** Holds if this expression has a nullable type `T?`. */
   predicate hasNullableType() { isNullableType = true }
 
-  /**
-   * Gets an expression that tests via nullness whether this expression is `null`.
-   *
-   * If the returned expression evaluates to `null` (`v.isNullValue()`) or evaluates to
-   * non-`null` (`not v.isNullValue()`), then this expression is guaranteed to be `null`
-   * if `isNull` is true, and non-`null` if `isNull` is false.
-   *
-   * For example, if `x` evaluates to `null` in `x ?? y` then `y` is evaluated, and
-   * `x` is guaranteed to be `null`.
-   */
-  private Expr getANullnessNullCheck(GuardValue v, boolean isNull) {
-    exists(NullnessCompletion c | c.isValidFor(this) |
-      result = this and
-      if c.isNull()
-      then (
-        v.isNullValue() and
-        isNull = true
-      ) else (
-        v.isNonNullValue() and
-        isNull = false
-      )
-    )
-  }
-
   /** Holds if `guard` suggests that this expression may be `null`. */
   predicate guardSuggestsMaybeNull(Guards::Guard guard) {
     not nonNullValueImplied(this) and
     (
-      guard = this.getANullnessNullCheck(_, true)
+      exists(NullnessCompletion c | c.isValidFor(this) and c.isNull() and guard = this)
       or
       LogicInput::additionalNullCheck(guard, _, this, true)
       or
