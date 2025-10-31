@@ -46,7 +46,7 @@ fn main() {
 
     // GOOD: Numeric data derived from user input (directly)
     let number = remote_data.parse::<u64>().unwrap_or(0);
-    info!("Number: {}", number); // $ SPURIOUS: Alert[rust/log-injection]=remote
+    info!("Number: {}", number);
 
     // More complex test cases
     test_complex_scenarios(&username, &user_input);
