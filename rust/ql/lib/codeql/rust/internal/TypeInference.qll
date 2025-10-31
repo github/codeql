@@ -232,9 +232,14 @@ import M2
 module Consistency {
   import M2::Consistency
 
+  private Type inferCertainTypeAdj(AstNode n, TypePath path) {
+    result = CertainTypeInference::inferCertainType(n, path) and
+    not result = TNeverType()
+  }
+
   predicate nonUniqueCertainType(AstNode n, TypePath path, Type t) {
-    strictcount(CertainTypeInference::inferCertainType(n, path)) > 1 and
-    t = CertainTypeInference::inferCertainType(n, path) and
+    strictcount(inferCertainTypeAdj(n, path)) > 1 and
+    t = inferCertainTypeAdj(n, path) and
     // Suppress the inconsistency if `n` is a self parameter and the type
     // mention for the self type has multiple types for a path.
     not exists(ImplItemNode impl, TypePath selfTypePath |
@@ -278,7 +283,7 @@ private TypeMention getTypeAnnotation(AstNode n) {
   )
   or
   exists(Function f |
-    result = f.getRetType().getTypeRepr() and
+    result = getReturnTypeMention(f) and
     n = f.getFunctionBody()
   )
 }
@@ -289,6 +294,17 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
   or
   result = n.(ShorthandSelfParameterMention).resolveTypeAt(path)
+}
+
+/**
+ * Holds if `me` is a call to the `panic!` macro.
+ *
+ * `panic!` needs special treatment, because it expands to a block expression
+ * that looks like it should have type `()` instead of the correct `!` type.
+ */
+pragma[nomagic]
+private predicate isPanicMacroCall(MacroExpr me) {
+  me.getMacroCall().resolveMacro().(MacroRules).getName().getText() = "panic"
 }
 
 /** Module for inferring certain type information. */
@@ -436,13 +452,20 @@ module CertainTypeInference {
     result = inferTupleRootType(n) and
     path.isEmpty()
     or
-    result = inferAsyncBlockExprRootType(n) and
-    path.isEmpty()
+    result = inferBlockExprType(n, path)
     or
     result = inferArrayExprType(n) and
     path.isEmpty()
     or
     result = inferCastExprType(n, path)
+    or
+    exprHasUnitType(n) and
+    path.isEmpty() and
+    result instanceof UnitType
+    or
+    isPanicMacroCall(n) and
+    path.isEmpty() and
+    result instanceof NeverType
     or
     infersCertainTypeAt(n, path, result.getATypeParameter())
   }
@@ -580,7 +603,8 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       n2 = be.getRhs()
     )
     or
-    n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion()
+    n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion() and
+    not isPanicMacroCall(n2)
     or
     n1 = n2.(MacroPat).getMacroCall().getMacroCallExpansion()
     or
@@ -932,14 +956,17 @@ private predicate functionInfoBlanketLike(
  */
 bindingset[path, type]
 private predicate isComplexRootStripped(TypePath path, Type type) {
-  path.isEmpty() and
-  not validSelfType(type)
-  or
-  exists(TypeParameter tp |
-    complexSelfRoot(_, tp) and
-    path = TypePath::singleton(tp) and
-    exists(type)
-  )
+  (
+    path.isEmpty() and
+    not validSelfType(type)
+    or
+    exists(TypeParameter tp |
+      complexSelfRoot(_, tp) and
+      path = TypePath::singleton(tp) and
+      exists(type)
+    )
+  ) and
+  type != TNeverType()
 }
 
 /**
@@ -1541,7 +1568,8 @@ private module MethodResolution {
     MethodCall getMethodCall() { result = mc_ }
 
     Type getTypeAt(TypePath path) {
-      result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, path)
+      result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, path) and
+      not result = TNeverType()
     }
 
     pragma[nomagic]
@@ -1854,7 +1882,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
     }
 
     private Type resolveRetType(TypePath path) {
-      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+      result = getReturnTypeMention(this).resolveTypeAt(path)
     }
 
     pragma[nomagic]
@@ -2799,10 +2827,37 @@ private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
 }
 
 pragma[nomagic]
-private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
+predicate isUnitBlockExpr(BlockExpr be) {
+  not be.getStmtList().hasTailExpr() and
+  not be = any(Callable c).getBody() and
+  not be.hasLabel()
+}
+
+pragma[nomagic]
+private Type inferBlockExprType(BlockExpr be, TypePath path) {
   // `typeEquality` handles the non-root case
-  exists(abe) and
-  result = getFutureTraitType()
+  if be instanceof AsyncBlockExpr
+  then (
+    path.isEmpty() and
+    result = getFutureTraitType()
+    or
+    isUnitBlockExpr(be) and
+    path = TypePath::singleton(getFutureOutputTypeParameter()) and
+    result instanceof UnitType
+  ) else (
+    isUnitBlockExpr(be) and
+    path.isEmpty() and
+    result instanceof UnitType
+  )
+}
+
+pragma[nomagic]
+private predicate exprHasUnitType(Expr e) {
+  e = any(IfExpr ie | not ie.hasElse())
+  or
+  e instanceof WhileExpr
+  or
+  e instanceof ForExpr
 }
 
 final private class AwaitTarget extends Expr {

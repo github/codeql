@@ -2122,6 +2122,10 @@ mod async_ {
         async { S1 }
     }
 
+    fn f3() -> impl Future<Output = ()> {
+        async {}
+    }
+
     struct S2;
 
     impl Future for S2 {
@@ -2135,14 +2139,15 @@ mod async_ {
         }
     }
 
-    fn f3() -> impl Future<Output = S1> {
+    fn f4() -> impl Future<Output = S1> {
         S2
     }
 
     pub async fn f() {
         f1().await.f(); // $ target=S1f target=f1
         f2().await.f(); // $ target=S1f target=f2
-        f3().await.f(); // $ target=S1f target=f3
+        f3().await; // $ target=f3
+        f4().await.f(); // $ target=S1f target=f4
         S2.await.f(); // $ target=S1f
         let b = async { S1 };
         b.await.f(); // $ target=S1f
@@ -2824,6 +2829,52 @@ mod if_expr {
     }
 }
 
+mod local_function {
+    pub fn f() -> () {
+        fn local(x: i32) -> i32 {
+            x + 1 // $ target=add
+        }
+    }
+}
+
+mod block_types {
+    #[rustfmt::skip]
+    fn f1(cond: bool) -> i32 {
+        // Block that evaluates to unit
+        let a = { // $ type=a:()
+            if cond {
+                return 12;
+            }
+        };
+        0
+    }
+
+    #[rustfmt::skip]
+    fn f2() -> i32 {
+        // Block that does not evaluate to unit
+        let b = 'label: { // $ MISSING: b:i32
+            break 'label 12;
+        };
+        println!("b: {:?}", b);
+        0
+    }
+
+    fn f3() -> i32 {
+        return 0;
+    } // should only have type `i32`, not `()`
+
+    #[rustfmt::skip]
+    fn f4(cond: bool) -> i32 {
+        let a = { // $ certainType=a:()
+            if cond {
+                return 12;
+            };
+        };
+        println!("a: {:?}", a);
+        0
+    }
+}
+
 mod blanket_impl;
 mod closure;
 mod dereference;
@@ -2863,4 +2914,5 @@ fn main() {
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
     dyn_type::test(); // $ target=test
     if_expr::f(true); // $ target=f
+    local_function::f(); // $ target=f
 }
