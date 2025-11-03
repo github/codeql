@@ -67,7 +67,7 @@
                The following example shows two functions for checking whether the hash
                of a certificate matches a known value -- to prevent tampering.
 
-               The first function uses MD5 that is known to be vulnerable to collision attacks.
+               The first function uses SHA-1 that is known to be vulnerable to collision attacks.
 
                The second function uses SHA-256 that is a strong cryptographic hashing function.
           </p>
