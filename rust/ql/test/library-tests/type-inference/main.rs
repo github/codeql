@@ -2908,12 +2908,12 @@ mod context_typed {
     pub fn f() {
         let x = None; // $ type=x:T.i32
         let x: Option<i32> = x;
-        let x = Option::<i32>::None; // $ MISSING: type=x:T.i32
-        let x = Option::None::<i32>; // $ MISSING: type=x:T.i32
+        let x = Option::<i32>::None; // $ type=x:T.i32
+        let x = Option::None::<i32>; // $ type=x:T.i32
 
         fn pin_option<T>(opt: Option<T>, x: T) {}
 
-        let x = None; // $ MISSING: type=x:T.i32
+        let x = None; // $ type=x:T.i32
         pin_option(x, 0); // $ target=pin_option
 
         enum MyEither<T1, T2> {
@@ -2932,7 +2932,7 @@ mod context_typed {
         fn pin_my_either<T>(e: MyEither<T, String>, x: T) {}
 
         #[rustfmt::skip]
-        let x = MyEither::B {  // $ type=x:T2.String $ MISSING: type=x:T1.i32
+        let x = MyEither::B {  // $ type=x:T1.i32 type=x:T2.String
             right: String::new(), // $ target=new
         };
         pin_my_either(x, 0); // $ target=pin_my_either
@@ -2944,7 +2944,7 @@ mod context_typed {
 
         fn pin_result<T, E>(res: Result<T, E>, x: E) {}
 
-        let x = Result::Ok(0); // $ type=x:T.i32 $ MISSING: type=x:E.bool
+        let x = Result::Ok(0); // $ type=x:T.i32 type=x:E.bool
         pin_result(x, false); // $ target=pin_result
 
         let mut x = Vec::new(); // $ type=x:T.i32 target=new

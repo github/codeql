@@ -3115,9 +3115,12 @@ inferType
 | main.rs:1370:26:1370:27 | p3 | Snd | main.rs:1310:5:1311:14 | S3 |
 | main.rs:1372:9:1372:55 | g(...) |  | file://:0:0:0:0 | () |
 | main.rs:1372:11:1372:54 | ...::PairSnd(...) |  | main.rs:1285:5:1291:5 | PairOption |
+| main.rs:1372:11:1372:54 | ...::PairSnd(...) | Fst | main.rs:1307:5:1308:14 | S2 |
 | main.rs:1372:11:1372:54 | ...::PairSnd(...) | Snd | main.rs:1285:5:1291:5 | PairOption |
+| main.rs:1372:11:1372:54 | ...::PairSnd(...) | Snd.Fst | main.rs:1307:5:1308:14 | S2 |
 | main.rs:1372:11:1372:54 | ...::PairSnd(...) | Snd.Snd | main.rs:1310:5:1311:14 | S3 |
 | main.rs:1372:31:1372:53 | ...::PairSnd(...) |  | main.rs:1285:5:1291:5 | PairOption |
+| main.rs:1372:31:1372:53 | ...::PairSnd(...) | Fst | main.rs:1307:5:1308:14 | S2 |
 | main.rs:1372:31:1372:53 | ...::PairSnd(...) | Snd | main.rs:1310:5:1311:14 | S3 |
 | main.rs:1372:51:1372:52 | S3 |  | main.rs:1310:5:1311:14 | S3 |
 | main.rs:1374:13:1374:13 | x |  | {EXTERNAL LOCATION} | Result |
@@ -3551,7 +3554,6 @@ inferType
 | main.rs:1554:24:1554:39 | &... | &T | main.rs:1476:5:1479:5 | MyInt |
 | main.rs:1554:25:1554:39 | MyInt {...} |  | main.rs:1476:5:1479:5 | MyInt |
 | main.rs:1554:36:1554:37 | 37 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1554:36:1554:37 | 37 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1556:13:1556:13 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1556:17:1556:24 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1556:17:1556:24 | my_thing | &T | main.rs:1476:5:1479:5 | MyInt |
@@ -3567,7 +3569,6 @@ inferType
 | main.rs:1560:24:1560:39 | &... | &T | main.rs:1476:5:1479:5 | MyInt |
 | main.rs:1560:25:1560:39 | MyInt {...} |  | main.rs:1476:5:1479:5 | MyInt |
 | main.rs:1560:36:1560:37 | 38 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1560:36:1560:37 | 38 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1561:13:1561:13 | a |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1561:17:1561:24 | my_thing |  | file://:0:0:0:0 | & |
 | main.rs:1561:17:1561:24 | my_thing | &T | main.rs:1476:5:1479:5 | MyInt |
@@ -3823,6 +3824,7 @@ inferType
 | main.rs:1700:21:1700:25 | input | T | main.rs:1699:20:1699:27 | T |
 | main.rs:1700:21:1700:26 | TryExpr |  | main.rs:1699:20:1699:27 | T |
 | main.rs:1701:22:1701:38 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1701:22:1701:38 | ...::Ok(...) | E | main.rs:1667:5:1668:14 | S1 |
 | main.rs:1701:22:1701:38 | ...::Ok(...) | T | main.rs:1699:20:1699:27 | T |
 | main.rs:1701:22:1704:10 | ... .and_then(...) |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1701:22:1704:10 | ... .and_then(...) | E | main.rs:1667:5:1668:14 | S1 |
@@ -3895,6 +3897,7 @@ inferType
 | main.rs:1722:37:1722:63 | try_complex(...) | E | main.rs:1667:5:1668:14 | S1 |
 | main.rs:1722:37:1722:63 | try_complex(...) | T | main.rs:1667:5:1668:14 | S1 |
 | main.rs:1722:49:1722:62 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:1722:49:1722:62 | ...::Ok(...) | E | main.rs:1667:5:1668:14 | S1 |
 | main.rs:1722:49:1722:62 | ...::Ok(...) | T | main.rs:1667:5:1668:14 | S1 |
 | main.rs:1722:60:1722:61 | S1 |  | main.rs:1667:5:1668:14 | S1 |
 | main.rs:1722:65:1724:9 | { ... } |  | file://:0:0:0:0 | () |
@@ -3957,9 +3960,7 @@ inferType
 | main.rs:1769:30:1771:9 | { ... } |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:1770:13:1770:31 | Vec2 {...} |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:1770:23:1770:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1770:23:1770:23 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1770:29:1770:29 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1770:29:1770:29 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1777:16:1777:19 | SelfParam |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:1777:22:1777:24 | rhs |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:1777:41:1782:9 | { ... } |  | main.rs:1762:5:1767:5 | Vec2 |
@@ -4554,15 +4555,11 @@ inferType
 | main.rs:2065:13:2065:14 | v1 |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2065:18:2065:36 | Vec2 {...} |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2065:28:2065:28 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2065:28:2065:28 | 1 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2065:34:2065:34 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2065:34:2065:34 | 2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2066:13:2066:14 | v2 |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2066:18:2066:36 | Vec2 {...} |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2066:28:2066:28 | 3 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2066:28:2066:28 | 3 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2066:34:2066:34 | 4 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2066:34:2066:34 | 4 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2069:13:2069:19 | vec2_eq |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2069:23:2069:24 | v1 |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2069:23:2069:30 | ... == ... |  | {EXTERNAL LOCATION} | bool |
@@ -4689,9 +4686,7 @@ inferType
 | main.rs:2128:30:2128:48 | Vec2 {...} |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2128:30:2128:63 | ... + ... |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2128:40:2128:40 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2128:40:2128:40 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2128:46:2128:46 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2128:46:2128:46 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2128:52:2128:63 | default_vec2 |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2132:13:2132:24 | default_vec2 |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2132:28:2132:45 | ...::default(...) |  | main.rs:1762:5:1767:5 | Vec2 |
@@ -4699,9 +4694,7 @@ inferType
 | main.rs:2133:30:2133:48 | Vec2 {...} |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2133:30:2133:64 | ... == ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2133:40:2133:40 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2133:40:2133:40 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2133:46:2133:46 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2133:46:2133:46 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2133:53:2133:64 | default_vec2 |  | main.rs:1762:5:1767:5 | Vec2 |
 | main.rs:2143:18:2143:21 | SelfParam |  | main.rs:2140:5:2140:14 | S1 |
 | main.rs:2143:24:2143:25 | { ... } |  | file://:0:0:0:0 | () |
@@ -6202,17 +6195,24 @@ inferType
 | main.rs:2910:30:2910:30 | x |  | {EXTERNAL LOCATION} | Option |
 | main.rs:2910:30:2910:30 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2911:13:2911:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2911:13:2911:13 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2911:17:2911:35 | ...::None |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2911:17:2911:35 | ...::None | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2912:13:2912:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2912:13:2912:13 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2912:17:2912:35 | ...::None::<...> |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2912:17:2912:35 | ...::None::<...> | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2914:26:2914:28 | opt |  | {EXTERNAL LOCATION} | Option |
 | main.rs:2914:26:2914:28 | opt | T | main.rs:2914:23:2914:23 | T |
 | main.rs:2914:42:2914:42 | x |  | main.rs:2914:23:2914:23 | T |
 | main.rs:2914:48:2914:49 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2916:13:2916:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2916:13:2916:13 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2916:17:2916:20 | None |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2916:17:2916:20 | None | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2917:9:2917:24 | pin_option(...) |  | file://:0:0:0:0 | () |
 | main.rs:2917:20:2917:20 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2917:20:2917:20 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2917:23:2917:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2924:13:2924:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
 | main.rs:2924:13:2924:13 | x | T1 | {EXTERNAL LOCATION} | i32 |
@@ -6247,12 +6247,15 @@ inferType
 | main.rs:2932:53:2932:53 | x |  | main.rs:2932:26:2932:26 | T |
 | main.rs:2932:59:2932:60 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2935:13:2935:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2935:13:2935:13 | x | T1 | {EXTERNAL LOCATION} | i32 |
 | main.rs:2935:13:2935:13 | x | T2 | {EXTERNAL LOCATION} | String |
 | main.rs:2935:17:2937:9 | ...::B {...} |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2935:17:2937:9 | ...::B {...} | T1 | {EXTERNAL LOCATION} | i32 |
 | main.rs:2935:17:2937:9 | ...::B {...} | T2 | {EXTERNAL LOCATION} | String |
 | main.rs:2936:20:2936:32 | ...::new(...) |  | {EXTERNAL LOCATION} | String |
 | main.rs:2938:9:2938:27 | pin_my_either(...) |  | file://:0:0:0:0 | () |
 | main.rs:2938:23:2938:23 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2938:23:2938:23 | x | T1 | {EXTERNAL LOCATION} | i32 |
 | main.rs:2938:23:2938:23 | x | T2 | {EXTERNAL LOCATION} | String |
 | main.rs:2938:26:2938:26 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2940:13:2940:13 | x |  | {EXTERNAL LOCATION} | Result |
@@ -6288,12 +6291,15 @@ inferType
 | main.rs:2945:48:2945:48 | x |  | main.rs:2945:26:2945:26 | E |
 | main.rs:2945:54:2945:55 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2947:13:2947:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2947:13:2947:13 | x | E | {EXTERNAL LOCATION} | bool |
 | main.rs:2947:13:2947:13 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2947:17:2947:29 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2947:17:2947:29 | ...::Ok(...) | E | {EXTERNAL LOCATION} | bool |
 | main.rs:2947:17:2947:29 | ...::Ok(...) | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2947:28:2947:28 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2948:9:2948:28 | pin_result(...) |  | file://:0:0:0:0 | () |
 | main.rs:2948:20:2948:20 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2948:20:2948:20 | x | E | {EXTERNAL LOCATION} | bool |
 | main.rs:2948:20:2948:20 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2948:23:2948:27 | false |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2950:17:2950:17 | x |  | {EXTERNAL LOCATION} | Vec |

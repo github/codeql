@@ -108,6 +108,20 @@ class AliasPathTypeMention extends PathTypeMention {
   }
 }
 
+/**
+ * Gets the `i`th type argument of `p`.
+ *
+ * Takes into account that variants can have type arguments applied to both the
+ * enum and the variant itself, e.g. `Option::<i32>::Some` is valid in addition
+ * to `Option::Some::<i32>`.
+ */
+TypeMention getPathTypeArgument(Path p, int i) {
+  result = p.getSegment().getGenericArgList().getTypeArg(i)
+  or
+  resolvePath(p) instanceof Variant and
+  result = p.getQualifier().getSegment().getGenericArgList().getTypeArg(i)
+}
+
 class NonAliasPathTypeMention extends PathTypeMention {
   TypeItemNode resolved;
 
@@ -144,18 +158,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
   }
 
   /**
-   * Gets the positional type argument at index `i` that occurs in this path, if
-   * any.
-   */
-  private TypeMention getPathPositionalTypeArgument(int i) {
-    result = this.getSegment().getGenericArgList().getTypeArg(i)
-    or
-    // `Option::<i32>::Some` is valid in addition to `Option::Some::<i32>`
-    resolvePath(this) instanceof Variant and
-    result = this.getQualifier().getSegment().getGenericArgList().getTypeArg(i)
-  }
-
-  /**
    * Gets the type mention that instantiates the implicit `Self` type parameter
    * for this path, if it occurs in the position of a trait bound.
    */
@@ -173,7 +175,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   private Type getDefaultPositionalTypeArgument(int i, TypePath path) {
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
-    not exists(this.getPathPositionalTypeArgument(i)) and
+    not exists(getPathTypeArgument(this, i)) and
     // Defaults only apply to type mentions in type annotations
     this = any(PathTypeRepr ptp).getPath().getQualifier*() and
     exists(Type ty, TypePath prefix |
@@ -191,7 +193,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   }
 
   private Type getPositionalTypeArgument(int i, TypePath path) {
-    result = this.getPathPositionalTypeArgument(i).resolveTypeAt(path)
+    result = getPathTypeArgument(this, i).resolveTypeAt(path)
     or
     result = this.getDefaultPositionalTypeArgument(i, path)
   }

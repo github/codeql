@@ -260,11 +260,22 @@ private class NonMethodFunction extends Function {
 }
 
 pragma[nomagic]
-private TypeMention getCallExprTypeArgument(CallExpr ce, TypeArgumentPosition apos) {
-  exists(Path p, int i |
+private TypeMention getCallExprTypeMentionArgument(CallExpr ce, TypeArgumentPosition apos) {
+  exists(Path p, int i | p = CallExprImpl::getFunctionPath(ce) |
+    apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i)) and
+    result = getPathTypeArgument(p, pragma[only_bind_into](i))
+  )
+}
+
+pragma[nomagic]
+private Type getCallExprTypeArgument(CallExpr ce, TypeArgumentPosition apos, TypePath path) {
+  result = getCallExprTypeMentionArgument(ce, apos).resolveTypeAt(path)
+  or
+  // Handle constructions that use `Self(...)` syntax
+  exists(Path p, TypePath path0 |
     p = CallExprImpl::getFunctionPath(ce) and
-    result = p.getSegment().getGenericArgList().getTypeArg(pragma[only_bind_into](i)) and
-    apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i))
+    result = p.(TypeMention).resolveTypeAt(path0) and
+    path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
   )
 }
 
@@ -356,8 +367,7 @@ module CertainTypeInference {
         // For type parameters of the function we must resolve their
         // instantiation from the path. For instance, for `fn bar<A>(a: A) -> A`
         // and the path `bar<i64>`, we must resolve `A` to `i64`.
-        result =
-          getCallExprTypeArgument(ce, TTypeParamTypeArgumentPosition(tp)).resolveTypeAt(suffix)
+        result = getCallExprTypeArgument(ce, TTypeParamTypeArgumentPosition(tp), suffix)
       )
       or
       not ty instanceof TypeParameter and
@@ -748,6 +758,8 @@ private Type inferTypeEquality(AstNode n, TypePath path) {
 /**
  * A matching configuration for resolving types of struct expressions
  * like `Foo { bar = baz }`.
+ *
+ * This also includes nullary struct expressions like `None`.
  */
 private module StructExprMatchingInput implements MatchingInputSig {
   private newtype TPos =
@@ -830,26 +842,86 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
   class AccessPosition = DeclarationPosition;
 
-  class Access extends StructExpr {
+  abstract class Access extends AstNode {
+    pragma[nomagic]
+    abstract AstNode getNodeAt(AccessPosition apos);
+
+    pragma[nomagic]
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    pragma[nomagic]
+    abstract Path getStructPath();
+
+    pragma[nomagic]
+    Declaration getTarget() { result = resolvePath(this.getStructPath()) }
+
+    pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      // Handle constructions that use `Self{...}` syntax
+      exists(TypeMention tm, TypePath path0 |
+        tm = this.getStructPath() and
+        result = tm.resolveTypeAt(path0) and
+        path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
+      )
+    }
+
+    /**
+     * Holds if the return type of this struct expression at `path` may have to
+     * be inferred from the context.
+     */
+    pragma[nomagic]
+    predicate isContextTypedAt(DeclarationPosition pos, TypePath path) {
+      exists(Declaration d, TypeParameter tp |
+        d = this.getTarget() and
+        pos.isStructPos() and
+        tp = d.getDeclaredType(pos, path) and
+        not exists(DeclarationPosition fieldPos |
+          not fieldPos.isStructPos() and
+          tp = d.getDeclaredType(fieldPos, _)
+        ) and
+        // check that no explicit type arguments have been supplied for `tp`
+        not exists(TypeArgumentPosition tapos |
+          exists(this.getTypeArgument(tapos, _)) and
+          TTypeParamTypeParameter(tapos.asTypeParam()) = tp
+        )
+      )
+    }
+  }
+
+  private class StructExprAccess extends Access, StructExpr {
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      result = super.getTypeArgument(apos, path)
+      or
       exists(TypePath suffix |
         suffix.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path) and
         result = CertainTypeInference::inferCertainType(this, suffix)
       )
     }
 
-    AstNode getNodeAt(AccessPosition apos) {
+    override AstNode getNodeAt(AccessPosition apos) {
       result = this.getFieldExpr(apos.asFieldPos()).getExpr()
       or
       result = this and
       apos.isStructPos()
     }
 
-    Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
+    override Path getStructPath() { result = this.getPath() }
+  }
+
+  /**
+   * A potential nullary struct/variant construction such as `None`.
+   */
+  private class PathExprAccess extends Access, PathExpr {
+    PathExprAccess() { not exists(CallExpr ce | this = ce.getFunction()) }
+
+    override AstNode getNodeAt(AccessPosition apos) {
+      result = this and
+      apos.isStructPos()
     }
 
-    Declaration getTarget() { result = resolvePath(this.getPath()) }
+    override Path getStructPath() { result = this.getPath() }
   }
 
   predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
@@ -859,34 +931,30 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
 private module StructExprMatching = Matching<StructExprMatchingInput>;
 
+pragma[nomagic]
+private Type inferStructExprType0(AstNode n, boolean isReturn, TypePath path) {
+  exists(StructExprMatchingInput::Access a, StructExprMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    if apos.isStructPos() then isReturn = true else isReturn = false
+  |
+    result = StructExprMatching::inferAccessType(a, apos, path)
+    or
+    a.isContextTypedAt(apos, path) and
+    result = TContextType()
+  )
+}
+
 /**
  * Gets the type of `n` at `path`, where `n` is either a struct expression or
  * a field expression of a struct expression.
  */
-pragma[nomagic]
-private Type inferStructExprType(AstNode n, TypePath path) {
-  exists(StructExprMatchingInput::Access a, StructExprMatchingInput::AccessPosition apos |
-    n = a.getNodeAt(apos) and
-    result = StructExprMatching::inferAccessType(a, apos, path)
-  )
-}
+private predicate inferStructExprType =
+  ContextTyping::CheckContextTyping<inferStructExprType0/3>::check/2;
 
 pragma[nomagic]
 private Type inferTupleRootType(AstNode n) {
   // `typeEquality` handles the non-root cases
   result = TTuple([n.(TupleExpr).getNumberOfFields(), n.(TuplePat).getTupleArity()])
-}
-
-pragma[nomagic]
-private Type inferPathExprType(PathExpr pe, TypePath path) {
-  // nullary struct/variant constructors
-  not exists(CallExpr ce | pe = ce.getFunction()) and
-  path.isEmpty() and
-  exists(ItemNode i | i = resolvePath(pe.getPath()) |
-    result = TEnum(i.(Variant).getEnum())
-    or
-    result = TStruct(i)
-  )
 }
 
 pragma[nomagic]
@@ -955,7 +1023,7 @@ private module ContextTyping {
      */
     bindingset[this, i, target]
     predicate isContextTypedAt(
-      ImplOrTraitItemNode i, Function target, TypePath path, FunctionPosition pos
+      ImplOrTraitItemNode i, Function target, FunctionPosition pos, TypePath path
     ) {
       exists(TypeParameter tp |
         assocFunctionReturnContextTypedAt(i, target, pos, path, tp) and
@@ -982,7 +1050,7 @@ private module ContextTyping {
   pragma[nomagic]
   private predicate isContextTyped(AstNode n) { isContextTyped(n, _) }
 
-  signature Type inferCallTypeSig(AstNode n, FunctionPosition pos, TypePath path);
+  signature Type inferCallTypeSig(AstNode n, boolean isReturn, TypePath path);
 
   /**
    * Given a predicate `inferCallType` for inferring the type of a call at a given
@@ -992,30 +1060,24 @@ private module ContextTyping {
    */
   module CheckContextTyping<inferCallTypeSig/3 inferCallType> {
     pragma[nomagic]
-    private Type inferCallTypeFromContextCand(
-      AstNode n, FunctionPosition pos, TypePath path, TypePath prefix
-    ) {
-      result = inferCallType(n, pos, path) and
-      not pos.isReturn() and
+    private Type inferCallTypeFromContextCand(AstNode n, TypePath path, TypePath prefix) {
+      result = inferCallType(n, false, path) and
       isContextTyped(n) and
       prefix = path
       or
       exists(TypePath mid |
-        result = inferCallTypeFromContextCand(n, pos, path, mid) and
+        result = inferCallTypeFromContextCand(n, path, mid) and
         mid.isSnoc(prefix, _)
       )
     }
 
     pragma[nomagic]
     Type check(AstNode n, TypePath path) {
-      exists(FunctionPosition pos |
-        result = inferCallType(n, pos, path) and
-        pos.isReturn()
-        or
-        exists(TypePath prefix |
-          result = inferCallTypeFromContextCand(n, pos, path, prefix) and
-          isContextTyped(n, prefix)
-        )
+      result = inferCallType(n, true, path)
+      or
+      exists(TypePath prefix |
+        result = inferCallTypeFromContextCand(n, path, prefix) and
+        isContextTyped(n, prefix)
       )
     }
   }
@@ -2037,12 +2099,14 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
 
     pragma[nomagic]
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      exists(TypeMention arg | result = arg.resolveTypeAt(path) |
-        arg =
-          this.(MethodCallExpr).getGenericArgList().getTypeArg(apos.asMethodTypeArgumentPosition())
-        or
-        arg = getCallExprTypeArgument(this, apos)
-      )
+      result =
+        this.(MethodCallExpr)
+            .getGenericArgList()
+            .getTypeArg(apos.asMethodTypeArgumentPosition())
+            .(TypeMention)
+            .resolveTypeAt(path)
+      or
+      result = getCallExprTypeArgument(this, apos, path)
     }
 
     pragma[nomagic]
@@ -2090,6 +2154,17 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
     }
 
     Declaration getTarget(string derefChainBorrow) { result = this.getTarget(_, derefChainBorrow) }
+
+    /**
+     * Holds if the return type of this call at `path` may have to be inferred
+     * from the context.
+     */
+    pragma[nomagic]
+    predicate isContextTypedAt(string derefChainBorrow, FunctionPosition pos, TypePath path) {
+      exists(ImplOrTraitItemNode i |
+        this.isContextTypedAt(i, this.getTarget(i, derefChainBorrow), pos, path)
+      )
+    }
   }
 }
 
@@ -2105,10 +2180,8 @@ private Type inferMethodCallType0(
     (
       result = MethodCallMatching::inferAccessType(a, derefChainBorrow, apos, path0)
       or
-      exists(ImplOrTraitItemNode i |
-        a.isContextTypedAt(i, a.getTarget(i, derefChainBorrow), path0, apos) and
-        result = TContextType()
-      )
+      a.isContextTypedAt(derefChainBorrow, apos, path0) and
+      result = TContextType()
     )
   |
     if
@@ -2122,11 +2195,13 @@ private Type inferMethodCallType0(
 }
 
 pragma[nomagic]
-private Type inferMethodCallType1(
-  AstNode n, MethodCallMatchingInput::AccessPosition apos, TypePath path
-) {
-  exists(MethodCallMatchingInput::Access a, string derefChainBorrow, TypePath path0 |
-    result = inferMethodCallType0(a, apos, n, derefChainBorrow, path0)
+private Type inferMethodCallType1(AstNode n, boolean isReturn, TypePath path) {
+  exists(
+    MethodCallMatchingInput::Access a, MethodCallMatchingInput::AccessPosition apos,
+    string derefChainBorrow, TypePath path0
+  |
+    result = inferMethodCallType0(a, apos, n, derefChainBorrow, path0) and
+    if apos.isReturn() then isReturn = true else isReturn = false
   |
     (
       not apos.isSelf()
@@ -2451,6 +2526,9 @@ private module NonMethodResolution {
 /**
  * A matching configuration for resolving types of calls like
  * `foo::bar(baz)` where the target is not a method.
+ *
+ * This also includes "calls" to tuple variants and tuple structs such
+ * as `Result::Ok(42)`.
  */
 private module NonMethodCallMatchingInput implements MatchingInputSig {
   import FunctionPositionMatchingInput
@@ -2571,7 +2649,7 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
   class Access extends NonMethodResolution::NonMethodCall, ContextTyping::ContextTypedCallCand {
     pragma[nomagic]
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = getCallExprTypeArgument(this, apos).resolveTypeAt(path)
+      result = getCallExprTypeArgument(this, apos, path)
     }
 
     pragma[nomagic]
@@ -2585,27 +2663,50 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
     Declaration getTarget() {
       result = this.resolveCallTarget() // potential mutual recursion; resolving some associated function calls requires resolving types
     }
+
+    /**
+     * Holds if the return type of this call at `path` may have to be inferred
+     * from the context.
+     */
+    pragma[nomagic]
+    predicate isContextTypedAt(FunctionPosition pos, TypePath path) {
+      exists(ImplOrTraitItemNode i |
+        this.isContextTypedAt(i,
+          [
+            this.resolveCallTargetViaPathResolution().(NonMethodFunction),
+            this.resolveCallTargetViaTypeInference(i),
+            this.resolveTraitFunctionViaPathResolution(i)
+          ], pos, path)
+      )
+      or
+      // Tuple declarations, such as `Result::Ok(...)`, may also be context typed
+      exists(TupleDeclaration td, TypeParameter tp |
+        td = this.resolveCallTargetViaPathResolution() and
+        pos.isReturn() and
+        tp = td.getReturnType(path) and
+        not tp = td.getParameterType(_, _) and
+        // check that no explicit type arguments have been supplied for `tp`
+        not exists(TypeArgumentPosition tapos |
+          exists(this.getTypeArgument(tapos, _)) and
+          TTypeParamTypeParameter(tapos.asTypeParam()) = tp
+        )
+      )
+    }
   }
 }
 
 private module NonMethodCallMatching = Matching<NonMethodCallMatchingInput>;
 
 pragma[nomagic]
-private Type inferNonMethodCallType0(
-  AstNode n, NonMethodCallMatchingInput::AccessPosition apos, TypePath path
-) {
-  exists(NonMethodCallMatchingInput::Access a | n = a.getNodeAt(apos) |
+private Type inferNonMethodCallType0(AstNode n, boolean isReturn, TypePath path) {
+  exists(NonMethodCallMatchingInput::Access a, NonMethodCallMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    if apos.isReturn() then isReturn = true else isReturn = false
+  |
     result = NonMethodCallMatching::inferAccessType(a, apos, path)
     or
-    exists(ImplOrTraitItemNode i |
-      a.isContextTypedAt(i,
-        [
-          a.resolveCallTargetViaPathResolution().(NonMethodFunction),
-          a.resolveCallTargetViaTypeInference(i),
-          a.resolveTraitFunctionViaPathResolution(i)
-        ], path, apos) and
-      result = TContextType()
-    )
+    a.isContextTypedAt(apos, path) and
+    result = TContextType()
   )
 }
 
@@ -2684,12 +2785,11 @@ private module OperationMatchingInput implements MatchingInputSig {
 private module OperationMatching = Matching<OperationMatchingInput>;
 
 pragma[nomagic]
-private Type inferOperationType0(
-  AstNode n, OperationMatchingInput::AccessPosition apos, TypePath path
-) {
-  exists(OperationMatchingInput::Access a |
+private Type inferOperationType0(AstNode n, boolean isReturn, TypePath path) {
+  exists(OperationMatchingInput::Access a, OperationMatchingInput::AccessPosition apos |
     n = a.getNodeAt(apos) and
-    result = OperationMatching::inferAccessType(a, apos, path)
+    result = OperationMatching::inferAccessType(a, apos, path) and
+    if apos.isReturn() then isReturn = true else isReturn = false
   )
 }
 
@@ -3456,8 +3556,6 @@ private module Cached {
       result = inferTypeEquality(n, path)
       or
       result = inferStructExprType(n, path)
-      or
-      result = inferPathExprType(n, path)
       or
       result = inferMethodCallType(n, path)
       or
