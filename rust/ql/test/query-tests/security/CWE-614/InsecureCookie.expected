@@ -595,3 +595,16 @@ nodes
 | main.rs:173:22:173:59 | ...::build(...) | semmle.label | ...::build(...) |
 | main.rs:173:61:173:65 | build | semmle.label | build |
 subpaths
+testFailures
+| main.rs:197:32:197:42 | //... | Missing result: Source |
+| main.rs:198:64:198:95 | //... | Missing result: Alert[rust/insecure-cookie] |
+| main.rs:206:54:206:64 | //... | Missing result: Source |
+| main.rs:207:64:207:95 | //... | Missing result: Alert[rust/insecure-cookie] |
+| main.rs:215:32:215:42 | //... | Missing result: Source |
+| main.rs:216:59:216:90 | //... | Missing result: Alert[rust/insecure-cookie] |
+| main.rs:224:62:224:72 | //... | Missing result: Source |
+| main.rs:225:59:225:90 | //... | Missing result: Alert[rust/insecure-cookie] |
+| main.rs:233:32:233:42 | //... | Missing result: Source |
+| main.rs:234:65:234:96 | //... | Missing result: Alert[rust/insecure-cookie] |
+| main.rs:242:58:242:68 | //... | Missing result: Source |
+| main.rs:243:65:243:96 | //... | Missing result: Alert[rust/insecure-cookie] |

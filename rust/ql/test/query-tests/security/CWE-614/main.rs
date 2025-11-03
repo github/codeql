@@ -193,32 +193,36 @@ fn test_actix_web() {
     use actix_web::cookie::Cookie as ActixCookie;
 
     // secure set to false
-    let cookie1 = ActixCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
-    println!("actix-web cookie1 = '{}'", cookie1.to_string());
+    let mut cookie1 = ActixCookie::new("name", "value");
+    cookie1.set_secure(false); // $ Source
+    println!("actix-web cookie1 = '{}'", cookie1.to_string()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
-    let cookie2 = ActixCookie::build("name", "value").secure(true).finish(); // good
+    let mut cookie2 = ActixCookie::new("name", "value");
+    cookie2.set_secure(true); // good
     println!("actix-web cookie2 = '{}'", cookie2.to_string());
 
     // secure left as default
-    let cookie3 = ActixCookie::build("name", "value").finish(); // $ Alert[rust/insecure-cookie]
-    println!("actix-web cookie3 = '{}'", cookie3.to_string());
+    let cookie3 = ActixCookie::new("name", "value"); // $ Source
+    println!("actix-web cookie3 = '{}'", cookie3.to_string()); // $ Alert[rust/insecure-cookie]
 }
 
 fn test_poem() {
     use poem::web::cookie::Cookie as PoemCookie;
 
     // secure set to false
-    let cookie1 = PoemCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
-    println!("poem cookie1 = '{}'", cookie1.to_string());
+    let mut cookie1 = PoemCookie::new_with_str("name", "value");
+    cookie1.set_secure(false); // $ Source
+    println!("poem cookie1 = '{}'", cookie1.to_string()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
-    let cookie2 = PoemCookie::build("name", "value").secure(true).finish(); // good
+    let mut cookie2 = PoemCookie::new_with_str("name", "value");
+    cookie2.set_secure(true); // good
     println!("poem cookie2 = '{}'", cookie2.to_string());
 
     // secure left as default
-    let cookie3 = PoemCookie::build("name", "value").finish(); // $ Alert[rust/insecure-cookie]
-    println!("poem cookie3 = '{}'", cookie3.to_string());
+    let cookie3 = PoemCookie::new_with_str("name", "value"); // $ Source
+    println!("poem cookie3 = '{}'", cookie3.to_string()); // $ Alert[rust/insecure-cookie]
 }
 
 fn test_http_types() {
