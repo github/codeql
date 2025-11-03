@@ -536,7 +536,9 @@ namespace Semmle.Extraction.CSharp
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
             Compilation = c;
             this.scope = scope;
-            OnlyScaffold = overlayInfo.IsOverlayMode && scope is SourceScope ss && overlayInfo.OnlyMakeScaffold(ss.SourceTree.FilePath);
+            OnlyScaffold = overlayInfo.IsOverlayMode && (
+                IsAssemblyScope
+                || (scope is SourceScope ss && overlayInfo.OnlyMakeScaffold(ss.SourceTree.FilePath)));
         }
 
         public bool FromSource => scope is SourceScope;
