@@ -5,8 +5,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id actions/unnecessary-use-of-advanced-config
- * @tags actions
+ * @tags quality
  *       maintainability
+ *       actions
  */
 
 import codeql.actions.Violations_Of_Best_Practices.DefaultableCodeQLInitiatlizeActionQuery
