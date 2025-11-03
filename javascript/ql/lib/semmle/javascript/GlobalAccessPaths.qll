@@ -206,6 +206,7 @@ module AccessPath {
    * Holds if the global `accessPath` is only assigned to from one file, not counting
    * self-assignments.
    */
+  overlay[global]
   predicate isAssignedInUniqueFile(string accessPath) {
     strictcount(File f | isAssignedInFile(accessPath, f)) = 1
   }
@@ -511,7 +512,7 @@ module AccessPath {
   /**
    * Holds if there is a step from `pred` to `succ` through an assignment to an access path.
    */
-  overlay[caller]
+  overlay[caller?]
   pragma[inline]
   predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(string name, Root root |
