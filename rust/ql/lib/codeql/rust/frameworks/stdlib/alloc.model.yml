@@ -47,8 +47,6 @@ extensions:
       - ["<core::alloc::layout::Layout>::pad_to_align", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<core::alloc::layout::Layout>::size", "Argument[self]", "ReturnValue", "taint", "manual"]
       # String
-      - ["<alloc::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "value"]
-      - ["<alloc::string::String>::as_bytes", "Argument[self]", "ReturnValue", "taint", "value"]
       - ["<alloc::string::String>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
       - ["<alloc::string::String>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
       - ["<_ as alloc::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
