@@ -249,7 +249,6 @@
 /lib/codeql/rust/elements/internal/ConstBlockPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstBlockPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ConstImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ContinueExprConstructor.qll linguist-generated

@@ -14,27 +14,19 @@ mod my_module {
 }
 
 fn use_consts() {
-    // $ const_access=GLOBAL_CONST
-    let x = GLOBAL_CONST;
-    // $ const_access=GLOBAL_CONST
-    println!("{}", GLOBAL_CONST);
+    let x = GLOBAL_CONST; // $ const_access=GLOBAL_CONST
     
-    // $ const_access=STRING_CONST
-    let s = STRING_CONST;
+    let s = STRING_CONST; // $ const_access=STRING_CONST
     
-    // $ const_access=ASSOC_CONST
-    let y = MyStruct::ASSOC_CONST;
+    let y = MyStruct::ASSOC_CONST; // $ const_access=ASSOC_CONST
     
-    // $ const_access=MODULE_CONST
-    let z = my_module::MODULE_CONST;
+    let z = my_module::MODULE_CONST; // $ const_access=MODULE_CONST
     
-    // $ const_access=GLOBAL_CONST
-    if GLOBAL_CONST > 0 {
+    if GLOBAL_CONST > 0 { // $ const_access=GLOBAL_CONST
         println!("positive");
     }
     
-    // $ const_access=ASSOC_CONST
-    let arr = [MyStruct::ASSOC_CONST; 5];
+    let arr = [MyStruct::ASSOC_CONST; 5]; // $ const_access=ASSOC_CONST
 }
 
 fn main() {

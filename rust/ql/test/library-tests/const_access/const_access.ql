@@ -2,9 +2,7 @@ import rust
 import utils.test.InlineExpectationsTest
 import TestUtils
 
-query predicate constAccess(ConstAccess ca, Const c) {
-  toBeTested(ca) and c = ca.getConst()
-}
+query predicate constAccess(ConstAccess ca, Const c) { toBeTested(ca) and c = ca.getConst() }
 
 module ConstAccessTest implements TestSig {
   string getARelevantTag() { result = "const_access" }

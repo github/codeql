@@ -22,17 +22,3 @@ import codeql.rust.elements.WhereClause
  * ```
  */
 final class Const = Impl::Const;
-
-/**
- * A constant access.
- *
- * For example:
- * ```rust
- * const X: i32 = 42;
- *
- * fn main() {
- *     println!("{}", X);
- * }
- * ```
- */
-final class ConstAccess = Impl::ConstAccess;
