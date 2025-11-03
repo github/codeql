@@ -184,8 +184,8 @@ with CodeQL() as codeql:
                         sys.exit("You can use '--ignore-missing-query-packs' to ignore this error")
 
                 # Exception for the code-quality suites, which might be empty, but must be resolvable.
-                if pack == 'code-quality' and queries_subp == '':
-                    print(f'Warning: skipping empty suite code-quality', file=sys.stderr)
+                if pack in ['code-quality', 'code-quality-extended'] and queries_subp == '':
+                    print(f'Warning: skipping empty suite {pack}', file=sys.stderr)
                     continue
 
                 # Investigate metadata for every query by using 'codeql resolve metadata'
