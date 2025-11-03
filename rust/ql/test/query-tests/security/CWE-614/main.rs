@@ -188,9 +188,63 @@ fn test_qhelp_examples() {
     }
 }
 
+fn test_actix_web() {
+    // actix-web re-exports the cookie crate
+    use actix_web::cookie::Cookie as ActixCookie;
+
+    // secure set to false
+    let cookie1 = ActixCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
+    println!("actix-web cookie1 = '{}'", cookie1.to_string());
+
+    // secure set to true
+    let cookie2 = ActixCookie::build("name", "value").secure(true).finish(); // good
+    println!("actix-web cookie2 = '{}'", cookie2.to_string());
+
+    // secure left as default
+    let cookie3 = ActixCookie::build("name", "value").finish(); // $ Alert[rust/insecure-cookie]
+    println!("actix-web cookie3 = '{}'", cookie3.to_string());
+}
+
+fn test_poem() {
+    use poem::web::cookie::Cookie as PoemCookie;
+
+    // secure set to false
+    let cookie1 = PoemCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
+    println!("poem cookie1 = '{}'", cookie1.to_string());
+
+    // secure set to true
+    let cookie2 = PoemCookie::build("name", "value").secure(true).finish(); // good
+    println!("poem cookie2 = '{}'", cookie2.to_string());
+
+    // secure left as default
+    let cookie3 = PoemCookie::build("name", "value").finish(); // $ Alert[rust/insecure-cookie]
+    println!("poem cookie3 = '{}'", cookie3.to_string());
+}
+
+fn test_http_types() {
+    use http_types::Cookie as HttpTypesCookie;
+
+    // secure set to false
+    let mut cookie1 = HttpTypesCookie::new("name", "value");
+    cookie1.set_secure(false); // $ Source
+    println!("http-types cookie1 = '{}'", cookie1.to_string()); // $ Alert[rust/insecure-cookie]
+
+    // secure set to true
+    let mut cookie2 = HttpTypesCookie::new("name", "value");
+    cookie2.set_secure(true); // good
+    println!("http-types cookie2 = '{}'", cookie2.to_string());
+
+    // secure left as default
+    let cookie3 = HttpTypesCookie::new("name", "value"); // $ Source
+    println!("http-types cookie3 = '{}'", cookie3.to_string()); // $ Alert[rust/insecure-cookie]
+}
+
 fn main() {
     test_cookie(true);
     test_cookie(false);
     test_biscotti();
     test_qhelp_examples();
+    test_actix_web();
+    test_poem();
+    test_http_types();
 }
