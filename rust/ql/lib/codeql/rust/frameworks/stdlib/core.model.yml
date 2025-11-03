@@ -26,6 +26,9 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Pin
       - ["core::pin::Pin", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue", "value", "manual"]
