@@ -65,35 +65,28 @@
 
           <p>
                The following example shows two functions for checking whether the hash
-               of a certificate matches a known value -- to prevent tampering.
+               of a secret matches a known value.
 
-               The first function uses MD5 that is known to be vulnerable to collision attacks.
+               The first function uses SHA-1 that is known to be vulnerable to collision attacks.
 
                The second function uses SHA-256 that is a strong cryptographic hashing function.
           </p>
 
-          <sample src="examples/weak_certificate_hashing.rb" />
+          <sample src="examples/WeakSecretHashing.go" />
 
      </example>
      <example>
           <p>
                The following example shows two functions for hashing passwords.
 
-               The first function uses SHA-256 to hash passwords. Although SHA-256 is a
-               strong cryptographic hash function, it is not suitable for password
+               The first example uses SHA-256 to hash passwords. Although
+               SHA-256 is a strong cryptographic hash function, it is not suitable for password
                hashing since it is not computationally expensive.
+
+               The second function uses PBKDF2, which is a strong password hashing algorithm.
           </p>
 
-          <sample src="examples/weak_password_hashing_bad.rb" />
-
-
-          <p>
-               The second function uses Argon2 (through the <code>argon2</code>
-               gem), which is a strong password hashing algorithm (and
-               includes a per-password salt by default).
-          </p>
-
-          <sample src="examples/weak_password_hashing_good.rb" />
+          <sample src="examples/WeakPasswordHashing.go" />
 
      </example>
 

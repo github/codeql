@@ -28,10 +28,10 @@
      <example>
 
           <p>
-               The following code uses the different packages to encrypt/hash 
-               some secret data. The first few examples uses DES, MD5, RC4, and SHA1, 
-               which are older algorithms that are now considered weak. The following
-               examples use AES and SHA256, which are stronger, more modern algorithms.
+               The following code uses the different packages to encrypt
+               some secret data. The first example uses DES,
+               which is an older algorithm that is now considered weak. The following
+               example uses AES, which is a stronger, more modern algorithm.
           </p>
 
           <sample src="examples/Crypto.go" />
