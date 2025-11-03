@@ -1927,8 +1927,6 @@ module API {
           or
           name = any(DataFlow::PropRef pr).getPropertyName()
           or
-          AccessPath::isAssignedInUniqueFile(name)
-          or
           exists(AccessPath::getAnAssignmentTo(_, name))
           or
           name = DataFlow::PseudoProperties::arrayLikeElement()
