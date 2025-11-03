@@ -124,34 +124,34 @@ Type getAssocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition 
  *
  * ```rust
  * trait T1 {
- *   fn m1(self);              // self1
+ *   fn m1(self);              // T1::m1
  *
- *   fn m2(self) { ... }       // self2
+ *   fn m2(self) { ... }       // T1::m2
  * }
  *
  * trait T2 : T1 {
- *   fn m3(self);              // self3
+ *   fn m3(self);              // T2::m3
  * }
  *
  * impl T1 for X {
- *   fn m1(self) { ... }       // self4
+ *   fn m1(self) { ... }       // X::m1
  * }
  *
  * impl T2 for X {
- *   fn m3(self) { ... }       // self5
+ *   fn m3(self) { ... }       // X::m3
  * }
  * ```
  *
- * f    | `impl` or trait | pos    | type
- * ---- | --------------- | ------ | ----
- * `m1` | `trait T1`      | `self` | `T1`
- * `m1` | `trait T2`      | `self` | `T2`
- * `m2` | `trait T1`      | `self` | `T1`
- * `m2` | `trait T2`      | `self` | `T2`
- * `m2` | `impl T1 for X` | `self` | `X`
- * `m3` | `trait T2`      | `self` | `T2`
- * `m4` | `impl T2 for X` | `self` | `X`
- * `m5` | `impl T2 for X` | `self` | `X`
+ * f        | `impl` or trait | pos    | type
+ * -------- | --------------- | ------ | ----
+ * `T1::m1` | `trait T1`      | `self` | `T1`
+ * `T1::m1` | `trait T2`      | `self` | `T2`
+ * `T1::m2` | `trait T1`      | `self` | `T1`
+ * `T1::m2` | `trait T2`      | `self` | `T2`
+ * `T1::m2` | `impl T1 for X` | `self` | `X`
+ * `T2::m3` | `trait T2`      | `self` | `T2`
+ * `X::m1`  | `impl T1 for X` | `self` | `X`
+ * `X::m3`  | `impl T2 for X` | `self` | `X`
  */
 class AssocFunctionType extends MkAssocFunctionType {
   /**

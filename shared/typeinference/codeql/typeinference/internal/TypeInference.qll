@@ -449,8 +449,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * - `abs` is a type abstraction that introduces type variables that are
      *   free in `condition` and `constraint`,
      * - and for every instantiation of the type parameters from `abs` the
-     *   resulting `condition` satisifies the constraint given by `constraint`.
-     * - `transitive` corresponds to wether any further constraints satisifed
+     *   resulting `condition` satisfies the constraint given by `constraint`.
+     * - `transitive` corresponds to whether any further constraints satisfied
      *   through `constraint` also applies to `condition`.
      *
      * Example in C#:
