@@ -21,8 +21,6 @@ private module HashConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof HashAlgorithmInit }
 
   predicate isSink(DataFlow::Node sink) { any() }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks the flow of hash algorithms. */
@@ -50,8 +48,6 @@ private module EncryptionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(BlockModeInit nbcm).step(node1, node2)
   }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -39,6 +39,8 @@ module NormalHashFunctionFlow {
       // make sinks barriers so that we only report the closest instance
       isSink(node)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   import TaintTracking::Global<Config>
@@ -70,6 +72,8 @@ module ComputationallyExpensiveHashFunctionFlow {
       // make sinks barriers so that we only report the closest instance
       isSink(node)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   import TaintTracking::Global<Config>
