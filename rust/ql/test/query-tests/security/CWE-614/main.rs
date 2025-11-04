@@ -194,16 +194,23 @@ fn test_actix_web() {
     let mut jar = actix_web::cookie::CookieJar::new();
 
     // secure set to false
+    ActixCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
+    ActixCookie::build("name", "value").secure(false).path("/").finish(); // $ Alert[rust/insecure-cookie]
+
     let mut cookie1 = ActixCookie::new("name", "value"); // $ Source
     cookie1.set_secure(false); // $ Source
     jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
+    ActixCookie::build("name", "value").secure(true).finish(); // good
+
     let mut cookie2 = ActixCookie::new("name", "value");
     cookie2.set_secure(true); // good
     jar.add(cookie2.clone());
 
     // secure left as default
+    ActixCookie::build("name", "value").finish(); // $ Alert[rust/insecure-cookie]
+
     let cookie3 = ActixCookie::new("name", "value"); // $ Source
     jar.add(cookie3.clone()); // $ Alert[rust/insecure-cookie]
 }
@@ -232,16 +239,23 @@ fn test_http_types() {
     let mut jar = http_types::cookies::CookieJar::default();
 
     // secure set to false
+    HttpTypesCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
+    HttpTypesCookie::build("name", "value").secure(false).path("/").finish(); // $ Alert[rust/insecure-cookie]
+
     let mut cookie1 = HttpTypesCookie::new("name", "value"); // $ Source
     cookie1.set_secure(false); // $ Source
     jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
+    HttpTypesCookie::build("name", "value").secure(true).finish(); // good
+
     let mut cookie2 = HttpTypesCookie::new("name", "value");
     cookie2.set_secure(true); // good
     jar.add(cookie2.clone());
 
     // secure left as default
+    HttpTypesCookie::build("name", "value").finish(); // $ Alert[rust/insecure-cookie]
+
     let cookie3 = HttpTypesCookie::new("name", "value"); // $ Source
     jar.add(cookie3.clone()); // $ Alert[rust/insecure-cookie]
 }
