@@ -213,6 +213,10 @@ fn test_actix_web() {
 
     let cookie3 = ActixCookie::new("name", "value"); // $ Source
     jar.add(cookie3.clone()); // $ Alert[rust/insecure-cookie]
+
+    // secure reset to None
+    cookie2.set_secure(None); // $ Source
+    jar.add(cookie2.clone()); // $ Alert[rust/insecure-cookie]
 }
 
 fn test_poem() {
@@ -271,6 +275,10 @@ fn test_http_types() {
 
     let cookie3 = HttpTypesCookie::new("name", "value"); // $ Source
     jar.add(cookie3.clone()); // $ Alert[rust/insecure-cookie]
+
+    // secure reset to None
+    cookie2.set_secure(None); // $ Source
+    jar.add(cookie2.clone()); // $ Alert[rust/insecure-cookie]
 }
 
 fn main() {

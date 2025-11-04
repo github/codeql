@@ -87,15 +87,19 @@
 | main.rs:202:9:202:11 | add | main.rs:201:5:201:11 | cookie1 | main.rs:202:9:202:11 | add | Cookie attribute 'Secure' is not set to true. |
 | main.rs:212:41:212:46 | finish | main.rs:212:5:212:22 | ...::build | main.rs:212:41:212:46 | finish | Cookie attribute 'Secure' is not set to true. |
 | main.rs:215:9:215:11 | add | main.rs:214:19:214:34 | ...::new | main.rs:215:9:215:11 | add | Cookie attribute 'Secure' is not set to true. |
-| main.rs:255:59:255:64 | finish | main.rs:255:5:255:26 | ...::build | main.rs:255:59:255:64 | finish | Cookie attribute 'Secure' is not set to true. |
-| main.rs:255:59:255:64 | finish | main.rs:255:5:255:43 | ...::build(...) | main.rs:255:59:255:64 | finish | Cookie attribute 'Secure' is not set to true. |
-| main.rs:256:69:256:74 | finish | main.rs:256:5:256:26 | ...::build | main.rs:256:69:256:74 | finish | Cookie attribute 'Secure' is not set to true. |
-| main.rs:256:69:256:74 | finish | main.rs:256:5:256:43 | ...::build(...) | main.rs:256:69:256:74 | finish | Cookie attribute 'Secure' is not set to true. |
-| main.rs:260:9:260:11 | add | main.rs:258:23:258:42 | ...::new | main.rs:260:9:260:11 | add | Cookie attribute 'Secure' is not set to true. |
-| main.rs:260:9:260:11 | add | main.rs:259:5:259:11 | [SSA] cookie1 | main.rs:260:9:260:11 | add | Cookie attribute 'Secure' is not set to true. |
-| main.rs:260:9:260:11 | add | main.rs:259:5:259:11 | cookie1 | main.rs:260:9:260:11 | add | Cookie attribute 'Secure' is not set to true. |
-| main.rs:270:45:270:50 | finish | main.rs:270:5:270:26 | ...::build | main.rs:270:45:270:50 | finish | Cookie attribute 'Secure' is not set to true. |
-| main.rs:273:9:273:11 | add | main.rs:272:19:272:38 | ...::new | main.rs:273:9:273:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:219:9:219:11 | add | main.rs:218:5:218:11 | [SSA] cookie2 | main.rs:219:9:219:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:219:9:219:11 | add | main.rs:218:5:218:11 | cookie2 | main.rs:219:9:219:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:259:59:259:64 | finish | main.rs:259:5:259:26 | ...::build | main.rs:259:59:259:64 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:259:59:259:64 | finish | main.rs:259:5:259:43 | ...::build(...) | main.rs:259:59:259:64 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:260:69:260:74 | finish | main.rs:260:5:260:26 | ...::build | main.rs:260:69:260:74 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:260:69:260:74 | finish | main.rs:260:5:260:43 | ...::build(...) | main.rs:260:69:260:74 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:264:9:264:11 | add | main.rs:262:23:262:42 | ...::new | main.rs:264:9:264:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:264:9:264:11 | add | main.rs:263:5:263:11 | [SSA] cookie1 | main.rs:264:9:264:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:264:9:264:11 | add | main.rs:263:5:263:11 | cookie1 | main.rs:264:9:264:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:274:45:274:50 | finish | main.rs:274:5:274:26 | ...::build | main.rs:274:45:274:50 | finish | Cookie attribute 'Secure' is not set to true. |
+| main.rs:277:9:277:11 | add | main.rs:276:19:276:38 | ...::new | main.rs:277:9:277:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:281:9:281:11 | add | main.rs:280:5:280:11 | [SSA] cookie2 | main.rs:281:9:281:11 | add | Cookie attribute 'Secure' is not set to true. |
+| main.rs:281:9:281:11 | add | main.rs:280:5:280:11 | cookie2 | main.rs:281:9:281:11 | add | Cookie attribute 'Secure' is not set to true. |
 edges
 | main.rs:8:19:8:31 | ...::build | main.rs:8:19:8:50 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
 | main.rs:8:19:8:50 | ...::build(...) | main.rs:8:19:8:64 | ... .secure(...) | provenance | MaD:41 |
@@ -357,31 +361,43 @@ edges
 | main.rs:214:19:214:51 | ...::new(...) | main.rs:214:9:214:15 | cookie3 | provenance |  |
 | main.rs:215:13:215:19 | cookie3 | main.rs:215:13:215:27 | cookie3.clone() | provenance | MaD:17 |
 | main.rs:215:13:215:27 | cookie3.clone() | main.rs:215:9:215:11 | add | provenance | MaD:4 Sink:MaD:4 |
-| main.rs:255:5:255:26 | ...::build | main.rs:255:5:255:43 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
-| main.rs:255:5:255:43 | ...::build(...) | main.rs:255:5:255:57 | ... .secure(...) | provenance | MaD:41 |
-| main.rs:255:5:255:57 | ... .secure(...) | main.rs:255:59:255:64 | finish | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:256:5:256:26 | ...::build | main.rs:256:5:256:43 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
-| main.rs:256:5:256:43 | ...::build(...) | main.rs:256:5:256:57 | ... .secure(...) | provenance | MaD:41 |
-| main.rs:256:5:256:57 | ... .secure(...) | main.rs:256:5:256:67 | ... .path(...) | provenance | MaD:37 |
-| main.rs:256:5:256:67 | ... .path(...) | main.rs:256:69:256:74 | finish | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:258:9:258:19 | mut cookie1 | main.rs:260:13:260:19 | cookie1 | provenance |  |
-| main.rs:258:9:258:19 | mut cookie1 | main.rs:260:13:260:27 | cookie1.clone() | provenance | MaD:17 |
-| main.rs:258:23:258:42 | ...::new | main.rs:258:23:258:59 | ...::new(...) | provenance | Src:MaD:15 MaD:15 |
-| main.rs:258:23:258:59 | ...::new(...) | main.rs:258:9:258:19 | mut cookie1 | provenance |  |
-| main.rs:259:5:259:11 | [SSA] cookie1 | main.rs:260:13:260:19 | cookie1 | provenance |  |
-| main.rs:259:5:259:11 | [SSA] cookie1 | main.rs:260:13:260:27 | cookie1.clone() | provenance | MaD:17 |
-| main.rs:259:5:259:11 | cookie1 | main.rs:260:13:260:19 | cookie1 | provenance |  |
-| main.rs:259:5:259:11 | cookie1 | main.rs:260:13:260:27 | cookie1.clone() | provenance | MaD:17 |
-| main.rs:260:13:260:19 | cookie1 | main.rs:260:13:260:27 | cookie1.clone() | provenance | MaD:17 |
-| main.rs:260:13:260:27 | cookie1.clone() | main.rs:260:9:260:11 | add | provenance | MaD:4 Sink:MaD:4 |
-| main.rs:270:5:270:26 | ...::build | main.rs:270:5:270:43 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
-| main.rs:270:5:270:43 | ...::build(...) | main.rs:270:45:270:50 | finish | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:272:9:272:15 | cookie3 | main.rs:273:13:273:19 | cookie3 | provenance |  |
-| main.rs:272:9:272:15 | cookie3 | main.rs:273:13:273:27 | cookie3.clone() | provenance | MaD:17 |
-| main.rs:272:19:272:38 | ...::new | main.rs:272:19:272:55 | ...::new(...) | provenance | Src:MaD:15 MaD:15 |
-| main.rs:272:19:272:55 | ...::new(...) | main.rs:272:9:272:15 | cookie3 | provenance |  |
-| main.rs:273:13:273:19 | cookie3 | main.rs:273:13:273:27 | cookie3.clone() | provenance | MaD:17 |
-| main.rs:273:13:273:27 | cookie3.clone() | main.rs:273:9:273:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:218:5:218:11 | [SSA] cookie2 | main.rs:219:13:219:19 | cookie2 | provenance |  |
+| main.rs:218:5:218:11 | [SSA] cookie2 | main.rs:219:13:219:27 | cookie2.clone() | provenance | MaD:17 |
+| main.rs:218:5:218:11 | cookie2 | main.rs:219:13:219:19 | cookie2 | provenance |  |
+| main.rs:218:5:218:11 | cookie2 | main.rs:219:13:219:27 | cookie2.clone() | provenance | MaD:17 |
+| main.rs:219:13:219:19 | cookie2 | main.rs:219:13:219:27 | cookie2.clone() | provenance | MaD:17 |
+| main.rs:219:13:219:27 | cookie2.clone() | main.rs:219:9:219:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:259:5:259:26 | ...::build | main.rs:259:5:259:43 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:259:5:259:43 | ...::build(...) | main.rs:259:5:259:57 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:259:5:259:57 | ... .secure(...) | main.rs:259:59:259:64 | finish | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:260:5:260:26 | ...::build | main.rs:260:5:260:43 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:260:5:260:43 | ...::build(...) | main.rs:260:5:260:57 | ... .secure(...) | provenance | MaD:41 |
+| main.rs:260:5:260:57 | ... .secure(...) | main.rs:260:5:260:67 | ... .path(...) | provenance | MaD:37 |
+| main.rs:260:5:260:67 | ... .path(...) | main.rs:260:69:260:74 | finish | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:262:9:262:19 | mut cookie1 | main.rs:264:13:264:19 | cookie1 | provenance |  |
+| main.rs:262:9:262:19 | mut cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:17 |
+| main.rs:262:23:262:42 | ...::new | main.rs:262:23:262:59 | ...::new(...) | provenance | Src:MaD:15 MaD:15 |
+| main.rs:262:23:262:59 | ...::new(...) | main.rs:262:9:262:19 | mut cookie1 | provenance |  |
+| main.rs:263:5:263:11 | [SSA] cookie1 | main.rs:264:13:264:19 | cookie1 | provenance |  |
+| main.rs:263:5:263:11 | [SSA] cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:17 |
+| main.rs:263:5:263:11 | cookie1 | main.rs:264:13:264:19 | cookie1 | provenance |  |
+| main.rs:263:5:263:11 | cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:17 |
+| main.rs:264:13:264:19 | cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:17 |
+| main.rs:264:13:264:27 | cookie1.clone() | main.rs:264:9:264:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:274:5:274:26 | ...::build | main.rs:274:5:274:43 | ...::build(...) | provenance | Src:MaD:13 MaD:13 |
+| main.rs:274:5:274:43 | ...::build(...) | main.rs:274:45:274:50 | finish | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:276:9:276:15 | cookie3 | main.rs:277:13:277:19 | cookie3 | provenance |  |
+| main.rs:276:9:276:15 | cookie3 | main.rs:277:13:277:27 | cookie3.clone() | provenance | MaD:17 |
+| main.rs:276:19:276:38 | ...::new | main.rs:276:19:276:55 | ...::new(...) | provenance | Src:MaD:15 MaD:15 |
+| main.rs:276:19:276:55 | ...::new(...) | main.rs:276:9:276:15 | cookie3 | provenance |  |
+| main.rs:277:13:277:19 | cookie3 | main.rs:277:13:277:27 | cookie3.clone() | provenance | MaD:17 |
+| main.rs:277:13:277:27 | cookie3.clone() | main.rs:277:9:277:11 | add | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:280:5:280:11 | [SSA] cookie2 | main.rs:281:13:281:19 | cookie2 | provenance |  |
+| main.rs:280:5:280:11 | [SSA] cookie2 | main.rs:281:13:281:27 | cookie2.clone() | provenance | MaD:17 |
+| main.rs:280:5:280:11 | cookie2 | main.rs:281:13:281:19 | cookie2 | provenance |  |
+| main.rs:280:5:280:11 | cookie2 | main.rs:281:13:281:27 | cookie2.clone() | provenance | MaD:17 |
+| main.rs:281:13:281:19 | cookie2 | main.rs:281:13:281:27 | cookie2.clone() | provenance | MaD:17 |
+| main.rs:281:13:281:27 | cookie2.clone() | main.rs:281:9:281:11 | add | provenance | MaD:4 Sink:MaD:4 |
 models
 | 1 | Sink: <biscotti::response_cookies::ResponseCookies>::insert; Argument[0]; cookie-use |
 | 2 | Sink: <cookie::builder::CookieBuilder>::build; Argument[self]; cookie-use |
@@ -688,30 +704,40 @@ nodes
 | main.rs:215:9:215:11 | add | semmle.label | add |
 | main.rs:215:13:215:19 | cookie3 | semmle.label | cookie3 |
 | main.rs:215:13:215:27 | cookie3.clone() | semmle.label | cookie3.clone() |
-| main.rs:255:5:255:26 | ...::build | semmle.label | ...::build |
-| main.rs:255:5:255:43 | ...::build(...) | semmle.label | ...::build(...) |
-| main.rs:255:5:255:57 | ... .secure(...) | semmle.label | ... .secure(...) |
-| main.rs:255:59:255:64 | finish | semmle.label | finish |
-| main.rs:256:5:256:26 | ...::build | semmle.label | ...::build |
-| main.rs:256:5:256:43 | ...::build(...) | semmle.label | ...::build(...) |
-| main.rs:256:5:256:57 | ... .secure(...) | semmle.label | ... .secure(...) |
-| main.rs:256:5:256:67 | ... .path(...) | semmle.label | ... .path(...) |
-| main.rs:256:69:256:74 | finish | semmle.label | finish |
-| main.rs:258:9:258:19 | mut cookie1 | semmle.label | mut cookie1 |
-| main.rs:258:23:258:42 | ...::new | semmle.label | ...::new |
-| main.rs:258:23:258:59 | ...::new(...) | semmle.label | ...::new(...) |
-| main.rs:259:5:259:11 | [SSA] cookie1 | semmle.label | [SSA] cookie1 |
-| main.rs:259:5:259:11 | cookie1 | semmle.label | cookie1 |
-| main.rs:260:9:260:11 | add | semmle.label | add |
-| main.rs:260:13:260:19 | cookie1 | semmle.label | cookie1 |
-| main.rs:260:13:260:27 | cookie1.clone() | semmle.label | cookie1.clone() |
-| main.rs:270:5:270:26 | ...::build | semmle.label | ...::build |
-| main.rs:270:5:270:43 | ...::build(...) | semmle.label | ...::build(...) |
-| main.rs:270:45:270:50 | finish | semmle.label | finish |
-| main.rs:272:9:272:15 | cookie3 | semmle.label | cookie3 |
-| main.rs:272:19:272:38 | ...::new | semmle.label | ...::new |
-| main.rs:272:19:272:55 | ...::new(...) | semmle.label | ...::new(...) |
-| main.rs:273:9:273:11 | add | semmle.label | add |
-| main.rs:273:13:273:19 | cookie3 | semmle.label | cookie3 |
-| main.rs:273:13:273:27 | cookie3.clone() | semmle.label | cookie3.clone() |
+| main.rs:218:5:218:11 | [SSA] cookie2 | semmle.label | [SSA] cookie2 |
+| main.rs:218:5:218:11 | cookie2 | semmle.label | cookie2 |
+| main.rs:219:9:219:11 | add | semmle.label | add |
+| main.rs:219:13:219:19 | cookie2 | semmle.label | cookie2 |
+| main.rs:219:13:219:27 | cookie2.clone() | semmle.label | cookie2.clone() |
+| main.rs:259:5:259:26 | ...::build | semmle.label | ...::build |
+| main.rs:259:5:259:43 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:259:5:259:57 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:259:59:259:64 | finish | semmle.label | finish |
+| main.rs:260:5:260:26 | ...::build | semmle.label | ...::build |
+| main.rs:260:5:260:43 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:260:5:260:57 | ... .secure(...) | semmle.label | ... .secure(...) |
+| main.rs:260:5:260:67 | ... .path(...) | semmle.label | ... .path(...) |
+| main.rs:260:69:260:74 | finish | semmle.label | finish |
+| main.rs:262:9:262:19 | mut cookie1 | semmle.label | mut cookie1 |
+| main.rs:262:23:262:42 | ...::new | semmle.label | ...::new |
+| main.rs:262:23:262:59 | ...::new(...) | semmle.label | ...::new(...) |
+| main.rs:263:5:263:11 | [SSA] cookie1 | semmle.label | [SSA] cookie1 |
+| main.rs:263:5:263:11 | cookie1 | semmle.label | cookie1 |
+| main.rs:264:9:264:11 | add | semmle.label | add |
+| main.rs:264:13:264:19 | cookie1 | semmle.label | cookie1 |
+| main.rs:264:13:264:27 | cookie1.clone() | semmle.label | cookie1.clone() |
+| main.rs:274:5:274:26 | ...::build | semmle.label | ...::build |
+| main.rs:274:5:274:43 | ...::build(...) | semmle.label | ...::build(...) |
+| main.rs:274:45:274:50 | finish | semmle.label | finish |
+| main.rs:276:9:276:15 | cookie3 | semmle.label | cookie3 |
+| main.rs:276:19:276:38 | ...::new | semmle.label | ...::new |
+| main.rs:276:19:276:55 | ...::new(...) | semmle.label | ...::new(...) |
+| main.rs:277:9:277:11 | add | semmle.label | add |
+| main.rs:277:13:277:19 | cookie3 | semmle.label | cookie3 |
+| main.rs:277:13:277:27 | cookie3.clone() | semmle.label | cookie3.clone() |
+| main.rs:280:5:280:11 | [SSA] cookie2 | semmle.label | [SSA] cookie2 |
+| main.rs:280:5:280:11 | cookie2 | semmle.label | cookie2 |
+| main.rs:281:9:281:11 | add | semmle.label | add |
+| main.rs:281:13:281:19 | cookie2 | semmle.label | cookie2 |
+| main.rs:281:13:281:27 | cookie2.clone() | semmle.label | cookie2.clone() |
 subpaths
