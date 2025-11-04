@@ -9,7 +9,6 @@
  */
 
 import go
-import semmle.go.dataflow.internal.DataFlowPrivate
 private import semmle.go.security.SensitiveActions
 
 /**
