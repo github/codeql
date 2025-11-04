@@ -498,9 +498,12 @@ public class AutoBuild {
         // ensuring that the finalize steps detects that no code was seen.
         Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
         try {
-          FileUtil8.recursiveDelete(srcFolder);
+          // Non-recursive delete because "src/" should be empty.
+          FileUtil8.delete(srcFolder);
         } catch (NoSuchFileException e) {
           Exceptions.ignore(e, "the directory did not exist");
+        } catch (DirectoryNotEmptyException e) {
+          Exceptions.ignore(e, "just leave the directory if it is not empty");
         }
         return 0;
       }
