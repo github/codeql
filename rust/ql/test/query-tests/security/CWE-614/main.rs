@@ -191,56 +191,59 @@ fn test_qhelp_examples() {
 fn test_actix_web() {
     // actix-web re-exports the cookie crate
     use actix_web::cookie::Cookie as ActixCookie;
+    let mut jar = actix_web::cookie::CookieJar::new();
 
     // secure set to false
-    let mut cookie1 = ActixCookie::new("name", "value");
-    cookie1.set_secure(false); // $ MISSING: Source
-    println!("actix-web cookie1 = '{}'", cookie1.to_string()); // $ MISSING: Alert[rust/insecure-cookie]
+    let mut cookie1 = ActixCookie::new("name", "value"); // $ Source
+    cookie1.set_secure(false); // $ Source
+    jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
     let mut cookie2 = ActixCookie::new("name", "value");
     cookie2.set_secure(true); // good
-    println!("actix-web cookie2 = '{}'", cookie2.to_string());
+    jar.add(cookie2.clone());
 
     // secure left as default
-    let cookie3 = ActixCookie::new("name", "value"); // $ MISSING: Source
-    println!("actix-web cookie3 = '{}'", cookie3.to_string()); // $ MISSING: Alert[rust/insecure-cookie]
+    let cookie3 = ActixCookie::new("name", "value"); // $ Source
+    jar.add(cookie3.clone()); // $ Alert[rust/insecure-cookie]
 }
 
 fn test_poem() {
     use poem::web::cookie::Cookie as PoemCookie;
+    let mut jar = poem::web::cookie::CookieJar::default();
 
     // secure set to false
     let mut cookie1 = PoemCookie::new_with_str("name", "value");
     cookie1.set_secure(false); // $ MISSING: Source
-    println!("poem cookie1 = '{}'", cookie1.to_string()); // $ MISSING: Alert[rust/insecure-cookie]
+    jar.add(cookie1.clone()); // $ MISSING: Alert[rust/insecure-cookie]
 
     // secure set to true
     let mut cookie2 = PoemCookie::new_with_str("name", "value");
     cookie2.set_secure(true); // good
-    println!("poem cookie2 = '{}'", cookie2.to_string());
+    jar.add(cookie2.clone());
 
     // secure left as default
     let cookie3 = PoemCookie::new_with_str("name", "value"); // $ MISSING: Source
-    println!("poem cookie3 = '{}'", cookie3.to_string()); // $ MISSING: Alert[rust/insecure-cookie]
+    jar.add(cookie3.clone()); // $ MISSING: Alert[rust/insecure-cookie]
 }
 
 fn test_http_types() {
     use http_types::Cookie as HttpTypesCookie;
+    let mut jar = http_types::cookies::CookieJar::default();
 
     // secure set to false
-    let mut cookie1 = HttpTypesCookie::new("name", "value");
-    cookie1.set_secure(false); // $ MISSING: Source
-    println!("http-types cookie1 = '{}'", cookie1.to_string()); // $ MISSING: Alert[rust/insecure-cookie]
+    let mut cookie1 = HttpTypesCookie::new("name", "value"); // $ Source
+    cookie1.set_secure(false); // $ Source
+    jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
     let mut cookie2 = HttpTypesCookie::new("name", "value");
     cookie2.set_secure(true); // good
-    println!("http-types cookie2 = '{}'", cookie2.to_string());
+    jar.add(cookie2.clone());
 
     // secure left as default
-    let cookie3 = HttpTypesCookie::new("name", "value"); // $ MISSING: Source
-    println!("http-types cookie3 = '{}'", cookie3.to_string()); // $ MISSING: Alert[rust/insecure-cookie]
+    let cookie3 = HttpTypesCookie::new("name", "value"); // $ Source
+    jar.add(cookie3.clone()); // $ Alert[rust/insecure-cookie]
 }
 
 fn main() {
