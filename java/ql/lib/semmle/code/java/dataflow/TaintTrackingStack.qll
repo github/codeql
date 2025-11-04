@@ -8,11 +8,10 @@ private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
 private import codeql.dataflowstack.TaintTrackingStack as TTS
 
-module TaintTrackingStack = TTS::LanguageTaintTracking<Location, JavaDataFlow, JavaTaintTracking>;
-// private import TTS::TaintTrackingStackMake<> as TaintTrackingStackFactory
+module LanguageTaintTrackingStack = TTS::LanguageTaintTracking<Location, JavaDataFlow, JavaTaintTracking>;
 
 private module TaintTrackingStackInput<DataFlow::ConfigSig Config>
-  implements TaintTrackingStack::TaintTrackingStackSig<Config>
+  implements LanguageTaintTrackingStack::DataFlowGroup<Config>::TaintTrackingStackSig<TaintTracking::Global<Config>>
 {
   private module Flow = TaintTracking::Global<Config>;
 
@@ -31,13 +30,13 @@ private module TaintTrackingStackInput<DataFlow::ConfigSig Config>
   }
 }
 
-module DataFlowStackMake<TaintTrackingStackFactory::DataFlow::ConfigSig Config> {
-  import TaintTrackingStackFactory::FlowStack<Config, TaintTrackingStackInput<Config>>
+module DataFlowStackMake<DataFlow::ConfigSig Config> {
+  import LanguageTaintTrackingStack::FlowStack<TaintTracking::Global<Config>, Config, TaintTrackingStackInput<Config>>
 }
 
 module BiStackAnalysisMake<
-  TaintTrackingStackFactory::DataFlow::ConfigSig ConfigA,
-  TaintTrackingStackFactory::DataFlow::ConfigSig ConfigB>
-{
-  import TaintTrackingStackFactory::BiStackAnalysis<ConfigA, TaintTrackingStackInput<ConfigA>, ConfigB, TaintTrackingStackInput<ConfigB>>
+  DataFlow::ConfigSig ConfigA,
+  DataFlow::ConfigSig ConfigB
+>{
+  import LanguageTaintTrackingStack::BiStackAnalysis<ConfigA, TaintTracking::Global<ConfigA>, TaintTrackingStackInput<ConfigA>, ConfigB, TaintTracking::Global<ConfigB>, TaintTrackingStackInput<ConfigB>>
 }

@@ -8,8 +8,7 @@ private import codeql.util.Location
 /**
  * A Language-initialized grouping of DataFlow types and primitives.
  */
-module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, TT::InputSig<Location, Lang> TTLang>
-{
+module LanguageTaintTracking<LocationSig Location, DF::InputSig<Location> Lang, TT::InputSig<Location, Lang> TTLang>{
   module AbstractDF = DF::Configs<Location, Lang>;
   module AbstractDataFlow = DF::DataFlowMake<Location, Lang>;
   module AbstractTaintFlow = TT::TaintFlowMake<Location, Lang, TTLang>;
