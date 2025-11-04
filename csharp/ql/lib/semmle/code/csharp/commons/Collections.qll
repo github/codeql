@@ -1,4 +1,6 @@
 /** Provides classes for collections. */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.system.Collections

@@ -3,6 +3,8 @@
  *
  * All literals have the common base class `Literal`.
  */
+overlay[local?]
+module;
 
 import Expr
 

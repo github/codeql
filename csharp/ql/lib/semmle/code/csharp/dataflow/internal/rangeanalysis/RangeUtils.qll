@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides predicates for range and modulus analysis.
  */

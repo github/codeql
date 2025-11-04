@@ -1,6 +1,8 @@
 /**
  * Provides classes representing sources of local input.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.windows.Forms

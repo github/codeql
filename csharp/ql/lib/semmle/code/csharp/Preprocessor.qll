@@ -1,6 +1,8 @@
 /**
  * Provides all preprocessor directive classes.
  */
+overlay[local?]
+module;
 
 import Element
 private import semmle.code.csharp.commons.Compilation

@@ -3,6 +3,8 @@
  *
  * All expressions have the common base class `Expr`.
  */
+overlay[local?]
+module;
 
 import Access
 import ArithmeticOperation

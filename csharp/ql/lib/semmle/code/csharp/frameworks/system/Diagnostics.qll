@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `System.Diagnostics`. */
+overlay[local?]
+module;
 
 import semmle.code.csharp.Type
 private import semmle.code.csharp.frameworks.System

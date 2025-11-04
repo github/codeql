@@ -3,6 +3,8 @@
  *
  * All ASP.NET elements have the common base class `AspElement`.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.commons.QualifiedName

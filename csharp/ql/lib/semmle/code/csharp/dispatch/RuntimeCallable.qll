@@ -3,6 +3,8 @@
  * those callables that may actually be called at run-time (that is, neither
  * abstract callables nor callables defined in an interface).
  */
+overlay[local?]
+module;
 
 import csharp
 

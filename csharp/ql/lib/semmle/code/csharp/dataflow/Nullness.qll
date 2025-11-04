@@ -16,6 +16,8 @@
  * }
  * ```
  */
+overlay[local?]
+module;
 
 import csharp
 private import ControlFlow

@@ -10,6 +10,8 @@
  * Do not use the predicates in this library directly; use `Type.isImplicitlyConvertibleTo(Type)`
  * instead.
  */
+overlay[local?]
+module;
 
 import Type
 private import semmle.code.csharp.frameworks.System

@@ -1,4 +1,6 @@
 /** Provides classes related to the namespace `System.Xml.XPath`. */
+overlay[local?]
+module;
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Xml as Xml

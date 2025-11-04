@@ -3,6 +3,8 @@
  *
  * All bitwise operations have the common base class `BitwiseOperation`.
  */
+overlay[local?]
+module;
 
 import Expr
 

@@ -1,6 +1,8 @@
 /**
  * Provides the `Element` class, the base class of all C# program elements.
  */
+overlay[local?]
+module;
 
 import Location
 private import semmle.code.csharp.ExprOrStmtParent

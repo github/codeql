@@ -1,4 +1,6 @@
 /** Provides classes related to the namespace `System.Web.Http`. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Web

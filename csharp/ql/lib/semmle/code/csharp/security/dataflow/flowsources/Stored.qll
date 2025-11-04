@@ -1,6 +1,8 @@
 /**
  * Provides classes representing sources of stored data.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.dataflow.internal.ExternalFlow

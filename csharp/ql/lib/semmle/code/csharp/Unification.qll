@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import csharp
 private import Conversion
 private import Caching
@@ -723,6 +726,7 @@ module Unification {
    *
    * Note: This predicate is inlined.
    */
+  overlay[caller?]
   pragma[inline]
   predicate unifiable(Type t1, Type t2) {
     Gvn::unifiable(Gvn::getGlobalValueNumber(t1), Gvn::getGlobalValueNumber(t2))
@@ -737,6 +741,7 @@ module Unification {
    *
    * Note: This predicate is inlined.
    */
+  overlay[caller?]
   pragma[inline]
   predicate subsumes(Type t1, Type t2) {
     Gvn::subsumes(Gvn::getGlobalValueNumber(t1), Gvn::getGlobalValueNumber(t2))

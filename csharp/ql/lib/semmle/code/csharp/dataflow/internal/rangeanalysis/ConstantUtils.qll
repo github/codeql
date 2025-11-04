@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates to represent constant integer expressions.
  */
+overlay[local?]
+module;
 
 private import csharp
 private import Ssa

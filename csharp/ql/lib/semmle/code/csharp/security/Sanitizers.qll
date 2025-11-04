@@ -1,4 +1,6 @@
 /** Provides classes for identifying expressions that might be sanitized. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Net

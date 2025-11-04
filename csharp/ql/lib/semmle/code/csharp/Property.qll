@@ -1,6 +1,8 @@
 /**
  * Provides classes for properties, indexers, and accessors.
  */
+overlay[local?]
+module;
 
 import Member
 import Stmt

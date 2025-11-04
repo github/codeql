@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `System.Data.SqlClient`. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Data

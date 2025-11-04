@@ -3,6 +3,8 @@
  *
  * Provides logic for calculating the child relation on expressions and statements.
  */
+overlay[local?]
+module;
 
 import csharp
 private import internal.Location

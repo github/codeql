@@ -1,6 +1,8 @@
 /**
  * Provides classes representing HTML data flow sinks.
  */
+overlay[local?]
+module;
 
 import csharp
 private import Remote

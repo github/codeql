@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import csharp
 import Diagnostics
 

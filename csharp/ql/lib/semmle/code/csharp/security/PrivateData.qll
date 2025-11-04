@@ -8,6 +8,8 @@
  * This library is not concerned with credentials. See `SensitiveActions` for expressions related
  * to credentials.
  */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.system.windows.Forms

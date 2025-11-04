@@ -2,6 +2,8 @@
  * Provides a taint-tracking configuration for reasoning about hard-coded
  * symmetric encryption keys.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.dataflow.internal.ExternalFlow

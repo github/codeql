@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides C#-specific definitions for use in sign analysis.
  */
@@ -181,6 +184,7 @@ private module Impl {
   }
 
   /** Returns possible signs of `f` based on the declaration. */
+  overlay[caller?]
   pragma[inline]
   Sign specificFieldSign(Field f) { not exists(f.getInitializer()) and result = TZero() }
 

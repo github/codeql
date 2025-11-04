@@ -3,6 +3,8 @@
  *
  * All assignments have the common base class `Assignment`.
  */
+overlay[local?]
+module;
 
 import Expr
 

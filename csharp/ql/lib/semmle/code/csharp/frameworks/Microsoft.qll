@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `Microsoft`. */
+overlay[local?]
+module;
 
 import csharp
 

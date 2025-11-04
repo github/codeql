@@ -1,4 +1,6 @@
 /** Provides definitions related to Windows Communication Foundation (WCF). */
+overlay[local?]
+module;
 
 import csharp
 

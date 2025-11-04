@@ -1,4 +1,6 @@
 /** Common definitions for queries checking for access control measures on action methods. */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore

@@ -1,4 +1,6 @@
 /** Provides definitions related to the Microsoft Visual Studio Unit Testing Framework. */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.Test

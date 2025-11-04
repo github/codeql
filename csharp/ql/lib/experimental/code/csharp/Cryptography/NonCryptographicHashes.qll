@@ -5,6 +5,8 @@
  * These predicates are intended for helping detect non-cryptographic hashes that may be used
  * in a context that is not appropriate, or for detecting modified hash functions
  */
+overlay[local?]
+module;
 
 import csharp
 private import DataFlow

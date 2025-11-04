@@ -2,6 +2,8 @@
  * Provides classes that define callables that can be overridden or
  * implemented.
  */
+overlay[local?]
+module;
 
 import csharp
 

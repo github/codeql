@@ -1,6 +1,8 @@
 /**
  * Classes for modeling NHibernate.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.System

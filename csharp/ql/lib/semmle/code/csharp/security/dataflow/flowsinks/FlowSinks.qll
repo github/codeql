@@ -1,4 +1,6 @@
 /** Provides classes representing various flow sinks for data flow / taint tracking. */
+overlay[local?]
+module;
 
 private import csharp
 private import semmle.code.csharp.dataflow.internal.ExternalFlow

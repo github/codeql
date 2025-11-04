@@ -1,6 +1,8 @@
 /**
  * Provides classes representing filesystem files and folders.
  */
+overlay[local?]
+module;
 
 private import Comments
 private import codeql.util.FileSystem

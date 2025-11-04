@@ -3,6 +3,8 @@
  *
  * All logical operations have the common base class `LogicalOperation`.
  */
+overlay[local?]
+module;
 
 import Expr
 

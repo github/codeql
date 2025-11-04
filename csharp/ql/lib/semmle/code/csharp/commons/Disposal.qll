@@ -1,6 +1,8 @@
 /**
  * Provides predicates for determining whether variables may be disposed.
  */
+overlay[local?]
+module;
 
 import csharp
 

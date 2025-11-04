@@ -1,4 +1,6 @@
 /** Provides generic utility classes. */
+overlay[local?]
+module;
 
 import csharp
 

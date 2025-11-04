@@ -1,4 +1,6 @@
 /** Provides classes and predicates related to handling test libraries. */
+overlay[local?]
+module;
 
 private import csharp
 

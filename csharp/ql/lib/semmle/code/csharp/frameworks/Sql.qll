@@ -1,4 +1,6 @@
 /** Provides definitions related to SQL frameworks. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Data

@@ -4,6 +4,8 @@
  * For example `stringBuilder.Append(x).Append(y)` is a
  * chained call, where the `Append` method is chained.
  */
+overlay[local?]
+module;
 
 import csharp
 
