@@ -8,7 +8,8 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from Expr e, string name
+from ExprWithPointsTo e, string name
 where e.pointsTo(Value::named(name)) and not name.charAt(_) = "."
 select e

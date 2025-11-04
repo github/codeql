@@ -489,13 +489,18 @@ public class AutoBuild {
         diagnosticsToClose.forEach(DiagnosticWriter::close);
       }
 
-      if (!hasSeenCode()) {
+      // Fail extraction if no relevant files were found.
+      boolean seenRelevantFiles = EnvironmentVariables.isActionsExtractor()
+        ? seenFiles // assume all files are relevant for Actions extractor
+        : hasSeenCode();
+      if (!seenRelevantFiles) {
         if (seenFiles) {
           warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
         } else {
           warn("No JavaScript or TypeScript code found.");
         }
-        // ensuring that the finalize steps detects that no code was seen.
+        // Ensuring that the finalize steps detects that no code was seen.
+        // This is necessary to ensure we don't produce an overlay-base database without externs.
         Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
         try {
           FileUtil8.recursiveDelete(srcFolder);
