@@ -66,6 +66,7 @@ class Element extends @element {
   final Location getLocation() { result = bestLocation(this) }
 
   /** Gets a location of this element, including sources and assemblies. */
+  overlay[global]
   Location getALocation() { none() }
 
   /** Gets the parent of this element, if any. */
