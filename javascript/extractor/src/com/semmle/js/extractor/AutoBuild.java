@@ -490,7 +490,10 @@ public class AutoBuild {
       }
 
       // Fail extraction if no relevant files were found.
-      if (!seenFiles || !hasSeenCode() && !EnvironmentVariables.isActionsExtractor()) {
+      boolean seenRelevantFiles = EnvironmentVariables.isActionsExtractor()
+        ? seenFiles // assume all files are relevant for Actions extractor
+        : hasSeenCode();
+      if (!seenRelevantFiles) {
         if (seenFiles) {
           warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
         } else {
