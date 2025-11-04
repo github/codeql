@@ -6192,48 +6192,170 @@ inferType
 | main.rs:2902:18:2902:29 | { ... } |  | file://:0:0:0:0 | () |
 | main.rs:2902:29:2902:29 | a |  | file://:0:0:0:0 | () |
 | main.rs:2903:9:2903:9 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2912:11:2947:1 | { ... } |  | file://:0:0:0:0 | () |
-| main.rs:2913:5:2913:21 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2914:5:2914:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2915:5:2915:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2915:20:2915:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2915:41:2915:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2916:5:2916:35 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2917:5:2917:41 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2918:5:2918:45 | ...::test(...) |  | file://:0:0:0:0 | () |
-| main.rs:2919:5:2919:30 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2920:5:2920:33 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2921:5:2921:21 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2922:5:2922:27 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2923:5:2923:32 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2924:5:2924:23 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2925:5:2925:36 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2926:5:2926:35 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2927:5:2927:29 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2928:5:2928:23 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2929:5:2929:24 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2930:5:2930:17 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2931:5:2931:18 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2932:5:2932:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
-| main.rs:2932:5:2932:15 | ...::f(...) | Output | file://:0:0:0:0 | () |
-| main.rs:2933:5:2933:19 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2934:5:2934:17 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2935:5:2935:14 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2936:5:2936:27 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2937:5:2937:15 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2938:5:2938:43 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2939:5:2939:15 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2940:5:2940:17 | ...::f(...) |  | file://:0:0:0:0 | () |
-| main.rs:2941:5:2941:23 | ...::test(...) |  | file://:0:0:0:0 | () |
-| main.rs:2942:5:2942:41 | ...::test_all_patterns(...) |  | file://:0:0:0:0 | () |
-| main.rs:2943:5:2943:49 | ...::box_patterns(...) |  | file://:0:0:0:0 | () |
-| main.rs:2944:5:2944:20 | ...::test(...) |  | file://:0:0:0:0 | () |
-| main.rs:2945:5:2945:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
-| main.rs:2945:5:2945:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2945:5:2945:20 | ...::f(...) | T | main.rs:2816:5:2818:5 | dyn MyTrait |
-| main.rs:2945:5:2945:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
-| main.rs:2945:16:2945:19 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:2946:5:2946:23 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2908:16:2955:5 | { ... } |  | file://:0:0:0:0 | () |
+| main.rs:2909:13:2909:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2909:13:2909:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2909:17:2909:20 | None |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2909:17:2909:20 | None | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2910:13:2910:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2910:13:2910:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2910:30:2910:30 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2910:30:2910:30 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2911:13:2911:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2911:17:2911:35 | ...::None |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2912:13:2912:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2912:17:2912:35 | ...::None::<...> |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2914:26:2914:28 | opt |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2914:26:2914:28 | opt | T | main.rs:2914:23:2914:23 | T |
+| main.rs:2914:42:2914:42 | x |  | main.rs:2914:23:2914:23 | T |
+| main.rs:2914:48:2914:49 | { ... } |  | file://:0:0:0:0 | () |
+| main.rs:2916:13:2916:13 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2916:17:2916:20 | None |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2917:9:2917:24 | pin_option(...) |  | file://:0:0:0:0 | () |
+| main.rs:2917:20:2917:20 | x |  | {EXTERNAL LOCATION} | Option |
+| main.rs:2917:23:2917:23 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2924:13:2924:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2924:13:2924:13 | x | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2924:13:2924:13 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2924:17:2924:39 | ...::A {...} |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2924:17:2924:39 | ...::A {...} | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2924:17:2924:39 | ...::A {...} | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2924:37:2924:37 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2925:13:2925:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2925:13:2925:13 | x | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2925:13:2925:13 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2925:40:2925:40 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2925:40:2925:40 | x | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2925:40:2925:40 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2926:13:2926:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2926:13:2926:13 | x | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2926:13:2926:13 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2926:17:2926:52 | ...::A {...} |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2926:17:2926:52 | ...::A {...} | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2926:17:2926:52 | ...::A {...} | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2926:50:2926:50 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2928:13:2928:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2928:13:2928:13 | x | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2928:13:2928:13 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2928:17:2930:9 | ...::B::<...> {...} |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2928:17:2930:9 | ...::B::<...> {...} | T1 | {EXTERNAL LOCATION} | i32 |
+| main.rs:2928:17:2930:9 | ...::B::<...> {...} | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2929:20:2929:32 | ...::new(...) |  | {EXTERNAL LOCATION} | String |
+| main.rs:2932:29:2932:29 | e |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2932:29:2932:29 | e | T1 | main.rs:2932:26:2932:26 | T |
+| main.rs:2932:29:2932:29 | e | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2932:53:2932:53 | x |  | main.rs:2932:26:2932:26 | T |
+| main.rs:2932:59:2932:60 | { ... } |  | file://:0:0:0:0 | () |
+| main.rs:2935:13:2935:13 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2935:13:2935:13 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2935:17:2937:9 | ...::B {...} |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2935:17:2937:9 | ...::B {...} | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2936:20:2936:32 | ...::new(...) |  | {EXTERNAL LOCATION} | String |
+| main.rs:2938:9:2938:27 | pin_my_either(...) |  | file://:0:0:0:0 | () |
+| main.rs:2938:23:2938:23 | x |  | main.rs:2919:9:2922:9 | MyEither |
+| main.rs:2938:23:2938:23 | x | T2 | {EXTERNAL LOCATION} | String |
+| main.rs:2938:26:2938:26 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2940:13:2940:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2940:13:2940:13 | x | E | {EXTERNAL LOCATION} | String |
+| main.rs:2940:13:2940:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2940:17:2940:29 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2940:17:2940:29 | ...::Ok(...) | E | {EXTERNAL LOCATION} | String |
+| main.rs:2940:17:2940:29 | ...::Ok(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2940:28:2940:28 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2941:13:2941:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2941:13:2941:13 | x | E | {EXTERNAL LOCATION} | String |
+| main.rs:2941:13:2941:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2941:38:2941:38 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2941:38:2941:38 | x | E | {EXTERNAL LOCATION} | String |
+| main.rs:2941:38:2941:38 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2942:13:2942:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2942:13:2942:13 | x | E | {EXTERNAL LOCATION} | String |
+| main.rs:2942:13:2942:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2942:17:2942:44 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2942:17:2942:44 | ...::Ok(...) | E | {EXTERNAL LOCATION} | String |
+| main.rs:2942:17:2942:44 | ...::Ok(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2942:43:2942:43 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2943:13:2943:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2943:13:2943:13 | x | E | {EXTERNAL LOCATION} | String |
+| main.rs:2943:13:2943:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2943:17:2943:44 | ...::Ok::<...>(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2943:17:2943:44 | ...::Ok::<...>(...) | E | {EXTERNAL LOCATION} | String |
+| main.rs:2943:17:2943:44 | ...::Ok::<...>(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2943:43:2943:43 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2945:29:2945:31 | res |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2945:29:2945:31 | res | E | main.rs:2945:26:2945:26 | E |
+| main.rs:2945:29:2945:31 | res | T | main.rs:2945:23:2945:23 | T |
+| main.rs:2945:48:2945:48 | x |  | main.rs:2945:26:2945:26 | E |
+| main.rs:2945:54:2945:55 | { ... } |  | file://:0:0:0:0 | () |
+| main.rs:2947:13:2947:13 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2947:13:2947:13 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2947:17:2947:29 | ...::Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2947:17:2947:29 | ...::Ok(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2947:28:2947:28 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2948:9:2948:28 | pin_result(...) |  | file://:0:0:0:0 | () |
+| main.rs:2948:20:2948:20 | x |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2948:20:2948:20 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2948:23:2948:27 | false |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2950:17:2950:17 | x |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2950:17:2950:17 | x | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2950:17:2950:17 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2950:21:2950:30 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2950:21:2950:30 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2950:21:2950:30 | ...::new(...) | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2951:9:2951:9 | x |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2951:9:2951:9 | x | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2951:9:2951:9 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2951:9:2951:17 | x.push(...) |  | file://:0:0:0:0 | () |
+| main.rs:2951:16:2951:16 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2953:13:2953:13 | y |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2953:17:2953:34 | ...::default(...) |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2954:9:2954:9 | x |  | {EXTERNAL LOCATION} | Vec |
+| main.rs:2954:9:2954:9 | x | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2954:9:2954:9 | x | T | {EXTERNAL LOCATION} | i32 |
+| main.rs:2954:9:2954:17 | x.push(...) |  | file://:0:0:0:0 | () |
+| main.rs:2954:16:2954:16 | y |  | {EXTERNAL LOCATION} | i32 |
+| main.rs:2963:11:2998:1 | { ... } |  | file://:0:0:0:0 | () |
+| main.rs:2964:5:2964:21 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2965:5:2965:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2966:5:2966:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2966:20:2966:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2966:41:2966:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2967:5:2967:35 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2968:5:2968:41 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2969:5:2969:45 | ...::test(...) |  | file://:0:0:0:0 | () |
+| main.rs:2970:5:2970:30 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2971:5:2971:33 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2972:5:2972:21 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2973:5:2973:27 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2974:5:2974:32 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2975:5:2975:23 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2976:5:2976:36 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2977:5:2977:35 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2978:5:2978:29 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2979:5:2979:23 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2980:5:2980:24 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2981:5:2981:17 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2982:5:2982:18 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2983:5:2983:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:2983:5:2983:15 | ...::f(...) | Output | file://:0:0:0:0 | () |
+| main.rs:2984:5:2984:19 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2985:5:2985:17 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2986:5:2986:14 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2987:5:2987:27 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2988:5:2988:15 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2989:5:2989:43 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2990:5:2990:15 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2991:5:2991:17 | ...::f(...) |  | file://:0:0:0:0 | () |
+| main.rs:2992:5:2992:23 | ...::test(...) |  | file://:0:0:0:0 | () |
+| main.rs:2993:5:2993:41 | ...::test_all_patterns(...) |  | file://:0:0:0:0 | () |
+| main.rs:2994:5:2994:49 | ...::box_patterns(...) |  | file://:0:0:0:0 | () |
+| main.rs:2995:5:2995:20 | ...::test(...) |  | file://:0:0:0:0 | () |
+| main.rs:2996:5:2996:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
+| main.rs:2996:5:2996:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2996:5:2996:20 | ...::f(...) | T | main.rs:2816:5:2818:5 | dyn MyTrait |
+| main.rs:2996:5:2996:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
+| main.rs:2996:16:2996:19 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2997:5:2997:23 | ...::f(...) |  | file://:0:0:0:0 | () |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | file://:0:0:0:0 | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
