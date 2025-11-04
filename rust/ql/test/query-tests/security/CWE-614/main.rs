@@ -197,7 +197,7 @@ fn test_actix_web() {
     ActixCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
     ActixCookie::build("name", "value").secure(false).path("/").finish(); // $ Alert[rust/insecure-cookie]
 
-    let mut cookie1 = ActixCookie::new("name", "value"); // $ Source
+    let mut cookie1 = ActixCookie::new("name", "value");
     cookie1.set_secure(false); // $ Source
     jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
@@ -259,7 +259,7 @@ fn test_http_types() {
     HttpTypesCookie::build("name", "value").secure(false).finish(); // $ Alert[rust/insecure-cookie]
     HttpTypesCookie::build("name", "value").secure(false).path("/").finish(); // $ Alert[rust/insecure-cookie]
 
-    let mut cookie1 = HttpTypesCookie::new("name", "value"); // $ Source
+    let mut cookie1 = HttpTypesCookie::new("name", "value");
     cookie1.set_secure(false); // $ Source
     jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
