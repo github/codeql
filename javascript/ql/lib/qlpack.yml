@@ -23,4 +23,3 @@ dataExtensions:
   - semmle/javascript/security/domains/**/*.model.yml
   - ext/*.model.yml
 warnOnImplicitThis: true
-compileForOverlayEval: true
