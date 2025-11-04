@@ -489,7 +489,7 @@ public class AutoBuild {
         diagnosticsToClose.forEach(DiagnosticWriter::close);
       }
 
-      // Fail extraction is no relevant files were found.
+      // Fail extraction if no relevant files were found.
       if (!seenFiles || !hasSeenCode() && !EnvironmentVariables.isActionsExtractor()) {
         if (seenFiles) {
           warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
