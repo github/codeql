@@ -136,6 +136,7 @@
 /lib/codeql/rust/elements/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/RefTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Rename.qll linguist-generated
+/lib/codeql/rust/elements/Resolvable.qll linguist-generated
 /lib/codeql/rust/elements/RestPat.qll linguist-generated
 /lib/codeql/rust/elements/RetTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/ReturnExpr.qll linguist-generated
@@ -368,6 +369,7 @@
 /lib/codeql/rust/elements/internal/RefTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/ResolvableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RestPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeReprImpl.qll linguist-generated
@@ -590,6 +592,7 @@
 /lib/codeql/rust/elements/internal/generated/RefPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RefTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Rename.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/Resolvable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RestPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/RetTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ReturnExpr.qll linguist-generated
