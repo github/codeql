@@ -164,7 +164,7 @@ private predicate uncertainVariableUpdateImpl(TrackedVar v, ControlFlowNode n, B
 predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) =
   forceLocal(uncertainVariableUpdateImpl/4)(v, n, b, i)
 
-private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = SsaSourceVariable;
 
   /**
@@ -206,7 +206,35 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
   }
 }
 
-import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
+
+private module SsaInput implements Impl::SsaInputSig {
+  private import java as J
+
+  class Expr = J::Expr;
+
+  class Parameter = J::Parameter;
+
+  class VariableWrite = J::VariableWrite;
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaSourceVariable v) {
+    exists(VariableUpdate upd |
+      upd = w.asExpr() and
+      certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
+      getDestVar(upd) = v
+    )
+    or
+    exists(Parameter p, Callable c |
+      c = p.getCallable() and
+      v = TLocalVar(c, p) and
+      w.isParameterInit(p) and
+      c.getBody().getBasicBlock() = bb and
+      i = -1
+    )
+  }
+}
+
+module Ssa = Impl::MakeSsa<SsaInput>;
 
 final class Definition = Impl::Definition;
 

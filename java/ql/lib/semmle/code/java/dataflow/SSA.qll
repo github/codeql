@@ -15,6 +15,8 @@ module;
 
 import java
 private import internal.SsaImpl
+import internal.SsaImpl::Ssa as Ssa
+import Ssa
 
 /**
  * A fully qualified variable in the context of a `Callable` in which it is
