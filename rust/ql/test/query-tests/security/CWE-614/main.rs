@@ -225,8 +225,8 @@ fn test_poem() {
 
     // secure set to false
     let mut cookie1 = PoemCookie::new_with_str("name", "value");
-    cookie1.set_secure(false); // $ MISSING: Source
-    jar.add(cookie1.clone()); // $ MISSING: Alert[rust/insecure-cookie]
+    cookie1.set_secure(false); // $ Source
+    jar.add(cookie1.clone()); // $ Alert[rust/insecure-cookie]
 
     // secure set to true
     let mut cookie2 = PoemCookie::new_with_str("name", "value");
@@ -234,21 +234,21 @@ fn test_poem() {
     jar.add(cookie2.clone());
 
     // secure left as default (which is `true` for Poem)
-    let cookie3 = PoemCookie::new_with_str("name", "value");
-    jar.add(cookie3.clone()); // good
+    let cookie3 = PoemCookie::new_with_str("name", "value"); // $ Source
+    jar.add(cookie3.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
 
     // set secure via CookieConfig
-    let cookie_config_bad = poem::session::CookieConfig::new().secure(false);
-    _ = poem::session::ServerSession::new(cookie_config_bad, ()); // $ MISSING: Alert[rust/insecure-cookie]
+    let cookie_config_bad = poem::session::CookieConfig::new().secure(false); // $ Source
+    _ = poem::session::ServerSession::new(cookie_config_bad, ()); // $ Alert[rust/insecure-cookie]
 
-    let cookie_config_bad2 = poem::session::CookieConfig::new().secure(false).name("name").path("/");
-    _ = poem::session::ServerSession::new(cookie_config_bad2, ()); // $ MISSING: Alert[rust/insecure-cookie]
+    let cookie_config_bad2 = poem::session::CookieConfig::new().secure(false).name("name").path("/"); // $ Source
+    _ = poem::session::ServerSession::new(cookie_config_bad2, ()); // $ Alert[rust/insecure-cookie]
 
     let cookie_config_good = poem::session::CookieConfig::new().secure(true);
     _ = poem::session::ServerSession::new(cookie_config_good, ()); // good
 
-    let cookie_config_default = poem::session::CookieConfig::new();
-    _ = poem::session::ServerSession::new(cookie_config_default, ()); // good
+    let cookie_config_default = poem::session::CookieConfig::new(); // $ Source
+    _ = poem::session::ServerSession::new(cookie_config_default, ()); // $ SPURIOUS: Alert[rust/insecure-cookie]
 }
 
 fn test_http_types() {
