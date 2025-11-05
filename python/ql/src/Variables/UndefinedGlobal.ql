@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Variables.MonkeyPatched
 import Loop
 import semmle.python.pointsto.PointsTo
@@ -95,7 +96,7 @@ predicate undefined_use(Name u) {
   not contains_unknown_import_star(u.getEnclosingModule()) and
   not use_of_exec(u.getEnclosingModule()) and
   not exists(u.getVariable().getAStore()) and
-  not u.pointsTo(_) and
+  not u.(ExprWithPointsTo).pointsTo(_) and
   not probably_defined_in_loop(u)
 }
 
