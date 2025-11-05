@@ -20,7 +20,9 @@ private @file getFile(@locatable locatable) {
 /** Holds if the `locatable` is in the `file` and is part of the overlay base database. */
 private predicate discardableLocatable(@file file, @locatable locatable) {
   not isOverlay() and
-  file = getFile(locatable)
+  file = getFile(locatable) and
+  // Avoid discarding @file entities, since they are shared between base and overlay.
+  not locatable instanceof @file
 }
 
 /**
