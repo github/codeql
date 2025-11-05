@@ -234,8 +234,8 @@ fn test_poem() {
     jar.add(cookie2.clone());
 
     // secure left as default (which is `true` for Poem)
-    let cookie3 = PoemCookie::new_with_str("name", "value"); // $ Source
-    jar.add(cookie3.clone()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    let cookie3 = PoemCookie::new_with_str("name", "value");
+    jar.add(cookie3.clone()); // good
 
     // set secure via CookieConfig
     let cookie_config_bad = poem::session::CookieConfig::new().secure(false); // $ Source
@@ -247,8 +247,8 @@ fn test_poem() {
     let cookie_config_good = poem::session::CookieConfig::new().secure(true);
     _ = poem::session::ServerSession::new(cookie_config_good, ()); // good
 
-    let cookie_config_default = poem::session::CookieConfig::new(); // $ Source
-    _ = poem::session::ServerSession::new(cookie_config_default, ()); // $ SPURIOUS: Alert[rust/insecure-cookie]
+    let cookie_config_default = poem::session::CookieConfig::new();
+    _ = poem::session::ServerSession::new(cookie_config_default, ()); // good
 }
 
 fn test_http_types() {
