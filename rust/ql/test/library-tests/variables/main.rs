@@ -375,7 +375,7 @@ fn match_pattern16() {
         Some(y) // y1
             if let Some(y) = // y2
                 Some(y) // $ read_access=y1
-            => print_i64(y), // $ MISSING: read_access=y2 $ SPURIOUS: read_access=y1
+            => print_i64(y), // $ read_access=y2
         _ => {},
     }
 }

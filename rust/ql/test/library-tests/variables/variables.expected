@@ -238,7 +238,7 @@ variableAccess
 | main.rs:367:20:367:20 | x | main.rs:366:18:366:18 | x |
 | main.rs:374:11:374:11 | x | main.rs:373:9:373:9 | x |
 | main.rs:377:22:377:22 | y | main.rs:375:14:375:14 | y |
-| main.rs:378:26:378:26 | y | main.rs:375:14:375:14 | y |
+| main.rs:378:26:378:26 | y | main.rs:376:25:376:25 | y |
 | main.rs:390:15:390:16 | a8 | main.rs:384:5:384:6 | a8 |
 | main.rs:391:15:391:16 | b3 | main.rs:386:9:386:10 | b3 |
 | main.rs:392:15:392:16 | c1 | main.rs:387:9:387:10 | c1 |
@@ -470,7 +470,7 @@ variableReadAccess
 | main.rs:367:20:367:20 | x | main.rs:366:18:366:18 | x |
 | main.rs:374:11:374:11 | x | main.rs:373:9:373:9 | x |
 | main.rs:377:22:377:22 | y | main.rs:375:14:375:14 | y |
-| main.rs:378:26:378:26 | y | main.rs:375:14:375:14 | y |
+| main.rs:378:26:378:26 | y | main.rs:376:25:376:25 | y |
 | main.rs:390:15:390:16 | a8 | main.rs:384:5:384:6 | a8 |
 | main.rs:391:15:391:16 | b3 | main.rs:386:9:386:10 | b3 |
 | main.rs:392:15:392:16 | c1 | main.rs:387:9:387:10 | c1 |
