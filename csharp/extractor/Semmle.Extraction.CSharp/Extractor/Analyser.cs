@@ -78,6 +78,14 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public void AnalyseReferences()
         {
+            // Only source files can be considered changed in overlay mode.
+            // The transitive dependencies to references are extracted, when the
+            // changed files are extracted.
+            if (OverlayInfo.IsOverlayMode)
+            {
+                return;
+            }
+
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
                 extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
@@ -197,9 +205,18 @@ namespace Semmle.Extraction.CSharp
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
 
                 var currentTaskId = IncrementTaskCount();
-                ReportProgressTaskStarted(currentTaskId, sourcePath);
 
                 var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), OverlayInfo, addAssemblyTrapPrefix);
+
+                // If the file is not changed, the transitive dependency extraction is handled
+                // when the changed file is extracted.
+                if (cx.OnlyScaffold)
+                {
+                    return;
+                }
+
+                ReportProgressTaskStarted(currentTaskId, sourcePath);
+
                 // Ensure that the file itself is populated in case the source file is totally empty
                 var root = tree.GetRoot();
                 Entities.File.Create(cx, root.SyntaxTree.FilePath);
