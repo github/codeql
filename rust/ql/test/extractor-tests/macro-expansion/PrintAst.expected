@@ -174,7 +174,7 @@ macro_expansion.rs:
 #    1|           getPath(): [Path] MyTrait
 #    1|             getSegment(): [PathSegment] MyTrait
 #    1|               getIdentifier(): [NameRef] MyTrait
-#    3|   getItem(1): [Function] fn foo
+#    3|   getItem(1): [Function] (item with attribute macro expansion)
 #    4|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    4|       getItem(0): [Function] fn foo
 #    4|         getParamList(): [ParamList] ParamList
@@ -190,7 +190,7 @@ macro_expansion.rs:
 #    5|                         getIdentifier(): [NameRef] concat
 #    5|                     getTokenTree(): [TokenTree] TokenTree
 #    5|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#    7|             getStatement(1): [Function] fn inner
+#    7|             getStatement(1): [Function] (item with attribute macro expansion)
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
@@ -202,16 +202,12 @@ macro_expansion.rs:
 #    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_1
-#    8|               getParamList(): [ParamList] ParamList
 #    7|               getAttr(0): [Attr] Attr
 #    7|                 getMeta(): [Meta] Meta
 #    7|                   getPath(): [Path] repeat
 #    7|                     getSegment(): [PathSegment] repeat
 #    7|                       getIdentifier(): [NameRef] repeat
 #    7|                   getTokenTree(): [TokenTree] TokenTree
-#    8|               getFunctionBody(): [BlockExpr] { ... }
-#    8|                 getStmtList(): [StmtList] StmtList
-#    8|               getName(): [Name] inner
 #   10|             getStatement(2): [ExprStmt] ExprStmt
 #   10|               getExpr(): [CallExpr] inner_0(...)
 #   10|                 getArgList(): [ArgList] ArgList
@@ -242,7 +238,7 @@ macro_expansion.rs:
 #    5|                         getIdentifier(): [NameRef] concat
 #    5|                     getTokenTree(): [TokenTree] TokenTree
 #    5|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#    7|             getStatement(1): [Function] fn inner
+#    7|             getStatement(1): [Function] (item with attribute macro expansion)
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
@@ -254,16 +250,12 @@ macro_expansion.rs:
 #    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_1
-#    8|               getParamList(): [ParamList] ParamList
 #    7|               getAttr(0): [Attr] Attr
 #    7|                 getMeta(): [Meta] Meta
 #    7|                   getPath(): [Path] repeat
 #    7|                     getSegment(): [PathSegment] repeat
 #    7|                       getIdentifier(): [NameRef] repeat
 #    7|                   getTokenTree(): [TokenTree] TokenTree
-#    8|               getFunctionBody(): [BlockExpr] { ... }
-#    8|                 getStmtList(): [StmtList] StmtList
-#    8|               getName(): [Name] inner
 #   10|             getStatement(2): [ExprStmt] ExprStmt
 #   10|               getExpr(): [CallExpr] inner_0(...)
 #   10|                 getArgList(): [ArgList] ArgList
@@ -280,53 +272,14 @@ macro_expansion.rs:
 #   11|                       getIdentifier(): [NameRef] inner_1
 #    4|         getName(): [Name] foo_new
 #    4|         getVisibility(): [Visibility] Visibility
-#    4|     getParamList(): [ParamList] ParamList
 #    3|     getAttr(0): [Attr] Attr
 #    3|       getMeta(): [Meta] Meta
 #    3|         getPath(): [Path] add_one
 #    3|           getSegment(): [PathSegment] add_one
 #    3|             getIdentifier(): [NameRef] add_one
-#    4|     getFunctionBody(): [BlockExpr] { ... }
-#    4|       getStmtList(): [StmtList] StmtList
-#    5|         getStatement(0): [ExprStmt] ExprStmt
-#    5|           getExpr(): [AssignmentExpr] ... = ...
-#    5|             getLhs(): [UnderscoreExpr] _
-#    5|             getRhs(): [MacroExpr] MacroExpr
-#    5|               getMacroCall(): [MacroCall] concat!...
-#    5|                 getPath(): [Path] concat
-#    5|                   getSegment(): [PathSegment] concat
-#    5|                     getIdentifier(): [NameRef] concat
-#    5|                 getTokenTree(): [TokenTree] TokenTree
-#    7|         getStatement(1): [Function] fn inner
-#    8|           getParamList(): [ParamList] ParamList
-#    7|           getAttr(0): [Attr] Attr
-#    7|             getMeta(): [Meta] Meta
-#    7|               getPath(): [Path] repeat
-#    7|                 getSegment(): [PathSegment] repeat
-#    7|                   getIdentifier(): [NameRef] repeat
-#    7|               getTokenTree(): [TokenTree] TokenTree
-#    8|           getFunctionBody(): [BlockExpr] { ... }
-#    8|             getStmtList(): [StmtList] StmtList
-#    8|           getName(): [Name] inner
-#   10|         getStatement(2): [ExprStmt] ExprStmt
-#   10|           getExpr(): [CallExpr] inner_0(...)
-#   10|             getArgList(): [ArgList] ArgList
-#   10|             getFunction(): [PathExpr] inner_0
-#   10|               getPath(): [Path] inner_0
-#   10|                 getSegment(): [PathSegment] inner_0
-#   10|                   getIdentifier(): [NameRef] inner_0
-#   11|         getStatement(3): [ExprStmt] ExprStmt
-#   11|           getExpr(): [CallExpr] inner_1(...)
-#   11|             getArgList(): [ArgList] ArgList
-#   11|             getFunction(): [PathExpr] inner_1
-#   11|               getPath(): [Path] inner_1
-#   11|                 getSegment(): [PathSegment] inner_1
-#   11|                   getIdentifier(): [NameRef] inner_1
-#    4|     getName(): [Name] foo
-#    4|     getVisibility(): [Visibility] Visibility
-#   14|   getItem(2): [Function] fn bar
+#   14|   getItem(2): [Function] (item with attribute macro expansion)
 #   15|     getAttributeMacroExpansion(): [MacroItems] MacroItems
-#   15|       getItem(0): [Function] fn bar_0
+#   15|       getItem(0): [Function] (item with attribute macro expansion)
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_0
 #   16|             getParamList(): [ParamList] ParamList
@@ -340,17 +293,12 @@ macro_expansion.rs:
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_0_new
 #   16|             getVisibility(): [Visibility] Visibility
-#   16|         getParamList(): [ParamList] ParamList
 #   15|         getAttr(0): [Attr] Attr
 #   15|           getMeta(): [Meta] Meta
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   16|         getFunctionBody(): [BlockExpr] { ... }
-#   16|           getStmtList(): [StmtList] StmtList
-#   16|         getName(): [Name] bar_0
-#   16|         getVisibility(): [Visibility] Visibility
-#   15|       getItem(1): [Function] fn bar_1
+#   15|       getItem(1): [Function] (item with attribute macro expansion)
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_1
 #   16|             getParamList(): [ParamList] ParamList
@@ -364,17 +312,11 @@ macro_expansion.rs:
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_1_new
 #   16|             getVisibility(): [Visibility] Visibility
-#   16|         getParamList(): [ParamList] ParamList
 #   15|         getAttr(0): [Attr] Attr
 #   15|           getMeta(): [Meta] Meta
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   16|         getFunctionBody(): [BlockExpr] { ... }
-#   16|           getStmtList(): [StmtList] StmtList
-#   16|         getName(): [Name] bar_1
-#   16|         getVisibility(): [Visibility] Visibility
-#   16|     getParamList(): [ParamList] ParamList
 #   14|     getAttr(0): [Attr] Attr
 #   14|       getMeta(): [Meta] Meta
 #   14|         getPath(): [Path] repeat
@@ -386,22 +328,13 @@ macro_expansion.rs:
 #   15|         getPath(): [Path] add_one
 #   15|           getSegment(): [PathSegment] add_one
 #   15|             getIdentifier(): [NameRef] add_one
-#   16|     getFunctionBody(): [BlockExpr] { ... }
-#   16|       getStmtList(): [StmtList] StmtList
-#   16|     getName(): [Name] bar
-#   16|     getVisibility(): [Visibility] Visibility
-#   18|   getItem(3): [Function] fn baz
+#   18|   getItem(3): [Function] (item with attribute macro expansion)
 #   18|     getAttributeMacroExpansion(): [MacroItems] MacroItems
-#   19|     getParamList(): [ParamList] ParamList
 #   18|     getAttr(0): [Attr] Attr
 #   18|       getMeta(): [Meta] Meta
 #   18|         getPath(): [Path] erase
 #   18|           getSegment(): [PathSegment] erase
 #   18|             getIdentifier(): [NameRef] erase
-#   19|     getFunctionBody(): [BlockExpr] { ... }
-#   19|       getStmtList(): [StmtList] StmtList
-#   19|     getName(): [Name] baz
-#   19|     getVisibility(): [Visibility] Visibility
 #   22|   getItem(4): [MacroRules] MacroRules
 #   22|     getName(): [Name] hello
 #   22|     getTokenTree(): [TokenTree] TokenTree
@@ -410,7 +343,7 @@ macro_expansion.rs:
 #   28|     getVisibility(): [Visibility] Visibility
 #   30|   getItem(6): [Impl] impl S { ... }
 #   30|     getAssocItemList(): [AssocItemList] AssocItemList
-#   31|       getAssocItem(0): [Function] fn bzz
+#   31|       getAssocItem(0): [Function] (item with attribute macro expansion)
 #   32|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   32|           getItem(0): [Function] fn bzz_0
 #   32|             getParamList(): [ParamList] ParamList
@@ -556,24 +489,12 @@ macro_expansion.rs:
 #   31|                                               getIdentifier(): [NameRef] _print
 #   32|             getName(): [Name] bzz_2
 #   32|             getVisibility(): [Visibility] Visibility
-#   32|         getParamList(): [ParamList] ParamList
 #   31|         getAttr(0): [Attr] Attr
 #   31|           getMeta(): [Meta] Meta
 #   31|             getPath(): [Path] repeat
 #   31|               getSegment(): [PathSegment] repeat
 #   31|                 getIdentifier(): [NameRef] repeat
 #   31|             getTokenTree(): [TokenTree] TokenTree
-#   32|         getFunctionBody(): [BlockExpr] { ... }
-#   32|           getStmtList(): [StmtList] StmtList
-#   33|             getStatement(0): [ExprStmt] ExprStmt
-#   33|               getExpr(): [MacroExpr] MacroExpr
-#   33|                 getMacroCall(): [MacroCall] hello!...
-#   33|                   getPath(): [Path] hello
-#   33|                     getSegment(): [PathSegment] hello
-#   33|                       getIdentifier(): [NameRef] hello
-#   33|                   getTokenTree(): [TokenTree] TokenTree
-#   32|         getName(): [Name] bzz
-#   32|         getVisibility(): [Visibility] Visibility
 #   30|     getSelfTy(): [PathTypeRepr] S
 #   30|       getPath(): [Path] S
 #   30|         getSegment(): [PathSegment] S

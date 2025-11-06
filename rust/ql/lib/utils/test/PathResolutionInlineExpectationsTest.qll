@@ -10,9 +10,8 @@ private import utils.test.InlineExpectationsTest
 private module ResolveTest implements TestSig {
   string getARelevantTag() { result = "item" }
 
-  private predicate itemAt(ItemNode i, string filepath, int line, boolean inMacro) {
-    i.getLocation().hasLocationInfo(filepath, _, _, line, _) and
-    if i.(AstNode).isInMacroExpansion() then inMacro = true else inMacro = false
+  private predicate itemAt(ItemNode i, string filepath, int line) {
+    i.getLocation().hasLocationInfo(filepath, _, _, line, _)
   }
 
   private predicate commmentAt(string text, string filepath, int line) {
@@ -25,7 +24,7 @@ private module ResolveTest implements TestSig {
   }
 
   private predicate item(ItemNode i, string value) {
-    exists(string filepath, int line, boolean inMacro | itemAt(i, filepath, line, inMacro) |
+    exists(string filepath, int line | itemAt(i, filepath, line) |
       if i instanceof SourceFile
       then value = i.getFile().getBaseName()
       else (
