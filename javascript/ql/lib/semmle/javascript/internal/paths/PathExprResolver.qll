@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import semmle.javascript.internal.paths.PackageJsonEx
 private import semmle.javascript.internal.paths.JSPaths

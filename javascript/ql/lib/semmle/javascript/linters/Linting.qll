@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with various JavaScript linters.
  */
+overlay[local?]
+module;
 
 import javascript
 

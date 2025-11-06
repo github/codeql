@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [request](https://github.com/request/request) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 

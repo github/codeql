@@ -1,6 +1,8 @@
 /**
  * Contains models for `@actions/core` related libraries.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.security.dataflow.IndirectCommandInjectionCustomizations

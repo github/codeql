@@ -3,6 +3,8 @@
  * hardcoded credentials, as well as extension points for adding your
  * own.
  */
+overlay[local?]
+module;
 
 import semmle.javascript.filters.ClassifyFiles
 import javascript

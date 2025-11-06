@@ -2,6 +2,8 @@
  * Provides access to the "tainted object" flow label defined in `TaintedObject.qll`, without
  * materializing that flow label.
  */
+overlay[local?]
+module;
 
 import javascript
 

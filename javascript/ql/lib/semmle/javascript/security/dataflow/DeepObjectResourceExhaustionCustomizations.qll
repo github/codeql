@@ -2,6 +2,8 @@
  * Provides sources, sinks and sanitizers for reasoning about
  * DoS attacks due to inefficient handling of user-controlled objects.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.TaintedObjectCustomizations

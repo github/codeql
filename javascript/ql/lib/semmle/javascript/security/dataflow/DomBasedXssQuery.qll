@@ -2,6 +2,8 @@
  * Provides a taint-tracking configuration for reasoning about DOM-based
  * cross-site scripting vulnerabilities.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.TaintedUrlSuffix

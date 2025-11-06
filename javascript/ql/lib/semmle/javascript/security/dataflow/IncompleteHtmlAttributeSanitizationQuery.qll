@@ -6,6 +6,8 @@
  * `IncompleteHtmlAttributeSanitization::Configuration` is needed, otherwise
  * `IncompleteHtmlAttributeSanitizationCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization

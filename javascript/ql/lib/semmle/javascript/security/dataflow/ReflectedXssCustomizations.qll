@@ -2,6 +2,8 @@
  * Provides default sources for reasoning about reflected
  * cross-site scripting vulnerabilities.
  */
+overlay[local?]
+module;
 
 import javascript
 

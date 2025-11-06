@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the [http-proxy](https://www.npmjs.com/package/http-proxy) library.
  */
+overlay[local?]
+module;
 
 import javascript
 

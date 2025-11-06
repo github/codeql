@@ -3,6 +3,8 @@
  * overly permissive CORS configurations, as well as
  * extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides a model of the `micro` NPM package.
  */
+overlay[local?]
+module;
 
 private import javascript
 

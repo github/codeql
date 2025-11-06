@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import semmle.javascript.frameworks.Express
 import semmle.javascript.frameworks.Hapi
 import semmle.javascript.frameworks.Koa

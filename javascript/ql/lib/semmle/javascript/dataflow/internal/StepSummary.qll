@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import javascript
 private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages

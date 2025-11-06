@@ -1,6 +1,8 @@
 /**
  * Contains flow summaries and steps modeling flow through iterators.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode

@@ -10,6 +10,7 @@
  *
  * NOTE: This library should only be used for debugging and exploration, not in production code.
  */
+overlay[local?]
 deprecated module;
 
 import javascript

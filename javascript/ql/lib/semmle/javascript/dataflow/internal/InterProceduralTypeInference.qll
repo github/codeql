@@ -3,6 +3,8 @@
  *
  * Provides classes implementing type inference across function calls.
  */
+overlay[local?]
+module;
 
 private import javascript
 import AbstractValuesImpl

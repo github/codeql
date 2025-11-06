@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [DigitalOcean](https://www.npmjs.com/package/digitalocean) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 

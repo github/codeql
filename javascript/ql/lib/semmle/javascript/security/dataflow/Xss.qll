@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates used by the XSS queries.
  */
+overlay[local?]
+module;
 
 import javascript
 

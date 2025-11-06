@@ -1,4 +1,6 @@
 /** Provides taint steps modeling flow through date-manipulation libraries. */
+overlay[local?]
+module;
 
 private import javascript
 

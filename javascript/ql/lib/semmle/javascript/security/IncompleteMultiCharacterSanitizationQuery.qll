@@ -1,6 +1,8 @@
 /**
  * Provides shared predicates for reasoning about improper multi-character sanitization.
  */
+overlay[local?]
+module;
 
 import IncompleteMultiCharacterSanitizationSpecific
 

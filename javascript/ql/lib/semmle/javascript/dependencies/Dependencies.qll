@@ -2,6 +2,8 @@
  * Provides classes for modeling dependencies such as NPM packages
  * and framework libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 private import FrameworkLibraries

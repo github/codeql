@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JSON parsers.
  */
+overlay[local?]
+module;
 
 import javascript
 

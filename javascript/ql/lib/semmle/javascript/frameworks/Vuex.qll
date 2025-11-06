@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the `vuex` library.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
@@ -394,6 +396,7 @@ module Vuex {
     }
 
     /** Holds if the two files are considered to be part of the same Vuex app. */
+    overlay[caller?]
     pragma[inline]
     predicate areFilesInSameVuexApp(File a, File b) {
       not exists(PackageJson pkg)

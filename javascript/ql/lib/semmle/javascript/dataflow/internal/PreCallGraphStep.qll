@@ -2,6 +2,8 @@
  * Provides an extension point for contributing flow edges prior
  * to call graph construction and type tracking.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.Unit

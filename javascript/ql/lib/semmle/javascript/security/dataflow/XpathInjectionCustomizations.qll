@@ -3,6 +3,8 @@
  * untrusted user input used in XPath expression, as well as extension
  * points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.security.dataflow.DOM

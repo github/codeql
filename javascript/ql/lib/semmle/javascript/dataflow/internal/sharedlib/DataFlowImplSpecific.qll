@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 
 // This file provides the input to FlowSummaryImpl.qll, which is shared via identical-files.json.
