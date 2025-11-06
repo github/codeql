@@ -1,3 +1,9 @@
+## 1.4.3
+
+### Minor Analysis Improvements
+
+* The `cs/web/missing-x-frame-options` query now correctly handles configuration nested in root `<location>` elements.
+
 ## 1.4.2
 
 No user-facing changes.
@@ -164,7 +170,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query.
 
 ## 1.0.10
 
@@ -278,7 +284,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.    
+* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.
 * Fixed a URL redirection from remote source false positive when guarding a redirect with `HttpRequestBase.IsUrlLocalToHost()`
 
 ## 0.8.5
