@@ -15,4 +15,6 @@
 #
 # Fix: Adds all dependency ModDirs to wantedRoots and prioritizes checking them first.
 def test(codeql, go):
-    codeql.database.create(source_root="src")
+    # Extract only mainmodule packages to reproduce the bug scenario
+    # Without the fix, configmodule won't be in wantedRoots and will be excluded
+    codeql.database.create(command=["go", "list", "./mainmodule/..."], source_root="src")
