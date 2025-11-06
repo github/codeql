@@ -7,6 +7,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision high
+ * @security-severity 5.0
  * @id go/cookie-httponly-not-set
  * @tags security
  *       external/cwe/cwe-1004
@@ -14,7 +15,6 @@
 
 import go
 import semmle.go.security.SecureCookies
-import semmle.go.concepts.HTTP
 import SensitiveCookieNameFlow::PathGraph
 
 from

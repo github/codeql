@@ -381,7 +381,7 @@ module Http {
     predicate guardedBy(DataFlow::Node check) { super.guardedBy(check) }
   }
 
-  /** Provides a class for modelling HTTP response cookie writes. */
+  /** Provides a class for modeling HTTP response cookie writes. */
   module CookieWrite {
     /**
      * An write of an HTTP Cookie to an HTTP response.
@@ -424,7 +424,7 @@ module Http {
     DataFlow::Node getHttpOnly() { result = super.getHttpOnly() }
   }
 
-  /** Provides a class for modelling the options of an HTTP cookie. */
+  /** Provides a class for modeling the options of an HTTP cookie. */
   module CookieOptions {
     /**
      * An HTTP Cookie object.

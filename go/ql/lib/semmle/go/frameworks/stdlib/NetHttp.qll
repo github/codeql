@@ -294,7 +294,7 @@ module NetHttp {
     override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
   }
 
-  class CookieWrite extends Http::CookieWrite::Range, DataFlow::CallNode {
+  private class CookieWrite extends Http::CookieWrite::Range, DataFlow::CallNode {
     CookieWrite() { this.getTarget().hasQualifiedName(package("net/http", ""), "SetCookie") }
 
     override DataFlow::Node getName() { result = this.getArgument(1) }
@@ -306,7 +306,7 @@ module NetHttp {
     override DataFlow::Node getHttpOnly() { result = this.getArgument(1) }
   }
 
-  class CookieFieldWrite extends Http::CookieOptions::Range {
+  private class CookieFieldWrite extends Http::CookieOptions::Range {
     Write w;
     Field f;
     DataFlow::Node written;
