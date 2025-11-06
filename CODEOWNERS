@@ -8,7 +8,11 @@
 /csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor @github/code-scanning-language-coverage
 /csharp/autobuilder/Semmle.Autobuild.Cpp.Tests @github/codeql-c-extractor @github/code-scanning-language-coverage
 /go/ @github/codeql-go
+/go/codeql-tools/ @github/codeql-go @github/code-scanning-language-coverage
+/go/downgrades/ @github/codeql-go @github/code-scanning-language-coverage
 /go/extractor/ @github/codeql-go @github/code-scanning-language-coverage
+/go/extractor-smoke-test/ @github/codeql-go @github/code-scanning-language-coverage
+/go/ql/test/extractor-tests/ @github/codeql-go @github/code-scanning-language-coverage
 /java/ @github/codeql-java
 /javascript/ @github/codeql-javascript
 /javascript/extractor/ @github/codeql-javascript @github/code-scanning-language-coverage
