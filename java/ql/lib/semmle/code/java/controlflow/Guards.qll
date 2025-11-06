@@ -416,30 +416,8 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
 }
 
 private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
-  private import semmle.code.java.dataflow.SSA as SSA
-
-  final private class FinalSsaVariable = SSA::SsaVariable;
-
-  class SsaDefinition extends FinalSsaVariable {
-    GuardsInput::Expr getARead() { result = this.getAUse() }
-  }
-
-  class SsaExplicitWrite extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
-    GuardsInput::Expr getValue() {
-      super.getDefiningExpr().(VariableAssign).getSource() = result or
-      super.getDefiningExpr().(AssignOp) = result
-    }
-  }
-
-  class SsaPhiDefinition extends SsaDefinition instanceof SSA::SsaPhiNode {
-    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
-      super.hasInputFromBlock(inp, bb)
-    }
-  }
-
-  class SsaParameterInit extends SsaDefinition instanceof SSA::SsaImplicitInit {
-    Parameter getParameter() { super.isParameterDefinition(result) }
-  }
+  private import semmle.code.java.dataflow.SSA
+  import Ssa
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 

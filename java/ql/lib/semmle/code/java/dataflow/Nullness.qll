@@ -249,9 +249,9 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
 }
 
 private module NullnessConfig implements ControlFlowReachability::ConfigSig {
-  predicate source(ControlFlowNode node, SsaVariable def) { varMaybeNull(def, node, _, _) }
+  predicate source(ControlFlowNode node, SsaDefinition def) { varMaybeNull(def, node, _, _) }
 
-  predicate sink(ControlFlowNode node, SsaVariable def) { varDereference(def, _) = node }
+  predicate sink(ControlFlowNode node, SsaDefinition def) { varDereference(def, _) = node }
 
   predicate barrierValue(GuardValue gv) { gv.isNullness(false) }
 
