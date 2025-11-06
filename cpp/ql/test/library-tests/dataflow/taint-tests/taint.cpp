@@ -850,9 +850,9 @@ int tolower(int);
 void test_toupper_and_tolower() {
 	int s = source();
 	int u = toupper(s);
-	sink(u); // $ MISSING: ast,ir
+	sink(u); // $ ir MISSING: ast
 	int l = tolower(s);
-	sink(l); // $ MISSING: ast,ir
+	sink(l); // $ ir MISSING: ast
 }
 
 typedef int iconv_t;
@@ -864,5 +864,5 @@ void test_iconv(size_t size) {
 	char* p = out;
 	size_t size_out;
 	iconv(0, &s, &size, &p, &size_out);
-	sink(*p); // $ MISSING: ast,ir
+	sink(*p); // $ ast,ir
 }
