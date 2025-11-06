@@ -1043,7 +1043,7 @@ macro_expansion.rs:
 #   98|             getParamList(): [ParamList] ParamList
 #   99|             getFunctionBody(): [BlockExpr] { ... }
 #   99|               getStmtList(): [StmtList] StmtList
-#   99|                 getTailExpr(): [PathExpr] CONST_MyDeriveUnion
+#   99|                 getTailExpr(): [ConstAccess] CONST_MyDeriveUnion
 #   99|                   getPath(): [Path] CONST_MyDeriveUnion
 #   99|                     getSegment(): [PathSegment] CONST_MyDeriveUnion
 #   99|                       getIdentifier(): [NameRef] CONST_MyDeriveUnion
