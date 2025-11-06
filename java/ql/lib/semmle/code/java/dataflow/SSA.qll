@@ -317,6 +317,8 @@ class SsaImplicitInit extends SsaVariable instanceof WriteDefinition {
   predicate captures(SsaVariable capturedvar) { captures(this, capturedvar) }
 
   /**
+   * DEPRECATED: Use `SsaParameterInit::getParameter()` instead.
+   *
    * Holds if the SSA variable is a parameter defined by its initial value in the callable.
    */
   predicate isParameterDefinition(Parameter p) {

@@ -551,15 +551,15 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
-    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
+    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaParameterInit param,
     Guard guard
   |
     // get constant bool argument and parameter for this call
     viableParamArg(call, pragma[only_bind_into](paramNode), arg) and
     // get the ssa variable definition for this parameter
-    param.isParameterDefinition(paramNode.getParameter()) and
+    param.getParameter() = paramNode.getParameter() and
     // which is used in a guard
-    param.getAUse() = guard and
+    param.getARead() = guard and
     // which controls `n` with the opposite value of `arg`
     guard
         .controls(nr,

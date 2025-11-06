@@ -47,6 +47,6 @@ predicate defUsePair(VariableUpdate def, VarRead use) {
  */
 predicate parameterDefUsePair(Parameter p, VarRead use) {
   exists(SsaVariable v |
-    v.getAUse() = use and v.getAnUltimateDefinition().(SsaImplicitInit).isParameterDefinition(p)
+    v.getAUse() = use and v.getAnUltimateDefinition().(SsaParameterInit).getParameter() = p
   )
 }

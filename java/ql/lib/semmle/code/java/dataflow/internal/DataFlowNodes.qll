@@ -46,7 +46,7 @@ module SsaFlow {
     or
     exists(Parameter p |
       n = TExplicitParameterNode(p) and
-      result.(Impl::WriteDefSourceNode).getDefinition().(SsaImplicitInit).isParameterDefinition(p)
+      result.(Impl::WriteDefSourceNode).getDefinition().(SsaParameterInit).getParameter() = p
     )
     or
     ssaDefAssigns(result.(Impl::WriteDefSourceNode).getDefinition(), n.asExpr())

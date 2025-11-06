@@ -57,7 +57,7 @@ private class InputStreamWrapperCapturedLocalStep extends AdditionalTaintStep {
     |
       n1.asExpr() = captured.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource()
       or
-      captured.(SsaImplicitInit).isParameterDefinition(n1.asParameter())
+      captured.(SsaParameterInit).getParameter() = n1.asParameter()
     )
   }
 }

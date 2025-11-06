@@ -156,7 +156,7 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
   or
   // A parameter might be null if there is a null argument somewhere.
   exists(Parameter p, Expr arg |
-    v.(SsaImplicitInit).isParameterDefinition(p) and
+    v.(SsaParameterInit).getParameter() = p and
     node = v.getCfgNode() and
     p.getAnArgument() = arg and
     reason = arg and
