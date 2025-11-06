@@ -1,0 +1,2 @@
+query: security/CWE-1004/CookieWithoutHttpOnly.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
