@@ -102,10 +102,9 @@ predicate hasNonlocalValue(FieldRead fr) {
   not exists(SsaDefinition v | v.getARead() = fr)
   or
   exists(SsaDefinition v, SsaDefinition def |
-    v.getARead() = fr and def = v.getAnUltimateDefinition()
-  |
-    def instanceof SsaImplicitInit or
-    def instanceof SsaImplicitUpdate
+    v.getARead() = fr and
+    def = v.getAnUltimateDefinition() and
+    def instanceof SsaImplicitWrite
   )
 }
 

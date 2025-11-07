@@ -267,9 +267,8 @@ private module Impl {
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
-  Variable getImplicitSsaDeclaration(SsaVariable v) {
-    result = v.(SsaImplicitUpdate).getSourceVariable().getVariable() or
-    result = v.(SsaImplicitInit).getSourceVariable().getVariable()
+  Variable getImplicitSsaDeclaration(SsaDefinition v) {
+    result = v.(SsaImplicitWrite).getSourceVariable().getVariable()
   }
 
   /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */

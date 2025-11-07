@@ -510,9 +510,9 @@ private module Cached {
 
   /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
   cached
-  predicate captures(SsaImplicitInit init, SsaVariable capturedvar) {
+  predicate captures(SsaImplicitEntryDefinition init, SsaVariable capturedvar) {
     exists(BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(_, capturedvar, bb, i) and
+      Ssa::ssaDefReachesUncertainRead(_, capturedvar, bb, i) and
       variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
     )
   }
