@@ -17,4 +17,4 @@
 def test(codeql, go):
     # Extract only mainmodule packages to reproduce the bug scenario
     # Without the fix, configmodule won't be in wantedRoots and will be excluded
-    codeql.database.create(command=["go", "list", "./mainmodule/..."], source_root="src")
+    codeql.database.create(source_root="src", command="go build ./mainmodule/...")
