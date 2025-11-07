@@ -73,11 +73,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     if this.isSVariant()
     then result = 1
     else (
-      this.getName()
-          .matches([
-              "%ncpy%", "%nbcpy%", "%xfrm%", "strlcpy", "__builtin___strcpy_chk",
-              "__builtin___stpcpy_chk", "__builtin___stpncpy_chk", "__builtin___strncpy_chk"
-            ]) and
+      this.getName().matches(["%ncpy%", "%nbcpy%", "%xfrm%", "strlcpy"]) and
       result = 2
     )
   }
