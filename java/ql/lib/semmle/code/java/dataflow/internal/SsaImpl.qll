@@ -486,13 +486,13 @@ private module Cached {
 
   overlay[global]
   cached
-  predicate defUpdatesNamedField(SsaImplicitUpdate def, TrackedField f, Callable setter) {
+  predicate defUpdatesNamedField(SsaImplicitWrite def, TrackedField f, Callable setter) {
     f = def.getSourceVariable() and
-    updatesNamedField0(def.getCfgNode().asCall(), f, setter)
+    updatesNamedField0(def.getControlFlowNode().asCall(), f, setter)
   }
 
   cached
-  predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
+  deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
     exists(SsaSourceVariable v, BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
       uncertainVariableUpdate(v, _, bb, i)
@@ -522,7 +522,7 @@ private module Cached {
    * SSA definition of `v`.
    */
   cached
-  predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
+  deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
     Impl::uncertainWriteDefinitionInput(redef, def)
   }
 
@@ -671,7 +671,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    def instanceof SsaUncertainImplicitUpdate
+    def instanceof SsaUncertainWrite
   }
 
   class GuardValue = Guards::GuardValue;

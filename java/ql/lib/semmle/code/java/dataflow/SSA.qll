@@ -293,12 +293,14 @@ class SsaExplicitUpdate extends SsaUpdate {
 }
 
 /**
+ * DEPRECATED: Use `SsaImplicitWrite` instead.
+ *
  * An SSA variable that represents any sort of implicit update. This can be a
  * `Call` that might reach a non-local update of the field, an explicit or
  * implicit update of the qualifier of the field, or the implicit update that
  * occurs just prior to a `FieldRead` of an untracked field.
  */
-class SsaImplicitUpdate extends SsaUpdate {
+deprecated class SsaImplicitUpdate extends SsaUpdate {
   SsaImplicitUpdate() { not this instanceof SsaExplicitUpdate }
 
   override string toString() {
@@ -383,18 +385,22 @@ private predicate isNonLocalImpl(SsaImplicitWrite calldef) { exists(getANonLocal
 private predicate isNonLocal(SsaImplicitWrite calldef) = forceLocal(isNonLocalImpl/1)(calldef)
 
 /**
+ * DEPRECATED: Use `SsaUncertainWrite` instead.
+ *
  * An SSA variable that represents an uncertain implicit update of the value.
  * This is a `Call` that might reach a non-local update of the field or one of
  * its qualifiers.
  */
-class SsaUncertainImplicitUpdate extends SsaImplicitUpdate {
+deprecated class SsaUncertainImplicitUpdate extends SsaImplicitUpdate {
   SsaUncertainImplicitUpdate() { ssaUncertainImplicitUpdate(this) }
 
   /**
+   * DEPRECATED: Use `getPriorDefinition()` instead.
+   *
    * Gets the immediately preceding definition. Since this update is uncertain
    * the value from the preceding definition might still be valid.
    */
-  SsaVariable getPriorDef() { ssaDefReachesUncertainDef(result, this) }
+  deprecated SsaVariable getPriorDef() { ssaDefReachesUncertainDef(result, this) }
 }
 
 /**
