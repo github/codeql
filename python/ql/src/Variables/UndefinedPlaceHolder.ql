@@ -13,6 +13,8 @@
 
 import python
 import Variables.MonkeyPatched
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 
 /* Local variable part */
 predicate initialized_as_local(PlaceHolder use) {

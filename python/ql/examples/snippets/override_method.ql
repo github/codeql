@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionObject override, FunctionObject base
 where

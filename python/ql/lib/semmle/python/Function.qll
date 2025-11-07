@@ -87,9 +87,6 @@ class Function extends Function_, Scope, AstNode {
   /** Gets the metrics for this function */
   FunctionMetrics getMetrics() { result = this }
 
-  /** Gets the FunctionObject corresponding to this function */
-  FunctionObject getFunctionObject() { result.getOrigin() = this.getDefinition() }
-
   /**
    * Whether this function is a procedure, that is, it has no explicit return statement and always returns None.
    * Note that generator and async functions are not procedures as they return generators and coroutines respectively.

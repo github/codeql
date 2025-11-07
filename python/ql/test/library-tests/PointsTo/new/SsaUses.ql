@@ -1,5 +1,4 @@
 import python
-import semmle.python.pointsto.PointsTo
 import Util
 
 from EssaVariable var, ControlFlowNode use

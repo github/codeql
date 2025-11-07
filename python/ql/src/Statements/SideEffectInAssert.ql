@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |

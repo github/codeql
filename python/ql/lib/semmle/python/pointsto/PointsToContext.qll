@@ -1,6 +1,8 @@
 import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.types.ImportTime
+private import semmle.python.types.Version
 
 /*
  * A note on 'cost'. Cost doesn't represent the cost to compute,

@@ -4,7 +4,7 @@
 
 import python
 private import LegacyPointsTo
-import semmle.python.pointsto.PointsTo
+private import semmle.python.types.ImportTime
 import IDEContextual
 
 private newtype TDefinition =

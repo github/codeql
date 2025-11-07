@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ModuleObject m, string name
 where m.getName() = "package" or m.getName() = "confused_elements"

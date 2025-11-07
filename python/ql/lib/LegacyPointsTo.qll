@@ -20,8 +20,21 @@
  */
 
 private import python
-private import semmle.python.pointsto.PointsTo
-private import semmle.python.objects.Modules
+import semmle.python.pointsto.Base
+import semmle.python.pointsto.Context
+import semmle.python.pointsto.PointsTo
+import semmle.python.pointsto.PointsToContext
+import semmle.python.objects.Modules
+import semmle.python.objects.ObjectAPI
+import semmle.python.objects.ObjectInternal
+import semmle.python.types.Object
+import semmle.python.types.ClassObject
+import semmle.python.types.FunctionObject
+import semmle.python.types.ModuleObject
+import semmle.python.types.Exceptions
+import semmle.python.types.Properties
+import semmle.python.types.Descriptors
+import semmle.python.SelfAttribute
 
 /**
  * An extension of `ControlFlowNode` that provides points-to predicates.
@@ -93,6 +106,24 @@ class ControlFlowNodeWithPointsTo extends ControlFlowNode {
     // for that variable.
     exists(SsaVariable v | v.getAUse() = this | varHasCompletePointsToSet(v))
   }
+
+  /** Whether it is unlikely that this ControlFlowNode can be reached */
+  predicate unlikelyReachable() {
+    not start_bb_likely_reachable(this.getBasicBlock())
+    or
+    exists(BasicBlock b |
+      start_bb_likely_reachable(b) and
+      not end_bb_likely_reachable(b) and
+      // If there is an unlikely successor edge earlier in the BB
+      // than this node, then this node must be unreachable.
+      exists(ControlFlowNode p, int i, int j |
+        p.(RaisingNode).unlikelySuccessor(_) and
+        p = b.getNode(i) and
+        this = b.getNode(j) and
+        i < j
+      )
+    )
+  }
 }
 
 /**
@@ -119,6 +150,45 @@ private predicate varHasCompletePointsToSet(SsaVariable var) {
       varHasCompletePointsToSet(phiInput)
     )
   )
+}
+
+private predicate start_bb_likely_reachable(BasicBlock b) {
+  exists(Scope s | s.getEntryNode() = b.getNode(_))
+  or
+  exists(BasicBlock pred |
+    pred = b.getAPredecessor() and
+    end_bb_likely_reachable(pred) and
+    not pred.getLastNode().(RaisingNode).unlikelySuccessor(b)
+  )
+}
+
+private predicate end_bb_likely_reachable(BasicBlock b) {
+  start_bb_likely_reachable(b) and
+  not exists(ControlFlowNode p, ControlFlowNode s |
+    p.(RaisingNode).unlikelySuccessor(s) and
+    p = b.getNode(_) and
+    s = b.getNode(_) and
+    not p = b.getLastNode()
+  )
+}
+
+/**
+ * An extension of `BasicBlock` that provides points-to related methods.
+ */
+class BasicBlockWithPointsTo extends BasicBlock {
+  /**
+   * Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ.
+   */
+  predicate unlikelySuccessor(BasicBlockWithPointsTo succ) {
+    this.getLastNode().(RaisingNode).unlikelySuccessor(succ.firstNode())
+    or
+    not end_bb_likely_reachable(this) and succ = this.getASuccessor()
+  }
+
+  /**
+   * Whether (as inferred by type inference) this basic block is likely to be reachable.
+   */
+  predicate likelyReachable() { start_bb_likely_reachable(this) }
 }
 
 /**
@@ -207,4 +277,67 @@ class ModuleWithPointsTo extends Module {
   }
 
   override string getAQlClass() { none() }
+}
+
+/**
+ * An extension of `Function` that provides points-to related methods.
+ */
+class FunctionWithPointsTo extends Function {
+  /** Gets the FunctionObject corresponding to this function */
+  FunctionObject getFunctionObject() { result.getOrigin() = this.getDefinition() }
+
+  override string getAQlClass() { none() }
+}
+
+/**
+ * An extension of `Class` that provides points-to related methods.
+ */
+class ClassWithPointsTo extends Class {
+  /** Gets the ClassObject corresponding to this class */
+  ClassObject getClassObject() { result.getOrigin() = this.getParent() }
+
+  override string getAQlClass() { none() }
+}
+
+Object getLiteralObject(ImmutableLiteral l) {
+  l instanceof IntegerLiteral and
+  (
+    py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, l.(Num).getN())
+    or
+    py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, l.(Num).getN())
+  )
+  or
+  l instanceof FloatLiteral and
+  py_cobjecttypes(result, theFloatType()) and
+  py_cobjectnames(result, l.(Num).getN())
+  or
+  l instanceof ImaginaryLiteral and
+  py_cobjecttypes(result, theComplexType()) and
+  py_cobjectnames(result, l.(Num).getN())
+  or
+  l instanceof NegativeIntegerLiteral and
+  (
+    (py_cobjecttypes(result, theIntType()) or py_cobjecttypes(result, theLongType())) and
+    py_cobjectnames(result, "-" + l.(UnaryExpr).getOperand().(IntegerLiteral).getN())
+  )
+  or
+  l instanceof Bytes and
+  py_cobjecttypes(result, theBytesType()) and
+  py_cobjectnames(result, l.(Bytes).quotedString())
+  or
+  l instanceof Unicode and
+  py_cobjecttypes(result, theUnicodeType()) and
+  py_cobjectnames(result, l.(Unicode).quotedString())
+  or
+  l instanceof True and
+  name_consts(l, "True") and
+  result = theTrueObject()
+  or
+  l instanceof False and
+  name_consts(l, "False") and
+  result = theFalseObject()
+  or
+  l instanceof None and
+  name_consts(l, "None") and
+  result = theNoneObject()
 }

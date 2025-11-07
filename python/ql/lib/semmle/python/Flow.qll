@@ -190,24 +190,6 @@ class ControlFlowNode extends @py_flow_node {
   /** Whether this node is a normal (non-exceptional) exit */
   predicate isNormalExit() { py_scope_flow(this, _, 0) or py_scope_flow(this, _, 2) }
 
-  /** Whether it is unlikely that this ControlFlowNode can be reached */
-  predicate unlikelyReachable() {
-    not start_bb_likely_reachable(this.getBasicBlock())
-    or
-    exists(BasicBlock b |
-      start_bb_likely_reachable(b) and
-      not end_bb_likely_reachable(b) and
-      // If there is an unlikely successor edge earlier in the BB
-      // than this node, then this node must be unreachable.
-      exists(ControlFlowNode p, int i, int j |
-        p.(RaisingNode).unlikelySuccessor(_) and
-        p = b.getNode(i) and
-        this = b.getNode(j) and
-        i < j
-      )
-    )
-  }
-
   /** Whether this strictly dominates other. */
   pragma[inline]
   predicate strictlyDominates(ControlFlowNode other) {
@@ -901,6 +883,58 @@ class StarredNode extends ControlFlowNode {
   ControlFlowNode getValue() { toAst(result) = toAst(this).(Starred).getValue() }
 }
 
+/** The ControlFlowNode for an 'except' statement. */
+class ExceptFlowNode extends ControlFlowNode {
+  ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
+
+  /**
+   * Gets the type handled by this exception handler.
+   * `ExceptionType` in `except ExceptionType as e:`
+   */
+  ControlFlowNode getType() {
+    exists(ExceptStmt ex |
+      this.getBasicBlock().dominates(result.getBasicBlock()) and
+      ex = this.getNode() and
+      result = ex.getType().getAFlowNode()
+    )
+  }
+
+  /**
+   * Gets the name assigned to the handled exception, if any.
+   * `e` in `except ExceptionType as e:`
+   */
+  ControlFlowNode getName() {
+    exists(ExceptStmt ex |
+      this.getBasicBlock().dominates(result.getBasicBlock()) and
+      ex = this.getNode() and
+      result = ex.getName().getAFlowNode()
+    )
+  }
+}
+
+/** The ControlFlowNode for an 'except*' statement. */
+class ExceptGroupFlowNode extends ControlFlowNode {
+  ExceptGroupFlowNode() { this.getNode() instanceof ExceptGroupStmt }
+
+  /**
+   * Gets the type handled by this exception handler.
+   * `ExceptionType` in `except* ExceptionType as e:`
+   */
+  ControlFlowNode getType() {
+    this.getBasicBlock().dominates(result.getBasicBlock()) and
+    result = this.getNode().(ExceptGroupStmt).getType().getAFlowNode()
+  }
+
+  /**
+   * Gets the name assigned to the handled exception, if any.
+   * `e` in `except* ExceptionType as e:`
+   */
+  ControlFlowNode getName() {
+    this.getBasicBlock().dominates(result.getBasicBlock()) and
+    result = this.getNode().(ExceptGroupStmt).getName().getAFlowNode()
+  }
+}
+
 private module Scopes {
   private predicate fast_local(NameNode n) {
     exists(FastLocalVariable v |
@@ -1004,7 +1038,8 @@ class BasicBlock extends @py_flow_node {
     )
   }
 
-  private ControlFlowNode firstNode() { result = this }
+  /** Gets the first node in this basic block */
+  ControlFlowNode firstNode() { result = this }
 
   /** Gets the last node in this basic block */
   ControlFlowNode getLastNode() {
@@ -1093,15 +1128,6 @@ class BasicBlock extends @py_flow_node {
     )
   }
 
-  /**
-   * Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ.
-   */
-  predicate unlikelySuccessor(BasicBlock succ) {
-    this.getLastNode().(RaisingNode).unlikelySuccessor(succ.firstNode())
-    or
-    not end_bb_likely_reachable(this) and succ = this.getASuccessor()
-  }
-
   /** Holds if this basic block strictly reaches the other. Is the start of other reachable from the end of this. */
   cached
   predicate strictlyReaches(BasicBlock other) {
@@ -1111,11 +1137,6 @@ class BasicBlock extends @py_flow_node {
 
   /** Holds if this basic block reaches the other. Is the start of other reachable from the end of this. */
   predicate reaches(BasicBlock other) { this = other or this.strictlyReaches(other) }
-
-  /**
-   * Whether (as inferred by type inference) this basic block is likely to be reachable.
-   */
-  predicate likelyReachable() { start_bb_likely_reachable(this) }
 
   /**
    * Gets the `ConditionBlock`, if any, that controls this block and
@@ -1142,26 +1163,6 @@ class BasicBlock extends @py_flow_node {
     or
     forex(BasicBlock immsucc | immsucc = this.getASuccessor() | immsucc.alwaysReaches(succ))
   }
-}
-
-private predicate start_bb_likely_reachable(BasicBlock b) {
-  exists(Scope s | s.getEntryNode() = b.getNode(_))
-  or
-  exists(BasicBlock pred |
-    pred = b.getAPredecessor() and
-    end_bb_likely_reachable(pred) and
-    not pred.getLastNode().(RaisingNode).unlikelySuccessor(b)
-  )
-}
-
-private predicate end_bb_likely_reachable(BasicBlock b) {
-  start_bb_likely_reachable(b) and
-  not exists(ControlFlowNode p, ControlFlowNode s |
-    p.(RaisingNode).unlikelySuccessor(s) and
-    p = b.getNode(_) and
-    s = b.getNode(_) and
-    not p = b.getLastNode()
-  )
 }
 
 private class ControlFlowNodeAlias = ControlFlowNode;

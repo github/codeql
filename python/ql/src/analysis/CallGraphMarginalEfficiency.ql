@@ -4,8 +4,7 @@
  */
 
 import python
-import semmle.python.pointsto.PointsTo
-import semmle.python.pointsto.PointsToContext
+private import LegacyPointsTo
 
 from int total_facts, int total_size, int depth, float efficiency
 where

@@ -8,6 +8,7 @@
 
 import python
 import semmle.python.dependencies.TechInventory
+private import LegacyPointsTo
 
 /*
  * This query creates the source links for the ExternalDependencies.ql query.
