@@ -29,9 +29,17 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
-            if (Context.ExtractLocation(Symbol) && (!IsDefault || IsBestSourceLocation))
+
+            if (Symbol.IsImplicitlyDeclared)
             {
-                WriteLocationToTrap(trapFile.constructor_location, this, Location);
+                var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
+                trapFile.numlines(this, lineCounts);
+            }
+            ExtractCompilerGenerated(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
             }
 
             if (MakeSynthetic)
@@ -40,12 +48,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
             }
 
-            if (Symbol.IsImplicitlyDeclared)
+            if (Context.ExtractLocation(Symbol) && (!IsDefault || IsBestSourceLocation))
             {
-                var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
-                trapFile.numlines(this, lineCounts);
+                WriteLocationToTrap(trapFile.constructor_location, this, Location);
             }
-            ExtractCompilerGenerated(trapFile);
+
         }
 
         protected override void ExtractInitializers(TextWriter trapFile)

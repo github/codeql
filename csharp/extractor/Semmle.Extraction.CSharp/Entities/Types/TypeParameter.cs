@@ -26,13 +26,18 @@ namespace Semmle.Extraction.CSharp.Entities
             var parentNs = Namespace.Create(Context, Symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : Symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);
 
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             if (Context.ExtractLocation(Symbol))
             {
                 var locations = Context.GetLocations(Symbol);
                 WriteLocationsToTrap(trapFile.type_location, this, locations);
             }
 
-            if (IsSourceDeclaration && !Context.OnlyScaffold)
+            if (IsSourceDeclaration)
             {
                 var declSyntaxReferences = Symbol.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())

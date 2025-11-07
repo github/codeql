@@ -21,12 +21,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            location = Context.CreateLocation(Location);
             trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
-            if (!Context.OnlyScaffold)
+            if (Context.OnlyScaffold)
             {
-                WriteLocationToTrap(trapFile.commentline_location, this, location);
+                return;
             }
+            location = Context.CreateLocation(Location);
+            WriteLocationToTrap(trapFile.commentline_location, this, location);
+
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => location?.Symbol;

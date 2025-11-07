@@ -20,6 +20,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             // This is guaranteed to be non-null as we only deal with "using namespace" not "using X = Y"
             var name = node.Name!;
 
@@ -32,10 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     var ns = Namespace.Create(Context, namespaceSymbol);
                     trapFile.using_namespace_directives(this, ns);
-                    if (!Context.OnlyScaffold)
-                    {
-                        trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
-                    }
+                    trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
                 }
                 else
                 {
@@ -49,10 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // A "using static"
                 var m = Type.Create(Context, (ITypeSymbol?)info.Symbol);
                 trapFile.using_static_directives(this, m.TypeRef);
-                if (!Context.OnlyScaffold)
-                {
-                    trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
-                }
+                trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
             }
 
             if (node.GlobalKeyword.IsKind(SyntaxKind.GlobalKeyword))

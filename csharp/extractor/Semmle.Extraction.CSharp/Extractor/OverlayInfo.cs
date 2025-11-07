@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp
         ///  ]
         /// }
         /// </summary>
-        public record ChangedFiles
+        private record ChangedFiles
         {
             public string[]? Changes { get; set; }
         }

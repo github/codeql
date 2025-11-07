@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
-                if (IsSourceDeclaration && !Context.OnlyScaffold)
+                if (IsSourceDeclaration)
                 {
                     foreach (var syntax in Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
                         TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
