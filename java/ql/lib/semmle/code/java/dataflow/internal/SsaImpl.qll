@@ -244,7 +244,7 @@ final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
 final class PhiNode = Impl::PhiNode;
 
-predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
+deprecated predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
   exists(SsaSourceVariable v, BasicBlock bb, int i |
     def.definesAt(v, bb, i) and
     certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
@@ -259,7 +259,7 @@ deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
   )
 }
 
-predicate ssaImplicitInit(WriteDefinition def) {
+deprecated predicate ssaImplicitInit(WriteDefinition def) {
   exists(SsaSourceVariable v, BasicBlock bb, int i |
     def.definesAt(v, bb, i) and
     hasEntryDef(v, bb) and
@@ -275,7 +275,7 @@ deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainIm
   Impl::uncertainWriteDefinitionInput(redef, def)
 }
 
-VarRead getAUse(Definition def) {
+deprecated VarRead getAUse(Definition def) {
   exists(SsaSourceVariable v, BasicBlock bb, int i |
     Impl::ssaDefReachesRead(v, def, bb, i) and
     result.getControlFlowNode() = bb.getNode(i) and
@@ -283,7 +283,7 @@ VarRead getAUse(Definition def) {
   )
 }
 
-predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
+deprecated predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
   Impl::ssaDefReachesEndOfBlock(bb, def, _)
 }
 
