@@ -5,10 +5,8 @@
  * `ControlFlowNode` at which it is defined. Each SSA variable is defined
  * either by a phi node, an implicit initial value (for parameters and fields),
  * an explicit update, or an implicit update (for fields).
- * An implicit update occurs either at a `Call` that might modify a field, at
- * another update that can update the qualifier of a field, or at a `FieldRead`
- * of the field in case the field is not amenable to a non-trivial SSA
- * representation.
+ * An implicit update occurs either at a `Call` that might modify a field, or
+ * at another update that can update the qualifier of a field.
  */
 overlay[local?]
 module;
@@ -168,13 +166,19 @@ class SsaCapturedDefinition extends SsaImplicitEntryDefinition {
 VarRead ssaGetAFirstUse(SsaDefinition def) { firstUse(def, result) }
 
 /**
+ * DEPRECATED: use `SsaDefinition` instead.
+ *
  * An SSA variable.
  */
 class SsaVariable extends Definition {
   /** Gets the SSA source variable underlying this SSA variable. */
   SsaSourceVariable getSourceVariable() { result = super.getSourceVariable() }
 
-  /** Gets the `ControlFlowNode` at which this SSA variable is defined. */
+  /**
+   * DEPRECATED: Use `getControlFlowNode()` instead.
+   *
+   * Gets the `ControlFlowNode` at which this SSA variable is defined.
+   */
   pragma[nomagic]
   ControlFlowNode getCfgNode() {
     exists(BasicBlock bb, int i |
@@ -193,7 +197,11 @@ class SsaVariable extends Definition {
   /** Gets the `BasicBlock` in which this SSA variable is defined. */
   BasicBlock getBasicBlock() { result = super.getBasicBlock() }
 
-  /** Gets an access of this SSA variable. */
+  /**
+   * DEPRECATED: Use `getARead()` instead.
+   *
+   * Gets an access of this SSA variable.
+   */
   VarRead getAUse() { result = getAUse(this) }
 
   /**
@@ -236,7 +244,11 @@ class SsaVariable extends Definition {
   }
 }
 
-/** An SSA variable that either explicitly or implicitly updates the variable. */
+/**
+ * DEPRECATED: use `SsaWriteDefinition` instead.
+ *
+ * An SSA variable that either explicitly or implicitly updates the variable.
+ */
 class SsaUpdate extends SsaVariable instanceof WriteDefinition {
   SsaUpdate() { not this instanceof SsaImplicitInit }
 }
