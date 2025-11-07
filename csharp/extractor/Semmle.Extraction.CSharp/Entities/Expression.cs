@@ -34,11 +34,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            if (Context.OnlyScaffold)
-            {
-                return;
-            }
-
             var type = Type.HasValue ? Entities.Type.Create(Context, Type.Value) : NullType.Create(Context);
             trapFile.expressions(this, Kind, type.TypeRef);
             if (info.Parent.IsTopLevelParent)

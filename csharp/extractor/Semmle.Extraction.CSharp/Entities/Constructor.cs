@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Do not extract initializers for constructed types.
             // Extract initializers for constructors with a body, primary constructors
             // and default constructors for classes and structs declared in source code.
-            if (Block is null && ExpressionBody is null && !MakeSynthetic)
+            if (Block is null && ExpressionBody is null && !MakeSynthetic || Context.OnlyScaffold)
             {
                 return;
             }
@@ -113,6 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
 
                 var baseConstructorTarget = Create(Context, baseConstructor);
+
                 var info = new ExpressionInfo(Context,
                     AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
                     Location,
