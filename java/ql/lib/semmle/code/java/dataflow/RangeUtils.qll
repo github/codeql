@@ -30,14 +30,14 @@ predicate eqFlowCond = U::eqFlowCond/5;
  * only other input to `phi` is a `null` value.
  *
  * Note that the declared type of `phi` is `SsaVariable` instead of
- * `SsaPhiNode` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
- * have non-`SsaPhiNode` results.
+ * `SsaPhiDefinition` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
+ * have non-`SsaPhiDefinition` results.
  */
 private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
-  exists(SsaExplicitWrite vnull, SsaPhiNode phi0 | phi0 = phi |
-    2 = strictcount(phi0.getAPhiInput()) and
-    vnull = phi0.getAPhiInput() and
-    v = phi0.getAPhiInput() and
+  exists(SsaExplicitWrite vnull, SsaPhiDefinition phi0 | phi0 = phi |
+    2 = strictcount(phi0.getAnInput()) and
+    vnull = phi0.getAnInput() and
+    v = phi0.getAnInput() and
     not backEdge(phi0, v, _) and
     vnull != v and
     vnull.getValue() instanceof NullLiteral

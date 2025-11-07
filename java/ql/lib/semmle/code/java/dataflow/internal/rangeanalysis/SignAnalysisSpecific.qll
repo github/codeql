@@ -19,7 +19,7 @@ module Private {
 
   class SsaVariable = Ssa::SsaVariable;
 
-  class SsaPhiNode = Ssa::SsaPhiNode;
+  class SsaPhiNode = Ssa::SsaPhiDefinition;
 
   class VarAccess = J::VarAccess;
 

@@ -142,7 +142,7 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
     msg = "as suggested by $@ null guard" and
     guardSuggestsVarMaybeNull(e, v) and
     node = v.getCfgNode() and
-    not v instanceof SsaPhiNode and
+    not v instanceof SsaPhiDefinition and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
     not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and

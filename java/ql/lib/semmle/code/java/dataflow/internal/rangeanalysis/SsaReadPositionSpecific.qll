@@ -10,7 +10,7 @@ private import SsaReadPositionCommon
 
 class SsaVariable = Ssa::SsaVariable;
 
-class SsaPhiNode = Ssa::SsaPhiNode;
+class SsaPhiNode = Ssa::SsaPhiDefinition;
 
 class BasicBlock = BB::BasicBlock;
 

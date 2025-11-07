@@ -248,7 +248,7 @@ module Sem implements Semantic<Location> {
     Expr getAUse() { result = super.getAUse() }
   }
 
-  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode {
+  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiDefinition {
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb) { super.hasInputFromBlock(inp, bb) }
   }
 

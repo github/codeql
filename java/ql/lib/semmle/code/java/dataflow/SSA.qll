@@ -381,12 +381,20 @@ class SsaImplicitInit extends SsaVariable instanceof WriteDefinition {
   }
 }
 
-/** An SSA phi node. */
-class SsaPhiNode extends SsaVariable instanceof PhiNode {
+/**
+ * DEPRECATED: Use `SsaPhiDefinition` instead.
+ *
+ * An SSA phi node.
+ */
+deprecated class SsaPhiNode extends SsaVariable instanceof PhiNode {
   override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
 
-  /** Gets an input to the phi node defining the SSA variable. */
-  SsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
+  /**
+   * DEPRECATED: Use `getAnInput()` instead.
+   *
+   * Gets an input to the phi node defining the SSA variable.
+   */
+  deprecated SsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
 
   /** Gets an input to the phi node defining the SSA variable. */
   SsaVariable getAnInput() { this.hasInputFromBlock(result, _) }
