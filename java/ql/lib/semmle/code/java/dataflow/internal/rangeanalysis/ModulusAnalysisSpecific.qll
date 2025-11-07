@@ -11,7 +11,9 @@ module Private {
 
   class BasicBlock = BB::BasicBlock;
 
-  class SsaVariable = Ssa::SsaVariable;
+  class SsaVariable extends Ssa::SsaDefinition {
+    Expr getAUse() { result = super.getARead() }
+  }
 
   class SsaPhiNode = Ssa::SsaPhiDefinition;
 

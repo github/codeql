@@ -324,7 +324,7 @@ private module Impl {
     result = e.(CastingExpr).getExpr()
   }
 
-  Expr getARead(SsaVariable v) { result = v.getAUse() }
+  Expr getARead(SsaDefinition v) { result = v.getARead() }
 
   Field getField(FieldAccess fa) { result = fa.getField() }
 

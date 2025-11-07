@@ -179,9 +179,9 @@ private Expr nonEmptyExpr() {
   // An array creation with a known positive size is trivially non-empty.
   result.(ArrayCreationExpr).getFirstDimensionSize() > 0
   or
-  exists(SsaVariable v |
+  exists(SsaDefinition v |
     // A use of an array variable is non-empty if...
-    result = v.getAUse() and
+    result = v.getARead() and
     v.getSourceVariable().getType() instanceof Array
   |
     // ...its definition is non-empty...
@@ -192,13 +192,13 @@ private Expr nonEmptyExpr() {
       cond.controls(result.getBasicBlock(), branch) and
       cond.getCondition() = nonZeroGuard(length, branch) and
       length.getField().hasName("length") and
-      length.getQualifier() = v.getAUse()
+      length.getQualifier() = v.getARead()
     )
   )
   or
-  exists(SsaVariable v |
+  exists(SsaDefinition v |
     // A use of a Collection variable is non-empty if...
-    result = v.getAUse() and
+    result = v.getARead() and
     v.getSourceVariable().getType() instanceof CollectionType and
     exists(ConditionBlock cond, boolean branch, Expr c |
       // ...it is guarded by a condition...
@@ -216,13 +216,13 @@ private Expr nonEmptyExpr() {
       // ...and the condition proves that it is non-empty, either by using the `isEmpty` method...
       c.(MethodCall).getMethod().hasName("isEmpty") and
       branch = false and
-      c.(MethodCall).getQualifier() = v.getAUse()
+      c.(MethodCall).getQualifier() = v.getARead()
       or
       // ...or a check on its `size`.
       exists(MethodCall size |
         c = nonZeroGuard(size, branch) and
         size.getMethod().hasName("size") and
-        size.getQualifier() = v.getAUse()
+        size.getQualifier() = v.getARead()
       )
     )
   )

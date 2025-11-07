@@ -74,9 +74,9 @@ ArrayCreationExpr getArrayDef(SsaVariable v) {
  * `arrlen` without going through a back edge.
  */
 private predicate arrayLengthDef(FieldRead arrlen, ArrayCreationExpr def) {
-  exists(SsaVariable arr |
+  exists(SsaDefinition arr |
     arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = arr.getAUse() and
+    arrlen.getQualifier() = arr.getARead() and
     def = getArrayDef(arr)
   )
 }

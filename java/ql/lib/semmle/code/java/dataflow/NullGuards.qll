@@ -26,9 +26,9 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
 }
 
 /** Gets an instanceof expression of `v` with type `type` */
-InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
+InstanceOfExpr instanceofExpr(SsaDefinition v, RefType type) {
   result.getCheckedType() = type and
-  result.getExpr() = v.getAUse()
+  result.getExpr() = v.getARead()
 }
 
 /**
@@ -37,8 +37,8 @@ InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
  *
  * Note this includes Kotlin's `==` and `!=` operators, which are value-equality tests.
  */
-EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
-  result.hasOperands(v1.getAUse(), v2.getAUse()) and
+EqualityTest varEqualityTestExpr(SsaDefinition v1, SsaDefinition v2, boolean isEqualExpr) {
+  result.hasOperands(v1.getARead(), v2.getARead()) and
   isEqualExpr = result.polarity()
 }
 
@@ -91,18 +91,18 @@ Expr clearlyNotNullExpr(Expr reason) {
     (reason = r1 or reason = r2)
   )
   or
-  exists(SsaVariable v, boolean branch, VarRead rval, Guard guard |
+  exists(SsaDefinition v, boolean branch, VarRead rval, Guard guard |
     guard = directNullGuard(v, branch, false) and
     guard.controls(rval.getBasicBlock(), branch) and
     reason = guard and
-    rval = v.getAUse() and
+    rval = v.getARead() and
     result = rval and
     not result = baseNotNullExpr()
   )
   or
-  exists(SsaVariable v |
+  exists(SsaDefinition v |
     clearlyNotNull(v, reason) and
-    result = v.getAUse() and
+    result = v.getARead() and
     not result = baseNotNullExpr()
   )
 }

@@ -242,10 +242,10 @@ module Sem implements Semantic<Location> {
 
   Type getSsaType(SsaVariable var) { result = var.getSourceVariable().getType() }
 
-  final private class FinalSsaVariable = SSA::SsaVariable;
+  final private class FinalSsaVariable = SSA::SsaDefinition;
 
   class SsaVariable extends FinalSsaVariable {
-    Expr getAUse() { result = super.getAUse() }
+    Expr getAUse() { result = super.getARead() }
   }
 
   class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiDefinition {

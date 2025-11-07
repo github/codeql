@@ -417,8 +417,8 @@ private class RefTypeCastingExpr extends CastingExpr {
  *
  * The `VarAccess` represents the access to `v` that `result` has the same value as.
  */
-Expr sameValue(SsaVariable v, VarAccess va) {
-  result = v.getAUse() and result = va
+Expr sameValue(SsaDefinition v, VarAccess va) {
+  result = v.getARead() and result = va
   or
   result.(AssignExpr).getDest() = va and result = v.(SsaExplicitWrite).getDefiningExpr()
   or
