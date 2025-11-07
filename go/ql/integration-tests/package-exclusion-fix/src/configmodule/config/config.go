@@ -1,9 +1,9 @@
 package config
 
 type Settings struct {
-    Value string
+	Value string
 }
 
 func Value() string {
-    return Settings{Value: "ok"}.Value
+	return Settings{Value: "ok"}.Value
 }
