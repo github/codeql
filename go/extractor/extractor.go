@@ -11,6 +11,7 @@ import (
 	"go/types"
 	"io"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -387,6 +388,7 @@ func NewExtraction(buildFlags []string, patterns []string, sourceRoot string) *E
 				log.Fatalf("Error resolving absolute path of overlay change %s: %s", changedFilePath, err.Error())
 			}
 			overlayChanges[absPath] = true
+			slog.Info("Overlay changed file", "path", absPath)
 		}
 	}
 
@@ -739,6 +741,7 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 	if extraction.OverlayChanges != nil &&
 		!extraction.OverlayChanges[path] &&
 		strings.HasPrefix(path+string(filepath.Separator), pkg.Dir) {
+		slog.Info("Skipping unchanged file in overlay extraction", "path", path)
 		return nil
 	}
 

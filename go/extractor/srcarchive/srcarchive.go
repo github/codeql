@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +16,9 @@ func init() {
 	pt, err := LoadProjectLayoutFromEnv()
 	if err == nil {
 		pathTransformer = pt
+		if pathTransformer != nil {
+			slog.Info("Loaded path transformer", "from", pathTransformer.From, "to", pathTransformer.To)
+		}
 	} else {
 		log.Fatalf("Unable to load path transformer: %s.\n", err.Error())
 	}
