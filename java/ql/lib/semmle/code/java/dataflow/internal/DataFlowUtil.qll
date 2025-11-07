@@ -101,7 +101,9 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
 predicate hasNonlocalValue(FieldRead fr) {
   not exists(SsaVariable v | v.getAUse() = fr)
   or
-  exists(SsaVariable v, SsaVariable def | v.getAUse() = fr and def = v.getAnUltimateDefinition() |
+  exists(SsaDefinition v, SsaDefinition def |
+    v.getARead() = fr and def = v.getAnUltimateDefinition()
+  |
     def instanceof SsaImplicitInit or
     def instanceof SsaImplicitUpdate
   )

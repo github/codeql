@@ -38,9 +38,13 @@ private predicate isShell(Expr ex) {
     cmd.regexpMatch(".*(sh|javac?|python[23]?|osascript|cmd)(\\.exe)?$")
   )
   or
-  exists(SsaVariable ssa |
-    ex = ssa.getAUse() and
-    isShell(ssa.getAnUltimateDefinition().(SsaExplicitWrite).getDefiningExpr())
+  exists(SsaDefinition ssa, SsaExplicitWrite def |
+    ex = ssa.getARead() and
+    isShell(def.getDefiningExpr())
+  |
+    ssa.getAnUltimateDefinition() = def
+    or
+    ssa.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
   )
   or
   isShell(ex.(Assignment).getRhs())

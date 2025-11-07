@@ -62,9 +62,10 @@ private predicate fieldStep(Node node1, Node node2) {
 private predicate closureFlowStep(Expr e1, Expr e2) {
   simpleAstFlowStep(e1, e2)
   or
-  exists(SsaVariable v |
-    v.getAUse() = e2 and
-    v.getAnUltimateDefinition().(SsaExplicitWrite).getValue() = e1
+  exists(SsaDefinition v, SsaExplicitWrite def | v.getARead() = e2 and def.getValue() = e1 |
+    v.getAnUltimateDefinition() = def
+    or
+    v.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
   )
 }
 

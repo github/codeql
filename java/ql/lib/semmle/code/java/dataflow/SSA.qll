@@ -140,6 +140,25 @@ class SsaSourceField extends SsaSourceVariable {
   }
 }
 
+/** An SSA definition in a closure that captures a variable. */
+class SsaCapturedDefinition extends SsaImplicitEntryDefinition {
+  SsaCapturedDefinition() { captures(this, _) }
+
+  override string toString() { result = "SSA capture def(" + this.getSourceVariable() + ")" }
+
+  /** Holds if this definition captures the value of `capturedvar`. */
+  predicate captures(SsaDefinition capturedvar) { captures(this, capturedvar) }
+
+  /**
+   * Gets a definition that ultimately defines the captured variable and is not itself a phi node.
+   */
+  SsaDefinition getAnUltimateCapturedDefinition() {
+    exists(SsaDefinition capturedvar |
+      captures(this, capturedvar) and result = capturedvar.getAnUltimateDefinition()
+    )
+  }
+}
+
 /**
  * Gets an access of the SSA source variable underlying this SSA variable
  * that can be reached from this SSA variable without passing through any
@@ -194,18 +213,25 @@ class SsaVariable extends Definition {
   predicate isLiveAtEndOfBlock(BasicBlock b) { ssaDefReachesEndOfBlock(b, this) }
 
   /**
+   * DEPRECATED.
+   *
    * Gets an SSA variable whose value can flow to this one in one step. This
    * includes inputs to phi nodes, the prior definition of uncertain updates,
    * and the captured ssa variable for a closure variable.
    */
-  SsaVariable getAPhiInputOrPriorDef() {
+  deprecated SsaVariable getAPhiInputOrPriorDef() {
     result = this.(SsaPhiNode).getAPhiInput() or
     result = this.(SsaUncertainImplicitUpdate).getPriorDef() or
     this.(SsaImplicitInit).captures(result)
   }
 
-  /** Gets a definition that ultimately defines this variable and is not itself a phi node. */
-  SsaVariable getAnUltimateDefinition() {
+  /**
+   * DEPRECATED: Use `SsaCapturedDefinition::getAnUltimateCapturedDefinition()`
+   * and/or `SsaDefinition::getAnUltimateDefinition()` instead.
+   *
+   * Gets a definition that ultimately defines this variable and is not itself a phi node.
+   */
+  deprecated SsaVariable getAnUltimateDefinition() {
     result = this.getAPhiInputOrPriorDef*() and not result instanceof SsaPhiNode
   }
 }
@@ -319,6 +345,8 @@ class SsaUncertainImplicitUpdate extends SsaImplicitUpdate {
 }
 
 /**
+ * DEPRECATED: Use `SsaParameterInit`, `SsaImplicitEntryDefinition`, or `SsaCapturedDefinition` instead.
+ *
  * An SSA variable that is defined by its initial value in the callable. This
  * includes initial values of parameters, fields, and closure variables.
  */

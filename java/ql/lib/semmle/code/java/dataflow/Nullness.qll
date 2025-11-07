@@ -278,8 +278,8 @@ predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) 
  * A dereference of a variable that is always `null`.
  */
 predicate alwaysNullDeref(SsaSourceVariable v, VarAccess va) {
-  exists(BasicBlock bb, SsaVariable ssa |
-    forall(SsaVariable def | def = ssa.getAnUltimateDefinition() |
+  exists(BasicBlock bb, SsaDefinition ssa |
+    forall(SsaDefinition def | def = ssa.getAnUltimateDefinition() |
       def.(SsaExplicitWrite).getValue() = alwaysNullExpr()
     )
     or

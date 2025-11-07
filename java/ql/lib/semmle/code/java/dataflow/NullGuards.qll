@@ -120,8 +120,8 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
     reason = decl
   )
   or
-  exists(SsaVariable captured |
-    v.(SsaImplicitInit).captures(captured) and
+  exists(SsaDefinition captured |
+    v.(SsaCapturedDefinition).captures(captured) and
     clearlyNotNull(captured, reason)
   )
   or
