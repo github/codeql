@@ -151,7 +151,7 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
       not exists(MethodCall ma | ma.getAnArgument().getAChildExpr*() = e)
     ) and
     // Don't use a guard as reason if there is a null assignment.
-    not v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
+    not v.(SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
   )
   or
   // A parameter might be null if there is a null argument somewhere.
@@ -167,7 +167,7 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
   or
   // If the source of a variable is null then the variable may be null.
   exists(VariableAssign def |
-    v.(SsaExplicitUpdate).getDefiningExpr() = def and
+    v.(SsaExplicitWrite).getDefiningExpr() = def and
     def.getSource() = nullExpr(node.asExpr()) and
     reason = def and
     msg = "because of $@ assignment"
@@ -185,7 +185,7 @@ private Expr nonEmptyExpr() {
     v.getSourceVariable().getType() instanceof Array
   |
     // ...its definition is non-empty...
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nonEmptyExpr()
+    v.(SsaExplicitWrite).getValue() = nonEmptyExpr()
     or
     // ...or it is guarded by a condition proving its length to be non-zero.
     exists(ConditionBlock cond, boolean branch, FieldAccess length |
@@ -280,7 +280,7 @@ predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) 
 predicate alwaysNullDeref(SsaSourceVariable v, VarAccess va) {
   exists(BasicBlock bb, SsaVariable ssa |
     forall(SsaVariable def | def = ssa.getAnUltimateDefinition() |
-      def.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = alwaysNullExpr()
+      def.(SsaExplicitWrite).getValue() = alwaysNullExpr()
     )
     or
     nullGuardControls(ssa, true, bb) and

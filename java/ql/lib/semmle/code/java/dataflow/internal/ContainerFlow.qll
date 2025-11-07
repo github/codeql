@@ -460,7 +460,7 @@ predicate arrayStoreStep(Node node1, Node node2) {
 }
 
 private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType) {
-  exists(EnhancedForStmt for, Expr e, SsaExplicitUpdate v |
+  exists(EnhancedForStmt for, Expr e, SsaExplicitWrite v |
     for.getExpr() = e and
     node1.asExpr() = e and
     containerType = e.getType() and

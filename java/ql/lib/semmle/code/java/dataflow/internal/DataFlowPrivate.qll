@@ -64,8 +64,7 @@ private predicate closureFlowStep(Expr e1, Expr e2) {
   or
   exists(SsaVariable v |
     v.getAUse() = e2 and
-    v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
-      e1
+    v.getAnUltimateDefinition().(SsaExplicitWrite).getValue() = e1
   )
 }
 
@@ -395,7 +394,7 @@ class CastNode extends ExprNode {
   CastNode() {
     this.getExpr() instanceof CastingExpr
     or
-    exists(SsaExplicitUpdate upd |
+    exists(SsaExplicitWrite upd |
       upd.getDefiningExpr().(VariableAssign).getSource() =
         [
           any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
@@ -531,9 +530,9 @@ class NodeRegion instanceof BasicBlock {
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantBooleanExpr(src, val)
   )
 }

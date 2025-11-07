@@ -215,7 +215,11 @@ class SsaUpdate extends SsaVariable instanceof WriteDefinition {
   SsaUpdate() { not this instanceof SsaImplicitInit }
 }
 
-/** An SSA variable that is defined by a `VariableUpdate`. */
+/**
+ * DEPRECATED: Use `SsaExplicitWrite` instead.
+ *
+ * An SSA variable that is defined by a `VariableUpdate`.
+ */
 class SsaExplicitUpdate extends SsaUpdate {
   private VariableUpdate upd;
 
@@ -368,7 +372,7 @@ private class RefTypeCastingExpr extends CastingExpr {
 Expr sameValue(SsaVariable v, VarAccess va) {
   result = v.getAUse() and result = va
   or
-  result.(AssignExpr).getDest() = va and result = v.(SsaExplicitUpdate).getDefiningExpr()
+  result.(AssignExpr).getDest() = va and result = v.(SsaExplicitWrite).getDefiningExpr()
   or
   result.(AssignExpr).getSource() = sameValue(v, va)
   or

@@ -35,7 +35,7 @@ predicate useUsePair(VarRead use1, VarRead use2) { adjacentUseUse+(use1, use2) }
  */
 predicate defUsePair(VariableUpdate def, VarRead use) {
   exists(SsaVariable v |
-    v.getAUse() = use and v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr() = def
+    v.getAUse() = use and v.getAnUltimateDefinition().(SsaExplicitWrite).getDefiningExpr() = def
   )
 }
 

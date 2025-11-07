@@ -240,8 +240,8 @@ private module Impl {
   }
 
   /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  VariableUpdate getExplicitSsaAssignment(SsaVariable v) {
-    result = v.(SsaExplicitUpdate).getDefiningExpr()
+  VariableUpdate getExplicitSsaAssignment(SsaDefinition v) {
+    result = v.(SsaExplicitWrite).getDefiningExpr()
   }
 
   /** Returns the assignment of the variable update `def`. */

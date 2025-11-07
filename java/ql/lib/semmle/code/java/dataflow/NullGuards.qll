@@ -110,13 +110,13 @@ Expr clearlyNotNullExpr(Expr reason) {
 /** Holds if `v` is an SSA variable that is provably not `null`. */
 predicate clearlyNotNull(SsaVariable v, Expr reason) {
   exists(Expr src |
-    src = v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() and
+    src = v.(SsaExplicitWrite).getValue() and
     src = clearlyNotNullExpr(reason)
   )
   or
   exists(CatchClause cc, LocalVariableDeclExpr decl |
     decl = cc.getVariable() and
-    decl = v.(SsaExplicitUpdate).getDefiningExpr() and
+    decl = v.(SsaExplicitWrite).getDefiningExpr() and
     reason = decl
   )
   or

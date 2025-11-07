@@ -252,7 +252,7 @@ module Sem implements Semantic<Location> {
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb) { super.hasInputFromBlock(inp, bb) }
   }
 
-  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate {
+  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitWrite {
     Expr getDefiningExpr() { result = super.getDefiningExpr() }
   }
 

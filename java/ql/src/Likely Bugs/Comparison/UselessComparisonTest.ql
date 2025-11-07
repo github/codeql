@@ -127,7 +127,7 @@ Expr overFlowCand() {
     c.getIntValue() >= 0
   )
   or
-  exists(SsaExplicitUpdate x | result = x.getAUse() and x.getDefiningExpr() = overFlowCand())
+  exists(SsaExplicitWrite x | result = x.getARead() and x.getDefiningExpr() = overFlowCand())
   or
   result.(AssignExpr).getRhs() = overFlowCand()
   or
@@ -161,8 +161,8 @@ Expr increaseOrDecreaseOfVar(SsaVariable v) {
     positiveOrNegative(sub.getRightOperand())
   )
   or
-  exists(SsaExplicitUpdate x |
-    result = x.getAUse() and x.getDefiningExpr() = increaseOrDecreaseOfVar(v)
+  exists(SsaExplicitWrite x |
+    result = x.getARead() and x.getDefiningExpr() = increaseOrDecreaseOfVar(v)
   )
   or
   result.(AssignExpr).getRhs() = increaseOrDecreaseOfVar(v)

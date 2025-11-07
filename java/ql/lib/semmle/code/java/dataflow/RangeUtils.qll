@@ -34,13 +34,13 @@ predicate eqFlowCond = U::eqFlowCond/5;
  * have non-`SsaPhiNode` results.
  */
 private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
-  exists(SsaExplicitUpdate vnull, SsaPhiNode phi0 | phi0 = phi |
+  exists(SsaExplicitWrite vnull, SsaPhiNode phi0 | phi0 = phi |
     2 = strictcount(phi0.getAPhiInput()) and
     vnull = phi0.getAPhiInput() and
     v = phi0.getAPhiInput() and
     not backEdge(phi0, v, _) and
     vnull != v and
-    vnull.getDefiningExpr().(VariableAssign).getSource() instanceof NullLiteral
+    vnull.getValue() instanceof NullLiteral
   )
 }
 
@@ -58,7 +58,7 @@ private predicate nonNullDefStep(Expr e1, Expr e2) {
  */
 ArrayCreationExpr getArrayDef(SsaVariable v) {
   exists(Expr src |
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = src and
+    v.(SsaExplicitWrite).getValue() = src and
     nonNullDefStep*(result, src)
   )
   or
@@ -86,9 +86,9 @@ pragma[nomagic]
 private predicate constantIntegerExpr(Expr e, int val) {
   e.(CompileTimeConstantExpr).getIntValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantIntegerExpr(src, val)
   )
   or
@@ -112,9 +112,9 @@ pragma[nomagic]
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantBooleanExpr(src, val)
   )
   or
@@ -125,9 +125,9 @@ pragma[nomagic]
 private predicate constantStringExpr(Expr e, string val) {
   e.(CompileTimeConstantExpr).getStringValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantStringExpr(src, val)
   )
 }
