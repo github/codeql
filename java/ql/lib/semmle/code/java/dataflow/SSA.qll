@@ -158,6 +158,29 @@ class SsaCapturedDefinition extends SsaImplicitEntryDefinition {
 }
 
 /**
+ * An SSA definition representing the potential definition of a variable
+ * via a call.
+ */
+class SsaImplicitCallDefinition extends SsaImplicitWrite {
+  SsaImplicitCallDefinition() { isNonLocal(this) and not hasQualifierUpdate(this) }
+
+  override string toString() { result = "SSA call def(" + this.getSourceVariable() + ")" }
+
+  /**
+   * Gets a reachable `FieldWrite` that might represent this ssa update, if any.
+   */
+  overlay[global]
+  FieldWrite getANonLocalUpdate() { result = getANonLocalUpdate(this) }
+}
+
+/** An SSA definition due to an update of the qualifier. */
+class SsaImplicitQualifierDefinition extends SsaImplicitWrite {
+  SsaImplicitQualifierDefinition() { hasQualifierUpdate(this) }
+
+  override string toString() { result = "SSA qualifier def(" + this.getSourceVariable() + ")" }
+}
+
+/**
  * Gets an access of the SSA source variable underlying this SSA variable
  * that can be reached from this SSA variable without passing through any
  * other uses, but potentially through phi nodes and uncertain implicit
@@ -299,47 +322,65 @@ class SsaImplicitUpdate extends SsaUpdate {
 
   private string getKind() {
     this.hasExplicitQualifierUpdate() and
-    result = "explicit qualifier"
+    result = "explicit qualifier" // -> SSA qualifier def
     or
     if this.hasImplicitQualifierUpdate()
     then
       if isNonLocal(this)
-      then result = "nonlocal + nonlocal qualifier"
-      else result = "nonlocal qualifier"
+      then result = "nonlocal + nonlocal qualifier" // -> SSA qualifier def
+      else result = "nonlocal qualifier" // -> SSA qualifier def
     else (
-      isNonLocal(this) and result = "nonlocal"
+      isNonLocal(this) and result = "nonlocal" // -> SSA call def
     )
   }
 
   /**
+   * DEPRECATED: Use `SsaImplicitCallDefinition.getANonLocalUpdate()` instead.
+   *
    * Gets a reachable `FieldWrite` that might represent this ssa update, if any.
    */
   overlay[global]
-  FieldWrite getANonLocalUpdate() {
-    exists(SsaSourceField f, Callable setter |
-      relevantFieldUpdate(setter, f.getField(), result) and
-      defUpdatesNamedField(this, f, setter)
-    )
-  }
+  deprecated FieldWrite getANonLocalUpdate() { result = getANonLocalUpdate(this) }
 
   /**
+   * DEPRECATED: Use `SsaImplicitQualifierDefinition` instead.
+   *
    * Holds if this ssa variable might change the value to something unknown.
    *
    * Examples include updates that might change the value of the qualifier, or
    * reads from untracked variables, for example those where the field or one
    * of its qualifiers is volatile.
    */
-  predicate assignsUnknownValue() {
+  deprecated predicate assignsUnknownValue() {
     this.hasExplicitQualifierUpdate()
     or
     this.hasImplicitQualifierUpdate()
   }
 }
 
-overlay[global]
-private predicate isNonLocalImpl(SsaImplicitUpdate su) { exists(su.getANonLocalUpdate()) }
+private predicate hasQualifierUpdate(SsaImplicitWrite def) {
+  exists(SsaWriteDefinition qdef, BasicBlock bb, int i |
+    qdef.definesAt(def.getSourceVariable().getQualifier(), bb, i) and
+    def.definesAt(_, bb, i) and
+    not qdef instanceof SsaImplicitEntryDefinition
+  )
+}
 
-private predicate isNonLocal(SsaImplicitUpdate su) = forceLocal(isNonLocalImpl/1)(su)
+/**
+ * Gets a reachable `FieldWrite` that might represent this ssa update, if any.
+ */
+overlay[global]
+private FieldWrite getANonLocalUpdate(SsaImplicitWrite calldef) {
+  exists(SsaSourceField f, Callable setter |
+    relevantFieldUpdate(setter, f.getField(), result) and
+    defUpdatesNamedField(calldef, f, setter)
+  )
+}
+
+overlay[global]
+private predicate isNonLocalImpl(SsaImplicitWrite calldef) { exists(getANonLocalUpdate(calldef)) }
+
+private predicate isNonLocal(SsaImplicitWrite calldef) = forceLocal(isNonLocalImpl/1)(calldef)
 
 /**
  * An SSA variable that represents an uncertain implicit update of the value.
