@@ -5,10 +5,11 @@ import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
 private import codeql.dataflowstack.DataFlowStack as DFS
-private import DFS::DataFlowStackMake<Location, JavaDataFlow> as DataFlowStackFactory
 
-private module DataFlowStackInput<DataFlowStackFactory::DataFlow::ConfigSig Config> implements
-  DFS::DataFlowStackSig<Location, JavaDataFlow, Config>
+module LanguageDataFlowStack = DFS::LanguageDataFlow<Location, JavaDataFlow>;
+
+private module FlowStackInput<DataFlow::ConfigSig Config>
+  implements LanguageDataFlowStack::DataFlowGroup<Config>::DataFlowStackSig<DataFlow::Global<Config>>
 {
   private module Flow = DataFlow::Global<Config>;
 
@@ -27,13 +28,13 @@ private module DataFlowStackInput<DataFlowStackFactory::DataFlow::ConfigSig Conf
   }
 }
 
-module DataFlowStackMake<DataFlowStackFactory::DataFlow::ConfigSig Config> {
-  import DataFlowStackFactory::FlowStack<Config, DataFlowStackInput<Config>>
+module DataFlowStackMake<DataFlow::ConfigSig Config> {
+  import LanguageDataFlowStack::FlowStack<DataFlow::Global<Config>, Config, FlowStackInput<Config>>
 }
 
 module BiStackAnalysisMake<
-  DataFlowStackFactory::DataFlow::ConfigSig ConfigA,
-  DataFlowStackFactory::DataFlow::ConfigSig ConfigB>
-{
-  import DataFlowStackFactory::BiStackAnalysis<ConfigA, DataFlowStackInput<ConfigA>, ConfigB, DataFlowStackInput<ConfigB>>
+  DataFlow::ConfigSig ConfigA,
+  DataFlow::ConfigSig ConfigB
+>{
+  import LanguageDataFlowStack::BiStackAnalysis<ConfigA, DataFlow::Global<ConfigA>, FlowStackInput<ConfigA>, ConfigB, DataFlow::Global<ConfigB>, FlowStackInput<ConfigB>>
 }
