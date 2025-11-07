@@ -105,7 +105,7 @@ class SsaSourceVariable extends TSsaSourceVariable {
   SsaSourceVariable getQualifier() { this = TQualifiedField(_, result, _) }
 
   /** Gets an SSA variable that has this variable as its underlying source variable. */
-  SsaVariable getAnSsaVariable() { result.getSourceVariable() = this }
+  SsaDefinition getAnSsaVariable() { result.getSourceVariable() = this }
 }
 
 /**

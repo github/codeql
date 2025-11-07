@@ -17,7 +17,7 @@ module Private {
 
   class Guard = G::Guards_v2::Guard;
 
-  class SsaVariable = Ssa::SsaVariable;
+  class SsaVariable = Ssa::SsaDefinition;
 
   class SsaPhiNode = Ssa::SsaPhiDefinition;
 

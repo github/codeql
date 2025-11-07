@@ -113,7 +113,7 @@ predicate dereference(Expr e) {
  *
  * The `VarAccess` is included for nicer error reporting.
  */
-private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
+private ControlFlowNode varDereference(SsaDefinition v, VarAccess va) {
   dereference(result.asExpr()) and
   result.asExpr() = sameValue(v, va)
 }
@@ -121,7 +121,7 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 /**
  * The first dereference of a variable in a given `BasicBlock`.
  */
-private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAccess va) {
+private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaDefinition v, VarAccess va) {
   exists(ControlFlowNode n |
     varDereference(v, va) = n and
     n.getBasicBlock() = bb and
@@ -135,13 +135,13 @@ private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAc
 }
 
 /** A variable suspected of being `null`. */
-private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, Expr reason) {
+private predicate varMaybeNull(SsaDefinition v, ControlFlowNode node, string msg, Expr reason) {
   // A variable compared to null might be null.
   exists(Expr e |
     reason = e and
     msg = "as suggested by $@ null guard" and
     guardSuggestsVarMaybeNull(e, v) and
-    node = v.getCfgNode() and
+    node = v.getControlFlowNode() and
     not v instanceof SsaPhiDefinition and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
@@ -157,7 +157,7 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
   // A parameter might be null if there is a null argument somewhere.
   exists(Parameter p, Expr arg |
     v.(SsaParameterInit).getParameter() = p and
-    node = v.getCfgNode() and
+    node = v.getControlFlowNode() and
     p.getAnArgument() = arg and
     reason = arg and
     msg = "because of $@ null argument" and
@@ -266,7 +266,7 @@ private module NullnessFlow = ControlFlowReachability::Flow<NullnessConfig>;
  * Holds if the dereference of `v` at `va` might be `null`.
  */
 predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) {
-  exists(SsaVariable origin, SsaVariable ssa, ControlFlowNode src, ControlFlowNode sink |
+  exists(SsaDefinition origin, SsaDefinition ssa, ControlFlowNode src, ControlFlowNode sink |
     varMaybeNull(origin, src, msg, reason) and
     NullnessFlow::flow(src, origin, sink, ssa) and
     ssa.getSourceVariable() = v and

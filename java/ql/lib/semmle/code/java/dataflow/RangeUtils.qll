@@ -33,7 +33,7 @@ predicate eqFlowCond = U::eqFlowCond/5;
  * `SsaPhiDefinition` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
  * have non-`SsaPhiDefinition` results.
  */
-private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
+private predicate nonNullSsaFwdStep(SsaDefinition v, SsaDefinition phi) {
   exists(SsaExplicitWrite vnull, SsaPhiDefinition phi0 | phi0 = phi |
     2 = strictcount(phi0.getAnInput()) and
     vnull = phi0.getAnInput() and
@@ -56,13 +56,13 @@ private predicate nonNullDefStep(Expr e1, Expr e2) {
  * explicit `ArrayCreationExpr` definition and that the definition does not go
  * through a back edge.
  */
-ArrayCreationExpr getArrayDef(SsaVariable v) {
+ArrayCreationExpr getArrayDef(SsaDefinition v) {
   exists(Expr src |
     v.(SsaExplicitWrite).getValue() = src and
     nonNullDefStep*(result, src)
   )
   or
-  exists(SsaVariable mid |
+  exists(SsaDefinition mid |
     result = getArrayDef(mid) and
     nonNullSsaFwdStep(mid, v)
   )
