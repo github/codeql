@@ -45,7 +45,7 @@ private class InputStreamWrapperCapturedLocalStep extends AdditionalTaintStep {
       wrapper.getASourceSupertype+() instanceof TypeInputStream and
       m.getDeclaringType() = wrapper and
       capturer.captures(captured) and
-      TaintTracking::localTaint(DataFlow::exprNode(capturer.getAFirstUse()),
+      TaintTracking::localTaint(DataFlow::exprNode(ssaGetAFirstUse(capturer)),
         any(DataFlow::PostUpdateNode pun |
           pun.getPreUpdateNode().asExpr() = m.getParameter(0).getAnAccess()
         )) and

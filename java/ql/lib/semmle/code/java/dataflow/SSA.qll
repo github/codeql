@@ -141,6 +141,14 @@ class SsaSourceField extends SsaSourceVariable {
 }
 
 /**
+ * Gets an access of the SSA source variable underlying this SSA variable
+ * that can be reached from this SSA variable without passing through any
+ * other uses, but potentially through phi nodes and uncertain implicit
+ * updates.
+ */
+VarRead ssaGetAFirstUse(SsaDefinition def) { firstUse(def, result) }
+
+/**
  * An SSA variable.
  */
 class SsaVariable extends Definition {
@@ -170,6 +178,8 @@ class SsaVariable extends Definition {
   VarRead getAUse() { result = getAUse(this) }
 
   /**
+   * DEPRECATED: Use `ssaGetAFirstUse(SsaDefinition)` instead.
+   *
    * Gets an access of the SSA source variable underlying this SSA variable
    * that can be reached from this SSA variable without passing through any
    * other uses, but potentially through phi nodes and uncertain implicit
@@ -178,7 +188,7 @@ class SsaVariable extends Definition {
    * Subsequent uses can be found by following the steps defined by
    * `adjacentUseUse`.
    */
-  VarRead getAFirstUse() { firstUse(this, result) }
+  deprecated VarRead getAFirstUse() { firstUse(this, result) }
 
   /** Holds if this SSA variable is live at the end of `b`. */
   predicate isLiveAtEndOfBlock(BasicBlock b) { ssaDefReachesEndOfBlock(b, this) }

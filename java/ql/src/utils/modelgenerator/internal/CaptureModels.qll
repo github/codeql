@@ -279,7 +279,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
     // exclude variable capture jump steps
     exists(Ssa::SsaImplicitInit closure |
       closure.captures(_) and
-      node.asExpr() = closure.getAFirstUse()
+      node.asExpr() = Ssa::ssaGetAFirstUse(closure)
     )
   }
 

@@ -71,7 +71,7 @@ private class CommandArgumentList extends SsaExplicitUpdate {
 
   /** Gets a use of the variable for which the list could be empty. */
   private VarRead getAUseBeforeFirstAdd() {
-    result = this.getAFirstUse()
+    result = ssaGetAFirstUse(this)
     or
     exists(VarRead mid |
       mid = this.getAUseBeforeFirstAdd() and
@@ -150,7 +150,7 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
 private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   CommandArgArrayImmutableFirst() {
     (exists(this.getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
-    forall(VarRead use | exists(this.getAWrite(0, use)) | use = this.getAFirstUse())
+    forall(VarRead use | exists(this.getAWrite(0, use)) | use = ssaGetAFirstUse(this))
   }
 
   /** Gets the first element of this array. */

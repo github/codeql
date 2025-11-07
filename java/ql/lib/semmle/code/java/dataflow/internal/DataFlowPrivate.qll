@@ -401,7 +401,7 @@ class CastNode extends ExprNode {
           any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
           any(InstanceOfExpr ioe).getExpr()
         ] and
-      this.asExpr() = upd.getAFirstUse()
+      this.asExpr() = ssaGetAFirstUse(upd)
     )
   }
 }
