@@ -1,7 +1,3 @@
-## 2.0.18
-
-No user-facing changes.
-
 ## 2.0.17
 
 No user-facing changes.

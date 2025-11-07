@@ -1,9 +1,3 @@
-## 6.0.1
-
-### Bug Fixes
-
-* Improve performance of the range analysis in cases where it would otherwise take an exorbitant amount of time.
-
 ## 6.0.0
 
 ### Breaking Changes
