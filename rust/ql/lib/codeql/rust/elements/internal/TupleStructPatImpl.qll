@@ -30,6 +30,7 @@ module Impl {
 
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedPath(int pos) {
+      this.hasResolvedPath() and
       result = PathResolution::resolvePath(this.getPath()) and
       exists(this.getField(pragma[only_bind_into](pos)))
     }
@@ -37,7 +38,10 @@ module Impl {
     /**
      * Gets the struct matched by this pattern.
      */
-    Struct getStruct() { result = PathResolution::resolvePath(this.getPath()) }
+    Struct getStruct() {
+      this.hasResolvedPath() and
+      result = PathResolution::resolvePath(this.getPath())
+    }
 
     /** Gets the tuple field that matches the `pos`th pattern of this pattern. */
     pragma[nomagic]

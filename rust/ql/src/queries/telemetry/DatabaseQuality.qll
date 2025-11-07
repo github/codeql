@@ -21,10 +21,7 @@ private class RelevantFile extends File {
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() {
     result =
-      count(CallExprBase c |
-        c.getFile() instanceof RelevantFile and
-        c.(Resolvable).hasResolvedPath()
-      )
+      count(CallExprBase c | c.getFile() instanceof RelevantFile and exists(c.getStaticTarget()))
   }
 
   private predicate isLambdaCall(CallExpr call) {
@@ -36,7 +33,7 @@ module CallTargetStats implements StatsSig {
 
   additional predicate isNotOkCall(CallExprBase c) {
     c.getFile() instanceof RelevantFile and
-    not c.(Resolvable).hasResolvedPath() and
+    not exists(c.getStaticTarget()) and
     not isLambdaCall(c)
   }
 

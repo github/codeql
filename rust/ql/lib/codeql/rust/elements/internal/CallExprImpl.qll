@@ -16,7 +16,10 @@ module Impl {
   private import codeql.rust.internal.PathResolution as PathResolution
 
   pragma[nomagic]
-  Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }
+  Path getFunctionPath(CallExpr ce) {
+    ce.getFunction().(PathExpr).hasResolvedPath() and
+    result = ce.getFunction().(PathExpr).getPath()
+  }
 
   pragma[nomagic]
   PathResolution::ItemNode getResolvedFunction(CallExpr ce) {

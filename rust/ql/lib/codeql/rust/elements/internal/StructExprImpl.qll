@@ -36,6 +36,7 @@ module Impl {
 
     pragma[nomagic]
     private PathResolution::ItemNode getResolvedPath(string name) {
+      this.hasResolvedPath() and
       result = PathResolution::resolvePath(this.getPath()) and
       exists(this.getFieldExpr(name))
     }

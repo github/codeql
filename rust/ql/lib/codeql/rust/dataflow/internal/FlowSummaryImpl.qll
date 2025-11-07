@@ -146,6 +146,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 
   /** Get the callable that `expr` refers to. */
   private Callable getCallable(Expr expr) {
+    expr.(PathExpr).hasResolvedPath() and
     result = resolvePath(expr.(PathExpr).getPath()).(Function)
     or
     result = expr.(ClosureExpr)
