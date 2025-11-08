@@ -838,14 +838,16 @@ private Function getFunction(string namespace, string type, boolean subtypes, st
  * is `func:n` then the signature name is compared with the `n`'th name
  * in `name`.
  */
-private predicate signatureMatches(Function func, string signature, string type, string name, int i) {
-  func = getFunction(_, type, _, name) and
+private predicate signatureMatches(
+  Function func, string namespace, string signature, string type, string name, int i
+) {
+  func = getFunction(namespace, type, _, name) and
   exists(string s |
     s = getSignatureParameterName(signature, type, name, i) and
     s = getParameterTypeName(func, i)
   ) and
   if exists(getParameterTypeName(func, i + 1))
-  then signatureMatches(func, signature, type, name, i + 1)
+  then signatureMatches(func, namespace, signature, type, name, i + 1)
   else i = count(signature.indexOf(","))
 }
 
@@ -860,7 +862,7 @@ module ExternalFlowDebug {
    *
    * Exposed for testing purposes.
    */
-  predicate signatureMatches_debug = signatureMatches/5;
+  predicate signatureMatches_debug = signatureMatches/6;
 
   /**
    * INTERNAL: Do not use.
@@ -936,7 +938,7 @@ private predicate elementSpecMatchesSignature(
 ) {
   elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
     pragma[only_bind_into](signature), _) and
-  signatureMatches(func, signature, type, name, 0)
+  signatureMatches(func, namespace, signature, type, name, 0)
 }
 
 /**

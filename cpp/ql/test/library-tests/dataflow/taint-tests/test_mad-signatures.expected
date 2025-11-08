@@ -1,143 +1,143 @@
 signatureMatches
-| atl.cpp:71:5:71:17 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:72:5:72:17 | _U_STRINGorID | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:411:5:411:12 | CComBSTR | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:413:5:413:12 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:413:5:413:12 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
-| atl.cpp:414:5:414:12 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:414:5:414:12 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
-| atl.cpp:415:5:415:12 | CComBSTR | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:416:5:416:12 | CComBSTR | (LPCSTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:417:5:417:12 | CComBSTR | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:420:13:420:18 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
-| atl.cpp:421:13:421:18 | Append | (wchar_t) | CComBSTR | Append | 0 |
-| atl.cpp:422:13:422:18 | Append | (char) | CComBSTR | Append | 0 |
-| atl.cpp:423:13:423:18 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
-| atl.cpp:424:13:424:18 | Append | (LPCSTR) | CComBSTR | Append | 0 |
-| atl.cpp:425:13:425:18 | Append | (LPCOLESTR,int) | CComBSTR | Append | 0 |
-| atl.cpp:425:13:425:18 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
-| atl.cpp:440:10:440:19 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:440:10:440:19 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
-| atl.cpp:441:10:441:19 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:540:5:540:17 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
-| atl.cpp:544:13:544:15 | Add | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
-| atl.cpp:546:13:546:15 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
-| atl.cpp:546:13:546:15 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
-| atl.cpp:915:5:915:18 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
-| atl.cpp:915:5:915:18 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
-| atl.cpp:915:5:915:18 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 2 |
-| atl.cpp:916:5:916:18 | CSimpleStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
-| atl.cpp:916:5:916:18 | CSimpleStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
-| atl.cpp:917:5:917:18 | CSimpleStringT | (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 |
-| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
-| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
-| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
-| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
-| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
-| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
-| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 3 |
-| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 |
-| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 |
-| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
-| atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) | CStringT | CStringT | 0 |
-| atl.cpp:1037:5:1037:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1037:5:1037:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1037:5:1037:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 0 |
-| atl.cpp:1037:5:1037:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1037:5:1037:12 | CStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1038:5:1038:12 | CStringT | (const CStringT &) | CStringT | CStringT | 0 |
-| atl.cpp:1042:5:1042:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 0 |
-| atl.cpp:1042:5:1042:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1042:5:1042:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1042:5:1042:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1042:5:1042:12 | CStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1043:5:1043:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1043:5:1043:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 0 |
-| atl.cpp:1043:5:1043:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1043:5:1043:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1043:5:1043:12 | CStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
-| atl.cpp:1045:5:1045:12 | CStringT | (char *) | CStringT | CStringT | 0 |
-| atl.cpp:1046:5:1046:12 | CStringT | (unsigned char *) | CStringT | CStringT | 0 |
-| atl.cpp:1047:5:1047:12 | CStringT | (wchar_t *) | CStringT | CStringT | 0 |
-| atl.cpp:1049:5:1049:12 | CStringT | (char,int) | CStringT | CStringT | 0 |
-| atl.cpp:1049:5:1049:12 | CStringT | (char,int) | CStringT | CStringT | 1 |
-| atl.cpp:1049:5:1049:12 | CStringT | (const XCHAR *,int) | CStringT | CStringT | 1 |
-| atl.cpp:1049:5:1049:12 | CStringT | (const YCHAR *,int) | CStringT | CStringT | 1 |
-| atl.cpp:1049:5:1049:12 | CStringT | (wchar_t,int) | CStringT | CStringT | 1 |
-| atl.cpp:1050:5:1050:12 | CStringT | (char,int) | CStringT | CStringT | 1 |
-| atl.cpp:1050:5:1050:12 | CStringT | (const XCHAR *,int) | CStringT | CStringT | 1 |
-| atl.cpp:1050:5:1050:12 | CStringT | (const YCHAR *,int) | CStringT | CStringT | 1 |
-| atl.cpp:1050:5:1050:12 | CStringT | (wchar_t,int) | CStringT | CStringT | 0 |
-| atl.cpp:1050:5:1050:12 | CStringT | (wchar_t,int) | CStringT | CStringT | 1 |
-| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 0 |
-| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 1 |
-| atl.cpp:1061:10:1061:21 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 1 |
-| atl.cpp:1062:10:1062:21 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 1 |
-| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 0 |
-| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 1 |
-| atl.cpp:1070:9:1070:14 | Insert | (int,PCXSTR) | CStringT | Insert | 0 |
-| atl.cpp:1070:9:1070:14 | Insert | (int,PCXSTR) | CStringT | Insert | 1 |
-| atl.cpp:1071:9:1071:14 | Insert | (int,XCHAR) | CStringT | Insert | 0 |
-| atl.cpp:1071:9:1071:14 | Insert | (int,XCHAR) | CStringT | Insert | 1 |
-| atl.cpp:1081:9:1081:15 | Replace | (PCXSTR,PCXSTR) | CStringT | Replace | 0 |
-| atl.cpp:1081:9:1081:15 | Replace | (PCXSTR,PCXSTR) | CStringT | Replace | 1 |
-| atl.cpp:1082:9:1082:15 | Replace | (XCHAR,XCHAR) | CStringT | Replace | 0 |
-| atl.cpp:1082:9:1082:15 | Replace | (XCHAR,XCHAR) | CStringT | Replace | 1 |
-| atl.cpp:1286:5:1286:10 | ComPtr | (const ComPtr &) | ComPtr | ComPtr | 0 |
-| atl.cpp:1287:5:1287:10 | ComPtr | (ComPtr &&) | ComPtr | ComPtr | 0 |
-| atl.cpp:1290:5:1290:10 | ComPtr | (T *) | ComPtr | ComPtr<T> | 0 |
-| atl.cpp:1290:5:1290:10 | ComPtr | (T *) | ComPtr | ComPtr<T> | 0 |
-| atl.cpp:1301:13:1301:18 | CopyTo | (T **) | ComPtr<T> | CopyTo | 0 |
-| atl.cpp:1303:13:1303:18 | CopyTo | (REFIID,void **) | ComPtr | CopyTo | 0 |
-| atl.cpp:1303:13:1303:18 | CopyTo | (REFIID,void **) | ComPtr | CopyTo | 1 |
-| atl.cpp:1306:13:1306:18 | CopyTo | (T **) | ComPtr | CopyTo<T> | 0 |
-| atl.cpp:1328:13:1328:21 | operator= | (T *) | ComPtr<T> | operator= | 0 |
-| atl.cpp:1330:13:1330:21 | operator= | (U *) | ComPtr | operator=<U> | 0 |
-| atl.cpp:1331:13:1331:21 | operator= | (const ComPtr &) | ComPtr | operator= | 0 |
-| atl.cpp:1333:13:1333:21 | operator= | (const ComPtr &) | ComPtr | operator= | 0 |
-| atl.cpp:1334:13:1334:21 | operator= | (ComPtr &&) | ComPtr | operator= | 0 |
-| atl.cpp:1336:13:1336:21 | operator= | (ComPtr &&) | ComPtr | operator= | 0 |
-| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
-| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
-| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 |
-| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 |
-| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
-| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
-| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
-| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
-| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
-| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
-| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
-| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
-| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | vector<T> | insert | 0 |
-| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | vector<T> | insert | 1 |
-| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
-| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
-| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
-| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
-| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
-| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
-| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
-| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
-| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
-| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
-| taint.cpp:735:7:735:12 | malloc | (size_t) |  | malloc | 0 |
-| taint.cpp:847:5:847:11 | toupper | (int) |  | toupper | 0 |
-| taint.cpp:848:5:848:11 | tolower | (int) |  | tolower | 0 |
+| atl.cpp:71:5:71:17 | _U_STRINGorID | ATL | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:72:5:72:17 | _U_STRINGorID | ATL | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:411:5:411:12 | CComBSTR | ATL | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:413:5:413:12 | CComBSTR | ATL | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:413:5:413:12 | CComBSTR | ATL | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:414:5:414:12 | CComBSTR | ATL | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:414:5:414:12 | CComBSTR | ATL | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:415:5:415:12 | CComBSTR | ATL | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:416:5:416:12 | CComBSTR | ATL | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:417:5:417:12 | CComBSTR | ATL | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:420:13:420:18 | Append | ATL | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:421:13:421:18 | Append | ATL | (wchar_t) | CComBSTR | Append | 0 |
+| atl.cpp:422:13:422:18 | Append | ATL | (char) | CComBSTR | Append | 0 |
+| atl.cpp:423:13:423:18 | Append | ATL | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:424:13:424:18 | Append | ATL | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:425:13:425:18 | Append | ATL | (LPCOLESTR,int) | CComBSTR | Append | 0 |
+| atl.cpp:425:13:425:18 | Append | ATL | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:440:10:440:19 | LoadString | ATL | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:440:10:440:19 | LoadString | ATL | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
+| atl.cpp:441:10:441:19 | LoadString | ATL | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:540:5:540:17 | CComSafeArray | ATL | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:544:13:544:15 | Add | ATL | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:546:13:546:15 | Add | ATL | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
+| atl.cpp:546:13:546:15 | Add | ATL | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | ATL | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | ATL | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | ATL | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 2 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | ATL | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | ATL | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:917:5:917:18 | CSimpleStringT | ATL | (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:927:17:927:25 | CopyChars | ATL | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:927:17:927:25 | CopyChars | ATL | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:927:17:927:25 | CopyChars | ATL | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:928:17:928:25 | CopyChars | ATL | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:928:17:928:25 | CopyChars | ATL | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:928:17:928:25 | CopyChars | ATL | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:928:17:928:25 | CopyChars | ATL | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 3 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | ATL | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | ATL | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | ATL | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| atl.cpp:1036:5:1036:12 | CStringT | ATL | (const VARIANT &) | CStringT | CStringT | 0 |
+| atl.cpp:1037:5:1037:12 | CStringT | ATL | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | ATL | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | ATL | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 0 |
+| atl.cpp:1037:5:1037:12 | CStringT | ATL | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | ATL | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1038:5:1038:12 | CStringT | ATL | (const CStringT &) | CStringT | CStringT | 0 |
+| atl.cpp:1042:5:1042:12 | CStringT | ATL | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 0 |
+| atl.cpp:1042:5:1042:12 | CStringT | ATL | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | ATL | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | ATL | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | ATL | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | ATL | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | ATL | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 0 |
+| atl.cpp:1043:5:1043:12 | CStringT | ATL | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | ATL | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | ATL | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1045:5:1045:12 | CStringT | ATL | (char *) | CStringT | CStringT | 0 |
+| atl.cpp:1046:5:1046:12 | CStringT | ATL | (unsigned char *) | CStringT | CStringT | 0 |
+| atl.cpp:1047:5:1047:12 | CStringT | ATL | (wchar_t *) | CStringT | CStringT | 0 |
+| atl.cpp:1049:5:1049:12 | CStringT | ATL | (char,int) | CStringT | CStringT | 0 |
+| atl.cpp:1049:5:1049:12 | CStringT | ATL | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | ATL | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | ATL | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | ATL | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | ATL | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | ATL | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | ATL | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | ATL | (wchar_t,int) | CStringT | CStringT | 0 |
+| atl.cpp:1050:5:1050:12 | CStringT | ATL | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | ATL | (PCXSTR,...) | CStringT | AppendFormat | 0 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | ATL | (PCXSTR,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | ATL | (UINT,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | ATL | (PCXSTR,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | ATL | (UINT,...) | CStringT | AppendFormat | 0 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | ATL | (UINT,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1070:9:1070:14 | Insert | ATL | (int,PCXSTR) | CStringT | Insert | 0 |
+| atl.cpp:1070:9:1070:14 | Insert | ATL | (int,PCXSTR) | CStringT | Insert | 1 |
+| atl.cpp:1071:9:1071:14 | Insert | ATL | (int,XCHAR) | CStringT | Insert | 0 |
+| atl.cpp:1071:9:1071:14 | Insert | ATL | (int,XCHAR) | CStringT | Insert | 1 |
+| atl.cpp:1081:9:1081:15 | Replace | ATL | (PCXSTR,PCXSTR) | CStringT | Replace | 0 |
+| atl.cpp:1081:9:1081:15 | Replace | ATL | (PCXSTR,PCXSTR) | CStringT | Replace | 1 |
+| atl.cpp:1082:9:1082:15 | Replace | ATL | (XCHAR,XCHAR) | CStringT | Replace | 0 |
+| atl.cpp:1082:9:1082:15 | Replace | ATL | (XCHAR,XCHAR) | CStringT | Replace | 1 |
+| atl.cpp:1286:5:1286:10 | ComPtr | Microsoft::WRL | (const ComPtr &) | ComPtr | ComPtr | 0 |
+| atl.cpp:1287:5:1287:10 | ComPtr | Microsoft::WRL | (ComPtr &&) | ComPtr | ComPtr | 0 |
+| atl.cpp:1290:5:1290:10 | ComPtr | Microsoft::WRL | (T *) | ComPtr | ComPtr<T> | 0 |
+| atl.cpp:1290:5:1290:10 | ComPtr | Microsoft::WRL | (T *) | ComPtr | ComPtr<T> | 0 |
+| atl.cpp:1301:13:1301:18 | CopyTo | Microsoft::WRL | (T **) | ComPtr<T> | CopyTo | 0 |
+| atl.cpp:1303:13:1303:18 | CopyTo | Microsoft::WRL | (REFIID,void **) | ComPtr | CopyTo | 0 |
+| atl.cpp:1303:13:1303:18 | CopyTo | Microsoft::WRL | (REFIID,void **) | ComPtr | CopyTo | 1 |
+| atl.cpp:1306:13:1306:18 | CopyTo | Microsoft::WRL | (T **) | ComPtr | CopyTo<T> | 0 |
+| atl.cpp:1328:13:1328:21 | operator= | Microsoft::WRL | (T *) | ComPtr<T> | operator= | 0 |
+| atl.cpp:1330:13:1330:21 | operator= | Microsoft::WRL | (U *) | ComPtr | operator=<U> | 0 |
+| atl.cpp:1331:13:1331:21 | operator= | Microsoft::WRL | (const ComPtr &) | ComPtr | operator= | 0 |
+| atl.cpp:1333:13:1333:21 | operator= | Microsoft::WRL | (const ComPtr &) | ComPtr | operator= | 0 |
+| atl.cpp:1334:13:1334:21 | operator= | Microsoft::WRL | (ComPtr &&) | ComPtr | operator= | 0 |
+| atl.cpp:1336:13:1336:21 | operator= | Microsoft::WRL | (ComPtr &&) | ComPtr | operator= | 0 |
+| stl.h:294:12:294:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | std | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | std | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:295:3:295:8 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:296:101:296:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | std | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | std | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:303:106:303:111 | assign | std | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | std | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | std | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:331:12:331:17 | insert | std | (const_iterator,T &&) | vector<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | std | (const_iterator,T &&) | vector<T> | insert | 1 |
+| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | std | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| taint.cpp:735:7:735:12 | malloc |  | (size_t) |  | malloc | 0 |
+| taint.cpp:847:5:847:11 | toupper |  | (int) |  | toupper | 0 |
+| taint.cpp:848:5:848:11 | tolower |  | (int) |  | tolower | 0 |
 getSignatureParameterName
 | (..(*)(..)) |  | ASN1_SCTX_new | 0 | ..(*)(..) |
 | (..(*)(..)) |  | ossl_pqueue_new | 0 | ..(*)(..) |
