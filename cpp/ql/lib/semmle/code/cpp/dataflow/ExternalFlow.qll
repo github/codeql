@@ -839,6 +839,7 @@ private Function getFunction(string namespace, string type, boolean subtypes, st
  * in `name`.
  */
 private predicate signatureMatches(Function func, string signature, string type, string name, int i) {
+  func = getFunction(_, type, _, name) and
   exists(string s |
     s = getSignatureParameterName(signature, type, name, i) and
     s = getParameterTypeName(func, i)
