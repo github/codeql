@@ -998,8 +998,6 @@ private predicate classHasQualifiedName(Class namedClass, string namespace, stri
  *    are also returned.
  * 3. The element has name `name`
  * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
- *
- * NOTE: `namespace` is currently not used (since we don't properly extract modules yet).
  */
 pragma[nomagic]
 private Element interpretElement0(
