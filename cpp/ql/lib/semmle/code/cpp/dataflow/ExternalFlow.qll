@@ -790,6 +790,32 @@ private string getSignatureParameterName(string signature, string type, string n
 }
 
 /**
+ * Gets a `Function` identified by the `(namespace, type, name)` components.
+ *
+ * If `subtypes` is `true` then the result may be an override of the function
+ * identified by the components.
+ */
+bindingset[type, name]
+private Function getFunction(string namespace, string type, boolean subtypes, string name) {
+  funcHasQualifiedName(result, namespace, name) and
+  subtypes = false and
+  type = ""
+  or
+  exists(Class namedClass, Class classWithMethod |
+    hasClassAndName(classWithMethod, result, name) and
+    classHasQualifiedName(namedClass, namespace, type)
+  |
+    // member declared in the named type or a subtype of it
+    subtypes = true and
+    classWithMethod = namedClass.getADerivedClass*()
+    or
+    // member declared directly in the named type
+    subtypes = false and
+    classWithMethod = namedClass
+  )
+}
+
+/**
  * Holds if the suffix containing the entries in `signature` starting at entry
  * `i` matches the suffix containing the parameters of `func` starting at entry `i`.
  *
@@ -953,7 +979,7 @@ private predicate funcHasQualifiedName(Function func, string namespace, string n
  * Holds if `namedClass` is in namespace `namespace` and has
  * name `type` (excluding any template parameters).
  */
-bindingset[type, namespace]
+bindingset[type]
 pragma[inline_late]
 private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
   exists(string typeWithoutArgs |
@@ -976,10 +1002,9 @@ pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
+  result = getFunction(namespace, type, subtypes, name) and
   (
     // Non-member functions
-    funcHasQualifiedName(result, namespace, name) and
-    subtypes = false and
     type = "" and
     (
       elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
@@ -989,52 +1014,36 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(Class namedClass, Class classWithMethod |
-      hasClassAndName(classWithMethod, result, name) and
-      classHasQualifiedName(namedClass, namespace, type)
-    |
-      (
-        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
-        or
-        signature = "" and
-        elementSpec(namespace, type, subtypes, name, "", _)
-      ) and
-      (
-        // member declared in the named type or a subtype of it
-        subtypes = true and
-        classWithMethod = namedClass.getADerivedClass*()
-        or
-        // member declared directly in the named type
-        subtypes = false and
-        classWithMethod = namedClass
-      )
-    )
+    elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
     or
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    // Member variables
     signature = "" and
-    exists(Class namedClass, Class classWithMember, MemberVariable member |
-      member.getName() = name and
-      member = classWithMember.getAMember() and
-      namedClass.hasQualifiedName(namespace, type) and
-      result = member
-    |
-      // field declared in the named type or a subtype of it (or an extension of any)
-      subtypes = true and
-      classWithMember = namedClass.getADerivedClass*()
-      or
-      // field declared directly in the named type (or an extension of it)
-      subtypes = false and
-      classWithMember = namedClass
-    )
-    or
-    // Global or namespace variables
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    signature = "" and
-    type = "" and
-    subtypes = false and
-    result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
+    elementSpec(namespace, type, subtypes, name, signature, _)
   )
+  or
+  // Member variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  exists(Class namedClass, Class classWithMember, MemberVariable member |
+    member.getName() = name and
+    member = classWithMember.getAMember() and
+    namedClass.hasQualifiedName(namespace, type) and
+    result = member
+  |
+    // field declared in the named type or a subtype of it (or an extension of any)
+    subtypes = true and
+    classWithMember = namedClass.getADerivedClass*()
+    or
+    // field declared directly in the named type (or an extension of it)
+    subtypes = false and
+    classWithMember = namedClass
+  )
+  or
+  // Global or namespace variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  type = "" and
+  subtypes = false and
+  result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
 }
 
 cached
