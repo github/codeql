@@ -1,6 +1,7 @@
 /**
- * @name 'Secure' attribute is not set to true
- * @description todo
+ * @name Cookie 'Secure' attribute is not set to true
+ * @description Cookies without the `Secure` flag may be sent in cleartext.
+ *              This makes them vulnerable to be intercepted by an attacker.
  * @kind problem
  * @problem.severity warning
  * @precision high
