@@ -1715,6 +1715,9 @@ impl Translator<'_> {
         &mut self,
         node: &ast::MethodCallExpr,
     ) -> Option<Label<generated::MethodCallExpr>> {
+        if let Some(label) = self.pre_emit(node) {
+            return Some(label);
+        }
         if self.should_be_excluded(node) {
             return None;
         }
@@ -1734,6 +1737,7 @@ impl Translator<'_> {
             receiver,
         });
         self.emit_location(label, node);
+        self.post_emit(node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -1935,6 +1939,9 @@ impl Translator<'_> {
         &mut self,
         node: &ast::PathExpr,
     ) -> Option<Label<generated::PathExpr>> {
+        if let Some(label) = self.pre_emit(node) {
+            return Some(label);
+        }
         if self.should_be_excluded(node) {
             return None;
         }
@@ -1946,6 +1953,7 @@ impl Translator<'_> {
             path,
         });
         self.emit_location(label, node);
+        self.post_emit(node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -1953,12 +1961,16 @@ impl Translator<'_> {
         &mut self,
         node: &ast::PathPat,
     ) -> Option<Label<generated::PathPat>> {
+        if let Some(label) = self.pre_emit(node) {
+            return Some(label);
+        }
         let path = node.path().and_then(|x| self.emit_path(&x));
         let label = self.trap.emit(generated::PathPat {
             id: TrapId::Star,
             path,
         });
         self.emit_location(label, node);
+        self.post_emit(node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -2086,6 +2098,9 @@ impl Translator<'_> {
         &mut self,
         node: &ast::RecordExpr,
     ) -> Option<Label<generated::StructExpr>> {
+        if let Some(label) = self.pre_emit(node) {
+            return Some(label);
+        }
         let path = node.path().and_then(|x| self.emit_path(&x));
         let struct_expr_field_list = node
             .record_expr_field_list()
@@ -2096,6 +2111,7 @@ impl Translator<'_> {
             struct_expr_field_list,
         });
         self.emit_location(label, node);
+        self.post_emit(node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -2188,6 +2204,9 @@ impl Translator<'_> {
         &mut self,
         node: &ast::RecordPat,
     ) -> Option<Label<generated::StructPat>> {
+        if let Some(label) = self.pre_emit(node) {
+            return Some(label);
+        }
         let path = node.path().and_then(|x| self.emit_path(&x));
         let struct_pat_field_list = node
             .record_pat_field_list()
@@ -2198,6 +2217,7 @@ impl Translator<'_> {
             struct_pat_field_list,
         });
         self.emit_location(label, node);
+        self.post_emit(node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -2676,6 +2696,9 @@ impl Translator<'_> {
         &mut self,
         node: &ast::TupleStructPat,
     ) -> Option<Label<generated::TupleStructPat>> {
+        if let Some(label) = self.pre_emit(node) {
+            return Some(label);
+        }
         let fields = node.fields().filter_map(|x| self.emit_pat(&x)).collect();
         let path = node.path().and_then(|x| self.emit_path(&x));
         let label = self.trap.emit(generated::TupleStructPat {
@@ -2684,6 +2707,7 @@ impl Translator<'_> {
             path,
         });
         self.emit_location(label, node);
+        self.post_emit(node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -3111,11 +3135,29 @@ impl HasTrapClass for ast::MacroCall {
 impl HasTrapClass for ast::Meta {
     type TrapClass = generated::Meta;
 }
+impl HasTrapClass for ast::MethodCallExpr {
+    type TrapClass = generated::MethodCallExpr;
+}
+impl HasTrapClass for ast::PathExpr {
+    type TrapClass = generated::PathExpr;
+}
+impl HasTrapClass for ast::PathPat {
+    type TrapClass = generated::PathPat;
+}
 impl HasTrapClass for ast::PathSegment {
     type TrapClass = generated::PathSegment;
 }
+impl HasTrapClass for ast::RecordExpr {
+    type TrapClass = generated::StructExpr;
+}
+impl HasTrapClass for ast::RecordPat {
+    type TrapClass = generated::StructPat;
+}
 impl HasTrapClass for ast::Struct {
     type TrapClass = generated::Struct;
+}
+impl HasTrapClass for ast::TupleStructPat {
+    type TrapClass = generated::TupleStructPat;
 }
 impl HasTrapClass for ast::Union {
     type TrapClass = generated::Union;

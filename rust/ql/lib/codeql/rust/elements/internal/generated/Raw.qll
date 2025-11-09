@@ -789,17 +789,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
-   */
-  class PathAstNode extends @path_ast_node, AstNode {
-    /**
-     * Gets the path of this path ast node, if it exists.
-     */
-    Path getPath() { path_ast_node_paths(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A path segment, which is one part of a whole path.
    * For example:
    * - `HashMap`
@@ -866,6 +855,22 @@ module Raw {
      * Gets the name of this rename, if it exists.
      */
     Name getName() { rename_names(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
+   */
+  class Resolvable extends @resolvable, AstNode {
+    /**
+     * Gets the resolved path of this resolvable, if it exists.
+     */
+    string getResolvedPath() { resolvable_resolved_paths(this, result) }
+
+    /**
+     * Gets the resolved crate origin of this resolvable, if it exists.
+     */
+    string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
   }
 
   /**
@@ -2891,23 +2896,20 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
+   * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
    */
-  class PathExprBase extends @path_expr_base, Expr { }
+  class PathAstNode extends @path_ast_node, Resolvable {
+    /**
+     * Gets the path of this path ast node, if it exists.
+     */
+    Path getPath() { path_ast_node_paths(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
-   * A path pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo::Bar => "ok",
-   *     _ => "fail",
-   * }
-   * ```
+   * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
    */
-  class PathPat extends @path_pat, Pat, PathAstNode {
-    override string toString() { result = "PathPat" }
-  }
+  class PathExprBase extends @path_expr_base, Expr { }
 
   /**
    * INTERNAL: Do not use.
@@ -3269,27 +3271,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A struct expression. For example:
-   * ```rust
-   * let first = Foo { a: 1, b: 2 };
-   * let second = Foo { a: 2, ..first };
-   * let n = Foo { a: 1, b: 2 }.b;
-   * Foo { a: m, .. } = second;
-   * ```
-   */
-  class StructExpr extends @struct_expr, Expr, PathAstNode {
-    override string toString() { result = "StructExpr" }
-
-    /**
-     * Gets the struct expression field list of this struct expression, if it exists.
-     */
-    StructExprFieldList getStructExprFieldList() {
-      struct_expr_struct_expr_field_lists(this, result)
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A list of fields in a struct declaration.
    *
    * For example:
@@ -3305,25 +3286,6 @@ module Raw {
      * Gets the `index`th field of this struct field list (0-based).
      */
     StructField getField(int index) { struct_field_list_fields(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo { a: 1, b: 2 } => "ok",
-   *     Foo { .. } => "fail",
-   * }
-   * ```
-   */
-  class StructPat extends @struct_pat, Pat, PathAstNode {
-    override string toString() { result = "StructPat" }
-
-    /**
-     * Gets the struct pattern field list of this struct pattern, if it exists.
-     */
-    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
   }
 
   /**
@@ -3407,26 +3369,6 @@ module Raw {
      * Gets the `index`th field of this tuple pattern (0-based).
      */
     Pat getField(int index) { tuple_pat_fields(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A tuple struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Tuple("a", 1, 2, 3) => "great",
-   *     Tuple(.., 3) => "fine",
-   *     Tuple(..) => "fail",
-   * };
-   * ```
-   */
-  class TupleStructPat extends @tuple_struct_pat, Pat, PathAstNode {
-    override string toString() { result = "TupleStructPat" }
-
-    /**
-     * Gets the `index`th field of this tuple struct pattern (0-based).
-     */
-    Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
   }
 
   /**
@@ -3987,7 +3929,7 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends @method_call_expr, CallExprBase {
+  class MethodCallExpr extends @method_call_expr, CallExprBase, Resolvable {
     override string toString() { result = "MethodCallExpr" }
 
     /**
@@ -4059,6 +4001,60 @@ module Raw {
      * Gets the `index`th attr of this path expression (0-based).
      */
     Attr getAttr(int index) { path_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A path pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
+   */
+  class PathPat extends @path_pat, Pat, PathAstNode {
+    override string toString() { result = "PathPat" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct expression. For example:
+   * ```rust
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * let n = Foo { a: 1, b: 2 }.b;
+   * Foo { a: m, .. } = second;
+   * ```
+   */
+  class StructExpr extends @struct_expr, Expr, PathAstNode {
+    override string toString() { result = "StructExpr" }
+
+    /**
+     * Gets the struct expression field list of this struct expression, if it exists.
+     */
+    StructExprFieldList getStructExprFieldList() {
+      struct_expr_struct_expr_field_lists(this, result)
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
+   */
+  class StructPat extends @struct_pat, Pat, PathAstNode {
+    override string toString() { result = "StructPat" }
+
+    /**
+     * Gets the struct pattern field list of this struct pattern, if it exists.
+     */
+    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
   }
 
   /**
@@ -4164,6 +4160,26 @@ module Raw {
      * Gets the where clause of this trait alias, if it exists.
      */
     WhereClause getWhereClause() { trait_alias_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A tuple struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
+   */
+  class TupleStructPat extends @tuple_struct_pat, Pat, PathAstNode {
+    override string toString() { result = "TupleStructPat" }
+
+    /**
+     * Gets the `index`th field of this tuple struct pattern (0-based).
+     */
+    Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
   }
 
   /**

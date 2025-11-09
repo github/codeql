@@ -814,6 +814,7 @@ module RustDataFlow implements InputSig<Location> {
       // A path expression, that resolves to a function, evaluates to a function
       // pointer. Except if the path occurs directly in a call, then it's just a
       // call to the function and not a function being passed as data.
+      e.(PathExpr).hasResolvedPath() and
       resolvePath(e.(PathExpr).getPath()) = c.asCfgScope() and
       not any(CallExpr call).getFunction() = e
     )

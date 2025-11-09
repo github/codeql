@@ -64,6 +64,12 @@ fn has_special_emission(type_name: &str) -> bool {
             | "Struct"
             | "Enum"
             | "Union"
+            | "PathExpr"
+            | "RecordExpr"
+            | "PathPat"
+            | "RecordPat"
+            | "TupleStructPat"
+            | "MethodCallExpr"
             | "PathSegment"
             | "Const"
     )

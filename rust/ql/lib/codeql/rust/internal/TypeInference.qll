@@ -3215,6 +3215,7 @@ private module Cached {
   /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
   cached
   Addressable resolveCallTarget(Call call) {
+    call.(Resolvable).hasResolvedPath() and
     result = call.(MethodResolution::MethodCall).resolveCallTarget(_, _)
     or
     result = call.(NonMethodResolution::NonMethodCall).resolveCallTarget()

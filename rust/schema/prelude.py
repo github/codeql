@@ -84,8 +84,14 @@ class Addressable(AstNode):
     TODO: This does not yet include all possible cases.
     """
 
+class Resolvable(AstNode):
+    """
+    One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
+    """
+    resolved_path: optional[string] | rust.detach | ql.internal
+    resolved_crate_origin: optional[string] | rust.detach | ql.internal
 
-class PathAstNode(AstNode):
+class PathAstNode(Resolvable):
     """
     An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
     """
