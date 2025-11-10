@@ -37,3 +37,5 @@ query predicate commentLines(CommentLine cl) { any() }
 query predicate commentBlocks(CommentBlock cb) { any() }
 
 query predicate typeMentions(TypeMention tm) { any() }
+
+query predicate xmlLocatables(XmlLocatable xl) { any() }

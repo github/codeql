@@ -265,3 +265,10 @@ typeMentions
 | Program.cs:60:10:60:16 | ProgramAttribute |
 | Program.cs:61:16:61:19 | Void |
 | Program.cs:64:37:64:45 | Attribute |
+xmlLocatables
+| web.changed.config:2:1:5:17 | configuration |
+| web.changed.config:3:3:4:16 | system.web |
+| web.unchanged.config:2:1:6:17 | configuration |
+| web.unchanged.config:3:3:5:16 | system.web |
+| web.unchanged.config:4:5:4:37 | httpCookies |
+| web.unchanged.config:4:5:4:37 | requireSSL=true |
