@@ -32,8 +32,8 @@ query predicate eventAccessors(EventAccessor ea) { ea.fromSource() }
 
 query predicate usingDirectives(UsingDirective ud) { ud.fromSource() }
 
-query predicate commentLines(CommentLine cl) { cl.getLocation().getFile().fromSource() }
+query predicate commentLines(CommentLine cl) { any() }
 
-query predicate commentBlocks(CommentBlock cb) { cb.getLocation().getFile().fromSource() }
+query predicate commentBlocks(CommentBlock cb) { any() }
 
-query predicate typeMentions(TypeMention tm) { tm.getLocation().getFile().fromSource() }
+query predicate typeMentions(TypeMention tm) { any() }
