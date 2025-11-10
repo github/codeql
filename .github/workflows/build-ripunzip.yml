@@ -6,11 +6,11 @@ on:
       ripunzip-version:
         description: "what reference to checktout from google/runzip"
         required: false
-        default: v2.0.2
+        default: v2.0.3
       openssl-version:
         description: "what reference to checkout from openssl/openssl for Linux"
         required: false
-        default: openssl-3.5.0
+        default: openssl-3.6.0
   pull_request:
     paths:
       - .github/workflows/build-ripunzip.yml
