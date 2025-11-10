@@ -15,13 +15,28 @@ private string getLocationFilePath(@location_default loc) {
   exists(@file file | locations_default(loc, file, _, _, _, _) | files(file, result))
 }
 
+overlay[local]
+private class DiscardableEntityBase extends @locatable {
+  /** Gets the path to the file in which this element occurs. */
+  abstract string getFilePath();
+
+  /** Holds if this element exists in the base variant. */
+  predicate existsInBase() { not isOverlay() }
+
+  /** Holds if this element exists in the overlay variant. */
+  predicate existsInOverlay() { isOverlay() }
+
+  /** Gets a textual representation of this discardable element. */
+  string toString() { none() }
+}
+
 /**
  * A class of elements that can be discarded from the base.
  */
 overlay[local]
-private class DiscardableEntity extends @locatable {
+private class DiscardableEntity extends DiscardableEntityBase {
   /** Gets the path to the file in which this element occurs. */
-  string getFilePath() {
+  override string getFilePath() {
     exists(@location_default loc | result = getLocationFilePath(loc) |
       expr_location(this, loc) or
       stmt_location(this, loc) or
@@ -50,15 +65,6 @@ private class DiscardableEntity extends @locatable {
       extractor_messages(this, _, _, _, _, loc, _)
     )
   }
-
-  /** Holds if this element exists in the base variant. */
-  predicate existsInBase() { not isOverlay() }
-
-  /** Holds if this element exists in the overlay variant. */
-  predicate existsInOverlay() { isOverlay() }
-
-  /** Gets a textual representation of this discardable element. */
-  string toString() { none() }
 }
 
 /**
@@ -102,4 +108,34 @@ private predicate discardableLocation(@location_default loc, string path) {
 overlay[discard_entity]
 private predicate discardLocation(@location_default loc) {
   exists(string path | discardableLocation(loc, path) | overlayChangedFiles(path))
+}
+
+/**
+ * A class of Xml locatables that can be discarded from the base.
+ */
+overlay[local]
+private class DiscardableXmlEntity extends DiscardableEntityBase instanceof @xmllocatable {
+  /** Gets the path to the file in which this element occurs. */
+  override string getFilePath() {
+    exists(@location_default loc | result = getLocationFilePath(loc) | xmllocations(this, loc))
+  }
+}
+
+overlay[local]
+private predicate overlayXmlExtracted(string file) {
+  exists(DiscardableXmlEntity dxe |
+    dxe.existsInOverlay() and
+    file = dxe.getFilePath() and
+    not files(dxe, _) and
+    not xmlNs(dxe, _, _, _)
+  )
+}
+
+overlay[discard_entity]
+private predicate discardXmlEntity(@xmllocatable xml) {
+  overlayChangedFiles(xml.(DiscardableXmlEntity).getFilePath())
+  or
+  // The XML extractor is not incremental and may extract more
+  // XML files than those included in overlayChangedFiles.
+  overlayXmlExtracted(xml.(DiscardableXmlEntity).getFilePath())
 }
