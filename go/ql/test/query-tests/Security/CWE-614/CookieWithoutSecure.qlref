@@ -1,2 +1,2 @@
-query: security/CWE-614/CookieWithoutSecure.ql
+query: Security/CWE-614/CookieWithoutSecure.ql
 postprocess: utils/test/InlineExpectationsTestQuery.ql
