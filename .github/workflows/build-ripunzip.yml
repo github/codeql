@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-15, windows-2022]
+        os: [ubuntu-24.04, macos-15, windows-2025]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
