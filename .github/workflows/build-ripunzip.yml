@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       ripunzip-version:
-        description: What reference to checktout from google/runzip. Latest by default
+        description: What reference to checkout from google/ripunzip. Latest by default
         required: false
       openssl-version:
         description: What reference to checkout from openssl/openssl for Linux. Latest by default
