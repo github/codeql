@@ -139,3 +139,28 @@ private predicate discardXmlEntity(@xmllocatable xml) {
   // XML files than those included in overlayChangedFiles.
   overlayXmlExtracted(xml.(DiscardableXmlEntity).getFilePath())
 }
+
+overlay[local]
+private class DiscardableAspEntity extends DiscardableEntityBase instanceof @asp_element {
+  /** Gets the path to the file in which this element occurs. */
+  override string getFilePath() {
+    exists(@location_default loc | result = getLocationFilePath(loc) | asp_elements(this, _, loc))
+  }
+}
+
+overlay[local]
+private predicate overlayAspExtracted(string file) {
+  exists(DiscardableAspEntity dae |
+    dae.existsInOverlay() and
+    file = dae.getFilePath()
+  )
+}
+
+overlay[discard_entity]
+private predicate discardAspEntity(@asp_element asp) {
+  overlayChangedFiles(asp.(DiscardableAspEntity).getFilePath())
+  or
+  // The ASP extractor is not incremental and may extract more
+  // ASP files than those included in overlayChangedFiles.
+  overlayAspExtracted(asp.(DiscardableAspEntity).getFilePath())
+}
