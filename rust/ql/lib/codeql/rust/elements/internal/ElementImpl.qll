@@ -54,7 +54,7 @@ module Impl {
     /**
      * Gets the immediately enclosing macro invocation for element `e`, if any.
      *
-     * The result is either a `MacroCall`, and `Adt` with a derive macro expansion, or
+     * The result is either a `MacroCall`, an `Adt` with a derive macro expansion, or
      * an `Item` with an attribute macro expansion.
      */
     cached
