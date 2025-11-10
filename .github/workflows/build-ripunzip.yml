@@ -1,4 +1,4 @@
-name: Build runzip
+name: Build ripunzip
 
 on:
   workflow_dispatch:
@@ -6,24 +6,28 @@ on:
       ripunzip-version:
         description: "what reference to checktout from google/runzip"
         required: false
-        default: v2.0.2
       openssl-version:
         description: "what reference to checkout from openssl/openssl for Linux"
         required: false
-        default: openssl-3.5.0
+  pull_request:
+    paths:
+      - .github/workflows/build-ripunzip.yml
+env:
+  RIPUNZIP_DEFAULT: v2.0.3
+  OPENSSL_DEFAULT: openssl-3.6.0
 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-13, windows-2022]
+        os: [ubuntu-24.04, macos-15, windows-2025]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
         with:
           repository: google/ripunzip
-          ref: ${{ inputs.ripunzip-version }}
+          ref: ${{ inputs.ripunzip-version || env.RIPUNZIP_DEFAULT }}
       # we need to avoid ripunzip dynamically linking into libssl
       # see https://github.com/sfackler/rust-openssl/issues/183
       - if: runner.os == 'Linux'
@@ -32,7 +36,7 @@ jobs:
         with:
           repository: openssl/openssl
           path: openssl
-          ref: ${{ inputs.openssl-version }}
+          ref: ${{ inputs.openssl-version || env.OPENSSL_DEFAULT }}
       - if: runner.os == 'Linux'
         name: build and install openssl with fPIC
         shell: bash
