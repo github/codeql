@@ -1,4 +1,4 @@
-name: Build runzip
+name: Build ripunzip
 
 on:
   workflow_dispatch:
