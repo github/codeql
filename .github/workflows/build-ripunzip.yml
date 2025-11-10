@@ -11,6 +11,9 @@ on:
         description: "what reference to checkout from openssl/openssl for Linux"
         required: false
         default: openssl-3.5.0
+  pull_request:
+    paths:
+      - .github/workflows/build-ripunzip.yml
 
 jobs:
   build:
