@@ -25,7 +25,7 @@ func handler2(w http.ResponseWriter, r *http.Request) {
 
 func handler3(w http.ResponseWriter, r *http.Request) {
 	c := http.Cookie{
-		Name:     "session", 
+		Name:     "session",
 		Value:    "secret",
 		HttpOnly: true,
 	}
@@ -63,7 +63,7 @@ func handler6(w http.ResponseWriter, r *http.Request) {
 func handler7(w http.ResponseWriter, r *http.Request) {
 	val := true
 	c := http.Cookie{
-		Name:     "session", 
+		Name:     "session",
 		Value:    "secret",
 		HttpOnly: val,
 	}
@@ -125,7 +125,7 @@ func main() {
 
 	router.GET("/cookie", func(c *gin.Context) {
 
-		_, err := c.Cookie("session") 
+		_, err := c.Cookie("session")
 
 		if err != nil {
 			c.SetCookie("session", "test", 3600, "/", "localhost", false, false) // $ Alert // BAD: httpOnly set to false
