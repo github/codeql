@@ -631,6 +631,10 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l">Location of the entity.</param>
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)
         {
+            if (OnlyScaffold)
+            {
+                return;
+            }
             var duplicationGuardKey = GetCurrentTagStackKey();
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }
