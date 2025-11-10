@@ -6,8 +6,8 @@ import (
 
 func handlerBad(w http.ResponseWriter, r *http.Request) {
 	c := http.Cookie{
-		Name:     "session",
-		Value:    "secret",
+		Name:  "session",
+		Value: "secret",
 	}
 	http.SetCookie(w, &c) // BAD: The HttpOnly flag is set to false by default.
 }
