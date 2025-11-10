@@ -384,7 +384,7 @@ module Http {
   /** Provides a class for modeling HTTP response cookie writes. */
   module CookieWrite {
     /**
-     * An write of an HTTP Cookie to an HTTP response.
+     * A write of an HTTP Cookie to an HTTP response.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `HTTP::CookieWrite` instead.
@@ -405,7 +405,7 @@ module Http {
   }
 
   /**
-   * An write of an HTTP Cookie to an HTTP response.
+   * A write of an HTTP Cookie to an HTTP response.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::CookieWrite::Range` instead.

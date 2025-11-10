@@ -8,7 +8,7 @@
  * @security-severity 5.0
  * @id go/cookie-secure-not-set
  * @tags security
- *       external/cwe/cwe-1004
+ *       external/cwe/cwe-614
  */
 
 import go
