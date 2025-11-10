@@ -656,6 +656,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `class:N` (where `N` is the index of the template).
  */
+pragma[nomagic]
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
@@ -727,6 +728,7 @@ private string getSignatureWithoutClassTemplateNames(
  * - The `remaining` number of template arguments in `partiallyNormalizedSignature`
  * with their index in `nameArgs`.
  */
+pragma[nomagic]
 private string getSignatureWithoutFunctionTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
@@ -770,6 +772,7 @@ private string getSignatureWithoutFunctionTemplateNames(
  * ```
  * In this case, `normalizedSignature` will be `"(const func:0 &,int,class:1,class:0 *)"`.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments(
   string signature, string type, string name, string normalizedSignature, string typeArgs,
   string nameArgs
@@ -795,23 +798,26 @@ private string getSignatureParameterName(string signature, string type, string n
  * If `subtypes` is `true` then the result may be an override of the function
  * identified by the components.
  */
-bindingset[type, name]
+pragma[nomagic]
 private Function getFunction(string namespace, string type, boolean subtypes, string name) {
-  funcHasQualifiedName(result, namespace, name) and
-  subtypes = false and
-  type = ""
-  or
-  exists(Class namedClass, Class classWithMethod |
-    hasClassAndName(classWithMethod, result, name) and
-    classHasQualifiedName(namedClass, namespace, type)
-  |
-    // member declared in the named type or a subtype of it
-    subtypes = true and
-    classWithMethod = namedClass.getADerivedClass*()
-    or
-    // member declared directly in the named type
+  elementSpec(namespace, type, subtypes, name, _, _) and
+  (
+    funcHasQualifiedName(result, namespace, name) and
     subtypes = false and
-    classWithMethod = namedClass
+    type = ""
+    or
+    exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
+    |
+      // member declared in the named type or a subtype of it
+      subtypes = true and
+      classWithMethod = namedClass.getADerivedClass*()
+      or
+      // member declared directly in the named type
+      subtypes = false and
+      classWithMethod = namedClass
+    )
   )
 }
 
@@ -838,6 +844,7 @@ private Function getFunction(string namespace, string type, boolean subtypes, st
  * is `func:n` then the signature name is compared with the `n`'th name
  * in `name`.
  */
+pragma[nomagic]
 private predicate signatureMatches(
   Function func, string namespace, string signature, string type, string name, int i
 ) {
@@ -912,6 +919,7 @@ private predicate parseParens(string s, string betweenParens) { s = "(" + betwee
  * - `signatureWithoutParens` equals `signature`, but with the surrounding
  *    parentheses removed.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments0(
   string signature, string type, string name, string signatureWithoutParens, string typeArgs,
   string nameArgs
