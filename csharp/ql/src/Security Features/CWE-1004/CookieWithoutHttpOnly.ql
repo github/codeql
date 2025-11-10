@@ -82,7 +82,8 @@ predicate nonHttpOnlyCookieCall(Call c) {
         or
         // IResponseCookies.Append(String, String) was called, `HttpOnly` is set to `false` by default
         mc = c and
-        mc.getNumberOfArguments() < 3
+        mc.getNumberOfArguments() < 3 and
+        mc.getTarget().getParameter(0).getType() instanceof StringType
       )
     )
     or

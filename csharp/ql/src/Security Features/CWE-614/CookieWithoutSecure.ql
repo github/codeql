@@ -57,7 +57,8 @@ predicate insecureCookieAppend(Expr sink) {
   exists(MethodCall mc, MicrosoftAspNetCoreHttpResponseCookies iResponse |
     mc = sink and
     iResponse.getAppendMethod() = mc.getTarget() and
-    mc.getNumberOfArguments() < 3
+    mc.getNumberOfArguments() < 3 and
+    mc.getTarget().getParameter(0).getType() instanceof StringType
   )
 }
 
