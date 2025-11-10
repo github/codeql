@@ -26846,14 +26846,20 @@ getParameterTypeName
 | atl.cpp:196:12:196:14 | Add | 0 | INARGTYPclass:0 |
 | atl.cpp:198:12:198:17 | Append | 0 | const CAtlArray & |
 | atl.cpp:199:10:199:13 | Copy | 0 | const CAtlArray & |
+| atl.cpp:201:8:201:12 | GetAt | 0 | decltype(...) |
 | atl.cpp:201:8:201:12 | GetAt | 0 | size_t |
+| atl.cpp:205:10:205:22 | InsertArrayAt | 0 | decltype(...) |
 | atl.cpp:205:10:205:22 | InsertArrayAt | 0 | size_t |
 | atl.cpp:205:10:205:22 | InsertArrayAt | 1 | const CAtlArray * |
+| atl.cpp:206:10:206:17 | InsertAt | 0 | decltype(...) |
 | atl.cpp:206:10:206:17 | InsertAt | 0 | size_t |
 | atl.cpp:206:10:206:17 | InsertAt | 1 | INARGTYPclass:0 |
+| atl.cpp:206:10:206:17 | InsertAt | 2 | decltype(...) |
 | atl.cpp:206:10:206:17 | InsertAt | 2 | size_t |
+| atl.cpp:211:10:211:18 | SetAtGrow | 0 | decltype(...) |
 | atl.cpp:211:10:211:18 | SetAtGrow | 0 | size_t |
 | atl.cpp:211:10:211:18 | SetAtGrow | 1 | INARGTYPclass:0 |
+| atl.cpp:213:8:213:17 | operator[] | 0 | decltype(...) |
 | atl.cpp:213:8:213:17 | operator[] | 0 | size_t |
 | atl.cpp:259:5:259:12 | CAtlList | 0 | UINT |
 | atl.cpp:259:5:259:12 | CAtlList | 0 | UINT |
@@ -26873,6 +26879,8 @@ getParameterTypeName
 | atl.cpp:267:14:267:17 | Find | 1 | POSITION |
 | atl.cpp:267:14:267:17 | Find | 1 | __POSITION * |
 | atl.cpp:267:14:267:17 | Find | 1 | __POSITION * |
+| atl.cpp:268:14:268:22 | FindIndex | 0 | decltype(...) |
+| atl.cpp:268:14:268:22 | FindIndex | 0 | decltype(...) |
 | atl.cpp:268:14:268:22 | FindIndex | 0 | size_t |
 | atl.cpp:268:14:268:22 | FindIndex | 0 | size_t |
 | atl.cpp:269:8:269:12 | GetAt | 0 | POSITION |
@@ -27053,6 +27061,7 @@ getParameterTypeName
 | atl.cpp:927:17:927:25 | CopyChars | 2 | int |
 | atl.cpp:928:17:928:25 | CopyChars | 0 | XCHAR * |
 | atl.cpp:928:17:928:25 | CopyChars | 0 | char * |
+| atl.cpp:928:17:928:25 | CopyChars | 1 | decltype(...) |
 | atl.cpp:928:17:928:25 | CopyChars | 1 | size_t |
 | atl.cpp:928:17:928:25 | CopyChars | 2 | const XCHAR * |
 | atl.cpp:928:17:928:25 | CopyChars | 2 | const char * |

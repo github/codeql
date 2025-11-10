@@ -1327,8 +1327,7 @@ specialnamequalifyingelements(
 @namequalifiableelement = @expr | @namequalifier;
 @namequalifyingelement = @namespace
                        | @specialnamequalifyingelement
-                       | @usertype
-                       | @decltype;
+                       | @usertype;
 
 namequalifiers(
     unique int id: @namequalifier,
