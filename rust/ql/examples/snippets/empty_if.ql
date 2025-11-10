@@ -12,7 +12,7 @@ import rust
 from IfExpr ifExpr
 where
   // where the 'then' branch is empty
-  ifExpr.getThen().(BlockExpr).getStmtList().getNumberOfStmtOrExpr() = 0 and
+  ifExpr.getThen().getStmtList().getNumberOfStmtOrExpr() = 0 and
   // and no 'else' branch exists
   not exists(ifExpr.getElse())
 select ifExpr, "This 'if' expression is redundant."
