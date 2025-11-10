@@ -1,7 +1,3 @@
-## 7.7.3
-
-No user-facing changes.
-
 ## 7.7.2
 
 ### Minor Analysis Improvements
