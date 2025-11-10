@@ -16,7 +16,7 @@ private string getLocationFilePath(@location_default loc) {
 }
 
 /**
- * An abstract base class for all elements that can be discarded from the base.
+ * A class of elements that can be discarded from the base.
  */
 overlay[local]
 private class DiscardableEntity extends @locatable {
@@ -52,10 +52,10 @@ private class DiscardableEntity extends @locatable {
   }
 
   /** Holds if this element exists in the base variant. */
-  predicate existsInBase() { not isOverlay() and exists(this) }
+  predicate existsInBase() { not isOverlay() }
 
   /** Holds if this element exists in the overlay variant. */
-  predicate existsInOverlay() { isOverlay() and exists(this) }
+  predicate existsInOverlay() { isOverlay() }
 
   /** Gets a textual representation of this discardable element. */
   string toString() { none() }
