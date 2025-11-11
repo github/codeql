@@ -18,7 +18,7 @@ public class FunctionType extends JSDocTypeExpression {
       JSDocTypeExpression result) {
     super(loc, "FunctionType");
     this._this = _this;
-    this._new = _Boolean.TRUE.equals(new);
+    this._new = Boolean.TRUE.equals(_new);
     this.params = params;
     this.result = result;
   }
