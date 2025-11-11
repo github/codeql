@@ -105,6 +105,13 @@ Expr clearlyNotNullExpr(Expr reason) {
     result = v.getARead() and
     not result = baseNotNullExpr()
   )
+  or
+  exists(Field f |
+    result = f.getAnAccess() and
+    f.isFinal() and
+    f.getInitializer() = clearlyNotNullExpr(reason) and
+    not result = baseNotNullExpr()
+  )
 }
 
 /** Holds if `v` is an SSA variable that is provably not `null`. */
