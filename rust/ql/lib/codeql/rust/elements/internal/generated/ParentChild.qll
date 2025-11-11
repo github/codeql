@@ -74,7 +74,7 @@ private module Impl {
   private Element getImmediateChildOfArgList(ArgList e, int index, string partialPredicateCall) {
     exists(int n, int nArg |
       n = 0 and
-      nArg = n + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
+      nArg = n + e.getNumberOfArgs() and
       (
         none()
         or
@@ -126,8 +126,8 @@ private module Impl {
   ) {
     exists(int n, int nAssocItem, int nAttr |
       n = 0 and
-      nAssocItem = n + 1 + max(int i | i = -1 or exists(e.getAssocItem(i)) | i) and
-      nAttr = nAssocItem + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAssocItem = n + e.getNumberOfAssocItems() and
+      nAttr = nAssocItem + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -157,8 +157,8 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nExternItem |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExternItem = nAttr + 1 + max(int i | i = -1 or exists(e.getExternItem(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExternItem = nAttr + e.getNumberOfExternItems() and
       (
         none()
         or
@@ -207,7 +207,7 @@ private module Impl {
   ) {
     exists(int n, int nGenericArg |
       n = 0 and
-      nGenericArg = n + 1 + max(int i | i = -1 or exists(e.getGenericArg(i)) | i) and
+      nGenericArg = n + e.getNumberOfGenericArgs() and
       (
         none()
         or
@@ -222,7 +222,7 @@ private module Impl {
   ) {
     exists(int n, int nGenericParam |
       n = 0 and
-      nGenericParam = n + 1 + max(int i | i = -1 or exists(e.getGenericParam(i)) | i) and
+      nGenericParam = n + e.getNumberOfGenericParams() and
       (
         none()
         or
@@ -235,8 +235,8 @@ private module Impl {
   private Element getImmediateChildOfItemList(ItemList e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nItem |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nItem = nAttr + 1 + max(int i | i = -1 or exists(e.getItem(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nItem = nAttr + e.getNumberOfItems() and
       (
         none()
         or
@@ -276,7 +276,7 @@ private module Impl {
   private Element getImmediateChildOfMacroItems(MacroItems e, int index, string partialPredicateCall) {
     exists(int n, int nItem |
       n = 0 and
-      nItem = n + 1 + max(int i | i = -1 or exists(e.getItem(i)) | i) and
+      nItem = n + e.getNumberOfItems() and
       (
         none()
         or
@@ -289,7 +289,7 @@ private module Impl {
   private Element getImmediateChildOfMatchArm(MatchArm e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr, int nGuard, int nPat |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       nGuard = nExpr + 1 and
       nPat = nGuard + 1 and
@@ -313,8 +313,8 @@ private module Impl {
   ) {
     exists(int n, int nArm, int nAttr |
       n = 0 and
-      nArm = n + 1 + max(int i | i = -1 or exists(e.getArm(i)) | i) and
-      nAttr = nArm + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nArm = n + e.getNumberOfArms() and
+      nAttr = nArm + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -362,7 +362,7 @@ private module Impl {
   private Element getImmediateChildOfParamList(ParamList e, int index, string partialPredicateCall) {
     exists(int n, int nParam, int nSelfParam |
       n = 0 and
-      nParam = n + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = n + e.getNumberOfParams() and
       nSelfParam = nParam + 1 and
       (
         none()
@@ -380,7 +380,7 @@ private module Impl {
   ) {
     exists(int n, int nTypeArg |
       n = 0 and
-      nTypeArg = n + 1 + max(int i | i = -1 or exists(e.getTypeArg(i)) | i) and
+      nTypeArg = n + e.getNumberOfTypeArgs() and
       (
         none()
         or
@@ -487,8 +487,8 @@ private module Impl {
   private Element getImmediateChildOfSourceFile(SourceFile e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nItem |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nItem = nAttr + 1 + max(int i | i = -1 or exists(e.getItem(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nItem = nAttr + e.getNumberOfItems() and
       (
         none()
         or
@@ -504,8 +504,8 @@ private module Impl {
   private Element getImmediateChildOfStmtList(StmtList e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nStatement, int nTailExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nStatement = nAttr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nStatement = nAttr + e.getNumberOfStatements() and
       nTailExpr = nStatement + 1 and
       (
         none()
@@ -526,7 +526,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nExpr, int nIdentifier |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       nIdentifier = nExpr + 1 and
       (
@@ -547,8 +547,8 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nField, int nSpread |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nField = nAttr + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nField = nAttr + e.getNumberOfFields() and
       nSpread = nField + 1 and
       (
         none()
@@ -569,7 +569,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nDefault, int nName, int nTypeRepr, int nVisibility |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nDefault = nAttr + 1 and
       nName = nDefault + 1 and
       nTypeRepr = nName + 1 and
@@ -596,7 +596,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nIdentifier, int nPat |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nIdentifier = nAttr + 1 and
       nPat = nIdentifier + 1 and
       (
@@ -617,7 +617,7 @@ private module Impl {
   ) {
     exists(int n, int nField, int nRestPat |
       n = 0 and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nField = n + e.getNumberOfFields() and
       nRestPat = nField + 1 and
       (
         none()
@@ -637,7 +637,7 @@ private module Impl {
   private Element getImmediateChildOfTupleField(TupleField e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nTypeRepr, int nVisibility |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nTypeRepr = nAttr + 1 and
       nVisibility = nTypeRepr + 1 and
       (
@@ -681,7 +681,7 @@ private module Impl {
   ) {
     exists(int n, int nBound |
       n = 0 and
-      nBound = n + 1 + max(int i | i = -1 or exists(e.getBound(i)) | i) and
+      nBound = n + e.getNumberOfBounds() and
       (
         none()
         or
@@ -696,7 +696,7 @@ private module Impl {
   ) {
     exists(int n, int nUseBoundGenericArg |
       n = 0 and
-      nUseBoundGenericArg = n + 1 + max(int i | i = -1 or exists(e.getUseBoundGenericArg(i)) | i) and
+      nUseBoundGenericArg = n + e.getNumberOfUseBoundGenericArgs() and
       (
         none()
         or
@@ -729,7 +729,7 @@ private module Impl {
   ) {
     exists(int n, int nUseTree |
       n = 0 and
-      nUseTree = n + 1 + max(int i | i = -1 or exists(e.getUseTree(i)) | i) and
+      nUseTree = n + e.getNumberOfUseTrees() and
       (
         none()
         or
@@ -744,7 +744,7 @@ private module Impl {
   ) {
     exists(int n, int nVariant |
       n = 0 and
-      nVariant = n + 1 + max(int i | i = -1 or exists(e.getVariant(i)) | i) and
+      nVariant = n + e.getNumberOfVariants() and
       (
         none()
         or
@@ -771,7 +771,7 @@ private module Impl {
   ) {
     exists(int n, int nPredicate |
       n = 0 and
-      nPredicate = n + 1 + max(int i | i = -1 or exists(e.getPredicate(i)) | i) and
+      nPredicate = n + e.getNumberOfPredicates() and
       (
         none()
         or
@@ -809,8 +809,8 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 + max(int i | i = -1 or exists(e.getExpr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + e.getNumberOfExprs() and
       (
         none()
         or
@@ -894,7 +894,7 @@ private module Impl {
   ) {
     exists(int n, int nAsmOption |
       n = 0 and
-      nAsmOption = n + 1 + max(int i | i = -1 or exists(e.getAsmOption(i)) | i) and
+      nAsmOption = n + e.getNumberOfAsmOptions() and
       (
         none()
         or
@@ -991,7 +991,7 @@ private module Impl {
   private Element getImmediateChildOfAwaitExpr(AwaitExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1007,7 +1007,7 @@ private module Impl {
   private Element getImmediateChildOfBecomeExpr(BecomeExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1023,7 +1023,7 @@ private module Impl {
   private Element getImmediateChildOfBinaryExpr(BinaryExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nLhs, int nRhs |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nLhs = nAttr + 1 and
       nRhs = nLhs + 1 and
       (
@@ -1054,7 +1054,7 @@ private module Impl {
   private Element getImmediateChildOfBreakExpr(BreakExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr, int nLifetime |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       nLifetime = nExpr + 1 and
       (
@@ -1073,7 +1073,7 @@ private module Impl {
   private Element getImmediateChildOfCastExpr(CastExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr, int nTypeRepr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       nTypeRepr = nExpr + 1 and
       (
@@ -1095,7 +1095,7 @@ private module Impl {
     exists(int n, int nParamList, int nAttr, int nClosureBody, int nForBinder, int nRetType |
       n = 0 and
       nParamList = n + 1 and
-      nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nParamList + e.getNumberOfAttrs() and
       nClosureBody = nAttr + 1 and
       nForBinder = nClosureBody + 1 and
       nRetType = nForBinder + 1 and
@@ -1149,7 +1149,7 @@ private module Impl {
   private Element getImmediateChildOfConstParam(ConstParam e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nDefaultVal, int nName, int nTypeRepr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nDefaultVal = nAttr + 1 and
       nName = nDefaultVal + 1 and
       nTypeRepr = nName + 1 and
@@ -1173,7 +1173,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nLifetime |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nLifetime = nAttr + 1 and
       (
         none()
@@ -1215,7 +1215,7 @@ private module Impl {
   private Element getImmediateChildOfFieldExpr(FieldExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nContainer, int nIdentifier |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nContainer = nAttr + 1 and
       nIdentifier = nContainer + 1 and
       (
@@ -1273,10 +1273,10 @@ private module Impl {
   ) {
     exists(int n, int nArg, int nAttr, int nTemplate, int nFormat |
       n = 0 and
-      nArg = n + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
-      nAttr = nArg + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nArg = n + e.getNumberOfArgs() and
+      nAttr = nArg + e.getNumberOfAttrs() and
       nTemplate = nAttr + 1 and
-      nFormat = nTemplate + 1 + max(int i | i = -1 or exists(e.getFormat(i)) | i) and
+      nFormat = nTemplate + e.getNumberOfFormats() and
       (
         none()
         or
@@ -1297,7 +1297,7 @@ private module Impl {
   private Element getImmediateChildOfIdentPat(IdentPat e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nName, int nPat |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nName = nAttr + 1 and
       nPat = nName + 1 and
       (
@@ -1316,7 +1316,7 @@ private module Impl {
   private Element getImmediateChildOfIfExpr(IfExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nCondition, int nElse, int nThen |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nCondition = nAttr + 1 and
       nElse = nCondition + 1 and
       nThen = nElse + 1 and
@@ -1352,7 +1352,7 @@ private module Impl {
   private Element getImmediateChildOfIndexExpr(IndexExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nBase, int nIndex |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nBase = nAttr + 1 and
       nIndex = nBase + 1 and
       (
@@ -1377,7 +1377,7 @@ private module Impl {
   private Element getImmediateChildOfLetExpr(LetExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nScrutinee, int nPat |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nScrutinee = nAttr + 1 and
       nPat = nScrutinee + 1 and
       (
@@ -1396,7 +1396,7 @@ private module Impl {
   private Element getImmediateChildOfLetStmt(LetStmt e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nInitializer, int nLetElse, int nPat, int nTypeRepr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nInitializer = nAttr + 1 and
       nLetElse = nInitializer + 1 and
       nPat = nLetElse + 1 and
@@ -1441,7 +1441,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nLifetime, int nTypeBoundList |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nLifetime = nAttr + 1 and
       nTypeBoundList = nLifetime + 1 and
       (
@@ -1464,7 +1464,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -1491,7 +1491,7 @@ private module Impl {
   ) {
     exists(int n, int nStatement, int nTailExpr |
       n = 0 and
-      nStatement = n + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      nStatement = n + e.getNumberOfStatements() and
       nTailExpr = nStatement + 1 and
       (
         none()
@@ -1545,7 +1545,7 @@ private module Impl {
   private Element getImmediateChildOfMatchExpr(MatchExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nScrutinee, int nMatchArmList |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nScrutinee = nAttr + 1 and
       nMatchArmList = nScrutinee + 1 and
       (
@@ -1578,8 +1578,8 @@ private module Impl {
   ) {
     exists(int n, int nAttr, int nField, int nTypeRepr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nField = nAttr + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nField = nAttr + e.getNumberOfFields() and
       nTypeRepr = nField + 1 and
       (
         none()
@@ -1598,7 +1598,7 @@ private module Impl {
   private Element getImmediateChildOfOrPat(OrPat e, int index, string partialPredicateCall) {
     exists(int n, int nPat |
       n = 0 and
-      nPat = n + 1 + max(int i | i = -1 or exists(e.getPat(i)) | i) and
+      nPat = n + e.getNumberOfPats() and
       (
         none()
         or
@@ -1611,7 +1611,7 @@ private module Impl {
   private Element getImmediateChildOfParam(Param e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nTypeRepr, int nPat |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nTypeRepr = nAttr + 1 and
       nPat = nTypeRepr + 1 and
       (
@@ -1630,7 +1630,7 @@ private module Impl {
   private Element getImmediateChildOfParenExpr(ParenExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1698,7 +1698,7 @@ private module Impl {
   private Element getImmediateChildOfPrefixExpr(PrefixExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1728,7 +1728,7 @@ private module Impl {
   private Element getImmediateChildOfRangeExpr(RangeExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nEnd, int nStart |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nEnd = nAttr + 1 and
       nStart = nEnd + 1 and
       (
@@ -1762,7 +1762,7 @@ private module Impl {
   private Element getImmediateChildOfRefExpr(RefExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1807,7 +1807,7 @@ private module Impl {
   private Element getImmediateChildOfRestPat(RestPat e, int index, string partialPredicateCall) {
     exists(int n, int nAttr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -1820,7 +1820,7 @@ private module Impl {
   private Element getImmediateChildOfReturnExpr(ReturnExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1836,7 +1836,7 @@ private module Impl {
   private Element getImmediateChildOfSelfParam(SelfParam e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nTypeRepr, int nLifetime, int nName |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nTypeRepr = nAttr + 1 and
       nLifetime = nTypeRepr + 1 and
       nName = nLifetime + 1 and
@@ -1858,7 +1858,7 @@ private module Impl {
   private Element getImmediateChildOfSlicePat(SlicePat e, int index, string partialPredicateCall) {
     exists(int n, int nPat |
       n = 0 and
-      nPat = n + 1 + max(int i | i = -1 or exists(e.getPat(i)) | i) and
+      nPat = n + e.getNumberOfPats() and
       (
         none()
         or
@@ -1904,7 +1904,7 @@ private module Impl {
   ) {
     exists(int n, int nField |
       n = 0 and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nField = n + e.getNumberOfFields() and
       (
         none()
         or
@@ -1934,7 +1934,7 @@ private module Impl {
   private Element getImmediateChildOfTryExpr(TryExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -1950,8 +1950,8 @@ private module Impl {
   private Element getImmediateChildOfTupleExpr(TupleExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nField |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nField = nAttr + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
+      nField = nAttr + e.getNumberOfFields() and
       (
         none()
         or
@@ -1969,7 +1969,7 @@ private module Impl {
   ) {
     exists(int n, int nField |
       n = 0 and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nField = n + e.getNumberOfFields() and
       (
         none()
         or
@@ -1982,7 +1982,7 @@ private module Impl {
   private Element getImmediateChildOfTuplePat(TuplePat e, int index, string partialPredicateCall) {
     exists(int n, int nField |
       n = 0 and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nField = n + e.getNumberOfFields() and
       (
         none()
         or
@@ -1998,7 +1998,7 @@ private module Impl {
     exists(int n, int nPath, int nField |
       n = 0 and
       nPath = n + 1 and
-      nField = nPath + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nField = nPath + e.getNumberOfFields() and
       (
         none()
         or
@@ -2015,7 +2015,7 @@ private module Impl {
   ) {
     exists(int n, int nField |
       n = 0 and
-      nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
+      nField = n + e.getNumberOfFields() and
       (
         none()
         or
@@ -2040,7 +2040,7 @@ private module Impl {
   private Element getImmediateChildOfTypeParam(TypeParam e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nDefaultType, int nName, int nTypeBoundList |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nDefaultType = nAttr + 1 and
       nName = nDefaultType + 1 and
       nTypeBoundList = nName + 1 and
@@ -2064,7 +2064,7 @@ private module Impl {
   ) {
     exists(int n, int nAttr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -2077,7 +2077,7 @@ private module Impl {
   private Element getImmediateChildOfVariant(Variant e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nDiscriminant, int nFieldList, int nName, int nVisibility |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nDiscriminant = nAttr + 1 and
       nFieldList = nDiscriminant + 1 and
       nName = nFieldList + 1 and
@@ -2108,7 +2108,7 @@ private module Impl {
   private Element getImmediateChildOfYeetExpr(YeetExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -2124,7 +2124,7 @@ private module Impl {
   private Element getImmediateChildOfYieldExpr(YieldExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = n + e.getNumberOfAttrs() and
       nExpr = nAttr + 1 and
       (
         none()
@@ -2142,8 +2142,8 @@ private module Impl {
   ) {
     exists(int n, int nExpr, int nAttr |
       n = 0 and
-      nExpr = n + 1 + max(int i | i = -1 or exists(e.getExpr(i)) | i) and
-      nAttr = nExpr + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nExpr = n + e.getNumberOfExprs() and
+      nAttr = nExpr + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -2161,8 +2161,8 @@ private module Impl {
   ) {
     exists(int n, int nExpr, int nAttr, int nRepeatOperand, int nRepeatLength |
       n = 0 and
-      nExpr = n + 1 + max(int i | i = -1 or exists(e.getExpr(i)) | i) and
-      nAttr = nExpr + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nExpr = n + e.getNumberOfExprs() and
+      nAttr = nExpr + e.getNumberOfAttrs() and
       nRepeatOperand = nAttr + 1 and
       nRepeatLength = nRepeatOperand + 1 and
       (
@@ -2187,9 +2187,9 @@ private module Impl {
     exists(int n, int nAttributeMacroExpansion, int nAsmPiece, int nAttr, int nTemplate |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAsmPiece = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAsmPiece(i)) | i) and
-      nAttr = nAsmPiece + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nTemplate = nAttr + 1 + max(int i | i = -1 or exists(e.getTemplate(i)) | i) and
+      nAsmPiece = nAttributeMacroExpansion + e.getNumberOfAsmPieces() and
+      nAttr = nAsmPiece + e.getNumberOfAttrs() and
+      nTemplate = nAttr + e.getNumberOfTemplates() and
       (
         none()
         or
@@ -2213,7 +2213,7 @@ private module Impl {
     exists(int n, int nLabel, int nAttr, int nStmtList |
       n = 0 and
       nLabel = n + 1 and
-      nAttr = nLabel + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nLabel + e.getNumberOfAttrs() and
       nStmtList = nAttr + 1 and
       (
         none()
@@ -2232,7 +2232,7 @@ private module Impl {
     exists(int n, int nArgList, int nAttr, int nFunction |
       n = 0 and
       nArgList = n + 1 and
-      nAttr = nArgList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nArgList + e.getNumberOfAttrs() and
       nFunction = nAttr + 1 and
       (
         none()
@@ -2254,7 +2254,7 @@ private module Impl {
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nAbi = nAttributeMacroExpansion + 1 and
-      nAttr = nAbi + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAbi + e.getNumberOfAttrs() and
       nExternItemList = nAttr + 1 and
       (
         none()
@@ -2283,7 +2283,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nIdentifier = nAttr + 1 and
       nRename = nIdentifier + 1 and
       nVisibility = nRename + 1 and
@@ -2320,7 +2320,7 @@ private module Impl {
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nAssocItemList = nAttributeMacroExpansion + 1 and
-      nAttr = nAssocItemList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAssocItemList + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nSelfTy = nGenericParamList + 1 and
       nTrait = nSelfTy + 1 and
@@ -2365,7 +2365,7 @@ private module Impl {
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nArgs = nAttributeMacroExpansion + 1 and
-      nAttr = nArgs + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nArgs + e.getNumberOfAttrs() and
       nBody = nAttr + 1 and
       nName = nBody + 1 and
       nVisibility = nName + 1 and
@@ -2398,7 +2398,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nName = nAttr + 1 and
       nTokenTree = nName + 1 and
       nVisibility = nTokenTree + 1 and
@@ -2427,7 +2427,7 @@ private module Impl {
     exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
       n = 0 and
       nArgList = n + 1 and
-      nAttr = nArgList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nArgList + e.getNumberOfAttrs() and
       nGenericArgList = nAttr + 1 and
       nIdentifier = nGenericArgList + 1 and
       nReceiver = nIdentifier + 1 and
@@ -2458,7 +2458,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nItemList = nAttr + 1 and
       nName = nItemList + 1 and
       nVisibility = nName + 1 and
@@ -2485,7 +2485,7 @@ private module Impl {
     exists(int n, int nPath, int nAttr |
       n = 0 and
       nPath = n + 1 and
-      nAttr = nPath + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nPath + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -2505,7 +2505,7 @@ private module Impl {
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nAssocItemList = nAttributeMacroExpansion + 1 and
-      nAttr = nAssocItemList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAssocItemList + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nTypeBoundList = nName + 1 and
@@ -2551,7 +2551,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nTypeBoundList = nName + 1 and
@@ -2590,7 +2590,7 @@ private module Impl {
     exists(int n, int nAttributeMacroExpansion, int nAttr, int nUseTree, int nVisibility |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nUseTree = nAttr + 1 and
       nVisibility = nUseTree + 1 and
       (
@@ -2617,7 +2617,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nBody = nAttr + 1 and
       nGenericParamList = nBody + 1 and
       nName = nGenericParamList + 1 and
@@ -2660,10 +2660,8 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nDeriveMacroExpansion =
-        nAttributeMacroExpansion + 1 +
-          max(int i | i = -1 or exists(e.getDeriveMacroExpansion(i)) | i) and
-      nAttr = nDeriveMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
+      nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nVariantList = nName + 1 and
@@ -2707,7 +2705,7 @@ private module Impl {
       n = 0 and
       nLabel = n + 1 and
       nLoopBody = nLabel + 1 and
-      nAttr = nLoopBody + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nLoopBody + e.getNumberOfAttrs() and
       nIterable = nAttr + 1 and
       nPat = nIterable + 1 and
       (
@@ -2735,7 +2733,7 @@ private module Impl {
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nParamList = nAttributeMacroExpansion + 1 and
-      nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nParamList + e.getNumberOfAttrs() and
       nAbi = nAttr + 1 and
       nFunctionBody = nAbi + 1 and
       nGenericParamList = nFunctionBody + 1 and
@@ -2783,7 +2781,7 @@ private module Impl {
       n = 0 and
       nLabel = n + 1 and
       nLoopBody = nLabel + 1 and
-      nAttr = nLoopBody + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nLoopBody + e.getNumberOfAttrs() and
       (
         none()
         or
@@ -2804,7 +2802,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nPath = nAttr + 1 and
       nTokenTree = nPath + 1 and
       nMacroCallExpansion = nTokenTree + 1 and
@@ -2836,7 +2834,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nBody = nAttr + 1 and
       nName = nBody + 1 and
       nTypeRepr = nName + 1 and
@@ -2869,10 +2867,8 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nDeriveMacroExpansion =
-        nAttributeMacroExpansion + 1 +
-          max(int i | i = -1 or exists(e.getDeriveMacroExpansion(i)) | i) and
-      nAttr = nDeriveMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
+      nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nFieldList = nAttr + 1 and
       nGenericParamList = nFieldList + 1 and
       nName = nGenericParamList + 1 and
@@ -2916,7 +2912,7 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nTypeRepr = nName + 1 and
@@ -2963,10 +2959,8 @@ private module Impl {
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
-      nDeriveMacroExpansion =
-        nAttributeMacroExpansion + 1 +
-          max(int i | i = -1 or exists(e.getDeriveMacroExpansion(i)) | i) and
-      nAttr = nDeriveMacroExpansion + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
+      nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nStructFieldList = nName + 1 and
@@ -3012,7 +3006,7 @@ private module Impl {
       n = 0 and
       nLabel = n + 1 and
       nLoopBody = nLabel + 1 and
-      nAttr = nLoopBody + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nAttr = nLoopBody + e.getNumberOfAttrs() and
       nCondition = nAttr + 1 and
       (
         none()

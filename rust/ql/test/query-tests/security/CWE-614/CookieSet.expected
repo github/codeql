@@ -52,3 +52,28 @@
 | main.rs:180:29:180:66 | ...::build(...) | secure | true |
 | main.rs:186:9:186:22 | [SSA] secure_cookie2 | secure | true |
 | main.rs:186:9:186:22 | secure_cookie2 | secure | true |
+| main.rs:197:5:197:39 | ...::build(...) | secure | false |
+| main.rs:198:5:198:39 | ...::build(...) | secure | false |
+| main.rs:201:5:201:11 | [SSA] cookie1 | secure | false |
+| main.rs:201:5:201:11 | cookie1 | secure | false |
+| main.rs:205:5:205:39 | ...::build(...) | secure | true |
+| main.rs:208:5:208:11 | [SSA] cookie2 | secure | true |
+| main.rs:208:5:208:11 | cookie2 | secure | true |
+| main.rs:218:5:218:11 | [SSA] cookie2 | secure | false |
+| main.rs:218:5:218:11 | cookie2 | secure | false |
+| main.rs:228:5:228:11 | [SSA] cookie1 | secure | false |
+| main.rs:228:5:228:11 | cookie1 | secure | false |
+| main.rs:233:5:233:11 | [SSA] cookie2 | secure | true |
+| main.rs:233:5:233:11 | cookie2 | secure | true |
+| main.rs:241:29:241:62 | ...::new(...) | secure | false |
+| main.rs:244:30:244:63 | ...::new(...) | secure | false |
+| main.rs:247:30:247:63 | ...::new(...) | secure | true |
+| main.rs:259:5:259:43 | ...::build(...) | secure | false |
+| main.rs:260:5:260:43 | ...::build(...) | secure | false |
+| main.rs:263:5:263:11 | [SSA] cookie1 | secure | false |
+| main.rs:263:5:263:11 | cookie1 | secure | false |
+| main.rs:267:5:267:43 | ...::build(...) | secure | true |
+| main.rs:270:5:270:11 | [SSA] cookie2 | secure | true |
+| main.rs:270:5:270:11 | cookie2 | secure | true |
+| main.rs:280:5:280:11 | [SSA] cookie2 | secure | false |
+| main.rs:280:5:280:11 | cookie2 | secure | false |

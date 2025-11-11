@@ -15,21 +15,12 @@ module Impl {
 
   class BlockExprScope extends VariableScope, BlockExpr { }
 
-  abstract class MatchArmScope extends VariableScope {
-    MatchArm arm;
-
-    bindingset[arm]
-    MatchArmScope() { exists(arm) }
-
-    Pat getPat() { result = arm.getPat() }
+  class MatchArmExprScope extends VariableScope {
+    MatchArmExprScope() { this = any(MatchArm arm).getExpr() }
   }
 
-  class MatchArmExprScope extends MatchArmScope {
-    MatchArmExprScope() { this = arm.getExpr() }
-  }
-
-  class MatchArmGuardScope extends MatchArmScope {
-    MatchArmGuardScope() { this = arm.getGuard() }
+  class MatchArmGuardScope extends VariableScope {
+    MatchArmGuardScope() { this = any(MatchArm arm).getGuard() }
   }
 
   class ClosureBodyScope extends VariableScope {
@@ -41,7 +32,7 @@ module Impl {
    *
    * Such variables are only available in the body guarded by the condition.
    */
-  class ConditionScope extends VariableScope, Expr {
+  class ConditionScope extends VariableScope {
     private AstNode parent;
     private AstNode body;
 
@@ -56,6 +47,12 @@ module Impl {
         any(WhileExpr we |
           this = we.getCondition() and
           body = we.getLoopBody()
+        )
+      or
+      parent =
+        any(MatchArm ma |
+          this = ma.getGuard() and
+          body = ma.getExpr()
         )
     }
 
@@ -417,11 +414,14 @@ module Impl {
       ord = getPreOrderNumbering(scope, scope)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |
-        scope =
-          any(MatchArmScope arm |
-            arm.getPat() = pat and
-            ord = getPreOrderNumbering(scope, arm)
-          )
+        exists(MatchArm arm |
+          pat = arm.getPat() and
+          ord = getPreOrderNumbering(scope, scope)
+        |
+          scope = arm.getGuard()
+          or
+          not arm.hasGuard() and scope = arm.getExpr()
+        )
         or
         exists(LetStmt let |
           let.getPat() = pat and
