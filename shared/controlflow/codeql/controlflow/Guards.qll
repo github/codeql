@@ -1082,6 +1082,15 @@ module Make<
         guard.directlyValueControls(ret.getBasicBlock(), val)
       }
 
+      private predicate parameterControlsReturnExpr(
+        SsaParameterInit param, GuardValue val, ReturnExpr ret
+      ) {
+        exists(Guard g0, GuardValue v0 |
+          directlyControlsReturn(g0, v0, ret) and
+          BranchImplies::ssaControls(param, val, g0, v0)
+        )
+      }
+
       /**
        * Holds if `ret` is a return expression in a non-overridable method that
        * on a return value of `retval` allows the conclusion that the `ppos`th
@@ -1095,11 +1104,8 @@ module Make<
           ret = rankedReturnExpr(m, rnk) and
           param.getParameter() = m.getParameter(ppos)
         |
-          exists(Guard g0, GuardValue v0 |
-            directlyControlsReturn(g0, v0, ret) and
-            BranchImplies::ssaControls(param, val, g0, v0) and
-            relevantReturnExprValue(m, ret, retval)
-          )
+          parameterControlsReturnExpr(param, val, ret) and
+          relevantReturnExprValue(m, ret, retval)
           or
           ReturnImplies::ssaControls(param, val, ret, retval)
         )
