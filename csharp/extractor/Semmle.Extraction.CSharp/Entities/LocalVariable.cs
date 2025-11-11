@@ -20,6 +20,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile) { }
 
+        // Populated by calling "PopulateManual".
+        public override bool NeedsPopulation => false;
+
         public void PopulateManual(Expression parent, bool isVar)
         {
             var trapFile = Context.TrapWriter.Writer;
@@ -41,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.localvars(this, Kinds.VariableKind.None, Symbol.Name, @var, Type.Create(Context, parent.Type).TypeRef, parent);
             }
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

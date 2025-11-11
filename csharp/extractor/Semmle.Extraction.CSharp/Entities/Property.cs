@@ -36,6 +36,10 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";property");
         }
 
+        public override bool NeedsPopulation => Context.Defines(Symbol) || Context.IsOverlayMode;
+
+        public override bool OnlyScaffold => base.OnlyScaffold || !Context.Defines(Symbol);
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateAttributes();
@@ -68,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

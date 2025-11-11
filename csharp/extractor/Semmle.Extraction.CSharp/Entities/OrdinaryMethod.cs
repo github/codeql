@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractRefReturn(trapFile, Symbol, this);
             ExtractCompilerGenerated(trapFile);
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }
