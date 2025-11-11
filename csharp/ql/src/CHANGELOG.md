@@ -1,3 +1,9 @@
+## 1.4.3
+
+### Minor Analysis Improvements
+
+* the `cs/web/missing-x-frame-options` query now correctly handles configuration nested in root `<location>` elements.
+
 ## 1.4.2
 
 No user-facing changes.
