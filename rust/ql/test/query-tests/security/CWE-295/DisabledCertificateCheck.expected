@@ -1,10 +1,10 @@
-| main.rs:3:16:4:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:8:16:9:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:13:16:16:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:13:16:17:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:36:16:37:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:41:16:42:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:46:16:47:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:46:16:48:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:52:16:55:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
-| main.rs:52:16:56:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks. |
+| main.rs:3:16:4:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:8:16:9:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:13:16:16:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:13:16:17:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:36:16:37:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:41:16:42:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:46:16:47:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:46:16:48:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:52:16:55:36 | ... .danger_accept_invalid_certs(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:52:16:56:40 | ... .danger_accept_invalid_hostnames(...) | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |

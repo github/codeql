@@ -15,8 +15,8 @@ import rust
 
 from CallExprBase fc
 where
-    fc.getStaticTarget().(Function).getName().getText() = ["danger_accept_invalid_certs", "danger_accept_invalid_hostnames"] and
-    fc.getArg(0).(BooleanLiteralExpr).getTextValue() = "true"
-select
-    fc,
-    "Disabling TLS certificate validation with 'danger_accept_invalid_certs(true)' can expose the application to man-in-the-middle attacks." // TODO: proper message.
+  fc.getStaticTarget().(Function).getName().getText() =
+    ["danger_accept_invalid_certs", "danger_accept_invalid_hostnames"] and
+  fc.getArg(0).(BooleanLiteralExpr).getTextValue() = "true"
+select fc,
+  "Disabling TLS certificate validation can expose the application to man-in-the-middle attacks."
