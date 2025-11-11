@@ -3115,7 +3115,7 @@ public class Parser {
       }
       first = false;
     }
-    if (oldStrict.equals(Boolean.FALSE)) this.setStrict(false);
+    if (Boolean.FALSE.equals(oldStrict)) this.setStrict(false);
     return this.finishNode(new BlockStatement(new SourceLocation(startLoc), body));
   }
 

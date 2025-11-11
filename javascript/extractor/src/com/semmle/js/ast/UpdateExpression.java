@@ -11,7 +11,7 @@ public class UpdateExpression extends Expression {
     super("UpdateExpression", loc);
     this.operator = operator;
     this.argument = argument;
-    this.prefix = prefix.equals(Boolean.TRUE);
+    this.prefix = Boolean.TRUE.equals(prefix);
   }
 
   @Override
