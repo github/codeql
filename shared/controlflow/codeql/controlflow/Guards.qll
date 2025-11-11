@@ -1024,16 +1024,34 @@ module Make<
         ReturnImplies::guardControls(call, val, _, _)
       }
 
-      predicate relevantReturnValue(NonOverridableMethod m, GuardValue val) {
+      /**
+       * Holds if a call to `m` having a return value of `retval` is reachable
+       * by a chain of implications.
+       */
+      predicate relevantReturnValue(NonOverridableMethod m, GuardValue retval) {
         exists(NonOverridableMethodCall call |
-          relevantCallValue(call, val) and
+          relevantCallValue(call, retval) and
           call.getMethod() = m and
-          not val instanceof TException
+          not retval instanceof TException
+        )
+      }
+
+      /**
+       * Holds if a call to `m` having a return value of `retval` is reachable
+       * by a chain of implications, and `ret` is a return expression in `m`
+       * that could possibly have the value `retval`.
+       */
+      predicate relevantReturnExprValue(NonOverridableMethod m, ReturnExpr ret, GuardValue retval) {
+        relevantReturnValue(m, retval) and
+        ret = m.getAReturnExpr() and
+        not exists(GuardValue notRetval |
+          exprHasValue(ret, notRetval) and
+          disjointValues(notRetval, retval)
         )
       }
 
       private predicate returnGuard(Guard guard, GuardValue val) {
-        relevantReturnValue(guard.(ReturnExpr).getMethod(), val)
+        relevantReturnExprValue(_, guard, val)
       }
 
       module ReturnImplies = ImpliesTC<returnGuard/2>;
@@ -1058,7 +1076,7 @@ module Make<
           exists(Guard g0, GuardValue v0 |
             directlyControlsReturn(g0, v0, ret) and
             BranchImplies::ssaControls(param, val, g0, v0) and
-            relevantReturnValue(m, retval)
+            relevantReturnExprValue(m, ret, retval)
           )
           or
           ReturnImplies::ssaControls(param, val, ret, retval)
@@ -1166,7 +1184,7 @@ module Make<
           guardChecksDef(guard, param, val, state)
         |
           guard.valueControls(ret.getBasicBlock(), val) and
-          relevantReturnValue(m, retval)
+          relevantReturnExprValue(m, ret, retval)
           or
           ReturnImplies::guardControls(guard, val, ret, retval)
         )
