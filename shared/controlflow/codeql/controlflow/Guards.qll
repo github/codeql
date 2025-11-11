@@ -1008,6 +1008,8 @@ module Make<
      * wrappers.
      */
     private module WrapperGuard {
+      private import codeql.util.DenseRank
+
       final private class FinalExpr = Expr;
 
       class ReturnExpr extends FinalExpr {
@@ -1017,6 +1019,25 @@ module Make<
 
         pragma[nomagic]
         BasicBlock getBasicBlock() { result = super.getBasicBlock() }
+      }
+
+      private module DenseRankInput implements DenseRankInputSig1 {
+        class C = NonOverridableMethod;
+
+        class Ranked = ReturnExpr;
+
+        int getRank(NonOverridableMethod m, ReturnExpr ret) {
+          m.getAReturnExpr() = ret and
+          result = ret.getLocation().getStartLine()
+        }
+      }
+
+      private module ReturnExprRank = DenseRank1<DenseRankInput>;
+
+      private predicate rankedReturnExpr = ReturnExprRank::denseRank/2;
+
+      private int maxRank(NonOverridableMethod m) {
+        result = max(int rnk | exists(rankedReturnExpr(m, rnk)))
       }
 
       private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
