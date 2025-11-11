@@ -4,7 +4,7 @@
  *              This may allow an attacker to bypass a filter or sanitizer.
  * @kind problem
  * @problem.severity warning
- * @security-severity 5.0
+ * @security-severity 4.0
  * @precision high
  * @id java/overly-large-range
  * @tags correctness
