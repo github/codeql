@@ -17,6 +17,8 @@ on:
     paths:
       - .github/workflows/build-ripunzip.yml
 
+permissions: {}
+  
 jobs:
   versions:
     runs-on: ubuntu-slim
@@ -116,6 +118,9 @@ jobs:
   publish:
     needs: [versions, build]
     if: inputs.open-pr == 'true'
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-slim
     steps:
       # workaround for git-lfs not being installed yet on ubuntu-slim runners
