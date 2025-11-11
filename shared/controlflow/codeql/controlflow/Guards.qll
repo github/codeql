@@ -1088,10 +1088,11 @@ module Make<
        * parameter has the value `val`.
        */
       private predicate validReturnInCustomGuard(
-        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, GuardValue val
+        ReturnExpr ret, int rnk, NonOverridableMethod m, ParameterPosition ppos, GuardValue retval,
+        GuardValue val
       ) {
-        exists(NonOverridableMethod m, SsaParameterInit param |
-          m.getAReturnExpr() = ret and
+        exists(SsaParameterInit param |
+          ret = rankedReturnExpr(m, rnk) and
           param.getParameter() = m.getParameter(ppos)
         |
           exists(Guard g0, GuardValue v0 |
@@ -1101,6 +1102,24 @@ module Make<
           )
           or
           ReturnImplies::ssaControls(param, val, ret, retval)
+        )
+      }
+
+      private predicate validReturnInCustomGuardToRank(
+        int rnk, NonOverridableMethod m, ParameterPosition ppos, GuardValue retval, GuardValue val
+      ) {
+        validReturnInCustomGuard(_, _, m, ppos, retval, val) and rnk = 0
+        or
+        validReturnInCustomGuardToRank(rnk - 1, m, ppos, retval, val) and
+        rnk <= maxRank(m) and
+        forall(ReturnExpr ret |
+          ret = rankedReturnExpr(m, rnk) and
+          not exists(GuardValue notRetval |
+            exprHasValue(ret, notRetval) and
+            disjointValues(notRetval, retval)
+          )
+        |
+          validReturnInCustomGuard(ret, rnk, m, ppos, retval, val)
         )
       }
 
@@ -1119,15 +1138,7 @@ module Make<
       private NonOverridableMethod wrapperGuard(
         ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
-        forex(ReturnExpr ret |
-          result.getAReturnExpr() = ret and
-          not exists(GuardValue notRetval |
-            exprHasValue(ret, notRetval) and
-            disjointValues(notRetval, retval)
-          )
-        |
-          validReturnInCustomGuard(ret, ppos, retval, val)
-        )
+        validReturnInCustomGuardToRank(maxRank(result), result, ppos, retval, val)
         or
         exists(SsaParameterInit param, Guard g0, GuardValue v0 |
           param.getParameter() = result.getParameter(ppos) and
