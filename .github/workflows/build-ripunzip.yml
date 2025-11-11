@@ -106,7 +106,7 @@ jobs:
       - name: Check built binary
         shell: bash
         run: |
-          rm -f ripunzip-*.zip
+          rm -f ripunzip-*.tar.zst
           ./ripunzip-* --version
   publish:
     needs: [versions, build]
