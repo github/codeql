@@ -1,0 +1,5 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - reqwest = { version = "0.12.9", features = ["blocking"] }
+    - native-tls = { version = "0.2.14" }
+    - rand = { version = "0.9.2" }
