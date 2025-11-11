@@ -71,8 +71,8 @@ fn test_reqwest() {
 }
 
 fn test_data_flow(sometimes_global: bool) {
-	let always = true;
-	let mut sometimes = true;
+	let always = true; // $ Source=always
+	let mut sometimes = true; // $ Source=sometimes
 	let never = false;
 
 	if rand::random_range(0 .. 2) == 0 {
@@ -80,17 +80,17 @@ fn test_data_flow(sometimes_global: bool) {
 	}
 
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_certs(always) // $ MISSING: Alert[rust/disabled-certificate-check]
+		.danger_accept_invalid_certs(always) // $ Alert[rust/disabled-certificate-check]=always
 		.build()
 		.unwrap();
 
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_certs(sometimes) // $ MISSING: Alert[rust/disabled-certificate-check]
+		.danger_accept_invalid_certs(sometimes) // $ Alert[rust/disabled-certificate-check]=sometimes
 		.build()
 		.unwrap();
 
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_certs(sometimes_global) // $ MISSING: Alert[rust/disabled-certificate-check]
+		.danger_accept_invalid_certs(sometimes_global) // $ Alert[rust/disabled-certificate-check]=arg
 		.build()
 		.unwrap();
 
@@ -103,6 +103,6 @@ fn test_data_flow(sometimes_global: bool) {
 fn main() {
 	test_native_tls();
 	test_reqwest();
-	test_data_flow(true);
+	test_data_flow(true); // $ Source=arg
 	test_data_flow(false);
 }
