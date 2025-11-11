@@ -1,7 +1,3 @@
-## 5.0.1
-
-No user-facing changes.
-
 ## 5.0.0
 
 ### Breaking Changes
