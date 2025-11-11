@@ -16,7 +16,7 @@ public class ForInStatement extends EnhancedForStatement {
   public ForInStatement(
       SourceLocation loc, Node left, Expression right, Statement body, Boolean each) {
     super("ForInStatement", loc, left, right, body);
-    this.each = each == Boolean.TRUE;
+    this.each = each.equals(Boolean.TRUE);
   }
 
   public boolean isEach() {

@@ -27,8 +27,8 @@ public abstract class InvokeExpression extends Expression implements INodeWithSy
     this.callee = callee;
     this.typeArguments = typeArguments;
     this.arguments = arguments;
-    this.optional = optional == Boolean.TRUE;
-    this.onOptionalChain = onOptionalChain == Boolean.TRUE;
+    this.optional = optional.equals(Boolean.TRUE);
+    this.onOptionalChain = onOptionalChain.equals(Boolean.TRUE);
   }
 
   /** The callee expression of this invocation. */
