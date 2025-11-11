@@ -93,21 +93,14 @@ jobs:
           lipo -create -output ripunzip-macos \
             -arch x86_64 target/x86_64-apple-darwin/release/ripunzip \
             -arch arm64 target/aarch64-apple-darwin/release/ripunzip
-      - name: Archive (POSIX)
-        if: runner.os != 'Windows'
-        shell: bash
+      - name: Archive
         run: |
-          zip -j ripunzip-${{ runner.os }}.zip ripunzip-*
-      - name: Archive (Windows)
-        if: runner.os == 'Windows'
-        shell: powershell
-        run: |
-          Compress-Archive -Path ripunzip-* -DestinationPath ripunzip-${{ runner.os }}.zip -Force
+          tar acf ripunzip-${{ runner.os }}.tar.zst ripunzip-*
       - name: Upload built binary
         uses: actions/upload-artifact@v4
         with:
           name: ripunzip-${{ runner.os }}
-          path: ripunzip-${{ runner.os }}.zip
+          path: ripunzip-${{ runner.os }}.tar.zst
           retention-days: 5
           compression: 0
       - name: Check built binary
