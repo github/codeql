@@ -592,7 +592,7 @@ private module BoundsEstimate {
     not exists(def.getAPhiInput(v)) and
     // If there's different `access`es, then they refer to the same variable
     // with the same lower bounds. Hence adding these guards make no sense (the
-    // implementation will take the union but they'll be removed by
+    // implementation will take the union, but they'll be removed by
     // deduplication). Hence we use `max` as an approximation.
     result =
       max(VariableAccess access | isGuardPhiWithBound(def, v, access) | nrOfBoundsExpr(access))
@@ -624,8 +624,13 @@ private module BoundsEstimate {
    * Gets the number of bounds for `def` when `def` is an NE phi node for the
    * variable `v`.
    */
-  private float nrOfBoundsNEPhi(RangeSsaDefinition def, StackVariable v) {
-    exists(VariableAccess access | isNEPhi(v, def, access, _) and result = nrOfBoundsExpr(access))
+  language[monotonicAggregates]
+  float nrOfBoundsNEPhi(RangeSsaDefinition def, StackVariable v) {
+    // If there's different `access`es, then they refer to the same variable
+    // with the same lower bounds. Hence adding these guards make no sense (the
+    // implementation will take the union, but they'll be removed by
+    // deduplication). Hence we use `max` as an approximation.
+    result = max(VariableAccess access | isNEPhi(v, def, access, _) | nrOfBoundsExpr(access))
     or
     def.isPhiNode(v) and
     not isNEPhi(v, def, _, _) and
@@ -636,11 +641,14 @@ private module BoundsEstimate {
    * Gets the number of bounds for `def` when `def` is an unsupported guard phi
    * node for the variable `v`.
    */
+  language[monotonicAggregates]
   private float nrOfBoundsUnsupportedGuardPhi(RangeSsaDefinition def, StackVariable v) {
-    exists(VariableAccess access |
-      isUnsupportedGuardPhi(v, def, access) and
-      result = nrOfBoundsExpr(access)
-    )
+    // If there's different `access`es, then they refer to the same variable
+    // with the same lower bounds. Hence adding these guards make no sense (the
+    // implementation will take the union, but they'll be removed by
+    // deduplication). Hence we use `max` as an approximation.
+    result =
+      max(VariableAccess access | isUnsupportedGuardPhi(v, def, access) | nrOfBoundsExpr(access))
     or
     def.isPhiNode(v) and
     not isUnsupportedGuardPhi(v, def, _) and

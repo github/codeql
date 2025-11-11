@@ -436,8 +436,8 @@ int ne_phi_nodes(int a, int b) {
   }
   // The statement below is an NE phi node for the access `a` in both `a == 17`
   // and `a == 18`.
-  int c = a + b; // $ nonFunctionalNrOfBounds
-  return a + b; // $ nonFunctionalNrOfBounds
+  int c = a + b;
+  return a + b;
 }
 
 unsigned int conditional_nested_guards(unsigned int ip) {
