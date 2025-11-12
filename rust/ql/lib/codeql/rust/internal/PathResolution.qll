@@ -264,6 +264,9 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   ItemNode getImmediateParent() { this = result.getADescendant() }
 
+  /** Gets a child item of this item, if any. */
+  ItemNode getAChild() { this = result.getImmediateParent() }
+
   /** Gets the immediately enclosing module (or source file) of this item. */
   pragma[nomagic]
   ModuleLikeNode getImmediateParentModule() {
@@ -339,10 +342,13 @@ abstract class ItemNode extends Locatable {
     typeImplEdge(this, _, name, kind, result, useOpt)
     or
     // trait items with default implementations made available in an implementation
-    exists(ImplItemNodeImpl impl, ItemNode trait |
+    exists(ImplItemNodeImpl impl, TraitItemNode trait |
       this = impl and
       trait = impl.resolveTraitTyCand() and
       result = trait.getASuccessor(name, kind, useOpt) and
+      // do not inherit default implementations from super traits; those are inherited by
+      // their `impl` blocks
+      result = trait.getAssocItem(name) and
       result.(AssocItemNode).hasImplementation() and
       kind.isExternalOrBoth() and
       not impl.hasAssocItem(name)
@@ -402,8 +408,14 @@ abstract class ItemNode extends Locatable {
       this instanceof SourceFile and
       builtin(name, result)
       or
-      name = "Self" and
-      this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
+      exists(ImplOrTraitItemNode i |
+        name = "Self" and
+        this = i.getAnItemInSelfScope()
+      |
+        result = i.(Trait)
+        or
+        result = i.(ImplItemNodeImpl).resolveSelfTyCand()
+      )
       or
       name = "crate" and
       this = result.(CrateItemNode).getASourceFile()
@@ -734,7 +746,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   Path getASelfPath() {
     Stages::PathResolutionStage::ref() and
     isUnqualifiedSelfPath(result) and
-    this = unqualifiedPathLookup(result, _, _)
+    result = this.getAnItemInSelfScope().getADescendant()
   }
 
   /** Gets an associated item belonging to this trait or `impl` block. */
@@ -960,7 +972,7 @@ private class ImplItemNodeImpl extends ImplItemNode {
     result = this.resolveSelfTyBuiltin()
   }
 
-  TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
+  TraitItemNodeImpl resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
 private class StructItemNode extends TypeItemNode, ParameterizableItemNode instanceof Struct {
@@ -1813,15 +1825,7 @@ private module DollarCrateResolution {
 
 pragma[nomagic]
 private ItemNode resolvePathCand0(PathExt path, Namespace ns) {
-  exists(ItemNode res |
-    res = unqualifiedPathLookup(path, ns, _) and
-    if
-      not any(PathExt parent).getQualifier() = path and
-      isUnqualifiedSelfPath(path) and
-      res instanceof ImplItemNode
-    then result = res.(ImplItemNodeImpl).resolveSelfTyCand()
-    else result = res
-  )
+  result = unqualifiedPathLookup(path, ns, _)
   or
   DollarCrateResolution::resolveDollarCrate(path, result) and
   ns = result.getNamespace()
