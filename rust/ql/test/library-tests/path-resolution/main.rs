@@ -381,8 +381,9 @@ mod m16 {
     > {
         fn f(&self) -> T; // $ item=I84
 
-        fn g(&self) -> T // $ item=I84
-        ; // I85
+        fn g(&self) -> T {// $ item=I84
+            self.f() // $ item=f
+        } // I85
 
         fn h(&self) -> T { // $ item=I84
             Self::g(&self); // $ item=I85
@@ -436,6 +437,7 @@ mod m16 {
     > // $ item=I89
       for S { // $ item=I90
         fn f(&self) -> S { // $ item=I90
+            Self::g(&self); // $ MISSING: item=I92 $ SPURIOUS: item=I85
             println!("m16::<S as Trait2<S>>::f"); // $ item=println
             Self::c // $ MISSING: item=I95
         } // I93
@@ -455,7 +457,7 @@ mod m16 {
             S // $ item=I90
           > // $ item=I89
         >::f(&x); // $ MISSING: item=I93
-        S::g(&x); // $ item=I92
+        S::g(&x); // $ item=I92 $ SPURIOUS: item=I85
         x.g(); // $ item=I92
         S::h(&x); // $ item=I96
         x.h(); // $ item=I96
@@ -466,6 +468,27 @@ mod m16 {
           > // $ item=I86
         >::c; // $ MISSING: item=I95
     } // I83
+
+    trait Trait3 {
+        fn f(&self);
+    }
+
+    trait Trait4 {
+        fn g(&self);
+    }
+
+    struct S2;
+
+    impl Trait3 for S2 { // $ item=Trait3 item=S2
+        fn f(&self) { } // S2asTrait3::f
+    }
+
+    impl Trait4 for S2 { // $ item=Trait4 item=S2
+        fn g(&self) {
+            Self::f(&self); // $ MISSING: item=S2asTrait3::f
+            S2::f(&self); // $ item=S2asTrait3::f
+        }
+    }
 }
 
 mod trait_visibility {
