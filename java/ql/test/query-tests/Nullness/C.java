@@ -261,7 +261,7 @@ public class C {
       if (t != null) {
         t.hashCode(); // OK
       } else {
-        x.hashCode(); // NPE - false positive
+        x.hashCode(); // OK
       }
     }
   }
