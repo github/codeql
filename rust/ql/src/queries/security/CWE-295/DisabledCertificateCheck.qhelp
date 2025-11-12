@@ -17,11 +17,11 @@ Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_inval
 
 <example>
 <p>
-The following code snippet shows a function that creates a TLS or HTTP client with certificate verification disabled:
+The following code snippet shows a function that creates an HTTP client with certificate verification disabled:
 </p>
 <sample src="DisabledCertificateCheckBad.rs"/>
 <p>
-In production code, always configure clients to verify certificates and hostnames:
+In production code, always configure clients to verify certificates:
 </p>
 <sample src="DisabledCertificateCheckGood.rs"/>
 </example>
