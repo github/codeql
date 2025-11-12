@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+In Rust, the <code>danger_accept_invalid_certs</code> and <code>danger_accept_invalid_hostnames</code> options on TLS connectors and HTTP clients control whether certificate and hostname verification are performed. If set to <code>true</code>, the client will accept any certificate and any host name, making it susceptible to man-in-the-middle attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_invalid_hostnames</code> to <code>true</code> except in tests or controlled environments. In production, always ensure certificate and hostname verification are enabled to prevent security risks.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet shows a function that creates a TLS or HTTP client with certificate verification disabled:
+</p>
+<sample src="DisabledCertificateCheckBad.rs"/>
+<p>
+While this may be acceptable in a test, it should not be used in production code. Instead, always configure clients to verify certificates and hostnames:
+</p>
+<sample src="DisabledCertificateCheckGood.rs"/>
+</example>
+<references>
+<li>
+Rust native-tls crate: <a href="https://docs.rs/native-tls/latest/native_tls/struct.TlsConnectorBuilder.html">TlsConnectorBuilder</a>.
+</li>
+<li>
+Rust reqwest crate: <a href="https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html">ClientBuilder</a>.
+</li>
+<li>
+Mozilla: <a href="https://infosec.mozilla.org/guidelines/web_security#https">Web Security Guidelines: HTTPS</a>.
+</li>
+</references>
+</qhelp>
