@@ -28,10 +28,13 @@ public class FileUpload {
         sink(fileItem.get());            // $ hasRemoteValueFlow
         sink(fileItem.getString());      // $ hasRemoteValueFlow
         sink(fileItem.getContentType()); // $ hasRemoteValueFlow
+        sink(fileItem.getFieldName());        // $ hasRemoteValueFlow
+        sink(fileItem.getInputStream());        // $ hasRemoteValueFlow
         sink(fileItem.getName());        // $ hasRemoteValueFlow
 
         sink(fileItemStream.getFieldName()); // $ hasRemoteValueFlow
         sink(fileItemStream.getName()); // $ hasRemoteValueFlow
+        sink(fileItemStream.getContentType()); // $ hasRemoteValueFlow
         sink(fileItemStream.openStream()); // $ hasRemoteValueFlow
 
         sink(jakartaPart.getContentType());  // $ hasRemoteValueFlow
