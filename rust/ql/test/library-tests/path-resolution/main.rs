@@ -437,9 +437,9 @@ mod m16 {
     > // $ item=I89
       for S { // $ item=I90
         fn f(&self) -> S { // $ item=I90
-            Self::g(&self); // $ MISSING: item=I92 $ SPURIOUS: item=I85
+            Self::g(&self); // $ item=I92
             println!("m16::<S as Trait2<S>>::f"); // $ item=println
-            Self::c // $ MISSING: item=I95
+            Self::c // $ item=I95
         } // I93
     }
 
@@ -457,7 +457,7 @@ mod m16 {
             S // $ item=I90
           > // $ item=I89
         >::f(&x); // $ MISSING: item=I93
-        S::g(&x); // $ item=I92 $ SPURIOUS: item=I85
+        S::g(&x); // $ item=I92
         x.g(); // $ item=I92
         S::h(&x); // $ item=I96
         x.h(); // $ item=I96
@@ -485,7 +485,7 @@ mod m16 {
 
     impl Trait4 for S2 { // $ item=Trait4 item=S2
         fn g(&self) {
-            Self::f(&self); // $ MISSING: item=S2asTrait3::f
+            Self::f(&self); // $ item=S2asTrait3::f
             S2::f(&self); // $ item=S2asTrait3::f
         }
     }
