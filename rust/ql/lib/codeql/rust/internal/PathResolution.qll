@@ -91,24 +91,6 @@ private module UseOption = Option<Use>;
 private class UseOption = UseOption::Option;
 
 /**
- * Holds if `n` is superseded by an attribute macro expansion. That is, `n` is
- * an item or a transitive child of an item with an attribute macro expansion.
- */
-predicate supersededByAttributeMacroExpansion(AstNode n) {
-  n.(Item).hasAttributeMacroExpansion()
-  or
-  exists(AstNode parent |
-    n.getParentNode() = parent and
-    supersededByAttributeMacroExpansion(parent) and
-    // Don't exclude expansions themselves as they supercede other nodes.
-    not n = parent.(Item).getAttributeMacroExpansion() and
-    // Don't consider attributes themselves to be superseded.  E.g., in `#[a] fn
-    // f() {}` the macro expansion supercedes `fn f() {}` but not `#[a]`.
-    not n instanceof Attr
-  )
-}
-
-/**
  * An item that may be referred to by a path, and which is a node in
  * the _item graph_.
  *
@@ -186,10 +168,7 @@ predicate supersededByAttributeMacroExpansion(AstNode n) {
  * - https://doc.rust-lang.org/reference/names/namespaces.html
  */
 abstract class ItemNode extends Locatable {
-  ItemNode() {
-    // Exclude items that are superseded by the expansion of an attribute macro.
-    not supersededByAttributeMacroExpansion(this)
-  }
+  ItemNode() { not this.(Item).hasAttributeMacroExpansion() }
 
   /** Gets the (original) name of this item. */
   abstract string getName();
