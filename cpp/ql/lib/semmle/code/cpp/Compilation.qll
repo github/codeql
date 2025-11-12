@@ -95,6 +95,19 @@ class Compilation extends @compilation {
   string getArgument(int i) { compilation_args(this, i, result) }
 
   /**
+   * Gets an expanded argument passed to the extractor on this invocation.
+   */
+  string getAnExpandedArgument() { result = this.getArgument(_) }
+
+  /**
+   * The expanded arguments that were passed to the extractor for a
+   * compiler invocation. This is similar to `getArgument`, but
+   * for a `@someFile` argument, it includes the arguments from that
+   * file, rather than just taking the argument literally.
+   */
+  string getExpandedArgument(int i) { compilation_expanded_args(this, i, result) }
+
+  /**
    * Gets the total amount of CPU time spent processing all the files in the
    * front-end and extractor.
    */
