@@ -11,7 +11,7 @@ The <code>danger_accept_invalid_certs</code> and <code>danger_accept_invalid_hos
 
 <recommendation>
 <p>
-Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_invalid_hostnames</code> to <code>true</code> except in controlled environments such as tests. In production, always ensure certificate and hostname verification are enabled to prevent security risks.
+Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_invalid_hostnames</code> to <code>true</code>, except in controlled environments such as tests. In production, always ensure certificate and hostname verification are enabled to prevent security risks.
 </p>
 </recommendation>
 

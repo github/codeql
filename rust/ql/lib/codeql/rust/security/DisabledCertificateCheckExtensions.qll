@@ -21,7 +21,7 @@ module DisabledCertificateCheckExtensions {
   }
 
   /**
-   * A default sink for disabled certificate check based on function names.
+   * A default sink for disabled certificate check vulnerabilities based on function names.
    */
   private class DefaultSink extends Sink {
     DefaultSink() {
@@ -34,7 +34,7 @@ module DisabledCertificateCheckExtensions {
   }
 
   /**
-   * A sink for disabled certificate check from model data.
+   * A sink for disabled certificate check vulnerabilities from model data.
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "disable-certificate") }
