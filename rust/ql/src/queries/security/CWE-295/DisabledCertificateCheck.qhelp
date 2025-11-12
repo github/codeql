@@ -33,7 +33,7 @@ Rust native-tls crate: <a href="https://docs.rs/native-tls/latest/native_tls/str
 Rust reqwest crate: <a href="https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html">ClientBuilder</a>.
 </li>
 <li>
-Mozilla: <a href="https://infosec.mozilla.org/guidelines/web_security#https">Web Security Guidelines: HTTPS</a>.
+SSL.com: <a href="https://www.ssl.com/article/browsers-and-certificate-validation/">Browsers and Certificate Validation</a>.
 </li>
 </references>
 </qhelp>
