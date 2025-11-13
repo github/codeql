@@ -1114,6 +1114,11 @@ module Make<
       private predicate validReturnInCustomGuardToRank(
         int rnk, NonOverridableMethod m, ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
+        // The forall-range has been pushed all the way into
+        // `relevantReturnExprValue` and `validReturnInCustomGuard`. This means
+        // that this base case ensures that at least one return expression
+        // non-vacuously satisfies that it's a valid implication from return
+        // value to parameter value.
         validReturnInCustomGuard(_, _, m, ppos, retval, val) and rnk = 0
         or
         validReturnInCustomGuardToRank(rnk - 1, m, ppos, retval, val) and
