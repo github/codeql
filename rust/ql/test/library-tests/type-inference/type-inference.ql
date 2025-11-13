@@ -60,9 +60,10 @@ module TypeTest implements TestSig {
     exists(AstNode n, TypePath path, Type t |
       t = TypeInference::inferType(n, path) and
       (
-        if t = TypeInference::CertainTypeInference::inferCertainType(n, path)
-        then tag = "certainType"
-        else tag = "type"
+        tag = "type"
+        or
+        t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
+        tag = "certainType"
       ) and
       location = n.getLocation() and
       (

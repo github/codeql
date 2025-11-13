@@ -87,26 +87,6 @@ private module Input1 implements InputSig1<Location> {
   int getTypeParameterId(TypeParameter tp) {
     tp =
       rank[result](TypeParameter tp0, int kind, int id1, int id2 |
-        tp0 instanceof ArrayTypeParameter and
-        kind = 0 and
-        id1 = 0 and
-        id2 = 0
-        or
-        tp0 instanceof RefTypeParameter and
-        kind = 0 and
-        id1 = 0 and
-        id2 = 1
-        or
-        tp0 instanceof SliceTypeParameter and
-        kind = 0 and
-        id1 = 0 and
-        id2 = 2
-        or
-        tp0 instanceof PtrTypeParameter and
-        kind = 0 and
-        id1 = 0 and
-        id2 = 3
-        or
         kind = 1 and
         id1 = 0 and
         id2 =
@@ -127,10 +107,6 @@ private module Input1 implements InputSig1<Location> {
           node = tp0.(SelfTypeParameter).getTrait() or
           node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
-        or
-        kind = 4 and
-        id1 = tp0.(TupleTypeParameter).getTupleType().getArity() and
-        id2 = tp0.(TupleTypeParameter).getIndex()
       |
         tp0 order by kind, id1, id2
       )
@@ -417,7 +393,9 @@ module CertainTypeInference {
       any(IdentPat ip |
         n2 = ip.getName() and
         prefix1.isEmpty() and
-        if ip.isRef() then prefix2 = TypePath::singleton(TRefTypeParameter()) else prefix2.isEmpty()
+        if ip.isRef()
+        then prefix2 = TypePath::singleton(getRefTypeParameter())
+        else prefix2.isEmpty()
       )
   }
 
@@ -627,11 +605,11 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n1 = n2.(RefPat).getPat()
   ) and
   prefix1.isEmpty() and
-  prefix2 = TypePath::singleton(TRefTypeParameter())
+  prefix2 = TypePath::singleton(getRefTypeParameter())
   or
   exists(int i, int arity |
     prefix1.isEmpty() and
-    prefix2 = TypePath::singleton(TTupleTypeParameter(arity, i))
+    prefix2 = TypePath::singleton(getTupleTypeParameter(arity, i))
   |
     arity = n2.(TupleExpr).getNumberOfFields() and
     n1 = n2.(TupleExpr).getField(i)
@@ -659,12 +637,12 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
       ale.getAnExpr() = n2 and
       ale.getNumberOfExprs() = 1
     ) and
-  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix1 = TypePath::singleton(getArrayTypeParameter()) and
   prefix2.isEmpty()
   or
   // an array repeat expression (`[1; 3]`) has the type of the repeat operand
   n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
-  prefix1 = TypePath::singleton(TArrayTypeParameter()) and
+  prefix1 = TypePath::singleton(getArrayTypeParameter()) and
   prefix2.isEmpty()
   or
   exists(Struct s |
@@ -713,7 +691,7 @@ private predicate lubCoercion(AstNode parent, AstNode child, TypePath prefix) {
       child = ale.getAnExpr() and
       ale.getNumberOfExprs() > 1
     ) and
-  prefix = TypePath::singleton(TArrayTypeParameter())
+  prefix = TypePath::singleton(getArrayTypeParameter())
   or
   bodyReturns(parent, child) and
   strictcount(Expr e | bodyReturns(parent, e)) > 1 and
@@ -952,9 +930,9 @@ private predicate inferStructExprType =
   ContextTyping::CheckContextTyping<inferStructExprType0/3>::check/2;
 
 pragma[nomagic]
-private Type inferTupleRootType(AstNode n) {
+private TupleType inferTupleRootType(AstNode n) {
   // `typeEquality` handles the non-root cases
-  result = TTuple([n.(TupleExpr).getNumberOfFields(), n.(TuplePat).getTupleArity()])
+  result.getArity() = [n.(TupleExpr).getNumberOfFields(), n.(TuplePat).getTupleArity()]
 }
 
 pragma[nomagic]
@@ -1187,7 +1165,7 @@ private module MethodResolution {
    *
    * `strippedTypePath` points to the type `strippedType` inside `selfType`,
    * which is the (possibly complex-stripped) root type of `selfType`. For example,
-   * if `m` has a `&self` parameter, then `strippedTypePath` is `TRefTypeParameter()`
+   * if `m` has a `&self` parameter, then `strippedTypePath` is `getRefTypeParameter()`
    * and `strippedType` is the type inside the reference.
    */
   pragma[nomagic]
@@ -1397,7 +1375,7 @@ private module MethodResolution {
         this.hasNoCompatibleTargetBorrow(derefChain0) and
         t0 = this.getACandidateReceiverTypeAtNoBorrow(derefChain0, path0)
       |
-        path0.isCons(TRefTypeParameter(), path) and
+        path0.isCons(getRefTypeParameter(), path) and
         result = t0 and
         derefChain = derefChain0 + ".ref"
         or
@@ -1579,11 +1557,11 @@ private module MethodResolution {
       borrow = true and
       (
         path.isEmpty() and
-        result = TRefType()
+        result instanceof RefType
         or
         exists(TypePath suffix |
           result = this.getACandidateReceiverTypeAtNoBorrow(derefChain, suffix) and
-          path = TypePath::cons(TRefTypeParameter(), suffix)
+          path = TypePath::cons(getRefTypeParameter(), suffix)
         )
       )
     }
@@ -1702,12 +1680,12 @@ private module MethodResolution {
     override Type getArgumentTypeAt(ArgumentPosition pos, TypePath path) {
       if this.(Call).implicitBorrowAt(pos, true)
       then
-        result = TRefType() and
+        result instanceof RefType and
         path.isEmpty()
         or
         exists(TypePath path0 |
           result = inferType(this.getArgument(pos), path0) and
-          path = TypePath::cons(TRefTypeParameter(), path0)
+          path = TypePath::cons(getRefTypeParameter(), path0)
         )
       else result = inferType(this.getArgument(pos), path)
     }
@@ -1850,7 +1828,7 @@ private module MethodResolution {
       |
         mcc.hasNoBorrow()
         or
-        blanketPath.getHead() = TRefTypeParameter()
+        blanketPath.getHead() = getRefTypeParameter()
       )
     }
   }
@@ -2129,11 +2107,11 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
         this instanceof IndexExpr
       then
         path.isEmpty() and
-        result = TRefType()
+        result instanceof RefType
         or
         exists(TypePath suffix |
           result = inferType(this.getNodeAt(apos), suffix) and
-          path = TypePath::cons(TRefTypeParameter(), suffix)
+          path = TypePath::cons(getRefTypeParameter(), suffix)
         )
       else (
         not apos.isSelf() and
@@ -2191,7 +2169,7 @@ private Type inferMethodCallType0(
       // the implicit deref
       apos.isReturn() and
       a instanceof IndexExpr
-    then path0.isCons(TRefTypeParameter(), path)
+    then path0.isCons(getRefTypeParameter(), path)
     else path = path0
   )
 }
@@ -2215,12 +2193,12 @@ private Type inferMethodCallType1(AstNode n, boolean isReturn, TypePath path) {
     // adjust for implicit deref
     apos.isSelf() and
     derefChainBorrow = ".ref;" and
-    path = TypePath::cons(TRefTypeParameter(), path0)
+    path = TypePath::cons(getRefTypeParameter(), path0)
     or
     // adjust for implicit borrow
     apos.isSelf() and
     derefChainBorrow = ";borrow" and
-    path0.isCons(TRefTypeParameter(), path)
+    path0.isCons(getRefTypeParameter(), path)
   )
 }
 
@@ -2747,7 +2725,7 @@ private module OperationMatchingInput implements MatchingInputSig {
     private Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(TypePath path0 |
         result = super.getParameterType(dpos, path0) and
-        if this.borrowsAt(dpos) then path0.isCons(TRefTypeParameter(), path) else path0 = path
+        if this.borrowsAt(dpos) then path0.isCons(getRefTypeParameter(), path) else path0 = path
       )
     }
 
@@ -2758,7 +2736,7 @@ private module OperationMatchingInput implements MatchingInputSig {
     private Type getReturnType(TypePath path) {
       exists(TypePath path0 |
         result = super.getReturnType(path0) and
-        if this.derefsReturn() then path0.isCons(TRefTypeParameter(), path) else path0 = path
+        if this.derefsReturn() then path0.isCons(getRefTypeParameter(), path) else path0 = path
       )
     }
 
@@ -2815,14 +2793,6 @@ private Type getTupleFieldExprLookupType(FieldExpr fe, int pos) {
   )
 }
 
-pragma[nomagic]
-private TupleTypeParameter resolveTupleTypeFieldExpr(FieldExpr fe) {
-  exists(int arity, int i |
-    TTuple(arity) = getTupleFieldExprLookupType(fe, i) and
-    result = TTupleTypeParameter(arity, i)
-  )
-}
-
 /**
  * A matching configuration for resolving types of field expressions like `x.field`.
  */
@@ -2847,8 +2817,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
 
   private newtype TDeclaration =
     TStructFieldDecl(StructField sf) or
-    TTupleFieldDecl(TupleField tf) or
-    TTupleTypeParameterDecl(TupleTypeParameter ttp)
+    TTupleFieldDecl(TupleField tf)
 
   abstract class Declaration extends TDeclaration {
     TypeParameter getTypeParameter(TypeParameterPosition ppos) { none() }
@@ -2905,31 +2874,6 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     override TypeRepr getTypeRepr() { result = tf.getTypeRepr() }
   }
 
-  private class TupleTypeParameterDecl extends Declaration, TTupleTypeParameterDecl {
-    private TupleTypeParameter ttp;
-
-    TupleTypeParameterDecl() { this = TTupleTypeParameterDecl(ttp) }
-
-    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      dpos.isSelf() and
-      (
-        result = ttp.getTupleType() and
-        path.isEmpty()
-        or
-        result = ttp and
-        path = TypePath::singleton(ttp)
-      )
-      or
-      dpos.isField() and
-      result = ttp and
-      path.isEmpty()
-    }
-
-    override string toString() { result = ttp.toString() }
-
-    override Location getLocation() { result = ttp.getLocation() }
-  }
-
   class AccessPosition = DeclarationPosition;
 
   class Access extends FieldExpr {
@@ -2948,10 +2892,10 @@ private module FieldExprMatchingInput implements MatchingInputSig {
         if apos.isSelf()
         then
           // adjust for implicit deref
-          path0.isCons(TRefTypeParameter(), path)
+          path0.isCons(getRefTypeParameter(), path)
           or
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (result = TRefType() and path0.isEmpty()) and
+          not path0.isCons(getRefTypeParameter(), _) and
+          not (result instanceof RefType and path0.isEmpty()) and
           path = path0
         else path = path0
       )
@@ -2962,8 +2906,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       result =
         [
           TStructFieldDecl(resolveStructFieldExpr(this)).(TDeclaration),
-          TTupleFieldDecl(resolveTupleFieldExpr(this)),
-          TTupleTypeParameterDecl(resolveTupleTypeFieldExpr(this))
+          TTupleFieldDecl(resolveTupleFieldExpr(this))
         ]
     }
   }
@@ -2990,12 +2933,12 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
     if apos.isSelf()
     then
       exists(Type receiverType | receiverType = inferType(n) |
-        if receiverType = TRefType()
+        if receiverType instanceof RefType
         then
           // adjust for implicit deref
-          not path0.isCons(TRefTypeParameter(), _) and
-          not (path0.isEmpty() and result = TRefType()) and
-          path = TypePath::cons(TRefTypeParameter(), path0)
+          not path0.isCons(getRefTypeParameter(), _) and
+          not (path0.isEmpty() and result instanceof RefType) and
+          path = TypePath::cons(getRefTypeParameter(), path0)
         else path = path0
       )
     else path = path0
@@ -3012,7 +2955,7 @@ private Type inferRefNodeType(AstNode ref) {
     or
     ref instanceof RefPat
   ) and
-  result = TRefType()
+  result instanceof RefType
 }
 
 pragma[nomagic]
@@ -3066,9 +3009,9 @@ private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
   or
   le instanceof StringLiteralExpr and
   (
-    path.isEmpty() and result = TRefType()
+    path.isEmpty() and result instanceof RefType
     or
-    path = TypePath::singleton(TRefTypeParameter()) and
+    path = TypePath::singleton(getRefTypeParameter()) and
     result = getStrStruct()
   ) and
   certain = true
@@ -3142,7 +3085,7 @@ private Type inferAwaitExprType(AstNode n, TypePath path) {
  * Gets the root type of the array expression `ae`.
  */
 pragma[nomagic]
-private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result = TArrayType() }
+private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result instanceof ArrayType }
 
 /**
  * Gets the root type of the range expression `re`.
@@ -3178,11 +3121,11 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
     // todo: remove?
     exprPath.isCons(TTypeParamTypeParameter(any(Vec v).getElementTypeParam()), path)
     or
-    exprPath.isCons(any(ArrayTypeParameter tp), path)
+    exprPath.isCons(getArrayTypeParameter(), path)
     or
     exists(TypePath path0 |
-      exprPath.isCons(any(RefTypeParameter tp), path0) and
-      path0.isCons(any(SliceTypeParameter tp), path)
+      exprPath.isCons(getRefTypeParameter(), path0) and
+      path0.isCons(getSliceTypeParameter(), path)
     )
   )
 }
@@ -3327,7 +3270,7 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
     or
     // TODO: Remove once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
     tp = getIteratorItemTypeParameter() and
-    inferType(fe.getIterable()) != TArrayType()
+    inferType(fe.getIterable()) != getArrayTypeParameter()
   )
 }
 
@@ -3374,7 +3317,7 @@ pragma[nomagic]
 private TypePath closureParameterPath(int arity, int index) {
   result =
     TypePath::cons(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam()),
-      TypePath::singleton(TTupleTypeParameter(arity, index)))
+      TypePath::singleton(getTupleTypeParameter(arity, index)))
 }
 
 /** Gets the path to the return type of the `FnOnce` trait. */
@@ -3390,7 +3333,7 @@ pragma[nomagic]
 private TypePath fnParameterPath(int arity, int index) {
   result =
     TypePath::cons(TTypeParamTypeParameter(any(FnOnceTrait t).getTypeParam()),
-      TypePath::singleton(TTupleTypeParameter(arity, index)))
+      TypePath::singleton(getTupleTypeParameter(arity, index)))
 }
 
 pragma[nomagic]
@@ -3439,7 +3382,7 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
     or
     n = ce and
     path = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam())) and
-    result = TTuple(ce.getNumberOfParams())
+    result.(TupleType).getArity() = ce.getNumberOfParams()
     or
     // Propagate return type annotation to body
     n = ce.getClosureBody() and
