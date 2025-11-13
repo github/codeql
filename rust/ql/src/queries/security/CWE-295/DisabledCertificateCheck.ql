@@ -1,6 +1,6 @@
 /**
  * @name Disabled TLS certificate check
- * @description If an application disables TLS certificate checking, it may be vulnerable to
+ * @description An application that disables TLS certificate checking is more vulnerable to
  *              man-in-the-middle attacks.
  * @kind path-problem
  * @problem.severity warning

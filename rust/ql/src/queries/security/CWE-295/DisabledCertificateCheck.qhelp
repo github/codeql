@@ -5,13 +5,13 @@
 
 <overview>
 <p>
-The <code>danger_accept_invalid_certs</code> and <code>danger_accept_invalid_hostnames</code> options on TLS connectors and HTTP clients control whether certificate and hostname verification are performed. If set to <code>true</code>, the client will accept any certificate or any host name, making it susceptible to man-in-the-middle attacks.
+The <code>danger_accept_invalid_certs</code> and <code>danger_accept_invalid_hostnames</code> options on TLS connectors and HTTP clients control whether certificate and hostname verification is performed. If set to <code>true</code>, the client will accept any certificate or any host name, making it susceptible to man-in-the-middle attacks.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_invalid_hostnames</code> to <code>true</code>, except in controlled environments such as tests. In production, always ensure certificate and hostname verification are enabled to prevent security risks.
+Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_invalid_hostnames</code> to <code>true</code>, except in controlled environments such as tests. In production, always ensure certificate and hostname verification is enabled to prevent security risks.
 </p>
 </recommendation>
 
