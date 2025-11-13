@@ -155,59 +155,59 @@ pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
 	let mut ptr = std::alloc::alloc(layout) as *mut MyObject;
 	(*ptr).value = 0; // good
 
-	if mode == 121 {
-		ptr = std::ptr::null_mut(); // (causes a panic below)
+	if mode == 121 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
 	}
 
 	if ptr.is_null() {
-		let v = (*ptr).value; // $ MISSING: Alert[rust/access-invalid-pointer]
+		let v = (*ptr).value; // $ Alert[rust/access-invalid-pointer]
 		println!("	cond1 v = {v}");
 	} else {
-		let v = (*ptr).value; // good - unreachable with null pointer
+		let v = (*ptr).value; // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - unreachable with null pointer
 		println!("	cond2 v = {v}");
 	}
 
-	if mode == 122 {
-		ptr = std::ptr::null_mut(); // (causes a panic below)
+	if mode == 122 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
 	}
 
 	if !(ptr.is_null()) {
-		let v = (*ptr).value; // good - unreachable with null pointer
+		let v = (*ptr).value; // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - unreachable with null pointer
 		println!("	cond3 v = {v}");
 	} else {
-		let v = (*ptr).value; // $ MISSING: Alert[rust/access-invalid-pointer]
+		let v = (*ptr).value; // $ Alert[rust/access-invalid-pointer]
 		println!("	cond4 v = {v}");
 	}
 
-	if mode == 123 {
-		ptr = std::ptr::null_mut(); // (causes a panic below)
+	if mode == 123 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
 	}
 
-	if ptr.is_null() || (*ptr).value == 0 { // good - deref is protected by short-circuiting
+	if ptr.is_null() || (*ptr).value == 0 { // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - deref is protected by short-circuiting
 		println!("	cond5");
 	}
 
-	if ptr.is_null() || (*ptr).is_zero() { // good - deref is protected by short-circuiting
+	if ptr.is_null() || (*ptr).is_zero() { // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - deref is protected by short-circuiting
 		println!("	cond6");
 	}
 
-	if !ptr.is_null() || (*ptr).value == 0 { // $ MISSING: Alert[rust/access-invalid-pointer]
+	if !ptr.is_null() || (*ptr).value == 0 { // $ Alert[rust/access-invalid-pointer]
 		println!("	cond7");
 	}
 
-	if mode == 124 {
-		ptr = std::ptr::null_mut(); // (causes a panic below)
+	if mode == 124 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
 	}
 
-	if ptr.is_null() && (*ptr).is_zero() { // $ MISSING: Alert[rust/access-invalid-pointer]
+	if ptr.is_null() && (*ptr).is_zero() { // $ Alert[rust/access-invalid-pointer]
 		println!("	cond8");
 	}
 
-	if mode == 125 {
-		ptr = std::ptr::null_mut(); // (causes a panic below)
+	if mode == 125 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
 	}
 
-	if (*ptr).is_zero() || ptr.is_null() { // $ MISSING: Alert[rust/access-invalid-pointer]
+	if (*ptr).is_zero() || ptr.is_null() { // $ Alert[rust/access-invalid-pointer]
 		println!("	cond9");
 	}
 
@@ -216,17 +216,17 @@ pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
 	let const_ptr;
 
 	if mode == 126 { // (causes a panic below)
-		const_ptr = std::ptr::null_mut();
+		const_ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
 	} else {
 		const_ptr = std::alloc::alloc(layout) as *mut MyObject;
 		(*const_ptr).value = 0; // good
 	}
 
 	if const_ptr.is_null() {
-		let v = (*const_ptr).value; // $ MISSING: Alert[rust/access-invalid-pointer]
+		let v = (*const_ptr).value; // $ Alert[rust/access-invalid-pointer]
 		println!("	cond10 v = {v}");
 	} else {
-		let v = (*const_ptr).value; // good - unreachable with null pointer
+		let v = (*const_ptr).value; // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - unreachable with null pointer
 		println!("	cond11 v = {v}");
 	}
 }
