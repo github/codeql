@@ -20,6 +20,7 @@ ql/rust/ql/src/queries/security/CWE-327/BrokenCryptoAlgorithm.ql
 ql/rust/ql/src/queries/security/CWE-327/WeakSensitiveDataHashing.ql
 ql/rust/ql/src/queries/security/CWE-614/InsecureCookie.ql
 ql/rust/ql/src/queries/security/CWE-770/UncontrolledAllocationSize.ql
+ql/rust/ql/src/queries/security/CWE-295/DisabledCertificateCheck.ql
 ql/rust/ql/src/queries/security/CWE-798/HardcodedCryptographicValue.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessAfterLifetime.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessInvalidPointer.ql
