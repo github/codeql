@@ -2033,10 +2033,7 @@ private ItemNode resolveUseTreeListItemQualifier(
 
 private UseTree getAUseUseTree(Use use) {
   exists(UseTree root | root = use.getUseTree() |
-    result = root
-    or
-    not root.hasPath() and
-    result = getAUseTreeUseTree(root)
+    if root.hasPath() then result = root else result = getAUseTreeUseTree(root)
   )
 }
 
