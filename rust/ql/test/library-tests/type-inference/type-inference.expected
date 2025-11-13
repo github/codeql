@@ -5399,7 +5399,6 @@ inferType
 | main.rs:2612:40:2612:40 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2612:43:2612:44 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2613:9:2613:41 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2613:13:2613:13 | i |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2613:13:2613:13 | i |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2613:18:2613:26 | [...] |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2613:18:2613:26 | [...] | [T;...] | {EXTERNAL LOCATION} | i32 |
@@ -5573,7 +5572,6 @@ inferType
 | main.rs:2652:26:2652:26 | c |  | main.rs:2596:5:2596:24 | MyCallable |
 | main.rs:2652:26:2652:33 | c.call() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2657:9:2657:25 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2657:13:2657:13 | i |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2657:13:2657:13 | i |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2657:18:2657:18 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2657:18:2657:22 | 0..10 |  | {EXTERNAL LOCATION} | Range |
@@ -5602,7 +5600,6 @@ inferType
 | main.rs:2659:21:2659:25 | 0..10 | Idx | {EXTERNAL LOCATION} | i32 |
 | main.rs:2659:24:2659:25 | 10 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2660:9:2660:25 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2660:13:2660:13 | i |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2660:13:2660:13 | i |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2660:18:2660:22 | range |  | {EXTERNAL LOCATION} | Range |
 | main.rs:2660:18:2660:22 | range | Idx | {EXTERNAL LOCATION} | i32 |
@@ -5626,7 +5623,6 @@ inferType
 | main.rs:2666:20:2666:23 | 0u16 |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2667:18:2667:22 | 10u16 |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2669:9:2669:26 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2669:13:2669:13 | u |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2669:13:2669:13 | u |  | {EXTERNAL LOCATION} | u16 |
 | main.rs:2669:18:2669:23 | range1 |  | {EXTERNAL LOCATION} | Range |
 | main.rs:2669:18:2669:23 | range1 | Idx | {EXTERNAL LOCATION} | u16 |
@@ -5795,7 +5791,6 @@ inferType
 | main.rs:2701:33:2701:37 | "two" |  | {EXTERNAL LOCATION} | & |
 | main.rs:2701:33:2701:37 | "two" | &T | {EXTERNAL LOCATION} | str |
 | main.rs:2702:9:2702:33 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2702:13:2702:15 | key |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2702:13:2702:15 | key |  | {EXTERNAL LOCATION} | & |
 | main.rs:2702:13:2702:15 | key | &T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2702:20:2702:23 | map1 |  | {EXTERNAL LOCATION} | HashMap |
@@ -5813,7 +5808,6 @@ inferType
 | main.rs:2702:20:2702:30 | map1.keys() | V.T.&T | {EXTERNAL LOCATION} | str |
 | main.rs:2702:32:2702:33 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2703:9:2703:37 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2703:13:2703:17 | value |  | {EXTERNAL LOCATION} | Item |
 | main.rs:2703:13:2703:17 | value |  | {EXTERNAL LOCATION} | & |
 | main.rs:2703:13:2703:17 | value | &T | {EXTERNAL LOCATION} | Box |
 | main.rs:2703:13:2703:17 | value | &T.A | {EXTERNAL LOCATION} | Global |
