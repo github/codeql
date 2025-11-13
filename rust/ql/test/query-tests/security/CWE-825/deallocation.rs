@@ -137,6 +137,78 @@ pub fn test_ptr_invalid(mode: i32) {
 	}
 }
 
+struct MyObject {
+	value: i64
+}
+
+impl MyObject {
+	fn is_zero(&self) -> bool {
+		self.value == 0
+	}
+}
+
+pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
+	let layout = std::alloc::Layout::new::<MyObject>();
+	let mut ptr = std::alloc::alloc(layout) as *mut MyObject;
+	(*ptr).value = 0; // good
+
+	if mode == 121 {
+		ptr = std::ptr::null_mut(); // (causes a panic below)
+	}
+
+	if ptr.is_null() {
+		let v = (*ptr).value; // $ MISSING: Alert[rust/access-invalid-pointer]
+		println!("	cond1 v = {v}");
+	} else {
+		let v = (*ptr).value; // good - unreachable with null pointer
+		println!("	cond2 v = {v}");
+	}
+
+	if mode == 122 {
+		ptr = std::ptr::null_mut(); // (causes a panic below)
+	}
+
+	if !(ptr.is_null()) {
+		let v = (*ptr).value; // good - unreachable with null pointer
+		println!("	cond3 v = {v}");
+	} else {
+		let v = (*ptr).value; // $ MISSING: Alert[rust/access-invalid-pointer]
+		println!("	cond4 v = {v}");
+	}
+
+	if mode == 123 {
+		ptr = std::ptr::null_mut(); // (causes a panic below)
+	}
+
+	if ptr.is_null() || (*ptr).value == 0 { // good - deref is protected by short-circuiting
+		println!("	cond5");
+	}
+
+	if ptr.is_null() || (*ptr).is_zero() { // good - deref is protected by short-circuiting
+		println!("	cond6");
+	}
+
+	if !ptr.is_null() || (*ptr).value == 0 { // $ MISSING: Alert[rust/access-invalid-pointer]
+		println!("	cond7");
+	}
+
+	if mode == 124 {
+		ptr = std::ptr::null_mut(); // (causes a panic below)
+	}
+
+	if ptr.is_null() && (*ptr).is_zero() { // $ MISSING: Alert[rust/access-invalid-pointer]
+		println!("	cond8");
+	}
+
+	if mode == 125 {
+		ptr = std::ptr::null_mut(); // (causes a panic below)
+	}
+
+	if (*ptr).is_zero() || ptr.is_null() { // $ MISSING: Alert[rust/access-invalid-pointer]
+		println!("	cond9");
+	}
+}
+
 // --- drop ---
 
 struct MyBuffer {
