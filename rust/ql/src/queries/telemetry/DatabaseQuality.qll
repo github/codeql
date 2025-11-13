@@ -8,8 +8,21 @@ import rust
 import codeql.util.ReportStats
 import codeql.rust.internal.TypeInference as TypeInference
 
+/**
+ * A file that is included in the quality statistics.
+ */
+private class RelevantFile extends File {
+  RelevantFile() {
+    // files that are not skipped by the compilation
+    not this.(ExtractedFile).isSkippedByCompilation()
+  }
+}
+
 module CallTargetStats implements StatsSig {
-  int getNumberOfOk() { result = count(CallExprBase c | exists(c.getStaticTarget())) }
+  int getNumberOfOk() {
+    result =
+      count(CallExprBase c | c.getFile() instanceof RelevantFile and exists(c.getStaticTarget()))
+  }
 
   private predicate isLambdaCall(CallExpr call) {
     exists(Expr receiver | receiver = call.getFunction() |
@@ -19,6 +32,7 @@ module CallTargetStats implements StatsSig {
   }
 
   additional predicate isNotOkCall(CallExprBase c) {
+    c.getFile() instanceof RelevantFile and
     not exists(c.getStaticTarget()) and
     not isLambdaCall(c)
   }
@@ -31,9 +45,13 @@ module CallTargetStats implements StatsSig {
 }
 
 module MacroCallTargetStats implements StatsSig {
-  int getNumberOfOk() { result = count(MacroCall c | c.hasMacroCallExpansion()) }
+  int getNumberOfOk() {
+    result = count(MacroCall c | c.getFile() instanceof RelevantFile and c.hasMacroCallExpansion())
+  }
 
-  additional predicate isNotOkCall(MacroCall c) { not c.hasMacroCallExpansion() }
+  additional predicate isNotOkCall(MacroCall c) {
+    c.getFile() instanceof RelevantFile and not c.hasMacroCallExpansion()
+  }
 
   int getNumberOfNotOk() { result = count(MacroCall c | isNotOkCall(c)) }
 
@@ -45,9 +63,23 @@ module MacroCallTargetStats implements StatsSig {
 private predicate hasGoodType(Expr e) { exists(TypeInference::inferType(e, _)) }
 
 module ExprTypeStats implements StatsSig {
-  int getNumberOfOk() { result = count(Expr e | e.fromSource() and hasGoodType(e)) }
+  int getNumberOfOk() {
+    result =
+      count(Expr e |
+        e.getFile() instanceof RelevantFile and
+        e.fromSource() and
+        hasGoodType(e)
+      )
+  }
 
-  int getNumberOfNotOk() { result = count(Expr e | e.fromSource() and not hasGoodType(e)) }
+  int getNumberOfNotOk() {
+    result =
+      count(Expr e |
+        e.getFile() instanceof RelevantFile and
+        e.fromSource() and
+        not hasGoodType(e)
+      )
+  }
 
   string getOkText() { result = "expressions with known type" }
 

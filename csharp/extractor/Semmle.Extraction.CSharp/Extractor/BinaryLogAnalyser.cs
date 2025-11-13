@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp
     public class BinaryLogAnalyser : Analyser
     {
         public BinaryLogAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
-            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, new TrivialOverlayInfo(), addAssemblyTrapPrefix)
         {
         }
 

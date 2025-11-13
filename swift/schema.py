@@ -117,6 +117,10 @@ class GenericContext(Element):
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
+class UsingDecl(Decl):
+    is_main_actor: predicate
+    is_nonisolated: predicate
+
 class ExtensionDecl(GenericContext, Decl):
     extended_type_decl: "NominalTypeDecl"
     protocols: list["ProtocolDecl"]
@@ -315,6 +319,10 @@ class Accessor(AccessorOrNamedFunction):
     is_modify: predicate | doc('this accessor is a `_modify` coroutine, yielding an inout value of the property')
     is_unsafe_address: predicate | doc('this accessor is an `unsafeAddress` immutable addressor')
     is_unsafe_mutable_address: predicate | doc('this accessor is an `unsafeMutableAddress` mutable addressor')
+    is_distributed_get: predicate | doc('this accessor is a distributed getter')
+    is_read2: predicate | doc('this accessor is a `read` coroutine, yielding a borrowed value of the property')
+    is_modify2: predicate | doc('this accessor is a `modify` coroutine, yielding an inout value of the property')
+    is_init: predicate | doc('this accessor is an `init` accessor')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
@@ -486,15 +494,13 @@ class KeyPathComponent(AstNode):
     kind: int | doc("kind of key path component") | desc("""
         INTERNAL: Do not use.
 
-        TODO: Swift 6.2 update with UnresolvedApply and Apply
+        This is 4 for method or initializer application, 5 for members, 6 for array and dictionary
+        subscripts, 7 for optional forcing (`!`), 8 for optional chaining (`?`), 9 for implicit
+        optional wrapping, 10 for `self`, and 11 for tuple element indexing.
 
-        This is 5 for properties, 6 for array and dictionary subscripts, 7 for optional forcing
-        (`!`), 8 for optional chaining (`?`), 9 for implicit optional wrapping, 10 for `self`,
-        and 11 for tuple element indexing.
-
-        The following values should not appear: 0 for invalid components, 2 for unresolved
-        properties, 3 for unresolved subscripts, 12 for #keyPath dictionary keys, and 13 for
-        implicit IDE code completion data.
+        The following values should not appear: 0 for invalid components, 1 for unresolved
+        method or initializer applications, 2 for unresolved members, 3 for unresolved subscripts,
+        12 for #keyPath dictionary keys, and 13 for implicit IDE code completion data.
     """)
     subscript_arguments : list[Argument] | child | doc(
         "arguments to an array or dictionary subscript expression")
@@ -628,6 +634,9 @@ class AutoClosureExpr(ClosureExpr):
     pass
 
 class AwaitExpr(IdentityExpr):
+    pass
+
+class UnsafeExpr(IdentityExpr):
     pass
 
 class BinaryExpr(ApplyExpr):
@@ -1182,6 +1191,10 @@ class BuiltinIntegerLiteralType(AnyBuiltinIntegerType):
 @qltest.uncollapse_hierarchy
 class BuiltinIntegerType(AnyBuiltinIntegerType):
     width: optional[int]
+
+class InlineArrayType(SyntaxSugarType):
+    count_type: Type
+    element_type: Type
 
 class DictionaryType(SyntaxSugarType):
     key_type: Type

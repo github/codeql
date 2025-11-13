@@ -9,6 +9,7 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
+private import codeql.rust.security.Barriers as Barriers
 
 /**
  * Provides default sources, sinks and barriers for detecting regular expression
@@ -87,4 +88,14 @@ module RegexInjection {
           .getText() = "escape"
     }
   }
+
+  /**
+   * A barrier for regular expression injection vulnerabilities for nodes whose
+   * type is an integral or boolean type, which is unlikely to expose any vulnerability.
+   *
+   * We don't include floating point types in this barrier, as `.` is a special character
+   * in regular expressions.
+   */
+  private class IntegralOrBooleanTypeBarrier extends Barrier instanceof Barriers::IntegralOrBooleanTypeBarrier
+  { }
 }

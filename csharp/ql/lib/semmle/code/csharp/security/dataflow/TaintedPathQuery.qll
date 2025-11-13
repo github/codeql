@@ -116,7 +116,7 @@ private class WeakGuard extends Guard {
     )
     or
     // Checking against `null` has no bearing on path traversal.
-    this.controlsNode(_, _, any(AbstractValues::NullValue nv))
+    this.controlsNode(_, _, any(GuardValue nv | nv.isNullness(_)))
     or
     this.(LogicalOperation).getAnOperand() instanceof WeakGuard
   }
@@ -130,8 +130,9 @@ private class WeakGuard extends Guard {
 class PathCheck extends Sanitizer {
   PathCheck() {
     // This expression is structurally replicated in a dominating guard which is not a "weak" check
-    exists(Guard g, AbstractValues::BooleanValue v |
+    exists(Guard g, GuardValue v |
       g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+      exists(v.asBooleanValue()) and
       not g instanceof WeakGuard
     )
   }

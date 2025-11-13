@@ -34,6 +34,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   codeql::EnumDecl translateEnumDecl(const swift::EnumDecl& decl);
   codeql::ProtocolDecl translateProtocolDecl(const swift::ProtocolDecl& decl);
   codeql::EnumCaseDecl translateEnumCaseDecl(const swift::EnumCaseDecl& decl);
+  codeql::UsingDecl translateUsingDecl(const swift::UsingDecl& decl);
   codeql::EnumElementDecl translateEnumElementDecl(const swift::EnumElementDecl& decl);
   codeql::GenericTypeParamDecl translateGenericTypeParamDecl(
       const swift::GenericTypeParamDecl& decl);

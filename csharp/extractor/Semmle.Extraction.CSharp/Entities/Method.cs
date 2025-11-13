@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected virtual void PopulateMethodBody(TextWriter trapFile)
         {
-            if (!IsSourceDeclaration)
+            if (!IsSourceDeclaration || Context.OnlyScaffold)
                 return;
 
             var block = Block;

@@ -88,6 +88,14 @@ codeql::ArraySliceType TypeTranslator::translateArraySliceType(const swift::Arra
   return entry;
 }
 
+codeql::InlineArrayType TypeTranslator::translateInlineArrayType(
+    const swift::InlineArrayType& type) {
+  auto entry = createTypeEntry(type);
+  entry.count_type = dispatcher.fetchLabel(type.getCountType());
+  entry.element_type = dispatcher.fetchLabel(type.getElementType());
+  return entry;
+}
+
 codeql::DictionaryType TypeTranslator::translateDictionaryType(const swift::DictionaryType& type) {
   auto entry = createTypeEntry(type);
   entry.key_type = dispatcher.fetchLabel(type.getKeyType());

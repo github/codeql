@@ -535,6 +535,37 @@ mod impl_overlap {
         }
     }
 
+    trait MyTrait1 {
+        // MyTrait1::m
+        fn m(&self) {}
+    }
+
+    trait MyTrait2: MyTrait1 {}
+
+    #[derive(Debug)]
+    struct S4;
+
+    impl MyTrait1 for S4 {
+        // <S4_as_MyTrait1>::m
+        fn m(&self) {}
+    }
+
+    impl MyTrait2 for S4 {}
+
+    #[derive(Debug)]
+    struct S5<T5>(T5);
+
+    impl MyTrait1 for S5<i32> {
+        // <S5<i32>_as_MyTrait1>::m
+        fn m(&self) {}
+    }
+
+    impl MyTrait2 for S5<i32> {}
+
+    impl MyTrait1 for S5<bool> {}
+
+    impl MyTrait2 for S5<bool> {}
+
     pub fn f() {
         let x = S1;
         println!("{:?}", x.common_method()); // $ target=S1::common_method
@@ -554,6 +585,13 @@ mod impl_overlap {
         let w = S3(S1);
         println!("{:?}", w.m(x)); // $ target=S3<T>::m
         println!("{:?}", S3::m(&w, x)); // $ target=S3<T>::m
+
+        S4.m(); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S4::m(&S4); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5(0i32).m(); // $ target=<S5<i32>_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5::m(&S5(0i32)); // $ target=<S5<i32>_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S5(true).m(); // $ target=MyTrait1::m
+        S5::m(&S5(true)); // $ target=MyTrait1::m
     }
 }
 
@@ -649,6 +687,50 @@ mod type_parameter_bounds {
         let s1 = x.fst(); // $ target=fst type=s1:u8
         let s2 = y.snd(); // $ target=snd type=s2:i64
         println!("{:?}, {:?}", s1, s2);
+    }
+}
+
+mod trait_default_self_type_parameter {
+    // A trait with a type parameter that defaults to `Self`.
+    trait TraitWithSelfTp<A = Option<Self>> {
+        // TraitWithSelfTp::get_a
+        fn get_a(&self) -> A;
+    }
+
+    fn get_a<A, T: TraitWithSelfTp<A>>(thing: &T) -> A {
+        thing.get_a() // $ target=TraitWithSelfTp::get_a
+    }
+
+    // The trait bound on `T` uses the default for `A` which contains `Self`
+    fn tp_uses_default<S: TraitWithSelfTp>(thing: S) -> i64 {
+        let _ms = thing.get_a(); // $ target=TraitWithSelfTp::get_a type=_ms:T.S
+        0
+    }
+
+    // The supertrait uses the default for `A` which contains `Self`
+    trait SubTraitOfTraitWithSelfTp: TraitWithSelfTp + Sized {}
+
+    fn get_a_through_tp<S: SubTraitOfTraitWithSelfTp>(thing: &S) {
+        // `thing` is a `TraitWithSelfTp` through the trait hierarchy
+        let _ms = get_a(thing); // $ target=get_a type=_ms:T.S
+    }
+
+    struct MyStruct {
+        value: i32,
+    }
+
+    // The implementing trait uses the default for `A` which contains `Self`
+    impl TraitWithSelfTp for MyStruct {
+        fn get_a(&self) -> Option<Self> {
+            Some(MyStruct { value: self.value }) // $ fieldof=MyStruct
+        }
+    }
+
+    impl SubTraitOfTraitWithSelfTp for MyStruct {}
+
+    pub fn test() {
+        let s = MyStruct { value: 0 };
+        let _ms = get_a(&s); // $ target=get_a type=_ms:T.MyStruct
     }
 }
 
@@ -2040,6 +2122,10 @@ mod async_ {
         async { S1 }
     }
 
+    fn f3() -> impl Future<Output = ()> {
+        async {}
+    }
+
     struct S2;
 
     impl Future for S2 {
@@ -2053,14 +2139,15 @@ mod async_ {
         }
     }
 
-    fn f3() -> impl Future<Output = S1> {
+    fn f4() -> impl Future<Output = S1> {
         S2
     }
 
     pub async fn f() {
         f1().await.f(); // $ target=S1f target=f1
         f2().await.f(); // $ target=S1f target=f2
-        f3().await.f(); // $ target=S1f target=f3
+        f3().await; // $ target=f3
+        f4().await.f(); // $ target=S1f target=f4
         S2.await.f(); // $ target=S1f
         let b = async { S1 };
         b.await.f(); // $ target=S1f
@@ -2742,6 +2829,52 @@ mod if_expr {
     }
 }
 
+mod local_function {
+    pub fn f() -> () {
+        fn local(x: i32) -> i32 {
+            x + 1 // $ target=add
+        }
+    }
+}
+
+mod block_types {
+    #[rustfmt::skip]
+    fn f1(cond: bool) -> i32 {
+        // Block that evaluates to unit
+        let a = { // $ type=a:()
+            if cond {
+                return 12;
+            }
+        };
+        0
+    }
+
+    #[rustfmt::skip]
+    fn f2() -> i32 {
+        // Block that does not evaluate to unit
+        let b = 'label: { // $ MISSING: b:i32
+            break 'label 12;
+        };
+        println!("b: {:?}", b);
+        0
+    }
+
+    fn f3() -> i32 {
+        return 0;
+    } // should only have type `i32`, not `()`
+
+    #[rustfmt::skip]
+    fn f4(cond: bool) -> i32 {
+        let a = { // $ certainType=a:()
+            if cond {
+                return 12;
+            };
+        };
+        println!("a: {:?}", a);
+        0
+    }
+}
+
 mod blanket_impl;
 mod closure;
 mod dereference;
@@ -2753,6 +2886,7 @@ fn main() {
     method_impl::g(method_impl::Foo {}, method_impl::Foo {}); // $ target=g
     method_non_parametric_impl::f(); // $ target=f
     method_non_parametric_trait_impl::f(); // $ target=f
+    trait_default_self_type_parameter::test(); // $ target=test
     function_trait_bounds::f(); // $ target=f
     associated_type_in_trait::f(); // $ target=f
     generic_enum::f(); // $ target=f
@@ -2780,4 +2914,5 @@ fn main() {
     pattern_matching_experimental::box_patterns(); // $ target=box_patterns
     dyn_type::test(); // $ target=test
     if_expr::f(true); // $ target=f
+    local_function::f(); // $ target=f
 }

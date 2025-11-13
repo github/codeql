@@ -297,7 +297,7 @@ module Make<
      */
     predicate isIntRange(int bound, boolean upper) { this = TIntRange(bound, upper) }
 
-    /** Holds if this value represents throwing an exception. */
+    /** Holds if this value represents throwing an exception (or exiting). */
     predicate isThrowsException() { this = TException(true) }
 
     /** Gets a textual representation of this value. */
@@ -362,12 +362,25 @@ module Make<
     v.asConstantValue() = c.asConstantValue()
   }
 
+  private predicate trivialHasValue(Expr e, GuardValue v) {
+    constantHasValue(e, v)
+    or
+    e instanceof NonNullExpr and v.isNonNullValue()
+  }
+
+  /** Holds if `t` is an exception-like successor type. */
+  private predicate exceptionLike(SuccessorType t) {
+    t instanceof ExceptionSuccessor or
+    t instanceof ExitSuccessor
+  }
+
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
-    exists(SuccessorType norm, ExceptionSuccessor exc |
+    exists(SuccessorType norm, SuccessorType exc |
       bb1.getASuccessor(norm) = normalSucc and
       bb1.getASuccessor(exc) = excSucc and
       normalSucc != excSucc and
-      not norm instanceof ExceptionSuccessor
+      exceptionLike(exc) and
+      not exceptionLike(norm)
     )
   }
 
@@ -779,6 +792,8 @@ module Make<
         baseSsaValueCheck(def, ssaVal, g0, v0)
       |
         impliesStep1(g, v, g0, v0)
+        or
+        additionalImpliesStep(g, v, g0, v0)
       )
     }
 
@@ -815,7 +830,7 @@ module Make<
           v2.isNonNullValue()
         )
       ) and
-      not exprHasValue(g2, v2) // disregard trivial guard
+      not trivialHasValue(g2, v2) // disregard trivial guard
     }
 
     bindingset[g1, v1]
@@ -838,7 +853,7 @@ module Make<
         // g1 === ... ? e : g2
         g2 = getBranchExpr(cond, branch.booleanNot()) and
         v2 = v1 and
-        not exprHasValue(g2, v2) // disregard trivial guard
+        not trivialHasValue(g2, v2) // disregard trivial guard
       )
     }
 
@@ -847,7 +862,7 @@ module Make<
     private predicate impliesStepSsaGuard(SsaDefinition def1, GuardValue v1, Guard g2, GuardValue v2) {
       def1.(SsaExplicitWrite).getValue() = g2 and
       v1 = v2 and
-      not exprHasValue(g2, v2) // disregard trivial guard
+      not trivialHasValue(g2, v2) // disregard trivial guard
       or
       exists(Expr e, GuardValue ev |
         guardDeterminesPhiInput(g2, v2.getDualValue(), def1, e) and
@@ -1097,7 +1112,7 @@ module Make<
           call.getMethod() = wrapperGuard(ppos, v1, v2) and
           call.getArgument(apos) = g2 and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
-          not exprHasValue(g2, v2) // disregard trivial guard
+          not trivialHasValue(g2, v2) // disregard trivial guard
         )
       }
     }

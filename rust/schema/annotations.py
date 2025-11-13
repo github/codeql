@@ -266,7 +266,7 @@ class _:
 
 
 @annotate(MatchArm)
-@rust.doc_test_signature("(x: i32) -> i32")
+@rust.doc_test_signature("(x: i32)")
 class _:
     """
     A match arm. For example:
@@ -1738,7 +1738,7 @@ class _:
 
     For example:
     ```rust
-    fn foo() -> i32 {}
+    fn foo() -> i32 { 0 }
     //       ^^^^^^
     ```
     """
@@ -2466,7 +2466,7 @@ class _:
 
     For example:
     ```rust
-    pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+    pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> { 0 }
     //                                                        ^^^^^^^^
     ```
     """

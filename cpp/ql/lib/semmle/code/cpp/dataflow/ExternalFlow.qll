@@ -656,6 +656,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `class:N` (where `N` is the index of the template).
  */
+pragma[nomagic]
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
@@ -727,6 +728,7 @@ private string getSignatureWithoutClassTemplateNames(
  * - The `remaining` number of template arguments in `partiallyNormalizedSignature`
  * with their index in `nameArgs`.
  */
+pragma[nomagic]
 private string getSignatureWithoutFunctionTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
@@ -770,6 +772,7 @@ private string getSignatureWithoutFunctionTemplateNames(
  * ```
  * In this case, `normalizedSignature` will be `"(const func:0 &,int,class:1,class:0 *)"`.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments(
   string signature, string type, string name, string normalizedSignature, string typeArgs,
   string nameArgs
@@ -786,6 +789,35 @@ private string getSignatureParameterName(string signature, string type, string n
   exists(string normalizedSignature |
     elementSpecWithArguments(signature, type, name, normalizedSignature, _, _) and
     result = getAtIndex(normalizedSignature, n)
+  )
+}
+
+/**
+ * Gets a `Function` identified by the `(namespace, type, name)` components.
+ *
+ * If `subtypes` is `true` then the result may be an override of the function
+ * identified by the components.
+ */
+pragma[nomagic]
+private Function getFunction(string namespace, string type, boolean subtypes, string name) {
+  elementSpec(namespace, type, subtypes, name, _, _) and
+  (
+    funcHasQualifiedName(result, namespace, name) and
+    subtypes = false and
+    type = ""
+    or
+    exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
+    |
+      // member declared in the named type or a subtype of it
+      subtypes = true and
+      classWithMethod = namedClass.getADerivedClass*()
+      or
+      // member declared directly in the named type
+      subtypes = false and
+      classWithMethod = namedClass
+    )
   )
 }
 
@@ -812,13 +844,17 @@ private string getSignatureParameterName(string signature, string type, string n
  * is `func:n` then the signature name is compared with the `n`'th name
  * in `name`.
  */
-private predicate signatureMatches(Function func, string signature, string type, string name, int i) {
+pragma[nomagic]
+private predicate signatureMatches(
+  Function func, string namespace, string signature, string type, string name, int i
+) {
+  func = getFunction(namespace, type, _, name) and
   exists(string s |
     s = getSignatureParameterName(signature, type, name, i) and
     s = getParameterTypeName(func, i)
   ) and
   if exists(getParameterTypeName(func, i + 1))
-  then signatureMatches(func, signature, type, name, i + 1)
+  then signatureMatches(func, namespace, signature, type, name, i + 1)
   else i = count(signature.indexOf(","))
 }
 
@@ -833,7 +869,7 @@ module ExternalFlowDebug {
    *
    * Exposed for testing purposes.
    */
-  predicate signatureMatches_debug = signatureMatches/5;
+  predicate signatureMatches_debug = signatureMatches/6;
 
   /**
    * INTERNAL: Do not use.
@@ -883,6 +919,7 @@ private predicate parseParens(string s, string betweenParens) { s = "(" + betwee
  * - `signatureWithoutParens` equals `signature`, but with the surrounding
  *    parentheses removed.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments0(
   string signature, string type, string name, string signatureWithoutParens, string typeArgs,
   string nameArgs
@@ -909,7 +946,7 @@ private predicate elementSpecMatchesSignature(
 ) {
   elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
     pragma[only_bind_into](signature), _) and
-  signatureMatches(func, signature, type, name, 0)
+  signatureMatches(func, namespace, signature, type, name, 0)
 }
 
 /**
@@ -953,7 +990,7 @@ private predicate funcHasQualifiedName(Function func, string namespace, string n
  * Holds if `namedClass` is in namespace `namespace` and has
  * name `type` (excluding any template parameters).
  */
-bindingset[type, namespace]
+bindingset[type]
 pragma[inline_late]
 private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
   exists(string typeWithoutArgs |
@@ -969,17 +1006,14 @@ private predicate classHasQualifiedName(Class namedClass, string namespace, stri
  *    are also returned.
  * 3. The element has name `name`
  * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
- *
- * NOTE: `namespace` is currently not used (since we don't properly extract modules yet).
  */
 pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
+  result = getFunction(namespace, type, subtypes, name) and
   (
     // Non-member functions
-    funcHasQualifiedName(result, namespace, name) and
-    subtypes = false and
     type = "" and
     (
       elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
@@ -989,52 +1023,36 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(Class namedClass, Class classWithMethod |
-      hasClassAndName(classWithMethod, result, name) and
-      classHasQualifiedName(namedClass, namespace, type)
-    |
-      (
-        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
-        or
-        signature = "" and
-        elementSpec(namespace, type, subtypes, name, "", _)
-      ) and
-      (
-        // member declared in the named type or a subtype of it
-        subtypes = true and
-        classWithMethod = namedClass.getADerivedClass*()
-        or
-        // member declared directly in the named type
-        subtypes = false and
-        classWithMethod = namedClass
-      )
-    )
+    elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
     or
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    // Member variables
     signature = "" and
-    exists(Class namedClass, Class classWithMember, MemberVariable member |
-      member.getName() = name and
-      member = classWithMember.getAMember() and
-      namedClass.hasQualifiedName(namespace, type) and
-      result = member
-    |
-      // field declared in the named type or a subtype of it (or an extension of any)
-      subtypes = true and
-      classWithMember = namedClass.getADerivedClass*()
-      or
-      // field declared directly in the named type (or an extension of it)
-      subtypes = false and
-      classWithMember = namedClass
-    )
-    or
-    // Global or namespace variables
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    signature = "" and
-    type = "" and
-    subtypes = false and
-    result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
+    elementSpec(namespace, type, subtypes, name, signature, _)
   )
+  or
+  // Member variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  exists(Class namedClass, Class classWithMember, MemberVariable member |
+    member.getName() = name and
+    member = classWithMember.getAMember() and
+    namedClass.hasQualifiedName(namespace, type) and
+    result = member
+  |
+    // field declared in the named type or a subtype of it (or an extension of any)
+    subtypes = true and
+    classWithMember = namedClass.getADerivedClass*()
+    or
+    // field declared directly in the named type (or an extension of it)
+    subtypes = false and
+    classWithMember = namedClass
+  )
+  or
+  // Global or namespace variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  type = "" and
+  subtypes = false and
+  result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
 }
 
 cached

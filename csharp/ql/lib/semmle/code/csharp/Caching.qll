@@ -10,7 +10,6 @@ module Stages {
   cached
   module ControlFlowStage {
     private import semmle.code.csharp.controlflow.internal.Splitting
-    private import semmle.code.csharp.controlflow.Guards as Guards
 
     cached
     predicate forceCachingInSameStage() { any() }
@@ -20,8 +19,6 @@ module Stages {
       exists(Split s)
       or
       exists(ControlFlow::Node n)
-      or
-      Guards::Internal::isCustomNullCheck(_, _, _, _)
       or
       forceCachingInSameStageRev()
     }
@@ -36,8 +33,6 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      any(ControlFlowElement cfe).controlsBlock(_, _, _)
-      or
       exists(GuardedExpr ge)
       or
       forceCachingInSameStageRev()

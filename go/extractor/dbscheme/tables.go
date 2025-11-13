@@ -43,6 +43,17 @@ externalData(
 snapshotDate(unique date snapshotDate : date ref);
 
 sourceLocationPrefix(varchar(900) prefix : string ref);
+
+/** Overlay support **/
+
+databaseMetadata(
+  string metadataKey: string ref,
+  string value: string ref
+);
+
+overlayChangedFiles(
+  string path: string ref
+);
 `)
 
 // Copied directly from the XML dbscheme

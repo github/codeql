@@ -360,6 +360,26 @@ fn match_pattern14() {
     }
 }
 
+fn match_pattern15() {
+    let x = Some(0); // x1
+    match x { // $ read_access=x1
+            Some(x) // x2
+                => x, // $ read_access=x2
+            _ => 0
+        };
+}
+
+fn match_pattern16() {
+    let x = Some(32);
+    match x { // $ read_access=x
+        Some(y) // y1
+            if let Some(y) = // y2
+                Some(y) // $ read_access=y1
+            => print_i64(y), // $ read_access=y2
+        _ => {},
+    }
+}
+
 fn param_pattern1(
     a8: &str, // a8
     (
@@ -757,6 +777,8 @@ fn main() {
     match_pattern12();
     match_pattern13();
     match_pattern14();
+    match_pattern15();
+    match_pattern16();
     param_pattern1("a", ("b", "c"));
     param_pattern2(Either::Left(45));
     destruct_assignment();

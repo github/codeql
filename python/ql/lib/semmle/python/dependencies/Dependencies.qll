@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 import semmle.python.dependencies.DependencyKind
 
 private predicate importDependency(Object target, AstNode source) {
@@ -59,7 +60,7 @@ class PythonUse extends DependencyKind {
     interesting(target) and
     this = this and
     source != target.(ControlFlowNode).getNode() and
-    exists(ControlFlowNode use, Object obj |
+    exists(ControlFlowNodeWithPointsTo use, Object obj |
       use.getNode() = source and
       use.refersTo(obj) and
       use.isLoad()
@@ -114,12 +115,14 @@ private predicate attribute_access_dependency(Object target, AstNode source) {
 
 private predicate use_of_attribute(Attribute attr, Scope s, string name) {
   exists(AttrNode cfg | cfg.isLoad() and cfg.getNode() = attr |
-    exists(Object obj | cfg.getObject(name).refersTo(obj) |
+    exists(Object obj | cfg.getObject(name).(ControlFlowNodeWithPointsTo).refersTo(obj) |
       s = obj.(PythonModuleObject).getModule() or
       s = obj.(ClassObject).getPyClass()
     )
     or
-    exists(ClassObject cls | cfg.getObject(name).refersTo(_, cls, _) | s = cls.getPyClass())
+    exists(ClassObject cls | cfg.getObject(name).(ControlFlowNodeWithPointsTo).refersTo(_, cls, _) |
+      s = cls.getPyClass()
+    )
   )
   or
   exists(SelfAttributeRead sar | sar = attr |

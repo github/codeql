@@ -90,7 +90,10 @@ module SatisfiesBlanketConstraint<
 
     Location getLocation() { result = at.getLocation() }
 
-    Type getTypeAt(TypePath path) { result = at.getTypeAt(blanketPath.appendInverse(path)) }
+    Type getTypeAt(TypePath path) {
+      result = at.getTypeAt(blanketPath.appendInverse(path)) and
+      not result = TNeverType()
+    }
 
     string toString() { result = at.toString() + " [blanket at " + blanketPath.toString() + "]" }
   }

@@ -4571,7 +4571,7 @@ declarations.swift:
 #   81|         Type = Int
 #   81|     getParam(5): [ParamDecl] hasBoth
 #   81|         Type = Int
-#   89| [Comment] // A field can be marked as read-only by dirctly implementing
+#   89| [Comment] // A field can be marked as read-only by directly implementing
 #   89| 
 #   90| [Comment] // the getter between the braces.
 #   90| 

@@ -963,7 +963,7 @@ private module Cached {
       DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
-    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::AbstractValue v);
+    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue v);
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
@@ -971,9 +971,9 @@ private module Cached {
         DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
         DataFlowIntegrationInput::GuardValue branch
       ) {
-        exists(Guards::AbstractValues::BooleanValue v |
+        exists(Guards::GuardValue v |
           guardChecks(g, e.getAstNode(), v) and
-          branch = v.getValue()
+          branch = v.asBooleanValue()
         )
       }
 

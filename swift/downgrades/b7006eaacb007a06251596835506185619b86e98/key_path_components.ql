@@ -19,14 +19,19 @@ class ValueDeclOrNone extends @value_decl_or_none {
 }
 
 predicate isKeyPathComponentWithNewKind(KeyPathComponent id) {
-  key_path_components(id, 3, _) or key_path_components(id, 4, _)
+  key_path_components(id, 1, _) or key_path_components(id, 4, _)
 }
 
 query predicate new_key_path_components(KeyPathComponent id, int kind, TypeOrNone component_type) {
   exists(int old_kind |
     key_path_components(id, old_kind, component_type) and
     not isKeyPathComponentWithNewKind(id) and
-    if old_kind < 5 then kind = old_kind else kind = old_kind - 2
+    if old_kind = 0
+    then kind = old_kind
+    else
+      if old_kind = 2 or old_kind = 3
+      then kind = old_kind - 1
+      else kind = old_kind - 2
   )
 }
 
