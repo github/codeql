@@ -2,14 +2,15 @@ import csharp
 private import codeql.dataflow.DataFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
-private import codeql.dataflowstack.TaintTrackingStack as TTS
+private import codeql.dataflowstack.FlowStack as FlowStack
 
-module LanguageTaintTrackingStack = TTS::LanguageTaintTracking<Location, CsharpDataFlow, CsharpTaintTracking>;
+module LanguageFlowStack = FlowStack::LanguageDataFlow<Location, CsharpDataFlow>;
 
-private module TaintTrackingStackInput<DataFlow::ConfigSig Config>
-  implements LanguageTaintTrackingStack::DataFlowGroup<Config>::TaintTrackingStackSig<TaintTracking::Global<Config>>
+private module FlowStackInput<DataFlow::ConfigSig Config>
+  implements LanguageFlowStack::DataFlowConfigContext<Config>::FlowInstance
 {
   private module Flow = TaintTracking::Global<Config>;
+  class PathNode = Flow::PathNode;
 
   CsharpDataFlow::Node getNode(Flow::PathNode n) { result = n.getNode() }
 
@@ -27,12 +28,12 @@ private module TaintTrackingStackInput<DataFlow::ConfigSig Config>
 }
 
 module DataFlowStackMake<DataFlow::ConfigSig Config> {
-  import LanguageTaintTrackingStack::FlowStack<TaintTracking::Global<Config>, Config, TaintTrackingStackInput<Config>>
+  import LanguageFlowStack::FlowStack<Config, FlowStackInput<Config>>
 }
 
 module BiStackAnalysisMake<
   DataFlow::ConfigSig ConfigA,
   DataFlow::ConfigSig ConfigB
 >{
-  import LanguageTaintTrackingStack::BiStackAnalysis<ConfigA, TaintTracking::Global<ConfigA>, TaintTrackingStackInput<ConfigA>, ConfigB, TaintTracking::Global<ConfigB>, TaintTrackingStackInput<ConfigB>>
+  import LanguageFlowStack::BiStackAnalysis<ConfigA, FlowStackInput<ConfigA>, ConfigB, FlowStackInput<ConfigB>>
 }
