@@ -1736,6 +1736,87 @@ mod builtins {
         let f = 123.0f64; // $ certainType=f:f64
         let t = true; // $ certainType=t:bool
         let f = false; // $ certainType=f:bool
+
+        trait MyTrait<T> {
+            fn my_method(&self) -> &T;
+
+            fn my_func() -> T;
+        }
+
+        impl<T: Default, const N: usize> MyTrait<T> for [T; N] {
+            fn my_method(&self) -> &T {
+                self.get(0).unwrap() // $ MISSING: target=get target=unwrap
+            }
+
+            fn my_func() -> T {
+                T::default() // $ target=default
+            }
+        }
+
+        let x = [1, 2, 3].my_method(); // $ target=my_method type=x:&T.i32
+        let x = <[_; 3]>::my_method(&[1, 2, 3]); // $ target=my_method type=x:&T.i32
+        let x = <[i32; 3]>::my_func(); // $ MISSING: target=my_func type=x:i32
+
+        impl<T: Default> MyTrait<T> for [T] {
+            fn my_method(&self) -> &T {
+                self.get(0).unwrap() // $ target=get target=unwrap
+            }
+
+            fn my_func() -> T {
+                T::default() // $ target=default
+            }
+        }
+
+        let s: &[i32] = &[1, 2, 3];
+        let x = s.my_method(); // $ target=my_method type=x:&T.i32
+        let x = <[_]>::my_method(s); // $ target=my_method type=x:&T.i32
+        let x = <[i32]>::my_func(); // $ MISSING: target=my_func type=x:i32
+
+        impl<T: Default> MyTrait<T> for (T, i32) {
+            fn my_method(&self) -> &T {
+                &self.0
+            }
+
+            fn my_func() -> T {
+                T::default() // $ target=default
+            }
+        }
+
+        let p = (42, 7);
+        let x = p.my_method(); // $ target=my_method type=x:&T.i32
+        let x = <(_, _)>::my_method(&p); // $ target=my_method type=x:&T.i32
+        let x = <(i32, i32)>::my_func(); // $ MISSING: target=my_func type=x:i32
+
+        impl<T: Default> MyTrait<T> for &T {
+            fn my_method(&self) -> &T {
+                *self // $ target=deref
+            }
+
+            fn my_func() -> T {
+                T::default() // $ target=default
+            }
+        }
+
+        let r = &42;
+        let x = r.my_method(); // $ target=my_method type=x:&T.i32
+        let x = <&_>::my_method(&r); // $ target=my_method type=x:&T.i32
+        let x = <&i32>::my_func(); // $ MISSING: target=my_func type=x:i32
+
+        impl<T: Default> MyTrait<T> for *mut T {
+            fn my_method(&self) -> &T {
+                unsafe { &**self } // $ target=deref target=deref
+            }
+
+            fn my_func() -> T {
+                T::default() // $ target=default
+            }
+        }
+
+        let mut v = 42;
+        let p: *mut i32 = &mut v;
+        let x = unsafe { p.my_method() }; // $ target=my_method type=x:&T.i32
+        let x = unsafe { <*mut _>::my_method(&p) }; // $ target=my_method type=x:&T.i32
+        let x = <*mut i32>::my_func(); // $ MISSING: target=my_func type=x:i32
     }
 }
 
