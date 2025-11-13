@@ -226,7 +226,7 @@ pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
 		let v = (*const_ptr).value; // $ Alert[rust/access-invalid-pointer]
 		println!("	cond10 v = {v}");
 	} else {
-		let v = (*const_ptr).value; // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - unreachable with null pointer
+		let v = (*const_ptr).value; // $ good - unreachable with null pointer
 		println!("	cond11 v = {v}");
 	}
 }

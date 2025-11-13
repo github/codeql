@@ -26,7 +26,6 @@
 | deallocation.rs:210:7:210:9 | ptr | deallocation.rs:199:9:199:26 | ...::null_mut | deallocation.rs:210:7:210:9 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:199:9:199:26 | ...::null_mut | invalid |
 | deallocation.rs:210:7:210:9 | ptr | deallocation.rs:207:9:207:26 | ...::null_mut | deallocation.rs:210:7:210:9 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:207:9:207:26 | ...::null_mut | invalid |
 | deallocation.rs:226:13:226:21 | const_ptr | deallocation.rs:219:15:219:32 | ...::null_mut | deallocation.rs:226:13:226:21 | const_ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:219:15:219:32 | ...::null_mut | invalid |
-| deallocation.rs:229:13:229:21 | const_ptr | deallocation.rs:219:15:219:32 | ...::null_mut | deallocation.rs:229:13:229:21 | const_ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:219:15:219:32 | ...::null_mut | invalid |
 | deallocation.rs:274:15:274:16 | p1 | deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:274:15:274:16 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:270:3:270:25 | ...::drop_in_place | invalid |
 | deallocation.rs:274:15:274:16 | p1 | deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:274:15:274:16 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:270:3:270:25 | ...::drop_in_place | invalid |
 | deallocation.rs:342:18:342:20 | ptr | deallocation.rs:336:3:336:25 | ...::drop_in_place | deallocation.rs:342:18:342:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:336:3:336:25 | ...::drop_in_place | invalid |
@@ -81,7 +80,6 @@ edges
 | deallocation.rs:207:9:207:26 | ...::null_mut | deallocation.rs:207:9:207:28 | ...::null_mut(...) | provenance | Src:MaD:8 MaD:8 |
 | deallocation.rs:207:9:207:28 | ...::null_mut(...) | deallocation.rs:207:3:207:5 | ptr | provenance |  |
 | deallocation.rs:219:3:219:11 | const_ptr | deallocation.rs:226:13:226:21 | const_ptr | provenance |  |
-| deallocation.rs:219:3:219:11 | const_ptr | deallocation.rs:229:13:229:21 | const_ptr | provenance |  |
 | deallocation.rs:219:15:219:32 | ...::null_mut | deallocation.rs:219:15:219:34 | ...::null_mut(...) | provenance | Src:MaD:8 MaD:8 |
 | deallocation.rs:219:15:219:34 | ...::null_mut(...) | deallocation.rs:219:3:219:11 | const_ptr | provenance |  |
 | deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:270:27:270:28 | [post] p1 | provenance | Src:MaD:6 MaD:6 |
@@ -161,7 +159,6 @@ nodes
 | deallocation.rs:219:15:219:32 | ...::null_mut | semmle.label | ...::null_mut |
 | deallocation.rs:219:15:219:34 | ...::null_mut(...) | semmle.label | ...::null_mut(...) |
 | deallocation.rs:226:13:226:21 | const_ptr | semmle.label | const_ptr |
-| deallocation.rs:229:13:229:21 | const_ptr | semmle.label | const_ptr |
 | deallocation.rs:270:3:270:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
 | deallocation.rs:270:3:270:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
 | deallocation.rs:270:27:270:28 | [post] p1 | semmle.label | [post] p1 |
