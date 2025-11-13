@@ -1755,7 +1755,7 @@ mod builtins {
 
         let x = [1, 2, 3].my_method(); // $ target=my_method type=x:&T.i32
         let x = <[_; 3]>::my_method(&[1, 2, 3]); // $ target=my_method type=x:&T.i32
-        let x = <[i32; 3]>::my_func(); // $ MISSING: target=my_func type=x:i32
+        let x = <[i32; 3]>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for [T] {
             fn my_method(&self) -> &T {
@@ -1770,11 +1770,11 @@ mod builtins {
         let s: &[i32] = &[1, 2, 3];
         let x = s.my_method(); // $ target=my_method type=x:&T.i32
         let x = <[_]>::my_method(s); // $ target=my_method type=x:&T.i32
-        let x = <[i32]>::my_func(); // $ MISSING: target=my_func type=x:i32
+        let x = <[i32]>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for (T, i32) {
             fn my_method(&self) -> &T {
-                &self.0
+                &self.0 // $ fieldof=Tuple2
             }
 
             fn my_func() -> T {
@@ -1785,7 +1785,7 @@ mod builtins {
         let p = (42, 7);
         let x = p.my_method(); // $ target=my_method type=x:&T.i32
         let x = <(_, _)>::my_method(&p); // $ target=my_method type=x:&T.i32
-        let x = <(i32, i32)>::my_func(); // $ MISSING: target=my_func type=x:i32
+        let x = <(i32, i32)>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for &T {
             fn my_method(&self) -> &T {
@@ -1800,7 +1800,7 @@ mod builtins {
         let r = &42;
         let x = r.my_method(); // $ target=my_method type=x:&T.i32
         let x = <&_>::my_method(&r); // $ target=my_method type=x:&T.i32
-        let x = <&i32>::my_func(); // $ MISSING: target=my_func type=x:i32
+        let x = <&i32>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for *mut T {
             fn my_method(&self) -> &T {
@@ -1816,7 +1816,7 @@ mod builtins {
         let p: *mut i32 = &mut v;
         let x = unsafe { p.my_method() }; // $ target=my_method type=x:&T.i32
         let x = unsafe { <*mut _>::my_method(&p) }; // $ target=my_method type=x:&T.i32
-        let x = <*mut i32>::my_func(); // $ MISSING: target=my_func type=x:i32
+        let x = <*mut i32>::my_func(); // $ target=my_func type=x:i32
     }
 }
 
@@ -2344,7 +2344,7 @@ mod impl_trait {
 
         // For this function the `impl` type does not appear in the root of the return type
         let f = get_a_my_trait3(S1).unwrap().get_a(); // $ target=get_a_my_trait3 target=unwrap target=MyTrait::get_a type=f:S1
-        let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1
+        let g = get_a_my_trait4(S1).0.get_a(); // $ target=get_a_my_trait4 target=MyTrait::get_a type=g:S1 fieldof=Tuple2
     }
 }
 
@@ -2670,7 +2670,7 @@ mod loops {
 
         // for loops with containers
 
-        let vals3 = vec![1, 2, 3]; // $ MISSING: type=vals3:Vec type=vals3:T.i32
+        let vals3 = vec![1, 2, 3]; // $ type=vals3:Vec $ MISSING: type=vals3:T.i32
         for i in vals3 {} // $ MISSING: type=i:i32
 
         let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ certainType=vals4a:Vec certainType=vals4a:T.u16
@@ -2689,7 +2689,7 @@ mod loops {
         vals7.push(1u8); // $ target=push
         for u in vals7 {} // $ type=u:u8
 
-        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ MISSING: type=matrix1:Vec type=matrix1:T.Vec type=matrix1:T.T.i32
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ type=matrix1:Vec $ MISSING: type=matrix1:T.Vec type=matrix1:T.T.i32
         #[rustfmt::skip]
         let _ = for row in matrix1 { // $ MISSING: type=row:Vec type=row:T.i32
             for cell in row { // $ MISSING: type=cell:i32
@@ -2790,8 +2790,8 @@ mod tuples {
         let (mut e, f) = S1::get_pair(); // $ target=get_pair type=e:S1 type=f:S1
         let (mut g, mut h) = S1::get_pair(); // $ target=get_pair type=g:S1 type=h:S1
 
-        a.0.foo(); // $ target=foo
-        b.1.foo(); // $ target=foo
+        a.0.foo(); // $ target=foo fieldof=Tuple2
+        b.1.foo(); // $ target=foo fieldof=Tuple2
         c.foo(); // $ target=foo
         d.foo(); // $ target=foo
         e.foo(); // $ target=foo
@@ -2805,18 +2805,18 @@ mod tuples {
         let a = Default::default(); // $ target=default type=a:i64
         let b = Default::default(); // $ target=default type=b:bool
         let pair = (a, b); // $ type=pair:0(2).i64 type=pair:1(2).bool
-        let i: i64 = pair.0;
-        let j: bool = pair.1;
+        let i: i64 = pair.0; // $ fieldof=Tuple2
+        let j: bool = pair.1; // $ fieldof=Tuple2
 
         let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:0(2).i32 type=pair:1(2).i32 MISSING: target=into
         match pair {
             (0, 0) => print!("unexpected"),
             _ => print!("expected"),
         }
-        let x = pair.0; // $ type=x:i32
+        let x = pair.0; // $ type=x:i32 fieldof=Tuple2
 
         let y = &S1::get_pair(); // $ target=get_pair
-        y.0.foo(); // $ target=foo
+        y.0.foo(); // $ target=foo fieldof=Tuple2
     }
 }
 

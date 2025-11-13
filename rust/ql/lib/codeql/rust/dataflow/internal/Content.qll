@@ -4,6 +4,7 @@
 
 private import rust
 private import codeql.rust.controlflow.CfgNodes
+private import codeql.rust.frameworks.stdlib.Builtins
 private import DataFlowImpl
 
 /**
@@ -36,7 +37,11 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getTupleField() }
+  override FieldExprCfgNode getAnAccess() {
+    field = result.getFieldExpr().getTupleField() and
+    // tuples are handled using the special `TupleContent` type
+    not field = any(TupleType tt).getATupleField()
+  }
 
   final override string toString() {
     exists(Variant v, int pos, string vname |
