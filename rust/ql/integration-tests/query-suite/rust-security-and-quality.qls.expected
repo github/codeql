@@ -12,6 +12,7 @@ ql/rust/ql/src/queries/security/CWE-020/RegexInjection.ql
 ql/rust/ql/src/queries/security/CWE-022/TaintedPath.ql
 ql/rust/ql/src/queries/security/CWE-089/SqlInjection.ql
 ql/rust/ql/src/queries/security/CWE-117/LogInjection.ql
+ql/rust/ql/src/queries/security/CWE-295/DisabledCertificateCheck.ql
 ql/rust/ql/src/queries/security/CWE-311/CleartextTransmission.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextLogging.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextStorageDatabase.ql
@@ -21,7 +22,6 @@ ql/rust/ql/src/queries/security/CWE-327/WeakSensitiveDataHashing.ql
 ql/rust/ql/src/queries/security/CWE-614/InsecureCookie.ql
 ql/rust/ql/src/queries/security/CWE-696/BadCtorInitialization.ql
 ql/rust/ql/src/queries/security/CWE-770/UncontrolledAllocationSize.ql
-ql/rust/ql/src/queries/security/CWE-295/DisabledCertificateCheck.ql
 ql/rust/ql/src/queries/security/CWE-798/HardcodedCryptographicValue.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessAfterLifetime.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessInvalidPointer.ql
