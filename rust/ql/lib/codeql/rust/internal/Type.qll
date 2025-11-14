@@ -51,7 +51,7 @@ newtype TType =
   TSliceType() or
   TNeverType() or
   TPtrType() or
-  TContextType() or
+  TUnknownType() or
   TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
@@ -374,21 +374,27 @@ class PtrType extends Type, TPtrType {
 
 /**
  * A special pseudo type used to indicate that the actual type may have to be
- * inferred from a context.
+ * inferred by propagating type information back into call arguments.
  *
- * For example, a call like `Default::default()` is assigned this type, which
- * means that the actual type is to be inferred from the context in which the call
- * occurs.
+ * For example, in
  *
- * Context types are not restricted to root types, for example in a call like
+ * ```rust
+ * let x = Default::default();
+ * foo(x);
+ * ```
+ *
+ * `Default::default()` is assigned this type, which allows us to infer the actual
+ * type from the type of `foo`'s first parameter.
+ *
+ * Unknown types are not restricted to root types, for example in a call like
  * `Vec::new()` we assign this type at the type path corresponding to the type
  * parameter of `Vec`.
  *
- * Context types are used to restrict when type information is allowed to flow
+ * Unknown types are used to restrict when type information is allowed to flow
  * into call arguments (including method call receivers), in order to avoid
  * combinatorial explosions.
  */
-class ContextType extends Type, TContextType {
+class UnknownType extends Type, TUnknownType {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
 
   override string toString() { result = "(context typed)" }

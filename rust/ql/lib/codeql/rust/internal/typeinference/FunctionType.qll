@@ -230,7 +230,7 @@ module ArgIsInstantiationOf<
     Type getTypeAt(TypePath path) {
       result = substituteLookupTraits(super.getTypeAt(path)) and
       not result = TNeverType() and
-      not result = TContextType()
+      not result = TUnknownType()
     }
   }
 

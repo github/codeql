@@ -859,7 +859,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
     pragma[nomagic]
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      // Handle constructions that use `Self{...}` syntax
+      // Handle constructions that use `Self {...}` syntax
       exists(TypeMention tm, TypePath path0 |
         tm = this.getStructPath() and
         result = tm.resolveTypeAt(path0) and
@@ -872,7 +872,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
      * be inferred from the context.
      */
     pragma[nomagic]
-    predicate isContextTypedAt(DeclarationPosition pos, TypePath path) {
+    predicate hasUnknownTypeAt(DeclarationPosition pos, TypePath path) {
       exists(Declaration d, TypeParameter tp |
         d = this.getTarget() and
         pos.isStructPos() and
@@ -939,8 +939,8 @@ private Type inferStructExprType0(AstNode n, boolean isReturn, TypePath path) {
   |
     result = StructExprMatching::inferAccessType(a, apos, path)
     or
-    a.isContextTypedAt(apos, path) and
-    result = TContextType()
+    a.hasUnknownTypeAt(apos, path) and
+    result = TUnknownType()
   )
 }
 
@@ -1022,7 +1022,7 @@ private module ContextTyping {
      * at `pos` and `path` may have to be inferred from the context.
      */
     bindingset[this, i, target]
-    predicate isContextTypedAt(
+    predicate hasUnknownTypeAt(
       ImplOrTraitItemNode i, Function target, FunctionPosition pos, TypePath path
     ) {
       exists(TypeParameter tp |
@@ -1045,10 +1045,12 @@ private module ContextTyping {
   }
 
   pragma[nomagic]
-  private predicate isContextTyped(AstNode n, TypePath path) { inferType(n, path) = TContextType() }
+  private predicate hasUnknownTypeAt(AstNode n, TypePath path) {
+    inferType(n, path) = TUnknownType()
+  }
 
   pragma[nomagic]
-  private predicate isContextTyped(AstNode n) { isContextTyped(n, _) }
+  private predicate hasUnknownType(AstNode n) { hasUnknownTypeAt(n, _) }
 
   signature Type inferCallTypeSig(AstNode n, boolean isReturn, TypePath path);
 
@@ -1062,7 +1064,7 @@ private module ContextTyping {
     pragma[nomagic]
     private Type inferCallTypeFromContextCand(AstNode n, TypePath path, TypePath prefix) {
       result = inferCallType(n, false, path) and
-      isContextTyped(n) and
+      hasUnknownType(n) and
       prefix = path
       or
       exists(TypePath mid |
@@ -1077,7 +1079,7 @@ private module ContextTyping {
       or
       exists(TypePath prefix |
         result = inferCallTypeFromContextCand(n, path, prefix) and
-        isContextTyped(n, prefix)
+        hasUnknownTypeAt(n, prefix)
       )
     }
   }
@@ -1744,7 +1746,7 @@ private module MethodResolution {
     Type getTypeAt(TypePath path) {
       result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, path) and
       not result = TNeverType() and
-      not result = TContextType()
+      not result = TUnknownType()
     }
 
     pragma[nomagic]
@@ -2160,9 +2162,9 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
      * from the context.
      */
     pragma[nomagic]
-    predicate isContextTypedAt(string derefChainBorrow, FunctionPosition pos, TypePath path) {
+    predicate hasUnknownTypeAt(string derefChainBorrow, FunctionPosition pos, TypePath path) {
       exists(ImplOrTraitItemNode i |
-        this.isContextTypedAt(i, this.getTarget(i, derefChainBorrow), pos, path)
+        this.hasUnknownTypeAt(i, this.getTarget(i, derefChainBorrow), pos, path)
       )
     }
   }
@@ -2180,8 +2182,8 @@ private Type inferMethodCallType0(
     (
       result = MethodCallMatching::inferAccessType(a, derefChainBorrow, apos, path0)
       or
-      a.isContextTypedAt(derefChainBorrow, apos, path0) and
-      result = TContextType()
+      a.hasUnknownTypeAt(derefChainBorrow, apos, path0) and
+      result = TUnknownType()
     )
   |
     if
@@ -2669,9 +2671,9 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
      * from the context.
      */
     pragma[nomagic]
-    predicate isContextTypedAt(FunctionPosition pos, TypePath path) {
+    predicate hasUnknownTypeAt(FunctionPosition pos, TypePath path) {
       exists(ImplOrTraitItemNode i |
-        this.isContextTypedAt(i,
+        this.hasUnknownTypeAt(i,
           [
             this.resolveCallTargetViaPathResolution().(NonMethodFunction),
             this.resolveCallTargetViaTypeInference(i),
@@ -2705,8 +2707,8 @@ private Type inferNonMethodCallType0(AstNode n, boolean isReturn, TypePath path)
   |
     result = NonMethodCallMatching::inferAccessType(a, apos, path)
     or
-    a.isContextTypedAt(apos, path) and
-    result = TContextType()
+    a.hasUnknownTypeAt(apos, path) and
+    result = TUnknownType()
   )
 }
 
