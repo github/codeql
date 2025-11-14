@@ -140,7 +140,7 @@ jobs:
             misc/ripunzip
           lfs: true
       - name: Download built binaries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           merge-multiple: true
           path: misc/ripunzip
