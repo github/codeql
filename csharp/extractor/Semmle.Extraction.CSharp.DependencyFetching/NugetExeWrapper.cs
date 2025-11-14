@@ -28,12 +28,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// This will be in the Cached or Temp location
         /// so as to not trample the source tree.
         /// </summary>
-        private readonly TemporaryDirectory packageDirectory;
+        private readonly DependencyDirectory packageDirectory;
 
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        public NugetExeWrapper(FileProvider fileProvider, TemporaryDirectory packageDirectory, Semmle.Util.Logging.ILogger logger)
+        public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger)
         {
             this.fileProvider = fileProvider;
             this.packageDirectory = packageDirectory;
