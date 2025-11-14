@@ -713,12 +713,34 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   predicate hasAssocItem(string name) { name = this.getAnAssocItem().getName() }
 }
 
+private TypeItemNode resolveBuiltin(TypeRepr tr) {
+  tr instanceof SliceTypeRepr and
+  result instanceof Builtins::SliceType
+  or
+  tr instanceof ArrayTypeRepr and
+  result instanceof Builtins::ArrayType
+  or
+  tr instanceof RefTypeRepr and
+  result instanceof Builtins::RefType
+  or
+  tr instanceof PtrTypeRepr and
+  result instanceof Builtins::PtrType
+  or
+  result.(Builtins::TupleType).getArity() = tr.(TupleTypeRepr).getNumberOfFields()
+}
+
 final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   Path getSelfPath() { result = super.getSelfTy().(PathTypeRepr).getPath() }
 
   Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
 
-  TypeItemNode resolveSelfTy() { result = resolvePath(this.getSelfPath()) }
+  TypeItemNode resolveSelfTyBuiltin() { result = resolveBuiltin(this.(Impl).getSelfTy()) }
+
+  TypeItemNode resolveSelfTy() {
+    result = resolvePath(this.getSelfPath())
+    or
+    result = this.resolveSelfTyBuiltin()
+  }
 
   TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
 
@@ -893,7 +915,11 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
 }
 
 private class ImplItemNodeImpl extends ImplItemNode {
-  TypeItemNode resolveSelfTyCand() { result = resolvePathCand(this.getSelfPath()) }
+  TypeItemNode resolveSelfTyCand() {
+    result = resolvePathCand(this.getSelfPath())
+    or
+    result = this.resolveSelfTyBuiltin()
+  }
 
   TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
@@ -1764,6 +1790,10 @@ private ItemNode resolvePathCand0(RelevantPath path, Namespace ns) {
   or
   result = resolveUseTreeListItem(_, _, path, _) and
   ns = result.getNamespace()
+  or
+  result = resolveBuiltin(path.getSegment().getTypeRepr()) and
+  not path.getSegment().hasTraitTypeRepr() and
+  ns.isType()
 }
 
 pragma[nomagic]
@@ -2141,7 +2171,9 @@ pragma[nomagic]
 private predicate builtin(string name, ItemNode i) {
   exists(BuiltinSourceFile builtins |
     builtins.getFile().getBaseName() = "types.rs" and
-    i = builtins.getASuccessor(name)
+    i = builtins.getASuccessor(name) and
+    not name = ["Slice", "Array", "Ref", "Ptr"] and
+    not name.matches("Tuple%")
   )
 }
 
