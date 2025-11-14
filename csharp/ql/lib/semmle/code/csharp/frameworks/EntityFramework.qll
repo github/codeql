@@ -1,6 +1,8 @@
 /**
  * Classes modeling EntityFramework and EntityFrameworkCore.
  */
+overlay[local?]
+module;
 
 import csharp
 private import DataFlow

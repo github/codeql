@@ -3,6 +3,8 @@
  *
  * All access expressions have the common base class `Access`.
  */
+overlay[local?]
+module;
 
 import Expr
 import semmle.code.csharp.Variable

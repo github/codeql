@@ -8,6 +8,8 @@
  * In addition, there are methods that ought not to be executed or not in a fashion that the user
  * can control. This includes authorization methods such as logins, and sending of data, etc.
  */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.system.windows.Forms

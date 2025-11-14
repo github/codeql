@@ -3,6 +3,8 @@
  *
  * All statements have the common base class `Stmt`.
  */
+overlay[local?]
+module;
 
 import Element
 import Location

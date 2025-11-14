@@ -1,6 +1,8 @@
 /**
  * The default C# QL library.
  */
+overlay[local?]
+module;
 
 import Customizations
 import semmle.code.csharp.Attribute

@@ -3,6 +3,8 @@
  *
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
+overlay[local?]
+module;
 
 import csharp
 private import Completion as Comp

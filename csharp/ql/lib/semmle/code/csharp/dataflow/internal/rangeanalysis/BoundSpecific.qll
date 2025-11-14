@@ -1,6 +1,8 @@
 /**
  * Provides C#-specific definitions for bounds.
  */
+overlay[local?]
+module;
 
 private import csharp as CS
 private import semmle.code.csharp.dataflow.SSA::Ssa as Ssa

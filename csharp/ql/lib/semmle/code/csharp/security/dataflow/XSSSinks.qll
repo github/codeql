@@ -1,6 +1,8 @@
 /**
  * Provides sink definitions for cross-site scripting (XSS) vulnerabilities.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.asp.AspNet

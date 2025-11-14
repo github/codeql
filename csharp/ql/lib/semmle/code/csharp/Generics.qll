@@ -12,6 +12,8 @@
  * within constructed generic types. The predicate `getUnboundDeclaration` refers
  * to the ultimate `UnboundGeneric` type/method as defined in the source code.
  */
+overlay[local?]
+module;
 
 import Location
 import Namespace

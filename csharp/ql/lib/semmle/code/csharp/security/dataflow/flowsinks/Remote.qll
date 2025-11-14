@@ -1,6 +1,8 @@
 /**
  * Provides classes representing data flow sinks for remote user output.
  */
+overlay[local?]
+module;
 
 import csharp
 private import Email::Email

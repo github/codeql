@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import csharp
 
 // Branching points in the sense of cyclomatic complexity are binary,

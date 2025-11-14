@@ -1,6 +1,8 @@
 /**
  * Provides class representing parallel sink nodes.
  */
+overlay[local?]
+module;
 
 import csharp
 private import FlowSinks

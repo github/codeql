@@ -1,4 +1,6 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
+overlay[local?]
+module;
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch

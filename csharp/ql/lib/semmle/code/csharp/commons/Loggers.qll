@@ -1,4 +1,6 @@
 /** Provides classes associated with logging frameworks. */
+overlay[local?]
+module;
 
 import csharp
 

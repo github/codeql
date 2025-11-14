@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `Moq`. */
+overlay[local?]
+module;
 
 import csharp
 

@@ -5,6 +5,8 @@
  * for annotations on the type. Use the corresponding `getAnnotatedType()` predicate to
  * get the annotated type, that includes this additional information.
  */
+overlay[local?]
+module;
 
 import csharp
 private import TypeRef

@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `System.Web.Helpers`. */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.system.Web

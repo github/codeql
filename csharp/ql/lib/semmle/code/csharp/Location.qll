@@ -11,6 +11,8 @@
  * or even several `Assembly` locations if the assembly file
  * is copied during the build process.
  */
+overlay[local?]
+module;
 
 import File
 private import Attribute

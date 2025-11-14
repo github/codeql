@@ -4,6 +4,8 @@
  * Provides a simple analysis for identifying calls to callables that will
  * not return.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.ExprOrStmtParent

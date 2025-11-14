@@ -1,6 +1,8 @@
 /**
  * Provides classes representing events and event accessors.
  */
+overlay[local?]
+module;
 
 import Member
 import Type

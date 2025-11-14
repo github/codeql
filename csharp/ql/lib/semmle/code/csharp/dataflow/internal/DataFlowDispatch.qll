@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import csharp
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
@@ -248,6 +251,7 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 
   /** Gets a control flow node belonging to this callable. */
+  overlay[caller?]
   pragma[inline]
   ControlFlow::Node getAControlFlowNode() {
     result = this.getAMultiBodyControlFlowNode()

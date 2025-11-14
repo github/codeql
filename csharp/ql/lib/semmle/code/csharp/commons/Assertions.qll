@@ -1,4 +1,6 @@
 /** Provides classes for assertions. */
+overlay[local?]
+module;
 
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.frameworks.system.diagnostics.Contracts

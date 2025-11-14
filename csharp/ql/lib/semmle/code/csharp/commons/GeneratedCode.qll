@@ -1,4 +1,6 @@
 /** Provides classes for detecting generated code. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.codedom.Compiler

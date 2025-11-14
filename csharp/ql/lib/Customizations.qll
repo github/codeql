@@ -8,5 +8,7 @@
  * the `RemoteFlowSource` and `SummarizedCallable` classes associated with the security queries
  * to model frameworks that are not covered by the standard library.
  */
+overlay[local?]
+module;
 
 import csharp

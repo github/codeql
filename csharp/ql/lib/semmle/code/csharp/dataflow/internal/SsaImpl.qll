@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with static single assignment (SSA) form.
  */
+overlay[local?]
+module;
 
 import csharp
 private import codeql.ssa.Ssa as SsaImplCommon

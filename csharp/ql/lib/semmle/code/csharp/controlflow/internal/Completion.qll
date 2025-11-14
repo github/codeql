@@ -18,6 +18,8 @@
  * Goto successors are further subdivided into label gotos, case gotos, and
  * default gotos.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.commons.Assertions

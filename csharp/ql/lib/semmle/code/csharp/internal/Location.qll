@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import csharp
 
 private SourceLocation fromMappedLocation(SourceLocation loc) { result.getMappedLocation() = loc }

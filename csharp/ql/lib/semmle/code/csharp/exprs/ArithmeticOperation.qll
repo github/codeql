@@ -3,6 +3,8 @@
  *
  * All arithmetic operations have the common base class `ArithmeticOperation`.
  */
+overlay[local?]
+module;
 
 import Expr
 

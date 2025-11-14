@@ -1,6 +1,8 @@
 /**
  * Provides classes related to the namespace `System.Data.Common`.
  */
+overlay[local?]
+module;
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Data as Data

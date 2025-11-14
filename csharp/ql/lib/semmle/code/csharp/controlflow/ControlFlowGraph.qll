@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import csharp
 
 /**
@@ -55,6 +58,7 @@ module ControlFlow {
      * itself.
      */
     // potentially very large predicate, so must be inlined
+    overlay[caller?]
     pragma[inline]
     predicate dominates(Node that) {
       this.strictlyDominates(that)
@@ -85,6 +89,7 @@ module ControlFlow {
      * through the null check).
      */
     // potentially very large predicate, so must be inlined
+    overlay[caller?]
     pragma[inline]
     predicate strictlyDominates(Node that) {
       this.getBasicBlock().strictlyDominates(that.getBasicBlock())
@@ -126,6 +131,7 @@ module ControlFlow {
      * post-dominates itself.
      */
     // potentially very large predicate, so must be inlined
+    overlay[caller?]
     pragma[inline]
     predicate postDominates(Node that) {
       this.strictlyPostDominates(that)
@@ -161,6 +167,7 @@ module ControlFlow {
      * the `WriteLine` call).
      */
     // potentially very large predicate, so must be inlined
+    overlay[caller?]
     pragma[inline]
     predicate strictlyPostDominates(Node that) {
       this.getBasicBlock().strictlyPostDominates(that.getBasicBlock())

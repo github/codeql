@@ -1,4 +1,6 @@
 /** Provides the `TargetFrameworkAttribute` class for querying the target framework. */
+overlay[local?]
+module;
 
 import csharp
 

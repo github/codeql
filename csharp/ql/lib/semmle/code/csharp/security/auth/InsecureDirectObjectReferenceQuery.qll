@@ -1,4 +1,6 @@
 /** Definitions for the Insecure Direct Object Reference query */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.FlowSources

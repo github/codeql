@@ -1,4 +1,6 @@
 /** Provides data flow sinks for sending email. */
+overlay[local?]
+module;
 
 import csharp
 private import Remote

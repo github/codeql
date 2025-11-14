@@ -1,6 +1,8 @@
 /**
  * Provides predicates for analyzing the return values of callables.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.dataflow.Nullness

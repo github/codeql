@@ -1,6 +1,8 @@
 /**
  * Provides classes related to the Entity Framework namespace `System.Data.Entity`.
  */
+overlay[local?]
+module;
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.system.Data as Data

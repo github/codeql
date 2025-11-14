@@ -1,4 +1,6 @@
 /** Provides classes for types. */
+overlay[local?]
+module;
 
 import Callable
 import Event
@@ -172,6 +174,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
    * }
    * ```
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasMethod(Method m) { this.hasMember(m) }
 
@@ -199,6 +202,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
    * }
    * ```
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasCallable(Callable c) {
     this.hasMember(c)
@@ -229,6 +233,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
    * }
    * ```
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasMember(Member m) {
     m = this.getAMember()

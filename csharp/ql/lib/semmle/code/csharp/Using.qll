@@ -3,6 +3,8 @@
  *
  * All `using` directives have the common base class `UsingDirective`.
  */
+overlay[local?]
+module;
 
 import Element
 private import TypeRef

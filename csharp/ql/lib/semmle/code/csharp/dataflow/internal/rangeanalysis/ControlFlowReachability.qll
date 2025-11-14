@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import csharp
 
 private class ControlFlowScope extends ControlFlowElement {

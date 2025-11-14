@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with assignables.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl

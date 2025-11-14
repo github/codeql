@@ -4,6 +4,8 @@
  *  - SQLi sinks
  *  - XSS sinks
  */
+overlay[local?]
+module;
 
 import csharp
 

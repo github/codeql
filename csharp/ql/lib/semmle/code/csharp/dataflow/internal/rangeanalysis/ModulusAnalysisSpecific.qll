@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 module Private {
   private import csharp as CS
   private import ConstantUtils as CU

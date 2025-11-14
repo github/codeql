@@ -4,6 +4,8 @@
  * Provides logic for resolving viable run-time target callables
  * (non-delegate calls only).
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.commons.Collections

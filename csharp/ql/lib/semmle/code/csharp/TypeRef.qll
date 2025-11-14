@@ -3,6 +3,8 @@
  *
  * Provides support for type-references.
  */
+overlay[local?]
+module;
 
 import csharp
 

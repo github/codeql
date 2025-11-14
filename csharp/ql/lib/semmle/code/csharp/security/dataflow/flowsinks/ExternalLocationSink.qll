@@ -1,6 +1,8 @@
 /**
  * Provides classes representing external location sinks.
  */
+overlay[local?]
+module;
 
 import csharp
 private import FlowSinks

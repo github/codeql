@@ -3,6 +3,8 @@
  *
  * OWIN defines a standard interface between .NET web servers and web applications.
  */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.Microsoft

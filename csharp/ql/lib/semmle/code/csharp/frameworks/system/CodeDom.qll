@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `System.CodeDom`. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.System

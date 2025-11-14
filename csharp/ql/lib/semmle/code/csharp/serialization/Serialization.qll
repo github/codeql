@@ -3,6 +3,8 @@
  * attributed with `SerializableAttribute` and types implementing the
  * `ISerializable` interface.
  */
+overlay[local?]
+module;
 
 import csharp
 

@@ -2,6 +2,8 @@
  * Provides an implementation for constructing control-flow graphs (CFGs) from
  * abstract syntax trees (ASTs), using the shared library from `codeql.controlflow.Cfg`.
  */
+overlay[local?]
+module;
 
 import csharp
 private import codeql.controlflow.Cfg as CfgShared

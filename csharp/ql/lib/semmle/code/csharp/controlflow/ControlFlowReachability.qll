@@ -1,6 +1,8 @@
 /**
  * Provides an implementation of local (intraprocedural) control flow reachability.
  */
+overlay[local?]
+module;
 
 import csharp
 private import codeql.controlflow.ControlFlowReachability

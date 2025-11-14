@@ -3,6 +3,8 @@
  *
  * All comparison operations have the common base class `ComparisonOperation`.
  */
+overlay[local?]
+module;
 
 import Expr
 

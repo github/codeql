@@ -8,6 +8,8 @@
  * The logic is duplicated from the implementation in `BasicBlocks.qll`, and
  * being an internal class, all predicate documentation has been removed.
  */
+overlay[local?]
+module;
 
 import csharp
 private import Completion
@@ -86,9 +88,11 @@ class PreBasicBlock extends ControlFlowElement {
 
   predicate immediatelyDominates(PreBasicBlock bb) { bbIDominates(this, bb) }
 
+  overlay[caller?]
   pragma[inline]
   predicate strictlyDominates(PreBasicBlock bb) { this.immediatelyDominates+(bb) }
 
+  overlay[caller?]
   pragma[inline]
   predicate dominates(PreBasicBlock bb) {
     bb = this

@@ -3,6 +3,8 @@
  *
  * All calls have the common base class `Call`.
  */
+overlay[local?]
+module;
 
 import Expr
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch

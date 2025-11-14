@@ -1,4 +1,6 @@
 /** Provides predicates for working with fully qualified names. */
+overlay[local?]
+module;
 
 private import csharp
 

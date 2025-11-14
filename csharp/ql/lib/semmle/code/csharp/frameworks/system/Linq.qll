@@ -1,6 +1,8 @@
 /**
  * Provides classes related to the namespace `System.Linq`.
  */
+overlay[local?]
+module;
 
 private import csharp as CSharp
 private import semmle.code.csharp.frameworks.System as System

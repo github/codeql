@@ -1,4 +1,6 @@
 /** Provides definitions related to the xUnit.net test framework. */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.Test

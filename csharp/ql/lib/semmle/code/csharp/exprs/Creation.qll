@@ -1,6 +1,8 @@
 /**
  * Provides expression classes for creating various types of object.
  */
+overlay[local?]
+module;
 
 import Expr
 private import semmle.code.csharp.frameworks.system.linq.Expressions

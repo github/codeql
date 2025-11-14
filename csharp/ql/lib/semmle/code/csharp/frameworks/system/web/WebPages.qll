@@ -1,4 +1,6 @@
 /** Definitions related to the namespace `System.Web.WebPages`, ASP.NET */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Web

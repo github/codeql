@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import csharp as CS
 private import codeql.util.test.InlineExpectationsTest
 

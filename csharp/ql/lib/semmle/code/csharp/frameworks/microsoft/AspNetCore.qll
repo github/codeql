@@ -1,4 +1,6 @@
 /** Provides classes for working with `Microsoft.AspNetCore.Mvc`. */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.Microsoft

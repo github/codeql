@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `System`. */
+overlay[local?]
+module;
 
 import csharp
 private import system.Reflection

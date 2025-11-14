@@ -1,6 +1,8 @@
 /**
  * Provides classes related to the namespace `System.Text.RegularExpressions`.
  */
+overlay[local?]
+module;
 
 import default
 import semmle.code.csharp.frameworks.system.Text

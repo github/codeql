@@ -3,6 +3,8 @@
  *
  * All `dynamic` expressions have the common base class `DynamicExpr`.
  */
+overlay[local?]
+module;
 
 import Expr
 private import semmle.code.csharp.dispatch.Dispatch

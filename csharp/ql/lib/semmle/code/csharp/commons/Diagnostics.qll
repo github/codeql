@@ -1,4 +1,6 @@
 /** Provides classes relating to compilation and extraction diagnostics. */
+overlay[local?]
+module;
 
 import csharp
 import Compilation

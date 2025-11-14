@@ -1,4 +1,6 @@
 /** Definitions for the missing function level access control query */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore

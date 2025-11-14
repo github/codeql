@@ -2,6 +2,8 @@
  * Provides classes for variables, such as fields, parameters, local variables, and
  * constants.
  */
+overlay[local?]
+module;
 
 import Assignable
 import Callable

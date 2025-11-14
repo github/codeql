@@ -1,4 +1,6 @@
 /** Provides definitions related to the namespace `System.Diagnostics.CodeAnalysis`. */
+overlay[local?]
+module;
 
 private import csharp
 

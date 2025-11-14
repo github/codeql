@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.test.ProvenancePathGraph as Graph
 private import semmle.code.csharp.dataflow.internal.ExternalFlow

@@ -1,4 +1,6 @@
 /** Provides classes representing various flow sources for taint tracking. */
+overlay[local?]
+module;
 
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import codeql.threatmodels.ThreatModels
