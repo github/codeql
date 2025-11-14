@@ -115,15 +115,23 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type.Create(Context, Symbol.Type);
             trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
 
-            foreach (var l in Symbol.Locations)
-                trapFile.param_location(this, Context.CreateLocation(l));
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                var locations = Context.GetLocations(Symbol);
+                WriteLocationsToTrap(trapFile.param_location, this, locations);
+            }
 
             if (!Symbol.Locations.Any() &&
                 Symbol.ContainingSymbol is IMethodSymbol ms &&
                 ms.Name == WellKnownMemberNames.TopLevelStatementsEntryPointMethodName &&
                 ms.ContainingType.Name == WellKnownMemberNames.TopLevelStatementsEntryPointTypeName)
             {
-                trapFile.param_location(this, Context.CreateLocation());
+                WriteLocationToTrap(trapFile.param_location, this, Context.CreateLocation());
             }
 
             if (Symbol.HasExplicitDefaultValue && Context.Defines(Symbol))
@@ -247,7 +255,6 @@ namespace Semmle.Extraction.CSharp.Entities
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
             trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent!, this);
-            trapFile.param_location(this, GeneratedLocation.Create(Context));
         }
 
         protected override int Ordinal => ((Method)Parent!).OriginalDefinition.Symbol.Parameters.Length;

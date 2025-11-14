@@ -17,8 +17,8 @@
 
    .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
-   Go (aka Golang), "Go up to 1.24", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 24 [6]_","javac (OpenJDK and Oracle JDK),
+   Go (aka Golang), "Go up to 1.25", "Go 1.11 or more recent", ``.go``
+   Java,"Java 7 to 25 [6]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [7]_",``.java``
    Kotlin,"Kotlin 1.6.0 to 2.2.2\ *x*","kotlinc",``.kt``
@@ -26,8 +26,8 @@
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Rust [11]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
-   Swift [12]_,"Swift 5.4-6.1","Swift compiler","``.swift``"
-   TypeScript [13]_,"2.6-5.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   Swift [12]_ [13]_,"Swift 5.4-6.2","Swift compiler","``.swift``"
+   TypeScript [14]_,"2.6-5.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
@@ -36,11 +36,12 @@
     .. [3] Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.
     .. [4] Support for the clang-cl compiler is preliminary.
     .. [5] Support for the Arm Compiler (armcc) is preliminary.
-    .. [6] Builds that execute on Java 7 to 24 can be analyzed. The analysis understands standard language features in Java 8 to 24; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
+    .. [6] Builds that execute on Java 7 to 25 can be analyzed. The analysis understands standard language features in Java 8 to 25; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
     .. [7] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [8] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [9] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
     .. [10] Requires glibc 2.17.
     .. [11] Requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
     .. [12] Support for the analysis of Swift requires macOS.
-    .. [13] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
+    .. [13] Embedded Swift is not supported.
+    .. [14] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.

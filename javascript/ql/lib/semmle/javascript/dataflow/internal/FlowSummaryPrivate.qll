@@ -94,6 +94,8 @@ private string encodeContentAux(ContentSet cs, string arg) {
     cs = ContentSet::iteratorElement() and result = "IteratorElement"
     or
     cs = ContentSet::iteratorError() and result = "IteratorError"
+    or
+    cs = ContentSet::anyProperty() and result = "AnyMember"
   )
   or
   cs = getPromiseContent(arg) and
@@ -148,7 +150,9 @@ private module FlowSummaryStepInput implements Private::StepsInputSig {
     )
   }
 
-  DataFlow::Node getSourceNode(SourceBase source, Private::SummaryComponent sc) { none() }
+  DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source) { none() }
+
+  DataFlow::Node getSourceNode(SourceBase source, Private::SummaryComponentStack s) { none() }
 
   DataFlow::Node getSinkNode(SinkBase sink, Private::SummaryComponent sc) { none() }
 }

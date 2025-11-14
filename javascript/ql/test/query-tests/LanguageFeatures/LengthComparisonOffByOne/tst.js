@@ -55,3 +55,11 @@ function badContains(a, elt) {
       return true;
   return false;
 }
+
+// OK - incorrect upper bound, but extra check
+function badContains2(a, elt) {
+  for (let i = 0; i <= a.length; ++i)
+    if (i < a.length && a[i] === elt)
+      return true;
+  return false;
+}

@@ -141,16 +141,17 @@ module Babel {
    */
   deprecated private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
-    string prefix;
     string mappedPrefix;
     string suffix;
 
     BabelRootTransformedPathExpr() {
       this instanceof PathExpr and
       plugin.appliesTo(this.getTopLevel()) and
-      prefix = this.getStringValue().regexpCapture("(.)/(.*)", 1) and
       suffix = this.getStringValue().regexpCapture("(.)/(.*)", 2) and
-      mappedPrefix = plugin.getRoot(prefix)
+      exists(string prefix |
+        prefix = this.getStringValue().regexpCapture("(.)/(.*)", 1) and
+        mappedPrefix = plugin.getRoot(prefix)
+      )
     }
 
     /** Gets the configuration that applies to this path. */

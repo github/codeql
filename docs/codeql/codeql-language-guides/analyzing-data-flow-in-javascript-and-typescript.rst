@@ -456,7 +456,7 @@ Exercise 3: Write a class which represents flow sources from the array elements 
 Hint: array indices are properties with numeric names; you can use regular expression matching to check this. (`Answer <#exercise-3>`__)
 
 Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from array elements of the result of a call to the ``tagName`` argument to the
-``createElement`` function. (`Answer <#exercise-4>`__)
+``createElement`` function. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Answers
 -------
@@ -540,6 +540,48 @@ Exercise 4
   from DataFlow::Node source, DataFlow::Node sink
   where HardCodedTagNameFlow::flow(source, sink)
   select source, sink
+
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+  /**
+   * @kind path-problem
+   * @problem.severity warning
+   * @id hard-coded-tag-name
+   */
+
+  import javascript
+
+  class ArrayEntryCallResult extends DataFlow::Node {
+    ArrayEntryCallResult() {
+      exists(DataFlow::CallNode call, string index |
+        this = call.getAPropertyRead(index) and
+        index.regexpMatch("\\d+")
+      )
+    }
+  }
+
+  module HardCodedTagNameConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof ArrayEntryCallResult }
+
+    predicate isSink(DataFlow::Node sink) {
+      sink = DataFlow::globalVarRef("document").getAMethodCall("createElement").getArgument(0)
+    }
+  }
+
+  module HardCodedTagNameFlow = DataFlow::Global<HardCodedTagNameConfig>;
+
+   import HardCodedTagNameFlow::PathGraph
+
+   from HardCodedTagNameFlow::PathNode source, HardCodedTagNameFlow::PathNode sink
+   where HardCodedTagNameFlow::flowPath(source, sink)
+   select sink.getNode(), source, sink, "Hard-coded tag name $@.", source, "here"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------

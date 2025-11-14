@@ -313,6 +313,8 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(UnsafeDeserializationSink).getLocation()
+    or
     result = sink.(UnsafeDeserializationSink).getMethodCall().getLocation()
   }
 }
@@ -552,7 +554,7 @@ private DataFlow::Node getASafelyConfiguredParser() {
 }
 
 /**
- * Holds if `parseMethodQualifierExpr` is a `jodd.json.JsonParser` instance that is configured unsafely
+ * Holds if `parserExpr` is a `jodd.json.JsonParser` instance that is configured unsafely
  * and which never appears to be configured safely.
  */
 private predicate joddJsonParserConfiguredUnsafely(Expr parserExpr) {

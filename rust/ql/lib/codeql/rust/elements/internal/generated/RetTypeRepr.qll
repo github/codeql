@@ -19,7 +19,7 @@ module Generated {
    *
    * For example:
    * ```rust
-   * fn foo() -> i32 {}
+   * fn foo() -> i32 { 0 }
    * //       ^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::RetTypeRepr` class directly.

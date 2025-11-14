@@ -15,7 +15,11 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.destructors(this, $"~{Symbol.ContainingType.Name}", ContainingType, OriginalDefinition(Context, this, Symbol));
-            trapFile.destructor_location(this, Location);
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationToTrap(trapFile.destructor_location, this, Location);
+            }
         }
 
         private static new Destructor OriginalDefinition(Context cx, Destructor original, IMethodSymbol symbol)

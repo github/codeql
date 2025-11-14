@@ -1,25 +1,8 @@
-ql/java/ql/src/Advisory/Declarations/NonFinalImmutableField.ql
-ql/java/ql/src/Advisory/Declarations/NonPrivateField.ql
 ql/java/ql/src/Advisory/Documentation/MissingJavadocMethods.ql
 ql/java/ql/src/Advisory/Documentation/MissingJavadocParameters.ql
 ql/java/ql/src/Advisory/Documentation/MissingJavadocReturnValues.ql
 ql/java/ql/src/Advisory/Documentation/MissingJavadocThrows.ql
 ql/java/ql/src/Advisory/Documentation/MissingJavadocTypes.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidCloneMethodAccess.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidCloneOverride.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidCloneableInterface.ql
-ql/java/ql/src/Advisory/Java Objects/AvoidFinalizeOverride.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsConstants.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsMethods.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsPackages.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsRefTypes.ql
-ql/java/ql/src/Advisory/Naming/NamingConventionsVariables.ql
-ql/java/ql/src/Advisory/Statements/MissingDefaultInSwitch.ql
-ql/java/ql/src/Advisory/Statements/OneStatementPerLine.ql
-ql/java/ql/src/Advisory/Statements/TerminateIfElseIfWithElse.ql
-ql/java/ql/src/Advisory/Types/GenericsConstructor.ql
-ql/java/ql/src/Advisory/Types/GenericsReturnType.ql
-ql/java/ql/src/Advisory/Types/GenericsVariable.ql
 ql/java/ql/src/AlertSuppression.ql
 ql/java/ql/src/AlertSuppressionAnnotations.ql
 ql/java/ql/src/Architecture/Dependencies/MutualDependency.ql
@@ -31,10 +14,6 @@ ql/java/ql/src/Architecture/Refactoring Opportunities/HubClasses.ql
 ql/java/ql/src/Architecture/Refactoring Opportunities/InappropriateIntimacy.ql
 ql/java/ql/src/Complexity/BlockWithTooManyStatements.ql
 ql/java/ql/src/Complexity/ComplexCondition.ql
-ql/java/ql/src/DeadCode/DeadClass.ql
-ql/java/ql/src/DeadCode/DeadEnumConstant.ql
-ql/java/ql/src/DeadCode/DeadField.ql
-ql/java/ql/src/DeadCode/DeadMethod.ql
 ql/java/ql/src/DeadCode/FLinesOfDeadCode.ql
 ql/java/ql/src/Frameworks/JavaEE/EJB/EjbContainerInterference.ql
 ql/java/ql/src/Frameworks/JavaEE/EJB/EjbFileIO.ql
@@ -66,7 +45,6 @@ ql/java/ql/src/Frameworks/Spring/XML Configuration Errors/MissingSetters.ql
 ql/java/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/java/ql/src/Language Abuse/DubiousDowncastOfThis.ql
 ql/java/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
-ql/java/ql/src/Language Abuse/EmptyStatement.ql
 ql/java/ql/src/Language Abuse/EnumIdentifier.ql
 ql/java/ql/src/Language Abuse/ImplementsAnnotation.ql
 ql/java/ql/src/Language Abuse/MissedTernaryOpportunity.ql
@@ -187,7 +165,6 @@ ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicNumbersUseConsta
 ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicStringsUseConstant.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverridesNames.ql
 ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsField.ql
-ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToSystemExit.ql
 ql/java/ql/src/Violations of Best Practice/Undesirable Calls/GarbageCollection.ql
 ql/java/ql/src/Violations of Best Practice/legacy/AutoBoxing.ql
 ql/java/ql/src/Violations of Best Practice/legacy/FinallyMayNotComplete.ql
@@ -196,7 +173,6 @@ ql/java/ql/src/Violations of Best Practice/legacy/ParameterAssignment.ql
 ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryCast.ql
 ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryImport.ql
 ql/java/ql/src/definitions.ql
-ql/java/ql/src/experimental/Security/CWE/CWE-016/InsecureSpringActuatorConfig.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-020/Log4jJndiInjection.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-036/OpenStream.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-073/FilePathInjection.ql
@@ -214,7 +190,6 @@ ql/java/ql/src/experimental/Security/CWE/CWE-094/ScriptInjection.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-094/SpringImplicitViewManipulation.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-094/SpringViewManipulation.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-1004/InsecureTomcatConfig.ql
-ql/java/ql/src/experimental/Security/CWE/CWE-1004/SensitiveCookieNotHttpOnly.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-200/InsecureWebResourceResponse.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-200/SensitiveAndroidFileLeak.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-208/PossibleTimingAttackAgainstSignature.ql
@@ -253,14 +228,25 @@ ql/java/ql/src/experimental/Security/CWE/CWE-665/InsecureRmiJmxEnvironmentConfig
 ql/java/ql/src/experimental/Security/CWE/CWE-755/NFEAndroidDoS.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-759/HashWithoutSalt.ql
 ql/java/ql/src/experimental/Security/CWE/CWE-939/IncorrectURLVerification.ql
-ql/java/ql/src/experimental/quantum/Analysis/InsecureNonceSource.ql
-ql/java/ql/src/experimental/quantum/Analysis/KnownWeakKDFIterationCount.ql
-ql/java/ql/src/experimental/quantum/Analysis/ReusedNonce.ql
-ql/java/ql/src/experimental/quantum/Analysis/UnknownKDFIterationCount.ql
+ql/java/ql/src/experimental/quantum/Examples/BadMacOrderDecryptThenMac.ql
+ql/java/ql/src/experimental/quantum/Examples/BadMacOrderDecryptToMac.ql
+ql/java/ql/src/experimental/quantum/Examples/BadMacOrderMacOnEncryptPlaintext.ql
 ql/java/ql/src/experimental/quantum/Examples/BrokenCrypto.ql
+ql/java/ql/src/experimental/quantum/Examples/InsecureIVorNonceSource.ql
+ql/java/ql/src/experimental/quantum/Examples/NonAESGCMCipher.ql
+ql/java/ql/src/experimental/quantum/Examples/ReusedNonce.ql
 ql/java/ql/src/experimental/quantum/Examples/TestAESGCMNonce.ql
 ql/java/ql/src/experimental/quantum/Examples/TestCipher.ql
 ql/java/ql/src/experimental/quantum/Examples/TestHash.ql
+ql/java/ql/src/experimental/quantum/Examples/UnknownHash.ql
+ql/java/ql/src/experimental/quantum/Examples/UnknownIVorNonceSource.ql
+ql/java/ql/src/experimental/quantum/Examples/UnknownKDFIterationCount.ql
+ql/java/ql/src/experimental/quantum/Examples/WeakAsymmetricKeyGenSize.ql
+ql/java/ql/src/experimental/quantum/Examples/WeakBlockModes.ql
+ql/java/ql/src/experimental/quantum/Examples/WeakHash.ql
+ql/java/ql/src/experimental/quantum/Examples/WeakKDFIterationCount.ql
+ql/java/ql/src/experimental/quantum/Examples/WeakKDFKeySize.ql
+ql/java/ql/src/experimental/quantum/Examples/WeakSymmetricCipher.ql
 ql/java/ql/src/experimental/quantum/InventorySlices/KnownAsymmetricAlgorithm.ql
 ql/java/ql/src/experimental/quantum/InventorySlices/KnownAsymmetricCipherAlgorithm.ql
 ql/java/ql/src/experimental/quantum/InventorySlices/KnownAsymmetricOperationAlgorithm.ql
@@ -285,10 +271,6 @@ ql/java/ql/src/external/MostlyDuplicateMethod.ql
 ql/java/ql/src/external/MostlySimilarFile.ql
 ql/java/ql/src/filters/ClassifyFiles.ql
 ql/java/ql/src/meta/frameworks/Coverage.ql
-ql/java/ql/src/meta/ssa/AmbiguousToString.ql
-ql/java/ql/src/meta/ssa/TooFewPhiInputs.ql
-ql/java/ql/src/meta/ssa/UncertainDefWithoutPrior.ql
-ql/java/ql/src/meta/ssa/UseWithoutUniqueSsaVariable.ql
 ql/java/ql/src/utils/modelconverter/ExtractNeutrals.ql
 ql/java/ql/src/utils/modelconverter/ExtractSinks.ql
 ql/java/ql/src/utils/modelconverter/ExtractSources.ql

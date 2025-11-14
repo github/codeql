@@ -1,7 +1,0 @@
----
-category: fix
----
-* Made the following changes to `NetHttpRequest`
-  * Adds `connectionNode`, like other Ruby HTTP clients
-  * Makes `requestNode` and `connectionNode` public so subclasses can use them
-  * Adds detection of `Net::HTTP.start`, a common way to make HTTP requests in Ruby

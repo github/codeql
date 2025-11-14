@@ -137,6 +137,19 @@ codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCase
   return entry;
 }
 
+codeql::UsingDecl DeclTranslator::translateUsingDecl(const swift::UsingDecl& decl) {
+  auto entry = createEntry(decl);
+  switch (decl.getSpecifier()) {
+    case swift::UsingSpecifier::MainActor:
+      entry.is_main_actor = true;
+      break;
+    case swift::UsingSpecifier::Nonisolated:
+      entry.is_nonisolated = true;
+      break;
+  }
+  return entry;
+}
+
 codeql::EnumElementDecl DeclTranslator::translateEnumElementDecl(
     const swift::EnumElementDecl& decl) {
   auto entry = createEntry(decl);
@@ -196,6 +209,18 @@ codeql::Accessor DeclTranslator::translateAccessorDecl(const swift::AccessorDecl
       break;
     case swift::AccessorKind::MutableAddress:
       entry.is_unsafe_mutable_address = true;
+      break;
+    case swift::AccessorKind::DistributedGet:
+      entry.is_distributed_get = true;
+      break;
+    case swift::AccessorKind::Read2:
+      entry.is_read2 = true;
+      break;
+    case swift::AccessorKind::Modify2:
+      entry.is_modify2 = true;
+      break;
+    case swift::AccessorKind::Init:
+      entry.is_init = true;
       break;
   }
   fillFunction(decl, entry);
@@ -280,7 +305,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
                                              codeql::Decl& entry) {
   for (auto member : decl.getMembers()) {
-    if (swift::AvailableAttr::isUnavailable(member)) {
+    if (member->isUnavailable()) {
       continue;
     }
     entry.members.emplace_back(dispatcher.fetchLabel(member));
@@ -339,14 +364,6 @@ codeql::OpaqueTypeDecl DeclTranslator::translateOpaqueTypeDecl(const swift::Opaq
   fillTypeDecl(decl, entry);
   entry.naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
   entry.opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
-  return entry;
-}
-
-codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
-    const swift::PoundDiagnosticDecl& decl) {
-  auto entry = createEntry(decl);
-  entry.kind = translateDiagnosticsKind(decl.getKind());
-  entry.message = dispatcher.fetchLabel(decl.getMessage());
   return entry;
 }
 

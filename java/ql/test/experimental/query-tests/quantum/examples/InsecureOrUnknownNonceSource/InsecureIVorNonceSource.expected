@@ -1,0 +1,130 @@
+#select
+| InsecureIVorNonceSource.java:20:51:20:56 | ivSpec | InsecureIVorNonceSource.java:14:21:14:81 | {...} : byte[] | InsecureIVorNonceSource.java:20:51:20:56 | ivSpec | Nonce or IV uses constant source $@ | InsecureIVorNonceSource.java:14:21:14:81 | Constant | Constant | InsecureIVorNonceSource.java:20:51:20:56 | Nonce | Nonce |
+| InsecureIVorNonceSource.java:49:51:49:56 | ivSpec | InsecureIVorNonceSource.java:42:21:42:21 | 1 : Number | InsecureIVorNonceSource.java:49:51:49:56 | ivSpec | Nonce or IV uses constant source $@ | InsecureIVorNonceSource.java:42:21:42:21 | Constant | Constant | InsecureIVorNonceSource.java:49:51:49:56 | Nonce | Nonce |
+| InsecureIVorNonceSource.java:65:51:65:56 | ivSpec | InsecureIVorNonceSource.java:57:13:57:62 | {...} : byte[] | InsecureIVorNonceSource.java:65:51:65:56 | ivSpec | Nonce or IV uses constant source $@ | InsecureIVorNonceSource.java:57:13:57:62 | Constant | Constant | InsecureIVorNonceSource.java:65:51:65:56 | Nonce | Nonce |
+| InsecureIVorNonceSource.java:65:51:65:56 | ivSpec | InsecureIVorNonceSource.java:58:13:58:63 | {...} : byte[] | InsecureIVorNonceSource.java:65:51:65:56 | ivSpec | Nonce or IV uses constant source $@ | InsecureIVorNonceSource.java:58:13:58:63 | Constant | Constant | InsecureIVorNonceSource.java:65:51:65:56 | Nonce | Nonce |
+| InsecureIVorNonceSource.java:81:51:81:56 | ivSpec | InsecureIVorNonceSource.java:73:13:73:73 | {...} : byte[] | InsecureIVorNonceSource.java:81:51:81:56 | ivSpec | Nonce or IV uses constant source $@ | InsecureIVorNonceSource.java:73:13:73:73 | Constant | Constant | InsecureIVorNonceSource.java:81:51:81:56 | Nonce | Nonce |
+| InsecureIVorNonceSource.java:81:51:81:56 | ivSpec | InsecureIVorNonceSource.java:74:13:74:74 | {...} : byte[] | InsecureIVorNonceSource.java:81:51:81:56 | ivSpec | Nonce or IV uses constant source $@ | InsecureIVorNonceSource.java:74:13:74:74 | Constant | Constant | InsecureIVorNonceSource.java:81:51:81:56 | Nonce | Nonce |
+| InsecureIVorNonceSource.java:206:51:206:56 | ivSpec | InsecureIVorNonceSource.java:194:26:194:30 | bytes : byte[] | InsecureIVorNonceSource.java:206:51:206:56 | ivSpec | Nonce or IV uses insecure source $@ at encryption operation $@ | InsecureIVorNonceSource.java:194:26:194:30 | RandomNumberGeneration | RandomNumberGeneration | InsecureIVorNonceSource.java:208:16:208:31 | EncryptOperation | EncryptOperation |
+edges
+| InsecureIVorNonceSource.java:14:21:14:81 | {...} : byte[] | InsecureIVorNonceSource.java:16:61:16:62 | iv : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:16:35:16:63 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:20:51:20:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:16:61:16:62 | iv : byte[] | InsecureIVorNonceSource.java:16:35:16:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:16:61:16:62 | iv : byte[] | InsecureIVorNonceSource.java:16:35:16:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | MaD:4 |
+| InsecureIVorNonceSource.java:42:13:42:14 | iv [post update] : byte[] [[]] : Number | InsecureIVorNonceSource.java:45:54:45:55 | iv : byte[] [[]] : Number | provenance |  |
+| InsecureIVorNonceSource.java:42:21:42:21 | 1 : Number | InsecureIVorNonceSource.java:42:13:42:14 | iv [post update] : byte[] [[]] : Number | provenance |  |
+| InsecureIVorNonceSource.java:45:34:45:56 | new IvParameterSpec(...) : IvParameterSpec | InsecureIVorNonceSource.java:49:51:49:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:45:54:45:55 | iv : byte[] [[]] : Number | InsecureIVorNonceSource.java:45:34:45:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:56:30:59:9 | {...} : byte[][] [[]] : byte[] | InsecureIVorNonceSource.java:61:61:61:69 | staticIvs : byte[][] [[]] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:57:13:57:62 | {...} : byte[] | InsecureIVorNonceSource.java:56:30:59:9 | {...} : byte[][] [[]] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:58:13:58:63 | {...} : byte[] | InsecureIVorNonceSource.java:56:30:59:9 | {...} : byte[][] [[]] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:61:35:61:73 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:65:51:65:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:61:61:61:69 | staticIvs : byte[][] [[]] : byte[] | InsecureIVorNonceSource.java:61:61:61:72 | ...[...] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:61:61:61:72 | ...[...] : byte[] | InsecureIVorNonceSource.java:61:35:61:73 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:61:61:61:72 | ...[...] : byte[] | InsecureIVorNonceSource.java:61:35:61:73 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | MaD:4 |
+| InsecureIVorNonceSource.java:72:30:75:9 | {...} : byte[][] [[]] : byte[] | InsecureIVorNonceSource.java:77:61:77:69 | staticIvs : byte[][] [[]] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:73:13:73:73 | {...} : byte[] | InsecureIVorNonceSource.java:72:30:75:9 | {...} : byte[][] [[]] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:74:13:74:74 | {...} : byte[] | InsecureIVorNonceSource.java:72:30:75:9 | {...} : byte[][] [[]] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:77:35:77:73 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:81:51:81:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:77:61:77:69 | staticIvs : byte[][] [[]] : byte[] | InsecureIVorNonceSource.java:77:61:77:72 | ...[...] : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:77:61:77:72 | ...[...] : byte[] | InsecureIVorNonceSource.java:77:35:77:73 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:77:61:77:72 | ...[...] : byte[] | InsecureIVorNonceSource.java:77:35:77:73 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | MaD:4 |
+| InsecureIVorNonceSource.java:107:26:107:27 | iv : byte[] | InsecureIVorNonceSource.java:109:61:109:62 | iv : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:109:35:109:63 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:113:51:113:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:109:61:109:62 | iv : byte[] | InsecureIVorNonceSource.java:109:35:109:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:109:61:109:62 | iv : byte[] | InsecureIVorNonceSource.java:109:35:109:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | MaD:4 |
+| InsecureIVorNonceSource.java:123:13:123:14 | iv [post update] : byte[] [[]] : Number | InsecureIVorNonceSource.java:126:61:126:62 | iv : byte[] [[]] : Number | provenance |  |
+| InsecureIVorNonceSource.java:123:21:123:43 | (...)... : Number | InsecureIVorNonceSource.java:123:13:123:14 | iv [post update] : byte[] [[]] : Number | provenance |  |
+| InsecureIVorNonceSource.java:123:28:123:43 | nextInt(...) : Number | InsecureIVorNonceSource.java:123:21:123:43 | (...)... : Number | provenance |  |
+| InsecureIVorNonceSource.java:126:35:126:63 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:130:51:130:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:126:61:126:62 | iv : byte[] [[]] : Number | InsecureIVorNonceSource.java:126:35:126:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:138:52:138:62 | randomBytes : byte[] | InsecureIVorNonceSource.java:141:26:141:36 | randomBytes : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:141:26:141:36 | randomBytes : byte[] | InsecureIVorNonceSource.java:141:42:141:43 | iv [post update] : byte[] | provenance | MaD:2 |
+| InsecureIVorNonceSource.java:141:42:141:43 | iv [post update] : byte[] | InsecureIVorNonceSource.java:143:61:143:62 | iv : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:143:35:143:63 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:147:51:147:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:143:61:143:62 | iv : byte[] | InsecureIVorNonceSource.java:143:35:143:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:143:61:143:62 | iv : byte[] | InsecureIVorNonceSource.java:143:35:143:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | MaD:4 |
+| InsecureIVorNonceSource.java:155:52:155:62 | randomBytes : byte[] | InsecureIVorNonceSource.java:158:28:158:38 | randomBytes : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:158:14:158:43 | copyOf(...) : byte[] [[]] : Object | InsecureIVorNonceSource.java:160:61:160:62 | iv : byte[] [[]] : Object | provenance |  |
+| InsecureIVorNonceSource.java:158:28:158:38 | randomBytes : byte[] | InsecureIVorNonceSource.java:158:14:158:43 | copyOf(...) : byte[] [[]] : Object | provenance | MaD:3 |
+| InsecureIVorNonceSource.java:160:35:160:63 | new GCMParameterSpec(...) : GCMParameterSpec | InsecureIVorNonceSource.java:164:51:164:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:160:61:160:62 | iv : byte[] [[]] : Object | InsecureIVorNonceSource.java:160:35:160:63 | new GCMParameterSpec(...) : GCMParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:174:52:174:62 | randomBytes : byte[] | InsecureIVorNonceSource.java:175:16:175:26 | randomBytes : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:175:16:175:26 | randomBytes : byte[] | InsecureIVorNonceSource.java:180:21:180:32 | generate(...) : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:180:21:180:32 | generate(...) : byte[] | InsecureIVorNonceSource.java:182:54:182:55 | iv : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:182:34:182:56 | new IvParameterSpec(...) : IvParameterSpec | InsecureIVorNonceSource.java:186:51:186:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:182:54:182:55 | iv : byte[] | InsecureIVorNonceSource.java:182:34:182:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:182:54:182:55 | iv : byte[] | InsecureIVorNonceSource.java:182:34:182:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:5 |
+| InsecureIVorNonceSource.java:194:26:194:30 | bytes : byte[] | InsecureIVorNonceSource.java:195:16:195:20 | bytes : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:195:16:195:20 | bytes : byte[] | InsecureIVorNonceSource.java:200:21:200:51 | generateInsecureRandomBytes(...) : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:200:21:200:51 | generateInsecureRandomBytes(...) : byte[] | InsecureIVorNonceSource.java:202:54:202:55 | iv : byte[] | provenance |  |
+| InsecureIVorNonceSource.java:202:34:202:56 | new IvParameterSpec(...) : IvParameterSpec | InsecureIVorNonceSource.java:206:51:206:56 | ivSpec | provenance | Sink:MaD:1 |
+| InsecureIVorNonceSource.java:202:54:202:55 | iv : byte[] | InsecureIVorNonceSource.java:202:34:202:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| InsecureIVorNonceSource.java:202:54:202:55 | iv : byte[] | InsecureIVorNonceSource.java:202:34:202:56 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:5 |
+models
+| 1 | Sink: javax.crypto; Cipher; true; init; (int,Key,AlgorithmParameterSpec); ; Argument[2]; encryption-iv; manual |
+| 2 | Summary: java.lang; System; false; arraycopy; ; ; Argument[0]; Argument[2]; taint; manual |
+| 3 | Summary: java.util; Arrays; false; copyOf; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
+| 4 | Summary: javax.crypto.spec; GCMParameterSpec; true; GCMParameterSpec; ; ; Argument[1]; Argument[this]; taint; manual |
+| 5 | Summary: javax.crypto.spec; IvParameterSpec; true; IvParameterSpec; ; ; Argument[0]; Argument[this]; taint; manual |
+nodes
+| InsecureIVorNonceSource.java:14:21:14:81 | {...} : byte[] | semmle.label | {...} : byte[] |
+| InsecureIVorNonceSource.java:16:35:16:63 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:16:61:16:62 | iv : byte[] | semmle.label | iv : byte[] |
+| InsecureIVorNonceSource.java:20:51:20:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:42:13:42:14 | iv [post update] : byte[] [[]] : Number | semmle.label | iv [post update] : byte[] [[]] : Number |
+| InsecureIVorNonceSource.java:42:21:42:21 | 1 : Number | semmle.label | 1 : Number |
+| InsecureIVorNonceSource.java:45:34:45:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| InsecureIVorNonceSource.java:45:54:45:55 | iv : byte[] [[]] : Number | semmle.label | iv : byte[] [[]] : Number |
+| InsecureIVorNonceSource.java:49:51:49:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:56:30:59:9 | {...} : byte[][] [[]] : byte[] | semmle.label | {...} : byte[][] [[]] : byte[] |
+| InsecureIVorNonceSource.java:57:13:57:62 | {...} : byte[] | semmle.label | {...} : byte[] |
+| InsecureIVorNonceSource.java:58:13:58:63 | {...} : byte[] | semmle.label | {...} : byte[] |
+| InsecureIVorNonceSource.java:61:35:61:73 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:61:61:61:69 | staticIvs : byte[][] [[]] : byte[] | semmle.label | staticIvs : byte[][] [[]] : byte[] |
+| InsecureIVorNonceSource.java:61:61:61:72 | ...[...] : byte[] | semmle.label | ...[...] : byte[] |
+| InsecureIVorNonceSource.java:65:51:65:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:72:30:75:9 | {...} : byte[][] [[]] : byte[] | semmle.label | {...} : byte[][] [[]] : byte[] |
+| InsecureIVorNonceSource.java:73:13:73:73 | {...} : byte[] | semmle.label | {...} : byte[] |
+| InsecureIVorNonceSource.java:74:13:74:74 | {...} : byte[] | semmle.label | {...} : byte[] |
+| InsecureIVorNonceSource.java:77:35:77:73 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:77:61:77:69 | staticIvs : byte[][] [[]] : byte[] | semmle.label | staticIvs : byte[][] [[]] : byte[] |
+| InsecureIVorNonceSource.java:77:61:77:72 | ...[...] : byte[] | semmle.label | ...[...] : byte[] |
+| InsecureIVorNonceSource.java:81:51:81:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:107:26:107:27 | iv : byte[] | semmle.label | iv : byte[] |
+| InsecureIVorNonceSource.java:109:35:109:63 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:109:61:109:62 | iv : byte[] | semmle.label | iv : byte[] |
+| InsecureIVorNonceSource.java:113:51:113:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:123:13:123:14 | iv [post update] : byte[] [[]] : Number | semmle.label | iv [post update] : byte[] [[]] : Number |
+| InsecureIVorNonceSource.java:123:21:123:43 | (...)... : Number | semmle.label | (...)... : Number |
+| InsecureIVorNonceSource.java:123:28:123:43 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| InsecureIVorNonceSource.java:126:35:126:63 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:126:61:126:62 | iv : byte[] [[]] : Number | semmle.label | iv : byte[] [[]] : Number |
+| InsecureIVorNonceSource.java:130:51:130:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:138:52:138:62 | randomBytes : byte[] | semmle.label | randomBytes : byte[] |
+| InsecureIVorNonceSource.java:141:26:141:36 | randomBytes : byte[] | semmle.label | randomBytes : byte[] |
+| InsecureIVorNonceSource.java:141:42:141:43 | iv [post update] : byte[] | semmle.label | iv [post update] : byte[] |
+| InsecureIVorNonceSource.java:143:35:143:63 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:143:61:143:62 | iv : byte[] | semmle.label | iv : byte[] |
+| InsecureIVorNonceSource.java:147:51:147:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:155:52:155:62 | randomBytes : byte[] | semmle.label | randomBytes : byte[] |
+| InsecureIVorNonceSource.java:158:14:158:43 | copyOf(...) : byte[] [[]] : Object | semmle.label | copyOf(...) : byte[] [[]] : Object |
+| InsecureIVorNonceSource.java:158:28:158:38 | randomBytes : byte[] | semmle.label | randomBytes : byte[] |
+| InsecureIVorNonceSource.java:160:35:160:63 | new GCMParameterSpec(...) : GCMParameterSpec | semmle.label | new GCMParameterSpec(...) : GCMParameterSpec |
+| InsecureIVorNonceSource.java:160:61:160:62 | iv : byte[] [[]] : Object | semmle.label | iv : byte[] [[]] : Object |
+| InsecureIVorNonceSource.java:164:51:164:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:174:52:174:62 | randomBytes : byte[] | semmle.label | randomBytes : byte[] |
+| InsecureIVorNonceSource.java:175:16:175:26 | randomBytes : byte[] | semmle.label | randomBytes : byte[] |
+| InsecureIVorNonceSource.java:180:21:180:32 | generate(...) : byte[] | semmle.label | generate(...) : byte[] |
+| InsecureIVorNonceSource.java:182:34:182:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| InsecureIVorNonceSource.java:182:54:182:55 | iv : byte[] | semmle.label | iv : byte[] |
+| InsecureIVorNonceSource.java:186:51:186:56 | ivSpec | semmle.label | ivSpec |
+| InsecureIVorNonceSource.java:194:26:194:30 | bytes : byte[] | semmle.label | bytes : byte[] |
+| InsecureIVorNonceSource.java:195:16:195:20 | bytes : byte[] | semmle.label | bytes : byte[] |
+| InsecureIVorNonceSource.java:200:21:200:51 | generateInsecureRandomBytes(...) : byte[] | semmle.label | generateInsecureRandomBytes(...) : byte[] |
+| InsecureIVorNonceSource.java:202:34:202:56 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| InsecureIVorNonceSource.java:202:54:202:55 | iv : byte[] | semmle.label | iv : byte[] |
+| InsecureIVorNonceSource.java:206:51:206:56 | ivSpec | semmle.label | ivSpec |
+subpaths
+testFailures
+| InsecureIVorNonceSource.java:42:21:42:21 | 1 : Number | Unexpected result: Source |

@@ -1,0 +1,72 @@
+#select
+| main.rs:12:22:12:43 | ...::get | main.rs:12:45:12:68 | "http://example.com/api" | main.rs:12:22:12:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:12:45:12:68 | "http://example.com/api" | this HTTP URL |
+| main.rs:13:22:13:43 | ...::get | main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | main.rs:13:22:13:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | this HTTP URL |
+| main.rs:14:22:14:43 | ...::get | main.rs:14:45:14:73 | "http://api.example.com/data" | main.rs:14:22:14:43 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:14:45:14:73 | "http://api.example.com/data" | this HTTP URL |
+| main.rs:26:21:26:42 | ...::get | main.rs:23:20:23:39 | "http://example.com" | main.rs:26:21:26:42 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:23:20:23:39 | "http://example.com" | this HTTP URL |
+| main.rs:37:30:37:51 | ...::get | main.rs:34:20:34:28 | "http://" | main.rs:37:30:37:51 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:34:20:34:28 | "http://" | this HTTP URL |
+| main.rs:60:20:60:41 | ...::get | main.rs:60:43:60:65 | "http://172.32.0.0/baz" | main.rs:60:20:60:41 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:60:43:60:65 | "http://172.32.0.0/baz" | this HTTP URL |
+| main.rs:71:24:71:45 | ...::get | main.rs:68:19:68:53 | "http://example.com/sensitive-... | main.rs:71:24:71:45 | ...::get | This URL may be constructed with the HTTP protocol, from $@. | main.rs:68:19:68:53 | "http://example.com/sensitive-... | this HTTP URL |
+edges
+| main.rs:12:45:12:68 | "http://example.com/api" | main.rs:12:22:12:43 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | main.rs:13:22:13:43 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:14:45:14:73 | "http://api.example.com/data" | main.rs:14:22:14:43 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:23:9:23:16 | base_url | main.rs:25:28:25:53 | MacroExpr | provenance |  |
+| main.rs:23:20:23:39 | "http://example.com" | main.rs:23:9:23:16 | base_url | provenance |  |
+| main.rs:25:9:25:16 | full_url | main.rs:26:45:26:52 | full_url | provenance |  |
+| main.rs:25:28:25:53 | ...::format(...) | main.rs:25:28:25:53 | { ... } | provenance |  |
+| main.rs:25:28:25:53 | ...::must_use(...) | main.rs:25:9:25:16 | full_url | provenance |  |
+| main.rs:25:28:25:53 | MacroExpr | main.rs:25:28:25:53 | ...::format(...) | provenance | MaD:2 |
+| main.rs:25:28:25:53 | { ... } | main.rs:25:28:25:53 | ...::must_use(...) | provenance | MaD:3 |
+| main.rs:26:44:26:52 | &full_url [&ref] | main.rs:26:21:26:42 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:26:45:26:52 | full_url | main.rs:26:44:26:52 | &full_url [&ref] | provenance |  |
+| main.rs:34:9:34:16 | protocol | main.rs:36:32:36:53 | MacroExpr | provenance |  |
+| main.rs:34:20:34:28 | "http://" | main.rs:34:9:34:16 | protocol | provenance |  |
+| main.rs:36:9:36:20 | insecure_url | main.rs:37:54:37:65 | insecure_url | provenance |  |
+| main.rs:36:32:36:53 | ...::format(...) | main.rs:36:32:36:53 | { ... } | provenance |  |
+| main.rs:36:32:36:53 | ...::must_use(...) | main.rs:36:9:36:20 | insecure_url | provenance |  |
+| main.rs:36:32:36:53 | MacroExpr | main.rs:36:32:36:53 | ...::format(...) | provenance | MaD:2 |
+| main.rs:36:32:36:53 | { ... } | main.rs:36:32:36:53 | ...::must_use(...) | provenance | MaD:3 |
+| main.rs:37:53:37:65 | &insecure_url [&ref] | main.rs:37:30:37:51 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:37:54:37:65 | insecure_url | main.rs:37:53:37:65 | &insecure_url [&ref] | provenance |  |
+| main.rs:60:43:60:65 | "http://172.32.0.0/baz" | main.rs:60:20:60:41 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:68:13:68:15 | url | main.rs:71:47:71:49 | url | provenance |  |
+| main.rs:68:19:68:53 | "http://example.com/sensitive-... | main.rs:68:13:68:15 | url | provenance |  |
+| main.rs:71:47:71:49 | url | main.rs:71:24:71:45 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+models
+| 1 | Sink: reqwest::blocking::get; Argument[0]; request-url |
+| 2 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 3 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+nodes
+| main.rs:12:22:12:43 | ...::get | semmle.label | ...::get |
+| main.rs:12:45:12:68 | "http://example.com/api" | semmle.label | "http://example.com/api" |
+| main.rs:13:22:13:43 | ...::get | semmle.label | ...::get |
+| main.rs:13:45:13:68 | "HTTP://EXAMPLE.COM/API" | semmle.label | "HTTP://EXAMPLE.COM/API" |
+| main.rs:14:22:14:43 | ...::get | semmle.label | ...::get |
+| main.rs:14:45:14:73 | "http://api.example.com/data" | semmle.label | "http://api.example.com/data" |
+| main.rs:23:9:23:16 | base_url | semmle.label | base_url |
+| main.rs:23:20:23:39 | "http://example.com" | semmle.label | "http://example.com" |
+| main.rs:25:9:25:16 | full_url | semmle.label | full_url |
+| main.rs:25:28:25:53 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:25:28:25:53 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:25:28:25:53 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:25:28:25:53 | { ... } | semmle.label | { ... } |
+| main.rs:26:21:26:42 | ...::get | semmle.label | ...::get |
+| main.rs:26:44:26:52 | &full_url [&ref] | semmle.label | &full_url [&ref] |
+| main.rs:26:45:26:52 | full_url | semmle.label | full_url |
+| main.rs:34:9:34:16 | protocol | semmle.label | protocol |
+| main.rs:34:20:34:28 | "http://" | semmle.label | "http://" |
+| main.rs:36:9:36:20 | insecure_url | semmle.label | insecure_url |
+| main.rs:36:32:36:53 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:36:32:36:53 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:36:32:36:53 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:36:32:36:53 | { ... } | semmle.label | { ... } |
+| main.rs:37:30:37:51 | ...::get | semmle.label | ...::get |
+| main.rs:37:53:37:65 | &insecure_url [&ref] | semmle.label | &insecure_url [&ref] |
+| main.rs:37:54:37:65 | insecure_url | semmle.label | insecure_url |
+| main.rs:60:20:60:41 | ...::get | semmle.label | ...::get |
+| main.rs:60:43:60:65 | "http://172.32.0.0/baz" | semmle.label | "http://172.32.0.0/baz" |
+| main.rs:68:13:68:15 | url | semmle.label | url |
+| main.rs:68:19:68:53 | "http://example.com/sensitive-... | semmle.label | "http://example.com/sensitive-... |
+| main.rs:71:24:71:45 | ...::get | semmle.label | ...::get |
+| main.rs:71:47:71:49 | url | semmle.label | url |
+subpaths

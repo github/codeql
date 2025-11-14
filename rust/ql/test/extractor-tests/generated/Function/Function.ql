@@ -23,14 +23,6 @@ query predicate instances(
   if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
 }
 
-query predicate getExtendedCanonicalPath(Function x, string getExtendedCanonicalPath) {
-  toBeTested(x) and not x.isUnknown() and getExtendedCanonicalPath = x.getExtendedCanonicalPath()
-}
-
-query predicate getCrateOrigin(Function x, string getCrateOrigin) {
-  toBeTested(x) and not x.isUnknown() and getCrateOrigin = x.getCrateOrigin()
-}
-
 query predicate getAttributeMacroExpansion(Function x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -49,12 +41,16 @@ query predicate getParam(Function x, int index, Param getParam) {
   toBeTested(x) and not x.isUnknown() and getParam = x.getParam(index)
 }
 
+query predicate getBody(Function x, Expr getBody) {
+  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+}
+
 query predicate getAbi(Function x, Abi getAbi) {
   toBeTested(x) and not x.isUnknown() and getAbi = x.getAbi()
 }
 
-query predicate getBody(Function x, BlockExpr getBody) {
-  toBeTested(x) and not x.isUnknown() and getBody = x.getBody()
+query predicate getFunctionBody(Function x, BlockExpr getFunctionBody) {
+  toBeTested(x) and not x.isUnknown() and getFunctionBody = x.getFunctionBody()
 }
 
 query predicate getGenericParamList(Function x, GenericParamList getGenericParamList) {

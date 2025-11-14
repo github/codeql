@@ -7,9 +7,9 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
-import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.ForBinder
 import codeql.rust.elements.RetTypeRepr
 
 /**
@@ -23,10 +23,13 @@ module Generated {
    * |x| x + 1;
    * move |x: i32| -> i32 { x + 1 };
    * async |x: i32, y| x + y;
-   *  #[coroutine]
+   * #[coroutine]
    * |x| yield x;
-   *  #[coroutine]
-   *  static |x| yield x;
+   * #[coroutine]
+   * static |x| yield x;
+   * for<T: std::fmt::Debug> |x: T| {
+   *     println!("{:?}", x);
+   * };
    * ```
    * INTERNAL: Do not reference the `Generated::ClosureExpr` class directly.
    * Use the subclass `ClosureExpr`, where the following predicates are available.
@@ -35,32 +38,34 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ClosureExpr" }
 
     /**
-     * Gets the body of this closure expression, if it exists.
+     * Gets the closure body of this closure expression, if it exists.
      */
-    Expr getBody() {
+    Expr getClosureBody() {
       result =
-        Synth::convertExprFromRaw(Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).getBody())
-    }
-
-    /**
-     * Holds if `getBody()` exists.
-     */
-    final predicate hasBody() { exists(this.getBody()) }
-
-    /**
-     * Gets the closure binder of this closure expression, if it exists.
-     */
-    ClosureBinder getClosureBinder() {
-      result =
-        Synth::convertClosureBinderFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertExprFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
-              .getClosureBinder())
+              .getClosureBody())
     }
 
     /**
-     * Holds if `getClosureBinder()` exists.
+     * Holds if `getClosureBody()` exists.
      */
-    final predicate hasClosureBinder() { exists(this.getClosureBinder()) }
+    final predicate hasClosureBody() { exists(this.getClosureBody()) }
+
+    /**
+     * Gets the for binder of this closure expression, if it exists.
+     */
+    ForBinder getForBinder() {
+      result =
+        Synth::convertForBinderFromRaw(Synth::convertClosureExprToRaw(this)
+              .(Raw::ClosureExpr)
+              .getForBinder())
+    }
+
+    /**
+     * Holds if `getForBinder()` exists.
+     */
+    final predicate hasForBinder() { exists(this.getForBinder()) }
 
     /**
      * Holds if this closure expression is async.

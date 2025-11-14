@@ -1,3 +1,46 @@
+## 7.7.3
+
+No user-facing changes.
+
+## 7.7.2
+
+### Minor Analysis Improvements
+
+* Fields of certain objects are considered tainted if the object is tainted. This holds, for example, for objects that occur directly as sources in the active threat model (for instance, a remote flow source). This has now been amended to also include array types, such that if an array like `MyPojo[]` is a source, then fields of a tainted `MyPojo` are now also considered tainted.
+
+## 7.7.1
+
+No user-facing changes.
+
+## 7.7.0
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 25.
+* Added support for Java 25 compact source files (JEP 512). The new predicate `Class.isImplicit()` identifies classes that are implicitly declared when using compact source files, and the new predicate `CompilationUnit.isCompactSourceFile()` identifies compilation units that contain compact source files.
+* Added support for Java 25 module import declarations.
+* Add `ModuleImportDeclaration` class.
+
+### Minor Analysis Improvements
+
+* Improved support for various assertion libraries, in particular JUnit. This affects the control-flow graph slightly, and in turn affects several queries (mainly quality queries). Most queries should see improved precision (new true positives and fewer false positives), in particular `java/constant-comparison`, `java/index-out-of-bounds`, `java/dereferenced-value-may-be-null`, and `java/useless-null-check`. Some medium precision queries like `java/toctou-race-condition` and `java/unreleased-lock` may see mixed result changes (both slight improvements and slight regressions).
+* Added taint flow model for `java.crypto.KDF`.
+* Added taint flow model for `java.lang.ScopedValue`.
+
+## 7.6.1
+
+No user-facing changes.
+
+## 7.6.0
+
+### Major Analysis Improvements
+
+* Added library models for the relevant method calls under `jakarta.servlet.ServletRequest` and `jakarta.servlet.http.HttpServletRequest` as remote flow sources.
+
+### Minor Analysis Improvements
+
+* Guard implication logic involving wrapper methods has been improved. In particular, this means fewer false positives for `java/dereferenced-value-may-be-null`.
+
 ## 7.5.0
 
 ### New Features

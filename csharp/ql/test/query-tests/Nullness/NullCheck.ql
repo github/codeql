@@ -1,5 +1,6 @@
 import csharp
 import semmle.code.csharp.controlflow.Guards
 
-from DereferenceableExpr de, AbstractValue v, boolean isNull
-select de.getANullCheck(v, isNull), de, v, isNull
+from DereferenceableExpr de, Guards::Guard reason
+where de.guardSuggestsMaybeNull(reason)
+select reason, de

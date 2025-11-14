@@ -80,12 +80,16 @@ rust_library(
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [],
+        "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:riscv64gc-unknown-none-elf": [],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [],
+        "@rules_rust//rust/platform:wasm32-unknown-emscripten": [],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [],
         "@rules_rust//rust/platform:wasm32-wasip1": [],
+        "@rules_rust//rust/platform:wasm32-wasip1-threads": [],
+        "@rules_rust//rust/platform:wasm32-wasip2": [],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [],
         "@rules_rust//rust/platform:x86_64-apple-ios": [],
         "@rules_rust//rust/platform:x86_64-linux-android": [],
@@ -101,7 +105,7 @@ rust_library(
     version = "7.2.4",
     deps = [
         "@vendor_ts__zstd-safe-7.2.4//:build_script_build",
-        "@vendor_ts__zstd-sys-2.0.15-zstd.1.5.7//:zstd_sys",
+        "@vendor_ts__zstd-sys-2.0.16-zstd.1.5.7//:zstd_sys",
     ],
 )
 
@@ -146,7 +150,7 @@ cargo_build_script(
     ),
     edition = "2018",
     link_deps = [
-        "@vendor_ts__zstd-sys-2.0.15-zstd.1.5.7//:zstd_sys",
+        "@vendor_ts__zstd-sys-2.0.16-zstd.1.5.7//:zstd_sys",
     ],
     pkg_name = "zstd-safe",
     rustc_env_files = [

@@ -1,3 +1,42 @@
+## 1.4.3
+
+### Minor Analysis Improvements
+
+* The `cs/web/missing-x-frame-options` query now correctly handles configuration nested in root `<location>` elements.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+### Minor Analysis Improvements
+
+* The modeling of null guards based on complex pattern expressions has been improved, which in turn improves the query `cs/dereferenced-value-may-be-null` by removing false positives.
+* The query `cs/xmldoc/missing-summary` has been removed from the `code-quality` suite, to align with other languages.
+
+## 1.4.0
+
+### Deprecated Queries
+
+* The query `cs/captured-foreach-variable` has been deprecated as the semantics of capturing a 'foreach' variable and using it outside the loop has been stable since C# version 5.
+
+### Minor Analysis Improvements
+
+* The query `cs/call-to-object-tostring` has been improved to remove false positives for enum types.
+
+### Bug Fixes
+
+* The message for `csharp/diagnostic/database-quality` has been updated to include detailed database health metrics. Additionally, the threshold for reporting database health issues has been lowered from 95% to 85% (if any metric falls below this percentage). These changes are visible on the tool status page.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+No user-facing changes.
+
 ## 1.3.2
 
 No user-facing changes.
@@ -131,7 +170,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query.
 
 ## 1.0.10
 
@@ -245,7 +284,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.    
+* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.
 * Fixed a URL redirection from remote source false positive when guarding a redirect with `HttpRequestBase.IsUrlLocalToHost()`
 
 ## 0.8.5

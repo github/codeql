@@ -18,10 +18,10 @@ final class CfgScope = CfgScopeImpl;
 
 final class AsyncBlockScope extends CfgScopeImpl, AsyncBlockExpr instanceof ExprTrees::AsyncBlockExprTree
 {
-  override predicate scopeFirst(AstNode first) { first(super.getFirstChildNode(), first) }
+  override predicate scopeFirst(AstNode first) { first(super.getFirstChildTree(), first) }
 
   override predicate scopeLast(AstNode last, Completion c) {
-    last(super.getLastChildElement(), last, c)
+    last(super.getLastChildTree(), last, c)
     or
     last(super.getChildNode(_), last, c) and
     not c instanceof NormalCompletion
@@ -35,20 +35,11 @@ final class CallableScope extends CfgScopeImpl, Callable {
   CallableScope() {
     // A function without a body corresponds to a trait method signature and
     // should not have a CFG scope.
-    this.(Function).hasBody()
-    or
-    this instanceof ClosureExpr
-  }
-
-  /** Gets the body of this callable. */
-  AstNode getBody() {
-    result = this.(Function).getBody()
-    or
-    result = this.(ClosureExpr).getBody()
+    this.hasBody()
   }
 
   override predicate scopeFirst(AstNode first) {
-    first(this.(CallableScopeTree).getFirstChildNode(), first)
+    first(this.(CallableScopeTree).getFirstChildTree(), first)
   }
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */

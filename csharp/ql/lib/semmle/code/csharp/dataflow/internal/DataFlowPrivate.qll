@@ -264,6 +264,7 @@ predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, No
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
+  private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(ControlFlow::Nodes::ExprNode e1, ControlFlow::Nodes::ExprNode e2) {
     e1 = LocalFlow::getALastEvalNode(e2)
@@ -275,23 +276,14 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig<Location> {
+  private module CaptureInput implements Shared::InputSig<Location, BasicBlocks::BasicBlock> {
     private import csharp as Cs
     private import semmle.code.csharp.controlflow.ControlFlowGraph as Cfg
-    private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
-    class BasicBlock extends BasicBlocks::BasicBlock {
-      Callable getEnclosingCallable() { result = super.getCallable() }
+    Callable basicBlockGetEnclosingCallable(BasicBlocks::BasicBlock bb) {
+      result = bb.getCallable()
     }
-
-    class ControlFlowNode = Cfg::ControlFlow::Node;
-
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
-    }
-
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
     private predicate thisAccess(ControlFlow::Node cfn, InstanceCallable c) {
       ThisFlow::thisAccessExpr(cfn.getAstNode()) and
@@ -359,7 +351,7 @@ module VariableCapture {
     }
 
     class Expr extends ControlFlow::Node {
-      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i) }
     }
 
     class VariableWrite extends Expr {
@@ -411,7 +403,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<Location, CaptureInput>;
+  module Flow = Shared::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -2591,12 +2583,10 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
  * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
-  exists(
-    ExplicitParameterNode paramNode, Guard guard, ControlFlow::SuccessorTypes::BooleanSuccessor bs
-  |
-    viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
+  exists(ExplicitParameterNode paramNode, Guard guard, GuardValue val |
+    viableConstantParamArg(paramNode, val.getDualValue(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(nr, bs, _)
+    guard.valueControls(nr, val)
   )
 }
 
@@ -2914,32 +2904,19 @@ class CastNode extends Node {
 
 class DataFlowExpr = Expr;
 
-/** Holds if `e` is an expression that always has the same Boolean value `val`. */
-private predicate constantBooleanExpr(Expr e, boolean val) {
-  e = any(AbstractValues::BooleanValue bv | val = bv.getValue()).getAnExpr()
-  or
-  exists(Ssa::ExplicitDefinition def, Expr src |
-    e = def.getARead() and
-    src = def.getADefinition().getSource() and
-    constantBooleanExpr(src, val)
-  )
-}
+/** An argument that always has the same value. */
+private class ConstantArgumentNode extends ExprNode {
+  ConstantArgumentNode() { Guards::InternalUtil::exprHasValue(this.(ArgumentNode).asExpr(), _) }
 
-/** An argument that always has the same Boolean value. */
-private class ConstantBooleanArgumentNode extends ExprNode {
-  ConstantBooleanArgumentNode() { constantBooleanExpr(this.(ArgumentNode).asExpr(), _) }
-
-  /** Gets the Boolean value of this expression. */
-  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+  /** Gets the value of this expression. */
+  GuardValue getValue() { Guards::InternalUtil::exprHasValue(this.getExpr(), result) }
 }
 
 pragma[noinline]
-private predicate viableConstantBooleanParamArg(
-  ParameterNode paramNode, boolean b, DataFlowCall call
-) {
-  exists(ConstantBooleanArgumentNode arg |
+private predicate viableConstantParamArg(ParameterNode paramNode, GuardValue val, DataFlowCall call) {
+  exists(ConstantArgumentNode arg |
     viableParamArg(call, paramNode, arg) and
-    b = arg.getBooleanValue()
+    val = arg.getValue()
   )
 }
 

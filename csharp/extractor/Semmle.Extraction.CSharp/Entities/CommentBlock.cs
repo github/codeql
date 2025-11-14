@@ -10,9 +10,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
             trapFile.commentblock(this);
-            trapFile.commentblock_location(this, Context.CreateLocation(Symbol.Location));
             Symbol.CommentLines.ForEach((l, child) => trapFile.commentblock_child(this, l, child));
+            WriteLocationToTrap(trapFile.commentblock_location, this, Context.CreateLocation(Symbol.Location));
         }
 
         public override bool NeedsPopulation => true;
@@ -27,6 +31,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void BindTo(Label entity, CommentBinding binding)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
             Context.TrapWriter.Writer.commentblock_binding(this, entity, binding);
         }
 

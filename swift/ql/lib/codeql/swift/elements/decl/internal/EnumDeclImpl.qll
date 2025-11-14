@@ -7,7 +7,7 @@ module Impl {
   /**
    * An enumeration declaration, for example:
    * ```
-   * enum MyColours {
+   * enum MyColors {
    *   case red
    *   case green
    *   case blue

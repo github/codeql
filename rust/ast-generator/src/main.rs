@@ -44,6 +44,8 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("StructField", "expr") => "default",
         ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
+        ("Function", "body") => "function_body",
+        ("ClosureExpr", "body") => "closure_body",
         _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
         _ => field_name,
     };
@@ -62,15 +64,6 @@ fn has_special_emission(type_name: &str) -> bool {
             | "Struct"
             | "Enum"
             | "Union"
-            | "Trait"
-            | "Module"
-            | "Variant"
-            | "PathExpr"
-            | "RecordExpr"
-            | "PathPat"
-            | "RecordPat"
-            | "TupleStructPat"
-            | "MethodCallExpr"
             | "PathSegment"
             | "Const"
     )
@@ -82,6 +75,7 @@ fn should_enum_be_skipped(name: &str) -> bool {
 
 fn should_node_be_skipped(name: &str) -> bool {
     name == "TypeAnchor" // we flatten TypeAnchor into PathSegment in the extractor
+    || name == "MacroStmts" // we workaround a getter bug in the extractor
 }
 
 fn should_node_be_skipped_in_extractor(name: &str) -> bool {

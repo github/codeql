@@ -1,31 +1,20 @@
 ql/csharp/ql/src/API Abuse/MissingDisposeCall.ql
 ql/csharp/ql/src/API Abuse/MissingDisposeMethod.ql
-ql/csharp/ql/src/API Abuse/NonOverridingMethod.ql
 ql/csharp/ql/src/API Abuse/UncheckedReturnValue.ql
 ql/csharp/ql/src/ASP/ComplexInlineCode.ql
 ql/csharp/ql/src/ASP/NonInternationalizedText.ql
-ql/csharp/ql/src/ASP/SplitControlStructure.ql
 ql/csharp/ql/src/AlertSuppression.ql
 ql/csharp/ql/src/Architecture/Dependencies/MutualDependency.ql
 ql/csharp/ql/src/Architecture/Refactoring Opportunities/FeatureEnvy.ql
-ql/csharp/ql/src/Bad Practices/Comments/CommentedOutCode.ql
-ql/csharp/ql/src/Bad Practices/Comments/TodoComments.ql
 ql/csharp/ql/src/Bad Practices/Declarations/EmptyInterface.ql
-ql/csharp/ql/src/Bad Practices/Declarations/NoConstantsOnly.ql
-ql/csharp/ql/src/Bad Practices/Implementation Hiding/StaticArray.ql
 ql/csharp/ql/src/Bad Practices/LeftoverDebugCode.ql
 ql/csharp/ql/src/Bad Practices/Magic Constants/MagicConstantsNumbers.ql
 ql/csharp/ql/src/Bad Practices/Magic Constants/MagicConstantsString.ql
 ql/csharp/ql/src/Bad Practices/Magic Constants/MagicNumbersUseConstant.ql
 ql/csharp/ql/src/Bad Practices/Magic Constants/MagicStringsUseConstant.ql
-ql/csharp/ql/src/Bad Practices/Naming Conventions/ConfusingMethodNames.ql
-ql/csharp/ql/src/Bad Practices/Naming Conventions/ConfusingOverridesNames.ql
 ql/csharp/ql/src/Bad Practices/Naming Conventions/ConstantNaming.ql
-ql/csharp/ql/src/Bad Practices/Naming Conventions/ControlNamePrefixes.ql
-ql/csharp/ql/src/Bad Practices/Naming Conventions/DefaultControlNames.ql
 ql/csharp/ql/src/Bad Practices/Naming Conventions/VariableNameTooShort.ql
 ql/csharp/ql/src/Bad Practices/UseOfHtmlInputHidden.ql
-ql/csharp/ql/src/Bad Practices/UseOfSystemOutputStream.ql
 ql/csharp/ql/src/Configuration/PasswordInConfigurationFile.ql
 ql/csharp/ql/src/Dead Code/DeadRefTypes.ql
 ql/csharp/ql/src/Dead Code/NonAssignedFields.ql
@@ -39,7 +28,6 @@ ql/csharp/ql/src/Documentation/XmldocMissingParam.ql
 ql/csharp/ql/src/Documentation/XmldocMissingReturn.ql
 ql/csharp/ql/src/Documentation/XmldocMissingTypeParam.ql
 ql/csharp/ql/src/Language Abuse/ForeachCapture.ql
-ql/csharp/ql/src/Language Abuse/UselessIsBeforeAs.ql
 ql/csharp/ql/src/Likely Bugs/BadCheckOdd.ql
 ql/csharp/ql/src/Likely Bugs/RandomUsedOnce.ql
 ql/csharp/ql/src/Metrics/Callables/CCyclomaticComplexity.ql
@@ -93,13 +81,10 @@ ql/csharp/ql/src/Security Features/CWE-611/UseXmlSecureResolver.ql
 ql/csharp/ql/src/Security Features/CWE-798/HardcodedConnectionString.ql
 ql/csharp/ql/src/Security Features/CWE-798/HardcodedCredentials.ql
 ql/csharp/ql/src/Security Features/CWE-838/InappropriateEncoding.ql
-ql/csharp/ql/src/Useless code/PointlessForwardingMethod.ql
 ql/csharp/ql/src/definitions.ql
 ql/csharp/ql/src/experimental/CWE-099/TaintedWebClient.ql
 ql/csharp/ql/src/experimental/CWE-918/RequestForgery.ql
-ql/csharp/ql/src/experimental/Security Features/CWE-1004/CookieWithoutHttpOnly.ql
 ql/csharp/ql/src/experimental/Security Features/CWE-327/Azure/UnsafeUsageOfClientSideEncryptionVersion.ql
-ql/csharp/ql/src/experimental/Security Features/CWE-614/CookieWithoutSecure.ql
 ql/csharp/ql/src/experimental/Security Features/CWE-759/HashWithoutSalt.ql
 ql/csharp/ql/src/experimental/Security Features/JsonWebTokenHandler/delegated-security-validations-always-return-true.ql
 ql/csharp/ql/src/experimental/Security Features/JsonWebTokenHandler/security-validation-disabled.ql

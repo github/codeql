@@ -251,35 +251,35 @@
 | typescript.ts:31:29:31:33 | path6 | typescript.ts:9:24:9:30 | req.url | typescript.ts:31:29:31:33 | path6 | This path depends on a $@. | typescript.ts:9:24:9:30 | req.url | user-provided value |
 | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | views.js:1:43:1:55 | req.params[0] | This path depends on a $@. | views.js:1:43:1:55 | req.params[0] | user-provided value |
 edges
-| TaintedPath-es6.js:7:7:7:44 | path | TaintedPath-es6.js:9:41:9:44 | path | provenance |  |
+| TaintedPath-es6.js:7:7:7:10 | path | TaintedPath-es6.js:9:41:9:44 | path | provenance |  |
 | TaintedPath-es6.js:7:14:7:33 | parse(req.url, true) | TaintedPath-es6.js:7:14:7:39 | parse(r ... ).query | provenance | Config |
 | TaintedPath-es6.js:7:14:7:39 | parse(r ... ).query | TaintedPath-es6.js:7:14:7:44 | parse(r ... ry.path | provenance | Config |
-| TaintedPath-es6.js:7:14:7:44 | parse(r ... ry.path | TaintedPath-es6.js:7:7:7:44 | path | provenance |  |
+| TaintedPath-es6.js:7:14:7:44 | parse(r ... ry.path | TaintedPath-es6.js:7:7:7:10 | path | provenance |  |
 | TaintedPath-es6.js:7:20:7:26 | req.url | TaintedPath-es6.js:7:14:7:33 | parse(req.url, true) | provenance | Config |
 | TaintedPath-es6.js:9:41:9:44 | path | TaintedPath-es6.js:9:26:9:45 | join("public", path) | provenance | Config |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:11:29:11:32 | path | provenance |  |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:13:45:13:48 | path | provenance |  |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:16:33:16:36 | path | provenance |  |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:19:33:19:36 | path | provenance |  |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:22:33:22:36 | path | provenance |  |
-| TaintedPath.js:9:7:9:48 | path | TaintedPath.js:31:31:31:34 | path | provenance |  |
+| TaintedPath.js:9:7:9:10 | path | TaintedPath.js:11:29:11:32 | path | provenance |  |
+| TaintedPath.js:9:7:9:10 | path | TaintedPath.js:13:45:13:48 | path | provenance |  |
+| TaintedPath.js:9:7:9:10 | path | TaintedPath.js:16:33:16:36 | path | provenance |  |
+| TaintedPath.js:9:7:9:10 | path | TaintedPath.js:19:33:19:36 | path | provenance |  |
+| TaintedPath.js:9:7:9:10 | path | TaintedPath.js:22:33:22:36 | path | provenance |  |
+| TaintedPath.js:9:7:9:10 | path | TaintedPath.js:31:31:31:34 | path | provenance |  |
 | TaintedPath.js:9:14:9:37 | url.par ... , true) | TaintedPath.js:9:14:9:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:9:14:9:43 | url.par ... ).query | TaintedPath.js:9:14:9:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:9:14:9:48 | url.par ... ry.path | TaintedPath.js:9:7:9:48 | path | provenance |  |
+| TaintedPath.js:9:14:9:48 | url.par ... ry.path | TaintedPath.js:9:7:9:10 | path | provenance |  |
 | TaintedPath.js:9:24:9:30 | req.url | TaintedPath.js:9:14:9:37 | url.par ... , true) | provenance | Config |
 | TaintedPath.js:13:45:13:48 | path | TaintedPath.js:13:29:13:48 | "/home/user/" + path | provenance | Config |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:39:48:39:51 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:42:45:42:48 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:43:51:43:54 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:44:50:44:53 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:45:52:45:55 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:46:49:46:52 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:47:48:47:51 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:48:54:48:57 | path | provenance |  |
-| TaintedPath.js:36:3:36:44 | path | TaintedPath.js:49:57:49:60 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:39:48:39:51 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:42:45:42:48 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:43:51:43:54 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:44:50:44:53 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:45:52:45:55 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:46:49:46:52 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:47:48:47:51 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:48:54:48:57 | path | provenance |  |
+| TaintedPath.js:36:3:36:6 | path | TaintedPath.js:49:57:49:60 | path | provenance |  |
 | TaintedPath.js:36:10:36:33 | url.par ... , true) | TaintedPath.js:36:10:36:39 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:36:10:36:39 | url.par ... ).query | TaintedPath.js:36:10:36:44 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:36:10:36:44 | url.par ... ry.path | TaintedPath.js:36:3:36:44 | path | provenance |  |
+| TaintedPath.js:36:10:36:44 | url.par ... ry.path | TaintedPath.js:36:3:36:6 | path | provenance |  |
 | TaintedPath.js:36:20:36:26 | req.url | TaintedPath.js:36:10:36:33 | url.par ... , true) | provenance | Config |
 | TaintedPath.js:39:48:39:51 | path | TaintedPath.js:39:29:39:52 | pathMod ... e(path) | provenance | Config |
 | TaintedPath.js:42:45:42:48 | path | TaintedPath.js:42:29:42:49 | pathMod ... n(path) | provenance | Config |
@@ -296,57 +296,57 @@ edges
 | TaintedPath.js:55:61:55:67 | req.url | TaintedPath.js:55:31:55:68 | require ... eq.url) | provenance | Config |
 | TaintedPath.js:56:31:56:67 | require ... eq.url) | TaintedPath.js:56:31:56:73 | require ... ).query | provenance | Config |
 | TaintedPath.js:56:60:56:66 | req.url | TaintedPath.js:56:31:56:67 | require ... eq.url) | provenance | Config |
-| TaintedPath.js:73:6:73:47 | path | TaintedPath.js:75:44:75:47 | path | provenance |  |
-| TaintedPath.js:73:6:73:47 | path | TaintedPath.js:76:14:76:17 | path | provenance |  |
+| TaintedPath.js:73:6:73:9 | path | TaintedPath.js:75:44:75:47 | path | provenance |  |
+| TaintedPath.js:73:6:73:9 | path | TaintedPath.js:76:14:76:17 | path | provenance |  |
 | TaintedPath.js:73:13:73:36 | url.par ... , true) | TaintedPath.js:73:13:73:42 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:73:13:73:42 | url.par ... ).query | TaintedPath.js:73:13:73:47 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:73:13:73:47 | url.par ... ry.path | TaintedPath.js:73:6:73:47 | path | provenance |  |
+| TaintedPath.js:73:13:73:47 | url.par ... ry.path | TaintedPath.js:73:6:73:9 | path | provenance |  |
 | TaintedPath.js:73:23:73:29 | req.url | TaintedPath.js:73:13:73:36 | url.par ... , true) | provenance | Config |
 | TaintedPath.js:75:44:75:47 | path | TaintedPath.js:75:28:75:48 | fs.real ... c(path) | provenance | Config |
 | TaintedPath.js:76:14:76:17 | path | TaintedPath.js:77:32:77:39 | realpath | provenance | Config |
 | TaintedPath.js:77:32:77:39 | realpath | TaintedPath.js:78:45:78:52 | realpath | provenance |  |
-| TaintedPath.js:109:6:109:47 | path | TaintedPath.js:111:23:111:26 | path | provenance |  |
+| TaintedPath.js:109:6:109:9 | path | TaintedPath.js:111:23:111:26 | path | provenance |  |
 | TaintedPath.js:109:13:109:36 | url.par ... , true) | TaintedPath.js:109:13:109:42 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:109:13:109:42 | url.par ... ).query | TaintedPath.js:109:13:109:47 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:109:13:109:47 | url.par ... ry.path | TaintedPath.js:109:6:109:47 | path | provenance |  |
+| TaintedPath.js:109:13:109:47 | url.par ... ry.path | TaintedPath.js:109:6:109:9 | path | provenance |  |
 | TaintedPath.js:109:23:109:29 | req.url | TaintedPath.js:109:13:109:36 | url.par ... , true) | provenance | Config |
-| TaintedPath.js:115:7:115:48 | path | TaintedPath.js:117:19:117:22 | path | provenance |  |
-| TaintedPath.js:115:7:115:48 | path | TaintedPath.js:119:15:119:18 | path | provenance |  |
+| TaintedPath.js:115:7:115:10 | path | TaintedPath.js:117:19:117:22 | path | provenance |  |
+| TaintedPath.js:115:7:115:10 | path | TaintedPath.js:119:15:119:18 | path | provenance |  |
 | TaintedPath.js:115:14:115:37 | url.par ... , true) | TaintedPath.js:115:14:115:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:115:14:115:43 | url.par ... ).query | TaintedPath.js:115:14:115:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:115:14:115:48 | url.par ... ry.path | TaintedPath.js:115:7:115:48 | path | provenance |  |
+| TaintedPath.js:115:14:115:48 | url.par ... ry.path | TaintedPath.js:115:7:115:10 | path | provenance |  |
 | TaintedPath.js:115:24:115:30 | req.url | TaintedPath.js:115:14:115:37 | url.par ... , true) | provenance | Config |
-| TaintedPath.js:119:7:119:29 | split | TaintedPath.js:121:19:121:23 | split | provenance |  |
-| TaintedPath.js:119:7:119:29 | split | TaintedPath.js:125:19:125:23 | split | provenance |  |
-| TaintedPath.js:119:7:119:29 | split | TaintedPath.js:126:28:126:32 | split | provenance |  |
-| TaintedPath.js:119:7:119:29 | split | TaintedPath.js:128:33:128:37 | split | provenance |  |
-| TaintedPath.js:119:7:119:29 | split | TaintedPath.js:131:20:131:24 | split | provenance |  |
-| TaintedPath.js:119:7:119:29 | split | TaintedPath.js:134:19:134:23 | split | provenance |  |
+| TaintedPath.js:119:7:119:11 | split | TaintedPath.js:121:19:121:23 | split | provenance |  |
+| TaintedPath.js:119:7:119:11 | split | TaintedPath.js:125:19:125:23 | split | provenance |  |
+| TaintedPath.js:119:7:119:11 | split | TaintedPath.js:126:28:126:32 | split | provenance |  |
+| TaintedPath.js:119:7:119:11 | split | TaintedPath.js:128:33:128:37 | split | provenance |  |
+| TaintedPath.js:119:7:119:11 | split | TaintedPath.js:131:20:131:24 | split | provenance |  |
+| TaintedPath.js:119:7:119:11 | split | TaintedPath.js:134:19:134:23 | split | provenance |  |
 | TaintedPath.js:119:15:119:18 | path | TaintedPath.js:119:15:119:29 | path.split("/") | provenance | Config |
-| TaintedPath.js:119:15:119:29 | path.split("/") | TaintedPath.js:119:7:119:29 | split | provenance |  |
+| TaintedPath.js:119:15:119:29 | path.split("/") | TaintedPath.js:119:7:119:11 | split | provenance |  |
 | TaintedPath.js:121:19:121:23 | split | TaintedPath.js:121:19:121:33 | split.join("/") | provenance | Config |
 | TaintedPath.js:125:19:125:23 | split | TaintedPath.js:125:19:125:26 | split[x] | provenance | Config |
 | TaintedPath.js:126:28:126:32 | split | TaintedPath.js:126:28:126:35 | split[x] | provenance | Config |
 | TaintedPath.js:126:28:126:35 | split[x] | TaintedPath.js:126:19:126:35 | prefix + split[x] | provenance | Config |
-| TaintedPath.js:128:7:128:38 | concatted | TaintedPath.js:129:19:129:27 | concatted | provenance |  |
-| TaintedPath.js:128:19:128:38 | prefix.concat(split) | TaintedPath.js:128:7:128:38 | concatted | provenance |  |
+| TaintedPath.js:128:7:128:15 | concatted | TaintedPath.js:129:19:129:27 | concatted | provenance |  |
+| TaintedPath.js:128:19:128:38 | prefix.concat(split) | TaintedPath.js:128:7:128:15 | concatted | provenance |  |
 | TaintedPath.js:128:33:128:37 | split | TaintedPath.js:128:19:128:38 | prefix.concat(split) | provenance | Config |
 | TaintedPath.js:129:19:129:27 | concatted | TaintedPath.js:129:19:129:37 | concatted.join("/") | provenance | Config |
-| TaintedPath.js:131:7:131:39 | concatted2 | TaintedPath.js:132:19:132:28 | concatted2 | provenance |  |
+| TaintedPath.js:131:7:131:16 | concatted2 | TaintedPath.js:132:19:132:28 | concatted2 | provenance |  |
 | TaintedPath.js:131:20:131:24 | split | TaintedPath.js:131:20:131:39 | split.concat(prefix) | provenance | Config |
-| TaintedPath.js:131:20:131:39 | split.concat(prefix) | TaintedPath.js:131:7:131:39 | concatted2 | provenance |  |
+| TaintedPath.js:131:20:131:39 | split.concat(prefix) | TaintedPath.js:131:7:131:16 | concatted2 | provenance |  |
 | TaintedPath.js:132:19:132:28 | concatted2 | TaintedPath.js:132:19:132:38 | concatted2.join("/") | provenance | Config |
 | TaintedPath.js:134:19:134:23 | split | TaintedPath.js:134:19:134:29 | split.pop() | provenance | Config |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:143:29:143:32 | path | provenance |  |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:149:29:149:32 | path | provenance |  |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:150:29:150:32 | path | provenance |  |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:151:29:151:32 | path | provenance |  |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:152:29:152:32 | path | provenance |  |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:167:40:167:43 | path | provenance |  |
-| TaintedPath.js:139:7:139:48 | path | TaintedPath.js:168:50:168:53 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:143:29:143:32 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:149:29:149:32 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:150:29:150:32 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:151:29:151:32 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:152:29:152:32 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:167:40:167:43 | path | provenance |  |
+| TaintedPath.js:139:7:139:10 | path | TaintedPath.js:168:50:168:53 | path | provenance |  |
 | TaintedPath.js:139:14:139:37 | url.par ... , true) | TaintedPath.js:139:14:139:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:139:14:139:43 | url.par ... ).query | TaintedPath.js:139:14:139:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:139:14:139:48 | url.par ... ry.path | TaintedPath.js:139:7:139:48 | path | provenance |  |
+| TaintedPath.js:139:14:139:48 | url.par ... ry.path | TaintedPath.js:139:7:139:10 | path | provenance |  |
 | TaintedPath.js:139:24:139:30 | req.url | TaintedPath.js:139:14:139:37 | url.par ... , true) | provenance | Config |
 | TaintedPath.js:143:29:143:32 | path | TaintedPath.js:143:29:143:55 | path.re ... /g, '') | provenance | Config |
 | TaintedPath.js:149:29:149:32 | path | TaintedPath.js:149:29:149:52 | path.re ... /g, '') | provenance | Config |
@@ -364,360 +364,360 @@ edges
 | TaintedPath.js:177:51:177:57 | req.url | TaintedPath.js:177:38:177:58 | normali ... eq.url) | provenance | Config |
 | TaintedPath.js:179:29:179:51 | parseqs ... eq.url) | TaintedPath.js:179:29:179:55 | parseqs ... rl).foo | provenance | Config |
 | TaintedPath.js:179:44:179:50 | req.url | TaintedPath.js:179:29:179:51 | parseqs ... eq.url) | provenance | Config |
-| TaintedPath.js:184:7:184:48 | path | TaintedPath.js:185:31:185:34 | path | provenance |  |
-| TaintedPath.js:184:7:184:48 | path | TaintedPath.js:186:45:186:48 | path | provenance |  |
-| TaintedPath.js:184:7:184:48 | path | TaintedPath.js:187:35:187:38 | path | provenance |  |
+| TaintedPath.js:184:7:184:10 | path | TaintedPath.js:185:31:185:34 | path | provenance |  |
+| TaintedPath.js:184:7:184:10 | path | TaintedPath.js:186:45:186:48 | path | provenance |  |
+| TaintedPath.js:184:7:184:10 | path | TaintedPath.js:187:35:187:38 | path | provenance |  |
 | TaintedPath.js:184:14:184:37 | url.par ... , true) | TaintedPath.js:184:14:184:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:184:14:184:43 | url.par ... ).query | TaintedPath.js:184:14:184:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:184:14:184:48 | url.par ... ry.path | TaintedPath.js:184:7:184:48 | path | provenance |  |
+| TaintedPath.js:184:14:184:48 | url.par ... ry.path | TaintedPath.js:184:7:184:10 | path | provenance |  |
 | TaintedPath.js:184:24:184:30 | req.url | TaintedPath.js:184:14:184:37 | url.par ... , true) | provenance | Config |
-| TaintedPath.js:191:7:191:48 | path | TaintedPath.js:195:29:195:32 | path | provenance |  |
+| TaintedPath.js:191:7:191:10 | path | TaintedPath.js:195:29:195:32 | path | provenance |  |
 | TaintedPath.js:191:14:191:37 | url.par ... , true) | TaintedPath.js:191:14:191:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:191:14:191:43 | url.par ... ).query | TaintedPath.js:191:14:191:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:191:14:191:48 | url.par ... ry.path | TaintedPath.js:191:7:191:48 | path | provenance |  |
+| TaintedPath.js:191:14:191:48 | url.par ... ry.path | TaintedPath.js:191:7:191:10 | path | provenance |  |
 | TaintedPath.js:191:24:191:30 | req.url | TaintedPath.js:191:14:191:37 | url.par ... , true) | provenance | Config |
 | TaintedPath.js:195:29:195:32 | path | TaintedPath.js:195:29:195:85 | path.re ... '), '') | provenance | Config |
-| TaintedPath.js:200:7:200:48 | path | TaintedPath.js:202:29:202:32 | path | provenance |  |
-| TaintedPath.js:200:7:200:48 | path | TaintedPath.js:205:31:205:34 | path | provenance |  |
+| TaintedPath.js:200:7:200:10 | path | TaintedPath.js:202:29:202:32 | path | provenance |  |
+| TaintedPath.js:200:7:200:10 | path | TaintedPath.js:205:31:205:34 | path | provenance |  |
 | TaintedPath.js:200:14:200:37 | url.par ... , true) | TaintedPath.js:200:14:200:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:200:14:200:43 | url.par ... ).query | TaintedPath.js:200:14:200:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:200:14:200:48 | url.par ... ry.path | TaintedPath.js:200:7:200:48 | path | provenance |  |
+| TaintedPath.js:200:14:200:48 | url.par ... ry.path | TaintedPath.js:200:7:200:10 | path | provenance |  |
 | TaintedPath.js:200:24:200:30 | req.url | TaintedPath.js:200:14:200:37 | url.par ... , true) | provenance | Config |
 | TaintedPath.js:202:29:202:32 | path | TaintedPath.js:202:29:202:68 | path.re ... '), '') | provenance | Config |
 | TaintedPath.js:205:31:205:34 | path | TaintedPath.js:205:31:205:69 | path.re ... '), '') | provenance | Config |
-| TaintedPath.js:212:7:212:48 | path | TaintedPath.js:213:33:213:36 | path | provenance |  |
-| TaintedPath.js:212:7:212:48 | path | TaintedPath.js:215:36:215:39 | path | provenance |  |
+| TaintedPath.js:212:7:212:10 | path | TaintedPath.js:213:33:213:36 | path | provenance |  |
+| TaintedPath.js:212:7:212:10 | path | TaintedPath.js:215:36:215:39 | path | provenance |  |
 | TaintedPath.js:212:14:212:37 | url.par ... , true) | TaintedPath.js:212:14:212:43 | url.par ... ).query | provenance | Config |
 | TaintedPath.js:212:14:212:43 | url.par ... ).query | TaintedPath.js:212:14:212:48 | url.par ... ry.path | provenance | Config |
-| TaintedPath.js:212:14:212:48 | url.par ... ry.path | TaintedPath.js:212:7:212:48 | path | provenance |  |
+| TaintedPath.js:212:14:212:48 | url.par ... ry.path | TaintedPath.js:212:7:212:10 | path | provenance |  |
 | TaintedPath.js:212:24:212:30 | req.url | TaintedPath.js:212:14:212:37 | url.par ... , true) | provenance | Config |
-| TaintedPath.js:213:9:213:37 | improperEscape | TaintedPath.js:214:29:214:42 | improperEscape | provenance |  |
-| TaintedPath.js:213:26:213:37 | escape(path) | TaintedPath.js:213:9:213:37 | improperEscape | provenance |  |
+| TaintedPath.js:213:9:213:22 | improperEscape | TaintedPath.js:214:29:214:42 | improperEscape | provenance |  |
+| TaintedPath.js:213:26:213:37 | escape(path) | TaintedPath.js:213:9:213:22 | improperEscape | provenance |  |
 | TaintedPath.js:213:33:213:36 | path | TaintedPath.js:213:26:213:37 | escape(path) | provenance | Config |
-| TaintedPath.js:215:9:215:40 | improperEscape2 | TaintedPath.js:216:29:216:43 | improperEscape2 | provenance |  |
-| TaintedPath.js:215:27:215:40 | unescape(path) | TaintedPath.js:215:9:215:40 | improperEscape2 | provenance |  |
+| TaintedPath.js:215:9:215:23 | improperEscape2 | TaintedPath.js:216:29:216:43 | improperEscape2 | provenance |  |
+| TaintedPath.js:215:27:215:40 | unescape(path) | TaintedPath.js:215:9:215:23 | improperEscape2 | provenance |  |
 | TaintedPath.js:215:36:215:39 | path | TaintedPath.js:215:27:215:40 | unescape(path) | provenance | Config |
-| examples/TaintedPath.js:8:7:8:52 | filePath | examples/TaintedPath.js:10:36:10:43 | filePath | provenance |  |
+| examples/TaintedPath.js:8:7:8:14 | filePath | examples/TaintedPath.js:10:36:10:43 | filePath | provenance |  |
 | examples/TaintedPath.js:8:18:8:41 | url.par ... , true) | examples/TaintedPath.js:8:18:8:47 | url.par ... ).query | provenance | Config |
 | examples/TaintedPath.js:8:18:8:47 | url.par ... ).query | examples/TaintedPath.js:8:18:8:52 | url.par ... ry.path | provenance | Config |
-| examples/TaintedPath.js:8:18:8:52 | url.par ... ry.path | examples/TaintedPath.js:8:7:8:52 | filePath | provenance |  |
+| examples/TaintedPath.js:8:18:8:52 | url.par ... ry.path | examples/TaintedPath.js:8:7:8:14 | filePath | provenance |  |
 | examples/TaintedPath.js:8:28:8:34 | req.url | examples/TaintedPath.js:8:18:8:41 | url.par ... , true) | provenance | Config |
 | examples/TaintedPath.js:10:36:10:43 | filePath | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | provenance | Config |
-| execa.js:6:9:6:64 | filePath | execa.js:9:26:9:33 | filePath | provenance |  |
-| execa.js:6:9:6:64 | filePath | execa.js:12:37:12:44 | filePath | provenance |  |
-| execa.js:6:9:6:64 | filePath | execa.js:15:50:15:57 | filePath | provenance |  |
-| execa.js:6:9:6:64 | filePath | execa.js:18:62:18:69 | filePath | provenance |  |
+| execa.js:6:9:6:16 | filePath | execa.js:9:26:9:33 | filePath | provenance |  |
+| execa.js:6:9:6:16 | filePath | execa.js:12:37:12:44 | filePath | provenance |  |
+| execa.js:6:9:6:16 | filePath | execa.js:15:50:15:57 | filePath | provenance |  |
+| execa.js:6:9:6:16 | filePath | execa.js:18:62:18:69 | filePath | provenance |  |
 | execa.js:6:20:6:43 | url.par ... , true) | execa.js:6:20:6:49 | url.par ... ).query | provenance | Config |
 | execa.js:6:20:6:49 | url.par ... ).query | execa.js:6:20:6:61 | url.par ... ePath"] | provenance | Config |
 | execa.js:6:20:6:61 | url.par ... ePath"] | execa.js:6:20:6:64 | url.par ... th"][0] | provenance | Config |
-| execa.js:6:20:6:64 | url.par ... th"][0] | execa.js:6:9:6:64 | filePath | provenance |  |
+| execa.js:6:20:6:64 | url.par ... th"][0] | execa.js:6:9:6:16 | filePath | provenance |  |
 | execa.js:6:30:6:36 | req.url | execa.js:6:20:6:43 | url.par ... , true) | provenance | Config |
 | handlebars.js:10:51:10:58 | filePath | handlebars.js:11:32:11:39 | filePath | provenance |  |
 | handlebars.js:13:73:13:80 | filePath | handlebars.js:15:25:15:32 | filePath | provenance |  |
 | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:10:51:10:58 | filePath | provenance |  |
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath | provenance |  |
-| hapi.js:14:19:14:51 | filepath | hapi.js:15:44:15:51 | filepath | provenance |  |
-| hapi.js:14:30:14:51 | request ... ilepath | hapi.js:14:19:14:51 | filepath | provenance |  |
-| make-dir.js:7:11:7:31 | file | make-dir.js:9:25:9:28 | file | provenance |  |
-| make-dir.js:7:11:7:31 | file | make-dir.js:10:23:10:26 | file | provenance |  |
-| make-dir.js:7:18:7:31 | req.query.file | make-dir.js:7:11:7:31 | file | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:11:12:11:18 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:12:17:12:23 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:13:23:13:29 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:14:19:14:25 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:15:19:15:25 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:16:23:16:29 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:17:25:17:31 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:18:25:18:31 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:19:29:19:35 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:20:29:20:35 | dirPath | provenance |  |
-| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:21:23:21:29 | dirPath | provenance |  |
-| mkdirp.js:9:21:9:76 | path.jo ... ltDir') | mkdirp.js:9:11:9:76 | dirPath | provenance |  |
+| hapi.js:14:19:14:26 | filepath | hapi.js:15:44:15:51 | filepath | provenance |  |
+| hapi.js:14:30:14:51 | request ... ilepath | hapi.js:14:19:14:26 | filepath | provenance |  |
+| make-dir.js:7:11:7:14 | file | make-dir.js:9:25:9:28 | file | provenance |  |
+| make-dir.js:7:11:7:14 | file | make-dir.js:10:23:10:26 | file | provenance |  |
+| make-dir.js:7:18:7:31 | req.query.file | make-dir.js:7:11:7:14 | file | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:11:12:11:18 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:12:17:12:23 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:13:23:13:29 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:14:19:14:25 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:15:19:15:25 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:16:23:16:29 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:17:25:17:31 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:18:25:18:31 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:19:29:19:35 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:20:29:20:35 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:17 | dirPath | mkdirp.js:21:23:21:29 | dirPath | provenance |  |
+| mkdirp.js:9:21:9:76 | path.jo ... ltDir') | mkdirp.js:9:11:9:17 | dirPath | provenance |  |
 | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:9:42:9:75 | req.que ... ultDir' | provenance |  |
 | mkdirp.js:9:42:9:75 | req.que ... ultDir' | mkdirp.js:9:21:9:76 | path.jo ... ltDir') | provenance | Config |
 | more-fs-extra.js:8:11:8:22 | { filename } | more-fs-extra.js:8:13:8:20 | filename | provenance | Config |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:10:15:10:22 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:11:11:11:18 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:12:14:12:21 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:13:18:13:25 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:14:11:14:18 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:15:21:15:28 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:16:21:16:28 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:17:31:17:38 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:18:15:18:22 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:19:25:19:32 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:20:21:20:28 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:21:17:21:24 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:22:16:22:23 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:23:20:23:27 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:24:19:24:26 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:25:15:25:22 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:26:19:26:26 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:27:13:27:20 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:28:17:28:24 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:29:23:29:30 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:30:16:30:23 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:31:20:31:27 | filename | provenance |  |
-| more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:32:23:32:30 | filename | provenance |  |
-| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:8:11:8:33 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:8:13:8:20 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:10:15:10:22 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:11:11:11:18 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:12:14:12:21 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:13:18:13:25 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:14:11:14:18 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:15:21:15:28 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:16:21:16:28 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:17:31:17:38 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:18:15:18:22 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:19:25:19:32 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:20:21:20:28 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:21:17:21:24 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:22:16:22:23 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:23:20:23:27 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:24:19:24:26 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:25:15:25:22 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:26:19:26:26 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:27:13:27:20 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:28:17:28:24 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:29:23:29:30 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:30:16:30:23 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:31:20:31:27 | filename | provenance |  |
+| more-fs-extra.js:8:13:8:20 | filename | more-fs-extra.js:32:23:32:30 | filename | provenance |  |
 | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:8:11:8:22 | { filename } | provenance |  |
-| normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:13:19:13:22 | path | provenance |  |
-| normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:14:26:14:29 | path | provenance |  |
-| normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:15:19:15:22 | path | provenance |  |
-| normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:16:35:16:38 | path | provenance |  |
-| normalizedPaths.js:11:7:11:27 | path | normalizedPaths.js:17:53:17:56 | path | provenance |  |
-| normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:11:7:11:27 | path | provenance |  |
+| normalizedPaths.js:11:7:11:10 | path | normalizedPaths.js:13:19:13:22 | path | provenance |  |
+| normalizedPaths.js:11:7:11:10 | path | normalizedPaths.js:14:26:14:29 | path | provenance |  |
+| normalizedPaths.js:11:7:11:10 | path | normalizedPaths.js:15:19:15:22 | path | provenance |  |
+| normalizedPaths.js:11:7:11:10 | path | normalizedPaths.js:16:35:16:38 | path | provenance |  |
+| normalizedPaths.js:11:7:11:10 | path | normalizedPaths.js:17:53:17:56 | path | provenance |  |
+| normalizedPaths.js:11:14:11:27 | req.query.path | normalizedPaths.js:11:7:11:10 | path | provenance |  |
 | normalizedPaths.js:14:26:14:29 | path | normalizedPaths.js:14:19:14:29 | './' + path | provenance | Config |
 | normalizedPaths.js:15:19:15:22 | path | normalizedPaths.js:15:19:15:38 | path + '/index.html' | provenance | Config |
 | normalizedPaths.js:16:35:16:38 | path | normalizedPaths.js:16:19:16:53 | pathMod ... .html') | provenance | Config |
 | normalizedPaths.js:17:53:17:56 | path | normalizedPaths.js:17:19:17:57 | pathMod ... , path) | provenance | Config |
-| normalizedPaths.js:21:7:21:49 | path | normalizedPaths.js:23:19:23:22 | path | provenance |  |
-| normalizedPaths.js:21:7:21:49 | path | normalizedPaths.js:24:26:24:29 | path | provenance |  |
-| normalizedPaths.js:21:7:21:49 | path | normalizedPaths.js:25:19:25:22 | path | provenance |  |
-| normalizedPaths.js:21:7:21:49 | path | normalizedPaths.js:26:35:26:38 | path | provenance |  |
-| normalizedPaths.js:21:7:21:49 | path | normalizedPaths.js:27:53:27:56 | path | provenance |  |
-| normalizedPaths.js:21:14:21:49 | pathMod ... y.path) | normalizedPaths.js:21:7:21:49 | path | provenance |  |
+| normalizedPaths.js:21:7:21:10 | path | normalizedPaths.js:23:19:23:22 | path | provenance |  |
+| normalizedPaths.js:21:7:21:10 | path | normalizedPaths.js:24:26:24:29 | path | provenance |  |
+| normalizedPaths.js:21:7:21:10 | path | normalizedPaths.js:25:19:25:22 | path | provenance |  |
+| normalizedPaths.js:21:7:21:10 | path | normalizedPaths.js:26:35:26:38 | path | provenance |  |
+| normalizedPaths.js:21:7:21:10 | path | normalizedPaths.js:27:53:27:56 | path | provenance |  |
+| normalizedPaths.js:21:14:21:49 | pathMod ... y.path) | normalizedPaths.js:21:7:21:10 | path | provenance |  |
 | normalizedPaths.js:21:35:21:48 | req.query.path | normalizedPaths.js:21:14:21:49 | pathMod ... y.path) | provenance | Config |
 | normalizedPaths.js:24:26:24:29 | path | normalizedPaths.js:24:19:24:29 | './' + path | provenance | Config |
 | normalizedPaths.js:25:19:25:22 | path | normalizedPaths.js:25:19:25:38 | path + '/index.html' | provenance | Config |
 | normalizedPaths.js:26:35:26:38 | path | normalizedPaths.js:26:19:26:53 | pathMod ... .html') | provenance | Config |
 | normalizedPaths.js:27:53:27:56 | path | normalizedPaths.js:27:19:27:57 | pathMod ... , path) | provenance | Config |
-| normalizedPaths.js:31:7:31:49 | path | normalizedPaths.js:36:19:36:22 | path | provenance |  |
-| normalizedPaths.js:31:7:31:49 | path | normalizedPaths.js:41:21:41:24 | path | provenance |  |
-| normalizedPaths.js:31:14:31:49 | pathMod ... y.path) | normalizedPaths.js:31:7:31:49 | path | provenance |  |
+| normalizedPaths.js:31:7:31:10 | path | normalizedPaths.js:36:19:36:22 | path | provenance |  |
+| normalizedPaths.js:31:7:31:10 | path | normalizedPaths.js:41:21:41:24 | path | provenance |  |
+| normalizedPaths.js:31:14:31:49 | pathMod ... y.path) | normalizedPaths.js:31:7:31:10 | path | provenance |  |
 | normalizedPaths.js:31:35:31:48 | req.query.path | normalizedPaths.js:31:14:31:49 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:54:7:54:49 | path | normalizedPaths.js:59:19:59:22 | path | provenance |  |
-| normalizedPaths.js:54:7:54:49 | path | normalizedPaths.js:63:19:63:22 | path | provenance |  |
-| normalizedPaths.js:54:7:54:49 | path | normalizedPaths.js:68:21:68:24 | path | provenance |  |
-| normalizedPaths.js:54:14:54:49 | pathMod ... y.path) | normalizedPaths.js:54:7:54:49 | path | provenance |  |
+| normalizedPaths.js:54:7:54:10 | path | normalizedPaths.js:59:19:59:22 | path | provenance |  |
+| normalizedPaths.js:54:7:54:10 | path | normalizedPaths.js:63:19:63:22 | path | provenance |  |
+| normalizedPaths.js:54:7:54:10 | path | normalizedPaths.js:68:21:68:24 | path | provenance |  |
+| normalizedPaths.js:54:14:54:49 | pathMod ... y.path) | normalizedPaths.js:54:7:54:10 | path | provenance |  |
 | normalizedPaths.js:54:35:54:48 | req.query.path | normalizedPaths.js:54:14:54:49 | pathMod ... y.path) | provenance | Config |
 | normalizedPaths.js:63:19:63:22 | path | normalizedPaths.js:63:19:63:38 | path + "/index.html" | provenance | Config |
-| normalizedPaths.js:73:7:73:56 | path | normalizedPaths.js:78:22:78:25 | path | provenance |  |
-| normalizedPaths.js:73:14:73:56 | pathMod ... y.path) | normalizedPaths.js:73:7:73:56 | path | provenance |  |
+| normalizedPaths.js:73:7:73:10 | path | normalizedPaths.js:78:22:78:25 | path | provenance |  |
+| normalizedPaths.js:73:14:73:56 | pathMod ... y.path) | normalizedPaths.js:73:7:73:10 | path | provenance |  |
 | normalizedPaths.js:73:35:73:55 | './' +  ... ry.path | normalizedPaths.js:73:14:73:56 | pathMod ... y.path) | provenance | Config |
 | normalizedPaths.js:73:42:73:55 | req.query.path | normalizedPaths.js:73:35:73:55 | './' +  ... ry.path | provenance | Config |
-| normalizedPaths.js:82:7:82:27 | path | normalizedPaths.js:87:29:87:32 | path | provenance |  |
-| normalizedPaths.js:82:7:82:27 | path | normalizedPaths.js:90:31:90:34 | path | provenance |  |
-| normalizedPaths.js:82:14:82:27 | req.query.path | normalizedPaths.js:82:7:82:27 | path | provenance |  |
-| normalizedPaths.js:94:7:94:49 | path | normalizedPaths.js:99:29:99:32 | path | provenance |  |
-| normalizedPaths.js:94:14:94:49 | pathMod ... y.path) | normalizedPaths.js:94:7:94:49 | path | provenance |  |
+| normalizedPaths.js:82:7:82:10 | path | normalizedPaths.js:87:29:87:32 | path | provenance |  |
+| normalizedPaths.js:82:7:82:10 | path | normalizedPaths.js:90:31:90:34 | path | provenance |  |
+| normalizedPaths.js:82:14:82:27 | req.query.path | normalizedPaths.js:82:7:82:10 | path | provenance |  |
+| normalizedPaths.js:94:7:94:10 | path | normalizedPaths.js:99:29:99:32 | path | provenance |  |
+| normalizedPaths.js:94:14:94:49 | pathMod ... y.path) | normalizedPaths.js:94:7:94:10 | path | provenance |  |
 | normalizedPaths.js:94:35:94:48 | req.query.path | normalizedPaths.js:94:14:94:49 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:117:7:117:44 | path | normalizedPaths.js:119:19:119:22 | path | provenance |  |
-| normalizedPaths.js:117:7:117:44 | path | normalizedPaths.js:120:35:120:38 | path | provenance |  |
-| normalizedPaths.js:117:14:117:44 | fs.real ... y.path) | normalizedPaths.js:117:7:117:44 | path | provenance |  |
+| normalizedPaths.js:117:7:117:10 | path | normalizedPaths.js:119:19:119:22 | path | provenance |  |
+| normalizedPaths.js:117:7:117:10 | path | normalizedPaths.js:120:35:120:38 | path | provenance |  |
+| normalizedPaths.js:117:14:117:44 | fs.real ... y.path) | normalizedPaths.js:117:7:117:10 | path | provenance |  |
 | normalizedPaths.js:117:30:117:43 | req.query.path | normalizedPaths.js:117:14:117:44 | fs.real ... y.path) | provenance | Config |
 | normalizedPaths.js:120:35:120:38 | path | normalizedPaths.js:120:19:120:53 | pathMod ... .html') | provenance | Config |
-| normalizedPaths.js:130:7:130:49 | path | normalizedPaths.js:135:21:135:24 | path | provenance |  |
-| normalizedPaths.js:130:14:130:49 | pathMod ... y.path) | normalizedPaths.js:130:7:130:49 | path | provenance |  |
+| normalizedPaths.js:130:7:130:10 | path | normalizedPaths.js:135:21:135:24 | path | provenance |  |
+| normalizedPaths.js:130:14:130:49 | pathMod ... y.path) | normalizedPaths.js:130:7:130:10 | path | provenance |  |
 | normalizedPaths.js:130:35:130:48 | req.query.path | normalizedPaths.js:130:14:130:49 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:139:7:139:62 | path | normalizedPaths.js:144:21:144:24 | path | provenance |  |
-| normalizedPaths.js:139:14:139:62 | pathMod ... y.path) | normalizedPaths.js:139:7:139:62 | path | provenance |  |
+| normalizedPaths.js:139:7:139:10 | path | normalizedPaths.js:144:21:144:24 | path | provenance |  |
+| normalizedPaths.js:139:14:139:62 | pathMod ... y.path) | normalizedPaths.js:139:7:139:10 | path | provenance |  |
 | normalizedPaths.js:139:48:139:61 | req.query.path | normalizedPaths.js:139:14:139:62 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:148:7:148:58 | path | normalizedPaths.js:151:21:151:24 | path | provenance |  |
-| normalizedPaths.js:148:7:148:58 | path | normalizedPaths.js:153:21:153:24 | path | provenance |  |
-| normalizedPaths.js:148:14:148:58 | 'foo/'  ... y.path) | normalizedPaths.js:148:7:148:58 | path | provenance |  |
+| normalizedPaths.js:148:7:148:10 | path | normalizedPaths.js:151:21:151:24 | path | provenance |  |
+| normalizedPaths.js:148:7:148:10 | path | normalizedPaths.js:153:21:153:24 | path | provenance |  |
+| normalizedPaths.js:148:14:148:58 | 'foo/'  ... y.path) | normalizedPaths.js:148:7:148:10 | path | provenance |  |
 | normalizedPaths.js:148:23:148:58 | pathMod ... y.path) | normalizedPaths.js:148:14:148:58 | 'foo/'  ... y.path) | provenance | Config |
 | normalizedPaths.js:148:44:148:57 | req.query.path | normalizedPaths.js:148:23:148:58 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:160:7:160:49 | path | normalizedPaths.js:165:19:165:22 | path | provenance |  |
-| normalizedPaths.js:160:7:160:49 | path | normalizedPaths.js:170:21:170:24 | path | provenance |  |
-| normalizedPaths.js:160:14:160:49 | pathMod ... y.path) | normalizedPaths.js:160:7:160:49 | path | provenance |  |
+| normalizedPaths.js:160:7:160:10 | path | normalizedPaths.js:165:19:165:22 | path | provenance |  |
+| normalizedPaths.js:160:7:160:10 | path | normalizedPaths.js:170:21:170:24 | path | provenance |  |
+| normalizedPaths.js:160:14:160:49 | pathMod ... y.path) | normalizedPaths.js:160:7:160:10 | path | provenance |  |
 | normalizedPaths.js:160:35:160:48 | req.query.path | normalizedPaths.js:160:14:160:49 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:184:19:184:22 | path | provenance |  |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:187:21:187:24 | path | provenance |  |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:189:21:189:24 | path | provenance |  |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:192:21:192:24 | path | provenance |  |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:194:21:194:24 | path | provenance |  |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:199:21:199:24 | path | provenance |  |
-| normalizedPaths.js:174:7:174:27 | path | normalizedPaths.js:201:45:201:48 | path | provenance |  |
-| normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:174:7:174:27 | path | provenance |  |
-| normalizedPaths.js:201:7:201:49 | normalizedPath | normalizedPaths.js:205:21:205:34 | normalizedPath | provenance |  |
-| normalizedPaths.js:201:7:201:49 | normalizedPath | normalizedPaths.js:208:21:208:34 | normalizedPath | provenance |  |
-| normalizedPaths.js:201:7:201:49 | normalizedPath | normalizedPaths.js:210:21:210:34 | normalizedPath | provenance |  |
-| normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | normalizedPaths.js:201:7:201:49 | normalizedPath | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:184:19:184:22 | path | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:187:21:187:24 | path | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:189:21:189:24 | path | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:192:21:192:24 | path | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:194:21:194:24 | path | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:199:21:199:24 | path | provenance |  |
+| normalizedPaths.js:174:7:174:10 | path | normalizedPaths.js:201:45:201:48 | path | provenance |  |
+| normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:174:7:174:10 | path | provenance |  |
+| normalizedPaths.js:201:7:201:20 | normalizedPath | normalizedPaths.js:205:21:205:34 | normalizedPath | provenance |  |
+| normalizedPaths.js:201:7:201:20 | normalizedPath | normalizedPaths.js:208:21:208:34 | normalizedPath | provenance |  |
+| normalizedPaths.js:201:7:201:20 | normalizedPath | normalizedPaths.js:210:21:210:34 | normalizedPath | provenance |  |
+| normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | normalizedPaths.js:201:7:201:20 | normalizedPath | provenance |  |
 | normalizedPaths.js:201:45:201:48 | path | normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | provenance | Config |
-| normalizedPaths.js:214:7:214:49 | path | normalizedPaths.js:219:29:219:32 | path | provenance |  |
-| normalizedPaths.js:214:14:214:49 | pathMod ... y.path) | normalizedPaths.js:214:7:214:49 | path | provenance |  |
+| normalizedPaths.js:214:7:214:10 | path | normalizedPaths.js:219:29:219:32 | path | provenance |  |
+| normalizedPaths.js:214:14:214:49 | pathMod ... y.path) | normalizedPaths.js:214:7:214:10 | path | provenance |  |
 | normalizedPaths.js:214:35:214:48 | req.query.path | normalizedPaths.js:214:14:214:49 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:219:3:219:33 | path | normalizedPaths.js:222:21:222:24 | path | provenance |  |
-| normalizedPaths.js:219:10:219:33 | decodeU ... t(path) | normalizedPaths.js:219:3:219:33 | path | provenance |  |
+| normalizedPaths.js:219:3:219:6 | path | normalizedPaths.js:222:21:222:24 | path | provenance |  |
+| normalizedPaths.js:219:10:219:33 | decodeU ... t(path) | normalizedPaths.js:219:3:219:6 | path | provenance |  |
 | normalizedPaths.js:219:29:219:32 | path | normalizedPaths.js:219:10:219:33 | decodeU ... t(path) | provenance | Config |
-| normalizedPaths.js:226:7:226:70 | path | normalizedPaths.js:228:21:228:24 | path | provenance |  |
+| normalizedPaths.js:226:7:226:10 | path | normalizedPaths.js:228:21:228:24 | path | provenance |  |
 | normalizedPaths.js:226:14:226:49 | pathMod ... y.path) | normalizedPaths.js:226:14:226:70 | pathMod ... g, ' ') | provenance | Config |
-| normalizedPaths.js:226:14:226:70 | pathMod ... g, ' ') | normalizedPaths.js:226:7:226:70 | path | provenance |  |
+| normalizedPaths.js:226:14:226:70 | pathMod ... g, ' ') | normalizedPaths.js:226:7:226:10 | path | provenance |  |
 | normalizedPaths.js:226:35:226:48 | req.query.path | normalizedPaths.js:226:14:226:49 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:236:7:236:47 | path | normalizedPaths.js:238:19:238:22 | path | provenance |  |
-| normalizedPaths.js:236:7:236:47 | path | normalizedPaths.js:245:21:245:24 | path | provenance |  |
-| normalizedPaths.js:236:7:236:47 | path | normalizedPaths.js:250:21:250:24 | path | provenance |  |
-| normalizedPaths.js:236:14:236:47 | pathMod ... y.path) | normalizedPaths.js:236:7:236:47 | path | provenance |  |
+| normalizedPaths.js:236:7:236:10 | path | normalizedPaths.js:238:19:238:22 | path | provenance |  |
+| normalizedPaths.js:236:7:236:10 | path | normalizedPaths.js:245:21:245:24 | path | provenance |  |
+| normalizedPaths.js:236:7:236:10 | path | normalizedPaths.js:250:21:250:24 | path | provenance |  |
+| normalizedPaths.js:236:14:236:47 | pathMod ... y.path) | normalizedPaths.js:236:7:236:10 | path | provenance |  |
 | normalizedPaths.js:236:33:236:46 | req.query.path | normalizedPaths.js:236:14:236:47 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:256:19:256:22 | path | provenance |  |
-| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:262:21:262:24 | path | provenance |  |
-| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:267:38:267:41 | path | provenance |  |
-| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:275:38:275:41 | path | provenance |  |
-| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:283:38:283:41 | path | provenance |  |
-| normalizedPaths.js:254:7:254:47 | path | normalizedPaths.js:291:38:291:41 | path | provenance |  |
-| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | normalizedPaths.js:254:7:254:47 | path | provenance |  |
+| normalizedPaths.js:254:7:254:10 | path | normalizedPaths.js:256:19:256:22 | path | provenance |  |
+| normalizedPaths.js:254:7:254:10 | path | normalizedPaths.js:262:21:262:24 | path | provenance |  |
+| normalizedPaths.js:254:7:254:10 | path | normalizedPaths.js:267:38:267:41 | path | provenance |  |
+| normalizedPaths.js:254:7:254:10 | path | normalizedPaths.js:275:38:275:41 | path | provenance |  |
+| normalizedPaths.js:254:7:254:10 | path | normalizedPaths.js:283:38:283:41 | path | provenance |  |
+| normalizedPaths.js:254:7:254:10 | path | normalizedPaths.js:291:38:291:41 | path | provenance |  |
+| normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | normalizedPaths.js:254:7:254:10 | path | provenance |  |
 | normalizedPaths.js:254:33:254:46 | req.query.path | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:267:7:267:42 | newpath | normalizedPaths.js:270:21:270:27 | newpath | provenance |  |
-| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | normalizedPaths.js:267:7:267:42 | newpath | provenance |  |
+| normalizedPaths.js:267:7:267:13 | newpath | normalizedPaths.js:270:21:270:27 | newpath | provenance |  |
+| normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | normalizedPaths.js:267:7:267:13 | newpath | provenance |  |
 | normalizedPaths.js:267:38:267:41 | path | normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | provenance | Config |
-| normalizedPaths.js:275:7:275:42 | newpath | normalizedPaths.js:278:21:278:27 | newpath | provenance |  |
-| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | normalizedPaths.js:275:7:275:42 | newpath | provenance |  |
+| normalizedPaths.js:275:7:275:13 | newpath | normalizedPaths.js:278:21:278:27 | newpath | provenance |  |
+| normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | normalizedPaths.js:275:7:275:13 | newpath | provenance |  |
 | normalizedPaths.js:275:38:275:41 | path | normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | provenance | Config |
-| normalizedPaths.js:283:7:283:42 | newpath | normalizedPaths.js:286:21:286:27 | newpath | provenance |  |
-| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | normalizedPaths.js:283:7:283:42 | newpath | provenance |  |
+| normalizedPaths.js:283:7:283:13 | newpath | normalizedPaths.js:286:21:286:27 | newpath | provenance |  |
+| normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | normalizedPaths.js:283:7:283:13 | newpath | provenance |  |
 | normalizedPaths.js:283:38:283:41 | path | normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | provenance | Config |
-| normalizedPaths.js:291:7:291:42 | newpath | normalizedPaths.js:296:21:296:27 | newpath | provenance |  |
-| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | normalizedPaths.js:291:7:291:42 | newpath | provenance |  |
+| normalizedPaths.js:291:7:291:13 | newpath | normalizedPaths.js:296:21:296:27 | newpath | provenance |  |
+| normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | normalizedPaths.js:291:7:291:13 | newpath | provenance |  |
 | normalizedPaths.js:291:38:291:41 | path | normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | provenance | Config |
-| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:304:18:304:21 | path | provenance |  |
-| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:309:19:309:22 | path | provenance |  |
-| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:313:19:313:22 | path | provenance |  |
-| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:316:19:316:22 | path | provenance |  |
-| normalizedPaths.js:303:6:303:26 | path | normalizedPaths.js:320:45:320:48 | path | provenance |  |
-| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:26 | path | provenance |  |
-| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath | provenance |  |
-| normalizedPaths.js:320:6:320:49 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath | provenance |  |
-| normalizedPaths.js:320:23:320:49 | pathMod ... , path) | normalizedPaths.js:320:6:320:49 | normalizedPath | provenance |  |
+| normalizedPaths.js:303:6:303:9 | path | normalizedPaths.js:304:18:304:21 | path | provenance |  |
+| normalizedPaths.js:303:6:303:9 | path | normalizedPaths.js:309:19:309:22 | path | provenance |  |
+| normalizedPaths.js:303:6:303:9 | path | normalizedPaths.js:313:19:313:22 | path | provenance |  |
+| normalizedPaths.js:303:6:303:9 | path | normalizedPaths.js:316:19:316:22 | path | provenance |  |
+| normalizedPaths.js:303:6:303:9 | path | normalizedPaths.js:320:45:320:48 | path | provenance |  |
+| normalizedPaths.js:303:13:303:26 | req.query.path | normalizedPaths.js:303:6:303:9 | path | provenance |  |
+| normalizedPaths.js:320:6:320:19 | normalizedPath | normalizedPaths.js:325:19:325:32 | normalizedPath | provenance |  |
+| normalizedPaths.js:320:6:320:19 | normalizedPath | normalizedPaths.js:332:19:332:32 | normalizedPath | provenance |  |
+| normalizedPaths.js:320:23:320:49 | pathMod ... , path) | normalizedPaths.js:320:6:320:19 | normalizedPath | provenance |  |
 | normalizedPaths.js:320:45:320:48 | path | normalizedPaths.js:320:23:320:49 | pathMod ... , path) | provenance | Config |
-| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:341:18:341:21 | path | provenance |  |
-| normalizedPaths.js:339:6:339:46 | path | normalizedPaths.js:346:19:346:22 | path | provenance |  |
-| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | normalizedPaths.js:339:6:339:46 | path | provenance |  |
+| normalizedPaths.js:339:6:339:9 | path | normalizedPaths.js:341:18:341:21 | path | provenance |  |
+| normalizedPaths.js:339:6:339:9 | path | normalizedPaths.js:346:19:346:22 | path | provenance |  |
+| normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | normalizedPaths.js:339:6:339:9 | path | provenance |  |
 | normalizedPaths.js:339:32:339:45 | req.query.path | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | provenance | Config |
-| normalizedPaths.js:354:7:354:27 | path | normalizedPaths.js:356:19:356:22 | path | provenance |  |
-| normalizedPaths.js:354:7:354:27 | path | normalizedPaths.js:358:47:358:50 | path | provenance |  |
-| normalizedPaths.js:354:14:354:27 | req.query.path | normalizedPaths.js:354:7:354:27 | path | provenance |  |
-| normalizedPaths.js:358:7:358:51 | requestPath | normalizedPaths.js:363:21:363:31 | requestPath | provenance |  |
-| normalizedPaths.js:358:21:358:51 | pathMod ... , path) | normalizedPaths.js:358:7:358:51 | requestPath | provenance |  |
+| normalizedPaths.js:354:7:354:10 | path | normalizedPaths.js:356:19:356:22 | path | provenance |  |
+| normalizedPaths.js:354:7:354:10 | path | normalizedPaths.js:358:47:358:50 | path | provenance |  |
+| normalizedPaths.js:354:14:354:27 | req.query.path | normalizedPaths.js:354:7:354:10 | path | provenance |  |
+| normalizedPaths.js:358:7:358:17 | requestPath | normalizedPaths.js:363:21:363:31 | requestPath | provenance |  |
+| normalizedPaths.js:358:21:358:51 | pathMod ... , path) | normalizedPaths.js:358:7:358:17 | requestPath | provenance |  |
 | normalizedPaths.js:358:47:358:50 | path | normalizedPaths.js:358:21:358:51 | pathMod ... , path) | provenance | Config |
-| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:379:19:379:22 | path | provenance |  |
-| normalizedPaths.js:377:7:377:27 | path | normalizedPaths.js:381:25:381:28 | path | provenance |  |
-| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:27 | path | provenance |  |
+| normalizedPaths.js:377:7:377:10 | path | normalizedPaths.js:379:19:379:22 | path | provenance |  |
+| normalizedPaths.js:377:7:377:10 | path | normalizedPaths.js:381:25:381:28 | path | provenance |  |
+| normalizedPaths.js:377:14:377:27 | req.query.path | normalizedPaths.js:377:7:377:10 | path | provenance |  |
 | normalizedPaths.js:381:25:381:28 | path | normalizedPaths.js:381:19:381:29 | slash(path) | provenance | Config |
-| normalizedPaths.js:385:7:385:46 | path | normalizedPaths.js:388:19:388:22 | path | provenance |  |
-| normalizedPaths.js:385:7:385:46 | path | normalizedPaths.js:399:21:399:24 | path | provenance |  |
-| normalizedPaths.js:385:14:385:46 | pathMod ... uery.x) | normalizedPaths.js:385:7:385:46 | path | provenance |  |
+| normalizedPaths.js:385:7:385:10 | path | normalizedPaths.js:388:19:388:22 | path | provenance |  |
+| normalizedPaths.js:385:7:385:10 | path | normalizedPaths.js:399:21:399:24 | path | provenance |  |
+| normalizedPaths.js:385:14:385:46 | pathMod ... uery.x) | normalizedPaths.js:385:7:385:10 | path | provenance |  |
 | normalizedPaths.js:385:35:385:45 | req.query.x | normalizedPaths.js:385:14:385:46 | pathMod ... uery.x) | provenance | Config |
 | normalizedPaths.js:407:45:407:55 | req.query.x | normalizedPaths.js:407:45:407:66 | req.que ... it('/') | provenance | Config |
 | normalizedPaths.js:407:45:407:66 | req.que ... it('/') | normalizedPaths.js:407:19:407:67 | pathMod ... t('/')) | provenance | Config |
 | normalizedPaths.js:408:38:408:48 | req.query.x | normalizedPaths.js:408:38:408:59 | req.que ... it('/') | provenance | Config |
 | normalizedPaths.js:408:38:408:59 | req.que ... it('/') | normalizedPaths.js:408:19:408:60 | pathMod ... t('/')) | provenance | Config |
-| normalizedPaths.js:412:7:412:46 | path | normalizedPaths.js:415:19:415:22 | path | provenance |  |
-| normalizedPaths.js:412:7:412:46 | path | normalizedPaths.js:426:21:426:24 | path | provenance |  |
-| normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | normalizedPaths.js:412:7:412:46 | path | provenance |  |
+| normalizedPaths.js:412:7:412:10 | path | normalizedPaths.js:415:19:415:22 | path | provenance |  |
+| normalizedPaths.js:412:7:412:10 | path | normalizedPaths.js:426:21:426:24 | path | provenance |  |
+| normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | normalizedPaths.js:412:7:412:10 | path | provenance |  |
 | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | provenance | Config |
-| open.js:7:11:7:31 | file | open.js:9:10:9:13 | file | provenance |  |
-| open.js:7:11:7:31 | file | open.js:10:13:10:16 | file | provenance |  |
-| open.js:7:18:7:31 | req.query.file | open.js:7:11:7:31 | file | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:14:27:14:30 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:16:34:16:37 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:17:35:17:38 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:19:56:19:59 | path | provenance |  |
-| other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:24:35:24:38 | path | provenance |  |
+| open.js:7:11:7:14 | file | open.js:9:10:9:13 | file | provenance |  |
+| open.js:7:11:7:14 | file | open.js:10:13:10:16 | file | provenance |  |
+| open.js:7:18:7:31 | req.query.file | open.js:7:11:7:14 | file | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:11:19:11:22 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:12:27:12:30 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:13:24:13:27 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:14:27:14:30 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:16:34:16:37 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:17:35:17:38 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:19:56:19:59 | path | provenance |  |
+| other-fs-libraries.js:9:7:9:10 | path | other-fs-libraries.js:24:35:24:38 | path | provenance |  |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | other-fs-libraries.js:9:14:9:43 | url.par ... ).query | provenance | Config |
 | other-fs-libraries.js:9:14:9:43 | url.par ... ).query | other-fs-libraries.js:9:14:9:48 | url.par ... ry.path | provenance | Config |
-| other-fs-libraries.js:9:14:9:48 | url.par ... ry.path | other-fs-libraries.js:9:7:9:48 | path | provenance |  |
+| other-fs-libraries.js:9:14:9:48 | url.par ... ry.path | other-fs-libraries.js:9:7:9:10 | path | provenance |  |
 | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | provenance | Config |
-| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:40:35:40:38 | path | provenance |  |
-| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:41:50:41:53 | path | provenance |  |
-| other-fs-libraries.js:38:7:38:48 | path | other-fs-libraries.js:42:53:42:56 | path | provenance |  |
+| other-fs-libraries.js:38:7:38:10 | path | other-fs-libraries.js:40:35:40:38 | path | provenance |  |
+| other-fs-libraries.js:38:7:38:10 | path | other-fs-libraries.js:41:50:41:53 | path | provenance |  |
+| other-fs-libraries.js:38:7:38:10 | path | other-fs-libraries.js:42:53:42:56 | path | provenance |  |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | other-fs-libraries.js:38:14:38:43 | url.par ... ).query | provenance | Config |
 | other-fs-libraries.js:38:14:38:43 | url.par ... ).query | other-fs-libraries.js:38:14:38:48 | url.par ... ry.path | provenance | Config |
-| other-fs-libraries.js:38:14:38:48 | url.par ... ry.path | other-fs-libraries.js:38:7:38:48 | path | provenance |  |
+| other-fs-libraries.js:38:14:38:48 | url.par ... ry.path | other-fs-libraries.js:38:7:38:10 | path | provenance |  |
 | other-fs-libraries.js:38:24:38:30 | req.url | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | provenance | Config |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:51:19:51:22 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:52:24:52:27 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:54:36:54:39 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:55:36:55:39 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:57:46:57:49 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:59:39:59:42 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:62:43:62:46 | path | provenance |  |
-| other-fs-libraries.js:49:7:49:48 | path | other-fs-libraries.js:63:51:63:54 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:51:19:51:22 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:52:24:52:27 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:54:36:54:39 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:55:36:55:39 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:57:46:57:49 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:59:39:59:42 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:62:43:62:46 | path | provenance |  |
+| other-fs-libraries.js:49:7:49:10 | path | other-fs-libraries.js:63:51:63:54 | path | provenance |  |
 | other-fs-libraries.js:49:14:49:37 | url.par ... , true) | other-fs-libraries.js:49:14:49:43 | url.par ... ).query | provenance | Config |
 | other-fs-libraries.js:49:14:49:43 | url.par ... ).query | other-fs-libraries.js:49:14:49:48 | url.par ... ry.path | provenance | Config |
-| other-fs-libraries.js:49:14:49:48 | url.par ... ry.path | other-fs-libraries.js:49:7:49:48 | path | provenance |  |
+| other-fs-libraries.js:49:14:49:48 | url.par ... ry.path | other-fs-libraries.js:49:7:49:10 | path | provenance |  |
 | other-fs-libraries.js:49:24:49:30 | req.url | other-fs-libraries.js:49:14:49:37 | url.par ... , true) | provenance | Config |
-| other-fs-libraries.js:68:7:68:48 | path | other-fs-libraries.js:70:19:70:22 | path | provenance |  |
-| other-fs-libraries.js:68:7:68:48 | path | other-fs-libraries.js:71:10:71:13 | path | provenance |  |
-| other-fs-libraries.js:68:7:68:48 | path | other-fs-libraries.js:72:15:72:18 | path | provenance |  |
-| other-fs-libraries.js:68:7:68:48 | path | other-fs-libraries.js:73:8:73:11 | path | provenance |  |
+| other-fs-libraries.js:68:7:68:10 | path | other-fs-libraries.js:70:19:70:22 | path | provenance |  |
+| other-fs-libraries.js:68:7:68:10 | path | other-fs-libraries.js:71:10:71:13 | path | provenance |  |
+| other-fs-libraries.js:68:7:68:10 | path | other-fs-libraries.js:72:15:72:18 | path | provenance |  |
+| other-fs-libraries.js:68:7:68:10 | path | other-fs-libraries.js:73:8:73:11 | path | provenance |  |
 | other-fs-libraries.js:68:14:68:37 | url.par ... , true) | other-fs-libraries.js:68:14:68:43 | url.par ... ).query | provenance | Config |
 | other-fs-libraries.js:68:14:68:43 | url.par ... ).query | other-fs-libraries.js:68:14:68:48 | url.par ... ry.path | provenance | Config |
-| other-fs-libraries.js:68:14:68:48 | url.par ... ry.path | other-fs-libraries.js:68:7:68:48 | path | provenance |  |
+| other-fs-libraries.js:68:14:68:48 | url.par ... ry.path | other-fs-libraries.js:68:7:68:10 | path | provenance |  |
 | other-fs-libraries.js:68:24:68:30 | req.url | other-fs-libraries.js:68:14:68:37 | url.par ... , true) | provenance | Config |
 | other-fs-libraries.js:73:8:73:11 | path | other-fs-libraries.js:75:15:75:15 | x | provenance |  |
 | other-fs-libraries.js:75:15:75:15 | x | other-fs-libraries.js:76:19:76:19 | x | provenance |  |
-| other-fs-libraries.js:81:7:81:48 | path | other-fs-libraries.js:83:16:83:19 | path | provenance |  |
+| other-fs-libraries.js:81:7:81:10 | path | other-fs-libraries.js:83:16:83:19 | path | provenance |  |
 | other-fs-libraries.js:81:14:81:37 | url.par ... , true) | other-fs-libraries.js:81:14:81:43 | url.par ... ).query | provenance | Config |
 | other-fs-libraries.js:81:14:81:43 | url.par ... ).query | other-fs-libraries.js:81:14:81:48 | url.par ... ry.path | provenance | Config |
-| other-fs-libraries.js:81:14:81:48 | url.par ... ry.path | other-fs-libraries.js:81:7:81:48 | path | provenance |  |
+| other-fs-libraries.js:81:14:81:48 | url.par ... ry.path | other-fs-libraries.js:81:7:81:10 | path | provenance |  |
 | other-fs-libraries.js:81:24:81:30 | req.url | other-fs-libraries.js:81:14:81:37 | url.par ... , true) | provenance | Config |
-| prettier.js:6:11:6:28 | p | prettier.js:7:28:7:28 | p | provenance |  |
-| prettier.js:6:11:6:28 | p | prettier.js:11:44:11:44 | p | provenance |  |
-| prettier.js:6:13:6:13 | p | prettier.js:6:11:6:28 | p | provenance |  |
-| pupeteer.js:5:9:5:71 | tainted | pupeteer.js:9:28:9:34 | tainted | provenance |  |
-| pupeteer.js:5:9:5:71 | tainted | pupeteer.js:13:37:13:43 | tainted | provenance |  |
-| pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | pupeteer.js:5:9:5:71 | tainted | provenance |  |
+| prettier.js:6:13:6:13 | p | prettier.js:6:13:6:13 | p | provenance |  |
+| prettier.js:6:13:6:13 | p | prettier.js:7:28:7:28 | p | provenance |  |
+| prettier.js:6:13:6:13 | p | prettier.js:11:44:11:44 | p | provenance |  |
+| pupeteer.js:5:9:5:15 | tainted | pupeteer.js:9:28:9:34 | tainted | provenance |  |
+| pupeteer.js:5:9:5:15 | tainted | pupeteer.js:13:37:13:43 | tainted | provenance |  |
+| pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | pupeteer.js:5:9:5:15 | tainted | provenance |  |
 | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | provenance | Config |
 | rimraf.js:8:11:8:18 | { path } | rimraf.js:8:13:8:16 | path | provenance | Config |
-| rimraf.js:8:11:8:29 | path | rimraf.js:10:17:10:20 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:11:23:11:26 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:12:19:12:22 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:13:25:13:28 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:14:24:14:27 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:15:23:15:26 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:16:25:16:28 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:17:19:17:22 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:18:24:18:27 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:19:23:19:26 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:20:26:20:29 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:21:20:21:23 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:22:25:22:28 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:23:24:23:27 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:24:23:24:26 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:25:28:25:31 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:26:27:26:30 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:27:22:27:25 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:28:18:28:21 | path | provenance |  |
-| rimraf.js:8:11:8:29 | path | rimraf.js:29:23:29:26 | path | provenance |  |
-| rimraf.js:8:13:8:16 | path | rimraf.js:8:11:8:29 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:8:13:8:16 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:10:17:10:20 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:11:23:11:26 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:12:19:12:22 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:13:25:13:28 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:14:24:14:27 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:15:23:15:26 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:16:25:16:28 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:17:19:17:22 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:18:24:18:27 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:19:23:19:26 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:20:26:20:29 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:21:20:21:23 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:22:25:22:28 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:23:24:23:27 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:24:23:24:26 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:25:28:25:31 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:26:27:26:30 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:27:22:27:25 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:28:18:28:21 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:29:23:29:26 | path | provenance |  |
 | rimraf.js:8:22:8:29 | req.body | rimraf.js:8:11:8:18 | { path } | provenance |  |
 | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | sharedlib-repro.js:21:27:21:34 | filepath | provenance |  |
 | sharedlib-repro.js:21:27:21:34 | filepath | sharedlib-repro.js:22:18:22:25 | filepath | provenance |  |
-| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path | provenance |  |
-| tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:10:33:10:36 | path | provenance |  |
+| tainted-access-paths.js:6:7:6:10 | path | tainted-access-paths.js:8:19:8:22 | path | provenance |  |
+| tainted-access-paths.js:6:7:6:10 | path | tainted-access-paths.js:10:33:10:36 | path | provenance |  |
 | tainted-access-paths.js:6:14:6:37 | url.par ... , true) | tainted-access-paths.js:6:14:6:43 | url.par ... ).query | provenance | Config |
 | tainted-access-paths.js:6:14:6:43 | url.par ... ).query | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | provenance | Config |
-| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:48 | path | provenance |  |
+| tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | tainted-access-paths.js:6:7:6:10 | path | provenance |  |
 | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:6:14:6:37 | url.par ... , true) | provenance | Config |
-| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:12:19:12:21 | obj | provenance |  |
-| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:26:19:26:21 | obj | provenance |  |
-| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:29:21:29:23 | obj | provenance |  |
-| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:30:23:30:25 | obj | provenance |  |
-| tainted-access-paths.js:10:7:10:36 | obj | tainted-access-paths.js:31:23:31:25 | obj | provenance |  |
-| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:7:10:36 | obj | provenance |  |
+| tainted-access-paths.js:10:7:10:9 | obj | tainted-access-paths.js:12:19:12:21 | obj | provenance |  |
+| tainted-access-paths.js:10:7:10:9 | obj | tainted-access-paths.js:26:19:26:21 | obj | provenance |  |
+| tainted-access-paths.js:10:7:10:9 | obj | tainted-access-paths.js:29:21:29:23 | obj | provenance |  |
+| tainted-access-paths.js:10:7:10:9 | obj | tainted-access-paths.js:30:23:30:25 | obj | provenance |  |
+| tainted-access-paths.js:10:7:10:9 | obj | tainted-access-paths.js:31:23:31:25 | obj | provenance |  |
+| tainted-access-paths.js:10:33:10:36 | path | tainted-access-paths.js:10:7:10:9 | obj | provenance |  |
 | tainted-access-paths.js:12:19:12:21 | obj | tainted-access-paths.js:12:19:12:25 | obj.sub | provenance | Config |
 | tainted-access-paths.js:26:19:26:21 | obj | tainted-access-paths.js:26:19:26:26 | obj.sub3 | provenance | Config |
 | tainted-access-paths.js:29:21:29:23 | obj | tainted-access-paths.js:29:21:29:28 | obj.sub4 | provenance | Config |
 | tainted-access-paths.js:30:23:30:25 | obj | tainted-access-paths.js:30:23:30:30 | obj.sub4 | provenance | Config |
 | tainted-access-paths.js:31:23:31:25 | obj | tainted-access-paths.js:31:23:31:30 | obj.sub4 | provenance | Config |
-| tainted-access-paths.js:39:7:39:48 | path | tainted-access-paths.js:40:23:40:26 | path | provenance |  |
+| tainted-access-paths.js:39:7:39:10 | path | tainted-access-paths.js:40:23:40:26 | path | provenance |  |
 | tainted-access-paths.js:39:14:39:37 | url.par ... , true) | tainted-access-paths.js:39:14:39:43 | url.par ... ).query | provenance | Config |
 | tainted-access-paths.js:39:14:39:43 | url.par ... ).query | tainted-access-paths.js:39:14:39:48 | url.par ... ry.path | provenance | Config |
-| tainted-access-paths.js:39:14:39:48 | url.par ... ry.path | tainted-access-paths.js:39:7:39:48 | path | provenance |  |
+| tainted-access-paths.js:39:14:39:48 | url.par ... ry.path | tainted-access-paths.js:39:7:39:10 | path | provenance |  |
 | tainted-access-paths.js:39:24:39:30 | req.url | tainted-access-paths.js:39:14:39:37 | url.par ... , true) | provenance | Config |
-| tainted-access-paths.js:48:7:48:48 | path | tainted-access-paths.js:49:10:49:13 | path | provenance |  |
+| tainted-access-paths.js:48:7:48:10 | path | tainted-access-paths.js:49:10:49:13 | path | provenance |  |
 | tainted-access-paths.js:48:14:48:37 | url.par ... , true) | tainted-access-paths.js:48:14:48:43 | url.par ... ).query | provenance | Config |
 | tainted-access-paths.js:48:14:48:43 | url.par ... ).query | tainted-access-paths.js:48:14:48:48 | url.par ... ry.path | provenance | Config |
-| tainted-access-paths.js:48:14:48:48 | url.par ... ry.path | tainted-access-paths.js:48:7:48:48 | path | provenance |  |
+| tainted-access-paths.js:48:14:48:48 | url.par ... ry.path | tainted-access-paths.js:48:7:48:10 | path | provenance |  |
 | tainted-access-paths.js:48:24:48:30 | req.url | tainted-access-paths.js:48:14:48:37 | url.par ... , true) | provenance | Config |
-| tainted-promise-steps.js:6:7:6:48 | path | tainted-promise-steps.js:7:26:7:29 | path | provenance |  |
+| tainted-promise-steps.js:6:7:6:10 | path | tainted-promise-steps.js:7:26:7:29 | path | provenance |  |
 | tainted-promise-steps.js:6:14:6:37 | url.par ... , true) | tainted-promise-steps.js:6:14:6:43 | url.par ... ).query | provenance | Config |
 | tainted-promise-steps.js:6:14:6:43 | url.par ... ).query | tainted-promise-steps.js:6:14:6:48 | url.par ... ry.path | provenance | Config |
-| tainted-promise-steps.js:6:14:6:48 | url.par ... ry.path | tainted-promise-steps.js:6:7:6:48 | path | provenance |  |
+| tainted-promise-steps.js:6:14:6:48 | url.par ... ry.path | tainted-promise-steps.js:6:7:6:10 | path | provenance |  |
 | tainted-promise-steps.js:6:24:6:30 | req.url | tainted-promise-steps.js:6:14:6:37 | url.par ... , true) | provenance | Config |
 | tainted-promise-steps.js:7:10:7:30 | Promise ... e(path) [PromiseValue] | tainted-promise-steps.js:10:23:10:33 | pathPromise [PromiseValue] | provenance |  |
 | tainted-promise-steps.js:7:26:7:29 | path | tainted-promise-steps.js:7:10:7:30 | Promise ... e(path) [PromiseValue] | provenance |  |
@@ -730,23 +730,23 @@ edges
 | tainted-sendFile.js:22:34:22:45 | req.params.x | tainted-sendFile.js:22:16:22:46 | path.jo ... rams.x) | provenance | Config |
 | tainted-sendFile.js:28:37:28:48 | req.params.x | tainted-sendFile.js:28:16:28:48 | homeDir ... arams.x | provenance | Config |
 | tainted-sendFile.js:30:34:30:45 | req.params.x | tainted-sendFile.js:30:16:30:46 | path.jo ... rams.x) | provenance | Config |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:8:18:8:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:9:18:9:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:10:18:10:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:11:18:11:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:13:18:13:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:14:33:14:36 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:15:42:15:45 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:17:18:17:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:18:18:18:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:22:18:22:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:23:18:23:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:24:18:24:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:26:18:26:21 | path | provenance |  |
-| tainted-string-steps.js:6:7:6:48 | path | tainted-string-steps.js:27:18:27:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:8:18:8:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:9:18:9:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:10:18:10:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:11:18:11:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:13:18:13:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:14:33:14:36 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:15:42:15:45 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:17:18:17:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:18:18:18:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:22:18:22:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:23:18:23:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:24:18:24:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:26:18:26:21 | path | provenance |  |
+| tainted-string-steps.js:6:7:6:10 | path | tainted-string-steps.js:27:18:27:21 | path | provenance |  |
 | tainted-string-steps.js:6:14:6:37 | url.par ... , true) | tainted-string-steps.js:6:14:6:43 | url.par ... ).query | provenance | Config |
 | tainted-string-steps.js:6:14:6:43 | url.par ... ).query | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | provenance | Config |
-| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:48 | path | provenance |  |
+| tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | tainted-string-steps.js:6:7:6:10 | path | provenance |  |
 | tainted-string-steps.js:6:24:6:30 | req.url | tainted-string-steps.js:6:14:6:37 | url.par ... , true) | provenance | Config |
 | tainted-string-steps.js:8:18:8:21 | path | tainted-string-steps.js:8:18:8:34 | path.substring(4) | provenance | Config |
 | tainted-string-steps.js:9:18:9:21 | path | tainted-string-steps.js:9:18:9:37 | path.substring(0, i) | provenance | Config |
@@ -766,34 +766,34 @@ edges
 | tainted-string-steps.js:26:18:26:21 | path | tainted-string-steps.js:26:18:26:36 | path.split(unknown) | provenance | Config |
 | tainted-string-steps.js:26:18:26:36 | path.split(unknown) | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | provenance | Config |
 | tainted-string-steps.js:27:18:27:21 | path | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | provenance | Config |
-| torrents.js:5:6:5:38 | name | torrents.js:6:24:6:27 | name | provenance |  |
-| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:38 | name | provenance |  |
-| torrents.js:6:6:6:45 | loc | torrents.js:7:25:7:27 | loc | provenance |  |
-| torrents.js:6:12:6:45 | dir + " ... t.data" | torrents.js:6:6:6:45 | loc | provenance |  |
+| torrents.js:5:6:5:9 | name | torrents.js:6:24:6:27 | name | provenance |  |
+| torrents.js:5:13:5:38 | parseTo ... t).name | torrents.js:5:6:5:9 | name | provenance |  |
+| torrents.js:6:6:6:8 | loc | torrents.js:7:25:7:27 | loc | provenance |  |
+| torrents.js:6:12:6:45 | dir + " ... t.data" | torrents.js:6:6:6:8 | loc | provenance |  |
 | torrents.js:6:24:6:27 | name | torrents.js:6:12:6:45 | dir + " ... t.data" | provenance | Config |
-| typescript.ts:9:7:9:48 | path | typescript.ts:11:29:11:32 | path | provenance |  |
-| typescript.ts:9:7:9:48 | path | typescript.ts:19:15:19:18 | path | provenance |  |
-| typescript.ts:9:7:9:48 | path | typescript.ts:22:15:22:18 | path | provenance |  |
-| typescript.ts:9:7:9:48 | path | typescript.ts:29:15:29:18 | path | provenance |  |
+| typescript.ts:9:7:9:10 | path | typescript.ts:11:29:11:32 | path | provenance |  |
+| typescript.ts:9:7:9:10 | path | typescript.ts:19:15:19:18 | path | provenance |  |
+| typescript.ts:9:7:9:10 | path | typescript.ts:22:15:22:18 | path | provenance |  |
+| typescript.ts:9:7:9:10 | path | typescript.ts:29:15:29:18 | path | provenance |  |
 | typescript.ts:9:14:9:37 | url.par ... , true) | typescript.ts:9:14:9:43 | url.par ... ).query | provenance | Config |
 | typescript.ts:9:14:9:43 | url.par ... ).query | typescript.ts:9:14:9:48 | url.par ... ry.path | provenance | Config |
-| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:48 | path | provenance |  |
+| typescript.ts:9:14:9:48 | url.par ... ry.path | typescript.ts:9:7:9:10 | path | provenance |  |
 | typescript.ts:9:24:9:30 | req.url | typescript.ts:9:14:9:37 | url.par ... , true) | provenance | Config |
-| typescript.ts:19:7:19:18 | path3 | typescript.ts:20:39:20:43 | path3 | provenance |  |
-| typescript.ts:19:15:19:18 | path | typescript.ts:19:7:19:18 | path3 | provenance |  |
-| typescript.ts:22:7:22:18 | path4 | typescript.ts:23:39:23:43 | path4 | provenance |  |
-| typescript.ts:22:15:22:18 | path | typescript.ts:22:7:22:18 | path4 | provenance |  |
-| typescript.ts:29:7:29:18 | path6 | typescript.ts:31:29:31:33 | path6 | provenance |  |
-| typescript.ts:29:15:29:18 | path | typescript.ts:29:7:29:18 | path6 | provenance |  |
+| typescript.ts:19:7:19:11 | path3 | typescript.ts:20:39:20:43 | path3 | provenance |  |
+| typescript.ts:19:15:19:18 | path | typescript.ts:19:7:19:11 | path3 | provenance |  |
+| typescript.ts:22:7:22:11 | path4 | typescript.ts:23:39:23:43 | path4 | provenance |  |
+| typescript.ts:22:15:22:18 | path | typescript.ts:22:7:22:11 | path4 | provenance |  |
+| typescript.ts:29:7:29:11 | path6 | typescript.ts:31:29:31:33 | path6 | provenance |  |
+| typescript.ts:29:15:29:18 | path | typescript.ts:29:7:29:11 | path6 | provenance |  |
 nodes
-| TaintedPath-es6.js:7:7:7:44 | path | semmle.label | path |
+| TaintedPath-es6.js:7:7:7:10 | path | semmle.label | path |
 | TaintedPath-es6.js:7:14:7:33 | parse(req.url, true) | semmle.label | parse(req.url, true) |
 | TaintedPath-es6.js:7:14:7:39 | parse(r ... ).query | semmle.label | parse(r ... ).query |
 | TaintedPath-es6.js:7:14:7:44 | parse(r ... ry.path | semmle.label | parse(r ... ry.path |
 | TaintedPath-es6.js:7:20:7:26 | req.url | semmle.label | req.url |
 | TaintedPath-es6.js:9:26:9:45 | join("public", path) | semmle.label | join("public", path) |
 | TaintedPath-es6.js:9:41:9:44 | path | semmle.label | path |
-| TaintedPath.js:9:7:9:48 | path | semmle.label | path |
+| TaintedPath.js:9:7:9:10 | path | semmle.label | path |
 | TaintedPath.js:9:14:9:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:9:14:9:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:9:14:9:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -805,7 +805,7 @@ nodes
 | TaintedPath.js:19:33:19:36 | path | semmle.label | path |
 | TaintedPath.js:22:33:22:36 | path | semmle.label | path |
 | TaintedPath.js:31:31:31:34 | path | semmle.label | path |
-| TaintedPath.js:36:3:36:44 | path | semmle.label | path |
+| TaintedPath.js:36:3:36:6 | path | semmle.label | path |
 | TaintedPath.js:36:10:36:33 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:36:10:36:39 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:36:10:36:44 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -838,7 +838,7 @@ nodes
 | TaintedPath.js:56:31:56:73 | require ... ).query | semmle.label | require ... ).query |
 | TaintedPath.js:56:60:56:66 | req.url | semmle.label | req.url |
 | TaintedPath.js:64:48:64:60 | req.params[0] | semmle.label | req.params[0] |
-| TaintedPath.js:73:6:73:47 | path | semmle.label | path |
+| TaintedPath.js:73:6:73:9 | path | semmle.label | path |
 | TaintedPath.js:73:13:73:36 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:73:13:73:42 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:73:13:73:47 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -848,19 +848,19 @@ nodes
 | TaintedPath.js:76:14:76:17 | path | semmle.label | path |
 | TaintedPath.js:77:32:77:39 | realpath | semmle.label | realpath |
 | TaintedPath.js:78:45:78:52 | realpath | semmle.label | realpath |
-| TaintedPath.js:109:6:109:47 | path | semmle.label | path |
+| TaintedPath.js:109:6:109:9 | path | semmle.label | path |
 | TaintedPath.js:109:13:109:36 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:109:13:109:42 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:109:13:109:47 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | TaintedPath.js:109:23:109:29 | req.url | semmle.label | req.url |
 | TaintedPath.js:111:23:111:26 | path | semmle.label | path |
-| TaintedPath.js:115:7:115:48 | path | semmle.label | path |
+| TaintedPath.js:115:7:115:10 | path | semmle.label | path |
 | TaintedPath.js:115:14:115:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:115:14:115:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:115:14:115:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | TaintedPath.js:115:24:115:30 | req.url | semmle.label | req.url |
 | TaintedPath.js:117:19:117:22 | path | semmle.label | path |
-| TaintedPath.js:119:7:119:29 | split | semmle.label | split |
+| TaintedPath.js:119:7:119:11 | split | semmle.label | split |
 | TaintedPath.js:119:15:119:18 | path | semmle.label | path |
 | TaintedPath.js:119:15:119:29 | path.split("/") | semmle.label | path.split("/") |
 | TaintedPath.js:121:19:121:23 | split | semmle.label | split |
@@ -870,19 +870,19 @@ nodes
 | TaintedPath.js:126:19:126:35 | prefix + split[x] | semmle.label | prefix + split[x] |
 | TaintedPath.js:126:28:126:32 | split | semmle.label | split |
 | TaintedPath.js:126:28:126:35 | split[x] | semmle.label | split[x] |
-| TaintedPath.js:128:7:128:38 | concatted | semmle.label | concatted |
+| TaintedPath.js:128:7:128:15 | concatted | semmle.label | concatted |
 | TaintedPath.js:128:19:128:38 | prefix.concat(split) | semmle.label | prefix.concat(split) |
 | TaintedPath.js:128:33:128:37 | split | semmle.label | split |
 | TaintedPath.js:129:19:129:27 | concatted | semmle.label | concatted |
 | TaintedPath.js:129:19:129:37 | concatted.join("/") | semmle.label | concatted.join("/") |
-| TaintedPath.js:131:7:131:39 | concatted2 | semmle.label | concatted2 |
+| TaintedPath.js:131:7:131:16 | concatted2 | semmle.label | concatted2 |
 | TaintedPath.js:131:20:131:24 | split | semmle.label | split |
 | TaintedPath.js:131:20:131:39 | split.concat(prefix) | semmle.label | split.concat(prefix) |
 | TaintedPath.js:132:19:132:28 | concatted2 | semmle.label | concatted2 |
 | TaintedPath.js:132:19:132:38 | concatted2.join("/") | semmle.label | concatted2.join("/") |
 | TaintedPath.js:134:19:134:23 | split | semmle.label | split |
 | TaintedPath.js:134:19:134:29 | split.pop() | semmle.label | split.pop() |
-| TaintedPath.js:139:7:139:48 | path | semmle.label | path |
+| TaintedPath.js:139:7:139:10 | path | semmle.label | path |
 | TaintedPath.js:139:14:139:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:139:14:139:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:139:14:139:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -913,7 +913,7 @@ nodes
 | TaintedPath.js:179:29:179:51 | parseqs ... eq.url) | semmle.label | parseqs ... eq.url) |
 | TaintedPath.js:179:29:179:55 | parseqs ... rl).foo | semmle.label | parseqs ... rl).foo |
 | TaintedPath.js:179:44:179:50 | req.url | semmle.label | req.url |
-| TaintedPath.js:184:7:184:48 | path | semmle.label | path |
+| TaintedPath.js:184:7:184:10 | path | semmle.label | path |
 | TaintedPath.js:184:14:184:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:184:14:184:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:184:14:184:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -921,14 +921,14 @@ nodes
 | TaintedPath.js:185:31:185:34 | path | semmle.label | path |
 | TaintedPath.js:186:45:186:48 | path | semmle.label | path |
 | TaintedPath.js:187:35:187:38 | path | semmle.label | path |
-| TaintedPath.js:191:7:191:48 | path | semmle.label | path |
+| TaintedPath.js:191:7:191:10 | path | semmle.label | path |
 | TaintedPath.js:191:14:191:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:191:14:191:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:191:14:191:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | TaintedPath.js:191:24:191:30 | req.url | semmle.label | req.url |
 | TaintedPath.js:195:29:195:32 | path | semmle.label | path |
 | TaintedPath.js:195:29:195:85 | path.re ... '), '') | semmle.label | path.re ... '), '') |
-| TaintedPath.js:200:7:200:48 | path | semmle.label | path |
+| TaintedPath.js:200:7:200:10 | path | semmle.label | path |
 | TaintedPath.js:200:14:200:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:200:14:200:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:200:14:200:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -937,27 +937,27 @@ nodes
 | TaintedPath.js:202:29:202:68 | path.re ... '), '') | semmle.label | path.re ... '), '') |
 | TaintedPath.js:205:31:205:34 | path | semmle.label | path |
 | TaintedPath.js:205:31:205:69 | path.re ... '), '') | semmle.label | path.re ... '), '') |
-| TaintedPath.js:212:7:212:48 | path | semmle.label | path |
+| TaintedPath.js:212:7:212:10 | path | semmle.label | path |
 | TaintedPath.js:212:14:212:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | TaintedPath.js:212:14:212:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | TaintedPath.js:212:14:212:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | TaintedPath.js:212:24:212:30 | req.url | semmle.label | req.url |
-| TaintedPath.js:213:9:213:37 | improperEscape | semmle.label | improperEscape |
+| TaintedPath.js:213:9:213:22 | improperEscape | semmle.label | improperEscape |
 | TaintedPath.js:213:26:213:37 | escape(path) | semmle.label | escape(path) |
 | TaintedPath.js:213:33:213:36 | path | semmle.label | path |
 | TaintedPath.js:214:29:214:42 | improperEscape | semmle.label | improperEscape |
-| TaintedPath.js:215:9:215:40 | improperEscape2 | semmle.label | improperEscape2 |
+| TaintedPath.js:215:9:215:23 | improperEscape2 | semmle.label | improperEscape2 |
 | TaintedPath.js:215:27:215:40 | unescape(path) | semmle.label | unescape(path) |
 | TaintedPath.js:215:36:215:39 | path | semmle.label | path |
 | TaintedPath.js:216:29:216:43 | improperEscape2 | semmle.label | improperEscape2 |
-| examples/TaintedPath.js:8:7:8:52 | filePath | semmle.label | filePath |
+| examples/TaintedPath.js:8:7:8:14 | filePath | semmle.label | filePath |
 | examples/TaintedPath.js:8:18:8:41 | url.par ... , true) | semmle.label | url.par ... , true) |
 | examples/TaintedPath.js:8:18:8:47 | url.par ... ).query | semmle.label | url.par ... ).query |
 | examples/TaintedPath.js:8:18:8:52 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | examples/TaintedPath.js:8:28:8:34 | req.url | semmle.label | req.url |
 | examples/TaintedPath.js:10:29:10:43 | ROOT + filePath | semmle.label | ROOT + filePath |
 | examples/TaintedPath.js:10:36:10:43 | filePath | semmle.label | filePath |
-| execa.js:6:9:6:64 | filePath | semmle.label | filePath |
+| execa.js:6:9:6:16 | filePath | semmle.label | filePath |
 | execa.js:6:20:6:43 | url.par ... , true) | semmle.label | url.par ... , true) |
 | execa.js:6:20:6:49 | url.par ... ).query | semmle.label | url.par ... ).query |
 | execa.js:6:20:6:61 | url.par ... ePath"] | semmle.label | url.par ... ePath"] |
@@ -974,14 +974,14 @@ nodes
 | handlebars.js:15:25:15:32 | filePath | semmle.label | filePath |
 | handlebars.js:29:46:29:60 | req.params.path | semmle.label | req.params.path |
 | handlebars.js:43:15:43:29 | req.params.path | semmle.label | req.params.path |
-| hapi.js:14:19:14:51 | filepath | semmle.label | filepath |
+| hapi.js:14:19:14:26 | filepath | semmle.label | filepath |
 | hapi.js:14:30:14:51 | request ... ilepath | semmle.label | request ... ilepath |
 | hapi.js:15:44:15:51 | filepath | semmle.label | filepath |
-| make-dir.js:7:11:7:31 | file | semmle.label | file |
+| make-dir.js:7:11:7:14 | file | semmle.label | file |
 | make-dir.js:7:18:7:31 | req.query.file | semmle.label | req.query.file |
 | make-dir.js:9:25:9:28 | file | semmle.label | file |
 | make-dir.js:10:23:10:26 | file | semmle.label | file |
-| mkdirp.js:9:11:9:76 | dirPath | semmle.label | dirPath |
+| mkdirp.js:9:11:9:17 | dirPath | semmle.label | dirPath |
 | mkdirp.js:9:21:9:76 | path.jo ... ltDir') | semmle.label | path.jo ... ltDir') |
 | mkdirp.js:9:42:9:59 | req.query.filename | semmle.label | req.query.filename |
 | mkdirp.js:9:42:9:75 | req.que ... ultDir' | semmle.label | req.que ... ultDir' |
@@ -997,7 +997,7 @@ nodes
 | mkdirp.js:20:29:20:35 | dirPath | semmle.label | dirPath |
 | mkdirp.js:21:23:21:29 | dirPath | semmle.label | dirPath |
 | more-fs-extra.js:8:11:8:22 | { filename } | semmle.label | { filename } |
-| more-fs-extra.js:8:11:8:33 | filename | semmle.label | filename |
+| more-fs-extra.js:8:13:8:20 | filename | semmle.label | filename |
 | more-fs-extra.js:8:13:8:20 | filename | semmle.label | filename |
 | more-fs-extra.js:8:26:8:33 | req.body | semmle.label | req.body |
 | more-fs-extra.js:10:15:10:22 | filename | semmle.label | filename |
@@ -1023,7 +1023,7 @@ nodes
 | more-fs-extra.js:30:16:30:23 | filename | semmle.label | filename |
 | more-fs-extra.js:31:20:31:27 | filename | semmle.label | filename |
 | more-fs-extra.js:32:23:32:30 | filename | semmle.label | filename |
-| normalizedPaths.js:11:7:11:27 | path | semmle.label | path |
+| normalizedPaths.js:11:7:11:10 | path | semmle.label | path |
 | normalizedPaths.js:11:14:11:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:13:19:13:22 | path | semmle.label | path |
 | normalizedPaths.js:14:19:14:29 | './' + path | semmle.label | './' + path |
@@ -1034,7 +1034,7 @@ nodes
 | normalizedPaths.js:16:35:16:38 | path | semmle.label | path |
 | normalizedPaths.js:17:19:17:57 | pathMod ... , path) | semmle.label | pathMod ... , path) |
 | normalizedPaths.js:17:53:17:56 | path | semmle.label | path |
-| normalizedPaths.js:21:7:21:49 | path | semmle.label | path |
+| normalizedPaths.js:21:7:21:10 | path | semmle.label | path |
 | normalizedPaths.js:21:14:21:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:21:35:21:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:23:19:23:22 | path | semmle.label | path |
@@ -1046,57 +1046,57 @@ nodes
 | normalizedPaths.js:26:35:26:38 | path | semmle.label | path |
 | normalizedPaths.js:27:19:27:57 | pathMod ... , path) | semmle.label | pathMod ... , path) |
 | normalizedPaths.js:27:53:27:56 | path | semmle.label | path |
-| normalizedPaths.js:31:7:31:49 | path | semmle.label | path |
+| normalizedPaths.js:31:7:31:10 | path | semmle.label | path |
 | normalizedPaths.js:31:14:31:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:31:35:31:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:36:19:36:22 | path | semmle.label | path |
 | normalizedPaths.js:41:21:41:24 | path | semmle.label | path |
-| normalizedPaths.js:54:7:54:49 | path | semmle.label | path |
+| normalizedPaths.js:54:7:54:10 | path | semmle.label | path |
 | normalizedPaths.js:54:14:54:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:54:35:54:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:59:19:59:22 | path | semmle.label | path |
 | normalizedPaths.js:63:19:63:22 | path | semmle.label | path |
 | normalizedPaths.js:63:19:63:38 | path + "/index.html" | semmle.label | path + "/index.html" |
 | normalizedPaths.js:68:21:68:24 | path | semmle.label | path |
-| normalizedPaths.js:73:7:73:56 | path | semmle.label | path |
+| normalizedPaths.js:73:7:73:10 | path | semmle.label | path |
 | normalizedPaths.js:73:14:73:56 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:73:35:73:55 | './' +  ... ry.path | semmle.label | './' +  ... ry.path |
 | normalizedPaths.js:73:42:73:55 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:78:22:78:25 | path | semmle.label | path |
-| normalizedPaths.js:82:7:82:27 | path | semmle.label | path |
+| normalizedPaths.js:82:7:82:10 | path | semmle.label | path |
 | normalizedPaths.js:82:14:82:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:87:29:87:32 | path | semmle.label | path |
 | normalizedPaths.js:90:31:90:34 | path | semmle.label | path |
-| normalizedPaths.js:94:7:94:49 | path | semmle.label | path |
+| normalizedPaths.js:94:7:94:10 | path | semmle.label | path |
 | normalizedPaths.js:94:14:94:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:94:35:94:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:99:29:99:32 | path | semmle.label | path |
-| normalizedPaths.js:117:7:117:44 | path | semmle.label | path |
+| normalizedPaths.js:117:7:117:10 | path | semmle.label | path |
 | normalizedPaths.js:117:14:117:44 | fs.real ... y.path) | semmle.label | fs.real ... y.path) |
 | normalizedPaths.js:117:30:117:43 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:119:19:119:22 | path | semmle.label | path |
 | normalizedPaths.js:120:19:120:53 | pathMod ... .html') | semmle.label | pathMod ... .html') |
 | normalizedPaths.js:120:35:120:38 | path | semmle.label | path |
-| normalizedPaths.js:130:7:130:49 | path | semmle.label | path |
+| normalizedPaths.js:130:7:130:10 | path | semmle.label | path |
 | normalizedPaths.js:130:14:130:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:130:35:130:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:135:21:135:24 | path | semmle.label | path |
-| normalizedPaths.js:139:7:139:62 | path | semmle.label | path |
+| normalizedPaths.js:139:7:139:10 | path | semmle.label | path |
 | normalizedPaths.js:139:14:139:62 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:139:48:139:61 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:144:21:144:24 | path | semmle.label | path |
-| normalizedPaths.js:148:7:148:58 | path | semmle.label | path |
+| normalizedPaths.js:148:7:148:10 | path | semmle.label | path |
 | normalizedPaths.js:148:14:148:58 | 'foo/'  ... y.path) | semmle.label | 'foo/'  ... y.path) |
 | normalizedPaths.js:148:23:148:58 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:148:44:148:57 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:151:21:151:24 | path | semmle.label | path |
 | normalizedPaths.js:153:21:153:24 | path | semmle.label | path |
-| normalizedPaths.js:160:7:160:49 | path | semmle.label | path |
+| normalizedPaths.js:160:7:160:10 | path | semmle.label | path |
 | normalizedPaths.js:160:14:160:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:160:35:160:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:165:19:165:22 | path | semmle.label | path |
 | normalizedPaths.js:170:21:170:24 | path | semmle.label | path |
-| normalizedPaths.js:174:7:174:27 | path | semmle.label | path |
+| normalizedPaths.js:174:7:174:10 | path | semmle.label | path |
 | normalizedPaths.js:174:14:174:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:184:19:184:22 | path | semmle.label | path |
 | normalizedPaths.js:187:21:187:24 | path | semmle.label | path |
@@ -1104,80 +1104,80 @@ nodes
 | normalizedPaths.js:192:21:192:24 | path | semmle.label | path |
 | normalizedPaths.js:194:21:194:24 | path | semmle.label | path |
 | normalizedPaths.js:199:21:199:24 | path | semmle.label | path |
-| normalizedPaths.js:201:7:201:49 | normalizedPath | semmle.label | normalizedPath |
+| normalizedPaths.js:201:7:201:20 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:201:24:201:49 | pathMod ... e(path) | semmle.label | pathMod ... e(path) |
 | normalizedPaths.js:201:45:201:48 | path | semmle.label | path |
 | normalizedPaths.js:205:21:205:34 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:208:21:208:34 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:210:21:210:34 | normalizedPath | semmle.label | normalizedPath |
-| normalizedPaths.js:214:7:214:49 | path | semmle.label | path |
+| normalizedPaths.js:214:7:214:10 | path | semmle.label | path |
 | normalizedPaths.js:214:14:214:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:214:35:214:48 | req.query.path | semmle.label | req.query.path |
-| normalizedPaths.js:219:3:219:33 | path | semmle.label | path |
+| normalizedPaths.js:219:3:219:6 | path | semmle.label | path |
 | normalizedPaths.js:219:10:219:33 | decodeU ... t(path) | semmle.label | decodeU ... t(path) |
 | normalizedPaths.js:219:29:219:32 | path | semmle.label | path |
 | normalizedPaths.js:222:21:222:24 | path | semmle.label | path |
-| normalizedPaths.js:226:7:226:70 | path | semmle.label | path |
+| normalizedPaths.js:226:7:226:10 | path | semmle.label | path |
 | normalizedPaths.js:226:14:226:49 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:226:14:226:70 | pathMod ... g, ' ') | semmle.label | pathMod ... g, ' ') |
 | normalizedPaths.js:226:35:226:48 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:228:21:228:24 | path | semmle.label | path |
-| normalizedPaths.js:236:7:236:47 | path | semmle.label | path |
+| normalizedPaths.js:236:7:236:10 | path | semmle.label | path |
 | normalizedPaths.js:236:14:236:47 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:236:33:236:46 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:238:19:238:22 | path | semmle.label | path |
 | normalizedPaths.js:245:21:245:24 | path | semmle.label | path |
 | normalizedPaths.js:250:21:250:24 | path | semmle.label | path |
-| normalizedPaths.js:254:7:254:47 | path | semmle.label | path |
+| normalizedPaths.js:254:7:254:10 | path | semmle.label | path |
 | normalizedPaths.js:254:14:254:47 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:254:33:254:46 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:256:19:256:22 | path | semmle.label | path |
 | normalizedPaths.js:262:21:262:24 | path | semmle.label | path |
-| normalizedPaths.js:267:7:267:42 | newpath | semmle.label | newpath |
+| normalizedPaths.js:267:7:267:13 | newpath | semmle.label | newpath |
 | normalizedPaths.js:267:17:267:42 | pathMod ... e(path) | semmle.label | pathMod ... e(path) |
 | normalizedPaths.js:267:38:267:41 | path | semmle.label | path |
 | normalizedPaths.js:270:21:270:27 | newpath | semmle.label | newpath |
-| normalizedPaths.js:275:7:275:42 | newpath | semmle.label | newpath |
+| normalizedPaths.js:275:7:275:13 | newpath | semmle.label | newpath |
 | normalizedPaths.js:275:17:275:42 | pathMod ... e(path) | semmle.label | pathMod ... e(path) |
 | normalizedPaths.js:275:38:275:41 | path | semmle.label | path |
 | normalizedPaths.js:278:21:278:27 | newpath | semmle.label | newpath |
-| normalizedPaths.js:283:7:283:42 | newpath | semmle.label | newpath |
+| normalizedPaths.js:283:7:283:13 | newpath | semmle.label | newpath |
 | normalizedPaths.js:283:17:283:42 | pathMod ... e(path) | semmle.label | pathMod ... e(path) |
 | normalizedPaths.js:283:38:283:41 | path | semmle.label | path |
 | normalizedPaths.js:286:21:286:27 | newpath | semmle.label | newpath |
-| normalizedPaths.js:291:7:291:42 | newpath | semmle.label | newpath |
+| normalizedPaths.js:291:7:291:13 | newpath | semmle.label | newpath |
 | normalizedPaths.js:291:17:291:42 | pathMod ... e(path) | semmle.label | pathMod ... e(path) |
 | normalizedPaths.js:291:38:291:41 | path | semmle.label | path |
 | normalizedPaths.js:296:21:296:27 | newpath | semmle.label | newpath |
-| normalizedPaths.js:303:6:303:26 | path | semmle.label | path |
+| normalizedPaths.js:303:6:303:9 | path | semmle.label | path |
 | normalizedPaths.js:303:13:303:26 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:304:18:304:21 | path | semmle.label | path |
 | normalizedPaths.js:309:19:309:22 | path | semmle.label | path |
 | normalizedPaths.js:313:19:313:22 | path | semmle.label | path |
 | normalizedPaths.js:316:19:316:22 | path | semmle.label | path |
-| normalizedPaths.js:320:6:320:49 | normalizedPath | semmle.label | normalizedPath |
+| normalizedPaths.js:320:6:320:19 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:320:23:320:49 | pathMod ... , path) | semmle.label | pathMod ... , path) |
 | normalizedPaths.js:320:45:320:48 | path | semmle.label | path |
 | normalizedPaths.js:325:19:325:32 | normalizedPath | semmle.label | normalizedPath |
 | normalizedPaths.js:332:19:332:32 | normalizedPath | semmle.label | normalizedPath |
-| normalizedPaths.js:339:6:339:46 | path | semmle.label | path |
+| normalizedPaths.js:339:6:339:9 | path | semmle.label | path |
 | normalizedPaths.js:339:13:339:46 | pathMod ... y.path) | semmle.label | pathMod ... y.path) |
 | normalizedPaths.js:339:32:339:45 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:341:18:341:21 | path | semmle.label | path |
 | normalizedPaths.js:346:19:346:22 | path | semmle.label | path |
-| normalizedPaths.js:354:7:354:27 | path | semmle.label | path |
+| normalizedPaths.js:354:7:354:10 | path | semmle.label | path |
 | normalizedPaths.js:354:14:354:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:356:19:356:22 | path | semmle.label | path |
-| normalizedPaths.js:358:7:358:51 | requestPath | semmle.label | requestPath |
+| normalizedPaths.js:358:7:358:17 | requestPath | semmle.label | requestPath |
 | normalizedPaths.js:358:21:358:51 | pathMod ... , path) | semmle.label | pathMod ... , path) |
 | normalizedPaths.js:358:47:358:50 | path | semmle.label | path |
 | normalizedPaths.js:363:21:363:31 | requestPath | semmle.label | requestPath |
-| normalizedPaths.js:377:7:377:27 | path | semmle.label | path |
+| normalizedPaths.js:377:7:377:10 | path | semmle.label | path |
 | normalizedPaths.js:377:14:377:27 | req.query.path | semmle.label | req.query.path |
 | normalizedPaths.js:379:19:379:22 | path | semmle.label | path |
 | normalizedPaths.js:381:19:381:29 | slash(path) | semmle.label | slash(path) |
 | normalizedPaths.js:381:25:381:28 | path | semmle.label | path |
-| normalizedPaths.js:385:7:385:46 | path | semmle.label | path |
+| normalizedPaths.js:385:7:385:10 | path | semmle.label | path |
 | normalizedPaths.js:385:14:385:46 | pathMod ... uery.x) | semmle.label | pathMod ... uery.x) |
 | normalizedPaths.js:385:35:385:45 | req.query.x | semmle.label | req.query.x |
 | normalizedPaths.js:388:19:388:22 | path | semmle.label | path |
@@ -1188,16 +1188,16 @@ nodes
 | normalizedPaths.js:408:19:408:60 | pathMod ... t('/')) | semmle.label | pathMod ... t('/')) |
 | normalizedPaths.js:408:38:408:48 | req.query.x | semmle.label | req.query.x |
 | normalizedPaths.js:408:38:408:59 | req.que ... it('/') | semmle.label | req.que ... it('/') |
-| normalizedPaths.js:412:7:412:46 | path | semmle.label | path |
+| normalizedPaths.js:412:7:412:10 | path | semmle.label | path |
 | normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | semmle.label | pathMod ... uery.x) |
 | normalizedPaths.js:412:35:412:45 | req.query.x | semmle.label | req.query.x |
 | normalizedPaths.js:415:19:415:22 | path | semmle.label | path |
 | normalizedPaths.js:426:21:426:24 | path | semmle.label | path |
-| open.js:7:11:7:31 | file | semmle.label | file |
+| open.js:7:11:7:14 | file | semmle.label | file |
 | open.js:7:18:7:31 | req.query.file | semmle.label | req.query.file |
 | open.js:9:10:9:13 | file | semmle.label | file |
 | open.js:10:13:10:16 | file | semmle.label | file |
-| other-fs-libraries.js:9:7:9:48 | path | semmle.label | path |
+| other-fs-libraries.js:9:7:9:10 | path | semmle.label | path |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:9:14:9:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | other-fs-libraries.js:9:14:9:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -1210,7 +1210,7 @@ nodes
 | other-fs-libraries.js:17:35:17:38 | path | semmle.label | path |
 | other-fs-libraries.js:19:56:19:59 | path | semmle.label | path |
 | other-fs-libraries.js:24:35:24:38 | path | semmle.label | path |
-| other-fs-libraries.js:38:7:38:48 | path | semmle.label | path |
+| other-fs-libraries.js:38:7:38:10 | path | semmle.label | path |
 | other-fs-libraries.js:38:14:38:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:38:14:38:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | other-fs-libraries.js:38:14:38:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -1218,7 +1218,7 @@ nodes
 | other-fs-libraries.js:40:35:40:38 | path | semmle.label | path |
 | other-fs-libraries.js:41:50:41:53 | path | semmle.label | path |
 | other-fs-libraries.js:42:53:42:56 | path | semmle.label | path |
-| other-fs-libraries.js:49:7:49:48 | path | semmle.label | path |
+| other-fs-libraries.js:49:7:49:10 | path | semmle.label | path |
 | other-fs-libraries.js:49:14:49:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:49:14:49:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | other-fs-libraries.js:49:14:49:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -1231,7 +1231,7 @@ nodes
 | other-fs-libraries.js:59:39:59:42 | path | semmle.label | path |
 | other-fs-libraries.js:62:43:62:46 | path | semmle.label | path |
 | other-fs-libraries.js:63:51:63:54 | path | semmle.label | path |
-| other-fs-libraries.js:68:7:68:48 | path | semmle.label | path |
+| other-fs-libraries.js:68:7:68:10 | path | semmle.label | path |
 | other-fs-libraries.js:68:14:68:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:68:14:68:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | other-fs-libraries.js:68:14:68:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -1242,23 +1242,23 @@ nodes
 | other-fs-libraries.js:73:8:73:11 | path | semmle.label | path |
 | other-fs-libraries.js:75:15:75:15 | x | semmle.label | x |
 | other-fs-libraries.js:76:19:76:19 | x | semmle.label | x |
-| other-fs-libraries.js:81:7:81:48 | path | semmle.label | path |
+| other-fs-libraries.js:81:7:81:10 | path | semmle.label | path |
 | other-fs-libraries.js:81:14:81:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:81:14:81:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | other-fs-libraries.js:81:14:81:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | other-fs-libraries.js:81:24:81:30 | req.url | semmle.label | req.url |
 | other-fs-libraries.js:83:16:83:19 | path | semmle.label | path |
-| prettier.js:6:11:6:28 | p | semmle.label | p |
+| prettier.js:6:13:6:13 | p | semmle.label | p |
 | prettier.js:6:13:6:13 | p | semmle.label | p |
 | prettier.js:7:28:7:28 | p | semmle.label | p |
 | prettier.js:11:44:11:44 | p | semmle.label | p |
-| pupeteer.js:5:9:5:71 | tainted | semmle.label | tainted |
+| pupeteer.js:5:9:5:15 | tainted | semmle.label | tainted |
 | pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | semmle.label | "dir/"  ... t.data" |
 | pupeteer.js:5:28:5:53 | parseTo ... t).name | semmle.label | parseTo ... t).name |
 | pupeteer.js:9:28:9:34 | tainted | semmle.label | tainted |
 | pupeteer.js:13:37:13:43 | tainted | semmle.label | tainted |
 | rimraf.js:8:11:8:18 | { path } | semmle.label | { path } |
-| rimraf.js:8:11:8:29 | path | semmle.label | path |
+| rimraf.js:8:13:8:16 | path | semmle.label | path |
 | rimraf.js:8:13:8:16 | path | semmle.label | path |
 | rimraf.js:8:22:8:29 | req.body | semmle.label | req.body |
 | rimraf.js:10:17:10:20 | path | semmle.label | path |
@@ -1284,13 +1284,13 @@ nodes
 | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | semmle.label | req.par ... spaceId |
 | sharedlib-repro.js:21:27:21:34 | filepath | semmle.label | filepath |
 | sharedlib-repro.js:22:18:22:25 | filepath | semmle.label | filepath |
-| tainted-access-paths.js:6:7:6:48 | path | semmle.label | path |
+| tainted-access-paths.js:6:7:6:10 | path | semmle.label | path |
 | tainted-access-paths.js:6:14:6:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | tainted-access-paths.js:6:14:6:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | tainted-access-paths.js:6:14:6:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | tainted-access-paths.js:6:24:6:30 | req.url | semmle.label | req.url |
 | tainted-access-paths.js:8:19:8:22 | path | semmle.label | path |
-| tainted-access-paths.js:10:7:10:36 | obj | semmle.label | obj |
+| tainted-access-paths.js:10:7:10:9 | obj | semmle.label | obj |
 | tainted-access-paths.js:10:33:10:36 | path | semmle.label | path |
 | tainted-access-paths.js:12:19:12:21 | obj | semmle.label | obj |
 | tainted-access-paths.js:12:19:12:25 | obj.sub | semmle.label | obj.sub |
@@ -1302,19 +1302,19 @@ nodes
 | tainted-access-paths.js:30:23:30:30 | obj.sub4 | semmle.label | obj.sub4 |
 | tainted-access-paths.js:31:23:31:25 | obj | semmle.label | obj |
 | tainted-access-paths.js:31:23:31:30 | obj.sub4 | semmle.label | obj.sub4 |
-| tainted-access-paths.js:39:7:39:48 | path | semmle.label | path |
+| tainted-access-paths.js:39:7:39:10 | path | semmle.label | path |
 | tainted-access-paths.js:39:14:39:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | tainted-access-paths.js:39:14:39:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | tainted-access-paths.js:39:14:39:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | tainted-access-paths.js:39:24:39:30 | req.url | semmle.label | req.url |
 | tainted-access-paths.js:40:23:40:26 | path | semmle.label | path |
-| tainted-access-paths.js:48:7:48:48 | path | semmle.label | path |
+| tainted-access-paths.js:48:7:48:10 | path | semmle.label | path |
 | tainted-access-paths.js:48:14:48:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | tainted-access-paths.js:48:14:48:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | tainted-access-paths.js:48:14:48:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | tainted-access-paths.js:48:24:48:30 | req.url | semmle.label | req.url |
 | tainted-access-paths.js:49:10:49:13 | path | semmle.label | path |
-| tainted-promise-steps.js:6:7:6:48 | path | semmle.label | path |
+| tainted-promise-steps.js:6:7:6:10 | path | semmle.label | path |
 | tainted-promise-steps.js:6:14:6:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | tainted-promise-steps.js:6:14:6:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | tainted-promise-steps.js:6:14:6:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -1343,7 +1343,7 @@ nodes
 | tainted-sendFile.js:30:16:30:46 | path.jo ... rams.x) | semmle.label | path.jo ... rams.x) |
 | tainted-sendFile.js:30:34:30:45 | req.params.x | semmle.label | req.params.x |
 | tainted-sendFile.js:32:43:32:58 | req.param("dir") | semmle.label | req.param("dir") |
-| tainted-string-steps.js:6:7:6:48 | path | semmle.label | path |
+| tainted-string-steps.js:6:7:6:10 | path | semmle.label | path |
 | tainted-string-steps.js:6:14:6:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | tainted-string-steps.js:6:14:6:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | tainted-string-steps.js:6:14:6:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
@@ -1380,25 +1380,25 @@ nodes
 | tainted-string-steps.js:26:18:26:45 | path.sp ... hatever | semmle.label | path.sp ... hatever |
 | tainted-string-steps.js:27:18:27:21 | path | semmle.label | path |
 | tainted-string-steps.js:27:18:27:36 | path.split(unknown) | semmle.label | path.split(unknown) |
-| torrents.js:5:6:5:38 | name | semmle.label | name |
+| torrents.js:5:6:5:9 | name | semmle.label | name |
 | torrents.js:5:13:5:38 | parseTo ... t).name | semmle.label | parseTo ... t).name |
-| torrents.js:6:6:6:45 | loc | semmle.label | loc |
+| torrents.js:6:6:6:8 | loc | semmle.label | loc |
 | torrents.js:6:12:6:45 | dir + " ... t.data" | semmle.label | dir + " ... t.data" |
 | torrents.js:6:24:6:27 | name | semmle.label | name |
 | torrents.js:7:25:7:27 | loc | semmle.label | loc |
-| typescript.ts:9:7:9:48 | path | semmle.label | path |
+| typescript.ts:9:7:9:10 | path | semmle.label | path |
 | typescript.ts:9:14:9:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | typescript.ts:9:14:9:43 | url.par ... ).query | semmle.label | url.par ... ).query |
 | typescript.ts:9:14:9:48 | url.par ... ry.path | semmle.label | url.par ... ry.path |
 | typescript.ts:9:24:9:30 | req.url | semmle.label | req.url |
 | typescript.ts:11:29:11:32 | path | semmle.label | path |
-| typescript.ts:19:7:19:18 | path3 | semmle.label | path3 |
+| typescript.ts:19:7:19:11 | path3 | semmle.label | path3 |
 | typescript.ts:19:15:19:18 | path | semmle.label | path |
 | typescript.ts:20:39:20:43 | path3 | semmle.label | path3 |
-| typescript.ts:22:7:22:18 | path4 | semmle.label | path4 |
+| typescript.ts:22:7:22:11 | path4 | semmle.label | path4 |
 | typescript.ts:22:15:22:18 | path | semmle.label | path |
 | typescript.ts:23:39:23:43 | path4 | semmle.label | path4 |
-| typescript.ts:29:7:29:18 | path6 | semmle.label | path6 |
+| typescript.ts:29:7:29:11 | path6 | semmle.label | path6 |
 | typescript.ts:29:15:29:18 | path | semmle.label | path |
 | typescript.ts:31:29:31:33 | path6 | semmle.label | path6 |
 | views.js:1:43:1:55 | req.params[0] | semmle.label | req.params[0] |

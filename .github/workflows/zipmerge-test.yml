@@ -18,6 +18,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           bazel test //misc/bazel/internal/zipmerge:test --test_output=all

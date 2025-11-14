@@ -157,17 +157,7 @@ private module BaseSsaImpl {
 
 private import BaseSsaImpl
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
-  private import java as J
-
-  class BasicBlock = J::BasicBlock;
-
-  class ControlFlowNode = J::ControlFlowNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
+private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = BaseSsaSourceVariable;
 
   /**
@@ -199,7 +189,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-private module Impl = SsaImplCommon::Make<Location, SsaInput>;
+private module Impl = SsaImplCommon::Make<Location, Cfg, SsaInput>;
 
 private import Cached
 
@@ -375,6 +365,9 @@ class BaseSsaImplicitInit extends BaseSsaVariable instanceof Impl::WriteDefiniti
 class BaseSsaPhiNode extends BaseSsaVariable instanceof Impl::PhiNode {
   /** Gets an input to the phi node defining the SSA variable. */
   BaseSsaVariable getAPhiInput() { this.hasInputFromBlock(result, _) }
+
+  /** Gets an input to the phi node defining the SSA variable. */
+  BaseSsaVariable getAnInput() { this.hasInputFromBlock(result, _) }
 
   /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
   predicate hasInputFromBlock(BaseSsaVariable inp, BasicBlock bb) {

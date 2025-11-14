@@ -7,6 +7,8 @@
  * @precision medium
  * @id java/undocumented-exception
  * @tags maintainability
+ *       readability
+ *       error-handling
  */
 
 import java

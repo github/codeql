@@ -37,7 +37,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 Method.Create(Context, remover);
 
             PopulateModifiers(trapFile);
-            BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
                 ? Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray()
@@ -51,8 +50,17 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
-            foreach (var l in Locations)
-                trapFile.event_location(this, l);
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            BindComments();
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.event_location, this, Locations);
+            }
 
             foreach (var syntaxType in declSyntaxReferences
                 .OfType<VariableDeclaratorSyntax>()

@@ -1,0 +1,92 @@
+#select
+| request_forgery_tests.rs:8:24:8:35 | ...::get | request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:8:24:8:35 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:5:29:5:36 | user_url | user-provided value |
+| request_forgery_tests.rs:17:25:17:36 | ...::get | request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:17:25:17:36 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:5:29:5:36 | user_url | user-provided value |
+| request_forgery_tests.rs:21:25:21:36 | ...::get | request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:21:25:21:36 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:5:29:5:36 | user_url | user-provided value |
+| request_forgery_tests.rs:25:25:25:36 | ...::get | request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:25:25:25:36 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:5:29:5:36 | user_url | user-provided value |
+| request_forgery_tests.rs:31:29:31:40 | ...::get | request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:31:29:31:40 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:5:29:5:36 | user_url | user-provided value |
+| request_forgery_tests.rs:37:37:37:48 | ...::get | request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:37:37:37:48 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:5:29:5:36 | user_url | user-provided value |
+| request_forgery_tests.rs:68:28:68:39 | ...::get | request_forgery_tests.rs:65:33:65:40 | and_then | request_forgery_tests.rs:68:28:68:39 | ...::get | The URL of this request depends on a $@. | request_forgery_tests.rs:65:33:65:40 | and_then | user-provided value |
+edges
+| request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:8:38:8:45 | user_url | provenance |  |
+| request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:16:27:16:49 | MacroExpr | provenance |  |
+| request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:20:27:20:57 | MacroExpr | provenance |  |
+| request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:24:27:24:70 | MacroExpr | provenance |  |
+| request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:31:43:31:50 | user_url | provenance |  |
+| request_forgery_tests.rs:5:29:5:36 | user_url | request_forgery_tests.rs:37:51:37:58 | user_url | provenance |  |
+| request_forgery_tests.rs:8:37:8:45 | &user_url [&ref] | request_forgery_tests.rs:8:24:8:35 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:8:38:8:45 | user_url | request_forgery_tests.rs:8:37:8:45 | &user_url [&ref] | provenance |  |
+| request_forgery_tests.rs:16:13:16:15 | url | request_forgery_tests.rs:17:39:17:41 | url | provenance |  |
+| request_forgery_tests.rs:16:27:16:49 | ...::format(...) | request_forgery_tests.rs:16:27:16:49 | { ... } | provenance |  |
+| request_forgery_tests.rs:16:27:16:49 | ...::must_use(...) | request_forgery_tests.rs:16:13:16:15 | url | provenance |  |
+| request_forgery_tests.rs:16:27:16:49 | MacroExpr | request_forgery_tests.rs:16:27:16:49 | ...::format(...) | provenance | MaD:3 |
+| request_forgery_tests.rs:16:27:16:49 | { ... } | request_forgery_tests.rs:16:27:16:49 | ...::must_use(...) | provenance | MaD:4 |
+| request_forgery_tests.rs:17:38:17:41 | &url [&ref] | request_forgery_tests.rs:17:25:17:36 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:17:39:17:41 | url | request_forgery_tests.rs:17:38:17:41 | &url [&ref] | provenance |  |
+| request_forgery_tests.rs:20:13:20:15 | url | request_forgery_tests.rs:21:39:21:41 | url | provenance |  |
+| request_forgery_tests.rs:20:27:20:57 | ...::format(...) | request_forgery_tests.rs:20:27:20:57 | { ... } | provenance |  |
+| request_forgery_tests.rs:20:27:20:57 | ...::must_use(...) | request_forgery_tests.rs:20:13:20:15 | url | provenance |  |
+| request_forgery_tests.rs:20:27:20:57 | MacroExpr | request_forgery_tests.rs:20:27:20:57 | ...::format(...) | provenance | MaD:3 |
+| request_forgery_tests.rs:20:27:20:57 | { ... } | request_forgery_tests.rs:20:27:20:57 | ...::must_use(...) | provenance | MaD:4 |
+| request_forgery_tests.rs:21:38:21:41 | &url [&ref] | request_forgery_tests.rs:21:25:21:36 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:21:39:21:41 | url | request_forgery_tests.rs:21:38:21:41 | &url [&ref] | provenance |  |
+| request_forgery_tests.rs:24:13:24:15 | url | request_forgery_tests.rs:25:39:25:41 | url | provenance |  |
+| request_forgery_tests.rs:24:27:24:70 | ...::format(...) | request_forgery_tests.rs:24:27:24:70 | { ... } | provenance |  |
+| request_forgery_tests.rs:24:27:24:70 | ...::must_use(...) | request_forgery_tests.rs:24:13:24:15 | url | provenance |  |
+| request_forgery_tests.rs:24:27:24:70 | MacroExpr | request_forgery_tests.rs:24:27:24:70 | ...::format(...) | provenance | MaD:3 |
+| request_forgery_tests.rs:24:27:24:70 | { ... } | request_forgery_tests.rs:24:27:24:70 | ...::must_use(...) | provenance | MaD:4 |
+| request_forgery_tests.rs:25:38:25:41 | &url [&ref] | request_forgery_tests.rs:25:25:25:36 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:25:39:25:41 | url | request_forgery_tests.rs:25:38:25:41 | &url [&ref] | provenance |  |
+| request_forgery_tests.rs:31:42:31:50 | &user_url [&ref] | request_forgery_tests.rs:31:29:31:40 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:31:43:31:50 | user_url | request_forgery_tests.rs:31:42:31:50 | &user_url [&ref] | provenance |  |
+| request_forgery_tests.rs:37:50:37:58 | &user_url [&ref] | request_forgery_tests.rs:37:37:37:48 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:37:51:37:58 | user_url | request_forgery_tests.rs:37:50:37:58 | &user_url [&ref] | provenance |  |
+| request_forgery_tests.rs:65:33:65:40 | and_then | request_forgery_tests.rs:65:49:65:57 | ...: String | provenance | Src:MaD:2  |
+| request_forgery_tests.rs:65:49:65:57 | ...: String | request_forgery_tests.rs:68:42:68:42 | a | provenance |  |
+| request_forgery_tests.rs:68:41:68:42 | &a [&ref] | request_forgery_tests.rs:68:28:68:39 | ...::get | provenance | MaD:1 Sink:MaD:1 |
+| request_forgery_tests.rs:68:42:68:42 | a | request_forgery_tests.rs:68:41:68:42 | &a [&ref] | provenance |  |
+models
+| 1 | Sink: reqwest::get; Argument[0]; request-url |
+| 2 | Source: <_ as warp::filter::Filter>::and_then; Argument[0].Parameter[0..7]; remote |
+| 3 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 4 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+nodes
+| request_forgery_tests.rs:5:29:5:36 | user_url | semmle.label | user_url |
+| request_forgery_tests.rs:8:24:8:35 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:8:37:8:45 | &user_url [&ref] | semmle.label | &user_url [&ref] |
+| request_forgery_tests.rs:8:38:8:45 | user_url | semmle.label | user_url |
+| request_forgery_tests.rs:16:13:16:15 | url | semmle.label | url |
+| request_forgery_tests.rs:16:27:16:49 | ...::format(...) | semmle.label | ...::format(...) |
+| request_forgery_tests.rs:16:27:16:49 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| request_forgery_tests.rs:16:27:16:49 | MacroExpr | semmle.label | MacroExpr |
+| request_forgery_tests.rs:16:27:16:49 | { ... } | semmle.label | { ... } |
+| request_forgery_tests.rs:17:25:17:36 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:17:38:17:41 | &url [&ref] | semmle.label | &url [&ref] |
+| request_forgery_tests.rs:17:39:17:41 | url | semmle.label | url |
+| request_forgery_tests.rs:20:13:20:15 | url | semmle.label | url |
+| request_forgery_tests.rs:20:27:20:57 | ...::format(...) | semmle.label | ...::format(...) |
+| request_forgery_tests.rs:20:27:20:57 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| request_forgery_tests.rs:20:27:20:57 | MacroExpr | semmle.label | MacroExpr |
+| request_forgery_tests.rs:20:27:20:57 | { ... } | semmle.label | { ... } |
+| request_forgery_tests.rs:21:25:21:36 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:21:38:21:41 | &url [&ref] | semmle.label | &url [&ref] |
+| request_forgery_tests.rs:21:39:21:41 | url | semmle.label | url |
+| request_forgery_tests.rs:24:13:24:15 | url | semmle.label | url |
+| request_forgery_tests.rs:24:27:24:70 | ...::format(...) | semmle.label | ...::format(...) |
+| request_forgery_tests.rs:24:27:24:70 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| request_forgery_tests.rs:24:27:24:70 | MacroExpr | semmle.label | MacroExpr |
+| request_forgery_tests.rs:24:27:24:70 | { ... } | semmle.label | { ... } |
+| request_forgery_tests.rs:25:25:25:36 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:25:38:25:41 | &url [&ref] | semmle.label | &url [&ref] |
+| request_forgery_tests.rs:25:39:25:41 | url | semmle.label | url |
+| request_forgery_tests.rs:31:29:31:40 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:31:42:31:50 | &user_url [&ref] | semmle.label | &user_url [&ref] |
+| request_forgery_tests.rs:31:43:31:50 | user_url | semmle.label | user_url |
+| request_forgery_tests.rs:37:37:37:48 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:37:50:37:58 | &user_url [&ref] | semmle.label | &user_url [&ref] |
+| request_forgery_tests.rs:37:51:37:58 | user_url | semmle.label | user_url |
+| request_forgery_tests.rs:65:33:65:40 | and_then | semmle.label | and_then |
+| request_forgery_tests.rs:65:49:65:57 | ...: String | semmle.label | ...: String |
+| request_forgery_tests.rs:68:28:68:39 | ...::get | semmle.label | ...::get |
+| request_forgery_tests.rs:68:41:68:42 | &a [&ref] | semmle.label | &a [&ref] |
+| request_forgery_tests.rs:68:42:68:42 | a | semmle.label | a |
+subpaths

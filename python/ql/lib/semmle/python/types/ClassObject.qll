@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 private import semmle.python.objects.Classes
 private import semmle.python.objects.Instances
 private import semmle.python.pointsto.PointsTo
@@ -193,7 +194,9 @@ class ClassObject extends Object {
    * It is guaranteed that getProbableSingletonInstance() returns at most one Object for each ClassObject.
    */
   Object getProbableSingletonInstance() {
-    exists(ControlFlowNode use, Expr origin | use.refersTo(result, this, origin.getAFlowNode()) |
+    exists(ControlFlowNodeWithPointsTo use, Expr origin |
+      use.refersTo(result, this, origin.getAFlowNode())
+    |
       this.hasStaticallyUniqueInstance() and
       /* Ensure that original expression will be executed only one. */
       origin.getScope() instanceof ImportTimeScope and
@@ -351,7 +354,7 @@ class ClassObject extends Object {
    * Gets a call to this class. Note that the call may not create a new instance of
    * this class, as that depends on the `__new__` method of this class.
    */
-  CallNode getACall() { result.getFunction().refersTo(this) }
+  CallNode getACall() { result.getFunction().(ControlFlowNodeWithPointsTo).refersTo(this) }
 
   override predicate notClass() { none() }
 }

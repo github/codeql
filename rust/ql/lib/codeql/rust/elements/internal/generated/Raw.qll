@@ -34,6 +34,8 @@ module Raw {
     int getDurationMs() { extractor_steps(this, _, result) }
   }
 
+  private Element getImmediateChildOfExtractorStep(ExtractorStep e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    */
@@ -55,6 +57,8 @@ module Raw {
      */
     Crate getCrate() { named_crates(this, _, result) }
   }
+
+  private Element getImmediateChildOfNamedCrate(NamedCrate e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -92,10 +96,25 @@ module Raw {
     string getCfgOption(int index) { crate_cfg_options(this, index, result) }
 
     /**
+     * Gets the number of cfg options of this crate.
+     */
+    int getNumberOfCfgOptions() { result = count(int i | crate_cfg_options(this, i, _)) }
+
+    /**
      * Gets the `index`th named dependency of this crate (0-based).
      */
     NamedCrate getNamedDependency(int index) { crate_named_dependencies(this, index, result) }
+
+    /**
+     * Gets the number of named dependencies of this crate.
+     * INTERNAL: Do not use.
+     */
+    int getNumberOfNamedDependencies() {
+      result = count(int i | crate_named_dependencies(this, i, _))
+    }
   }
+
+  private Element getImmediateChildOfCrate(Crate e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -105,6 +124,8 @@ module Raw {
     override string toString() { result = "Missing" }
   }
 
+  private Element getImmediateChildOfMissing(Missing e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
@@ -112,6 +133,8 @@ module Raw {
   class Unimplemented extends @unimplemented, Unextracted {
     override string toString() { result = "Unimplemented" }
   }
+
+  private Element getImmediateChildOfUnimplemented(Unimplemented e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -132,29 +155,15 @@ module Raw {
     string getAbiString() { abi_abi_strings(this, result) }
   }
 
+  private Element getImmediateChildOfAbi(Abi e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * Something that can be addressed by a path.
    *
    * TODO: This does not yet include all possible cases.
    */
-  class Addressable extends @addressable, AstNode {
-    /**
-     * Gets the extended canonical path of this addressable, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     */
-    string getExtendedCanonicalPath() { addressable_extended_canonical_paths(this, result) }
-
-    /**
-     * Gets the crate origin of this addressable, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
-     */
-    string getCrateOrigin() { addressable_crate_origins(this, result) }
-  }
+  class Addressable extends @addressable, AstNode { }
 
   /**
    * INTERNAL: Do not use.
@@ -173,6 +182,23 @@ module Raw {
      * Gets the `index`th argument of this argument list (0-based).
      */
     Expr getArg(int index) { arg_list_args(this, index, result) }
+
+    /**
+     * Gets the number of arguments of this argument list.
+     */
+    int getNumberOfArgs() { result = count(int i | arg_list_args(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfArgList(ArgList e, int index) {
+    exists(int n, int nArg |
+      n = 0 and
+      nArg = n + e.getNumberOfArgs() and
+      (
+        none()
+        or
+        result = e.getArg(index - n)
+      )
+    )
   }
 
   /**
@@ -189,6 +215,8 @@ module Raw {
   class AsmDirSpec extends @asm_dir_spec, AstNode {
     override string toString() { result = "AsmDirSpec" }
   }
+
+  private Element getImmediateChildOfAsmDirSpec(AsmDirSpec e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -220,6 +248,21 @@ module Raw {
     Expr getOutExpr() { asm_operand_expr_out_exprs(this, result) }
   }
 
+  private Element getImmediateChildOfAsmOperandExpr(AsmOperandExpr e, int index) {
+    exists(int n, int nInExpr, int nOutExpr |
+      n = 0 and
+      nInExpr = n + 1 and
+      nOutExpr = nInExpr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getInExpr()
+        or
+        index = nInExpr and result = e.getOutExpr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An option in an inline assembly block.
@@ -239,6 +282,8 @@ module Raw {
      */
     predicate isRaw() { asm_option_is_raw(this) }
   }
+
+  private Element getImmediateChildOfAsmOption(AsmOption e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -265,6 +310,18 @@ module Raw {
     NameRef getIdentifier() { asm_reg_spec_identifiers(this, result) }
   }
 
+  private Element getImmediateChildOfAsmRegSpec(AsmRegSpec e, int index) {
+    exists(int n, int nIdentifier |
+      n = 0 and
+      nIdentifier = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getIdentifier()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
@@ -278,9 +335,34 @@ module Raw {
     AssocItem getAssocItem(int index) { assoc_item_list_assoc_items(this, index, result) }
 
     /**
+     * Gets the number of assoc items of this assoc item list.
+     */
+    int getNumberOfAssocItems() { result = count(int i | assoc_item_list_assoc_items(this, i, _)) }
+
+    /**
      * Gets the `index`th attr of this assoc item list (0-based).
      */
     Attr getAttr(int index) { assoc_item_list_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this assoc item list.
+     */
+    int getNumberOfAttrs() { result = count(int i | assoc_item_list_attrs(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfAssocItemList(AssocItemList e, int index) {
+    exists(int n, int nAssocItem, int nAttr |
+      n = 0 and
+      nAssocItem = n + e.getNumberOfAssocItems() and
+      nAttr = nAssocItem + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        result = e.getAssocItem(index - n)
+        or
+        result = e.getAttr(index - nAssocItem)
+      )
+    )
   }
 
   /**
@@ -303,6 +385,18 @@ module Raw {
     Meta getMeta() { attr_meta(this, result) }
   }
 
+  private Element getImmediateChildOfAttr(Attr e, int index) {
+    exists(int n, int nMeta |
+      n = 0 and
+      nMeta = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMeta()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A callable. Either a `Function` or a `ClosureExpr`.
@@ -317,30 +411,11 @@ module Raw {
      * Gets the `index`th attr of this callable (0-based).
      */
     Attr getAttr(int index) { callable_attrs(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A closure binder, specifying lifetime or type parameters for a closure.
-   *
-   * For example:
-   * ```rust
-   * let print_any = for<T: std::fmt::Debug> |x: T| {
-   * //              ^^^^^^^^^^^^^^^^^^^^^^^
-   *     println!("{:?}", x);
-   * };
-   *
-   * print_any(42);
-   * print_any("hello");
-   * ```
-   */
-  class ClosureBinder extends @closure_binder, AstNode {
-    override string toString() { result = "ClosureBinder" }
 
     /**
-     * Gets the generic parameter list of this closure binder, if it exists.
+     * Gets the number of attrs of this callable.
      */
-    GenericParamList getGenericParamList() { closure_binder_generic_param_lists(this, result) }
+    int getNumberOfAttrs() { result = count(int i | callable_attrs(this, i, _)) }
   }
 
   /**
@@ -370,9 +445,36 @@ module Raw {
     Attr getAttr(int index) { extern_item_list_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this extern item list.
+     */
+    int getNumberOfAttrs() { result = count(int i | extern_item_list_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th extern item of this extern item list (0-based).
      */
     ExternItem getExternItem(int index) { extern_item_list_extern_items(this, index, result) }
+
+    /**
+     * Gets the number of extern items of this extern item list.
+     */
+    int getNumberOfExternItems() {
+      result = count(int i | extern_item_list_extern_items(this, i, _))
+    }
+  }
+
+  private Element getImmediateChildOfExternItemList(ExternItemList e, int index) {
+    exists(int n, int nAttr, int nExternItem |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExternItem = nAttr + e.getNumberOfExternItems() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getExternItem(index - nAttr)
+      )
+    )
   }
 
   /**
@@ -388,6 +490,42 @@ module Raw {
    * ```
    */
   class FieldList extends @field_list, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A for binder, specifying lifetime or type parameters for a closure or a type.
+   *
+   * For example:
+   * ```rust
+   * let print_any = for<T: std::fmt::Debug> |x: T| {
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^
+   *     println!("{:?}", x);
+   * };
+   *
+   * print_any(42);
+   * print_any("hello");
+   * ```
+   */
+  class ForBinder extends @for_binder, AstNode {
+    override string toString() { result = "ForBinder" }
+
+    /**
+     * Gets the generic parameter list of this for binder, if it exists.
+     */
+    GenericParamList getGenericParamList() { for_binder_generic_param_lists(this, result) }
+  }
+
+  private Element getImmediateChildOfForBinder(ForBinder e, int index) {
+    exists(int n, int nGenericParamList |
+      n = 0 and
+      nGenericParamList = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getGenericParamList()
+      )
+    )
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -408,6 +546,21 @@ module Raw {
      * Gets the name of this format arguments argument, if it exists.
      */
     Name getName() { format_args_arg_names(this, result) }
+  }
+
+  private Element getImmediateChildOfFormatArgsArg(FormatArgsArg e, int index) {
+    exists(int n, int nExpr, int nName |
+      n = 0 and
+      nExpr = n + 1 and
+      nName = nExpr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getExpr()
+        or
+        index = nExpr and result = e.getName()
+      )
+    )
   }
 
   /**
@@ -436,6 +589,25 @@ module Raw {
      * Gets the `index`th generic argument of this generic argument list (0-based).
      */
     GenericArg getGenericArg(int index) { generic_arg_list_generic_args(this, index, result) }
+
+    /**
+     * Gets the number of generic arguments of this generic argument list.
+     */
+    int getNumberOfGenericArgs() {
+      result = count(int i | generic_arg_list_generic_args(this, i, _))
+    }
+  }
+
+  private Element getImmediateChildOfGenericArgList(GenericArgList e, int index) {
+    exists(int n, int nGenericArg |
+      n = 0 and
+      nGenericArg = n + e.getNumberOfGenericArgs() and
+      (
+        none()
+        or
+        result = e.getGenericArg(index - n)
+      )
+    )
   }
 
   /**
@@ -469,6 +641,25 @@ module Raw {
     GenericParam getGenericParam(int index) {
       generic_param_list_generic_params(this, index, result)
     }
+
+    /**
+     * Gets the number of generic parameters of this generic parameter list.
+     */
+    int getNumberOfGenericParams() {
+      result = count(int i | generic_param_list_generic_params(this, i, _))
+    }
+  }
+
+  private Element getImmediateChildOfGenericParamList(GenericParamList e, int index) {
+    exists(int n, int nGenericParam |
+      n = 0 and
+      nGenericParam = n + e.getNumberOfGenericParams() and
+      (
+        none()
+        or
+        result = e.getGenericParam(index - n)
+      )
+    )
   }
 
   /**
@@ -492,9 +683,34 @@ module Raw {
     Attr getAttr(int index) { item_list_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this item list.
+     */
+    int getNumberOfAttrs() { result = count(int i | item_list_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th item of this item list (0-based).
      */
     Item getItem(int index) { item_list_items(this, index, result) }
+
+    /**
+     * Gets the number of items of this item list.
+     */
+    int getNumberOfItems() { result = count(int i | item_list_items(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfItemList(ItemList e, int index) {
+    exists(int n, int nAttr, int nItem |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nItem = nAttr + e.getNumberOfItems() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getItem(index - nAttr)
+      )
+    )
   }
 
   /**
@@ -516,6 +732,18 @@ module Raw {
     Lifetime getLifetime() { label_lifetimes(this, result) }
   }
 
+  private Element getImmediateChildOfLabel(Label e, int index) {
+    exists(int n, int nLifetime |
+      n = 0 and
+      nLifetime = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLifetime()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An else block in a let-else statement.
@@ -535,6 +763,18 @@ module Raw {
      * Gets the block expression of this let else, if it exists.
      */
     BlockExpr getBlockExpr() { let_else_block_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfLetElse(LetElse e, int index) {
+    exists(int n, int nBlockExpr |
+      n = 0 and
+      nBlockExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getBlockExpr()
+      )
+    )
   }
 
   /**
@@ -561,6 +801,23 @@ module Raw {
      * Gets the `index`th item of this macro items (0-based).
      */
     Item getItem(int index) { macro_items_items(this, index, result) }
+
+    /**
+     * Gets the number of items of this macro items.
+     */
+    int getNumberOfItems() { result = count(int i | macro_items_items(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfMacroItems(MacroItems e, int index) {
+    exists(int n, int nItem |
+      n = 0 and
+      nItem = n + e.getNumberOfItems() and
+      (
+        none()
+        or
+        result = e.getItem(index - n)
+      )
+    )
   }
 
   /**
@@ -588,6 +845,11 @@ module Raw {
     Attr getAttr(int index) { match_arm_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this match arm.
+     */
+    int getNumberOfAttrs() { result = count(int i | match_arm_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this match arm, if it exists.
      */
     Expr getExpr() { match_arm_exprs(this, result) }
@@ -601,6 +863,27 @@ module Raw {
      * Gets the pattern of this match arm, if it exists.
      */
     Pat getPat() { match_arm_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfMatchArm(MatchArm e, int index) {
+    exists(int n, int nAttr, int nExpr, int nGuard, int nPat |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      nGuard = nExpr + 1 and
+      nPat = nGuard + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+        or
+        index = nExpr and result = e.getGuard()
+        or
+        index = nGuard and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -626,9 +909,34 @@ module Raw {
     MatchArm getArm(int index) { match_arm_list_arms(this, index, result) }
 
     /**
+     * Gets the number of arms of this match arm list.
+     */
+    int getNumberOfArms() { result = count(int i | match_arm_list_arms(this, i, _)) }
+
+    /**
      * Gets the `index`th attr of this match arm list (0-based).
      */
     Attr getAttr(int index) { match_arm_list_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this match arm list.
+     */
+    int getNumberOfAttrs() { result = count(int i | match_arm_list_attrs(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfMatchArmList(MatchArmList e, int index) {
+    exists(int n, int nArm, int nAttr |
+      n = 0 and
+      nArm = n + e.getNumberOfArms() and
+      nAttr = nArm + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        result = e.getArm(index - n)
+        or
+        result = e.getAttr(index - nArm)
+      )
+    )
   }
 
   /**
@@ -651,6 +959,18 @@ module Raw {
      * Gets the condition of this match guard, if it exists.
      */
     Expr getCondition() { match_guard_conditions(this, result) }
+  }
+
+  private Element getImmediateChildOfMatchGuard(MatchGuard e, int index) {
+    exists(int n, int nCondition |
+      n = 0 and
+      nCondition = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCondition()
+      )
+    )
   }
 
   /**
@@ -692,6 +1012,24 @@ module Raw {
     TokenTree getTokenTree() { meta_token_trees(this, result) }
   }
 
+  private Element getImmediateChildOfMeta(Meta e, int index) {
+    exists(int n, int nExpr, int nPath, int nTokenTree |
+      n = 0 and
+      nExpr = n + 1 and
+      nPath = nExpr + 1 and
+      nTokenTree = nPath + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getExpr()
+        or
+        index = nExpr and result = e.getPath()
+        or
+        index = nPath and result = e.getTokenTree()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An identifier name.
@@ -711,6 +1049,8 @@ module Raw {
     string getText() { name_texts(this, result) }
   }
 
+  private Element getImmediateChildOfName(Name e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * A normal parameter, `Param`, or a self parameter `SelfParam`.
@@ -720,6 +1060,11 @@ module Raw {
      * Gets the `index`th attr of this parameter base (0-based).
      */
     Attr getAttr(int index) { param_base_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this parameter base.
+     */
+    int getNumberOfAttrs() { result = count(int i | param_base_attrs(this, i, _)) }
 
     /**
      * Gets the type representation of this parameter base, if it exists.
@@ -746,9 +1091,29 @@ module Raw {
     Param getParam(int index) { param_list_params(this, index, result) }
 
     /**
+     * Gets the number of parameters of this parameter list.
+     */
+    int getNumberOfParams() { result = count(int i | param_list_params(this, i, _)) }
+
+    /**
      * Gets the self parameter of this parameter list, if it exists.
      */
     SelfParam getSelfParam() { param_list_self_params(this, result) }
+  }
+
+  private Element getImmediateChildOfParamList(ParamList e, int index) {
+    exists(int n, int nParam, int nSelfParam |
+      n = 0 and
+      nParam = n + e.getNumberOfParams() and
+      nSelfParam = nParam + 1 and
+      (
+        none()
+        or
+        result = e.getParam(index - n)
+        or
+        index = nParam and result = e.getSelfParam()
+      )
+    )
   }
 
   /**
@@ -773,6 +1138,25 @@ module Raw {
      * Gets the `index`th type argument of this parenthesized argument list (0-based).
      */
     TypeArg getTypeArg(int index) { parenthesized_arg_list_type_args(this, index, result) }
+
+    /**
+     * Gets the number of type arguments of this parenthesized argument list.
+     */
+    int getNumberOfTypeArgs() {
+      result = count(int i | parenthesized_arg_list_type_args(this, i, _))
+    }
+  }
+
+  private Element getImmediateChildOfParenthesizedArgList(ParenthesizedArgList e, int index) {
+    exists(int n, int nTypeArg |
+      n = 0 and
+      nTypeArg = n + e.getNumberOfTypeArgs() and
+      (
+        none()
+        or
+        result = e.getTypeArg(index - n)
+      )
+    )
   }
 
   /**
@@ -801,6 +1185,32 @@ module Raw {
      * Gets the last segment of this path, if it exists.
      */
     PathSegment getSegment() { path_segments_(this, result) }
+  }
+
+  private Element getImmediateChildOfPath(Path e, int index) {
+    exists(int n, int nQualifier, int nSegment |
+      n = 0 and
+      nQualifier = n + 1 and
+      nSegment = nQualifier + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getQualifier()
+        or
+        index = nQualifier and result = e.getSegment()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
+   */
+  class PathAstNode extends @path_ast_node, AstNode {
+    /**
+     * Gets the path of this path ast node, if it exists.
+     */
+    Path getPath() { path_ast_node_paths(this, result) }
   }
 
   /**
@@ -854,6 +1264,39 @@ module Raw {
     PathTypeRepr getTraitTypeRepr() { path_segment_trait_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfPathSegment(PathSegment e, int index) {
+    exists(
+      int n, int nGenericArgList, int nIdentifier, int nParenthesizedArgList, int nRetType,
+      int nReturnTypeSyntax, int nTypeRepr, int nTraitTypeRepr
+    |
+      n = 0 and
+      nGenericArgList = n + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nParenthesizedArgList = nIdentifier + 1 and
+      nRetType = nParenthesizedArgList + 1 and
+      nReturnTypeSyntax = nRetType + 1 and
+      nTypeRepr = nReturnTypeSyntax + 1 and
+      nTraitTypeRepr = nTypeRepr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getGenericArgList()
+        or
+        index = nGenericArgList and result = e.getIdentifier()
+        or
+        index = nIdentifier and result = e.getParenthesizedArgList()
+        or
+        index = nParenthesizedArgList and result = e.getRetType()
+        or
+        index = nRetType and result = e.getReturnTypeSyntax()
+        or
+        index = nReturnTypeSyntax and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getTraitTypeRepr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A rename in a use declaration.
@@ -873,20 +1316,16 @@ module Raw {
     Name getName() { rename_names(this, result) }
   }
 
-  /**
-   * INTERNAL: Do not use.
-   * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
-   */
-  class Resolvable extends @resolvable, AstNode {
-    /**
-     * Gets the resolved path of this resolvable, if it exists.
-     */
-    string getResolvedPath() { resolvable_resolved_paths(this, result) }
-
-    /**
-     * Gets the resolved crate origin of this resolvable, if it exists.
-     */
-    string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
+  private Element getImmediateChildOfRename(Rename e, int index) {
+    exists(int n, int nName |
+      n = 0 and
+      nName = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getName()
+      )
+    )
   }
 
   /**
@@ -895,7 +1334,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * fn foo() -> i32 {}
+   * fn foo() -> i32 { 0 }
    * //       ^^^^^^
    * ```
    */
@@ -906,6 +1345,18 @@ module Raw {
      * Gets the type representation of this ret type representation, if it exists.
      */
     TypeRepr getTypeRepr() { ret_type_repr_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfRetTypeRepr(RetTypeRepr e, int index) {
+    exists(int n, int nTypeRepr |
+      n = 0 and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeRepr()
+      )
+    )
   }
 
   /**
@@ -932,6 +1383,8 @@ module Raw {
     override string toString() { result = "ReturnTypeSyntax" }
   }
 
+  private Element getImmediateChildOfReturnTypeSyntax(ReturnTypeSyntax e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * A source file.
@@ -951,9 +1404,34 @@ module Raw {
     Attr getAttr(int index) { source_file_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this source file.
+     */
+    int getNumberOfAttrs() { result = count(int i | source_file_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th item of this source file (0-based).
      */
     Item getItem(int index) { source_file_items(this, index, result) }
+
+    /**
+     * Gets the number of items of this source file.
+     */
+    int getNumberOfItems() { result = count(int i | source_file_items(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfSourceFile(SourceFile e, int index) {
+    exists(int n, int nAttr, int nItem |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nItem = nAttr + e.getNumberOfItems() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getItem(index - nAttr)
+      )
+    )
   }
 
   /**
@@ -964,13 +1442,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A list of statements in a block.
+   * A list of statements in a block, with an optional tail expression at the
+   * end that determines the block's value.
    *
    * For example:
    * ```rust
    * {
    *     let x = 1;
    *     let y = 2;
+   *     x + y
    * }
    * //  ^^^^^^^^^
    * ```
@@ -984,14 +1464,48 @@ module Raw {
     Attr getAttr(int index) { stmt_list_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this statement list.
+     */
+    int getNumberOfAttrs() { result = count(int i | stmt_list_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th statement of this statement list (0-based).
+     *
+     * The statements of a `StmtList` do not include any tail expression, which
+     * can be accessed with predicates such as `getTailExpr`.
      */
     Stmt getStatement(int index) { stmt_list_statements(this, index, result) }
 
     /**
+     * Gets the number of statements of this statement list.
+     */
+    int getNumberOfStatements() { result = count(int i | stmt_list_statements(this, i, _)) }
+
+    /**
      * Gets the tail expression of this statement list, if it exists.
+     *
+     * The tail expression is the expression at the end of a block, that
+     * determines the block's value.
      */
     Expr getTailExpr() { stmt_list_tail_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfStmtList(StmtList e, int index) {
+    exists(int n, int nAttr, int nStatement, int nTailExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nStatement = nAttr + e.getNumberOfStatements() and
+      nTailExpr = nStatement + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getStatement(index - nAttr)
+        or
+        index = nStatement and result = e.getTailExpr()
+      )
+    )
   }
 
   /**
@@ -1010,6 +1524,11 @@ module Raw {
     Attr getAttr(int index) { struct_expr_field_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this struct expression field.
+     */
+    int getNumberOfAttrs() { result = count(int i | struct_expr_field_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this struct expression field, if it exists.
      */
     Expr getExpr() { struct_expr_field_exprs(this, result) }
@@ -1018,6 +1537,24 @@ module Raw {
      * Gets the identifier of this struct expression field, if it exists.
      */
     NameRef getIdentifier() { struct_expr_field_identifiers(this, result) }
+  }
+
+  private Element getImmediateChildOfStructExprField(StructExprField e, int index) {
+    exists(int n, int nAttr, int nExpr, int nIdentifier |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      nIdentifier = nExpr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+        or
+        index = nExpr and result = e.getIdentifier()
+      )
+    )
   }
 
   /**
@@ -1039,14 +1576,42 @@ module Raw {
     Attr getAttr(int index) { struct_expr_field_list_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this struct expression field list.
+     */
+    int getNumberOfAttrs() { result = count(int i | struct_expr_field_list_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th field of this struct expression field list (0-based).
      */
     StructExprField getField(int index) { struct_expr_field_list_fields(this, index, result) }
 
     /**
+     * Gets the number of fields of this struct expression field list.
+     */
+    int getNumberOfFields() { result = count(int i | struct_expr_field_list_fields(this, i, _)) }
+
+    /**
      * Gets the spread of this struct expression field list, if it exists.
      */
     Expr getSpread() { struct_expr_field_list_spreads(this, result) }
+  }
+
+  private Element getImmediateChildOfStructExprFieldList(StructExprFieldList e, int index) {
+    exists(int n, int nAttr, int nField, int nSpread |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nField = nAttr + e.getNumberOfFields() and
+      nSpread = nField + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getField(index - nAttr)
+        or
+        index = nField and result = e.getSpread()
+      )
+    )
   }
 
   /**
@@ -1066,6 +1631,11 @@ module Raw {
      * Gets the `index`th attr of this struct field (0-based).
      */
     Attr getAttr(int index) { struct_field_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this struct field.
+     */
+    int getNumberOfAttrs() { result = count(int i | struct_field_attrs(this, i, _)) }
 
     /**
      * Gets the default of this struct field, if it exists.
@@ -1093,6 +1663,30 @@ module Raw {
     Visibility getVisibility() { struct_field_visibilities(this, result) }
   }
 
+  private Element getImmediateChildOfStructField(StructField e, int index) {
+    exists(int n, int nAttr, int nDefault, int nName, int nTypeRepr, int nVisibility |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nDefault = nAttr + 1 and
+      nName = nDefault + 1 and
+      nTypeRepr = nName + 1 and
+      nVisibility = nTypeRepr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getDefault()
+        or
+        index = nDefault and result = e.getName()
+        or
+        index = nName and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getVisibility()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A field in a struct pattern. For example `a: 1` in:
@@ -1109,6 +1703,11 @@ module Raw {
     Attr getAttr(int index) { struct_pat_field_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this struct pattern field.
+     */
+    int getNumberOfAttrs() { result = count(int i | struct_pat_field_attrs(this, i, _)) }
+
+    /**
      * Gets the identifier of this struct pattern field, if it exists.
      */
     NameRef getIdentifier() { struct_pat_field_identifiers(this, result) }
@@ -1117,6 +1716,24 @@ module Raw {
      * Gets the pattern of this struct pattern field, if it exists.
      */
     Pat getPat() { struct_pat_field_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfStructPatField(StructPatField e, int index) {
+    exists(int n, int nAttr, int nIdentifier, int nPat |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nIdentifier = nAttr + 1 and
+      nPat = nIdentifier + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getIdentifier()
+        or
+        index = nIdentifier and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -1138,9 +1755,29 @@ module Raw {
     StructPatField getField(int index) { struct_pat_field_list_fields(this, index, result) }
 
     /**
+     * Gets the number of fields of this struct pattern field list.
+     */
+    int getNumberOfFields() { result = count(int i | struct_pat_field_list_fields(this, i, _)) }
+
+    /**
      * Gets the rest pattern of this struct pattern field list, if it exists.
      */
     RestPat getRestPat() { struct_pat_field_list_rest_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfStructPatFieldList(StructPatFieldList e, int index) {
+    exists(int n, int nField, int nRestPat |
+      n = 0 and
+      nField = n + e.getNumberOfFields() and
+      nRestPat = nField + 1 and
+      (
+        none()
+        or
+        result = e.getField(index - n)
+        or
+        index = nField and result = e.getRestPat()
+      )
+    )
   }
 
   /**
@@ -1167,6 +1804,8 @@ module Raw {
     override string toString() { result = "TokenTree" }
   }
 
+  private Element getImmediateChildOfTokenTree(TokenTree e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * A field in a tuple struct or tuple enum variant.
@@ -1186,6 +1825,11 @@ module Raw {
     Attr getAttr(int index) { tuple_field_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this tuple field.
+     */
+    int getNumberOfAttrs() { result = count(int i | tuple_field_attrs(this, i, _)) }
+
+    /**
      * Gets the type representation of this tuple field, if it exists.
      */
     TypeRepr getTypeRepr() { tuple_field_type_reprs(this, result) }
@@ -1196,6 +1840,24 @@ module Raw {
     Visibility getVisibility() { tuple_field_visibilities(this, result) }
   }
 
+  private Element getImmediateChildOfTupleField(TupleField e, int index) {
+    exists(int n, int nAttr, int nTypeRepr, int nVisibility |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nTypeRepr = nAttr + 1 and
+      nVisibility = nTypeRepr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getVisibility()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A type bound in a trait or generic parameter.
@@ -1204,10 +1866,17 @@ module Raw {
    * ```rust
    * fn foo<T: Debug>(t: T) {}
    * //        ^^^^^
+   * fn bar(value: impl for<'a> From<&'a str>) {}
+   * //                 ^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TypeBound extends @type_bound, AstNode {
     override string toString() { result = "TypeBound" }
+
+    /**
+     * Gets the for binder of this type bound, if it exists.
+     */
+    ForBinder getForBinder() { type_bound_for_binders(this, result) }
 
     /**
      * Holds if this type bound is async.
@@ -1235,6 +1904,27 @@ module Raw {
     UseBoundGenericArgs getUseBoundGenericArgs() { type_bound_use_bound_generic_args(this, result) }
   }
 
+  private Element getImmediateChildOfTypeBound(TypeBound e, int index) {
+    exists(int n, int nForBinder, int nLifetime, int nTypeRepr, int nUseBoundGenericArgs |
+      n = 0 and
+      nForBinder = n + 1 and
+      nLifetime = nForBinder + 1 and
+      nTypeRepr = nLifetime + 1 and
+      nUseBoundGenericArgs = nTypeRepr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getForBinder()
+        or
+        index = nForBinder and result = e.getLifetime()
+        or
+        index = nLifetime and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getUseBoundGenericArgs()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A list of type bounds.
@@ -1252,6 +1942,23 @@ module Raw {
      * Gets the `index`th bound of this type bound list (0-based).
      */
     TypeBound getBound(int index) { type_bound_list_bounds(this, index, result) }
+
+    /**
+     * Gets the number of bounds of this type bound list.
+     */
+    int getNumberOfBounds() { result = count(int i | type_bound_list_bounds(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfTypeBoundList(TypeBoundList e, int index) {
+    exists(int n, int nBound |
+      n = 0 and
+      nBound = n + e.getNumberOfBounds() and
+      (
+        none()
+        or
+        result = e.getBound(index - n)
+      )
+    )
   }
 
   /**
@@ -1276,7 +1983,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> { 0 }
    * //                                                        ^^^^^^^^
    * ```
    */
@@ -1289,6 +1996,25 @@ module Raw {
     UseBoundGenericArg getUseBoundGenericArg(int index) {
       use_bound_generic_args_use_bound_generic_args(this, index, result)
     }
+
+    /**
+     * Gets the number of use bound generic arguments of this use bound generic arguments.
+     */
+    int getNumberOfUseBoundGenericArgs() {
+      result = count(int i | use_bound_generic_args_use_bound_generic_args(this, i, _))
+    }
+  }
+
+  private Element getImmediateChildOfUseBoundGenericArgs(UseBoundGenericArgs e, int index) {
+    exists(int n, int nUseBoundGenericArg |
+      n = 0 and
+      nUseBoundGenericArg = n + e.getNumberOfUseBoundGenericArgs() and
+      (
+        none()
+        or
+        result = e.getUseBoundGenericArg(index - n)
+      )
+    )
   }
 
   /**
@@ -1325,6 +2051,24 @@ module Raw {
     UseTreeList getUseTreeList() { use_tree_use_tree_lists(this, result) }
   }
 
+  private Element getImmediateChildOfUseTree(UseTree e, int index) {
+    exists(int n, int nPath, int nRename, int nUseTreeList |
+      n = 0 and
+      nPath = n + 1 and
+      nRename = nPath + 1 and
+      nUseTreeList = nRename + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+        or
+        index = nPath and result = e.getRename()
+        or
+        index = nRename and result = e.getUseTreeList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A list of use trees in a use declaration.
@@ -1342,6 +2086,23 @@ module Raw {
      * Gets the `index`th use tree of this use tree list (0-based).
      */
     UseTree getUseTree(int index) { use_tree_list_use_trees(this, index, result) }
+
+    /**
+     * Gets the number of use trees of this use tree list.
+     */
+    int getNumberOfUseTrees() { result = count(int i | use_tree_list_use_trees(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfUseTreeList(UseTreeList e, int index) {
+    exists(int n, int nUseTree |
+      n = 0 and
+      nUseTree = n + e.getNumberOfUseTrees() and
+      (
+        none()
+        or
+        result = e.getUseTree(index - n)
+      )
+    )
   }
 
   /**
@@ -1361,6 +2122,23 @@ module Raw {
      * Gets the `index`th variant of this variant list (0-based).
      */
     Variant getVariant(int index) { variant_list_variants(this, index, result) }
+
+    /**
+     * Gets the number of variants of this variant list.
+     */
+    int getNumberOfVariants() { result = count(int i | variant_list_variants(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfVariantList(VariantList e, int index) {
+    exists(int n, int nVariant |
+      n = 0 and
+      nVariant = n + e.getNumberOfVariants() and
+      (
+        none()
+        or
+        result = e.getVariant(index - n)
+      )
+    )
   }
 
   /**
@@ -1382,6 +2160,18 @@ module Raw {
     Path getPath() { visibility_paths(this, result) }
   }
 
+  private Element getImmediateChildOfVisibility(Visibility e, int index) {
+    exists(int n, int nPath |
+      n = 0 and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A where clause in a generic declaration.
@@ -1399,6 +2189,23 @@ module Raw {
      * Gets the `index`th predicate of this where clause (0-based).
      */
     WherePred getPredicate(int index) { where_clause_predicates(this, index, result) }
+
+    /**
+     * Gets the number of predicates of this where clause.
+     */
+    int getNumberOfPredicates() { result = count(int i | where_clause_predicates(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfWhereClause(WhereClause e, int index) {
+    exists(int n, int nPredicate |
+      n = 0 and
+      nPredicate = n + e.getNumberOfPredicates() and
+      (
+        none()
+        or
+        result = e.getPredicate(index - n)
+      )
+    )
   }
 
   /**
@@ -1409,15 +2216,17 @@ module Raw {
    * ```rust
    * fn foo<T, U>(t: T, u: U) where T: Debug, U: Clone {}
    * //                             ^^^^^^^^  ^^^^^^^^
+   * fn bar<T>(value: T) where for<'a> T: From<&'a str> {}
+   * //                        ^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class WherePred extends @where_pred, AstNode {
     override string toString() { result = "WherePred" }
 
     /**
-     * Gets the generic parameter list of this where pred, if it exists.
+     * Gets the for binder of this where pred, if it exists.
      */
-    GenericParamList getGenericParamList() { where_pred_generic_param_lists(this, result) }
+    ForBinder getForBinder() { where_pred_for_binders(this, result) }
 
     /**
      * Gets the lifetime of this where pred, if it exists.
@@ -1435,6 +2244,27 @@ module Raw {
     TypeBoundList getTypeBoundList() { where_pred_type_bound_lists(this, result) }
   }
 
+  private Element getImmediateChildOfWherePred(WherePred e, int index) {
+    exists(int n, int nForBinder, int nLifetime, int nTypeRepr, int nTypeBoundList |
+      n = 0 and
+      nForBinder = n + 1 and
+      nLifetime = nForBinder + 1 and
+      nTypeRepr = nLifetime + 1 and
+      nTypeBoundList = nTypeRepr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getForBinder()
+        or
+        index = nForBinder and result = e.getLifetime()
+        or
+        index = nLifetime and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getTypeBoundList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    */
@@ -1447,14 +2277,39 @@ module Raw {
     Attr getAttr(int index) { array_expr_internal_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this array expression internal.
+     */
+    int getNumberOfAttrs() { result = count(int i | array_expr_internal_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th expression of this array expression internal (0-based).
      */
     Expr getExpr(int index) { array_expr_internal_exprs(this, index, result) }
 
     /**
+     * Gets the number of expressions of this array expression internal.
+     */
+    int getNumberOfExprs() { result = count(int i | array_expr_internal_exprs(this, i, _)) }
+
+    /**
      * Holds if this array expression internal is semicolon.
      */
     predicate isSemicolon() { array_expr_internal_is_semicolon(this) }
+  }
+
+  private Element getImmediateChildOfArrayExprInternal(ArrayExprInternal e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + e.getNumberOfExprs() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getExpr(index - nAttr)
+      )
+    )
   }
 
   /**
@@ -1481,6 +2336,21 @@ module Raw {
     TypeRepr getElementTypeRepr() { array_type_repr_element_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfArrayTypeRepr(ArrayTypeRepr e, int index) {
+    exists(int n, int nConstArg, int nElementTypeRepr |
+      n = 0 and
+      nConstArg = n + 1 and
+      nElementTypeRepr = nConstArg + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getConstArg()
+        or
+        index = nConstArg and result = e.getElementTypeRepr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A clobbered ABI in an inline assembly block.
@@ -1495,6 +2365,8 @@ module Raw {
   class AsmClobberAbi extends @asm_clobber_abi, AsmPiece {
     override string toString() { result = "AsmClobberAbi" }
   }
+
+  private Element getImmediateChildOfAsmClobberAbi(AsmClobberAbi e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -1521,33 +2393,16 @@ module Raw {
     predicate isConst() { asm_const_is_const(this) }
   }
 
-  /**
-   * INTERNAL: Do not use.
-   * An inline assembly expression. For example:
-   * ```rust
-   * unsafe {
-   *     #[inline(always)]
-   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
-   * }
-   * ```
-   */
-  class AsmExpr extends @asm_expr, Expr {
-    override string toString() { result = "AsmExpr" }
-
-    /**
-     * Gets the `index`th asm piece of this asm expression (0-based).
-     */
-    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
-
-    /**
-     * Gets the `index`th attr of this asm expression (0-based).
-     */
-    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the `index`th template of this asm expression (0-based).
-     */
-    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
+  private Element getImmediateChildOfAsmConst(AsmConst e, int index) {
+    exists(int n, int nExpr |
+      n = 0 and
+      nExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -1571,6 +2426,18 @@ module Raw {
      * Gets the block expression of this asm label, if it exists.
      */
     BlockExpr getBlockExpr() { asm_label_block_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfAsmLabel(AsmLabel e, int index) {
+    exists(int n, int nBlockExpr |
+      n = 0 and
+      nBlockExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getBlockExpr()
+      )
+    )
   }
 
   /**
@@ -1598,6 +2465,21 @@ module Raw {
     Name getName() { asm_operand_named_names(this, result) }
   }
 
+  private Element getImmediateChildOfAsmOperandNamed(AsmOperandNamed e, int index) {
+    exists(int n, int nAsmOperand, int nName |
+      n = 0 and
+      nAsmOperand = n + 1 and
+      nName = nAsmOperand + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAsmOperand()
+        or
+        index = nAsmOperand and result = e.getName()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A list of options in an inline assembly block.
@@ -1616,6 +2498,23 @@ module Raw {
      * Gets the `index`th asm option of this asm options list (0-based).
      */
     AsmOption getAsmOption(int index) { asm_options_list_asm_options(this, index, result) }
+
+    /**
+     * Gets the number of asm options of this asm options list.
+     */
+    int getNumberOfAsmOptions() { result = count(int i | asm_options_list_asm_options(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfAsmOptionsList(AsmOptionsList e, int index) {
+    exists(int n, int nAsmOption |
+      n = 0 and
+      nAsmOption = n + e.getNumberOfAsmOptions() and
+      (
+        none()
+        or
+        result = e.getAsmOption(index - n)
+      )
+    )
   }
 
   /**
@@ -1648,6 +2547,24 @@ module Raw {
     AsmRegSpec getAsmRegSpec() { asm_reg_operand_asm_reg_specs(this, result) }
   }
 
+  private Element getImmediateChildOfAsmRegOperand(AsmRegOperand e, int index) {
+    exists(int n, int nAsmDirSpec, int nAsmOperandExpr, int nAsmRegSpec |
+      n = 0 and
+      nAsmDirSpec = n + 1 and
+      nAsmOperandExpr = nAsmDirSpec + 1 and
+      nAsmRegSpec = nAsmOperandExpr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAsmDirSpec()
+        or
+        index = nAsmDirSpec and result = e.getAsmOperandExpr()
+        or
+        index = nAsmOperandExpr and result = e.getAsmRegSpec()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A symbol operand in an inline assembly block.
@@ -1666,6 +2583,18 @@ module Raw {
      * Gets the path of this asm sym, if it exists.
      */
     Path getPath() { asm_sym_paths(this, result) }
+  }
+
+  private Element getImmediateChildOfAsmSym(AsmSym e, int index) {
+    exists(int n, int nPath |
+      n = 0 and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+      )
+    )
   }
 
   /**
@@ -1727,6 +2656,42 @@ module Raw {
     TypeBoundList getTypeBoundList() { assoc_type_arg_type_bound_lists(this, result) }
   }
 
+  private Element getImmediateChildOfAssocTypeArg(AssocTypeArg e, int index) {
+    exists(
+      int n, int nConstArg, int nGenericArgList, int nIdentifier, int nParamList, int nRetType,
+      int nReturnTypeSyntax, int nTypeRepr, int nTypeBoundList
+    |
+      n = 0 and
+      nConstArg = n + 1 and
+      nGenericArgList = nConstArg + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nParamList = nIdentifier + 1 and
+      nRetType = nParamList + 1 and
+      nReturnTypeSyntax = nRetType + 1 and
+      nTypeRepr = nReturnTypeSyntax + 1 and
+      nTypeBoundList = nTypeRepr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getConstArg()
+        or
+        index = nConstArg and result = e.getGenericArgList()
+        or
+        index = nGenericArgList and result = e.getIdentifier()
+        or
+        index = nIdentifier and result = e.getParamList()
+        or
+        index = nParamList and result = e.getRetType()
+        or
+        index = nRetType and result = e.getReturnTypeSyntax()
+        or
+        index = nReturnTypeSyntax and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getTypeBoundList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An `await` expression. For example:
@@ -1746,9 +2711,29 @@ module Raw {
     Attr getAttr(int index) { await_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this await expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | await_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this await expression, if it exists.
      */
     Expr getExpr() { await_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfAwaitExpr(AwaitExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -1773,9 +2758,29 @@ module Raw {
     Attr getAttr(int index) { become_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this become expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | become_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this become expression, if it exists.
      */
     Expr getExpr() { become_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfBecomeExpr(BecomeExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -1798,6 +2803,11 @@ module Raw {
     Attr getAttr(int index) { binary_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this binary expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | binary_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the lhs of this binary expression, if it exists.
      */
     Expr getLhs() { binary_expr_lhs(this, result) }
@@ -1811,6 +2821,24 @@ module Raw {
      * Gets the rhs of this binary expression, if it exists.
      */
     Expr getRhs() { binary_expr_rhs(this, result) }
+  }
+
+  private Element getImmediateChildOfBinaryExpr(BinaryExpr e, int index) {
+    exists(int n, int nAttr, int nLhs, int nRhs |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nLhs = nAttr + 1 and
+      nRhs = nLhs + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getLhs()
+        or
+        index = nLhs and result = e.getRhs()
+      )
+    )
   }
 
   /**
@@ -1830,6 +2858,18 @@ module Raw {
      * Gets the pattern of this box pattern, if it exists.
      */
     Pat getPat() { box_pat_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfBoxPat(BoxPat e, int index) {
+    exists(int n, int nPat |
+      n = 0 and
+      nPat = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -1867,6 +2907,11 @@ module Raw {
     Attr getAttr(int index) { break_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this break expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | break_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this break expression, if it exists.
      */
     Expr getExpr() { break_expr_exprs(this, result) }
@@ -1875,6 +2920,24 @@ module Raw {
      * Gets the lifetime of this break expression, if it exists.
      */
     Lifetime getLifetime() { break_expr_lifetimes(this, result) }
+  }
+
+  private Element getImmediateChildOfBreakExpr(BreakExpr e, int index) {
+    exists(int n, int nAttr, int nExpr, int nLifetime |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      nLifetime = nExpr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+        or
+        index = nExpr and result = e.getLifetime()
+      )
+    )
   }
 
   /**
@@ -1891,6 +2954,11 @@ module Raw {
      * Gets the `index`th attr of this call expression base (0-based).
      */
     Attr getAttr(int index) { call_expr_base_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this call expression base.
+     */
+    int getNumberOfAttrs() { result = count(int i | call_expr_base_attrs(this, i, _)) }
   }
 
   /**
@@ -1909,6 +2977,11 @@ module Raw {
     Attr getAttr(int index) { cast_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this cast expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | cast_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this cast expression, if it exists.
      */
     Expr getExpr() { cast_expr_exprs(this, result) }
@@ -1919,6 +2992,24 @@ module Raw {
     TypeRepr getTypeRepr() { cast_expr_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfCastExpr(CastExpr e, int index) {
+    exists(int n, int nAttr, int nExpr, int nTypeRepr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      nTypeRepr = nExpr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+        or
+        index = nExpr and result = e.getTypeRepr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A closure expression. For example:
@@ -1926,24 +3017,27 @@ module Raw {
    * |x| x + 1;
    * move |x: i32| -> i32 { x + 1 };
    * async |x: i32, y| x + y;
-   *  #[coroutine]
+   * #[coroutine]
    * |x| yield x;
-   *  #[coroutine]
-   *  static |x| yield x;
+   * #[coroutine]
+   * static |x| yield x;
+   * for<T: std::fmt::Debug> |x: T| {
+   *     println!("{:?}", x);
+   * };
    * ```
    */
   class ClosureExpr extends @closure_expr, Expr, Callable {
     override string toString() { result = "ClosureExpr" }
 
     /**
-     * Gets the body of this closure expression, if it exists.
+     * Gets the closure body of this closure expression, if it exists.
      */
-    Expr getBody() { closure_expr_bodies(this, result) }
+    Expr getClosureBody() { closure_expr_closure_bodies(this, result) }
 
     /**
-     * Gets the closure binder of this closure expression, if it exists.
+     * Gets the for binder of this closure expression, if it exists.
      */
-    ClosureBinder getClosureBinder() { closure_expr_closure_binders(this, result) }
+    ForBinder getForBinder() { closure_expr_for_binders(this, result) }
 
     /**
      * Holds if this closure expression is async.
@@ -1976,6 +3070,30 @@ module Raw {
     RetTypeRepr getRetType() { closure_expr_ret_types(this, result) }
   }
 
+  private Element getImmediateChildOfClosureExpr(ClosureExpr e, int index) {
+    exists(int n, int nParamList, int nAttr, int nClosureBody, int nForBinder, int nRetType |
+      n = 0 and
+      nParamList = n + 1 and
+      nAttr = nParamList + e.getNumberOfAttrs() and
+      nClosureBody = nAttr + 1 and
+      nForBinder = nClosureBody + 1 and
+      nRetType = nForBinder + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getParamList()
+        or
+        result = e.getAttr(index - nParamList)
+        or
+        index = nAttr and result = e.getClosureBody()
+        or
+        index = nClosureBody and result = e.getForBinder()
+        or
+        index = nForBinder and result = e.getRetType()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A comment. For example:
@@ -1998,6 +3116,8 @@ module Raw {
     string getText() { comments(this, _, result) }
   }
 
+  private Element getImmediateChildOfComment(Comment e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * A constant argument in a generic argument list.
@@ -2015,6 +3135,18 @@ module Raw {
      * Gets the expression of this const argument, if it exists.
      */
     Expr getExpr() { const_arg_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfConstArg(ConstArg e, int index) {
+    exists(int n, int nExpr |
+      n = 0 and
+      nExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -2041,6 +3173,18 @@ module Raw {
     predicate isConst() { const_block_pat_is_const(this) }
   }
 
+  private Element getImmediateChildOfConstBlockPat(ConstBlockPat e, int index) {
+    exists(int n, int nBlockExpr |
+      n = 0 and
+      nBlockExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getBlockExpr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A constant parameter in a generic parameter list.
@@ -2058,6 +3202,11 @@ module Raw {
      * Gets the `index`th attr of this const parameter (0-based).
      */
     Attr getAttr(int index) { const_param_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this const parameter.
+     */
+    int getNumberOfAttrs() { result = count(int i | const_param_attrs(this, i, _)) }
 
     /**
      * Gets the default val of this const parameter, if it exists.
@@ -2078,6 +3227,27 @@ module Raw {
      * Gets the type representation of this const parameter, if it exists.
      */
     TypeRepr getTypeRepr() { const_param_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfConstParam(ConstParam e, int index) {
+    exists(int n, int nAttr, int nDefaultVal, int nName, int nTypeRepr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nDefaultVal = nAttr + 1 and
+      nName = nDefaultVal + 1 and
+      nTypeRepr = nName + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getDefaultVal()
+        or
+        index = nDefaultVal and result = e.getName()
+        or
+        index = nName and result = e.getTypeRepr()
+      )
+    )
   }
 
   /**
@@ -2107,9 +3277,29 @@ module Raw {
     Attr getAttr(int index) { continue_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this continue expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | continue_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the lifetime of this continue expression, if it exists.
      */
     Lifetime getLifetime() { continue_expr_lifetimes(this, result) }
+  }
+
+  private Element getImmediateChildOfContinueExpr(ContinueExpr e, int index) {
+    exists(int n, int nAttr, int nLifetime |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nLifetime = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getLifetime()
+      )
+    )
   }
 
   /**
@@ -2131,6 +3321,18 @@ module Raw {
     TypeBoundList getTypeBoundList() { dyn_trait_type_repr_type_bound_lists(this, result) }
   }
 
+  private Element getImmediateChildOfDynTraitTypeRepr(DynTraitTypeRepr e, int index) {
+    exists(int n, int nTypeBoundList |
+      n = 0 and
+      nTypeBoundList = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeBoundList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An expression statement. For example:
@@ -2149,6 +3351,18 @@ module Raw {
     Expr getExpr() { expr_stmt_exprs(this, result) }
   }
 
+  private Element getImmediateChildOfExprStmt(ExprStmt e, int index) {
+    exists(int n, int nExpr |
+      n = 0 and
+      nExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getExpr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A field access expression. For example:
@@ -2165,6 +3379,11 @@ module Raw {
     Attr getAttr(int index) { field_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this field expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | field_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the container of this field expression, if it exists.
      */
     Expr getContainer() { field_expr_containers(this, result) }
@@ -2173,6 +3392,24 @@ module Raw {
      * Gets the identifier of this field expression, if it exists.
      */
     NameRef getIdentifier() { field_expr_identifiers(this, result) }
+  }
+
+  private Element getImmediateChildOfFieldExpr(FieldExpr e, int index) {
+    exists(int n, int nAttr, int nContainer, int nIdentifier |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nContainer = nAttr + 1 and
+      nIdentifier = nContainer + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getContainer()
+        or
+        index = nContainer and result = e.getIdentifier()
+      )
+    )
   }
 
   /**
@@ -2219,33 +3456,61 @@ module Raw {
     RetTypeRepr getRetType() { fn_ptr_type_repr_ret_types(this, result) }
   }
 
+  private Element getImmediateChildOfFnPtrTypeRepr(FnPtrTypeRepr e, int index) {
+    exists(int n, int nAbi, int nParamList, int nRetType |
+      n = 0 and
+      nAbi = n + 1 and
+      nParamList = nAbi + 1 and
+      nRetType = nParamList + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAbi()
+        or
+        index = nAbi and result = e.getParamList()
+        or
+        index = nParamList and result = e.getRetType()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
-   * A higher-ranked trait bound.
+   * A function pointer type with a `for` modifier.
    *
    * For example:
    * ```rust
-   * fn foo<T>(value: T)
-   * where
-   *     T: for<'a> Fn(&'a str) -> &'a str
-   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   * {
-   *     // ...
-   * }
+   * type RefOp<X> = for<'a> fn(&'a X) -> &'a X;
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class ForTypeRepr extends @for_type_repr, TypeRepr {
     override string toString() { result = "ForTypeRepr" }
 
     /**
-     * Gets the generic parameter list of this for type representation, if it exists.
+     * Gets the for binder of this for type representation, if it exists.
      */
-    GenericParamList getGenericParamList() { for_type_repr_generic_param_lists(this, result) }
+    ForBinder getForBinder() { for_type_repr_for_binders(this, result) }
 
     /**
      * Gets the type representation of this for type representation, if it exists.
      */
     TypeRepr getTypeRepr() { for_type_repr_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfForTypeRepr(ForTypeRepr e, int index) {
+    exists(int n, int nForBinder, int nTypeRepr |
+      n = 0 and
+      nForBinder = n + 1 and
+      nTypeRepr = nForBinder + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getForBinder()
+        or
+        index = nForBinder and result = e.getTypeRepr()
+      )
+    )
   }
 
   /**
@@ -2268,14 +3533,43 @@ module Raw {
     FormatArgsArg getArg(int index) { format_args_expr_args(this, index, result) }
 
     /**
+     * Gets the number of arguments of this format arguments expression.
+     */
+    int getNumberOfArgs() { result = count(int i | format_args_expr_args(this, i, _)) }
+
+    /**
      * Gets the `index`th attr of this format arguments expression (0-based).
      */
     Attr getAttr(int index) { format_args_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this format arguments expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | format_args_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the template of this format arguments expression, if it exists.
      */
     Expr getTemplate() { format_args_expr_templates(this, result) }
+  }
+
+  private Element getImmediateChildOfFormatArgsExpr(FormatArgsExpr e, int index) {
+    exists(int n, int nArg, int nAttr, int nTemplate, int nFormat |
+      n = 0 and
+      nArg = n + e.getNumberOfArgs() and
+      nAttr = nArg + e.getNumberOfAttrs() and
+      nTemplate = nAttr + 1 and
+      nFormat = nTemplate and
+      (
+        none()
+        or
+        result = e.getArg(index - n)
+        or
+        result = e.getAttr(index - nArg)
+        or
+        index = nAttr and result = e.getTemplate()
+      )
+    )
   }
 
   /**
@@ -2303,6 +3597,11 @@ module Raw {
     Attr getAttr(int index) { ident_pat_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this ident pattern.
+     */
+    int getNumberOfAttrs() { result = count(int i | ident_pat_attrs(this, i, _)) }
+
+    /**
      * Holds if this ident pattern is mut.
      */
     predicate isMut() { ident_pat_is_mut(this) }
@@ -2321,6 +3620,24 @@ module Raw {
      * Gets the pattern of this ident pattern, if it exists.
      */
     Pat getPat() { ident_pat_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfIdentPat(IdentPat e, int index) {
+    exists(int n, int nAttr, int nName, int nPat |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nName = nAttr + 1 and
+      nPat = nName + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getName()
+        or
+        index = nName and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -2348,6 +3665,11 @@ module Raw {
     Attr getAttr(int index) { if_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this if expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | if_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the condition of this if expression, if it exists.
      */
     Expr getCondition() { if_expr_conditions(this, result) }
@@ -2361,6 +3683,27 @@ module Raw {
      * Gets the then of this if expression, if it exists.
      */
     BlockExpr getThen() { if_expr_thens(this, result) }
+  }
+
+  private Element getImmediateChildOfIfExpr(IfExpr e, int index) {
+    exists(int n, int nAttr, int nCondition, int nElse, int nThen |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nCondition = nAttr + 1 and
+      nElse = nCondition + 1 and
+      nThen = nElse + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getCondition()
+        or
+        index = nCondition and result = e.getElse()
+        or
+        index = nElse and result = e.getThen()
+      )
+    )
   }
 
   /**
@@ -2382,6 +3725,18 @@ module Raw {
     TypeBoundList getTypeBoundList() { impl_trait_type_repr_type_bound_lists(this, result) }
   }
 
+  private Element getImmediateChildOfImplTraitTypeRepr(ImplTraitTypeRepr e, int index) {
+    exists(int n, int nTypeBoundList |
+      n = 0 and
+      nTypeBoundList = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeBoundList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An index expression. For example:
@@ -2399,6 +3754,11 @@ module Raw {
     Attr getAttr(int index) { index_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this index expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | index_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the base of this index expression, if it exists.
      */
     Expr getBase() { index_expr_bases(this, result) }
@@ -2407,6 +3767,24 @@ module Raw {
      * Gets the index of this index expression, if it exists.
      */
     Expr getIndex() { index_expr_indices(this, result) }
+  }
+
+  private Element getImmediateChildOfIndexExpr(IndexExpr e, int index) {
+    exists(int n, int nAttr, int nBase, int nIndex |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nBase = nAttr + 1 and
+      nIndex = nBase + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getBase()
+        or
+        index = nBase and result = e.getIndex()
+      )
+    )
   }
 
   /**
@@ -2422,6 +3800,8 @@ module Raw {
   class InferTypeRepr extends @infer_type_repr, TypeRepr {
     override string toString() { result = "InferTypeRepr" }
   }
+
+  private Element getImmediateChildOfInferTypeRepr(InferTypeRepr e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -2470,6 +3850,11 @@ module Raw {
     Attr getAttr(int index) { let_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this let expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | let_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the scrutinee of this let expression, if it exists.
      */
     Expr getScrutinee() { let_expr_scrutinees(this, result) }
@@ -2478,6 +3863,24 @@ module Raw {
      * Gets the pattern of this let expression, if it exists.
      */
     Pat getPat() { let_expr_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfLetExpr(LetExpr e, int index) {
+    exists(int n, int nAttr, int nScrutinee, int nPat |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nScrutinee = nAttr + 1 and
+      nPat = nScrutinee + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getScrutinee()
+        or
+        index = nScrutinee and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -2503,6 +3906,11 @@ module Raw {
     Attr getAttr(int index) { let_stmt_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this let statement.
+     */
+    int getNumberOfAttrs() { result = count(int i | let_stmt_attrs(this, i, _)) }
+
+    /**
      * Gets the initializer of this let statement, if it exists.
      */
     Expr getInitializer() { let_stmt_initializers(this, result) }
@@ -2521,6 +3929,30 @@ module Raw {
      * Gets the type representation of this let statement, if it exists.
      */
     TypeRepr getTypeRepr() { let_stmt_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfLetStmt(LetStmt e, int index) {
+    exists(int n, int nAttr, int nInitializer, int nLetElse, int nPat, int nTypeRepr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nInitializer = nAttr + 1 and
+      nLetElse = nInitializer + 1 and
+      nPat = nLetElse + 1 and
+      nTypeRepr = nPat + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getInitializer()
+        or
+        index = nInitializer and result = e.getLetElse()
+        or
+        index = nLetElse and result = e.getPat()
+        or
+        index = nPat and result = e.getTypeRepr()
+      )
+    )
   }
 
   /**
@@ -2542,6 +3974,8 @@ module Raw {
     string getText() { lifetime_texts(this, result) }
   }
 
+  private Element getImmediateChildOfLifetime(Lifetime e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * A lifetime argument in a generic argument list.
@@ -2559,6 +3993,18 @@ module Raw {
      * Gets the lifetime of this lifetime argument, if it exists.
      */
     Lifetime getLifetime() { lifetime_arg_lifetimes(this, result) }
+  }
+
+  private Element getImmediateChildOfLifetimeArg(LifetimeArg e, int index) {
+    exists(int n, int nLifetime |
+      n = 0 and
+      nLifetime = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLifetime()
+      )
+    )
   }
 
   /**
@@ -2580,6 +4026,11 @@ module Raw {
     Attr getAttr(int index) { lifetime_param_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this lifetime parameter.
+     */
+    int getNumberOfAttrs() { result = count(int i | lifetime_param_attrs(this, i, _)) }
+
+    /**
      * Gets the lifetime of this lifetime parameter, if it exists.
      */
     Lifetime getLifetime() { lifetime_param_lifetimes(this, result) }
@@ -2588,6 +4039,24 @@ module Raw {
      * Gets the type bound list of this lifetime parameter, if it exists.
      */
     TypeBoundList getTypeBoundList() { lifetime_param_type_bound_lists(this, result) }
+  }
+
+  private Element getImmediateChildOfLifetimeParam(LifetimeParam e, int index) {
+    exists(int n, int nAttr, int nLifetime, int nTypeBoundList |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nLifetime = nAttr + 1 and
+      nTypeBoundList = nLifetime + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getLifetime()
+        or
+        index = nLifetime and result = e.getTypeBoundList()
+      )
+    )
   }
 
   /**
@@ -2613,9 +4082,26 @@ module Raw {
     Attr getAttr(int index) { literal_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this literal expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | literal_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the text value of this literal expression, if it exists.
      */
     string getTextValue() { literal_expr_text_values(this, result) }
+  }
+
+  private Element getImmediateChildOfLiteralExpr(LiteralExpr e, int index) {
+    exists(int n, int nAttr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+      )
+    )
   }
 
   /**
@@ -2637,27 +4123,65 @@ module Raw {
     LiteralExpr getLiteral() { literal_pat_literals(this, result) }
   }
 
+  private Element getImmediateChildOfLiteralPat(LiteralPat e, int index) {
+    exists(int n, int nLiteral |
+      n = 0 and
+      nLiteral = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLiteral()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A sequence of statements generated by a `MacroCall`. For example:
    * ```rust
-   * fn main() {
-   *     println!("Hello, world!"); // This macro expands into a list of statements
+   * macro_rules! my_macro {
+   *     () => {
+   *         let mut x = 40;
+   *         x += 2;
+   *         x
+   *     };
    * }
+   *
+   * my_macro!();  // this macro expands to a sequence of statements (and an expression)
    * ```
    */
   class MacroBlockExpr extends @macro_block_expr, Expr {
     override string toString() { result = "MacroBlockExpr" }
 
     /**
-     * Gets the tail expression of this macro block expression, if it exists.
-     */
-    Expr getTailExpr() { macro_block_expr_tail_exprs(this, result) }
-
-    /**
      * Gets the `index`th statement of this macro block expression (0-based).
      */
     Stmt getStatement(int index) { macro_block_expr_statements(this, index, result) }
+
+    /**
+     * Gets the number of statements of this macro block expression.
+     */
+    int getNumberOfStatements() { result = count(int i | macro_block_expr_statements(this, i, _)) }
+
+    /**
+     * Gets the tail expression of this macro block expression, if it exists.
+     */
+    Expr getTailExpr() { macro_block_expr_tail_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfMacroBlockExpr(MacroBlockExpr e, int index) {
+    exists(int n, int nStatement, int nTailExpr |
+      n = 0 and
+      nStatement = n + e.getNumberOfStatements() and
+      nTailExpr = nStatement + 1 and
+      (
+        none()
+        or
+        result = e.getStatement(index - n)
+        or
+        index = nStatement and result = e.getTailExpr()
+      )
+    )
   }
 
   /**
@@ -2676,6 +4200,18 @@ module Raw {
      * Gets the macro call of this macro expression, if it exists.
      */
     MacroCall getMacroCall() { macro_expr_macro_calls(this, result) }
+  }
+
+  private Element getImmediateChildOfMacroExpr(MacroExpr e, int index) {
+    exists(int n, int nMacroCall |
+      n = 0 and
+      nMacroCall = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMacroCall()
+      )
+    )
   }
 
   /**
@@ -2705,6 +4241,18 @@ module Raw {
     MacroCall getMacroCall() { macro_pat_macro_calls(this, result) }
   }
 
+  private Element getImmediateChildOfMacroPat(MacroPat e, int index) {
+    exists(int n, int nMacroCall |
+      n = 0 and
+      nMacroCall = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMacroCall()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A type produced by a macro.
@@ -2725,6 +4273,18 @@ module Raw {
      * Gets the macro call of this macro type representation, if it exists.
      */
     MacroCall getMacroCall() { macro_type_repr_macro_calls(this, result) }
+  }
+
+  private Element getImmediateChildOfMacroTypeRepr(MacroTypeRepr e, int index) {
+    exists(int n, int nMacroCall |
+      n = 0 and
+      nMacroCall = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMacroCall()
+      )
+    )
   }
 
   /**
@@ -2752,6 +4312,11 @@ module Raw {
     Attr getAttr(int index) { match_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this match expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | match_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
     Expr getScrutinee() { match_expr_scrutinees(this, result) }
@@ -2760,6 +4325,24 @@ module Raw {
      * Gets the match arm list of this match expression, if it exists.
      */
     MatchArmList getMatchArmList() { match_expr_match_arm_lists(this, result) }
+  }
+
+  private Element getImmediateChildOfMatchExpr(MatchExpr e, int index) {
+    exists(int n, int nAttr, int nScrutinee, int nMatchArmList |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nScrutinee = nAttr + 1 and
+      nMatchArmList = nScrutinee + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getScrutinee()
+        or
+        index = nScrutinee and result = e.getMatchArmList()
+      )
+    )
   }
 
   /**
@@ -2781,6 +4364,8 @@ module Raw {
     string getText() { name_ref_texts(this, result) }
   }
 
+  private Element getImmediateChildOfNameRef(NameRef e, int index) { none() }
+
   /**
    * INTERNAL: Do not use.
    * The never type `!`.
@@ -2794,6 +4379,8 @@ module Raw {
   class NeverTypeRepr extends @never_type_repr, TypeRepr {
     override string toString() { result = "NeverTypeRepr" }
   }
+
+  private Element getImmediateChildOfNeverTypeRepr(NeverTypeRepr e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -2811,14 +4398,42 @@ module Raw {
     Attr getAttr(int index) { offset_of_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this offset of expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | offset_of_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th field of this offset of expression (0-based).
      */
     NameRef getField(int index) { offset_of_expr_fields(this, index, result) }
 
     /**
+     * Gets the number of fields of this offset of expression.
+     */
+    int getNumberOfFields() { result = count(int i | offset_of_expr_fields(this, i, _)) }
+
+    /**
      * Gets the type representation of this offset of expression, if it exists.
      */
     TypeRepr getTypeRepr() { offset_of_expr_type_reprs(this, result) }
+  }
+
+  private Element getImmediateChildOfOffsetOfExpr(OffsetOfExpr e, int index) {
+    exists(int n, int nAttr, int nField, int nTypeRepr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nField = nAttr + e.getNumberOfFields() and
+      nTypeRepr = nField + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getField(index - nAttr)
+        or
+        index = nField and result = e.getTypeRepr()
+      )
+    )
   }
 
   /**
@@ -2837,6 +4452,23 @@ module Raw {
      * Gets the `index`th pattern of this or pattern (0-based).
      */
     Pat getPat(int index) { or_pat_pats(this, index, result) }
+
+    /**
+     * Gets the number of patterns of this or pattern.
+     */
+    int getNumberOfPats() { result = count(int i | or_pat_pats(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfOrPat(OrPat e, int index) {
+    exists(int n, int nPat |
+      n = 0 and
+      nPat = n + e.getNumberOfPats() and
+      (
+        none()
+        or
+        result = e.getPat(index - n)
+      )
+    )
   }
 
   /**
@@ -2857,6 +4489,24 @@ module Raw {
     Pat getPat() { param_pats(this, result) }
   }
 
+  private Element getImmediateChildOfParam(Param e, int index) {
+    exists(int n, int nAttr, int nTypeRepr, int nPat |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nTypeRepr = nAttr + 1 and
+      nPat = nTypeRepr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getPat()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A parenthesized expression.
@@ -2875,9 +4525,29 @@ module Raw {
     Attr getAttr(int index) { paren_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this paren expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | paren_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this paren expression, if it exists.
      */
     Expr getExpr() { paren_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfParenExpr(ParenExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -2899,6 +4569,18 @@ module Raw {
     Pat getPat() { paren_pat_pats(this, result) }
   }
 
+  private Element getImmediateChildOfParenPat(ParenPat e, int index) {
+    exists(int n, int nPat |
+      n = 0 and
+      nPat = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPat()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A parenthesized type.
@@ -2918,15 +4600,16 @@ module Raw {
     TypeRepr getTypeRepr() { paren_type_repr_type_reprs(this, result) }
   }
 
-  /**
-   * INTERNAL: Do not use.
-   * An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
-   */
-  class PathAstNode extends @path_ast_node, Resolvable {
-    /**
-     * Gets the path of this path ast node, if it exists.
-     */
-    Path getPath() { path_ast_node_paths(this, result) }
+  private Element getImmediateChildOfParenTypeRepr(ParenTypeRepr e, int index) {
+    exists(int n, int nTypeRepr |
+      n = 0 and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeRepr()
+      )
+    )
   }
 
   /**
@@ -2934,6 +4617,32 @@ module Raw {
    * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
    */
   class PathExprBase extends @path_expr_base, Expr { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A path pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo::Bar => "ok",
+   *     _ => "fail",
+   * }
+   * ```
+   */
+  class PathPat extends @path_pat, Pat, PathAstNode {
+    override string toString() { result = "PathPat" }
+  }
+
+  private Element getImmediateChildOfPathPat(PathPat e, int index) {
+    exists(int n, int nPath |
+      n = 0 and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+      )
+    )
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2950,6 +4659,18 @@ module Raw {
      * Gets the path of this path type representation, if it exists.
      */
     Path getPath() { path_type_repr_paths(this, result) }
+  }
+
+  private Element getImmediateChildOfPathTypeRepr(PathTypeRepr e, int index) {
+    exists(int n, int nPath |
+      n = 0 and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+      )
+    )
   }
 
   /**
@@ -2970,6 +4691,11 @@ module Raw {
     Attr getAttr(int index) { prefix_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this prefix expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | prefix_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this prefix expression, if it exists.
      */
     Expr getExpr() { prefix_expr_exprs(this, result) }
@@ -2978,6 +4704,21 @@ module Raw {
      * Gets the operator name of this prefix expression, if it exists.
      */
     string getOperatorName() { prefix_expr_operator_names(this, result) }
+  }
+
+  private Element getImmediateChildOfPrefixExpr(PrefixExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -3010,6 +4751,18 @@ module Raw {
     TypeRepr getTypeRepr() { ptr_type_repr_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfPtrTypeRepr(PtrTypeRepr e, int index) {
+    exists(int n, int nTypeRepr |
+      n = 0 and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeRepr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A range expression. For example:
@@ -3031,6 +4784,11 @@ module Raw {
     Attr getAttr(int index) { range_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this range expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | range_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the end of this range expression, if it exists.
      */
     Expr getEnd() { range_expr_ends(this, result) }
@@ -3044,6 +4802,24 @@ module Raw {
      * Gets the start of this range expression, if it exists.
      */
     Expr getStart() { range_expr_starts(this, result) }
+  }
+
+  private Element getImmediateChildOfRangeExpr(RangeExpr e, int index) {
+    exists(int n, int nAttr, int nEnd, int nStart |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nEnd = nAttr + 1 and
+      nStart = nEnd + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getEnd()
+        or
+        index = nEnd and result = e.getStart()
+      )
+    )
   }
 
   /**
@@ -3076,6 +4852,21 @@ module Raw {
     Pat getStart() { range_pat_starts(this, result) }
   }
 
+  private Element getImmediateChildOfRangePat(RangePat e, int index) {
+    exists(int n, int nEnd, int nStart |
+      n = 0 and
+      nEnd = n + 1 and
+      nStart = nEnd + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getEnd()
+        or
+        index = nEnd and result = e.getStart()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A reference expression. For example:
@@ -3093,6 +4884,11 @@ module Raw {
      * Gets the `index`th attr of this reference expression (0-based).
      */
     Attr getAttr(int index) { ref_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this reference expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | ref_expr_attrs(this, i, _)) }
 
     /**
      * Gets the expression of this reference expression, if it exists.
@@ -3113,6 +4909,21 @@ module Raw {
      * Holds if this reference expression is raw.
      */
     predicate isRaw() { ref_expr_is_raw(this) }
+  }
+
+  private Element getImmediateChildOfRefExpr(RefExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -3137,6 +4948,18 @@ module Raw {
      * Gets the pattern of this reference pattern, if it exists.
      */
     Pat getPat() { ref_pat_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfRefPat(RefPat e, int index) {
+    exists(int n, int nPat |
+      n = 0 and
+      nPat = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -3169,6 +4992,21 @@ module Raw {
     TypeRepr getTypeRepr() { ref_type_repr_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfRefTypeRepr(RefTypeRepr e, int index) {
+    exists(int n, int nLifetime, int nTypeRepr |
+      n = 0 and
+      nLifetime = n + 1 and
+      nTypeRepr = nLifetime + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLifetime()
+        or
+        index = nLifetime and result = e.getTypeRepr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A rest pattern (`..`) in a tuple, slice, or struct pattern.
@@ -3186,6 +5024,23 @@ module Raw {
      * Gets the `index`th attr of this rest pattern (0-based).
      */
     Attr getAttr(int index) { rest_pat_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this rest pattern.
+     */
+    int getNumberOfAttrs() { result = count(int i | rest_pat_attrs(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfRestPat(RestPat e, int index) {
+    exists(int n, int nAttr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+      )
+    )
   }
 
   /**
@@ -3211,9 +5066,29 @@ module Raw {
     Attr getAttr(int index) { return_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this return expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | return_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this return expression, if it exists.
      */
     Expr getExpr() { return_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfReturnExpr(ReturnExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -3254,6 +5129,27 @@ module Raw {
     Name getName() { self_param_names(this, result) }
   }
 
+  private Element getImmediateChildOfSelfParam(SelfParam e, int index) {
+    exists(int n, int nAttr, int nTypeRepr, int nLifetime, int nName |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nTypeRepr = nAttr + 1 and
+      nLifetime = nTypeRepr + 1 and
+      nName = nLifetime + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getLifetime()
+        or
+        index = nLifetime and result = e.getName()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A slice pattern. For example:
@@ -3272,6 +5168,23 @@ module Raw {
      * Gets the `index`th pattern of this slice pattern (0-based).
      */
     Pat getPat(int index) { slice_pat_pats(this, index, result) }
+
+    /**
+     * Gets the number of patterns of this slice pattern.
+     */
+    int getNumberOfPats() { result = count(int i | slice_pat_pats(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfSlicePat(SlicePat e, int index) {
+    exists(int n, int nPat |
+      n = 0 and
+      nPat = n + e.getNumberOfPats() and
+      (
+        none()
+        or
+        result = e.getPat(index - n)
+      )
+    )
   }
 
   /**
@@ -3293,6 +5206,54 @@ module Raw {
     TypeRepr getTypeRepr() { slice_type_repr_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfSliceTypeRepr(SliceTypeRepr e, int index) {
+    exists(int n, int nTypeRepr |
+      n = 0 and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeRepr()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct expression. For example:
+   * ```rust
+   * let first = Foo { a: 1, b: 2 };
+   * let second = Foo { a: 2, ..first };
+   * let n = Foo { a: 1, b: 2 }.b;
+   * Foo { a: m, .. } = second;
+   * ```
+   */
+  class StructExpr extends @struct_expr, Expr, PathAstNode {
+    override string toString() { result = "StructExpr" }
+
+    /**
+     * Gets the struct expression field list of this struct expression, if it exists.
+     */
+    StructExprFieldList getStructExprFieldList() {
+      struct_expr_struct_expr_field_lists(this, result)
+    }
+  }
+
+  private Element getImmediateChildOfStructExpr(StructExpr e, int index) {
+    exists(int n, int nPath, int nStructExprFieldList |
+      n = 0 and
+      nPath = n + 1 and
+      nStructExprFieldList = nPath + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+        or
+        index = nPath and result = e.getStructExprFieldList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A list of fields in a struct declaration.
@@ -3310,6 +5271,57 @@ module Raw {
      * Gets the `index`th field of this struct field list (0-based).
      */
     StructField getField(int index) { struct_field_list_fields(this, index, result) }
+
+    /**
+     * Gets the number of fields of this struct field list.
+     */
+    int getNumberOfFields() { result = count(int i | struct_field_list_fields(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfStructFieldList(StructFieldList e, int index) {
+    exists(int n, int nField |
+      n = 0 and
+      nField = n + e.getNumberOfFields() and
+      (
+        none()
+        or
+        result = e.getField(index - n)
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Foo { a: 1, b: 2 } => "ok",
+   *     Foo { .. } => "fail",
+   * }
+   * ```
+   */
+  class StructPat extends @struct_pat, Pat, PathAstNode {
+    override string toString() { result = "StructPat" }
+
+    /**
+     * Gets the struct pattern field list of this struct pattern, if it exists.
+     */
+    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
+  }
+
+  private Element getImmediateChildOfStructPat(StructPat e, int index) {
+    exists(int n, int nPath, int nStructPatFieldList |
+      n = 0 and
+      nPath = n + 1 and
+      nStructPatFieldList = nPath + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+        or
+        index = nPath and result = e.getStructPatFieldList()
+      )
+    )
   }
 
   /**
@@ -3331,17 +5343,38 @@ module Raw {
     Attr getAttr(int index) { try_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this try expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | try_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this try expression, if it exists.
      */
     Expr getExpr() { try_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfTryExpr(TryExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
    * INTERNAL: Do not use.
    * A tuple expression. For example:
    * ```rust
-   * (1, "one");
-   * (2, "two")[0] = 3;
+   * let tuple = (1, "one");
+   * let n = (2, "two").0;
+   * let (a, b) = tuple;
    * ```
    */
   class TupleExpr extends @tuple_expr, Expr {
@@ -3353,9 +5386,34 @@ module Raw {
     Attr getAttr(int index) { tuple_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this tuple expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | tuple_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the `index`th field of this tuple expression (0-based).
      */
     Expr getField(int index) { tuple_expr_fields(this, index, result) }
+
+    /**
+     * Gets the number of fields of this tuple expression.
+     */
+    int getNumberOfFields() { result = count(int i | tuple_expr_fields(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfTupleExpr(TupleExpr e, int index) {
+    exists(int n, int nAttr, int nField |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nField = nAttr + e.getNumberOfFields() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        result = e.getField(index - nAttr)
+      )
+    )
   }
 
   /**
@@ -3375,6 +5433,23 @@ module Raw {
      * Gets the `index`th field of this tuple field list (0-based).
      */
     TupleField getField(int index) { tuple_field_list_fields(this, index, result) }
+
+    /**
+     * Gets the number of fields of this tuple field list.
+     */
+    int getNumberOfFields() { result = count(int i | tuple_field_list_fields(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfTupleFieldList(TupleFieldList e, int index) {
+    exists(int n, int nField |
+      n = 0 and
+      nField = n + e.getNumberOfFields() and
+      (
+        none()
+        or
+        result = e.getField(index - n)
+      )
+    )
   }
 
   /**
@@ -3392,6 +5467,63 @@ module Raw {
      * Gets the `index`th field of this tuple pattern (0-based).
      */
     Pat getField(int index) { tuple_pat_fields(this, index, result) }
+
+    /**
+     * Gets the number of fields of this tuple pattern.
+     */
+    int getNumberOfFields() { result = count(int i | tuple_pat_fields(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfTuplePat(TuplePat e, int index) {
+    exists(int n, int nField |
+      n = 0 and
+      nField = n + e.getNumberOfFields() and
+      (
+        none()
+        or
+        result = e.getField(index - n)
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A tuple struct pattern. For example:
+   * ```rust
+   * match x {
+   *     Tuple("a", 1, 2, 3) => "great",
+   *     Tuple(.., 3) => "fine",
+   *     Tuple(..) => "fail",
+   * };
+   * ```
+   */
+  class TupleStructPat extends @tuple_struct_pat, Pat, PathAstNode {
+    override string toString() { result = "TupleStructPat" }
+
+    /**
+     * Gets the `index`th field of this tuple struct pattern (0-based).
+     */
+    Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
+
+    /**
+     * Gets the number of fields of this tuple struct pattern.
+     */
+    int getNumberOfFields() { result = count(int i | tuple_struct_pat_fields(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfTupleStructPat(TupleStructPat e, int index) {
+    exists(int n, int nPath, int nField |
+      n = 0 and
+      nPath = n + 1 and
+      nField = nPath + e.getNumberOfFields() and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+        or
+        result = e.getField(index - nPath)
+      )
+    )
   }
 
   /**
@@ -3411,6 +5543,23 @@ module Raw {
      * Gets the `index`th field of this tuple type representation (0-based).
      */
     TypeRepr getField(int index) { tuple_type_repr_fields(this, index, result) }
+
+    /**
+     * Gets the number of fields of this tuple type representation.
+     */
+    int getNumberOfFields() { result = count(int i | tuple_type_repr_fields(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfTupleTypeRepr(TupleTypeRepr e, int index) {
+    exists(int n, int nField |
+      n = 0 and
+      nField = n + e.getNumberOfFields() and
+      (
+        none()
+        or
+        result = e.getField(index - n)
+      )
+    )
   }
 
   /**
@@ -3432,6 +5581,18 @@ module Raw {
     TypeRepr getTypeRepr() { type_arg_type_reprs(this, result) }
   }
 
+  private Element getImmediateChildOfTypeArg(TypeArg e, int index) {
+    exists(int n, int nTypeRepr |
+      n = 0 and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getTypeRepr()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A type parameter in a generic parameter list.
@@ -3451,6 +5612,11 @@ module Raw {
     Attr getAttr(int index) { type_param_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this type parameter.
+     */
+    int getNumberOfAttrs() { result = count(int i | type_param_attrs(this, i, _)) }
+
+    /**
      * Gets the default type of this type parameter, if it exists.
      */
     TypeRepr getDefaultType() { type_param_default_types(this, result) }
@@ -3464,6 +5630,27 @@ module Raw {
      * Gets the type bound list of this type parameter, if it exists.
      */
     TypeBoundList getTypeBoundList() { type_param_type_bound_lists(this, result) }
+  }
+
+  private Element getImmediateChildOfTypeParam(TypeParam e, int index) {
+    exists(int n, int nAttr, int nDefaultType, int nName, int nTypeBoundList |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nDefaultType = nAttr + 1 and
+      nName = nDefaultType + 1 and
+      nTypeBoundList = nName + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getDefaultType()
+        or
+        index = nDefaultType and result = e.getName()
+        or
+        index = nName and result = e.getTypeBoundList()
+      )
+    )
   }
 
   /**
@@ -3480,6 +5667,23 @@ module Raw {
      * Gets the `index`th attr of this underscore expression (0-based).
      */
     Attr getAttr(int index) { underscore_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this underscore expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | underscore_expr_attrs(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfUnderscoreExpr(UnderscoreExpr e, int index) {
+    exists(int n, int nAttr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+      )
+    )
   }
 
   /**
@@ -3499,6 +5703,11 @@ module Raw {
      * Gets the `index`th attr of this variant (0-based).
      */
     Attr getAttr(int index) { variant_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this variant.
+     */
+    int getNumberOfAttrs() { result = count(int i | variant_attrs(this, i, _)) }
 
     /**
      * Gets the discriminant of this variant, if it exists.
@@ -3521,6 +5730,30 @@ module Raw {
     Visibility getVisibility() { variant_visibilities(this, result) }
   }
 
+  private Element getImmediateChildOfVariant(Variant e, int index) {
+    exists(int n, int nAttr, int nDiscriminant, int nFieldList, int nName, int nVisibility |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nDiscriminant = nAttr + 1 and
+      nFieldList = nDiscriminant + 1 and
+      nName = nFieldList + 1 and
+      nVisibility = nName + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getDiscriminant()
+        or
+        index = nDiscriminant and result = e.getFieldList()
+        or
+        index = nFieldList and result = e.getName()
+        or
+        index = nName and result = e.getVisibility()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A wildcard pattern. For example:
@@ -3531,6 +5764,8 @@ module Raw {
   class WildcardPat extends @wildcard_pat, Pat {
     override string toString() { result = "WildcardPat" }
   }
+
+  private Element getImmediateChildOfWildcardPat(WildcardPat e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -3550,9 +5785,29 @@ module Raw {
     Attr getAttr(int index) { yeet_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this yeet expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | yeet_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this yeet expression, if it exists.
      */
     Expr getExpr() { yeet_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfYeetExpr(YeetExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -3574,9 +5829,29 @@ module Raw {
     Attr getAttr(int index) { yield_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this yield expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | yield_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the expression of this yield expression, if it exists.
      */
     Expr getExpr() { yield_expr_exprs(this, result) }
+  }
+
+  private Element getImmediateChildOfYieldExpr(YieldExpr e, int index) {
+    exists(int n, int nAttr, int nExpr |
+      n = 0 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nExpr = nAttr + 1 and
+      (
+        none()
+        or
+        result = e.getAttr(index - n)
+        or
+        index = nAttr and result = e.getExpr()
+      )
+    )
   }
 
   /**
@@ -3590,6 +5865,78 @@ module Raw {
     MacroItems getDeriveMacroExpansion(int index) {
       adt_derive_macro_expansions(this, index, result)
     }
+
+    /**
+     * Gets the number of derive macro expansions of this adt.
+     */
+    int getNumberOfDeriveMacroExpansions() {
+      result = count(int i | adt_derive_macro_expansions(this, i, _))
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An inline assembly expression. For example:
+   * ```rust
+   * unsafe {
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
+   * }
+   * ```
+   */
+  class AsmExpr extends @asm_expr, Expr, Item {
+    override string toString() { result = "AsmExpr" }
+
+    /**
+     * Gets the `index`th asm piece of this asm expression (0-based).
+     */
+    AsmPiece getAsmPiece(int index) { asm_expr_asm_pieces(this, index, result) }
+
+    /**
+     * Gets the number of asm pieces of this asm expression.
+     */
+    int getNumberOfAsmPieces() { result = count(int i | asm_expr_asm_pieces(this, i, _)) }
+
+    /**
+     * Gets the `index`th attr of this asm expression (0-based).
+     */
+    Attr getAttr(int index) { asm_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this asm expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | asm_expr_attrs(this, i, _)) }
+
+    /**
+     * Gets the `index`th template of this asm expression (0-based).
+     */
+    Expr getTemplate(int index) { asm_expr_templates(this, index, result) }
+
+    /**
+     * Gets the number of templates of this asm expression.
+     */
+    int getNumberOfTemplates() { result = count(int i | asm_expr_templates(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfAsmExpr(AsmExpr e, int index) {
+    exists(int n, int nAttributeMacroExpansion, int nAsmPiece, int nAttr, int nTemplate |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAsmPiece = nAttributeMacroExpansion + e.getNumberOfAsmPieces() and
+      nAttr = nAsmPiece + e.getNumberOfAttrs() and
+      nTemplate = nAttr + e.getNumberOfTemplates() and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAsmPiece(index - nAttributeMacroExpansion)
+        or
+        result = e.getAttr(index - nAsmPiece)
+        or
+        result = e.getTemplate(index - nAttr)
+      )
+    )
   }
 
   /**
@@ -3628,6 +5975,11 @@ module Raw {
     Attr getAttr(int index) { block_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this block expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | block_expr_attrs(this, i, _)) }
+
+    /**
      * Holds if this block expression is async.
      */
     predicate isAsync() { block_expr_is_async(this) }
@@ -3663,6 +6015,24 @@ module Raw {
     StmtList getStmtList() { block_expr_stmt_lists(this, result) }
   }
 
+  private Element getImmediateChildOfBlockExpr(BlockExpr e, int index) {
+    exists(int n, int nLabel, int nAttr, int nStmtList |
+      n = 0 and
+      nLabel = n + 1 and
+      nAttr = nLabel + e.getNumberOfAttrs() and
+      nStmtList = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLabel()
+        or
+        result = e.getAttr(index - nLabel)
+        or
+        index = nAttr and result = e.getStmtList()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A function call expression. For example:
@@ -3680,6 +6050,24 @@ module Raw {
      * Gets the function of this call expression, if it exists.
      */
     Expr getFunction() { call_expr_functions(this, result) }
+  }
+
+  private Element getImmediateChildOfCallExpr(CallExpr e, int index) {
+    exists(int n, int nArgList, int nAttr, int nFunction |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nFunction = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList()
+        or
+        result = e.getAttr(index - nArgList)
+        or
+        index = nAttr and result = e.getFunction()
+      )
+    )
   }
 
   /**
@@ -3707,6 +6095,11 @@ module Raw {
     Attr getAttr(int index) { extern_block_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this extern block.
+     */
+    int getNumberOfAttrs() { result = count(int i | extern_block_attrs(this, i, _)) }
+
+    /**
      * Gets the extern item list of this extern block, if it exists.
      */
     ExternItemList getExternItemList() { extern_block_extern_item_lists(this, result) }
@@ -3715,6 +6108,27 @@ module Raw {
      * Holds if this extern block is unsafe.
      */
     predicate isUnsafe() { extern_block_is_unsafe(this) }
+  }
+
+  private Element getImmediateChildOfExternBlock(ExternBlock e, int index) {
+    exists(int n, int nAttributeMacroExpansion, int nAbi, int nAttr, int nExternItemList |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAbi = nAttributeMacroExpansion + 1 and
+      nAttr = nAbi + e.getNumberOfAttrs() and
+      nExternItemList = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        index = nAttributeMacroExpansion and result = e.getAbi()
+        or
+        result = e.getAttr(index - nAbi)
+        or
+        index = nAttr and result = e.getExternItemList()
+      )
+    )
   }
 
   /**
@@ -3735,6 +6149,11 @@ module Raw {
     Attr getAttr(int index) { extern_crate_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this extern crate.
+     */
+    int getNumberOfAttrs() { result = count(int i | extern_crate_attrs(this, i, _)) }
+
+    /**
      * Gets the identifier of this extern crate, if it exists.
      */
     NameRef getIdentifier() { extern_crate_identifiers(this, result) }
@@ -3748,6 +6167,32 @@ module Raw {
      * Gets the visibility of this extern crate, if it exists.
      */
     Visibility getVisibility() { extern_crate_visibilities(this, result) }
+  }
+
+  private Element getImmediateChildOfExternCrate(ExternCrate e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nIdentifier, int nRename, int nVisibility
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nIdentifier = nAttr + 1 and
+      nRename = nIdentifier + 1 and
+      nVisibility = nRename + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getIdentifier()
+        or
+        index = nIdentifier and result = e.getRename()
+        or
+        index = nRename and result = e.getVisibility()
+      )
+    )
   }
 
   /**
@@ -3787,6 +6232,11 @@ module Raw {
      * Gets the `index`th attr of this impl (0-based).
      */
     Attr getAttr(int index) { impl_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this impl.
+     */
+    int getNumberOfAttrs() { result = count(int i | impl_attrs(this, i, _)) }
 
     /**
      * Gets the generic parameter list of this impl, if it exists.
@@ -3829,6 +6279,42 @@ module Raw {
     WhereClause getWhereClause() { impl_where_clauses(this, result) }
   }
 
+  private Element getImmediateChildOfImpl(Impl e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
+      int nSelfTy, int nTrait, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAssocItemList = nAttributeMacroExpansion + 1 and
+      nAttr = nAssocItemList + e.getNumberOfAttrs() and
+      nGenericParamList = nAttr + 1 and
+      nSelfTy = nGenericParamList + 1 and
+      nTrait = nSelfTy + 1 and
+      nVisibility = nTrait + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        index = nAttributeMacroExpansion and result = e.getAssocItemList()
+        or
+        result = e.getAttr(index - nAssocItemList)
+        or
+        index = nAttr and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getSelfTy()
+        or
+        index = nSelfTy and result = e.getTrait()
+        or
+        index = nTrait and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
@@ -3865,6 +6351,11 @@ module Raw {
     Attr getAttr(int index) { macro_def_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this macro def.
+     */
+    int getNumberOfAttrs() { result = count(int i | macro_def_attrs(this, i, _)) }
+
+    /**
      * Gets the body of this macro def, if it exists.
      */
     TokenTree getBody() { macro_def_bodies(this, result) }
@@ -3878,6 +6369,36 @@ module Raw {
      * Gets the visibility of this macro def, if it exists.
      */
     Visibility getVisibility() { macro_def_visibilities(this, result) }
+  }
+
+  private Element getImmediateChildOfMacroDef(MacroDef e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nArgs, int nAttr, int nBody, int nName,
+      int nVisibility
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nArgs = nAttributeMacroExpansion + 1 and
+      nAttr = nArgs + e.getNumberOfAttrs() and
+      nBody = nAttr + 1 and
+      nName = nBody + 1 and
+      nVisibility = nName + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        index = nAttributeMacroExpansion and result = e.getArgs()
+        or
+        result = e.getAttr(index - nArgs)
+        or
+        index = nAttr and result = e.getBody()
+        or
+        index = nBody and result = e.getName()
+        or
+        index = nName and result = e.getVisibility()
+      )
+    )
   }
 
   /**
@@ -3900,6 +6421,11 @@ module Raw {
     Attr getAttr(int index) { macro_rules_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this macro rules.
+     */
+    int getNumberOfAttrs() { result = count(int i | macro_rules_attrs(this, i, _)) }
+
+    /**
      * Gets the name of this macro rules, if it exists.
      */
     Name getName() { macro_rules_names(this, result) }
@@ -3915,6 +6441,32 @@ module Raw {
     Visibility getVisibility() { macro_rules_visibilities(this, result) }
   }
 
+  private Element getImmediateChildOfMacroRules(MacroRules e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nName, int nTokenTree, int nVisibility
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nName = nAttr + 1 and
+      nTokenTree = nName + 1 and
+      nVisibility = nTokenTree + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getName()
+        or
+        index = nName and result = e.getTokenTree()
+        or
+        index = nTokenTree and result = e.getVisibility()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A method call expression. For example:
@@ -3923,7 +6475,7 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends @method_call_expr, CallExprBase, Resolvable {
+  class MethodCallExpr extends @method_call_expr, CallExprBase {
     override string toString() { result = "MethodCallExpr" }
 
     /**
@@ -3940,6 +6492,30 @@ module Raw {
      * Gets the receiver of this method call expression, if it exists.
      */
     Expr getReceiver() { method_call_expr_receivers(this, result) }
+  }
+
+  private Element getImmediateChildOfMethodCallExpr(MethodCallExpr e, int index) {
+    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nGenericArgList = nAttr + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nReceiver = nIdentifier + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList()
+        or
+        result = e.getAttr(index - nArgList)
+        or
+        index = nAttr and result = e.getGenericArgList()
+        or
+        index = nGenericArgList and result = e.getIdentifier()
+        or
+        index = nIdentifier and result = e.getReceiver()
+      )
+    )
   }
 
   /**
@@ -3963,6 +6539,11 @@ module Raw {
     Attr getAttr(int index) { module_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this module.
+     */
+    int getNumberOfAttrs() { result = count(int i | module_attrs(this, i, _)) }
+
+    /**
      * Gets the item list of this module, if it exists.
      */
     ItemList getItemList() { module_item_lists(this, result) }
@@ -3976,6 +6557,32 @@ module Raw {
      * Gets the visibility of this module, if it exists.
      */
     Visibility getVisibility() { module_visibilities(this, result) }
+  }
+
+  private Element getImmediateChildOfModule(Module e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nItemList, int nName, int nVisibility
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nItemList = nAttr + 1 and
+      nName = nItemList + 1 and
+      nVisibility = nName + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getItemList()
+        or
+        index = nItemList and result = e.getName()
+        or
+        index = nName and result = e.getVisibility()
+      )
+    )
   }
 
   /**
@@ -3995,60 +6602,26 @@ module Raw {
      * Gets the `index`th attr of this path expression (0-based).
      */
     Attr getAttr(int index) { path_expr_attrs(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A path pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo::Bar => "ok",
-   *     _ => "fail",
-   * }
-   * ```
-   */
-  class PathPat extends @path_pat, Pat, PathAstNode {
-    override string toString() { result = "PathPat" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A struct expression. For example:
-   * ```rust
-   * let first = Foo { a: 1, b: 2 };
-   * let second = Foo { a: 2, ..first };
-   * Foo { a: 1, b: 2 }[2] = 10;
-   * Foo { .. } = second;
-   * ```
-   */
-  class StructExpr extends @struct_expr, Expr, PathAstNode {
-    override string toString() { result = "StructExpr" }
 
     /**
-     * Gets the struct expression field list of this struct expression, if it exists.
+     * Gets the number of attrs of this path expression.
      */
-    StructExprFieldList getStructExprFieldList() {
-      struct_expr_struct_expr_field_lists(this, result)
-    }
+    int getNumberOfAttrs() { result = count(int i | path_expr_attrs(this, i, _)) }
   }
 
-  /**
-   * INTERNAL: Do not use.
-   * A struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Foo { a: 1, b: 2 } => "ok",
-   *     Foo { .. } => "fail",
-   * }
-   * ```
-   */
-  class StructPat extends @struct_pat, Pat, PathAstNode {
-    override string toString() { result = "StructPat" }
-
-    /**
-     * Gets the struct pattern field list of this struct pattern, if it exists.
-     */
-    StructPatFieldList getStructPatFieldList() { struct_pat_struct_pat_field_lists(this, result) }
+  private Element getImmediateChildOfPathExpr(PathExpr e, int index) {
+    exists(int n, int nPath, int nAttr |
+      n = 0 and
+      nPath = n + 1 and
+      nAttr = nPath + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        index = n and result = e.getPath()
+        or
+        result = e.getAttr(index - nPath)
+      )
+    )
   }
 
   /**
@@ -4076,6 +6649,11 @@ module Raw {
      * Gets the `index`th attr of this trait (0-based).
      */
     Attr getAttr(int index) { trait_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this trait.
+     */
+    int getNumberOfAttrs() { result = count(int i | trait_attrs(this, i, _)) }
 
     /**
      * Gets the generic parameter list of this trait, if it exists.
@@ -4113,6 +6691,42 @@ module Raw {
     WhereClause getWhereClause() { trait_where_clauses(this, result) }
   }
 
+  private Element getImmediateChildOfTrait(Trait e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
+      int nName, int nTypeBoundList, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAssocItemList = nAttributeMacroExpansion + 1 and
+      nAttr = nAssocItemList + e.getNumberOfAttrs() and
+      nGenericParamList = nAttr + 1 and
+      nName = nGenericParamList + 1 and
+      nTypeBoundList = nName + 1 and
+      nVisibility = nTypeBoundList + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        index = nAttributeMacroExpansion and result = e.getAssocItemList()
+        or
+        result = e.getAttr(index - nAssocItemList)
+        or
+        index = nAttr and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getTypeBoundList()
+        or
+        index = nTypeBoundList and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A trait alias.
@@ -4129,6 +6743,11 @@ module Raw {
      * Gets the `index`th attr of this trait alias (0-based).
      */
     Attr getAttr(int index) { trait_alias_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this trait alias.
+     */
+    int getNumberOfAttrs() { result = count(int i | trait_alias_attrs(this, i, _)) }
 
     /**
      * Gets the generic parameter list of this trait alias, if it exists.
@@ -4156,24 +6775,37 @@ module Raw {
     WhereClause getWhereClause() { trait_alias_where_clauses(this, result) }
   }
 
-  /**
-   * INTERNAL: Do not use.
-   * A tuple struct pattern. For example:
-   * ```rust
-   * match x {
-   *     Tuple("a", 1, 2, 3) => "great",
-   *     Tuple(.., 3) => "fine",
-   *     Tuple(..) => "fail",
-   * };
-   * ```
-   */
-  class TupleStructPat extends @tuple_struct_pat, Pat, PathAstNode {
-    override string toString() { result = "TupleStructPat" }
-
-    /**
-     * Gets the `index`th field of this tuple struct pattern (0-based).
-     */
-    Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
+  private Element getImmediateChildOfTraitAlias(TraitAlias e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nGenericParamList, int nName,
+      int nTypeBoundList, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nGenericParamList = nAttr + 1 and
+      nName = nGenericParamList + 1 and
+      nTypeBoundList = nName + 1 and
+      nVisibility = nTypeBoundList + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getTypeBoundList()
+        or
+        index = nTypeBoundList and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
   }
 
   /**
@@ -4192,6 +6824,11 @@ module Raw {
     Attr getAttr(int index) { use_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this use.
+     */
+    int getNumberOfAttrs() { result = count(int i | use_attrs(this, i, _)) }
+
+    /**
      * Gets the use tree of this use, if it exists.
      */
     UseTree getUseTree() { use_use_trees(this, result) }
@@ -4200,6 +6837,27 @@ module Raw {
      * Gets the visibility of this use, if it exists.
      */
     Visibility getVisibility() { use_visibilities(this, result) }
+  }
+
+  private Element getImmediateChildOfUse(Use e, int index) {
+    exists(int n, int nAttributeMacroExpansion, int nAttr, int nUseTree, int nVisibility |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nUseTree = nAttr + 1 and
+      nVisibility = nUseTree + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getUseTree()
+        or
+        index = nUseTree and result = e.getVisibility()
+      )
+    )
   }
 
   /**
@@ -4218,6 +6876,11 @@ module Raw {
      * Gets the `index`th attr of this const (0-based).
      */
     Attr getAttr(int index) { const_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this const.
+     */
+    int getNumberOfAttrs() { result = count(int i | const_attrs(this, i, _)) }
 
     /**
      * Gets the body of this const, if it exists.
@@ -4268,6 +6931,42 @@ module Raw {
     predicate hasImplementation() { const_has_implementation(this) }
   }
 
+  private Element getImmediateChildOfConst(Const e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nBody, int nGenericParamList, int nName,
+      int nTypeRepr, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nBody = nAttr + 1 and
+      nGenericParamList = nBody + 1 and
+      nName = nGenericParamList + 1 and
+      nTypeRepr = nName + 1 and
+      nVisibility = nTypeRepr + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getBody()
+        or
+        index = nBody and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * An enum declaration.
@@ -4284,6 +6983,11 @@ module Raw {
      * Gets the `index`th attr of this enum (0-based).
      */
     Attr getAttr(int index) { enum_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this enum.
+     */
+    int getNumberOfAttrs() { result = count(int i | enum_attrs(this, i, _)) }
 
     /**
      * Gets the generic parameter list of this enum, if it exists.
@@ -4311,6 +7015,42 @@ module Raw {
     WhereClause getWhereClause() { enum_where_clauses(this, result) }
   }
 
+  private Element getImmediateChildOfEnum(Enum e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
+      int nGenericParamList, int nName, int nVariantList, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
+      nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
+      nGenericParamList = nAttr + 1 and
+      nName = nGenericParamList + 1 and
+      nVariantList = nName + 1 and
+      nVisibility = nVariantList + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getDeriveMacroExpansion(index - nAttributeMacroExpansion)
+        or
+        result = e.getAttr(index - nDeriveMacroExpansion)
+        or
+        index = nAttr and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getVariantList()
+        or
+        index = nVariantList and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A for loop expression.
@@ -4331,6 +7071,11 @@ module Raw {
     Attr getAttr(int index) { for_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this for expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | for_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the iterable of this for expression, if it exists.
      */
     Expr getIterable() { for_expr_iterables(this, result) }
@@ -4339,6 +7084,30 @@ module Raw {
      * Gets the pattern of this for expression, if it exists.
      */
     Pat getPat() { for_expr_pats(this, result) }
+  }
+
+  private Element getImmediateChildOfForExpr(ForExpr e, int index) {
+    exists(int n, int nLabel, int nLoopBody, int nAttr, int nIterable, int nPat |
+      n = 0 and
+      nLabel = n + 1 and
+      nLoopBody = nLabel + 1 and
+      nAttr = nLoopBody + e.getNumberOfAttrs() and
+      nIterable = nAttr + 1 and
+      nPat = nIterable + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLabel()
+        or
+        index = nLabel and result = e.getLoopBody()
+        or
+        result = e.getAttr(index - nLoopBody)
+        or
+        index = nAttr and result = e.getIterable()
+        or
+        index = nIterable and result = e.getPat()
+      )
+    )
   }
 
   /**
@@ -4363,9 +7132,9 @@ module Raw {
     Abi getAbi() { function_abis(this, result) }
 
     /**
-     * Gets the body of this function, if it exists.
+     * Gets the function body of this function, if it exists.
      */
-    BlockExpr getBody() { function_bodies(this, result) }
+    BlockExpr getFunctionBody() { function_function_bodies(this, result) }
 
     /**
      * Gets the generic parameter list of this function, if it exists.
@@ -4426,6 +7195,48 @@ module Raw {
     predicate hasImplementation() { function_has_implementation(this) }
   }
 
+  private Element getImmediateChildOfFunction(Function e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nParamList, int nAttr, int nAbi, int nFunctionBody,
+      int nGenericParamList, int nName, int nRetType, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nParamList = nAttributeMacroExpansion + 1 and
+      nAttr = nParamList + e.getNumberOfAttrs() and
+      nAbi = nAttr + 1 and
+      nFunctionBody = nAbi + 1 and
+      nGenericParamList = nFunctionBody + 1 and
+      nName = nGenericParamList + 1 and
+      nRetType = nName + 1 and
+      nVisibility = nRetType + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        index = nAttributeMacroExpansion and result = e.getParamList()
+        or
+        result = e.getAttr(index - nParamList)
+        or
+        index = nAttr and result = e.getAbi()
+        or
+        index = nAbi and result = e.getFunctionBody()
+        or
+        index = nFunctionBody and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getRetType()
+        or
+        index = nRetType and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A loop expression. For example:
@@ -4458,6 +7269,29 @@ module Raw {
      * Gets the `index`th attr of this loop expression (0-based).
      */
     Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this loop expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | loop_expr_attrs(this, i, _)) }
+  }
+
+  private Element getImmediateChildOfLoopExpr(LoopExpr e, int index) {
+    exists(int n, int nLabel, int nLoopBody, int nAttr |
+      n = 0 and
+      nLabel = n + 1 and
+      nLoopBody = nLabel + 1 and
+      nAttr = nLoopBody + e.getNumberOfAttrs() and
+      (
+        none()
+        or
+        index = n and result = e.getLabel()
+        or
+        index = nLabel and result = e.getLoopBody()
+        or
+        result = e.getAttr(index - nLoopBody)
+      )
+    )
   }
 
   /**
@@ -4478,6 +7312,11 @@ module Raw {
     Attr getAttr(int index) { macro_call_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this macro call.
+     */
+    int getNumberOfAttrs() { result = count(int i | macro_call_attrs(this, i, _)) }
+
+    /**
      * Gets the path of this macro call, if it exists.
      */
     Path getPath() { macro_call_paths(this, result) }
@@ -4491,6 +7330,33 @@ module Raw {
      * Gets the macro call expansion of this macro call, if it exists.
      */
     AstNode getMacroCallExpansion() { macro_call_macro_call_expansions(this, result) }
+  }
+
+  private Element getImmediateChildOfMacroCall(MacroCall e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nPath, int nTokenTree,
+      int nMacroCallExpansion
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nPath = nAttr + 1 and
+      nTokenTree = nPath + 1 and
+      nMacroCallExpansion = nTokenTree + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getPath()
+        or
+        index = nPath and result = e.getTokenTree()
+        or
+        index = nTokenTree and result = e.getMacroCallExpansion()
+      )
+    )
   }
 
   /**
@@ -4509,6 +7375,11 @@ module Raw {
      * Gets the `index`th attr of this static (0-based).
      */
     Attr getAttr(int index) { static_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this static.
+     */
+    int getNumberOfAttrs() { result = count(int i | static_attrs(this, i, _)) }
 
     /**
      * Gets the body of this static, if it exists.
@@ -4546,6 +7417,36 @@ module Raw {
     Visibility getVisibility() { static_visibilities(this, result) }
   }
 
+  private Element getImmediateChildOfStatic(Static e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nBody, int nName, int nTypeRepr,
+      int nVisibility
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nBody = nAttr + 1 and
+      nName = nBody + 1 and
+      nTypeRepr = nName + 1 and
+      nVisibility = nTypeRepr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getBody()
+        or
+        index = nBody and result = e.getName()
+        or
+        index = nName and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getVisibility()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A Struct. For example:
@@ -4563,6 +7464,11 @@ module Raw {
      * Gets the `index`th attr of this struct (0-based).
      */
     Attr getAttr(int index) { struct_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this struct.
+     */
+    int getNumberOfAttrs() { result = count(int i | struct_attrs(this, i, _)) }
 
     /**
      * Gets the field list of this struct, if it exists.
@@ -4590,6 +7496,42 @@ module Raw {
     WhereClause getWhereClause() { struct_where_clauses(this, result) }
   }
 
+  private Element getImmediateChildOfStruct(Struct e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr, int nFieldList,
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
+      nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
+      nFieldList = nAttr + 1 and
+      nGenericParamList = nFieldList + 1 and
+      nName = nGenericParamList + 1 and
+      nVisibility = nName + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getDeriveMacroExpansion(index - nAttributeMacroExpansion)
+        or
+        result = e.getAttr(index - nDeriveMacroExpansion)
+        or
+        index = nAttr and result = e.getFieldList()
+        or
+        index = nFieldList and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A type alias. For example:
@@ -4609,6 +7551,11 @@ module Raw {
      * Gets the `index`th attr of this type alias (0-based).
      */
     Attr getAttr(int index) { type_alias_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this type alias.
+     */
+    int getNumberOfAttrs() { result = count(int i | type_alias_attrs(this, i, _)) }
 
     /**
      * Gets the generic parameter list of this type alias, if it exists.
@@ -4646,6 +7593,42 @@ module Raw {
     WhereClause getWhereClause() { type_alias_where_clauses(this, result) }
   }
 
+  private Element getImmediateChildOfTypeAlias(TypeAlias e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nAttr, int nGenericParamList, int nName,
+      int nTypeRepr, int nTypeBoundList, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
+      nGenericParamList = nAttr + 1 and
+      nName = nGenericParamList + 1 and
+      nTypeRepr = nName + 1 and
+      nTypeBoundList = nTypeRepr + 1 and
+      nVisibility = nTypeBoundList + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getAttr(index - nAttributeMacroExpansion)
+        or
+        index = nAttr and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getTypeRepr()
+        or
+        index = nTypeRepr and result = e.getTypeBoundList()
+        or
+        index = nTypeBoundList and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A union declaration.
@@ -4662,6 +7645,11 @@ module Raw {
      * Gets the `index`th attr of this union (0-based).
      */
     Attr getAttr(int index) { union_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this union.
+     */
+    int getNumberOfAttrs() { result = count(int i | union_attrs(this, i, _)) }
 
     /**
      * Gets the generic parameter list of this union, if it exists.
@@ -4689,6 +7677,42 @@ module Raw {
     WhereClause getWhereClause() { union_where_clauses(this, result) }
   }
 
+  private Element getImmediateChildOfUnion(Union e, int index) {
+    exists(
+      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
+      int nGenericParamList, int nName, int nStructFieldList, int nVisibility, int nWhereClause
+    |
+      n = 0 and
+      nAttributeMacroExpansion = n + 1 and
+      nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
+      nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
+      nGenericParamList = nAttr + 1 and
+      nName = nGenericParamList + 1 and
+      nStructFieldList = nName + 1 and
+      nVisibility = nStructFieldList + 1 and
+      nWhereClause = nVisibility + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getAttributeMacroExpansion()
+        or
+        result = e.getDeriveMacroExpansion(index - nAttributeMacroExpansion)
+        or
+        result = e.getAttr(index - nDeriveMacroExpansion)
+        or
+        index = nAttr and result = e.getGenericParamList()
+        or
+        index = nGenericParamList and result = e.getName()
+        or
+        index = nName and result = e.getStructFieldList()
+        or
+        index = nStructFieldList and result = e.getVisibility()
+        or
+        index = nVisibility and result = e.getWhereClause()
+      )
+    )
+  }
+
   /**
    * INTERNAL: Do not use.
    * A while loop expression.
@@ -4709,8 +7733,364 @@ module Raw {
     Attr getAttr(int index) { while_expr_attrs(this, index, result) }
 
     /**
+     * Gets the number of attrs of this while expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | while_expr_attrs(this, i, _)) }
+
+    /**
      * Gets the condition of this while expression, if it exists.
      */
     Expr getCondition() { while_expr_conditions(this, result) }
+  }
+
+  private Element getImmediateChildOfWhileExpr(WhileExpr e, int index) {
+    exists(int n, int nLabel, int nLoopBody, int nAttr, int nCondition |
+      n = 0 and
+      nLabel = n + 1 and
+      nLoopBody = nLabel + 1 and
+      nAttr = nLoopBody + e.getNumberOfAttrs() and
+      nCondition = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getLabel()
+        or
+        index = nLabel and result = e.getLoopBody()
+        or
+        result = e.getAttr(index - nLoopBody)
+        or
+        index = nAttr and result = e.getCondition()
+      )
+    )
+  }
+
+  /**
+   * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+   */
+  pragma[nomagic]
+  Element getImmediateChild(Element e, int index) {
+    // why does this look more complicated than it should?
+    // * none() simplifies generation, as we can append `or ...` without a special case for the first item
+    none()
+    or
+    result = getImmediateChildOfExtractorStep(e, index)
+    or
+    result = getImmediateChildOfNamedCrate(e, index)
+    or
+    result = getImmediateChildOfCrate(e, index)
+    or
+    result = getImmediateChildOfMissing(e, index)
+    or
+    result = getImmediateChildOfUnimplemented(e, index)
+    or
+    result = getImmediateChildOfAbi(e, index)
+    or
+    result = getImmediateChildOfArgList(e, index)
+    or
+    result = getImmediateChildOfAsmDirSpec(e, index)
+    or
+    result = getImmediateChildOfAsmOperandExpr(e, index)
+    or
+    result = getImmediateChildOfAsmOption(e, index)
+    or
+    result = getImmediateChildOfAsmRegSpec(e, index)
+    or
+    result = getImmediateChildOfAssocItemList(e, index)
+    or
+    result = getImmediateChildOfAttr(e, index)
+    or
+    result = getImmediateChildOfExternItemList(e, index)
+    or
+    result = getImmediateChildOfForBinder(e, index)
+    or
+    result = getImmediateChildOfFormatArgsArg(e, index)
+    or
+    result = getImmediateChildOfGenericArgList(e, index)
+    or
+    result = getImmediateChildOfGenericParamList(e, index)
+    or
+    result = getImmediateChildOfItemList(e, index)
+    or
+    result = getImmediateChildOfLabel(e, index)
+    or
+    result = getImmediateChildOfLetElse(e, index)
+    or
+    result = getImmediateChildOfMacroItems(e, index)
+    or
+    result = getImmediateChildOfMatchArm(e, index)
+    or
+    result = getImmediateChildOfMatchArmList(e, index)
+    or
+    result = getImmediateChildOfMatchGuard(e, index)
+    or
+    result = getImmediateChildOfMeta(e, index)
+    or
+    result = getImmediateChildOfName(e, index)
+    or
+    result = getImmediateChildOfParamList(e, index)
+    or
+    result = getImmediateChildOfParenthesizedArgList(e, index)
+    or
+    result = getImmediateChildOfPath(e, index)
+    or
+    result = getImmediateChildOfPathSegment(e, index)
+    or
+    result = getImmediateChildOfRename(e, index)
+    or
+    result = getImmediateChildOfRetTypeRepr(e, index)
+    or
+    result = getImmediateChildOfReturnTypeSyntax(e, index)
+    or
+    result = getImmediateChildOfSourceFile(e, index)
+    or
+    result = getImmediateChildOfStmtList(e, index)
+    or
+    result = getImmediateChildOfStructExprField(e, index)
+    or
+    result = getImmediateChildOfStructExprFieldList(e, index)
+    or
+    result = getImmediateChildOfStructField(e, index)
+    or
+    result = getImmediateChildOfStructPatField(e, index)
+    or
+    result = getImmediateChildOfStructPatFieldList(e, index)
+    or
+    result = getImmediateChildOfTokenTree(e, index)
+    or
+    result = getImmediateChildOfTupleField(e, index)
+    or
+    result = getImmediateChildOfTypeBound(e, index)
+    or
+    result = getImmediateChildOfTypeBoundList(e, index)
+    or
+    result = getImmediateChildOfUseBoundGenericArgs(e, index)
+    or
+    result = getImmediateChildOfUseTree(e, index)
+    or
+    result = getImmediateChildOfUseTreeList(e, index)
+    or
+    result = getImmediateChildOfVariantList(e, index)
+    or
+    result = getImmediateChildOfVisibility(e, index)
+    or
+    result = getImmediateChildOfWhereClause(e, index)
+    or
+    result = getImmediateChildOfWherePred(e, index)
+    or
+    result = getImmediateChildOfArrayExprInternal(e, index)
+    or
+    result = getImmediateChildOfArrayTypeRepr(e, index)
+    or
+    result = getImmediateChildOfAsmClobberAbi(e, index)
+    or
+    result = getImmediateChildOfAsmConst(e, index)
+    or
+    result = getImmediateChildOfAsmLabel(e, index)
+    or
+    result = getImmediateChildOfAsmOperandNamed(e, index)
+    or
+    result = getImmediateChildOfAsmOptionsList(e, index)
+    or
+    result = getImmediateChildOfAsmRegOperand(e, index)
+    or
+    result = getImmediateChildOfAsmSym(e, index)
+    or
+    result = getImmediateChildOfAssocTypeArg(e, index)
+    or
+    result = getImmediateChildOfAwaitExpr(e, index)
+    or
+    result = getImmediateChildOfBecomeExpr(e, index)
+    or
+    result = getImmediateChildOfBinaryExpr(e, index)
+    or
+    result = getImmediateChildOfBoxPat(e, index)
+    or
+    result = getImmediateChildOfBreakExpr(e, index)
+    or
+    result = getImmediateChildOfCastExpr(e, index)
+    or
+    result = getImmediateChildOfClosureExpr(e, index)
+    or
+    result = getImmediateChildOfComment(e, index)
+    or
+    result = getImmediateChildOfConstArg(e, index)
+    or
+    result = getImmediateChildOfConstBlockPat(e, index)
+    or
+    result = getImmediateChildOfConstParam(e, index)
+    or
+    result = getImmediateChildOfContinueExpr(e, index)
+    or
+    result = getImmediateChildOfDynTraitTypeRepr(e, index)
+    or
+    result = getImmediateChildOfExprStmt(e, index)
+    or
+    result = getImmediateChildOfFieldExpr(e, index)
+    or
+    result = getImmediateChildOfFnPtrTypeRepr(e, index)
+    or
+    result = getImmediateChildOfForTypeRepr(e, index)
+    or
+    result = getImmediateChildOfFormatArgsExpr(e, index)
+    or
+    result = getImmediateChildOfIdentPat(e, index)
+    or
+    result = getImmediateChildOfIfExpr(e, index)
+    or
+    result = getImmediateChildOfImplTraitTypeRepr(e, index)
+    or
+    result = getImmediateChildOfIndexExpr(e, index)
+    or
+    result = getImmediateChildOfInferTypeRepr(e, index)
+    or
+    result = getImmediateChildOfLetExpr(e, index)
+    or
+    result = getImmediateChildOfLetStmt(e, index)
+    or
+    result = getImmediateChildOfLifetime(e, index)
+    or
+    result = getImmediateChildOfLifetimeArg(e, index)
+    or
+    result = getImmediateChildOfLifetimeParam(e, index)
+    or
+    result = getImmediateChildOfLiteralExpr(e, index)
+    or
+    result = getImmediateChildOfLiteralPat(e, index)
+    or
+    result = getImmediateChildOfMacroBlockExpr(e, index)
+    or
+    result = getImmediateChildOfMacroExpr(e, index)
+    or
+    result = getImmediateChildOfMacroPat(e, index)
+    or
+    result = getImmediateChildOfMacroTypeRepr(e, index)
+    or
+    result = getImmediateChildOfMatchExpr(e, index)
+    or
+    result = getImmediateChildOfNameRef(e, index)
+    or
+    result = getImmediateChildOfNeverTypeRepr(e, index)
+    or
+    result = getImmediateChildOfOffsetOfExpr(e, index)
+    or
+    result = getImmediateChildOfOrPat(e, index)
+    or
+    result = getImmediateChildOfParam(e, index)
+    or
+    result = getImmediateChildOfParenExpr(e, index)
+    or
+    result = getImmediateChildOfParenPat(e, index)
+    or
+    result = getImmediateChildOfParenTypeRepr(e, index)
+    or
+    result = getImmediateChildOfPathPat(e, index)
+    or
+    result = getImmediateChildOfPathTypeRepr(e, index)
+    or
+    result = getImmediateChildOfPrefixExpr(e, index)
+    or
+    result = getImmediateChildOfPtrTypeRepr(e, index)
+    or
+    result = getImmediateChildOfRangeExpr(e, index)
+    or
+    result = getImmediateChildOfRangePat(e, index)
+    or
+    result = getImmediateChildOfRefExpr(e, index)
+    or
+    result = getImmediateChildOfRefPat(e, index)
+    or
+    result = getImmediateChildOfRefTypeRepr(e, index)
+    or
+    result = getImmediateChildOfRestPat(e, index)
+    or
+    result = getImmediateChildOfReturnExpr(e, index)
+    or
+    result = getImmediateChildOfSelfParam(e, index)
+    or
+    result = getImmediateChildOfSlicePat(e, index)
+    or
+    result = getImmediateChildOfSliceTypeRepr(e, index)
+    or
+    result = getImmediateChildOfStructExpr(e, index)
+    or
+    result = getImmediateChildOfStructFieldList(e, index)
+    or
+    result = getImmediateChildOfStructPat(e, index)
+    or
+    result = getImmediateChildOfTryExpr(e, index)
+    or
+    result = getImmediateChildOfTupleExpr(e, index)
+    or
+    result = getImmediateChildOfTupleFieldList(e, index)
+    or
+    result = getImmediateChildOfTuplePat(e, index)
+    or
+    result = getImmediateChildOfTupleStructPat(e, index)
+    or
+    result = getImmediateChildOfTupleTypeRepr(e, index)
+    or
+    result = getImmediateChildOfTypeArg(e, index)
+    or
+    result = getImmediateChildOfTypeParam(e, index)
+    or
+    result = getImmediateChildOfUnderscoreExpr(e, index)
+    or
+    result = getImmediateChildOfVariant(e, index)
+    or
+    result = getImmediateChildOfWildcardPat(e, index)
+    or
+    result = getImmediateChildOfYeetExpr(e, index)
+    or
+    result = getImmediateChildOfYieldExpr(e, index)
+    or
+    result = getImmediateChildOfAsmExpr(e, index)
+    or
+    result = getImmediateChildOfBlockExpr(e, index)
+    or
+    result = getImmediateChildOfCallExpr(e, index)
+    or
+    result = getImmediateChildOfExternBlock(e, index)
+    or
+    result = getImmediateChildOfExternCrate(e, index)
+    or
+    result = getImmediateChildOfImpl(e, index)
+    or
+    result = getImmediateChildOfMacroDef(e, index)
+    or
+    result = getImmediateChildOfMacroRules(e, index)
+    or
+    result = getImmediateChildOfMethodCallExpr(e, index)
+    or
+    result = getImmediateChildOfModule(e, index)
+    or
+    result = getImmediateChildOfPathExpr(e, index)
+    or
+    result = getImmediateChildOfTrait(e, index)
+    or
+    result = getImmediateChildOfTraitAlias(e, index)
+    or
+    result = getImmediateChildOfUse(e, index)
+    or
+    result = getImmediateChildOfConst(e, index)
+    or
+    result = getImmediateChildOfEnum(e, index)
+    or
+    result = getImmediateChildOfForExpr(e, index)
+    or
+    result = getImmediateChildOfFunction(e, index)
+    or
+    result = getImmediateChildOfLoopExpr(e, index)
+    or
+    result = getImmediateChildOfMacroCall(e, index)
+    or
+    result = getImmediateChildOfStatic(e, index)
+    or
+    result = getImmediateChildOfStruct(e, index)
+    or
+    result = getImmediateChildOfTypeAlias(e, index)
+    or
+    result = getImmediateChildOfUnion(e, index)
+    or
+    result = getImmediateChildOfWhileExpr(e, index)
   }
 }

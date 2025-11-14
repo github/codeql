@@ -8,8 +8,8 @@ namespace Semmle.Extraction.CSharp
 {
     public class StandaloneAnalyser : Analyser
     {
-        public StandaloneAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
-            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
+        public StandaloneAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, IOverlayInfo overlayInfo, bool addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, overlayInfo, addAssemblyTrapPrefix)
         {
         }
 

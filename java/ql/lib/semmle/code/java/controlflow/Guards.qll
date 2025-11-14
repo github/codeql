@@ -139,18 +139,12 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
   )
 }
 
-private module GuardsInput implements SharedGuards::InputSig<Location> {
+private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
   private import java as J
+  private import semmle.code.java.dataflow.internal.BaseSSA
   private import semmle.code.java.dataflow.NullGuards as NullGuards
-  import SuccessorType
-
-  class ControlFlowNode = J::ControlFlowNode;
 
   class NormalExitNode = ControlFlow::NormalExitNode;
-
-  class BasicBlock = J::BasicBlock;
-
-  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) { J::dominatingEdge(bb1, bb2) }
 
   class AstNode = ExprParent;
 
@@ -215,6 +209,12 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
         this = f.getAnAccess() and
         f.isFinal() and
         f.getInitializer() = NullGuards::baseNotNullExpr()
+      )
+      or
+      exists(CatchClause cc, LocalVariableDeclExpr decl, BaseSsaUpdate v |
+        decl = cc.getVariable() and
+        decl = v.getDefiningExpr() and
+        this = v.getAUse()
       )
     }
   }
@@ -375,7 +375,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location> {
   }
 }
 
-private module GuardsImpl = SharedGuards::Make<Location, GuardsInput>;
+private module GuardsImpl = SharedGuards::Make<Location, Cfg, GuardsInput>;
 
 private module LogicInputCommon {
   private import semmle.code.java.dataflow.NullGuards as NullGuards
@@ -395,11 +395,13 @@ private module LogicInputCommon {
   predicate additionalImpliesStep(
     GuardsImpl::PreGuard g1, GuardValue v1, GuardsImpl::PreGuard g2, GuardValue v2
   ) {
-    exists(MethodCall check, int argIndex |
+    exists(MethodCall check |
       g1 = check and
-      v1.getDualValue().isThrowsException() and
-      conditionCheckArgument(check, argIndex, v2.asBooleanValue()) and
-      g2 = check.getArgument(argIndex)
+      v1.getDualValue().isThrowsException()
+    |
+      methodCallChecksBoolean(check, g2, v2.asBooleanValue())
+      or
+      methodCallChecksNotNull(check, g2) and v2.isNonNullValue()
     )
   }
 }
@@ -413,21 +415,21 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
     GuardsInput::Expr getARead() { result = this.getAUse() }
   }
 
-  class SsaWriteDefinition extends SsaDefinition instanceof BaseSsaUpdate {
-    GuardsInput::Expr getDefinition() {
+  class SsaExplicitWrite extends SsaDefinition instanceof BaseSsaUpdate {
+    GuardsInput::Expr getValue() {
       super.getDefiningExpr().(VariableAssign).getSource() = result or
       super.getDefiningExpr().(AssignOp) = result
     }
   }
 
-  class SsaPhiNode extends SsaDefinition instanceof BaseSsaPhiNode {
+  class SsaPhiDefinition extends SsaDefinition instanceof BaseSsaPhiNode {
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
       super.hasInputFromBlock(inp, bb)
     }
   }
 
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(BaseSsaImplicitInit).isParameterDefinition(p)
+  class SsaParameterInit extends SsaDefinition instanceof BaseSsaImplicitInit {
+    Parameter getParameter() { super.isParameterDefinition(result) }
   }
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
@@ -444,21 +446,21 @@ private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
     GuardsInput::Expr getARead() { result = this.getAUse() }
   }
 
-  class SsaWriteDefinition extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
-    GuardsInput::Expr getDefinition() {
+  class SsaExplicitWrite extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
+    GuardsInput::Expr getValue() {
       super.getDefiningExpr().(VariableAssign).getSource() = result or
       super.getDefiningExpr().(AssignOp) = result
     }
   }
 
-  class SsaPhiNode extends SsaDefinition instanceof SSA::SsaPhiNode {
+  class SsaPhiDefinition extends SsaDefinition instanceof SSA::SsaPhiNode {
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
       super.hasInputFromBlock(inp, bb)
     }
   }
 
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(SSA::SsaImplicitInit).isParameterDefinition(p)
+  class SsaParameterInit extends SsaDefinition instanceof SSA::SsaImplicitInit {
+    Parameter getParameter() { super.isParameterDefinition(result) }
   }
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
@@ -489,12 +491,6 @@ module Guards_v2 = GuardsImpl::Logic<LogicInput_v2>;
 
 /** INTERNAL: Don't use. */
 module Guards_v3 = GuardsImpl::Logic<LogicInput_v3>;
-
-/** INTERNAL: Don't use. */
-predicate implies_v3(Guard g1, boolean b1, Guard g2, boolean b2) {
-  Guards_v3::boolImplies(g1, any(GuardValue v | v.asBooleanValue() = b1), g2,
-    any(GuardValue v | v.asBooleanValue() = b2))
-}
 
 /**
  * A guard. This may be any expression whose value determines subsequent

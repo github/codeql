@@ -16,10 +16,14 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             trapFile.types(this, Kinds.TypeKind.DYNAMIC, "dynamic");
-            trapFile.type_location(this, Location);
 
             trapFile.has_modifiers(this, Modifier.Create(Context, "public"));
             trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+            WriteLocationToTrap(trapFile.type_location, this, Location);
         }
 
         public override void WriteId(EscapingTextWriter trapFile)

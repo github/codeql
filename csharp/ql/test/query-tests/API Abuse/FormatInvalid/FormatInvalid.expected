@@ -40,7 +40,7 @@
 | FormatInvalid.cs:111:23:111:25 | "}" | FormatInvalid.cs:111:23:111:25 | "}" | FormatInvalid.cs:111:23:111:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:111:9:111:32 | call to method Write | this | FormatInvalid.cs:111:9:111:32 | call to method Write | this |
 | FormatInvalid.cs:112:23:112:25 | "}" | FormatInvalid.cs:112:23:112:25 | "}" | FormatInvalid.cs:112:23:112:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:112:9:112:35 | call to method Write | this | FormatInvalid.cs:112:9:112:35 | call to method Write | this |
 | FormatInvalid.cs:113:23:113:25 | "}" | FormatInvalid.cs:113:23:113:25 | "}" | FormatInvalid.cs:113:23:113:25 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:113:9:113:38 | call to method Write | this | FormatInvalid.cs:113:9:113:38 | call to method Write | this |
-| FormatInvalid.cs:118:56:118:58 | "}" | FormatInvalid.cs:118:56:118:58 | [assertion success] "}" | FormatInvalid.cs:118:56:118:58 | [assertion success] "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:118:9:118:63 | call to method Assert | this | FormatInvalid.cs:118:9:118:63 | call to method Assert | this |
+| FormatInvalid.cs:118:56:118:58 | "}" | FormatInvalid.cs:118:56:118:58 | "}" | FormatInvalid.cs:118:56:118:58 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:118:9:118:63 | call to method Assert | this | FormatInvalid.cs:118:9:118:63 | call to method Assert | this |
 | FormatInvalid.cs:119:18:119:20 | "}" | FormatInvalid.cs:119:18:119:20 | "}" | FormatInvalid.cs:119:18:119:20 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:119:9:119:24 | call to method Write | this | FormatInvalid.cs:119:9:119:24 | call to method Write | this |
 | FormatInvalid.cs:120:40:120:42 | "}" | FormatInvalid.cs:120:40:120:42 | "}" | FormatInvalid.cs:120:40:120:42 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:120:9:120:47 | call to method Print | this | FormatInvalid.cs:120:9:120:47 | call to method Print | this |
 | FormatInvalid.cs:140:44:140:46 | "}" | FormatInvalid.cs:140:44:140:46 | "}" | FormatInvalid.cs:140:44:140:46 | "}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:140:22:140:47 | call to method Parse | this | FormatInvalid.cs:140:22:140:47 | call to method Parse | this |
@@ -264,8 +264,8 @@ nodes
 | FormatInvalid.cs:112:23:112:25 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:113:23:113:25 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:113:23:113:25 | "}" | semmle.label | "}" |
-| FormatInvalid.cs:118:56:118:58 | [assertion success] "}" | semmle.label | [assertion success] "}" |
-| FormatInvalid.cs:118:56:118:58 | [assertion success] "}" | semmle.label | [assertion success] "}" |
+| FormatInvalid.cs:118:56:118:58 | "}" | semmle.label | "}" |
+| FormatInvalid.cs:118:56:118:58 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:119:18:119:20 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:119:18:119:20 | "}" | semmle.label | "}" |
 | FormatInvalid.cs:120:40:120:42 | "}" | semmle.label | "}" |

@@ -4,7 +4,6 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision high
  * @id java/weak-cryptographic-algorithm-new-model
  * @tags security
  *       external/cwe/cwe-327
@@ -12,7 +11,7 @@
  */
 
 //THIS QUERY IS A REPLICA OF: https://github.com/github/codeql/blob/main/java/ql/src/Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
-//but uses the **NEW MODELLING**
+//but uses the **NEW MODELING**
 import experimental.quantum.Language
 
 /**

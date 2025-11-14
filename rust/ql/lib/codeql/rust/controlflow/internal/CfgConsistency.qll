@@ -36,8 +36,7 @@ query predicate scopeNoFirst(CfgScope scope) {
   Consistency::scopeNoFirst(scope) and
   not scope =
     [
-      any(AstNode f | not f.(Function).hasBody()),
-      any(ClosureExpr c | not c.hasBody()),
+      any(AstNode f | not f.(Callable).hasBody()),
       any(AsyncBlockExpr b | not b.hasStmtList())
     ]
 }
@@ -53,6 +52,7 @@ private predicate letElsePanic(BlockExpr be) {
  */
 query predicate deadEnd(CfgImpl::Node node) {
   Consistency::deadEnd(node) and
+  successfullyExtractedFile(node.getLocation().getFile()) and
   not letElsePanic(node.getAstNode())
 }
 

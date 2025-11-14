@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
-from Module m
+from ModuleWithPointsTo m
 select m.toString(), m.getAnExport().toString()

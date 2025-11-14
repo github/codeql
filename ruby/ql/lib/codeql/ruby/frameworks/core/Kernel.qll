@@ -50,8 +50,8 @@ module Kernel {
   }
 
   /**
-   * Private methods in the `Kernel` module.
-   * These can be be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
+   * Holds if `method` is a name of a private method in the `Kernel` module.
+   * These can be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
    * ```ruby
    * puts "hello world"
    * Kernel.puts "hello world"

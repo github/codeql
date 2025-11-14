@@ -265,7 +265,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     result = Virtualizable.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { method_location(this, result) }
+  override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
 
   /** Holds if this method is an extension method. */
   predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
@@ -357,7 +357,7 @@ class Constructor extends Callable, Member, Attributable, @constructor {
 
   override Constructor getUnboundDeclaration() { constructors(this, _, _, result) }
 
-  override Location getALocation() { constructor_location(this, result) }
+  override Location getALocation() { constructor_location(this.getUnboundDeclaration(), result) }
 
   override predicate fromSource() { Member.super.fromSource() and not this.isCompilerGenerated() }
 
@@ -450,7 +450,7 @@ class Destructor extends Callable, Member, Attributable, @destructor {
 
   override Destructor getUnboundDeclaration() { destructors(this, _, _, result) }
 
-  override Location getALocation() { destructor_location(this, result) }
+  override Location getALocation() { destructor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 
@@ -484,7 +484,7 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
-  override Location getALocation() { operator_location(this, result) }
+  override Location getALocation() { operator_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 
@@ -708,7 +708,7 @@ class TrueOperator extends UnaryOperator {
  *
  * Either an addition operator (`AddOperator`), a checked addition operator
  * (`CheckedAddOperator`) a subtraction operator (`SubOperator`), a checked
- * substraction operator (`CheckedSubOperator`), a multiplication operator
+ * subtraction operator (`CheckedSubOperator`), a multiplication operator
  * (`MulOperator`), a checked multiplication operator (`CheckedMulOperator`),
  * a division operator (`DivOperator`), a checked division operator
  * (`CheckedDivOperator`), a remainder operator (`RemOperator`), an and

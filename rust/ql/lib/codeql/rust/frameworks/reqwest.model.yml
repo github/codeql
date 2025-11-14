@@ -9,8 +9,8 @@ extensions:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
-      - ["<reqwest::async_impl::client::Client>::request", "Argument[1]", "transmission", "manual"]
-      - ["<reqwest::blocking::client::Client>::request", "Argument[1]", "transmission", "manual"]
+      - ["<reqwest::async_impl::client::Client>::request", "Argument[1]", "request-url", "manual"]
+      - ["<reqwest::blocking::client::Client>::request", "Argument[1]", "request-url", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel

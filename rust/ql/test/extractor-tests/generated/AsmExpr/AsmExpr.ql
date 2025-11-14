@@ -4,6 +4,12 @@ import TestUtils
 
 query predicate instances(AsmExpr x) { toBeTested(x) and not x.isUnknown() }
 
+query predicate getAttributeMacroExpansion(AsmExpr x, MacroItems getAttributeMacroExpansion) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  getAttributeMacroExpansion = x.getAttributeMacroExpansion()
+}
+
 query predicate getAsmPiece(AsmExpr x, int index, AsmPiece getAsmPiece) {
   toBeTested(x) and not x.isUnknown() and getAsmPiece = x.getAsmPiece(index)
 }

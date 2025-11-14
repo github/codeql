@@ -272,8 +272,8 @@ definitions.cs:
 #  125|           0: [MethodCall] call to method M
 #  125|             -1: [BaseAccess] base access
 #  128|     6: [Method] M2`1
-#  128|       -1: [TypeMention] Void
 #  128|       -1: [TypeMention] I1
+#  128|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #  128|         0: [TypeParameter] T
 #  128|       4: [BlockStmt] {...}
@@ -356,8 +356,8 @@ definitions.cs:
 #  153|           0: [Parameter] value
 #  153|         4: [BlockStmt] {...}
 #  154|     6: [Method] M
-#  154|       -1: [TypeMention] A
 #  154|       -1: [TypeMention] I4
+#  154|       -1: [TypeMention] A
 #  154|       4: [ThrowExpr] throw ...
 #  154|         0: [ObjectCreation] object creation of type Exception
 #  154|           0: [TypeMention] Exception

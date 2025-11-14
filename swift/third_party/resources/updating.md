@@ -22,4 +22,6 @@ In order to perform a Swift update:
    ```
    (or whatever you have overridden). This will pull the staged archives in the repository for git LFS.
 8. Clear `_override` in [`load.bzl`](../load.bzl).
-9. Push and your PR will be ready for `main`.
+9. Add a change note to the [library change note directory](../../ql/lib/change-notes/) that mentions that we now support the Swift version we updated to.
+10. If this is not a patch update, then update the [supported versions](../../../docs/codeql/reusables/supported-versions-compilers.rst) with the Swift version we updated to.
+11. Push and your PR will be ready for `main`.

@@ -120,6 +120,13 @@ module UncontrolledArithConfig implements DataFlow::ConfigSig {
     // block unintended flow to pointers
     node.asExpr().getUnspecifiedType() instanceof PointerType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    isSource(source) and
+    result = [getExpr(source).getLocation(), source.getLocation()]
+  }
 }
 
 module UncontrolledArith = TaintTracking::Global<UncontrolledArithConfig>;

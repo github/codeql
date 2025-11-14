@@ -76,7 +76,7 @@ module TaintedUrlSuffix {
     //
     //   x [tainted-url-suffix] --> x.split('#') [array element 1] [taint]
     //
-    // Technically we should also preverse tainted-url-suffix when entering the first array element of such
+    // Technically we should also preserve tainted-url-suffix when entering the first array element of such
     // a split, but this mostly leads to FPs since we currently don't track if the taint has been through URI-decoding.
     // (The query/fragment parts are often URI-decoded in practice, but not the other URL parts are not)
     state1.isTaintedUrlSuffix() and

@@ -4,22 +4,16 @@ module;
 private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
+private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
-module SsaInput implements SsaImplCommon::InputSig<Location> {
+private class BasicBlock = BasicBlocks::Cfg::BasicBlock;
+
+module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
-  private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
-
-  class BasicBlock = BasicBlocks::BasicBlock;
-
-  class ControlFlowNode = Cfg::CfgNode;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class SourceVariable = LocalVariable;
 
@@ -66,7 +60,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -220,15 +214,14 @@ private predicate hasVariableReadWithCapturedWrite(
 
 pragma[noinline]
 deprecated private predicate adjacentDefReadExt(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
 ) {
   Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
   v = def.getSourceVariable()
 }
 
 deprecated private predicate adjacentDefReachesReadExt(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
     def.definesAt(v, bb1, i1)
@@ -236,7 +229,7 @@ deprecated private predicate adjacentDefReachesReadExt(
     SsaInput::variableRead(bb1, i1, v, true)
   )
   or
-  exists(SsaInput::BasicBlock bb3, int i3 |
+  exists(BasicBlock bb3, int i3 |
     adjacentDefReachesReadExt(def, bb1, i1, bb3, i3) and
     SsaInput::variableRead(bb3, i3, _, false) and
     Impl::adjacentDefReadExt(def, _, bb3, i3, bb2, i2)
@@ -244,7 +237,7 @@ deprecated private predicate adjacentDefReachesReadExt(
 }
 
 deprecated private predicate adjacentDefReachesUncertainReadExt(
-  Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
 ) {
   adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
   SsaInput::variableRead(bb2, i2, _, false)
@@ -252,13 +245,11 @@ deprecated private predicate adjacentDefReachesUncertainReadExt(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-deprecated private predicate lastRefSkipUncertainReadsExt(
-  Definition def, SsaInput::BasicBlock bb, int i
-) {
+deprecated private predicate lastRefSkipUncertainReadsExt(Definition def, BasicBlock bb, int i) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
-  exists(SsaInput::BasicBlock bb0, int i0 |
+  exists(BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
   )
@@ -479,7 +470,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   private import codeql.util.Boolean
 
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
@@ -495,10 +486,8 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
-    predicate hasValueBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
-    ) {
-      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+    predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
+      exists(Cfg::ConditionalSuccessor s |
         this.getBasicBlock() = bb1 and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
@@ -510,15 +499,13 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * branch edge from `bb1` to `bb2`. That is, following the edge from
      * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
-    predicate valueControlsBranchEdge(
-      SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, GuardValue branch
-    ) {
+    predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
       this.hasValueBranchEdge(bb1, bb2, branch)
     }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, GuardValue branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue branch) {
     Guards::guardControlsBlock(guard, bb, branch)
   }
 }

@@ -26,7 +26,6 @@ private import semmle.code.csharp.frameworks.System
 private import ControlFlowGraphImpl
 private import NonReturning
 private import SuccessorType
-private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
@@ -310,10 +309,8 @@ private class Overflowable extends UnaryOperation {
 
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
-  TryStmt try;
-
   TriedControlFlowElement() {
-    this = try.getATriedElement() and
+    this = any(TryStmt try).getATriedElement() and
     not this instanceof NonReturningCall
   }
 
@@ -393,11 +390,6 @@ private predicate invalidCastCandidate(CastExpr ce) {
   ce.getExpr().getType() = getACastExprBaseType(ce)
 }
 
-private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
-  e = a.getExpr(i) and
-  am = a.getAssertMethod()
-}
-
 /** Gets a valid completion when argument `i` fails in assertion `a`. */
 Completion assertionCompletion(Assertion a, int i) {
   exists(AssertMethod am | am = a.getAssertMethod() |
@@ -431,11 +423,6 @@ private predicate inBooleanContext(Expr e) {
   e = any(Case c).getCondition()
   or
   e = any(SpecificCatchClause scc).getFilterClause()
-  or
-  exists(BooleanAssertMethod m, int i |
-    assertion(_, i, m, e) and
-    i = m.getAnAssertionIndex(_)
-  )
   or
   e = any(LogicalNotExpr lne | inBooleanContext(lne)).getAnOperand()
   or
@@ -483,11 +470,6 @@ private predicate inNullnessContext(Expr e) {
   e = any(NullCoalescingExpr nce).getLeftOperand()
   or
   exists(QualifiableExpr qe | qe.isConditional() | e = qe.getChildExpr(-1))
-  or
-  exists(NullnessAssertMethod m, int i |
-    assertion(_, i, m, e) and
-    i = m.getAnAssertionIndex(_)
-  )
   or
   exists(ConditionalExpr ce | inNullnessContext(ce) | (e = ce.getThen() or e = ce.getElse()))
   or
@@ -575,7 +557,7 @@ abstract private class NonNestedNormalCompletion extends NormalCompletion { }
 
 /** A simple (normal) completion. */
 class SimpleCompletion extends NonNestedNormalCompletion, TSimpleCompletion {
-  override NormalSuccessor getAMatchingSuccessorType() { any() }
+  override DirectSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "normal" }
 }
@@ -859,7 +841,7 @@ class GotoCompletion extends Completion {
   /** Gets the label of the `goto` completion. */
   string getLabel() { result = label }
 
-  override GotoSuccessor getAMatchingSuccessorType() { result.getLabel() = label }
+  override GotoSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case
@@ -882,7 +864,7 @@ class ThrowCompletion extends Completion {
   /** Gets the type of the exception being thrown. */
   ExceptionClass getExceptionClass() { result = ec }
 
-  override ExceptionSuccessor getAMatchingSuccessorType() { result.getExceptionClass() = ec }
+  override ExceptionSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case

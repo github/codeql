@@ -298,13 +298,13 @@ _NORMAL_DEPENDENCIES = {
             "anyhow": Label("@vendor_py__anyhow-1.0.95//:anyhow"),
             "clap": Label("@vendor_py__clap-4.5.30//:clap"),
             "regex": Label("@vendor_py__regex-1.11.1//:regex"),
-            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.4//:tree_sitter"),
-            "tree-sitter-graph": Label("@vendor_py__tree-sitter-graph-0.7.0//:tree_sitter_graph"),
+            "tree-sitter": Label("@vendor_py__tree-sitter-0.24.7//:tree_sitter"),
+            "tree-sitter-graph": Label("@vendor_py__tree-sitter-graph-0.12.0//:tree_sitter_graph"),
         },
     },
     "python/extractor/tsg-python/tsp": {
         _COMMON_CONDITION: {
-            "tree-sitter": Label("@vendor_py__tree-sitter-0.20.4//:tree_sitter"),
+            "tree-sitter": Label("@vendor_py__tree-sitter-0.24.7//:tree_sitter"),
         },
     },
 }
@@ -425,12 +425,16 @@ _CONDITIONS = {
     "i686-unknown-linux-gnu": ["@rules_rust//rust/platform:i686-unknown-linux-gnu"],
     "powerpc-unknown-linux-gnu": ["@rules_rust//rust/platform:powerpc-unknown-linux-gnu"],
     "riscv32imc-unknown-none-elf": ["@rules_rust//rust/platform:riscv32imc-unknown-none-elf"],
+    "riscv64gc-unknown-linux-gnu": ["@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu"],
     "riscv64gc-unknown-none-elf": ["@rules_rust//rust/platform:riscv64gc-unknown-none-elf"],
     "s390x-unknown-linux-gnu": ["@rules_rust//rust/platform:s390x-unknown-linux-gnu"],
     "thumbv7em-none-eabi": ["@rules_rust//rust/platform:thumbv7em-none-eabi"],
     "thumbv8m.main-none-eabi": ["@rules_rust//rust/platform:thumbv8m.main-none-eabi"],
+    "wasm32-unknown-emscripten": ["@rules_rust//rust/platform:wasm32-unknown-emscripten"],
     "wasm32-unknown-unknown": ["@rules_rust//rust/platform:wasm32-unknown-unknown"],
     "wasm32-wasip1": ["@rules_rust//rust/platform:wasm32-wasip1"],
+    "wasm32-wasip1-threads": ["@rules_rust//rust/platform:wasm32-wasip1-threads"],
+    "wasm32-wasip2": ["@rules_rust//rust/platform:wasm32-wasip2"],
     "x86_64-apple-darwin": ["@rules_rust//rust/platform:x86_64-apple-darwin"],
     "x86_64-apple-ios": ["@rules_rust//rust/platform:x86_64-apple-ios"],
     "x86_64-linux-android": ["@rules_rust//rust/platform:x86_64-linux-android"],
@@ -452,16 +456,6 @@ def crate_repositories():
     Returns:
       A list of repos visible to the module through the module extension.
     """
-    maybe(
-        http_archive,
-        name = "vendor_py__ahash-0.4.8",
-        sha256 = "0453232ace82dee0dd0b4c87a59bd90f7b53b314f3e0f61fe2ee7c8a16482289",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/ahash/0.4.8/download"],
-        strip_prefix = "ahash-0.4.8",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.ahash-0.4.8.bazel"),
-    )
-
     maybe(
         http_archive,
         name = "vendor_py__aho-corasick-1.1.3",
@@ -544,16 +538,6 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__cfg-if-1.0.0",
-        sha256 = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/cfg-if/1.0.0/download"],
-        strip_prefix = "cfg-if-1.0.0",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.cfg-if-1.0.0.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_py__clap-4.5.30",
         sha256 = "92b7b18d71fad5313a1e320fa9897994228ce274b60faa4d694fe0ea89cd9e6d",
         type = "tar.gz",
@@ -590,16 +574,6 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/colorchoice/1.0.3/download"],
         strip_prefix = "colorchoice-1.0.3",
         build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.colorchoice-1.0.3.bazel"),
-    )
-
-    maybe(
-        http_archive,
-        name = "vendor_py__hashbrown-0.9.1",
-        sha256 = "d7afe4a420e3fe79967a00898cc1f4db7c8a49a9333a29f8a4bd76a253d5cd04",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/hashbrown/0.9.1/download"],
-        strip_prefix = "hashbrown-0.9.1",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.hashbrown-0.9.1.bazel"),
     )
 
     maybe(
@@ -764,12 +738,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__string-interner-0.12.2",
-        sha256 = "383196d1876517ee6f9f0864d1fc1070331b803335d3c6daaa04bbcccd823c08",
+        name = "vendor_py__streaming-iterator-0.1.9",
+        sha256 = "2b2231b7c3057d5e4ad0156fb3dc807d900806020c5ffa3ee6ff2c8c76fb8520",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/string-interner/0.12.2/download"],
-        strip_prefix = "string-interner-0.12.2",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.string-interner-0.12.2.bazel"),
+        urls = ["https://static.crates.io/crates/streaming-iterator/0.1.9/download"],
+        strip_prefix = "streaming-iterator-0.1.9",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.streaming-iterator-0.1.9.bazel"),
     )
 
     maybe(
@@ -814,22 +788,32 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_py__tree-sitter-0.20.4",
-        sha256 = "4e34327f8eac545e3f037382471b2b19367725a242bba7bc45edb9efb49fe39a",
+        name = "vendor_py__tree-sitter-0.24.7",
+        sha256 = "a5387dffa7ffc7d2dae12b50c6f7aab8ff79d6210147c6613561fc3d474c6f75",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter/0.20.4/download"],
-        strip_prefix = "tree-sitter-0.20.4",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-0.20.4.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter/0.24.7/download"],
+        strip_prefix = "tree-sitter-0.24.7",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-0.24.7.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_py__tree-sitter-graph-0.7.0",
-        sha256 = "639d21e886f581d293de5f5081f09af003c54607ff3fa85efa159b243ba1f97a",
+        name = "vendor_py__tree-sitter-graph-0.12.0",
+        sha256 = "63f86eb73c7d891c4b9b6fe4d4e63dd94c506e4788af7c2296afdcfbeea626cc",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter-graph/0.7.0/download"],
-        strip_prefix = "tree-sitter-graph-0.7.0",
-        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-graph-0.7.0.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter-graph/0.12.0/download"],
+        strip_prefix = "tree-sitter-graph-0.12.0",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-graph-0.12.0.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_py__tree-sitter-language-0.1.5",
+        sha256 = "c4013970217383f67b18aef68f6fb2e8d409bc5755227092d32efb0422ba24b8",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/tree-sitter-language/0.1.5/download"],
+        strip_prefix = "tree-sitter-language-0.1.5",
+        build_file = Label("//misc/bazel/3rdparty/py_deps:BUILD.tree-sitter-language-0.1.5.bazel"),
     )
 
     maybe(
@@ -957,6 +941,6 @@ def crate_repositories():
         struct(repo = "vendor_py__cc-1.2.14", is_dev_dep = False),
         struct(repo = "vendor_py__clap-4.5.30", is_dev_dep = False),
         struct(repo = "vendor_py__regex-1.11.1", is_dev_dep = False),
-        struct(repo = "vendor_py__tree-sitter-0.20.4", is_dev_dep = False),
-        struct(repo = "vendor_py__tree-sitter-graph-0.7.0", is_dev_dep = False),
+        struct(repo = "vendor_py__tree-sitter-0.24.7", is_dev_dep = False),
+        struct(repo = "vendor_py__tree-sitter-graph-0.12.0", is_dev_dep = False),
     ]

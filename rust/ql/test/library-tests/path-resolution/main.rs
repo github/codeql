@@ -1,6 +1,7 @@
 mod my; // I1
 
-use my::*; // $ item=I1
+#[rustfmt::skip]
+use {{{my::{{self as my_alias, *}}}}}; // $ item=I1
 
 use my::nested::nested1::nested2::*; // $ item=I3
 
@@ -8,20 +9,26 @@ mod my2; // I14
 
 use my2::*; // $ item=I14
 
-use my2::nested2::nested3::nested4::{f, g}; // $ item=I11 item=I12 item=I13
+#[rustfmt::skip]
+use my2::nested2::nested3::nested4::{ // $ item=I11
+    f, // $ item=I12
+    g, // $ item=I13
+};
+
+use my2::nested8_f; // $ item=I119
 
 mod m1 {
     fn f() {
-        println!("main.rs::m1::f");
+        println!("main.rs::m1::f"); // $ item=println
     } // I16
 
     pub mod m2 {
         fn f() {
-            println!("main.rs::m1::m2::f");
+            println!("main.rs::m1::m2::f"); // $ item=println
         } // I18
 
         pub fn g() {
-            println!("main.rs::m1::m2::g");
+            println!("main.rs::m1::m2::g"); // $ item=println
             f(); // $ item=I18
             super::f(); // $ item=I16
         } // I19
@@ -29,7 +36,7 @@ mod m1 {
         pub mod m3 {
             use super::f; // $ item=I18
             pub fn h() {
-                println!("main.rs::m1::m2::m3::h");
+                println!("main.rs::m1::m2::m3::h"); // $ item=println
                 f(); // $ item=I18
             } // I21
         } // I20
@@ -40,7 +47,7 @@ mod m4 {
     use super::m1::m2::g; // $ item=I19
 
     pub fn i() {
-        println!("main.rs::m4::i");
+        println!("main.rs::m4::i"); // $ item=println
         g(); // $ item=I19
     } // I23
 } // I22
@@ -48,7 +55,7 @@ mod m4 {
 struct Foo {} // I24
 
 fn h() {
-    println!("main.rs::h");
+    println!("main.rs::h"); // $ item=println
 
     struct Foo {} // I26
 
@@ -57,7 +64,7 @@ fn h() {
         g(); // $ item=I19
 
         struct Foo {} // I28
-        println!("main.rs::h::f");
+        println!("main.rs::h::f"); // $ item=println
         let _ = Foo {}; // $ item=I28
     } // I27
 
@@ -69,7 +76,7 @@ fn h() {
 } // I25
 
 fn i() {
-    println!("main.rs::i");
+    println!("main.rs::i"); // $ item=println
 
     let _ = Foo {}; // $ item=I24
 
@@ -95,24 +102,25 @@ macro_rules! fn_in_macro {
 }
 
 fn j() {
-    println!("main.rs::j");
-    fn_in_macro!(println!("main.rs::j::f"));
+    println!("main.rs::j"); // $ item=println
+    fn_in_macro!(println!("main.rs::j::f")); // $ item=fn_in_macro item=println
     f_defined_in_macro(); // $ item=f_defined_in_macro
 } // I31
 
 mod m5 {
     pub fn f() {
-        println!("main.rs::m5::f");
+        println!("main.rs::m5::f"); // $ item=println
     } // I33
 } // I32
 
 mod m6 {
     fn f() {
-        println!("main.rs::m6::f");
+        println!("main.rs::m6::f"); // $ item=println
     } // I35
 
     pub fn g() {
-        println!("main.rs::m6::g");
+        println!("main.rs::m6::g"); // $ item=println
+
         // this import shadows the definition `I35`, which we don't currently handle
         use super::m5::*; // $ item=I32
         f(); // $ item=I33 $ SPURIOUS: item=I35
@@ -133,7 +141,7 @@ mod m7 {
     #[rustfmt::skip]
     pub fn f() -> MyEnum // $ item=I41
     {
-        println!("main.rs::m7::f");
+        println!("main.rs::m7::f"); // $ item=println
         let _ = MyEnum::A(0); // $ item=I42
         let _ = MyEnum::B { x: 0 }; // $ item=I43
         MyEnum::C // $ item=I44
@@ -145,7 +153,7 @@ mod m8 {
         fn f(&self); // I48
 
         fn g(&self) {
-            println!("main.rs::m8::MyTrait::g");
+            println!("main.rs::m8::MyTrait::g"); // $ item=println
             f(); // $ item=I51
             Self::f(self); // $ item=I48
         } // I49
@@ -154,26 +162,26 @@ mod m8 {
     struct MyStruct {} // I50
 
     fn f() {
-        println!("main.rs::m8::f");
+        println!("main.rs::m8::f"); // $ item=println
     } // I51
 
     #[rustfmt::skip]
     impl MyTrait for MyStruct { // $ item=I47 item=I50
         fn f(&self) {
-            println!("main.rs::m8::<MyStruct as MyTrait>::f");
+            println!("main.rs::m8::<MyStruct as MyTrait>::f"); // $ item=println
             f(); // $ item=I51
             Self::g(self); // $ item=I54
         } // I53
 
         fn g(&self) {
-            println!("main.rs::m8::<MyStruct as MyTrait>::g");
+            println!("main.rs::m8::<MyStruct as MyTrait>::g"); // $ item=println
         } // I54
     } // I52
 
     #[rustfmt::skip]
     impl MyStruct { // $ item=I50
         fn h(&self) {
-            println!("main.rs::m8::MyStruct::h");
+            println!("main.rs::m8::MyStruct::h"); // $ item=println
             f(); // $ item=I51
         } // I74
     } // I73
@@ -201,7 +209,7 @@ mod m9 {
 
     #[rustfmt::skip]
     pub fn f() -> self::MyStruct { // $ item=I56
-        println!("main.rs::m9::f");
+        println!("main.rs::m9::f"); // $ item=println
         self::MyStruct {} // $ item=I56
     } // I57
 }
@@ -306,7 +314,7 @@ mod m15 {
     trait Trait2
       : Trait1 { // $ item=I79
         fn f(&self) {
-            println!("m15::Trait2::f");
+            println!("m15::Trait2::f"); // $ item=println
             Self::g(self); // $ item=I80
             self.g(); // $ item=I80
         }
@@ -333,13 +341,13 @@ mod m15 {
     impl Trait1 // $ item=I79
       for S { // $ item=I81
         fn f(&self) {
-            println!("m15::<S as Trait1>::f");
+            println!("m15::<S as Trait1>::f"); // $ item=println
             Self::g(self); // $ item=I77
             self.g(); // $ item=I77
         } // I76
 
         fn g(&self) {
-            println!("m15::<S as Trait1>::g");
+            println!("m15::<S as Trait1>::g"); // $ item=println
         } // I77
     }
 
@@ -347,13 +355,13 @@ mod m15 {
     impl Trait2 // $ item=I82
       for S { // $ item=I81
         fn f(&self) {
-            println!("m15::<S as Trait2>::f");
+            println!("m15::<S as Trait2>::f"); // $ item=println
         } // I78
     }
 
     #[rustfmt::skip]
     pub fn f() {
-        println!("m15::f");
+        println!("m15::f"); // $ item=println
         let x = S; // $ item=I81
         <S // $ item=I81
           as Trait1 // $ item=I79
@@ -393,7 +401,7 @@ mod m16 {
           T // $ item=I87
         > { // $ item=I86
         fn f(&self) -> T { // $ item=I87
-            println!("m16::Trait2::f");
+            println!("m16::Trait2::f"); // $ item=println
             Self::g(self); // $ item=I85
             self.g(); // $ item=I85
             Self::c // $ item=I94
@@ -408,13 +416,13 @@ mod m16 {
     > // $ item=I86
       for S { // $ item=I90
         fn f(&self) -> S { // $ item=I90
-            println!("m16::<S as Trait1<S>>::f");
+            println!("m16::<S as Trait1<S>>::f"); // $ item=println
             Self::g(self); // $ item=I92
             self.g() // $ item=I92
         } // I91
 
         fn g(&self) -> S { // $ item=I90
-            println!("m16::<S as Trait1<S>>::g");
+            println!("m16::<S as Trait1<S>>::g"); // $ item=println
             Self::c // $ item=I95
         } // I92
 
@@ -428,14 +436,14 @@ mod m16 {
     > // $ item=I89
       for S { // $ item=I90
         fn f(&self) -> S { // $ item=I90
-            println!("m16::<S as Trait2<S>>::f");
+            println!("m16::<S as Trait2<S>>::f"); // $ item=println
             Self::c // $ MISSING: item=I95
         } // I93
     }
 
     #[rustfmt::skip]
     pub fn f() {
-        println!("m16::f");
+        println!("m16::f"); // $ item=println
         let x = S; // $ item=I90
         <S // $ item=I90
           as Trait1<
@@ -460,6 +468,58 @@ mod m16 {
     } // I83
 }
 
+mod trait_visibility {
+    mod m {
+        pub trait Foo {
+            fn a_method(&self); // Foo::a_method
+        } // Foo
+
+        pub trait Bar {
+            fn a_method(&self); // Bar::a_method
+        } // Bar
+
+        pub struct X;
+        #[rustfmt::skip]
+        impl Foo for X { // $ item=Foo item=X
+            fn a_method(&self) {
+                println!("foo!"); // $ item=println
+            } // X_Foo::a_method
+        }
+        #[rustfmt::skip]
+        impl Bar for X { // $ item=Bar item=X
+            fn a_method(&self) {
+                println!("bar!"); // $ item=println
+            } // X_Bar::a_method
+        }
+    }
+
+    use m::X; // $ item=X
+
+    pub fn f() {
+        let x = X; // $ item=X
+        {
+            // Only the `Foo` trait is visible
+            use m::Foo; // $ item=Foo
+            X::a_method(&x); // $ item=X_Foo::a_method
+        }
+        {
+            // Only the `Bar` trait is visible
+            use m::Bar; // $ item=Bar
+            X::a_method(&x); // $ item=X_Bar::a_method
+        }
+        {
+            // Only the `Bar` trait is visible (but unnameable)
+            use m::Bar as _; // $ item=Bar
+            X::a_method(&x); // $ item=X_Bar::a_method
+        }
+        {
+            // The `Bar` trait is not visible, but we can refer to its method
+            // with a full path.
+            m::Bar::a_method(&x); // $ item=Bar::a_method
+        }
+    } // trait_visibility::f
+}
+
 mod m17 {
     trait MyTrait {
         fn f(&self); // I1
@@ -471,7 +531,7 @@ mod m17 {
     impl MyTrait // $ item=I2
     for S { // $ item=I3
         fn f(&self) {
-            println!("M17::MyTrait::f");
+            println!("M17::MyTrait::f"); // $ item=println
         } // I4
     }
 
@@ -494,17 +554,17 @@ mod m17 {
 
 mod m18 {
     fn f() {
-        println!("m18::f");
+        println!("m18::f"); // $ item=println
     } // I101
 
     pub mod m19 {
         fn f() {
-            println!("m18::m19::f");
+            println!("m18::m19::f"); // $ item=println
         } // I102
 
         pub mod m20 {
             pub fn g() {
-                println!("m18::m19::m20::g");
+                println!("m18::m19::m20::g"); // $ item=println
                 super::f(); // $ item=I102
                 super::super::f(); // $ item=I101
             } // I103
@@ -555,7 +615,7 @@ mod m23 {
     > // $ item=I2
       for S { // $ item=I4
         fn f(&self) {
-            println!("m23::<S as Trait1<S>>::f");
+            println!("m23::<S as Trait1<S>>::f"); // $ item=println
         } // I5
     }
 
@@ -609,14 +669,14 @@ mod m24 {
     #[rustfmt::skip]
     impl TraitA for Implementor { // $ item=I111 item=I118
         fn trait_a_method(&self) {
-            println!("TraitA method called");
+            println!("TraitA method called"); // $ item=println
         } // I119
     }
 
     #[rustfmt::skip]
     impl TraitB for Implementor { // $ item=I113 item=I118
         fn trait_b_method(&self) {
-            println!("TraitB method called");
+            println!("TraitB method called"); // $ item=println
         } // I120
     }
 
@@ -709,6 +769,27 @@ use std::{self as ztd}; // $ item=std
 
 fn use_ztd(x: ztd::string::String) {} // $ item=String
 
+#[rustfmt::skip]
+mod impl_with_attribute_macro {
+    struct Foo; // IFoo
+
+    trait ATrait {
+        type Foo;
+    } // IATrait
+
+    #[proc_macro::identity] // $ item=identity
+    impl ATrait for i64 { // $ item=IATrait item=i64
+        type Foo =
+          i64 // $ item=i64
+        ; // IATrait_i64_Foo
+    }
+
+    pub fn test() {
+        // This should resolve to the struct, not the associated type.
+        let _x: Foo; // $ item=IFoo
+    } // impl_with_attribute_macro::test
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -730,17 +811,19 @@ fn main() {
     m11::f(); // $ item=I63
     m15::f(); // $ item=I75
     m16::f(); // $ item=I83
+    trait_visibility::f(); // $ item=trait_visibility::f
     m17::f(); // $ item=I99
     nested6::f(); // $ item=I116
     nested8::f(); // $ item=I119
     my3::f(); // $ item=I200
     nested_f(); // $ item=I201
+    my_alias::nested_f(); // $ item=I201
     m18::m19::m20::g(); // $ item=I103
     m23::f(); // $ item=I108
     m24::f(); // $ item=I121
     zelf::h(); // $ item=I25
-    z_changed(); // $ MISSING: item=I122
-    AStruct::z_on_type(); // $ MISSING: item=I124
-    AStruct {} // $ item=I123
-        .z_on_instance(); // MISSING: item=I125
+    z_changed(); // $ item=I122
+    AStruct::z_on_type(); // $ item=I124
+    AStruct {}.z_on_instance(); // $ item=I123 item=I125
+    impl_with_attribute_macro::test(); // $ item=impl_with_attribute_macro::test
 }

@@ -1,7 +1,6 @@
 multipleCallTargets
-| main.rs:118:9:118:11 | f(...) |
-| proc_macro.rs:9:5:11:5 | ...::new(...) |
-multiplePathResolutions
-| main.rs:641:3:641:12 | proc_macro |
-| main.rs:647:7:647:16 | proc_macro |
-| main.rs:650:7:650:16 | proc_macro |
+| main.rs:126:9:126:11 | f(...) |
+| main.rs:366:9:368:16 | ...::f(...) |
+| main.rs:369:9:371:16 | ...::f(...) |
+| main.rs:448:9:452:16 | ...::f(...) |
+| main.rs:453:9:457:16 | ...::f(...) |

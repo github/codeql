@@ -465,10 +465,11 @@ public class AutoBuild {
       try {
         CompletableFuture<?> sourceFuture = extractSource();
         sourceFuture.join(); // wait for source extraction to complete
-        if (hasSeenCode()) { // don't bother with the externs if no code was seen
+        if (hasSeenCode() && !isOverlayChangeMode()) { // don't bother with the externs if no code was seen or in overlay change mode
           extractExterns();
         }
         extractXml();
+        writeOverlayMetadata();
       } catch (OutOfMemoryError oom) {
         System.err.println("Out of memory while extracting the project.");
         return 137; // the CodeQL CLI will interpret this as an out-of-memory error
@@ -488,25 +489,42 @@ public class AutoBuild {
         diagnosticsToClose.forEach(DiagnosticWriter::close);
       }
 
-      if (!hasSeenCode()) {
+      // Fail extraction if no relevant files were found.
+      boolean seenRelevantFiles = EnvironmentVariables.isActionsExtractor()
+        ? seenFiles // assume all files are relevant for Actions extractor
+        : hasSeenCode();
+      if (!seenRelevantFiles) {
         if (seenFiles) {
           warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
         } else {
           warn("No JavaScript or TypeScript code found.");
         }
-        // ensuring that the finalize steps detects that no code was seen.
+        // Ensuring that the finalize steps detects that no code was seen.
+        // This is necessary to ensure we don't produce an overlay-base database without externs.
         Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
         try {
-          // Non-recursive delete because "src/" should be empty.
-          FileUtil8.delete(srcFolder);
+          FileUtil8.recursiveDelete(srcFolder);
         } catch (NoSuchFileException e) {
           Exceptions.ignore(e, "the directory did not exist");
-        } catch (DirectoryNotEmptyException e) {
-          Exceptions.ignore(e, "just leave the directory if it is not empty");
         }
         return 0;
       }
     return 0;
+  }
+
+  private void writeOverlayMetadata() {
+    String file = getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_BASE_METADATA_OUT");
+    if (file == null) {
+      // no overlay metadata file specified, so nothing to do
+      return;
+    }
+    // Write an empty string to the file as we currently have no metadata to emit.
+    // The file must be created for the database to recognized as an overlay base.
+    try {
+      Files.writeString(Paths.get(file), "", StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw new ResourceError("Could not write overlay metadata to " + file, e);
+    }
   }
 
   /**
@@ -733,6 +751,17 @@ public class AutoBuild {
     Set<Path> filesToExtract = new LinkedHashSet<>();
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
+
+    OverlayChanges overlay = getOverlayChanges();
+    if (overlay != null) {
+      Set<Path> changedFiles = overlay.changes.stream()
+          .map(file -> Paths.get(file).toAbsolutePath())
+          .collect(Collectors.toSet());
+      int before = filesToExtract.size();
+      filesToExtract.retainAll(changedFiles);
+      int after = filesToExtract.size();
+      System.out.println("Overlay filter removed " + (before - after) + " out of " + before + " files from extraction.");
+    }
 
     tsconfigFiles = tsconfigFiles.stream()
          .sorted(PATH_ORDERING)
@@ -1336,6 +1365,18 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     } catch (InterruptedException e) {
       throw new CatastrophicError(e);
     }
+  }
+
+  private boolean isOverlayChangeMode() {
+    return getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_CHANGES") != null;
+  }
+
+  private OverlayChanges getOverlayChanges() throws IOException {
+    String jsonFile = getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_CHANGES");
+    if (jsonFile == null) {
+      return null;
+    }
+    return new Gson().fromJson(Files.newBufferedReader(Paths.get(jsonFile)), OverlayChanges.class);
   }
 
   public static void main(String[] args) {

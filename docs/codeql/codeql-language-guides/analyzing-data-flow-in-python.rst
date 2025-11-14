@@ -354,11 +354,50 @@ This data flow configuration tracks data flow from environment variables to open
     select fileOpen, "This call to 'os.open' uses data from $@.",
       environment, "call to 'os.getenv'"
 
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the network input example above, converted into a path query:
+
+.. code-block:: ql
+
+    /**
+     * @kind path-problem
+     * @problem.severity warning
+     * @id file-system-access-from-remote-input
+     */
+
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.dataflow.new.TaintTracking
+    import semmle.python.dataflow.new.RemoteFlowSources
+    import semmle.python.Concepts
+
+    module RemoteToFileConfiguration implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node source) {
+        source instanceof RemoteFlowSource
+      }
+
+      predicate isSink(DataFlow::Node sink) {
+        sink = any(FileSystemAccess fa).getAPathArgument()
+      }
+    }
+
+    module RemoteToFileFlow = TaintTracking::Global<RemoteToFileConfiguration>;
+
+    import RemoteToFileFlow::PathGraph
+
+    from RemoteToFileFlow::PathNode input, RemoteToFileFlow::PathNode fileAccess
+    where RemoteToFileFlow::flowPath(input, fileAccess)
+    select fileAccess.getNode(), input, fileAccess, "This file access uses data from $@.",
+      input, "user-controllable input."
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------
 
-- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
+- `Creating path queries  <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__.
 
 
 .. include:: ../reusables/python-further-reading.rst

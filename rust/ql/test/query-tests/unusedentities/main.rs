@@ -1,3 +1,4 @@
+#![feature(let_chains)]
 mod more;
 mod unreachable;
 
@@ -318,7 +319,7 @@ fn if_lets_matches() {
         No => {}
     }
 
-    if let j = Yes { // $ Alert[rust/unused-variable]
+    if let j = Yes { // $ Alert[rust/unused-value]
     }
 
     if let k = Yes {
@@ -371,6 +372,10 @@ fn if_lets_matches() {
         right2) = // $ MISSING: Alert[rust/unused-value] $ SPURIOUS: Alert[rust/unused-variable]
         pair;
     _ = left2;
+
+    if let Some(m) = Some(10)
+        && m > 0
+    {}
 }
 
 fn shadowing() -> i32 {
@@ -483,7 +488,7 @@ macro_rules! use_value {
 fn macros1() {
     let a: u16;
     let b: u16 = 2;
-    set_value!(a, 1);
+    set_value!(a, 1); // $ Alert[rust/unused-value]
     use_value!(b);
 
     match std::env::args().nth(1).unwrap().parse::<u16>() {
@@ -508,13 +513,7 @@ fn macros2() {
 
 fn macros3() {
     let x;
-    println!(
-        "The value of x is {}",
-        ({
-            x = 10; // $ MISSING: Alert[rust/unused-value]
-            10
-        })
-    );
+    println!("The value of x is {}", ({ x = 10; 10 })); // $ Alert[rust/unused-value]
 }
 
 macro_rules! let_in_macro {

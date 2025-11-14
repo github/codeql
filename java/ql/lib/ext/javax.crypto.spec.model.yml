@@ -7,6 +7,21 @@ extensions:
       - ["javax.crypto.spec", "GCMParameterSpec", True, "GCMParameterSpec", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
       - ["javax.crypto.spec", "RC2ParameterSpec", True, "RC2ParameterSpec", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
       - ["javax.crypto.spec", "RC5ParameterSpec", True, "RC5ParameterSpec", "", "", "Argument[3]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addIKM", "(byte[])", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addIKM", "(byte[])", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addIKM", "(SecretKey)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addIKM", "(SecretKey)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addSalt", "(byte[])", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addSalt", "(byte[])", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addSalt", "(SecretKey)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "addSalt", "(SecretKey)", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "thenExpand", "(byte[],int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "thenExpand", "(byte[],int)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec$Builder", True, "thenExpand", "(byte[],int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec", False, "expandOnly", "(SecretKey,byte[],int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto.spec", "HKDFParameterSpec", False, "expandOnly", "(SecretKey,byte[],int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", False, "SecretKeySpec", "(byte[],int,int,String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: sinkModel

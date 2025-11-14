@@ -16,9 +16,9 @@ For example, to declare a module ``M`` as private, you could use:
     }
 
 Note that some annotations act on an entity itself, whilst others act on a particular *name* for the entity:
-  - Act on an **entity**: ``abstract``, ``cached``, ``external``, ``transient``, ``override``, ``pragma``, ``language``,
-    and ``bindingset``
-  - Act on a **name**: ``deprecated``, ``library``, ``private``, ``final``, and ``query``
+  - Act on an **entity**: ``abstract``, ``bindingset``, ``cached``, ``extensible``, ``external``, ``language``,
+    ``override``, ``pragma``, and ``transient``
+  - Act on a **name**: ``additional``, ``deprecated``, ``final``, ``library``, ``private``, and ``query``
 
 For example, if you annotate an entity with ``private``, then only that particular name is
 private. You could still access that entity under a different name (using an :ref:`alias <aliases>`).
@@ -97,13 +97,27 @@ own body, or they must inherit from another class that overrides ``isSource``:
       // doesn't need to override `isSource`, because it inherits it from ConfigA
     }
 
+.. index:: additional
+.. _additional:
+
+``additional``
+==============
+
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |non-member predicates|, |modules|, |aliases|, |signatures|
+
+The ``additional`` annotation can be used on declarations in explicit modules.
+All declarations that are not required by a module signature in modules that implement |module signatures| must be annotated with ``additional``.
+
+Omitting ``additional`` on such declarations, or using the annotation in any other context, will result in a compiler error.
+Other than that, the annotation has no effect.
+
 .. index:: cached
 .. _cached:
 
 ``cached``
 ==========
 
-**Available for**: |classes|, |algebraic datatypes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
 
 The ``cached`` annotation indicates that an entity should be evaluated in its entirety and
 stored in the evaluation cache. All later references to this entity will use the 
@@ -126,7 +140,7 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 ``deprecated``
 ==============
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``deprecated`` annotation is applied to names that are outdated and scheduled for removal
 in a future release of QL.
@@ -150,6 +164,16 @@ For example, the name ``DataFlowNode`` is deprecated and has the following QLDoc
     }
 
 This QLDoc comment appears when you use the name ``DataFlowNode`` in a QL editor.
+
+.. index:: extensible
+.. _extensible:
+
+``extensible``
+==============
+
+**Available for**: |non-member predicates|
+
+The ``extensible`` annotation is used to mark predicates that are populated at evaluation time through data extensions.
 
 .. index:: external
 .. _external:
@@ -235,7 +259,7 @@ warning.
 ``private``
 ===========
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``private`` annotation is used to prevent names from being exported.
 
@@ -461,7 +485,7 @@ For more information, see ":ref:`monotonic-aggregates`."
 Binding sets
 ============
 
-**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |predicate signatures|, |type signatures|
 
 ``bindingset[...]``
 -------------------
@@ -490,4 +514,9 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
 .. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
+.. |type unions|               replace:: :ref:`type unions <type-unions>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`
+.. |signatures|                replace:: :ref:`signatures <signatures>`
+.. |predicate signatures|      replace:: :ref:`predicate signatures <predicate-signatures>`
+.. |type signatures|           replace:: :ref:`type signatures <type-signatures>`
+.. |module signatures|         replace:: :ref:`module signatures <module-signatures>`

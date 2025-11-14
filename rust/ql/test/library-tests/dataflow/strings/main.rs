@@ -43,20 +43,20 @@ fn string_add_reference() {
     let s1 = source(37);
     let s2 = "1".to_string();
 
-    sink("Hello ".to_string() + &s1); // $ MISSING: hasTaintFlow=37
+    sink("Hello ".to_string() + &s1); // $ hasTaintFlow=37
     sink("Hello ".to_string() + &s2);
 }
 
 fn string_from() {
     let s1 = source_slice(36);
     let s2 = String::from(s1);
-    sink(s2); // $ hasValueFlow=36
+    sink(s2); // $ hasTaintFlow=36
 }
 
 fn string_to_string() {
     let s1 = source_slice(22);
     let s2 = s1.to_string();
-    sink(s2); // $ MISSING: hasTaintFlow=22 - we are not currently able to resolve the `to_string` call above, which comes from `impl<T: fmt::Display + ?Sized> ToString for T`
+    sink(s2); // $ hasTaintFlow=22
 }
 
 fn as_str() {

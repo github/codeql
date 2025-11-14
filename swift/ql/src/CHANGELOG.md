@@ -1,3 +1,29 @@
+## 1.2.8
+
+No user-facing changes.
+
+## 1.2.7
+
+No user-facing changes.
+
+## 1.2.6
+
+No user-facing changes.
+
+## 1.2.5
+
+No user-facing changes.
+
+## 1.2.4
+
+### Bug Fixes
+
+* Fixed an inconsistency across languages where most have a `Customizations.qll` file for adding customizations, but not all did.
+
+## 1.2.3
+
+No user-facing changes.
+
 ## 1.2.2
 
 No user-facing changes.

@@ -9,6 +9,8 @@ column_kind: "utf8"
 build_modes:
   - autobuild
   - manual
+default_queries:
+  - codeql/go-queries
 github_api_languages:
   - Go
 scc_languages:
@@ -19,6 +21,7 @@ file_types:
     extensions:
       - .go
 legacy_qltest_extraction: true
+overlay_support_version: 20250626
 options:
   extract_tests:
     title: Whether to include Go test files in the CodeQL database.

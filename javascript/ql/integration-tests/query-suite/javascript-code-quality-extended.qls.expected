@@ -4,6 +4,9 @@ ql/javascript/ql/src/AngularJS/IncompatibleService.ql
 ql/javascript/ql/src/AngularJS/MissingExplicitInjection.ql
 ql/javascript/ql/src/AngularJS/RepeatedInjection.ql
 ql/javascript/ql/src/AngularJS/UseNgSrc.ql
+ql/javascript/ql/src/Comments/CommentedOutCode.ql
+ql/javascript/ql/src/Comments/TodoComments.ql
+ql/javascript/ql/src/DOM/Alert.ql
 ql/javascript/ql/src/DOM/DuplicateAttributes.ql
 ql/javascript/ql/src/DOM/MalformedIdAttribute.ql
 ql/javascript/ql/src/DOM/PseudoEval.ql
@@ -20,11 +23,13 @@ ql/javascript/ql/src/Declarations/IneffectiveParameterType.ql
 ql/javascript/ql/src/Declarations/MissingThisQualifier.ql
 ql/javascript/ql/src/Declarations/MissingVarDecl.ql
 ql/javascript/ql/src/Declarations/MixedStaticInstanceThisAccess.ql
+ql/javascript/ql/src/Declarations/RedeclaredVariable.ql
 ql/javascript/ql/src/Declarations/SuspiciousMethodNameDeclaration.ql
 ql/javascript/ql/src/Declarations/TemporalDeadZone.ql
 ql/javascript/ql/src/Declarations/UniqueParameterNames.ql
 ql/javascript/ql/src/Declarations/UniquePropertyNames.ql
 ql/javascript/ql/src/Declarations/UnreachableMethodOverloads.ql
+ql/javascript/ql/src/Declarations/UnusedParameter.ql
 ql/javascript/ql/src/Declarations/UnusedVariable.ql
 ql/javascript/ql/src/Expressions/ComparisonWithNaN.ql
 ql/javascript/ql/src/Expressions/DuplicateCondition.ql
@@ -48,9 +53,12 @@ ql/javascript/ql/src/Expressions/UnclearOperatorPrecedence.ql
 ql/javascript/ql/src/Expressions/UnknownDirective.ql
 ql/javascript/ql/src/Expressions/UnneededDefensiveProgramming.ql
 ql/javascript/ql/src/Expressions/WhitespaceContradictsPrecedence.ql
+ql/javascript/ql/src/LanguageFeatures/ArgumentsCallerCallee.ql
 ql/javascript/ql/src/LanguageFeatures/BadTypeof.ql
 ql/javascript/ql/src/LanguageFeatures/ConditionalComments.ql
+ql/javascript/ql/src/LanguageFeatures/DebuggerStatement.ql
 ql/javascript/ql/src/LanguageFeatures/DeleteVar.ql
+ql/javascript/ql/src/LanguageFeatures/Eval.ql
 ql/javascript/ql/src/LanguageFeatures/ExpressionClosures.ql
 ql/javascript/ql/src/LanguageFeatures/ForInComprehensionBlocks.ql
 ql/javascript/ql/src/LanguageFeatures/IllegalInvocation.ql
@@ -63,7 +71,6 @@ ql/javascript/ql/src/LanguageFeatures/SemicolonInsertion.ql
 ql/javascript/ql/src/LanguageFeatures/SetterReturn.ql
 ql/javascript/ql/src/LanguageFeatures/SpuriousArguments.ql
 ql/javascript/ql/src/LanguageFeatures/StrictModeCallStackIntrospection.ql
-ql/javascript/ql/src/LanguageFeatures/SyntaxError.ql
 ql/javascript/ql/src/LanguageFeatures/TemplateSyntaxInStringLiteral.ql
 ql/javascript/ql/src/LanguageFeatures/ThisBeforeSuper.ql
 ql/javascript/ql/src/LanguageFeatures/UnusedIndexVariable.ql
@@ -71,6 +78,7 @@ ql/javascript/ql/src/LanguageFeatures/WithStatement.ql
 ql/javascript/ql/src/LanguageFeatures/YieldInNonGenerator.ql
 ql/javascript/ql/src/NodeJS/InvalidExport.ql
 ql/javascript/ql/src/NodeJS/MissingExports.ql
+ql/javascript/ql/src/Performance/ReassignParameterAndUseArguments.ql
 ql/javascript/ql/src/Quality/UnhandledErrorInStreamPipeline.ql
 ql/javascript/ql/src/React/DirectStateMutation.ql
 ql/javascript/ql/src/React/InconsistentStateUpdate.ql
@@ -78,6 +86,7 @@ ql/javascript/ql/src/React/UnsupportedStateUpdateInLifecycleMethod.ql
 ql/javascript/ql/src/React/UnusedOrUndefinedStateProperty.ql
 ql/javascript/ql/src/RegExp/BackrefBeforeGroup.ql
 ql/javascript/ql/src/RegExp/BackrefIntoNegativeLookahead.ql
+ql/javascript/ql/src/RegExp/BackspaceEscape.ql
 ql/javascript/ql/src/RegExp/DuplicateCharacterInCharacterClass.ql
 ql/javascript/ql/src/RegExp/EmptyCharacterClass.ql
 ql/javascript/ql/src/RegExp/RegExpAlwaysMatches.ql
@@ -86,7 +95,9 @@ ql/javascript/ql/src/RegExp/UnmatchableCaret.ql
 ql/javascript/ql/src/RegExp/UnmatchableDollar.ql
 ql/javascript/ql/src/Statements/DanglingElse.ql
 ql/javascript/ql/src/Statements/IgnoreArrayResult.ql
+ql/javascript/ql/src/Statements/ImplicitReturn.ql
 ql/javascript/ql/src/Statements/InconsistentLoopOrientation.ql
+ql/javascript/ql/src/Statements/InconsistentReturn.ql
 ql/javascript/ql/src/Statements/LabelInCase.ql
 ql/javascript/ql/src/Statements/LoopIterationSkippedDueToShifting.ql
 ql/javascript/ql/src/Statements/MisleadingIndentationAfterControlStmt.ql

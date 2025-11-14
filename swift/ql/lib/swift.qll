@@ -1,5 +1,6 @@
 /** Top-level import for the Swift language pack */
 
+import Customizations
 import codeql.swift.elements
 import codeql.swift.elements.expr.ArithmeticOperation
 import codeql.swift.elements.expr.Assignment

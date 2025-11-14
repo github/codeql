@@ -69,6 +69,7 @@ private class FollowsBarrierPrefix extends UrlForwardBarrier {
   FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
 }
 
+overlay[local?]
 private class BarrierPrefix extends InterestingPrefix {
   int offset;
 

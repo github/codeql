@@ -95,6 +95,16 @@ class RangeToStruct extends Struct {
 }
 
 /**
+ * The [`RangeFull` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/struct.RangeFull.html
+ */
+class RangeFullStruct extends Struct {
+  pragma[nomagic]
+  RangeFullStruct() { this.getCanonicalPath() = "core::ops::range::RangeFull" }
+}
+
+/**
  * The [`RangeInclusive` struct][1].
  *
  * [1]: https://doc.rust-lang.org/core/ops/struct.RangeInclusive.html
@@ -202,4 +212,97 @@ class IntoIteratorTrait extends Trait {
 class StringStruct extends Struct {
   pragma[nomagic]
   StringStruct() { this.getCanonicalPath() = "alloc::string::String" }
+}
+
+/**
+ * The [`Deref` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/trait.Deref.html
+ */
+class DerefTrait extends Trait {
+  pragma[nomagic]
+  DerefTrait() { this.getCanonicalPath() = "core::ops::deref::Deref" }
+
+  /** Gets the `deref` function. */
+  Function getDerefFunction() { result = this.(TraitItemNode).getAssocItem("deref") }
+
+  /** Gets the `Target` associated type. */
+  pragma[nomagic]
+  TypeAlias getTargetType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Target"
+  }
+}
+
+/**
+ * The [`Index` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.Index.html
+ */
+class IndexTrait extends Trait {
+  pragma[nomagic]
+  IndexTrait() { this.getCanonicalPath() = "core::ops::index::Index" }
+
+  /** Gets the `index` function. */
+  Function getIndexFunction() { result = this.(TraitItemNode).getAssocItem("index") }
+
+  /** Gets the `Output` associated type. */
+  pragma[nomagic]
+  TypeAlias getOutputType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Output"
+  }
+}
+
+/**
+ * The [`Box` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/boxed/struct.Box.html
+ */
+class BoxStruct extends Struct {
+  pragma[nomagic]
+  BoxStruct() { this.getCanonicalPath() = "alloc::boxed::Box" }
+}
+
+/**
+ * The [`Rc` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/rc/struct.Rc.html
+ */
+class RcStruct extends Struct {
+  pragma[nomagic]
+  RcStruct() { this.getCanonicalPath() = "alloc::rc::Rc" }
+}
+
+/**
+ * The [`Arc` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+ */
+class ArcStruct extends Struct {
+  pragma[nomagic]
+  ArcStruct() { this.getCanonicalPath() = "alloc::sync::Arc" }
+}
+
+/**
+ * The [`Pin` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/pin/struct.Pin.html
+ */
+class PinStruct extends Struct {
+  pragma[nomagic]
+  PinStruct() { this.getCanonicalPath() = "core::pin::Pin" }
+}
+
+/**
+ * The [`Vec` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/alloc/vec/struct.Vec.html
+ */
+class Vec extends Struct {
+  pragma[nomagic]
+  Vec() { this.getCanonicalPath() = "alloc::vec::Vec" }
+
+  /** Gets the type parameter representing the element type. */
+  TypeParam getElementTypeParam() { result = this.getGenericParamList().getTypeParam(0) }
 }
