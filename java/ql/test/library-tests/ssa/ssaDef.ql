@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.SSA
 
-from SsaVariable ssa, SsaSourceVariable v, string s
+from SsaDefinition ssa, SsaSourceVariable v, string s
 where
   ssa.getSourceVariable() = v and
   (
@@ -9,4 +9,4 @@ where
     or
     not exists(ssa.toString()) and s = "error"
   )
-select v, ssa.getCfgNode(), s
+select v, ssa.getControlFlowNode(), s

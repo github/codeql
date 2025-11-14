@@ -41,11 +41,13 @@ private class InputStreamWrapperCapturedJumpStep extends AdditionalTaintStep {
  */
 private class InputStreamWrapperCapturedLocalStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(InputStreamRead m, NestedClass wrapper, SsaVariable captured, SsaImplicitInit capturer |
+    exists(
+      InputStreamRead m, NestedClass wrapper, SsaDefinition captured, SsaCapturedDefinition capturer
+    |
       wrapper.getASourceSupertype+() instanceof TypeInputStream and
       m.getDeclaringType() = wrapper and
       capturer.captures(captured) and
-      TaintTracking::localTaint(DataFlow::exprNode(capturer.getAFirstUse()),
+      TaintTracking::localTaint(DataFlow::exprNode(ssaGetAFirstUse(capturer)),
         any(DataFlow::PostUpdateNode pun |
           pun.getPreUpdateNode().asExpr() = m.getParameter(0).getAnAccess()
         )) and
@@ -55,9 +57,9 @@ private class InputStreamWrapperCapturedLocalStep extends AdditionalTaintStep {
           .getASourceSupertype*()
           .getSourceDeclaration() = wrapper
     |
-      n1.asExpr() = captured.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource()
+      n1.asExpr() = captured.(SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource()
       or
-      captured.(SsaImplicitInit).isParameterDefinition(n1.asParameter())
+      captured.(SsaParameterInit).getParameter() = n1.asParameter()
     )
   }
 }

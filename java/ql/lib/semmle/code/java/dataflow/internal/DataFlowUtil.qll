@@ -99,11 +99,12 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
  * updates.
  */
 predicate hasNonlocalValue(FieldRead fr) {
-  not exists(SsaVariable v | v.getAUse() = fr)
+  not exists(SsaDefinition v | v.getARead() = fr)
   or
-  exists(SsaVariable v, SsaVariable def | v.getAUse() = fr and def = v.getAnUltimateDefinition() |
-    def instanceof SsaImplicitInit or
-    def instanceof SsaImplicitUpdate
+  exists(SsaDefinition v, SsaDefinition def |
+    v.getARead() = fr and
+    def = v.getAnUltimateDefinition() and
+    def instanceof SsaImplicitWrite
   )
 }
 

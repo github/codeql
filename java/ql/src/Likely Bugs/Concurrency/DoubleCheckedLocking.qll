@@ -8,9 +8,9 @@ import semmle.code.java.dataflow.SSA
 private Expr getAFieldRead(Field f) {
   result = f.getAnAccess()
   or
-  exists(SsaExplicitUpdate v | v.getSourceVariable().getVariable() instanceof LocalScopeVariable |
-    result = v.getAUse() and
-    v.getDefiningExpr().(VariableAssign).getSource() = getAFieldRead(f)
+  exists(SsaExplicitWrite v | v.getSourceVariable().getVariable() instanceof LocalScopeVariable |
+    result = v.getARead() and
+    v.getValue() = getAFieldRead(f)
   )
   or
   result.(AssignExpr).getSource() = getAFieldRead(f)

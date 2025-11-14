@@ -6,11 +6,12 @@ module;
 
 import java
 private import codeql.controlflow.ControlFlowReachability
-private import semmle.code.java.dataflow.SSA as SSA
+private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.controlflow.Guards as Guards
 
 private module ControlFlowInput implements InputSig<Location, ControlFlowNode, BasicBlock> {
   private import java as J
+  import Ssa
 
   AstNode getEnclosingAstNode(ControlFlowNode node) { node.getAstNode() = result }
 
@@ -26,23 +27,6 @@ private module ControlFlowInput implements InputSig<Location, ControlFlowNode, B
   }
 
   class Expr = J::Expr;
-
-  class SourceVariable = SSA::SsaSourceVariable;
-
-  class SsaDefinition = SSA::SsaVariable;
-
-  class SsaExplicitWrite extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
-    Expr getValue() {
-      super.getDefiningExpr().(VariableAssign).getSource() = result or
-      super.getDefiningExpr().(AssignOp) = result
-    }
-  }
-
-  class SsaPhiDefinition = SSA::SsaPhiNode;
-
-  class SsaUncertainWrite extends SsaDefinition instanceof SSA::SsaUncertainImplicitUpdate {
-    SsaDefinition getPriorDefinition() { result = super.getPriorDef() }
-  }
 
   class GuardValue = Guards::GuardValue;
 

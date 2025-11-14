@@ -8,7 +8,9 @@ private import java as J
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.RangeUtils as RU
 
-class SsaVariable = Ssa::SsaVariable;
+class SsaVariable extends Ssa::SsaDefinition {
+  Expr getAUse() { result = super.getARead() }
+}
 
 class Expr = J::Expr;
 
