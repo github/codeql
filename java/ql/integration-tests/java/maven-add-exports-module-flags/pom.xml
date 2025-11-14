@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>maven-add-exports-module-flags</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>maven-add-exports-module-flags</name>
+  <description>Test case: Project using --add-exports. Autobuilder should detect this and use --source/--target.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>11</java.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <compilerArgs>
+            <arg>--add-exports</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+            <arg>--add-exports</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+            <arg>--add-exports</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+            <arg>--add-exports</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
