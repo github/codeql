@@ -25,16 +25,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.userReportedDirectoryPurpose = userReportedDirectoryPurpose;
 
             string path;
-            if (EnvironmentVariables.GetBuildlessDependencyDir() is string dir)
-            {
-                path = dir;
-                attemptCleanup = false;
-            }
-            else
-            {
-                path = FileUtils.GetTemporaryWorkingDirectory(out _);
-                attemptCleanup = true;
-            }
+            // if (EnvironmentVariables.GetBuildlessDependencyDir() is string dir)
+            // {
+            //     path = dir;
+            //     attemptCleanup = false;
+            // }
+            // else
+            // {
+            path = FileUtils.GetTemporaryWorkingDirectory(out _);
+            attemptCleanup = true;
+            //}
             DirInfo = new DirectoryInfo(Path.Combine(path, subfolderName));
             DirInfo.Create();
         }
