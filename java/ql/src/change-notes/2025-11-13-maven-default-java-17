@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Autobuild now auto-detects the Java version from Maven POM files across all project modules, defaulting to Java 17 or higher for improved build compatibility.
+* Java analysis now selects the Java version to use informed by Maven POM files across all project modules. It also tries to use Java 17 or higher for all Maven projects if possible, for improved build compatibility.
