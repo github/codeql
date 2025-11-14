@@ -926,6 +926,9 @@ module Make<
             guardControls(g0, v0, tgtGuard, tgtVal) and
             additionalImpliesStep(g0, v0, guard, v)
           )
+          or
+          baseGuardValue(tgtGuard, tgtVal) and
+          disjunctiveGuardControls(guard, v, tgtGuard, tgtVal)
         }
 
         /**
@@ -1003,6 +1006,104 @@ module Make<
       )
     }
 
+    private import DisjunctiveGuard
+
+    private module DisjunctiveGuard {
+      /**
+       * Holds if `disjunction` evaluating to `val` means that either
+       * `disjunct1` or `disjunct2` is `val`.
+       */
+      private predicate disjunction(
+        Guard disjunction, GuardValue val, Guard disjunct1, Guard disjunct2
+      ) {
+        2 =
+          strictcount(Guard op |
+            disjunction.(OrExpr).getAnOperand() = op or disjunction.(AndExpr).getAnOperand() = op
+          ) and
+        disjunct1 != disjunct2 and
+        (
+          exists(OrExpr d | d = disjunction |
+            d.getAnOperand() = disjunct1 and
+            d.getAnOperand() = disjunct2 and
+            val.asBooleanValue() = true
+          )
+          or
+          exists(AndExpr d | d = disjunction |
+            d.getAnOperand() = disjunct1 and
+            d.getAnOperand() = disjunct2 and
+            val.asBooleanValue() = false
+          )
+        )
+      }
+
+      private predicate disjunct(Guard guard, GuardValue val) { disjunction(_, val, guard, _) }
+
+      module DisjunctImplies = ImpliesTC<disjunct/2>;
+
+      /**
+       * Holds if one of the disjuncts in `disjunction` evaluating to `dv` implies that `def`
+       * evaluates to `v`. The other disjunct is `otherDisjunct`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsDisjunct(
+        SsaDefinition def, GuardValue v, Guard disjunction, Guard otherDisjunct, GuardValue dv
+      ) {
+        exists(Guard disjunct |
+          disjunction(disjunction, dv, disjunct, otherDisjunct) and
+          DisjunctImplies::ssaControls(def, v, disjunct, dv)
+        )
+      }
+
+      /**
+       * Holds if the disjunction of `def` evaluating to `v` and
+       * `otherDisjunct` evaluating to `dv` controls `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaDisjunctionControls(
+        SsaDefinition def, GuardValue v, Guard otherDisjunct, GuardValue dv, BasicBlock bb
+      ) {
+        exists(Guard disjunction |
+          ssaControlsDisjunct(def, v, disjunction, otherDisjunct, dv) and
+          disjunction.valueControls(bb, dv)
+        )
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+       * evaluates to `v`. The basic block of `tgtGuard` is `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsGuard(
+        SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal, BasicBlock bb
+      ) {
+        (
+          BranchImplies::ssaControls(def, v, tgtGuard, tgtVal) or
+          WrapperGuard::ReturnImplies::ssaControls(def, v, tgtGuard, tgtVal)
+        ) and
+        tgtGuard.getBasicBlock() = bb
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
+       * evaluates to `v`.
+       */
+      pragma[nomagic]
+      predicate disjunctiveGuardControls(
+        Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal
+      ) {
+        exists(SsaDefinition def, GuardValue v1, GuardValue v2, BasicBlock bb |
+          // If `def==v1 || guard==v` controls `bb`,
+          ssaDisjunctionControls(def, v1, guard, v, bb) and
+          // and `tgtGuard==tgtVal` in `bb` implies `def==v2`,
+          ssaControlsGuard(def, v2, tgtGuard, tgtVal, bb) and
+          // and `v1` and `v2` are disjoint,
+          disjointValues(v1, v2)
+          // then assuming `tgtGuard==tgtVal` it follows that `def` cannot be `v1`
+          // and therefore we must have `guard==v`.
+        )
+      }
+    }
+
     /**
      * Provides an implementation of guard implication logic for guard
      * wrappers.
@@ -1042,7 +1143,8 @@ module Make<
 
       private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
         BranchImplies::guardControls(call, val, _, _) or
-        ReturnImplies::guardControls(call, val, _, _)
+        ReturnImplies::guardControls(call, val, _, _) or
+        DisjunctImplies::guardControls(call, val, _, _)
       }
 
       /**
