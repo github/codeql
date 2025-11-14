@@ -709,7 +709,7 @@ private module BoundsEstimate {
    * ```
    * the actual number of bounds for `y` is 1. However, the estimate will be 4
    * as the conditional assignment to `x` gives two bounds for `x` on the last
-   * line and the addition gives 2 * 2 bounds. There are two sources of anncuracies:
+   * line and the addition gives 2 * 2 bounds. There are two sources of inaccuracies:
    *
    * 1. Without tracking the lower bounds we can't see that `x` is assigned a
    * value that is equal to its lower bound.
