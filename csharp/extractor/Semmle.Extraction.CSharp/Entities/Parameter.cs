@@ -115,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type.Create(Context, Symbol.Type);
             trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

@@ -20,6 +20,10 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";event");
         }
 
+        public override bool NeedsPopulation => Context.Defines(Symbol) || Context.IsOverlayMode;
+
+        public override bool OnlyScaffold => base.OnlyScaffold || !Context.Defines(Symbol);
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
@@ -50,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

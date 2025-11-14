@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }
@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void BindTo(Label entity, CommentBinding binding)
         {
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

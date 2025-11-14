@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.parent_namespace_declaration(this, parent);
             }
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

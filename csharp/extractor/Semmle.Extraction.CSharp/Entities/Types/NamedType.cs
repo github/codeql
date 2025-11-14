@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             // Class location
-            if ((!Symbol.IsGenericType || Symbol.IsReallyUnbound()) && !Context.OnlyScaffold)
+            if ((!Symbol.IsGenericType || Symbol.IsReallyUnbound()) && !OnlyScaffold)
             {
                 WriteLocationsToTrap(trapFile.type_location, this, Locations);
             }

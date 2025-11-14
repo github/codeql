@@ -25,6 +25,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public abstract void Populate(TextWriter trapFile);
 
         public abstract bool NeedsPopulation { get; }
+
+        public abstract bool OnlyScaffold { get; }
     }
 
     /// <summary>
@@ -70,8 +72,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override bool NeedsPopulation { get; }
-
         public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();
 
         public override bool Equals(object? obj)
@@ -81,6 +81,8 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public override bool OnlyScaffold => Context.OnlyScaffold;
     }
 
     /// <summary>

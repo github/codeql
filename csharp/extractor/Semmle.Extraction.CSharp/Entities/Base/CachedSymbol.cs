@@ -140,7 +140,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public virtual bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 
-        public override bool NeedsPopulation => Context.Defines(Symbol);
+        // When extracting in overlay mode we always need to populate to ensure that
+        // all transitive dependencies are extracted.
+        //public override bool NeedsPopulation => Context.Defines(Symbol) || Context.IsOverlayMode;
 
         public Location Location => Context.CreateLocation(ReportingLocation);
     }

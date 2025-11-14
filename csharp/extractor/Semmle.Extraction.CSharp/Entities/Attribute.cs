@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             // In this case, we don't extract the attribute again, as it was extracted using * ID
             // originally and we re-use that.
-            if (Context.OnlyScaffold && (ReportingLocation is null || !ReportingLocation.IsInSource))
+            if (OnlyScaffold && (ReportingLocation is null || !ReportingLocation.IsInSource))
             {
                 return;
             }
@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type.Create(Context, Symbol.AttributeClass);
             trapFile.attributes(this, kind, type.TypeRef, entity);
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

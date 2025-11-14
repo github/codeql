@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
 #nullable restore warnings
 
         public override bool NeedsPopulation =>
-            base.NeedsPopulation || Symbol.TypeKind == TypeKind.Dynamic || Symbol.TypeKind == TypeKind.TypeParameter;
+            Context.Defines(Symbol) || Context.IsOverlayMode || Symbol.TypeKind == TypeKind.Dynamic || Symbol.TypeKind == TypeKind.TypeParameter;
 
         public static bool ConstructedOrParentIsConstructed(INamedTypeSymbol symbol)
         {
@@ -222,7 +222,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private IEnumerable<BaseTypeSyntax> GetBaseTypeDeclarations()
         {
-            if (!IsSourceDeclaration || !Symbol.FromSource() || Context.OnlyScaffold)
+            if (!IsSourceDeclaration || !Symbol.FromSource() || OnlyScaffold)
             {
                 return Enumerable.Empty<BaseTypeSyntax>();
             }

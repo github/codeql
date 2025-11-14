@@ -37,6 +37,10 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
+        public override bool NeedsPopulation => Context.Defines(Symbol) || Context.IsOverlayMode;
+
+        public override bool OnlyScaffold => base.OnlyScaffold || !Context.Defines(Symbol);
+
         /// <summary>
         /// Extracts constructor initializers.
         /// </summary>

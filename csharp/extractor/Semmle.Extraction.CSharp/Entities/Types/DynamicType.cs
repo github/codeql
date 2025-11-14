@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.has_modifiers(this, Modifier.Create(Context, "public"));
             trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

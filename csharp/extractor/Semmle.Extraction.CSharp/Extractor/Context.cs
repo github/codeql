@@ -30,10 +30,17 @@ namespace Semmle.Extraction.CSharp
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
         /// <summary>
-        /// Holds if trap only should be created for types and member signatures (and not for expressions and statements).
+        /// Holds if TRAP only should be created for types and member signatures (and not for expressions and statements).
         /// This is the case for all unchanged files, when running in overlay mode.
         /// </summary>
         public bool OnlyScaffold { get; }
+
+        /// <summary>
+        /// Holds if the extractor is running in overlay mode.
+        /// </summary>
+        public bool IsOverlayMode { get; }
+
+        public bool OnlyScaffoldSymbol(ISymbol symbol) => OnlyScaffold || !Defines(symbol);
 
         public IList<object> TrapStackSuffix { get; } = new List<object>();
 
@@ -536,6 +543,7 @@ namespace Semmle.Extraction.CSharp
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
             Compilation = c;
             this.scope = scope;
+            IsOverlayMode = overlayInfo.IsOverlayMode;
             OnlyScaffold = overlayInfo.IsOverlayMode && (
                 IsAssemblyScope
                 || (scope is SourceScope ss && overlayInfo.OnlyMakeScaffold(ss.SourceTree.FilePath)));
