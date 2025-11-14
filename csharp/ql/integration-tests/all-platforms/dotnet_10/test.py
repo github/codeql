@@ -1,5 +1,5 @@
-import os
-import runs_on
-
-def test(codeql, csharp):
+def test1(codeql, csharp):
     codeql.database.create()
+
+def test2(codeql, csharp):
+    codeql.database.create(build_mode="none")
