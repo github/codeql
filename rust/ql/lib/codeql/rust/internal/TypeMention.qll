@@ -207,6 +207,11 @@ class NonAliasPathTypeMention extends PathTypeMention {
     )
   }
 
+  pragma[nomagic]
+  private TypeAlias getResolvedAlias(string name) {
+    result = resolved.(TraitItemNode).getAssocItem(name)
+  }
+
   /** Gets the type mention in this path for the type parameter `tp`, if any. */
   pragma[nomagic]
   private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
@@ -228,16 +233,11 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // }
     // ```
     // the rhs. of the type alias is a type argument to the trait.
-    exists(ImplItemNode impl, AssociatedTypeTypeParameter param, TypeAlias alias, string name |
+    exists(ImplItemNode impl, TypeAlias alias, string name |
       this = impl.getTraitPath() and
-      param.getTrait() = resolved and
-      name = param.getTypeAlias().getName().getText() and
       alias = impl.getASuccessor(pragma[only_bind_into](name)) and
       result = alias.getTypeRepr() and
-      tp =
-        TAssociatedTypeTypeParameter(resolved
-              .(TraitItemNode)
-              .getAssocItem(pragma[only_bind_into](name)))
+      tp = TAssociatedTypeTypeParameter(this.getResolvedAlias(pragma[only_bind_into](name)))
     )
     or
     // Handle the special syntactic sugar for function traits. For now we only
