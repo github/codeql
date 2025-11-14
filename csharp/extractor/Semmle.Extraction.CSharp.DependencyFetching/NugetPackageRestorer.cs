@@ -623,15 +623,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
+        private static async Task<HttpResponseMessage> ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
         {
-            using var stream = await httpClient.GetStreamAsync(address, cancellationToken);
-            var buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                // do nothing
-            }
+            return await httpClient.GetAsync(address, cancellationToken);
         }
 
         private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, bool allowExceptions = true)
@@ -673,7 +667,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 cts.CancelAfter(timeoutMilliSeconds);
                 try
                 {
-                    ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
+                    var response = ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
+                    response.EnsureSuccessStatusCode();
                     logger.LogInfo($"Querying NuGet feed '{feed}' succeeded.");
                     return true;
                 }
@@ -686,6 +681,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         logger.LogInfo($"Didn't receive answer from NuGet feed '{feed}' in {timeoutMilliSeconds}ms.");
                         timeoutMilliSeconds *= 2;
                         continue;
+                    }
+                    if (exc is HttpRequestException hre &&
+                        hre.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+
+                        logger.LogInfo($"Received 401 Unauthorized error from NuGet feed '{feed}'.");
+                        return false;
                     }
 
                     // We're only interested in timeouts.
