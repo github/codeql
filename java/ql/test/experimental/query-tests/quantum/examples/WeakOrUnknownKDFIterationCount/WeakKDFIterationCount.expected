@@ -1,0 +1,16 @@
+#select
+| Test.java:32:72:32:85 | iterationCount | Test.java:31:30:31:31 | 10 : Number | Test.java:32:72:32:85 | iterationCount | Key derivation operation configures iteration count below 100k: $@ | Test.java:31:30:31:31 | 10 | 10 |
+edges
+| Test.java:31:30:31:31 | 10 : Number | Test.java:32:72:32:85 | iterationCount | provenance |  |
+| Test.java:43:53:43:70 | iterationCount : Number | Test.java:45:72:45:85 | iterationCount | provenance |  |
+| Test.java:58:30:58:38 | 1_000_000 : Number | Test.java:59:72:59:85 | iterationCount | provenance |  |
+nodes
+| Test.java:31:30:31:31 | 10 : Number | semmle.label | 10 : Number |
+| Test.java:32:72:32:85 | iterationCount | semmle.label | iterationCount |
+| Test.java:43:53:43:70 | iterationCount : Number | semmle.label | iterationCount : Number |
+| Test.java:45:72:45:85 | iterationCount | semmle.label | iterationCount |
+| Test.java:58:30:58:38 | 1_000_000 : Number | semmle.label | 1_000_000 : Number |
+| Test.java:59:72:59:85 | iterationCount | semmle.label | iterationCount |
+subpaths
+testFailures
+| Test.java:43:92:43:101 | // $Source | Missing result: Source |

@@ -1,3 +1,9 @@
+## 4.1.0
+
+### New Features
+
+* Initial support for incremental Python databases via `codeql database create --overlay-base`/`--overlay-changes`.
+
 ## 4.0.17
 
 ### Bug Fixes

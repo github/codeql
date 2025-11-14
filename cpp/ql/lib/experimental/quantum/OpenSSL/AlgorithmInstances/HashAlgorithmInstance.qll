@@ -72,7 +72,7 @@ class KnownOpenSslHashConstantAlgorithmInstance extends OpenSslAlgorithmInstance
 
   override OpenSslAlgorithmValueConsumer getAvc() { result = getterCall }
 
-  override Crypto::THashType getHashFamily() {
+  override Crypto::THashType getHashType() {
     knownOpenSslConstantToHashFamilyType(this, result)
     or
     not knownOpenSslConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()

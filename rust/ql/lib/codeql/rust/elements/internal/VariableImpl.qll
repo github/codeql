@@ -309,7 +309,7 @@ module Impl {
   private predicate parameterDeclInScope(Variable v, VariableScope scope) {
     exists(Callable f |
       v.getParameter() = f.getParamList().getAParamBase() and
-      scope = [f.(Function).getBody(), f.(ClosureExpr).getBody()]
+      scope = f.getBody()
     )
   }
 
@@ -460,7 +460,12 @@ module Impl {
     VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
   ) {
     name = cand.getName() and
-    scope = [cand.(VariableScope), getEnclosingScope(cand)] and
+    (
+      scope = cand
+      or
+      not cand instanceof VariableScope and
+      scope = getEnclosingScope(cand)
+    ) and
     ord = getPreOrderNumbering(scope, cand) and
     nestLevel = 0
     or

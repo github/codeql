@@ -47,6 +47,9 @@ module Impl {
      */
     TypeBound getATypeBound() { result = this.getTypeBound(_) }
 
+    /** Holds if this type parameter has at least one type bound. */
+    predicate hasTypeBound() { exists(this.getATypeBound()) }
+
     override string toAbbreviatedString() { result = this.getName().getText() }
 
     override string toStringImpl() { result = this.getName().getText() }

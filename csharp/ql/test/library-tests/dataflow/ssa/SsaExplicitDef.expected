@@ -15,7 +15,6 @@
 | Capture.cs:212:30:212:35 | exited | Capture.cs:212:30:212:71 | SSA def(exited) | Capture.cs:212:30:212:71 | EventHandler exited = ... |
 | Capture.cs:248:36:248:36 | j | Capture.cs:251:13:251:17 | SSA def(j) | Capture.cs:251:13:251:17 | ... = ... |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
-| Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception] SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:25:29:25:29 | Consistency c |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:32:9:32:29 | ... = ... |
 | Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | SSA def(s) | Consistency.cs:44:11:44:11 | S s |
@@ -117,13 +116,6 @@
 | Properties.cs:76:9:76:12 | f.xs | Properties.cs:84:9:84:25 | SSA def(f.xs) | Properties.cs:84:9:84:25 | ... = ... |
 | Properties.cs:78:9:78:15 | this.xs | Properties.cs:81:9:81:22 | SSA def(this.xs) | Properties.cs:81:9:81:22 | ... = ... |
 | Properties.cs:78:9:78:15 | this.xs | Properties.cs:83:9:83:22 | SSA def(this.xs) | Properties.cs:83:9:83:22 | ... = ... |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:7:13:7:19 | [b (line 3): true] SSA def(x) | Splitting.cs:7:13:7:19 | ... = ... |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:10:13:10:19 | [b (line 3): false] SSA def(x) | Splitting.cs:10:13:10:19 | ... = ... |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:29:13:29:19 | [b (line 22): false] SSA def(x) | Splitting.cs:29:13:29:19 | ... = ... |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): false] SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:32:9:32:15 | [b (line 22): true] SSA def(x) | Splitting.cs:32:9:32:15 | ... = ... |
-| Splitting.cs:44:13:44:13 | x | Splitting.cs:46:13:46:19 | [b (line 42): true] SSA def(x) | Splitting.cs:46:13:46:19 | ... = ... |
-| Splitting.cs:44:13:44:13 | x | Splitting.cs:49:13:49:19 | [b (line 42): false] SSA def(x) | Splitting.cs:49:13:49:19 | ... = ... |
 | Test.cs:5:15:5:20 | param1 | Test.cs:27:17:27:24 | SSA def(param1) | Test.cs:27:17:27:24 | ...++ |
 | Test.cs:5:15:5:20 | param1 | Test.cs:41:13:41:23 | SSA def(param1) | Test.cs:41:13:41:23 | ... = ... |
 | Test.cs:7:9:7:13 | this.field | Test.cs:7:9:7:17 | SSA def(this.field) | Test.cs:7:9:7:17 | ... = ... |
@@ -144,7 +136,7 @@
 | Test.cs:46:29:46:32 | out | Test.cs:50:13:50:20 | SSA def(out) | Test.cs:50:13:50:20 | ... = ... |
 | Test.cs:46:29:46:32 | out | Test.cs:54:13:54:20 | SSA def(out) | Test.cs:54:13:54:20 | ... = ... |
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | ... = ... |
-| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
+| Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
 | Test.cs:78:13:78:13 | x | Test.cs:78:13:78:17 | SSA def(x) | Test.cs:78:13:78:17 | Int32 x = ... |
 | Test.cs:78:13:78:13 | x | Test.cs:108:13:108:17 | SSA def(x) | Test.cs:108:13:108:17 | ... = ... |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | ... = ... |

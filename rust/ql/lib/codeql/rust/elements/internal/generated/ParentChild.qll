@@ -1092,12 +1092,12 @@ private module Impl {
   private Element getImmediateChildOfClosureExpr(
     ClosureExpr e, int index, string partialPredicateCall
   ) {
-    exists(int n, int nParamList, int nAttr, int nBody, int nForBinder, int nRetType |
+    exists(int n, int nParamList, int nAttr, int nClosureBody, int nForBinder, int nRetType |
       n = 0 and
       nParamList = n + 1 and
       nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nBody = nAttr + 1 and
-      nForBinder = nBody + 1 and
+      nClosureBody = nAttr + 1 and
+      nForBinder = nClosureBody + 1 and
       nRetType = nForBinder + 1 and
       (
         none()
@@ -1107,9 +1107,9 @@ private module Impl {
         result = e.getAttr(index - nParamList) and
         partialPredicateCall = "Attr(" + (index - nParamList).toString() + ")"
         or
-        index = nAttr and result = e.getBody() and partialPredicateCall = "Body()"
+        index = nAttr and result = e.getClosureBody() and partialPredicateCall = "ClosureBody()"
         or
-        index = nBody and result = e.getForBinder() and partialPredicateCall = "ForBinder()"
+        index = nClosureBody and result = e.getForBinder() and partialPredicateCall = "ForBinder()"
         or
         index = nForBinder and result = e.getRetType() and partialPredicateCall = "RetType()"
       )
@@ -2729,7 +2729,7 @@ private module Impl {
 
   private Element getImmediateChildOfFunction(Function e, int index, string partialPredicateCall) {
     exists(
-      int n, int nAttributeMacroExpansion, int nParamList, int nAttr, int nAbi, int nBody,
+      int n, int nAttributeMacroExpansion, int nParamList, int nAttr, int nAbi, int nFunctionBody,
       int nGenericParamList, int nName, int nRetType, int nVisibility, int nWhereClause
     |
       n = 0 and
@@ -2737,8 +2737,8 @@ private module Impl {
       nParamList = nAttributeMacroExpansion + 1 and
       nAttr = nParamList + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nAbi = nAttr + 1 and
-      nBody = nAbi + 1 and
-      nGenericParamList = nBody + 1 and
+      nFunctionBody = nAbi + 1 and
+      nGenericParamList = nFunctionBody + 1 and
       nName = nGenericParamList + 1 and
       nRetType = nName + 1 and
       nVisibility = nRetType + 1 and
@@ -2759,9 +2759,9 @@ private module Impl {
         or
         index = nAttr and result = e.getAbi() and partialPredicateCall = "Abi()"
         or
-        index = nAbi and result = e.getBody() and partialPredicateCall = "Body()"
+        index = nAbi and result = e.getFunctionBody() and partialPredicateCall = "FunctionBody()"
         or
-        index = nBody and
+        index = nFunctionBody and
         result = e.getGenericParamList() and
         partialPredicateCall = "GenericParamList()"
         or

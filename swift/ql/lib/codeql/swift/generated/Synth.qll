@@ -21,6 +21,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TAvailabilitySpec(Raw::AvailabilitySpec id) { constructAvailabilitySpec(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TComment(Raw::Comment id) { constructComment(id) } or
     /**
      * INTERNAL: Do not use.
@@ -42,16 +46,6 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TMacroRole(Raw::MacroRole id) { constructMacroRole(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TPlatformVersionAvailabilitySpec(Raw::PlatformVersionAvailabilitySpec id) {
-      constructPlatformVersionAvailabilitySpec(id)
-    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -188,6 +182,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TTypeAliasDecl(Raw::TypeAliasDecl id) { constructTypeAliasDecl(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TUsingDecl(Raw::UsingDecl id) { constructUsingDecl(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -727,6 +725,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUnsafeExpr(Raw::UnsafeExpr id) { constructUnsafeExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TVarargExpansionExpr(Raw::VarargExpansionExpr id) { constructVarargExpansionExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -979,6 +981,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExistentialArchetypeType(Raw::ExistentialArchetypeType id) {
+      constructExistentialArchetypeType(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TExistentialMetatypeType(Raw::ExistentialMetatypeType id) {
       constructExistentialMetatypeType(id)
     } or
@@ -1005,6 +1013,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TInlineArrayType(Raw::InlineArrayType id) { constructInlineArrayType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TIntegerType(Raw::IntegerType id) { constructIntegerType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1024,10 +1036,6 @@ module Synth {
     TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) {
       constructOpaqueTypeArchetypeType(id)
     } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1124,11 +1132,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TAvailabilitySpec = TOtherAvailabilitySpec or TPlatformVersionAvailabilitySpec;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TCallable = TClosureExpr or TFunction;
 
   /**
@@ -1176,7 +1179,7 @@ module Synth {
   class TDecl =
     TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
         TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
-        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TUsingDecl or TValueDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1286,7 +1289,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr or
+        TUnsafeExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1400,7 +1404,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocalArchetypeType = TElementArchetypeType or TOpenedArchetypeType;
+  class TLocalArchetypeType = TElementArchetypeType or TExistentialArchetypeType;
 
   /**
    * INTERNAL: Do not use.
@@ -1430,7 +1434,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TSyntaxSugarType = TDictionaryType or TUnarySyntaxSugarType;
+  class TSyntaxSugarType = TDictionaryType or TInlineArrayType or TUnarySyntaxSugarType;
 
   /**
    * INTERNAL: Do not use.
@@ -1452,6 +1456,12 @@ module Synth {
    * Converts a raw element to a synthesized `TAvailabilityInfo`, if possible.
    */
   TAvailabilityInfo convertAvailabilityInfoFromRaw(Raw::Element e) { result = TAvailabilityInfo(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TAvailabilitySpec`, if possible.
+   */
+  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) { result = TAvailabilitySpec(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1488,22 +1498,6 @@ module Synth {
    * Converts a raw element to a synthesized `TMacroRole`, if possible.
    */
   TMacroRole convertMacroRoleFromRaw(Raw::Element e) { result = TMacroRole(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOtherAvailabilitySpec`, if possible.
-   */
-  TOtherAvailabilitySpec convertOtherAvailabilitySpecFromRaw(Raw::Element e) {
-    result = TOtherAvailabilitySpec(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TPlatformVersionAvailabilitySpec`, if possible.
-   */
-  TPlatformVersionAvailabilitySpec convertPlatformVersionAvailabilitySpecFromRaw(Raw::Element e) {
-    result = TPlatformVersionAvailabilitySpec(e)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -1728,6 +1722,12 @@ module Synth {
    * Converts a raw element to a synthesized `TTypeAliasDecl`, if possible.
    */
   TTypeAliasDecl convertTypeAliasDeclFromRaw(Raw::Element e) { result = TTypeAliasDecl(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUsingDecl`, if possible.
+   */
+  TUsingDecl convertUsingDeclFromRaw(Raw::Element e) { result = TUsingDecl(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2591,6 +2591,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnsafeExpr`, if possible.
+   */
+  TUnsafeExpr convertUnsafeExprFromRaw(Raw::Element e) { result = TUnsafeExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TVarargExpansionExpr`, if possible.
    */
   TVarargExpansionExpr convertVarargExpansionExprFromRaw(Raw::Element e) {
@@ -2989,6 +2995,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExistentialArchetypeType`, if possible.
+   */
+  TExistentialArchetypeType convertExistentialArchetypeTypeFromRaw(Raw::Element e) {
+    result = TExistentialArchetypeType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TExistentialMetatypeType`, if possible.
    */
   TExistentialMetatypeType convertExistentialMetatypeTypeFromRaw(Raw::Element e) {
@@ -3031,6 +3045,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TInlineArrayType`, if possible.
+   */
+  TInlineArrayType convertInlineArrayTypeFromRaw(Raw::Element e) { result = TInlineArrayType(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TIntegerType`, if possible.
    */
   TIntegerType convertIntegerTypeFromRaw(Raw::Element e) { result = TIntegerType(e) }
@@ -3059,14 +3079,6 @@ module Synth {
    */
   TOpaqueTypeArchetypeType convertOpaqueTypeArchetypeTypeFromRaw(Raw::Element e) {
     result = TOpaqueTypeArchetypeType(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TOpenedArchetypeType`, if possible.
-   */
-  TOpenedArchetypeType convertOpenedArchetypeTypeFromRaw(Raw::Element e) {
-    result = TOpenedArchetypeType(e)
   }
 
   /**
@@ -3241,16 +3253,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TAvailabilitySpec`, if possible.
-   */
-  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) {
-    result = convertOtherAvailabilitySpecFromRaw(e)
-    or
-    result = convertPlatformVersionAvailabilitySpecFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TCallable`, if possible.
    */
   TCallable convertCallableFromRaw(Raw::Element e) {
@@ -3397,6 +3399,8 @@ module Synth {
     result = convertPrecedenceGroupDeclFromRaw(e)
     or
     result = convertTopLevelCodeDeclFromRaw(e)
+    or
+    result = convertUsingDeclFromRaw(e)
     or
     result = convertValueDeclFromRaw(e)
   }
@@ -3735,6 +3739,8 @@ module Synth {
     result = convertParenExprFromRaw(e)
     or
     result = convertUnresolvedMemberChainResultExprFromRaw(e)
+    or
+    result = convertUnsafeExprFromRaw(e)
   }
 
   /**
@@ -4058,7 +4064,7 @@ module Synth {
   TLocalArchetypeType convertLocalArchetypeTypeFromRaw(Raw::Element e) {
     result = convertElementArchetypeTypeFromRaw(e)
     or
-    result = convertOpenedArchetypeTypeFromRaw(e)
+    result = convertExistentialArchetypeTypeFromRaw(e)
   }
 
   /**
@@ -4125,6 +4131,8 @@ module Synth {
    */
   TSyntaxSugarType convertSyntaxSugarTypeFromRaw(Raw::Element e) {
     result = convertDictionaryTypeFromRaw(e)
+    or
+    result = convertInlineArrayTypeFromRaw(e)
     or
     result = convertUnarySyntaxSugarTypeFromRaw(e)
   }
@@ -4199,6 +4207,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAvailabilitySpec` to a raw DB element, if possible.
+   */
+  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) { e = TAvailabilitySpec(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TComment` to a raw DB element, if possible.
    */
   Raw::Element convertCommentToRaw(TComment e) { e = TComment(result) }
@@ -4232,22 +4246,6 @@ module Synth {
    * Converts a synthesized `TMacroRole` to a raw DB element, if possible.
    */
   Raw::Element convertMacroRoleToRaw(TMacroRole e) { e = TMacroRole(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TOtherAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertOtherAvailabilitySpecToRaw(TOtherAvailabilitySpec e) {
-    e = TOtherAvailabilitySpec(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TPlatformVersionAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertPlatformVersionAvailabilitySpecToRaw(TPlatformVersionAvailabilitySpec e) {
-    e = TPlatformVersionAvailabilitySpec(result)
-  }
 
   /**
    * INTERNAL: Do not use.
@@ -4472,6 +4470,12 @@ module Synth {
    * Converts a synthesized `TTypeAliasDecl` to a raw DB element, if possible.
    */
   Raw::Element convertTypeAliasDeclToRaw(TTypeAliasDecl e) { e = TTypeAliasDecl(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TUsingDecl` to a raw DB element, if possible.
+   */
+  Raw::Element convertUsingDeclToRaw(TUsingDecl e) { e = TUsingDecl(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5333,6 +5337,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TUnsafeExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnsafeExprToRaw(TUnsafeExpr e) { e = TUnsafeExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TVarargExpansionExpr` to a raw DB element, if possible.
    */
   Raw::Element convertVarargExpansionExprToRaw(TVarargExpansionExpr e) {
@@ -5731,6 +5741,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TExistentialArchetypeType` to a raw DB element, if possible.
+   */
+  Raw::Element convertExistentialArchetypeTypeToRaw(TExistentialArchetypeType e) {
+    e = TExistentialArchetypeType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TExistentialMetatypeType` to a raw DB element, if possible.
    */
   Raw::Element convertExistentialMetatypeTypeToRaw(TExistentialMetatypeType e) {
@@ -5773,6 +5791,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TInlineArrayType` to a raw DB element, if possible.
+   */
+  Raw::Element convertInlineArrayTypeToRaw(TInlineArrayType e) { e = TInlineArrayType(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TIntegerType` to a raw DB element, if possible.
    */
   Raw::Element convertIntegerTypeToRaw(TIntegerType e) { e = TIntegerType(result) }
@@ -5801,14 +5825,6 @@ module Synth {
    */
   Raw::Element convertOpaqueTypeArchetypeTypeToRaw(TOpaqueTypeArchetypeType e) {
     e = TOpaqueTypeArchetypeType(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TOpenedArchetypeType` to a raw DB element, if possible.
-   */
-  Raw::Element convertOpenedArchetypeTypeToRaw(TOpenedArchetypeType e) {
-    e = TOpenedArchetypeType(result)
   }
 
   /**
@@ -5983,16 +5999,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAvailabilitySpec` to a raw DB element, if possible.
-   */
-  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) {
-    result = convertOtherAvailabilitySpecToRaw(e)
-    or
-    result = convertPlatformVersionAvailabilitySpecToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TCallable` to a raw DB element, if possible.
    */
   Raw::Element convertCallableToRaw(TCallable e) {
@@ -6139,6 +6145,8 @@ module Synth {
     result = convertPrecedenceGroupDeclToRaw(e)
     or
     result = convertTopLevelCodeDeclToRaw(e)
+    or
+    result = convertUsingDeclToRaw(e)
     or
     result = convertValueDeclToRaw(e)
   }
@@ -6477,6 +6485,8 @@ module Synth {
     result = convertParenExprToRaw(e)
     or
     result = convertUnresolvedMemberChainResultExprToRaw(e)
+    or
+    result = convertUnsafeExprToRaw(e)
   }
 
   /**
@@ -6800,7 +6810,7 @@ module Synth {
   Raw::Element convertLocalArchetypeTypeToRaw(TLocalArchetypeType e) {
     result = convertElementArchetypeTypeToRaw(e)
     or
-    result = convertOpenedArchetypeTypeToRaw(e)
+    result = convertExistentialArchetypeTypeToRaw(e)
   }
 
   /**
@@ -6867,6 +6877,8 @@ module Synth {
    */
   Raw::Element convertSyntaxSugarTypeToRaw(TSyntaxSugarType e) {
     result = convertDictionaryTypeToRaw(e)
+    or
+    result = convertInlineArrayTypeToRaw(e)
     or
     result = convertUnarySyntaxSugarTypeToRaw(e)
   }

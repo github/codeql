@@ -42,8 +42,6 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module StaticInitializationVectorFlow = TaintTracking::Global<StaticInitializationVectorConfig>;

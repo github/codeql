@@ -1,0 +1,2 @@
+multipleCallTargets
+| test.rs:31:22:31:72 | ... .read_to_string(...) |

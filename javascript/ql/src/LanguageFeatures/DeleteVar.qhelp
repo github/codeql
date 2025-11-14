@@ -35,11 +35,4 @@ function <code>compute</code> to the outside world):
 <sample src="examples/DeleteVarGood.js" />
 
 </example>
-<references>
-
-
-<li>JSLint Error Explanations: <a href="http://jslinterrors.com/only-properties-should-be-deleted">Only properties should be deleted</a>.</li>
-
-
-</references>
 </qhelp>
