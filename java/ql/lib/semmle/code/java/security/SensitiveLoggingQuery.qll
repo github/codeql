@@ -61,13 +61,19 @@ private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
           m.hasQualifiedName("java.lang", "StringBuffer", "substring") or
           m.hasQualifiedName("java.lang", "StringBuilder", "substring")
         ) and
-        twoArgLimit(mc, limit, false) and
+        (
+          twoArgLimit(mc, limit, false) or
+          singleArgLimit(mc, limit, false)
+        ) and
         this.asExpr() = mc.getQualifier()
         or
         // Kotlin string operations, which use extension methods (so the string is the first argument)
         (
           m.hasQualifiedName("kotlin.text", "StringsKt", "substring") and
-          twoArgLimit(mc, limit, true)
+          (
+            twoArgLimit(mc, limit, true) or
+            singleArgLimit(mc, limit, true)
+          )
           or
           m.hasQualifiedName("kotlin.text", "StringsKt", ["take", "takeLast"]) and
           singleArgLimit(mc, limit, true)
