@@ -91,24 +91,6 @@ private module UseOption = Option<Use>;
 private class UseOption = UseOption::Option;
 
 /**
- * Holds if `n` is superseded by an attribute macro expansion. That is, `n` is
- * an item or a transitive child of an item with an attribute macro expansion.
- */
-predicate supersededByAttributeMacroExpansion(AstNode n) {
-  n.(Item).hasAttributeMacroExpansion()
-  or
-  exists(AstNode parent |
-    n.getParentNode() = parent and
-    supersededByAttributeMacroExpansion(parent) and
-    // Don't exclude expansions themselves as they supercede other nodes.
-    not n = parent.(Item).getAttributeMacroExpansion() and
-    // Don't consider attributes themselves to be superseded.  E.g., in `#[a] fn
-    // f() {}` the macro expansion supercedes `fn f() {}` but not `#[a]`.
-    not n instanceof Attr
-  )
-}
-
-/**
  * An item that may be referred to by a path, and which is a node in
  * the _item graph_.
  *
@@ -186,10 +168,7 @@ predicate supersededByAttributeMacroExpansion(AstNode n) {
  * - https://doc.rust-lang.org/reference/names/namespaces.html
  */
 abstract class ItemNode extends Locatable {
-  ItemNode() {
-    // Exclude items that are superseded by the expansion of an attribute macro.
-    not supersededByAttributeMacroExpansion(this)
-  }
+  ItemNode() { not this.(Item).hasAttributeMacroExpansion() }
 
   /** Gets the (original) name of this item. */
   abstract string getName();
@@ -1457,6 +1436,24 @@ private predicate crateDependencyEdge(SourceFileItemNode file, string name, Crat
   not hasDeclOrDep(file, name)
 }
 
+/**
+ * Gets a `UseTree` that is nested under `tree`, and which needs to be resolved
+ * relative to the path of `tree`.
+ *
+ * `tree` is restricted to either having a path or being a direct child of some
+ * `use` statement without a path.
+ */
+private UseTree getAUseTreeUseTree(UseTree tree) {
+  result = tree.getUseTreeList().getAUseTree() and
+  (if tree.hasPath() then any() else tree = any(Use u).getUseTree())
+  or
+  exists(UseTree mid |
+    mid = getAUseTreeUseTree(tree) and
+    not mid.hasPath() and
+    result = mid.getUseTreeList().getAUseTree()
+  )
+}
+
 private predicate useTreeDeclares(UseTree tree, string name) {
   not tree.isGlob() and
   not exists(tree.getUseTreeList()) and
@@ -1470,7 +1467,7 @@ private predicate useTreeDeclares(UseTree tree, string name) {
   or
   exists(UseTree mid |
     useTreeDeclares(mid, name) and
-    mid = tree.getUseTreeList().getAUseTree()
+    mid = getAUseTreeUseTree(tree)
   )
 }
 
@@ -1511,7 +1508,10 @@ class RelevantPath extends Path {
   pragma[nomagic]
   predicate isUnqualified(string name) {
     not exists(this.getQualifier()) and
-    not this = any(UseTreeList list).getAUseTree().getPath().getQualifier*() and
+    not exists(UseTree tree |
+      tree.hasPath() and
+      this = getAUseTreeUseTree(tree).getPath().getQualifier*()
+    ) and
     name = this.getText()
   }
 
@@ -1990,7 +1990,7 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path
   exists(UseOption useOpt | checkQualifiedVisibility(use, result, kind, useOpt) |
     exists(UseTree midTree, ItemNode mid, string name |
       mid = resolveUseTreeListItem(use, midTree) and
-      tree = midTree.getUseTreeList().getAUseTree() and
+      tree = getAUseTreeUseTree(midTree) and
       isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
       result = mid.getASuccessor(pragma[only_bind_into](name), kind, useOpt)
     )
@@ -2010,13 +2010,27 @@ private ItemNode resolveUseTreeListItemQualifier(
   name = path.getText()
 }
 
+private UseTree getAUseUseTree(Use use) {
+  exists(UseTree root | root = use.getUseTree() |
+    if root.hasPath() then result = root else result = getAUseTreeUseTree(root)
+  )
+}
+
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   exists(Path path | path = tree.getPath() |
-    tree = use.getUseTree() and
+    tree = getAUseUseTree(use) and
     result = resolvePathCand(path)
     or
     result = resolveUseTreeListItem(use, tree, path, _)
+  )
+  or
+  exists(UseTree midTree |
+    // `use foo::{bar, *}`; midTree = `foo` and tree = `*`
+    result = resolveUseTreeListItem(use, midTree) and
+    tree = getAUseTreeUseTree(midTree) and
+    tree.isGlob() and
+    not tree.hasPath()
   )
 }
 
@@ -2157,6 +2171,16 @@ private module Debug {
   ItemNode debugResolvePath(RelevantPath path) {
     path = getRelevantLocatable() and
     result = resolvePath(path)
+  }
+
+  ItemNode debugResolveUseTreeListItem(Use use, UseTree tree, RelevantPath path, SuccessorKind kind) {
+    use = getRelevantLocatable() and
+    result = resolveUseTreeListItem(use, tree, path, kind)
+  }
+
+  ItemNode debugResolveUseTreeListItem(Use use, UseTree tree) {
+    use = getRelevantLocatable() and
+    result = resolveUseTreeListItem(use, tree)
   }
 
   predicate debugUseImportEdge(Use use, string name, ItemNode item, SuccessorKind kind) {
