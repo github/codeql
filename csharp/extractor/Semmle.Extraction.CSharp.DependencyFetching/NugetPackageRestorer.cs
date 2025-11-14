@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.compilationInfoContainer = compilationInfoContainer;
 
             PackageDirectory = new DependencyDirectory("packages", "package", logger);
-            legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
+            legacyPackageDirectory = new DependencyDirectory(ComputeTempDirectoryPath("legacypackages"), "legacy package", logger);
             missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
         }
 

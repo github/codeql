@@ -46,5 +46,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Couldn't delete {userReportedDirectoryPurpose} directory {exc.Message}");
             }
         }
+
+        public override string ToString() => DirInfo.FullName.ToString();
     }
 }
