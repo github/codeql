@@ -277,10 +277,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
 
   predicate sinkModelSanitizer(DataFlow::Node node) {
     // exclude variable capture jump steps
-    exists(Ssa::SsaImplicitInit closure |
-      closure.captures(_) and
-      node.asExpr() = closure.getAFirstUse()
-    )
+    exists(Ssa::SsaCapturedDefinition closure | node.asExpr() = Ssa::ssaGetAFirstUse(closure))
   }
 
   predicate apiSource(DataFlow::Node source) {

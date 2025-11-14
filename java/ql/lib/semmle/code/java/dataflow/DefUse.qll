@@ -34,8 +34,12 @@ predicate useUsePair(VarRead use1, VarRead use2) { adjacentUseUse+(use1, use2) }
  * Other paths may also exist, so the SSA variables in `def` and `use` can be different.
  */
 predicate defUsePair(VariableUpdate def, VarRead use) {
-  exists(SsaVariable v |
-    v.getAUse() = use and v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr() = def
+  exists(SsaDefinition v, SsaExplicitWrite write |
+    v.getARead() = use and write.getDefiningExpr() = def
+  |
+    v.getAnUltimateDefinition() = write
+    or
+    v.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = write
   )
 }
 
@@ -46,7 +50,9 @@ predicate defUsePair(VariableUpdate def, VarRead use) {
  * Other paths may also exist, so the SSA variables can be different.
  */
 predicate parameterDefUsePair(Parameter p, VarRead use) {
-  exists(SsaVariable v |
-    v.getAUse() = use and v.getAnUltimateDefinition().(SsaImplicitInit).isParameterDefinition(p)
+  exists(SsaDefinition v, SsaParameterInit init | v.getARead() = use and init.getParameter() = p |
+    v.getAnUltimateDefinition() = init
+    or
+    v.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = init
   )
 }

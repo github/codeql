@@ -1617,6 +1617,9 @@ module Make<
 
     /** A static single assignment (SSA) definition. */
     class SsaDefinition extends FinalDefinition {
+      /** Gets a textual representation of this SSA definition. */
+      string toString() { result = super.toString() }
+
       /**
        * Gets the control flow node of this SSA definition.
        *
@@ -1708,6 +1711,8 @@ module Make<
     class SsaParameterInit extends SsaExplicitWrite {
       SsaParameterInit() { parameterInit(this, _) }
 
+      override string toString() { result = "SSA param(" + this.getSourceVariable() + ")" }
+
       /**
        * Gets the parameter that this definition represents. This is equivalent
        * to `getDefinition().isParameterInit(result)`
@@ -1725,6 +1730,8 @@ module Make<
      */
     class SsaImplicitWrite extends SsaWriteDefinition {
       SsaImplicitWrite() { not explicitWrite(this, _) }
+
+      override string toString() { result = "SSA implicit def(" + this.getSourceVariable() + ")" }
     }
 
     /**
@@ -1734,6 +1741,8 @@ module Make<
      */
     class SsaImplicitEntryDefinition extends SsaImplicitWrite {
       SsaImplicitEntryDefinition() { this.definesAt(_, any(EntryBasicBlock bb), -1) }
+
+      override string toString() { result = "SSA entry def(" + this.getSourceVariable() + ")" }
     }
 
     /** An SSA definition that represents an uncertain variable update. */
@@ -1761,7 +1770,7 @@ module Make<
      * ```
      * a phi definition for `x` is inserted just before the call `puts x`.
      */
-    class SsaPhiDefinition extends SsaDefinition {
+    class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
       /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
         phiHasInputFromBlockCached(this, inp, bb)

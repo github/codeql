@@ -8,7 +8,7 @@
 
 import java
 private import VirtualDispatch
-private import semmle.code.java.dataflow.internal.BaseSSA
+private import semmle.code.java.dataflow.internal.BaseSSA as Base
 private import semmle.code.java.dataflow.internal.DataFlowUtil as DataFlow
 private import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.java.dataflow.InstanceAccess
@@ -162,14 +162,28 @@ private module TypeTrackingSteps {
     storeContents = loadContents
   }
 
-  predicate simpleLocalSmallStep(Node n1, Node n2) {
-    exists(BaseSsaVariable v, BaseSsaVariable def |
-      def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
-      or
-      def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
+  /**
+   * Holds if `n` is a read of an SSA variable that is ultimately defined by `def`.
+   *
+   * This includes reads of captured variables even though they are not technically
+   * local steps, but treating them as local is useful for type tracking purposes.
+   */
+  private predicate readsSsa(Node n, Base::SsaDefinition def) {
+    exists(Base::SsaDefinition v |
+      v.getAnUltimateDefinition() = def or
+      v.(Base::SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
     |
-      v.getAnUltimateDefinition() = def and
-      v.getAUse() = n2.asExpr()
+      v.getARead() = n.asExpr()
+    )
+  }
+
+  predicate simpleLocalSmallStep(Node n1, Node n2) {
+    exists(Base::SsaDefinition def |
+      def.(Base::SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+      or
+      def.(Base::SsaParameterInit).getParameter() = n1.asParameter()
+    |
+      readsSsa(n2, def)
     )
     or
     exists(Callable c | n1.(DataFlow::InstanceParameterNode).getCallable() = c |
@@ -220,11 +234,10 @@ private module TypeTrackingSteps {
         n2.asExpr() = get
       )
       or
-      exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
-        for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+      exists(EnhancedForStmt for, Base::SsaDefinition def |
+        for.getVariable() = def.(Base::SsaExplicitWrite).getDefiningExpr() and
         for.getExpr() = v.getAnAccess() and
-        ssa.getAnUltimateDefinition() = def and
-        ssa.getAUse() = n2.asExpr()
+        readsSsa(n2, def)
       )
     )
   }
@@ -259,16 +272,15 @@ private module TypeTrackingSteps {
   }
 
   predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
-    exists(BaseSsaVariable v, BaseSsaVariable def |
+    exists(Base::SsaDefinition def |
       exists(EnhancedForStmt for |
-        for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+        for.getVariable() = def.(Base::SsaExplicitWrite).getDefiningExpr() and
         for.getExpr() = n1.asExpr() and
         n1.getType() instanceof Array and
         f = ContentArray()
       )
     |
-      v.getAnUltimateDefinition() = def and
-      v.getAUse() = n2.asExpr()
+      readsSsa(n2, def)
     )
     or
     n2.asExpr().(ArrayAccess).getArray() = n1.asExpr()
