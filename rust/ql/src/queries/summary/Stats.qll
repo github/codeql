@@ -22,6 +22,7 @@ private import codeql.rust.security.AccessInvalidPointerExtensions
 private import codeql.rust.security.CleartextLoggingExtensions
 private import codeql.rust.security.CleartextStorageDatabaseExtensions
 private import codeql.rust.security.CleartextTransmissionExtensions
+private import codeql.rust.security.DisabledCertificateCheckExtensions
 private import codeql.rust.security.HardcodedCryptographicValueExtensions
 private import codeql.rust.security.InsecureCookieExtensions
 private import codeql.rust.security.LogInjectionExtensions
