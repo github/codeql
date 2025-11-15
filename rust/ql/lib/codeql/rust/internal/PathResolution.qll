@@ -259,8 +259,7 @@ abstract class ItemNode extends Locatable {
     kind.isInternal() and
     useOpt.isNone()
     or
-    externCrateEdge(this, name, result) and
-    kind.isInternal() and
+    externCrateEdge(this, name, kind, result) and
     useOpt.isNone()
     or
     macroExportEdge(this, name, result) and
@@ -276,7 +275,7 @@ abstract class ItemNode extends Locatable {
         result = use_.getASuccessor(name, kind, _)
       )
     or
-    exists(ExternCrateItemNode ec | result = ec.(ItemNode).getASuccessor(name, kind, useOpt) |
+    exists(ExternCrateItemNode ec | result = ec.getASuccessor(name, kind, useOpt) |
       ec = this.getASuccessor(_, _, _)
       or
       // if the extern crate appears in the crate root, then the crate name is also added
@@ -527,7 +526,7 @@ class ExternCrateItemNode extends ItemNode instanceof ExternCrate {
 
   override Namespace getNamespace() { none() }
 
-  override Visibility getVisibility() { none() }
+  override Visibility getVisibility() { result = ExternCrate.super.getVisibility() }
 
   override Attr getAnAttr() { result = ExternCrate.super.getAnAttr() }
 
@@ -2107,8 +2106,11 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
 
 /** Holds if `ec` imports `crate` as `name`. */
 pragma[nomagic]
-private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItemNode crate) {
+private predicate externCrateEdge(
+  ExternCrateItemNode ec, string name, SuccessorKind kind, CrateItemNode crate
+) {
   name = ec.getName() and
+  (if ec.isPublic() then kind.isBoth() else kind.isInternal()) and
   exists(SourceFile f, string s |
     ec.getFile() = f.getFile() and
     s = ec.(ExternCrate).getIdentifier().getText()
