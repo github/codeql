@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.commons.fileupload", "FileItem", True, "get", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItem", True, "getContentType", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItem", True, "getFieldName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItem", True, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItem", True, "getName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItem", True, "getString", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItem", True, "getString", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItemStream", True, "getContentType", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItemStream", True, "getFieldName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItemStream", True, "getName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.apache.commons.fileupload", "FileItemStream", True, "openStream", "()", "", "ReturnValue", "remote", "manual"]
