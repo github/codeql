@@ -184,16 +184,12 @@
 | MultiImplementationA.cs:3:7:3:15 | call to constructor Object | normal | MultiImplementationA.cs:3:7:3:15 | call to constructor Object |
 | MultiImplementationB.cs:1:7:1:15 | call to constructor Object | normal | MultiImplementationB.cs:1:7:1:15 | call to constructor Object |
 | Splitting.cs:1:7:1:15 | call to constructor Object | normal | Splitting.cs:1:7:1:15 | call to constructor Object |
-| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
-| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
+| Splitting.cs:8:17:8:31 | call to method Return<String> | normal | Splitting.cs:8:17:8:31 | call to method Return<String> |
 | Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |
 | Splitting.cs:21:21:21:33 | call to method Return<String> | normal | Splitting.cs:21:21:21:33 | call to method Return<String> |
-| Splitting.cs:30:9:30:13 | [b (line 24): false] dynamic access to element | normal | Splitting.cs:30:9:30:13 | [b (line 24): false] dynamic access to element |
-| Splitting.cs:30:9:30:13 | [b (line 24): true] dynamic access to element | normal | Splitting.cs:30:9:30:13 | [b (line 24): true] dynamic access to element |
-| Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element | normal | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element |
-| Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element | normal | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element |
-| Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check | normal | Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check |
-| Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check | normal | Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check |
+| Splitting.cs:30:9:30:13 | dynamic access to element | normal | Splitting.cs:30:9:30:13 | dynamic access to element |
+| Splitting.cs:31:17:31:26 | dynamic access to element | normal | Splitting.cs:31:17:31:26 | dynamic access to element |
+| Splitting.cs:32:9:32:16 | dynamic call to method Check | normal | Splitting.cs:32:9:32:16 | dynamic call to method Check |
 | Splitting.cs:34:13:34:20 | dynamic call to method Check | normal | Splitting.cs:34:13:34:20 | dynamic call to method Check |
 | This.cs:7:5:7:8 | call to constructor Object | normal | This.cs:7:5:7:8 | call to constructor Object |
 | This.cs:17:9:17:18 | object creation of type This | normal | This.cs:17:9:17:18 | object creation of type This |

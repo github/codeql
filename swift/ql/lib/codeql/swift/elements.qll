@@ -18,8 +18,6 @@ import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.MacroRole
-import codeql.swift.elements.OtherAvailabilitySpec
-import codeql.swift.elements.PlatformVersionAvailabilitySpec
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
 import codeql.swift.elements.UnspecifiedElement
@@ -63,6 +61,7 @@ import codeql.swift.elements.decl.SubscriptDecl
 import codeql.swift.elements.decl.TopLevelCodeDecl
 import codeql.swift.elements.decl.TypeAliasDecl
 import codeql.swift.elements.decl.TypeDecl
+import codeql.swift.elements.decl.UsingDecl
 import codeql.swift.elements.decl.ValueDecl
 import codeql.swift.elements.decl.VarDecl
 import codeql.swift.elements.expr.AbiSafeConversionExpr
@@ -197,6 +196,7 @@ import codeql.swift.elements.expr.UnresolvedPatternExpr
 import codeql.swift.elements.expr.UnresolvedSpecializeExpr
 import codeql.swift.elements.expr.UnresolvedTypeConversionExpr
 import codeql.swift.elements.expr.UnsafeCastExpr
+import codeql.swift.elements.expr.UnsafeExpr
 import codeql.swift.elements.expr.VarargExpansionExpr
 import codeql.swift.elements.pattern.AnyPattern
 import codeql.swift.elements.pattern.BindingPattern
@@ -268,12 +268,14 @@ import codeql.swift.elements.type.DynamicSelfType
 import codeql.swift.elements.type.ElementArchetypeType
 import codeql.swift.elements.type.EnumType
 import codeql.swift.elements.type.ErrorType
+import codeql.swift.elements.type.ExistentialArchetypeType
 import codeql.swift.elements.type.ExistentialMetatypeType
 import codeql.swift.elements.type.ExistentialType
 import codeql.swift.elements.type.FunctionType
 import codeql.swift.elements.type.GenericFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.type.InOutType
+import codeql.swift.elements.type.InlineArrayType
 import codeql.swift.elements.type.IntegerType
 import codeql.swift.elements.type.LValueType
 import codeql.swift.elements.type.LocalArchetypeType
@@ -282,7 +284,6 @@ import codeql.swift.elements.type.ModuleType
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
-import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
 import codeql.swift.elements.type.PackArchetypeType
 import codeql.swift.elements.type.PackElementType

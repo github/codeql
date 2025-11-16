@@ -15,8 +15,6 @@
 /lib/codeql/swift/elements/Locatable.qll linguist-generated
 /lib/codeql/swift/elements/Location.qll linguist-generated
 /lib/codeql/swift/elements/MacroRole.qll linguist-generated
-/lib/codeql/swift/elements/OtherAvailabilitySpec.qll linguist-generated
-/lib/codeql/swift/elements/PlatformVersionAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/elements/UnknownFile.qll linguist-generated
 /lib/codeql/swift/elements/UnknownLocation.qll linguist-generated
 /lib/codeql/swift/elements/UnspecifiedElement.qll linguist-generated
@@ -60,6 +58,7 @@
 /lib/codeql/swift/elements/decl/TopLevelCodeDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/TypeAliasDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/TypeDecl.qll linguist-generated
+/lib/codeql/swift/elements/decl/UsingDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/AbstractStorageDeclImpl.qll linguist-generated
@@ -112,6 +111,8 @@
 /lib/codeql/swift/elements/decl/internal/SubscriptDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TopLevelCodeDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TypeAliasDeclConstructor.qll linguist-generated
+/lib/codeql/swift/elements/decl/internal/UsingDeclConstructor.qll linguist-generated
+/lib/codeql/swift/elements/decl/internal/UsingDeclImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyHashableErasureExpr.qll linguist-generated
@@ -244,6 +245,7 @@
 /lib/codeql/swift/elements/expr/UnresolvedSpecializeExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedTypeConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnsafeCastExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/UnsafeExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprImpl.qll linguist-generated
@@ -433,9 +435,11 @@
 /lib/codeql/swift/elements/expr/internal/UnresolvedTypeConversionExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnsafeCastExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnsafeCastExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnsafeExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnsafeExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/VarargExpansionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/AvailabilityInfoConstructor.qll linguist-generated
-/lib/codeql/swift/elements/internal/AvailabilitySpecImpl.qll linguist-generated
+/lib/codeql/swift/elements/internal/AvailabilitySpecConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/CommentConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/DbFileConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/DbFileImpl.qll linguist-generated
@@ -445,8 +449,6 @@
 /lib/codeql/swift/elements/internal/ErrorElementImpl.qll linguist-generated
 /lib/codeql/swift/elements/internal/KeyPathComponentConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/MacroRoleConstructor.qll linguist-generated
-/lib/codeql/swift/elements/internal/OtherAvailabilitySpecConstructor.qll linguist-generated
-/lib/codeql/swift/elements/internal/PlatformVersionAvailabilitySpecConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/UnspecifiedElementConstructor.qll linguist-generated
 /lib/codeql/swift/elements/pattern/AnyPattern.qll linguist-generated
 /lib/codeql/swift/elements/pattern/BindingPattern.qll linguist-generated
@@ -557,12 +559,14 @@
 /lib/codeql/swift/elements/type/ElementArchetypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/EnumType.qll linguist-generated
 /lib/codeql/swift/elements/type/ErrorType.qll linguist-generated
+/lib/codeql/swift/elements/type/ExistentialArchetypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/ExistentialMetatypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/ExistentialType.qll linguist-generated
 /lib/codeql/swift/elements/type/FunctionType.qll linguist-generated
 /lib/codeql/swift/elements/type/GenericFunctionType.qll linguist-generated
 /lib/codeql/swift/elements/type/GenericTypeParamType.qll linguist-generated
 /lib/codeql/swift/elements/type/InOutType.qll linguist-generated
+/lib/codeql/swift/elements/type/InlineArrayType.qll linguist-generated
 /lib/codeql/swift/elements/type/IntegerType.qll linguist-generated
 /lib/codeql/swift/elements/type/LValueType.qll linguist-generated
 /lib/codeql/swift/elements/type/LocalArchetypeType.qll linguist-generated
@@ -571,7 +575,6 @@
 /lib/codeql/swift/elements/type/NominalOrBoundGenericNominalType.qll linguist-generated
 /lib/codeql/swift/elements/type/NominalType.qll linguist-generated
 /lib/codeql/swift/elements/type/OpaqueTypeArchetypeType.qll linguist-generated
-/lib/codeql/swift/elements/type/OpenedArchetypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/OptionalType.qll linguist-generated
 /lib/codeql/swift/elements/type/PackArchetypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/PackElementType.qll linguist-generated
@@ -652,6 +655,8 @@
 /lib/codeql/swift/elements/type/internal/EnumTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/ErrorTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/ErrorTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/ExistentialArchetypeTypeConstructor.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/ExistentialArchetypeTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/ExistentialMetatypeTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/ExistentialMetatypeTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/ExistentialTypeConstructor.qll linguist-generated
@@ -664,6 +669,8 @@
 /lib/codeql/swift/elements/type/internal/GenericTypeParamTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/InOutTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/InOutTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/InlineArrayTypeConstructor.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/InlineArrayTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/IntegerTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/IntegerTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/LValueTypeConstructor.qll linguist-generated
@@ -675,8 +682,6 @@
 /lib/codeql/swift/elements/type/internal/NominalOrBoundGenericNominalTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/OpaqueTypeArchetypeTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/OpaqueTypeArchetypeTypeImpl.qll linguist-generated
-/lib/codeql/swift/elements/type/internal/OpenedArchetypeTypeConstructor.qll linguist-generated
-/lib/codeql/swift/elements/type/internal/OpenedArchetypeTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/OptionalTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/OptionalTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/PackArchetypeTypeConstructor.qll linguist-generated
@@ -734,9 +739,7 @@
 /lib/codeql/swift/generated/Locatable.qll linguist-generated
 /lib/codeql/swift/generated/Location.qll linguist-generated
 /lib/codeql/swift/generated/MacroRole.qll linguist-generated
-/lib/codeql/swift/generated/OtherAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/generated/ParentChild.qll linguist-generated
-/lib/codeql/swift/generated/PlatformVersionAvailabilitySpec.qll linguist-generated
 /lib/codeql/swift/generated/PureSynthConstructors.qll linguist-generated
 /lib/codeql/swift/generated/Raw.qll linguist-generated
 /lib/codeql/swift/generated/Synth.qll linguist-generated
@@ -785,6 +788,7 @@
 /lib/codeql/swift/generated/decl/TopLevelCodeDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/TypeAliasDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/TypeDecl.qll linguist-generated
+/lib/codeql/swift/generated/decl/UsingDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/generated/expr/AbiSafeConversionExpr.qll linguist-generated
@@ -922,6 +926,7 @@
 /lib/codeql/swift/generated/expr/UnresolvedSpecializeExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedTypeConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnsafeCastExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/UnsafeExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/generated/pattern/AnyPattern.qll linguist-generated
 /lib/codeql/swift/generated/pattern/BindingPattern.qll linguist-generated
@@ -993,12 +998,14 @@
 /lib/codeql/swift/generated/type/ElementArchetypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/EnumType.qll linguist-generated
 /lib/codeql/swift/generated/type/ErrorType.qll linguist-generated
+/lib/codeql/swift/generated/type/ExistentialArchetypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/ExistentialMetatypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/ExistentialType.qll linguist-generated
 /lib/codeql/swift/generated/type/FunctionType.qll linguist-generated
 /lib/codeql/swift/generated/type/GenericFunctionType.qll linguist-generated
 /lib/codeql/swift/generated/type/GenericTypeParamType.qll linguist-generated
 /lib/codeql/swift/generated/type/InOutType.qll linguist-generated
+/lib/codeql/swift/generated/type/InlineArrayType.qll linguist-generated
 /lib/codeql/swift/generated/type/IntegerType.qll linguist-generated
 /lib/codeql/swift/generated/type/LValueType.qll linguist-generated
 /lib/codeql/swift/generated/type/LocalArchetypeType.qll linguist-generated
@@ -1007,7 +1014,6 @@
 /lib/codeql/swift/generated/type/NominalOrBoundGenericNominalType.qll linguist-generated
 /lib/codeql/swift/generated/type/NominalType.qll linguist-generated
 /lib/codeql/swift/generated/type/OpaqueTypeArchetypeType.qll linguist-generated
-/lib/codeql/swift/generated/type/OpenedArchetypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/OptionalType.qll linguist-generated
 /lib/codeql/swift/generated/type/PackArchetypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/PackElementType.qll linguist-generated
@@ -1035,12 +1041,11 @@
 /lib/codeql/swift/generated/type/VariadicSequenceType.qll linguist-generated
 /lib/codeql/swift/generated/type/WeakStorageType.qll linguist-generated
 /test/extractor-tests/generated/AvailabilityInfo/AvailabilityInfo.ql linguist-generated
+/test/extractor-tests/generated/AvailabilitySpec/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Comment/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Diagnostics/Diagnostics.ql linguist-generated
 /test/extractor-tests/generated/File/File.ql linguist-generated
 /test/extractor-tests/generated/KeyPathComponent/KeyPathComponent.ql linguist-generated
-/test/extractor-tests/generated/OtherAvailabilitySpec/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/PlatformVersionAvailabilitySpec/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/Accessor/Accessor.ql linguist-generated
 /test/extractor-tests/generated/decl/AssociatedTypeDecl/AssociatedTypeDecl.ql linguist-generated
 /test/extractor-tests/generated/decl/CapturedDecl/CapturedDecl.ql linguist-generated
@@ -1072,6 +1077,7 @@
 /test/extractor-tests/generated/decl/SubscriptDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/TopLevelCodeDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/decl/TypeAliasDecl/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/decl/UsingDecl/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/AppliedPropertyWrapperExpr/AppliedPropertyWrapperExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/Argument/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ArrayExpr/MISSING_SOURCE.txt linguist-generated
@@ -1190,18 +1196,19 @@
 /test/extractor-tests/generated/type/DictionaryType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/DynamicSelfType/DynamicSelfType.ql linguist-generated
 /test/extractor-tests/generated/type/EnumType/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/type/ExistentialArchetypeType/ExistentialArchetypeType.ql linguist-generated
 /test/extractor-tests/generated/type/ExistentialMetatypeType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/ExistentialType/ExistentialType.ql linguist-generated
 /test/extractor-tests/generated/type/FunctionType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/GenericFunctionType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/GenericTypeParamType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/InOutType/InOutType.ql linguist-generated
+/test/extractor-tests/generated/type/InlineArrayType/InlineArrayType.ql linguist-generated
 /test/extractor-tests/generated/type/IntegerType/IntegerType.ql linguist-generated
 /test/extractor-tests/generated/type/LValueType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/MetatypeType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/ModuleType/ModuleType.ql linguist-generated
 /test/extractor-tests/generated/type/OpaqueTypeArchetypeType/OpaqueTypeArchetypeType.ql linguist-generated
-/test/extractor-tests/generated/type/OpenedArchetypeType/OpenedArchetypeType.ql linguist-generated
 /test/extractor-tests/generated/type/OptionalType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/PackType/ElementArchetypeType.ql linguist-generated
 /test/extractor-tests/generated/type/PackType/PackArchetypeType.ql linguist-generated

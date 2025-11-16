@@ -86,7 +86,7 @@ struct HasPropertyAndObserver {
     }
   }
 
-  // A field can be marked as read-only by dirctly implementing
+  // A field can be marked as read-only by directly implementing
   // the getter between the braces.
   var readOnlyField1: Int {
     return 0

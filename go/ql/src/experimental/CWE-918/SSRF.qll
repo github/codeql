@@ -33,9 +33,9 @@ module ServerSideRequestForgery {
 
     predicate observeDiffInformedIncrementalMode() { any() }
 
-    Location getASelectedSourceLocation(DataFlow::Node source) { none() }
-
     Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.(Sink).getLocation()
+      or
       result = sink.(Sink).getARequest().getLocation()
     }
   }

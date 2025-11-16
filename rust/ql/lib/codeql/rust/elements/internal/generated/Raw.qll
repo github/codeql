@@ -874,7 +874,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * fn foo() -> i32 {}
+   * fn foo() -> i32 { 0 }
    * //       ^^^^^^
    * ```
    */
@@ -1270,7 +1270,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> { 0 }
    * //                                                        ^^^^^^^^
    * ```
    */
@@ -1906,9 +1906,9 @@ module Raw {
     override string toString() { result = "ClosureExpr" }
 
     /**
-     * Gets the body of this closure expression, if it exists.
+     * Gets the closure body of this closure expression, if it exists.
      */
-    Expr getBody() { closure_expr_bodies(this, result) }
+    Expr getClosureBody() { closure_expr_closure_bodies(this, result) }
 
     /**
      * Gets the for binder of this closure expression, if it exists.
@@ -4353,9 +4353,9 @@ module Raw {
     Abi getAbi() { function_abis(this, result) }
 
     /**
-     * Gets the body of this function, if it exists.
+     * Gets the function body of this function, if it exists.
      */
-    BlockExpr getBody() { function_bodies(this, result) }
+    BlockExpr getFunctionBody() { function_function_bodies(this, result) }
 
     /**
      * Gets the generic parameter list of this function, if it exists.
