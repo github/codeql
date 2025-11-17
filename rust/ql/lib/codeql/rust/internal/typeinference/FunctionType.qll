@@ -80,7 +80,7 @@ private newtype TAssocFunctionType =
     i.getASuccessor(_) = f and
     // When `f` is not directly in `i`, the `parent` should be satisfiable
     // through `i`. This ensures that `parent` is either a supertrait of `i` or
-    // `i` in an `impl` block implementing `parent`.
+    // `i` is an `impl` block implementing `parent`.
     (parent = i or BaseTypes::rootTypesSatisfaction(_, TTrait(parent), i, _, _)) and
     exists(pos.getTypeMention(f))
   }
