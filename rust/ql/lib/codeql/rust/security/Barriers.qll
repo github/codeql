@@ -58,7 +58,7 @@ private predicate notNullCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolea
 }
 
 /**
- * A node representing a check that the value is not null, which may be an
+ * A node representing a value checked to be non-null. This may be an
  * appropriate taint flow barrier for some queries.
  */
 class NotNullCheckBarrier extends DataFlow::Node {

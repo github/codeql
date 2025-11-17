@@ -62,8 +62,8 @@ module AccessInvalidPointer {
   }
 
   /**
-   * A barrier for invalid pointer access vulnerabilities for values found to be `null` in
-   * a comparison.
+   * A barrier for invalid pointer access vulnerabilities for values checked to
+   * be non-`null`.
    */
-  private class NullCheckBarrier extends Barrier instanceof Barriers::NotNullCheckBarrier { }
+  private class NotNullCheckBarrier extends Barrier instanceof Barriers::NotNullCheckBarrier { }
 }
