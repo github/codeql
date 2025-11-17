@@ -12,14 +12,14 @@
  */
 
 import go
-import semmle.go.security.SecureCookies
+import semmle.go.security.CookieWithoutHttpOnly
 import SensitiveCookieNameFlow::PathGraph
 
 from
-  Http::CookieWrite cw, Expr sensitiveNameExpr, string name,
-  SensitiveCookieNameFlow::PathNode source, SensitiveCookieNameFlow::PathNode sink
+  Http::CookieWrite cw, string name, SensitiveCookieNameFlow::PathNode source,
+  SensitiveCookieNameFlow::PathNode sink
 where
-  isSensitiveCookie(cw, sensitiveNameExpr, name, source, sink) and
+  isSensitiveCookie(cw, name, source, sink) and
   isNonHttpOnlyCookie(cw)
-select cw, source, sink, "Sensitive cookie $@ does not set HttpOnly attribute to true.",
-  sensitiveNameExpr, name
+select cw, source, sink, "Sensitive cookie $@ does not set HttpOnly attribute to true.", source,
+  name

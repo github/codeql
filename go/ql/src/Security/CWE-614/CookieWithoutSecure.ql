@@ -5,14 +5,14 @@
  * @kind problem
  * @problem.severity warning
  * @precision high
- * @security-severity 5.0
+ * @security-severity 4.0
  * @id go/cookie-secure-not-set
  * @tags security
  *       external/cwe/cwe-614
  */
 
 import go
-import semmle.go.security.SecureCookies
+import semmle.go.security.CookieWithoutSecure
 
 from Http::CookieWrite cw
 where isInsecureCookie(cw)
