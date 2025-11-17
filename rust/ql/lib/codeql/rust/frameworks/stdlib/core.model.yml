@@ -9,6 +9,7 @@ extensions:
       - ["<_ as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
       # Clone
       - ["<_ as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "manual"]
+      - ["<_ as core::clone::Clone>::clone_from", "Argument[0].Reference", "Argument[self].Reference", "value", "manual"]
       # Conversions
       - ["<_ as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::convert::From>::from", "Argument[0].Reference", "ReturnValue", "taint", "manual"]

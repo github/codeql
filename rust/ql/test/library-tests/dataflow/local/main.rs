@@ -587,7 +587,7 @@ fn clone() {
     let mut b: i64 = 0;
     sink(b);
     b.clone_from(&a);
-    sink(b); // $ MISSING: hasValueFlow=60
+    sink(b); // $ hasValueFlow=60
 }
 
 fn main() {
