@@ -451,7 +451,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * - and for every instantiation of the type parameters from `abs` the
      *   resulting `condition` satisfies the constraint given by `constraint`.
      * - `transitive` corresponds to whether any further constraints satisfied
-     *   through `constraint` also applies to `condition`.
+     *   through `constraint` should also apply to `condition`.
      *
      * Example in C#:
      * ```csharp
