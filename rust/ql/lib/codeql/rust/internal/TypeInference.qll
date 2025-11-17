@@ -9,6 +9,7 @@ private import TypeMention
 private import typeinference.FunctionType
 private import typeinference.FunctionOverloading as FunctionOverloading
 private import typeinference.BlanketImplementation as BlanketImplementation
+private import codeql.rust.internal.CachedStages
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
@@ -437,9 +438,10 @@ module CertainTypeInference {
    * Holds if `n` has complete and certain type information and if `n` has the
    * resulting type at `path`.
    */
-  pragma[nomagic]
+  cached
   Type inferCertainType(AstNode n, TypePath path) {
-    result = inferAnnotatedType(n, path)
+    result = inferAnnotatedType(n, path) and
+    Stages::TypeInferenceStage::ref()
     or
     result = inferCertainCallExprType(n, path)
     or
@@ -3454,8 +3456,6 @@ private Type inferCastExprType(CastExpr ce, TypePath path) {
 
 cached
 private module Cached {
-  private import codeql.rust.internal.CachedStages
-
   /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
   cached
   predicate receiverHasImplicitDeref(AstNode receiver) {
