@@ -103,7 +103,7 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::ParenExpr, ParenExprTag)
     MAP(swift::DotSelfExpr, DotSelfExprTag)
     MAP(swift::AwaitExpr, AwaitExprTag)
-    MAP(swift::UnsafeExpr, void) // TODO: Swift 6.2
+    MAP(swift::UnsafeExpr, UnsafeExprTag)
     MAP(swift::BorrowExpr, BorrowExprTag)
     MAP(swift::UnresolvedMemberChainResultExpr, UnresolvedMemberChainResultExprTag)
   MAP(swift::AnyTryExpr, AnyTryExprTag)
@@ -241,7 +241,7 @@ MAP(swift::Decl, DeclTag)
   MAP(swift::MissingMemberDecl, MissingMemberDeclTag)
   MAP(swift::PatternBindingDecl, PatternBindingDeclTag)
   MAP(swift::EnumCaseDecl, EnumCaseDeclTag)
-  MAP(swift::UsingDecl, void) // TODO: Swift 6.2
+  MAP(swift::UsingDecl, UsingDeclTag)
   MAP(swift::OperatorDecl, OperatorDeclTag)
     MAP(swift::InfixOperatorDecl, InfixOperatorDeclTag)
     MAP(swift::PrefixOperatorDecl, PrefixOperatorDeclTag)
@@ -342,13 +342,13 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::IntegerType, IntegerTypeTag)
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)
-    MAP(swift::LocatableType, void) // TODO: Swift 6.2
+    MAP(swift::LocatableType, void) // created during type checking and only used for constraint checking
     MAP(swift::SyntaxSugarType, SyntaxSugarTypeTag)
       MAP(swift::UnarySyntaxSugarType, UnarySyntaxSugarTypeTag)
         MAP(swift::ArraySliceType, ArraySliceTypeTag)
         MAP(swift::OptionalType, OptionalTypeTag)
         MAP(swift::VariadicSequenceType, VariadicSequenceTypeTag)
-      MAP(swift::InlineArrayType, void) // TODO: Swift 6.2
+      MAP(swift::InlineArrayType, InlineArrayTypeTag)
       MAP(swift::DictionaryType, DictionaryTypeTag)
 
 MAP(swift::AvailabilitySpec, AvailabilitySpecTag)

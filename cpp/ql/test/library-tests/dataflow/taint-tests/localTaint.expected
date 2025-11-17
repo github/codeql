@@ -7988,6 +7988,26 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:841:21:841:35 | call to indirect_source | taint.cpp:843:16:843:17 | fp |  |
 | taint.cpp:842:11:842:12 | ref arg fp | taint.cpp:843:16:843:17 | fp |  |
 | taint.cpp:842:15:842:16 |  | taint.cpp:842:11:842:12 | ref arg fp | TAINT |
+| taint.cpp:851:10:851:15 | call to source | taint.cpp:852:18:852:18 | s |  |
+| taint.cpp:851:10:851:15 | call to source | taint.cpp:854:18:854:18 | s |  |
+| taint.cpp:852:10:852:16 | call to toupper | taint.cpp:853:7:853:7 | u |  |
+| taint.cpp:854:10:854:16 | call to tolower | taint.cpp:855:7:855:7 | l |  |
+| taint.cpp:861:24:861:27 | size | taint.cpp:866:16:866:19 | size |  |
+| taint.cpp:862:12:862:26 | call to indirect_source | taint.cpp:866:12:866:12 | s |  |
+| taint.cpp:863:7:863:9 | out | taint.cpp:864:12:864:14 | out |  |
+| taint.cpp:864:12:864:14 | out | taint.cpp:866:23:866:23 | p |  |
+| taint.cpp:864:12:864:14 | out | taint.cpp:867:8:867:8 | p |  |
+| taint.cpp:865:9:865:16 | size_out | taint.cpp:866:27:866:34 | size_out |  |
+| taint.cpp:866:11:866:12 | ref arg & ... | taint.cpp:866:12:866:12 | s [inner post update] |  |
+| taint.cpp:866:12:866:12 | s | taint.cpp:866:11:866:12 | & ... |  |
+| taint.cpp:866:15:866:19 | ref arg & ... | taint.cpp:866:16:866:19 | size [inner post update] |  |
+| taint.cpp:866:16:866:19 | size | taint.cpp:866:15:866:19 | & ... |  |
+| taint.cpp:866:22:866:23 | ref arg & ... | taint.cpp:866:23:866:23 | p [inner post update] |  |
+| taint.cpp:866:22:866:23 | ref arg & ... | taint.cpp:867:8:867:8 | p |  |
+| taint.cpp:866:23:866:23 | p | taint.cpp:866:22:866:23 | & ... |  |
+| taint.cpp:866:26:866:34 | ref arg & ... | taint.cpp:866:27:866:34 | size_out [inner post update] |  |
+| taint.cpp:866:27:866:34 | size_out | taint.cpp:866:26:866:34 | & ... |  |
+| taint.cpp:867:8:867:8 | p | taint.cpp:867:7:867:8 | * ... | TAINT |
 | thread.cpp:10:27:10:27 | s | thread.cpp:10:27:10:27 | s |  |
 | thread.cpp:10:27:10:27 | s | thread.cpp:11:8:11:8 | s |  |
 | thread.cpp:14:26:14:26 | s | thread.cpp:15:8:15:8 | s |  |

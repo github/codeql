@@ -28,6 +28,32 @@ func mkProjectLayout(projectLayoutSource string, t *testing.T) (*ProjectLayout, 
 	return LoadProjectLayout(pt)
 }
 
+func mkProjectLayoutFromEnv(projectLayoutSource string, t *testing.T) (*ProjectLayout, error) {
+	pt, err := os.CreateTemp("", "path-transformer-from-env")
+	if err != nil {
+		t.Fatalf("Unable to create temporary file for project layout: %s", err.Error())
+	}
+	defer os.Remove(pt.Name())
+	_, err = pt.WriteString(projectLayoutSource)
+	if err != nil {
+		t.Fatalf("Unable to write to temporary file for project layout: %s", err.Error())
+	}
+	err = pt.Close()
+	if err != nil {
+		t.Fatalf("Unable to close path transformer file: %s.", err.Error())
+	}
+
+	pt, err = os.Open(pt.Name())
+	if err != nil {
+		t.Fatalf("Unable to open path transformer file: %s.", err.Error())
+	}
+
+	os.Setenv("CODEQL_PATH_TRANSFORMER", pt.Name())
+	defer os.Unsetenv("CODEQL_PATH_TRANSFORMER")
+
+	return LoadProjectLayoutFromEnv()
+}
+
 func testTransformation(projectLayout *ProjectLayout, t *testing.T, path string, expected string) {
 	actual := projectLayout.Transform(path)
 	if actual != expected {
@@ -35,22 +61,38 @@ func testTransformation(projectLayout *ProjectLayout, t *testing.T, path string,
 	}
 }
 
-func TestValidProjectLayout(t *testing.T) {
-	p, err := mkProjectLayout(`
+const validProjectLayoutSource = `
 # /opt/src
 /opt/src/root/src/org/repo//
-`, t)
+`
 
-	if err != nil {
-		t.Fatalf("Error loading project layout: %s", err.Error())
-	}
-
+func testTransformationsForValidProjectLayout(p *ProjectLayout, t *testing.T) {
 	testTransformation(p, t, "/opt/src/root/src/org/repo", "/opt/src")
 	testTransformation(p, t, "/opt/src/root/src/org/repo/", "/opt/src/")
 	testTransformation(p, t, "/opt/src/root/src/org/repo/main.go", "/opt/src/main.go")
 	testTransformation(p, t, "/opt/not/in/src", "/opt/not/in/src")
 	testTransformation(p, t, "/opt/src/root/srcorg/repo", "/opt/src/root/srcorg/repo")
 	testTransformation(p, t, "opt/src/root/src/org/repo", "opt/src/root/src/org/repo")
+}
+
+func TestValidProjectLayout(t *testing.T) {
+	p, err := mkProjectLayout(validProjectLayoutSource, t)
+
+	if err != nil {
+		t.Fatalf("Error loading project layout: %s", err.Error())
+	}
+
+	testTransformationsForValidProjectLayout(p, t)
+}
+
+func TestValidProjectLayoutFromEnv(t *testing.T) {
+	p, err := mkProjectLayoutFromEnv(validProjectLayoutSource, t)
+
+	if err != nil {
+		t.Fatalf("Error loading project layout: %s", err.Error())
+	}
+
+	testTransformationsForValidProjectLayout(p, t)
 }
 
 func TestWindowsPaths(t *testing.T) {

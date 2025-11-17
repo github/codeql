@@ -29,9 +29,79 @@ module Raw {
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
     }
+    {{#is_indexed}}
+    /**
+     * Gets the number of {{doc_plural}}.
+    {{#internal}}
+     * INTERNAL: Do not use.
+    {{/internal}}
+     */
+    int getNumberOf{{plural}}() {
+      result = count(int i | {{tablename}}(this, i, _))
+    }
+    {{/is_indexed}}
     {{/synth}}
     {{/properties}}
   }
 
+
+  {{#final}}
+  private Element getImmediateChildOf{{name}}({{name}} e, int index) {
+    {{^has_children}}none(){{/has_children}}
+    {{#has_children}}
+    {{! n is the base offset 0, for ease of generation }}
+    {{! n<child> is constructed to be strictly greater than the indexes for <child> children }}
+        exists(int n{{#all_children}}, int n{{property.singular}}{{/all_children}} |
+            n = 0
+            {{#all_children}}
+                {{#property}}
+                {{#synth}}
+                       and
+                       n{{singular}} = n{{prev}}
+                {{/synth}}
+                {{^synth}}
+                    {{! n<child> is defined on top of the previous definition }}
+                    {{! for single and optional properties it adds 1 (regardless of whether the optional property exists) }}
+                    {{! for repeated it adds 1 + the maximum index (which works for repeated optional as well) }}
+                        and
+                        n{{singular}} = n{{prev}} {{^is_repeated}}+ 1{{/is_repeated}}{{#is_repeated}}+ e.getNumberOf{{plural}}(){{/is_repeated}}
+                {{/synth}}
+                {{/property}}
+            {{/all_children}} and (
+        none()
+        {{#all_children}}
+            {{#property}}
+            {{^synth}}
+                or
+                {{#is_repeated}}
+                    result = e.get{{singular}}(index - n{{prev}})
+                {{/is_repeated}}
+                {{^is_repeated}}
+                    index = n{{prev}} and result = e.get{{singular}}()
+                {{/is_repeated}}
+            {{/synth}}
+            {{/property}}
+        {{/all_children}}
+        ))
+    {{/has_children}}
+    }
+    {{/final}}
+
   {{/classes}}
+
+  /**
+   * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+   */
+  pragma[nomagic]
+  Element getImmediateChild(Element e, int index) {
+  // why does this look more complicated than it should?
+  // * none() simplifies generation, as we can append `or ...` without a special case for the first item
+  none()
+  {{#classes}}
+      {{#final}}
+          or
+          result = getImmediateChildOf{{name}}(e, index)
+      {{/final}}
+  {{/classes}}
+  }
 }

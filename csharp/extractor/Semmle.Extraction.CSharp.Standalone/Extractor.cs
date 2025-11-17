@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -53,6 +54,20 @@ namespace Semmle.Extraction.CSharp.Standalone
                         }
 
                         progressMonitor.MissingSummary(analyser.ExtractionContext!.MissingTypes.Count(), analyser.ExtractionContext!.MissingNamespaces.Count());
+
+                        // If extracting a base database, we need to create an empty metadata file.
+                        if (EnvironmentVariables.GetBaseMetaDataOutPath() is string baseMetaDataOutPath)
+                        {
+                            try
+                            {
+                                analyser.Logger.LogInfo($"Creating base metadata file at {baseMetaDataOutPath}");
+                                File.WriteAllText(baseMetaDataOutPath, string.Empty);
+                            }
+                            catch (Exception ex)
+                            {
+                                analyser.Logger.LogError($"Failed to create base metadata file: {ex.Message}");
+                            }
+                        }
                     });
             }
             finally
@@ -143,7 +158,8 @@ namespace Semmle.Extraction.CSharp.Standalone
             var pathTransformer = new PathTransformer(canonicalPathCache);
 
             var progressMonitor = new ExtractionProgress(logger);
-            using var analyser = new StandaloneAnalyser(progressMonitor, fileLogger, pathTransformer, canonicalPathCache, false);
+            var overlayInfo = OverlayInfoFactory.Make(logger, options.SrcDir);
+            using var analyser = new StandaloneAnalyser(progressMonitor, fileLogger, pathTransformer, canonicalPathCache, overlayInfo, false);
             try
             {
                 var extractionInput = new ExtractionInput(dependencyManager.AllSourceFiles, dependencyManager.ReferenceFiles, dependencyManager.CompilationInfos);
@@ -154,7 +170,8 @@ namespace Semmle.Extraction.CSharp.Standalone
                 fileLogger.LogError($"  Unhandled exception: {ex}");
             }
 
-            logger.Log(Severity.Info, $"Extraction completed in {overallStopwatch.Elapsed}");
+            logger.Log(Severity.Info, $"Extraction completed in {analyzerStopwatch.Elapsed}");
+            logger.Log(Severity.Info, $"Total time: {overallStopwatch.Elapsed}");
 
             return ExitCode.Ok;
         }

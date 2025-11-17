@@ -32,9 +32,28 @@ module Synth {
   {{/root}}
   {{/non_final_classes}}
 
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets the parent of synthetic element `e`.
+   */
+  Raw::{{root}} getSynthParent(T{{root}} e) {
+    none()
+    {{#final_classes}}
+    {{#is_fresh_synth}}
+    {{#has_params}}
+    or
+    e = T{{name}}({{#params}}{{#first}}result{{/first}}{{^first}}, _{{/first}}{{/params}})
+    {{/has_params}}
+    {{/is_fresh_synth}}
+    {{/final_classes}}
+  }
+
+
   {{#final_classes}}
   /**
    * INTERNAL: Do not use.
+   *
    * Converts a raw element to a synthesized `T{{name}}`, if possible.
    */
   T{{name}} convert{{name}}FromRaw(Raw::Element e) {

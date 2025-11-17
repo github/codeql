@@ -92,7 +92,8 @@ module SatisfiesBlanketConstraint<
 
     Type getTypeAt(TypePath path) {
       result = at.getTypeAt(blanketPath.appendInverse(path)) and
-      not result = TNeverType()
+      not result = TNeverType() and
+      not result = TUnknownType()
     }
 
     string toString() { result = at.toString() + " [blanket at " + blanketPath.toString() + "]" }

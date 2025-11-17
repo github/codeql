@@ -36,6 +36,7 @@ import semmle.code.csharp.controlflow.ControlFlowGraph
 import semmle.code.csharp.dataflow.DataFlow
 import semmle.code.csharp.dataflow.TaintTracking
 import semmle.code.csharp.dataflow.SSA
+private import semmle.code.csharp.internal.Overlay
 
 /** Whether the source was extracted without a build command. */
 predicate extractionIsStandalone() { exists(SourceFile f | f.extractedStandalone()) }

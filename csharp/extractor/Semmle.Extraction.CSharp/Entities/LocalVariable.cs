@@ -41,6 +41,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.localvars(this, Kinds.VariableKind.None, Symbol.Name, @var, Type.Create(Context, parent.Type).TypeRef, parent);
             }
 
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             WriteLocationToTrap(trapFile.localvar_location, this, Location);
 
             DefineConstantValue(trapFile);

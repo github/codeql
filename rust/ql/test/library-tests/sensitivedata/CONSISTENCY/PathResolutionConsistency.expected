@@ -1,0 +1,2 @@
+multipleCallTargets
+| test.rs:288:7:288:36 | ... .as_str() |

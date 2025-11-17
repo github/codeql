@@ -59,8 +59,8 @@ public class Property extends Node {
     }
     this.rawValue = rawValue;
     this.kind = Kind.valueOf(StringUtil.uc(kind));
-    this.computed = computed == Boolean.TRUE;
-    this.method = method == Boolean.TRUE;
+    this.computed = Boolean.TRUE.equals(computed);
+    this.method = Boolean.TRUE.equals(method);
     this.decorators = new ArrayList<Decorator>();
   }
 
