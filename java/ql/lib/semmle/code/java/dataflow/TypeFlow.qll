@@ -25,6 +25,7 @@ private RefType boxIfNeeded(J::Type t) {
 
 /** Provides the input types and predicates for instantiation of `UniversalFlow`. */
 module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
+  overlay[local]
   private newtype TFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
     TSsa(Base::SsaDefinition ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
@@ -34,6 +35,7 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
   /**
    * A `Field`, `BaseSsaVariable`, `Expr`, or `Method`.
    */
+  overlay[local]
   class FlowNode extends TFlowNode {
     /** Gets a textual representation of this element. */
     string toString() {
@@ -158,6 +160,11 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
     // reflection and are thus not always null.
     exists(n.asField())
   }
+
+  private import semmle.code.java.Overlay as Overlay
+
+  overlay[local]
+  predicate isEvaluatingInOverlay() { Overlay::isOverlay() }
 }
 
 private module Input implements TypeFlowInput<Location> {

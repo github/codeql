@@ -60,6 +60,18 @@ signature module UniversalFlowInput<LocationSig Location> {
    * the null analysis determines that `n` is always null.
    */
   default predicate isExcludedFromNullAnalysis(FlowNode n) { none() }
+
+  /**
+   * Holds if the evaluator is currently evaluating with an overlay. The
+   * implementation of this predicate needs to be `overlay[local]`. For a
+   * language with no overlay support, `none()` is a valid implementation.
+   *
+   * When called from a local predicate, this predicate holds if we are in the
+   * overlay-only local evaluation. When called from a global predicate, this
+   * predicate holds if we are evaluating globally with overlay and base both
+   * visible.
+   */
+  predicate isEvaluatingInOverlay();
 }
 
 /**
@@ -68,23 +80,46 @@ signature module UniversalFlowInput<LocationSig Location> {
 module Make<LocationSig Location, UniversalFlowInput<Location> I> {
   private import I
 
+  overlay[local?]
+  private predicate overlayNode(FlowNode n) { isEvaluatingInOverlay() and exists(n) }
+
+  overlay[global]
+  private predicate canReachOverlay(FlowNode n) {
+    overlayNode(n)
+    or
+    exists(FlowNode mid | canReachOverlay(mid) and step(n, mid))
+  }
+
+  bindingset[n]
+  private predicate relevantNode(FlowNode n) {
+    not isEvaluatingInOverlay()
+    or
+    canReachOverlay(n)
+  }
+
   /**
    * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
    * functionally determined by `n2`.
    */
-  private predicate uniqStep(FlowNode n1, FlowNode n2) { n1 = unique(FlowNode n | step(n, n2)) }
+  private predicate uniqStep(FlowNode n1, FlowNode n2) {
+    n1 = unique(FlowNode n | step(n, n2)) and relevantNode(n2)
+  }
 
   /**
    * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
    * functionally determined by `n2`.
    */
-  private predicate joinStep(FlowNode n1, FlowNode n2) { step(n1, n2) and not uniqStep(n1, n2) }
+  private predicate joinStep(FlowNode n1, FlowNode n2) {
+    step(n1, n2) and not uniqStep(n1, n2) and relevantNode(n2)
+  }
 
   /** Holds if `null` is the only value that flows to `n`. */
   private predicate isNull(FlowNode n) {
-    isNullValue(n)
+    isNullValue(n) and
+    relevantNode(n)
     or
     not isExcludedFromNullAnalysis(n) and
+    relevantNode(n) and
     (
       exists(FlowNode mid | isNull(mid) and uniqStep(mid, n))
       or
@@ -256,7 +291,7 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     private module Propagation implements PropPropagation {
       class Prop = Unit;
 
-      predicate candProp(FlowNode n, Unit u) { hasProperty(n) and exists(u) }
+      predicate candProp(FlowNode n, Unit u) { hasPropertyImpl(n) and exists(u) }
 
       predicate supportsProp = candProp/2;
     }
@@ -264,13 +299,16 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     /**
      * Holds if all flow reaching `n` originates from nodes in
      * `hasPropertyBase`.
+     *
+     * When evaluated in an overlay-merged context, this is restricted to nodes
+     * that can reach the overlay.
      */
-    predicate hasProperty(FlowNode n) {
+    private predicate hasPropertyImpl(FlowNode n) {
       P::hasPropertyBase(n)
       or
       not P::barrier(n) and
       (
-        exists(FlowNode mid | hasProperty(mid) and uniqStepNotNull(mid, n))
+        exists(FlowNode mid | hasPropertyImpl(mid) and uniqStepNotNull(mid, n))
         or
         // The following is an optimized version of
         // `forex(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid))`
@@ -284,6 +322,13 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
         )
       )
     }
+
+    /**
+     * Holds if all flow reaching `n` originates from nodes in
+     * `hasPropertyBase`.
+     */
+    overlay[local?]
+    predicate hasProperty(FlowNode n) = forceLocal(hasPropertyImpl/1)(n)
   }
 
   signature module PropertySig {
@@ -305,11 +350,11 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     private module Propagation implements PropPropagation {
       class Prop = P::Prop;
 
-      predicate candProp = hasProperty/2;
+      predicate candProp = hasPropertyImpl/2;
 
       bindingset[t]
       predicate supportsProp(FlowNode n, Prop t) {
-        exists(Prop t0 | hasProperty(n, t0) and P::propImplies(t0, t))
+        exists(Prop t0 | hasPropertyImpl(n, t0) and P::propImplies(t0, t))
       }
     }
 
@@ -317,13 +362,16 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
      * Holds if all flow reaching `n` originates from nodes in
      * `hasPropertyBase`. The property `t` is taken from one of those origins
      * such that all other origins imply `t`.
+     *
+     * When evaluated in an overlay-merged context, this is restricted to nodes
+     * that can reach the overlay.
      */
-    predicate hasProperty(FlowNode n, P::Prop t) {
+    private predicate hasPropertyImpl(FlowNode n, P::Prop t) {
       P::hasPropertyBase(n, t)
       or
       not P::barrier(n) and
       (
-        exists(FlowNode mid | hasProperty(mid, t) and uniqStepNotNull(mid, n))
+        exists(FlowNode mid | hasPropertyImpl(mid, t) and uniqStepNotNull(mid, n))
         or
         // The following is an optimized version of
         // ```
@@ -349,5 +397,13 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
         )
       )
     }
+
+    /**
+     * Holds if all flow reaching `n` originates from nodes in
+     * `hasPropertyBase`. The property `t` is taken from one of those origins
+     * such that all other origins imply `t`.
+     */
+    overlay[local?]
+    predicate hasProperty(FlowNode n, P::Prop t) = forceLocal(hasPropertyImpl/2)(n, t)
   }
 }
