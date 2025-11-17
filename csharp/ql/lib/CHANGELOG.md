@@ -1,3 +1,17 @@
+## 5.4.0
+
+### Deprecated APIs
+
+* `ControlFlowElement.controlsBlock` has been deprecated in favor of the Guards library.
+
+### New Features
+
+* Initial support for incremental C# databases via `codeql database create --overlay-base`/`--overlay-changes`.
+
+### Minor Analysis Improvements
+
+* Updated *roslyn* and *binlog* dependencies in the extractor, which may improve database and analysis quality.
+
 ## 5.3.0
 
 ### Deprecated APIs
@@ -6,7 +20,7 @@
 
 ### Major Analysis Improvements
 
-* The representation of the C# control-flow graph has been significantly changed. This has minor effects on a wide range of queries including both minor improvements and minor regressions. For example, improved precision has been observed for `cs/inefficient-containskey` and `cs/stringbuilder-creation-in-loop`. Two queries stand out as being significantly affected with great improvements: `cs/dereferenced-value-may-be-null` has been completely rewritten which removes a very significant number of false positives. Furthermore, `cs/constant-condition` has been updated to report many new results - these new results are primarily expected to be true positives, but a few new false positives are expected as well. As part of these changes, `cs/dereferenced-value-may-be-null` has been changed from a `path-problem` query to a `problem` query, so paths are no longer reported for this query.
+* The representation of the C# control-flow graph has been significantly changed. This has minor effects on a wide range of queries including both minor improvements and minor regressions, for example, improved precision has been observed for `cs/inefficient-containskey` and `cs/stringbuilder-creation-in-loop`. Two queries stand out as being significantly affected with great improvements: `cs/dereferenced-value-may-be-null` has been completely rewritten which removes a very significant number of false positives. Furthermore, `cs/constant-condition` has been updated to report many new results - these new results are primarily expected to be true positives, but a few new false positives are expected as well. As part of these changes, `cs/dereferenced-value-may-be-null` has been changed from a `path-problem` query to a `problem` query, so paths are no longer reported for this query.
 
 ### Minor Analysis Improvements
 
@@ -143,7 +157,7 @@ No user-facing changes.
 * Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
   - `[SupplyParameterFromForm]`
   - `[SupplyParameterFromQuery]`
-* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`.
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
 * Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
 * The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
 * The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
@@ -163,7 +177,7 @@ No user-facing changes.
   - `System.Web.HttpUtility::ParseQueryString`
   - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseQuery`
   - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseNullableQuery`
-* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript.
+* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript. 
 
 ## 3.1.1
 
@@ -201,8 +215,8 @@ No user-facing changes.
 
 ### Breaking Changes
 
-* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`.
-* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
 * Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
 
 ### Minor Analysis Improvements
@@ -451,7 +465,7 @@ No user-facing changes.
 
 ### New Features
 
-* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`.
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
   Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
 
 ### Minor Analysis Improvements
@@ -586,7 +600,7 @@ No user-facing changes.
 
 * Attributes on methods in CIL are now extracted (Bugfix).
 * Support for `static virtual` and `static abstract` interface members.
-* Support for *operators* in interface definitions.
+* Support for *operators* in interface definitions. 
 * C# 11: Added support for the unsigned right shift `>>>` and unsigned right shift assignment `>>>=` operators.
 * Query id's have been aligned such that they are prefixed with `cs` instead of `csharp`.
 
@@ -626,13 +640,13 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 * `DateTime` expressions are now considered simple type sanitizers. This affects a wide range of security queries.
-* ASP.NET Core controller definition has been made more precise. The amount of introduced taint sources or eliminated false positives should be low though, since the most common pattern is to derive all user defined ASP.NET Core controllers from the standard Controller class, which is not affected.
+* ASP.NET Core controller definition has been made more precise. The amount of introduced taint sources or eliminated false positives should be low though, since the most common pattern is to derive all user defined ASP.NET Core controllers from the standard Controller class, which is not affected. 
 
 ## 0.4.0
 
 ### Deprecated APIs
 
-* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### Bug Fixes
@@ -645,7 +659,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### Minor Analysis Improvements
@@ -692,7 +706,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features
