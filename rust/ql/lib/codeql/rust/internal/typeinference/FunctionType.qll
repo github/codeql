@@ -351,7 +351,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
       |
         rnk = 0
         or
-        argsAreInstantiationsOfFromIndex(call, abs, f, rnk - 1)
+        argsAreInstantiationsOfToIndex(call, abs, f, rnk - 1)
       )
     }
 
@@ -360,15 +360,15 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     }
   }
 
-  private module ArgIsInstantiationOfFromIndex =
+  private module ArgIsInstantiationOfToIndex =
     ArgIsInstantiationOf<CallAndPos, ArgIsInstantiationOfInput>;
 
   pragma[nomagic]
-  private predicate argsAreInstantiationsOfFromIndex(
+  private predicate argsAreInstantiationsOfToIndex(
     Input::Call call, ImplOrTraitItemNode i, Function f, int rnk
   ) {
     exists(FunctionPosition pos |
-      ArgIsInstantiationOfFromIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
+      ArgIsInstantiationOfToIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
       call.hasTargetCand(i, f) and
       toCheckRanked(i, f, pos, rnk)
     )
@@ -381,7 +381,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   pragma[nomagic]
   predicate argsAreInstantiationsOf(Input::Call call, ImplOrTraitItemNode i, Function f) {
     exists(int rnk |
-      argsAreInstantiationsOfFromIndex(call, i, f, rnk) and
+      argsAreInstantiationsOfToIndex(call, i, f, rnk) and
       rnk = max(int r | toCheckRanked(i, f, _, r))
     )
   }
