@@ -47,7 +47,7 @@ private class TypeType extends RefType {
 /**
  * A sanitizer that may remove sensitive information from a string before logging.
  *
- *  It allows for substring operations taking the first N (or last N, for Kotlin) characters, limited to 7 or fewer.
+ * It allows for substring operations taking the first N (or last N, for Kotlin) characters, limited to 7 or fewer.
  */
 private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
   SensitiveLoggerSanitizerCalled() {
