@@ -57,6 +57,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public override string ToString() => DirInfo.FullName.ToString();
+        public override string ToString() => DirInfo.FullName;
     }
 }

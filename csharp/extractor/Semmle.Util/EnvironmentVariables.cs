@@ -79,9 +79,8 @@ namespace Semmle.Util
 
         /// <summary>
         /// If set, returns the directory where buildless dependencies should be stored.
-        /// This is needed for caching dependencies.
+        /// This can be used for caching dependencies.
         /// </summary>
-        /// <returns></returns>
         public static string? GetBuildlessDependencyDir()
         {
             return Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS_DEPENDENCY_DIR");

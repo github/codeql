@@ -24,8 +24,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileProvider fileProvider;
 
         /// <summary>
-        /// The computed packages directory.
-        /// This will be in the Cached or Temp location
+        /// The packages directory.
+        /// This will be in the user-specified or computed Temp location
         /// so as to not trample the source tree.
         /// </summary>
         private readonly DependencyDirectory packageDirectory;
