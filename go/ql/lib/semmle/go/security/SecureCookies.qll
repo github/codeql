@@ -22,7 +22,7 @@ private module SensitiveCookieNameConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { exists(Http::CookieWrite cw | sink = cw.getName()) }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Http::CookieOptions co | co.getName() = pred and co.getCookieOutput() = succ)
+    exists(Http::CookieOptionWrite co | co.getName() = pred and co.getCookieOutput() = succ)
   }
 }
 
@@ -37,7 +37,7 @@ private module BooleanCookieSecureConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { exists(Http::CookieWrite cw | sink = cw.getSecure()) }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Http::CookieOptions co | co.getSecure() = pred and co.getCookieOutput() = succ)
+    exists(Http::CookieOptionWrite co | co.getSecure() = pred and co.getCookieOutput() = succ)
   }
 }
 
@@ -52,7 +52,7 @@ private module BooleanCookieHttpOnlyConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { exists(Http::CookieWrite cw | sink = cw.getHttpOnly()) }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Http::CookieOptions co | co.getHttpOnly() = pred and co.getCookieOutput() = succ)
+    exists(Http::CookieOptionWrite co | co.getHttpOnly() = pred and co.getCookieOutput() = succ)
   }
 }
 

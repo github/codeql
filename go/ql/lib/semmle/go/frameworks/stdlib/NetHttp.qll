@@ -306,15 +306,15 @@ module NetHttp {
     override DataFlow::Node getHttpOnly() { result = this.getArgument(1) }
   }
 
-  private class CookieFieldWrite extends Http::CookieOptions::Range {
-    Write w;
-    Field f;
+  private class CookieFieldWrite extends Http::CookieOptionWrite::Range {
     DataFlow::Node written;
     string fieldName;
 
     CookieFieldWrite() {
-      f.hasQualifiedName(package("net/http", ""), "Cookie", fieldName) and
-      w.writesField(this, f, written)
+      exists(Write w, Field f |
+        f.hasQualifiedName(package("net/http", ""), "Cookie", fieldName) and
+        w.writesField(this, f, written)
+      )
     }
 
     override DataFlow::Node getCookieOutput() { result = this }
