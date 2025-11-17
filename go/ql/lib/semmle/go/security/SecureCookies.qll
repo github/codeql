@@ -4,22 +4,24 @@ import go
 import semmle.go.concepts.HTTP
 import semmle.go.dataflow.DataFlow
 
-/**
- * Holds if the expression or its value has a sensitive name
- */
-private predicate isSensitiveExpr(Expr expr, string val) {
-  (
-    val = expr.getStringValue() or
-    val = expr.(Name).getTarget().getName()
-  ) and
-  val.regexpMatch("(?i).*(session|login|token|user|auth|credential).*") and
-  not val.regexpMatch("(?i).*(xsrf|csrf|forgery).*")
-}
-
 private module SensitiveCookieNameConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isSensitiveExpr(source.asExpr(), _) }
+  /**
+   * Holds if `source` is an expression with a name or literal value `val` indicating a sensitive cookie.
+   */
+  additional predicate isSource(DataFlow::Node source, string val) {
+    (
+      val = source.asExpr().getStringValue() or
+      val = source.asExpr().(Name).getTarget().getName()
+    ) and
+    val.regexpMatch("(?i).*(session|login|token|user|auth|credential).*") and
+    not val.regexpMatch("(?i).*(xsrf|csrf|forgery).*")
+  }
 
-  predicate isSink(DataFlow::Node sink) { exists(Http::CookieWrite cw | sink = cw.getName()) }
+  predicate isSource(DataFlow::Node source) { isSource(source, _) }
+
+  additional predicate isSink(DataFlow::Node sink, Http::CookieWrite cw) { sink = cw.getName() }
+
+  predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Http::CookieOptionWrite co | co.getName() = pred and co.getCookieOutput() = succ)
@@ -98,11 +100,10 @@ predicate isNonHttpOnlyCookie(Http::CookieWrite cw) {
  * `source` and `sink` represent the data flow path from the sensitive name expression to the cookie write.
  */
 predicate isSensitiveCookie(
-  Http::CookieWrite cw, Expr nameExpr, string name, SensitiveCookieNameFlow::PathNode source,
+  Http::CookieWrite cw, string name, SensitiveCookieNameFlow::PathNode source,
   SensitiveCookieNameFlow::PathNode sink
 ) {
   SensitiveCookieNameFlow::flowPath(source, sink) and
-  source.getNode().asExpr() = nameExpr and
-  sink.getNode() = cw.getName() and
-  isSensitiveExpr(nameExpr, name)
+  SensitiveCookieNameConfig::isSource(source.getNode(), name) and
+  SensitiveCookieNameConfig::isSink(sink.getNode(), cw)
 }
