@@ -6,10 +6,9 @@ private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
 overlay[local]
 private string getFileFromEntity(@locatable node) {
-  exists(@location loc, @file file |
+  exists(@location loc |
     hasLocation(node, loc) and
-    locations_default(loc, file, _, _, _, _) and
-    files(file, result)
+    result = getFileFromLocation(loc)
   )
 }
 
