@@ -17,6 +17,8 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     predicate isNullValue = I::isNullValue/1;
 
     predicate isExcludedFromNullAnalysis = I::isExcludedFromNullAnalysis/1;
+
+    predicate isEvaluatingInOverlay = I::isEvaluatingInOverlay/0;
   }
 
   private module UnivFlow = UniversalFlow::Make<Location, UfInput>;
