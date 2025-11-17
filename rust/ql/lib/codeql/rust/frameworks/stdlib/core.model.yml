@@ -10,10 +10,14 @@ extensions:
       # Clone
       - ["<_ as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "manual"]
       # Conversions
+      - ["<_ as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::convert::From>::from", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::convert::From>::from", "Argument[0].Element", "ReturnValue.Element", "taint", "manual"]
+      - ["<_ as core::convert::From>::from", "Argument[0].Reference.Element", "ReturnValue.Element", "taint", "manual"]
+      - ["<_ as core::convert::Into>::into", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::convert::Into>::into", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       - ["<_ as core::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
       - ["<_ as core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
-      # From
-      - ["<_ as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Iterator
       - ["<core::result::Result>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["<_ as value_trait::array::Array>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]

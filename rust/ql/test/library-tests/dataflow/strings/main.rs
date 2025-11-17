@@ -76,7 +76,7 @@ fn string_conversions() {
     sink(s8); // $ MISSING: hasTaintFlow=37
 
     let ss2: Vec<&str> = Vec::from(ss);
-    sink_slice(ss2[0]); // $ MISSING: hasTaintFlow=37
+    sink_slice(ss2[0]); // $ hasTaintFlow=37 SPURIOUS: hasTaintFlow=38
     let ss3: Vec<&str> = Vec::try_from(ss).unwrap();
     sink_slice(ss3[0]); // $ MISSING: hasTaintFlow=37
     let ss4: Vec<&str> = ss.into();
