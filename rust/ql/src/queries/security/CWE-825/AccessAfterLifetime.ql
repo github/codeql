@@ -23,9 +23,22 @@ import AccessAfterLifetimeFlow::PathGraph
  * lifetime has ended.
  */
 module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof AccessAfterLifetime::Source }
+  predicate isSource(DataFlow::Node node) {
+    node instanceof AccessAfterLifetime::Source and
+    // exclude cases with sources in macros, since these results are difficult to interpret
+    not node.asExpr().getExpr().isFromMacroExpansion()
+  }
 
-  predicate isSink(DataFlow::Node node) { node instanceof AccessAfterLifetime::Sink }
+  predicate isSink(DataFlow::Node node) {
+    node instanceof AccessAfterLifetime::Sink and
+    // exclude cases with sinks in macros, since these results are difficult to interpret
+    not node.asExpr().getExpr().isFromMacroExpansion() and
+    // include only results inside `unsafe` blocks, as other results tend to be false positives
+    (
+      node.asExpr().getExpr().getEnclosingBlock*().isUnsafe() or
+      node.asExpr().getExpr().getEnclosingCallable().(Function).isUnsafe()
+    )
+  }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessAfterLifetime::Barrier }
 
@@ -36,26 +49,12 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
       result = [target.getLocation(), source.getLocation()]
     |
       isSink(sink) and
-      narrowDereferenceAfterLifetime(source, sink, target)
+      AccessAfterLifetime::dereferenceAfterLifetime(source, sink, target)
     )
   }
 }
 
 module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig>;
-
-pragma[inline]
-predicate narrowDereferenceAfterLifetime(DataFlow::Node source, DataFlow::Node sink, Variable target) {
-  // check that the dereference is outside the lifetime of the target
-  AccessAfterLifetime::dereferenceAfterLifetime(source, sink, target) and
-  // include only results inside `unsafe` blocks, as other results tend to be false positives
-  (
-    sink.asExpr().getExpr().getEnclosingBlock*().isUnsafe() or
-    sink.asExpr().getExpr().getEnclosingCallable().(Function).isUnsafe()
-  ) and
-  // exclude cases with sources / sinks in macros, since these results are difficult to interpret
-  not source.asExpr().getExpr().isFromMacroExpansion() and
-  not sink.asExpr().getExpr().isFromMacroExpansion()
-}
 
 from
   AccessAfterLifetimeFlow::PathNode sourceNode, AccessAfterLifetimeFlow::PathNode sinkNode,
@@ -64,6 +63,6 @@ where
   // flow from a pointer or reference to the dereference
   AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
   // check that the dereference is outside the lifetime of the target
-  narrowDereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target)
+  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "Access of a pointer to $@ after its lifetime has ended.", target, target.toString()
