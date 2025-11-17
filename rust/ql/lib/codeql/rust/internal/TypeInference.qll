@@ -179,48 +179,52 @@ private module Input2 implements InputSig2 {
    * inference module for more information.
    */
   predicate conditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
   ) {
     // `impl` blocks implementing traits
+    transitive = false and
     exists(Impl impl |
       abs = impl and
       condition = impl.getSelfTy() and
       constraint = impl.getTrait()
     )
     or
-    // supertraits
-    exists(Trait trait |
-      abs = trait and
-      condition = trait and
-      constraint = trait.getATypeBound().getTypeRepr()
-    )
-    or
-    // trait bounds on type parameters
-    exists(TypeParam param |
-      abs = param.getATypeBound() and
-      condition = param and
-      constraint = abs.(TypeBound).getTypeRepr()
-    )
-    or
-    // the implicit `Self` type parameter satisfies the trait
-    exists(SelfTypeParameterMention self |
-      abs = self and
-      condition = self and
-      constraint = self.getTrait()
-    )
-    or
-    exists(ImplTraitTypeRepr impl |
-      abs = impl and
-      condition = impl and
-      constraint = impl.getTypeBoundList().getABound().getTypeRepr()
-    )
-    or
-    // a `dyn Trait` type implements `Trait`. See the comment on
-    // `DynTypeBoundListMention` for further details.
-    exists(DynTraitTypeRepr object |
-      abs = object and
-      condition = object.getTypeBoundList() and
-      constraint = object.getTrait()
+    transitive = true and
+    (
+      // supertraits
+      exists(Trait trait |
+        abs = trait and
+        condition = trait and
+        constraint = trait.getATypeBound().getTypeRepr()
+      )
+      or
+      // trait bounds on type parameters
+      exists(TypeParam param |
+        abs = param.getATypeBound() and
+        condition = param and
+        constraint = abs.(TypeBound).getTypeRepr()
+      )
+      or
+      // the implicit `Self` type parameter satisfies the trait
+      exists(SelfTypeParameterMention self |
+        abs = self and
+        condition = self and
+        constraint = self.getTrait()
+      )
+      or
+      exists(ImplTraitTypeRepr impl |
+        abs = impl and
+        condition = impl and
+        constraint = impl.getTypeBoundList().getABound().getTypeRepr()
+      )
+      or
+      // a `dyn Trait` type implements `Trait`. See the comment on
+      // `DynTypeBoundListMention` for further details.
+      exists(DynTraitTypeRepr object |
+        abs = object and
+        condition = object.getTypeBoundList() and
+        constraint = object.getTrait()
+      )
     )
   }
 }
@@ -3616,10 +3620,10 @@ private module Debug {
   }
 
   predicate debugConditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
   ) {
     abs = getRelevantLocatable() and
-    Input2::conditionSatisfiesConstraint(abs, condition, constraint)
+    Input2::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
   }
 
   predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
