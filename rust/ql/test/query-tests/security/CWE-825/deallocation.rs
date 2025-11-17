@@ -149,6 +149,9 @@ impl MyObject {
 
 pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
 	let layout = std::alloc::Layout::new::<MyObject>();
+
+	// --- mutable pointer ---
+
 	let mut ptr = std::alloc::alloc(layout) as *mut MyObject;
 	(*ptr).value = 0; // good
 
@@ -206,6 +209,25 @@ pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
 
 	if (*ptr).is_zero() || ptr.is_null() { // $ MISSING: Alert[rust/access-invalid-pointer]
 		println!("	cond9");
+	}
+
+	// --- immutable pointer ---
+
+	let const_ptr;
+
+	if mode == 126 { // (causes a panic below)
+		const_ptr = std::ptr::null_mut();
+	} else {
+		const_ptr = std::alloc::alloc(layout) as *mut MyObject;
+		(*const_ptr).value = 0; // good
+	}
+
+	if const_ptr.is_null() {
+		let v = (*const_ptr).value; // $ MISSING: Alert[rust/access-invalid-pointer]
+		println!("	cond10 v = {v}");
+	} else {
+		let v = (*const_ptr).value; // good - unreachable with null pointer
+		println!("	cond11 v = {v}");
 	}
 }
 

@@ -13,10 +13,10 @@
 | deallocation.rs:130:14:130:15 | p1 | deallocation.rs:123:23:123:40 | ...::dangling | deallocation.rs:130:14:130:15 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:123:23:123:40 | ...::dangling | invalid |
 | deallocation.rs:131:14:131:15 | p2 | deallocation.rs:124:21:124:42 | ...::dangling_mut | deallocation.rs:131:14:131:15 | p2 | This operation dereferences a pointer that may be $@. | deallocation.rs:124:21:124:42 | ...::dangling_mut | invalid |
 | deallocation.rs:132:14:132:15 | p3 | deallocation.rs:125:23:125:36 | ...::null | deallocation.rs:132:14:132:15 | p3 | This operation dereferences a pointer that may be $@. | deallocation.rs:125:23:125:36 | ...::null | invalid |
-| deallocation.rs:252:15:252:16 | p1 | deallocation.rs:248:3:248:25 | ...::drop_in_place | deallocation.rs:252:15:252:16 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:248:3:248:25 | ...::drop_in_place | invalid |
-| deallocation.rs:252:15:252:16 | p1 | deallocation.rs:248:3:248:25 | ...::drop_in_place | deallocation.rs:252:15:252:16 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:248:3:248:25 | ...::drop_in_place | invalid |
-| deallocation.rs:320:18:320:20 | ptr | deallocation.rs:314:3:314:25 | ...::drop_in_place | deallocation.rs:320:18:320:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:314:3:314:25 | ...::drop_in_place | invalid |
-| deallocation.rs:320:18:320:20 | ptr | deallocation.rs:314:3:314:25 | ...::drop_in_place | deallocation.rs:320:18:320:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:314:3:314:25 | ...::drop_in_place | invalid |
+| deallocation.rs:274:15:274:16 | p1 | deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:274:15:274:16 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:270:3:270:25 | ...::drop_in_place | invalid |
+| deallocation.rs:274:15:274:16 | p1 | deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:274:15:274:16 | p1 | This operation dereferences a pointer that may be $@. | deallocation.rs:270:3:270:25 | ...::drop_in_place | invalid |
+| deallocation.rs:342:18:342:20 | ptr | deallocation.rs:336:3:336:25 | ...::drop_in_place | deallocation.rs:342:18:342:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:336:3:336:25 | ...::drop_in_place | invalid |
+| deallocation.rs:342:18:342:20 | ptr | deallocation.rs:336:3:336:25 | ...::drop_in_place | deallocation.rs:342:18:342:20 | ptr | This operation dereferences a pointer that may be $@. | deallocation.rs:336:3:336:25 | ...::drop_in_place | invalid |
 edges
 | deallocation.rs:20:3:20:21 | ...::dealloc | deallocation.rs:20:23:20:24 | [post] m1 | provenance | Src:MaD:3 MaD:3 |
 | deallocation.rs:20:23:20:24 | [post] m1 | deallocation.rs:26:15:26:16 | m1 | provenance |  |
@@ -44,12 +44,12 @@ edges
 | deallocation.rs:125:6:125:7 | p3 | deallocation.rs:132:14:132:15 | p3 | provenance |  |
 | deallocation.rs:125:23:125:36 | ...::null | deallocation.rs:125:23:125:38 | ...::null(...) | provenance | Src:MaD:7 MaD:7 |
 | deallocation.rs:125:23:125:38 | ...::null(...) | deallocation.rs:125:6:125:7 | p3 | provenance |  |
-| deallocation.rs:248:3:248:25 | ...::drop_in_place | deallocation.rs:248:27:248:28 | [post] p1 | provenance | Src:MaD:6 MaD:6 |
-| deallocation.rs:248:3:248:25 | ...::drop_in_place | deallocation.rs:248:27:248:28 | [post] p1 | provenance | Src:MaD:6 MaD:6 |
-| deallocation.rs:248:27:248:28 | [post] p1 | deallocation.rs:252:15:252:16 | p1 | provenance |  |
-| deallocation.rs:314:3:314:25 | ...::drop_in_place | deallocation.rs:314:27:314:29 | [post] ptr | provenance | Src:MaD:6 MaD:6 |
-| deallocation.rs:314:3:314:25 | ...::drop_in_place | deallocation.rs:314:27:314:29 | [post] ptr | provenance | Src:MaD:6 MaD:6 |
-| deallocation.rs:314:27:314:29 | [post] ptr | deallocation.rs:320:18:320:20 | ptr | provenance |  |
+| deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:270:27:270:28 | [post] p1 | provenance | Src:MaD:6 MaD:6 |
+| deallocation.rs:270:3:270:25 | ...::drop_in_place | deallocation.rs:270:27:270:28 | [post] p1 | provenance | Src:MaD:6 MaD:6 |
+| deallocation.rs:270:27:270:28 | [post] p1 | deallocation.rs:274:15:274:16 | p1 | provenance |  |
+| deallocation.rs:336:3:336:25 | ...::drop_in_place | deallocation.rs:336:27:336:29 | [post] ptr | provenance | Src:MaD:6 MaD:6 |
+| deallocation.rs:336:3:336:25 | ...::drop_in_place | deallocation.rs:336:27:336:29 | [post] ptr | provenance | Src:MaD:6 MaD:6 |
+| deallocation.rs:336:27:336:29 | [post] ptr | deallocation.rs:342:18:342:20 | ptr | provenance |  |
 models
 | 1 | Sink: core::ptr::read; Argument[0]; pointer-access |
 | 2 | Sink: core::ptr::write; Argument[0]; pointer-access |
@@ -92,12 +92,12 @@ nodes
 | deallocation.rs:130:14:130:15 | p1 | semmle.label | p1 |
 | deallocation.rs:131:14:131:15 | p2 | semmle.label | p2 |
 | deallocation.rs:132:14:132:15 | p3 | semmle.label | p3 |
-| deallocation.rs:248:3:248:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
-| deallocation.rs:248:3:248:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
-| deallocation.rs:248:27:248:28 | [post] p1 | semmle.label | [post] p1 |
-| deallocation.rs:252:15:252:16 | p1 | semmle.label | p1 |
-| deallocation.rs:314:3:314:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
-| deallocation.rs:314:3:314:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
-| deallocation.rs:314:27:314:29 | [post] ptr | semmle.label | [post] ptr |
-| deallocation.rs:320:18:320:20 | ptr | semmle.label | ptr |
+| deallocation.rs:270:3:270:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
+| deallocation.rs:270:3:270:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
+| deallocation.rs:270:27:270:28 | [post] p1 | semmle.label | [post] p1 |
+| deallocation.rs:274:15:274:16 | p1 | semmle.label | p1 |
+| deallocation.rs:336:3:336:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
+| deallocation.rs:336:3:336:25 | ...::drop_in_place | semmle.label | ...::drop_in_place |
+| deallocation.rs:336:27:336:29 | [post] ptr | semmle.label | [post] ptr |
+| deallocation.rs:342:18:342:20 | ptr | semmle.label | ptr |
 subpaths
