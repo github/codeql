@@ -2,7 +2,7 @@ import cpp
 
 from SizeofOperator sto, string elemDesc, Element e
 where
-  elemDesc = "SizeofTypeOperator.getTypeOperand()" and
+  elemDesc = "SizeofOperator.getTypeOperand()" and
   e = sto.(SizeofOperator).getTypeOperand()
   or
   elemDesc = "SizeofExprOperator.getExprOperand()" and
