@@ -1574,7 +1574,7 @@ pragma[inline]
 ContentApprox getContentApprox(Content c) {
   exists(string prefix, Field f |
     prefix = result.(FieldApproxContent).getPrefix() and
-    f = c.(FieldContent).getField() and
+    f = c.(NonUnionFieldContent).getField() and
     fieldHasApproxName(f, prefix)
   )
   or

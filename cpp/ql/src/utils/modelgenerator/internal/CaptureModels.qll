@@ -190,7 +190,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
   predicate isRelevantType(Type t) { any() }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
-    result = c.(DataFlow::FieldContent).getField().getUnspecifiedType() or
+    result = c.(DataFlow::NonUnionFieldContent).getField().getUnspecifiedType() or
     result = c.(DataFlow::UnionContent).getUnion().getUnspecifiedType()
   }
 

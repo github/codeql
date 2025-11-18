@@ -2093,8 +2093,8 @@ private Field getAFieldWithSize(Union u, int bytes) {
 
 cached
 private newtype TContent =
-  TFieldContent(Field f, int indirectionIndex) {
-    // the indirection index for field content starts at 1 (because `TFieldContent` is thought of as
+  TNonUnionContent(Field f, int indirectionIndex) {
+    // the indirection index for field content starts at 1 (because `TNonUnionContent` is thought of as
     // the address of the field, `FieldAddress` in the IR).
     indirectionIndex = [1 .. SsaImpl::getMaxIndirectionsForType(f.getUnspecifiedType())] and
     // Reads and writes of union fields are tracked using `UnionContent`.
@@ -2163,11 +2163,11 @@ private module ContentStars {
 private import ContentStars
 
 /** A reference through a non-union instance field. */
-class FieldContent extends Content, TFieldContent {
+class NonUnionFieldContent extends Content, TNonUnionContent {
   private Field f;
   private int indirectionIndex;
 
-  FieldContent() { this = TFieldContent(f, indirectionIndex) }
+  NonUnionFieldContent() { this = TNonUnionContent(f, indirectionIndex) }
 
   override string toString() { result = contentStars(this) + f.toString() }
 
