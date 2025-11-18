@@ -19,23 +19,15 @@ module Test implements TestSig {
       exists(int c | c = count(ho.getInitialization()) |
         c = 0 and initialization = ""
         or
-        c = 1 and
+        c > 0 and
         initialization =
-          " init from line " +
-            strictconcat(DataFlow::Node init |
-              init = ho.getInitialization()
+          " init from " +
+            strictconcat(DataFlow::Node init, int n |
+              init = ho.getInitialization() and
+              n = ho.getStartLine() - init.getStartLine()
             |
-              init.getStartLine().toString(), ","
-            ) + "."
-        or
-        c > 1 and
-        initialization =
-          " init from lines " +
-            strictconcat(DataFlow::Node init |
-              init = ho.getInitialization()
-            |
-              init.getStartLine().toString(), ","
-            ) + "."
+              n.toString(), ","
+            ) + " lines above."
       ) and
       ho.getLocation() = location and
       element = ho.toString() and
