@@ -127,7 +127,7 @@ Expr overFlowCand() {
     c.getIntValue() >= 0
   )
   or
-  exists(SsaExplicitUpdate x | result = x.getAUse() and x.getDefiningExpr() = overFlowCand())
+  exists(SsaExplicitWrite x | result = x.getARead() and x.getDefiningExpr() = overFlowCand())
   or
   result.(AssignExpr).getRhs() = overFlowCand()
   or
@@ -142,27 +142,27 @@ Expr overFlowCand() {
 predicate positiveOrNegative(Expr e) { positive(e) or negative(e) }
 
 /** Gets an expression that equals `v` plus a positive or negative value. */
-Expr increaseOrDecreaseOfVar(SsaVariable v) {
+Expr increaseOrDecreaseOfVar(SsaDefinition v) {
   exists(AssignAddExpr add |
     result = add and
     positiveOrNegative(add.getDest()) and
-    add.getRhs() = v.getAUse()
+    add.getRhs() = v.getARead()
   )
   or
   exists(AddExpr add, Expr e |
     result = add and
-    add.hasOperands(v.getAUse(), e) and
+    add.hasOperands(v.getARead(), e) and
     positiveOrNegative(e)
   )
   or
   exists(SubExpr sub |
     result = sub and
-    sub.getLeftOperand() = v.getAUse() and
+    sub.getLeftOperand() = v.getARead() and
     positiveOrNegative(sub.getRightOperand())
   )
   or
-  exists(SsaExplicitUpdate x |
-    result = x.getAUse() and x.getDefiningExpr() = increaseOrDecreaseOfVar(v)
+  exists(SsaExplicitWrite x |
+    result = x.getARead() and x.getDefiningExpr() = increaseOrDecreaseOfVar(v)
   )
   or
   result.(AssignExpr).getRhs() = increaseOrDecreaseOfVar(v)
@@ -172,7 +172,7 @@ Expr increaseOrDecreaseOfVar(SsaVariable v) {
 
 predicate overFlowTest(ComparisonExpr comp) {
   (
-    exists(SsaVariable v | comp.hasOperands(increaseOrDecreaseOfVar(v), v.getAUse()))
+    exists(SsaDefinition v | comp.hasOperands(increaseOrDecreaseOfVar(v), v.getARead()))
     or
     comp.getLesserOperand() = overFlowCand() and
     comp.getGreaterOperand().(IntegerLiteral).getIntValue() = 0
@@ -195,9 +195,9 @@ predicate concurrentModificationTest(BinaryExpr test) {
  */
 pragma[nomagic]
 predicate guardedTest(EqualityTest test, Guard guard, boolean isEq, int i1, int i2) {
-  exists(SsaVariable v, CompileTimeConstantExpr c1, CompileTimeConstantExpr c2 |
-    guard.isEquality(v.getAUse(), c1, isEq) and
-    test.hasOperands(v.getAUse(), c2) and
+  exists(SsaDefinition v, CompileTimeConstantExpr c1, CompileTimeConstantExpr c2 |
+    guard.isEquality(v.getARead(), c1, isEq) and
+    test.hasOperands(v.getARead(), c2) and
     i1 = c1.getIntValue() and
     i2 = c2.getIntValue() and
     v.getSourceVariable().getType() instanceof IntegralType
