@@ -254,7 +254,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 else
                 {
                     var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
-
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
@@ -269,14 +268,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     prelude = downloadDotNetInstallSh & chmod.Script;
                     postlude = shouldCleanUp ? BuildScript.DeleteFile(dotnetInstallPath) : BuildScript.Success;
 
-                    getInstall = version => new CommandBuilder(actions).
-                        RunCommand(dotnetInstallPath).
-                        Argument("--channel").
-                        Argument("release").
-                        Argument("--version").
-                        Argument(version).
-                        Argument("--install-dir").
-                        Argument(path).Script;
+                    getInstall = version =>
+                    {
+                        var cb = new CommandBuilder(actions).
+                            RunCommand(dotnetInstallPath).
+                            Argument("--channel").
+                            Argument("release").
+                            Argument("--version").
+                            Argument(version);
+
+                        // Request ARM64 architecture on Apple Silicon machines
+                        if (actions.IsRunningOnAppleSilicon())
+                        {
+                            cb.Argument("--architecture").
+                                Argument("arm64");
+                        }
+
+                        return cb.Argument("--install-dir").
+                            Argument(path).Script;
+                    };
                 }
 
                 var dotnetInfo = new CommandBuilder(actions).
