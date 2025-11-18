@@ -15,10 +15,6 @@
 | struct Tuple10 |  |
 | struct Tuple11 |  |
 | struct Tuple12 |  |
-| struct Tuple13 |  |
-| struct Tuple14 |  |
-| struct Tuple15 |  |
-| struct Tuple16 |  |
 | struct bool |  |
 | struct char |  |
 | struct f32 | FloatingPointType, NumericType |

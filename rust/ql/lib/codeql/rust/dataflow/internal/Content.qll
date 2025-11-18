@@ -29,7 +29,11 @@ abstract class FieldContent extends Content {
 class TupleFieldContent extends FieldContent, TTupleFieldContent {
   private TupleField field;
 
-  TupleFieldContent() { this = TTupleFieldContent(field) }
+  TupleFieldContent() {
+    this = TTupleFieldContent(field) and
+    // tuples are handled using the special `TupleContent` type
+    not field = any(TupleType tt).getATupleField()
+  }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, int pos) { field.isVariantField(v, pos) }
@@ -37,11 +41,7 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
 
-  override FieldExprCfgNode getAnAccess() {
-    field = result.getFieldExpr().getTupleField() and
-    // tuples are handled using the special `TupleContent` type
-    not field = any(TupleType tt).getATupleField()
-  }
+  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getTupleField() }
 
   final override string toString() {
     exists(Variant v, int pos, string vname |

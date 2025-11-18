@@ -208,8 +208,7 @@ class UnionType extends Type, TUnion {
 /**
  * An array type.
  *
- * Array types like `[i64; 5]` are modeled as normal generic types
- * with a single type argument.
+ * Array types like `[i64; 5]` are modeled as normal generic types.
  */
 class ArrayType extends StructType {
   ArrayType() { this.getStruct() instanceof Builtins::ArrayType }
@@ -401,32 +400,7 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
 
   TypeParam getTypeParam() { result = typeParam }
 
-  override string toString() {
-    this = any(SliceType st).getATypeParameter() and
-    result = "[T]"
-    or
-    this = any(ArrayType at).getATypeParameter() and
-    result = "[T;...]"
-    or
-    this = any(RefType rt).getATypeParameter() and
-    result = "&T"
-    or
-    this = any(PtrType pt).getATypeParameter() and
-    result = "*T"
-    or
-    exists(TupleType tt, int arity, int i |
-      this = tt.getPositionalTypeParameter(i) and
-      arity = tt.getArity() and
-      result = i + "(" + arity + ")"
-    )
-    or
-    not this = any(SliceType st).getATypeParameter() and
-    not this = any(ArrayType at).getATypeParameter() and
-    not this = any(RefType rt).getATypeParameter() and
-    not this = any(PtrType pt).getATypeParameter() and
-    not this = any(TupleType tt).getATypeParameter() and
-    result = typeParam.toString()
-  }
+  override string toString() { result = typeParam.toString() }
 
   override Location getLocation() { result = typeParam.getLocation() }
 }

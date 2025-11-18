@@ -2172,8 +2172,7 @@ private predicate builtin(string name, ItemNode i) {
   exists(BuiltinSourceFile builtins |
     builtins.getFile().getBaseName() = "types.rs" and
     i = builtins.getASuccessor(name) and
-    not name = ["Slice", "Array", "Ref", "Ptr"] and
-    not name.matches("Tuple%")
+    i.isPublic()
   )
 }
 
