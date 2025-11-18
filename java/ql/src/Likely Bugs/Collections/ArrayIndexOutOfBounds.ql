@@ -19,10 +19,10 @@ import semmle.code.java.dataflow.RangeUtils
 import semmle.code.java.dataflow.RangeAnalysis
 
 pragma[nomagic]
-predicate ssaArrayLengthBound(SsaVariable arr, Bound b) {
+predicate ssaArrayLengthBound(SsaDefinition arr, Bound b) {
   exists(FieldAccess len |
     len.getField() instanceof ArrayLengthField and
-    len.getQualifier() = arr.getAUse() and
+    len.getQualifier() = arr.getARead() and
     b.getExpr() = len
   )
 }
@@ -31,9 +31,9 @@ predicate ssaArrayLengthBound(SsaVariable arr, Bound b) {
  * Holds if the index expression of `aa` is less than or equal to the array length plus `k`.
  */
 predicate boundedArrayAccess(ArrayAccess aa, int k) {
-  exists(SsaVariable arr, Expr index, Bound b, int delta |
+  exists(SsaDefinition arr, Expr index, Bound b, int delta |
     aa.getIndexExpr() = index and
-    aa.getArray() = arr.getAUse() and
+    aa.getArray() = arr.getARead() and
     bounded(index, b, delta, true, _)
   |
     ssaArrayLengthBound(arr, b) and
