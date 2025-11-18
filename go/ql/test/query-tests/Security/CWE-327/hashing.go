@@ -5,6 +5,8 @@ package main
 
 import (
 	"crypto/md5"
+	"crypto/pbkdf2"
+	"crypto/rand"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha3"
@@ -75,7 +77,15 @@ func StrongHashes() {
 	sha3.SumSHAKE256(secretByteSlice, 100)             // $ CryptographicOperation="SHAKE256. init from 0 lines above."
 }
 
-func PasswordHashing() {
-	password := []byte("")
-	sha256.Sum256(password) // $ Alert[go/weak-sensitive-data-hashing] CryptographicOperation="SHA256. init from 0 lines above."
+func GetPasswordHashBad(password string) [32]byte {
+	// BAD, SHA256 is a strong hashing algorithm but it is not computationally expensive
+	return sha256.Sum256([]byte(password)) // $ Alert[go/weak-sensitive-data-hashing] CryptographicOperation="SHA256. init from 0 lines above."
+}
+
+func GetPasswordHashGood(password string) []byte {
+	// GOOD, PBKDF2 is a strong hashing algorithm and it is computationally expensive
+	salt := make([]byte, 16)
+	rand.Read(salt)
+	key, _ := pbkdf2.Key(sha512.New, password, salt, 4096, 32)
+	return key
 }
