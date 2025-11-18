@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -139,6 +140,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         // The version number should be kept in sync with the version .NET version used for building the application.
         public const string LatestDotNetSdkVersion = "9.0.300";
+
+        public static ReadOnlyDictionary<string, string> MinimalEnvironment => IDotNetCliInvoker.MinimalEnvironment;
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the
@@ -289,7 +292,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     };
                 }
 
-                var dotnetInfo = new CommandBuilder(actions).
+                var dotnetInfo = new CommandBuilder(actions, environment: MinimalEnvironment).
                     RunCommand(actions.PathCombine(path, "dotnet")).
                     Argument("--info").Script;
 
@@ -321,7 +324,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static BuildScript GetInstalledSdksScript(IBuildActions actions)
         {
-            var listSdks = new CommandBuilder(actions, silent: true).
+            var listSdks = new CommandBuilder(actions, silent: true, environment: MinimalEnvironment).
                 RunCommand("dotnet").
                 Argument("--list-sdks");
             return listSdks.Script;
