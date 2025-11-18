@@ -2162,8 +2162,31 @@ private module ContentStars {
 
 private import ContentStars
 
+private class TFieldContent = TNonUnionContent or TUnionContent;
+
+/**
+ * A `Content` that references a `Field`. This may be a field of a `struct`,
+ * `class`, or `union`. In the case of a `union` there may be multiple fields
+ * associated with the same `Content`.
+ */
+class FieldContent extends Content, TFieldContent {
+  /** Gets a `Field` of this `Content`. */
+  Field getAField() { none() }
+
+  /**
+   * Gets the field associated with this `Content`, if a unique one exists.
+   */
+  final Field getField() { result = unique( | | this.getAField()) }
+
+  override int getIndirectionIndex() { none() } // overridden in subclasses
+
+  override string toString() { none() } // overridden in subclasses
+
+  override predicate impliesClearOf(Content c) { none() } // overridden in subclasses
+}
+
 /** A reference through a non-union instance field. */
-class NonUnionFieldContent extends Content, TNonUnionContent {
+class NonUnionFieldContent extends FieldContent, TNonUnionContent {
   private Field f;
   private int indirectionIndex;
 
@@ -2171,7 +2194,7 @@ class NonUnionFieldContent extends Content, TNonUnionContent {
 
   override string toString() { result = contentStars(this) + f.toString() }
 
-  Field getField() { result = f }
+  override Field getAField() { result = f }
 
   /** Gets the indirection index of this `FieldContent`. */
   pragma[inline]
@@ -2191,7 +2214,7 @@ class NonUnionFieldContent extends Content, TNonUnionContent {
 }
 
 /** A reference through an instance field of a union. */
-class UnionContent extends Content, TUnionContent {
+class UnionContent extends FieldContent, TUnionContent {
   private Union u;
   private int indirectionIndex;
   private int bytes;
@@ -2201,7 +2224,7 @@ class UnionContent extends Content, TUnionContent {
   override string toString() { result = contentStars(this) + u.toString() }
 
   /** Gets a field of the underlying union of this `UnionContent`, if any. */
-  Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
+  override Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
 
   /** Gets the underlying union of this `UnionContent`. */
   Union getUnion() { result = u }

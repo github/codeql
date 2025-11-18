@@ -340,12 +340,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
     )
   }
 
-  predicate isField(DataFlow::ContentSet cs) {
-    exists(DataFlow::Content c | cs.isSingleton(c) |
-      c instanceof DataFlow::FieldContent or
-      c instanceof DataFlow::UnionContent
-    )
-  }
+  predicate isField(DataFlow::ContentSet cs) { cs.isSingleton(any(DataFlow::FieldContent fc)) }
 
   predicate isCallback(DataFlow::ContentSet c) { none() }
 
