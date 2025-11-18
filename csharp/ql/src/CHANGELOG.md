@@ -12,7 +12,7 @@
 
 ### Minor Analysis Improvements
 
-* the `cs/web/missing-x-frame-options` query now correctly handles configuration nested in root `<location>` elements.
+* The `cs/web/missing-x-frame-options` query now correctly handles configuration nested in root `<location>` elements.
 
 ## 1.4.2
 
