@@ -38,7 +38,7 @@ impl<T> S<T> {
 fn explicit_monomorphic_dereference() {
     // Dereference with method call
     let a1 = MyIntPointer { value: 34i64 };
-    let _b1 = a1.deref(); // $ target=MyIntPointer::deref type=_b1:&T.i64
+    let _b1 = a1.deref(); // $ target=MyIntPointer::deref type=_b1:TRef.i64
 
     // Dereference with overloaded dereference operator
     let a2 = MyIntPointer { value: 34i64 };
@@ -52,7 +52,7 @@ fn explicit_monomorphic_dereference() {
 fn explicit_polymorphic_dereference() {
     // Explicit dereference with type parameter
     let c1 = MySmartPointer { value: 'a' };
-    let _d1 = c1.deref(); // $ target=MySmartPointer::deref type=_d1:&T.char
+    let _d1 = c1.deref(); // $ target=MySmartPointer::deref type=_d1:TRef.char
 
     // Explicit dereference with type parameter
     let c2 = MySmartPointer { value: 'a' };
@@ -66,7 +66,7 @@ fn explicit_polymorphic_dereference() {
 fn explicit_ref_dereference() {
     // Explicit dereference with type parameter
     let e1 = &'a';
-    let _f1 = e1.deref(); // $ target=deref type=_f1:&T.char
+    let _f1 = e1.deref(); // $ target=deref type=_f1:TRef.char
 
     // Explicit dereference with type parameter
     let e2 = &'a';
@@ -80,7 +80,7 @@ fn explicit_ref_dereference() {
 fn explicit_box_dereference() {
     // Explicit dereference with type parameter
     let g1: Box<char> = Box::new('a'); // $ target=new
-    let _h1 = g1.deref(); // $ target=deref type=_h1:&T.char
+    let _h1 = g1.deref(); // $ target=deref type=_h1:TRef.char
 
     // Explicit dereference with type parameter
     let g2: Box<char> = Box::new('a'); // $ target=new
@@ -101,7 +101,7 @@ fn implicit_dereference() {
     let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
 
     let z = MySmartPointer { value: S(0i64) };
-    let z_ = z.foo(); // $ MISSING: target=foo type=z_:&T.i64
+    let z_ = z.foo(); // $ MISSING: target=foo type=z_:TRef.i64
 }
 
 mod implicit_deref_coercion_cycle {

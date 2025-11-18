@@ -4,6 +4,7 @@
 
 private import rust
 private import codeql.rust.controlflow.CfgNodes
+private import codeql.rust.frameworks.stdlib.Builtins
 private import DataFlowImpl
 
 /**
@@ -28,7 +29,11 @@ abstract class FieldContent extends Content {
 class TupleFieldContent extends FieldContent, TTupleFieldContent {
   private TupleField field;
 
-  TupleFieldContent() { this = TTupleFieldContent(field) }
+  TupleFieldContent() {
+    this = TTupleFieldContent(field) and
+    // tuples are handled using the special `TupleContent` type
+    not field = any(TupleType tt).getATupleField()
+  }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, int pos) { field.isVariantField(v, pos) }

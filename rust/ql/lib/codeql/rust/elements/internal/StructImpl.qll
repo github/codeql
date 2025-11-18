@@ -32,9 +32,15 @@ module Impl {
       result.getName().getText() = name
     }
 
+    /** Gets a record field, if any. */
+    StructField getAStructField() { result = this.getStructField(_) }
+
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
+
+    /** Gets a tuple field, if any. */
+    TupleField getATupleField() { result = this.getTupleField(_) }
 
     /** Holds if this struct uses tuple fields. */
     pragma[nomagic]

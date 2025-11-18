@@ -992,7 +992,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
-          useUniversalConditions() and
+          useUniversalConditions() and // todo: remove, and instead check constraints
           not exists(countConstraintImplementations(type, constraint)) and
           conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
           resolveTypeMentionRoot(condition) = abs.getATypeParameter() and

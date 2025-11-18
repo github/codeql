@@ -136,3 +136,36 @@ class F32 extends FloatingPointTypeImpl {
 class F64 extends FloatingPointTypeImpl {
   F64() { this.getName() = "f64" }
 }
+
+/** The builtin slice type `[T]`. */
+class SliceType extends BuiltinType {
+  SliceType() { this.getName() = "Slice" }
+}
+
+/** The builtin array type `[T; N]`. */
+class ArrayType extends BuiltinType {
+  ArrayType() { this.getName() = "Array" }
+}
+
+/** The builtin reference type `&T` or `&mut T`. */
+class RefType extends BuiltinType {
+  RefType() { this.getName() = "Ref" }
+}
+
+/** The builtin pointer type `*const T` or `*mut T`. */
+class PtrType extends BuiltinType {
+  PtrType() { this.getName() = "Ptr" }
+}
+
+/** A builtin tuple type `(T1, T2, ...)`. */
+class TupleType extends BuiltinType {
+  TupleType() { this.getName().matches("Tuple%") }
+
+  /** Gets the arity of this tuple type. */
+  int getArity() {
+    not this.hasGenericParamList() and
+    result = 0
+    or
+    result = this.getGenericParamList().getNumberOfGenericParams()
+  }
+}
