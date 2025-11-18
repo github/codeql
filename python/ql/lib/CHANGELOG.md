@@ -1,3 +1,9 @@
+## 5.0.0
+
+### Breaking Changes
+
+- The classes `ControlFlowNode`, `Expr`, and `Module` no longer expose predicates that invoke the points-to analysis. To access these predicates, import the module `LegacyPointsTo` and follow the instructions given therein.
+
 ## 4.1.0
 
 ### New Features

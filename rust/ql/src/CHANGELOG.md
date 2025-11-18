@@ -1,3 +1,9 @@
+## 0.1.20
+
+### Minor Analysis Improvements
+
+* Taint flow barriers have been added to the `rust/regex-injection`, `rust/sql-injection` and `rust/log-injection`, reducing the frequency of false positive results for these queries.
+
 ## 0.1.19
 
 ### Minor Analysis Improvements
