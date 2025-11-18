@@ -2124,14 +2124,14 @@ private newtype TContent =
  */
 class Content extends TContent {
   /** Gets a textual representation of this element. */
-  abstract string toString();
+  string toString() { none() } // overridden in subclasses
 
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
 
   /** Gets the indirection index of this `Content`. */
-  abstract int getIndirectionIndex();
+  int getIndirectionIndex() { none() } // overridden in subclasses
 
   /**
    * INTERNAL: Do not use.
@@ -2142,7 +2142,7 @@ class Content extends TContent {
    * For example, a write to a field `f` implies that any content of
    * the form `*f` is also cleared.
    */
-  abstract predicate impliesClearOf(Content c);
+  predicate impliesClearOf(Content c) { none() } // overridden in subclasses
 }
 
 /**
