@@ -97,7 +97,7 @@ class Compilation extends @compilation {
   /**
    * Gets an expanded argument passed to the extractor on this invocation.
    */
-  string getAnExpandedArgument() { result = this.getArgument(_) }
+  string getAnExpandedArgument() { result = this.getExpandedArgument(_) }
 
   /**
    * Gets the `i`th expanded argument passed to the extractor on this
