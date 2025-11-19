@@ -48,7 +48,7 @@ module BooleanCookieHttpOnlyFlow = TaintTracking::Global<BooleanCookieHttpOnlyCo
 
 /** Holds if `cw` has the `HttpOnly` attribute left at its default value of `false`. */
 predicate isNonHttpOnlyDefault(Http::CookieWrite cw) {
-  not BooleanCookieHttpOnlyFlow::flow(_, cw.getHttpOnly())
+  not BooleanCookieHttpOnlyFlow::flowTo(cw.getHttpOnly())
 }
 
 /** Holds if `cw` has the `HttpOnly` attribute explicitly set to `false`, from the expression `boolFalse`. */
