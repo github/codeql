@@ -16,6 +16,8 @@ stringLiteral
 | literal.rs:21:5:21:8 | r"R" |
 | literal.rs:22:5:22:11 | "\\\\x52" |
 | literal.rs:23:5:23:11 | r"\\x52" |
+| literal.rs:25:5:29:5 | "\n    A normal string literal\n... |
+| literal.rs:31:5:34:6 | r#"\n    A raw string literal\n ... |
 integerLiteral
 | literal.rs:39:5:39:7 | 123 |  |
 | literal.rs:40:5:40:10 | 123i32 | i32 |
