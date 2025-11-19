@@ -1,17 +1,19 @@
 models
 | 1 | Summary: <_ as alloc::string::ToString>::to_string; Argument[self]; ReturnValue; taint |
-| 2 | Summary: <_ as core::convert::From>::from; Argument[0].Element; ReturnValue.Element; taint |
-| 3 | Summary: <_ as core::convert::From>::from; Argument[0].Reference; ReturnValue; taint |
-| 4 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 5 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 6 | Summary: <_ as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
-| 7 | Summary: <alloc::string::String as core::convert::AsMut>::as_mut; Argument[self]; ReturnValue; value |
-| 8 | Summary: <alloc::string::String as core::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
-| 9 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Reference; ReturnValue; value |
-| 10 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
-| 11 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
-| 12 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
-| 13 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+| 2 | Summary: <_ as core::convert::AsMut>::as_mut; Argument[self]; ReturnValue; value |
+| 3 | Summary: <_ as core::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 4 | Summary: <_ as core::convert::From>::from; Argument[0].Element; ReturnValue.Element; taint |
+| 5 | Summary: <_ as core::convert::From>::from; Argument[0].Reference; ReturnValue; taint |
+| 6 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
+| 7 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
+| 8 | Summary: <_ as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
+| 9 | Summary: <alloc::string::String as core::convert::AsMut>::as_mut; Argument[self]; ReturnValue; value |
+| 10 | Summary: <alloc::string::String as core::convert::AsRef>::as_ref; Argument[self]; ReturnValue; value |
+| 11 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Reference; ReturnValue; value |
+| 12 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
+| 13 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+| 14 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 15 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 edges
 | main.rs:30:9:30:9 | s | main.rs:31:19:31:25 | s[...] | provenance |  |
 | main.rs:30:13:30:22 | source(...) | main.rs:30:9:30:9 | s | provenance |  |
@@ -22,20 +24,20 @@ edges
 | main.rs:36:9:36:10 | s1 | main.rs:39:14:39:15 | s1 | provenance |  |
 | main.rs:36:14:36:23 | source(...) | main.rs:36:9:36:10 | s1 | provenance |  |
 | main.rs:39:9:39:10 | s4 | main.rs:42:10:42:11 | s4 | provenance |  |
-| main.rs:39:14:39:15 | s1 | main.rs:39:14:39:20 | ... + ... | provenance | MaD:6 |
-| main.rs:39:14:39:15 | s1 | main.rs:39:14:39:20 | ... + ... | provenance | MaD:10 |
+| main.rs:39:14:39:15 | s1 | main.rs:39:14:39:20 | ... + ... | provenance | MaD:8 |
+| main.rs:39:14:39:15 | s1 | main.rs:39:14:39:20 | ... + ... | provenance | MaD:12 |
 | main.rs:39:14:39:20 | ... + ... | main.rs:39:9:39:10 | s4 | provenance |  |
 | main.rs:47:9:47:10 | s1 | main.rs:50:34:50:35 | s1 | provenance |  |
 | main.rs:47:14:47:23 | source(...) | main.rs:47:9:47:10 | s1 | provenance |  |
-| main.rs:50:33:50:35 | &s1 [&ref] | main.rs:50:10:50:35 | ... + ... | provenance | MaD:5 |
+| main.rs:50:33:50:35 | &s1 [&ref] | main.rs:50:10:50:35 | ... + ... | provenance | MaD:7 |
 | main.rs:50:34:50:35 | s1 | main.rs:50:33:50:35 | &s1 [&ref] | provenance |  |
 | main.rs:55:9:55:10 | s1 | main.rs:57:27:57:28 | s1 | provenance |  |
 | main.rs:55:14:55:29 | source_slice(...) | main.rs:55:9:55:10 | s1 | provenance |  |
 | main.rs:57:9:57:10 | s2 | main.rs:58:10:58:11 | s2 | provenance |  |
 | main.rs:57:14:57:29 | ...::from(...) | main.rs:57:9:57:10 | s2 | provenance |  |
-| main.rs:57:27:57:28 | s1 | main.rs:57:14:57:29 | ...::from(...) | provenance | MaD:3 |
-| main.rs:57:27:57:28 | s1 | main.rs:57:14:57:29 | ...::from(...) | provenance | MaD:4 |
-| main.rs:57:27:57:28 | s1 | main.rs:57:14:57:29 | ...::from(...) | provenance | MaD:9 |
+| main.rs:57:27:57:28 | s1 | main.rs:57:14:57:29 | ...::from(...) | provenance | MaD:5 |
+| main.rs:57:27:57:28 | s1 | main.rs:57:14:57:29 | ...::from(...) | provenance | MaD:6 |
+| main.rs:57:27:57:28 | s1 | main.rs:57:14:57:29 | ...::from(...) | provenance | MaD:11 |
 | main.rs:66:9:66:10 | ss [element] | main.rs:67:16:67:17 | ss [element] | provenance |  |
 | main.rs:66:9:66:10 | ss [element] | main.rs:69:27:69:28 | ss [element] | provenance |  |
 | main.rs:66:9:66:10 | ss [element] | main.rs:78:36:78:37 | ss [element] | provenance |  |
@@ -46,54 +48,57 @@ edges
 | main.rs:69:9:69:10 | s5 | main.rs:70:10:70:11 | s5 | provenance |  |
 | main.rs:69:14:69:32 | ...::from(...) | main.rs:69:9:69:10 | s5 | provenance |  |
 | main.rs:69:27:69:28 | ss [element] | main.rs:69:27:69:31 | ss[0] | provenance |  |
-| main.rs:69:27:69:31 | ss[0] | main.rs:69:14:69:32 | ...::from(...) | provenance | MaD:3 |
-| main.rs:69:27:69:31 | ss[0] | main.rs:69:14:69:32 | ...::from(...) | provenance | MaD:4 |
-| main.rs:69:27:69:31 | ss[0] | main.rs:69:14:69:32 | ...::from(...) | provenance | MaD:9 |
+| main.rs:69:27:69:31 | ss[0] | main.rs:69:14:69:32 | ...::from(...) | provenance | MaD:5 |
+| main.rs:69:27:69:31 | ss[0] | main.rs:69:14:69:32 | ...::from(...) | provenance | MaD:6 |
+| main.rs:69:27:69:31 | ss[0] | main.rs:69:14:69:32 | ...::from(...) | provenance | MaD:11 |
 | main.rs:78:9:78:11 | ss2 [element] | main.rs:79:16:79:18 | ss2 [element] | provenance |  |
 | main.rs:78:26:78:38 | ...::from(...) [element] | main.rs:78:9:78:11 | ss2 [element] | provenance |  |
-| main.rs:78:36:78:37 | ss [element] | main.rs:78:26:78:38 | ...::from(...) [element] | provenance | MaD:2 |
+| main.rs:78:36:78:37 | ss [element] | main.rs:78:26:78:38 | ...::from(...) [element] | provenance | MaD:4 |
 | main.rs:79:16:79:18 | ss2 [element] | main.rs:79:16:79:21 | ss2[0] | provenance |  |
 | main.rs:89:9:89:10 | s1 | main.rs:90:14:90:27 | s1.to_string() | provenance | MaD:1 |
 | main.rs:89:14:89:29 | source_slice(...) | main.rs:89:9:89:10 | s1 | provenance |  |
 | main.rs:90:9:90:10 | s2 | main.rs:91:10:91:11 | s2 | provenance |  |
 | main.rs:90:14:90:27 | s1.to_string() | main.rs:90:9:90:10 | s2 | provenance |  |
 | main.rs:95:9:95:9 | s | main.rs:96:16:96:16 | s | provenance |  |
-| main.rs:95:9:95:9 | s | main.rs:96:16:96:25 | s.as_str() | provenance | MaD:11 |
+| main.rs:95:9:95:9 | s | main.rs:96:16:96:25 | s.as_str() | provenance | MaD:13 |
 | main.rs:95:13:95:22 | source(...) | main.rs:95:9:95:9 | s | provenance |  |
-| main.rs:96:16:96:16 | s | main.rs:96:16:96:25 | s.as_str() | provenance | MaD:11 |
+| main.rs:96:16:96:16 | s | main.rs:96:16:96:25 | s.as_str() | provenance | MaD:13 |
 | main.rs:100:9:100:9 | s | main.rs:102:34:102:61 | MacroExpr | provenance |  |
 | main.rs:100:9:100:9 | s | main.rs:105:34:105:59 | MacroExpr | provenance |  |
 | main.rs:100:13:100:22 | source(...) | main.rs:100:9:100:9 | s | provenance |  |
 | main.rs:102:9:102:18 | formatted1 | main.rs:103:10:103:19 | formatted1 | provenance |  |
 | main.rs:102:22:102:62 | ...::format(...) | main.rs:102:9:102:18 | formatted1 | provenance |  |
-| main.rs:102:34:102:61 | MacroExpr | main.rs:102:22:102:62 | ...::format(...) | provenance | MaD:12 |
+| main.rs:102:34:102:61 | MacroExpr | main.rs:102:22:102:62 | ...::format(...) | provenance | MaD:14 |
 | main.rs:105:9:105:18 | formatted2 | main.rs:106:10:106:19 | formatted2 | provenance |  |
 | main.rs:105:22:105:60 | ...::format(...) | main.rs:105:9:105:18 | formatted2 | provenance |  |
-| main.rs:105:34:105:59 | MacroExpr | main.rs:105:22:105:60 | ...::format(...) | provenance | MaD:12 |
+| main.rs:105:34:105:59 | MacroExpr | main.rs:105:22:105:60 | ...::format(...) | provenance | MaD:14 |
 | main.rs:108:9:108:13 | width | main.rs:109:34:109:74 | MacroExpr | provenance |  |
 | main.rs:108:17:108:32 | source_usize(...) | main.rs:108:9:108:13 | width | provenance |  |
 | main.rs:109:9:109:18 | formatted3 | main.rs:110:10:110:19 | formatted3 | provenance |  |
 | main.rs:109:22:109:75 | ...::format(...) | main.rs:109:9:109:18 | formatted3 | provenance |  |
-| main.rs:109:34:109:74 | MacroExpr | main.rs:109:22:109:75 | ...::format(...) | provenance | MaD:12 |
+| main.rs:109:34:109:74 | MacroExpr | main.rs:109:22:109:75 | ...::format(...) | provenance | MaD:14 |
 | main.rs:114:9:114:10 | s1 | main.rs:118:18:118:25 | MacroExpr | provenance |  |
 | main.rs:114:9:114:10 | s1 | main.rs:119:18:119:32 | MacroExpr | provenance |  |
 | main.rs:114:14:114:23 | source(...) | main.rs:114:9:114:10 | s1 | provenance |  |
 | main.rs:118:18:118:25 | ...::format(...) | main.rs:118:18:118:25 | { ... } | provenance |  |
 | main.rs:118:18:118:25 | ...::must_use(...) | main.rs:118:10:118:26 | MacroExpr | provenance |  |
-| main.rs:118:18:118:25 | MacroExpr | main.rs:118:18:118:25 | ...::format(...) | provenance | MaD:12 |
-| main.rs:118:18:118:25 | { ... } | main.rs:118:18:118:25 | ...::must_use(...) | provenance | MaD:13 |
+| main.rs:118:18:118:25 | MacroExpr | main.rs:118:18:118:25 | ...::format(...) | provenance | MaD:14 |
+| main.rs:118:18:118:25 | { ... } | main.rs:118:18:118:25 | ...::must_use(...) | provenance | MaD:15 |
 | main.rs:119:18:119:32 | ...::format(...) | main.rs:119:18:119:32 | { ... } | provenance |  |
 | main.rs:119:18:119:32 | ...::must_use(...) | main.rs:119:10:119:33 | MacroExpr | provenance |  |
-| main.rs:119:18:119:32 | MacroExpr | main.rs:119:18:119:32 | ...::format(...) | provenance | MaD:12 |
-| main.rs:119:18:119:32 | { ... } | main.rs:119:18:119:32 | ...::must_use(...) | provenance | MaD:13 |
+| main.rs:119:18:119:32 | MacroExpr | main.rs:119:18:119:32 | ...::format(...) | provenance | MaD:14 |
+| main.rs:119:18:119:32 | { ... } | main.rs:119:18:119:32 | ...::must_use(...) | provenance | MaD:15 |
 | main.rs:124:9:124:14 | mut s1 | main.rs:126:15:126:16 | s1 | provenance |  |
-| main.rs:124:9:124:14 | mut s1 | main.rs:127:14:127:24 | s1.as_ref() | provenance | MaD:8 |
+| main.rs:124:9:124:14 | mut s1 | main.rs:127:14:127:24 | s1.as_ref() | provenance | MaD:3 |
+| main.rs:124:9:124:14 | mut s1 | main.rs:127:14:127:24 | s1.as_ref() | provenance | MaD:10 |
 | main.rs:124:9:124:14 | mut s1 | main.rs:128:14:128:15 | s1 | provenance |  |
-| main.rs:124:9:124:14 | mut s1 | main.rs:128:14:128:24 | s1.as_mut() | provenance | MaD:7 |
+| main.rs:124:9:124:14 | mut s1 | main.rs:128:14:128:24 | s1.as_mut() | provenance | MaD:2 |
+| main.rs:124:9:124:14 | mut s1 | main.rs:128:14:128:24 | s1.as_mut() | provenance | MaD:9 |
 | main.rs:124:18:124:27 | source(...) | main.rs:124:18:124:39 | ... .to_string() | provenance | MaD:1 |
 | main.rs:124:18:124:39 | ... .to_string() | main.rs:124:9:124:14 | mut s1 | provenance |  |
 | main.rs:126:15:126:16 | s1 | main.rs:126:14:126:16 | &s1 | provenance |  |
-| main.rs:128:14:128:15 | s1 | main.rs:128:14:128:24 | s1.as_mut() | provenance | MaD:7 |
+| main.rs:128:14:128:15 | s1 | main.rs:128:14:128:24 | s1.as_mut() | provenance | MaD:2 |
+| main.rs:128:14:128:15 | s1 | main.rs:128:14:128:24 | s1.as_mut() | provenance | MaD:9 |
 nodes
 | main.rs:30:9:30:9 | s | semmle.label | s |
 | main.rs:30:13:30:22 | source(...) | semmle.label | source(...) |
