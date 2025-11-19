@@ -4,21 +4,21 @@ def _impl(repository_ctx):
     build_file = Label("//misc/ripunzip:BUILD.ripunzip.bazel")
     if repository_ctx.os.name == "linux":
         repository_ctx.download_and_extract(
-            url="%s/ripunzip_%s-1_amd64.deb" % (url_prefix, version),
-            sha256=repository_ctx.attr.sha256_linux,
-            canonical_id="ripunzip-linux",
-            output="deb",
+            url = "%s/ripunzip_%s-1_amd64.deb" % (url_prefix, version),
+            sha256 = repository_ctx.attr.sha256_linux,
+            canonical_id = "ripunzip-linux",
+            output = "deb",
         )
         repository_ctx.extract(
             "deb/data.tar.xz",
-            strip_prefix="usr",
+            strip_prefix = "usr",
         )
     elif repository_ctx.os.name == "windows":
         repository_ctx.download_and_extract(
-            url="%s/ripunzip_v%s-x86_64-pc-windows-msvc.zip" % (url_prefix, version),
-            canonical_id="ripunzip-windows",
-            sha256=repository_ctx.attr.sha256_windows,
-            output="bin",
+            url = "%s/ripunzip_v%s-x86_64-pc-windows-msvc.zip" % (url_prefix, version),
+            canonical_id = "ripunzip-windows",
+            sha256 = repository_ctx.attr.sha256_windows,
+            output = "bin",
         )
     elif repository_ctx.os.name == "mac os x":
         arch = repository_ctx.os.arch
@@ -33,10 +33,10 @@ def _impl(repository_ctx):
         else:
             fail("Unsupported macOS architecture: %s" % arch)
         repository_ctx.download_and_extract(
-            url="%s/ripunzip_v%s-%s.tar.gz" % (url_prefix, version, suffix),
-            sha256=sha256,
-            canonical_id=canonical_id,
-            output="bin",
+            url = "%s/ripunzip_v%s-%s.tar.gz" % (url_prefix, version, suffix),
+            sha256 = sha256,
+            canonical_id = canonical_id,
+            output = "bin",
         )
     else:
         fail("Unsupported OS: %s" % repository_ctx.os.name)
@@ -44,12 +44,12 @@ def _impl(repository_ctx):
     repository_ctx.symlink(build_file, "BUILD.bazel")
 
 ripunzip_archive = repository_rule(
-    implementation=_impl,
-    attrs={
-        "version": attr.string(mandatory=True),
-        "sha256_linux": attr.string(mandatory=True),
-        "sha256_windows": attr.string(mandatory=True),
-        "sha256_macos_intel": attr.string(mandatory=True),
-        "sha256_macos_arm": attr.string(mandatory=True),
+    implementation = _impl,
+    attrs = {
+        "version": attr.string(mandatory = True),
+        "sha256_linux": attr.string(mandatory = True),
+        "sha256_windows": attr.string(mandatory = True),
+        "sha256_macos_intel": attr.string(mandatory = True),
+        "sha256_macos_arm": attr.string(mandatory = True),
     },
 )
