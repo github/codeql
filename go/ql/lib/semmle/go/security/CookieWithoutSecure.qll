@@ -21,7 +21,7 @@ module BooleanCookieSecureFlow = TaintTracking::Global<BooleanCookieSecureConfig
 
 /** Holds if `cw` has the `Secure` attribute left at its default value of `false`. */
 predicate isInsecureDefault(Http::CookieWrite cw) {
-  not BooleanCookieSecureFlow::flow(_, cw.getSecure())
+  not BooleanCookieSecureFlow::flowTo(cw.getSecure())
 }
 
 /** Holds if `cw` has the `Secure` attribute explicitly set to `false`, from the expression `boolFalse`. */

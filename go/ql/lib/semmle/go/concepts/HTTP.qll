@@ -427,10 +427,10 @@ module Http {
   /** Provides a class for modeling the new APIs for writes to options of an HTTP cookie. */
   module CookieOptionWrite {
     /**
-     * A write to an HTTP cookie object.
+     * A write to an option of an HTTP cookie object.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `HTTP::CookieOptions` instead.
+     * extend `HTTP::CookieOptionWrite` instead.
      */
     abstract class Range extends DataFlow::Node {
       /** Gets the node representing the cookie object for the options being set. */
@@ -451,10 +451,10 @@ module Http {
   }
 
   /**
-   * A write to an HTTP cookie object.
+   * A write to an option of an HTTP cookie object.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
-   * extend `HTTP::CookieOptions::Range` instead.
+   * extend `HTTP::CookieOptionWrite::Range` instead.
    */
   class CookieOptionWrite extends DataFlow::Node instanceof CookieOptionWrite::Range {
     /** Gets the node representing the cookie object for the options being set. */
