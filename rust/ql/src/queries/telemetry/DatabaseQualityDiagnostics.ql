@@ -13,6 +13,8 @@ private predicate diagnostic(string msg, float value, float threshold) {
   CallTargetStatsReport::percentageOfOk(msg, value) and threshold = 50
   or
   MacroCallTargetStatsReport::percentageOfOk(msg, value) and threshold = 50
+  or
+  ExprTypeStatsReport::percentageOfOk(msg, value) and threshold = 20
 }
 
 private string getDbHealth() {

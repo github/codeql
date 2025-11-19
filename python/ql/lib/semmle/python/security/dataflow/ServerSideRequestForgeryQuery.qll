@@ -68,7 +68,8 @@ private module PartialServerSideRequestForgeryConfig implements DataFlow::Config
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    // Note: this query does not select the sink itself
+    result = sink.(Sink).getLocation()
+    or
     result = sink.(Sink).getRequest().getLocation()
   }
 }

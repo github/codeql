@@ -1,13 +1,15 @@
 import csharp
 private import codeql.dataflow.DataFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
-private import codeql.dataflowstack.DataFlowStack as DFS
-private import DFS::DataFlowStackMake<Location, CsharpDataFlow> as DataFlowStackFactory
+private import codeql.dataflowstack.FlowStack as FlowStack
 
-private module DataFlowStackInput<DataFlowStackFactory::DataFlow::ConfigSig Config> implements
-  DFS::DataFlowStackSig<Location, CsharpDataFlow, Config>
+module LanguageFlowStack = FlowStack::LanguageDataFlow<Location, CsharpDataFlow>;
+
+private module FlowStackInput<DataFlow::ConfigSig Config>
+  implements LanguageFlowStack::DataFlowConfigContext<Config>::FlowInstance
 {
   private module Flow = DataFlow::Global<Config>;
+  class PathNode = Flow::PathNode;
 
   CsharpDataFlow::Node getNode(Flow::PathNode n) { result = n.getNode() }
 
@@ -24,13 +26,13 @@ private module DataFlowStackInput<DataFlowStackFactory::DataFlow::ConfigSig Conf
   }
 }
 
-module DataFlowStackMake<DataFlowStackFactory::DataFlow::ConfigSig Config> {
-  import DataFlowStackFactory::FlowStack<Config, DataFlowStackInput<Config>>
+module DataFlowStackMake<DataFlow::ConfigSig Config> {
+  import LanguageFlowStack::FlowStack<Config, FlowStackInput<Config>>
 }
 
 module BiStackAnalysisMake<
-  DataFlowStackFactory::DataFlow::ConfigSig ConfigA,
-  DataFlowStackFactory::DataFlow::ConfigSig ConfigB>
-{
-  import DataFlowStackFactory::BiStackAnalysis<ConfigA, DataFlowStackInput<ConfigA>, ConfigB, DataFlowStackInput<ConfigB>>
+  DataFlow::ConfigSig ConfigA,
+  DataFlow::ConfigSig ConfigB
+>{
+  import LanguageFlowStack::BiStackAnalysis<ConfigA, FlowStackInput<ConfigA>, ConfigB, FlowStackInput<ConfigB>>
 }

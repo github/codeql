@@ -2915,7 +2915,8 @@ class DataFlowExpr = Expr;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
-  e = any(AbstractValues::BooleanValue bv | val = bv.getValue()).getAnExpr()
+  e.getType() instanceof BoolType and
+  e.getValue() = val.toString()
   or
   exists(Ssa::ExplicitDefinition def, Expr src |
     e = def.getARead() and

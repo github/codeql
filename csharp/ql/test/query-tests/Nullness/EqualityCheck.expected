@@ -190,12 +190,12 @@
 | E.cs:83:13:83:24 | ... != ... | false | E.cs:83:21:83:24 | null | E.cs:83:13:83:16 | access to parameter vals |
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:18:85:21 | access to parameter vals | E.cs:85:26:85:29 | null |
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:26:85:29 | null | E.cs:85:18:85:21 | access to parameter vals |
-| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
-| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:92:18:92:27 | access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard |
-| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
-| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:97:18:97:27 | access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard |
-| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
-| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_C | E.cs:95:18:95:27 | access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard |
+| E.cs:92:13:92:28 | case ...: | true | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
+| E.cs:92:13:92:28 | case ...: | true | E.cs:92:18:92:27 | access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard |
+| E.cs:95:13:95:28 | case ...: | true | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
+| E.cs:95:13:95:28 | case ...: | true | E.cs:95:18:95:27 | access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard |
+| E.cs:97:13:97:28 | case ...: | true | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
+| E.cs:97:13:97:28 | case ...: | true | E.cs:97:18:97:27 | access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:21:126:24 | access to local variable step | E.cs:126:29:126:29 | 0 |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:29:126:29 | 0 | E.cs:126:21:126:24 | access to local variable step |
 | E.cs:153:13:153:24 | ... != ... | false | E.cs:153:13:153:16 | access to local variable obj2 | E.cs:153:21:153:24 | null |
@@ -244,8 +244,18 @@
 | E.cs:423:33:423:44 | ... == ... | true | E.cs:423:38:423:44 | access to property Value | E.cs:423:33:423:33 | access to parameter j |
 | E.cs:430:34:430:45 | ... == ... | true | E.cs:430:34:430:34 | access to parameter j | E.cs:430:39:430:45 | access to property Value |
 | E.cs:430:34:430:45 | ... == ... | true | E.cs:430:39:430:45 | access to property Value | E.cs:430:34:430:34 | access to parameter j |
-| E.cs:437:13:437:21 | ... is ... | true | E.cs:437:13:437:13 | access to parameter s | E.cs:437:18:437:21 | null |
-| E.cs:437:13:437:21 | ... is ... | true | E.cs:437:18:437:21 | null | E.cs:437:13:437:13 | access to parameter s |
+| E.cs:437:13:437:18 | ... == ... | true | E.cs:437:13:437:13 | access to parameter i | E.cs:437:18:437:18 | 0 |
+| E.cs:437:13:437:18 | ... == ... | true | E.cs:437:18:437:18 | 0 | E.cs:437:13:437:13 | access to parameter i |
+| E.cs:437:23:437:31 | ... is ... | true | E.cs:437:23:437:23 | access to parameter s | E.cs:437:28:437:31 | null |
+| E.cs:437:23:437:31 | ... is ... | true | E.cs:437:28:437:31 | null | E.cs:437:23:437:23 | access to parameter s |
+| E.cs:442:13:442:18 | ... == ... | true | E.cs:442:13:442:13 | access to parameter i | E.cs:442:18:442:18 | 1 |
+| E.cs:442:13:442:18 | ... == ... | true | E.cs:442:18:442:18 | 1 | E.cs:442:13:442:13 | access to parameter i |
+| E.cs:447:13:447:18 | ... == ... | true | E.cs:447:13:447:13 | access to parameter i | E.cs:447:18:447:18 | 2 |
+| E.cs:447:13:447:18 | ... == ... | true | E.cs:447:18:447:18 | 2 | E.cs:447:13:447:13 | access to parameter i |
+| E.cs:447:23:447:35 | ... is ... | false | E.cs:447:23:447:23 | access to parameter s | E.cs:447:32:447:35 | null |
+| E.cs:447:23:447:35 | ... is ... | false | E.cs:447:32:447:35 | null | E.cs:447:23:447:23 | access to parameter s |
+| E.cs:452:13:452:18 | ... == ... | true | E.cs:452:13:452:13 | access to parameter i | E.cs:452:18:452:18 | 3 |
+| E.cs:452:13:452:18 | ... == ... | true | E.cs:452:18:452:18 | 3 | E.cs:452:13:452:13 | access to parameter i |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:13:59:13 | access to parameter o | Forwarding.cs:59:18:59:21 | null |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:18:59:21 | null | Forwarding.cs:59:13:59:13 | access to parameter o |
 | Forwarding.cs:78:16:78:39 | call to method ReferenceEquals | true | Forwarding.cs:78:32:78:32 | access to parameter o | Forwarding.cs:78:35:78:38 | null |

@@ -55,6 +55,12 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAvailabilitySpec(
+    AvailabilitySpec e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
   private Element getImmediateChildOfKeyPathComponent(
     KeyPathComponent e, int index, string partialPredicateCall
   ) {
@@ -87,18 +93,6 @@ private module Impl {
         partialPredicateCall = "Child(" + (index - n).toString() + ")"
       )
     )
-  }
-
-  private Element getImmediateChildOfOtherAvailabilitySpec(
-    OtherAvailabilitySpec e, int index, string partialPredicateCall
-  ) {
-    none()
-  }
-
-  private Element getImmediateChildOfPlatformVersionAvailabilitySpec(
-    PlatformVersionAvailabilitySpec e, int index, string partialPredicateCall
-  ) {
-    none()
   }
 
   private Element getImmediateChildOfCapturedDecl(
@@ -263,6 +257,19 @@ private module Impl {
         partialPredicateCall = "Member(" + (index - n).toString() + ")"
         or
         index = nMember and result = e.getBody() and partialPredicateCall = "Body()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUsingDecl(UsingDecl e, int index, string partialPredicateCall) {
+    exists(int n, int nMember |
+      n = 0 and
+      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      (
+        none()
+        or
+        result = e.getMember(index - n) and
+        partialPredicateCall = "Member(" + (index - n).toString() + ")"
       )
     )
   }
@@ -2241,6 +2248,18 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnsafeExpr(UnsafeExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nSubExpr |
+      n = 0 and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfBooleanLiteralExpr(
     BooleanLiteralExpr e, int index, string partialPredicateCall
   ) {
@@ -3084,6 +3103,12 @@ private module Impl {
     none()
   }
 
+  private Element getImmediateChildOfInlineArrayType(
+    InlineArrayType e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
   private Element getImmediateChildOfOpaqueTypeArchetypeType(
     OpaqueTypeArchetypeType e, int index, string partialPredicateCall
   ) {
@@ -3140,8 +3165,8 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfOpenedArchetypeType(
-    OpenedArchetypeType e, int index, string partialPredicateCall
+  private Element getImmediateChildOfExistentialArchetypeType(
+    ExistentialArchetypeType e, int index, string partialPredicateCall
   ) {
     none()
   }
@@ -3188,15 +3213,13 @@ private module Impl {
     or
     result = getImmediateChildOfAvailabilityInfo(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAvailabilitySpec(e, index, partialAccessor)
+    or
     result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroRole(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfPlatformVersionAvailabilitySpec(e, index, partialAccessor)
     or
     result = getImmediateChildOfCapturedDecl(e, index, partialAccessor)
     or
@@ -3217,6 +3240,8 @@ private module Impl {
     result = getImmediateChildOfPrecedenceGroupDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfTopLevelCodeDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUsingDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
     or
@@ -3478,6 +3503,8 @@ private module Impl {
     or
     result = getImmediateChildOfUnsafeCastExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfUnsafeExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfConditionalCheckedCastExpr(e, index, partialAccessor)
@@ -3654,6 +3681,8 @@ private module Impl {
     or
     result = getImmediateChildOfDictionaryType(e, index, partialAccessor)
     or
+    result = getImmediateChildOfInlineArrayType(e, index, partialAccessor)
+    or
     result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfPackArchetypeType(e, index, partialAccessor)
@@ -3674,7 +3703,7 @@ private module Impl {
     or
     result = getImmediateChildOfEnumType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
+    result = getImmediateChildOfExistentialArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfOptionalType(e, index, partialAccessor)
     or

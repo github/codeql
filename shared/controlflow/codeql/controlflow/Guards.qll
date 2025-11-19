@@ -202,12 +202,14 @@ module Make<
 
   private newtype TAbstractSingleValue =
     TValueNull() or
-    TValueTrue() or
+    TValueBool(Boolean b) or
     TValueInt(int i) { exists(ConstantExpr c | c.asIntegerValue() = i) or i = 0 } or
     TValueConstant(ConstantValue c) { exists(ConstantExpr ce | ce.asConstantValue() = c) }
 
   private newtype TGuardValue =
-    TValue(TAbstractSingleValue val, Boolean isVal) or
+    TValue(TAbstractSingleValue val, Boolean isVal) {
+      val instanceof TValueBool implies isVal = true
+    } or
     TIntRange(int bound, Boolean upper) {
       exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
       // exclude edge cases to avoid overflow issues when computing duals
@@ -221,7 +223,9 @@ module Make<
     string toString() {
       result = "null" and this instanceof TValueNull
       or
-      result = "true" and this instanceof TValueTrue
+      result = "true" and this = TValueBool(true)
+      or
+      result = "false" and this = TValueBool(false)
       or
       exists(int i | result = i.toString() and this = TValueInt(i))
       or
@@ -242,6 +246,11 @@ module Make<
       exists(AbstractSingleValue val, boolean isVal |
         this = TValue(val, isVal) and
         result = TValue(val, isVal.booleanNot())
+      )
+      or
+      exists(boolean b |
+        this = TValue(TValueBool(b), true) and
+        result = TValue(TValueBool(b.booleanNot()), true)
       )
       or
       exists(int bound, int d, boolean upper |
@@ -275,7 +284,7 @@ module Make<
     int asIntValue() { this = TValue(TValueInt(result), true) }
 
     /** Gets the boolean that this value represents, if any. */
-    boolean asBooleanValue() { this = TValue(TValueTrue(), result) }
+    boolean asBooleanValue() { this = TValue(TValueBool(result), true) }
 
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
@@ -288,14 +297,12 @@ module Make<
      */
     predicate isIntRange(int bound, boolean upper) { this = TIntRange(bound, upper) }
 
-    /** Holds if this value represents throwing an exception. */
+    /** Holds if this value represents throwing an exception (or exiting). */
     predicate isThrowsException() { this = TException(true) }
 
     /** Gets a textual representation of this value. */
     string toString() {
-      result = this.asBooleanValue().toString()
-      or
-      exists(AbstractSingleValue val | not val instanceof TValueTrue |
+      exists(AbstractSingleValue val |
         this = TValue(val, true) and result = val.toString()
         or
         this = TValue(val, false) and result = "not " + val.toString()
@@ -355,25 +362,33 @@ module Make<
     v.asConstantValue() = c.asConstantValue()
   }
 
+  private predicate trivialHasValue(Expr e, GuardValue v) {
+    constantHasValue(e, v)
+    or
+    e instanceof NonNullExpr and v.isNonNullValue()
+  }
+
+  /** Holds if `t` is an exception-like successor type. */
+  private predicate exceptionLike(SuccessorType t) {
+    t instanceof ExceptionSuccessor or
+    t instanceof ExitSuccessor
+  }
+
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
-    exists(SuccessorType norm, ExceptionSuccessor exc |
+    exists(SuccessorType norm, SuccessorType exc |
       bb1.getASuccessor(norm) = normalSucc and
       bb1.getASuccessor(exc) = excSucc and
       normalSucc != excSucc and
-      not norm instanceof ExceptionSuccessor
+      exceptionLike(exc) and
+      not exceptionLike(norm)
     )
   }
 
   private predicate branchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v) {
-    exists(ConditionalSuccessor s |
-      bb1.getASuccessor(s) = bb2 and
-      exists(AbstractSingleValue val |
-        s instanceof NullnessSuccessor and val = TValueNull()
-        or
-        s instanceof BooleanSuccessor and val = TValueTrue()
-      |
-        v = TValue(val, s.getValue())
-      )
+    exists(ConditionalSuccessor s | bb1.getASuccessor(s) = bb2 |
+      s instanceof NullnessSuccessor and v = TValue(TValueNull(), s.getValue())
+      or
+      s instanceof BooleanSuccessor and v = TValue(TValueBool(s.getValue()), true)
     )
     or
     exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
@@ -503,7 +518,8 @@ module Make<
     or
     exists(NonNullExpr nonnull |
       equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
-      v2.isNonNullValue()
+      v2.isNonNullValue() and
+      not g2 instanceof NonNullExpr // disregard trivial guard
     )
     or
     exists(Case c1, Expr switchExpr |
@@ -533,16 +549,18 @@ module Make<
       Location getLocation();
     }
 
-    class SsaWriteDefinition extends SsaDefinition {
-      Expr getDefinition();
+    class SsaExplicitWrite extends SsaDefinition {
+      Expr getValue();
     }
 
-    class SsaPhiNode extends SsaDefinition {
+    class SsaPhiDefinition extends SsaDefinition {
       /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
     }
 
-    predicate parameterDefinition(Parameter p, SsaDefinition def);
+    class SsaParameterInit extends SsaDefinition {
+      Parameter getParameter();
+    }
 
     /**
      * Holds if `guard` evaluating to `val` ensures that:
@@ -591,7 +609,7 @@ module Make<
      * logical inferences from `phi` to `guard` trivial and irrelevant.
      */
     private predicate guardControlsPhiBranch(
-      Guard guard, GuardValue v, SsaPhiNode phi, SsaDefinition inp
+      Guard guard, GuardValue v, SsaPhiDefinition phi, SsaDefinition inp
     ) {
       exists(BasicBlock bbPhi |
         phi.hasInputFromBlock(inp, _) and
@@ -612,10 +630,12 @@ module Make<
      *
      * This makes `phi` similar to the conditional `phi = guard==v ? input : ...`.
      */
-    private predicate guardDeterminesPhiInput(Guard guard, GuardValue v, SsaPhiNode phi, Expr input) {
-      exists(GuardValue dv, SsaWriteDefinition inp |
+    private predicate guardDeterminesPhiInput(
+      Guard guard, GuardValue v, SsaPhiDefinition phi, Expr input
+    ) {
+      exists(GuardValue dv, SsaExplicitWrite inp |
         guardControlsPhiBranch(guard, v, phi, inp) and
-        inp.getDefinition() = input and
+        inp.getValue() = input and
         dv = v.getDualValue() and
         forall(SsaDefinition other | phi.hasInputFromBlock(other, _) and other != inp |
           guardControlsPhiBranch(guard, dv, phi, other)
@@ -641,7 +661,7 @@ module Make<
       )
       or
       // An expression `x = ...` can be considered as a read of `x`.
-      guard.(IdExpr).getEqualChildExpr() = def.(SsaWriteDefinition).getDefinition()
+      guard.(IdExpr).getEqualChildExpr() = def.(SsaExplicitWrite).getValue()
     }
 
     private predicate valueStep(Expr e1, Expr e2) {
@@ -666,10 +686,10 @@ module Make<
      * through a back edge.
      */
     private SsaDefinition getAnUltimateDefinition(SsaDefinition v, boolean fromBackEdge) {
-      result = v and not v instanceof SsaPhiNode and fromBackEdge = false
+      result = v and not v instanceof SsaPhiDefinition and fromBackEdge = false
       or
       exists(SsaDefinition inp, BasicBlock bb, boolean fbe |
-        v.(SsaPhiNode).hasInputFromBlock(inp, bb) and
+        v.(SsaPhiDefinition).hasInputFromBlock(inp, bb) and
         result = getAnUltimateDefinition(inp, fbe) and
         (if v.getBasicBlock().dominates(bb) then fromBackEdge = true else fromBackEdge = fbe)
       )
@@ -680,9 +700,9 @@ module Make<
      */
     private predicate hasPossibleUnknownValue(SsaDefinition v) {
       exists(SsaDefinition def | def = getAnUltimateDefinition(v, _) |
-        not exists(def.(SsaWriteDefinition).getDefinition())
+        not exists(def.(SsaExplicitWrite).getValue())
         or
-        exists(Expr e | e = possibleValue(def.(SsaWriteDefinition).getDefinition()) |
+        exists(Expr e | e = possibleValue(def.(SsaExplicitWrite).getValue()) |
           not constantHasValue(e, _)
         )
       )
@@ -698,9 +718,9 @@ module Make<
      */
     private predicate possibleValue(SsaDefinition v, boolean fromBackEdge, Expr e, GuardValue k) {
       not hasPossibleUnknownValue(v) and
-      exists(SsaWriteDefinition def |
+      exists(SsaExplicitWrite def |
         def = getAnUltimateDefinition(v, fromBackEdge) and
-        e = possibleValue(def.getDefinition()) and
+        e = possibleValue(def.getValue()) and
         constantHasValue(e, k)
       )
     }
@@ -708,7 +728,7 @@ module Make<
     /**
      * Holds if `e` equals `k` and may be assigned to `v` without going through
      * back edges, and all other possible ultimate definitions of `v` are different
-     * from `k`. The trivial case where `v` is an `SsaWriteDefinition` with `e` as
+     * from `k`. The trivial case where `v` is an `SsaExplicitWrite` with `e` as
      * the only possible value is excluded.
      */
     private predicate uniqueValue(SsaDefinition v, Expr e, GuardValue k) {
@@ -724,14 +744,14 @@ module Make<
      * Holds if `phi` has exactly two inputs, `def1` and `e2`, and that `def1`
      * does not come from a back-edge into `phi`.
      */
-    private predicate phiWithTwoInputs(SsaPhiNode phi, SsaDefinition def1, Expr e2) {
-      exists(SsaWriteDefinition def2, BasicBlock bb1 |
+    private predicate phiWithTwoInputs(SsaPhiDefinition phi, SsaDefinition def1, Expr e2) {
+      exists(SsaExplicitWrite def2, BasicBlock bb1 |
         2 = strictcount(SsaDefinition inp, BasicBlock bb | phi.hasInputFromBlock(inp, bb)) and
         phi.hasInputFromBlock(def1, bb1) and
         phi.hasInputFromBlock(def2, _) and
         def1 != def2 and
         not phi.getBasicBlock().dominates(bb1) and
-        def2.getDefinition() = e2
+        def2.getValue() = e2
       )
     }
 
@@ -772,6 +792,8 @@ module Make<
         baseSsaValueCheck(def, ssaVal, g0, v0)
       |
         impliesStep1(g, v, g0, v0)
+        or
+        additionalImpliesStep(g, v, g0, v0)
       )
     }
 
@@ -792,20 +814,23 @@ module Make<
         baseSsaValueCheck(def, v, g, gv)
       )
       or
-      exists(SsaWriteDefinition def |
-        exprHasValue(def.getDefinition(), v) and
+      exists(SsaExplicitWrite def |
+        exprHasValue(def.getValue(), v) and
         e = def.getARead()
       )
     }
 
     private predicate impliesStep2(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
-      impliesStep1(g1, v1, g2, v2)
-      or
-      exists(Expr nonnull |
-        exprHasValue(nonnull, v2) and
-        equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
-        v2.isNonNullValue()
-      )
+      (
+        impliesStep1(g1, v1, g2, v2)
+        or
+        exists(Expr nonnull |
+          exprHasValue(nonnull, v2) and
+          equalityTestSymmetric(g1, g2, nonnull, v1.asBooleanValue()) and
+          v2.isNonNullValue()
+        )
+      ) and
+      not trivialHasValue(g2, v2) // disregard trivial guard
     }
 
     bindingset[g1, v1]
@@ -828,16 +853,16 @@ module Make<
         // g1 === ... ? e : g2
         g2 = getBranchExpr(cond, branch.booleanNot()) and
         v2 = v1 and
-        not exprHasValue(g2, v2) // disregard trivial guard
+        not trivialHasValue(g2, v2) // disregard trivial guard
       )
     }
 
     bindingset[def1, v1]
     pragma[inline_late]
     private predicate impliesStepSsaGuard(SsaDefinition def1, GuardValue v1, Guard g2, GuardValue v2) {
-      def1.(SsaWriteDefinition).getDefinition() = g2 and
+      def1.(SsaExplicitWrite).getValue() = g2 and
       v1 = v2 and
-      not exprHasValue(g2, v2) // disregard trivial guard
+      not trivialHasValue(g2, v2) // disregard trivial guard
       or
       exists(Expr e, GuardValue ev |
         guardDeterminesPhiInput(g2, v2.getDualValue(), def1, e) and
@@ -969,6 +994,7 @@ module Make<
      * Holds if `def` evaluating to `v` controls the basic block `bb`.
      * That is, execution of `bb` implies that `def` evaluated to `v`.
      */
+    pragma[nomagic]
     predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v) {
       exists(BasicBlock guard, BasicBlock succ |
         ssaControlsBranchEdge(def, guard, succ, v) and
@@ -1025,9 +1051,9 @@ module Make<
       private predicate validReturnInCustomGuard(
         ReturnExpr ret, ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
-        exists(NonOverridableMethod m, SsaDefinition param |
+        exists(NonOverridableMethod m, SsaParameterInit param |
           m.getAReturnExpr() = ret and
-          parameterDefinition(m.getParameter(ppos), param)
+          param.getParameter() = m.getParameter(ppos)
         |
           exists(Guard g0, GuardValue v0 |
             directlyControlsReturn(g0, v0, ret) and
@@ -1064,8 +1090,8 @@ module Make<
           validReturnInCustomGuard(ret, ppos, retval, val)
         )
         or
-        exists(SsaDefinition param, Guard g0, GuardValue v0 |
-          parameterDefinition(result.getParameter(ppos), param) and
+        exists(SsaParameterInit param, Guard g0, GuardValue v0 |
+          param.getParameter() = result.getParameter(ppos) and
           guardDirectlyControlsExit(g0, v0) and
           retval = TException(false) and
           BranchImplies::ssaControls(param, val, g0, v0)
@@ -1086,7 +1112,7 @@ module Make<
           call.getMethod() = wrapperGuard(ppos, v1, v2) and
           call.getArgument(apos) = g2 and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos)) and
-          not exprHasValue(g2, v2) // disregard trivial guard
+          not trivialHasValue(g2, v2) // disregard trivial guard
         )
       }
     }
@@ -1134,9 +1160,9 @@ module Make<
       private predicate validReturnInValidationWrapper(
         ReturnExpr ret, ParameterPosition ppos, GuardValue retval, State state
       ) {
-        exists(NonOverridableMethod m, SsaDefinition param, Guard guard, GuardValue val |
+        exists(NonOverridableMethod m, SsaParameterInit param, Guard guard, GuardValue val |
           m.getAReturnExpr() = ret and
-          parameterDefinition(m.getParameter(ppos), param) and
+          param.getParameter() = m.getParameter(ppos) and
           guardChecksDef(guard, param, val, state)
         |
           guard.valueControls(ret.getBasicBlock(), val) and
@@ -1164,8 +1190,8 @@ module Make<
           validReturnInValidationWrapper(ret, ppos, retval, state)
         )
         or
-        exists(SsaDefinition param, BasicBlock bb, Guard guard, GuardValue val |
-          parameterDefinition(result.getParameter(ppos), param) and
+        exists(SsaParameterInit param, BasicBlock bb, Guard guard, GuardValue val |
+          param.getParameter() = result.getParameter(ppos) and
           guardChecksDef(guard, param, val, state) and
           guard.valueControls(bb, val) and
           normalExitBlock(bb) and

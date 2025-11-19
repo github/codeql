@@ -40,7 +40,7 @@ class KnownOpenSslEllipticCurveConstantAlgorithmInstance extends OpenSslAlgorith
     result = this.(Call).getTarget().getName()
   }
 
-  override Crypto::EllipticCurveFamilyType getEllipticCurveFamilyType() {
+  override Crypto::EllipticCurveType getEllipticCurveType() {
     if
       Crypto::ellipticCurveNameToKnownKeySizeAndFamilyMapping(this.getParsedEllipticCurveName(), _,
         _)

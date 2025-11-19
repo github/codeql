@@ -22,7 +22,10 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess |
-      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation() and
+      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation()
+      or
+      result = sink.getLocation()
+    |
       arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), arrayCreation)
     )
   }

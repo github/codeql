@@ -334,3 +334,5 @@ private module SensitiveDataModeling {
 }
 
 predicate sensitiveDataExtraStepForCalls = SensitiveDataModeling::extraStepForCalls/2;
+
+predicate sensitiveLookupStringConst = SensitiveDataModeling::sensitiveLookupStringConst/1;

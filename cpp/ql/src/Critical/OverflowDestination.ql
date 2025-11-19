@@ -85,10 +85,8 @@ module OverflowDestinationConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
-
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(FunctionCall fc | result = fc.getLocation() |
+    exists(FunctionCall fc | result = [fc.getLocation(), sink.getLocation()] |
       sourceSized(fc, sink.asIndirectConvertedExpr())
     )
   }

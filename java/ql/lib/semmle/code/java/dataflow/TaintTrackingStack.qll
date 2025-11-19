@@ -6,19 +6,21 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
-private import codeql.dataflowstack.TaintTrackingStack as TTS
-private import TTS::TaintTrackingStackMake<Location, JavaDataFlow, JavaTaintTracking> as TaintTrackingStackFactory
+private import codeql.dataflowstack.FlowStack as FlowStack
 
-private module TaintTrackingStackInput<TaintTrackingStackFactory::DataFlow::ConfigSig Config>
-  implements TTS::TaintTrackingStackSig<Location, JavaDataFlow, JavaTaintTracking, Config>
+module LanguageFlowStack = FlowStack::LanguageDataFlow<Location, JavaDataFlow>;
+
+private module FlowStackInput<DataFlow::ConfigSig Config>
+  implements LanguageFlowStack::DataFlowConfigContext<Config>::FlowInstance
 {
   private module Flow = TaintTracking::Global<Config>;
+  class PathNode = Flow::PathNode;
 
-  JavaDataFlow::Node getNode(Flow::PathNode n) { result = n.getNode() }
+  JavaDataFlow::Node getNode(PathNode n) { result = n.getNode() }
 
-  predicate isSource(Flow::PathNode n) { n.isSource() }
+  predicate isSource(PathNode n) { n.isSource() }
 
-  Flow::PathNode getASuccessor(Flow::PathNode n) { result = n.getASuccessor() }
+  PathNode getASuccessor(PathNode n) { result = n.getASuccessor() }
 
   JavaDataFlow::DataFlowCallable getARuntimeTarget(JavaDataFlow::DataFlowCall call) {
     result.asCallable() = call.asCall().getCallee()
@@ -29,13 +31,13 @@ private module TaintTrackingStackInput<TaintTrackingStackFactory::DataFlow::Conf
   }
 }
 
-module DataFlowStackMake<TaintTrackingStackFactory::DataFlow::ConfigSig Config> {
-  import TaintTrackingStackFactory::FlowStack<Config, TaintTrackingStackInput<Config>>
+module DataFlowStackMake<DataFlow::ConfigSig Config> {
+  import LanguageFlowStack::FlowStack<Config, FlowStackInput<Config>>
 }
 
 module BiStackAnalysisMake<
-  TaintTrackingStackFactory::DataFlow::ConfigSig ConfigA,
-  TaintTrackingStackFactory::DataFlow::ConfigSig ConfigB>
-{
-  import TaintTrackingStackFactory::BiStackAnalysis<ConfigA, TaintTrackingStackInput<ConfigA>, ConfigB, TaintTrackingStackInput<ConfigB>>
+  DataFlow::ConfigSig ConfigA,
+  DataFlow::ConfigSig ConfigB
+>{
+  import LanguageFlowStack::BiStackAnalysis<ConfigA, FlowStackInput<ConfigA>, ConfigB, FlowStackInput<ConfigB>>
 }

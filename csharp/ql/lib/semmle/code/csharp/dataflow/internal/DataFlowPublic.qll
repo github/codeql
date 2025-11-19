@@ -173,7 +173,7 @@ abstract class NonLocalJumpNode extends Node {
  * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
  * the argument `x`.
  */
-signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
+signature predicate guardChecksSig(Guard g, Expr e, GuardValue v);
 
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
@@ -190,7 +190,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     SsaFlow::asNode(result) =
       SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
     or
-    exists(Guard g, Expr e, AbstractValue v |
+    exists(Guard g, Expr e, GuardValue v |
       guardChecks(g, e, v) and
       g.controlsNode(result.getControlFlowNode(), e, v)
     )

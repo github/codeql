@@ -194,7 +194,7 @@ private class WeakGuard extends Guard {
     )
     or
     // Checking against `null` has no bearing on path traversal.
-    this.controlsNode(_, _, any(AbstractValues::NullValue nv))
+    this.controlsNode(_, _, any(GuardValue nv | nv.isNullness(_)))
     or
     this.(LogicalOperation).getAnOperand() instanceof WeakGuard
   }
@@ -217,6 +217,7 @@ class PathCheck extends Sanitizer {
   Guard g;
 
   PathCheck() {
+<<<<<<< HEAD
     // This expression is structurally replicated in a dominating guard
     exists(AbstractValues::BooleanValue v | g = this.(GuardedDataFlowNode).getAGuard(_, v))
   }
@@ -225,6 +226,14 @@ class PathCheck extends Sanitizer {
     g.(WeakGuard).isBarrier(state)
     or
     not g instanceof WeakGuard
+=======
+    // This expression is structurally replicated in a dominating guard which is not a "weak" check
+    exists(Guard g, GuardValue v |
+      g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+      exists(v.asBooleanValue()) and
+      not g instanceof WeakGuard
+    )
+>>>>>>> codeql-cli/latest
   }
 }
 
