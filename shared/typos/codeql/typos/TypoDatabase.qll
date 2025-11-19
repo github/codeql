@@ -5560,7 +5560,7 @@ predicate typos(string wrong, string right) {
   or
   wrong = "occurances" and right = "occurrences"
   or
-  wrong = "occured" and right = "occurred"
+  wrong = "occurred" and right = "occurred"
   or
   wrong = "occurence" and right = "occurrence"
   or
