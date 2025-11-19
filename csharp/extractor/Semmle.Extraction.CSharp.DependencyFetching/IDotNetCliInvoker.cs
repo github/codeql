@@ -13,7 +13,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// A minimal environment for running the .NET CLI.
         /// 
-        /// The .NET CLI language is set to English to avoid localized output.
+        /// DOTNET_CLI_UI_LANGUAGE: The .NET CLI language is set to English to avoid localized output.
+        /// MSBUILDDISABLENODEREUSE: To ensure clean environment for each build.
+        /// DOTNET_SKIP_FIRST_TIME_EXPERIENCE: To skip first time experience messages.
         /// </summary>
         static ReadOnlyDictionary<string, string> MinimalEnvironment { get; } = new(new Dictionary<string, string>
         {
