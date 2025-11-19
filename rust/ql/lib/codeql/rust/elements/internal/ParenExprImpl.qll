@@ -21,6 +21,11 @@ module Impl {
    * ```
    */
   class ParenExpr extends Generated::ParenExpr {
-    override string toStringImpl() { result = "(" + this.getExpr().toAbbreviatedString() + ")" }
+    override string toStringImpl() {
+      result = "(" + this.getExpr().toAbbreviatedString() + ")"
+      or
+      not exists(this.getExpr().toAbbreviatedString()) and
+      result = "(...)"
+    }
   }
 }

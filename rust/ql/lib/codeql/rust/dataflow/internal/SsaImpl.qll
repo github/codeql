@@ -2,7 +2,6 @@ private import rust
 private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
 private import BasicBlocks
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import Cfg
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ssa.Ssa as SsaImplCommon
@@ -229,11 +228,11 @@ private module Cached {
   }
 
   cached
-  CfgNode getARead(Definition def) {
+  Expr getARead(Definition def) {
     exists(Variable v, BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
       variableReadCertain(bb, i, v.getAnAccess(), v) and
-      result = bb.getNode(i)
+      result = bb.getNode(i).getAstNode()
     )
   }
 
@@ -247,8 +246,10 @@ private module Cached {
    * without passing through any other non-pseudo read.
    */
   cached
-  predicate firstRead(Definition def, CfgNode read) {
-    exists(BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and read = bb.getNode(i))
+  predicate firstRead(Definition def, Expr read) {
+    exists(BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, true) and read = bb.getNode(i).getAstNode()
+    )
   }
 
   /**
@@ -257,12 +258,12 @@ private module Cached {
    * passing through another non-pseudo read.
    */
   cached
-  predicate adjacentReadPair(Definition def, CfgNode read1, CfgNode read2) {
+  predicate adjacentReadPair(Definition def, Expr read1, Expr read2) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, Variable v |
       Impl::ssaDefReachesRead(v, def, bb1, i1) and
       Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
-      read1 = bb1.getNode(i1) and
-      read2 = bb2.getNode(i2)
+      read1 = bb1.getNode(i1).getAstNode() and
+      read2 = bb2.getNode(i2).getAstNode()
     )
   }
 
@@ -287,7 +288,7 @@ private module Cached {
       DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
-    signature predicate guardChecksSig(CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
+    signature predicate guardChecksSig(AstNode g, Expr e, boolean branch);
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
@@ -310,47 +311,49 @@ private module Cached {
 import Cached
 private import codeql.rust.dataflow.Ssa
 
+private class ExprAlias = Expr;
+
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
   private import codeql.util.Boolean
 
-  class Expr extends CfgNodes::AstCfgNode {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+  class Expr extends ExprAlias {
+    predicate hasCfgNode(BasicBlock bb, int i) { this.getACfgNode() = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
   predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 
-  private predicate isArg(CfgNodes::CallExprBaseCfgNode call, CfgNodes::ExprCfgNode e) {
-    call.getArgument(_) = e
+  private predicate isArg(CallExprBase call, Expr e) {
+    call.getAnArg() = e
     or
-    call.(CfgNodes::MethodCallExprCfgNode).getReceiver() = e
+    call.(MethodCallExpr).getReceiver() = e
     or
-    exists(CfgNodes::ExprCfgNode mid |
+    exists(Expr mid |
       isArg(call, mid) and
       e = DataFlowImpl::getPostUpdateReverseStep(mid, _)
     )
   }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    exists(CfgNodes::CallExprBaseCfgNode call, Variable v, BasicBlock bb, int i |
+    exists(Variable v, BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
       mutablyBorrows(bb.getNode(i).getAstNode(), v) and
-      isArg(call, bb.getNode(i))
+      isArg(_, bb.getNode(i).getAstNode())
     )
   }
 
   class GuardValue = Boolean;
 
-  class Guard extends CfgNodes::AstCfgNode {
+  class Guard extends AstNode {
     /**
      * Holds if the evaluation of this guard to `branch` corresponds to the edge
      * from `bb1` to `bb2`.
      */
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
       exists(Cfg::ConditionalSuccessor s |
-        this = bb1.getANode() and
+        this = bb1.getANode().getAstNode() and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
       )
@@ -369,7 +372,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
   predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue branch) {
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
-      guard = conditionBlock.getLastNode() and
+      guard = conditionBlock.getLastNode().getAstNode() and
       s.getValue() = branch and
       conditionBlock.edgeDominates(bb, s)
     )
