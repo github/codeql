@@ -171,8 +171,6 @@ module Stages {
       or
       exists(any(DataFlow::PropRef ref).getBase())
       or
-      // exists(any(DataFlow::ClassNode cls)) // Depends on AnalyzedNode
-      // or
       exists(any(DataFlow::CallNode node).getArgument(_))
       or
       exists(any(DataFlow::CallNode node).getAnArgument())
