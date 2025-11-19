@@ -1,5 +1,5 @@
-## 2.6.15
-
-### Minor Analysis Improvements
+---
+category: minorAnalysis
+---
 
 - JavaScript `DataFlow::globalVarRef` now recognizes `document.defaultView` as an alias of `window`, allowing flows such as `document.defaultView.history.pushState(...)` to be modeled and found by queries relying on `globalVarRef("history")`.
