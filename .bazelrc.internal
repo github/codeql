@@ -10,3 +10,6 @@ common --registry=https://bcr.bazel.build
 common --@rules_dotnet//dotnet/settings:strict_deps=false
 
 build --@rules_python//python/config_settings:python_version=3.12
+
+# required to compile fmt on windows
+build --copt=-DFMT_UNICODE=0 --host_copt=-DFMT_UNICODE=0

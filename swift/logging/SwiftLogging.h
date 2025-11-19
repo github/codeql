@@ -8,8 +8,7 @@
 
 #include <fmt/format.h>
 #include <fmt/chrono.h>
-
-#include "swift/logging/Formatters.h"
+#include <fmt/std.h>
 
 #include <binlog/binlog.hpp>
 #include <binlog/TextOutputStream.hpp>
