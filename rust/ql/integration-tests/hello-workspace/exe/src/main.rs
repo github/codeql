@@ -7,4 +7,5 @@ mod a_module;
 fn main() {
     my_macro2!(); // $ item=my_macro2
     hello(); // $ item=HELLO
+    lib::extern_crate_alias::a_module::hello(); // $ item=HELLO
 }
