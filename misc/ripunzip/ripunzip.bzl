@@ -15,7 +15,7 @@ def _impl(repository_ctx):
         )
     elif repository_ctx.os.name == "windows":
         repository_ctx.download_and_extract(
-            url = "%s/ripunzip_v%s-x86_64-pc-windows-msvc.zip" % (url_prefix, version),
+            url = "%s/ripunzip_v%s_x86_64-pc-windows-msvc.zip" % (url_prefix, version),
             canonical_id = "ripunzip-windows",
             sha256 = repository_ctx.attr.sha256_windows,
             output = "bin",
@@ -33,7 +33,7 @@ def _impl(repository_ctx):
         else:
             fail("Unsupported macOS architecture: %s" % arch)
         repository_ctx.download_and_extract(
-            url = "%s/ripunzip_v%s-%s.tar.gz" % (url_prefix, version, suffix),
+            url = "%s/ripunzip_v%s_%s.tar.gz" % (url_prefix, version, suffix),
             sha256 = sha256,
             canonical_id = canonical_id,
             output = "bin",
