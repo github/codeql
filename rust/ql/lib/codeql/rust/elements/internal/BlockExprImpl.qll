@@ -11,6 +11,7 @@ private import codeql.rust.elements.internal.generated.BlockExpr
  * be referenced directly.
  */
 module Impl {
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A block expression. For example:
    * ```rust
