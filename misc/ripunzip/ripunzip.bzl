@@ -1,8 +1,10 @@
-def _impl(repository_ctx):
+def _ripunzip_archive_impl(repository_ctx):
     version = repository_ctx.attr.version
     url_prefix = "https://github.com/GoogleChrome/ripunzip/releases/download/v%s" % version
     build_file = Label("//misc/ripunzip:BUILD.ripunzip.bazel")
-    if repository_ctx.os.name == "linux":
+    if "linux" in repository_ctx.os.name:
+        # ripunzip only provides a deb package for Linux: we fish the binary out of it
+        # a deb archive contains a data.tar.xz one which contains the files to be installed under usr/bin
         repository_ctx.download_and_extract(
             url = "%s/ripunzip_%s-1_amd64.deb" % (url_prefix, version),
             sha256 = repository_ctx.attr.sha256_linux,
@@ -11,16 +13,17 @@ def _impl(repository_ctx):
         )
         repository_ctx.extract(
             "deb/data.tar.xz",
-            strip_prefix = "usr",
+            strip_prefix = "usr/bin",
+            output = "bin",
         )
-    elif repository_ctx.os.name == "windows":
+    elif "windows" in repository_ctx.os.name:
         repository_ctx.download_and_extract(
             url = "%s/ripunzip_v%s_x86_64-pc-windows-msvc.zip" % (url_prefix, version),
             canonical_id = "ripunzip-windows",
             sha256 = repository_ctx.attr.sha256_windows,
             output = "bin",
         )
-    elif repository_ctx.os.name == "mac os x":
+    elif "mac os" in repository_ctx.os.name:
         arch = repository_ctx.os.arch
         if arch == "x86_64":
             suffix = "x86_64-apple-darwin"
@@ -44,7 +47,8 @@ def _impl(repository_ctx):
     repository_ctx.symlink(build_file, "BUILD.bazel")
 
 ripunzip_archive = repository_rule(
-    implementation = _impl,
+    implementation = _ripunzip_archive_impl,
+    doc = "Downloads a prebuilt ripunzip binary for the host platform from https://github.com/GoogleChrome/ripunzip/releases",
     attrs = {
         "version": attr.string(mandatory = True),
         "sha256_linux": attr.string(mandatory = True),
