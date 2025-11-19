@@ -574,6 +574,20 @@ fn conversions() {
     sink(b as i64); // $ hasTaintFlow=51
     sink(b.into()); // $ MISSING: hasTaintFlow=51
     sink(i64::from(b)); // $ hasTaintFlow=51
+
+    let c: char = std::char::from_u32(source(52) as u32).unwrap();
+    sink(c as i64); // $ MISSING: hasTaintFlow=52
+}
+
+fn clone() {
+    let a = source(60);
+
+    sink(a.clone()); // $ hasValueFlow=60
+
+    let mut b: i64 = 0;
+    sink(b);
+    b.clone_from(&a);
+    sink(b); // $ MISSING: hasValueFlow=60
 }
 
 fn main() {
@@ -619,4 +633,5 @@ fn main() {
     iterators();
     references();
     conversions();
+    clone();
 }
