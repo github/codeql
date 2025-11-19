@@ -861,6 +861,10 @@ predicate jumpStep(Node n1, Node n2) {
     n2.(FlowSummaryNode).getSummaryNode())
 }
 
+bindingset[c]
+pragma[inline_late]
+private int getIndirectionIndexLate(Content c) { result = c.getIndirectionIndex() }
+
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
@@ -877,12 +881,13 @@ predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
   |
     postFieldUpdate = node2 and
     fc = c and
-    nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
+    nodeHasInstruction(node1, pragma[only_bind_into](store),
+      pragma[only_bind_into](indirectionIndex1)) and
     postFieldUpdate.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
       store.getDestinationAddressOperand(), numberOfLoads, certain) and
     fc.getAField() = postFieldUpdate.getUpdatedField() and
-    fc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
+    getIndirectionIndexLate(fc) = 1 + indirectionIndex1 + numberOfLoads
   )
   or
   // models-as-data summarized flow
@@ -968,7 +973,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
     numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _) and
     fc.getAField() = fa1.getField() and
-    fc.getIndirectionIndex() = indirectionIndex2 + numberOfLoads
+    getIndirectionIndexLate(fc) = indirectionIndex2 + numberOfLoads
   )
   or
   // models-as-data summarized flow

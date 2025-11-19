@@ -2197,10 +2197,7 @@ class NonUnionFieldContent extends FieldContent, TNonUnionContent {
   override Field getAField() { result = f }
 
   /** Gets the indirection index of this `FieldContent`. */
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) {
     exists(FieldContent fc |
@@ -2230,10 +2227,7 @@ class UnionContent extends FieldContent, TUnionContent {
   Union getUnion() { result = u }
 
   /** Gets the indirection index of this `UnionContent`. */
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) {
     exists(UnionContent uc |
@@ -2257,10 +2251,7 @@ class ElementContent extends Content, TElementContent {
 
   ElementContent() { this = TElementContent(indirectionIndex) }
 
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) { none() }
 
