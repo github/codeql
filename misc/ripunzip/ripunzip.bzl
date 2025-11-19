@@ -6,7 +6,7 @@ def _impl(repository_ctx):
         repository_ctx.download_and_extract(
             url="%s/ripunzip_%s-1_amd64.deb" % (url_prefix, version),
             sha256=repository_ctx.attr.sha256_linux,
-            canonical_id="ripunzip-deb",
+            canonical_id="ripunzip-linux",
             output="deb",
         )
         repository_ctx.extract(
@@ -16,22 +16,26 @@ def _impl(repository_ctx):
     elif repository_ctx.os.name == "windows":
         repository_ctx.download_and_extract(
             url="%s/ripunzip_v%s-x86_64-pc-windows-msvc.zip" % (url_prefix, version),
+            canonical_id="ripunzip-windows",
             sha256=repository_ctx.attr.sha256_windows,
             output="bin",
         )
-    elif repository_ctx.os.name == "macos":
+    elif repository_ctx.os.name == "mac os x":
         arch = repository_ctx.os.arch
         if arch == "x86_64":
             suffix = "x86_64-apple-darwin"
             sha256 = repository_ctx.attr.sha256_macos_intel
+            canonical_id = "ripunzip-macos-intel"
         elif arch == "aarch64":
             suffix = "aarch64-apple-darwin"
             sha256 = repository_ctx.attr.sha256_macos_arm
+            canonical_id = "ripunzip-macos-arm"
         else:
             fail("Unsupported macOS architecture: %s" % arch)
         repository_ctx.download_and_extract(
             url="%s/ripunzip_v%s-%s.tar.gz" % (url_prefix, version, suffix),
             sha256=sha256,
+            canonical_id=canonical_id,
             output="bin",
         )
     else:
