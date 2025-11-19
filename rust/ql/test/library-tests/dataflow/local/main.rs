@@ -576,7 +576,7 @@ fn conversions() {
     sink(i64::from(b)); // $ hasTaintFlow=51
 
     let c: char = std::char::from_u32(source(52) as u32).unwrap();
-    sink(c as i64); // $ MISSING: hasTaintFlow=52
+    sink(c as i64); // $ hasTaintFlow=52
 }
 
 fn clone() {

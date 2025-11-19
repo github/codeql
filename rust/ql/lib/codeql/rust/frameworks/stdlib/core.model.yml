@@ -29,6 +29,9 @@ extensions:
       - ["<_ as core::convert::TryInto>::try_into", "Argument[self].Reference.Element", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "taint", "manual"]
       - ["<_ as core::convert::AsMut>::as_mut", "Argument[self]", "ReturnValue", "value", "manual"]
       - ["<_ as core::convert::AsRef>::as_ref", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["core::char::from_digit", "Argument[0]", "ReturnValue.Field[core::option::Option::Some(0)]", "taint", "manual"]
+      - ["core::char::from_u32", "Argument[0]", "ReturnValue.Field[core::option::Option::Some(0)]", "taint", "manual"]
+      - ["core::char::from_u32_unchecked", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Iterator
       - ["<core::result::Result>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["<_ as value_trait::array::Array>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
