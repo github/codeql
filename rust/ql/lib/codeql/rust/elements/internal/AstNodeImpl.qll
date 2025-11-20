@@ -59,6 +59,9 @@ module Impl {
       )
     }
 
+    /** Holds if this node is inside a CFG scope. */
+    predicate hasEnclosingCfgScope() { exists(this.getEnclosingCfgScope()) }
+
     /** Gets the block that encloses this node, if any. */
     cached
     BlockExpr getEnclosingBlock() {

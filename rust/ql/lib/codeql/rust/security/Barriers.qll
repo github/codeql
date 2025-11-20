@@ -16,7 +16,7 @@ private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 class NumericTypeBarrier extends DataFlow::Node {
   NumericTypeBarrier() {
     exists(StructType t, Struct s |
-      t = TypeInference::inferType(this.asExpr().getExpr()) and
+      t = TypeInference::inferType(this.asExpr()) and
       s = t.getStruct()
     |
       s instanceof Builtins::NumericType or
@@ -32,7 +32,7 @@ class NumericTypeBarrier extends DataFlow::Node {
 class IntegralOrBooleanTypeBarrier extends DataFlow::Node {
   IntegralOrBooleanTypeBarrier() {
     exists(StructType t, Struct s |
-      t = TypeInference::inferType(this.asExpr().getExpr()) and
+      t = TypeInference::inferType(this.asExpr()) and
       s = t.getStruct()
     |
       s instanceof Builtins::IntegralType or

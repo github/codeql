@@ -25,7 +25,7 @@ import codeql.rust.dataflow.TaintTracking
 module ConstantPasswordConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     // `node` is a string literal
-    node.asExpr().getExpr() instanceof StringLiteralExpr
+    node.asExpr() instanceof StringLiteralExpr
   }
 
   predicate isSink(DataFlow::Node node) {
@@ -34,7 +34,7 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
       call.getStaticTarget() = target and
       v.getParameter() = target.getParam(argIndex) and
       v.getText().matches("pass%") and
-      call.getArg(argIndex) = node.asExpr().getExpr()
+      call.getArg(argIndex) = node.asExpr()
     )
   }
 }

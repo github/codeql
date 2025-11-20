@@ -82,12 +82,14 @@ localStep
 | main.rs:57:9:57:9 | a | main.rs:57:9:57:9 | [SSA] a |
 | main.rs:57:9:57:9 | a | main.rs:57:9:57:9 | a |
 | main.rs:57:13:59:5 | loop { ... } | main.rs:57:9:57:9 | a |
+| main.rs:57:18:59:5 | { ... } | main.rs:57:13:59:5 | loop { ... } |
 | main.rs:58:9:58:15 | break 1 | main.rs:57:13:59:5 | loop { ... } |
 | main.rs:58:15:58:15 | 1 | main.rs:58:9:58:15 | break 1 |
 | main.rs:61:9:61:9 | [SSA] b | main.rs:64:10:64:10 | b |
 | main.rs:61:9:61:9 | b | main.rs:61:9:61:9 | [SSA] b |
 | main.rs:61:9:61:9 | b | main.rs:61:9:61:9 | b |
 | main.rs:61:13:63:5 | loop { ... } | main.rs:61:9:61:9 | b |
+| main.rs:61:18:63:5 | { ... } | main.rs:61:13:63:5 | loop { ... } |
 | main.rs:62:9:62:23 | break ... | main.rs:61:13:63:5 | loop { ... } |
 | main.rs:62:15:62:23 | source(...) | main.rs:62:9:62:23 | break ... |
 | main.rs:68:9:68:13 | mut i | main.rs:68:13:68:13 | i |
@@ -131,6 +133,7 @@ localStep
 | main.rs:92:9:92:9 | a | main.rs:92:9:92:9 | [SSA] a |
 | main.rs:92:9:92:9 | a | main.rs:92:9:92:9 | a |
 | main.rs:92:13:97:5 | 'block: { ... } | main.rs:92:9:92:9 | a |
+| main.rs:93:14:95:9 | { ... } | main.rs:93:9:95:9 | if b {...} |
 | main.rs:94:13:94:26 | break 'block 1 | main.rs:92:13:97:5 | 'block: { ... } |
 | main.rs:94:26:94:26 | 1 | main.rs:94:13:94:26 | break 'block 1 |
 | main.rs:96:9:96:9 | 2 | main.rs:92:13:97:5 | 'block: { ... } |
@@ -143,6 +146,7 @@ localStep
 | main.rs:102:9:102:9 | a | main.rs:102:9:102:9 | [SSA] a |
 | main.rs:102:9:102:9 | a | main.rs:102:9:102:9 | a |
 | main.rs:102:13:107:5 | 'block: { ... } | main.rs:102:9:102:9 | a |
+| main.rs:103:14:105:9 | { ... } | main.rs:103:9:105:9 | if b {...} |
 | main.rs:104:13:104:26 | break 'block 1 | main.rs:102:13:107:5 | 'block: { ... } |
 | main.rs:104:26:104:26 | 1 | main.rs:104:13:104:26 | break 'block 1 |
 | main.rs:106:9:106:22 | break 'block 2 | main.rs:102:13:107:5 | 'block: { ... } |
@@ -713,6 +717,7 @@ localStep
 | main.rs:480:16:480:19 | name | main.rs:480:16:480:19 | [SSA] name |
 | main.rs:480:16:480:19 | name | main.rs:480:16:480:19 | name |
 | main.rs:481:9:485:9 | if cond {...} | main.rs:480:31:486:5 | { ... } |
+| main.rs:481:17:485:9 | { ... } | main.rs:481:9:485:9 | if cond {...} |
 | main.rs:482:17:482:17 | [SSA] n | main.rs:483:18:483:18 | n |
 | main.rs:482:17:482:17 | n | main.rs:482:17:482:17 | [SSA] n |
 | main.rs:482:17:482:17 | n | main.rs:482:17:482:17 | n |
