@@ -54,7 +54,7 @@ private class PrefixSuffixBarrier extends SensitiveLoggerBarrier {
     exists(MethodCall mc, Method m, int limit |
       limit = 7 and
       mc.getMethod() = m
-      |
+    |
       // substring in Java
       (
         m.hasQualifiedName("java.lang", "String", "substring") or
@@ -89,7 +89,8 @@ private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   mc.getNumArgument() = 1 and
   exists(int firstArgIndex |
     (if isKotlin = true then firstArgIndex = 1 else firstArgIndex = 0) and
-    mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <= limit
+    mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <=
+      limit
   )
 }
 
@@ -104,7 +105,8 @@ private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
       isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
     ) and
     mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
-    mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <= limit
+    mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <=
+      limit
   )
 }
 
