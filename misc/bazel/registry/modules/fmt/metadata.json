@@ -1,0 +1,22 @@
+{
+    "homepage": "https://github.com/fmtlib/fmt",
+    "maintainers": [
+        {
+            "email": "julian.amann@tum.de",
+            "github": "Vertexwahn",
+            "github_user_id": 3775001,
+            "name": "Julian Amann"
+        },
+        {
+            "github": "mering",
+            "github_user_id": 133344217
+        }
+    ],
+    "repository": [
+        "github:fmtlib/fmt"
+    ],
+    "versions": [
+        "12.1.0-codeql.1"
+    ],
+    "yanked_versions": {}
+}
