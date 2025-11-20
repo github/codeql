@@ -40,6 +40,14 @@ module AccessAfterLifetime {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
+   * Holds if the value pointed to by `source` accesses a variable `target` with scope `scope`.
+   */
+  pragma[nomagic]
+  predicate sourceValueScope(Source source, Variable target, BlockExpr scope) {
+    valueScope(source.getTarget(), target, scope)
+  }
+
+  /**
    * Holds if the pair `(source, sink)`, that represents a flow from a
    * pointer or reference to a dereference, has its dereference outside the
    * lifetime of the target variable `target`.
@@ -47,8 +55,8 @@ module AccessAfterLifetime {
   bindingset[source, sink]
   predicate dereferenceAfterLifetime(Source source, Sink sink, Variable target) {
     exists(BlockExpr valueScope, BlockExpr accessScope |
-      valueScope(source.getTarget(), target, valueScope) and
-      accessScope = sink.asExpr().getExpr().getEnclosingBlock() and
+      sourceValueScope(source, target, valueScope) and
+      accessScope = sink.asExpr().getEnclosingBlock() and
       not mayEncloseOnStack(valueScope, accessScope)
     )
   }
@@ -104,7 +112,7 @@ module AccessAfterLifetime {
   private class RefExprSource extends Source {
     Expr targetValue;
 
-    RefExprSource() { this.asExpr().getExpr().(RefExpr).getExpr() = targetValue }
+    RefExprSource() { this.asExpr().(RefExpr).getExpr() = targetValue }
 
     override Expr getTarget() { result = targetValue }
   }
@@ -114,6 +122,6 @@ module AccessAfterLifetime {
    * variables through closures properly.
    */
   private class ClosureBarrier extends Barrier {
-    ClosureBarrier() { this.asExpr().getExpr().getEnclosingCallable() instanceof ClosureExpr }
+    ClosureBarrier() { this.asExpr().getEnclosingCallable() instanceof ClosureExpr }
   }
 }

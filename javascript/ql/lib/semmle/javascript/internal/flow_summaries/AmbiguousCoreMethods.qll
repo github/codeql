@@ -20,6 +20,8 @@
  *
  * (Promise is absent in the table above as there currently are no name clashes with Promise methods)
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode

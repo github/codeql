@@ -3,6 +3,8 @@
  *
  * Note that some of Array methods are modeled in `AmbiguousCoreMethods.qll`, and `toString` is special-cased elsewhere.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary

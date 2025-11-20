@@ -13,7 +13,7 @@ module SensitiveDataConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     any(CallExpr call |
       call.getFunction().(PathExpr).getPath().getSegment().getIdentifier().getText() = "sink"
-    ).getArgList().getAnArg() = sink.asExpr().getExpr()
+    ).getArgList().getAnArg() = sink.asExpr()
   }
 }
 

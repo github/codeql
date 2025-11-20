@@ -4,20 +4,16 @@
 
 private import rust
 private import codeql.rust.Concepts
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.internal.PathResolution
 
 /**
  * A call to the `starts_with` method on a `Path`.
  */
-private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::MethodCallExprCfgNode {
-  StartswithCall() {
-    this.getMethodCallExpr().getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with"
-  }
+private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCallExpr {
+  StartswithCall() { this.getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with" }
 
-  override predicate checks(Cfg::CfgNode e, boolean branch) {
+  override predicate checks(Expr e, boolean branch) {
     e = this.getReceiver() and
     branch = true
   }
