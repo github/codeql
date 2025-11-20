@@ -1,6 +1,8 @@
 /**
  * Defines extensible predicates for contributing library models from data extensions.
  */
+overlay[local]
+module;
 
 /**
  * Holds if the value at `(type, path)` should be seen as a flow

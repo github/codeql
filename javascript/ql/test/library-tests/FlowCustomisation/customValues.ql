@@ -4,6 +4,7 @@ private import semmle.javascript.dataflow.InferredTypes
 /**
  * A custom abstract value representing the DOM object `document`.
  */
+overlay[local]
 class Document extends CustomAbstractValueTag {
   Document() { this = "document" }
 
@@ -25,6 +26,7 @@ class Document extends CustomAbstractValueTag {
  * Note that `getType()` isn't quite right, since `typeof document.all === 'undefined'`,
  * but that's fine for the purposes of this test.
  */
+overlay[local]
 class DocumentAll extends CustomAbstractValueTag {
   DocumentAll() { this = "document.all" }
 

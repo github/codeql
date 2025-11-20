@@ -25,7 +25,7 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
     // `node` is the first argument of a call to `sqlx_core::query::query`
     exists(CallExpr call |
       call.getStaticTarget().getCanonicalPath() = "sqlx_core::query::query" and
-      call.getArg(0) = node.asExpr().getExpr()
+      call.getArg(0) = node.asExpr()
     )
   }
 }

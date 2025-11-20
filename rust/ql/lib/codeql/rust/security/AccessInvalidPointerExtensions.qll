@@ -50,7 +50,7 @@ module AccessInvalidPointer {
    * A pointer access using the unary `*` operator.
    */
   private class DereferenceSink extends Sink {
-    DereferenceSink() { any(DerefExpr p).getExpr() = this.asExpr().getExpr() }
+    DereferenceSink() { any(DerefExpr p).getExpr() = this.asExpr() }
   }
 
   /**
