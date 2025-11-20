@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.frameworks.android.Compose
 private import semmle.code.java.security.Sanitizers
-import semmle.code.java.Constants
+private import semmle.code.java.dataflow.RangeAnalysis
 
 /** A data flow source node for sensitive logging sources. */
 abstract class SensitiveLoggerSource extends DataFlow::Node { }
@@ -49,37 +49,36 @@ private class TypeType extends RefType {
  *
  * It allows for substring operations taking the first N (or last N, for Kotlin) characters, limited to 7 or fewer.
  */
-private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
-  SensitiveLoggerSanitizerCalled() {
+private class PrefixSuffixBarrier extends SensitiveLoggerBarrier {
+  PrefixSuffixBarrier() {
     exists(MethodCall mc, Method m, int limit |
       limit = 7 and
-      mc.getMethod() = m and
+      mc.getMethod() = m
+    |
+      // substring in Java
       (
-        // substring in Java
+        m.hasQualifiedName("java.lang", "String", "substring") or
+        m.hasQualifiedName("java.lang", "StringBuffer", "substring") or
+        m.hasQualifiedName("java.lang", "StringBuilder", "substring")
+      ) and
+      (
+        twoArgLimit(mc, limit, false) or
+        singleArgLimit(mc, limit, false)
+      ) and
+      this.asExpr() = mc.getQualifier()
+      or
+      // Kotlin string operations, which use extension methods (so the string is the first argument)
+      (
+        m.hasQualifiedName("kotlin.text", "StringsKt", "substring") and
         (
-          m.hasQualifiedName("java.lang", "String", "substring") or
-          m.hasQualifiedName("java.lang", "StringBuffer", "substring") or
-          m.hasQualifiedName("java.lang", "StringBuilder", "substring")
-        ) and
-        (
-          twoArgLimit(mc, limit, false) or
-          singleArgLimit(mc, limit, false)
-        ) and
-        this.asExpr() = mc.getQualifier()
-        or
-        // Kotlin string operations, which use extension methods (so the string is the first argument)
-        (
-          m.hasQualifiedName("kotlin.text", "StringsKt", "substring") and
-          (
-            twoArgLimit(mc, limit, true) or
-            singleArgLimit(mc, limit, true)
-          )
-          or
-          m.hasQualifiedName("kotlin.text", "StringsKt", ["take", "takeLast"]) and
+          twoArgLimit(mc, limit, true) or
           singleArgLimit(mc, limit, true)
-        ) and
-        this.asExpr() = mc.getArgument(0)
-      )
+        )
+        or
+        m.hasQualifiedName("kotlin.text", "StringsKt", ["take", "takeLast"]) and
+        singleArgLimit(mc, limit, true)
+      ) and
+      this.asExpr() = mc.getArgument(0)
     )
   }
 }
@@ -87,72 +86,28 @@ private class SensitiveLoggerSanitizerCalled extends SensitiveLoggerBarrier {
 /** A predicate to check single-argument method calls for a constant integer below a set limit. */
 bindingset[limit, isKotlin]
 private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
-  exists(int argIndex, int staticInt |
+  exists(int argIndex |
     (if isKotlin = true then argIndex = 1 else argIndex = 0) and
-    (
-      staticInt <= limit and
-      staticInt > 0 and
-      mc.getArgument(argIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() =
-        staticInt
-      or
-      exists(CompileTimeConstantExpr cte, DataFlow::Node source, DataFlow::Node sink |
-        source.asExpr() = cte and
-        cte.getIntValue() = staticInt and
-        sink.asExpr() = mc.getArgument(argIndex) and
-        IntegerToArgFlow::flow(source, sink)
-      )
-    )
+    bounded(mc.getArgument(argIndex), any(ZeroBound z), limit, true, _)
   )
 }
 
 /** A predicate to check two-argument method calls for zero and a constant integer below a set limit. */
 bindingset[limit, isKotlin]
 private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
-  exists(int firstArgIndex, int secondArgIndex, int staticInt |
-    staticInt <= limit and
-    staticInt > 0 and
+  exists(int firstArgIndex, int secondArgIndex |
     (
       isKotlin = true and firstArgIndex = 1 and secondArgIndex = 2
       or
       isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
     ) and
     mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
-    (
-      mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() =
-        staticInt
-      or
-      exists(CompileTimeConstantExpr cte, DataFlow::Node source, DataFlow::Node sink |
-        source.asExpr() = cte and
-        cte.getIntValue() = staticInt and
-        sink.asExpr() = mc.getArgument(secondArgIndex) and
-        IntegerToArgFlow::flow(source, sink)
-      )
-    )
+    bounded(mc.getArgument(secondArgIndex), any(ZeroBound z), limit, true, _)
   )
 }
 
-/** A data-flow configuration for identifying flow from a constant integer to a use in a method argument. */
-private module IntegerToArgConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr().getUnderlyingExpr() instanceof CompileTimeConstantExpr and
-    source.asExpr().getType() instanceof IntegralType and
-    source.asExpr().(CompileTimeConstantExpr).getIntValue() > 0
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc |
-      sink.asExpr() = mc.getAnArgument() and
-      sink.asExpr().getType() instanceof IntegralType
-    )
-  }
-
-  predicate isBarrier(DataFlow::Node sanitizer) { none() }
-
-  predicate isBarrierIn(DataFlow::Node node) { none() }
-}
-
-private class GenericSanitizer extends SensitiveLoggerBarrier {
-  GenericSanitizer() {
+private class DefaultSensitiveLoggerBarrier extends SensitiveLoggerBarrier {
+  DefaultSensitiveLoggerBarrier() {
     this.asExpr() instanceof LiveLiteral or
     this instanceof SimpleTypeSanitizer or
     this.getType() instanceof TypeType
@@ -173,5 +128,3 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
 }
 
 module SensitiveLoggerFlow = TaintTracking::Global<SensitiveLoggerConfig>;
-
-module IntegerToArgFlow = TaintTracking::Global<IntegerToArgConfig>;

@@ -11,5 +11,7 @@ class Test {
         logger.error("Auth failed for: " + stringTokenizer); // Safe
         logger.error("Auth failed for: " + authToken.substring(4) + "..."); // Safe
         logger.error("Auth failed for: " + authToken.substring(0,4) + "..."); // Safe
+        logger.error("Auth failed for: " + authToken.substring(1,5) + "..."); // $ Alert
+        logger.error("Auth failed for: " + authToken.substring(0,8) + "..."); // $ Alert
     }
 }

@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Calls to `substring` (for Java), `take` (for Kotlin) and similar functions, when called with a fixed length less than or equal to 7, are now treated as sanitizers for the `java/sensitive-log` query.
+* Operations that extract only a fixed-length prefix or suffix of a string (for example, `substring` in Java or `take` in Kotlin), when limited to a length of at most 7 characters, are now treated as sanitizers for the `java/sensitive-log` query.  
