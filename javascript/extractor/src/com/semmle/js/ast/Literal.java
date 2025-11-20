@@ -76,7 +76,7 @@ public class Literal extends Expression implements ITypeExpression {
     if (isRegExp()) return false;
     return value == null
         || value instanceof Number && ((Number) value).intValue() == 0
-        || value == Boolean.FALSE
+        || Boolean.FALSE.equals(value)
         || value instanceof String && ((String) value).isEmpty();
   }
 

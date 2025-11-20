@@ -23,7 +23,12 @@ private module Impl {
                         {{! for single and optional properties it adds 1 (regardless of whether the optional property exists) }}
                         {{! for repeated it adds 1 + the maximum index (which works for repeated optional as well) }}
                             and
-                            n{{singular}} = n{{prev}} + 1{{#is_repeated}}+ max(int i | i = -1 or exists(e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(i)) | i){{/is_repeated}}
+                            {{#type_is_hideable}}
+                            n{{singular}} = n{{prev}} + 1{{#is_repeated}}+ max(int i | i = -1 or exists(e.getImmediate{{singular}}(i)) | i){{/is_repeated}}
+                            {{/type_is_hideable}}
+                            {{^type_is_hideable}}
+                            n{{singular}} = n{{prev}} {{^is_repeated}}+ 1{{/is_repeated}}{{#is_repeated}}+ e.getNumberOf{{plural}}(){{/is_repeated}}
+                            {{/type_is_hideable}}
                     {{/property}}
                 {{/all_children}} and (
             none()

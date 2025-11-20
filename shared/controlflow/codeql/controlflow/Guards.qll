@@ -926,6 +926,9 @@ module Make<
             guardControls(g0, v0, tgtGuard, tgtVal) and
             additionalImpliesStep(g0, v0, guard, v)
           )
+          or
+          baseGuardValue(tgtGuard, tgtVal) and
+          disjunctiveGuardControls(guard, v, tgtGuard, tgtVal)
         }
 
         /**
@@ -1003,11 +1006,111 @@ module Make<
       )
     }
 
+    private import DisjunctiveGuard
+
+    private module DisjunctiveGuard {
+      /**
+       * Holds if `disjunction` evaluating to `val` means that either
+       * `disjunct1` or `disjunct2` is `val`.
+       */
+      private predicate disjunction(
+        Guard disjunction, GuardValue val, Guard disjunct1, Guard disjunct2
+      ) {
+        2 =
+          strictcount(Guard op |
+            disjunction.(OrExpr).getAnOperand() = op or disjunction.(AndExpr).getAnOperand() = op
+          ) and
+        disjunct1 != disjunct2 and
+        (
+          exists(OrExpr d | d = disjunction |
+            d.getAnOperand() = disjunct1 and
+            d.getAnOperand() = disjunct2 and
+            val.asBooleanValue() = true
+          )
+          or
+          exists(AndExpr d | d = disjunction |
+            d.getAnOperand() = disjunct1 and
+            d.getAnOperand() = disjunct2 and
+            val.asBooleanValue() = false
+          )
+        )
+      }
+
+      private predicate disjunct(Guard guard, GuardValue val) { disjunction(_, val, guard, _) }
+
+      module DisjunctImplies = ImpliesTC<disjunct/2>;
+
+      /**
+       * Holds if one of the disjuncts in `disjunction` evaluating to `dv` implies that `def`
+       * evaluates to `v`. The other disjunct is `otherDisjunct`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsDisjunct(
+        SsaDefinition def, GuardValue v, Guard disjunction, Guard otherDisjunct, GuardValue dv
+      ) {
+        exists(Guard disjunct |
+          disjunction(disjunction, dv, disjunct, otherDisjunct) and
+          DisjunctImplies::ssaControls(def, v, disjunct, dv)
+        )
+      }
+
+      /**
+       * Holds if the disjunction of `def` evaluating to `v` and
+       * `otherDisjunct` evaluating to `dv` controls `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaDisjunctionControls(
+        SsaDefinition def, GuardValue v, Guard otherDisjunct, GuardValue dv, BasicBlock bb
+      ) {
+        exists(Guard disjunction |
+          ssaControlsDisjunct(def, v, disjunction, otherDisjunct, dv) and
+          disjunction.valueControls(bb, dv)
+        )
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+       * evaluates to `v`. The basic block of `tgtGuard` is `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsGuard(
+        SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal, BasicBlock bb
+      ) {
+        (
+          BranchImplies::ssaControls(def, v, tgtGuard, tgtVal) or
+          WrapperGuard::ReturnImplies::ssaControls(def, v, tgtGuard, tgtVal)
+        ) and
+        tgtGuard.getBasicBlock() = bb
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
+       * evaluates to `v`.
+       */
+      pragma[nomagic]
+      predicate disjunctiveGuardControls(
+        Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal
+      ) {
+        exists(SsaDefinition def, GuardValue v1, GuardValue v2, BasicBlock bb |
+          // If `def==v1 || guard==v` controls `bb`,
+          ssaDisjunctionControls(def, v1, guard, v, bb) and
+          // and `tgtGuard==tgtVal` in `bb` implies `def==v2`,
+          ssaControlsGuard(def, v2, tgtGuard, tgtVal, bb) and
+          // and `v1` and `v2` are disjoint,
+          disjointValues(v1, v2)
+          // then assuming `tgtGuard==tgtVal` it follows that `def` cannot be `v1`
+          // and therefore we must have `guard==v`.
+        )
+      }
+    }
+
     /**
      * Provides an implementation of guard implication logic for guard
      * wrappers.
      */
     private module WrapperGuard {
+      private import codeql.util.DenseRank
+
       final private class FinalExpr = Expr;
 
       class ReturnExpr extends FinalExpr {
@@ -1019,21 +1122,59 @@ module Make<
         BasicBlock getBasicBlock() { result = super.getBasicBlock() }
       }
 
-      private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
-        BranchImplies::guardControls(call, val, _, _) or
-        ReturnImplies::guardControls(call, val, _, _)
+      private module DenseRankInput implements DenseRankInputSig1 {
+        class C = NonOverridableMethod;
+
+        class Ranked = ReturnExpr;
+
+        int getRank(NonOverridableMethod m, ReturnExpr ret) {
+          m.getAReturnExpr() = ret and
+          result = ret.getLocation().getStartLine()
+        }
       }
 
-      predicate relevantReturnValue(NonOverridableMethod m, GuardValue val) {
+      private module ReturnExprRank = DenseRank1<DenseRankInput>;
+
+      private predicate rankedReturnExpr = ReturnExprRank::denseRank/2;
+
+      private int maxRank(NonOverridableMethod m) {
+        result = max(int rnk | exists(rankedReturnExpr(m, rnk)))
+      }
+
+      private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
+        BranchImplies::guardControls(call, val, _, _) or
+        ReturnImplies::guardControls(call, val, _, _) or
+        DisjunctImplies::guardControls(call, val, _, _)
+      }
+
+      /**
+       * Holds if a call to `m` having a return value of `retval` is reachable
+       * by a chain of implications.
+       */
+      predicate relevantReturnValue(NonOverridableMethod m, GuardValue retval) {
         exists(NonOverridableMethodCall call |
-          relevantCallValue(call, val) and
+          relevantCallValue(call, retval) and
           call.getMethod() = m and
-          not val instanceof TException
+          not retval instanceof TException
+        )
+      }
+
+      /**
+       * Holds if a call to `m` having a return value of `retval` is reachable
+       * by a chain of implications, and `ret` is a return expression in `m`
+       * that could possibly have the value `retval`.
+       */
+      predicate relevantReturnExprValue(NonOverridableMethod m, ReturnExpr ret, GuardValue retval) {
+        relevantReturnValue(m, retval) and
+        ret = m.getAReturnExpr() and
+        not exists(GuardValue notRetval |
+          exprHasValue(ret, notRetval) and
+          disjointValues(notRetval, retval)
         )
       }
 
       private predicate returnGuard(Guard guard, GuardValue val) {
-        relevantReturnValue(guard.(ReturnExpr).getMethod(), val)
+        relevantReturnExprValue(_, guard, val)
       }
 
       module ReturnImplies = ImpliesTC<returnGuard/2>;
@@ -1043,25 +1184,55 @@ module Make<
         guard.directlyValueControls(ret.getBasicBlock(), val)
       }
 
+      private predicate parameterControlsReturnExpr(
+        SsaParameterInit param, GuardValue val, ReturnExpr ret
+      ) {
+        exists(Guard g0, GuardValue v0 |
+          directlyControlsReturn(g0, v0, ret) and
+          BranchImplies::ssaControls(param, val, g0, v0)
+        )
+      }
+
       /**
        * Holds if `ret` is a return expression in a non-overridable method that
        * on a return value of `retval` allows the conclusion that the `ppos`th
        * parameter has the value `val`.
        */
       private predicate validReturnInCustomGuard(
-        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, GuardValue val
+        ReturnExpr ret, int rnk, NonOverridableMethod m, ParameterPosition ppos, GuardValue retval,
+        GuardValue val
       ) {
-        exists(NonOverridableMethod m, SsaParameterInit param |
-          m.getAReturnExpr() = ret and
+        exists(SsaParameterInit param |
+          ret = rankedReturnExpr(m, rnk) and
           param.getParameter() = m.getParameter(ppos)
         |
-          exists(Guard g0, GuardValue v0 |
-            directlyControlsReturn(g0, v0, ret) and
-            BranchImplies::ssaControls(param, val, g0, v0) and
-            relevantReturnValue(m, retval)
-          )
+          parameterControlsReturnExpr(param, val, ret) and
+          relevantReturnExprValue(m, ret, retval)
           or
           ReturnImplies::ssaControls(param, val, ret, retval)
+        )
+      }
+
+      private predicate validReturnInCustomGuardToRank(
+        int rnk, NonOverridableMethod m, ParameterPosition ppos, GuardValue retval, GuardValue val
+      ) {
+        // The forall-range has been pushed all the way into
+        // `relevantReturnExprValue` and `validReturnInCustomGuard`. This means
+        // that this base case ensures that at least one return expression
+        // non-vacuously satisfies that it's a valid implication from return
+        // value to parameter value.
+        validReturnInCustomGuard(_, _, m, ppos, retval, val) and rnk = 0
+        or
+        validReturnInCustomGuardToRank(rnk - 1, m, ppos, retval, val) and
+        rnk <= maxRank(m) and
+        forall(ReturnExpr ret |
+          ret = rankedReturnExpr(m, rnk) and
+          not exists(GuardValue notRetval |
+            exprHasValue(ret, notRetval) and
+            disjointValues(notRetval, retval)
+          )
+        |
+          validReturnInCustomGuard(ret, rnk, m, ppos, retval, val)
         )
       }
 
@@ -1080,15 +1251,7 @@ module Make<
       private NonOverridableMethod wrapperGuard(
         ParameterPosition ppos, GuardValue retval, GuardValue val
       ) {
-        forex(ReturnExpr ret |
-          result.getAReturnExpr() = ret and
-          not exists(GuardValue notRetval |
-            exprHasValue(ret, notRetval) and
-            disjointValues(notRetval, retval)
-          )
-        |
-          validReturnInCustomGuard(ret, ppos, retval, val)
-        )
+        validReturnInCustomGuardToRank(maxRank(result), result, ppos, retval, val)
         or
         exists(SsaParameterInit param, Guard g0, GuardValue v0 |
           param.getParameter() = result.getParameter(ppos) and
@@ -1166,7 +1329,7 @@ module Make<
           guardChecksDef(guard, param, val, state)
         |
           guard.valueControls(ret.getBasicBlock(), val) and
-          relevantReturnValue(m, retval)
+          relevantReturnExprValue(m, ret, retval)
           or
           ReturnImplies::guardControls(guard, val, ret, retval)
         )

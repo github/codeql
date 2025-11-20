@@ -758,6 +758,26 @@ mod function_trait_bounds {
         fn assoc(x: Self) -> A;
     }
 
+    impl<T: Default> MyTrait<T> for S2 {
+        fn m1(self) -> T {
+            Default::default() // $ target=default
+        }
+
+        fn assoc(x: Self) -> T {
+            Default::default() // $ target=default
+        }
+    }
+
+    impl MyTrait<i32> for S1 {
+        fn m1(self) -> i32 {
+            0
+        }
+
+        fn assoc(x: Self) -> i32 {
+            0
+        }
+    }
+
     // Type parameter with bound occurs in the root of a parameter type.
 
     fn call_trait_m1<T1, T2: MyTrait<T1> + Copy>(x: T2) -> T1 {
@@ -863,6 +883,8 @@ mod function_trait_bounds {
         println!("{:?}", b);
         let b = call_trait_thing_m1_3(y3); // $ type=b:S2 target=call_trait_thing_m1_3
         println!("{:?}", b);
+        let x = S1::m2(S1); // $ target=m2 $ type=x:i32
+        let y: i32 = S2::m2(S2); // $ target=m2
     }
 }
 
@@ -1576,11 +1598,18 @@ mod implicit_self_borrow {
         fn foo(&self) -> &Self {
             self
         }
+
+        fn bar(&self, x: &Self) -> &Self {
+            self
+        }
     }
 
     pub fn f() {
         let x = MyStruct(S);
         x.foo(); // $ target=foo
+        let x = MyStruct(S);
+        // `&&x` below is Deref coerced to `&x` (see https://doc.rust-lang.org/std/ops/trait.Deref.html#deref-coercion)
+        x.bar(&&x); // $ target=bar
     }
 }
 
@@ -2872,6 +2901,57 @@ mod block_types {
         };
         println!("a: {:?}", a);
         0
+    }
+}
+
+mod context_typed {
+    pub fn f() {
+        let x = None; // $ type=x:T.i32
+        let x: Option<i32> = x;
+        let x = Option::<i32>::None; // $ type=x:T.i32
+        let x = Option::None::<i32>; // $ type=x:T.i32
+
+        fn pin_option<T>(opt: Option<T>, x: T) {}
+
+        let x = None; // $ type=x:T.i32
+        pin_option(x, 0); // $ target=pin_option
+
+        enum MyEither<T1, T2> {
+            A { left: T1 },
+            B { right: T2 },
+        }
+
+        let x = MyEither::A { left: 0 }; // $ type=x:T1.i32 type=x:T2.String
+        let x: MyEither<i32, String> = x;
+        let x = MyEither::<_, String>::A { left: 0 }; // $ type=x:T1.i32 certainType=x:T2.String
+        #[rustfmt::skip]
+        let x = MyEither::B::<i32, _> { // $ certainType=x:T1.i32 type=x:T2.String
+            right: String::new(), // $ target=new
+        };
+
+        fn pin_my_either<T>(e: MyEither<T, String>, x: T) {}
+
+        #[rustfmt::skip]
+        let x = MyEither::B {  // $ type=x:T1.i32 type=x:T2.String
+            right: String::new(), // $ target=new
+        };
+        pin_my_either(x, 0); // $ target=pin_my_either
+
+        let x = Result::Ok(0); // $ type=x:E.String
+        let x: Result<i32, String> = x;
+        let x = Result::<i32, String>::Ok(0); // $ type=x:E.String
+        let x = Result::Ok::<i32, String>(0); // $ type=x:E.String
+
+        fn pin_result<T, E>(res: Result<T, E>, x: E) {}
+
+        let x = Result::Ok(0); // $ type=x:T.i32 type=x:E.bool
+        pin_result(x, false); // $ target=pin_result
+
+        let mut x = Vec::new(); // $ type=x:T.i32 target=new
+        x.push(0); // $ target=push
+
+        let y = Default::default(); // $ type=y:i32 target=default
+        x.push(y); // $ target=push
     }
 }
 

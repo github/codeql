@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Undefined
 import semmle.python.pointsto.PointsTo
 
@@ -30,7 +31,7 @@ predicate uninitialized_local(NameNode use) {
 predicate explicitly_guarded(NameNode u) {
   exists(Try t |
     t.getBody().contains(u.getNode()) and
-    t.getAHandler().getType().pointsTo(ClassValue::nameError())
+    t.getAHandler().getType().(ExprWithPointsTo).pointsTo(ClassValue::nameError())
   )
 }
 

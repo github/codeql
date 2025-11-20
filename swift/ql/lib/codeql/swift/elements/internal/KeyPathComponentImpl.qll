@@ -8,6 +8,11 @@ module Impl {
    */
   class KeyPathComponent extends Generated::KeyPathComponent {
     /**
+     * Method or initializer application like `.bar` in `\Foo.bar` with `bar` a method.
+     */
+    predicate isApply() { this.getKind() = 4 }
+
+    /**
      * Property access like `.bar` in `\Foo.bar`.
      */
     predicate isProperty() { this.getKind() = 5 }

@@ -12,8 +12,8 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
- * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
- * `__builtin___memcpy_chk`.
+ * The standard functions `memcpy`, `memmove` and `bcopy`; and variants such as
+ * `__builtin___memcpy_chk` and `__builtin___memmove_chk`.
  */
 private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
   AliasFunction, NonCppThrowingFunction
@@ -27,7 +27,9 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     // bcopy(src, dest, num)
     // mempcpy(dest, src, num)
     // memccpy(dest, src, c, n)
-    this.hasGlobalName(["bcopy", mempcpy(), "memccpy", "__builtin___memcpy_chk"])
+    this.hasGlobalName([
+        "bcopy", mempcpy(), "memccpy", "__builtin___memcpy_chk", "__builtin___memmove_chk"
+      ])
   }
 
   /**

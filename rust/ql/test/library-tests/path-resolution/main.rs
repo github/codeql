@@ -1,6 +1,7 @@
 mod my; // I1
 
-use my::*; // $ item=I1
+#[rustfmt::skip]
+use {{{my::{{self as my_alias, *}}}}}; // $ item=I1
 
 use my::nested::nested1::nested2::*; // $ item=I3
 
@@ -816,6 +817,7 @@ fn main() {
     nested8::f(); // $ item=I119
     my3::f(); // $ item=I200
     nested_f(); // $ item=I201
+    my_alias::nested_f(); // $ item=I201
     m18::m19::m20::g(); // $ item=I103
     m23::f(); // $ item=I108
     m24::f(); // $ item=I121

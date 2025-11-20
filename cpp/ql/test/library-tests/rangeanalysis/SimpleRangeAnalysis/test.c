@@ -425,6 +425,21 @@ int repeated_if_statements(unsigned int rhs) {
   return rhs; // rhs has 6 bounds
 }
 
+int ne_phi_nodes(int a, int b) {
+  if (a == 17) {
+    if (b == 23) {
+      a += b;
+    }
+    if (a == 18) {
+      b = 10;
+    }
+  }
+  // The statement below is an NE phi node for the access `a` in both `a == 17`
+  // and `a == 18`.
+  int c = a + b;
+  return a + b;
+}
+
 unsigned int conditional_nested_guards(unsigned int ip) {
   // This tests a combinatorial explosion that can happen from a large number of
   // nested linear guards.
