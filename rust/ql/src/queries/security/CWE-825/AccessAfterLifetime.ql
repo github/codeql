@@ -26,17 +26,17 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node instanceof AccessAfterLifetime::Source and
     // exclude cases with sources in macros, since these results are difficult to interpret
-    not node.asExpr().getExpr().isFromMacroExpansion()
+    not node.asExpr().isFromMacroExpansion()
   }
 
   predicate isSink(DataFlow::Node node) {
     node instanceof AccessAfterLifetime::Sink and
     // exclude cases with sinks in macros, since these results are difficult to interpret
-    not node.asExpr().getExpr().isFromMacroExpansion() and
+    not node.asExpr().isFromMacroExpansion() and
     // include only results inside `unsafe` blocks, as other results tend to be false positives
     (
-      node.asExpr().getExpr().getEnclosingBlock*().isUnsafe() or
-      node.asExpr().getExpr().getEnclosingCallable().(Function).isUnsafe()
+      node.asExpr().getEnclosingBlock*().isUnsafe() or
+      node.asExpr().getEnclosingCallable().(Function).isUnsafe()
     )
   }
 
@@ -45,11 +45,9 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {
-    exists(Variable target, DataFlow::Node sink |
+    exists(Variable target |
+      AccessAfterLifetime::sourceValueScope(source, target, _) and
       result = [target.getLocation(), source.getLocation()]
-    |
-      isSink(sink) and
-      AccessAfterLifetime::dereferenceAfterLifetime(source, sink, target)
     )
   }
 }

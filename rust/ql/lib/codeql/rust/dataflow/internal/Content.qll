@@ -3,7 +3,6 @@
  */
 
 private import rust
-private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.frameworks.stdlib.Builtins
 private import DataFlowImpl
 
@@ -22,7 +21,7 @@ abstract class Content extends TContent {
 abstract class FieldContent extends Content {
   /** Gets an access to this field. */
   pragma[nomagic]
-  abstract FieldExprCfgNode getAnAccess();
+  abstract FieldExpr getAnAccess();
 }
 
 /** A tuple field belonging to either a variant or a struct. */
@@ -41,7 +40,7 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getTupleField() }
+  override FieldExpr getAnAccess() { field = result.getTupleField() }
 
   final override string toString() {
     exists(Variant v, int pos, string vname |
@@ -74,7 +73,7 @@ class StructFieldContent extends FieldContent, TStructFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getStructField() }
+  override FieldExpr getAnAccess() { field = result.getStructField() }
 
   final override string toString() {
     exists(Variant v, string name, string vname |
@@ -153,7 +152,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
   /** Gets the index of this tuple position. */
   int getPosition() { result = pos }
 
-  override FieldExprCfgNode getAnAccess() {
+  override FieldExpr getAnAccess() {
     // TODO: limit to tuple types
     result.getIdentifier().getText().toInt() = pos
   }
