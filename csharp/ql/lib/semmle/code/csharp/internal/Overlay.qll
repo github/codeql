@@ -2,6 +2,8 @@
  * Defines entity discard predicates for C# overlay analysis.
  */
 
+private import OverlayXml
+
 /**
  * Holds always for the overlay variant and never for the base variant.
  * This local predicate is used to define local predicates that behave
@@ -108,36 +110,6 @@ private predicate discardableLocation(@location_default loc, string path) {
 overlay[discard_entity]
 private predicate discardLocation(@location_default loc) {
   exists(string path | discardableLocation(loc, path) | overlayChangedFiles(path))
-}
-
-/**
- * A class of Xml locatables that can be discarded from the base.
- */
-overlay[local]
-private class DiscardableXmlEntity extends DiscardableEntityBase instanceof @xmllocatable {
-  /** Gets the path to the file in which this element occurs. */
-  override string getFilePath() {
-    exists(@location_default loc | result = getLocationFilePath(loc) | xmllocations(this, loc))
-  }
-}
-
-overlay[local]
-private predicate overlayXmlExtracted(string file) {
-  exists(DiscardableXmlEntity dxe |
-    dxe.existsInOverlay() and
-    file = dxe.getFilePath() and
-    not files(dxe, _) and
-    not xmlNs(dxe, _, _, _)
-  )
-}
-
-overlay[discard_entity]
-private predicate discardXmlEntity(@xmllocatable xml) {
-  overlayChangedFiles(xml.(DiscardableXmlEntity).getFilePath())
-  or
-  // The XML extractor is not incremental and may extract more
-  // XML files than those included in overlayChangedFiles.
-  overlayXmlExtracted(xml.(DiscardableXmlEntity).getFilePath())
 }
 
 overlay[local]
