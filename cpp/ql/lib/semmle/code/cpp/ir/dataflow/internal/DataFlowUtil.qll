@@ -2093,8 +2093,8 @@ private Field getAFieldWithSize(Union u, int bytes) {
 
 cached
 private newtype TContent =
-  TFieldContent(Field f, int indirectionIndex) {
-    // the indirection index for field content starts at 1 (because `TFieldContent` is thought of as
+  TNonUnionContent(Field f, int indirectionIndex) {
+    // the indirection index for field content starts at 1 (because `TNonUnionContent` is thought of as
     // the address of the field, `FieldAddress` in the IR).
     indirectionIndex = [1 .. SsaImpl::getMaxIndirectionsForType(f.getUnspecifiedType())] and
     // Reads and writes of union fields are tracked using `UnionContent`.
@@ -2124,14 +2124,14 @@ private newtype TContent =
  */
 class Content extends TContent {
   /** Gets a textual representation of this element. */
-  abstract string toString();
+  string toString() { none() } // overridden in subclasses
 
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
 
   /** Gets the indirection index of this `Content`. */
-  abstract int getIndirectionIndex();
+  int getIndirectionIndex() { none() } // overridden in subclasses
 
   /**
    * INTERNAL: Do not use.
@@ -2142,7 +2142,7 @@ class Content extends TContent {
    * For example, a write to a field `f` implies that any content of
    * the form `*f` is also cleared.
    */
-  abstract predicate impliesClearOf(Content c);
+  predicate impliesClearOf(Content c) { none() } // overridden in subclasses
 }
 
 /**
@@ -2162,22 +2162,42 @@ private module ContentStars {
 
 private import ContentStars
 
-/** A reference through a non-union instance field. */
+private class TFieldContent = TNonUnionContent or TUnionContent;
+
+/**
+ * A `Content` that references a `Field`. This may be a field of a `struct`,
+ * `class`, or `union`. In the case of a `union` there may be multiple fields
+ * associated with the same `Content`.
+ */
 class FieldContent extends Content, TFieldContent {
+  /** Gets a `Field` of this `Content`. */
+  Field getAField() { none() }
+
+  /**
+   * Gets the field associated with this `Content`, if a unique one exists.
+   */
+  final Field getField() { result = unique( | | this.getAField()) }
+
+  override int getIndirectionIndex() { none() } // overridden in subclasses
+
+  override string toString() { none() } // overridden in subclasses
+
+  override predicate impliesClearOf(Content c) { none() } // overridden in subclasses
+}
+
+/** A reference through a non-union instance field. */
+class NonUnionFieldContent extends FieldContent, TNonUnionContent {
   private Field f;
   private int indirectionIndex;
 
-  FieldContent() { this = TFieldContent(f, indirectionIndex) }
+  NonUnionFieldContent() { this = TNonUnionContent(f, indirectionIndex) }
 
   override string toString() { result = contentStars(this) + f.toString() }
 
-  Field getField() { result = f }
+  override Field getAField() { result = f }
 
   /** Gets the indirection index of this `FieldContent`. */
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) {
     exists(FieldContent fc |
@@ -2191,7 +2211,7 @@ class FieldContent extends Content, TFieldContent {
 }
 
 /** A reference through an instance field of a union. */
-class UnionContent extends Content, TUnionContent {
+class UnionContent extends FieldContent, TUnionContent {
   private Union u;
   private int indirectionIndex;
   private int bytes;
@@ -2201,16 +2221,13 @@ class UnionContent extends Content, TUnionContent {
   override string toString() { result = contentStars(this) + u.toString() }
 
   /** Gets a field of the underlying union of this `UnionContent`, if any. */
-  Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
+  override Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
 
   /** Gets the underlying union of this `UnionContent`. */
   Union getUnion() { result = u }
 
   /** Gets the indirection index of this `UnionContent`. */
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) {
     exists(UnionContent uc |
@@ -2234,10 +2251,7 @@ class ElementContent extends Content, TElementContent {
 
   ElementContent() { this = TElementContent(indirectionIndex) }
 
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) { none() }
 

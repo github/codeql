@@ -62,6 +62,8 @@
  * should be prefixed with a tilde character (`~`). For example, `~Bar` can be used to indicate that
  * the type is not intended to match a static type.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Unit
 private import ApiGraphModelsSpecific as Specific
