@@ -148,7 +148,7 @@ mod actix_test {
 mod axum_test {
     use super::sink;
     use axum::extract::{Json, Path, Query, Request};
-    use axum::routing::get;
+    use axum::routing::{MethodFilter, get, post, put};
     use axum::Router;
     use std::collections::HashMap;
 
@@ -220,11 +220,10 @@ mod axum_test {
     async fn test_axum() {
         let app = Router::<()>::new()
             .route("/1/{a}", get(my_axum_handler_1))
-            .route("/2/{a}/{b}", get(my_axum_handler_2))
-            .route("/3/:a", get(my_axum_handler_3))
-            .route("/4/:a", get(my_axum_handler_4))
-            .route("/5/:a", get(my_axum_handler_5))
-            .route("/67/:a", get(my_axum_handler_6).get(my_axum_handler_7));
+            .route("/2/{a}/{b}", post(my_axum_handler_2))
+            .route("/3/:a", put(my_axum_handler_3))
+            .route("/4/:a", get(my_axum_handler_4).on(MethodFilter::DELETE, my_axum_handler_5))
+            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7));
 
         // ...
     }
