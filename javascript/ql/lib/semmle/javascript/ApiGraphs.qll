@@ -2164,6 +2164,10 @@ private predicate isDeclaredPackageName(string m) {
 
 overlay[local]
 private predicate isImportedPackageName(string m) {
-  m = any(Import imprt).getImportedPathString() and
+  (
+    m = any(Import imprt).getImportedPathString()
+    or
+    m = any(DataFlow::ModuleImportNode im).getPath()
+  ) and
   m.regexpMatch("[^./].*")
 }
