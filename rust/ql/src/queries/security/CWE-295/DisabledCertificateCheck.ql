@@ -14,6 +14,7 @@
 import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.security.DisabledCertificateCheckExtensions
+import codeql.rust.Concepts
 
 /**
  * A taint configuration for disabled TLS certificate checks.
@@ -22,7 +23,11 @@ module DisabledCertificateCheckConfig implements DataFlow::ConfigSig {
   import DisabledCertificateCheckExtensions
 
   predicate isSource(DataFlow::Node node) {
+    // the constant `true`
     node.asExpr().getExpr().(BooleanLiteralExpr).getTextValue() = "true"
+    or
+    // a value controlled by a potential attacker
+    node instanceof ActiveThreatModelSource
   }
 
   predicate isSink(DataFlow::Node node) { node instanceof Sink }
