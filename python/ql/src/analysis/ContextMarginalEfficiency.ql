@@ -4,8 +4,7 @@
  */
 
 import python
-import semmle.python.pointsto.PointsTo
-import semmle.python.pointsto.PointsToContext
+private import LegacyPointsTo
 
 int depth(ControlFlowNode f, Object value, ClassObject cls) {
   exists(PointsToContext ctx |

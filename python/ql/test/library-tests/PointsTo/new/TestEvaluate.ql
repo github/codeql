@@ -1,6 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
-import semmle.python.pointsto.PointsToContext
+private import LegacyPointsTo
 import Util
 
 from

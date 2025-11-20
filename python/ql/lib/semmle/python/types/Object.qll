@@ -1,8 +1,9 @@
 import python
 private import LegacyPointsTo
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
+private import semmle.python.types.Descriptors
+private import semmle.python.pointsto.Base
 
 cached
 private predicate is_an_object(@py_object obj) {

@@ -1,5 +1,8 @@
 import python
 private import LegacyPointsTo
+private import semmle.python.types.FunctionObject
+private import semmle.python.types.ClassObject
+private import semmle.python.SelfAttribute
 
 /** The metrics for a function */
 class FunctionMetrics extends Function {
@@ -29,9 +32,9 @@ class FunctionMetrics extends Function {
    */
   int getCyclomaticComplexity() {
     exists(int e, int n |
-      n = count(BasicBlock b | b = this.getABasicBlock() and b.likelyReachable()) and
+      n = count(BasicBlockWithPointsTo b | b = this.getABasicBlock() and b.likelyReachable()) and
       e =
-        count(BasicBlock b1, BasicBlock b2 |
+        count(BasicBlockWithPointsTo b1, BasicBlockWithPointsTo b2 |
           b1 = this.getABasicBlock() and
           b1.likelyReachable() and
           b2 = this.getABasicBlock() and

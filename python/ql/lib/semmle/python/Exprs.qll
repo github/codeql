@@ -240,17 +240,12 @@ class Bytes extends StringLiteral {
   /* syntax: b"hello" */
   Bytes() { not this.isUnicode() }
 
-  override Object getLiteralObject() {
-    py_cobjecttypes(result, theBytesType()) and
-    py_cobjectnames(result, this.quotedString())
-  }
-
   /**
    * The extractor puts quotes into the name of each string (to prevent "0" clashing with 0).
    * The following predicate help us match up a string/byte literals in the source
    * which the equivalent object.
    */
-  private string quotedString() {
+  string quotedString() {
     exists(string b_unquoted | b_unquoted = this.getS() | result = "b'" + b_unquoted + "'")
   }
 }
@@ -266,8 +261,6 @@ class Ellipsis extends Ellipsis_ {
  * Consists of string (both unicode and byte) literals and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
-  abstract Object getLiteralObject();
-
   abstract boolean booleanValue();
 }
 
@@ -292,12 +285,6 @@ class IntegerLiteral extends Num {
 
   override string toString() { result = "IntegerLiteral" }
 
-  override Object getLiteralObject() {
-    py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, this.getN())
-    or
-    py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())
-  }
-
   override boolean booleanValue() {
     this.getValue() = 0 and result = false
     or
@@ -316,10 +303,6 @@ class FloatLiteral extends Num {
   float getValue() { result = this.getN().toFloat() }
 
   override string toString() { result = "FloatLiteral" }
-
-  override Object getLiteralObject() {
-    py_cobjecttypes(result, theFloatType()) and py_cobjectnames(result, this.getN())
-  }
 
   override boolean booleanValue() {
     this.getValue() = 0.0 and result = false
@@ -343,10 +326,6 @@ class ImaginaryLiteral extends Num {
 
   override string toString() { result = "ImaginaryLiteral" }
 
-  override Object getLiteralObject() {
-    py_cobjecttypes(result, theComplexType()) and py_cobjectnames(result, this.getN())
-  }
-
   override boolean booleanValue() {
     this.getValue() = 0.0 and result = false
     or
@@ -365,11 +344,6 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
 
   override boolean booleanValue() { result = this.getOperand().(IntegerLiteral).booleanValue() }
 
-  override Object getLiteralObject() {
-    (py_cobjecttypes(result, theIntType()) or py_cobjecttypes(result, theLongType())) and
-    py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
-  }
-
   /**
    * Gets the (integer) value of this constant. Will not return a result if the value does not fit into
    * a 32 bit signed value
@@ -384,11 +358,6 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
 class Unicode extends StringLiteral {
   /* syntax: "hello" */
   Unicode() { this.isUnicode() }
-
-  override Object getLiteralObject() {
-    py_cobjecttypes(result, theUnicodeType()) and
-    py_cobjectnames(result, this.quotedString())
-  }
 
   /**
    * Gets the quoted representation fo this string.
@@ -593,12 +562,10 @@ class StringLiteral extends Str_, ImmutableLiteral {
     this.getText() != "" and result = true
   }
 
-  override Object getLiteralObject() { none() }
-
   override string toString() { result = "StringLiteral" }
 }
 
-private predicate name_consts(Name_ n, string id) {
+predicate name_consts(Name_ n, string id) {
   exists(Variable v | py_variables(v, n) and id = v.getId() |
     id = "True" or id = "False" or id = "None"
   )
@@ -627,8 +594,6 @@ class True extends BooleanLiteral {
   /* syntax: True */
   True() { name_consts(this, "True") }
 
-  override Object getLiteralObject() { name_consts(this, "True") and result = theTrueObject() }
-
   override boolean booleanValue() { result = true }
 }
 
@@ -637,8 +602,6 @@ class False extends BooleanLiteral {
   /* syntax: False */
   False() { name_consts(this, "False") }
 
-  override Object getLiteralObject() { name_consts(this, "False") and result = theFalseObject() }
-
   override boolean booleanValue() { result = false }
 }
 
@@ -646,8 +609,6 @@ class False extends BooleanLiteral {
 class None extends NameConstant {
   /* syntax: None */
   None() { name_consts(this, "None") }
-
-  override Object getLiteralObject() { name_consts(this, "None") and result = theNoneObject() }
 
   override boolean booleanValue() { result = false }
 }

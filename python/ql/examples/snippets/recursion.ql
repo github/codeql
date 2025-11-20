@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from PythonFunctionValue f
 where f.getACall().getScope() = f.getScope()

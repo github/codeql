@@ -13,6 +13,7 @@
 
 import python
 import Cyclic
+private import LegacyPointsTo
 
 from ModuleValue m1, ModuleValue m2, Stmt imp
 where

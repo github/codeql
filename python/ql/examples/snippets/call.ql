@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from Value len, CallNode call
 where len.getName() = "len" and len.getACall() = call

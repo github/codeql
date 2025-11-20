@@ -5,6 +5,8 @@ private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.MRO
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
+private import semmle.python.pointsto.Context
+private import semmle.python.pointsto.Base
 
 /** A class representing instances */
 abstract class InstanceObject extends ObjectInternal {
