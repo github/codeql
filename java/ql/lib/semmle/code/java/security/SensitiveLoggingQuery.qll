@@ -54,7 +54,7 @@ private class PrefixSuffixBarrier extends SensitiveLoggerBarrier {
     exists(MethodCall mc, Method m, int limit |
       limit = 7 and
       mc.getMethod() = m
-    |
+      |
       // substring in Java
       (
         m.hasQualifiedName("java.lang", "String", "substring") or
@@ -86,15 +86,17 @@ private class PrefixSuffixBarrier extends SensitiveLoggerBarrier {
 /** A predicate to check single-argument method calls for a constant integer below a set limit. */
 bindingset[limit, isKotlin]
 private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
-  exists(int argIndex |
-    (if isKotlin = true then argIndex = 1 else argIndex = 0) and
-    bounded(mc.getArgument(argIndex), any(ZeroBound z), limit, true, _)
+  mc.getNumArgument() = 1 and
+  exists(int firstArgIndex |
+    (if isKotlin = true then firstArgIndex = 1 else firstArgIndex = 0) and
+    mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <= limit
   )
 }
 
 /** A predicate to check two-argument method calls for zero and a constant integer below a set limit. */
 bindingset[limit, isKotlin]
 private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
+  mc.getNumArgument() = 2 and
   exists(int firstArgIndex, int secondArgIndex |
     (
       isKotlin = true and firstArgIndex = 1 and secondArgIndex = 2
@@ -102,7 +104,7 @@ private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
       isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
     ) and
     mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
-    bounded(mc.getArgument(secondArgIndex), any(ZeroBound z), limit, true, _)
+    mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <= limit
   )
 }
 
