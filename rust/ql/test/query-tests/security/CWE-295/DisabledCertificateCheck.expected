@@ -11,14 +11,17 @@
 | main.rs:56:36:56:39 | true | main.rs:56:36:56:39 | true | main.rs:56:36:56:39 | true | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 | main.rs:83:32:83:37 | always | main.rs:74:15:74:18 | true | main.rs:83:32:83:37 | always | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 | main.rs:88:32:88:40 | sometimes | main.rs:75:22:75:25 | true | main.rs:88:32:88:40 | sometimes | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
-| main.rs:93:32:93:47 | sometimes_global | main.rs:106:17:106:20 | true | main.rs:93:32:93:47 | sometimes_global | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:93:32:93:47 | sometimes_global | main.rs:154:17:154:20 | true | main.rs:93:32:93:47 | sometimes_global | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:146:36:146:37 | b6 | main.rs:144:39:144:42 | true | main.rs:146:36:146:37 | b6 | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 edges
 | main.rs:73:19:73:40 | ...: bool | main.rs:93:32:93:47 | sometimes_global | provenance |  |
 | main.rs:74:6:74:11 | always | main.rs:83:32:83:37 | always | provenance |  |
 | main.rs:74:15:74:18 | true | main.rs:74:6:74:11 | always | provenance |  |
 | main.rs:75:6:75:18 | mut sometimes | main.rs:88:32:88:40 | sometimes | provenance |  |
 | main.rs:75:22:75:25 | true | main.rs:75:6:75:18 | mut sometimes | provenance |  |
-| main.rs:106:17:106:20 | true | main.rs:73:19:73:40 | ...: bool | provenance |  |
+| main.rs:144:6:144:7 | b6 | main.rs:146:36:146:37 | b6 | provenance |  |
+| main.rs:144:39:144:42 | true | main.rs:144:6:144:7 | b6 | provenance |  |
+| main.rs:154:17:154:20 | true | main.rs:73:19:73:40 | ...: bool | provenance |  |
 nodes
 | main.rs:4:32:4:35 | true | semmle.label | true |
 | main.rs:9:36:9:39 | true | semmle.label | true |
@@ -38,5 +41,8 @@ nodes
 | main.rs:83:32:83:37 | always | semmle.label | always |
 | main.rs:88:32:88:40 | sometimes | semmle.label | sometimes |
 | main.rs:93:32:93:47 | sometimes_global | semmle.label | sometimes_global |
-| main.rs:106:17:106:20 | true | semmle.label | true |
+| main.rs:144:6:144:7 | b6 | semmle.label | b6 |
+| main.rs:144:39:144:42 | true | semmle.label | true |
+| main.rs:146:36:146:37 | b6 | semmle.label | b6 |
+| main.rs:154:17:154:20 | true | semmle.label | true |
 subpaths

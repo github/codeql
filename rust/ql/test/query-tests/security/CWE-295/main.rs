@@ -100,9 +100,58 @@ fn test_data_flow(sometimes_global: bool) {
 		.unwrap();
 }
 
+fn test_threat_model_source() {
+	// hostname setting from `fs` functions returning `bool` directly
+	// (these are highly unnatural but serve to create simple tests)
+
+	let b1: bool = std::fs::exists("main.rs").unwrap();
+	let _client = native_tls::TlsConnector::builder()
+		.danger_accept_invalid_hostnames(b1) // $ MISSING: Alert[rust/disabled-certificate-check]=fs
+		.build()
+		.unwrap();
+
+	let b2 = std::path::Path::new("main.rs").metadata().unwrap().is_file();
+	let _client = native_tls::TlsConnector::builder()
+		.danger_accept_invalid_hostnames(b2) // $ MISSING: Alert[rust/disabled-certificate-check]=fs
+		.build()
+		.unwrap();
+
+	let b3 = std::fs::metadata("main.rs").unwrap().is_dir();
+	let _client = native_tls::TlsConnector::builder()
+		.danger_accept_invalid_hostnames(b3) // $ MISSING: Alert[rust/disabled-certificate-check]=fs
+		.build()
+		.unwrap();
+
+	// hostname setting from `stdin`, parsed to `bool`
+	// (these are a little closer to something real)
+
+	let mut input_line = String::new();
+	let input = std::io::stdin();
+	input.read_line(&mut input_line).unwrap();
+
+	let b4: bool = input_line.parse::<bool>().unwrap_or(false);
+	let _client = native_tls::TlsConnector::builder()
+		.danger_accept_invalid_hostnames(b4) // $ MISSING: Alert[rust/disabled-certificate-check]=stdin
+		.build()
+		.unwrap();
+
+	let b5 = std::str::FromStr::from_str(&input_line).unwrap_or(false);
+	let _client = native_tls::TlsConnector::builder()
+		.danger_accept_invalid_hostnames(b5) // $ MISSING: Alert[rust/disabled-certificate-check]=stdin
+		.build()
+		.unwrap();
+
+	let b6 = if (input_line == "true") { true } else { false }; // $ Source=true
+	let _client = native_tls::TlsConnector::builder()
+		.danger_accept_invalid_hostnames(b6) // $ Alert[rust/disabled-certificate-check]=true
+		.build()
+		.unwrap();
+}
+
 fn main() {
 	test_native_tls();
 	test_reqwest();
 	test_data_flow(true); // $ Source=arg
 	test_data_flow(false);
+	test_threat_model_source();
 }
