@@ -27,7 +27,7 @@
  *
  * So it may seem that path resolution and variable resolution must happen in mutual
  * recursion, but we would like to keep the inherently global path resolution logic
- * separate from the inherently local variable resolution logic. We acheive this by
+ * separate from the inherently local variable resolution logic. We achieve this by
  *
  * - First computing global path resolution, where variable shadowing is ignored,
  *   exposed as the internal predicate `resolvePathIgnoreVariableShadowing`.
