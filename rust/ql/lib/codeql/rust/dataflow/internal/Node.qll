@@ -118,7 +118,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 }
 
-/** A data flow node that corresponds directly to a CFG node for an AST node. */
+/** A data flow node that corresponds directly to an AST node. */
 abstract class AstNodeNode extends Node {
   AstNode n;
 

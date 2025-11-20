@@ -40,7 +40,7 @@ module AccessAfterLifetime {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * Holds if the value `source` points to accesses a variable `target` with scope `scope`.
+   * Holds if the value pointed to by `source` accesses a variable `target` with scope `scope`.
    */
   pragma[nomagic]
   predicate sourceValueScope(Source source, Variable target, BlockExpr scope) {

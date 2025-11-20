@@ -24,6 +24,19 @@ module Impl {
     override string toStringImpl() {
       result = "(" + this.getExpr().toAbbreviatedString() + ")"
       or
+      // In macro expansions such as
+      //
+      // ```rust
+      // [
+      //     "a",
+      //     "b",
+      //     #[cfg(target_os = "macos")]
+      //     "c",
+      // ]
+      // ```
+      //
+      // the last array element will give rise to an empty `ParenExpr` when not
+      // compiling for macos.
       not exists(this.getExpr().toAbbreviatedString()) and
       result = "(...)"
     }
