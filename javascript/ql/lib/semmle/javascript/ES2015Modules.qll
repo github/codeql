@@ -838,10 +838,4 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
  */
 class OriginalExportDeclaration extends ExportDeclaration {
   OriginalExportDeclaration() { not this instanceof ReExportDeclaration }
-
-  overlay[global]
-  override DataFlow::Node getSourceNode(string name) {
-    result = this.(ExportDefaultDeclaration).getSourceNode(name) or
-    result = this.(ExportNamedDeclaration).getSourceNode(name)
-  }
 }
