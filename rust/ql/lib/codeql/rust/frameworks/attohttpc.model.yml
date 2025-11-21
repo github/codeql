@@ -9,3 +9,5 @@ extensions:
       - ["<attohttpc::request::builder::RequestBuilder>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
       - ["<attohttpc::tls::native_tls_impl::TlsHandshaker>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
       - ["<attohttpc::tls::native_tls_impl::TlsHandshaker>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::tls::rustls_impl::TlsHandshaker>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::tls::rustls_impl::TlsHandshaker>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
