@@ -87,10 +87,11 @@ private class PrefixSuffixBarrier extends SensitiveLoggerBarrier {
 bindingset[limit, isKotlin]
 private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   mc.getNumArgument() = 1 and
-  exists(int firstArgIndex |
-    (if isKotlin = true then firstArgIndex = 1 else firstArgIndex = 0) and
-    mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <=
-      limit
+  exists(int firstArgIndex, int delta |
+    if isKotlin = true then firstArgIndex = 1 else firstArgIndex = 0
+  |
+    bounded(mc.getArgument(firstArgIndex).getUnderlyingExpr(), any(ZeroBound z), delta, true, _) and
+    delta <= limit
   )
 }
 
@@ -98,15 +99,16 @@ private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
 bindingset[limit, isKotlin]
 private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   mc.getNumArgument() = 2 and
-  exists(int firstArgIndex, int secondArgIndex |
-    (
-      isKotlin = true and firstArgIndex = 1 and secondArgIndex = 2
-      or
-      isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
-    ) and
-    mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
-    mc.getArgument(secondArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() <=
-      limit
+  exists(int firstArgIndex, int secondArgIndex, int delta |
+    isKotlin = true and firstArgIndex = 1 and secondArgIndex = 2
+    or
+    isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
+  |
+    // mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
+    bounded(mc.getArgument(firstArgIndex).getUnderlyingExpr(), any(ZeroBound z), 0, true, _) and
+    bounded(mc.getArgument(firstArgIndex).getUnderlyingExpr(), any(ZeroBound z), 0, false, _) and
+    bounded(mc.getArgument(secondArgIndex).getUnderlyingExpr(), any(ZeroBound z), delta, true, _) and
+    delta <= limit
   )
 }
 
