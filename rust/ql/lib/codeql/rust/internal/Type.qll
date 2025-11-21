@@ -6,6 +6,7 @@ private import TypeMention
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
+private import codeql.rust.frameworks.stdlib.Stdlib
 
 /**
  * Holds if a dyn trait type should have a type parameter associated with `n`. A
@@ -623,4 +624,33 @@ final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeR
   override TypeParameter getATypeParameter() {
     implTraitTypeParam(this, _, result.(TypeParamTypeParameter).getTypeParam())
   }
+}
+
+/**
+ * Holds if `t` is a valid complex [`self` root type][1].
+ *
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-items.associated.fn.method.self-ty
+ */
+pragma[nomagic]
+predicate validSelfType(Type t) {
+  t instanceof RefType
+  or
+  exists(Struct s | t = TStruct(s) |
+    s instanceof BoxStruct or
+    s instanceof RcStruct or
+    s instanceof ArcStruct or
+    s instanceof PinStruct
+  )
+}
+
+/**
+ * Holds if `root` is a valid complex [`self` root type][1], with type
+ * parameter `tp`.
+ *
+ * [1]: https://doc.rust-lang.org/stable/reference/items/associated-items.html#r-items.associated.fn.method.self-ty
+ */
+pragma[nomagic]
+predicate complexSelfRoot(Type root, TypeParameter tp) {
+  validSelfType(root) and
+  tp = root.getPositionalTypeParameter(0)
 }

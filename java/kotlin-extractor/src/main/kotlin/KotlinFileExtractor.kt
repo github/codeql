@@ -62,6 +62,7 @@ open class KotlinFileExtractor(
     val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalDeclExtractor,
+    classInstanceStack: ClassInstanceStack,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
     val declarationStack: DeclarationStack,
@@ -72,6 +73,7 @@ open class KotlinFileExtractor(
         tw,
         dependencyCollector,
         externalClassExtractor,
+        classInstanceStack,
         primitiveTypeMapping,
         pluginContext,
         globalExtensionState
@@ -496,12 +498,17 @@ open class KotlinFileExtractor(
             }
 
             extractClassModifiers(c, id)
-            extractClassSupertypes(
-                c,
-                id,
-                if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw
-                else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
-            )
+            classInstanceStack.push(c)
+            try {
+                extractClassSupertypes(
+                    c,
+                    id,
+                    if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw
+                    else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
+                )
+            } finally {
+                classInstanceStack.pop()
+            }
 
             val locId = getLocation(c, argsIncludingOuterClasses)
             tw.writeHasLocation(id, locId)

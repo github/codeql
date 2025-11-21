@@ -19,7 +19,7 @@ module Generated {
    *
    * For example:
    * ```rust
-   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> { 0 }
    * //                                                        ^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::UseBoundGenericArgs` class directly.

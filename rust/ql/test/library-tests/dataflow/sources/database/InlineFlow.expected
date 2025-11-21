@@ -1,0 +1,205 @@
+models
+| 1 | Source: <_ as mysql::conn::queryable::Queryable>::query_first; ReturnValue.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]; database |
+| 2 | Source: <_ as mysql::conn::queryable::Queryable>::query_fold; Argument[2].Parameter[1]; database |
+| 3 | Source: <_ as mysql::conn::queryable::Queryable>::query_map; Argument[1].Parameter[0]; database |
+| 4 | Source: <_ as mysql_async::queryable::Queryable>::query_fold; Argument[2].Parameter[1]; database |
+| 5 | Source: <_ as mysql_async::queryable::Queryable>::query_map; Argument[1].Parameter[0]; database |
+| 6 | Source: <mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::exec_iter; ReturnValue.Field[core::result::Result::Ok(0)].Element; database |
+| 7 | Source: <mysql_common::row::Row>::get; ReturnValue.Field[core::option::Option::Some(0)]; database |
+| 8 | Source: <mysql_common::row::Row>::get_opt; ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]; database |
+| 9 | Source: <mysql_common::row::Row>::take; ReturnValue.Field[core::option::Option::Some(0)]; database |
+| 10 | Source: <mysql_common::row::Row>::take_opt; ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]; database |
+| 11 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
+| 12 | Summary: <_ as core::ops::arith::Add>::add; Argument[0]; ReturnValue; taint |
+| 13 | Summary: <_ as mysql::conn::queryable::Queryable>::query_fold; Argument[2].ReturnValue; ReturnValue.Field[core::result::Result::Ok(0)]; value |
+| 14 | Summary: <_ as mysql_async::queryable::Queryable>::query_fold; Argument[2].ReturnValue; ReturnValue.Future.Field[core::result::Result::Ok(0)]; value |
+| 15 | Summary: <core::i64 as core::ops::arith::Add>::add; Argument[0]; ReturnValue; taint |
+| 16 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 17 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+edges
+| test.rs:18:13:18:14 | v1 | test.rs:19:14:19:15 | v1 | provenance |  |
+| test.rs:18:24:18:33 | row.get(...) [Some] | test.rs:18:24:18:42 | ... .unwrap() | provenance | MaD:16 |
+| test.rs:18:24:18:42 | ... .unwrap() | test.rs:18:13:18:14 | v1 | provenance |  |
+| test.rs:18:28:18:30 | get | test.rs:18:24:18:33 | row.get(...) [Some] | provenance | Src:MaD:7  |
+| test.rs:21:13:21:14 | v2 | test.rs:22:14:22:15 | v2 | provenance |  |
+| test.rs:21:24:21:37 | row.get_opt(...) [Some, Ok] | test.rs:21:24:21:46 | ... .unwrap() [Ok] | provenance | MaD:16 |
+| test.rs:21:24:21:46 | ... .unwrap() [Ok] | test.rs:21:24:21:55 | ... .unwrap() | provenance | MaD:17 |
+| test.rs:21:24:21:55 | ... .unwrap() | test.rs:21:13:21:14 | v2 | provenance |  |
+| test.rs:21:28:21:34 | get_opt | test.rs:21:24:21:37 | row.get_opt(...) [Some, Ok] | provenance | Src:MaD:8  |
+| test.rs:24:13:24:14 | v3 | test.rs:25:14:25:15 | v3 | provenance |  |
+| test.rs:24:24:24:34 | row.take(...) [Some] | test.rs:24:24:24:43 | ... .unwrap() | provenance | MaD:16 |
+| test.rs:24:24:24:43 | ... .unwrap() | test.rs:24:13:24:14 | v3 | provenance |  |
+| test.rs:24:28:24:31 | take | test.rs:24:24:24:34 | row.take(...) [Some] | provenance | Src:MaD:9  |
+| test.rs:27:13:27:14 | v4 | test.rs:28:14:28:15 | v4 | provenance |  |
+| test.rs:27:24:27:38 | row.take_opt(...) [Some, Ok] | test.rs:27:24:27:47 | ... .unwrap() [Ok] | provenance | MaD:16 |
+| test.rs:27:24:27:47 | ... .unwrap() [Ok] | test.rs:27:24:27:56 | ... .unwrap() | provenance | MaD:17 |
+| test.rs:27:24:27:56 | ... .unwrap() | test.rs:27:13:27:14 | v4 | provenance |  |
+| test.rs:27:28:27:35 | take_opt | test.rs:27:24:27:38 | row.take_opt(...) [Some, Ok] | provenance | Src:MaD:10  |
+| test.rs:37:13:37:14 | v6 | test.rs:38:14:38:15 | v6 | provenance |  |
+| test.rs:37:23:37:63 | conn.query_first(...) [Ok, Some] | test.rs:37:23:37:64 | TryExpr [Some] | provenance |  |
+| test.rs:37:23:37:64 | TryExpr [Some] | test.rs:37:23:37:73 | ... .unwrap() | provenance | MaD:16 |
+| test.rs:37:23:37:73 | ... .unwrap() | test.rs:37:13:37:14 | v6 | provenance |  |
+| test.rs:37:28:37:38 | query_first | test.rs:37:23:37:63 | conn.query_first(...) [Ok, Some] | provenance | Src:MaD:1  |
+| test.rs:40:13:40:18 | mut t1 [element] | test.rs:42:20:42:21 | t1 [element] | provenance |  |
+| test.rs:40:22:40:71 | conn.exec_iter(...) [Ok, element] | test.rs:40:22:40:72 | TryExpr [element] | provenance |  |
+| test.rs:40:22:40:72 | TryExpr [element] | test.rs:40:13:40:18 | mut t1 [element] | provenance |  |
+| test.rs:40:27:40:35 | exec_iter | test.rs:40:22:40:71 | conn.exec_iter(...) [Ok, element] | provenance | Src:MaD:6  |
+| test.rs:41:14:41:61 | ... .get(...) [Some] | test.rs:41:14:41:70 | ... .unwrap() | provenance | MaD:16 |
+| test.rs:41:42:41:44 | get | test.rs:41:14:41:61 | ... .get(...) [Some] | provenance | Src:MaD:7  |
+| test.rs:42:13:42:15 | row | test.rs:44:22:44:22 | v | provenance |  |
+| test.rs:42:20:42:21 | t1 [element] | test.rs:42:13:42:15 | row | provenance |  |
+| test.rs:48:22:48:30 | query_map | test.rs:50:14:50:24 | ...: i64 | provenance | Src:MaD:3  |
+| test.rs:50:14:50:24 | ...: i64 | test.rs:51:22:51:27 | values | provenance |  |
+| test.rs:64:13:64:17 | total | test.rs:68:14:68:18 | total | provenance |  |
+| test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | test.rs:64:21:67:11 | TryExpr | provenance |  |
+| test.rs:64:21:67:11 | TryExpr | test.rs:64:13:64:17 | total | provenance |  |
+| test.rs:64:26:64:35 | query_fold | test.rs:64:76:64:83 | ...: i64 | provenance | Src:MaD:2  |
+| test.rs:64:76:64:83 | ...: i64 | test.rs:64:86:67:9 | { ... } | provenance |  |
+| test.rs:64:76:64:83 | ...: i64 | test.rs:65:18:65:20 | row | provenance |  |
+| test.rs:64:76:64:83 | ...: i64 | test.rs:66:19:66:21 | row | provenance |  |
+| test.rs:64:86:67:9 | { ... } | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | provenance | MaD:13 |
+| test.rs:66:13:66:21 | ... + ... | test.rs:64:86:67:9 | { ... } | provenance |  |
+| test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... | provenance | MaD:11 |
+| test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... | provenance | MaD:12 |
+| test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... | provenance | MaD:15 |
+| test.rs:105:13:105:14 | v1 | test.rs:106:14:106:15 | v1 | provenance |  |
+| test.rs:105:24:105:33 | row.get(...) [Some] | test.rs:105:24:105:42 | ... .unwrap() | provenance | MaD:16 |
+| test.rs:105:24:105:42 | ... .unwrap() | test.rs:105:13:105:14 | v1 | provenance |  |
+| test.rs:105:28:105:30 | get | test.rs:105:24:105:33 | row.get(...) [Some] | provenance | Src:MaD:7  |
+| test.rs:108:13:108:14 | v2 | test.rs:109:14:109:15 | v2 | provenance |  |
+| test.rs:108:24:108:37 | row.get_opt(...) [Some, Ok] | test.rs:108:24:108:46 | ... .unwrap() [Ok] | provenance | MaD:16 |
+| test.rs:108:24:108:46 | ... .unwrap() [Ok] | test.rs:108:24:108:55 | ... .unwrap() | provenance | MaD:17 |
+| test.rs:108:24:108:55 | ... .unwrap() | test.rs:108:13:108:14 | v2 | provenance |  |
+| test.rs:108:28:108:34 | get_opt | test.rs:108:24:108:37 | row.get_opt(...) [Some, Ok] | provenance | Src:MaD:8  |
+| test.rs:111:13:111:14 | v3 | test.rs:112:14:112:15 | v3 | provenance |  |
+| test.rs:111:24:111:34 | row.take(...) [Some] | test.rs:111:24:111:43 | ... .unwrap() | provenance | MaD:16 |
+| test.rs:111:24:111:43 | ... .unwrap() | test.rs:111:13:111:14 | v3 | provenance |  |
+| test.rs:111:28:111:31 | take | test.rs:111:24:111:34 | row.take(...) [Some] | provenance | Src:MaD:9  |
+| test.rs:114:13:114:14 | v4 | test.rs:115:14:115:15 | v4 | provenance |  |
+| test.rs:114:24:114:38 | row.take_opt(...) [Some, Ok] | test.rs:114:24:114:47 | ... .unwrap() [Ok] | provenance | MaD:16 |
+| test.rs:114:24:114:47 | ... .unwrap() [Ok] | test.rs:114:24:114:56 | ... .unwrap() | provenance | MaD:17 |
+| test.rs:114:24:114:56 | ... .unwrap() | test.rs:114:13:114:14 | v4 | provenance |  |
+| test.rs:114:28:114:35 | take_opt | test.rs:114:24:114:38 | row.take_opt(...) [Some, Ok] | provenance | Src:MaD:10  |
+| test.rs:135:22:135:30 | query_map | test.rs:137:14:137:24 | ...: i64 | provenance | Src:MaD:5  |
+| test.rs:137:14:137:24 | ...: i64 | test.rs:138:22:138:27 | values | provenance |  |
+| test.rs:151:13:151:17 | total | test.rs:155:14:155:18 | total | provenance |  |
+| test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | test.rs:151:21:154:16 | await ... [Ok] | provenance |  |
+| test.rs:151:21:154:16 | await ... [Ok] | test.rs:151:21:154:17 | TryExpr | provenance |  |
+| test.rs:151:21:154:17 | TryExpr | test.rs:151:13:151:17 | total | provenance |  |
+| test.rs:151:26:151:35 | query_fold | test.rs:151:76:151:83 | ...: i64 | provenance | Src:MaD:4  |
+| test.rs:151:76:151:83 | ...: i64 | test.rs:151:86:154:9 | { ... } | provenance |  |
+| test.rs:151:76:151:83 | ...: i64 | test.rs:152:18:152:20 | row | provenance |  |
+| test.rs:151:76:151:83 | ...: i64 | test.rs:153:19:153:21 | row | provenance |  |
+| test.rs:151:86:154:9 | { ... } | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | provenance | MaD:14 |
+| test.rs:153:13:153:21 | ... + ... | test.rs:151:86:154:9 | { ... } | provenance |  |
+| test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... | provenance | MaD:11 |
+| test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... | provenance | MaD:12 |
+| test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... | provenance | MaD:15 |
+nodes
+| test.rs:18:13:18:14 | v1 | semmle.label | v1 |
+| test.rs:18:24:18:33 | row.get(...) [Some] | semmle.label | row.get(...) [Some] |
+| test.rs:18:24:18:42 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:18:28:18:30 | get | semmle.label | get |
+| test.rs:19:14:19:15 | v1 | semmle.label | v1 |
+| test.rs:21:13:21:14 | v2 | semmle.label | v2 |
+| test.rs:21:24:21:37 | row.get_opt(...) [Some, Ok] | semmle.label | row.get_opt(...) [Some, Ok] |
+| test.rs:21:24:21:46 | ... .unwrap() [Ok] | semmle.label | ... .unwrap() [Ok] |
+| test.rs:21:24:21:55 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:21:28:21:34 | get_opt | semmle.label | get_opt |
+| test.rs:22:14:22:15 | v2 | semmle.label | v2 |
+| test.rs:24:13:24:14 | v3 | semmle.label | v3 |
+| test.rs:24:24:24:34 | row.take(...) [Some] | semmle.label | row.take(...) [Some] |
+| test.rs:24:24:24:43 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:24:28:24:31 | take | semmle.label | take |
+| test.rs:25:14:25:15 | v3 | semmle.label | v3 |
+| test.rs:27:13:27:14 | v4 | semmle.label | v4 |
+| test.rs:27:24:27:38 | row.take_opt(...) [Some, Ok] | semmle.label | row.take_opt(...) [Some, Ok] |
+| test.rs:27:24:27:47 | ... .unwrap() [Ok] | semmle.label | ... .unwrap() [Ok] |
+| test.rs:27:24:27:56 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:27:28:27:35 | take_opt | semmle.label | take_opt |
+| test.rs:28:14:28:15 | v4 | semmle.label | v4 |
+| test.rs:37:13:37:14 | v6 | semmle.label | v6 |
+| test.rs:37:23:37:63 | conn.query_first(...) [Ok, Some] | semmle.label | conn.query_first(...) [Ok, Some] |
+| test.rs:37:23:37:64 | TryExpr [Some] | semmle.label | TryExpr [Some] |
+| test.rs:37:23:37:73 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:37:28:37:38 | query_first | semmle.label | query_first |
+| test.rs:38:14:38:15 | v6 | semmle.label | v6 |
+| test.rs:40:13:40:18 | mut t1 [element] | semmle.label | mut t1 [element] |
+| test.rs:40:22:40:71 | conn.exec_iter(...) [Ok, element] | semmle.label | conn.exec_iter(...) [Ok, element] |
+| test.rs:40:22:40:72 | TryExpr [element] | semmle.label | TryExpr [element] |
+| test.rs:40:27:40:35 | exec_iter | semmle.label | exec_iter |
+| test.rs:41:14:41:61 | ... .get(...) [Some] | semmle.label | ... .get(...) [Some] |
+| test.rs:41:14:41:70 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:41:42:41:44 | get | semmle.label | get |
+| test.rs:42:13:42:15 | row | semmle.label | row |
+| test.rs:42:20:42:21 | t1 [element] | semmle.label | t1 [element] |
+| test.rs:44:22:44:22 | v | semmle.label | v |
+| test.rs:48:22:48:30 | query_map | semmle.label | query_map |
+| test.rs:50:14:50:24 | ...: i64 | semmle.label | ...: i64 |
+| test.rs:51:22:51:27 | values | semmle.label | values |
+| test.rs:64:13:64:17 | total | semmle.label | total |
+| test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | semmle.label | conn.query_fold(...) [Ok] |
+| test.rs:64:21:67:11 | TryExpr | semmle.label | TryExpr |
+| test.rs:64:26:64:35 | query_fold | semmle.label | query_fold |
+| test.rs:64:76:64:83 | ...: i64 | semmle.label | ...: i64 |
+| test.rs:64:86:67:9 | { ... } | semmle.label | { ... } |
+| test.rs:65:18:65:20 | row | semmle.label | row |
+| test.rs:66:13:66:21 | ... + ... | semmle.label | ... + ... |
+| test.rs:66:19:66:21 | row | semmle.label | row |
+| test.rs:68:14:68:18 | total | semmle.label | total |
+| test.rs:105:13:105:14 | v1 | semmle.label | v1 |
+| test.rs:105:24:105:33 | row.get(...) [Some] | semmle.label | row.get(...) [Some] |
+| test.rs:105:24:105:42 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:105:28:105:30 | get | semmle.label | get |
+| test.rs:106:14:106:15 | v1 | semmle.label | v1 |
+| test.rs:108:13:108:14 | v2 | semmle.label | v2 |
+| test.rs:108:24:108:37 | row.get_opt(...) [Some, Ok] | semmle.label | row.get_opt(...) [Some, Ok] |
+| test.rs:108:24:108:46 | ... .unwrap() [Ok] | semmle.label | ... .unwrap() [Ok] |
+| test.rs:108:24:108:55 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:108:28:108:34 | get_opt | semmle.label | get_opt |
+| test.rs:109:14:109:15 | v2 | semmle.label | v2 |
+| test.rs:111:13:111:14 | v3 | semmle.label | v3 |
+| test.rs:111:24:111:34 | row.take(...) [Some] | semmle.label | row.take(...) [Some] |
+| test.rs:111:24:111:43 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:111:28:111:31 | take | semmle.label | take |
+| test.rs:112:14:112:15 | v3 | semmle.label | v3 |
+| test.rs:114:13:114:14 | v4 | semmle.label | v4 |
+| test.rs:114:24:114:38 | row.take_opt(...) [Some, Ok] | semmle.label | row.take_opt(...) [Some, Ok] |
+| test.rs:114:24:114:47 | ... .unwrap() [Ok] | semmle.label | ... .unwrap() [Ok] |
+| test.rs:114:24:114:56 | ... .unwrap() | semmle.label | ... .unwrap() |
+| test.rs:114:28:114:35 | take_opt | semmle.label | take_opt |
+| test.rs:115:14:115:15 | v4 | semmle.label | v4 |
+| test.rs:135:22:135:30 | query_map | semmle.label | query_map |
+| test.rs:137:14:137:24 | ...: i64 | semmle.label | ...: i64 |
+| test.rs:138:22:138:27 | values | semmle.label | values |
+| test.rs:151:13:151:17 | total | semmle.label | total |
+| test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | semmle.label | conn.query_fold(...) [future, Ok] |
+| test.rs:151:21:154:16 | await ... [Ok] | semmle.label | await ... [Ok] |
+| test.rs:151:21:154:17 | TryExpr | semmle.label | TryExpr |
+| test.rs:151:26:151:35 | query_fold | semmle.label | query_fold |
+| test.rs:151:76:151:83 | ...: i64 | semmle.label | ...: i64 |
+| test.rs:151:86:154:9 | { ... } | semmle.label | { ... } |
+| test.rs:152:18:152:20 | row | semmle.label | row |
+| test.rs:153:13:153:21 | ... + ... | semmle.label | ... + ... |
+| test.rs:153:19:153:21 | row | semmle.label | row |
+| test.rs:155:14:155:18 | total | semmle.label | total |
+subpaths
+testFailures
+#select
+| test.rs:19:14:19:15 | v1 | test.rs:18:28:18:30 | get | test.rs:19:14:19:15 | v1 | $@ | test.rs:18:28:18:30 | get | get |
+| test.rs:22:14:22:15 | v2 | test.rs:21:28:21:34 | get_opt | test.rs:22:14:22:15 | v2 | $@ | test.rs:21:28:21:34 | get_opt | get_opt |
+| test.rs:25:14:25:15 | v3 | test.rs:24:28:24:31 | take | test.rs:25:14:25:15 | v3 | $@ | test.rs:24:28:24:31 | take | take |
+| test.rs:28:14:28:15 | v4 | test.rs:27:28:27:35 | take_opt | test.rs:28:14:28:15 | v4 | $@ | test.rs:27:28:27:35 | take_opt | take_opt |
+| test.rs:38:14:38:15 | v6 | test.rs:37:28:37:38 | query_first | test.rs:38:14:38:15 | v6 | $@ | test.rs:37:28:37:38 | query_first | query_first |
+| test.rs:41:14:41:70 | ... .unwrap() | test.rs:41:42:41:44 | get | test.rs:41:14:41:70 | ... .unwrap() | $@ | test.rs:41:42:41:44 | get | get |
+| test.rs:44:22:44:22 | v | test.rs:40:27:40:35 | exec_iter | test.rs:44:22:44:22 | v | $@ | test.rs:40:27:40:35 | exec_iter | exec_iter |
+| test.rs:51:22:51:27 | values | test.rs:48:22:48:30 | query_map | test.rs:51:22:51:27 | values | $@ | test.rs:48:22:48:30 | query_map | query_map |
+| test.rs:65:18:65:20 | row | test.rs:64:26:64:35 | query_fold | test.rs:65:18:65:20 | row | $@ | test.rs:64:26:64:35 | query_fold | query_fold |
+| test.rs:68:14:68:18 | total | test.rs:64:26:64:35 | query_fold | test.rs:68:14:68:18 | total | $@ | test.rs:64:26:64:35 | query_fold | query_fold |
+| test.rs:106:14:106:15 | v1 | test.rs:105:28:105:30 | get | test.rs:106:14:106:15 | v1 | $@ | test.rs:105:28:105:30 | get | get |
+| test.rs:109:14:109:15 | v2 | test.rs:108:28:108:34 | get_opt | test.rs:109:14:109:15 | v2 | $@ | test.rs:108:28:108:34 | get_opt | get_opt |
+| test.rs:112:14:112:15 | v3 | test.rs:111:28:111:31 | take | test.rs:112:14:112:15 | v3 | $@ | test.rs:111:28:111:31 | take | take |
+| test.rs:115:14:115:15 | v4 | test.rs:114:28:114:35 | take_opt | test.rs:115:14:115:15 | v4 | $@ | test.rs:114:28:114:35 | take_opt | take_opt |
+| test.rs:138:22:138:27 | values | test.rs:135:22:135:30 | query_map | test.rs:138:22:138:27 | values | $@ | test.rs:135:22:135:30 | query_map | query_map |
+| test.rs:152:18:152:20 | row | test.rs:151:26:151:35 | query_fold | test.rs:152:18:152:20 | row | $@ | test.rs:151:26:151:35 | query_fold | query_fold |
+| test.rs:155:14:155:18 | total | test.rs:151:26:151:35 | query_fold | test.rs:155:14:155:18 | total | $@ | test.rs:151:26:151:35 | query_fold | query_fold |

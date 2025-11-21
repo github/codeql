@@ -4,20 +4,21 @@ module;
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
-private import codeql.dataflowstack.DataFlowStack as DFS
+private import codeql.dataflowstack.FlowStack as FlowStack
 
-module LanguageDataFlowStack = DFS::LanguageDataFlow<Location, JavaDataFlow>;
+module LanguageFlowStack = FlowStack::LanguageDataFlow<Location, JavaDataFlow>;
 
 private module FlowStackInput<DataFlow::ConfigSig Config>
-  implements LanguageDataFlowStack::DataFlowGroup<Config>::DataFlowStackSig<DataFlow::Global<Config>>
+  implements LanguageFlowStack::DataFlowConfigContext<Config>::FlowInstance
 {
   private module Flow = DataFlow::Global<Config>;
+  class PathNode = Flow::PathNode;
 
-  JavaDataFlow::Node getNode(Flow::PathNode n) { result = n.getNode() }
+  JavaDataFlow::Node getNode(PathNode n) { result = n.getNode() }
 
-  predicate isSource(Flow::PathNode n) { n.isSource() }
+  predicate isSource(PathNode n) { n.isSource() }
 
-  Flow::PathNode getASuccessor(Flow::PathNode n) { result = n.getASuccessor() }
+  PathNode getASuccessor(PathNode n) { result = n.getASuccessor() }
 
   JavaDataFlow::DataFlowCallable getARuntimeTarget(JavaDataFlow::DataFlowCall call) {
     result.asCallable() = call.asCall().getCallee()
@@ -29,12 +30,12 @@ private module FlowStackInput<DataFlow::ConfigSig Config>
 }
 
 module DataFlowStackMake<DataFlow::ConfigSig Config> {
-  import LanguageDataFlowStack::FlowStack<DataFlow::Global<Config>, Config, FlowStackInput<Config>>
+  import LanguageFlowStack::FlowStack<Config, FlowStackInput<Config>>
 }
 
 module BiStackAnalysisMake<
   DataFlow::ConfigSig ConfigA,
   DataFlow::ConfigSig ConfigB
 >{
-  import LanguageDataFlowStack::BiStackAnalysis<ConfigA, DataFlow::Global<ConfigA>, FlowStackInput<ConfigA>, ConfigB, DataFlow::Global<ConfigB>, FlowStackInput<ConfigB>>
+  import LanguageFlowStack::BiStackAnalysis<ConfigA, FlowStackInput<ConfigA>, ConfigB, FlowStackInput<ConfigB>>
 }

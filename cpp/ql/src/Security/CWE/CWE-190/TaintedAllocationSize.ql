@@ -95,7 +95,7 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(Expr alloc | result = alloc.getLocation() | allocSink(alloc, sink))
+    exists(Expr alloc | result = [alloc.getLocation(), sink.getLocation()] | allocSink(alloc, sink))
   }
 }
 

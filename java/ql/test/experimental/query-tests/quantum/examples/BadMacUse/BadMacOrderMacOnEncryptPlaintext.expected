@@ -1,0 +1,51 @@
+#select
+| BadMacUse.java:76:44:76:52 | plaintext | BadMacUse.java:63:82:63:97 | plaintext : byte[] | BadMacUse.java:76:44:76:52 | plaintext | Incorrect MAC usage: Encryption plaintext also used for MAC. Flow shows plaintext to final use through intermediate mac or encryption operation here $@ | BadMacUse.java:71:42:71:50 | plaintext | plaintext |
+| BadMacUse.java:152:42:152:51 | ciphertext | BadMacUse.java:139:79:139:90 | input : byte[] | BadMacUse.java:152:42:152:51 | ciphertext | Incorrect MAC usage: Encryption plaintext also used for MAC. Flow shows plaintext to final use through intermediate mac or encryption operation here $@ | BadMacUse.java:92:31:92:35 | bytes | bytes |
+edges
+| BadMacUse.java:63:82:63:97 | plaintext : byte[] | BadMacUse.java:71:42:71:50 | plaintext : byte[] | provenance |  |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | BadMacUse.java:71:42:71:50 | plaintext : byte[] | provenance | Config |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | BadMacUse.java:76:44:76:52 | plaintext | provenance |  |
+| BadMacUse.java:84:42:84:53 | bytes : byte[] | BadMacUse.java:92:31:92:35 | bytes : byte[] | provenance |  |
+| BadMacUse.java:84:42:84:53 | bytes : byte[] [[]] : Object | BadMacUse.java:92:31:92:35 | bytes : byte[] [[]] : Object | provenance |  |
+| BadMacUse.java:92:31:92:35 | bytes : byte[] | BadMacUse.java:146:48:146:57 | ciphertext : byte[] | provenance | Config |
+| BadMacUse.java:92:31:92:35 | bytes : byte[] [[]] : Object | BadMacUse.java:146:48:146:57 | ciphertext : byte[] | provenance | Config |
+| BadMacUse.java:99:39:99:55 | ciphertext : byte[] [[]] : Object | BadMacUse.java:100:39:100:48 | ciphertext : byte[] [[]] : Object | provenance |  |
+| BadMacUse.java:100:39:100:48 | ciphertext : byte[] [[]] : Object | BadMacUse.java:84:42:84:53 | bytes : byte[] [[]] : Object | provenance |  |
+| BadMacUse.java:107:39:107:54 | plaintext : byte[] | BadMacUse.java:108:39:108:47 | plaintext : byte[] | provenance |  |
+| BadMacUse.java:108:39:108:47 | plaintext : byte[] | BadMacUse.java:84:42:84:53 | bytes : byte[] | provenance |  |
+| BadMacUse.java:114:92:114:107 | plaintext : byte[] | BadMacUse.java:118:52:118:60 | plaintext : byte[] | provenance |  |
+| BadMacUse.java:118:52:118:60 | plaintext : byte[] | BadMacUse.java:84:42:84:53 | bytes : byte[] | provenance |  |
+| BadMacUse.java:139:79:139:90 | input : byte[] | BadMacUse.java:142:48:142:52 | input : byte[] | provenance |  |
+| BadMacUse.java:142:29:142:82 | copyOfRange(...) : byte[] [[]] : Object | BadMacUse.java:146:48:146:57 | ciphertext : byte[] [[]] : Object | provenance |  |
+| BadMacUse.java:142:48:142:52 | input : byte[] | BadMacUse.java:142:29:142:82 | copyOfRange(...) : byte[] [[]] : Object | provenance | MaD:1 |
+| BadMacUse.java:146:48:146:57 | ciphertext : byte[] | BadMacUse.java:152:42:152:51 | ciphertext | provenance |  |
+| BadMacUse.java:146:48:146:57 | ciphertext : byte[] [[]] : Object | BadMacUse.java:99:39:99:55 | ciphertext : byte[] [[]] : Object | provenance |  |
+models
+| 1 | Summary: java.util; Arrays; false; copyOfRange; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
+nodes
+| BadMacUse.java:63:82:63:97 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:71:42:71:50 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:76:44:76:52 | plaintext | semmle.label | plaintext |
+| BadMacUse.java:84:42:84:53 | bytes : byte[] | semmle.label | bytes : byte[] |
+| BadMacUse.java:84:42:84:53 | bytes : byte[] [[]] : Object | semmle.label | bytes : byte[] [[]] : Object |
+| BadMacUse.java:92:31:92:35 | bytes : byte[] | semmle.label | bytes : byte[] |
+| BadMacUse.java:92:31:92:35 | bytes : byte[] [[]] : Object | semmle.label | bytes : byte[] [[]] : Object |
+| BadMacUse.java:99:39:99:55 | ciphertext : byte[] [[]] : Object | semmle.label | ciphertext : byte[] [[]] : Object |
+| BadMacUse.java:100:39:100:48 | ciphertext : byte[] [[]] : Object | semmle.label | ciphertext : byte[] [[]] : Object |
+| BadMacUse.java:107:39:107:54 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:108:39:108:47 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:114:92:114:107 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:118:52:118:60 | plaintext : byte[] | semmle.label | plaintext : byte[] |
+| BadMacUse.java:139:79:139:90 | input : byte[] | semmle.label | input : byte[] |
+| BadMacUse.java:142:29:142:82 | copyOfRange(...) : byte[] [[]] : Object | semmle.label | copyOfRange(...) : byte[] [[]] : Object |
+| BadMacUse.java:142:48:142:52 | input : byte[] | semmle.label | input : byte[] |
+| BadMacUse.java:146:48:146:57 | ciphertext : byte[] | semmle.label | ciphertext : byte[] |
+| BadMacUse.java:146:48:146:57 | ciphertext : byte[] [[]] : Object | semmle.label | ciphertext : byte[] [[]] : Object |
+| BadMacUse.java:152:42:152:51 | ciphertext | semmle.label | ciphertext |
+subpaths
+testFailures
+| BadMacUse.java:50:56:50:65 | // $Source | Missing result: Source |
+| BadMacUse.java:139:79:139:90 | input : byte[] | Unexpected result: Source |
+| BadMacUse.java:146:95:146:104 | // $Source | Missing result: Source |
+| BadMacUse.java:152:42:152:51 | ciphertext | Unexpected result: Alert |

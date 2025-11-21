@@ -29,13 +29,13 @@ module Generated {
      *
      * INTERNAL: Do not use.
      *
-     * This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
-     * (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
-     * and 9 for tuple element indexing.
+     * This is 4 for method or initializer application, 5 for members, 6 for array and dictionary
+     * subscripts, 7 for optional forcing (`!`), 8 for optional chaining (`?`), 9 for implicit
+     * optional wrapping, 10 for `self`, and 11 for tuple element indexing.
      *
      * The following values should not appear: 0 for invalid components, 1 for unresolved
-     * properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
-     * implicit IDE code completion data.
+     * method or initializer applications, 2 for unresolved members, 3 for unresolved subscripts,
+     * 12 for #keyPath dictionary keys, and 13 for implicit IDE code completion data.
      */
     int getKind() {
       result = Synth::convertKeyPathComponentToRaw(this).(Raw::KeyPathComponent).getKind()
