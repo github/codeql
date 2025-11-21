@@ -22,6 +22,7 @@ fn class_name(type_name: &str) -> String {
         "ArrayExpr" => "ArrayExprInternal".to_owned(),
         "AsmOptions" => "AsmOptionsList".to_owned(),
         "MacroStmts" => "MacroBlockExpr".to_owned(),
+        "CallExpr" => "ParenArgsExpr".to_owned(),
         _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
         _ if type_name.ends_with("Type") => format!("{type_name}Repr"),
         _ => type_name.to_owned(),
@@ -30,7 +31,7 @@ fn class_name(type_name: &str) -> String {
 
 fn property_name(type_name: &str, field_name: &str) -> String {
     let name = match (type_name, field_name) {
-        ("CallExpr", "expr") => "function",
+        ("ParenArgsExpr", "expr") => "base",
         ("LetExpr", "expr") => "scrutinee",
         ("MatchExpr", "expr") => "scrutinee",
         ("Variant", "expr") => "discriminant",

@@ -228,10 +228,10 @@ class _:
     loop_body: drop
 
 
-@annotate(CallExpr, cfg=True)
+@annotate(ParenArgsExpr, cfg=True)
 class _:
     """
-    A call expression. For example:
+    An expression with parenthesized arguments. For example:
     ```rust
     foo(42);
     foo::<u32, u64>(42);
