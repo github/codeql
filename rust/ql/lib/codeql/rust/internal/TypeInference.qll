@@ -14,7 +14,6 @@ private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.rust.elements.Call
-private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
 class Type = T::Type;
@@ -1363,7 +1362,7 @@ private module MethodResolution {
    *
    * [1]: https://doc.rust-lang.org/std/ops/trait.Index.html
    */
-  abstract class MethodCall extends Call {
+  abstract class MethodCall extends CallLikeExpr {
     abstract predicate hasNameAndArity(string name, int arity);
 
     abstract Expr getArg(ArgumentPosition pos);
@@ -3484,7 +3483,7 @@ private module Cached {
 
   /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
   cached
-  Addressable resolveCallTarget(Call call) {
+  Addressable resolveCallTarget(CallLikeExpr call) {
     result = call.(MethodResolution::MethodCall).resolveCallTarget(_, _, _)
     or
     result = call.(NonMethodResolution::NonMethodCall).resolveCallTarget()

@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  * be referenced directly.
  */
 module Impl {
-  private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
+  private import codeql.rust.elements.internal.CallLikeExprImpl::Impl as CallLikeExprImpl
 
   /**
    * Holds if the operator `op` with arity `arity` is overloaded to a trait with
@@ -102,7 +102,7 @@ module Impl {
   /**
    * An operation, for example `&&`, `+=`, `!` or `*`.
    */
-  abstract class Operation extends CallImpl::Call {
+  abstract class Operation extends CallLikeExprImpl::CallLikeExpr {
     /** Gets the operator name of this operation, if it exists. */
     abstract string getOperatorName();
 

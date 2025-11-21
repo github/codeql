@@ -18,7 +18,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   abstract private class SourceSinkBase extends AstNode {
     /** Gets the associated call. */
-    abstract Call getCall();
+    abstract CallLikeExpr getCall();
 
     /** Holds if the associated call resolves to `path`. */
     final predicate callResolvesTo(string path) {

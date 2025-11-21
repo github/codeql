@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.MethodCallExpr
  * be referenced directly.
  */
 module Impl {
-  private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
+  private import codeql.rust.elements.internal.CallLikeExprImpl::Impl as CallLikeExprImpl
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -25,7 +25,7 @@ module Impl {
    * Consider using `MethodCall` instead, as that also includes calls to methods using
    * function call syntax (e.g., `Foo::method(x)`).
    */
-  class MethodCallExpr extends Generated::MethodCallExpr, CallImpl::Call {
+  class MethodCallExpr extends Generated::MethodCallExpr, CallLikeExprImpl::CallLikeExpr {
     private string toStringPart(int index) {
       index = 0 and
       result = this.getReceiver().toAbbreviatedString()

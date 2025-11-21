@@ -11,7 +11,7 @@ private import codeql.rust.elements.internal.generated.IndexExpr
  * be referenced directly.
  */
 module Impl {
-  private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
+  private import codeql.rust.elements.internal.CallLikeExprImpl::Impl as CallLikeExprImpl
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -21,7 +21,7 @@ module Impl {
    * list[42] = 1;
    * ```
    */
-  class IndexExpr extends Generated::IndexExpr, CallImpl::Call {
+  class IndexExpr extends Generated::IndexExpr, CallLikeExprImpl::CallLikeExpr {
     override string toStringImpl() {
       result =
         this.getBase().toAbbreviatedString() + "[" + this.getIndex().toAbbreviatedString() + "]"

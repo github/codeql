@@ -3,27 +3,38 @@
  */
 
 private import rust
-private import internal.CallImpl
+private import internal.CallLikeExprImpl
 
-final class Call = Impl::Call;
+final class CallLikeExpr = Impl::CallLikeExpr;
+
+/**
+ * Holds if `call` is guaranteed to be a method call, even if we cannot resolve
+ * its target.
+ */
+private predicate isGuaranteedMethodCall(CallLikeExpr call) {
+  call instanceof MethodCallExpr
+  or
+  call.(Operation).isOverloaded(_, _, _)
+  or
+  call instanceof IndexExpr
+}
+
+/**
+ * A call expression.
+ */
+final class Call extends CallLikeExpr {
+  Call() {
+    forall(Addressable target | target = this.getStaticTarget() | target instanceof Callable)
+    or
+    isGuaranteedMethodCall(this)
+  }
+}
 
 private predicate isClosureCall(CallExpr call) {
   exists(Expr receiver | receiver = call.getFunction() |
     // All calls to complex expressions and local variable accesses are lambda calls
     receiver instanceof PathExpr implies receiver = any(Variable v).getAnAccess()
   )
-}
-
-/**
- * Holds if `call` is guaranteed to be a method call, even if we cannot resolve
- * its target.
- */
-private predicate isGuaranteedMethodCall(Call call) {
-  call instanceof MethodCallExpr
-  or
-  call.(Operation).isOverloaded(_, _, _)
-  or
-  call instanceof IndexExpr
 }
 
 /**
