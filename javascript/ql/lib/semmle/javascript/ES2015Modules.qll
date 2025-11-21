@@ -423,7 +423,7 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
   overlay[global]
   override predicate exportsAs(LexicalName v, string name) {
     this.getReExportedES2015Module().exportsAs(v, name) and
-    not isShadowedFromBulkExport(this, name)
+    not isShadowedFromBulkExport(this.getEnclosingModule(), name)
   }
 
   overlay[global]
@@ -433,8 +433,8 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
 }
 
 /**
- * Holds if the given bulk export `reExport` should not re-export `name` because there is an explicit export
- * of that name in the same module.
+ * Holds if bulk re-exports in `mod` should not re-export `name` because there is an explicit export
+ * of that name in `mod`.
  *
  * At compile time, shadowing works across declaration spaces.
  * For instance, directly exporting an interface `X` will block a variable `X` from being re-exported:
@@ -446,8 +446,8 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
  * but we ignore this subtlety.
  */
 overlay[global]
-private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, string name) {
-  exists(ExportNamedDeclaration other | other.getTopLevel() = reExport.getEnclosingModule() |
+private predicate isShadowedFromBulkExport(Module mod, string name) {
+  exists(ExportNamedDeclaration other | other.getTopLevel() = mod |
     other.getAnExportedDecl().getName() = name
     or
     other.getASpecifier().getExportedName() = name
