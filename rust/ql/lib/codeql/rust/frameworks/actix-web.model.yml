@@ -16,8 +16,3 @@ extensions:
       extensible: summaryModel
     data:
         - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue", "taint", "manual"]
-        - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue.Field[0]", "taint", "manual"]
-        - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue.Field[1]", "taint", "manual"]
-        - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue.Field[2]", "taint", "manual"]
-        - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue.Field[3]", "taint", "manual"]
-        - ["<actix_web::types::path::Path>::into_inner", "Argument[self]", "ReturnValue.Field[4]", "taint", "manual"]
