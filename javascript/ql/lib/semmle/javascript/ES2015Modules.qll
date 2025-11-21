@@ -543,13 +543,16 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
   VarDecl getADecl() { result = this.getAnExportedDecl() }
 
   override predicate exportsDirectlyAs(LexicalName v, string name) {
-    exists(LexicalDecl vd | vd = this.getAnExportedDecl() |
-      name = vd.getName() and v = vd.getALexicalName()
-    )
-    or
-    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
-      v = spec.getLocal().(LexicalAccess).getALexicalName()
-    )
+    (
+      exists(LexicalDecl vd | vd = this.getAnExportedDecl() |
+        name = vd.getName() and v = vd.getALexicalName()
+      )
+      or
+      exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
+        v = spec.getLocal().(LexicalAccess).getALexicalName()
+      )
+    ) and
+    not (this.isTypeOnly() and v instanceof Variable)
   }
 
   override DataFlow::Node getDirectSourceNode(string name) {
@@ -597,18 +600,6 @@ private class ExportNamespaceStep extends PreCallGraphStep {
         exprt.(ReExportDeclaration).getReExportedES2015Module().getAnExport().getSourceNode(prop) and
       succ = DataFlow::valueNode(spec)
     )
-  }
-}
-
-/**
- * An export declaration with the `type` modifier.
- */
-private class TypeOnlyExportDeclaration extends ExportNamedDeclaration {
-  TypeOnlyExportDeclaration() { this.isTypeOnly() }
-
-  override predicate exportsDirectlyAs(LexicalName v, string name) {
-    super.exportsDirectlyAs(v, name) and
-    not v instanceof Variable
   }
 }
 
@@ -834,7 +825,8 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
   override predicate reExportsAs(LexicalName v, string name) {
     exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
       this.getReExportedES2015Module().exportsAs(v, spec.getLocalName())
-    )
+    ) and
+    not (this.isTypeOnly() and v instanceof Variable)
   }
 
   overlay[global]
