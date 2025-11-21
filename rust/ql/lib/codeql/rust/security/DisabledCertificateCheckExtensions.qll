@@ -7,6 +7,7 @@ import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
+private import codeql.rust.dataflow.internal.Node as Node
 
 /**
  * Provides default sinks for detecting disabled certificate check
@@ -35,7 +36,9 @@ module DisabledCertificateCheckExtensions {
       exists(CallExprBase fc |
         fc.getStaticTarget().(Function).getName().getText() =
           ["danger_accept_invalid_certs", "danger_accept_invalid_hostnames"] and
-        fc.getArg(0) = this.asExpr()
+        fc.getArg(0) = this.asExpr() and
+        // don't duplicate modelled sinks
+        not exists(ModelsAsDataSink s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = fc)
       )
     }
   }
