@@ -8,3 +8,4 @@ qltest_dependencies:
     - rc2 = { version = "0.8.1" }
     - rc5 = { version = "0.0.1" }
     - cbc = { version = "0.1.2" }
+    - ecb = { version = "0.1.2" }
