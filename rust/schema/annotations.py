@@ -228,41 +228,36 @@ class _:
     loop_body: drop
 
 
-class CallExprBase(Expr):
-    """
-    A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-    """
-    arg_list: optional["ArgList"] | child
-    attrs: list["Attr"] | child
-    args: list["Expr"] | synth
-
-
-@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(CallExpr, cfg=True)
 class _:
     """
-    A function call expression. For example:
+    NOTE: Consider using `Call` instead, as that includes all kinds of calls to
+    functions, and excludes instantiations of tuple structs and tuple enum variants.
+
+    A call expression. For example:
     ```rust
     foo(42);
     foo::<u32, u64>(42);
     foo[0](42);
     foo(1) = 4;
+    Option::Some(42); // tuple enum variant instantiation
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(MethodCallExpr, cfg=True)
 class _:
     """
+    NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
+    function call syntax (such as `Foo::method(x)`), operator calls (such as `x + y`), and
+    indexing calls (such as `x[y]`).
+
     A method call expression. For example:
     ```rust
     x.foo(42);
     x.foo::<u32, u64>(42);
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
 @annotate(MatchArm)
