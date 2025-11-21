@@ -25,7 +25,7 @@ module DisabledCertificateCheckConfig implements DataFlow::ConfigSig {
 
   predicate isSource(DataFlow::Node node) {
     // the constant `true`
-    node.asExpr().getExpr().(BooleanLiteralExpr).getTextValue() = "true"
+    node.asExpr().(BooleanLiteralExpr).getTextValue() = "true"
     or
     // a value controlled by a potential attacker
     node instanceof ActiveThreatModelSource
