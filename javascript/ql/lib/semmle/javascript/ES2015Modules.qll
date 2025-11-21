@@ -821,12 +821,6 @@ class OriginalExportDeclaration extends ExportDeclaration {
   OriginalExportDeclaration() { not this instanceof ReExportDeclaration }
 
   overlay[global]
-  override predicate exportsAs(LexicalName v, string name) {
-    this.(ExportDefaultDeclaration).exportsAs(v, name) or
-    this.(ExportNamedDeclaration).exportsAs(v, name)
-  }
-
-  overlay[global]
   override DataFlow::Node getSourceNode(string name) {
     result = this.(ExportDefaultDeclaration).getSourceNode(name) or
     result = this.(ExportNamedDeclaration).getSourceNode(name)
