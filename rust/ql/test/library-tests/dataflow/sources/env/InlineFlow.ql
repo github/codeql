@@ -14,8 +14,8 @@ module MyFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
-    any(CallExpr call |
-      call.getFunction().(PathExpr).getPath().getSegment().getIdentifier().getText() = "sink"
+    any(ParenArgsExpr call |
+      call.getBase().(PathExpr).getPath().getSegment().getIdentifier().getText() = "sink"
     ).getArgList().getAnArg() = sink.asExpr()
   }
 

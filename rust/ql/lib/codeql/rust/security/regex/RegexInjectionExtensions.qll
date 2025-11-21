@@ -53,9 +53,9 @@ module RegexInjection {
    */
   private class NewSink extends Sink {
     NewSink() {
-      exists(Call call, Addressable a |
-        call.getStaticTarget() = a and
-        a.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
+      exists(CallExpr call, Function f |
+        call.getStaticTarget() = f and
+        f.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
         this.asExpr() = call.getArgument(0) and
         not this.asExpr() instanceof LiteralExpr
       )
@@ -77,8 +77,8 @@ module RegexInjection {
       // A barrier is any call to a function named `escape`, in particular this
       // makes calls to `regex::escape` a barrier.
       this.asExpr()
-          .(CallExpr)
-          .getFunction()
+          .(ParenArgsExpr)
+          .getBase()
           .(PathExpr)
           .getPath()
           .getSegment()

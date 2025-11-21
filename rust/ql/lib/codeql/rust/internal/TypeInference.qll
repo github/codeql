@@ -13,8 +13,7 @@ private import codeql.rust.internal.CachedStages
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
-private import codeql.rust.elements.Call
-private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.ParenArgsExprImpl::Impl as ParenArgsExprImpl
 
 class Type = T::Type;
 
@@ -235,20 +234,20 @@ private class NonMethodFunction extends Function {
 }
 
 pragma[nomagic]
-private TypeMention getCallExprTypeMentionArgument(CallExpr ce, TypeArgumentPosition apos) {
-  exists(Path p, int i | p = CallExprImpl::getFunctionPath(ce) |
+private TypeMention getParenArgsExprTypeMentionArgument(ParenArgsExpr ce, TypeArgumentPosition apos) {
+  exists(Path p, int i | p = ParenArgsExprImpl::getBasePath(ce) |
     apos.asTypeParam() = resolvePath(p).getTypeParam(pragma[only_bind_into](i)) and
     result = getPathTypeArgument(p, pragma[only_bind_into](i))
   )
 }
 
 pragma[nomagic]
-private Type getCallExprTypeArgument(CallExpr ce, TypeArgumentPosition apos, TypePath path) {
-  result = getCallExprTypeMentionArgument(ce, apos).resolveTypeAt(path)
+private Type getParenArgsExprTypeArgument(ParenArgsExpr ce, TypeArgumentPosition apos, TypePath path) {
+  result = getParenArgsExprTypeMentionArgument(ce, apos).resolveTypeAt(path)
   or
   // Handle constructions that use `Self(...)` syntax
   exists(Path p, TypePath path0 |
-    p = CallExprImpl::getFunctionPath(ce) and
+    p = ParenArgsExprImpl::getBasePath(ce) and
     result = p.(TypeMention).resolveTypeAt(path0) and
     path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
   )
@@ -296,13 +295,13 @@ private predicate isPanicMacroCall(MacroExpr me) {
 /** Module for inferring certain type information. */
 module CertainTypeInference {
   pragma[nomagic]
-  private predicate callResolvesTo(CallExpr ce, Path p, Function f) {
-    p = CallExprImpl::getFunctionPath(ce) and
+  private predicate callResolvesTo(ParenArgsExpr ce, Path p, Function f) {
+    p = ParenArgsExprImpl::getBasePath(ce) and
     f = resolvePath(p)
   }
 
   pragma[nomagic]
-  private Type getCallExprType(CallExpr ce, Path p, Function f, TypePath tp) {
+  private Type getParenArgsExprType(ParenArgsExpr ce, Path p, Function f, TypePath tp) {
     callResolvesTo(ce, p, f) and
     result =
       [
@@ -312,8 +311,8 @@ module CertainTypeInference {
   }
 
   pragma[nomagic]
-  private Type getCertainCallExprType(CallExpr ce, Path p, TypePath tp) {
-    forex(Function f | callResolvesTo(ce, p, f) | result = getCallExprType(ce, p, f, tp))
+  private Type getCertainParenArgsExprType(ParenArgsExpr ce, Path p, TypePath tp) {
+    forex(Function f | callResolvesTo(ce, p, f) | result = getParenArgsExprType(ce, p, f, tp))
   }
 
   pragma[nomagic]
@@ -325,8 +324,8 @@ module CertainTypeInference {
   }
 
   pragma[nomagic]
-  private Type inferCertainCallExprType(CallExpr ce, TypePath path) {
-    exists(Type ty, TypePath prefix, Path p | ty = getCertainCallExprType(ce, p, prefix) |
+  private Type inferCertainParenArgsExprType(ParenArgsExpr ce, TypePath path) {
+    exists(Type ty, TypePath prefix, Path p | ty = getCertainParenArgsExprType(ce, p, prefix) |
       exists(TypePath suffix, TypeParam tp |
         tp = ty.(TypeParamTypeParameter).getTypeParam() and
         path = prefix.append(suffix)
@@ -342,7 +341,7 @@ module CertainTypeInference {
         // For type parameters of the function we must resolve their
         // instantiation from the path. For instance, for `fn bar<A>(a: A) -> A`
         // and the path `bar<i64>`, we must resolve `A` to `i64`.
-        result = getCallExprTypeArgument(ce, TTypeParamTypeArgumentPosition(tp), suffix)
+        result = getParenArgsExprTypeArgument(ce, TTypeParamTypeArgumentPosition(tp), suffix)
       )
       or
       not ty instanceof TypeParameter and
@@ -419,7 +418,7 @@ module CertainTypeInference {
     result = inferAnnotatedType(n, path) and
     Stages::TypeInferenceStage::ref()
     or
-    result = inferCertainCallExprType(n, path)
+    result = inferCertainParenArgsExprType(n, path)
     or
     result = inferCertainTypeEquality(n, path)
     or
@@ -892,7 +891,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
    * A potential nullary struct/variant construction such as `None`.
    */
   private class PathExprAccess extends Access, PathExpr {
-    PathExprAccess() { not exists(CallExpr ce | this = ce.getFunction()) }
+    PathExprAccess() { not exists(ParenArgsExpr ce | this = ce.getBase()) }
 
     override AstNode getNodeAt(AccessPosition apos) {
       result = this and
@@ -936,8 +935,8 @@ private TupleType inferTupleRootType(AstNode n) {
 }
 
 pragma[nomagic]
-private Path getCallExprPathQualifier(CallExpr ce) {
-  result = CallExprImpl::getFunctionPath(ce).getQualifier()
+private Path getParenArgsExprPathQualifier(ParenArgsExpr ce) {
+  result = ParenArgsExprImpl::getBasePath(ce).getQualifier()
 }
 
 /**
@@ -947,9 +946,9 @@ private Path getCallExprPathQualifier(CallExpr ce) {
  * but only when `Foo` is not a trait.
  */
 pragma[nomagic]
-private Type getCallExprTypeQualifier(CallExpr ce, TypePath path) {
+private Type getParenArgsExprTypeQualifier(ParenArgsExpr ce, TypePath path) {
   exists(TypeMention tm |
-    tm = getCallExprPathQualifier(ce) and
+    tm = getParenArgsExprPathQualifier(ce) and
     result = tm.resolveTypeAt(path) and
     not resolvePath(tm) instanceof Trait
   )
@@ -961,9 +960,9 @@ private Type getCallExprTypeQualifier(CallExpr ce, TypePath path) {
  * For example, the trait qualifier of `Default::<i32>::default()` is `Default`.
  */
 pragma[nomagic]
-private Trait getCallExprTraitQualifier(CallExpr ce) {
+private Trait getParenArgsExprTraitQualifier(ParenArgsExpr ce) {
   exists(RelevantPath qualifierPath |
-    qualifierPath = getCallExprPathQualifier(ce) and
+    qualifierPath = getParenArgsExprPathQualifier(ce) and
     result = resolvePath(qualifierPath) and
     // When the qualifier is `Self` and resolves to a trait, it's inside a
     // trait method's default implementation. This is not a dispatch whose
@@ -1034,7 +1033,7 @@ private module ContextTyping {
         ) and
         not (
           tp instanceof TSelfTypeParameter and
-          exists(getCallExprTypeQualifier(this, _))
+          exists(getParenArgsExprTypeQualifier(this, _))
         )
       )
     }
@@ -1350,7 +1349,7 @@ private module MethodResolution {
    * 1. `MethodCallMethodCallExpr`: an actual method call, `x.m()`;
    * 2. `MethodCallIndexExpr`: an index expression, `x[i]`, which is [syntactic sugar][1]
    *    for `*x.index(i)`;
-   * 3. `MethodCallCallExpr`: a qualified function call, `Q::m(x)`, where `m` is a method;
+   * 3. `MethodCallParenArgsExpr`: a qualified function call, `Q::m(x)`, where `m` is a method;
    *    or
    * 4. `MethodCallOperation`: an operation expression, `x + y`, which is syntactic sugar
    *    for `Add::add(x, y)`.
@@ -1656,12 +1655,12 @@ private module MethodResolution {
     override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
   }
 
-  private class MethodCallCallExpr extends MethodCall instanceof CallExpr {
-    MethodCallCallExpr() {
-      exists(getCallExprPathQualifier(this)) and
+  private class MethodCallParenArgsExpr extends MethodCall instanceof ParenArgsExpr {
+    MethodCallParenArgsExpr() {
+      exists(getParenArgsExprPathQualifier(this)) and
       // even if a method cannot be resolved by path resolution, it may still
       // be possible to resolve a blanket implementation (so not `forex`)
-      forall(ItemNode i | i = CallExprImpl::getResolvedFunction(this) | i instanceof Method)
+      forall(ItemNode i | i = ParenArgsExprImpl::getResolvedBase(this) | i instanceof Method)
     }
 
     /**
@@ -1674,13 +1673,13 @@ private module MethodResolution {
      */
     pragma[nomagic]
     predicate hasTypeQualifiedCandidate(ImplItemNode impl) {
-      exists(getCallExprTypeQualifier(this, _)) and
-      CallExprImpl::getResolvedFunction(this) = impl.getASuccessor(_)
+      exists(getParenArgsExprTypeQualifier(this, _)) and
+      ParenArgsExprImpl::getResolvedBase(this) = impl.getASuccessor(_)
     }
 
     pragma[nomagic]
     override predicate hasNameAndArity(string name, int arity) {
-      name = CallExprImpl::getFunctionPath(this).getText() and
+      name = ParenArgsExprImpl::getBasePath(this).getText() and
       arity = super.getArgList().getNumberOfArgs() - 1
     }
 
@@ -1693,12 +1692,12 @@ private module MethodResolution {
 
     // needed for `TypeQualifierIsInstantiationOfImplSelfInput`
     Type getTypeAt(TypePath path) {
-      result = substituteLookupTraits(getCallExprTypeQualifier(this, path))
+      result = substituteLookupTraits(getParenArgsExprTypeQualifier(this, path))
     }
 
     override predicate supportsAutoDerefAndBorrow() { none() }
 
-    override Trait getTrait() { result = getCallExprTraitQualifier(this) }
+    override Trait getTrait() { result = getParenArgsExprTraitQualifier(this) }
   }
 
   final class MethodCallOperation extends MethodCall instanceof Operation {
@@ -1961,11 +1960,11 @@ private module MethodResolution {
    * instance of the type being implemented.
    */
   private module TypeQualifierIsInstantiationOfImplSelfInput implements
-    IsInstantiationOfInputSig<MethodCallCallExpr, TypeMentionTypeTree>
+    IsInstantiationOfInputSig<MethodCallParenArgsExpr, TypeMentionTypeTree>
   {
     pragma[nomagic]
     private predicate potentialInstantiationOf0(
-      MethodCallCallExpr ce, ImplItemNode impl, TypeMentionTypeTree constraint
+      MethodCallParenArgsExpr ce, ImplItemNode impl, TypeMentionTypeTree constraint
     ) {
       ce.hasTypeQualifiedCandidate(impl) and
       constraint = impl.getSelfPath()
@@ -1973,7 +1972,7 @@ private module MethodResolution {
 
     pragma[nomagic]
     predicate potentialInstantiationOf(
-      MethodCallCallExpr ce, TypeAbstraction abs, TypeMentionTypeTree constraint
+      MethodCallParenArgsExpr ce, TypeAbstraction abs, TypeMentionTypeTree constraint
     ) {
       potentialInstantiationOf0(ce, abs, constraint) and
       if abs.(Impl).hasTrait()
@@ -1990,7 +1989,7 @@ private module MethodResolution {
   }
 
   private module TypeQualifierIsInstantiationOfImplSelf =
-    IsInstantiationOf<MethodCallCallExpr, TypeMentionTypeTree,
+    IsInstantiationOf<MethodCallParenArgsExpr, TypeMentionTypeTree,
       TypeQualifierIsInstantiationOfImplSelfInput>;
 
   /**
@@ -2134,7 +2133,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
             .(TypeMention)
             .resolveTypeAt(path)
       or
-      result = getCallExprTypeArgument(this, apos, path)
+      result = getParenArgsExprTypeArgument(this, apos, path)
     }
 
     pragma[nomagic]
@@ -2332,18 +2331,18 @@ private module NonMethodResolution {
   private module BlanketTraitIsVisible = TraitIsVisible<blanketLikeCallTraitCandidate/2>;
 
   /** A (potential) non-method call, `f(x)`. */
-  final class NonMethodCall extends CallExpr {
+  final class NonMethodCall extends ParenArgsExpr {
     NonMethodCall() {
       // even if a function cannot be resolved by path resolution, it may still
       // be possible to resolve a blanket implementation (so not `forex`)
-      forall(Function f | f = CallExprImpl::getResolvedFunction(this) |
+      forall(Function f | f = ParenArgsExprImpl::getResolvedBase(this) |
         f instanceof NonMethodFunction
       )
     }
 
     pragma[nomagic]
     predicate hasNameAndArity(string name, int arity) {
-      name = CallExprImpl::getFunctionPath(this).getText() and
+      name = ParenArgsExprImpl::getBasePath(this).getText() and
       arity = this.getArgList().getNumberOfArgs()
     }
 
@@ -2352,7 +2351,7 @@ private module NonMethodResolution {
      * if any.
      */
     private ItemNode getPathResolutionResolved() {
-      result = CallExprImpl::getResolvedFunction(this) and
+      result = ParenArgsExprImpl::getResolvedBase(this) and
       not result.(Function).hasSelfParam()
     }
 
@@ -2369,7 +2368,7 @@ private module NonMethodResolution {
     }
 
     /** Gets the trait targeted by this call, if any. */
-    Trait getTrait() { result = getCallExprTraitQualifier(this) }
+    Trait getTrait() { result = getParenArgsExprTraitQualifier(this) }
 
     /** Holds if this call targets a trait. */
     predicate hasTrait() { exists(this.getTrait()) }
@@ -2686,13 +2685,13 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
   class Access extends NonMethodResolution::NonMethodCall, ContextTyping::ContextTypedCallCand {
     pragma[nomagic]
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = getCallExprTypeArgument(this, apos, path)
+      result = getParenArgsExprTypeArgument(this, apos, path)
     }
 
     pragma[nomagic]
     Type getInferredType(AccessPosition apos, TypePath path) {
       apos.isSelf() and
-      result = getCallExprTypeQualifier(this, path)
+      result = getParenArgsExprTypeQualifier(this, path)
       or
       result = inferType(this.getNodeAt(apos), path)
     }
@@ -3342,16 +3341,16 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
  * first-class function.
  */
 final private class InvokedClosureExpr extends Expr {
-  private CallExpr call;
+  private ParenArgsExpr call;
 
   InvokedClosureExpr() {
-    call.getFunction() = this and
+    call.getBase() = this and
     (not this instanceof PathExpr or this = any(Variable v).getAnAccess())
   }
 
   Type getTypeAt(TypePath path) { result = inferType(this, path) }
 
-  CallExpr getCall() { result = call }
+  ParenArgsExpr getCall() { result = call }
 }
 
 private module InvokedClosureSatisfiesConstraintInput implements
@@ -3625,7 +3624,7 @@ private module Debug {
     result = inferType(n, path)
   }
 
-  Addressable debugResolveCallTarget(Call c) {
+  Addressable debugResolveCallTarget(CallLikeExpr c) {
     c = getRelevantLocatable() and
     result = resolveCallTarget(c)
   }

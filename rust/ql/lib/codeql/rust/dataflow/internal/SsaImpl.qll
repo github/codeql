@@ -154,7 +154,7 @@ private predicate variableWriteInOuterScope(BasicBlock bb, int i, Variable v, Cf
 }
 
 /** Holds if evaluating `e` jumps to the evaluation of a different CFG scope. */
-private predicate isControlFlowJump(Expr e) { e instanceof FunctionCall or e instanceof AwaitExpr }
+private predicate isControlFlowJump(Expr e) { e instanceof CallExpr or e instanceof AwaitExpr }
 
 /**
  * Holds if the call `call` at index `i` in basic block `bb` may reach
@@ -325,7 +325,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
 
-  private predicate isArg(FunctionCall call, Expr e) {
+  private predicate isArg(CallExpr call, Expr e) {
     call.getAnArgument() = e
     or
     call.getReceiver() = e

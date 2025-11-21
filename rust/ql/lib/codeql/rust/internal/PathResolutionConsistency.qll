@@ -18,16 +18,16 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
       not use.hasUseTreeList()
     ).getPath() and
   // avoid overlap with `multipleCallTargets` below
-  not p = any(CallExpr ce).getFunction().(PathExpr).getPath() and
+  not p = any(ParenArgsExpr pe).getBase().(PathExpr).getPath() and
   // exclude crates when counting: crates can exist in many versions and configurations,
   // we deliberately want to exhibit them all
   strictcount(ItemNode i0 | i0 = resolvePath(p) and not i0 instanceof Crate) > 1
 }
 
 /** Holds if `call` has multiple static call targets including `target`. */
-query predicate multipleCallTargets(Call call, Callable target) {
-  target = call.getStaticTarget() and
-  strictcount(call.getStaticTarget()) > 1
+query predicate multipleCallTargets(CallLikeExpr call, Callable target) {
+  target = call.getResolvedTarget() and
+  strictcount(call.getResolvedTarget()) > 1
 }
 
 /** Holds if `fe` resolves to multiple record fields including `field`. */
@@ -56,7 +56,7 @@ int getPathResolutionInconsistencyCounts(string type) {
   result = count(Path p | multiplePathResolutions(p, _) | p)
   or
   type = "Multiple static call targets" and
-  result = count(Call call | multipleCallTargets(call, _) | call)
+  result = count(CallLikeExpr call | multipleCallTargets(call, _) | call)
   or
   type = "Multiple record fields" and
   result = count(FieldExpr fe | multipleStructFields(fe, _) | fe)

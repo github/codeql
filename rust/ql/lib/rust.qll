@@ -18,5 +18,6 @@ import codeql.rust.elements.Variable
 import codeql.rust.elements.NamedFormatArgument
 import codeql.rust.elements.PositionalFormatArgument
 import codeql.rust.elements.RangeExprExt
-import codeql.rust.elements.Call
+import codeql.rust.elements.CallExpr
+import codeql.rust.elements.CallLikeExpr
 import codeql.rust.elements.Method

@@ -103,7 +103,7 @@ module HardcodedCryptographicValue {
    */
   private class GetRandomBarrier extends Barrier {
     GetRandomBarrier() {
-      exists(Call call |
+      exists(CallExpr call |
         call.getStaticTarget().getCanonicalPath() = ["getrandom::fill", "getrandom::getrandom"] and
         this.asExpr().getParentNode*() = call.getArgument(0)
       )

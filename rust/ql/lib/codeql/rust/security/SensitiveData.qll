@@ -28,9 +28,9 @@ private class SensitiveDataCall extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveDataCall() {
-    exists(Call call, Addressable target, string name |
+    exists(CallLikeExpr call, Addressable target, string name |
       call = this.asExpr() and
-      target = call.getStaticTarget() and
+      target = call.getResolvedTarget() and
       name =
         [
           target.(Function).getName().getText(),

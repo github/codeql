@@ -224,7 +224,7 @@ abstract class ArgumentNode extends Node {
 }
 
 final class ExprArgumentNode extends ArgumentNode, ExprNode {
-  private FunctionCall call_;
+  private CallExpr call_;
   private RustDataFlow::ArgumentPosition pos_;
 
   ExprArgumentNode() {
@@ -234,7 +234,7 @@ final class ExprArgumentNode extends ArgumentNode, ExprNode {
   }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asFunctionCall() = call_ and pos = pos_
+    call.asCallExpr() = call_ and pos = pos_
   }
 }
 
@@ -269,7 +269,7 @@ final class DerefBorrowArgNode extends DerefBorrowNode, ArgumentNode {
   private DataFlowCall call_;
   private RustDataFlow::ArgumentPosition pos_;
 
-  DerefBorrowArgNode() { isArgumentForCall(n, call_.asFunctionCall(), pos_) }
+  DerefBorrowArgNode() { isArgumentForCall(n, call_.asCallExpr(), pos_) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
     call = call_ and pos = pos_
@@ -299,7 +299,7 @@ final class ClosureArgumentNode extends ArgumentNode, ExprNode {
   ClosureArgumentNode() { lambdaCallExpr(call_, _, this.asExpr()) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asFunctionCall() = call_ and pos.isClosureSelf()
+    call.asCallExpr() = call_ and pos.isClosureSelf()
   }
 }
 
@@ -347,11 +347,11 @@ abstract class OutNode extends Node {
 }
 
 final private class ExprOutNode extends ExprNode, OutNode {
-  ExprOutNode() { this.asExpr() instanceof FunctionCall }
+  ExprOutNode() { this.asExpr() instanceof CallExpr }
 
   /** Gets the underlying call CFG node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
-    result.asFunctionCall() = n and
+    result.asCallExpr() = n and
     kind = TNormalReturnKind()
   }
 }

@@ -24,7 +24,7 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
   StreamCipherInit() {
     // a call to `cipher::KeyInit::new`, `cipher::KeyInit::new_from_slice`,
     // `cipher::KeyIvInit::new`, `cipher::KeyIvInit::new_from_slices`, `rc2::Rc2::new_with_eff_key_len` or similar.
-    exists(Call call, string rawAlgorithmName |
+    exists(CallExpr call, string rawAlgorithmName |
       call = this.asExpr() and
       call.getStaticTarget().(Function).getName().getText() =
         ["new", "new_from_slice", "new_with_eff_key_len", "new_from_slices"] and

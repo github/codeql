@@ -80,7 +80,7 @@ module InsecureCookie {
    * as `false`.
    */
   predicate cookieSetNode(DataFlow::Node node, string attrib, boolean value) {
-    exists(FlowSummaryNode summaryNode, Call call, int arg, DataFlow::Node argNode |
+    exists(FlowSummaryNode summaryNode, CallExpr call, int arg, DataFlow::Node argNode |
       // decode the models-as-data `OptionalBarrier`
       cookieOptionalBarrier(summaryNode, attrib, arg) and
       // find a call and arg referenced by this optional barrier

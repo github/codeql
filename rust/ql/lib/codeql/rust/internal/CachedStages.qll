@@ -88,7 +88,7 @@ module Stages {
       or
       exists(AstCfgNode n)
       or
-      exists(CallExprCfgNode n | exists(n.getFunction()))
+      exists(ParenArgsExprCfgNode n | exists(n.getBase()))
     }
   }
 

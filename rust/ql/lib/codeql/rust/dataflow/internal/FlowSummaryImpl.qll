@@ -22,7 +22,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
     /** Holds if the associated call resolves to `path`. */
     final predicate callResolvesTo(string path) {
-      path = this.getCall().getStaticTarget().getCanonicalPath()
+      path = this.getCall().getResolvedTarget().getCanonicalPath()
     }
   }
 
@@ -31,11 +31,11 @@ module Input implements InputSig<Location, RustDataFlow> {
   abstract class SinkBase extends SourceSinkBase { }
 
   private class CallExprFunction extends SourceBase, SinkBase {
-    private CallExpr call;
+    private ParenArgsExpr call;
 
-    CallExprFunction() { this = call.getFunction() }
+    CallExprFunction() { this = call.getBase() }
 
-    override CallExpr getCall() { result = call }
+    override ParenArgsExpr getCall() { result = call }
   }
 
   private class MethodCallExprNameRef extends SourceBase, SinkBase {
@@ -43,7 +43,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
     MethodCallExprNameRef() { this = call.getIdentifier() }
 
-    override MethodCallExpr getCall() { result = call }
+    override CallLikeExpr getCall() { result = call }
   }
 
   RustDataFlow::ArgumentPosition callbackSelfParameterPosition() { result.isClosureSelf() }
@@ -129,7 +129,7 @@ private import Make<Location, RustDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
-    result.asFunctionCall().getStaticTarget() = sc
+    result.asCallExpr().getStaticTarget() = sc
   }
 
   /** Gets the argument of `source` described by `sc`, if any. */
@@ -172,7 +172,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(Call call, Expr arg, ArgumentPosition pos |
+    exists(CallLikeExpr call, Expr arg, ArgumentPosition pos |
       result.asExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
       call = sink.getCall() and

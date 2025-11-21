@@ -4,7 +4,6 @@
  */
 
 private import rust
-private import codeql.rust.elements.Call
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.CfgNodes
@@ -223,13 +222,13 @@ final class MethodCallExprCfgNode extends Nodes::MethodCallExprCfgNode {
  *
  * This class abstract over the different ways in which a function can be called in Rust.
  */
-final class CallCfgNode extends ExprCfgNode {
-  private Call node;
+final class CallExprCfgNode extends ExprCfgNode {
+  private CallExpr node;
 
-  CallCfgNode() { node = this.getAstNode() }
+  CallExprCfgNode() { node = this.getAstNode() }
 
   /** Gets the underlying `Call`. */
-  Call getCall() { result = node }
+  CallExpr getCall() { result = node }
 
   /** Gets the receiver of this call if it is a method call. */
   ExprCfgNode getReceiver() {
@@ -243,18 +242,19 @@ final class CallCfgNode extends ExprCfgNode {
 }
 
 /**
- * A function call expression. For example:
+ * An expression with parenthesized arguments. For example:
  * ```rust
  * foo(42);
  * foo::<u32, u64>(42);
  * foo[0](42);
  * foo(1) = 4;
+ * Option::Some(42);
  * ```
  */
-final class CallExprCfgNode extends Nodes::CallExprCfgNode {
-  private CallExprChildMapping node;
+final class ParenArgsExprCfgNode extends Nodes::ParenArgsExprCfgNode {
+  private ParenArgsExprChildMapping node;
 
-  CallExprCfgNode() { node = this.getAstNode() }
+  ParenArgsExprCfgNode() { node = this.getAstNode() }
 
   /** Gets the `i`th argument of this call. */
   ExprCfgNode getArgument(int i) {

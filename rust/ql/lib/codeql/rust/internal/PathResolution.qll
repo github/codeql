@@ -4,7 +4,7 @@
 
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
-private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.ParenArgsExprImpl::Impl as ParenArgsExprImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
@@ -1957,10 +1957,10 @@ private ItemNode resolvePathCand(RelevantPath path) {
     not pathUsesNamespace(path, _)
   ) and
   (
-    not path = CallExprImpl::getFunctionPath(_)
+    not path = ParenArgsExprImpl::getBasePath(_)
     or
-    exists(CallExpr ce |
-      path = CallExprImpl::getFunctionPath(ce) and
+    exists(ParenArgsExpr ce |
+      path = ParenArgsExprImpl::getBasePath(ce) and
       result.(ParameterizableItemNode).getArity() = ce.getArgList().getNumberOfArgs()
     )
   )

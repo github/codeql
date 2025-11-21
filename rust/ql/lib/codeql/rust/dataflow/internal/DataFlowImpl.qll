@@ -8,7 +8,6 @@ private import codeql.util.Boolean
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
-private import codeql.rust.elements.Call
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.internal.PathResolution
@@ -58,7 +57,7 @@ final class DataFlowCallable extends TDataFlowCallable {
 
 final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying function call, if any. */
-  FunctionCall asFunctionCall() { this = TFunctionCall(result) }
+  CallExpr asCallExpr() { this = TCallExpr(result) }
 
   predicate isSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -67,13 +66,13 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result.asCfgScope() = this.asFunctionCall().getEnclosingCfgScope()
+    result.asCfgScope() = this.asCallExpr().getEnclosingCfgScope()
     or
     this.isSummaryCall(result.asSummarizedCallable(), _)
   }
 
   string toString() {
-    result = this.asFunctionCall().toString()
+    result = this.asCallExpr().toString()
     or
     exists(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -83,7 +82,7 @@ final class DataFlowCall extends TDataFlowCall {
     )
   }
 
-  Location getLocation() { result = this.asFunctionCall().getLocation() }
+  Location getLocation() { result = this.asCallExpr().getLocation() }
 }
 
 /**
@@ -131,7 +130,7 @@ final class ParameterPosition extends TParameterPosition {
  */
 final class ArgumentPosition extends ParameterPosition {
   /** Gets the argument of `call` at this position, if any. */
-  Expr getArgument(Call call) {
+  Expr getArgument(CallExpr call) {
     result = call.getArgument(this.getPosition())
     or
     this.isSelf() and result = call.getReceiver()
@@ -141,7 +140,7 @@ final class ArgumentPosition extends ParameterPosition {
 /**
  * Holds if `arg` is an argument of `call` at the position `pos`.
  */
-predicate isArgumentForCall(Expr arg, FunctionCall call, ArgumentPosition pos) {
+predicate isArgumentForCall(Expr arg, CallExpr call, ArgumentPosition pos) {
   arg = pos.getArgument(call)
 }
 
@@ -291,8 +290,8 @@ predicate lambdaCreationExpr(Expr creation) {
  * Holds if `call` is a lambda call of kind `kind` where `receiver` is the
  * invoked expression.
  */
-predicate lambdaCallExpr(ClosureCall call, LambdaCallKind kind, Expr receiver) {
-  receiver = call.getFunction() and
+predicate lambdaCallExpr(ClosureCallExpr call, LambdaCallKind kind, Expr receiver) {
+  receiver = call.getClosureExpr() and
   exists(kind)
 }
 
@@ -402,7 +401,7 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    exists(FunctionCall c | c = call.asFunctionCall() |
+    exists(CallExpr c | c = call.asCallExpr() |
       result.asCfgScope() = c.getARuntimeTarget()
       or
       exists(SummarizedCallable sc, Function staticTarget |
@@ -662,7 +661,7 @@ module RustDataFlow implements InputSig<Location> {
 
   pragma[nomagic]
   additional predicate storeContentStep(Node node1, Content c, Node node2) {
-    exists(CallExpr call, int pos |
+    exists(ParenArgsExpr call, int pos |
       node1.asExpr() = call.getArgument(pragma[only_bind_into](pos)) and
       node2.asExpr() = call and
       c = TTupleFieldContent(call.getTupleField(pragma[only_bind_into](pos)))
@@ -814,7 +813,7 @@ module RustDataFlow implements InputSig<Location> {
       // pointer. Except if the path occurs directly in a call, then it's just a
       // call to the function and not a function being passed as data.
       resolvePath(e.(PathExpr).getPath()) = c.asCfgScope() and
-      not any(CallExpr call).getFunction() = e
+      not any(ParenArgsExpr call).getBase() = e
     )
   }
 
@@ -824,7 +823,7 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     (
-      receiver.asExpr() = call.asFunctionCall().(ClosureCall).getFunction()
+      receiver.asExpr() = call.asCallExpr().(ClosureCallExpr).getClosureExpr()
       or
       call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode())
     ) and
@@ -986,7 +985,7 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TFunctionCall(FunctionCall call) {
+    TCallExpr(CallExpr call) {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or

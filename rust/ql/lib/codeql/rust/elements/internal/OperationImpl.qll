@@ -12,6 +12,7 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  * be referenced directly.
  */
 module Impl {
+  private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
   private import codeql.rust.elements.internal.CallLikeExprImpl::Impl as CallLikeExprImpl
 
   /**
@@ -131,5 +132,13 @@ module Impl {
       isOverloaded(this.getOperatorName(), this.getNumberOfOperands(), trait.getCanonicalPath(),
         methodName, borrows)
     }
+  }
+
+  private class CallOperation extends CallExprImpl::CallExpr instanceof Operation {
+    CallOperation() { super.isOverloaded(_, _, _) }
+
+    override Expr getArgument(int i) { result = Operation.super.getArgument(i) }
+
+    override Expr getReceiver() { result = Operation.super.getReceiver() }
   }
 }
