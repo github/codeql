@@ -220,6 +220,12 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 		}
 
 		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
+
+		// Add ModDir to wantedRoots for all packages (including cross-module dependencies)
+		// This ensures dependencies from other modules can be extracted
+		if pkgInfo, ok := pkgInfos[pkg.PkgPath]; ok && pkgInfo.ModDir != "" {
+			wantedRoots[pkgInfo.ModDir] = true
+		}
 	})
 
 	if len(pkgsNotFound) > 0 {
