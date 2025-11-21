@@ -45,6 +45,18 @@ signature module TypeFlowInput<LocationSig Location> {
    */
   default predicate isExcludedFromNullAnalysis(TypeFlowNode n) { none() }
 
+  /**
+   * Holds if the evaluator is currently evaluating with an overlay. The
+   * implementation of this predicate needs to be `overlay[local]`. For a
+   * language with no overlay support, `none()` is a valid implementation.
+   *
+   * When called from a local predicate, this predicate holds if we are in the
+   * overlay-only local evaluation. When called from a global predicate, this
+   * predicate holds if we are evaluating globally with overlay and base both
+   * visible.
+   */
+  predicate isEvaluatingInOverlay();
+
   /** A type. */
   class Type {
     /** Gets a textual representation of this type. */
