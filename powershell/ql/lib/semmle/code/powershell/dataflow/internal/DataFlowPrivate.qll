@@ -437,6 +437,10 @@ predicate neverSkipInPathGraph(Node n) {
   isReturned(n.(AstNode).getCfgNode())
   or
   n = any(SsaDefinitionNodeImpl def | not def.nodeIsHidden())
+  or
+  n.asExpr() instanceof CfgNodes::ExprNodes::ExpandableStringExprCfgNode
+  or
+  n.asExpr() instanceof CfgNodes::ExprNodes::ExpandableSubExprCfgNode
 }
 
 /** An SSA node. */
