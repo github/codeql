@@ -1,5 +1,5 @@
 edges
-| test.ps1:1:1:1:10 | userinput | test.ps1:4:1:4:6 | query | provenance |  |
+| test.ps1:1:1:1:10 | userinput | test.ps1:4:10:4:62 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:8:1:8:6 | query | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:17:24:17:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | provenance |  |
 | test.ps1:1:1:1:10 | userinput | test.ps1:28:24:28:76 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | provenance |  |
@@ -7,16 +7,19 @@ edges
 | test.ps1:1:1:1:10 | userinput | test.ps1:128:28:128:37 | userinput | provenance |  |
 | test.ps1:1:14:1:45 | Call to read-host | test.ps1:1:1:1:10 | userinput | provenance | Src:MaD:0  |
 | test.ps1:4:1:4:6 | query | test.ps1:5:72:5:77 | query | provenance |  |
+| test.ps1:4:10:4:62 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | test.ps1:4:1:4:6 | query | provenance |  |
 | test.ps1:8:1:8:6 | query | test.ps1:9:72:9:77 | query | provenance |  |
 | test.ps1:72:1:72:11 | QueryConn2 [element Query] | test.ps1:81:15:81:25 | QueryConn2 | provenance |  |
 | test.ps1:72:15:79:1 | ${...} [element Query] | test.ps1:72:1:72:11 | QueryConn2 [element Query] | provenance |  |
 | test.ps1:78:13:78:59 | SELECT * FROM Customers WHERE id = $userinput | test.ps1:72:15:79:1 | ${...} [element Query] | provenance |  |
-| test.ps1:121:9:121:56 | unvalidated | test.ps1:125:92:125:143 | SELECT * FROM Customers where id = $($unvalidated) | provenance |  |
+| test.ps1:121:9:121:56 | unvalidated | test.ps1:125:128:125:142 | $(...) | provenance |  |
+| test.ps1:125:128:125:142 | $(...) | test.ps1:125:92:125:143 | SELECT * FROM Customers where id = $($unvalidated) | provenance |  |
 | test.ps1:128:28:128:37 | userinput | test.ps1:121:9:121:56 | unvalidated | provenance |  |
 nodes
 | test.ps1:1:1:1:10 | userinput | semmle.label | userinput |
 | test.ps1:1:14:1:45 | Call to read-host | semmle.label | Call to read-host |
 | test.ps1:4:1:4:6 | query | semmle.label | query |
+| test.ps1:4:10:4:62 | SELECT * FROM MyTable WHERE MyColumn = '$userinput' | semmle.label | SELECT * FROM MyTable WHERE MyColumn = '$userinput' |
 | test.ps1:5:72:5:77 | query | semmle.label | query |
 | test.ps1:8:1:8:6 | query | semmle.label | query |
 | test.ps1:9:72:9:77 | query | semmle.label | query |
@@ -28,6 +31,7 @@ nodes
 | test.ps1:81:15:81:25 | QueryConn2 | semmle.label | QueryConn2 |
 | test.ps1:121:9:121:56 | unvalidated | semmle.label | unvalidated |
 | test.ps1:125:92:125:143 | SELECT * FROM Customers where id = $($unvalidated) | semmle.label | SELECT * FROM Customers where id = $($unvalidated) |
+| test.ps1:125:128:125:142 | $(...) | semmle.label | $(...) |
 | test.ps1:128:28:128:37 | userinput | semmle.label | userinput |
 subpaths
 #select

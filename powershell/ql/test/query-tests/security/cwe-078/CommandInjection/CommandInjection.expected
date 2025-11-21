@@ -6,8 +6,9 @@ edges
 | test.ps1:27:11:27:20 | userinput | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | provenance | Sink:MaD:106 |
 | test.ps1:33:11:33:20 | userinput | test.ps1:34:14:34:46 | public class Foo { $UserInput } | provenance |  |
 | test.ps1:39:11:39:20 | userinput | test.ps1:40:30:40:62 | public class Foo { $UserInput } | provenance |  |
-| test.ps1:45:11:45:20 | userinput | test.ps1:47:5:47:9 | code | provenance |  |
+| test.ps1:45:11:45:20 | userinput | test.ps1:47:13:47:45 | public class Foo { $UserInput } | provenance |  |
 | test.ps1:47:5:47:9 | code | test.ps1:48:30:48:34 | code | provenance |  |
+| test.ps1:47:13:47:45 | public class Foo { $UserInput } | test.ps1:47:5:47:9 | code | provenance |  |
 | test.ps1:73:11:73:20 | userinput | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:80:11:80:20 | userinput | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | provenance |  |
 | test.ps1:87:11:87:20 | userinput | test.ps1:89:12:89:28 | ping $UserInput | provenance |  |
@@ -86,6 +87,7 @@ nodes
 | test.ps1:40:30:40:62 | public class Foo { $UserInput } | semmle.label | public class Foo { $UserInput } |
 | test.ps1:45:11:45:20 | userinput | semmle.label | userinput |
 | test.ps1:47:5:47:9 | code | semmle.label | code |
+| test.ps1:47:13:47:45 | public class Foo { $UserInput } | semmle.label | public class Foo { $UserInput } |
 | test.ps1:48:30:48:34 | code | semmle.label | code |
 | test.ps1:73:11:73:20 | userinput | semmle.label | userinput |
 | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
