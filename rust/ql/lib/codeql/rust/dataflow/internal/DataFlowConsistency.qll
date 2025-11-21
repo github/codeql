@@ -29,17 +29,6 @@ private module Input implements InputSig<Location, RustDataFlow> {
   }
 
   predicate missingLocationExclude(RustDataFlow::Node n) { not exists(n.asExpr().getLocation()) }
-
-  predicate multipleArgumentCallExclude(Node::ArgumentNode arg, DataFlowCall call) {
-    // An argument such as `x` in `if !x { ... }` has two successors (and hence
-    // two calls); one for each Boolean outcome of `x`.
-    exists(CfgNodes::ExprCfgNode n |
-      arg.isArgumentOf(call, _) and
-      n = call.asCallCfgNode() and
-      arg.asExpr().getASuccessor(any(ConditionalSuccessor c)).getASuccessor*() = n and
-      n.getASplit() instanceof ConditionalCompletionSplitting::ConditionalCompletionSplit
-    )
-  }
 }
 
 import MakeConsistency<Location, RustDataFlow, RustTaintTracking, Input>

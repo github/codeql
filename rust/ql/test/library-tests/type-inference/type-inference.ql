@@ -1,10 +1,12 @@
 import rust
 import utils.test.InlineExpectationsTest
+import codeql.rust.internal.Type
 import codeql.rust.internal.TypeInference as TypeInference
 import TypeInference
 
 query predicate inferType(AstNode n, TypePath path, Type t) {
   t = TypeInference::inferType(n, path) and
+  t != TUnknownType() and
   n.fromSource() and
   not n.isFromMacroExpansion() and
   not n instanceof IdentPat and // avoid overlap in the output with the underlying `Name` node
@@ -58,9 +60,10 @@ module TypeTest implements TestSig {
     exists(AstNode n, TypePath path, Type t |
       t = TypeInference::inferType(n, path) and
       (
-        if t = TypeInference::CertainTypeInference::inferCertainType(n, path)
-        then tag = "certainType"
-        else tag = "type"
+        tag = "type"
+        or
+        t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
+        tag = "certainType"
       ) and
       location = n.getLocation() and
       (

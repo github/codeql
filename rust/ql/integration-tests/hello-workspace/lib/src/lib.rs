@@ -15,3 +15,5 @@ mod macros {
 }
 
 pub mod a_module;
+
+pub extern crate self as extern_crate_alias;

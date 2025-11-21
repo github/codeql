@@ -30,17 +30,17 @@ predicate eqFlowCond = U::eqFlowCond/5;
  * only other input to `phi` is a `null` value.
  *
  * Note that the declared type of `phi` is `SsaVariable` instead of
- * `SsaPhiNode` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
- * have non-`SsaPhiNode` results.
+ * `SsaPhiDefinition` in order for the reflexive case of `nonNullSsaFwdStep*(..)` to
+ * have non-`SsaPhiDefinition` results.
  */
-private predicate nonNullSsaFwdStep(SsaVariable v, SsaVariable phi) {
-  exists(SsaExplicitUpdate vnull, SsaPhiNode phi0 | phi0 = phi |
-    2 = strictcount(phi0.getAPhiInput()) and
-    vnull = phi0.getAPhiInput() and
-    v = phi0.getAPhiInput() and
+private predicate nonNullSsaFwdStep(SsaDefinition v, SsaDefinition phi) {
+  exists(SsaExplicitWrite vnull, SsaPhiDefinition phi0 | phi0 = phi |
+    2 = strictcount(phi0.getAnInput()) and
+    vnull = phi0.getAnInput() and
+    v = phi0.getAnInput() and
     not backEdge(phi0, v, _) and
     vnull != v and
-    vnull.getDefiningExpr().(VariableAssign).getSource() instanceof NullLiteral
+    vnull.getValue() instanceof NullLiteral
   )
 }
 
@@ -56,13 +56,13 @@ private predicate nonNullDefStep(Expr e1, Expr e2) {
  * explicit `ArrayCreationExpr` definition and that the definition does not go
  * through a back edge.
  */
-ArrayCreationExpr getArrayDef(SsaVariable v) {
+ArrayCreationExpr getArrayDef(SsaDefinition v) {
   exists(Expr src |
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = src and
+    v.(SsaExplicitWrite).getValue() = src and
     nonNullDefStep*(result, src)
   )
   or
-  exists(SsaVariable mid |
+  exists(SsaDefinition mid |
     result = getArrayDef(mid) and
     nonNullSsaFwdStep(mid, v)
   )
@@ -74,9 +74,9 @@ ArrayCreationExpr getArrayDef(SsaVariable v) {
  * `arrlen` without going through a back edge.
  */
 private predicate arrayLengthDef(FieldRead arrlen, ArrayCreationExpr def) {
-  exists(SsaVariable arr |
+  exists(SsaDefinition arr |
     arrlen.getField() instanceof ArrayLengthField and
-    arrlen.getQualifier() = arr.getAUse() and
+    arrlen.getQualifier() = arr.getARead() and
     def = getArrayDef(arr)
   )
 }
@@ -86,9 +86,11 @@ pragma[nomagic]
 private predicate constantIntegerExpr(Expr e, int val) {
   e.(CompileTimeConstantExpr).getIntValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  e.(LongLiteral).getValue().toInt() = val
+  or
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantIntegerExpr(src, val)
   )
   or
@@ -112,9 +114,9 @@ pragma[nomagic]
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantBooleanExpr(src, val)
   )
   or
@@ -125,9 +127,9 @@ pragma[nomagic]
 private predicate constantStringExpr(Expr e, string val) {
   e.(CompileTimeConstantExpr).getStringValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantStringExpr(src, val)
   )
 }

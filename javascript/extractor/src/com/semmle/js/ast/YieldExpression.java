@@ -8,7 +8,7 @@ public class YieldExpression extends Expression {
   public YieldExpression(SourceLocation loc, Expression argument, Boolean delegating) {
     super("YieldExpression", loc);
     this.argument = argument;
-    this.delegating = delegating == Boolean.TRUE;
+    this.delegating = Boolean.TRUE.equals(delegating);
   }
 
   @Override

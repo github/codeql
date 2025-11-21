@@ -105,7 +105,7 @@ module Impl {
         not isAttributeMacroExpansionSourceLocation(macro, n.getLocation())
       )
       or
-      isFromMacroExpansion(getImmediatelyEnclosingMacroInvocation(n))
+      isFromMacroExpansion(pragma[only_bind_into](getImmediatelyEnclosingMacroInvocation(n)))
     }
 
     cached
