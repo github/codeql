@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -140,6 +141,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         // The version number should be kept in sync with the version .NET version used for building the application.
         public const string LatestDotNetSdkVersion = "9.0.300";
 
+        public static ReadOnlyDictionary<string, string> MinimalEnvironment => IDotNetCliInvoker.MinimalEnvironment;
+
         /// <summary>
         /// Returns a script for downloading relevant versions of the
         /// .NET SDK. The SDK(s) will be installed at <code>installDir</code>
@@ -254,7 +257,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 else
                 {
                     var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
-
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
@@ -269,17 +271,28 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     prelude = downloadDotNetInstallSh & chmod.Script;
                     postlude = shouldCleanUp ? BuildScript.DeleteFile(dotnetInstallPath) : BuildScript.Success;
 
-                    getInstall = version => new CommandBuilder(actions).
-                        RunCommand(dotnetInstallPath).
-                        Argument("--channel").
-                        Argument("release").
-                        Argument("--version").
-                        Argument(version).
-                        Argument("--install-dir").
-                        Argument(path).Script;
+                    getInstall = version =>
+                    {
+                        var cb = new CommandBuilder(actions).
+                            RunCommand(dotnetInstallPath).
+                            Argument("--channel").
+                            Argument("release").
+                            Argument("--version").
+                            Argument(version);
+
+                        // Request ARM64 architecture on Apple Silicon machines
+                        if (actions.IsRunningOnAppleSilicon())
+                        {
+                            cb.Argument("--architecture").
+                                Argument("arm64");
+                        }
+
+                        return cb.Argument("--install-dir").
+                            Argument(path).Script;
+                    };
                 }
 
-                var dotnetInfo = new CommandBuilder(actions).
+                var dotnetInfo = new CommandBuilder(actions, environment: MinimalEnvironment).
                     RunCommand(actions.PathCombine(path, "dotnet")).
                     Argument("--info").Script;
 
@@ -311,7 +324,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static BuildScript GetInstalledSdksScript(IBuildActions actions)
         {
-            var listSdks = new CommandBuilder(actions, silent: true).
+            var listSdks = new CommandBuilder(actions, silent: true, environment: MinimalEnvironment).
                 RunCommand("dotnet").
                 Argument("--list-sdks");
             return listSdks.Script;
