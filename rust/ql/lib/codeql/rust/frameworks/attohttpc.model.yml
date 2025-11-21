@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<attohttpc::request::session::Session>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::request::session::Session>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::request::builder::RequestBuilder>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::request::builder::RequestBuilder>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::tls::native_tls_impl::TlsHandshaker>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<attohttpc::tls::native_tls_impl::TlsHandshaker>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
