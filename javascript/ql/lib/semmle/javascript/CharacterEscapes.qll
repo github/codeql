@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about character escapes in literals.
  */
+overlay[local?]
+module;
 
 import javascript
 

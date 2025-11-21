@@ -3,6 +3,8 @@
  * comparisons that relies on different kinds of HTTP request data, as
  * well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -2,6 +2,8 @@
  * Provides default sources, sinks and sanitizers for reasoning about
  * request forgery, as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import semmle.javascript.security.dataflow.RemoteFlowSources
 

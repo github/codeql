@@ -1,6 +1,8 @@
 /**
  * Provides a classes and predicates for contributing to the `view-component-input` threat model.
  */
+overlay[local?]
+module;
 
 private import javascript
 

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import codeql.dataflow.internal.DataFlowImplConsistency
 private import sharedlib.DataFlowArg

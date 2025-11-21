@@ -1,6 +1,8 @@
 /**
  * Provides a limited public interface to name/type resolution information.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.internal.NameResolution

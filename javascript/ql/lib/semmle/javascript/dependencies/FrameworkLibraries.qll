@@ -25,6 +25,8 @@
  * (for example `Bootstrap` and `React`), while other frameworks have
  * more complex rules for recognizing instances (for example `MooTools`).
  */
+overlay[local?]
+module;
 
 import javascript
 

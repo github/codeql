@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with base64 encoders and decoders.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Restify](https://restify.com/) servers.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.HTTP

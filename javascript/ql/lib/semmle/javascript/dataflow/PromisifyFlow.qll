@@ -3,6 +3,8 @@
  * This ensures that when you call a promisified user-defined function,
  * arguments flow to the original function's parameters.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.AdditionalFlowSteps

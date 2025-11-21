@@ -2,6 +2,8 @@
  * Provides predicates for reasoning about regular expressions
  * that match URLs and hostname patterns.
  */
+overlay[local?]
+module;
 
 private import javascript as JS
 private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeImpl

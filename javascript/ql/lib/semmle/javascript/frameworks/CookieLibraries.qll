@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about cookies.
  */
+overlay[local?]
+module;
 
 import javascript
 

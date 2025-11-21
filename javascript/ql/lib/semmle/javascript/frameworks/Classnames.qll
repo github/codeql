@@ -1,6 +1,8 @@
 /**
  * Provides taint steps modeling flow through the `classnames` and `clsx` libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [socket.io](https://socket.io).
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JavaScript testing frameworks.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.TestingCustomizations

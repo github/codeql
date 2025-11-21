@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import AmbiguousCoreMethods
 private import Arrays
 private import AsyncAwait

@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling the server-side form/file parsing libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 

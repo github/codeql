@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for the 'js/unused-local-variable' query.
  */
+overlay[local?]
+module;
 
 import javascript
 import LanguageFeatures.UnusedIndexVariable

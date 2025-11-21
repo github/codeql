@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with generator functions.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.internal.PreCallGraphStep

@@ -2,6 +2,8 @@
  * Provides predicates for reasoning about flow of user-controlled values that are used
  * as property names.
  */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides classes for working with AngularJS (also known as Angular 1.x)
  * applications.

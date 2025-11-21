@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with DOM elements.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.Templating
@@ -192,6 +194,7 @@ module DOM {
    * A data flow node or other program element that may refer to
    * a DOM element.
    */
+  overlay[global]
   abstract class Element extends Locatable {
     ElementDefinition defn;
 

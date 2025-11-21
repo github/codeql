@@ -114,6 +114,7 @@ class ClientSideRemoteFlowKind extends string {
  * `name` and `address` of global variable `user` should be considered as remote flow sources with
  * source type "user input".
  */
+overlay[local?]
 private class RemoteFlowSourceAccessPath extends JsonString {
   string sourceType;
 
@@ -167,6 +168,7 @@ private class RemoteFlowSourceAccessPath extends JsonString {
  * The global variable referenced by a `RemoteFlowSourceAccessPath`, declared as an API
  * entry point.
  */
+overlay[local?]
 private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
   string name;
 

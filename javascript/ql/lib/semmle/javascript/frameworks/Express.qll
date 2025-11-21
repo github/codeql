@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with [Express](https://expressjs.com) applications.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.frameworks.ExpressModules

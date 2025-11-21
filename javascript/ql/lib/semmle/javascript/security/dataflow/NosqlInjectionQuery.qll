@@ -6,6 +6,8 @@
  * `NosqlInjection::Configuration` is needed, otherwise
  * `NosqlInjectionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import javascript
 import semmle.javascript.security.TaintedObject

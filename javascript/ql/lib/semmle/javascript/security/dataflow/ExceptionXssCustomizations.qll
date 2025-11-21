@@ -3,6 +3,8 @@
  * cross-site scripting vulnerabilities where the taint-flow passes through a thrown
  * exception.
  */
+overlay[local?]
+module;
 
 import javascript
 

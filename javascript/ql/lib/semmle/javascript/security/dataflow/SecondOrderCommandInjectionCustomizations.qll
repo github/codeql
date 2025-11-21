@@ -3,6 +3,8 @@
  * second order command injection, as well as
  * extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.PackageExports as Exports
@@ -129,6 +131,7 @@ module SecondOrderCommandInjection {
   /**
    * A sink that invokes a command described by the `VulnerableCommand` class.
    */
+  overlay[global]
   abstract class VulnerableCommandSink extends Sink {
     VulnerableCommand cmd;
 

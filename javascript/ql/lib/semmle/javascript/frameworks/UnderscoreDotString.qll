@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling data flow behavior of the Underscore.string library (https://www.npmjs.com/package/underscore.string).
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal

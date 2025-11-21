@@ -2,6 +2,8 @@
  * A model of routing trees, describing the composition of route handlers and middleware functions
  * in a web server application. See `Routing::Node` for more details.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
@@ -279,6 +281,7 @@ module Routing {
     /**
      * Holds if `node` has processed the incoming request strictly prior to this node.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isGuardedByNode(Node node) {
       this.isGuardedByNodeInternal(pragma[only_bind_out](node))
@@ -287,6 +290,7 @@ module Routing {
     /**
      * Holds if the middleware corresponding to `node` has processed the incoming request strictly prior to this node.
      */
+    overlay[caller?]
     pragma[inline]
     predicate isGuardedBy(DataFlow::Node node) { this.isGuardedByNode(getNode(node)) }
 
@@ -894,6 +898,7 @@ module Routing {
      * Gets a node that is stored in the given access path on this route handler parameter, either
      * during execution of this router handler, or in one of the preceding ones.
      */
+    overlay[caller?]
     pragma[inline]
     DataFlow::Node getValueFromAccessPath(string path) {
       exists(int i, Node predecessor |

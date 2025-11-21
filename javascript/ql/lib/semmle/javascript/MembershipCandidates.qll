@@ -1,6 +1,8 @@
 /**
  * Provides classes for recognizing membership tests.
  */
+overlay[local?]
+module;
 
 import javascript
 

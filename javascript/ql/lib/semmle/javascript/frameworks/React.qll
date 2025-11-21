@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with React and Preact code.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps

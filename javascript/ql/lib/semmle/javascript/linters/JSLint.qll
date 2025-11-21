@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JSLint/JSHint directives.
  */
+overlay[local?]
+module;
 
 import javascript
 

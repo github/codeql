@@ -21,6 +21,8 @@
  * For `RateLimitedRouteHandlerExpr`, the default subclasses model popular npm packages;
  * other means of rate-limiting can be supported by adding more subclasses.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared

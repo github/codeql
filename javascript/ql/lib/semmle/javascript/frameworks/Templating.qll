@@ -703,7 +703,7 @@ module Templating {
    *
    * These API nodes are used in the `getTemplateInput` predicate.
    */
-  overlay[global]
+  overlay[local?]
   private class IncludeFunctionAsEntryPoint extends API::EntryPoint {
     IncludeFunctionAsEntryPoint() { this = "IncludeFunctionAsEntryPoint" }
 

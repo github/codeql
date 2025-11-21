@@ -3,6 +3,8 @@
  * unvalidated URL redirection problems on the client side, as well as
  * extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.security.TaintedUrlSuffixCustomizations
@@ -63,6 +65,7 @@ module ClientSideUrlRedirect {
   /**
    * Holds if `node` extracts a part of a URL that does not contain the suffix.
    */
+  overlay[caller?]
   pragma[inline]
   deprecated predicate isPrefixExtraction(DataFlow::MethodCallNode node) {
     // Block flow through prefix-extraction `substring(0, ...)` and `split("#")[0]`

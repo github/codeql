@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with name resolution of namespaces and types.
  */
+overlay[local?]
 deprecated module;
 
 import javascript

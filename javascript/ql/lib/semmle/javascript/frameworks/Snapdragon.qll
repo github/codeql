@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with applications using [snapdragon](https://www.npmjs.com/package/snapdragon).
  */
+overlay[local?]
+module;
 
 import javascript
 

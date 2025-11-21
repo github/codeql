@@ -4,6 +4,8 @@
  * Provides classes implementing type inference for most expressions, except for variable
  * and property accesses.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import AbstractValuesImpl

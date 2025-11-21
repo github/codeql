@@ -1,6 +1,8 @@
 /**
  * Provides classes for the local objects that the dataflow library can reason about soundly.
  */
+overlay[local?]
+module;
 
 import javascript
 

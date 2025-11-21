@@ -1,6 +1,8 @@
 /**
  * Provides name resolution and propagates type information.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.internal.NameResolution::NameResolution

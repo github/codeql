@@ -27,6 +27,8 @@
  * In these cases, we try to make up human-readable names for the endpoints.
  * We make an effort to make these unambiguous in practice, though this is not always guaranteed.
  */
+overlay[local?]
+module;
 
 private import javascript
 

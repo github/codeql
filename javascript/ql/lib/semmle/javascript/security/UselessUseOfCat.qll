@@ -1,6 +1,8 @@
 /**
  * Provides predicates and classes for working with useless uses of the unix command `cat`.
  */
+overlay[local?]
+module;
 
 import javascript
 import Expressions.ExprHasNoEffect

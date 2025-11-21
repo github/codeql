@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with typeahead.js code (https://www.npmjs.com/package/typeahead.js).
  */
+overlay[local?]
+module;
 
 import javascript
 

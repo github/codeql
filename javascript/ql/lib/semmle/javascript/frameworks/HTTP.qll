@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling common HTTP concepts.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.DynamicPropertyAccess
