@@ -783,6 +783,10 @@ abstract class ReExportDeclaration extends ExportDeclaration {
     result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
   }
 
+  /**
+   * Holds if this re-export destination ultimately re-exports `v` (from another module)
+   * under the given `name`.
+   */
   overlay[global]
   abstract predicate reExportsAs(LexicalName v, string name);
 }
