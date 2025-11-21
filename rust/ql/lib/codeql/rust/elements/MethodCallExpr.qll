@@ -4,7 +4,8 @@
  */
 
 private import internal.MethodCallExprImpl
-import codeql.rust.elements.CallExprBase
+import codeql.rust.elements.ArgList
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
@@ -15,5 +16,8 @@ import codeql.rust.elements.NameRef
  * x.foo(42);
  * x.foo::<u32, u64>(42);
  * ```
+ *
+ * Consider using `MethodCall` instead, as that also includes calls to methods using
+ * function call syntax (e.g., `Foo::method(x)`).
  */
 final class MethodCallExpr = Impl::MethodCallExpr;

@@ -4,4 +4,7 @@ fn test_method_call_expr() -> () {
     // A method call expression. For example:
     x.foo(42);
     x.foo::<u32, u64>(42);
+    // 
+    // Consider using `MethodCall` instead, as that also includes calls to methods using
+    // function call syntax (e.g., `Foo::method(x)`).
 }

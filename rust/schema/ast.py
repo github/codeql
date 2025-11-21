@@ -152,10 +152,10 @@ class BreakExpr(Expr, ):
     expr: optional["Expr"] | child
     lifetime: optional["Lifetime"] | child
 
-class CallExpr(Expr, ):
+class ParenArgsExpr(Expr, ):
     arg_list: optional["ArgList"] | child
     attrs: list["Attr"] | child
-    function: optional["Expr"] | child
+    base: optional["Expr"] | child
 
 class CastExpr(Expr, ):
     attrs: list["Attr"] | child

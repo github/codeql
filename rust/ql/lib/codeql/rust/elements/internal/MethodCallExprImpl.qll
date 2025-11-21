@@ -19,6 +19,9 @@ module Impl {
    * x.foo(42);
    * x.foo::<u32, u64>(42);
    * ```
+   *
+   * Consider using `MethodCall` instead, as that also includes calls to methods using
+   * function call syntax (e.g., `Foo::method(x)`).
    */
   class MethodCallExpr extends Generated::MethodCallExpr {
     private string toStringPart(int index) {

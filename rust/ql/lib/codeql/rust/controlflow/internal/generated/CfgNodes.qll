@@ -645,100 +645,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasLifetime() { exists(this.getLifetime()) }
     }
 
-    final private class ParentCallExpr extends ParentAstNode, CallExpr {
-      override predicate relevantChild(AstNode child) {
-        none()
-        or
-        child = this.getFunction()
-      }
-    }
-
-    /**
-     * A function call expression. For example:
-     * ```rust
-     * foo(42);
-     * foo::<u32, u64>(42);
-     * foo[0](42);
-     * foo(1) = 4;
-     * ```
-     */
-    final class CallExprCfgNode extends CfgNodeFinal, CallExprBaseCfgNode {
-      private CallExpr node;
-
-      CallExprCfgNode() { node = this.getAstNode() }
-
-      /** Gets the underlying `CallExpr`. */
-      CallExpr getCallExpr() { result = node }
-
-      /**
-       * Gets the function of this call expression, if it exists.
-       */
-      ExprCfgNode getFunction() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getFunction(), this, result)
-      }
-
-      /**
-       * Holds if `getFunction()` exists.
-       */
-      predicate hasFunction() { exists(this.getFunction()) }
-    }
-
-    final private class ParentCallExprBase extends ParentAstNode, CallExprBase {
-      override predicate relevantChild(AstNode child) { none() }
-    }
-
-    /**
-     * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-     */
-    final class CallExprBaseCfgNode extends CfgNodeFinal, ExprCfgNode {
-      private CallExprBase node;
-
-      CallExprBaseCfgNode() { node = this.getAstNode() }
-
-      /** Gets the underlying `CallExprBase`. */
-      CallExprBase getCallExprBase() { result = node }
-
-      /**
-       * Gets the argument list of this call expression base, if it exists.
-       */
-      ArgList getArgList() { result = node.getArgList() }
-
-      /**
-       * Holds if `getArgList()` exists.
-       */
-      predicate hasArgList() { exists(this.getArgList()) }
-
-      /**
-       * Gets the `index`th attr of this call expression base (0-based).
-       */
-      Attr getAttr(int index) { result = node.getAttr(index) }
-
-      /**
-       * Gets any of the attrs of this call expression base.
-       */
-      Attr getAnAttr() { result = this.getAttr(_) }
-
-      /**
-       * Gets the number of attrs of this call expression base.
-       */
-      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
-
-      /**
-       * Gets the `index`th argument of this call expression base (0-based).
-       */
-      Expr getArg(int index) { result = node.getArg(index) }
-
-      /**
-       * Gets any of the arguments of this call expression base.
-       */
-      Expr getAnArg() { result = this.getArg(_) }
-
-      /**
-       * Gets the number of arguments of this call expression base.
-       */
-      int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
-    }
-
     final private class ParentCastExpr extends ParentAstNode, CastExpr {
       override predicate relevantChild(AstNode child) {
         none()
@@ -2076,14 +1982,42 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * x.foo(42);
      * x.foo::<u32, u64>(42);
      * ```
+     *
+     * Consider using `MethodCall` instead, as that also includes calls to methods using
+     * function call syntax (e.g., `Foo::method(x)`).
      */
-    final class MethodCallExprCfgNode extends CfgNodeFinal, CallExprBaseCfgNode {
+    final class MethodCallExprCfgNode extends CfgNodeFinal, ExprCfgNode {
       private MethodCallExpr node;
 
       MethodCallExprCfgNode() { node = this.getAstNode() }
 
       /** Gets the underlying `MethodCallExpr`. */
       MethodCallExpr getMethodCallExpr() { result = node }
+
+      /**
+       * Gets the argument list of this method call expression, if it exists.
+       */
+      ArgList getArgList() { result = node.getArgList() }
+
+      /**
+       * Holds if `getArgList()` exists.
+       */
+      predicate hasArgList() { exists(this.getArgList()) }
+
+      /**
+       * Gets the `index`th attr of this method call expression (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this method call expression.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this method call expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
        * Gets the generic argument list of this method call expression, if it exists.
@@ -2327,6 +2261,70 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getTypeRepr()` exists.
        */
       predicate hasTypeRepr() { exists(this.getTypeRepr()) }
+    }
+
+    final private class ParentParenArgsExpr extends ParentAstNode, ParenArgsExpr {
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getBase()
+      }
+    }
+
+    /**
+     * An expression with parenthesized arguments. For example:
+     * ```rust
+     * foo(42);
+     * foo::<u32, u64>(42);
+     * foo[0](42);
+     * foo(1) = 4;
+     * Option::Some(42);
+     * ```
+     */
+    final class ParenArgsExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private ParenArgsExpr node;
+
+      ParenArgsExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `ParenArgsExpr`. */
+      ParenArgsExpr getParenArgsExpr() { result = node }
+
+      /**
+       * Gets the argument list of this paren arguments expression, if it exists.
+       */
+      ArgList getArgList() { result = node.getArgList() }
+
+      /**
+       * Holds if `getArgList()` exists.
+       */
+      predicate hasArgList() { exists(this.getArgList()) }
+
+      /**
+       * Gets the `index`th attr of this paren arguments expression (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this paren arguments expression.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this paren arguments expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+      /**
+       * Gets the base of this paren arguments expression, if it exists.
+       */
+      ExprCfgNode getBase() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getBase(), this, result)
+      }
+
+      /**
+       * Holds if `getBase()` exists.
+       */
+      predicate hasBase() { exists(this.getBase()) }
     }
 
     final private class ParentPat extends ParentAstNode, Pat {
@@ -3531,18 +3529,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getFunction" and
-      parent =
-        any(Nodes::CallExprCfgNode cfgNode, CallExpr astNode |
-          astNode = cfgNode.getCallExpr() and
-          child = getDesugared(astNode.getFunction()) and
-          i = -1 and
-          hasCfgNode(child) and
-          not child = cfgNode.getFunction().getAstNode()
-        |
-          cfgNode
-        )
-      or
       pred = "getExpr" and
       parent =
         any(Nodes::CastExprCfgNode cfgNode, CastExpr astNode |
@@ -3885,6 +3871,18 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getPat().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getBase" and
+      parent =
+        any(Nodes::ParenArgsExprCfgNode cfgNode, ParenArgsExpr astNode |
+          astNode = cfgNode.getParenArgsExpr() and
+          child = getDesugared(astNode.getBase()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getBase().getAstNode()
         |
           cfgNode
         )
