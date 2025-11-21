@@ -56,7 +56,7 @@ mod test_mysql {
             "SELECT id, name, age FROM person",
             |values: (i64, String, i32)| -> () {
                 sink(values.0); // $ MISSING: hasTaintFlow
-                sink(values.1); // $ MISSING: hasTaintFlow
+                sink(values.1); // $ hasTaintFlow
                 sink(values.2); // $ MISSING: hasTaintFlow
             }
         )?;
@@ -72,7 +72,7 @@ mod test_mysql {
             let name: String = row.1;
             let age: i32 = row.2;
             sink(id); // $ MISSING: hasTaintFlow
-            sink(name); // $ MISSING: hasTaintFlow
+            sink(name); // $ hasTaintFlow
             sink(age); // $ MISSING: hasTaintFlow
             acc + 1
         })?;
@@ -143,7 +143,7 @@ mod test_mysql_async {
             "SELECT id, name, age FROM person",
             |values: (i64, String, i32)| -> () {
                 sink(values.0); // $ MISSING: hasTaintFlow
-                sink(values.1); // $ MISSING: hasTaintFlow
+                sink(values.1); // $ hasTaintFlow
                 sink(values.2); // $ MISSING: hasTaintFlow
             }
         ).await?;
@@ -159,7 +159,7 @@ mod test_mysql_async {
             let name: String = row.1;
             let age: i32 = row.2;
             sink(id); // $ MISSING: hasTaintFlow
-            sink(name); // $ MISSING: hasTaintFlow
+            sink(name); // $ hasTaintFlow
             sink(age); // $ MISSING: hasTaintFlow
             acc + 1
         }).await?;
