@@ -8,7 +8,7 @@ def test(codeql, csharp, cwd):
     # dependency directory set above.
     codeql.database.create(source_root="proj", build_mode="none")
 
-    # Check that the packages directory has been created in the dependecies folder.
+    # Check that the packages directory has been created in the dependencies folder.
     packages_dir = os.path.join(path, "packages")
     assert os.path.isdir(packages_dir), "The packages directory was not created in the specified dependency directory."
     shutil.rmtree(path)
