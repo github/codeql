@@ -45,7 +45,7 @@ class IntegralOrBooleanTypeBarrier extends DataFlow::Node {
 
 /**
  * Holds if guard expression `g` having result `branch` indicates that the
- * sub-expression `node` is not null. For example when `ptr.is_null()` is
+ * sub-expression `e` is not null. For example when `ptr.is_null()` is
  * `false`, we have that `ptr` is not null.
  */
 private predicate notNullCheck(AstNode g, Expr e, boolean branch) {
