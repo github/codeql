@@ -104,9 +104,9 @@ fn test_threat_model_source() {
 	// hostname setting from `fs` functions returning `bool` directly
 	// (these are highly unnatural but serve to create simple tests)
 
-	let b1: bool = std::fs::exists("main.rs").unwrap();
+	let b1: bool = std::fs::exists("main.rs").unwrap(); // $ Source=exists
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_hostnames(b1) // $ MISSING: Alert[rust/disabled-certificate-check]=fs
+		.danger_accept_invalid_hostnames(b1) // $ Alert[rust/disabled-certificate-check]=exists
 		.build()
 		.unwrap();
 
