@@ -14,6 +14,7 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
+private import codeql.rust.internal.TypeInference as TypeInference
 private import Node as Node
 private import DataFlowImpl
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -223,38 +224,56 @@ abstract class ArgumentNode extends Node {
 }
 
 final class ExprArgumentNode extends ArgumentNode, ExprNode {
-  private Call call_;
+  private FunctionCall call_;
   private RustDataFlow::ArgumentPosition pos_;
 
-  ExprArgumentNode() { isArgumentForCall(n, call_, pos_) }
+  ExprArgumentNode() {
+    isArgumentForCall(n, call_, pos_) and
+    not TypeInference::implicitDeref(n) and
+    not TypeInference::implicitBorrow(n)
+  }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCall() = call_ and pos = pos_
+    call.asFunctionCall() = call_ and pos = pos_
   }
 }
 
 /**
- * The receiver of a method call _after_ any implicit borrow or dereferencing
- * has taken place.
+ * A node that represents the value of an expression after implicit dereference
+ * or borrow.
  */
-final class ReceiverNode extends ArgumentNode, TReceiverNode {
-  private Call n;
+class DerefBorrowNode extends Node, TDerefBorrowNode {
+  AstNode n;
+  boolean isBorrow;
 
-  ReceiverNode() { this = TReceiverNode(n, false) }
+  DerefBorrowNode() { this = TDerefBorrowNode(n, isBorrow, false) }
 
-  Expr getReceiver() { result = n.getReceiver() }
+  AstNode getNode() { result = n }
 
-  MethodCallExpr getMethodCall() { result = n }
-
-  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCall() = n and pos = TSelfParameterPosition()
-  }
+  predicate isBorrow() { isBorrow = true }
 
   override CfgScope getCfgScope() { result = n.getEnclosingCfgScope() }
 
-  override Location getLocation() { result = this.getReceiver().getLocation() }
+  override Location getLocation() { result = n.getLocation() }
 
-  override string toString() { result = "receiver for " + this.getReceiver() }
+  override string toString() {
+    if isBorrow = true then result = n + " [borrowed]" else result = n + " [dereferenced]"
+  }
+}
+
+/**
+ * The argument of a call _after_ any implicit borrow or dereferencing
+ * has taken place.
+ */
+final class DerefBorrowArgNode extends DerefBorrowNode, ArgumentNode {
+  private DataFlowCall call_;
+  private RustDataFlow::ArgumentPosition pos_;
+
+  DerefBorrowArgNode() { isArgumentForCall(n, call_.asFunctionCall(), pos_) }
+
+  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+    call = call_ and pos = pos_
+  }
 }
 
 final class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
@@ -280,8 +299,7 @@ final class ClosureArgumentNode extends ArgumentNode, ExprNode {
   ClosureArgumentNode() { lambdaCallExpr(call_, _, this.asExpr()) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCall() = call_ and
-    pos.isClosureSelf()
+    call.asFunctionCall() = call_ and pos.isClosureSelf()
   }
 }
 
@@ -329,11 +347,11 @@ abstract class OutNode extends Node {
 }
 
 final private class ExprOutNode extends ExprNode, OutNode {
-  ExprOutNode() { this.asExpr() instanceof Call }
+  ExprOutNode() { this.asExpr() instanceof FunctionCall }
 
   /** Gets the underlying call CFG node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
-    result.asCall() = n and
+    result.asFunctionCall() = n and
     kind = TNormalReturnKind()
   }
 }
@@ -402,16 +420,17 @@ final class ExprPostUpdateNode extends PostUpdateNode, TExprPostUpdateNode {
   override Location getLocation() { result = e.getLocation() }
 }
 
-final class ReceiverPostUpdateNode extends PostUpdateNode, TReceiverNode {
-  private Call call;
+final class DerefBorrowPostUpdateNode extends PostUpdateNode, TDerefBorrowNode {
+  private Expr arg;
+  private boolean isBorrow;
 
-  ReceiverPostUpdateNode() { this = TReceiverNode(call, true) }
+  DerefBorrowPostUpdateNode() { this = TDerefBorrowNode(arg, isBorrow, true) }
 
-  override Node getPreUpdateNode() { result = TReceiverNode(call, false) }
+  override DerefBorrowNode getPreUpdateNode() { result = TDerefBorrowNode(arg, isBorrow, false) }
 
-  override CfgScope getCfgScope() { result = call.getEnclosingCfgScope() }
+  override CfgScope getCfgScope() { result = arg.getEnclosingCfgScope() }
 
-  override Location getLocation() { result = call.getReceiver().getLocation() }
+  override Location getLocation() { result = arg.getLocation() }
 }
 
 final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
@@ -464,21 +483,19 @@ newtype TNode =
       or
       e =
         [
-          any(IndexExpr i).getBase(), //
           any(FieldExpr access).getContainer(), //
           any(TryExpr try).getExpr(), //
-          any(PrefixExpr pe | pe.getOperatorName() = "*").getExpr(), //
           any(AwaitExpr a).getExpr(), //
-          any(MethodCallExpr mc).getReceiver(), //
           getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
         ]
     )
   } or
-  TReceiverNode(Call call, Boolean isPost) {
-    call.hasEnclosingCfgScope() and
-    call.receiverImplicitlyBorrowed() and
-    // TODO: Handle index expressions as calls in data flow.
-    not call instanceof IndexExpr
+  TDerefBorrowNode(AstNode n, boolean borrow, Boolean isPost) {
+    TypeInference::implicitDeref(n) and
+    borrow = false
+    or
+    TypeInference::implicitBorrow(n) and
+    borrow = true
   } or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {

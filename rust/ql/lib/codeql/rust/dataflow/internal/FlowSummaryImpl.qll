@@ -12,18 +12,17 @@ private import codeql.rust.dataflow.Ssa
 private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
-  private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
   private import codeql.rust.frameworks.stdlib.Stdlib
 
   class SummarizedCallableBase = Function;
 
   abstract private class SourceSinkBase extends AstNode {
     /** Gets the associated call. */
-    abstract CallExprBase getCall();
+    abstract Call getCall();
 
     /** Holds if the associated call resolves to `path`. */
     final predicate callResolvesTo(string path) {
-      path = this.getCall().getStaticTarget().(Addressable).getCanonicalPath()
+      path = this.getCall().getStaticTarget().getCanonicalPath()
     }
   }
 
@@ -53,9 +52,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
-  string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) {
-    result = encodeParameterPosition(pos)
-  }
+  string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) { result = pos.toString() }
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
@@ -131,7 +128,9 @@ module Input implements InputSig<Location, RustDataFlow> {
 private import Make<Location, RustDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
-  DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
+  DataFlowCall getACall(Public::SummarizedCallable sc) {
+    result.asFunctionCall().getStaticTarget() = sc
+  }
 
   /** Gets the argument of `source` described by `sc`, if any. */
   private Expr getSourceNodeArgument(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
@@ -173,7 +172,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(CallExprBase call, Expr arg, ArgumentPosition pos |
+    exists(Call call, Expr arg, ArgumentPosition pos |
       result.asExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
       call = sink.getCall() and

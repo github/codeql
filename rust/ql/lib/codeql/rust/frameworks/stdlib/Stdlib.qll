@@ -10,7 +10,7 @@ private import codeql.rust.internal.PathResolution
 /**
  * A call to the `starts_with` method on a `Path`.
  */
-private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCallExpr {
+private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCall {
   StartswithCall() { this.getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with" }
 
   override predicate checks(Expr e, boolean branch) {

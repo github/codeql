@@ -25,7 +25,7 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
 }
 
 /** Holds if `call` has multiple static call targets including `target`. */
-query predicate multipleCallTargets(CallExprBase call, Callable target) {
+query predicate multipleCallTargets(Call call, Callable target) {
   target = call.getStaticTarget() and
   strictcount(call.getStaticTarget()) > 1
 }
@@ -56,7 +56,7 @@ int getPathResolutionInconsistencyCounts(string type) {
   result = count(Path p | multiplePathResolutions(p, _) | p)
   or
   type = "Multiple static call targets" and
-  result = count(CallExprBase call | multipleCallTargets(call, _) | call)
+  result = count(Call call | multipleCallTargets(call, _) | call)
   or
   type = "Multiple record fields" and
   result = count(FieldExpr fe | multipleStructFields(fe, _) | fe)

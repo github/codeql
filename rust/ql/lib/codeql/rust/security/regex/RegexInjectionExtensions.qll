@@ -53,10 +53,10 @@ module RegexInjection {
    */
   private class NewSink extends Sink {
     NewSink() {
-      exists(CallExprBase call, Addressable a |
+      exists(Call call, Addressable a |
         call.getStaticTarget() = a and
         a.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
-        this.asExpr() = call.getArg(0) and
+        this.asExpr() = call.getArgument(0) and
         not this.asExpr() instanceof LiteralExpr
       )
     }

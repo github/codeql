@@ -22,11 +22,12 @@ edges
 | src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:14 |
 | src/main.rs:11:24:11:32 | file_path | src/main.rs:11:5:11:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
 | src/main.rs:50:51:50:59 | file_path | src/main.rs:52:32:52:40 | file_path | provenance |  |
-| src/main.rs:52:9:52:17 | file_path [&ref] | src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | provenance | Config |
+| src/main.rs:52:9:52:17 | file_path [&ref] | src/main.rs:53:21:53:29 | file_path [&ref] | provenance |  |
 | src/main.rs:52:21:52:41 | ...::new(...) [&ref] | src/main.rs:52:9:52:17 | file_path [&ref] | provenance |  |
 | src/main.rs:52:31:52:40 | &file_path [&ref] | src/main.rs:52:21:52:41 | ...::new(...) [&ref] | provenance | MaD:13 |
 | src/main.rs:52:32:52:40 | file_path | src/main.rs:52:31:52:40 | &file_path [&ref] | provenance |  |
 | src/main.rs:53:9:53:17 | file_path | src/main.rs:58:24:58:32 | file_path | provenance |  |
+| src/main.rs:53:21:53:29 | file_path [&ref] | src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | provenance | Config |
 | src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | src/main.rs:53:21:53:53 | ... .unwrap() | provenance | MaD:12 |
 | src/main.rs:53:21:53:53 | ... .unwrap() | src/main.rs:53:9:53:17 | file_path | provenance |  |
 | src/main.rs:58:24:58:32 | file_path | src/main.rs:58:5:58:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
@@ -37,27 +38,22 @@ edges
 | src/main.rs:66:32:66:40 | file_path | src/main.rs:66:31:66:40 | &file_path [&ref] | provenance |  |
 | src/main.rs:71:24:71:32 | file_path [&ref] | src/main.rs:71:5:71:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
 | src/main.rs:90:11:90:19 | file_path | src/main.rs:93:32:93:40 | file_path | provenance |  |
-| src/main.rs:93:9:93:17 | file_path [&ref] | src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | provenance | Config |
+| src/main.rs:93:9:93:17 | file_path [&ref] | src/main.rs:98:21:98:29 | file_path [&ref] | provenance |  |
 | src/main.rs:93:21:93:41 | ...::new(...) [&ref] | src/main.rs:93:9:93:17 | file_path [&ref] | provenance |  |
 | src/main.rs:93:31:93:40 | &file_path [&ref] | src/main.rs:93:21:93:41 | ...::new(...) [&ref] | provenance | MaD:13 |
 | src/main.rs:93:32:93:40 | file_path | src/main.rs:93:31:93:40 | &file_path [&ref] | provenance |  |
 | src/main.rs:98:9:98:17 | file_path | src/main.rs:99:24:99:32 | file_path | provenance |  |
+| src/main.rs:98:21:98:29 | file_path [&ref] | src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | provenance | Config |
 | src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | src/main.rs:98:21:98:53 | ... .unwrap() | provenance | MaD:12 |
 | src/main.rs:98:21:98:53 | ... .unwrap() | src/main.rs:98:9:98:17 | file_path | provenance |  |
 | src/main.rs:99:24:99:32 | file_path | src/main.rs:99:5:99:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:37 | path1 | provenance |  |
-| src/main.rs:103:9:103:13 | path1 | src/main.rs:104:33:104:45 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:106:39:106:43 | path1 | provenance |  |
-| src/main.rs:103:9:103:13 | path1 | src/main.rs:106:39:106:51 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:109:41:109:45 | path1 | provenance |  |
-| src/main.rs:103:9:103:13 | path1 | src/main.rs:109:41:109:53 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:112:45:112:49 | path1 | provenance |  |
-| src/main.rs:103:9:103:13 | path1 | src/main.rs:112:45:112:57 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:115:39:115:43 | path1 | provenance |  |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:122:27:122:31 | path1 | provenance |  |
-| src/main.rs:103:9:103:13 | path1 | src/main.rs:122:27:122:39 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:9:103:13 | path1 | src/main.rs:123:37:123:41 | path1 | provenance |  |
-| src/main.rs:103:9:103:13 | path1 | src/main.rs:123:37:123:49 | path1.clone() | provenance | MaD:8 |
 | src/main.rs:103:17:103:30 | ...::args | src/main.rs:103:17:103:32 | ...::args(...) [element] | provenance | Src:MaD:7  |
 | src/main.rs:103:17:103:32 | ...::args(...) [element] | src/main.rs:103:17:103:39 | ... .nth(...) [Some] | provenance | MaD:10 |
 | src/main.rs:103:17:103:39 | ... .nth(...) [Some] | src/main.rs:103:17:103:48 | ... .unwrap() | provenance | MaD:11 |
@@ -89,8 +85,9 @@ edges
 | src/main.rs:115:38:115:43 | &path1 [&ref] | src/main.rs:115:17:115:44 | ...::new(...) [&ref] | provenance | MaD:13 |
 | src/main.rs:115:39:115:43 | path1 | src/main.rs:115:38:115:43 | &path1 [&ref] | provenance |  |
 | src/main.rs:116:33:116:37 | path5 [&ref] | src/main.rs:116:13:116:31 | ...::open | provenance | MaD:2 Sink:MaD:2 |
-| src/main.rs:116:33:116:37 | path5 [&ref] | src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | provenance | Config |
+| src/main.rs:116:33:116:37 | path5 [&ref] | src/main.rs:118:17:118:21 | path5 [&ref] | provenance |  |
 | src/main.rs:118:9:118:13 | path6 | src/main.rs:119:33:119:37 | path6 | provenance |  |
+| src/main.rs:118:17:118:21 | path5 [&ref] | src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | provenance | Config |
 | src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | src/main.rs:118:17:118:45 | ... .unwrap() | provenance | MaD:12 |
 | src/main.rs:118:17:118:45 | ... .unwrap() | src/main.rs:118:9:118:13 | path6 | provenance |  |
 | src/main.rs:119:33:119:37 | path6 | src/main.rs:119:13:119:31 | ...::open | provenance | MaD:2 Sink:MaD:2 |
@@ -124,7 +121,7 @@ models
 | 7 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 8 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
 | 9 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 10 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 10 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 11 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 12 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 13 | Summary: <std::path::Path>::new; Argument[0].Reference; ReturnValue.Reference; value |
@@ -142,6 +139,7 @@ nodes
 | src/main.rs:52:31:52:40 | &file_path [&ref] | semmle.label | &file_path [&ref] |
 | src/main.rs:52:32:52:40 | file_path | semmle.label | file_path |
 | src/main.rs:53:9:53:17 | file_path | semmle.label | file_path |
+| src/main.rs:53:21:53:29 | file_path [&ref] | semmle.label | file_path [&ref] |
 | src/main.rs:53:21:53:44 | file_path.canonicalize() [Ok] | semmle.label | file_path.canonicalize() [Ok] |
 | src/main.rs:53:21:53:53 | ... .unwrap() | semmle.label | ... .unwrap() |
 | src/main.rs:58:5:58:22 | ...::read_to_string | semmle.label | ...::read_to_string |
@@ -159,6 +157,7 @@ nodes
 | src/main.rs:93:31:93:40 | &file_path [&ref] | semmle.label | &file_path [&ref] |
 | src/main.rs:93:32:93:40 | file_path | semmle.label | file_path |
 | src/main.rs:98:9:98:17 | file_path | semmle.label | file_path |
+| src/main.rs:98:21:98:29 | file_path [&ref] | semmle.label | file_path [&ref] |
 | src/main.rs:98:21:98:44 | file_path.canonicalize() [Ok] | semmle.label | file_path.canonicalize() [Ok] |
 | src/main.rs:98:21:98:53 | ... .unwrap() | semmle.label | ... .unwrap() |
 | src/main.rs:99:5:99:22 | ...::read_to_string | semmle.label | ...::read_to_string |
@@ -201,6 +200,7 @@ nodes
 | src/main.rs:116:13:116:31 | ...::open | semmle.label | ...::open |
 | src/main.rs:116:33:116:37 | path5 [&ref] | semmle.label | path5 [&ref] |
 | src/main.rs:118:9:118:13 | path6 | semmle.label | path6 |
+| src/main.rs:118:17:118:21 | path5 [&ref] | semmle.label | path5 [&ref] |
 | src/main.rs:118:17:118:36 | path5.canonicalize() [Ok] | semmle.label | path5.canonicalize() [Ok] |
 | src/main.rs:118:17:118:45 | ... .unwrap() | semmle.label | ... .unwrap() |
 | src/main.rs:119:13:119:31 | ...::open | semmle.label | ...::open |

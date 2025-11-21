@@ -1,6 +1,22 @@
 multipleCallTargets
+| deallocation.rs:151:13:151:15 | * ... |
+| deallocation.rs:158:13:158:15 | * ... |
+| deallocation.rs:260:3:260:7 | * ... |
 | deallocation.rs:260:11:260:29 | ...::from(...) |
+| deallocation.rs:261:3:261:7 | * ... |
 | deallocation.rs:261:11:261:29 | ...::from(...) |
+| deallocation.rs:279:12:279:16 | * ... |
+| deallocation.rs:287:12:287:16 | * ... |
+| deallocation.rs:298:12:298:16 | * ... |
+| deallocation.rs:308:12:308:16 | * ... |
+| lifetime.rs:217:17:217:25 | * ... |
 | lifetime.rs:610:13:610:31 | ...::from(...) |
 | lifetime.rs:611:13:611:31 | ...::from(...) |
 | lifetime.rs:628:13:628:31 | ...::from(...) |
+| lifetime.rs:630:11:630:25 | * ... |
+| lifetime.rs:659:14:659:18 | * ... |
+| lifetime.rs:667:13:667:17 | * ... |
+| lifetime.rs:692:12:692:14 | * ... |
+| lifetime.rs:693:12:693:14 | * ... |
+| lifetime.rs:694:12:694:14 | * ... |
+| lifetime.rs:734:11:734:13 | * ... |

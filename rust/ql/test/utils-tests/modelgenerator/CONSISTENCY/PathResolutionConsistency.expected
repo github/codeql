@@ -1,0 +1,9 @@
+multipleCallTargets
+| option.rs:34:18:34:22 | * ... |
+| option.rs:61:15:61:19 | * ... |
+| option.rs:69:15:69:19 | * ... |
+| option.rs:306:9:306:13 | * ... |
+| option.rs:334:13:334:17 | * ... |
+| option.rs:482:27:482:29 | * ... |
+| summaries.rs:87:5:87:6 | * ... |
+| summaries.rs:92:5:92:6 | * ... |

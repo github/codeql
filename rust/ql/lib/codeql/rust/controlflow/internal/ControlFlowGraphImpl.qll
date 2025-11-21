@@ -512,7 +512,7 @@ module ExprTrees {
 
   class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
     override AstNode getChildNode(int i) {
-      if i = 0 then result = this.getReceiver() else result = this.getArg(i - 1)
+      if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
     }
   }
 

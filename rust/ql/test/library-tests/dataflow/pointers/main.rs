@@ -88,7 +88,7 @@ mod intraprocedural_mutable_borrows {
         let mut a = 1;
         sink(a);
         *(&mut a) = source(87);
-        sink(a); // $ MISSING: hasValueFlow=87
+        sink(a); // $ hasValueFlow=87
     }
 
     pub fn clear_through_borrow() {

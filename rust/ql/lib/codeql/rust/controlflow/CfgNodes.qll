@@ -201,27 +201,22 @@ final class BreakExprCfgNode extends Nodes::BreakExprCfgNode {
 }
 
 /**
- * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
- */
-final class CallExprBaseCfgNode extends Nodes::CallExprBaseCfgNode {
-  private CallExprBaseChildMapping node;
-
-  CallExprBaseCfgNode() { node = this.getAstNode() }
-
-  /** Gets the `i`th argument of this call. */
-  ExprCfgNode getArgument(int i) {
-    any(ChildMapping mapping).hasCfgChild(node, node.getArgList().getArg(i), this, result)
-  }
-}
-
-/**
  * A method call expression. For example:
  * ```rust
  * x.foo(42);
  * x.foo::<u32, u64>(42);
  * ```
  */
-final class MethodCallExprCfgNode extends CallExprBaseCfgNode, Nodes::MethodCallExprCfgNode { }
+final class MethodCallExprCfgNode extends Nodes::MethodCallExprCfgNode {
+  private MethodCallExprChildMapping node;
+
+  MethodCallExprCfgNode() { node = this.getAstNode() }
+
+  /** Gets the `i`th argument of this call. */
+  ExprCfgNode getArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getArgList().getArg(i), this, result)
+  }
+}
 
 /**
  * A CFG node that calls a function.
@@ -242,8 +237,8 @@ final class CallCfgNode extends ExprCfgNode {
   }
 
   /** Gets the `i`th argument of this call, if any. */
-  ExprCfgNode getPositionalArgument(int i) {
-    any(ChildMapping mapping).hasCfgChild(node, node.getPositionalArgument(i), this, result)
+  ExprCfgNode getArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getArgument(i), this, result)
   }
 }
 
@@ -256,7 +251,16 @@ final class CallCfgNode extends ExprCfgNode {
  * foo(1) = 4;
  * ```
  */
-final class CallExprCfgNode extends CallExprBaseCfgNode, Nodes::CallExprCfgNode { }
+final class CallExprCfgNode extends Nodes::CallExprCfgNode {
+  private CallExprChildMapping node;
+
+  CallExprCfgNode() { node = this.getAstNode() }
+
+  /** Gets the `i`th argument of this call. */
+  ExprCfgNode getArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getArgList().getArg(i), this, result)
+  }
+}
 
 /**
  * A FormatArgsExpr. For example:
