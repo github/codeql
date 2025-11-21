@@ -21,3 +21,4 @@ dataExtensions:
   - ext/deallocation/*.model.yml
   - ext/allocation/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true
