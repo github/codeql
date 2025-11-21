@@ -7,6 +7,8 @@ import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.internal.TypeInference as TypeInference
 private import codeql.rust.internal.Type
+private import codeql.rust.controlflow.ControlFlowGraph as Cfg
+private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 /**
@@ -39,4 +41,26 @@ class IntegralOrBooleanTypeBarrier extends DataFlow::Node {
       s instanceof Builtins::Bool
     )
   }
+}
+
+/**
+ * Holds if guard expression `g` having result `branch` indicates that the
+ * sub-expression `e` is not null. For example when `ptr.is_null()` is
+ * `false`, we have that `ptr` is not null.
+ */
+private predicate notNullCheck(AstNode g, Expr e, boolean branch) {
+  exists(MethodCallExpr call |
+    call.getStaticTarget().getName().getText() = "is_null" and
+    g = call and
+    e = call.getReceiver() and
+    branch = false
+  )
+}
+
+/**
+ * A node representing a value checked to be non-null. This may be an
+ * appropriate taint flow barrier for some queries.
+ */
+class NotNullCheckBarrier extends DataFlow::Node {
+  NotNullCheckBarrier() { this = DataFlow::BarrierGuard<notNullCheck/3>::getABarrierNode() }
 }

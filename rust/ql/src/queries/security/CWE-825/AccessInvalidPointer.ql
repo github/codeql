@@ -22,11 +22,13 @@ import AccessInvalidPointerFlow::PathGraph
  * A data flow configuration for accesses to invalid pointers.
  */
 module AccessInvalidPointerConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof AccessInvalidPointer::Source }
+  import AccessInvalidPointer
 
-  predicate isSink(DataFlow::Node node) { node instanceof AccessInvalidPointer::Sink }
+  predicate isSource(DataFlow::Node node) { node instanceof Source }
 
-  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessInvalidPointer::Barrier }
+  predicate isSink(DataFlow::Node node) { node instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
 
   predicate isBarrierOut(DataFlow::Node node) {
     // make sinks barriers so that we only report the closest instance
