@@ -13,6 +13,8 @@
 | main.rs:88:32:88:40 | sometimes | main.rs:75:22:75:25 | true | main.rs:88:32:88:40 | sometimes | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 | main.rs:93:32:93:47 | sometimes_global | main.rs:154:17:154:20 | true | main.rs:93:32:93:47 | sometimes_global | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 | main.rs:109:36:109:37 | b1 | main.rs:107:17:107:31 | ...::exists | main.rs:109:36:109:37 | b1 | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:115:36:115:37 | b2 | main.rs:113:43:113:50 | metadata | main.rs:115:36:115:37 | b2 | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:121:36:121:37 | b3 | main.rs:119:11:119:27 | ...::metadata | main.rs:121:36:121:37 | b3 | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 | main.rs:146:36:146:37 | b6 | main.rs:144:39:144:42 | true | main.rs:146:36:146:37 | b6 | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
 edges
 | main.rs:73:19:73:40 | ...: bool | main.rs:93:32:93:47 | sometimes_global | provenance |  |
@@ -21,15 +23,29 @@ edges
 | main.rs:75:6:75:18 | mut sometimes | main.rs:88:32:88:40 | sometimes | provenance |  |
 | main.rs:75:22:75:25 | true | main.rs:75:6:75:18 | mut sometimes | provenance |  |
 | main.rs:107:6:107:7 | b1 | main.rs:109:36:109:37 | b1 | provenance |  |
-| main.rs:107:17:107:31 | ...::exists | main.rs:107:17:107:42 | ...::exists(...) [Ok] | provenance | Src:MaD:1  |
-| main.rs:107:17:107:42 | ...::exists(...) [Ok] | main.rs:107:17:107:51 | ... .unwrap() | provenance | MaD:2 |
+| main.rs:107:17:107:31 | ...::exists | main.rs:107:17:107:42 | ...::exists(...) [Ok] | provenance | Src:MaD:2  |
+| main.rs:107:17:107:42 | ...::exists(...) [Ok] | main.rs:107:17:107:51 | ... .unwrap() | provenance | MaD:4 |
 | main.rs:107:17:107:51 | ... .unwrap() | main.rs:107:6:107:7 | b1 | provenance |  |
+| main.rs:113:6:113:7 | b2 | main.rs:115:36:115:37 | b2 | provenance |  |
+| main.rs:113:11:113:52 | ... .metadata() [Ok] | main.rs:113:11:113:61 | ... .unwrap() | provenance | MaD:4 |
+| main.rs:113:11:113:61 | ... .unwrap() | main.rs:113:11:113:71 | ... .is_file() | provenance | MaD:6 |
+| main.rs:113:11:113:71 | ... .is_file() | main.rs:113:6:113:7 | b2 | provenance |  |
+| main.rs:113:43:113:50 | metadata | main.rs:113:11:113:52 | ... .metadata() [Ok] | provenance | Src:MaD:1  |
+| main.rs:119:6:119:7 | b3 | main.rs:121:36:121:37 | b3 | provenance |  |
+| main.rs:119:11:119:27 | ...::metadata | main.rs:119:11:119:38 | ...::metadata(...) [Ok] | provenance | Src:MaD:3  |
+| main.rs:119:11:119:38 | ...::metadata(...) [Ok] | main.rs:119:11:119:47 | ... .unwrap() | provenance | MaD:4 |
+| main.rs:119:11:119:47 | ... .unwrap() | main.rs:119:11:119:56 | ... .is_dir() | provenance | MaD:5 |
+| main.rs:119:11:119:56 | ... .is_dir() | main.rs:119:6:119:7 | b3 | provenance |  |
 | main.rs:144:6:144:7 | b6 | main.rs:146:36:146:37 | b6 | provenance |  |
 | main.rs:144:39:144:42 | true | main.rs:144:6:144:7 | b6 | provenance |  |
 | main.rs:154:17:154:20 | true | main.rs:73:19:73:40 | ...: bool | provenance |  |
 models
-| 1 | Source: std::fs::exists; ReturnValue.Field[core::result::Result::Ok(0)]; file |
-| 2 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 1 | Source: <std::path::Path>::metadata; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 2 | Source: std::fs::exists; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 3 | Source: std::fs::metadata; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 4 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 5 | Summary: <std::fs::Metadata>::is_dir; Argument[self].Reference; ReturnValue; taint |
+| 6 | Summary: <std::fs::Metadata>::is_file; Argument[self].Reference; ReturnValue; taint |
 nodes
 | main.rs:4:32:4:35 | true | semmle.label | true |
 | main.rs:9:36:9:39 | true | semmle.label | true |
@@ -54,6 +70,18 @@ nodes
 | main.rs:107:17:107:42 | ...::exists(...) [Ok] | semmle.label | ...::exists(...) [Ok] |
 | main.rs:107:17:107:51 | ... .unwrap() | semmle.label | ... .unwrap() |
 | main.rs:109:36:109:37 | b1 | semmle.label | b1 |
+| main.rs:113:6:113:7 | b2 | semmle.label | b2 |
+| main.rs:113:11:113:52 | ... .metadata() [Ok] | semmle.label | ... .metadata() [Ok] |
+| main.rs:113:11:113:61 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:113:11:113:71 | ... .is_file() | semmle.label | ... .is_file() |
+| main.rs:113:43:113:50 | metadata | semmle.label | metadata |
+| main.rs:115:36:115:37 | b2 | semmle.label | b2 |
+| main.rs:119:6:119:7 | b3 | semmle.label | b3 |
+| main.rs:119:11:119:27 | ...::metadata | semmle.label | ...::metadata |
+| main.rs:119:11:119:38 | ...::metadata(...) [Ok] | semmle.label | ...::metadata(...) [Ok] |
+| main.rs:119:11:119:47 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:119:11:119:56 | ... .is_dir() | semmle.label | ... .is_dir() |
+| main.rs:121:36:121:37 | b3 | semmle.label | b3 |
 | main.rs:144:6:144:7 | b6 | semmle.label | b6 |
 | main.rs:144:39:144:42 | true | semmle.label | true |
 | main.rs:146:36:146:37 | b6 | semmle.label | b6 |

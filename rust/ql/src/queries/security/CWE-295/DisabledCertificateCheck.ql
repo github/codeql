@@ -13,6 +13,7 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
+import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.DisabledCertificateCheckExtensions
 import codeql.rust.Concepts
 
@@ -35,7 +36,7 @@ module DisabledCertificateCheckConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-module DisabledCertificateCheckFlow = DataFlow::Global<DisabledCertificateCheckConfig>;
+module DisabledCertificateCheckFlow = TaintTracking::Global<DisabledCertificateCheckConfig>;
 
 import DisabledCertificateCheckFlow::PathGraph
 

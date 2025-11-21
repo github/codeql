@@ -110,15 +110,15 @@ fn test_threat_model_source() {
 		.build()
 		.unwrap();
 
-	let b2 = std::path::Path::new("main.rs").metadata().unwrap().is_file();
+	let b2 = std::path::Path::new("main.rs").metadata().unwrap().is_file(); // $ Source=is_file
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_hostnames(b2) // $ MISSING: Alert[rust/disabled-certificate-check]=fs
+		.danger_accept_invalid_hostnames(b2) // $ Alert[rust/disabled-certificate-check]=is_file
 		.build()
 		.unwrap();
 
-	let b3 = std::fs::metadata("main.rs").unwrap().is_dir();
+	let b3 = std::fs::metadata("main.rs").unwrap().is_dir(); // $ Source=is_dir
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_hostnames(b3) // $ MISSING: Alert[rust/disabled-certificate-check]=fs
+		.danger_accept_invalid_hostnames(b3) // $ Alert[rust/disabled-certificate-check]=is_dir
 		.build()
 		.unwrap();
 
