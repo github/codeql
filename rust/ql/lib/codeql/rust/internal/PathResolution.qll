@@ -307,7 +307,7 @@ abstract class ItemNode extends Locatable {
       this = impl and
       trait = impl.resolveTraitTyCand() and
       result = trait.getASuccessor(name, kind, useOpt) and
-      // do not inerit default implementations from super traits; those are inherited by
+      // do not inherit default implementations from super traits; those are inherited by
       // their `impl` blocks
       result = trait.getAssocItem(name) and
       result.(AssocItemNode).hasImplementation() and
