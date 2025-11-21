@@ -345,7 +345,17 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
 
   /** Holds if this export declaration exports variable `v` under the name `name`. */
   overlay[global]
-  abstract predicate exportsAs(LexicalName v, string name);
+  final predicate exportsAs(LexicalName v, string name) {
+    this.exportsDirectlyAs(v, name)
+    or
+    this.(ReExportDeclaration).reExportsAs(v, name)
+  }
+
+  /**
+   * Holds if this export declaration exports variable `v` under the name `name`,
+   * not counting re-exports.
+   */
+  predicate exportsDirectlyAs(LexicalName v, string name) { none() }
 
   /**
    * Gets the data flow node corresponding to the value this declaration exports
@@ -421,7 +431,7 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
   override ConstantString getImportedPath() { result = this.getChildExpr(0) }
 
   overlay[global]
-  override predicate exportsAs(LexicalName v, string name) {
+  override predicate reExportsAs(LexicalName v, string name) {
     this.getReExportedES2015Module().exportsAs(v, name) and
     not isShadowedFromBulkExport(this.getEnclosingModule(), name)
   }
@@ -468,8 +478,7 @@ class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declar
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = this.getChild(0) }
 
-  overlay[global]
-  override predicate exportsAs(LexicalName v, string name) {
+  override predicate exportsDirectlyAs(LexicalName v, string name) {
     name = "default" and v = this.getADecl().getVariable()
   }
 
@@ -524,16 +533,13 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
   /** Gets the variable declaration, if any, exported by this named export. */
   VarDecl getADecl() { result = this.getAnExportedDecl() }
 
-  overlay[global]
-  override predicate exportsAs(LexicalName v, string name) {
+  override predicate exportsDirectlyAs(LexicalName v, string name) {
     exists(LexicalDecl vd | vd = this.getAnExportedDecl() |
       name = vd.getName() and v = vd.getALexicalName()
     )
     or
     exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
       v = spec.getLocal().(LexicalAccess).getALexicalName()
-      or
-      this.(ReExportDeclaration).getReExportedES2015Module().exportsAs(v, spec.getLocalName())
     )
   }
 
@@ -593,9 +599,8 @@ private class ExportNamespaceStep extends PreCallGraphStep {
 private class TypeOnlyExportDeclaration extends ExportNamedDeclaration {
   TypeOnlyExportDeclaration() { this.isTypeOnly() }
 
-  overlay[global]
-  override predicate exportsAs(LexicalName v, string name) {
-    super.exportsAs(v, name) and
+  override predicate exportsDirectlyAs(LexicalName v, string name) {
+    super.exportsDirectlyAs(v, name) and
     not v instanceof Variable
   }
 }
@@ -777,6 +782,9 @@ abstract class ReExportDeclaration extends ExportDeclaration {
     Stages::Imports::ref() and
     result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
   }
+
+  overlay[global]
+  abstract predicate reExportsAs(LexicalName v, string name);
 }
 
 /** A literal path expression appearing in a re-export declaration. */
@@ -802,6 +810,13 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
   /** Gets the path of the module from which this declaration re-exports. */
   override ConstantString getImportedPath() {
     result = ExportNamedDeclaration.super.getImportedPath()
+  }
+
+  overlay[global]
+  override predicate reExportsAs(LexicalName v, string name) {
+    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
+      this.getReExportedES2015Module().exportsAs(v, spec.getLocalName())
+    )
   }
 }
 
