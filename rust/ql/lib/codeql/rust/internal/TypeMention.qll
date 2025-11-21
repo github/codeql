@@ -20,11 +20,11 @@ abstract class TypeMention extends AstNode {
 class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TTuple(super.getNumberOfFields())
+    result.(TupleType).getArity() = super.getNumberOfFields()
     or
     exists(TypePath suffix, int i |
       result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfFields(), i), suffix)
+      path = TypePath::cons(getTupleTypeParameter(super.getNumberOfFields(), i), suffix)
     )
   }
 }
@@ -32,11 +32,11 @@ class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
 class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedArgList {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TTuple(super.getNumberOfTypeArgs())
+    result.(TupleType).getArity() = super.getNumberOfTypeArgs()
     or
     exists(TypePath suffix, int index |
       result = super.getTypeArg(index).getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
+      path = TypePath::cons(getTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
     )
   }
 }
@@ -44,11 +44,11 @@ class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedAr
 class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TArrayType()
+    result instanceof ArrayType
     or
     exists(TypePath suffix |
       result = super.getElementTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TArrayTypeParameter(), suffix)
+      path = TypePath::cons(getArrayTypeParameter(), suffix)
     )
   }
 }
@@ -56,11 +56,11 @@ class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
 class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TRefType()
+    result instanceof RefType
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TRefTypeParameter(), suffix)
+      path = TypePath::cons(getRefTypeParameter(), suffix)
     )
   }
 }
@@ -68,11 +68,11 @@ class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
 class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TSliceType()
+    result instanceof SliceType
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TSliceTypeParameter(), suffix)
+      path = TypePath::cons(getSliceTypeParameter(), suffix)
     )
   }
 }
@@ -106,6 +106,20 @@ class AliasPathTypeMention extends PathTypeMention {
       typePath = prefix.append(suffix)
     )
   }
+}
+
+/**
+ * Gets the `i`th type argument of `p`.
+ *
+ * Takes into account that variants can have type arguments applied to both the
+ * enum and the variant itself, e.g. `Option::<i32>::Some` is valid in addition
+ * to `Option::Some::<i32>`.
+ */
+TypeMention getPathTypeArgument(Path p, int i) {
+  result = p.getSegment().getGenericArgList().getTypeArg(i)
+  or
+  resolvePath(p) instanceof Variant and
+  result = p.getQualifier().getSegment().getGenericArgList().getTypeArg(i)
 }
 
 class NonAliasPathTypeMention extends PathTypeMention {
@@ -144,18 +158,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
   }
 
   /**
-   * Gets the positional type argument at index `i` that occurs in this path, if
-   * any.
-   */
-  private TypeMention getPathPositionalTypeArgument(int i) {
-    result = this.getSegment().getGenericArgList().getTypeArg(i)
-    or
-    // `Option::<i32>::Some` is valid in addition to `Option::Some::<i32>`
-    resolvePath(this) instanceof Variant and
-    result = this.getQualifier().getSegment().getGenericArgList().getTypeArg(i)
-  }
-
-  /**
    * Gets the type mention that instantiates the implicit `Self` type parameter
    * for this path, if it occurs in the position of a trait bound.
    */
@@ -173,7 +175,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   private Type getDefaultPositionalTypeArgument(int i, TypePath path) {
     // If a type argument is not given in the path, then we use the default for
     // the type parameter if one exists for the type.
-    not exists(this.getPathPositionalTypeArgument(i)) and
+    not exists(getPathTypeArgument(this, i)) and
     // Defaults only apply to type mentions in type annotations
     this = any(PathTypeRepr ptp).getPath().getQualifier*() and
     exists(Type ty, TypePath prefix |
@@ -191,7 +193,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   }
 
   private Type getPositionalTypeArgument(int i, TypePath path) {
-    result = this.getPathPositionalTypeArgument(i).resolveTypeAt(path)
+    result = getPathTypeArgument(this, i).resolveTypeAt(path)
     or
     result = this.getDefaultPositionalTypeArgument(i, path)
   }
@@ -205,6 +207,11 @@ class NonAliasPathTypeMention extends PathTypeMention {
       result = this.getPositionalTypeArgument(pragma[only_bind_into](i), path) and
       tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
     )
+  }
+
+  pragma[nomagic]
+  private TypeAlias getResolvedAlias(string name) {
+    result = resolved.(TraitItemNode).getAssocItem(name)
   }
 
   /** Gets the type mention in this path for the type parameter `tp`, if any. */
@@ -228,16 +235,11 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // }
     // ```
     // the rhs. of the type alias is a type argument to the trait.
-    exists(ImplItemNode impl, AssociatedTypeTypeParameter param, TypeAlias alias, string name |
+    exists(ImplItemNode impl, TypeAlias alias, string name |
       this = impl.getTraitPath() and
-      param.getTrait() = resolved and
-      name = param.getTypeAlias().getName().getText() and
       alias = impl.getASuccessor(pragma[only_bind_into](name)) and
       result = alias.getTypeRepr() and
-      tp =
-        TAssociatedTypeTypeParameter(resolved
-              .(TraitItemNode)
-              .getAssocItem(pragma[only_bind_into](name)))
+      tp = TAssociatedTypeTypeParameter(this.getResolvedAlias(pragma[only_bind_into](name)))
     )
     or
     // Handle the special syntactic sugar for function traits. For now we only
@@ -289,6 +291,9 @@ class NonAliasPathTypeMention extends PathTypeMention {
       result = this.getSelfTraitBoundArg().resolveTypeAt(suffix) and
       typePath = TypePath::cons(TSelfTypeParameter(resolved), suffix)
     )
+    or
+    not this.getSegment().hasTraitTypeRepr() and
+    result = this.getSegment().getTypeRepr().(TypeMention).resolveTypeAt(typePath)
   }
 }
 
@@ -424,11 +429,11 @@ class ShorthandSelfParameterMention extends TypeMention instanceof SelfParam {
     then
       // `fn f(&self, ...)`
       typePath.isEmpty() and
-      result = TRefType()
+      result instanceof RefType
       or
       exists(TypePath suffix |
         result = this.resolveSelfType(suffix) and
-        typePath = TypePath::cons(TRefTypeParameter(), suffix)
+        typePath = TypePath::cons(getRefTypeParameter(), suffix)
       )
     else
       // `fn f(self, ...)`
@@ -539,11 +544,11 @@ class NeverTypeReprMention extends TypeMention, NeverTypeRepr {
 class PtrTypeReprMention extends TypeMention instanceof PtrTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TPtrType()
+    result instanceof PtrType
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TPtrTypeParameter(), suffix)
+      path = TypePath::cons(getPtrTypeParameter(), suffix)
     )
   }
 }

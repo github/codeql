@@ -18,20 +18,20 @@ private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
  * representation of the path has `name` as a prefix.
  */
 bindingset[name]
-private predicate callTargetName(CallExprCfgNode call, string name) {
-  call.getFunction().(PathExprCfgNode).toString().matches(name + "%")
+private predicate callTargetName(CallExpr call, string name) {
+  call.getFunction().(PathExpr).toString().matches(name + "%")
 }
 
 private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
   predicate defaultSource(DataFlow::Node source) { callTargetName(source.asExpr(), "source") }
 
   predicate defaultSink(DataFlow::Node sink) {
-    any(CallExprCfgNode call | callTargetName(call, "sink")).getArgument(_) = sink.asExpr()
+    any(CallExpr call | callTargetName(call, "sink")).getAnArg() = sink.asExpr()
   }
 
   private string getSourceArgString(DataFlow::Node src) {
     defaultSource(src) and
-    result = src.asExpr().(CallExprCfgNode).getArgument(0).toString()
+    result = src.asExpr().(CallExpr).getArg(0).toString()
     or
     sourceNode(src, _) and
     result = src.(Node::FlowSummaryNode).getSourceElement().getCall().getArg(0).toString() and

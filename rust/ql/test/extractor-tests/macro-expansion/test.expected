@@ -1,19 +1,19 @@
 attribute_macros
-| macro_expansion.rs:3:1:12:1 | fn foo | 0 | macro_expansion.rs:4:1:12:1 | fn foo |
-| macro_expansion.rs:3:1:12:1 | fn foo | 1 | macro_expansion.rs:4:1:12:1 | fn foo_new |
-| macro_expansion.rs:7:5:8:17 | fn inner | 0 | macro_expansion.rs:8:5:8:17 | fn inner_0 |
-| macro_expansion.rs:7:5:8:17 | fn inner | 0 | macro_expansion.rs:8:5:8:17 | fn inner_0 |
-| macro_expansion.rs:7:5:8:17 | fn inner | 1 | macro_expansion.rs:8:5:8:17 | fn inner_1 |
-| macro_expansion.rs:7:5:8:17 | fn inner | 1 | macro_expansion.rs:8:5:8:17 | fn inner_1 |
-| macro_expansion.rs:14:1:16:15 | fn bar | 0 | macro_expansion.rs:15:1:16:15 | fn bar_0 |
-| macro_expansion.rs:14:1:16:15 | fn bar | 1 | macro_expansion.rs:15:1:16:15 | fn bar_1 |
-| macro_expansion.rs:15:1:16:15 | fn bar_0 | 0 | macro_expansion.rs:16:1:16:15 | fn bar_0 |
-| macro_expansion.rs:15:1:16:15 | fn bar_0 | 1 | macro_expansion.rs:16:1:16:15 | fn bar_0_new |
-| macro_expansion.rs:15:1:16:15 | fn bar_1 | 0 | macro_expansion.rs:16:1:16:15 | fn bar_1 |
-| macro_expansion.rs:15:1:16:15 | fn bar_1 | 1 | macro_expansion.rs:16:1:16:15 | fn bar_1_new |
-| macro_expansion.rs:31:5:34:5 | fn bzz | 0 | macro_expansion.rs:32:5:34:5 | fn bzz_0 |
-| macro_expansion.rs:31:5:34:5 | fn bzz | 1 | macro_expansion.rs:32:5:34:5 | fn bzz_1 |
-| macro_expansion.rs:31:5:34:5 | fn bzz | 2 | macro_expansion.rs:32:5:34:5 | fn bzz_2 |
+| macro_expansion.rs:3:1:12:1 | (item with attribute macro expansion) | 0 | macro_expansion.rs:4:1:12:1 | fn foo |
+| macro_expansion.rs:3:1:12:1 | (item with attribute macro expansion) | 1 | macro_expansion.rs:4:1:12:1 | fn foo_new |
+| macro_expansion.rs:7:5:8:17 | (item with attribute macro expansion) | 0 | macro_expansion.rs:8:5:8:17 | fn inner_0 |
+| macro_expansion.rs:7:5:8:17 | (item with attribute macro expansion) | 0 | macro_expansion.rs:8:5:8:17 | fn inner_0 |
+| macro_expansion.rs:7:5:8:17 | (item with attribute macro expansion) | 1 | macro_expansion.rs:8:5:8:17 | fn inner_1 |
+| macro_expansion.rs:7:5:8:17 | (item with attribute macro expansion) | 1 | macro_expansion.rs:8:5:8:17 | fn inner_1 |
+| macro_expansion.rs:14:1:16:15 | (item with attribute macro expansion) | 0 | macro_expansion.rs:15:1:16:15 | (item with attribute macro expansion) |
+| macro_expansion.rs:14:1:16:15 | (item with attribute macro expansion) | 1 | macro_expansion.rs:15:1:16:15 | (item with attribute macro expansion) |
+| macro_expansion.rs:15:1:16:15 | (item with attribute macro expansion) | 0 | macro_expansion.rs:16:1:16:15 | fn bar_0 |
+| macro_expansion.rs:15:1:16:15 | (item with attribute macro expansion) | 0 | macro_expansion.rs:16:1:16:15 | fn bar_1 |
+| macro_expansion.rs:15:1:16:15 | (item with attribute macro expansion) | 1 | macro_expansion.rs:16:1:16:15 | fn bar_0_new |
+| macro_expansion.rs:15:1:16:15 | (item with attribute macro expansion) | 1 | macro_expansion.rs:16:1:16:15 | fn bar_1_new |
+| macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 0 | macro_expansion.rs:32:5:34:5 | fn bzz_0 |
+| macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 1 | macro_expansion.rs:32:5:34:5 | fn bzz_1 |
+| macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 2 | macro_expansion.rs:32:5:34:5 | fn bzz_2 |
 derive_macros
 | macro_expansion.rs:83:1:86:1 | struct MyDerive | 0 | 0 | macro_expansion.rs:84:8:85:9 | impl ...::Debug for MyDerive::<...> { ... } |
 | macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 0 | 0 | macro_expansion.rs:89:6:91:12 | impl ...::PartialEq for MyDeriveEnum::<...> { ... } |
@@ -46,8 +46,6 @@ macro_calls
 | macro_expansion.rs:79:12:79:20 | my_int!... | macro_expansion.rs:79:12:79:18 | i32 |
 unexpanded_macro_calls
 | included/included.rs:2:9:2:39 | concat!... |
-| macro_expansion.rs:5:9:5:35 | concat!... |
-| macro_expansion.rs:33:9:33:16 | hello!... |
 | macro_expansion.rs:56:9:56:31 | concat!... |
 | macro_expansion.rs:63:9:63:32 | include_str!... |
 warnings

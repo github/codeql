@@ -14,7 +14,7 @@ private predicate emptyDecl(LocalVariableDeclExpr decl) {
 /** A dead variable update. */
 predicate deadLocal(VariableUpdate upd) {
   upd.getDestVar() instanceof LocalScopeVariable and
-  not exists(SsaExplicitUpdate ssa | upd = ssa.getDefiningExpr()) and
+  not exists(SsaExplicitWrite ssa | upd = ssa.getDefiningExpr()) and
   not emptyDecl(upd) and
   not readImplicitly(upd, _)
 }

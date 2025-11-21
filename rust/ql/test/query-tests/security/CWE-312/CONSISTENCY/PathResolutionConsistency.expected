@@ -13,7 +13,6 @@ multipleCallTargets
 | test_storage.rs:73:25:73:67 | ...::from(...) |
 | test_storage.rs:75:25:75:65 | ...::from(...) |
 | test_storage.rs:76:25:76:65 | ...::from(...) |
-| test_storage.rs:77:14:77:24 | s1.as_str() |
 | test_storage.rs:78:25:78:65 | ...::from(...) |
 | test_storage.rs:79:25:79:65 | ...::from(...) |
 | test_storage.rs:80:25:80:70 | ...::from(...) |

@@ -7,7 +7,7 @@ import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.internal.TypeInference as TypeInference
 private import codeql.rust.internal.Type
-private import codeql.rust.frameworks.stdlib.Builtins
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 /**
  * A node whose type is a numeric or boolean type, which may be an appropriate
@@ -16,11 +16,11 @@ private import codeql.rust.frameworks.stdlib.Builtins
 class NumericTypeBarrier extends DataFlow::Node {
   NumericTypeBarrier() {
     exists(StructType t, Struct s |
-      t = TypeInference::inferType(this.asExpr().getExpr()) and
+      t = TypeInference::inferType(this.asExpr()) and
       s = t.getStruct()
     |
-      s instanceof NumericType or
-      s instanceof Bool
+      s instanceof Builtins::NumericType or
+      s instanceof Builtins::Bool
     )
   }
 }
@@ -32,11 +32,11 @@ class NumericTypeBarrier extends DataFlow::Node {
 class IntegralOrBooleanTypeBarrier extends DataFlow::Node {
   IntegralOrBooleanTypeBarrier() {
     exists(StructType t, Struct s |
-      t = TypeInference::inferType(this.asExpr().getExpr()) and
+      t = TypeInference::inferType(this.asExpr()) and
       s = t.getStruct()
     |
-      s instanceof IntegralType or
-      s instanceof Bool
+      s instanceof Builtins::IntegralType or
+      s instanceof Builtins::Bool
     )
   }
 }

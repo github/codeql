@@ -32,9 +32,9 @@ private predicate validationCall(MethodCall ma, VarAccess va) {
 }
 
 private predicate validatedAccess(VarAccess va) {
-  exists(SsaVariable v, MethodCall guardcall |
-    va = v.getAUse() and
-    validationCall(guardcall, v.getAUse())
+  exists(SsaDefinition v, MethodCall guardcall |
+    va = v.getARead() and
+    validationCall(guardcall, v.getARead())
   |
     guardcall.(Guard).controls(va.getBasicBlock(), _)
     or

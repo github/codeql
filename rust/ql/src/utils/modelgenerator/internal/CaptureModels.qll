@@ -120,7 +120,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   }
 
   QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
-    result.getFunction() = node.asExpr().getScope()
+    result.getFunction() = node.asExpr().getEnclosingCfgScope()
   }
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }

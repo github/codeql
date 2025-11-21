@@ -1,0 +1,24 @@
+#select
+| hashing.go:22:8:22:22 | secretByteSlice | hashing.go:22:8:22:22 | secretByteSlice | hashing.go:22:8:22:22 | secretByteSlice | $@ is used in a hashing algorithm (MD5) that is insecure. | hashing.go:22:8:22:22 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:23:10:23:24 | secretByteSlice | hashing.go:23:10:23:24 | secretByteSlice | hashing.go:23:10:23:24 | secretByteSlice | $@ is used in a hashing algorithm (MD5) that is insecure. | hashing.go:23:10:23:24 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:24:20:24:31 | secretString | hashing.go:24:20:24:31 | secretString | hashing.go:24:20:24:31 | secretString | $@ is used in a hashing algorithm (MD5) that is insecure. | hashing.go:24:20:24:31 | secretString | Sensitive data (secret) |
+| hashing.go:25:10:25:24 | secretByteSlice | hashing.go:25:10:25:24 | secretByteSlice | hashing.go:25:10:25:24 | secretByteSlice | $@ is used in a hashing algorithm (MD5) that is insecure. | hashing.go:25:10:25:24 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:27:17:27:31 | secretByteSlice | hashing.go:27:17:27:31 | secretByteSlice | hashing.go:27:17:27:31 | secretByteSlice | $@ is used in a hashing algorithm (SHA1) that is insecure. | hashing.go:27:17:27:31 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:28:11:28:25 | secretByteSlice | hashing.go:28:11:28:25 | secretByteSlice | hashing.go:28:11:28:25 | secretByteSlice | $@ is used in a hashing algorithm (SHA1) that is insecure. | hashing.go:28:11:28:25 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:30:16:30:30 | secretByteSlice | hashing.go:30:16:30:30 | secretByteSlice | hashing.go:30:16:30:30 | secretByteSlice | $@ is used in a hashing algorithm (MD4) that is insecure. | hashing.go:30:16:30:30 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:31:22:31:36 | secretByteSlice | hashing.go:31:22:31:36 | secretByteSlice | hashing.go:31:22:31:36 | secretByteSlice | $@ is used in a hashing algorithm (RIPEMD160) that is insecure. | hashing.go:31:22:31:36 | secretByteSlice | Sensitive data (secret) |
+| hashing.go:82:23:82:38 | type conversion | hashing.go:82:30:82:37 | password | hashing.go:82:23:82:38 | type conversion | $@ is used in a hashing algorithm (SHA256) that is insecure for password hashing, since it is not a computationally expensive hash function. | hashing.go:82:30:82:37 | password | Sensitive data (password) |
+edges
+| hashing.go:82:30:82:37 | password | hashing.go:82:23:82:38 | type conversion | provenance |  |
+nodes
+| hashing.go:22:8:22:22 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:23:10:23:24 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:24:20:24:31 | secretString | semmle.label | secretString |
+| hashing.go:25:10:25:24 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:27:17:27:31 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:28:11:28:25 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:30:16:30:30 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:31:22:31:36 | secretByteSlice | semmle.label | secretByteSlice |
+| hashing.go:82:23:82:38 | type conversion | semmle.label | type conversion |
+| hashing.go:82:30:82:37 | password | semmle.label | password |
+subpaths

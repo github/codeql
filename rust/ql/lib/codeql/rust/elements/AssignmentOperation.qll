@@ -25,6 +25,11 @@ final class AssignmentOperation = AssignmentOperationImpl;
 final class AssignmentExpr extends AssignmentOperationImpl {
   AssignmentExpr() { this.getOperatorName() = "=" }
 
+  /**
+   * Gets a write access that occurs in the left-hand side of this assignment expression.
+   */
+  VariableWriteAccess getAWriteAccess() { this = result.getAssignmentExpr() }
+
   override string getAPrimaryQlClass() { result = "AssignmentExpr" }
 }
 

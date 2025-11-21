@@ -7,6 +7,7 @@
 
 import javascript
 
+overlay[local]
 class BadSourceNode extends DataFlow::SourceNode {
   BadSourceNode() { this.(DataFlow::PropRead).getPropertyName() = "foo" }
 
