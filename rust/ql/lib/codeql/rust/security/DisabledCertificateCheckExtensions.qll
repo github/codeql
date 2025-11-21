@@ -26,4 +26,17 @@ module DisabledCertificateCheckExtensions {
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "disable-certificate") }
   }
+
+  /**
+   * A heuristic sink for disabled certificate check vulnerabilities based on function names.
+   */
+  private class HeuristicSink extends Sink {
+    HeuristicSink() {
+      exists(CallExprBase fc |
+        fc.getStaticTarget().(Function).getName().getText() =
+          ["danger_accept_invalid_certs", "danger_accept_invalid_hostnames"] and
+        fc.getArg(0) = this.asExpr()
+      )
+    }
+  }
 }
