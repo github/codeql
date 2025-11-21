@@ -5,6 +5,8 @@
  */
 
 private import codeql.rust.elements.internal.generated.Const
+private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+private import codeql.rust.elements.internal.IdentPatImpl::Impl as IdentPatImpl
 private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
 private import codeql.rust.internal.PathResolution
 
@@ -36,14 +38,30 @@ module Impl {
    * }
    * ```
    */
-  class ConstAccess extends PathExprImpl::PathExpr {
-    private Const c;
-
-    ConstAccess() { c = resolvePath(this.getPath()) }
-
+  abstract class ConstAccess extends AstNodeImpl::AstNode {
     /** Gets the constant being accessed. */
-    Const getConst() { result = c }
+    abstract Const getConst();
 
     override string getAPrimaryQlClass() { result = "ConstAccess" }
+  }
+
+  private class PathExprConstAccess extends ConstAccess, PathExprImpl::PathExpr {
+    private Const c;
+
+    PathExprConstAccess() { c = resolvePath(this.getPath()) }
+
+    override Const getConst() { result = c }
+
+    override string getAPrimaryQlClass() { result = ConstAccess.super.getAPrimaryQlClass() }
+  }
+
+  private class IdentPatConstAccess extends ConstAccess, IdentPatImpl::IdentPat {
+    private Const c;
+
+    IdentPatConstAccess() { c = resolvePath(this) }
+
+    override Const getConst() { result = c }
+
+    override string getAPrimaryQlClass() { result = ConstAccess.super.getAPrimaryQlClass() }
   }
 }

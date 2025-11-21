@@ -31,6 +31,8 @@ module Impl {
 
     override string toStringImpl() { result = this.getName() }
 
+    override string getAPrimaryQlClass() { result = "FormatTemplateVariableAccess" }
+
     /** Gets the name of the variable */
     string getName() { result = argument.getName() }
 

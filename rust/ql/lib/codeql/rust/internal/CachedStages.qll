@@ -115,13 +115,11 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(resolvePath(_))
+      exists(resolvePathIgnoreVariableShadowing(_))
       or
       exists(any(ItemNode i).getASuccessor(_, _, _))
       or
       exists(any(ImplOrTraitItemNode i).getASelfPath())
-      or
-      any(TypeParamItemNode i).hasTraitBound()
     }
   }
 

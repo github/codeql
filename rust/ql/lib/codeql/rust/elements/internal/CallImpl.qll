@@ -82,7 +82,7 @@ module Impl {
   }
 
   private predicate callHasTraitQualifier(CallExpr call, Trait qualifier) {
-    exists(RelevantPath qualifierPath |
+    exists(PathExt qualifierPath |
       callHasQualifier(call, _, qualifierPath) and
       qualifier = resolvePath(qualifierPath) and
       // When the qualifier is `Self` and resolves to a trait, it's inside a
