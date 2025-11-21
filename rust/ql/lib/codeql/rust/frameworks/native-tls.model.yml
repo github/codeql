@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<native_tls::TlsConnectorBuilder>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<native_tls::TlsConnectorBuilder>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
