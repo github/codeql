@@ -1,15 +1,28 @@
 #select
-| Test.java:7:21:7:53 | ... + ... | Test.java:7:46:7:53 | password : String | Test.java:7:21:7:53 | ... + ... | This $@ is written to a log file. | Test.java:7:46:7:53 | password | potentially sensitive information |
-| Test.java:8:22:8:52 | ... + ... | Test.java:8:44:8:52 | authToken : String | Test.java:8:22:8:52 | ... + ... | This $@ is written to a log file. | Test.java:8:44:8:52 | authToken | potentially sensitive information |
+| Test.java:11:21:11:53 | ... + ... | Test.java:11:46:11:53 | password : String | Test.java:11:21:11:53 | ... + ... | This $@ is written to a log file. | Test.java:11:46:11:53 | password | potentially sensitive information |
+| Test.java:12:22:12:52 | ... + ... | Test.java:12:44:12:52 | authToken : String | Test.java:12:22:12:52 | ... + ... | This $@ is written to a log file. | Test.java:12:44:12:52 | authToken | potentially sensitive information |
+| Test.java:21:22:21:75 | ... + ... | Test.java:21:44:21:52 | authToken : String | Test.java:21:22:21:75 | ... + ... | This $@ is written to a log file. | Test.java:21:44:21:52 | authToken | potentially sensitive information |
+| Test.java:22:22:22:75 | ... + ... | Test.java:22:44:22:52 | authToken : String | Test.java:22:22:22:75 | ... + ... | This $@ is written to a log file. | Test.java:22:44:22:52 | authToken | potentially sensitive information |
 edges
-| Test.java:7:46:7:53 | password : String | Test.java:7:21:7:53 | ... + ... | provenance | Sink:MaD:2 |
-| Test.java:8:44:8:52 | authToken : String | Test.java:8:22:8:52 | ... + ... | provenance | Sink:MaD:1 |
+| Test.java:11:46:11:53 | password : String | Test.java:11:21:11:53 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:12:44:12:52 | authToken : String | Test.java:12:22:12:52 | ... + ... | provenance | Sink:MaD:1 |
+| Test.java:21:44:21:52 | authToken : String | Test.java:21:44:21:67 | substring(...) : String | provenance | MaD:3 |
+| Test.java:21:44:21:67 | substring(...) : String | Test.java:21:22:21:75 | ... + ... | provenance | Sink:MaD:1 |
+| Test.java:22:44:22:52 | authToken : String | Test.java:22:44:22:67 | substring(...) : String | provenance | MaD:3 |
+| Test.java:22:44:22:67 | substring(...) : String | Test.java:22:22:22:75 | ... + ... | provenance | Sink:MaD:1 |
 models
 | 1 | Sink: org.apache.logging.log4j; Logger; true; error; (String); ; Argument[0]; log-injection; manual |
 | 2 | Sink: org.apache.logging.log4j; Logger; true; info; (String); ; Argument[0]; log-injection; manual |
+| 3 | Summary: java.lang; String; false; substring; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
-| Test.java:7:21:7:53 | ... + ... | semmle.label | ... + ... |
-| Test.java:7:46:7:53 | password : String | semmle.label | password : String |
-| Test.java:8:22:8:52 | ... + ... | semmle.label | ... + ... |
-| Test.java:8:44:8:52 | authToken : String | semmle.label | authToken : String |
+| Test.java:11:21:11:53 | ... + ... | semmle.label | ... + ... |
+| Test.java:11:46:11:53 | password : String | semmle.label | password : String |
+| Test.java:12:22:12:52 | ... + ... | semmle.label | ... + ... |
+| Test.java:12:44:12:52 | authToken : String | semmle.label | authToken : String |
+| Test.java:21:22:21:75 | ... + ... | semmle.label | ... + ... |
+| Test.java:21:44:21:52 | authToken : String | semmle.label | authToken : String |
+| Test.java:21:44:21:67 | substring(...) : String | semmle.label | substring(...) : String |
+| Test.java:22:22:22:75 | ... + ... | semmle.label | ... + ... |
+| Test.java:22:44:22:52 | authToken : String | semmle.label | authToken : String |
+| Test.java:22:44:22:67 | substring(...) : String | semmle.label | substring(...) : String |
 subpaths
