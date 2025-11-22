@@ -37,7 +37,7 @@ module DisabledCertificateCheckExtensions {
         fc.getStaticTarget().(Function).getName().getText() =
           ["danger_accept_invalid_certs", "danger_accept_invalid_hostnames"] and
         fc.getArg(0) = this.asExpr() and
-        // don't duplicate modelled sinks
+        // don't duplicate modeled sinks
         not exists(ModelsAsDataSink s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = fc)
       )
     }
