@@ -37,8 +37,6 @@ import codeql.rust.elements.BinaryExpr
 import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.BoxPat
 import codeql.rust.elements.BreakExpr
-import codeql.rust.elements.CallExpr
-import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Callable
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureExpr
@@ -119,6 +117,7 @@ import codeql.rust.elements.OrPat
 import codeql.rust.elements.Param
 import codeql.rust.elements.ParamBase
 import codeql.rust.elements.ParamList
+import codeql.rust.elements.ParenArgsExpr
 import codeql.rust.elements.ParenExpr
 import codeql.rust.elements.ParenPat
 import codeql.rust.elements.ParenTypeRepr

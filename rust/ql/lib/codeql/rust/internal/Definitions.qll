@@ -140,11 +140,11 @@ private class PathUse extends Use instanceof NameRef {
 
   PathUse() { this = path.getSegment().getIdentifier() }
 
-  private CallExpr getCall() { result.getFunction().(PathExpr).getPath() = path }
+  private ParenArgsExpr getCall() { result.getBase().(PathExpr).getPath() = path }
 
   override Definition getDefinition() {
     // Our call resolution logic may disambiguate some calls, so only use those
-    result.asItemNode() = this.getCall().getStaticTarget()
+    result.asItemNode() = this.getCall().getResolvedTarget()
     or
     not exists(this.getCall()) and
     result.asItemNode() = resolvePath(path)

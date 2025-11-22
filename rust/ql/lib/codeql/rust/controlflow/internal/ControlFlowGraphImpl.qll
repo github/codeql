@@ -292,9 +292,9 @@ module ExprTrees {
     }
   }
 
-  class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
+  class CallExprTree extends StandardPostOrderTree instanceof ParenArgsExpr {
     override AstNode getChildNode(int i) {
-      i = 0 and result = super.getFunction()
+      i = 0 and result = super.getBase()
       or
       result = super.getArgList().getArg(i - 1)
     }
@@ -512,7 +512,7 @@ module ExprTrees {
 
   class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
     override AstNode getChildNode(int i) {
-      if i = 0 then result = this.getReceiver() else result = this.getArg(i - 1)
+      if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
     }
   }
 

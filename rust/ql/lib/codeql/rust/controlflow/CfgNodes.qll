@@ -4,7 +4,6 @@
  */
 
 private import rust
-private import codeql.rust.elements.Call
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.CfgNodes
@@ -201,12 +200,16 @@ final class BreakExprCfgNode extends Nodes::BreakExprCfgNode {
 }
 
 /**
- * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
+ * A method call expression. For example:
+ * ```rust
+ * x.foo(42);
+ * x.foo::<u32, u64>(42);
+ * ```
  */
-final class CallExprBaseCfgNode extends Nodes::CallExprBaseCfgNode {
-  private CallExprBaseChildMapping node;
+final class MethodCallExprCfgNode extends Nodes::MethodCallExprCfgNode {
+  private MethodCallExprChildMapping node;
 
-  CallExprBaseCfgNode() { node = this.getAstNode() }
+  MethodCallExprCfgNode() { node = this.getAstNode() }
 
   /** Gets the `i`th argument of this call. */
   ExprCfgNode getArgument(int i) {
@@ -215,26 +218,17 @@ final class CallExprBaseCfgNode extends Nodes::CallExprBaseCfgNode {
 }
 
 /**
- * A method call expression. For example:
- * ```rust
- * x.foo(42);
- * x.foo::<u32, u64>(42);
- * ```
- */
-final class MethodCallExprCfgNode extends CallExprBaseCfgNode, Nodes::MethodCallExprCfgNode { }
-
-/**
  * A CFG node that calls a function.
  *
  * This class abstract over the different ways in which a function can be called in Rust.
  */
-final class CallCfgNode extends ExprCfgNode {
-  private Call node;
+final class CallExprCfgNode extends ExprCfgNode {
+  private CallExpr node;
 
-  CallCfgNode() { node = this.getAstNode() }
+  CallExprCfgNode() { node = this.getAstNode() }
 
   /** Gets the underlying `Call`. */
-  Call getCall() { result = node }
+  CallExpr getCall() { result = node }
 
   /** Gets the receiver of this call if it is a method call. */
   ExprCfgNode getReceiver() {
@@ -242,21 +236,31 @@ final class CallCfgNode extends ExprCfgNode {
   }
 
   /** Gets the `i`th argument of this call, if any. */
-  ExprCfgNode getPositionalArgument(int i) {
-    any(ChildMapping mapping).hasCfgChild(node, node.getPositionalArgument(i), this, result)
+  ExprCfgNode getArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getArgument(i), this, result)
   }
 }
 
 /**
- * A function call expression. For example:
+ * An expression with parenthesized arguments. For example:
  * ```rust
  * foo(42);
  * foo::<u32, u64>(42);
  * foo[0](42);
  * foo(1) = 4;
+ * Option::Some(42);
  * ```
  */
-final class CallExprCfgNode extends CallExprBaseCfgNode, Nodes::CallExprCfgNode { }
+final class ParenArgsExprCfgNode extends Nodes::ParenArgsExprCfgNode {
+  private ParenArgsExprChildMapping node;
+
+  ParenArgsExprCfgNode() { node = this.getAstNode() }
+
+  /** Gets the `i`th argument of this call. */
+  ExprCfgNode getArgument(int i) {
+    any(ChildMapping mapping).hasCfgChild(node, node.getArgList().getArg(i), this, result)
+  }
+}
 
 /**
  * A FormatArgsExpr. For example:

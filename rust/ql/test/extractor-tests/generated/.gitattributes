@@ -25,7 +25,6 @@
 /BlockExpr/gen_block_expr.rs linguist-generated
 /BoxPat/gen_box_pat.rs linguist-generated
 /BreakExpr/gen_break_expr.rs linguist-generated
-/CallExpr/gen_call_expr.rs linguist-generated
 /CastExpr/gen_cast_expr.rs linguist-generated
 /ClosureExpr/gen_closure_expr.rs linguist-generated
 /Comment/gen_comment.rs linguist-generated
@@ -91,6 +90,7 @@
 /OrPat/gen_or_pat.rs linguist-generated
 /Param/gen_param.rs linguist-generated
 /ParamList/gen_param_list.rs linguist-generated
+/ParenArgsExpr/gen_paren_args_expr.rs linguist-generated
 /ParenExpr/gen_paren_expr.rs linguist-generated
 /ParenPat/gen_paren_pat.rs linguist-generated
 /ParenTypeRepr/gen_paren_type_repr.rs linguist-generated

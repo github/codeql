@@ -228,31 +228,21 @@ class _:
     loop_body: drop
 
 
-class CallExprBase(Expr):
-    """
-    A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-    """
-    arg_list: optional["ArgList"] | child
-    attrs: list["Attr"] | child
-    args: list["Expr"] | synth
-
-
-@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(ParenArgsExpr, cfg=True)
 class _:
     """
-    A function call expression. For example:
+    An expression with parenthesized arguments. For example:
     ```rust
     foo(42);
     foo::<u32, u64>(42);
     foo[0](42);
     foo(1) = 4;
+    Option::Some(42);
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(MethodCallExpr, cfg=True)
 class _:
     """
     A method call expression. For example:
@@ -260,9 +250,10 @@ class _:
     x.foo(42);
     x.foo::<u32, u64>(42);
     ```
+
+    Consider using `MethodCall` instead, as that also includes calls to methods using
+    function call syntax (e.g., `Foo::method(x)`).
     """
-    arg_list: drop
-    attrs: drop
 
 
 @annotate(MatchArm)

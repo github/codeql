@@ -32,17 +32,17 @@ module ResolveTest implements TestSig {
       source.fromSource() and
       not source.isFromMacroExpansion()
     |
-      target = source.(Call).getStaticTarget() and
+      target = source.(CallExpr).getStaticTarget() and
       functionHasValue(target, value) and
       // `isFromMacroExpansion` does not always work
       not target.(Function).getName().getText() = ["panic_fmt", "_print", "format", "must_use"] and
       tag = "target"
       or
-      target = resolveStructFieldExpr(source) and
+      target = resolveStructFieldExpr(source, _) and
       any(Struct s | s.getStructField(_) = target).getName().getText() = value and
       tag = "fieldof"
       or
-      target = resolveTupleFieldExpr(source) and
+      target = resolveTupleFieldExpr(source, _) and
       any(Struct s | s.getTupleField(_) = target).getName().getText() = value and
       tag = "fieldof"
     )

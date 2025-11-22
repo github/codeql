@@ -125,10 +125,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TCallExpr(Raw::CallExpr id) { constructCallExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TCastExpr(Raw::CastExpr id) { constructCastExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -414,6 +410,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TParamList(Raw::ParamList id) { constructParamList(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TParenArgsExpr(Raw::ParenArgsExpr id) { constructParenArgsExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -732,11 +732,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TCallExprBase = TCallExpr or TMethodCallExpr;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TCallable = TClosureExpr or TFunction;
 
   /**
@@ -744,11 +739,11 @@ module Synth {
    */
   class TExpr =
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
-        TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
-        TMacroBlockExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or
-        TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or
-        TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TBreakExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or TFormatArgsExpr or
+        TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or TMacroBlockExpr or
+        TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or TParenArgsExpr or
+        TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or
+        TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1048,13 +1043,6 @@ module Synth {
    * Converts a raw element to a synthesized `TBreakExpr`, if possible.
    */
   TBreakExpr convertBreakExprFromRaw(Raw::Element e) { result = TBreakExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Converts a raw element to a synthesized `TCallExpr`, if possible.
-   */
-  TCallExpr convertCallExprFromRaw(Raw::Element e) { result = TCallExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1549,6 +1537,13 @@ module Synth {
    * Converts a raw element to a synthesized `TParamList`, if possible.
    */
   TParamList convertParamListFromRaw(Raw::Element e) { result = TParamList(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TParenArgsExpr`, if possible.
+   */
+  TParenArgsExpr convertParenArgsExprFromRaw(Raw::Element e) { result = TParenArgsExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2231,16 +2226,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TCallExprBase`, if possible.
-   */
-  TCallExprBase convertCallExprBaseFromRaw(Raw::Element e) {
-    result = convertCallExprFromRaw(e)
-    or
-    result = convertMethodCallExprFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TCallable`, if possible.
    */
   TCallable convertCallableFromRaw(Raw::Element e) {
@@ -2282,8 +2267,6 @@ module Synth {
     or
     result = convertBreakExprFromRaw(e)
     or
-    result = convertCallExprBaseFromRaw(e)
-    or
     result = convertCastExprFromRaw(e)
     or
     result = convertClosureExprFromRaw(e)
@@ -2310,7 +2293,11 @@ module Synth {
     or
     result = convertMatchExprFromRaw(e)
     or
+    result = convertMethodCallExprFromRaw(e)
+    or
     result = convertOffsetOfExprFromRaw(e)
+    or
+    result = convertParenArgsExprFromRaw(e)
     or
     result = convertParenExprFromRaw(e)
     or
@@ -2767,12 +2754,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TCallExpr` to a raw DB element, if possible.
-   */
-  Raw::Element convertCallExprToRaw(TCallExpr e) { e = TCallExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TCastExpr` to a raw DB element, if possible.
    */
   Raw::Element convertCastExprToRaw(TCastExpr e) { e = TCastExpr(result) }
@@ -3192,6 +3173,12 @@ module Synth {
    * Converts a synthesized `TParamList` to a raw DB element, if possible.
    */
   Raw::Element convertParamListToRaw(TParamList e) { e = TParamList(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TParenArgsExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertParenArgsExprToRaw(TParenArgsExpr e) { e = TParenArgsExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3807,16 +3794,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TCallExprBase` to a raw DB element, if possible.
-   */
-  Raw::Element convertCallExprBaseToRaw(TCallExprBase e) {
-    result = convertCallExprToRaw(e)
-    or
-    result = convertMethodCallExprToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TCallable` to a raw DB element, if possible.
    */
   Raw::Element convertCallableToRaw(TCallable e) {
@@ -3858,8 +3835,6 @@ module Synth {
     or
     result = convertBreakExprToRaw(e)
     or
-    result = convertCallExprBaseToRaw(e)
-    or
     result = convertCastExprToRaw(e)
     or
     result = convertClosureExprToRaw(e)
@@ -3886,7 +3861,11 @@ module Synth {
     or
     result = convertMatchExprToRaw(e)
     or
+    result = convertMethodCallExprToRaw(e)
+    or
     result = convertOffsetOfExprToRaw(e)
+    or
+    result = convertParenArgsExprToRaw(e)
     or
     result = convertParenExprToRaw(e)
     or

@@ -269,8 +269,6 @@ newtype TContent =
         )]
   } or
   TFunctionCallReturnContent() or
-  TFunctionCallArgumentContent(int pos) {
-    pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
-  } or
+  TFunctionCallArgumentContent(int pos) { pos in [0 .. any(CallExpr c).getNumberOfArgs() - 1] } or
   TCapturedVariableContent(VariableCapture::CapturedVariable v) or
   TReferenceContent()

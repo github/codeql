@@ -30,7 +30,6 @@ import codeql.rust.elements.internal.BinaryExprConstructor
 import codeql.rust.elements.internal.BlockExprConstructor
 import codeql.rust.elements.internal.BoxPatConstructor
 import codeql.rust.elements.internal.BreakExprConstructor
-import codeql.rust.elements.internal.CallExprConstructor
 import codeql.rust.elements.internal.CastExprConstructor
 import codeql.rust.elements.internal.ClosureExprConstructor
 import codeql.rust.elements.internal.CommentConstructor
@@ -101,6 +100,7 @@ import codeql.rust.elements.internal.OffsetOfExprConstructor
 import codeql.rust.elements.internal.OrPatConstructor
 import codeql.rust.elements.internal.ParamConstructor
 import codeql.rust.elements.internal.ParamListConstructor
+import codeql.rust.elements.internal.ParenArgsExprConstructor
 import codeql.rust.elements.internal.ParenExprConstructor
 import codeql.rust.elements.internal.ParenPatConstructor
 import codeql.rust.elements.internal.ParenTypeReprConstructor

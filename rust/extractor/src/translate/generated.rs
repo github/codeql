@@ -651,18 +651,18 @@ impl Translator<'_> {
     pub(crate) fn emit_call_expr(
         &mut self,
         node: &ast::CallExpr,
-    ) -> Option<Label<generated::CallExpr>> {
+    ) -> Option<Label<generated::ParenArgsExpr>> {
         if self.should_be_excluded(node) {
             return None;
         }
         let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(&x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
-        let function = node.expr().and_then(|x| self.emit_expr(&x));
-        let label = self.trap.emit(generated::CallExpr {
+        let base = node.expr().and_then(|x| self.emit_expr(&x));
+        let label = self.trap.emit(generated::ParenArgsExpr {
             id: TrapId::Star,
             arg_list,
             attrs,
-            function,
+            base,
         });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());

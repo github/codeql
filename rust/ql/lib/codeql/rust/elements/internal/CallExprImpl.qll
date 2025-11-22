@@ -1,64 +1,54 @@
-/**
- * This module provides a hand-modifiable wrapper around the generated class `CallExpr`.
- *
- * INTERNAL: Do not use.
- */
+private import rust
 
-private import codeql.rust.elements.internal.generated.CallExpr
-private import codeql.rust.elements.PathExpr
-
-/**
- * INTERNAL: This module contains the customizable definition of `CallExpr` and should not
- * be referenced directly.
- */
 module Impl {
-  private import rust
-  private import codeql.rust.internal.PathResolution as PathResolution
+  private import codeql.rust.internal.TypeInference as TypeInference
+  private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
-  pragma[nomagic]
-  Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }
-
-  pragma[nomagic]
-  PathResolution::ItemNode getResolvedFunction(CallExpr ce) {
-    result = PathResolution::resolvePath(getFunctionPath(ce))
-  }
-
-  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A function call expression. For example:
-   * ```rust
-   * foo(42);
-   * foo::<u32, u64>(42);
-   * foo[0](42);
-   * foo(1) = 4;
-   * ```
+   * A call expression.
+   *
+   * Either a `CallExpr`, a `MethodCallExpr`, an `Operation`, or an `IndexExpr`.
    */
-  class CallExpr extends Generated::CallExpr {
-    override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
+  abstract class CallExpr extends ExprImpl::Expr {
+    /** Gets the `i`th positional argument of this call, if any. */
+    Expr getArgument(int i) { none() }
 
-    /** Gets the struct that this call resolves to, if any. */
-    Struct getStruct() { result = getResolvedFunction(this) }
+    // todo: remove once internal query has been updated
+    Expr getArg(int i) { result = this.getArgument(i) }
 
-    /** Gets the variant that this call resolves to, if any. */
-    Variant getVariant() { result = getResolvedFunction(this) }
+    /** Gets a positional argument of this call, if any. */
+    Expr getAnArgument() { result = this.getArgument(_) }
 
-    pragma[nomagic]
-    private PathResolution::ItemNode getResolvedFunctionAndPos(int pos) {
-      result = getResolvedFunction(this) and
-      exists(this.getArg(pos))
-    }
+    /** Gets the number of positional arguments of this call. */
+    int getNumberOfArguments() { result = count(Expr arg | arg = this.getArgument(_)) }
+
+    // todo: remove once internal query has been updated
+    int getNumberOfArgs() { result = this.getNumberOfArguments() }
 
     /**
-     * Gets the tuple field that matches the `pos`th argument of this call, if any.
+     * Gets the receiver of this call, if any.
      *
-     * For example, if this call is `Option::Some(42)`, then the tuple field matching
-     * `42` is the first field of `Option::Some`.
+     * This is either an actual receiver of a method call, the first operand of an operation,
+     * or the base expression of an index expression.
      */
+    Expr getReceiver() { none() }
+
+    /** Gets the resolved target of this call, if any. */
+    Function getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
+
+    /** Gets the name of the method called, if any. */
+    string getMethodName() {
+      result = any(Function m | m = this.getStaticTarget() and m.hasSelfParam()).getName().getText()
+    }
+
+    /** Gets a runtime target of this call, if any. */
     pragma[nomagic]
-    TupleField getTupleField(int pos) {
-      exists(PathResolution::ItemNode i | i = this.getResolvedFunctionAndPos(pos) |
-        result.isStructField(i, pos) or
-        result.isVariantField(i, pos)
+    Function getARuntimeTarget() {
+      result.hasImplementation() and
+      (
+        result = this.getStaticTarget()
+        or
+        result.implements(this.getStaticTarget())
       )
     }
   }
