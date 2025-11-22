@@ -11,6 +11,10 @@ extensions:
     data:
       - ["<reqwest::async_impl::client::Client>::request", "Argument[1]", "request-url", "manual"]
       - ["<reqwest::blocking::client::Client>::request", "Argument[1]", "request-url", "manual"]
+      - ["<reqwest::async_impl::client::ClientBuilder>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<reqwest::async_impl::client::ClientBuilder>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
+      - ["<reqwest::blocking::client::ClientBuilder>::danger_accept_invalid_certs", "Argument[0]", "disable-certificate", "manual"]
+      - ["<reqwest::blocking::client::ClientBuilder>::danger_accept_invalid_hostnames", "Argument[0]", "disable-certificate", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
