@@ -58,7 +58,7 @@ models
 | 4 | Source: reqwest::blocking::get; ReturnValue.Field[core::result::Result::Ok(0)]; remote |
 | 5 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 6 | Source: std::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
-| 7 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 7 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 8 | Summary: <core::option::Option>::unwrap_or_default; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 9 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 10 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
