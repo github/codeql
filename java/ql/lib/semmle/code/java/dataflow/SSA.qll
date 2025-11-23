@@ -193,7 +193,7 @@ VarRead ssaGetAFirstUse(SsaDefinition def) { firstUse(def, result) }
  *
  * An SSA variable.
  */
-class SsaVariable extends Definition {
+deprecated class SsaVariable extends Definition {
   /** Gets the SSA source variable underlying this SSA variable. */
   SsaSourceVariable getSourceVariable() { result = super.getSourceVariable() }
 
@@ -203,7 +203,7 @@ class SsaVariable extends Definition {
    * Gets the `ControlFlowNode` at which this SSA variable is defined.
    */
   pragma[nomagic]
-  ControlFlowNode getCfgNode() {
+  deprecated ControlFlowNode getCfgNode() {
     exists(BasicBlock bb, int i |
       this.definesAt(_, bb, i) and
       // phi nodes are inserted at position `-1`
@@ -225,7 +225,7 @@ class SsaVariable extends Definition {
    *
    * Gets an access of this SSA variable.
    */
-  VarRead getAUse() { result = getAUse(this) }
+  deprecated VarRead getAUse() { result = getAUse(this) }
 
   /**
    * DEPRECATED: Use `ssaGetAFirstUse(SsaDefinition)` instead.
@@ -272,7 +272,7 @@ class SsaVariable extends Definition {
  *
  * An SSA variable that either explicitly or implicitly updates the variable.
  */
-class SsaUpdate extends SsaVariable instanceof WriteDefinition {
+deprecated class SsaUpdate extends SsaVariable instanceof WriteDefinition {
   SsaUpdate() { not this instanceof SsaImplicitInit }
 }
 
@@ -281,7 +281,7 @@ class SsaUpdate extends SsaVariable instanceof WriteDefinition {
  *
  * An SSA variable that is defined by a `VariableUpdate`.
  */
-class SsaExplicitUpdate extends SsaUpdate {
+deprecated class SsaExplicitUpdate extends SsaUpdate {
   private VariableUpdate upd;
 
   SsaExplicitUpdate() { ssaExplicitUpdate(this, upd) }
@@ -409,7 +409,7 @@ deprecated class SsaUncertainImplicitUpdate extends SsaImplicitUpdate {
  * An SSA variable that is defined by its initial value in the callable. This
  * includes initial values of parameters, fields, and closure variables.
  */
-class SsaImplicitInit extends SsaVariable instanceof WriteDefinition {
+deprecated class SsaImplicitInit extends SsaVariable instanceof WriteDefinition {
   SsaImplicitInit() { ssaImplicitInit(this) }
 
   override string toString() { result = "SSA init(" + this.getSourceVariable() + ")" }
@@ -422,7 +422,7 @@ class SsaImplicitInit extends SsaVariable instanceof WriteDefinition {
    *
    * Holds if the SSA variable is a parameter defined by its initial value in the callable.
    */
-  predicate isParameterDefinition(Parameter p) {
+  deprecated predicate isParameterDefinition(Parameter p) {
     this.getSourceVariable() = TLocalVar(p.getCallable(), p) and
     p.getCallable().getBody().getControlFlowNode() = this.getCfgNode()
   }
