@@ -24,11 +24,11 @@ struct MyStruct {
 
 impl MyStruct {
     fn set_data(&mut self, n: i64) {
-        (*self).data = n // todo: implicit deref not yet supported
+        self.data = n
     }
 
     fn get_data(&self) -> i64 {
-        (*self).data // todo: implicit deref not yet supported
+        self.data
     }
 }
 
@@ -225,7 +225,7 @@ impl Add for MyInt {
 
 impl MulAssign<MyInt> for MyInt {
     fn mul_assign(&mut self, rhs: MyInt) {
-        (*self).value = rhs.value; // todo: implicit deref not yet supported
+        self.value = rhs.value;
     }
 }
 
