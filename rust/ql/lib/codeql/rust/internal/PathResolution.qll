@@ -2050,7 +2050,7 @@ ItemNode resolvePathIgnoreVariableShadowing(PathExt path) {
 }
 
 /**
- * Holds if `ip` resolves to some constructor.
+ * Holds if `ip` resolves to some constructor or constant.
  */
 // use `forceLocal` once we implement overlay support
 pragma[nomagic]
