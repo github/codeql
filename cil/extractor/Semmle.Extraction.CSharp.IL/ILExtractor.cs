@@ -96,8 +96,14 @@ public class ILExtractor {
       var instrId = trap.GetId();
 
       // Basic instruction info
-      trap.WriteTuple("il_instructions", instrId, (int)instruction.OpCode.Code,
-                      instruction.OpCode.Name, instruction.Offset, methodId);
+      trap.WriteTuple("il_instruction", instrId, instruction.Offset,
+                     (int)instruction.OpCode.Code);
+
+      trap.WriteTuple("il_instruction_method", instrId,
+                      methodId);
+
+      trap.WriteTuple("il_instruction_string", instrId,
+                      instruction.OpCode.Name);
 
       // Parent relationship
       trap.WriteTuple("il_instruction_parent", instrId, index, methodId);

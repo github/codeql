@@ -19,8 +19,6 @@
  */
 sourceLocationPrefix(string prefix : string ref);
 
-/** EXTERNAL DATA **/
-
 /**
  * External data, loaded from CSV files during snapshot creation.
  * This allows importing additional data into CodeQL databases.
@@ -31,8 +29,6 @@ externalData(
   int column: int ref,
   string value: string ref
 );
-
-/** FILES AND LOCATIONS **/
 
 /**
  * Files, including DLL/EXE assemblies and any referenced source files.
@@ -60,8 +56,6 @@ containerparent(
   unique int child: @container ref
 );
 
-/** ASSEMBLIES AND TYPES **/
-
 /**
  * Compiled .NET assemblies.
  * Each assembly represents a DLL file that has been extracted.
@@ -85,8 +79,6 @@ types(
   string name: string ref
 );
 
-/** METHODS **/
-
 /**
  * Methods defined in types.
  * Includes instance methods, static methods, constructors, and property accessors.
@@ -100,6 +92,235 @@ methods(
 
 /** IL INSTRUCTIONS **/
 
+case @il_instruction.mnemonic of
+  0 = @nop
+| 1 = @break
+| 2 = @ldarg_0
+| 3 = @ldarg_1
+| 4 = @ldarg_2
+| 5 = @ldarg_3
+| 6 = @ldloc_0
+| 7 = @ldloc_1
+| 8 = @ldloc_2
+| 9 = @ldloc_3
+| 10 = @stloc_0
+| 11 = @stloc_1
+| 12 = @stloc_2
+| 13 = @stloc_3
+| 14 = @ldarg_S
+| 15 = @ldarga_S
+| 16 = @starg_S
+| 17 = @ldloc_S
+| 18 = @ldloca_S
+| 19 = @stloc_S
+| 20 = @ldnull
+| 21 = @ldc_I4_M1
+| 22 = @ldc_I4_0
+| 23 = @ldc_I4_1
+| 24 = @ldc_I4_2
+| 25 = @ldc_I4_3
+| 26 = @ldc_I4_4
+| 27 = @ldc_I4_5
+| 28 = @ldc_I4_6
+| 29 = @ldc_I4_7
+| 30 = @ldc_I4_8
+| 31 = @ldc_I4_S
+| 32 = @ldc_I4
+| 33 = @ldc_I8
+| 34 = @ldc_R4
+| 35 = @ldc_R8
+| 37 = @dup
+| 38 = @pop
+| 39 = @jmp
+| 40 = @call
+| 41 = @calli
+| 42 = @ret
+| 43 = @br_S
+| 44 = @brfalse_S
+| 45 = @brtrue_S
+| 46 = @beq_S
+| 47 = @bge_S
+| 48 = @bgt_S
+| 49 = @ble_S
+| 50 = @blt_S
+| 51 = @bne_un_S
+| 52 = @bge_un_S
+| 53 = @bgt_un_S
+| 54 = @ble_un_S
+| 55 = @blt_un_S
+| 56 = @br
+| 57 = @brfalse
+| 58 = @brtrue
+| 59 = @beq
+| 60 = @bge
+| 61 = @bgt
+| 62 = @ble
+| 63 = @blt
+| 64 = @bne_un
+| 65 = @bge_un
+| 66 = @bgt_un
+| 67 = @ble_un
+| 68 = @blt_un
+| 69 = @switch
+| 70 = @ldind_I1
+| 71 = @ldind_U1
+| 72 = @ldind_I2
+| 73 = @ldind_U2
+| 74 = @ldind_I4
+| 75 = @ldind_U4
+| 76 = @ldind_I8
+| 77 = @ldind_I
+| 78 = @ldind_R4
+| 79 = @ldind_R8
+| 80 = @ldind_Ref
+| 81 = @stind_Ref
+| 82 = @stind_I1
+| 83 = @stind_I2
+| 84 = @stind_I4
+| 85 = @stind_I8
+| 86 = @stind_R4
+| 87 = @stind_R8
+| 88 = @add
+| 89 = @sub
+| 90 = @mul
+| 91 = @div
+| 92 = @div_un
+| 93 = @rem
+| 94 = @rem_un
+| 95 = @and
+| 96 = @or
+| 97 = @xor
+| 98 = @shl
+| 99 = @shr
+| 100 = @shr_un
+| 101 = @neg
+| 102 = @not
+| 103 = @conv_I1
+| 104 = @conv_I2
+| 105 = @conv_I4
+| 106 = @conv_I8
+| 107 = @conv_R4
+| 108 = @conv_R8
+| 109 = @conv_U4
+| 110 = @conv_U8
+| 111 = @callvirt
+| 112 = @cpobj
+| 113 = @ldobj
+| 114 = @ldstr
+| 115 = @newobj
+| 116 = @castclass
+| 117 = @isinst
+| 118 = @conv_R_Un
+| 121 = @unbox
+| 122 = @throw
+| 123 = @ldfld
+| 124 = @ldflda
+| 125 = @stfld
+| 126 = @ldsfld
+| 127 = @ldsflda
+| 128 = @stsfld
+| 129 = @stobj
+| 130 = @conv_ovf_I1_Un
+| 131 = @conv_ovf_I2_Un
+| 132 = @conv_ovf_I4_Un
+| 133 = @conv_ovf_I8_Un
+| 134 = @conv_ovf_U1_Un
+| 135 = @conv_ovf_U2_Un
+| 136 = @conv_ovf_U4_Un
+| 137 = @conv_ovf_U8_Un
+| 138 = @conv_ovf_I_Un
+| 139 = @conv_ovf_U_Un
+| 140 = @box
+| 141 = @newarr
+| 142 = @ldlen
+| 143 = @ldelema
+| 144 = @ldelem_I1
+| 145 = @ldelem_U1
+| 146 = @ldelem_I2
+| 147 = @ldelem_U2
+| 148 = @ldelem_I4
+| 149 = @ldelem_U4
+| 150 = @ldelem_I8
+| 151 = @ldelem_I
+| 152 = @ldelem_R4
+| 153 = @ldelem_R8
+| 154 = @ldelem_Ref
+| 155 = @stelem_I
+| 156 = @stelem_I1
+| 157 = @stelem_I2
+| 158 = @stelem_I4
+| 159 = @stelem_I8
+| 160 = @stelem_R4
+| 161 = @stelem_R8
+| 162 = @stelem_Ref
+| 163 = @ldelem
+| 164 = @stelem
+| 165 = @unbox_any
+| 179 = @conv_ovf_I1
+| 180 = @conv_ovf_U1
+| 181 = @conv_ovf_I2
+| 182 = @conv_ovf_U2
+| 183 = @conv_ovf_I4
+| 184 = @conv_ovf_U4
+| 185 = @conv_ovf_I8
+| 186 = @conv_ovf_U8
+| 194 = @refanyval
+| 195 = @ckfinite
+| 198 = @mkrefany
+| 208 = @ldtoken
+| 209 = @conv_U2
+| 210 = @conv_U1
+| 211 = @conv_I
+| 212 = @conv_ovf_I
+| 213 = @conv_ovf_U
+| 214 = @add_ovf
+| 215 = @add_ovf_un
+| 216 = @mul_ovf
+| 217 = @mul_ovf_un
+| 218 = @sub_ovf
+| 219 = @sub_ovf_un
+| 220 = @endfinally
+| 221 = @leave
+| 222 = @leave_s
+| 223 = @stind_i
+| 224 = @conv_U
+| 248 = @prefix7
+| 249 = @prefix6
+| 250 = @prefix5
+| 251 = @prefix4
+| 252 = @prefix3
+| 253 = @prefix2
+| 254 = @prefix1
+| 255 = @prefixref
+| 65024 = @arglist
+| 65025 = @ceq
+| 65026 = @cgt
+| 65027 = @cgt_un
+| 65028 = @clt
+| 65029 = @clt_un
+| 65030 = @ldftn
+| 65031 = @ldvirtftn
+| 65033 = @ldarg
+| 65034 = @ldarga
+| 65035 = @starg
+| 65036 = @ldloc
+| 65037 = @ldloca
+| 65038 = @stloc
+| 65039 = @localloc
+| 65041 = @endfilter
+| 65042 = @unaligned_
+| 65043 = @volatile_
+| 65044 = @tail_
+| 65045 = @initobj
+| 65046 = @constrained_
+| 65047 = @cpblk
+| 65048 = @initblk
+| 65050 = @rethrow
+| 65052 = @sizeof
+| 65053 = @refanytype
+| 65054 = @readonly_
+;
+
 /**
  * IL (Intermediate Language) instructions within method bodies.
  * Each instruction represents a single IL opcode with its operand.
@@ -108,12 +329,20 @@ methods(
  * The opcode_name is the mnemonic (e.g., "ldloc", "call", "br.s").
  * The offset is the byte offset of the instruction within the method body.
  */
-il_instructions(
+il_instruction(
   unique int id: @il_instruction,
-  int opcode_num: int ref,
-  string opcode_name: string ref,
   int offset: int ref,
+  int mnemonic: int ref
+);
+
+il_instruction_method(
+  unique int instr: @il_instruction ref,
   int method: @method ref
+);
+
+il_instruction_string(
+  unique int instr: @il_instruction ref,
+  string repr : string ref
 );
 
 /**
@@ -176,8 +405,6 @@ il_operand_long(
   int value: int ref
 );
 
-/** EXCEPTION HANDLERS **/
-
 /**
  * Exception handlers (try/catch/finally blocks) in methods.
  * Each handler represents a try block with its associated catch/finally/fault handler.
@@ -200,15 +427,3 @@ il_exception_handler(
   int handler_start: int ref,
   int handler_end: int ref
 );
-
-/**
- * Union type representing all elements in the database.
- */
-@element = @assembly | @type | @method | @il_instruction | @il_exception_handler | @externalDataElement;
-
-/**
- * Union type representing elements that can be located in source code.
- * For IL extraction, most elements are located in compiled assemblies,
- * but this provides a hook for future source location mapping.
- */
-@locatable = @type | @method;
