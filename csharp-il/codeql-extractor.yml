@@ -1,4 +1,4 @@
-name: "csharpil"
+name: "cil"
 aliases:
   - "cil"
   - "csharp-il"
@@ -6,8 +6,6 @@ display_name: "C# IL"
 version: 0.0.1
 column_kind: "utf16"
 build_modes:
-  - autobuild
-  - manual
   - none
 file_types:
   - name: cil
