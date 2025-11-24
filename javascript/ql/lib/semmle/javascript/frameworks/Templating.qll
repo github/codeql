@@ -33,7 +33,7 @@ module Templating {
    */
   bindingset[prefix]
   string getDelimiterMatchingRegexpWithPrefix(string prefix) {
-    result = "(?s)" + prefix + "(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
+    result = "(?s)" + prefix + "(" + strictconcat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
   }
 
   /** A placeholder tag for a templating engine. */
