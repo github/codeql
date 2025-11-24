@@ -1578,7 +1578,7 @@ module API {
       DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) =
         forceLocal(Stage1::trackUseNodeAnyState/1)(nd, result)
 
-      DataFlow::SourceNode trackDefNode(DataFlow::SourceNode nd) =
+      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) =
         forceLocal(Stage1::trackDefNode/1)(nd, result)
 
       DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) =
