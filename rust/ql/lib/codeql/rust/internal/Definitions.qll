@@ -26,6 +26,19 @@ abstract class Use extends Locatable {
    * Gets the type of use.
    */
   abstract string getUseType();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 cached
@@ -164,6 +177,43 @@ private class MethodUse extends Use instanceof NameRef {
   override Definition getDefinition() { result.asItemNode() = mc.getStaticTarget() }
 
   override string getUseType() { result = "method" }
+}
+
+private class OperationUse extends Use instanceof Operation {
+  override Definition getDefinition() { result.asItemNode() = this.(Call).getStaticTarget() }
+
+  override string getUseType() { result = "method" }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // We don't have entities for the operator symbols, so approximate a location
+    this =
+      any(PrefixExpr pe |
+        pe.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+        pe.getExpr().getLocation().hasLocationInfo(_, endline, endcolumn + 2, _, _)
+      )
+    or
+    this =
+      any(BinaryExpr be |
+        be.getLhs().getLocation().hasLocationInfo(filepath, _, _, startline, startcolumn - 2) and
+        be.getRhs().getLocation().hasLocationInfo(filepath, endline, endcolumn + 2, _, _)
+      )
+  }
+}
+
+private class IndexExprUse extends Use instanceof IndexExpr {
+  override Definition getDefinition() { result.asItemNode() = this.(Call).getStaticTarget() }
+
+  override string getUseType() { result = "method" }
+
+  override predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // We don't have entities for the brackets, so approximate a location
+    super.getIndex().getLocation().hasLocationInfo(filepath, _, _, startline, startcolumn - 2) and
+    this.getLocation().hasLocationInfo(_, _, _, endline, endcolumn)
+  }
 }
 
 private class FileUse extends Use instanceof Name {

@@ -68,7 +68,10 @@
 | main.rs:66:14:66:14 | S | main.rs:3:1:4:9 | struct S | path |
 | main.rs:66:18:66:20 | new | main.rs:46:9:48:9 | fn new | path |
 | main.rs:66:22:66:22 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:67:5:67:4 | - ... | main.rs:11:5:13:5 | fn neg | method |
 | main.rs:67:6:67:6 | S | main.rs:3:1:4:9 | struct S | path |
 | main.rs:68:5:68:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:68:7:68:7 | ... + ... | main.rs:19:5:21:5 | fn add | method |
 | main.rs:68:9:68:9 | S | main.rs:3:1:4:9 | struct S | path |
 | main.rs:69:5:69:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:69:9:69:8 | S[0] | main.rs:27:5:29:5 | fn index | method |
