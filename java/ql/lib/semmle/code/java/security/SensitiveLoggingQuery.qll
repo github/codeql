@@ -90,7 +90,7 @@ private predicate singleArgLimit(MethodCall mc, int limit, boolean isKotlin) {
   exists(int firstArgIndex, int delta |
     if isKotlin = true then firstArgIndex = 1 else firstArgIndex = 0
   |
-    bounded(mc.getArgument(firstArgIndex).getUnderlyingExpr(), any(ZeroBound z), delta, true, _) and
+    bounded(mc.getArgument(firstArgIndex), any(ZeroBound z), delta, true, _) and
     delta <= limit
   )
 }
@@ -104,10 +104,10 @@ private predicate twoArgLimit(MethodCall mc, int limit, boolean isKotlin) {
     or
     isKotlin = false and firstArgIndex = 0 and secondArgIndex = 1
   |
-    // mc.getArgument(firstArgIndex).getUnderlyingExpr().(CompileTimeConstantExpr).getIntValue() = 0 and
-    bounded(mc.getArgument(firstArgIndex).getUnderlyingExpr(), any(ZeroBound z), 0, true, _) and
-    bounded(mc.getArgument(firstArgIndex).getUnderlyingExpr(), any(ZeroBound z), 0, false, _) and
-    bounded(mc.getArgument(secondArgIndex).getUnderlyingExpr(), any(ZeroBound z), delta, true, _) and
+    // mc.getArgument(firstArgIndex).(CompileTimeConstantExpr).getIntValue() = 0 and
+    bounded(mc.getArgument(firstArgIndex), any(ZeroBound z), 0, true, _) and
+    bounded(mc.getArgument(firstArgIndex), any(ZeroBound z), 0, false, _) and
+    bounded(mc.getArgument(secondArgIndex), any(ZeroBound z), delta, true, _) and
     delta <= limit
   )
 }
