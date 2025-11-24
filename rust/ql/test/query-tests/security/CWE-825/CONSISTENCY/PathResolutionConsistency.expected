@@ -7,8 +7,24 @@ multipleCallTargets
 | deallocation.rs:202:5:202:17 | ptr.is_null() |
 | deallocation.rs:210:25:210:37 | ptr.is_null() |
 | deallocation.rs:225:5:225:23 | const_ptr.is_null() |
+| deallocation.rs:245:13:245:15 | * ... |
+| deallocation.rs:252:13:252:15 | * ... |
+| deallocation.rs:354:3:354:7 | * ... |
 | deallocation.rs:354:11:354:29 | ...::from(...) |
+| deallocation.rs:355:3:355:7 | * ... |
 | deallocation.rs:355:11:355:29 | ...::from(...) |
+| deallocation.rs:373:12:373:16 | * ... |
+| deallocation.rs:381:12:381:16 | * ... |
+| deallocation.rs:392:12:392:16 | * ... |
+| deallocation.rs:402:12:402:16 | * ... |
+| lifetime.rs:217:17:217:25 | * ... |
 | lifetime.rs:610:13:610:31 | ...::from(...) |
 | lifetime.rs:611:13:611:31 | ...::from(...) |
 | lifetime.rs:628:13:628:31 | ...::from(...) |
+| lifetime.rs:630:11:630:25 | * ... |
+| lifetime.rs:659:14:659:18 | * ... |
+| lifetime.rs:667:13:667:17 | * ... |
+| lifetime.rs:692:12:692:14 | * ... |
+| lifetime.rs:693:12:693:14 | * ... |
+| lifetime.rs:694:12:694:14 | * ... |
+| lifetime.rs:734:11:734:13 | * ... |

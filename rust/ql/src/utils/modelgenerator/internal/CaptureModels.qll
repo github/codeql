@@ -134,7 +134,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   predicate isCallback(DataFlow::ContentSet cs) {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       c instanceof FunctionCallReturnContent or
-      c instanceof FunctionCallArgumentContent
+      c instanceof ClosureCallArgumentContent
     )
   }
 
@@ -145,7 +145,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
     or
     exists(Content c | cs = DataFlowImpl::TSingletonContentSet(c) |
       exists(int pos |
-        pos = c.(FunctionCallArgumentContent).getPosition() and
+        pos = c.(ClosureCallArgumentContent).getPosition() and
         result = "Parameter" and
         arg = pos.toString()
       )

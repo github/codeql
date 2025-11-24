@@ -1,0 +1,5 @@
+multipleCallTargets
+| main.rs:62:5:62:14 | * ... |
+| main.rs:62:5:62:14 | * ... |
+| main.rs:62:5:62:14 | * ... |
+| main.rs:62:5:62:14 | * ... |

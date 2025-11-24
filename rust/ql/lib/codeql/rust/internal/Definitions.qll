@@ -160,7 +160,7 @@ private class PathUse extends Use instanceof NameRef {
 
   override Definition getDefinition() {
     // Our call resolution logic may disambiguate some calls, so only use those
-    result.asItemNode() = this.getCall().getStaticTarget()
+    result.asItemNode() = this.getCall().getResolvedTarget()
     or
     not exists(this.getCall()) and
     result.asItemNode() = resolvePath(path)
@@ -180,7 +180,7 @@ private class MethodUse extends Use instanceof NameRef {
 }
 
 private class OperationUse extends Use instanceof Operation {
-  override Definition getDefinition() { result.asItemNode() = this.(Call).getStaticTarget() }
+  override Definition getDefinition() { result.asItemNode() = super.getResolvedTarget() }
 
   override string getUseType() { result = "method" }
 
@@ -203,7 +203,7 @@ private class OperationUse extends Use instanceof Operation {
 }
 
 private class IndexExprUse extends Use instanceof IndexExpr {
-  override Definition getDefinition() { result.asItemNode() = this.(Call).getStaticTarget() }
+  override Definition getDefinition() { result.asItemNode() = super.getStaticTarget() }
 
   override string getUseType() { result = "method" }
 
