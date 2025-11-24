@@ -13,6 +13,11 @@ public class TrapWriter : IDisposable {
 
   public TrapWriter(string outputPath) {
     trapFilePath = outputPath;
+    // Ensure directory exists
+    var dir = Path.GetDirectoryName(trapFilePath);
+    if (!Directory.Exists(dir)) {
+      Directory.CreateDirectory(dir!);
+    }
     writer = new StreamWriter(trapFilePath);
   }
 
