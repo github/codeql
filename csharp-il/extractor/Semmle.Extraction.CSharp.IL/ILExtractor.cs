@@ -40,6 +40,20 @@ public class ILExtractor {
       }
     }
 
+    var cilSourceArchiveDir = Environment.GetEnvironmentVariable(
+        "CODEQL_EXTRACTOR_CIL_SOURCE_ARCHIVE_DIR");
+    if (string.IsNullOrEmpty(cilSourceArchiveDir)) {
+      throw new InvalidOperationException(
+          "Environment variable CODEQL_EXTRACTOR_CIL_SOURCE_ARCHIVE_DIR is not set.");
+    }
+    var dllArchivePath =
+        Path.Combine(cilSourceArchiveDir, dllPath.Replace(":", "_"));
+    // Ensure directory exists
+    var archiveDir = Path.GetDirectoryName(dllArchivePath);
+    if (!Directory.Exists(archiveDir)) {
+      Directory.CreateDirectory(archiveDir!);
+    }
+    File.Copy(dllPath, dllArchivePath, true);
     Console.WriteLine($"Extraction complete!");
   }
 
