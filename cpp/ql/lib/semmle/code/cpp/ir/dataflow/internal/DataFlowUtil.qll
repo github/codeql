@@ -2289,7 +2289,7 @@ class FieldContent extends Content, TFieldContent {
    * Gets the field associated with this `Content`, if a unique one exists.
    *
    * For fields from template instantiations this predicate may still return
-   * more than field, but all the fields will be constructed from the same
+   * more than one field, but all the fields will be constructed from the same
    * template.
    */
   Field getField() { none() } // overridden in subclasses
