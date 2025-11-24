@@ -15,16 +15,17 @@
  * reading.
  * 1. The `namespace` column selects a namespace.
  * 2. The `type` column selects a type within that namespace. This column can
- *    introduce template names that can be mentioned in the `signature` column.
+ *    introduce template type names that can be mentioned in the `signature` column.
  *    For example, `vector<T,Allocator>` introduces the template names `T` and
- *    `Allocator`.
+ *    `Allocator`. Non-type template parameters cannot be specified.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
- *    Like the `type` column, this column can introduce template names that can
- *    be mentioned in the `signature` column. For example, `insert<InputIt>`
- *    introduces the template name `InputIt`.
+ *    Like the `type` column, this column can introduce template type names
+ *    that can be mentioned in the `signature` column. For example,
+ *    `insert<InputIt>` introduces the template name `InputIt`. Non-type
+ *    template parameters cannot be specified.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
  *    signature is a comma-separated list of types enclosed in parentheses. The
@@ -633,6 +634,21 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canon
   canonical = true
 }
 
+/** Gets the `i`'th supported template parameter for `templateFunction`. */
+private Locatable getSupportedFunctionTemplateArgument(Function templateFunction, int i) {
+  result =
+    rank[i + 1](int j, TypeTemplateParameter ttp |
+      ttp = templateFunction.getTemplateArgument(j)
+    |
+      ttp order by j
+    )
+}
+
+/** Gets the number of supported template parameters for `templateFunction`. */
+private int getNumberOfSupportedFunctionTemplateArguments(Function templateFunction) {
+  result = count(int i | exists(getSupportedFunctionTemplateArgument(templateFunction, i)) | i)
+}
+
 /**
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `func:N` (where `N` is the index of the template).
@@ -640,16 +656,32 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canon
 private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
   exists(Function templateFunction |
     templateFunction = getFullyTemplatedFunction(f) and
-    remaining = templateFunction.getNumberOfTemplateArguments() and
+    remaining = getNumberOfSupportedFunctionTemplateArguments(templateFunction) and
     result = getParameterTypeWithoutTemplateArguments(templateFunction, n, _)
   )
   or
   exists(string mid, TypeTemplateParameter tp, Function templateFunction |
     mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
     templateFunction = getFullyTemplatedFunction(f) and
-    tp = templateFunction.getTemplateArgument(remaining) and
+    tp = getSupportedFunctionTemplateArgument(templateFunction, remaining)
+  |
     result = mid.replaceAll(tp.getName(), "func:" + remaining.toString())
   )
+}
+
+/** Gets the `i`'th support template parameter for `templateClass`. */
+private Locatable getSupportedClassTemplateArgument(Class templateClass, int i) {
+  result =
+    rank[i + 1](int j, TypeTemplateParameter ttp |
+      ttp = templateClass.getTemplateArgument(j)
+    |
+      ttp order by j
+    )
+}
+
+/** Gets the number of supported template parameters for `templateClass`. */
+private int getNumberOfSupportedClassTemplateArguments(Class templateClass) {
+  result = count(int i | exists(getSupportedClassTemplateArgument(templateClass, i)) | i)
 }
 
 /**
@@ -661,7 +693,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
     isClassConstructedFrom(f.getDeclaringType(), template) and
-    remaining = template.getNumberOfTemplateArguments() and
+    remaining = getNumberOfSupportedClassTemplateArguments(template) and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
   or
@@ -673,7 +705,8 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   exists(string mid, TypeTemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
     isClassConstructedFrom(f.getDeclaringType(), template) and
-    tp = template.getTemplateArgument(remaining) and
+    tp = getSupportedClassTemplateArgument(template, remaining)
+  |
     result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
   )
 }
