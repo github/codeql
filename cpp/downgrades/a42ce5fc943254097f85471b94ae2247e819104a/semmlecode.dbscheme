@@ -1,4 +1,3 @@
-
 /*- Compilations -*/
 
 /**
@@ -2377,24 +2376,6 @@ link_targets(
 link_parent(
     int element : @element ref,
     int link_target : @link_target ref
-);
-
-/**
- * The CLI will automatically emit applicable tuples for this table,
- * such as `databaseMetadata("isOverlay", "true")` when building an
- * overlay database.
- */
-databaseMetadata(
-  string metadataKey: string ref,
-  string value: string ref
-);
-
-/**
- * The CLI will automatically emit tuples for each new/modified/deleted file
- * when building an overlay database.
- */
-overlayChangedFiles(
-  string path: string ref
 );
 
 /*- XML Files -*/
