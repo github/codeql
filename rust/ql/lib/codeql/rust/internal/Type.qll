@@ -51,6 +51,7 @@ newtype TType =
   TSliceType() or
   TNeverType() or
   TPtrType() or
+  TUnknownType() or
   TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
@@ -367,6 +368,36 @@ class PtrType extends Type, TPtrType {
   }
 
   override string toString() { result = "*" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A special pseudo type used to indicate that the actual type may have to be
+ * inferred by propagating type information back into call arguments.
+ *
+ * For example, in
+ *
+ * ```rust
+ * let x = Default::default();
+ * foo(x);
+ * ```
+ *
+ * `Default::default()` is assigned this type, which allows us to infer the actual
+ * type from the type of `foo`'s first parameter.
+ *
+ * Unknown types are not restricted to root types, for example in a call like
+ * `Vec::new()` we assign this type at the type path corresponding to the type
+ * parameter of `Vec`.
+ *
+ * Unknown types are used to restrict when type information is allowed to flow
+ * into call arguments (including method call receivers), in order to avoid
+ * combinatorial explosions.
+ */
+class UnknownType extends Type, TUnknownType {
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override string toString() { result = "(context typed)" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }

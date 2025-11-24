@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Testing.Mox
 
 predicate is_used(Call c) {
@@ -31,10 +32,12 @@ from Call c, FunctionValue func
 where
   /* Call result is used, but callee is a procedure */
   is_used(c) and
-  c.getFunc().pointsTo(func) and
+  c.getFunc().(ExprWithPointsTo).pointsTo(func) and
   func.getScope().isProcedure() and
   /* All callees are procedures */
-  forall(FunctionValue callee | c.getFunc().pointsTo(callee) | callee.getScope().isProcedure()) and
+  forall(FunctionValue callee | c.getFunc().(ExprWithPointsTo).pointsTo(callee) |
+    callee.getScope().isProcedure()
+  ) and
   /* Mox return objects have an `AndReturn` method */
   not useOfMoxInModule(c.getEnclosingModule())
 select c, "The result of $@ is used even though it is always None.", func, func.getQualifiedName()

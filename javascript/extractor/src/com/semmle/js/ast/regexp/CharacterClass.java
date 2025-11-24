@@ -11,7 +11,7 @@ public class CharacterClass extends RegExpTerm {
   public CharacterClass(SourceLocation loc, List<RegExpTerm> elements, Boolean inverted) {
     super(loc, "CharacterClass");
     this.elements = elements;
-    this.inverted = inverted == Boolean.TRUE;
+    this.inverted = Boolean.TRUE.equals(inverted);
   }
 
   @Override

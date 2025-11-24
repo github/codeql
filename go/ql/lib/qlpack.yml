@@ -1,5 +1,5 @@
 name: codeql/go-all
-version: 5.0.1
+version: 5.0.2
 groups: go
 dbscheme: go.dbscheme
 extractor: go
@@ -14,3 +14,4 @@ dependencies:
 dataExtensions:
   - ext/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true

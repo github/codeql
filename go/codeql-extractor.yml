@@ -21,6 +21,7 @@ file_types:
     extensions:
       - .go
 legacy_qltest_extraction: true
+overlay_support_version: 20250626
 options:
   extract_tests:
     title: Whether to include Go test files in the CodeQL database.

@@ -3,7 +3,9 @@ package trap
 import (
 	"fmt"
 	"go/types"
+	"path/filepath"
 
+	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -74,7 +76,7 @@ func (l *Labeler) FileLabel() Label {
 
 // FileLabelFor returns the label for the file for which the trap writer `tw` is associated
 func (l *Labeler) FileLabelFor(path string) Label {
-	return l.GlobalID(util.EscapeTrapSpecialChars(path) + ";sourcefile")
+	return l.GlobalID(util.EscapeTrapSpecialChars(filepath.ToSlash(srcarchive.TransformPath(path))) + ";sourcefile")
 }
 
 // LocalID associates a label with the given AST node `nd` and returns it

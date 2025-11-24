@@ -2592,10 +2592,10 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
  * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
-  exists(ExplicitParameterNode paramNode, Guard guard, ControlFlow::BooleanSuccessor bs |
-    viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
+  exists(ExplicitParameterNode paramNode, Guard guard, GuardValue val |
+    viableConstantParamArg(paramNode, val.getDualValue(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(nr, bs, _)
+    guard.valueControls(nr, val)
   )
 }
 
@@ -2913,33 +2913,19 @@ class CastNode extends Node {
 
 class DataFlowExpr = Expr;
 
-/** Holds if `e` is an expression that always has the same Boolean value `val`. */
-private predicate constantBooleanExpr(Expr e, boolean val) {
-  e.getType() instanceof BoolType and
-  e.getValue() = val.toString()
-  or
-  exists(Ssa::ExplicitDefinition def, Expr src |
-    e = def.getARead() and
-    src = def.getADefinition().getSource() and
-    constantBooleanExpr(src, val)
-  )
-}
+/** An argument that always has the same value. */
+private class ConstantArgumentNode extends ExprNode {
+  ConstantArgumentNode() { Guards::InternalUtil::exprHasValue(this.(ArgumentNode).asExpr(), _) }
 
-/** An argument that always has the same Boolean value. */
-private class ConstantBooleanArgumentNode extends ExprNode {
-  ConstantBooleanArgumentNode() { constantBooleanExpr(this.(ArgumentNode).asExpr(), _) }
-
-  /** Gets the Boolean value of this expression. */
-  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+  /** Gets the value of this expression. */
+  GuardValue getValue() { Guards::InternalUtil::exprHasValue(this.getExpr(), result) }
 }
 
 pragma[noinline]
-private predicate viableConstantBooleanParamArg(
-  ParameterNode paramNode, boolean b, DataFlowCall call
-) {
-  exists(ConstantBooleanArgumentNode arg |
+private predicate viableConstantParamArg(ParameterNode paramNode, GuardValue val, DataFlowCall call) {
+  exists(ConstantArgumentNode arg |
     viableParamArg(call, paramNode, arg) and
-    b = arg.getBooleanValue()
+    val = arg.getValue()
   )
 }
 

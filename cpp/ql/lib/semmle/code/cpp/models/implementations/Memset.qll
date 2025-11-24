@@ -19,7 +19,8 @@ private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, Alias
     this.hasGlobalOrStdName("wmemset")
     or
     this.hasGlobalName([
-        bzero(), "__builtin_memset", "__builtin_memset_chk", "RtlZeroMemory", "RtlSecureZeroMemory"
+        bzero(), "__builtin_memset", "__builtin_memset_chk", "__builtin___memset_chk",
+        "RtlZeroMemory", "RtlSecureZeroMemory"
       ])
   }
 
@@ -32,7 +33,7 @@ private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, Alias
       or
       this.hasGlobalOrStdName("wmemset")
       or
-      this.hasGlobalName(["__builtin_memset", "__builtin_memset_chk"])
+      this.hasGlobalName(["__builtin_memset", "__builtin_memset_chk", "__builtin___memset_chk"])
     ) and
     result = 1
   }

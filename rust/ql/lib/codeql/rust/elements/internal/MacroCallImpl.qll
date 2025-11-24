@@ -14,17 +14,6 @@ module Impl {
   private import rust
   private import codeql.rust.internal.PathResolution
 
-  pragma[nomagic]
-  predicate isInMacroExpansion(AstNode root, AstNode n) {
-    n = root.(MacroCall).getMacroCallExpansion()
-    or
-    n = root.(Adt).getDeriveMacroExpansion(_)
-    or
-    n = root.(Item).getAttributeMacroExpansion()
-    or
-    isInMacroExpansion(root, n.getParentNode())
-  }
-
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A macro invocation.
@@ -35,16 +24,7 @@ module Impl {
    * ```
    */
   class MacroCall extends Generated::MacroCall {
-    override string toStringImpl() {
-      if this.hasPath() then result = this.getPath().toAbbreviatedString() + "!..." else result = ""
-    }
-
-    /** Gets an AST node whose location is inside the token tree belonging to this macro call. */
-    pragma[nomagic]
-    AstNode getATokenTreeNode() {
-      isInMacroExpansion(this, result) and
-      this.getTokenTree().getLocation().contains(result.getLocation())
-    }
+    override string toStringImpl() { result = this.getPath().toAbbreviatedString() + "!..." }
 
     /**
      * Gets the macro definition that this macro call resolves to.

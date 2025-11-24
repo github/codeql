@@ -273,19 +273,19 @@ lfs_archive = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_archive")
 
 lfs_archive(
     name = "ripunzip-linux",
-    src = "//misc/ripunzip:ripunzip-Linux.zip",
+    src = "//misc/ripunzip:ripunzip-Linux.tar.zst",
     build_file = "//misc/ripunzip:BUILD.ripunzip.bazel",
 )
 
 lfs_archive(
     name = "ripunzip-windows",
-    src = "//misc/ripunzip:ripunzip-Windows.zip",
+    src = "//misc/ripunzip:ripunzip-Windows.tar.zst",
     build_file = "//misc/ripunzip:BUILD.ripunzip.bazel",
 )
 
 lfs_archive(
     name = "ripunzip-macos",
-    src = "//misc/ripunzip:ripunzip-macOS.zip",
+    src = "//misc/ripunzip:ripunzip-macOS.tar.zst",
     build_file = "//misc/ripunzip:BUILD.ripunzip.bazel",
 )
 
