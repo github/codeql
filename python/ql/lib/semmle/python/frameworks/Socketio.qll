@@ -30,6 +30,15 @@ module SocketIO {
   private class EventHandler extends Http::Server::RequestHandler::Range {
     EventHandler() {
       serverEventAnnotation().getAValueReachableFromSource().asExpr() = this.getADecorator()
+      or
+      exists(DataFlow::CallCfgNode c, DataFlow::Node arg | c = server().getMember("on").getACall() |
+        (
+          arg = c.getArg(1)
+          or
+          arg = c.getArgByName("handler")
+        ) and
+        poorMansFunctionTracker(this) = arg
+      )
     }
 
     override Parameter getARoutedParameter() {
@@ -44,20 +53,13 @@ module SocketIO {
       exists(DataFlow::CallCfgNode c | c = server().getMember(["emit", "send"]).getACall() |
         this = c.getArgByName("callback")
       )
-      or
-      exists(DataFlow::CallCfgNode c | c = server().getMember("on").getACall() |
-        this = c.getArg(1) or
-        this = c.getArgByName("handler")
-      )
     }
   }
 
   private class CallbackHandler extends Http::Server::RequestHandler::Range {
     CallbackHandler() { any(CallbackArgument ca) = poorMansFunctionTracker(this) }
 
-    override Parameter getARoutedParameter() {
-      result = this.getAnArg() and not result = this.getArg(0)
-    }
+    override Parameter getARoutedParameter() { result = this.getAnArg() }
 
     override string getFramework() { result = "socketio" }
   }
