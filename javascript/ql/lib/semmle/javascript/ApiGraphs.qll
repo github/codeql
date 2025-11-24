@@ -122,6 +122,7 @@ module API {
    * Although one may think of API graphs as a tool to find certain program elements in the codebase,
    * it can lead to some situations where intuition does not match what works best in practice.
    */
+  overlay[local?]
   class Node extends Impl::TApiNode {
     /**
      * Get a data-flow node where this value may flow after entering the current codebase.
@@ -1576,9 +1577,11 @@ module API {
     }
 
     private module Stage1Input implements StageInputSig {
+      overlay[caller]
       pragma[inline]
       predicate isAdditionalUseRoot(Node node) { none() }
 
+      overlay[caller]
       pragma[inline]
       predicate isAdditionalDefRoot(Node node) { none() }
 
