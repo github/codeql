@@ -6,6 +6,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
@@ -31,7 +32,9 @@ module SocketIO {
       serverEventAnnotation().getAValueReachableFromSource().asExpr() = this.getADecorator()
     }
 
-    override Parameter getARoutedParameter() { result = this.getAnArg() }
+    override Parameter getARoutedParameter() {
+      result = this.getAnArg() and not result = this.getArg(0)
+    }
 
     override string getFramework() { result = "socketio" }
   }
@@ -52,8 +55,16 @@ module SocketIO {
   private class CallbackHandler extends Http::Server::RequestHandler::Range {
     CallbackHandler() { any(CallbackArgument ca) = poorMansFunctionTracker(this) }
 
-    override Parameter getARoutedParameter() { result = this.getAnArg() }
+    override Parameter getARoutedParameter() {
+      result = this.getAnArg() and not result = this.getArg(0)
+    }
 
     override string getFramework() { result = "socketio" }
+  }
+
+  private class SocketIOCall extends RemoteFlowSource::Range {
+    SocketIOCall() { this = server().getMember("call").getACall() }
+
+    override string getSourceType() { result = "socketio call" }
   }
 }
