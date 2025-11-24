@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Directly writing user input (for example, an HTTP request parameter) to a web
+page, without properly sanitizing the input first, allows for a cross-site
+scripting vulnerability.</p>
+</overview>
+
+<recommendation>
+<p>To guard against cross-site scripting, consider encoding/escaping the unstrusted
+input before including it in the HTML.</p>
+</recommendation>
+
+<example>
+
+<p>The following example shows a simple web handler that writes a path of the
+URL parameter directly to an HTML response, leaving the website vulnerable to
+cross-site scripting:</p>
+
+<sample src="XSSBad.rs" />
+
+<p>To fix this vulnerability, the user input should be HTML-encoded before being
+included in the response:</p>
+
+<sample src="XSSGood.rs" />
+
+</example>
+
+<references>
+<li>
+  OWASP:
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
+  (Cross Site Scripting) Prevention Cheat Sheet</a>.
+</li>
+<li>
+  WiMISSING: Alert[rust/xss]kipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+<li>
+  OWASP:
+  <a href="https://owasp.org/www-community/attacks/xss/">Cross-site Scripting (XSS)</a>.
+</li>
+</references>
+</qhelp>
