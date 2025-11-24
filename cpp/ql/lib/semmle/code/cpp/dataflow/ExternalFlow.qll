@@ -669,7 +669,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
   )
 }
 
-/** Gets the `i`'th support template parameter for `templateClass`. */
+/** Gets the `i`'th supported template parameter for `templateClass`. */
 private Locatable getSupportedClassTemplateArgument(Class templateClass, int i) {
   result =
     rank[i + 1](int j, TypeTemplateParameter ttp |
