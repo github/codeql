@@ -6,7 +6,7 @@ class Test {
         int zero = 0;
         int four = 4;
         short zeroS = 0;
-        long fourL = 4;
+        long fourL = 4L;
 
         logger.info("User's password is: " + password); // $ Alert
         logger.error("Auth failed for: " + authToken); // $ Alert
