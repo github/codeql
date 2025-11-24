@@ -1,4 +1,4 @@
 @echo off
-REM For C# IL, autobuild and buildless extraction are the same - just extract the DLLs
-call "%~dp0index.cmd"
+
+"%CODEQL_DIST%\codeql.exe" database index-files --working-dir=. --language=cil "%CODEQL_EXTRACTOR_CIL_WIP_DATABASE%"
 exit /b %ERRORLEVEL%
