@@ -3,7 +3,28 @@ private import codeql.rust.internal.TypeInference
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.internal.Type
 private import codeql.rust.internal.TypeMention
-private import codeql.rust.elements.Call
+
+private newtype TArgumentPosition =
+  TPositionalArgumentPosition(int i) {
+    i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
+  } or
+  TSelfArgumentPosition()
+
+/** An argument position in a call. */
+class ArgumentPosition extends TArgumentPosition {
+  /** Gets the index of the argument in the call, if this is a positional argument. */
+  int asPosition() { this = TPositionalArgumentPosition(result) }
+
+  /** Holds if this call position is a self argument. */
+  predicate isSelf() { this instanceof TSelfArgumentPosition }
+
+  /** Gets a string representation of this argument position. */
+  string toString() {
+    result = this.asPosition().toString()
+    or
+    this.isSelf() and result = "self"
+  }
+}
 
 private newtype TFunctionPosition =
   TArgumentFunctionPosition(ArgumentPosition pos) or

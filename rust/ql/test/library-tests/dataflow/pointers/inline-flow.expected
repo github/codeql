@@ -41,6 +41,9 @@ edges
 | main.rs:73:10:73:10 | [post] b [&ref] | main.rs:74:15:74:15 | b [&ref] | provenance |  |
 | main.rs:73:14:73:23 | source(...) | main.rs:73:10:73:10 | [post] b [&ref] | provenance |  |
 | main.rs:74:15:74:15 | b [&ref] | main.rs:74:14:74:15 | * ... | provenance | MaD:1 |
+| main.rs:90:11:90:16 | [post] &mut a [&ref] | main.rs:90:16:90:16 | [post] a | provenance |  |
+| main.rs:90:16:90:16 | [post] a | main.rs:91:14:91:14 | a | provenance |  |
+| main.rs:90:21:90:30 | source(...) | main.rs:90:11:90:16 | [post] &mut a [&ref] | provenance |  |
 | main.rs:105:10:105:10 | [post] c [&ref] | main.rs:106:15:106:15 | c [&ref] | provenance |  |
 | main.rs:105:14:105:23 | source(...) | main.rs:105:10:105:10 | [post] c [&ref] | provenance |  |
 | main.rs:106:15:106:15 | c [&ref] | main.rs:106:14:106:15 | * ... | provenance | MaD:1 |
@@ -175,6 +178,10 @@ nodes
 | main.rs:73:14:73:23 | source(...) | semmle.label | source(...) |
 | main.rs:74:14:74:15 | * ... | semmle.label | * ... |
 | main.rs:74:15:74:15 | b [&ref] | semmle.label | b [&ref] |
+| main.rs:90:11:90:16 | [post] &mut a [&ref] | semmle.label | [post] &mut a [&ref] |
+| main.rs:90:16:90:16 | [post] a | semmle.label | [post] a |
+| main.rs:90:21:90:30 | source(...) | semmle.label | source(...) |
+| main.rs:91:14:91:14 | a | semmle.label | a |
 | main.rs:105:10:105:10 | [post] c [&ref] | semmle.label | [post] c [&ref] |
 | main.rs:105:14:105:23 | source(...) | semmle.label | source(...) |
 | main.rs:106:14:106:15 | * ... | semmle.label | * ... |
@@ -288,6 +295,7 @@ testFailures
 | main.rs:53:14:53:15 | * ... | main.rs:51:17:51:26 | source(...) | main.rs:53:14:53:15 | * ... | $@ | main.rs:51:17:51:26 | source(...) | source(...) |
 | main.rs:59:33:59:34 | * ... | main.rs:57:22:57:31 | source(...) | main.rs:59:33:59:34 | * ... | $@ | main.rs:57:22:57:31 | source(...) | source(...) |
 | main.rs:74:14:74:15 | * ... | main.rs:73:14:73:23 | source(...) | main.rs:74:14:74:15 | * ... | $@ | main.rs:73:14:73:23 | source(...) | source(...) |
+| main.rs:91:14:91:14 | a | main.rs:90:21:90:30 | source(...) | main.rs:91:14:91:14 | a | $@ | main.rs:90:21:90:30 | source(...) | source(...) |
 | main.rs:106:14:106:15 | * ... | main.rs:105:14:105:23 | source(...) | main.rs:106:14:106:15 | * ... | $@ | main.rs:105:14:105:23 | source(...) | source(...) |
 | main.rs:113:14:113:15 | * ... | main.rs:112:25:112:34 | source(...) | main.rs:113:14:113:15 | * ... | $@ | main.rs:112:25:112:34 | source(...) | source(...) |
 | main.rs:175:14:175:34 | my_number.to_number() | main.rs:174:44:174:53 | source(...) | main.rs:175:14:175:34 | my_number.to_number() | $@ | main.rs:174:44:174:53 | source(...) | source(...) |

@@ -19,22 +19,22 @@ private class RelevantFile extends File {
 }
 
 module CallTargetStats implements StatsSig {
+  // TODO: Take other calls into account
+  abstract private class CallExprBase extends ArgsExpr { }
+
+  private class CallExprCallExprBase extends CallExpr, CallExprBase { }
+
+  private class MethodCallExprCallExprBase extends MethodCallExpr, CallExprBase { }
+
   int getNumberOfOk() {
     result =
-      count(CallExprBase c | c.getFile() instanceof RelevantFile and exists(c.getStaticTarget()))
-  }
-
-  private predicate isLambdaCall(CallExpr call) {
-    exists(Expr receiver | receiver = call.getFunction() |
-      // All calls to complex expressions and local variable accesses are lambda calls
-      receiver instanceof PathExpr implies receiver = any(Variable v).getAnAccess()
-    )
+      count(CallExprBase c | c.getFile() instanceof RelevantFile and exists(c.getResolvedTarget()))
   }
 
   additional predicate isNotOkCall(CallExprBase c) {
     c.getFile() instanceof RelevantFile and
-    not exists(c.getStaticTarget()) and
-    not isLambdaCall(c)
+    not exists(c.getResolvedTarget()) and
+    not c instanceof ClosureCallExpr
   }
 
   int getNumberOfNotOk() { result = count(CallExprBase c | isNotOkCall(c)) }

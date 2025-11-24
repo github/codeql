@@ -294,13 +294,12 @@ final class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
  * passed into the closure body at an invocation.
  */
 final class ClosureArgumentNode extends ArgumentNode, ExprNode {
-  private CallExpr call_;
+  private Call call_;
 
   ClosureArgumentNode() { lambdaCallExpr(call_, _, this.asExpr()) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCall() = call_ and
-    pos.isClosureSelf()
+    call.asCall() = call_ and pos.isClosureSelf()
   }
 }
 

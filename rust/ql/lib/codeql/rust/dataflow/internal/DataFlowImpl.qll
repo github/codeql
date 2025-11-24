@@ -8,7 +8,6 @@ private import codeql.util.Boolean
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
-private import codeql.rust.elements.Call
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.internal.PathResolution
@@ -57,7 +56,7 @@ final class DataFlowCallable extends TDataFlowCallable {
 }
 
 final class DataFlowCall extends TDataFlowCall {
-  /** Gets the underlying call in the CFG, if any. */
+  /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
   predicate isSummaryCall(
@@ -134,7 +133,7 @@ final class ArgumentPosition extends ParameterPosition {
   Expr getArgument(Call call) {
     result = call.getPositionalArgument(this.getPosition())
     or
-    result = call.getReceiver() and this.isSelf()
+    result = call.(MethodCall).getReceiver() and this.isSelf()
   }
 }
 
@@ -293,10 +292,8 @@ predicate lambdaCreationExpr(Expr creation) {
  * Holds if `call` is a lambda call of kind `kind` where `receiver` is the
  * invoked expression.
  */
-predicate lambdaCallExpr(CallExpr call, LambdaCallKind kind, Expr receiver) {
-  receiver = call.getFunction() and
-  // All calls to complex expressions and local variable accesses are lambda call.
-  (receiver instanceof PathExpr implies receiver = any(Variable v).getAnAccess()) and
+predicate lambdaCallExpr(ClosureCallExpr call, LambdaCallKind kind, Expr receiver) {
+  receiver = call.getClosureExpr() and
   exists(kind)
 }
 
@@ -666,10 +663,14 @@ module RustDataFlow implements InputSig<Location> {
 
   pragma[nomagic]
   additional predicate storeContentStep(Node node1, Content c, Node node2) {
-    exists(CallExpr call, int pos |
-      node1.asExpr() = call.getArg(pragma[only_bind_into](pos)) and
-      node2.asExpr() = call and
-      c = TTupleFieldContent(call.getTupleField(pragma[only_bind_into](pos)))
+    exists(CallExpr ce, TupleField tf, int pos |
+      node1.asExpr() = ce.getSyntacticArgument(pos) and
+      node2.asExpr() = ce and
+      c = TTupleFieldContent(tf)
+    |
+      tf = ce.(TupleStructExpr).getTupleField(pos)
+      or
+      tf = ce.(TupleVariantExpr).getTupleField(pos)
     )
     or
     exists(StructExpr re, string field |
@@ -715,7 +716,7 @@ module RustDataFlow implements InputSig<Location> {
     exists(DataFlowCall call, int i |
       isArgumentNode(node1, call, TPositionalParameterPosition(i)) and
       lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
-      c.(FunctionCallArgumentContent).getPosition() = i
+      c.(ClosureCallArgumentContent).getPosition() = i
     )
     or
     VariableCapture::storeStep(node1, c, node2)
@@ -824,11 +825,7 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     (
-      receiver.asExpr() = call.asCall().(CallExpr).getFunction() and
-      // All calls to complex expressions and local variable accesses are lambda call.
-      exists(Expr f | f = receiver.asExpr() |
-        f instanceof PathExpr implies f = any(Variable v).getAnAccess()
-      )
+      receiver.asExpr() = call.asCall().(ClosureCallExpr).getClosureExpr()
       or
       call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode())
     ) and

@@ -210,14 +210,13 @@ module ExprTrees {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
   }
 
-  class BinaryOpExprTree extends StandardPostOrderTree instanceof BinaryExpr {
-    BinaryOpExprTree() { not this instanceof BinaryLogicalOperation }
-
-    override AstNode getChildNode(int i) {
-      i = 0 and result = super.getLhs()
-      or
-      i = 1 and result = super.getRhs()
+  class ArgsExprTree extends StandardPostOrderTree instanceof ArgsExpr {
+    ArgsExprTree() {
+      not this instanceof CallExpr and
+      not this instanceof BinaryLogicalOperation
     }
+
+    override AstNode getChildNode(int i) { result = super.getSyntacticArgument(i) }
   }
 
   class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
@@ -296,7 +295,7 @@ module ExprTrees {
     override AstNode getChildNode(int i) {
       i = 0 and result = super.getFunction()
       or
-      result = super.getArgList().getArg(i - 1)
+      result = super.getSyntacticArgument(i - 1)
     }
   }
 
@@ -368,14 +367,6 @@ module ExprTrees {
         |
           v
         )
-    }
-  }
-
-  class IndexExprTree extends StandardPostOrderTree instanceof IndexExpr {
-    override AstNode getChildNode(int i) {
-      i = 0 and result = super.getBase()
-      or
-      i = 1 and result = super.getIndex()
     }
   }
 
@@ -510,12 +501,6 @@ module ExprTrees {
     }
   }
 
-  class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
-    override AstNode getChildNode(int i) {
-      if i = 0 then result = this.getReceiver() else result = this.getArg(i - 1)
-    }
-  }
-
   class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
 
   class ParenExprTree extends ControlFlowTree, ParenExpr {
@@ -533,10 +518,6 @@ module ExprTrees {
   }
 
   class PathExprTree extends LeafTree instanceof PathExpr { }
-
-  class PrefixExprTree extends StandardPostOrderTree instanceof PrefixExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-  }
 
   class RangeExprTree extends StandardPostOrderTree instanceof RangeExpr {
     override AstNode getChildNode(int i) {

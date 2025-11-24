@@ -55,7 +55,7 @@ module Xss {
     HeuristicHtmlEncodingBarrier() {
       exists(Call fc |
         fc.getStaticTarget().getName().getText().regexpMatch(".*(escape|encode).*") and
-        fc.getArgument(_) = this.asExpr()
+        fc.getAPositionalArgument() = this.asExpr()
       )
     }
   }
