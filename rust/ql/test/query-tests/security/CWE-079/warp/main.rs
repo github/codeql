@@ -6,10 +6,10 @@ use warp::Filter;
 pub async fn main() {
     let hello = warp::path("greet")
         .and(warp::path::param())
-        .map(|name: String| {
+        .map(|name: String| { // $ Source
             // Vulnerable to XSS because it directly includes user input in the response
             let body = format!("<h1>Hello, {name}!</h1>");
-            warp::reply::html(body) // $ MISSING: Alert[rust/xss]
+            warp::reply::html(body) // $ Alert[rust/xss]
         });
 
     // Start the web server on port 3000

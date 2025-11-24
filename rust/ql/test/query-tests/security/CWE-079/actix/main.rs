@@ -5,7 +5,7 @@ use actix_web::{
 };
 
 // The "bad" example from the qldoc
-#[get("/bad/{a}")]
+#[get("/bad/{a}")] // $ Source
 async fn vulnerable_handler(path: web::Path<String>) -> impl Responder {
     let user_input = path.into_inner();
 
@@ -22,7 +22,7 @@ async fn vulnerable_handler(path: web::Path<String>) -> impl Responder {
         user_input
     );
 
-    Html::new(html) // $ MISSING: Alert[rust/xss]
+    Html::new(html) // $ Alert[rust/xss]
 }
 
 fn html_escape(s: &str) -> String {
