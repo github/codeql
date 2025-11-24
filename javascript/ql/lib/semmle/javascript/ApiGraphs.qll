@@ -579,7 +579,31 @@ module API {
      * Gets a textual representation of this node.
      */
     string toString() {
-      none() // defined in subclasses
+      this = Impl::MkRoot() and result = "root"
+      or
+      exists(string m | this = Impl::MkModuleDef(m) | result = "module def " + m)
+      or
+      exists(string m | this = Impl::MkModuleUse(m) | result = "module use " + m)
+      or
+      exists(string m | this = Impl::MkModuleExport(m) | result = "module export " + m)
+      or
+      exists(string m | this = Impl::MkModuleImport(m) | result = "module import " + m)
+      or
+      exists(string m, string e | this = Impl::MkTypeUse(m, e) |
+        result = "type use " + m + "::" + e
+      )
+      or
+      exists(DataFlow::SourceNode cls | this = Impl::MkClassInstance(cls) |
+        result = "instance of " + cls.toString()
+      )
+      or
+      exists(DataFlow::Node nd | this = Impl::MkDef(nd) | result = "def " + nd.toString())
+      or
+      exists(DataFlow::Node nd | this = Impl::MkUse(nd) | result = "use " + nd.toString())
+      or
+      exists(DataFlow::InvokeNode nd | this = Impl::MkSyntheticCallbackArg(nd) |
+        result = "callback arg " + nd.toString()
+      )
     }
 
     /**
@@ -607,19 +631,13 @@ module API {
   }
 
   /** The root node of an API graph. */
-  class Root extends Node, Impl::MkRoot {
-    override string toString() { result = "root" }
-  }
+  class Root extends Node, Impl::MkRoot { }
 
   /** A node corresponding to a definition of an API component. */
-  class Definition extends Node, Impl::TDef {
-    override string toString() { result = "def " + this.getInducingNode().toString() }
-  }
+  class Definition extends Node, Impl::TDef { }
 
   /** A node corresponding to the use of an API component. */
-  class Use extends Node, Impl::TUse {
-    override string toString() { result = "use " + this.getInducingNode().toString() }
-  }
+  class Use extends Node, Impl::TUse { }
 
   /** Gets the root node. */
   Root root() { any() }
