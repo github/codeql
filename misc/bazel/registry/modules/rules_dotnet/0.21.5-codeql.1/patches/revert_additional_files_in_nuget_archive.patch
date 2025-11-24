@@ -1,0 +1,11 @@
+--- a/dotnet/private/rules/nuget/nuget_archive.bzl	2025-09-04 16:14:49.402400198 +0200
++++ b/dotnet/private/rules/nuget/nuget_archive.bzl	2025-09-04 16:12:16.577010334 +0200
+@@ -123,7 +123,7 @@
+         return
+ 
+     # If the folder is empty we do nothing
+-    if file.endswith(tfm) or file.endswith(tfm + "/"):
++    if file.find("/", tfm_end + 1) != -1:
+         return
+ 
+     group = groups[group_name]
