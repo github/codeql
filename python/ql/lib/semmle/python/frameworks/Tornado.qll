@@ -437,7 +437,13 @@ module Tornado {
     /** Gets a reference to the `tornado.websocket` module. */
     API::Node websocket() { result = Tornado::tornado().getMember("websocket") }
 
+    /** Provides models for the `tornado.websocket` module */
     module WebSocket {
+      /**
+       * Provides models for the `tornado.websocket.WebSocketHandler` class and subclasses.
+       *
+       * See https://www.tornadoweb.org/en/stable/websocket.html#tornado.websocket.WebSocketHandler.
+       */
       module WebSocketHandler {
         /** Gets a reference to the `tornado.websocket.WebSocketHandler` class or any subclass. */
         API::Node subclassRef() {
@@ -447,6 +453,7 @@ module Tornado {
             ModelOutput::getATypeNode("tornado.websocket.WebSocketHandler~Subclass").getASubclass*()
         }
 
+        /** A subclass of `tornado.websocket.WebSocketHandler`. */
         class WebSocketHandlerClass extends Web::RequestHandler::RequestHandlerClass {
           WebSocketHandlerClass() { this.getParent() = subclassRef().asSource().asExpr() }
 
@@ -457,7 +464,7 @@ module Tornado {
             result.getName() = "open"
           }
 
-          /** Gets a function that could handle incoming websocket events, if any. */
+          /** Gets a function that could handle incoming WebSocket events, if any. */
           Function getAWebSocketEventHandler() {
             result = this.getAMethod() and
             result.getName() =
@@ -580,7 +587,7 @@ module Tornado {
     override string getFramework() { result = "Tornado" }
   }
 
-  /** A request handler for WebSocket events */
+  /** A request handler for WebSocket events. */
   private class TornadoWebSocketEventHandler extends Http::Server::RequestHandler::Range {
     TornadoWebSocketEventHandler() {
       exists(TornadoModule::WebSocket::WebSocketHandler::WebSocketHandlerClass cls |

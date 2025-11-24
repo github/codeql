@@ -1,5 +1,6 @@
 import tornado.web
 import tornado.routing
+import tornado.websocket
 
 
 class FooHandler(tornado.web.RequestHandler):
@@ -56,7 +57,7 @@ class PossiblyNotRouted(tornado.web.RequestHandler):
 
 class WebSocket(tornado.websocket.WebSocketHandler):
     def open(self, x): # $ requestHandler routedParameter=x
-        self.write_message("WebSocket open {}".format(x)) 
+        self.write_message("WebSocket open {}".format(x))
 
     def on_message(self, data): # $ requestHandler routedParameter=data
         self.write_message("WebSocket on_message {}".format(data))
@@ -74,7 +75,6 @@ class WebSocket(tornado.websocket.WebSocketHandler):
         print("check_origin", origin)
         return True
 
-    
 
 def make_app():
     # see https://www.tornadoweb.org/en/stable/routing.html for even more examples
