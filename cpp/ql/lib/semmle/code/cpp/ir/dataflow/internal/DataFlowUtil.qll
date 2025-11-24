@@ -2081,7 +2081,7 @@ predicate localExprFlow(Expr e1, Expr e2) {
 /**
  * A canonical representation of a field.
  *
- * For performance reasons we we want a unique `Content` that represents
+ * For performance reasons we want a unique `Content` that represents
  * a given field across any template instantiation of a class.
  *
  * This is possible in _almost_ all cases, but there are cases where it is
