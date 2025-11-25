@@ -1798,145 +1798,216 @@ edges
 | main.rs:753:5:753:16 | print_i64(...) | main.rs:744:18:754:1 | { ... } |  |
 | main.rs:753:5:753:17 | ExprStmt | main.rs:753:5:753:13 | print_i64 |  |
 | main.rs:753:15:753:15 | x | main.rs:753:5:753:16 | print_i64(...) |  |
-| main.rs:756:1:800:1 | enter fn main | main.rs:757:5:757:25 | ExprStmt |  |
-| main.rs:756:1:800:1 | exit fn main (normal) | main.rs:756:1:800:1 | exit fn main |  |
-| main.rs:756:11:800:1 | { ... } | main.rs:756:1:800:1 | exit fn main (normal) |  |
-| main.rs:757:5:757:22 | immutable_variable | main.rs:757:5:757:24 | immutable_variable(...) |  |
-| main.rs:757:5:757:24 | immutable_variable(...) | main.rs:758:5:758:23 | ExprStmt |  |
-| main.rs:757:5:757:25 | ExprStmt | main.rs:757:5:757:22 | immutable_variable |  |
-| main.rs:758:5:758:20 | mutable_variable | main.rs:758:5:758:22 | mutable_variable(...) |  |
-| main.rs:758:5:758:22 | mutable_variable(...) | main.rs:759:5:759:40 | ExprStmt |  |
-| main.rs:758:5:758:23 | ExprStmt | main.rs:758:5:758:20 | mutable_variable |  |
-| main.rs:759:5:759:37 | mutable_variable_immutable_borrow | main.rs:759:5:759:39 | mutable_variable_immutable_borrow(...) |  |
-| main.rs:759:5:759:39 | mutable_variable_immutable_borrow(...) | main.rs:760:5:760:23 | ExprStmt |  |
-| main.rs:759:5:759:40 | ExprStmt | main.rs:759:5:759:37 | mutable_variable_immutable_borrow |  |
-| main.rs:760:5:760:20 | variable_shadow1 | main.rs:760:5:760:22 | variable_shadow1(...) |  |
-| main.rs:760:5:760:22 | variable_shadow1(...) | main.rs:761:5:761:23 | ExprStmt |  |
-| main.rs:760:5:760:23 | ExprStmt | main.rs:760:5:760:20 | variable_shadow1 |  |
-| main.rs:761:5:761:20 | variable_shadow2 | main.rs:761:5:761:22 | variable_shadow2(...) |  |
-| main.rs:761:5:761:22 | variable_shadow2(...) | main.rs:762:5:762:19 | ExprStmt |  |
-| main.rs:761:5:761:23 | ExprStmt | main.rs:761:5:761:20 | variable_shadow2 |  |
-| main.rs:762:5:762:16 | let_pattern1 | main.rs:762:5:762:18 | let_pattern1(...) |  |
-| main.rs:762:5:762:18 | let_pattern1(...) | main.rs:763:5:763:19 | ExprStmt |  |
-| main.rs:762:5:762:19 | ExprStmt | main.rs:762:5:762:16 | let_pattern1 |  |
-| main.rs:763:5:763:16 | let_pattern2 | main.rs:763:5:763:18 | let_pattern2(...) |  |
-| main.rs:763:5:763:18 | let_pattern2(...) | main.rs:764:5:764:19 | ExprStmt |  |
-| main.rs:763:5:763:19 | ExprStmt | main.rs:763:5:763:16 | let_pattern2 |  |
-| main.rs:764:5:764:16 | let_pattern3 | main.rs:764:5:764:18 | let_pattern3(...) |  |
-| main.rs:764:5:764:18 | let_pattern3(...) | main.rs:765:5:765:19 | ExprStmt |  |
-| main.rs:764:5:764:19 | ExprStmt | main.rs:764:5:764:16 | let_pattern3 |  |
-| main.rs:765:5:765:16 | let_pattern4 | main.rs:765:5:765:18 | let_pattern4(...) |  |
-| main.rs:765:5:765:18 | let_pattern4(...) | main.rs:766:5:766:21 | ExprStmt |  |
-| main.rs:765:5:765:19 | ExprStmt | main.rs:765:5:765:16 | let_pattern4 |  |
-| main.rs:766:5:766:18 | match_pattern1 | main.rs:766:5:766:20 | match_pattern1(...) |  |
-| main.rs:766:5:766:20 | match_pattern1(...) | main.rs:767:5:767:21 | ExprStmt |  |
-| main.rs:766:5:766:21 | ExprStmt | main.rs:766:5:766:18 | match_pattern1 |  |
-| main.rs:767:5:767:18 | match_pattern2 | main.rs:767:5:767:20 | match_pattern2(...) |  |
-| main.rs:767:5:767:20 | match_pattern2(...) | main.rs:768:5:768:21 | ExprStmt |  |
-| main.rs:767:5:767:21 | ExprStmt | main.rs:767:5:767:18 | match_pattern2 |  |
-| main.rs:768:5:768:18 | match_pattern3 | main.rs:768:5:768:20 | match_pattern3(...) |  |
-| main.rs:768:5:768:20 | match_pattern3(...) | main.rs:769:5:769:21 | ExprStmt |  |
-| main.rs:768:5:768:21 | ExprStmt | main.rs:768:5:768:18 | match_pattern3 |  |
-| main.rs:769:5:769:18 | match_pattern4 | main.rs:769:5:769:20 | match_pattern4(...) |  |
-| main.rs:769:5:769:20 | match_pattern4(...) | main.rs:770:5:770:21 | ExprStmt |  |
-| main.rs:769:5:769:21 | ExprStmt | main.rs:769:5:769:18 | match_pattern4 |  |
-| main.rs:770:5:770:18 | match_pattern5 | main.rs:770:5:770:20 | match_pattern5(...) |  |
-| main.rs:770:5:770:20 | match_pattern5(...) | main.rs:771:5:771:21 | ExprStmt |  |
-| main.rs:770:5:770:21 | ExprStmt | main.rs:770:5:770:18 | match_pattern5 |  |
-| main.rs:771:5:771:18 | match_pattern6 | main.rs:771:5:771:20 | match_pattern6(...) |  |
-| main.rs:771:5:771:20 | match_pattern6(...) | main.rs:772:5:772:21 | ExprStmt |  |
-| main.rs:771:5:771:21 | ExprStmt | main.rs:771:5:771:18 | match_pattern6 |  |
-| main.rs:772:5:772:18 | match_pattern7 | main.rs:772:5:772:20 | match_pattern7(...) |  |
-| main.rs:772:5:772:20 | match_pattern7(...) | main.rs:773:5:773:21 | ExprStmt |  |
-| main.rs:772:5:772:21 | ExprStmt | main.rs:772:5:772:18 | match_pattern7 |  |
-| main.rs:773:5:773:18 | match_pattern8 | main.rs:773:5:773:20 | match_pattern8(...) |  |
-| main.rs:773:5:773:20 | match_pattern8(...) | main.rs:774:5:774:21 | ExprStmt |  |
-| main.rs:773:5:773:21 | ExprStmt | main.rs:773:5:773:18 | match_pattern8 |  |
-| main.rs:774:5:774:18 | match_pattern9 | main.rs:774:5:774:20 | match_pattern9(...) |  |
-| main.rs:774:5:774:20 | match_pattern9(...) | main.rs:775:5:775:22 | ExprStmt |  |
-| main.rs:774:5:774:21 | ExprStmt | main.rs:774:5:774:18 | match_pattern9 |  |
-| main.rs:775:5:775:19 | match_pattern10 | main.rs:775:5:775:21 | match_pattern10(...) |  |
-| main.rs:775:5:775:21 | match_pattern10(...) | main.rs:776:5:776:22 | ExprStmt |  |
-| main.rs:775:5:775:22 | ExprStmt | main.rs:775:5:775:19 | match_pattern10 |  |
-| main.rs:776:5:776:19 | match_pattern11 | main.rs:776:5:776:21 | match_pattern11(...) |  |
-| main.rs:776:5:776:21 | match_pattern11(...) | main.rs:777:5:777:22 | ExprStmt |  |
-| main.rs:776:5:776:22 | ExprStmt | main.rs:776:5:776:19 | match_pattern11 |  |
-| main.rs:777:5:777:19 | match_pattern12 | main.rs:777:5:777:21 | match_pattern12(...) |  |
-| main.rs:777:5:777:21 | match_pattern12(...) | main.rs:778:5:778:22 | ExprStmt |  |
-| main.rs:777:5:777:22 | ExprStmt | main.rs:777:5:777:19 | match_pattern12 |  |
-| main.rs:778:5:778:19 | match_pattern13 | main.rs:778:5:778:21 | match_pattern13(...) |  |
-| main.rs:778:5:778:21 | match_pattern13(...) | main.rs:779:5:779:22 | ExprStmt |  |
-| main.rs:778:5:778:22 | ExprStmt | main.rs:778:5:778:19 | match_pattern13 |  |
-| main.rs:779:5:779:19 | match_pattern14 | main.rs:779:5:779:21 | match_pattern14(...) |  |
-| main.rs:779:5:779:21 | match_pattern14(...) | main.rs:780:5:780:22 | ExprStmt |  |
-| main.rs:779:5:779:22 | ExprStmt | main.rs:779:5:779:19 | match_pattern14 |  |
-| main.rs:780:5:780:19 | match_pattern15 | main.rs:780:5:780:21 | match_pattern15(...) |  |
-| main.rs:780:5:780:21 | match_pattern15(...) | main.rs:781:5:781:22 | ExprStmt |  |
-| main.rs:780:5:780:22 | ExprStmt | main.rs:780:5:780:19 | match_pattern15 |  |
-| main.rs:781:5:781:19 | match_pattern16 | main.rs:781:5:781:21 | match_pattern16(...) |  |
-| main.rs:781:5:781:21 | match_pattern16(...) | main.rs:782:5:782:36 | ExprStmt |  |
-| main.rs:781:5:781:22 | ExprStmt | main.rs:781:5:781:19 | match_pattern16 |  |
-| main.rs:782:5:782:18 | param_pattern1 | main.rs:782:20:782:22 | "a" |  |
-| main.rs:782:5:782:35 | param_pattern1(...) | main.rs:783:5:783:37 | ExprStmt |  |
-| main.rs:782:5:782:36 | ExprStmt | main.rs:782:5:782:18 | param_pattern1 |  |
-| main.rs:782:20:782:22 | "a" | main.rs:782:26:782:28 | "b" |  |
-| main.rs:782:25:782:34 | TupleExpr | main.rs:782:5:782:35 | param_pattern1(...) |  |
-| main.rs:782:26:782:28 | "b" | main.rs:782:31:782:33 | "c" |  |
-| main.rs:782:31:782:33 | "c" | main.rs:782:25:782:34 | TupleExpr |  |
-| main.rs:783:5:783:18 | param_pattern2 | main.rs:783:20:783:31 | ...::Left |  |
-| main.rs:783:5:783:36 | param_pattern2(...) | main.rs:784:5:784:26 | ExprStmt |  |
-| main.rs:783:5:783:37 | ExprStmt | main.rs:783:5:783:18 | param_pattern2 |  |
-| main.rs:783:20:783:31 | ...::Left | main.rs:783:33:783:34 | 45 |  |
-| main.rs:783:20:783:35 | ...::Left(...) | main.rs:783:5:783:36 | param_pattern2(...) |  |
-| main.rs:783:33:783:34 | 45 | main.rs:783:20:783:35 | ...::Left(...) |  |
-| main.rs:784:5:784:23 | destruct_assignment | main.rs:784:5:784:25 | destruct_assignment(...) |  |
-| main.rs:784:5:784:25 | destruct_assignment(...) | main.rs:785:5:785:23 | ExprStmt |  |
-| main.rs:784:5:784:26 | ExprStmt | main.rs:784:5:784:23 | destruct_assignment |  |
-| main.rs:785:5:785:20 | closure_variable | main.rs:785:5:785:22 | closure_variable(...) |  |
-| main.rs:785:5:785:22 | closure_variable(...) | main.rs:786:5:786:22 | ExprStmt |  |
-| main.rs:785:5:785:23 | ExprStmt | main.rs:785:5:785:20 | closure_variable |  |
-| main.rs:786:5:786:19 | nested_function | main.rs:786:5:786:21 | nested_function(...) |  |
-| main.rs:786:5:786:21 | nested_function(...) | main.rs:787:5:787:19 | ExprStmt |  |
-| main.rs:786:5:786:22 | ExprStmt | main.rs:786:5:786:19 | nested_function |  |
-| main.rs:787:5:787:16 | for_variable | main.rs:787:5:787:18 | for_variable(...) |  |
-| main.rs:787:5:787:18 | for_variable(...) | main.rs:788:5:788:17 | ExprStmt |  |
-| main.rs:787:5:787:19 | ExprStmt | main.rs:787:5:787:16 | for_variable |  |
-| main.rs:788:5:788:14 | add_assign | main.rs:788:5:788:16 | add_assign(...) |  |
-| main.rs:788:5:788:16 | add_assign(...) | main.rs:789:5:789:13 | ExprStmt |  |
-| main.rs:788:5:788:17 | ExprStmt | main.rs:788:5:788:14 | add_assign |  |
-| main.rs:789:5:789:10 | mutate | main.rs:789:5:789:12 | mutate(...) |  |
-| main.rs:789:5:789:12 | mutate(...) | main.rs:790:5:790:17 | ExprStmt |  |
-| main.rs:789:5:789:13 | ExprStmt | main.rs:789:5:789:10 | mutate |  |
-| main.rs:790:5:790:14 | mutate_arg | main.rs:790:5:790:16 | mutate_arg(...) |  |
-| main.rs:790:5:790:16 | mutate_arg(...) | main.rs:791:5:791:12 | ExprStmt |  |
-| main.rs:790:5:790:17 | ExprStmt | main.rs:790:5:790:14 | mutate_arg |  |
-| main.rs:791:5:791:9 | alias | main.rs:791:5:791:11 | alias(...) |  |
-| main.rs:791:5:791:11 | alias(...) | main.rs:792:5:792:18 | ExprStmt |  |
-| main.rs:791:5:791:12 | ExprStmt | main.rs:791:5:791:9 | alias |  |
-| main.rs:792:5:792:15 | capture_mut | main.rs:792:5:792:17 | capture_mut(...) |  |
-| main.rs:792:5:792:17 | capture_mut(...) | main.rs:793:5:793:20 | ExprStmt |  |
-| main.rs:792:5:792:18 | ExprStmt | main.rs:792:5:792:15 | capture_mut |  |
-| main.rs:793:5:793:17 | capture_immut | main.rs:793:5:793:19 | capture_immut(...) |  |
-| main.rs:793:5:793:19 | capture_immut(...) | main.rs:794:5:794:26 | ExprStmt |  |
-| main.rs:793:5:793:20 | ExprStmt | main.rs:793:5:793:17 | capture_immut |  |
-| main.rs:794:5:794:23 | async_block_capture | main.rs:794:5:794:25 | async_block_capture(...) |  |
-| main.rs:794:5:794:25 | async_block_capture(...) | main.rs:795:5:795:14 | ExprStmt |  |
-| main.rs:794:5:794:26 | ExprStmt | main.rs:794:5:794:23 | async_block_capture |  |
-| main.rs:795:5:795:11 | structs | main.rs:795:5:795:13 | structs(...) |  |
-| main.rs:795:5:795:13 | structs(...) | main.rs:796:5:796:14 | ExprStmt |  |
-| main.rs:795:5:795:14 | ExprStmt | main.rs:795:5:795:11 | structs |  |
-| main.rs:796:5:796:11 | ref_arg | main.rs:796:5:796:13 | ref_arg(...) |  |
-| main.rs:796:5:796:13 | ref_arg(...) | main.rs:797:5:797:30 | ExprStmt |  |
-| main.rs:796:5:796:14 | ExprStmt | main.rs:796:5:796:11 | ref_arg |  |
-| main.rs:797:5:797:27 | ref_methodcall_receiver | main.rs:797:5:797:29 | ref_methodcall_receiver(...) |  |
-| main.rs:797:5:797:29 | ref_methodcall_receiver(...) | main.rs:798:5:798:23 | ExprStmt |  |
-| main.rs:797:5:797:30 | ExprStmt | main.rs:797:5:797:27 | ref_methodcall_receiver |  |
-| main.rs:798:5:798:20 | macro_invocation | main.rs:798:5:798:22 | macro_invocation(...) |  |
-| main.rs:798:5:798:22 | macro_invocation(...) | main.rs:799:5:799:18 | ExprStmt |  |
-| main.rs:798:5:798:23 | ExprStmt | main.rs:798:5:798:20 | macro_invocation |  |
-| main.rs:799:5:799:15 | capture_phi | main.rs:799:5:799:17 | capture_phi(...) |  |
-| main.rs:799:5:799:17 | capture_phi(...) | main.rs:756:11:800:1 | { ... } |  |
-| main.rs:799:5:799:18 | ExprStmt | main.rs:799:5:799:15 | capture_phi |  |
+| main.rs:757:5:772:5 | enter fn test | main.rs:759:9:759:25 | let ... = ... |  |
+| main.rs:757:5:772:5 | exit fn test (normal) | main.rs:757:5:772:5 | exit fn test |  |
+| main.rs:758:34:772:5 | { ... } | main.rs:757:5:772:5 | exit fn test (normal) |  |
+| main.rs:759:9:759:25 | let ... = ... | main.rs:759:17:759:20 | Some |  |
+| main.rs:759:13:759:13 | x | main.rs:759:13:759:13 | x |  |
+| main.rs:759:13:759:13 | x | main.rs:760:9:767:10 | let ... = ... | match |
+| main.rs:759:17:759:20 | Some | main.rs:759:22:759:23 | 42 |  |
+| main.rs:759:17:759:24 | Some(...) | main.rs:759:13:759:13 | x |  |
+| main.rs:759:22:759:23 | 42 | main.rs:759:17:759:24 | Some(...) |  |
+| main.rs:760:9:767:10 | let ... = ... | main.rs:761:19:761:19 | x |  |
+| main.rs:760:13:760:13 | y | main.rs:760:13:760:13 | y |  |
+| main.rs:760:13:760:13 | y | main.rs:768:15:768:15 | y | match |
+| main.rs:761:13:767:9 | match x { ... } | main.rs:760:13:760:13 | y |  |
+| main.rs:761:19:761:19 | x | main.rs:762:13:762:19 | Some(...) |  |
+| main.rs:762:13:762:19 | Some(...) | main.rs:762:18:762:18 | y | match |
+| main.rs:762:13:762:19 | Some(...) | main.rs:765:13:765:16 | None | no-match |
+| main.rs:762:18:762:18 | y | main.rs:762:18:762:18 | y |  |
+| main.rs:762:18:762:18 | y | main.rs:763:17:763:20 | None | match |
+| main.rs:762:24:764:13 | { ... } | main.rs:761:13:767:9 | match x { ... } |  |
+| main.rs:763:17:763:20 | None | main.rs:762:24:764:13 | { ... } |  |
+| main.rs:765:13:765:16 | None | main.rs:765:13:765:16 | None |  |
+| main.rs:765:13:765:16 | None | main.rs:766:17:766:20 | None | match |
+| main.rs:766:17:766:20 | None | main.rs:761:13:767:9 | match x { ... } |  |
+| main.rs:768:9:771:9 | match y { ... } | main.rs:758:34:772:5 | { ... } |  |
+| main.rs:768:15:768:15 | y | main.rs:769:13:769:16 | N0ne |  |
+| main.rs:769:13:769:16 | N0ne | main.rs:769:13:769:16 | N0ne |  |
+| main.rs:769:13:769:16 | N0ne | main.rs:770:17:770:20 | N0ne | match |
+| main.rs:770:17:770:20 | N0ne | main.rs:768:9:771:9 | match y { ... } |  |
+| main.rs:774:5:781:5 | enter fn test2 | main.rs:776:9:777:17 | let ... = test |  |
+| main.rs:774:5:781:5 | exit fn test2 (normal) | main.rs:774:5:781:5 | exit fn test2 |  |
+| main.rs:775:31:781:5 | { ... } | main.rs:774:5:781:5 | exit fn test2 (normal) |  |
+| main.rs:776:9:777:17 | let ... = test | main.rs:777:13:777:16 | test |  |
+| main.rs:776:13:776:22 | test_alias | main.rs:776:13:776:22 | test_alias |  |
+| main.rs:776:13:776:22 | test_alias | main.rs:778:9:779:25 | let ... = ... | match |
+| main.rs:777:13:777:16 | test | main.rs:776:13:776:22 | test_alias |  |
+| main.rs:778:9:779:25 | let ... = ... | main.rs:779:13:779:22 | test_alias |  |
+| main.rs:778:13:778:16 | test | main.rs:778:13:778:16 | test |  |
+| main.rs:778:13:778:16 | test | main.rs:780:9:780:12 | test | match |
+| main.rs:779:13:779:22 | test_alias | main.rs:779:13:779:24 | test_alias(...) |  |
+| main.rs:779:13:779:24 | test_alias(...) | main.rs:778:13:778:16 | test |  |
+| main.rs:780:9:780:12 | test | main.rs:775:31:781:5 | { ... } |  |
+| main.rs:785:5:798:5 | enter fn test3 | main.rs:787:9:787:24 | let ... = ... |  |
+| main.rs:785:5:798:5 | exit fn test3 (normal) | main.rs:785:5:798:5 | exit fn test3 |  |
+| main.rs:786:16:798:5 | { ... } | main.rs:785:5:798:5 | exit fn test3 (normal) |  |
+| main.rs:787:9:787:24 | let ... = ... | main.rs:787:17:787:20 | Some |  |
+| main.rs:787:13:787:13 | x | main.rs:787:13:787:13 | x |  |
+| main.rs:787:13:787:13 | x | main.rs:788:9:792:10 | ExprStmt | match |
+| main.rs:787:17:787:20 | Some | main.rs:787:22:787:22 | 0 |  |
+| main.rs:787:17:787:23 | Some(...) | main.rs:787:13:787:13 | x |  |
+| main.rs:787:22:787:22 | 0 | main.rs:787:17:787:23 | Some(...) |  |
+| main.rs:788:9:792:9 | match x { ... } | main.rs:793:9:797:10 | ExprStmt |  |
+| main.rs:788:9:792:10 | ExprStmt | main.rs:788:15:788:15 | x |  |
+| main.rs:788:15:788:15 | x | main.rs:789:13:789:19 | Some(...) |  |
+| main.rs:789:13:789:19 | Some(...) | main.rs:789:18:789:18 | x | match |
+| main.rs:789:13:789:19 | Some(...) | main.rs:791:13:791:13 | _ | no-match |
+| main.rs:789:18:789:18 | x | main.rs:789:18:789:18 | x |  |
+| main.rs:789:18:789:18 | x | main.rs:790:20:790:20 | x | match |
+| main.rs:790:20:790:20 | x | main.rs:788:9:792:9 | match x { ... } |  |
+| main.rs:791:13:791:13 | _ | main.rs:791:18:791:18 | 0 | match |
+| main.rs:791:18:791:18 | 0 | main.rs:788:9:792:9 | match x { ... } |  |
+| main.rs:793:9:797:9 | match x { ... } | main.rs:786:16:798:5 | { ... } |  |
+| main.rs:793:9:797:10 | ExprStmt | main.rs:793:15:793:15 | x |  |
+| main.rs:793:15:793:15 | x | main.rs:794:13:794:19 | Some(...) |  |
+| main.rs:794:13:794:19 | Some(...) | main.rs:794:18:794:18 | z | match |
+| main.rs:794:13:794:19 | Some(...) | main.rs:796:13:796:13 | _ | no-match |
+| main.rs:794:18:794:18 | z | main.rs:794:18:794:18 | z |  |
+| main.rs:794:18:794:18 | z | main.rs:795:17:795:17 | z | match |
+| main.rs:794:18:794:18 | z | main.rs:796:13:796:13 | _ | no-match |
+| main.rs:795:17:795:17 | z | main.rs:793:9:797:9 | match x { ... } |  |
+| main.rs:796:13:796:13 | _ | main.rs:796:18:796:18 | 0 | match |
+| main.rs:796:18:796:18 | 0 | main.rs:793:9:797:9 | match x { ... } |  |
+| main.rs:801:1:845:1 | enter fn main | main.rs:802:5:802:25 | ExprStmt |  |
+| main.rs:801:1:845:1 | exit fn main (normal) | main.rs:801:1:845:1 | exit fn main |  |
+| main.rs:801:11:845:1 | { ... } | main.rs:801:1:845:1 | exit fn main (normal) |  |
+| main.rs:802:5:802:22 | immutable_variable | main.rs:802:5:802:24 | immutable_variable(...) |  |
+| main.rs:802:5:802:24 | immutable_variable(...) | main.rs:803:5:803:23 | ExprStmt |  |
+| main.rs:802:5:802:25 | ExprStmt | main.rs:802:5:802:22 | immutable_variable |  |
+| main.rs:803:5:803:20 | mutable_variable | main.rs:803:5:803:22 | mutable_variable(...) |  |
+| main.rs:803:5:803:22 | mutable_variable(...) | main.rs:804:5:804:40 | ExprStmt |  |
+| main.rs:803:5:803:23 | ExprStmt | main.rs:803:5:803:20 | mutable_variable |  |
+| main.rs:804:5:804:37 | mutable_variable_immutable_borrow | main.rs:804:5:804:39 | mutable_variable_immutable_borrow(...) |  |
+| main.rs:804:5:804:39 | mutable_variable_immutable_borrow(...) | main.rs:805:5:805:23 | ExprStmt |  |
+| main.rs:804:5:804:40 | ExprStmt | main.rs:804:5:804:37 | mutable_variable_immutable_borrow |  |
+| main.rs:805:5:805:20 | variable_shadow1 | main.rs:805:5:805:22 | variable_shadow1(...) |  |
+| main.rs:805:5:805:22 | variable_shadow1(...) | main.rs:806:5:806:23 | ExprStmt |  |
+| main.rs:805:5:805:23 | ExprStmt | main.rs:805:5:805:20 | variable_shadow1 |  |
+| main.rs:806:5:806:20 | variable_shadow2 | main.rs:806:5:806:22 | variable_shadow2(...) |  |
+| main.rs:806:5:806:22 | variable_shadow2(...) | main.rs:807:5:807:19 | ExprStmt |  |
+| main.rs:806:5:806:23 | ExprStmt | main.rs:806:5:806:20 | variable_shadow2 |  |
+| main.rs:807:5:807:16 | let_pattern1 | main.rs:807:5:807:18 | let_pattern1(...) |  |
+| main.rs:807:5:807:18 | let_pattern1(...) | main.rs:808:5:808:19 | ExprStmt |  |
+| main.rs:807:5:807:19 | ExprStmt | main.rs:807:5:807:16 | let_pattern1 |  |
+| main.rs:808:5:808:16 | let_pattern2 | main.rs:808:5:808:18 | let_pattern2(...) |  |
+| main.rs:808:5:808:18 | let_pattern2(...) | main.rs:809:5:809:19 | ExprStmt |  |
+| main.rs:808:5:808:19 | ExprStmt | main.rs:808:5:808:16 | let_pattern2 |  |
+| main.rs:809:5:809:16 | let_pattern3 | main.rs:809:5:809:18 | let_pattern3(...) |  |
+| main.rs:809:5:809:18 | let_pattern3(...) | main.rs:810:5:810:19 | ExprStmt |  |
+| main.rs:809:5:809:19 | ExprStmt | main.rs:809:5:809:16 | let_pattern3 |  |
+| main.rs:810:5:810:16 | let_pattern4 | main.rs:810:5:810:18 | let_pattern4(...) |  |
+| main.rs:810:5:810:18 | let_pattern4(...) | main.rs:811:5:811:21 | ExprStmt |  |
+| main.rs:810:5:810:19 | ExprStmt | main.rs:810:5:810:16 | let_pattern4 |  |
+| main.rs:811:5:811:18 | match_pattern1 | main.rs:811:5:811:20 | match_pattern1(...) |  |
+| main.rs:811:5:811:20 | match_pattern1(...) | main.rs:812:5:812:21 | ExprStmt |  |
+| main.rs:811:5:811:21 | ExprStmt | main.rs:811:5:811:18 | match_pattern1 |  |
+| main.rs:812:5:812:18 | match_pattern2 | main.rs:812:5:812:20 | match_pattern2(...) |  |
+| main.rs:812:5:812:20 | match_pattern2(...) | main.rs:813:5:813:21 | ExprStmt |  |
+| main.rs:812:5:812:21 | ExprStmt | main.rs:812:5:812:18 | match_pattern2 |  |
+| main.rs:813:5:813:18 | match_pattern3 | main.rs:813:5:813:20 | match_pattern3(...) |  |
+| main.rs:813:5:813:20 | match_pattern3(...) | main.rs:814:5:814:21 | ExprStmt |  |
+| main.rs:813:5:813:21 | ExprStmt | main.rs:813:5:813:18 | match_pattern3 |  |
+| main.rs:814:5:814:18 | match_pattern4 | main.rs:814:5:814:20 | match_pattern4(...) |  |
+| main.rs:814:5:814:20 | match_pattern4(...) | main.rs:815:5:815:21 | ExprStmt |  |
+| main.rs:814:5:814:21 | ExprStmt | main.rs:814:5:814:18 | match_pattern4 |  |
+| main.rs:815:5:815:18 | match_pattern5 | main.rs:815:5:815:20 | match_pattern5(...) |  |
+| main.rs:815:5:815:20 | match_pattern5(...) | main.rs:816:5:816:21 | ExprStmt |  |
+| main.rs:815:5:815:21 | ExprStmt | main.rs:815:5:815:18 | match_pattern5 |  |
+| main.rs:816:5:816:18 | match_pattern6 | main.rs:816:5:816:20 | match_pattern6(...) |  |
+| main.rs:816:5:816:20 | match_pattern6(...) | main.rs:817:5:817:21 | ExprStmt |  |
+| main.rs:816:5:816:21 | ExprStmt | main.rs:816:5:816:18 | match_pattern6 |  |
+| main.rs:817:5:817:18 | match_pattern7 | main.rs:817:5:817:20 | match_pattern7(...) |  |
+| main.rs:817:5:817:20 | match_pattern7(...) | main.rs:818:5:818:21 | ExprStmt |  |
+| main.rs:817:5:817:21 | ExprStmt | main.rs:817:5:817:18 | match_pattern7 |  |
+| main.rs:818:5:818:18 | match_pattern8 | main.rs:818:5:818:20 | match_pattern8(...) |  |
+| main.rs:818:5:818:20 | match_pattern8(...) | main.rs:819:5:819:21 | ExprStmt |  |
+| main.rs:818:5:818:21 | ExprStmt | main.rs:818:5:818:18 | match_pattern8 |  |
+| main.rs:819:5:819:18 | match_pattern9 | main.rs:819:5:819:20 | match_pattern9(...) |  |
+| main.rs:819:5:819:20 | match_pattern9(...) | main.rs:820:5:820:22 | ExprStmt |  |
+| main.rs:819:5:819:21 | ExprStmt | main.rs:819:5:819:18 | match_pattern9 |  |
+| main.rs:820:5:820:19 | match_pattern10 | main.rs:820:5:820:21 | match_pattern10(...) |  |
+| main.rs:820:5:820:21 | match_pattern10(...) | main.rs:821:5:821:22 | ExprStmt |  |
+| main.rs:820:5:820:22 | ExprStmt | main.rs:820:5:820:19 | match_pattern10 |  |
+| main.rs:821:5:821:19 | match_pattern11 | main.rs:821:5:821:21 | match_pattern11(...) |  |
+| main.rs:821:5:821:21 | match_pattern11(...) | main.rs:822:5:822:22 | ExprStmt |  |
+| main.rs:821:5:821:22 | ExprStmt | main.rs:821:5:821:19 | match_pattern11 |  |
+| main.rs:822:5:822:19 | match_pattern12 | main.rs:822:5:822:21 | match_pattern12(...) |  |
+| main.rs:822:5:822:21 | match_pattern12(...) | main.rs:823:5:823:22 | ExprStmt |  |
+| main.rs:822:5:822:22 | ExprStmt | main.rs:822:5:822:19 | match_pattern12 |  |
+| main.rs:823:5:823:19 | match_pattern13 | main.rs:823:5:823:21 | match_pattern13(...) |  |
+| main.rs:823:5:823:21 | match_pattern13(...) | main.rs:824:5:824:22 | ExprStmt |  |
+| main.rs:823:5:823:22 | ExprStmt | main.rs:823:5:823:19 | match_pattern13 |  |
+| main.rs:824:5:824:19 | match_pattern14 | main.rs:824:5:824:21 | match_pattern14(...) |  |
+| main.rs:824:5:824:21 | match_pattern14(...) | main.rs:825:5:825:22 | ExprStmt |  |
+| main.rs:824:5:824:22 | ExprStmt | main.rs:824:5:824:19 | match_pattern14 |  |
+| main.rs:825:5:825:19 | match_pattern15 | main.rs:825:5:825:21 | match_pattern15(...) |  |
+| main.rs:825:5:825:21 | match_pattern15(...) | main.rs:826:5:826:22 | ExprStmt |  |
+| main.rs:825:5:825:22 | ExprStmt | main.rs:825:5:825:19 | match_pattern15 |  |
+| main.rs:826:5:826:19 | match_pattern16 | main.rs:826:5:826:21 | match_pattern16(...) |  |
+| main.rs:826:5:826:21 | match_pattern16(...) | main.rs:827:5:827:36 | ExprStmt |  |
+| main.rs:826:5:826:22 | ExprStmt | main.rs:826:5:826:19 | match_pattern16 |  |
+| main.rs:827:5:827:18 | param_pattern1 | main.rs:827:20:827:22 | "a" |  |
+| main.rs:827:5:827:35 | param_pattern1(...) | main.rs:828:5:828:37 | ExprStmt |  |
+| main.rs:827:5:827:36 | ExprStmt | main.rs:827:5:827:18 | param_pattern1 |  |
+| main.rs:827:20:827:22 | "a" | main.rs:827:26:827:28 | "b" |  |
+| main.rs:827:25:827:34 | TupleExpr | main.rs:827:5:827:35 | param_pattern1(...) |  |
+| main.rs:827:26:827:28 | "b" | main.rs:827:31:827:33 | "c" |  |
+| main.rs:827:31:827:33 | "c" | main.rs:827:25:827:34 | TupleExpr |  |
+| main.rs:828:5:828:18 | param_pattern2 | main.rs:828:20:828:31 | ...::Left |  |
+| main.rs:828:5:828:36 | param_pattern2(...) | main.rs:829:5:829:26 | ExprStmt |  |
+| main.rs:828:5:828:37 | ExprStmt | main.rs:828:5:828:18 | param_pattern2 |  |
+| main.rs:828:20:828:31 | ...::Left | main.rs:828:33:828:34 | 45 |  |
+| main.rs:828:20:828:35 | ...::Left(...) | main.rs:828:5:828:36 | param_pattern2(...) |  |
+| main.rs:828:33:828:34 | 45 | main.rs:828:20:828:35 | ...::Left(...) |  |
+| main.rs:829:5:829:23 | destruct_assignment | main.rs:829:5:829:25 | destruct_assignment(...) |  |
+| main.rs:829:5:829:25 | destruct_assignment(...) | main.rs:830:5:830:23 | ExprStmt |  |
+| main.rs:829:5:829:26 | ExprStmt | main.rs:829:5:829:23 | destruct_assignment |  |
+| main.rs:830:5:830:20 | closure_variable | main.rs:830:5:830:22 | closure_variable(...) |  |
+| main.rs:830:5:830:22 | closure_variable(...) | main.rs:831:5:831:22 | ExprStmt |  |
+| main.rs:830:5:830:23 | ExprStmt | main.rs:830:5:830:20 | closure_variable |  |
+| main.rs:831:5:831:19 | nested_function | main.rs:831:5:831:21 | nested_function(...) |  |
+| main.rs:831:5:831:21 | nested_function(...) | main.rs:832:5:832:19 | ExprStmt |  |
+| main.rs:831:5:831:22 | ExprStmt | main.rs:831:5:831:19 | nested_function |  |
+| main.rs:832:5:832:16 | for_variable | main.rs:832:5:832:18 | for_variable(...) |  |
+| main.rs:832:5:832:18 | for_variable(...) | main.rs:833:5:833:17 | ExprStmt |  |
+| main.rs:832:5:832:19 | ExprStmt | main.rs:832:5:832:16 | for_variable |  |
+| main.rs:833:5:833:14 | add_assign | main.rs:833:5:833:16 | add_assign(...) |  |
+| main.rs:833:5:833:16 | add_assign(...) | main.rs:834:5:834:13 | ExprStmt |  |
+| main.rs:833:5:833:17 | ExprStmt | main.rs:833:5:833:14 | add_assign |  |
+| main.rs:834:5:834:10 | mutate | main.rs:834:5:834:12 | mutate(...) |  |
+| main.rs:834:5:834:12 | mutate(...) | main.rs:835:5:835:17 | ExprStmt |  |
+| main.rs:834:5:834:13 | ExprStmt | main.rs:834:5:834:10 | mutate |  |
+| main.rs:835:5:835:14 | mutate_arg | main.rs:835:5:835:16 | mutate_arg(...) |  |
+| main.rs:835:5:835:16 | mutate_arg(...) | main.rs:836:5:836:12 | ExprStmt |  |
+| main.rs:835:5:835:17 | ExprStmt | main.rs:835:5:835:14 | mutate_arg |  |
+| main.rs:836:5:836:9 | alias | main.rs:836:5:836:11 | alias(...) |  |
+| main.rs:836:5:836:11 | alias(...) | main.rs:837:5:837:18 | ExprStmt |  |
+| main.rs:836:5:836:12 | ExprStmt | main.rs:836:5:836:9 | alias |  |
+| main.rs:837:5:837:15 | capture_mut | main.rs:837:5:837:17 | capture_mut(...) |  |
+| main.rs:837:5:837:17 | capture_mut(...) | main.rs:838:5:838:20 | ExprStmt |  |
+| main.rs:837:5:837:18 | ExprStmt | main.rs:837:5:837:15 | capture_mut |  |
+| main.rs:838:5:838:17 | capture_immut | main.rs:838:5:838:19 | capture_immut(...) |  |
+| main.rs:838:5:838:19 | capture_immut(...) | main.rs:839:5:839:26 | ExprStmt |  |
+| main.rs:838:5:838:20 | ExprStmt | main.rs:838:5:838:17 | capture_immut |  |
+| main.rs:839:5:839:23 | async_block_capture | main.rs:839:5:839:25 | async_block_capture(...) |  |
+| main.rs:839:5:839:25 | async_block_capture(...) | main.rs:840:5:840:14 | ExprStmt |  |
+| main.rs:839:5:839:26 | ExprStmt | main.rs:839:5:839:23 | async_block_capture |  |
+| main.rs:840:5:840:11 | structs | main.rs:840:5:840:13 | structs(...) |  |
+| main.rs:840:5:840:13 | structs(...) | main.rs:841:5:841:14 | ExprStmt |  |
+| main.rs:840:5:840:14 | ExprStmt | main.rs:840:5:840:11 | structs |  |
+| main.rs:841:5:841:11 | ref_arg | main.rs:841:5:841:13 | ref_arg(...) |  |
+| main.rs:841:5:841:13 | ref_arg(...) | main.rs:842:5:842:30 | ExprStmt |  |
+| main.rs:841:5:841:14 | ExprStmt | main.rs:841:5:841:11 | ref_arg |  |
+| main.rs:842:5:842:27 | ref_methodcall_receiver | main.rs:842:5:842:29 | ref_methodcall_receiver(...) |  |
+| main.rs:842:5:842:29 | ref_methodcall_receiver(...) | main.rs:843:5:843:23 | ExprStmt |  |
+| main.rs:842:5:842:30 | ExprStmt | main.rs:842:5:842:27 | ref_methodcall_receiver |  |
+| main.rs:843:5:843:20 | macro_invocation | main.rs:843:5:843:22 | macro_invocation(...) |  |
+| main.rs:843:5:843:22 | macro_invocation(...) | main.rs:844:5:844:18 | ExprStmt |  |
+| main.rs:843:5:843:23 | ExprStmt | main.rs:843:5:843:20 | macro_invocation |  |
+| main.rs:844:5:844:15 | capture_phi | main.rs:844:5:844:17 | capture_phi(...) |  |
+| main.rs:844:5:844:17 | capture_phi(...) | main.rs:801:11:845:1 | { ... } |  |
+| main.rs:844:5:844:18 | ExprStmt | main.rs:844:5:844:15 | capture_phi |  |
 breakTarget
 | main.rs:326:9:326:13 | break | main.rs:317:5:327:5 | while ... { ... } |
 continueTarget

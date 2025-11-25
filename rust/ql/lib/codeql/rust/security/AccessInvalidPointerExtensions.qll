@@ -9,6 +9,7 @@ private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.Node
+private import codeql.rust.security.Barriers as Barriers
 
 /**
  * Provides default sources, sinks and barriers for detecting accesses to
@@ -59,4 +60,10 @@ module AccessInvalidPointer {
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "pointer-access") }
   }
+
+  /**
+   * A barrier for invalid pointer access vulnerabilities for values checked to
+   * be non-`null`.
+   */
+  private class NotNullCheckBarrier extends Barrier instanceof Barriers::NotNullCheckBarrier { }
 }
