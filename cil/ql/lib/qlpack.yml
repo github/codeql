@@ -1,5 +1,0 @@
-name: codeql/csharp-il-all
-version: 0.0.1
-library: true
-dbscheme: semmlecode.csharp.il.dbscheme
-extractor: csharpil
