@@ -825,8 +825,8 @@ localStep
 | main.rs:616:36:616:41 | [post] MacroExpr | main.rs:616:36:616:39 | [post] ...::new(...) |
 readStep
 | main.rs:50:9:50:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:50:14:50:14 | _ |
+| main.rs:116:10:116:11 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:116:10:116:11 | * ... |
 | main.rs:116:11:116:11 | [post] i [borrowed] | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | [post] i |
-| main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:10:116:11 | * ... |
 | main.rs:124:10:124:10 | a | file://:0:0:0:0 | tuple.0 | main.rs:124:10:124:12 | a.0 |
 | main.rs:125:10:125:10 | a | file://:0:0:0:0 | tuple.1 | main.rs:125:10:125:12 | a.1 |
 | main.rs:130:9:130:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:130:10:130:11 | a0 |
@@ -934,30 +934,30 @@ readStep
 | main.rs:506:13:506:13 | [post] a [borrowed] | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | [post] a |
 | main.rs:519:10:519:11 | [post] vs [borrowed] | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | [post] vs |
 | main.rs:519:10:519:11 | vs | file://:0:0:0:0 | element | main.rs:519:10:519:14 | vs[0] |
-| main.rs:520:11:520:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:10:520:35 | * ... |
+| main.rs:520:10:520:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:520:10:520:35 | * ... |
 | main.rs:520:11:520:35 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | [post] ... .unwrap() |
-| main.rs:521:11:521:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:10:521:35 | * ... |
+| main.rs:521:10:521:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:521:10:521:35 | * ... |
 | main.rs:521:11:521:35 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | [post] ... .unwrap() |
 | main.rs:523:14:523:15 | vs | file://:0:0:0:0 | element | main.rs:523:9:523:9 | v |
 | main.rs:526:9:526:10 | &... | file://:0:0:0:0 | &ref | main.rs:526:10:526:10 | v |
 | main.rs:526:15:526:23 | vs.iter() | file://:0:0:0:0 | element | main.rs:526:9:526:10 | &... |
 | main.rs:531:9:531:10 | &... | file://:0:0:0:0 | &ref | main.rs:531:10:531:10 | v |
 | main.rs:531:15:531:17 | vs2 | file://:0:0:0:0 | element | main.rs:531:9:531:10 | &... |
+| main.rs:535:28:535:29 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:535:28:535:29 | * ... |
 | main.rs:535:29:535:29 | [post] x [borrowed] | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | [post] x |
-| main.rs:535:29:535:29 | x | file://:0:0:0:0 | &ref | main.rs:535:28:535:29 | * ... |
+| main.rs:536:33:536:34 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:536:33:536:34 | * ... |
 | main.rs:536:34:536:34 | [post] x [borrowed] | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | [post] x |
-| main.rs:536:34:536:34 | x | file://:0:0:0:0 | &ref | main.rs:536:33:536:34 | * ... |
 | main.rs:538:14:538:27 | vs.into_iter() | file://:0:0:0:0 | element | main.rs:538:9:538:9 | v |
 | main.rs:544:10:544:15 | [post] vs_mut [borrowed] | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | [post] vs_mut |
 | main.rs:544:10:544:15 | vs_mut | file://:0:0:0:0 | element | main.rs:544:10:544:18 | vs_mut[0] |
-| main.rs:545:11:545:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:10:545:39 | * ... |
+| main.rs:545:10:545:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:545:10:545:39 | * ... |
 | main.rs:545:11:545:39 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | [post] ... .unwrap() |
-| main.rs:546:11:546:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:10:546:39 | * ... |
+| main.rs:546:10:546:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:546:10:546:39 | * ... |
 | main.rs:546:11:546:39 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | [post] ... .unwrap() |
 | main.rs:548:9:548:14 | &mut ... | file://:0:0:0:0 | &ref | main.rs:548:14:548:14 | v |
 | main.rs:548:19:548:35 | vs_mut.iter_mut() | file://:0:0:0:0 | element | main.rs:548:9:548:14 | &mut ... |
+| main.rs:562:10:562:15 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:562:10:562:15 | * ... |
 | main.rs:562:11:562:15 | [post] c_ref [borrowed] | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | [post] c_ref |
-| main.rs:562:11:562:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:562:10:562:15 | * ... |
 storeStep
 | main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | i [borrowed] |
 | main.rs:123:14:123:22 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:123:13:123:26 | TupleExpr |
