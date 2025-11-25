@@ -117,6 +117,9 @@
 (string string_content: (_) @part)
 { let @part.node = (ast-node @part "StringPart") }
 
+(template_string string_content: (_) @part)
+{ let @part.node = (ast-node @part "TemplateStringPart") }
+
 ; A string concatenation that contains no interpolated expressions is just a `Str` (and its children
 ; will be `StringPart`s). A string concatenation that contains interpolated expressions is a
 ; `JoinedStr`, however.
@@ -141,6 +144,12 @@
         attr (@fstring.node) _fixup = #true
     }
 }
+
+(template_string) @tstring
+{ let @tstring.node = (ast-node @tstring "TemplateString") }
+
+(concatenated_template_string) @tstrings
+{ let @tstrings.node = (ast-node @tstrings "JoinedTemplateString") }
 
 (pair) @kvpair
 { let @kvpair.node = (ast-node @kvpair "KeyValuePair") }
@@ -2051,6 +2060,44 @@
 
 
 ;;;;;; End of JoinedStr (`f"foo"`)
+
+;;;;;; JoinedTemplateString / TemplateString (`t"foo"`)
+
+; Record the prefix of the template string.
+(template_string) @tstring
+{
+    attr (@tstring.node) prefix = (string-prefix @tstring)
+}
+
+; Attach raw children (string parts and interpolations) to the template string node.
+(template_string (string_content) @part) @tmpl_any
+{
+    edge @tmpl_any.node -> @part.node
+    attr (@tmpl_any.node -> @part.node) values = (named-child-index @part)
+    attr (@part.node) ctx = "load"
+    let safe_string = (concatenate-strings (string-safe-prefix @tmpl_any) (source-text @part) (string-quotes @tmpl_any))
+    attr (@part.node) s = safe_string
+    attr (@part.node) text = safe_string
+}
+
+(template_string (interpolation expression: (_) @part) @interp) @tmpl_any
+{
+    edge @tmpl_any.node -> @part.node
+    attr (@tmpl_any.node -> @part.node) values = (named-child-index @interp)
+    attr (@part.node) ctx = "load"
+}
+
+
+; Concatenated template strings simply have a list-like field containing the template strings that
+; are concatenated together.
+(concatenated_template_string (template_string) @tstring) @tmpl_concat
+{
+    edge @tmpl_concat.node -> @tstring.node
+    attr (@tmpl_concat.node -> @tstring.node) strings = (named-child-index @tstring)
+    attr (@tstring.node) ctx = "load"
+}
+
+;;;;;; End of JoinedTemplateString / TemplateString (`t"foo"`)
 
 
 
