@@ -3,6 +3,17 @@ sourceLocationPrefix(
   varchar(900) prefix: string ref
 );
 
+/**
+ * External data, loaded from CSV files during snapshot creation.
+ * This allows importing additional data into CodeQL databases.
+ */
+externalData(
+  int id: @externalDataElement,
+  string path: string ref,
+  int column: int ref,
+  string value: string ref
+);
+
 /* Entity Locations */
 @location = @location_default;
 
@@ -2094,4 +2105,369 @@ export_table_entry(
   int ordinal: int ref,
   string name: string ref,
   int address: int ref
+);
+
+/**
+ * Compiled .NET assemblies.
+ * Each assembly represents a DLL file that has been extracted.
+ * The file field references the DLL/EXE file in the files table.
+ */
+assemblies(
+  unique int id: @assembly,
+  int file: @file ref,
+  string name: string ref,
+  string version: string ref
+);
+
+/**
+ * Types defined in assemblies.
+ * Includes classes, structs, interfaces, enums, and delegates.
+ */
+types(
+  unique int id: @type,
+  string full_name: string ref,
+  string namespace: string ref,
+  string name: string ref
+);
+
+/**
+ * Methods defined in types.
+ * Includes instance methods, static methods, constructors, and property accessors.
+ */
+methods(
+  unique int id: @method,
+  string name: string ref,
+  string signature: string ref,
+  int type_id: @type ref
+);
+
+case @il_instruction.mnemonic of
+  0 = @il_nop
+| 1 = @il_break
+| 2 = @il_ldarg_0
+| 3 = @il_ldarg_1
+| 4 = @il_ldarg_2
+| 5 = @il_ldarg_3
+| 6 = @il_ldloc_0
+| 7 = @il_ldloc_1
+| 8 = @il_ldloc_2
+| 9 = @il_ldloc_3
+| 10 = @il_stloc_0
+| 11 = @il_stloc_1
+| 12 = @il_stloc_2
+| 13 = @il_stloc_3
+| 14 = @il_ldarg_S
+| 15 = @il_ldarga_S
+| 16 = @il_starg_S
+| 17 = @il_ldloc_S
+| 18 = @il_ldloca_S
+| 19 = @il_stloc_S
+| 20 = @il_ldnull
+| 21 = @il_ldc_I4_M1
+| 22 = @il_ldc_I4_0
+| 23 = @il_ldc_I4_1
+| 24 = @il_ldc_I4_2
+| 25 = @il_ldc_I4_3
+| 26 = @il_ldc_I4_4
+| 27 = @il_ldc_I4_5
+| 28 = @il_ldc_I4_6
+| 29 = @il_ldc_I4_7
+| 30 = @il_ldc_I4_8
+| 31 = @il_ldc_I4_S
+| 32 = @il_ldc_I4
+| 33 = @il_ldc_I8
+| 34 = @il_ldc_R4
+| 35 = @il_ldc_R8
+| 37 = @il_dup
+| 38 = @il_il_pop
+| 39 = @il_il_jmp
+| 40 = @il_il_call
+| 41 = @il_calli
+| 42 = @il_il_ret
+| 43 = @il_br_S
+| 44 = @il_brfalse_S
+| 45 = @il_brtrue_S
+| 46 = @il_beq_S
+| 47 = @il_bge_S
+| 48 = @il_bgt_S
+| 49 = @il_ble_S
+| 50 = @il_blt_S
+| 51 = @il_bne_un_S
+| 52 = @il_bge_un_S
+| 53 = @il_bgt_un_S
+| 54 = @il_ble_un_S
+| 55 = @il_blt_un_S
+| 56 = @il_br
+| 57 = @il_brfalse
+| 58 = @il_brtrue
+| 59 = @il_beq
+| 60 = @il_bge
+| 61 = @il_bgt
+| 62 = @il_ble
+| 63 = @il_blt
+| 64 = @il_bne_un
+| 65 = @il_bge_un
+| 66 = @il_bgt_un
+| 67 = @il_ble_un
+| 68 = @il_blt_un
+| 69 = @il_switch
+| 70 = @il_ldind_I1
+| 71 = @il_ldind_U1
+| 72 = @il_ldind_I2
+| 73 = @il_ldind_U2
+| 74 = @il_ldind_I4
+| 75 = @il_ldind_U4
+| 76 = @il_ldind_I8
+| 77 = @il_ldind_I
+| 78 = @il_ldind_R4
+| 79 = @il_ldind_R8
+| 80 = @il_ldind_Ref
+| 81 = @il_stind_Ref
+| 82 = @il_stind_I1
+| 83 = @il_stind_I2
+| 84 = @il_stind_I4
+| 85 = @il_stind_I8
+| 86 = @il_stind_R4
+| 87 = @il_stind_R8
+| 88 = @il_add
+| 89 = @il_sub
+| 90 = @il_mul
+| 91 = @il_div
+| 92 = @il_div_un
+| 93 = @il_rem
+| 94 = @il_rem_un
+| 95 = @il_and
+| 96 = @il_or
+| 97 = @il_xor
+| 98 = @il_shl
+| 99 = @il_shr
+| 100 = @il_shr_un
+| 101 = @il_neg
+| 102 = @il_not
+| 103 = @il_conv_I1
+| 104 = @il_conv_I2
+| 105 = @il_conv_I4
+| 106 = @il_conv_I8
+| 107 = @il_conv_R4
+| 108 = @il_conv_R8
+| 109 = @il_conv_U4
+| 110 = @il_conv_U8
+| 111 = @il_callvirt
+| 112 = @il_cpobj
+| 113 = @il_ldobj
+| 114 = @il_ldstr
+| 115 = @il_newobj
+| 116 = @il_castclass
+| 117 = @il_isinst
+| 118 = @il_conv_R_Un
+| 121 = @il_unbox
+| 122 = @il_throw
+| 123 = @il_ldfld
+| 124 = @il_ldflda
+| 125 = @il_stfld
+| 126 = @il_ldsfld
+| 127 = @il_ldsflda
+| 128 = @il_stsfld
+| 129 = @il_stobj
+| 130 = @il_conv_ovf_I1_Un
+| 131 = @il_conv_ovf_I2_Un
+| 132 = @il_conv_ovf_I4_Un
+| 133 = @il_conv_ovf_I8_Un
+| 134 = @il_conv_ovf_U1_Un
+| 135 = @il_conv_ovf_U2_Un
+| 136 = @il_conv_ovf_U4_Un
+| 137 = @il_conv_ovf_U8_Un
+| 138 = @il_conv_ovf_I_Un
+| 139 = @il_conv_ovf_U_Un
+| 140 = @il_box
+| 141 = @il_newarr
+| 142 = @il_ldlen
+| 143 = @il_ldelema
+| 144 = @il_ldelem_I1
+| 145 = @il_ldelem_U1
+| 146 = @il_ldelem_I2
+| 147 = @il_ldelem_U2
+| 148 = @il_ldelem_I4
+| 149 = @il_ldelem_U4
+| 150 = @il_ldelem_I8
+| 151 = @il_ldelem_I
+| 152 = @il_ldelem_R4
+| 153 = @il_ldelem_R8
+| 154 = @il_ldelem_Ref
+| 155 = @il_stelem_I
+| 156 = @il_stelem_I1
+| 157 = @il_stelem_I2
+| 158 = @il_stelem_I4
+| 159 = @il_stelem_I8
+| 160 = @il_stelem_R4
+| 161 = @il_stelem_R8
+| 162 = @il_stelem_Ref
+| 163 = @il_ldelem
+| 164 = @il_stelem
+| 165 = @il_unbox_any
+| 179 = @il_conv_ovf_I1
+| 180 = @il_conv_ovf_U1
+| 181 = @il_conv_ovf_I2
+| 182 = @il_conv_ovf_U2
+| 183 = @il_conv_ovf_I4
+| 184 = @il_conv_ovf_U4
+| 185 = @il_conv_ovf_I8
+| 186 = @il_conv_ovf_U8
+| 194 = @il_refanyval
+| 195 = @il_ckfinite
+| 198 = @il_mkrefany
+| 208 = @il_ldtoken
+| 209 = @il_conv_U2
+| 210 = @il_conv_U1
+| 211 = @il_conv_I
+| 212 = @il_conv_ovf_I
+| 213 = @il_conv_ovf_U
+| 214 = @il_add_ovf
+| 215 = @il_add_ovf_un
+| 216 = @il_mul_ovf
+| 217 = @il_mul_ovf_un
+| 218 = @il_sub_ovf
+| 219 = @il_sub_ovf_un
+| 220 = @il_endfinally
+| 221 = @il_leave
+| 222 = @il_leave_s
+| 223 = @il_stind_i
+| 224 = @il_conv_U
+| 248 = @il_prefix7
+| 249 = @il_prefix6
+| 250 = @il_prefix5
+| 251 = @il_prefix4
+| 252 = @il_prefix3
+| 253 = @il_prefix2
+| 254 = @il_prefix1
+| 255 = @il_prefixref
+| 65024 = @il_arglist
+| 65025 = @il_ceq
+| 65026 = @il_cgt
+| 65027 = @il_cgt_un
+| 65028 = @il_clt
+| 65029 = @il_clt_un
+| 65030 = @il_ldftn
+| 65031 = @il_ldvirtftn
+| 65033 = @il_ldarg
+| 65034 = @il_ldarga
+| 65035 = @il_starg
+| 65036 = @il_ldloc
+| 65037 = @il_ldloca
+| 65038 = @il_stloc
+| 65039 = @il_localloc
+| 65041 = @il_endfilter
+| 65042 = @il_unaligned
+| 65043 = @il_volatile
+| 65044 = @il_tail
+| 65045 = @il_initobj
+| 65046 = @il_constrained
+| 65047 = @il_cpblk
+| 65048 = @il_initblk
+| 65050 = @il_rethrow
+| 65052 = @il_sizeof
+| 65053 = @il_refanytype
+| 65054 = @il_readonly
+;
+
+/**
+ * IL (Intermediate Language) instructions within method bodies.
+ * Each instruction represents a single IL opcode with its operand.
+ * 
+ * The opcode_num is the numeric value from System.Reflection.Emit.OpCodes.
+ * The opcode_name is the mnemonic (e.g., "ldloc", "call", "br.s").
+ * The offset is the byte offset of the instruction within the method body.
+ */
+il_instruction(
+  unique int id: @il_instruction,
+  int offset: int ref,
+  int mnemonic: int ref
+);
+
+il_instruction_method(
+  unique int instr: @il_instruction ref,
+  int method: @method ref
+);
+
+/**
+ * Parent relationship between instructions and methods.
+ * The index represents the sequential position of the instruction (0-based).
+ * This allows instructions to be ordered even when offsets are non-sequential.
+ */
+#keyset[instruction, index]
+il_instruction_parent(
+  int instruction: @il_instruction ref,
+  int index: int ref,
+  int parent: @method ref
+);
+
+/**
+ * Branch target for branch instructions.
+ * The target_offset is the byte offset of the instruction that is the target of the branch.
+ * Used for control flow analysis.
+ */
+il_branch_target(
+  int instruction: @il_instruction ref,
+  int target_offset: int ref
+);
+
+/**
+ * Unresolved method call targets.
+ * The target_method_name is the fully qualified name of the called method.
+ * These are stored as strings because they may reference methods in other assemblies
+ * that haven't been extracted yet.
+ */
+il_call_target_unresolved(
+  int instruction: @il_instruction ref,
+  string target_method_name: string ref
+);
+
+/**
+ * String operands for IL instructions.
+ * Used for ldstr (load string) instructions.
+ */
+il_operand_string(
+  int instruction: @il_instruction ref,
+  string value: string ref
+);
+
+/**
+ * Integer operands for IL instructions.
+ * Used for ldc.i4 (load constant int32) and similar instructions.
+ */
+il_operand_int(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Long integer operands for IL instructions.
+ * Used for ldc.i8 (load constant int64) and similar instructions.
+ */
+il_operand_long(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Exception handlers (try/catch/finally blocks) in methods.
+ * Each handler represents a try block with its associated catch/finally/fault handler.
+ * 
+ * The handler_type indicates the type of handler:
+ * - "Catch": catch block for specific exception types
+ * - "Finally": finally block
+ * - "Fault": fault block (like finally but only runs on exception)
+ * - "Filter": exception filter block
+ * 
+ * Offsets indicate the start and end positions of the try and handler blocks.
+ * An offset of -1 indicates the position is not applicable or not set.
+ */
+il_exception_handler(
+  unique int id: @il_exception_handler,
+  int method: @method ref,
+  string handler_type: string ref,
+  int try_start: int ref,
+  int try_end: int ref,
+  int handler_start: int ref,
+  int handler_end: int ref
 );
