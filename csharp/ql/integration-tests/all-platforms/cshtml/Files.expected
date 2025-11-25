@@ -4,4 +4,5 @@
 | obj/Debug/net10.0/cshtml.AssemblyInfo.cs:0:0:0:0 | obj/Debug/net10.0/cshtml.AssemblyInfo.cs |
 | obj/Debug/net10.0/cshtml.GlobalUsings.g.cs:0:0:0:0 | obj/Debug/net10.0/cshtml.GlobalUsings.g.cs |
 | obj/Debug/net10.0/cshtml.RazorAssemblyInfo.cs:0:0:0:0 | obj/Debug/net10.0/cshtml.RazorAssemblyInfo.cs |
+| obj/Debug/net10.0/generated/Microsoft.AspNetCore.App.SourceGenerators/Microsoft.AspNetCore.SourceGenerators.PublicProgramSourceGenerator/PublicTopLevelProgram.Generated.g.cs:0:0:0:0 | obj/Debug/net10.0/generated/Microsoft.AspNetCore.App.SourceGenerators/Microsoft.AspNetCore.SourceGenerators.PublicProgramSourceGenerator/PublicTopLevelProgram.Generated.g.cs |
 | obj/Debug/net10.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Views_Home_Index_cshtml.g.cs:0:0:0:0 | obj/Debug/net10.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Views_Home_Index_cshtml.g.cs |
