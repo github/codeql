@@ -2086,12 +2086,13 @@ predicate localExprFlow(Expr e1, Expr e2) {
  *
  * This is possible in _almost_ all cases, but there are cases where it is
  * not possible to map between a field in the uninstantiated template to a
- * field in the instantiated template. This problem appears to be only in the
- * case of a local class definition. So this abstract class has two
- * implementations: a non-local case (where we can represent a canonical field
- * as the field declaration from an uninstantiated class template or a non-
- * templated class), and a local case (where we simply use the field from the
- * instantiated class).
+ * field in the instantiated template. This happens in the case of local class
+ * definitions (because the local class is not the template that constructs
+ * the instantiation - it is the enclosing function). So this abstract class
+ * has two implementations: a non-local case (where we can represent a
+ * canonical field as the field declaration from an uninstantiated class
+ * template or a non-templated class), and a local case (where we simply use
+ * the field from the instantiated class).
  */
 abstract private class CanonicalField extends Field {
   /** Gets a field represented by this canonical field. */
