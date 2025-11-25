@@ -107,8 +107,14 @@ void test_callWithArgument() {
 template<int N, typename T>
 T callWithNonTypeTemplate(const T&);
 
+template<typename T, int N>
+T callWithNonTypeTemplate(const T&);
+
 void test_callWithNonTypeTemplate() {
 	int x = ymlSource();
-	int y = callWithNonTypeTemplate<10, int>(x);
-	ymlSink(y); // $ ir
+	int y1 = callWithNonTypeTemplate<10, int>(x);
+	ymlSink(y1); // $ ir
+
+	int y2 = callWithNonTypeTemplate<int, 10>(x);
+	ymlSink(y2); // $ ir
 }
