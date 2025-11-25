@@ -1971,7 +1971,7 @@ register_access(
 
 operand(
   unique int id: @operand,
-  int instr: @instruction ref,
+  int instr: @x86_instruction ref,
   int index : int ref,
   int size : int ref
 );
