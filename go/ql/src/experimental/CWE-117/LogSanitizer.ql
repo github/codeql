@@ -1,38 +1,38 @@
 /**
- * LogSanitizer.ql
- *
- * Filter/suppress log-injection findings when the taint flow can be shown to
- * pass through a sanitizer (including zap custom encoders).
- *
- * NOTE: This is a conservative template. Integrate with your existing
- * taint-tracking / source/sink predicates used by your log-injection rules.
+ * @name Log entries created from user input
+ * @description Building log entries from user-controlled sources is vulnerable to
+ *              insertion of forged log entries by a malicious user.
+ * @kind path-problem
+ * @problem.severity error
+ * @id go/log-injection
+ * @tags security
+ *       experimental
+ *       external/cwe/cwe-287
  */
 
 import go
-import go.security.dataflow.TaintTracking as T
-// adjust imports above if your repo uses a different taint package
+import semmle.go.security.LogInjection
+import LogInjection::Flow::PathGraph
 
-// Reuse the library predicates
+from LogInjection::Flow::PathNode source, LogInjection::Flow::PathNode sink
+where LogInjection::Flow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
+  "user-provided value"
+
+import go
+import go.security.dataflow.TaintTracking as T
+
 import LogSanitizer
 
-/**
- * A wrapper sink used for demonstration. Replace with the actual log sink
- * definitions used by your log-injection query if you want precise suppression.
- */
 class LogSink extends T.Sink {
   LogSink() { this = T.Sink("LogSink") }
 }
 
-/**
- * Find flows from sources to log sinks but ignore flows that pass through a sanitizer.
- * This query demonstrates the pattern — adapt to concrete source/sink definitions.
- */
 from T.Source src, T.Sink sink, Function sanitizerFn
 where
   src.flowsTo(sink) and
   not exists(sanitizerFn |
     isSanitizer(sanitizerFn) and
-    // sanitizer function appears somewhere on the flow path
     src.flowsTo(sanitizerFn) and
     sanitizerFn.flowsTo(sink)
   )
