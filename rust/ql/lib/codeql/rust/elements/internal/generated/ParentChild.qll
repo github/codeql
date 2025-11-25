@@ -1070,6 +1070,25 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nArgList, int nAttr, int nFunction |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nFunction = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
+        or
+        result = e.getAttr(index - nArgList) and
+        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
+        or
+        index = nAttr and result = e.getFunction() and partialPredicateCall = "Function()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfCastExpr(CastExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr, int nTypeRepr |
       n = 0 and
@@ -1559,6 +1578,37 @@ private module Impl {
         index = nScrutinee and
         result = e.getMatchArmList() and
         partialPredicateCall = "MatchArmList()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMethodCallExpr(
+    MethodCallExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nGenericArgList = nAttr + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nReceiver = nIdentifier + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
+        or
+        result = e.getAttr(index - nArgList) and
+        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
+        or
+        index = nAttr and
+        result = e.getGenericArgList() and
+        partialPredicateCall = "GenericArgList()"
+        or
+        index = nGenericArgList and
+        result = e.getIdentifier() and
+        partialPredicateCall = "Identifier()"
+        or
+        index = nIdentifier and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -2228,25 +2278,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nArgList, int nAttr, int nFunction |
-      n = 0 and
-      nArgList = n + 1 and
-      nAttr = nArgList + e.getNumberOfAttrs() and
-      nFunction = nAttr + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
-        or
-        result = e.getAttr(index - nArgList) and
-        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
-        or
-        index = nAttr and result = e.getFunction() and partialPredicateCall = "Function()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfExternBlock(
     ExternBlock e, int index, string partialPredicateCall
   ) {
@@ -2417,37 +2448,6 @@ private module Impl {
         index = nName and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
         or
         index = nTokenTree and result = e.getVisibility() and partialPredicateCall = "Visibility()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfMethodCallExpr(
-    MethodCallExpr e, int index, string partialPredicateCall
-  ) {
-    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
-      n = 0 and
-      nArgList = n + 1 and
-      nAttr = nArgList + e.getNumberOfAttrs() and
-      nGenericArgList = nAttr + 1 and
-      nIdentifier = nGenericArgList + 1 and
-      nReceiver = nIdentifier + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
-        or
-        result = e.getAttr(index - nArgList) and
-        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
-        or
-        index = nAttr and
-        result = e.getGenericArgList() and
-        partialPredicateCall = "GenericArgList()"
-        or
-        index = nGenericArgList and
-        result = e.getIdentifier() and
-        partialPredicateCall = "Identifier()"
-        or
-        index = nIdentifier and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -3167,6 +3167,8 @@ private module Impl {
     or
     result = getImmediateChildOfBreakExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfCastExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
@@ -3226,6 +3228,8 @@ private module Impl {
     result = getImmediateChildOfMacroTypeRepr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfNameRef(e, index, partialAccessor)
     or
@@ -3311,8 +3315,6 @@ private module Impl {
     or
     result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfExternBlock(e, index, partialAccessor)
     or
     result = getImmediateChildOfExternCrate(e, index, partialAccessor)
@@ -3324,8 +3326,6 @@ private module Impl {
     result = getImmediateChildOfMacroDef(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroRules(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfModule(e, index, partialAccessor)
     or

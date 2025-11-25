@@ -25,12 +25,16 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A function call expression. For example:
+   * NOTE: Consider using `Call` instead, as that includes all kinds of calls to
+   * functions, and excludes instantiations of tuple structs and tuple enum variants.
+   *
+   * A call expression. For example:
    * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
    * foo[0](42);
    * foo(1) = 4;
+   * Option::Some(42); // tuple enum variant instantiation
    * ```
    */
   class CallExpr extends Generated::CallExpr {
