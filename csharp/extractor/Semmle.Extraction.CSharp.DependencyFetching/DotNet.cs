@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     Directory.CreateDirectory(path);
                 }
 
-                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
+                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\" /p:AllowMissingPrunePackageData=true";
             }
 
             if (restoreSettings.PathToNugetConfig != null)
