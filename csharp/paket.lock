@@ -122,6 +122,7 @@ NUGET
       System.Collections.Immutable (>= 8.0)
     NaturalSort.Extension (4.4.1)
     Newtonsoft.Json (13.0.4)
+    Nuget.Versioning (7.0.1)
     System.Buffers (4.6.1)
     System.Collections.Immutable (10.0)
     System.Composition (10.0)
