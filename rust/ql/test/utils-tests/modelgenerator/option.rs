@@ -299,7 +299,8 @@ impl<T> MyOption<T> {
     }
 
     // summary=<test::option::MyOption>::insert;Argument[0];Argument[self].Reference.Field[test::option::MyOption::MySome(0)];value;dfc-generated
-    // summary=<test::option::MyOption>::insert;Argument[0];ReturnValue.Reference;value;dfc-generated
+    // This summary is currently missing because of access path limit
+    // summary-MISSING=<test::option::MyOption>::insert;Argument[0];ReturnValue.Reference;value;dfc-generated
     // The content of `self` is overwritten so it does not flow to the return value.
     // SPURIOUS-summary=<test::option::MyOption>::insert;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
     pub fn insert(&mut self, value: T) -> &mut T {
@@ -310,7 +311,8 @@ impl<T> MyOption<T> {
     }
 
     // summary=<test::option::MyOption>::get_or_insert;Argument[0];Argument[self].Reference.Field[test::option::MyOption::MySome(0)];value;dfc-generated
-    // summary=<test::option::MyOption>::get_or_insert;Argument[0];ReturnValue.Reference;value;dfc-generated
+    // This summary is currently missing because of access path limit
+    // summary-MISSING=<test::option::MyOption>::get_or_insert;Argument[0];ReturnValue.Reference;value;dfc-generated
     // summary=<test::option::MyOption>::get_or_insert;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
     pub fn get_or_insert(&mut self, value: T) -> &mut T {
         self.get_or_insert_with(|| value)
@@ -325,7 +327,8 @@ impl<T> MyOption<T> {
     }
 
     // summary=<test::option::MyOption>::get_or_insert_with;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
-    // MISSING: Mutating `self` parameter.
+    // summary=<test::option::MyOption>::get_or_insert_with;Argument[0].ReturnValue;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];value;dfc-generated
+    // SPURIOUS-summary=<test::option::MyOption>::get_or_insert_with;Argument[0];Argument[self].Reference.Field[test::option::MyOption::MySome(0)];value;dfc-generated
     pub fn get_or_insert_with<F>(&mut self, f: F) -> &mut T
     where
         F: FnOnce() -> T,

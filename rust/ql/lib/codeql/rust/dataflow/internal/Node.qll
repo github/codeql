@@ -348,13 +348,44 @@ abstract class OutNode extends Node {
 }
 
 final private class ExprOutNode extends ExprNode, OutNode {
-  ExprOutNode() { this.asExpr() instanceof Call }
+  ExprOutNode() {
+    exists(Call call |
+      call = this.asExpr() and
+      not call instanceof DerefExpr // Handled by `DerefOutNode`
+    )
+  }
 
-  /** Gets the underlying call CFG node that includes this out node. */
+  /** Gets the underlying call node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
     result.asCall() = n and
     kind = TNormalReturnKind()
   }
+}
+
+/**
+ * A node that represents the value of a `*` expression _before_ implicit
+ * dereferencing:
+ *
+ * `*v` equivalent to `*Deref::deref(&v)`, and this node represents the
+ * `Deref::deref(&v)` part.
+ */
+class DerefOutNode extends OutNode, TDerefOutNode {
+  DerefExpr de;
+
+  DerefOutNode() { this = TDerefOutNode(de, false) }
+
+  DerefExpr getDerefExpr() { result = de }
+
+  override CfgScope getCfgScope() { result = de.getEnclosingCfgScope() }
+
+  override DataFlowCall getCall(ReturnKind kind) {
+    result.asCall() = de and
+    kind = TNormalReturnKind()
+  }
+
+  override Location getLocation() { result = de.getLocation() }
+
+  override string toString() { result = de.toString() + " [pre-dereferenced]" }
 }
 
 final class SummaryOutNode extends FlowSummaryNode, OutNode {
@@ -434,6 +465,18 @@ final class DerefBorrowPostUpdateNode extends PostUpdateNode, TDerefBorrowNode {
   override Location getLocation() { result = arg.getLocation() }
 }
 
+class DerefOutPostUpdateNode extends PostUpdateNode, TDerefOutNode {
+  DerefExpr de;
+
+  DerefOutPostUpdateNode() { this = TDerefOutNode(de, true) }
+
+  override DerefOutNode getPreUpdateNode() { result = TDerefOutNode(de, false) }
+
+  override CfgScope getCfgScope() { result = de.getEnclosingCfgScope() }
+
+  override Location getLocation() { result = de.getLocation() }
+}
+
 final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
   private FlowSummaryNode pre;
 
@@ -499,6 +542,7 @@ newtype TNode =
     TypeInference::implicitBorrow(n) and
     borrow = true
   } or
+  TDerefOutNode(DerefExpr de, Boolean isPost) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
     forall(AstNode n | n = sn.getSinkElement() or n = sn.getSourceElement() |

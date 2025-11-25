@@ -365,6 +365,7 @@ module RustDataFlow implements InputSig<Location> {
     node instanceof CaptureNode or
     node instanceof ClosureParameterNode or
     node instanceof DerefBorrowNode or
+    node instanceof DerefOutNode or
     node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
   }
@@ -586,10 +587,9 @@ module RustDataFlow implements InputSig<Location> {
           .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
     )
     or
-    exists(PrefixExpr deref |
+    exists(DerefExpr deref |
       c instanceof ReferenceContent and
-      deref.getOperatorName() = "*" and
-      node1.asExpr() = deref.getExpr() and
+      node1.(DerefOutNode).getDerefExpr() = deref and
       node2.asExpr() = deref
     )
     or
@@ -721,10 +721,6 @@ module RustDataFlow implements InputSig<Location> {
     VariableCapture::storeStep(node1, c, node2)
     or
     implicitBorrow(node1, node2, c)
-    or
-    // A store step dual to the read step for implicit dereferences.
-    implicitDeref(node2.(PostUpdateNode).getPreUpdateNode(),
-      node1.(PostUpdateNode).getPreUpdateNode(), c)
   }
 
   /**

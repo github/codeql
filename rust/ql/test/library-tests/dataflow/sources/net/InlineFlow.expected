@@ -19,7 +19,7 @@ models
 | 18 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read; Argument[self].Reference; Argument[0].Reference; taint |
 | 19 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 20 | Summary: <core::pin::Pin>::new; Argument[0].Reference; ReturnValue; value |
-| 21 | Summary: <core::pin::Pin>::new; Argument[0]; ReturnValue; value |
+| 21 | Summary: <core::pin::Pin>::new; Argument[0]; ReturnValue.Field[core::pin::Pin::pointer]; value |
 | 22 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 23 | Summary: <futures_rustls::TlsConnector>::connect; Argument[1]; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
 | 24 | Summary: <futures_util::io::buf_reader::BufReader>::new; Argument[0]; ReturnValue; taint |
@@ -169,17 +169,15 @@ edges
 | test.rs:381:15:381:20 | reader | test.rs:381:14:381:20 | &reader | provenance |  |
 | test.rs:386:17:386:26 | mut pinned | test.rs:387:19:387:24 | pinned | provenance |  |
 | test.rs:386:17:386:26 | mut pinned | test.rs:389:30:389:35 | pinned | provenance |  |
-| test.rs:386:17:386:26 | mut pinned [&ref] | test.rs:387:19:387:24 | pinned [&ref] | provenance |  |
-| test.rs:386:17:386:26 | mut pinned [&ref] | test.rs:389:30:389:35 | pinned [&ref] | provenance |  |
+| test.rs:386:17:386:26 | mut pinned [Pin, &ref] | test.rs:387:19:387:24 | pinned [Pin, &ref] | provenance |  |
 | test.rs:386:30:386:50 | ...::new(...) | test.rs:386:17:386:26 | mut pinned | provenance |  |
-| test.rs:386:30:386:50 | ...::new(...) [&ref] | test.rs:386:17:386:26 | mut pinned [&ref] | provenance |  |
+| test.rs:386:30:386:50 | ...::new(...) [Pin, &ref] | test.rs:386:17:386:26 | mut pinned [Pin, &ref] | provenance |  |
 | test.rs:386:39:386:49 | &mut reader [&ref] | test.rs:386:30:386:50 | ...::new(...) | provenance | MaD:20 |
-| test.rs:386:39:386:49 | &mut reader [&ref] | test.rs:386:30:386:50 | ...::new(...) [&ref] | provenance | MaD:21 |
+| test.rs:386:39:386:49 | &mut reader [&ref] | test.rs:386:30:386:50 | ...::new(...) [Pin, &ref] | provenance | MaD:21 |
 | test.rs:386:44:386:49 | reader | test.rs:386:39:386:49 | &mut reader [&ref] | provenance |  |
 | test.rs:387:19:387:24 | pinned | test.rs:387:18:387:24 | &pinned | provenance |  |
-| test.rs:387:19:387:24 | pinned [&ref] | test.rs:387:18:387:24 | &pinned | provenance |  |
+| test.rs:387:19:387:24 | pinned [Pin, &ref] | test.rs:387:18:387:24 | &pinned | provenance |  |
 | test.rs:389:30:389:35 | pinned | test.rs:389:56:389:66 | [post] &mut buffer [&ref] | provenance | MaD:9 |
-| test.rs:389:30:389:35 | pinned [&ref] | test.rs:389:56:389:66 | [post] &mut buffer [&ref] | provenance | MaD:9 |
 | test.rs:389:56:389:66 | [post] &mut buffer [&ref] | test.rs:389:61:389:66 | [post] buffer | provenance |  |
 | test.rs:389:61:389:66 | [post] buffer | test.rs:391:23:391:28 | buffer | provenance |  |
 | test.rs:389:61:389:66 | [post] buffer | test.rs:392:23:392:33 | buffer[...] | provenance |  |
@@ -211,19 +209,17 @@ edges
 | test.rs:409:15:409:21 | reader2 | test.rs:409:14:409:21 | &reader2 | provenance |  |
 | test.rs:413:17:413:26 | mut pinned | test.rs:414:19:414:24 | pinned | provenance |  |
 | test.rs:413:17:413:26 | mut pinned | test.rs:416:26:416:31 | pinned | provenance |  |
-| test.rs:413:17:413:26 | mut pinned [&ref] | test.rs:414:19:414:24 | pinned [&ref] | provenance |  |
-| test.rs:413:17:413:26 | mut pinned [&ref] | test.rs:416:26:416:31 | pinned [&ref] | provenance |  |
+| test.rs:413:17:413:26 | mut pinned [Pin, &ref] | test.rs:414:19:414:24 | pinned [Pin, &ref] | provenance |  |
 | test.rs:413:30:413:51 | ...::new(...) | test.rs:413:17:413:26 | mut pinned | provenance |  |
-| test.rs:413:30:413:51 | ...::new(...) [&ref] | test.rs:413:17:413:26 | mut pinned [&ref] | provenance |  |
+| test.rs:413:30:413:51 | ...::new(...) [Pin, &ref] | test.rs:413:17:413:26 | mut pinned [Pin, &ref] | provenance |  |
 | test.rs:413:39:413:50 | &mut reader2 [&ref] | test.rs:413:30:413:51 | ...::new(...) | provenance | MaD:20 |
-| test.rs:413:39:413:50 | &mut reader2 [&ref] | test.rs:413:30:413:51 | ...::new(...) [&ref] | provenance | MaD:21 |
+| test.rs:413:39:413:50 | &mut reader2 [&ref] | test.rs:413:30:413:51 | ...::new(...) [Pin, &ref] | provenance | MaD:21 |
 | test.rs:413:44:413:50 | reader2 | test.rs:413:39:413:50 | &mut reader2 [&ref] | provenance |  |
 | test.rs:414:19:414:24 | pinned | test.rs:414:18:414:24 | &pinned | provenance |  |
-| test.rs:414:19:414:24 | pinned [&ref] | test.rs:414:18:414:24 | &pinned | provenance |  |
+| test.rs:414:19:414:24 | pinned [Pin, &ref] | test.rs:414:18:414:24 | &pinned | provenance |  |
 | test.rs:416:17:416:22 | buffer [Ready, Ok] | test.rs:417:20:417:39 | ...::Ready(...) [Ready, Ok] | provenance |  |
 | test.rs:416:17:416:22 | buffer [Ready, Ok] | test.rs:418:23:418:28 | buffer [Ready, Ok] | provenance |  |
 | test.rs:416:26:416:31 | pinned | test.rs:416:26:416:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:8 |
-| test.rs:416:26:416:31 | pinned [&ref] | test.rs:416:26:416:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:8 |
 | test.rs:416:26:416:54 | pinned.poll_fill_buf(...) [Ready, Ok] | test.rs:416:17:416:22 | buffer [Ready, Ok] | provenance |  |
 | test.rs:417:20:417:39 | ...::Ready(...) [Ready, Ok] | test.rs:417:32:417:38 | Ok(...) [Ok] | provenance |  |
 | test.rs:417:32:417:38 | Ok(...) [Ok] | test.rs:417:35:417:37 | buf | provenance |  |
@@ -231,10 +227,8 @@ edges
 | test.rs:418:23:418:28 | buffer [Ready, Ok] | test.rs:418:22:418:28 | &buffer | provenance |  |
 | test.rs:423:17:423:23 | buffer2 [Ready, Ok] | test.rs:424:20:424:26 | buffer2 [Ready, Ok] | provenance |  |
 | test.rs:423:27:423:48 | ...::new(...) | test.rs:423:27:423:71 | ... .poll_fill_buf(...) [Ready, Ok] | provenance | MaD:8 |
-| test.rs:423:27:423:48 | ...::new(...) [&ref] | test.rs:423:27:423:71 | ... .poll_fill_buf(...) [Ready, Ok] | provenance | MaD:8 |
 | test.rs:423:27:423:71 | ... .poll_fill_buf(...) [Ready, Ok] | test.rs:423:17:423:23 | buffer2 [Ready, Ok] | provenance |  |
 | test.rs:423:36:423:47 | &mut reader2 [&ref] | test.rs:423:27:423:48 | ...::new(...) | provenance | MaD:20 |
-| test.rs:423:36:423:47 | &mut reader2 [&ref] | test.rs:423:27:423:48 | ...::new(...) [&ref] | provenance | MaD:21 |
 | test.rs:423:41:423:47 | reader2 | test.rs:423:36:423:47 | &mut reader2 [&ref] | provenance |  |
 | test.rs:424:20:424:26 | buffer2 [Ready, Ok] | test.rs:425:17:425:36 | ...::Ready(...) [Ready, Ok] | provenance |  |
 | test.rs:424:20:424:26 | buffer2 [Ready, Ok] | test.rs:426:27:426:33 | buffer2 [Ready, Ok] | provenance |  |
@@ -249,17 +243,15 @@ edges
 | test.rs:437:26:437:50 | TryExpr | test.rs:437:17:437:22 | buffer | provenance |  |
 | test.rs:444:17:444:26 | mut pinned | test.rs:445:19:445:24 | pinned | provenance |  |
 | test.rs:444:17:444:26 | mut pinned | test.rs:447:30:447:35 | pinned | provenance |  |
-| test.rs:444:17:444:26 | mut pinned [&ref] | test.rs:445:19:445:24 | pinned [&ref] | provenance |  |
-| test.rs:444:17:444:26 | mut pinned [&ref] | test.rs:447:30:447:35 | pinned [&ref] | provenance |  |
+| test.rs:444:17:444:26 | mut pinned [Pin, &ref] | test.rs:445:19:445:24 | pinned [Pin, &ref] | provenance |  |
 | test.rs:444:30:444:51 | ...::new(...) | test.rs:444:17:444:26 | mut pinned | provenance |  |
-| test.rs:444:30:444:51 | ...::new(...) [&ref] | test.rs:444:17:444:26 | mut pinned [&ref] | provenance |  |
+| test.rs:444:30:444:51 | ...::new(...) [Pin, &ref] | test.rs:444:17:444:26 | mut pinned [Pin, &ref] | provenance |  |
 | test.rs:444:39:444:50 | &mut reader2 [&ref] | test.rs:444:30:444:51 | ...::new(...) | provenance | MaD:20 |
-| test.rs:444:39:444:50 | &mut reader2 [&ref] | test.rs:444:30:444:51 | ...::new(...) [&ref] | provenance | MaD:21 |
+| test.rs:444:39:444:50 | &mut reader2 [&ref] | test.rs:444:30:444:51 | ...::new(...) [Pin, &ref] | provenance | MaD:21 |
 | test.rs:444:44:444:50 | reader2 | test.rs:444:39:444:50 | &mut reader2 [&ref] | provenance |  |
 | test.rs:445:19:445:24 | pinned | test.rs:445:18:445:24 | &pinned | provenance |  |
-| test.rs:445:19:445:24 | pinned [&ref] | test.rs:445:18:445:24 | &pinned | provenance |  |
+| test.rs:445:19:445:24 | pinned [Pin, &ref] | test.rs:445:18:445:24 | &pinned | provenance |  |
 | test.rs:447:30:447:35 | pinned | test.rs:447:56:447:66 | [post] &mut buffer [&ref] | provenance | MaD:9 |
-| test.rs:447:30:447:35 | pinned [&ref] | test.rs:447:56:447:66 | [post] &mut buffer [&ref] | provenance | MaD:9 |
 | test.rs:447:56:447:66 | [post] &mut buffer [&ref] | test.rs:447:61:447:66 | [post] buffer | provenance |  |
 | test.rs:447:61:447:66 | [post] buffer | test.rs:448:19:448:24 | buffer | provenance |  |
 | test.rs:447:61:447:66 | [post] buffer | test.rs:450:23:450:33 | buffer[...] | provenance |  |
@@ -276,19 +268,17 @@ edges
 | test.rs:462:19:462:40 | buffer2[...] | test.rs:462:18:462:40 | &... | provenance |  |
 | test.rs:467:17:467:26 | mut pinned | test.rs:468:19:468:24 | pinned | provenance |  |
 | test.rs:467:17:467:26 | mut pinned | test.rs:470:26:470:31 | pinned | provenance |  |
-| test.rs:467:17:467:26 | mut pinned [&ref] | test.rs:468:19:468:24 | pinned [&ref] | provenance |  |
-| test.rs:467:17:467:26 | mut pinned [&ref] | test.rs:470:26:470:31 | pinned [&ref] | provenance |  |
+| test.rs:467:17:467:26 | mut pinned [Pin, &ref] | test.rs:468:19:468:24 | pinned [Pin, &ref] | provenance |  |
 | test.rs:467:30:467:51 | ...::new(...) | test.rs:467:17:467:26 | mut pinned | provenance |  |
-| test.rs:467:30:467:51 | ...::new(...) [&ref] | test.rs:467:17:467:26 | mut pinned [&ref] | provenance |  |
+| test.rs:467:30:467:51 | ...::new(...) [Pin, &ref] | test.rs:467:17:467:26 | mut pinned [Pin, &ref] | provenance |  |
 | test.rs:467:39:467:50 | &mut reader2 [&ref] | test.rs:467:30:467:51 | ...::new(...) | provenance | MaD:20 |
-| test.rs:467:39:467:50 | &mut reader2 [&ref] | test.rs:467:30:467:51 | ...::new(...) [&ref] | provenance | MaD:21 |
+| test.rs:467:39:467:50 | &mut reader2 [&ref] | test.rs:467:30:467:51 | ...::new(...) [Pin, &ref] | provenance | MaD:21 |
 | test.rs:467:44:467:50 | reader2 | test.rs:467:39:467:50 | &mut reader2 [&ref] | provenance |  |
 | test.rs:468:19:468:24 | pinned | test.rs:468:18:468:24 | &pinned | provenance |  |
-| test.rs:468:19:468:24 | pinned [&ref] | test.rs:468:18:468:24 | &pinned | provenance |  |
+| test.rs:468:19:468:24 | pinned [Pin, &ref] | test.rs:468:18:468:24 | &pinned | provenance |  |
 | test.rs:470:17:470:22 | buffer [Ready, Ok] | test.rs:471:19:471:24 | buffer [Ready, Ok] | provenance |  |
 | test.rs:470:17:470:22 | buffer [Ready, Ok] | test.rs:472:20:472:39 | ...::Ready(...) [Ready, Ok] | provenance |  |
 | test.rs:470:26:470:31 | pinned | test.rs:470:26:470:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:8 |
-| test.rs:470:26:470:31 | pinned [&ref] | test.rs:470:26:470:54 | pinned.poll_fill_buf(...) [Ready, Ok] | provenance | MaD:8 |
 | test.rs:470:26:470:54 | pinned.poll_fill_buf(...) [Ready, Ok] | test.rs:470:17:470:22 | buffer [Ready, Ok] | provenance |  |
 | test.rs:471:19:471:24 | buffer [Ready, Ok] | test.rs:471:18:471:24 | &buffer | provenance |  |
 | test.rs:472:20:472:39 | ...::Ready(...) [Ready, Ok] | test.rs:472:32:472:38 | Ok(...) [Ok] | provenance |  |
@@ -455,16 +445,15 @@ nodes
 | test.rs:381:14:381:20 | &reader | semmle.label | &reader |
 | test.rs:381:15:381:20 | reader | semmle.label | reader |
 | test.rs:386:17:386:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:386:17:386:26 | mut pinned [&ref] | semmle.label | mut pinned [&ref] |
+| test.rs:386:17:386:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
 | test.rs:386:30:386:50 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:386:30:386:50 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| test.rs:386:30:386:50 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
 | test.rs:386:39:386:49 | &mut reader [&ref] | semmle.label | &mut reader [&ref] |
 | test.rs:386:44:386:49 | reader | semmle.label | reader |
 | test.rs:387:18:387:24 | &pinned | semmle.label | &pinned |
 | test.rs:387:19:387:24 | pinned | semmle.label | pinned |
-| test.rs:387:19:387:24 | pinned [&ref] | semmle.label | pinned [&ref] |
+| test.rs:387:19:387:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
 | test.rs:389:30:389:35 | pinned | semmle.label | pinned |
-| test.rs:389:30:389:35 | pinned [&ref] | semmle.label | pinned [&ref] |
 | test.rs:389:56:389:66 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
 | test.rs:389:61:389:66 | [post] buffer | semmle.label | [post] buffer |
 | test.rs:391:22:391:28 | &buffer | semmle.label | &buffer |
@@ -488,17 +477,16 @@ nodes
 | test.rs:409:14:409:21 | &reader2 | semmle.label | &reader2 |
 | test.rs:409:15:409:21 | reader2 | semmle.label | reader2 |
 | test.rs:413:17:413:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:413:17:413:26 | mut pinned [&ref] | semmle.label | mut pinned [&ref] |
+| test.rs:413:17:413:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
 | test.rs:413:30:413:51 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:413:30:413:51 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| test.rs:413:30:413:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
 | test.rs:413:39:413:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
 | test.rs:413:44:413:50 | reader2 | semmle.label | reader2 |
 | test.rs:414:18:414:24 | &pinned | semmle.label | &pinned |
 | test.rs:414:19:414:24 | pinned | semmle.label | pinned |
-| test.rs:414:19:414:24 | pinned [&ref] | semmle.label | pinned [&ref] |
+| test.rs:414:19:414:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
 | test.rs:416:17:416:22 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
 | test.rs:416:26:416:31 | pinned | semmle.label | pinned |
-| test.rs:416:26:416:31 | pinned [&ref] | semmle.label | pinned [&ref] |
 | test.rs:416:26:416:54 | pinned.poll_fill_buf(...) [Ready, Ok] | semmle.label | pinned.poll_fill_buf(...) [Ready, Ok] |
 | test.rs:417:20:417:39 | ...::Ready(...) [Ready, Ok] | semmle.label | ...::Ready(...) [Ready, Ok] |
 | test.rs:417:32:417:38 | Ok(...) [Ok] | semmle.label | Ok(...) [Ok] |
@@ -508,7 +496,6 @@ nodes
 | test.rs:419:22:419:24 | buf | semmle.label | buf |
 | test.rs:423:17:423:23 | buffer2 [Ready, Ok] | semmle.label | buffer2 [Ready, Ok] |
 | test.rs:423:27:423:48 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:423:27:423:48 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
 | test.rs:423:27:423:71 | ... .poll_fill_buf(...) [Ready, Ok] | semmle.label | ... .poll_fill_buf(...) [Ready, Ok] |
 | test.rs:423:36:423:47 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
 | test.rs:423:41:423:47 | reader2 | semmle.label | reader2 |
@@ -526,16 +513,15 @@ nodes
 | test.rs:437:26:437:50 | TryExpr | semmle.label | TryExpr |
 | test.rs:438:18:438:23 | buffer | semmle.label | buffer |
 | test.rs:444:17:444:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:444:17:444:26 | mut pinned [&ref] | semmle.label | mut pinned [&ref] |
+| test.rs:444:17:444:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
 | test.rs:444:30:444:51 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:444:30:444:51 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| test.rs:444:30:444:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
 | test.rs:444:39:444:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
 | test.rs:444:44:444:50 | reader2 | semmle.label | reader2 |
 | test.rs:445:18:445:24 | &pinned | semmle.label | &pinned |
 | test.rs:445:19:445:24 | pinned | semmle.label | pinned |
-| test.rs:445:19:445:24 | pinned [&ref] | semmle.label | pinned [&ref] |
+| test.rs:445:19:445:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
 | test.rs:447:30:447:35 | pinned | semmle.label | pinned |
-| test.rs:447:30:447:35 | pinned [&ref] | semmle.label | pinned [&ref] |
 | test.rs:447:56:447:66 | [post] &mut buffer [&ref] | semmle.label | [post] &mut buffer [&ref] |
 | test.rs:447:61:447:66 | [post] buffer | semmle.label | [post] buffer |
 | test.rs:448:18:448:24 | &buffer | semmle.label | &buffer |
@@ -554,17 +540,16 @@ nodes
 | test.rs:462:18:462:40 | &... | semmle.label | &... |
 | test.rs:462:19:462:40 | buffer2[...] | semmle.label | buffer2[...] |
 | test.rs:467:17:467:26 | mut pinned | semmle.label | mut pinned |
-| test.rs:467:17:467:26 | mut pinned [&ref] | semmle.label | mut pinned [&ref] |
+| test.rs:467:17:467:26 | mut pinned [Pin, &ref] | semmle.label | mut pinned [Pin, &ref] |
 | test.rs:467:30:467:51 | ...::new(...) | semmle.label | ...::new(...) |
-| test.rs:467:30:467:51 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| test.rs:467:30:467:51 | ...::new(...) [Pin, &ref] | semmle.label | ...::new(...) [Pin, &ref] |
 | test.rs:467:39:467:50 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
 | test.rs:467:44:467:50 | reader2 | semmle.label | reader2 |
 | test.rs:468:18:468:24 | &pinned | semmle.label | &pinned |
 | test.rs:468:19:468:24 | pinned | semmle.label | pinned |
-| test.rs:468:19:468:24 | pinned [&ref] | semmle.label | pinned [&ref] |
+| test.rs:468:19:468:24 | pinned [Pin, &ref] | semmle.label | pinned [Pin, &ref] |
 | test.rs:470:17:470:22 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
 | test.rs:470:26:470:31 | pinned | semmle.label | pinned |
-| test.rs:470:26:470:31 | pinned [&ref] | semmle.label | pinned [&ref] |
 | test.rs:470:26:470:54 | pinned.poll_fill_buf(...) [Ready, Ok] | semmle.label | pinned.poll_fill_buf(...) [Ready, Ok] |
 | test.rs:471:18:471:24 | &buffer | semmle.label | &buffer |
 | test.rs:471:19:471:24 | buffer [Ready, Ok] | semmle.label | buffer [Ready, Ok] |
