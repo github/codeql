@@ -1,15 +1,13 @@
-//! Tests for XSS
-//! 
 use warp::Filter;
 
 #[tokio::main]
 pub async fn main() {
     let hello = warp::path("greet")
         .and(warp::path::param())
-        .map(|name: String| { // $ Source
+        .map(|name: String| { // $ Source=name
             // Vulnerable to XSS because it directly includes user input in the response
             let body = format!("<h1>Hello, {name}!</h1>");
-            warp::reply::html(body) // $ Alert[rust/xss]
+            warp::reply::html(body) // $ Alert[rust/xss]=name
         });
 
     // Start the web server on port 3000

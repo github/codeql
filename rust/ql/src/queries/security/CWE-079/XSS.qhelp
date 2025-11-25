@@ -10,20 +10,22 @@ scripting vulnerability.</p>
 </overview>
 
 <recommendation>
-<p>To guard against cross-site scripting, consider encoding/escaping the unstrusted
+<p>To guard against cross-site scripting, consider encoding/escaping the untrusted
 input before including it in the HTML.</p>
 </recommendation>
 
 <example>
 
-<p>The following example shows a simple web handler that writes a path of the
-URL parameter directly to an HTML response, leaving the website vulnerable to
-cross-site scripting:</p>
+<p>The following example shows a simple web handler that writes a URL path parameter
+directly to an HTML response, leaving the website vulnerable to cross-site
+scripting:</p>
 
 <sample src="XSSBad.rs" />
 
 <p>To fix this vulnerability, the user input should be HTML-encoded before being
-included in the response:</p>
+included in the response. In the following example <code>encode_text</code> from
+the <a href="https://docs.rs/html-escape/latest/html_escape/index.html">html_escape</a>
+crate is used:</p>
 
 <sample src="XSSGood.rs" />
 
@@ -36,7 +38,7 @@ included in the response:</p>
   (Cross Site Scripting) Prevention Cheat Sheet</a>.
 </li>
 <li>
-  Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+  Wikipedia: <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
 </li>
 <li>
   OWASP:
