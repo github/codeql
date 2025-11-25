@@ -8,18 +8,36 @@ private import TranslatedInstruction
 private import semmle.code.binary.ast.ir.internal.InstructionTag
 private import codeql.controlflow.SuccessorType
 
-TranslatedFunction getTranslatedFunction(Raw::Instruction entry) { result.getRawElement() = entry }
+abstract class TranslatedFunction extends TranslatedElement {
+  final override predicate producesResult() { none() }
 
-class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
-  Raw::Instruction entry;
+  final override Variable getResultVariable() { none() }
 
-  TranslatedFunction() { this = TTranslatedFunction(entry) }
+  final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  abstract Instruction getEntry();
+
+  abstract string getName();
+
+  final override string toString() { result = "Translation of " + this.getName() }
+
+  abstract predicate isProgramEntryPoint();
+
+  abstract predicate isExported();
+
+  final override string getDumpId() { result = this.getName() }
+}
+
+TranslatedX86Function getTranslatedFunction(Raw::X86Instruction entry) {
+  result.getRawElement() = entry
+}
+
+class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
+  Raw::X86Instruction entry;
+
+  TranslatedX86Function() { this = TTranslatedX86Function(entry) }
 
   override Raw::Element getRawElement() { result = entry }
-
-  override predicate producesResult() { none() }
-
-  override Variable getResultVariable() { none() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     tag = InitStackPtrTag() and
@@ -41,13 +59,11 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
     result = getTranslatedInstruction(entry).getEntry()
   }
 
-  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
-
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
-  Instruction getEntry() { result = this.getInstruction(InitFramePtrTag()) }
+  final override Instruction getEntry() { result = this.getInstruction(InitFramePtrTag()) }
 
-  string getName() {
+  final override string getName() {
     if this.isProgramEntryPoint()
     then result = "Program_entry_function"
     else
@@ -56,11 +72,7 @@ class TranslatedFunction extends TranslatedElement, TTranslatedFunction {
       else result = "Function_" + entry.getIndex()
   }
 
-  override string toString() { result = "Translation of " + this.getName() }
+  final override predicate isProgramEntryPoint() { entry instanceof Raw::ProgramEntryInstruction }
 
-  predicate isProgramEntryPoint() { entry instanceof Raw::ProgramEntryInstruction }
-
-  predicate isExported() { entry instanceof Raw::ExportedEntryInstruction }
-
-  final override string getDumpId() { result = this.getName() }
+  final override predicate isExported() { entry instanceof Raw::ExportedEntryInstruction }
 }

@@ -6,7 +6,7 @@ private import Operand
 
 newtype TVariable =
   TTempVariable(TranslatedElement te, Tags::VariableTag tag) { hasTempVariable(te, tag) } or
-  TRegisterVariableReal(Raw::Register r) or
+  TRegisterVariableReal(Raw::X86Register r) or
   TRegisterVariableSynth(Tags::SynthRegisterTag tag) { hasSynthVariable(tag) }
 
 abstract class Variable extends TVariable {
@@ -31,22 +31,22 @@ class TRegisterVariable = TRegisterVariableReal or TRegisterVariableSynth;
 class RegisterVariable extends Variable, TRegisterVariable {
   override string toString() { none() }
 
-  Raw::Register getRegister() { none() }
+  Raw::X86Register getRegister() { none() }
 
   Tags::SynthRegisterTag getRegisterTag() { none() }
 }
 
 private class RegisterVariableReal extends RegisterVariable, TRegisterVariableReal {
-  Raw::Register r;
+  Raw::X86Register r;
 
   RegisterVariableReal() { this = TRegisterVariableReal(r) }
 
   override string toString() { result = r.toString() }
 
-  override Raw::Register getRegister() { result = r }
+  override Raw::X86Register getRegister() { result = r }
 }
 
-RegisterVariable getTranslatedVariableReal(Raw::Register r) { result.getRegister() = r }
+RegisterVariable getTranslatedVariableReal(Raw::X86Register r) { result.getRegister() = r }
 
 private class RegisterVariableSynth extends RegisterVariable, TRegisterVariableSynth {
   Tags::SynthRegisterTag tag;

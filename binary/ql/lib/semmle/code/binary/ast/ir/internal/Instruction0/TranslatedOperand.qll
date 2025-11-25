@@ -10,30 +10,34 @@ private import codeql.controlflow.SuccessorType
 private import Variable
 
 abstract class TranslatedOperand extends TranslatedElement {
-  Raw::Operand op;
-
-  override Raw::Element getRawElement() { result = op }
-
-  TranslatedInstruction getUse() { result = getTranslatedInstruction(op.getUse()) }
+  abstract TranslatedInstruction getUse();
 
   abstract Option<Instruction>::Option getEntry();
+}
+
+abstract class TranslatedX86Operand extends TranslatedOperand {
+  Raw::X86Operand op;
 
   final override string getDumpId() {
     result = "op_" + op.getUse().getIndex() + "_" + op.getIndex()
   }
 
+  override Raw::Element getRawElement() { result = op }
+
+  final override TranslatedX86Instruction getUse() { result = getTranslatedInstruction(op.getUse()) }
+
   final override string toString() { result = "Translation of " + op }
 }
 
-TranslatedOperand getTranslatedOperand(Raw::Operand op) {
+TranslatedOperand getTranslatedOperand(Raw::Element op) {
   result.getRawElement() = op and
   result.producesResult()
 }
 
-class TranslatedRegisterOperand extends TranslatedOperand, TTranslatedRegisterOperand {
-  override Raw::RegisterOperand op;
+class TranslatedX86RegisterOperand extends TranslatedX86Operand, TTranslatedX86RegisterOperand {
+  override Raw::X86RegisterOperand op;
 
-  TranslatedRegisterOperand() { this = TTranslatedRegisterOperand(op) }
+  TranslatedX86RegisterOperand() { this = TTranslatedX86RegisterOperand(op) }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) { none() }
 
@@ -58,10 +62,10 @@ class TranslatedRegisterOperand extends TranslatedOperand, TTranslatedRegisterOp
  * r1 = Const(0x48)
  * ```
  */
-class TranslatedImmediateOperand extends TranslatedOperand, TTranslatedImmediateOperand {
-  override Raw::ImmediateOperand op;
+class TranslatedX86ImmediateOperand extends TranslatedX86Operand, TTranslatedX86ImmediateOperand {
+  override Raw::X86ImmediateOperand op;
 
-  TranslatedImmediateOperand() { this = TTranslatedImmediateOperand(op) }
+  TranslatedX86ImmediateOperand() { this = TTranslatedX86ImmediateOperand(op) }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
     tag = ImmediateOperandConstTag() and
@@ -95,10 +99,10 @@ class TranslatedImmediateOperand extends TranslatedOperand, TTranslatedImmediate
   }
 }
 
-class TranslatedMemoryOperand extends TranslatedOperand, TTranslatedMemoryOperand {
-  override Raw::MemoryOperand op;
+class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86MemoryOperand {
+  override Raw::X86MemoryOperand op;
 
-  TranslatedMemoryOperand() { this = TTranslatedMemoryOperand(op) }
+  TranslatedX86MemoryOperand() { this = TTranslatedX86MemoryOperand(op) }
 
   private predicate isLoaded() { this.getUse().isOperandLoaded(op) }
 

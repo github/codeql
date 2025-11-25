@@ -11,15 +11,17 @@ private import codeql.controlflow.SuccessorType
 private import codeql.util.Either
 
 abstract class TranslatedInstruction extends TranslatedElement {
-  Raw::Instruction instr;
+  abstract Instruction getEntry();
+}
+
+abstract class TranslatedX86Instruction extends TranslatedInstruction {
+  Raw::X86Instruction instr;
+
+  predicate isOperandLoaded(Raw::X86MemoryOperand op) { op = instr.getAnOperand() }
 
   final override Raw::Element getRawElement() { result = instr }
 
-  predicate isOperandLoaded(Raw::MemoryOperand op) { op = instr.getAnOperand() }
-
-  abstract Instruction getEntry();
-
-  override string toString() { result = "Translation of " + instr }
+  override string toString() { result = "Translation of " + instr.toString() }
 
   final override string getDumpId() { result = "i" + instr.getIndex().toString() }
 }
@@ -28,8 +30,8 @@ abstract class TranslatedInstruction extends TranslatedElement {
  * An instruction that writes to a destination operand, which may require
  * generating a Store instruction.
  */
-abstract class WritingInstruction extends TranslatedInstruction {
-  abstract Raw::Operand getDestinationOperand();
+abstract class WritingInstruction extends TranslatedX86Instruction {
+  abstract Raw::X86Operand getDestinationOperand();
 
   abstract Instruction getResultInstruction();
 
@@ -38,10 +40,10 @@ abstract class WritingInstruction extends TranslatedInstruction {
   final override predicate producesResult() { any() }
 
   private predicate shouldGenerateStore() {
-    this.getDestinationOperand() instanceof Raw::MemoryOperand
+    this.getDestinationOperand() instanceof Raw::X86MemoryOperand
   }
 
-  private TranslatedMemoryOperand getTranslatedDestinationOperand() {
+  private TranslatedX86MemoryOperand getTranslatedDestinationOperand() {
     result = getTranslatedOperand(this.getDestinationOperand())
   }
 
@@ -92,120 +94,120 @@ abstract class WritingInstruction extends TranslatedInstruction {
   }
 }
 
-predicate isSimpleBinaryInstruction(Raw::Instruction instr, Opcode opcode, Raw::Operand r) {
-  instr instanceof Raw::Sub and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+predicate isSimpleBinaryInstruction(Raw::X86Instruction instr, Opcode opcode, Raw::X86Operand r) {
+  instr instanceof Raw::X86Sub and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Sbb and opcode instanceof Opcode::Sub and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::X86Sbb and opcode instanceof Opcode::Sub and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof Raw::Subpd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Subpd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Subsd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Subsd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Subss and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Subss and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Psubb and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Psubb and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Psubw and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Psubw and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Psubd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Psubd and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Psubq and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
+  instr instanceof Raw::X86Psubq and opcode instanceof Opcode::Sub and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Add and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Add and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Paddb and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Paddb and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Paddw and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Paddw and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Paddd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Paddd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Paddq and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Paddq and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Addpd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Addpd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Addsd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Addsd and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Addss and opcode instanceof Opcode::Add and r = instr.getOperand(0)
+  instr instanceof Raw::X86Addss and opcode instanceof Opcode::Add and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Adc and opcode instanceof Opcode::Add and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::X86Adc and opcode instanceof Opcode::Add and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof Raw::Adox and opcode instanceof Opcode::Add and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::X86Adox and opcode instanceof Opcode::Add and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof Raw::Imul and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Imul and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Imulzu and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::X86Imulzu and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof Raw::Mulpd and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Mulpd and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Mulps and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Mulps and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Mulsd and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Mulsd and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Mulss and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Mulss and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Pmullw and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Pmullw and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Pmulld and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Pmulld and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Pmulhw and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::X86Pmulhw and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof Raw::Pmulhuw and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
+  instr instanceof Raw::X86Pmulhuw and opcode instanceof Opcode::Mul and r = instr.getOperand(0) // TODO: Not semantically correct
   or
-  instr instanceof Raw::Pmuludq and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Pmuludq and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Pmuldq and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
+  instr instanceof Raw::X86Pmuldq and opcode instanceof Opcode::Mul and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Divpd and opcode instanceof Opcode::Div and r = instr.getOperand(0)
+  instr instanceof Raw::X86Divpd and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Divps and opcode instanceof Opcode::Div and r = instr.getOperand(0)
+  instr instanceof Raw::X86Divps and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Divsd and opcode instanceof Opcode::Div and r = instr.getOperand(0)
+  instr instanceof Raw::X86Divsd and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Divss and opcode instanceof Opcode::Div and r = instr.getOperand(0)
+  instr instanceof Raw::X86Divss and opcode instanceof Opcode::Div and r = instr.getOperand(0)
   or
-  instr instanceof Raw::And and opcode instanceof Opcode::And and r = instr.getOperand(0)
+  instr instanceof Raw::X86And and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Pand and opcode instanceof Opcode::And and r = instr.getOperand(0)
+  instr instanceof Raw::X86Pand and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Andpd and opcode instanceof Opcode::And and r = instr.getOperand(0)
+  instr instanceof Raw::X86Andpd and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Andps and opcode instanceof Opcode::And and r = instr.getOperand(0)
+  instr instanceof Raw::X86Andps and opcode instanceof Opcode::And and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Or and opcode instanceof Opcode::Or and r = instr.getOperand(0)
+  instr instanceof Raw::X86Or and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Por and opcode instanceof Opcode::Or and r = instr.getOperand(0)
+  instr instanceof Raw::X86Por and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Orpd and opcode instanceof Opcode::Or and r = instr.getOperand(0)
+  instr instanceof Raw::X86Orpd and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Orps and opcode instanceof Opcode::Or and r = instr.getOperand(0)
+  instr instanceof Raw::X86Orps and opcode instanceof Opcode::Or and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Xor and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
+  instr instanceof Raw::X86Xor and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Pxor and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
+  instr instanceof Raw::X86Pxor and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Xorpd and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
+  instr instanceof Raw::X86Xorpd and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Xorps and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
+  instr instanceof Raw::X86Xorps and opcode instanceof Opcode::Xor and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Shl and opcode instanceof Opcode::Shl and r = instr.getOperand(0)
+  instr instanceof Raw::X86Shl and opcode instanceof Opcode::Shl and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Shr and opcode instanceof Opcode::Shr and r = instr.getOperand(0)
+  instr instanceof Raw::X86Shr and opcode instanceof Opcode::Shr and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Sar and opcode instanceof Opcode::Sar and r = instr.getOperand(0)
+  instr instanceof Raw::X86Sar and opcode instanceof Opcode::Sar and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Rol and opcode instanceof Opcode::Rol and r = instr.getOperand(0)
+  instr instanceof Raw::X86Rol and opcode instanceof Opcode::Rol and r = instr.getOperand(0)
   or
-  instr instanceof Raw::Ror and opcode instanceof Opcode::Ror and r = instr.getOperand(0)
+  instr instanceof Raw::X86Ror and opcode instanceof Opcode::Ror and r = instr.getOperand(0)
 }
 
-class TranslatedSimpleBinaryInstruction extends WritingInstruction,
-  TTranslatedSimpleBinaryInstruction
+class TranslatedX86SimpleBinaryInstruction extends WritingInstruction,
+  TTranslatedX86SimpleBinaryInstruction
 {
   Opcode opcode;
-  Raw::Operand dest;
+  Raw::X86Operand dest;
 
-  TranslatedSimpleBinaryInstruction() {
-    this = TTranslatedSimpleBinaryInstruction(instr) and
+  TranslatedX86SimpleBinaryInstruction() {
+    this = TTranslatedX86SimpleBinaryInstruction(instr) and
     isSimpleBinaryInstruction(instr, opcode, dest)
   }
 
@@ -215,7 +217,7 @@ class TranslatedSimpleBinaryInstruction extends WritingInstruction,
 
   override Instruction getResultInstruction() { result = this.getInstruction(SingleTag()) }
 
-  final override Raw::Operand getDestinationOperand() { result = dest }
+  final override Raw::X86Operand getDestinationOperand() { result = dest }
 
   final override predicate hasInstruction(
     Opcode opcode_, InstructionTag tag, Option<Variable>::Option v
@@ -271,10 +273,10 @@ class TranslatedSimpleBinaryInstruction extends WritingInstruction,
   private TranslatedOperand getRightOperand() { result = getTranslatedOperand(instr.getOperand(1)) }
 }
 
-class TranslatedCall extends TranslatedInstruction, TTranslatedCall {
-  override Raw::Call instr;
+class TranslatedX86Call extends TranslatedX86Instruction, TTranslatedX86Call {
+  override Raw::X86Call instr;
 
-  TranslatedCall() { this = TTranslatedCall(instr) }
+  TranslatedX86Call() { this = TTranslatedX86Call(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -317,16 +319,16 @@ class TranslatedCall extends TranslatedInstruction, TTranslatedCall {
 
   override Variable getResultVariable() { none() } // TODO: We don't know where this is yet. Probably rax for x86
 
-  override TranslatedFunction getStaticCallTarget(InstructionTag tag) {
+  override TranslatedX86Function getStaticCallTarget(InstructionTag tag) {
     tag = SingleTag() and
-    result = TTranslatedFunction(instr.getTarget())
+    result = TTranslatedX86Function(instr.getTarget())
   }
 }
 
-class TranslatedJmp extends TranslatedInstruction, TTranslatedJmp {
-  override Raw::Jmp instr;
+class TranslatedX86Jmp extends TranslatedX86Instruction, TTranslatedX86Jmp {
+  override Raw::X86Jmp instr;
 
-  TranslatedJmp() { this = TTranslatedJmp(instr) }
+  TranslatedX86Jmp() { this = TTranslatedX86Jmp(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -370,10 +372,10 @@ class TranslatedJmp extends TranslatedInstruction, TTranslatedJmp {
   override Variable getResultVariable() { none() }
 }
 
-abstract class TranslatedCopy extends TranslatedInstruction {
-  private predicate shouldGenerateStore() { instr.getOperand(0) instanceof Raw::MemoryOperand }
+abstract class TranslatedCopy extends TranslatedX86Instruction {
+  private predicate shouldGenerateStore() { instr.getOperand(0) instanceof Raw::X86MemoryOperand }
 
-  override predicate isOperandLoaded(Raw::MemoryOperand op) { op = instr.getOperand(1) }
+  override predicate isOperandLoaded(Raw::X86MemoryOperand op) { op = instr.getOperand(1) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -454,81 +456,81 @@ abstract class TranslatedCopy extends TranslatedInstruction {
   }
 }
 
-class TranslatedMov extends TranslatedCopy, TTranslatedMov {
-  override Raw::Mov instr;
+class TranslatedX86Mov extends TranslatedCopy, TTranslatedX86Mov {
+  override Raw::X86Mov instr;
 
-  TranslatedMov() { this = TTranslatedMov(instr) }
+  TranslatedX86Mov() { this = TTranslatedX86Mov(instr) }
 }
 
-class TranslatedMovsd extends TranslatedCopy, TTranslatedMovsd {
-  override Raw::Movsd instr;
+class TranslatedX86Movsd extends TranslatedCopy, TTranslatedX86Movsd {
+  override Raw::X86Movsd instr;
 
-  TranslatedMovsd() { this = TTranslatedMovsd(instr) }
+  TranslatedX86Movsd() { this = TTranslatedX86Movsd(instr) }
 }
 
-class TranslatedMovq extends TranslatedCopy, TTranslatedMovq {
-  override Raw::Movq instr;
+class TranslatedX86Movq extends TranslatedCopy, TTranslatedX86Movq {
+  override Raw::X86Movq instr;
 
-  TranslatedMovq() { this = TTranslatedMovq(instr) }
+  TranslatedX86Movq() { this = TTranslatedX86Movq(instr) }
 }
 
-class TranslatedMovss extends TranslatedCopy, TTranslatedMovss {
-  override Raw::Movss instr;
+class TranslatedX86Movss extends TranslatedCopy, TTranslatedX86Movss {
+  override Raw::X86Movss instr;
 
-  TranslatedMovss() { this = TTranslatedMovss(instr) }
+  TranslatedX86Movss() { this = TTranslatedX86Movss(instr) }
 }
 
-class TranslatedMovzx extends TranslatedCopy, TTranslatedMovzx {
+class TranslatedX86Movzx extends TranslatedCopy, TTranslatedX86Movzx {
   // TODO: This should also perform a zero-extension
-  override Raw::Movzx instr;
+  override Raw::X86Movzx instr;
 
-  TranslatedMovzx() { this = TTranslatedMovzx(instr) }
+  TranslatedX86Movzx() { this = TTranslatedX86Movzx(instr) }
 }
 
-class TranslatedMovsxd extends TranslatedCopy, TTranslatedMovsxd {
+class TranslatedX86Movsxd extends TranslatedCopy, TTranslatedX86Movsxd {
   // TODO: What does this one do?
-  override Raw::Movsxd instr;
+  override Raw::X86Movsxd instr;
 
-  TranslatedMovsxd() { this = TTranslatedMovsxd(instr) }
+  TranslatedX86Movsxd() { this = TTranslatedX86Movsxd(instr) }
 }
 
-class TranslatedMovsx extends TranslatedCopy, TTranslatedMovsx {
+class TranslatedX86Movsx extends TranslatedCopy, TTranslatedX86Movsx {
   // TODO: What does this one do?
-  override Raw::Movsx instr;
+  override Raw::X86Movsx instr;
 
-  TranslatedMovsx() { this = TTranslatedMovsx(instr) }
+  TranslatedX86Movsx() { this = TTranslatedX86Movsx(instr) }
 }
 
-class TranslatedMovaps extends TranslatedCopy, TTranslatedMovaps {
-  override Raw::Movaps instr;
+class TranslatedX86Movaps extends TranslatedCopy, TTranslatedX86Movaps {
+  override Raw::X86Movaps instr;
 
-  TranslatedMovaps() { this = TTranslatedMovaps(instr) }
+  TranslatedX86Movaps() { this = TTranslatedX86Movaps(instr) }
 }
 
-class TranslatedMovups extends TranslatedCopy, TTranslatedMovups {
-  override Raw::Movups instr;
+class TranslatedX86Movups extends TranslatedCopy, TTranslatedX86Movups {
+  override Raw::X86Movups instr;
 
-  TranslatedMovups() { this = TTranslatedMovups(instr) }
+  TranslatedX86Movups() { this = TTranslatedX86Movups(instr) }
 }
 
-class TranslatedMovdqu extends TranslatedCopy, TTranslatedMovdqu {
-  override Raw::Movdqu instr;
+class TranslatedX86Movdqu extends TranslatedCopy, TTranslatedX86Movdqu {
+  override Raw::X86Movdqu instr;
 
-  TranslatedMovdqu() { this = TTranslatedMovdqu(instr) }
+  TranslatedX86Movdqu() { this = TTranslatedX86Movdqu(instr) }
 }
 
-class TranslatedMovdqa extends TranslatedCopy, TTranslatedMovdqa {
-  override Raw::Movdqa instr;
+class TranslatedX86Movdqa extends TranslatedCopy, TTranslatedX86Movdqa {
+  override Raw::X86Movdqa instr;
 
-  TranslatedMovdqa() { this = TTranslatedMovdqa(instr) }
+  TranslatedX86Movdqa() { this = TTranslatedX86Movdqa(instr) }
 }
 
 private Variable getEspVariable() { result = getTranslatedVariableReal(any(Raw::RspRegister r)) }
 
-class TranslatedPush extends TranslatedInstruction, TTranslatedPush {
-  override Raw::Push instr;
+class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
+  override Raw::X86Push instr;
 
-  TranslatedPush() { this = TTranslatedPush(instr) }
+  TranslatedX86Push() { this = TTranslatedX86Push(instr) }
 
   override predicate hasTempVariable(VariableTag tag) { tag = PushConstVarTag() }
 
@@ -614,10 +616,10 @@ class TranslatedPush extends TranslatedInstruction, TTranslatedPush {
   }
 }
 
-class TranslatedTest extends TranslatedInstruction, TTranslatedTest {
-  override Raw::Test instr;
+class TranslatedX86Test extends TranslatedX86Instruction, TTranslatedX86Test {
+  override Raw::X86Test instr;
 
-  TranslatedTest() { this = TTranslatedTest(instr) }
+  TranslatedX86Test() { this = TTranslatedX86Test(instr) }
 
   override predicate hasSynthVariable(SynthRegisterTag tag) { tag = CmpRegisterTag() }
 
@@ -720,10 +722,10 @@ class TranslatedTest extends TranslatedInstruction, TTranslatedTest {
   override Variable getResultVariable() { result = getTranslatedVariableSynth(CmpRegisterTag()) }
 }
 
-class TranslatedConditionalJump extends TranslatedInstruction, TTranslatedConditionalJump {
-  override Raw::ConditionalJumpInstruction instr;
+class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslatedX86ConditionalJump {
+  override Raw::X86ConditionalJumpInstruction instr;
 
-  TranslatedConditionalJump() { this = TTranslatedConditionalJump(instr) }
+  TranslatedX86ConditionalJump() { this = TTranslatedX86ConditionalJump(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -736,29 +738,29 @@ class TranslatedConditionalJump extends TranslatedInstruction, TTranslatedCondit
   override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
     tag = SingleTag() and
     (
-      instr instanceof Raw::Jb and kind = Opcode::LT()
+      instr instanceof Raw::X86Jb and kind = Opcode::LT()
       or
-      instr instanceof Raw::Jbe and kind = Opcode::LE()
+      instr instanceof Raw::X86Jbe and kind = Opcode::LE()
       or
-      instr instanceof Raw::Jz and kind = Opcode::EQ()
+      instr instanceof Raw::X86Jz and kind = Opcode::EQ()
       or
-      instr instanceof Raw::Jnz and kind = Opcode::NE()
+      instr instanceof Raw::X86Jnz and kind = Opcode::NE()
       or
-      instr instanceof Raw::Jnb and kind = Opcode::GE()
+      instr instanceof Raw::X86Jnb and kind = Opcode::GE()
       or
-      instr instanceof Raw::Jnbe and kind = Opcode::GT()
+      instr instanceof Raw::X86Jnbe and kind = Opcode::GT()
       or
-      instr instanceof Raw::Jnl and kind = Opcode::GE()
+      instr instanceof Raw::X86Jnl and kind = Opcode::GE()
       or
-      instr instanceof Raw::Jnle and kind = Opcode::GT()
+      instr instanceof Raw::X86Jnle and kind = Opcode::GT()
       or
-      instr instanceof Raw::Jl and kind = Opcode::LT()
+      instr instanceof Raw::X86Jl and kind = Opcode::LT()
       or
-      instr instanceof Raw::Jle and kind = Opcode::LE()
+      instr instanceof Raw::X86Jle and kind = Opcode::LE()
       or
-      instr instanceof Raw::Js and kind = Opcode::LT() // TODO: Not semantically correct
+      instr instanceof Raw::X86Js and kind = Opcode::LT() // TODO: Not semantically correct
       or
-      instr instanceof Raw::Jns and kind = Opcode::GE() // TODO: Not semantically correct
+      instr instanceof Raw::X86Jns and kind = Opcode::GE() // TODO: Not semantically correct
     )
   }
 
@@ -808,10 +810,10 @@ class TranslatedConditionalJump extends TranslatedInstruction, TTranslatedCondit
   override Variable getResultVariable() { none() }
 }
 
-class TranslatedCmp extends TranslatedInstruction, TTranslatedCmp {
-  override Raw::Cmp instr;
+class TranslatedX86Cmp extends TranslatedX86Instruction, TTranslatedX86Cmp {
+  override Raw::X86Cmp instr;
 
-  TranslatedCmp() { this = TTranslatedCmp(instr) }
+  TranslatedX86Cmp() { this = TTranslatedX86Cmp(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -876,10 +878,10 @@ class TranslatedCmp extends TranslatedInstruction, TTranslatedCmp {
   override Variable getResultVariable() { result = getTranslatedVariableSynth(CmpRegisterTag()) }
 }
 
-class TranslatedLea extends TranslatedInstruction, TTranslatedLea {
-  override Raw::Lea instr;
+class TranslatedX86Lea extends TranslatedX86Instruction, TTranslatedX86Lea {
+  override Raw::X86Lea instr;
 
-  TranslatedLea() { this = TTranslatedLea(instr) }
+  TranslatedX86Lea() { this = TTranslatedX86Lea(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -891,7 +893,7 @@ class TranslatedLea extends TranslatedInstruction, TTranslatedLea {
 
   override predicate producesResult() { any() }
 
-  override predicate isOperandLoaded(Raw::MemoryOperand op) { none() }
+  override predicate isOperandLoaded(Raw::X86MemoryOperand op) { none() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
@@ -942,13 +944,13 @@ class TranslatedLea extends TranslatedInstruction, TTranslatedLea {
     result = this.getTranslatedDestOperand().getResultVariable()
   }
 
-  override string toString() { result = TranslatedInstruction.super.toString() }
+  override string toString() { result = TranslatedX86Instruction.super.toString() }
 }
 
-class TranslatedPop extends TranslatedInstruction, TTranslatedPop {
-  override Raw::Pop instr;
+class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
+  override Raw::X86Pop instr;
 
-  TranslatedPop() { this = TTranslatedPop(instr) }
+  TranslatedX86Pop() { this = TTranslatedX86Pop(instr) }
 
   override predicate hasTempVariable(VariableTag tag) { tag = PopConstVarTag() }
 
@@ -1026,10 +1028,10 @@ class TranslatedPop extends TranslatedInstruction, TTranslatedPop {
   override Variable getResultVariable() { result = this.getTranslatedOperand().getResultVariable() }
 }
 
-class TranslatedRet extends TranslatedInstruction, TTranslatedRet {
-  override Raw::Ret instr;
+class TranslatedX86Ret extends TranslatedX86Instruction, TTranslatedX86Ret {
+  override Raw::X86Ret instr;
 
-  TranslatedRet() { this = TTranslatedRet(instr) }
+  TranslatedX86Ret() { this = TTranslatedX86Ret(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -1052,7 +1054,7 @@ class TranslatedRet extends TranslatedInstruction, TTranslatedRet {
   override Variable getResultVariable() { none() }
 }
 
-abstract class TranslatedDecOrInc extends WritingInstruction {
+abstract class TranslatedX86DecOrInc extends WritingInstruction {
   abstract Opcode getOpcode();
 
   final override predicate hasInstruction(
@@ -1124,29 +1126,29 @@ abstract class TranslatedDecOrInc extends WritingInstruction {
     result.asLeft() = DecOrIncOpTag()
   }
 
-  final override Raw::Operand getDestinationOperand() { result = instr.getOperand(0) }
+  final override Raw::X86Operand getDestinationOperand() { result = instr.getOperand(0) }
 }
 
-class TranslatedDec extends TranslatedDecOrInc, TTranslatedDec {
-  override Raw::Dec instr;
+class TranslatedX86Dec extends TranslatedX86DecOrInc, TTranslatedX86Dec {
+  override Raw::X86Dec instr;
 
-  TranslatedDec() { this = TTranslatedDec(instr) }
+  TranslatedX86Dec() { this = TTranslatedX86Dec(instr) }
 
   override Opcode getOpcode() { result instanceof Opcode::Sub }
 }
 
-class TranslatedInc extends TranslatedDecOrInc, TTranslatedInc {
-  override Raw::Inc instr;
+class TranslatedX86Inc extends TranslatedX86DecOrInc, TTranslatedX86Inc {
+  override Raw::X86Inc instr;
 
-  TranslatedInc() { this = TTranslatedInc(instr) }
+  TranslatedX86Inc() { this = TTranslatedX86Inc(instr) }
 
   override Opcode getOpcode() { result instanceof Opcode::Add }
 }
 
-class TranslatedNop extends TranslatedInstruction, TTranslatedNop {
-  override Raw::Nop instr;
+class TranslatedX86Nop extends TranslatedX86Instruction, TTranslatedX86Nop {
+  override Raw::X86Nop instr;
 
-  TranslatedNop() { this = TTranslatedNop(instr) }
+  TranslatedX86Nop() { this = TTranslatedX86Nop(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -1173,7 +1175,7 @@ class TranslatedNop extends TranslatedInstruction, TTranslatedNop {
   override Variable getResultVariable() { none() }
 }
 
-abstract class TranslatedBtBase extends TranslatedInstruction {
+abstract class TranslatedX86BtBase extends TranslatedX86Instruction {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     opcode instanceof Opcode::Shl and
     tag = BtShiftTag() and
@@ -1305,10 +1307,10 @@ abstract class TranslatedBtBase extends TranslatedInstruction {
   }
 }
 
-class TranslatedBt extends TranslatedBtBase, TTranslatedBt {
-  override Raw::Bt instr;
+class TranslatedX86Bt extends TranslatedX86BtBase, TTranslatedX86Bt {
+  override Raw::X86Bt instr;
 
-  TranslatedBt() { this = TTranslatedBt(instr) }
+  TranslatedX86Bt() { this = TTranslatedX86Bt(instr) }
 
   override TranslatedOperand getLeftOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
 
@@ -1321,10 +1323,10 @@ class TranslatedBt extends TranslatedBtBase, TTranslatedBt {
   }
 }
 
-class TranslatedBtr extends TranslatedBtBase, TTranslatedBtr {
-  override Raw::Btr instr;
+class TranslatedX86Btr extends TranslatedX86BtBase, TTranslatedX86Btr {
+  override Raw::X86Btr instr;
 
-  TranslatedBtr() { this = TTranslatedBtr(instr) }
+  TranslatedX86Btr() { this = TTranslatedX86Btr(instr) }
 
   override TranslatedOperand getLeftOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
 
@@ -1418,10 +1420,10 @@ class TranslatedBtr extends TranslatedBtBase, TTranslatedBtr {
   override Instruction getSuccessorAfterCmp() { result = this.getInstruction(BtrOneTag()) }
 }
 
-class TranslatedNeg extends WritingInstruction, TTranslatedNeg {
-  override Raw::Neg instr;
+class TranslatedX86Neg extends WritingInstruction, TTranslatedX86Neg {
+  override Raw::X86Neg instr;
 
-  TranslatedNeg() { this = TTranslatedNeg(instr) }
+  TranslatedX86Neg() { this = TTranslatedX86Neg(instr) }
 
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
@@ -1482,5 +1484,5 @@ class TranslatedNeg extends WritingInstruction, TTranslatedNeg {
     result.asLeft() = NegSubTag()
   }
 
-  final override Raw::Operand getDestinationOperand() { result = instr.getOperand(0) }
+  final override Raw::X86Operand getDestinationOperand() { result = instr.getOperand(0) }
 }

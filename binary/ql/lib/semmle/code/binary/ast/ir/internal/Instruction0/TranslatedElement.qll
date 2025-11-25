@@ -12,61 +12,63 @@ private import TranslatedFunction
 
 class Opcode = Opcode::Opcode;
 
-private predicate shouldTranslateInstr(Raw::Instruction instr) { any() }
+private predicate shouldTranslateX86Instr(Raw::X86Instruction instr) { any() }
 
-private predicate shouldTranslateOperand(Raw::Operand operand) { any() }
+private predicate shouldTranslateX86Operand(Raw::X86Operand operand) { any() }
 
 newtype TTranslatedElement =
-  TTranslatedFunction(Raw::Instruction entry) {
-    shouldTranslateInstr(entry) and
+  TTranslatedX86Function(Raw::X86Instruction entry) {
+    shouldTranslateX86Instr(entry) and
     (
-      entry = any(Raw::Call call).getTarget()
+      entry = any(Raw::X86Call call).getTarget()
       or
       entry instanceof Raw::ProgramEntryInstruction
       or
       entry instanceof Raw::ExportedEntryInstruction
     )
   } or
-  TTranslatedSimpleBinaryInstruction(Raw::Instruction instr) {
-    shouldTranslateInstr(instr) and
+  TTranslatedX86SimpleBinaryInstruction(Raw::X86Instruction instr) {
+    shouldTranslateX86Instr(instr) and
     isSimpleBinaryInstruction(instr, _, _)
   } or
-  TTranslatedImmediateOperand(Raw::ImmediateOperand op) { shouldTranslateOperand(op) } or
-  TTranslatedRegisterOperand(Raw::RegisterOperand reg) { shouldTranslateOperand(reg) } or
-  TTranslatedMemoryOperand(Raw::MemoryOperand mem) { shouldTranslateOperand(mem) } or
-  TTranslatedCall(Raw::Call call) { shouldTranslateInstr(call) } or
-  TTranslatedJmp(Raw::Jmp jmp) { shouldTranslateInstr(jmp) and exists(jmp.getTarget()) } or
-  TTranslatedMov(Raw::Mov mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovsd(Raw::Movsd mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovq(Raw::Movq mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovss(Raw::Movss mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovzx(Raw::Movzx mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovsxd(Raw::Movsxd mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovsx(Raw::Movsx mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovdqu(Raw::Movdqu mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovdqa(Raw::Movdqa mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovaps(Raw::Movaps mov) { shouldTranslateInstr(mov) } or
-  TTranslatedMovups(Raw::Movups mov) { shouldTranslateInstr(mov) } or
-  TTranslatedPush(Raw::Push push) { shouldTranslateInstr(push) } or
-  TTranslatedTest(Raw::Test test) { shouldTranslateInstr(test) } or
-  TTranslatedConditionalJump(Raw::ConditionalJumpInstruction cjmp) { shouldTranslateInstr(cjmp) } or
-  TTranslatedCmp(Raw::Cmp cmp) { shouldTranslateInstr(cmp) } or
-  TTranslatedLea(Raw::Lea lea) { shouldTranslateInstr(lea) } or
-  TTranslatedPop(Raw::Pop pop) { shouldTranslateInstr(pop) } or
-  TTranslatedRet(Raw::Ret ret) { shouldTranslateInstr(ret) } or
-  TTranslatedDec(Raw::Dec dec) { shouldTranslateInstr(dec) } or
-  TTranslatedInc(Raw::Inc inc) { shouldTranslateInstr(inc) } or
-  TTranslatedNop(Raw::Nop nop) { shouldTranslateInstr(nop) } or
-  TTranslatedBt(Raw::Bt bt) { shouldTranslateInstr(bt) } or
-  TTranslatedBtr(Raw::Btr btr) { shouldTranslateInstr(btr) } or
-  TTranslatedNeg(Raw::Neg neg) { shouldTranslateInstr(neg) }
+  TTranslatedX86ImmediateOperand(Raw::X86ImmediateOperand op) { shouldTranslateX86Operand(op) } or
+  TTranslatedX86RegisterOperand(Raw::X86RegisterOperand reg) { shouldTranslateX86Operand(reg) } or
+  TTranslatedX86MemoryOperand(Raw::X86MemoryOperand mem) { shouldTranslateX86Operand(mem) } or
+  TTranslatedX86Call(Raw::X86Call call) { shouldTranslateX86Instr(call) } or
+  TTranslatedX86Jmp(Raw::X86Jmp jmp) { shouldTranslateX86Instr(jmp) and exists(jmp.getTarget()) } or
+  TTranslatedX86Mov(Raw::X86Mov mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movsd(Raw::X86Movsd mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movq(Raw::X86Movq mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movss(Raw::X86Movss mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movzx(Raw::X86Movzx mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movsxd(Raw::X86Movsxd mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movsx(Raw::X86Movsx mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movdqu(Raw::X86Movdqu mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movdqa(Raw::X86Movdqa mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movaps(Raw::X86Movaps mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Movups(Raw::X86Movups mov) { shouldTranslateX86Instr(mov) } or
+  TTranslatedX86Push(Raw::X86Push push) { shouldTranslateX86Instr(push) } or
+  TTranslatedX86Test(Raw::X86Test test) { shouldTranslateX86Instr(test) } or
+  TTranslatedX86ConditionalJump(Raw::X86ConditionalJumpInstruction cjmp) {
+    shouldTranslateX86Instr(cjmp)
+  } or
+  TTranslatedX86Cmp(Raw::X86Cmp cmp) { shouldTranslateX86Instr(cmp) } or
+  TTranslatedX86Lea(Raw::X86Lea lea) { shouldTranslateX86Instr(lea) } or
+  TTranslatedX86Pop(Raw::X86Pop pop) { shouldTranslateX86Instr(pop) } or
+  TTranslatedX86Ret(Raw::X86Ret ret) { shouldTranslateX86Instr(ret) } or
+  TTranslatedX86Dec(Raw::X86Dec dec) { shouldTranslateX86Instr(dec) } or
+  TTranslatedX86Inc(Raw::X86Inc inc) { shouldTranslateX86Instr(inc) } or
+  TTranslatedX86Nop(Raw::X86Nop nop) { shouldTranslateX86Instr(nop) } or
+  TTranslatedX86Bt(Raw::X86Bt bt) { shouldTranslateX86Instr(bt) } or
+  TTranslatedX86Btr(Raw::X86Btr btr) { shouldTranslateX86Instr(btr) } or
+  TTranslatedX86Neg(Raw::X86Neg neg) { shouldTranslateX86Instr(neg) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and
   result.producesResult()
 }
 
-TranslatedInstruction getTranslatedInstruction(Raw::Instruction raw) {
+TranslatedInstruction getTranslatedInstruction(Raw::Element raw) {
   result.getRawElement() = raw and
   result.producesResult()
 }
