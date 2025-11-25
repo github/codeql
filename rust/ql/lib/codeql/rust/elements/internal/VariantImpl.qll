@@ -36,6 +36,15 @@ module Impl {
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
 
+    int getNumberOfFields() {
+      not this.hasFieldList() and
+      result = 0
+      or
+      result = this.getFieldList().(StructFieldList).getNumberOfFields()
+      or
+      result = this.getFieldList().(TupleFieldList).getNumberOfFields()
+    }
+
     /** Holds if this variant uses tuple fields. */
     pragma[nomagic]
     predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
