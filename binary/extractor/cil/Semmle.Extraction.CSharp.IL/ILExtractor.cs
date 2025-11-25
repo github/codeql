@@ -102,7 +102,7 @@ public class ILExtractor {
       trap.WriteTuple("il_instruction_method", instrId,
                       methodId);
 
-      trap.WriteTuple("il_instruction_string", instrId,
+      trap.WriteTuple("instruction_string", instrId,
                       instruction.OpCode.Name);
 
       // Parent relationship
