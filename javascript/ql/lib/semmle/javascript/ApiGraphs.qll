@@ -1744,9 +1744,11 @@ module API {
 
     private module Debug {
       private module FullInput implements StageInputSig {
+        overlay[caller]
         pragma[inline]
         predicate isAdditionalUseRoot(Node node) { none() }
 
+        overlay[caller]
         pragma[inline]
         predicate isAdditionalDefRoot(Node node) { none() }
 
