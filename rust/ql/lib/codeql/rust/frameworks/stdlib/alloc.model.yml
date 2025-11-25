@@ -24,9 +24,10 @@ extensions:
       extensible: summaryModel
     data:
       # Box
-      - ["<alloc::boxed::Box>::pin", "Argument[0]", "ReturnValue.Reference", "value", "manual"]
-      - ["<alloc::boxed::Box>::new", "Argument[0]", "ReturnValue.Reference", "value", "manual"]
-      - ["<alloc::boxed::Box>::into_pin", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<alloc::boxed::Box as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[alloc::boxed::Box(0)]", "ReturnValue.Reference", "value", "manual"]
+      - ["<alloc::boxed::Box>::pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "value", "manual"]
+      - ["<alloc::boxed::Box>::new", "Argument[0]", "ReturnValue.Field[alloc::boxed::Box(0)]", "value", "manual"]
+      - ["<alloc::boxed::Box>::into_pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
       # Fmt
       - ["alloc::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
       # Layout
