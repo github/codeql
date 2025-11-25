@@ -5,7 +5,7 @@ private import Sections
 private import Functions
 private import codeql.util.Unit
 
-private class TElement = @instruction or @operand;
+private class TElement = @x86_instruction or @operand;
 
 class Element extends TElement {
   final string toString() {
