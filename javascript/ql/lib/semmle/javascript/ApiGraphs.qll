@@ -1532,6 +1532,7 @@ module API {
           succ = MkDef(rhs)
           or
           exists(DataFlow::ClassNode cls |
+            needsDefNode(cls) and
             cls.getAnInstanceReference().flowsTo(rhs) and
             succ = MkClassInstance(cls)
           )
