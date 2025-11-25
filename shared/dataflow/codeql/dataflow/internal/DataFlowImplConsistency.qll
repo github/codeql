@@ -74,6 +74,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
   ) {
     none()
   }
+
+  /** Holds if `(n1, n2)` should be excluded from the consistency test `localFlowIsLocal`. */
+  default predicate localFlowIsLocalExclude(DataFlowLang::Node n1, DataFlowLang::Node n2) { none() }
 }
 
 module MakeConsistency<
@@ -169,6 +172,7 @@ module MakeConsistency<
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
     simpleLocalFlowStep(n1, n2, _) and
     nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    not Input::localFlowIsLocalExclude(n1, n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
 
