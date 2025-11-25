@@ -25,19 +25,6 @@ async fn vulnerable_handler(path: web::Path<String>) -> impl Responder {
     Html::new(html) // $ Alert[rust/xss]=a
 }
 
-fn html_escape(s: &str) -> String {
-    s.chars()
-        .map(|c| match c {
-            '<' => "&lt;".to_string(),
-            '>' => "&gt;".to_string(),
-            '&' => "&amp;".to_string(),
-            '"' => "&quot;".to_string(),
-            '\'' => "&#x27;".to_string(),
-            _ => c.to_string(),
-        })
-        .collect()
-}
-
 #[get("/good/{a}")]
 // The "good" example from the qldoc
 async fn safe_handler_with_encoding(path: web::Path<String>) -> impl Responder {
