@@ -1,5 +1,5 @@
 /**
- * ExcludeZapEncoderSanitizer.ql
+ * LogSanitizer.ql
  *
  * Filter/suppress log-injection findings when the taint flow can be shown to
  * pass through a sanitizer (including zap custom encoders).
