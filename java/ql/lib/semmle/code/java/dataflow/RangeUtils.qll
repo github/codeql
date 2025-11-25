@@ -86,6 +86,8 @@ pragma[nomagic]
 private predicate constantIntegerExpr(Expr e, int val) {
   e.(CompileTimeConstantExpr).getIntValue() = val
   or
+  e.(LongLiteral).getValue().toInt() = val
+  or
   exists(SsaExplicitWrite v, Expr src |
     e = v.getARead() and
     src = v.getValue() and

@@ -60,6 +60,7 @@ extensions:
       - ["core::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
       - ["core::ptr::dangling_mut", "ReturnValue", "pointer-invalidate", "manual"]
       - ["core::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["core::ptr::null_mut", "ReturnValue", "pointer-invalidate", "manual"]
       - ["v8::primitives::null", "ReturnValue", "pointer-invalidate", "manual"]
   - addsTo:
       pack: codeql/rust-all

@@ -26,8 +26,10 @@ pub struct f64;
 
 struct Slice<TSlice>;
 struct Array<TArray, const N: usize>;
-struct Ref<TRef>; // todo: add mut variant
-struct Ptr<TPtr>; // todo: add mut variant
+struct Ref<TRef>;
+struct RefMut<TRefMut>;
+struct Ptr<TPtr>;
+struct PtrMut<TPtrMut>;
 
 // tuples
 struct Tuple0;

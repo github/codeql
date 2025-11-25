@@ -1,0 +1,6 @@
+| CookieWithoutSecure.go:14:2:14:22 | call to SetCookie | Cookie does not set Secure attribute to true. |
+| CookieWithoutSecure.go:23:2:23:22 | call to SetCookie | Cookie does not set Secure attribute to true. |
+| CookieWithoutSecure.go:50:2:50:22 | call to SetCookie | Cookie does not set Secure attribute to true. |
+| CookieWithoutSecure.go:60:2:60:22 | call to SetCookie | Cookie does not set Secure attribute to true. |
+| CookieWithoutSecure.go:90:2:90:22 | call to SetCookie | Cookie does not set Secure attribute to true. |
+| CookieWithoutSecure.go:102:4:102:71 | call to SetCookie | Cookie does not set Secure attribute to true. |
