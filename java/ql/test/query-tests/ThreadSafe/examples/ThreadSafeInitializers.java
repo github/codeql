@@ -26,7 +26,7 @@ public class ThreadSafeInitializers {
     }
 
     public void sync_map_put(Integer i, Integer v) {
-        sync_map.put(i,v); // $ SPURIOUS: Alert
+        sync_map.put(i,v);
     }
 
     public void sync_map_initialised_put(Integer i, Integer v) {
@@ -34,7 +34,7 @@ public class ThreadSafeInitializers {
     }
 
     public void cmap_put(String s1, String s2) {
-        cmap.put(s1, s2); // $ SPURIOUS: Alert
+        cmap.put(s1, s2);
     }
 
     public void cmap_initialised_put(String s1, String s2) {
@@ -46,7 +46,7 @@ public class ThreadSafeInitializers {
     }
 
     public void set_add(Integer i) {
-        set.add(i); // $ SPURIOUS: Alert
+        set.add(i);
     }
 
     public void set_initialised_add(Integer i) {
