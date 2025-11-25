@@ -1,8 +1,6 @@
 /**
- * LogSanitizer.qll
- *
- * Predicates to identify sanitizer functions and zap encoder-like types.
- * Template: adjust whitelist entries as needed.
+ * Provides a taint tracking configuration for zap encoders that are known to remove or escape
+ * newline characters, thus mitigating log injection (CWE-117).
  */
 
 import go
