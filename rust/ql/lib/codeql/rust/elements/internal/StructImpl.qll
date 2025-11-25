@@ -46,12 +46,11 @@ module Impl {
     pragma[nomagic]
     predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
 
-    /**
-     * Holds if this struct uses record fields.
-     *
-     * Empty structs are considered to use record fields.
-     */
+    /** Holds if this struct uses struct fields. */
     pragma[nomagic]
-    predicate isStruct() { not this.isTuple() }
+    predicate isStruct() { this.getFieldList() instanceof StructFieldList }
+
+    /** Holds if this struct does not have a field list. */
+    predicate isUnit() { not this.hasFieldList() }
   }
 }
