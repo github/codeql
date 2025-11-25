@@ -1,5 +1,5 @@
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/Microsoft.CSharp.dll:0:0:0:0 | Microsoft.CSharp, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
-| test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/Microsoft.VisualBasic.Core.dll:0:0:0:0 | Microsoft.VisualBasic.Core, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
+| test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/Microsoft.VisualBasic.Core.dll:0:0:0:0 | Microsoft.VisualBasic.Core, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/Microsoft.VisualBasic.dll:0:0:0:0 | Microsoft.VisualBasic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/Microsoft.Win32.Primitives.dll:0:0:0:0 | Microsoft.Win32.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/Microsoft.Win32.Registry.dll:0:0:0:0 | Microsoft.Win32.Registry, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
@@ -56,6 +56,7 @@
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.IO.Pipes.dll:0:0:0:0 | System.IO.Pipes, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.IO.UnmanagedMemoryStream.dll:0:0:0:0 | System.IO.UnmanagedMemoryStream, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.IO.dll:0:0:0:0 | System.IO, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
+| test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Linq.AsyncEnumerable.dll:0:0:0:0 | System.Linq.AsyncEnumerable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Linq.Expressions.dll:0:0:0:0 | System.Linq.Expressions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Linq.Parallel.dll:0:0:0:0 | System.Linq.Parallel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Linq.Queryable.dll:0:0:0:0 | System.Linq.Queryable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
@@ -72,6 +73,7 @@
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.Quic.dll:0:0:0:0 | System.Net.Quic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.Requests.dll:0:0:0:0 | System.Net.Requests, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.Security.dll:0:0:0:0 | System.Net.Security, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
+| test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.ServerSentEvents.dll:0:0:0:0 | System.Net.ServerSentEvents, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.ServicePoint.dll:0:0:0:0 | System.Net.ServicePoint, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.Sockets.dll:0:0:0:0 | System.Net.Sockets, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Net.WebClient.dll:0:0:0:0 | System.Net.WebClient, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 |
@@ -133,6 +135,7 @@
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Text.Encodings.Web.dll:0:0:0:0 | System.Text.Encodings.Web, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Text.Json.dll:0:0:0:0 | System.Text.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Text.RegularExpressions.dll:0:0:0:0 | System.Text.RegularExpressions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
+| test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Threading.AccessControl.dll:0:0:0:0 | System.Threading.AccessControl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Threading.Channels.dll:0:0:0:0 | System.Threading.Channels, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Threading.Overlapped.dll:0:0:0:0 | System.Threading.Overlapped, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
 | test-db/working/packages/microsoft.netcore.app.ref/10.0.0/ref/net10.0/System.Threading.Tasks.Dataflow.dll:0:0:0:0 | System.Threading.Tasks.Dataflow, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a |
