@@ -175,7 +175,7 @@ namespace Semmle.Extraction.CSharp
         internal static void expr_argument_name(this TextWriter trapFile, Expression expr, string name) =>
             trapFile.WriteTuple("expr_argument_name", expr, name);
 
-        internal static void expr_call(this TextWriter trapFile, Expression expr, Method target) =>
+        internal static void expr_call(this TextWriter trapFile, Expression expr, IMethodEntity target) =>
             trapFile.WriteTuple("expr_call", expr, target);
 
         internal static void expr_flowstate(this TextWriter trapFile, Expression expr, int flowState) =>
@@ -247,10 +247,10 @@ namespace Semmle.Extraction.CSharp
         internal static void localvars(this TextWriter trapFile, LocalVariable key, VariableKind kind, string name, int @var, Type type, Expression expr) =>
             trapFile.WriteTuple("localvars", key, (int)kind, name, @var, type, expr);
 
-        internal static void method_location(this TextWriter trapFile, Method method, Location location) =>
+        internal static void method_location(this TextWriter trapFile, IMethodEntity method, Location location) =>
             trapFile.WriteTuple("method_location", method, location);
 
-        internal static void methods(this TextWriter trapFile, Method method, string name, Type declType, Type retType, Method originalDefinition) =>
+        internal static void methods(this TextWriter trapFile, IMethodEntity method, string name, Type declType, Type retType, IMethodEntity originalDefinition) =>
             trapFile.WriteTuple("methods", method, name, declType, retType, originalDefinition);
 
         internal static void modifiers(this TextWriter trapFile, Label entity, string modifier) =>
