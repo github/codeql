@@ -634,19 +634,26 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canon
   canonical = true
 }
 
-/** Gets the `i`'th supported template parameter for `templateFunction`. */
-private Locatable getSupportedFunctionTemplateArgument(Function templateFunction, int i) {
+/**
+ * Gets the largest index of a template parameter of `templateFunction` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateFunctionParameterIndex(Function templateFunction) {
   result =
-    rank[i + 1](int j, TypeTemplateParameter ttp |
-      ttp = templateFunction.getTemplateArgument(j)
-    |
-      ttp order by j
-    )
+    max(int index | templateFunction.getTemplateArgument(index) instanceof TypeTemplateParameter)
 }
 
 /** Gets the number of supported template parameters for `templateFunction`. */
 private int getNumberOfSupportedFunctionTemplateArguments(Function templateFunction) {
   result = count(int i | exists(getSupportedFunctionTemplateArgument(templateFunction, i)) | i)
+}
+
+/** Gets the `i`'th supported template parameter for `templateFunction`. */
+private Locatable getSupportedFunctionTemplateArgument(Function templateFunction, int i) {
+  result = templateFunction.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateFunctionParameterIndex(templateFunction)
 }
 
 /**
@@ -669,14 +676,21 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
   )
 }
 
+/**
+ * Gets the largest index of a template parameter of `templateFunction` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateClassParameterIndex(Class templateClass) {
+  result =
+    max(int index | templateClass.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
 /** Gets the `i`'th supported template parameter for `templateClass`. */
 private Locatable getSupportedClassTemplateArgument(Class templateClass, int i) {
-  result =
-    rank[i + 1](int j, TypeTemplateParameter ttp |
-      ttp = templateClass.getTemplateArgument(j)
-    |
-      ttp order by j
-    )
+  result = templateClass.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateClassParameterIndex(templateClass)
 }
 
 /** Gets the number of supported template parameters for `templateClass`. */
