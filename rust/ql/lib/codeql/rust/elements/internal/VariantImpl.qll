@@ -36,6 +36,7 @@ module Impl {
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
 
+    /** Gets the number of fields of this variant. */
     int getNumberOfFields() {
       not this.hasFieldList() and
       result = 0
