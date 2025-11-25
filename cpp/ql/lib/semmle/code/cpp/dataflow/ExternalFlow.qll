@@ -677,7 +677,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
 }
 
 /**
- * Gets the largest index of a template parameter of `templateFunction` that
+ * Gets the largest index of a template parameter of `templateClass` that
  * is a type template parameter.
  */
 private int getLastTypeTemplateClassParameterIndex(Class templateClass) {
