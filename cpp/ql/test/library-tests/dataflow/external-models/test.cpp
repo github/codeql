@@ -113,7 +113,7 @@ T callWithNonTypeTemplate(const T&);
 void test_callWithNonTypeTemplate() {
 	int x = ymlSource();
 	int y1 = callWithNonTypeTemplate<10, int>(x);
-	ymlSink(y1); // $ ir
+	ymlSink(y1); // $ MISSING: ir
 
 	int y2 = callWithNonTypeTemplate<int, 10>(x);
 	ymlSink(y2); // $ ir

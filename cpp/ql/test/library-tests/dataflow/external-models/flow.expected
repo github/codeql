@@ -104,15 +104,9 @@ edges
 | test.cpp:101:26:101:26 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:103:63:103:63 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:104:62:104:62 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
-| test.cpp:108:3:108:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:108:3:108:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | provenance | MaD:32 |
 | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | provenance | MaD:32 |
 | test.cpp:114:10:114:18 | call to ymlSource | test.cpp:114:10:114:18 | call to ymlSource | provenance | Src:MaD:16  |
-| test.cpp:114:10:114:18 | call to ymlSource | test.cpp:115:44:115:44 | *x | provenance |  |
 | test.cpp:114:10:114:18 | call to ymlSource | test.cpp:118:44:118:44 | *x | provenance |  |
-| test.cpp:115:11:115:42 | call to callWithNonTypeTemplate | test.cpp:115:11:115:42 | call to callWithNonTypeTemplate | provenance |  |
-| test.cpp:115:11:115:42 | call to callWithNonTypeTemplate | test.cpp:116:10:116:11 | y1 | provenance | Sink:MaD:1 |
-| test.cpp:115:44:115:44 | *x | test.cpp:108:3:108:25 | [summary param] *0 in callWithNonTypeTemplate | provenance |  |
-| test.cpp:115:44:115:44 | *x | test.cpp:115:11:115:42 | call to callWithNonTypeTemplate | provenance | MaD:32 |
 | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | provenance |  |
 | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | test.cpp:119:10:119:11 | y2 | provenance | Sink:MaD:1 |
 | test.cpp:118:44:118:44 | *x | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | provenance |  |
@@ -328,16 +322,10 @@ nodes
 | test.cpp:101:26:101:26 | x | semmle.label | x |
 | test.cpp:103:63:103:63 | x | semmle.label | x |
 | test.cpp:104:62:104:62 | x | semmle.label | x |
-| test.cpp:108:3:108:25 | [summary param] *0 in callWithNonTypeTemplate | semmle.label | [summary param] *0 in callWithNonTypeTemplate |
-| test.cpp:108:3:108:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | semmle.label | [summary] to write: ReturnValue in callWithNonTypeTemplate |
 | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | semmle.label | [summary param] *0 in callWithNonTypeTemplate |
 | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | semmle.label | [summary] to write: ReturnValue in callWithNonTypeTemplate |
 | test.cpp:114:10:114:18 | call to ymlSource | semmle.label | call to ymlSource |
 | test.cpp:114:10:114:18 | call to ymlSource | semmle.label | call to ymlSource |
-| test.cpp:115:11:115:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
-| test.cpp:115:11:115:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
-| test.cpp:115:44:115:44 | *x | semmle.label | *x |
-| test.cpp:116:10:116:11 | y1 | semmle.label | y1 |
 | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
 | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
 | test.cpp:118:44:118:44 | *x | semmle.label | *x |
@@ -500,7 +488,6 @@ subpaths
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
-| test.cpp:115:44:115:44 | *x | test.cpp:108:3:108:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:108:3:108:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | test.cpp:115:11:115:42 | call to callWithNonTypeTemplate |
 | test.cpp:118:44:118:44 | *x | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA |
 | windows.cpp:537:40:537:41 | *& ... | windows.cpp:473:17:473:37 | [summary param] *1 in RtlCopyVolatileMemory | windows.cpp:473:17:473:37 | [summary param] *0 in RtlCopyVolatileMemory [Return] | windows.cpp:537:27:537:37 | RtlCopyVolatileMemory output argument |
