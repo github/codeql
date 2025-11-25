@@ -29,12 +29,11 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Pin
-      - ["core::pin::Pin", "Argument[0]", "ReturnValue", "value", "manual"]
-      - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
       - ["<core::pin::Pin>::new_unchecked", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
-      - ["<core::pin::Pin>::into_inner", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["<core::pin::Pin>::into_inner", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::into_inner_unchecked", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
-      - ["<core::pin::Pin>::set", "Argument[0]", "Argument[self]", "value", "manual"]
+      - ["<core::pin::Pin>::set", "Argument[0]", "Argument[self].Reference.Field[core::pin::Pin::pointer]", "value", "manual"]
       # Ptr
       - ["core::ptr::read", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["core::ptr::read_unaligned", "Argument[0].Reference", "ReturnValue", "value", "manual"]
