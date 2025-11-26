@@ -42,11 +42,11 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     tag = InitStackPtrTag() and
     opcode instanceof Opcode::Init and
-    v.asSome() = getTranslatedVariableReal(any(Raw::RspRegister r)) // TODO: This assumes rsp is present in the DB
+    v.asSome() = getStackPointer()
     or
     tag = InitFramePtrTag() and
     opcode instanceof Opcode::Init and
-    v.asSome() = getTranslatedVariableReal(any(Raw::RbpRegister r)) // TODO: This assumes rsp is present in the DB
+    v.asSome() = getFramePointer()
   }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {

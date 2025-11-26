@@ -525,8 +525,6 @@ class TranslatedX86Movdqa extends TranslatedCopy, TTranslatedX86Movdqa {
   TranslatedX86Movdqa() { this = TTranslatedX86Movdqa(instr) }
 }
 
-private Variable getEspVariable() { result = getTranslatedVariableReal(any(Raw::RspRegister r)) }
-
 class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
   override Raw::X86Push instr;
 
@@ -545,7 +543,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
     // esp = esp - x
     tag = PushSubTag() and
     opcode instanceof Opcode::Sub and
-    v.asSome() = getEspVariable()
+    v.asSome() = getStackPointer()
     or
     // store [esp], y
     tag = PushStoreTag() and
@@ -564,7 +562,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
     tag = PushSubTag() and
     (
       operandTag = LeftTag() and
-      result = getEspVariable()
+      result = getStackPointer()
       or
       operandTag = RightTag() and
       result = this.getInstruction(PushSubConstTag()).getResultVariable()
@@ -576,7 +574,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
       result = this.getTranslatedOperand().getResultVariable()
       or
       operandTag = StoreAddressTag() and
-      result = getEspVariable()
+      result = getStackPointer()
     )
   }
 
@@ -969,7 +967,7 @@ class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
     // esp = esp + x
     tag = PopAddTag() and
     opcode instanceof Opcode::Add and
-    v.asSome() = getEspVariable()
+    v.asSome() = getStackPointer()
   }
 
   override int getConstantValue(InstructionTag tag) {
@@ -982,12 +980,12 @@ class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = PopLoadTag() and
     operandTag = UnaryTag() and
-    result = getEspVariable()
+    result = getStackPointer()
     or
     tag = PopAddTag() and
     (
       operandTag = LeftTag() and
-      result = getEspVariable()
+      result = getStackPointer()
       or
       operandTag = RightTag() and
       result = this.getInstruction(PopAddConstTag()).getResultVariable()
