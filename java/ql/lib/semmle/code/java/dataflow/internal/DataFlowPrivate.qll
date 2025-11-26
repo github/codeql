@@ -17,15 +17,28 @@ private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
 import DataFlowNodes::Private
 
-private newtype TReturnKind = TNormalReturnKind()
+private newtype TReturnKind =
+  TNormalReturnKind() or
+  TExceptionReturnKind()
 
 /**
- * A return kind. A return kind describes how a value can be returned
- * from a callable. For Java, this is simply a method return.
+ * A return kind. A return kind describes how a value can be returned from a
+ * callable. For Java, this is either a normal method return or an exception
+ * being returned.
  */
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this return kind. */
-  string toString() { result = "return" }
+  string toString() { none() }
+}
+
+/** A return kind indicating normal method return. */
+class NormalReturnKind extends ReturnKind, TNormalReturnKind {
+  override string toString() { result = "return" }
+}
+
+/** A return kind indicating exceptional method return. */
+class ExceptionReturnKind extends ReturnKind, TExceptionReturnKind {
+  override string toString() { result = "exception return" }
 }
 
 /**
@@ -34,7 +47,7 @@ class ReturnKind extends TReturnKind {
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result.getCall() = call and
-  kind = TNormalReturnKind()
+  result.getKind() = kind
 }
 
 /**
@@ -170,6 +183,8 @@ private CaptureFlow::ClosureNode asClosureNode(Node n) {
     n.asExpr() = write.(VariableAssign).getSource()
     or
     n.asExpr() = write.(AssignOp)
+    or
+    n.(CatchParameterNode).getVariable() = write
   )
 }
 
@@ -201,6 +216,59 @@ predicate jumpStep(Node node1, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode())
+}
+
+module ExceptionFlow {
+  /**
+   * Holds if `try` has at least one catch clause and `body` is either the main
+   * body of the `try` or one of its resource declarations.
+   */
+  predicate tryCatch(TryStmt try, Stmt body) {
+    exists(try.getACatchClause()) and
+    (
+      body = try.getBlock() or
+      body = try.getAResourceDecl()
+    )
+  }
+
+  /**
+   * Holds if `s2` is the enclosing statement of `s1` and `s1` is not directly
+   * wrapped in a try-catch.
+   */
+  private predicate excStep(Stmt s1, Stmt s2) {
+    s1.getEnclosingStmt() = s2 and
+    not tryCatch(_, s1)
+  }
+
+  pragma[nomagic]
+  private DataFlowCallable excReturnGetCallable(ExceptionReturnNode n) {
+    result = nodeGetEnclosingCallable(n)
+  }
+
+  /** Holds if a thrown exception can flow locally from `node1` to `node2`. */
+  predicate localStep(Node node1, Node node2) {
+    node1.(ExceptionOutNode).getCall().(SummaryCall).getEnclosingCallable() =
+      excReturnGetCallable(node2)
+    or
+    exists(Stmt exc |
+      node1.asExpr() = exc.(ThrowStmt).getExpr() or
+      node1.(ExceptionOutNode).getCall().asCall().getEnclosingStmt() = exc or
+      node1.(UncaughtNode).getTry() = exc
+    |
+      exists(TryStmt try, Stmt body |
+        excStep+(exc, body) and
+        tryCatch(try, body) and
+        node2.(CatchTypeTestNode).getCatch() = try.getCatchClause(0)
+      )
+      or
+      exists(Callable callable |
+        excStep+(exc, callable.getBody()) and
+        excReturnGetCallable(node2).asCallable() = callable
+      )
+    )
+    or
+    node1.(CatchTypeTestNode).getSuccessor(_) = node2
+  }
 }
 
 /**
@@ -391,9 +459,9 @@ pragma[nomagic]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
 
 /** A node that performs a type cast. */
-class CastNode extends ExprNode {
+class CastNode extends Node {
   CastNode() {
-    this.getExpr() instanceof CastingExpr
+    this.asExpr() instanceof CastingExpr
     or
     exists(SsaExplicitWrite upd |
       upd.getDefiningExpr().(VariableAssign).getSource() =
@@ -403,6 +471,8 @@ class CastNode extends ExprNode {
         ] and
       this.asExpr() = ssaGetAFirstUse(upd)
     )
+    or
+    this instanceof CatchParameterNode
   }
 }
 

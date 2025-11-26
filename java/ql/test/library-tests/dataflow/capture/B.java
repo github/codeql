@@ -279,4 +279,15 @@ public class B {
     sink(new MyLocal4().get()); // $ hasValueFlow=init
     sink(new MyLocal4(1).get()); // $ hasValueFlow=init
   }
+
+  void testCapturedCatch() {
+    try {
+      throw new RuntimeException(source("rte"));
+    } catch (RuntimeException e) {
+      Runnable r = () -> {
+        sink(e.getMessage()); // $ hasValueFlow=rte
+      };
+      r.run();
+    }
+  }
 }
