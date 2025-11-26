@@ -5,6 +5,7 @@
 
 private import go
 private import DataFlowImplSpecific as Impl
+private import DataFlowUtil
 private import TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 private import semmle.go.dataflow.internal.DataFlowNodes
@@ -17,7 +18,7 @@ private module Input implements InputSig<Location, Impl::GoDataFlow> {
   predicate uniqueNodeLocationExclude(DataFlow::Node n) { missingLocationExclude(n) }
 
   predicate localFlowIsLocalExclude(DataFlow::Node n1, DataFlow::Node n2) {
-    n1 instanceof DataFlow::FunctionNode and exists(n2)
+    n1 instanceof DataFlow::FunctionNode and simpleLocalFlowStep(n1, n2, _)
   }
 
   predicate argHasPostUpdateExclude(DataFlow::ArgumentNode n) {
