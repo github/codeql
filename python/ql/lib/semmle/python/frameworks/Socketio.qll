@@ -88,7 +88,11 @@ module SocketIO {
     }
 
     /** Gets a reference to an instance of a subclass of `socketio.Namespace` or `socketio.AsyncNamespace`. */
-    API::Node instance() { result = subclassRef().getAnInstance() }
+    API::Node instance() {
+      result = subclassRef().getAnInstance()
+      or
+      result = subclassRef().getAMember().getSelfParameter()
+    }
 
     /** A socketio Namespace class. */
     class NamespaceClass extends Class {
