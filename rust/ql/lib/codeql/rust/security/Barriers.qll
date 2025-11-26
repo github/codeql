@@ -11,7 +11,7 @@ private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
-/** A node whose type is a numeric. */
+/** A node whose type is a numeric type. */
 class NumericTypeBarrier extends DataFlow::Node {
   NumericTypeBarrier() {
     TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof
