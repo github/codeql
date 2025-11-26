@@ -34,6 +34,13 @@ class IntegralTypeBarrier extends DataFlow::Node {
   }
 }
 
+/** A node whose type is a fieldless enum. */
+class FieldlessEnumTypeBarrier extends DataFlow::Node {
+  FieldlessEnumTypeBarrier() {
+    TypeInference::inferType(this.asExpr()).(EnumType).getEnum().isFieldless()
+  }
+}
+
 /**
  * Holds if guard expression `g` having result `branch` indicates that the
  * sub-expression `e` is not null. For example when `ptr.is_null()` is
