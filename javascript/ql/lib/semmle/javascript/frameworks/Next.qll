@@ -38,20 +38,24 @@ module NextJS {
     result = appFolder().getAFolder()
   }
 
+  private Folder pagesFolder() {
+    result = pagesRoot()
+    or
+    result = pagesFolder().getAFolder()
+  }
+
   /**
    * Gets a "pages" folder in a `Next.js` application.
    * JavaScript files inside these folders are mapped to routes.
    */
-  Folder getAPagesFolder() {
-    result = pagesRoot()
-    or
-    result = getAPagesFolder().getAFolder()
-  }
+  deprecated predicate getAPagesFolder = pagesFolder/0;
 
   /**
    * Gets a module corrosponding to a `Next.js` page.
    */
-  Module getAPagesModule() { result.getFile().getParentContainer() = getAPagesFolder() }
+  Module getAPagesModule() {
+    result.getFile() = [pagesFolder().getAFile(), appFolder().getJavaScriptFile("page")]
+  }
 
   /**
    * Gets a module inside a "pages" folder where `fallback` from `getStaticPaths` is not set to false.

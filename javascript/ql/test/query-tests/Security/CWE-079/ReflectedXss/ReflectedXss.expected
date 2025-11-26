@@ -35,6 +35,8 @@
 | app/api/routeNextRequest.ts:15:20:15:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:15:20:15:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:27:20:27:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:31:27:31:30 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/blah/page.jsx:10:13:10:19 | req.url | app/blah/page.jsx:10:13:10:19 | req.url | app/blah/page.jsx:10:13:10:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/blah/page.jsx:10:13:10:19 | req.url | user-provided value |
+| app/blah/page.jsx:17:13:17:19 | req.url | app/blah/page.jsx:17:13:17:19 | req.url | app/blah/page.jsx:17:13:17:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/blah/page.jsx:17:13:17:19 | req.url | user-provided value |
 | app/blah/route.ts:3:25:3:27 | url | app/blah/route.ts:2:17:2:23 | req.url | app/blah/route.ts:3:25:3:27 | url | Cross-site scripting vulnerability due to a $@. | app/blah/route.ts:2:17:2:23 | req.url | user-provided value |
 | app/pages/Next2.jsx:8:13:8:19 | req.url | app/pages/Next2.jsx:8:13:8:19 | req.url | app/pages/Next2.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/pages/Next2.jsx:8:13:8:19 | req.url | user-provided value |
 | app/pages/Next2.jsx:15:13:15:19 | req.url | app/pages/Next2.jsx:15:13:15:19 | req.url | app/pages/Next2.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/pages/Next2.jsx:15:13:15:19 | req.url | user-provided value |
@@ -370,6 +372,8 @@ nodes
 | app/api/routeNextRequest.ts:15:20:15:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | semmle.label | body |
+| app/blah/page.jsx:10:13:10:19 | req.url | semmle.label | req.url |
+| app/blah/page.jsx:17:13:17:19 | req.url | semmle.label | req.url |
 | app/blah/route.ts:2:11:2:13 | url | semmle.label | url |
 | app/blah/route.ts:2:17:2:23 | req.url | semmle.label | req.url |
 | app/blah/route.ts:3:25:3:27 | url | semmle.label | url |
