@@ -4,14 +4,3 @@ reverseRead
 | UncontrolledAllocationSizeGood.go:32:12:32:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | UncontrolledAllocationSizeGood.go:52:12:52:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | UncontrolledAllocationSizeGood.go:73:12:73:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| UncontrolledAllocationSizeBad.go:21:18:21:21 | sink | Node steps to itself |
-| UncontrolledAllocationSizeBad.go:22:3:22:8 | result | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:23:18:23:21 | sink | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:24:3:24:8 | result | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:42:19:42:22 | sink | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:43:4:43:9 | result | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:63:19:63:22 | sink | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:64:4:64:9 | result | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:88:18:88:21 | sink | Node steps to itself |
-| UncontrolledAllocationSizeGood.go:89:3:89:8 | result | Node steps to itself |

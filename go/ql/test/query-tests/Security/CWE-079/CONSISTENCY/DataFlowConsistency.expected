@@ -19,8 +19,3 @@ reverseRead
 | tst.go:48:14:48:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | tst.go:66:15:66:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | websocketXss.go:26:9:26:9 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| StoredXss.go:13:18:13:18 | w | Node steps to itself |
-| StoredXssGood.go:17:3:17:10 | template | Node steps to itself |
-| stored.go:30:19:30:19 | w | Node steps to itself |
-| stored.go:51:20:51:20 | w | Node steps to itself |

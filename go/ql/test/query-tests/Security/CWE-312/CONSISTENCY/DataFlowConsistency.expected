@@ -29,6 +29,3 @@ reverseRead
 | server1.go:14:11:14:14 | vals | Origin of readStep is missing a PostUpdateNode. |
 | server1.go:17:41:17:41 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | server1.go:21:46:21:46 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| klog.go:24:20:24:23 | name | Node steps to itself |
-| server1.go:29:3:29:3 | s | Node steps to itself |

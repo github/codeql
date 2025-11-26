@@ -169,5 +169,3 @@ reverseRead
 | examples/booking/app/models/booking.go:82:14:82:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/models/booking.go:83:17:83:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | examples/booking/app/models/booking.go:84:18:84:18 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| examples/booking/app/controllers/app.go:95:10:95:10 | c | Node steps to itself |
