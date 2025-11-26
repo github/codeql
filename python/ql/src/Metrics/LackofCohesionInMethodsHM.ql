@@ -9,6 +9,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassMetrics cls
 select cls, cls.getLackOfCohesionHM() as n order by n desc

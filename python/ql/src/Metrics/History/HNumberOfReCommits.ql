@@ -10,6 +10,7 @@
 
 import python
 import external.VCS
+private import LegacyPointsTo
 
 predicate inRange(Commit first, Commit second) {
   first.getAnAffectedFile() = second.getAnAffectedFile() and
@@ -29,6 +30,6 @@ int recommitsForFile(File f) {
     )
 }
 
-from Module m
-where exists(m.getMetrics().getNumberOfLinesOfCode())
+from ModuleMetrics m
+where exists(m.getNumberOfLinesOfCode())
 select m, recommitsForFile(m.getFile())
