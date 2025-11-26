@@ -2,14 +2,3 @@ reverseRead
 | test.go:90:10:90:15 | taint8 | Origin of readStep is missing a PostUpdateNode. |
 | test.go:104:12:104:18 | taint10 | Origin of readStep is missing a PostUpdateNode. |
 | test.go:150:10:150:14 | slice | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| test.go:92:3:92:3 | b | Node steps to itself |
-| test.go:95:3:95:3 | b | Node steps to itself |
-| test.go:106:3:106:3 | b | Node steps to itself |
-| test.go:109:3:109:3 | b | Node steps to itself |
-| test.go:119:3:119:3 | b | Node steps to itself |
-| test.go:122:3:122:3 | b | Node steps to itself |
-| test.go:125:3:125:3 | b | Node steps to itself |
-| test.go:128:3:128:3 | b | Node steps to itself |
-| test.go:138:3:138:3 | b | Node steps to itself |
-| test.go:141:3:141:3 | b | Node steps to itself |

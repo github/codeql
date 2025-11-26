@@ -1,3 +1,0 @@
-identityLocalStep
-| main.go:35:6:35:9 | cond | Node steps to itself |
-| main.go:44:6:44:9 | cond | Node steps to itself |

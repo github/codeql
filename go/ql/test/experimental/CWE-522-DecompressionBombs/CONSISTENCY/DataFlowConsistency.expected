@@ -34,25 +34,3 @@ reverseRead
 | test.go:92:19:92:25 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | test.go:93:5:93:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | test.go:94:9:94:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| test.go:114:37:114:38 | rc | Node steps to itself |
-| test.go:198:27:198:29 | out | Node steps to itself |
-| test.go:224:27:224:29 | out | Node steps to itself |
-| test.go:249:27:249:29 | out | Node steps to itself |
-| test.go:274:27:274:29 | out | Node steps to itself |
-| test.go:299:27:299:29 | out | Node steps to itself |
-| test.go:324:26:324:28 | out | Node steps to itself |
-| test.go:349:26:349:28 | out | Node steps to itself |
-| test.go:375:28:375:30 | out | Node steps to itself |
-| test.go:403:28:403:30 | out | Node steps to itself |
-| test.go:431:24:431:26 | out | Node steps to itself |
-| test.go:463:26:463:28 | out | Node steps to itself |
-| test.go:490:26:490:28 | out | Node steps to itself |
-| test.go:517:27:517:29 | out | Node steps to itself |
-| test.go:546:26:546:28 | out | Node steps to itself |
-| test.go:571:26:571:28 | out | Node steps to itself |
-| test.go:601:24:601:26 | out | Node steps to itself |
-| test.go:614:15:614:21 | tarRead | Node steps to itself |
-| test.go:622:3:622:7 | files | Node steps to itself |
-| test.go:637:10:637:16 | tarRead | Node steps to itself |
-| test.go:647:10:647:16 | tarRead | Node steps to itself |
