@@ -19,7 +19,7 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
         any(Callable c |
           c.(Constructor).hasInitializer()
           or
-          InitializerSplitting::constructorInitializes(c, _)
+          InitializerSplitting::obinitInitializes(c, _)
           or
           c.hasBody()
         )
@@ -146,13 +146,15 @@ private predicate expr_parent_top_level_adjusted2(
 predicate scopeFirst(CfgScope scope, AstNode first) {
   scope =
     any(Callable c |
-      if exists(c.(Constructor).getInitializer())
-      then first(c.(Constructor).getInitializer(), first)
+      if exists(c.(Constructor).getObjectInitializerCall())
+      then first(c.(Constructor).getObjectInitializerCall(), first)
       else
-        if InitializerSplitting::constructorInitializes(c, _)
-        then first(InitializerSplitting::constructorInitializeOrder(c, _, 0), first)
+        if exists(c.(Constructor).getInitializer())
+        then first(c.(Constructor).getInitializer(), first)
         else first(c.getBody(), first)
     )
+  or
+  first(InitializerSplitting::initializedInstanceMemberOrder(scope, _, 0), first)
   or
   expr_parent_top_level_adjusted2(any(Expr e | first(e, first)), _, scope) and
   not scope instanceof Callable
@@ -165,12 +167,31 @@ predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
       last(callable.getBody(), last, c) and
       not c instanceof GotoCompletion
       or
-      last(InitializerSplitting::lastConstructorInitializer(scope, _), last, c) and
+      last(callable.(Constructor).getInitializer(), last, c) and
       not callable.hasBody()
     )
   or
+  last(InitializerSplitting::lastInitializer(scope, _), last, c)
+  or
   expr_parent_top_level_adjusted2(any(Expr e | last(e, last, c)), _, scope) and
   not scope instanceof Callable
+}
+
+private class ObjectInitTree extends ControlFlowTree instanceof ObjectInitMethod {
+  final override predicate propagatesAbnormal(AstNode child) { none() }
+
+  final override predicate first(AstNode first) { none() }
+
+  final override predicate last(AstNode last, Completion c) { none() }
+
+  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    exists(CompilationExt comp, int i |
+      // Flow from one member initializer to the next
+      last(InitializerSplitting::initializedInstanceMemberOrder(this, comp, i), pred, c) and
+      c instanceof NormalCompletion and
+      first(InitializerSplitting::initializedInstanceMemberOrder(this, comp, i + 1), succ)
+    )
+  }
 }
 
 private class ConstructorTree extends ControlFlowTree instanceof Constructor {
@@ -187,18 +208,23 @@ private class ConstructorTree extends ControlFlowTree instanceof Constructor {
     comp = getCompilation(result.getFile())
   }
 
+  pragma[noinline]
+  private MethodCall getObjectInitializerCall(CompilationExt comp) {
+    result = super.getObjectInitializerCall() and
+    comp = getCompilation(result.getFile())
+  }
+
+  pragma[noinline]
+  private ConstructorInitializer getInitializer(CompilationExt comp) {
+    result = super.getInitializer() and
+    comp = getCompilation(result.getFile())
+  }
+
   final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    exists(CompilationExt comp, int i, AssignExpr ae |
-      ae = InitializerSplitting::constructorInitializeOrder(this, comp, i) and
-      last(ae, pred, c) and
-      c instanceof NormalCompletion
-    |
-      // Flow from one member initializer to the next
-      first(InitializerSplitting::constructorInitializeOrder(this, comp, i + 1), succ)
-      or
-      // Flow from last member initializer to constructor body
-      ae = InitializerSplitting::lastConstructorInitializer(this, comp) and
-      first(this.getBody(comp), succ)
+    exists(CompilationExt comp |
+      last(this.getObjectInitializerCall(comp), pred, c) and
+      c instanceof NormalCompletion and
+      first(this.getInitializer(comp), succ)
     )
   }
 }
@@ -837,13 +863,7 @@ module Expressions {
         last(this, pred, c) and
         con = super.getConstructor() and
         comp = getCompilation(this.getFile()) and
-        c instanceof NormalCompletion
-      |
-        // Flow from constructor initializer to first member initializer
-        first(InitializerSplitting::constructorInitializeOrder(con, comp, 0), succ)
-        or
-        // Flow from constructor initializer to first element of constructor body
-        not exists(InitializerSplitting::constructorInitializeOrder(con, comp, _)) and
+        c instanceof NormalCompletion and
         first(con.getBody(comp), succ)
       )
     }
