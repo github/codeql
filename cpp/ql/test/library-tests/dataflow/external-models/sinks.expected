@@ -13,3 +13,5 @@
 | test.cpp:75:11:75:11 | y | test-sink |
 | test.cpp:83:11:83:11 | y | test-sink |
 | test.cpp:89:11:89:11 | y | test-sink |
+| test.cpp:116:10:116:11 | y1 | test-sink |
+| test.cpp:119:10:119:11 | y2 | test-sink |
