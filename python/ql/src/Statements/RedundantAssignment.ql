@@ -36,7 +36,7 @@ predicate same_value(Expr left, Expr right) {
 }
 
 predicate maybe_defined_in_outer_scope(Name n) {
-  exists(SsaVariable v | v.getAUse().getNode() = n | v.maybeUndefined())
+  exists(SsaVariableWithPointsTo v | v.getAUse().getNode() = n | v.maybeUndefined())
 }
 
 /*
