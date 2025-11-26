@@ -179,7 +179,38 @@ private class MethodUse extends Use instanceof NameRef {
   override string getUseType() { result = "method" }
 }
 
+// We don't have entities for the operator symbols, so we approximate a location.
+// The location spans are chosen so that they align with rust-analyzer's jump-to-def
+// behavior in VS Code, which means using weird locations where the end column is
+// before the start column in the case of unary prefix operations.
+private predicate operatorHasLocationInfo(
+  Operation o, string filepath, int startline, int startcolumn, int endline, int endcolumn
+) {
+  o =
+    // `-x`; placing the cursor before `-` jumps to `neg`, placing it after jumps to `x`
+    any(PrefixExpr pe |
+      pe.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
+      endline = startline and
+      endcolumn = startcolumn - 1
+    )
+  or
+  o =
+    // `x + y`: placing the cursor before or after `+` jumps to `add`
+    // `x+ y`: placing the cursor before `+` jumps to `x`, after `+` jumps to `add`
+    any(BinaryExpr be |
+      be.getLhs().getLocation().hasLocationInfo(filepath, _, _, startline, startcolumn - 2) and
+      be.getRhs().getLocation().hasLocationInfo(filepath, endline, endcolumn + 2, _, _) and
+      (
+        startline < endline
+        or
+        endcolumn = startcolumn
+      )
+    )
+}
+
 private class OperationUse extends Use instanceof Operation {
+  OperationUse() { operatorHasLocationInfo(this, _, _, _, _, _) }
+
   override Definition getDefinition() { result.asItemNode() = this.(Call).getStaticTarget() }
 
   override string getUseType() { result = "method" }
@@ -187,18 +218,7 @@ private class OperationUse extends Use instanceof Operation {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    // We don't have entities for the operator symbols, so approximate a location
-    this =
-      any(PrefixExpr pe |
-        pe.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _) and
-        pe.getExpr().getLocation().hasLocationInfo(_, endline, endcolumn + 2, _, _)
-      )
-    or
-    this =
-      any(BinaryExpr be |
-        be.getLhs().getLocation().hasLocationInfo(filepath, _, _, startline, startcolumn - 2) and
-        be.getRhs().getLocation().hasLocationInfo(filepath, endline, endcolumn + 2, _, _)
-      )
+    operatorHasLocationInfo(this, filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -207,10 +227,13 @@ private class IndexExprUse extends Use instanceof IndexExpr {
 
   override string getUseType() { result = "method" }
 
+  // We don't have entities for the bracket symbols, so approximate a location
+  // The location spans are chosen so that they align with rust-analyzer's jump-to-def
+  // behavior in VS Code.
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    // We don't have entities for the brackets, so approximate a location
+    // `x[y]`: placing the cursor after `]` jumps to `index`
     super.getIndex().getLocation().hasLocationInfo(filepath, _, _, startline, startcolumn - 2) and
     this.getLocation().hasLocationInfo(_, _, _, endline, endcolumn)
   }

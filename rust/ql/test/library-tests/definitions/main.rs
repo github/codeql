@@ -66,5 +66,14 @@ fn main() {
     M1::S2::<S>::new(S);
     -S;
     S + S;
+    #[rustfmt::skip]
+    let x = S+S;
+    #[rustfmt::skip]
+    let x = S
+    +S;
+    #[rustfmt::skip]
+    let x = S
+    +
+    S;
     S[0];
 }

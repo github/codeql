@@ -73,5 +73,13 @@
 | main.rs:68:5:68:5 | S | main.rs:3:1:4:9 | struct S | path |
 | main.rs:68:7:68:7 | ... + ... | main.rs:19:5:21:5 | fn add | method |
 | main.rs:68:9:68:9 | S | main.rs:3:1:4:9 | struct S | path |
-| main.rs:69:5:69:5 | S | main.rs:3:1:4:9 | struct S | path |
-| main.rs:69:9:69:8 | S[0] | main.rs:27:5:29:5 | fn index | method |
+| main.rs:70:13:70:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:70:15:70:15 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:72:13:72:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:72:15:73:4 | ... + ... | main.rs:19:5:21:5 | fn add | method |
+| main.rs:73:6:73:6 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:75:13:75:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:75:15:77:3 | ... + ... | main.rs:19:5:21:5 | fn add | method |
+| main.rs:77:5:77:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:78:5:78:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:78:9:78:8 | S[0] | main.rs:27:5:29:5 | fn index | method |
