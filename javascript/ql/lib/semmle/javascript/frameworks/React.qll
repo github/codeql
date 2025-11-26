@@ -613,6 +613,25 @@ private class UseStateStep extends PreCallGraphStep {
 }
 
 /**
+ * Step through a `useRef` call.
+ *
+ * It returns an object with a single property (`current`) initialized to the initial value.
+ *
+ * For example:
+ * ```js
+ * const inputRef1 = useRef(initialValue);
+ * ```
+ */
+private class UseRefStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useRef") |
+      pred = call.getArgument(0) and // initial state
+      succ = call.getAPropertyRead("current")
+    )
+  }
+}
+
+/**
  * A step through a React context object.
  *
  * For example:
@@ -782,6 +801,17 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
       dependedOnByReactRouterClient(component.getTopLevel()) and
       this = component.getAPropRead("location")
     )
+  }
+}
+
+private class UseRefDomValueSource extends DOM::DomValueSource::Range {
+  UseRefDomValueSource() {
+    this =
+      any(JsxAttribute attrib | attrib.getName() = "ref")
+          .getValue()
+          .flow()
+          .getALocalSource()
+          .getAPropertyRead("current")
   }
 }
 
