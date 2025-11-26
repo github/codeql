@@ -310,7 +310,8 @@ module NextJS {
         )
       |
         this =
-          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue()
+          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware", "proxy"])
+              .getAFunctionValue()
       )
     }
 
