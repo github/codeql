@@ -13,18 +13,9 @@ module NextJS {
    */
   PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
 
-  bindingset[base, name]
-  pragma[inline_late]
-  private Folder getOptionalFolder(Folder base, string name) {
-    result = base.getFolder(name)
-    or
-    not exists(base.getFolder(name)) and
-    result = base
-  }
-
   private Folder packageRoot() { result = getANextPackage().getFile().getParentContainer() }
 
-  private Folder srcRoot() { result = getOptionalFolder(packageRoot(), "src") }
+  private Folder srcRoot() { result = [packageRoot(), packageRoot().getFolder("src")] }
 
   private Folder appRoot() { result = srcRoot().getFolder("app") }
 
