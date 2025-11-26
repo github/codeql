@@ -1,5 +1,5 @@
 /**
- * @name Tests call graph.
+ * @name Tests call graph
  */
 
 import csharp

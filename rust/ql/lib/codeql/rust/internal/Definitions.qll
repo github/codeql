@@ -37,6 +37,9 @@ private module Cached {
     TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() } or
     TItemNode(ItemNode i)
 
+  pragma[nomagic]
+  private predicate isMacroCallLocation(Location loc) { loc = any(MacroCall m).getLocation() }
+
   /**
    * Gets an element, of kind `kind`, that element `use` uses, if any.
    */
@@ -44,7 +47,7 @@ private module Cached {
   Definition definitionOf(Use use, string kind) {
     result = use.getDefinition() and
     kind = use.getUseType() and
-    not result.getLocation() = any(MacroCall m).getLocation()
+    not isMacroCallLocation(result.getLocation())
   }
 }
 

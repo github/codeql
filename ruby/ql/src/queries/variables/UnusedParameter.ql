@@ -1,5 +1,5 @@
 /**
- * @name Unused parameter.
+ * @name Unused parameter
  * @description A parameter that is not used later on, or whose value is always overwritten,
  *              can be removed.
  * @kind problem

@@ -30,13 +30,14 @@ models
 | 29 | Summary: ; ; false; RtlMoveMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
 | 30 | Summary: ; ; false; RtlMoveVolatileMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
 | 31 | Summary: ; ; false; callWithArgument; ; ; Argument[1]; Argument[0].Parameter[0]; value; manual |
-| 32 | Summary: ; ; false; pthread_create; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
-| 33 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
-| 34 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
-| 35 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 36 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 32 | Summary: ; ; false; callWithNonTypeTemplate<T>; (const T &); ; Argument[*0]; ReturnValue; value; manual |
+| 33 | Summary: ; ; false; pthread_create; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
+| 34 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
+| 35 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
+| 36 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
+| 37 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
-| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:36 |
+| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:37 |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:17  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:17 Sink:MaD:2 |
 | asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
@@ -45,10 +46,10 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:2 |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:36 |
-| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:34 |
-| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:33 |
-| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:35 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:37 |
+| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:35 |
+| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:34 |
+| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:36 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:16  |
@@ -60,15 +61,15 @@ edges
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual | provenance |  |
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:1 |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | provenance |  |
-| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:34 |
+| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:35 |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance |  |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:1 |
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | provenance |  |
-| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:33 |
+| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:34 |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance |  |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:1 |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | provenance |  |
-| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:35 |
+| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:36 |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:1 |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | provenance |  |
@@ -76,7 +77,7 @@ edges
 | test.cpp:46:30:46:32 | *arg [x] | test.cpp:47:12:47:19 | *arg [x] | provenance |  |
 | test.cpp:47:12:47:19 | *arg [x] | test.cpp:48:13:48:13 | *s [x] | provenance |  |
 | test.cpp:48:13:48:13 | *s [x] | test.cpp:48:16:48:16 | x | provenance | Sink:MaD:1 |
-| test.cpp:52:5:52:18 | [summary param] *3 in pthread_create [x] | test.cpp:52:5:52:18 | [summary] to write: Argument[2].Parameter[*0] in pthread_create [x] | provenance | MaD:32 |
+| test.cpp:52:5:52:18 | [summary param] *3 in pthread_create [x] | test.cpp:52:5:52:18 | [summary] to write: Argument[2].Parameter[*0] in pthread_create [x] | provenance | MaD:33 |
 | test.cpp:52:5:52:18 | [summary] to write: Argument[2].Parameter[*0] in pthread_create [x] | test.cpp:46:30:46:32 | *arg [x] | provenance |  |
 | test.cpp:56:2:56:2 | *s [post update] [x] | test.cpp:59:55:59:64 | *& ... [x] | provenance |  |
 | test.cpp:56:2:56:18 | ... = ... | test.cpp:56:2:56:2 | *s [post update] [x] | provenance |  |
@@ -103,6 +104,13 @@ edges
 | test.cpp:101:26:101:26 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:103:63:103:63 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:104:62:104:62 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
+| test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | provenance | MaD:32 |
+| test.cpp:114:10:114:18 | call to ymlSource | test.cpp:114:10:114:18 | call to ymlSource | provenance | Src:MaD:16  |
+| test.cpp:114:10:114:18 | call to ymlSource | test.cpp:118:44:118:44 | *x | provenance |  |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | provenance |  |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | test.cpp:119:10:119:11 | y2 | provenance | Sink:MaD:1 |
+| test.cpp:118:44:118:44 | *x | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | provenance |  |
+| test.cpp:118:44:118:44 | *x | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | provenance | MaD:32 |
 | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:18 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:3  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
@@ -314,6 +322,14 @@ nodes
 | test.cpp:101:26:101:26 | x | semmle.label | x |
 | test.cpp:103:63:103:63 | x | semmle.label | x |
 | test.cpp:104:62:104:62 | x | semmle.label | x |
+| test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | semmle.label | [summary param] *0 in callWithNonTypeTemplate |
+| test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | semmle.label | [summary] to write: ReturnValue in callWithNonTypeTemplate |
+| test.cpp:114:10:114:18 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:114:10:114:18 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
+| test.cpp:118:44:118:44 | *x | semmle.label | *x |
+| test.cpp:119:10:119:11 | y2 | semmle.label | y2 |
 | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | semmle.label | [summary param] *0 in CommandLineToArgvA |
 | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | semmle.label | [summary] to write: ReturnValue[**] in CommandLineToArgvA |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
@@ -472,6 +488,7 @@ subpaths
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
+| test.cpp:118:44:118:44 | *x | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA |
 | windows.cpp:537:40:537:41 | *& ... | windows.cpp:473:17:473:37 | [summary param] *1 in RtlCopyVolatileMemory | windows.cpp:473:17:473:37 | [summary param] *0 in RtlCopyVolatileMemory [Return] | windows.cpp:537:27:537:37 | RtlCopyVolatileMemory output argument |
 | windows.cpp:542:38:542:39 | *& ... | windows.cpp:479:17:479:35 | [summary param] *1 in RtlCopyDeviceMemory | windows.cpp:479:17:479:35 | [summary param] *0 in RtlCopyDeviceMemory [Return] | windows.cpp:542:25:542:35 | RtlCopyDeviceMemory output argument |

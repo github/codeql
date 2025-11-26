@@ -142,6 +142,7 @@ postWithInFlow
 | simple.cpp:92:7:92:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | simple.cpp:118:7:118:7 | i [post update] | PostUpdateNode should not be the target of local flow. |
 | simple.cpp:124:5:124:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| simple.cpp:167:9:167:9 | x [post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

@@ -1,5 +1,5 @@
 /**
- * @name Dangerous use of exception blocks.
+ * @name Dangerous use of exception blocks
  * @description When clearing the data in the catch block, you must be sure that the memory was allocated before the exception.
  * @kind problem
  * @id cpp/dangerous-use-of-exception-blocks
