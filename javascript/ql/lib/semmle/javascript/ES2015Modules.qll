@@ -782,7 +782,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   }
 
   /**
-   * Holds if this re-export destination ultimately re-exports `v` (from another module)
+   * Holds if this re-export declaration ultimately re-exports `v` (from another module)
    * under the given `name`.
    */
   overlay[global]
