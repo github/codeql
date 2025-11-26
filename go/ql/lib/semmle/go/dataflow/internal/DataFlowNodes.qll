@@ -838,7 +838,11 @@ module Public {
       exists(IR::MethodReadInstruction mri |
         ce.getTarget() instanceof Method and
         mri = IR::evalExprInstruction(ce.getCalleeExpr()) and
-        insn = mri.getReceiver()
+        // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
+        // then mri.getReceiver() will give us the implicit field read a.b.c
+        // and we want to have post-update nodes for a, the implicit field
+        // read a.b and the implicit field read a.b.c.
+        insn = IR::lookThroughImplicitFieldRead*(mri.getReceiver())
       )
     ) and
     mutableType(insn.getResultType())
