@@ -1,6 +1,8 @@
 /**
  * Provides classes representing basic blocks.
  */
+overlay[local?]
+module;
 
 import csharp
 private import ControlFlow

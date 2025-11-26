@@ -2,6 +2,8 @@
  * Provides `Callable` classes, which are things that can be called
  * such as methods and operators.
  */
+overlay[local?]
+module;
 
 import Member
 import Stmt

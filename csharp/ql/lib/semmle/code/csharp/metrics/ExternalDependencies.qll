@@ -5,6 +5,8 @@
  * with the assemblies it uses. This creates a metric showing how much each
  * source file uses external assemblies.
  */
+overlay[local?]
+module;
 
 import csharp
 

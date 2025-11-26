@@ -1,4 +1,6 @@
 /** Provides definitions and flow steps related to Razor pages. */
+overlay[local?]
+module;
 
 private import csharp
 private import codeql.util.Unit

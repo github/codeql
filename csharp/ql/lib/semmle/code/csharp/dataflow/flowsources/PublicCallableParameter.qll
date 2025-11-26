@@ -1,6 +1,8 @@
 /**
  * Provides classes representing data flow sources for parameters of public callables.
  */
+overlay[local?]
+module;
 
 import csharp
 

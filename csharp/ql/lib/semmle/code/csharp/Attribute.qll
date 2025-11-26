@@ -1,6 +1,8 @@
 /**
  * Provides the `Attribute` class.
  */
+overlay[local?]
+module;
 
 import Type
 private import semmle.code.csharp.ExprOrStmtParent

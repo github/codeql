@@ -6,6 +6,8 @@
  * Do not use the predicates in this library directly; use the methods
  * of the class `Overridable` instead.
  */
+overlay[local?]
+module;
 
 import csharp
 private import Conversion

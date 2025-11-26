@@ -1,6 +1,8 @@
 /**
  * Provides classes representing data flow sources for remote user input.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Net

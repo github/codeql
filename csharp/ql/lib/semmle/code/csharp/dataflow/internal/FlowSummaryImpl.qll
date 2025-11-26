@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
+overlay[local?]
+module;
 
 private import csharp
 private import semmle.code.csharp.commons.QualifiedName

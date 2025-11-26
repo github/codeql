@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with guarded expressions.
  */
+overlay[local?]
+module;
 
 import csharp
 private import ControlFlow
@@ -180,6 +182,7 @@ private module GuardsInput implements
     ArgumentPosition() { this = parameterPosition() }
   }
 
+  overlay[caller?]
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
@@ -330,6 +333,7 @@ class Guard extends Guards::Guard {
    *
    * Note: This predicate is inlined.
    */
+  overlay[caller?]
   pragma[inline]
   predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, GuardValue v) {
     guardControls(this, cfn.getBasicBlock(), v)

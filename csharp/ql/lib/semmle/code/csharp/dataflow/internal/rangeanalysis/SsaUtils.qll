@@ -1,6 +1,8 @@
 /**
  * Provides utility predicates to extend the core SSA functionality.
  */
+overlay[local?]
+module;
 
 private import csharp
 private import Ssa

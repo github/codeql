@@ -2,6 +2,8 @@
  * Provides a library of known unsafe deserializers.
  * See https://www.blackhat.com/docs/us-17/thursday/us-17-Munoz-Friday-The-13th-Json-Attacks.pdf.
  */
+overlay[local?]
+module;
 
 import csharp
 import semmle.code.csharp.frameworks.JsonNET::JsonNET

@@ -1,4 +1,6 @@
 /** Provides classes relating to declarations and type members. */
+overlay[local?]
+module;
 
 import Callable
 import Element

@@ -1,6 +1,8 @@
 /**
  * Provides definitions related to strings.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.Format

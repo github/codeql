@@ -1,6 +1,8 @@
 /**
  * Provides C#-specific definitions for use in the `SsaReadPosition`.
  */
+overlay[local?]
+module;
 
 private import csharp
 private import SsaReadPositionCommon

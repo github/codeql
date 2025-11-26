@@ -1,4 +1,6 @@
 /** Provides classes related to the namespace `System.Security.Cryptography.X509Certificates`. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.frameworks.system.security.Cryptography

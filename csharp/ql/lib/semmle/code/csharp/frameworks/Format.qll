@@ -1,6 +1,8 @@
 /**
  * Provides definitions related to string formatting.
  */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.commons.Collections

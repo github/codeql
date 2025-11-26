@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates related to ASP.NET Web.config files.
  */
+overlay[local?]
+module;
 
 import csharp
 

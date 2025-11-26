@@ -1,4 +1,6 @@
 /** Provides classes and predicates for defining flow summaries. */
+overlay[local?]
+module;
 
 import csharp
 private import internal.FlowSummaryImpl as Impl

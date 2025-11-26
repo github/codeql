@@ -2,6 +2,8 @@
  * Helpers.qll
  * Provides helper classes and methods related to LINQ.
  */
+overlay[local?]
+module;
 
 private import csharp
 private import semmle.code.csharp.frameworks.system.collections.Generic as GenericCollections

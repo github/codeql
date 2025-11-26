@@ -1,4 +1,6 @@
 /** Provides classes for namespaces. */
+overlay[local?]
+module;
 
 private import semmle.code.csharp.commons.QualifiedName
 import Element

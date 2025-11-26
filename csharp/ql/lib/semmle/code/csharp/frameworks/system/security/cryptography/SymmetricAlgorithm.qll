@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with symmetric cryptography algorithms.
  */
+overlay[local?]
+module;
 
 import csharp
 

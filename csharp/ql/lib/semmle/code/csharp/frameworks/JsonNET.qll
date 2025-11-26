@@ -1,6 +1,8 @@
 /**
  * Classes for modeling Json.NET.
  */
+overlay[local?]
+module;
 
 import csharp
 

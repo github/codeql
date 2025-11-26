@@ -4,6 +4,8 @@
  * Comments are organized into `CommentBlock`s, consisting
  * of one or more `CommentLine`s.
  */
+overlay[local?]
+module;
 
 import Element
 import Location

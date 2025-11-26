@@ -1,4 +1,6 @@
 /** Provides logic for determining constant expressions. */
+overlay[local?]
+module;
 
 import csharp
 private import semmle.code.csharp.commons.ComparisonTest
