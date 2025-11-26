@@ -703,14 +703,17 @@ module MakeModelGeneratorFactory<
       }
 
       /**
-       * Holds if the access path `ap` is not a parameter or returnvalue of a callback
-       * stored in a field.
+       * Holds if `ap` is valid for generating summary models.
        *
-       * That is, we currently don't include summaries that rely on parameters or return values
-       * of callbacks stored in fields.
+       * We currently don't include summaries that rely on parameters or return values
+       * of callbacks stored in fields, as those are not supported by the data flow
+       * library.
+       *
+       * We also exclude access paths with contents not supported by `printContent`.
        */
       private predicate validateAccessPath(PropagateContentFlow::AccessPath ap) {
-        not (mentionsField(ap) and mentionsCallback(ap))
+        not (mentionsField(ap) and mentionsCallback(ap)) and
+        forall(int i | i in [0 .. ap.length() - 1] | exists(getContent(ap, i)))
       }
 
       private predicate apiFlow(
@@ -720,7 +723,9 @@ module MakeModelGeneratorFactory<
       ) {
         PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
         getEnclosingCallable(returnNodeExt) = api and
-        getEnclosingCallable(p) = api
+        getEnclosingCallable(p) = api and
+        validateAccessPath(reads) and
+        validateAccessPath(stores)
       }
 
       /**
@@ -763,9 +768,7 @@ module MakeModelGeneratorFactory<
         PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
         PropagateContentFlow::AccessPath stores, boolean preservesValue
       ) {
-        PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
-        getEnclosingCallable(returnNodeExt) = api and
-        getEnclosingCallable(p) = api and
+        apiFlow(api, p, reads, returnNodeExt, stores, preservesValue) and
         p = api.getARelevantParameterNode()
       }
 
@@ -956,8 +959,6 @@ module MakeModelGeneratorFactory<
           input = parameterNodeAsExactInput(p) + printReadAccessPath(reads) and
           output = getExactOutput(returnNodeExt) + printStoreAccessPath(stores) and
           input != output and
-          validateAccessPath(reads) and
-          validateAccessPath(stores) and
           (
             if mentionsField(reads) or mentionsField(stores)
             then lift = false and api.isRelevant()
