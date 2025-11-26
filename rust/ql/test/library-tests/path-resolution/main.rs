@@ -470,23 +470,38 @@ mod m16 {
     } // I83
 
     trait Trait3 {
+        type AssocType;
+
         fn f(&self);
     }
 
     trait Trait4 {
+        type AssocType;
+
         fn g(&self);
     }
 
     struct S2;
 
+    #[rustfmt::skip]
     impl Trait3 for S2 { // $ item=Trait3 item=S2
-        fn f(&self) { } // S2asTrait3::f
+        type AssocType = i32 // $ item=i32
+        ; // S2Trait3AssocType
+        
+        fn f(&self) {
+            let x: Self::AssocType = 42; // $ item=S2Trait3AssocType $ SPURIOUS: item=S2Trait4AssocType
+        } // S2asTrait3::f
     }
 
+    #[rustfmt::skip]
     impl Trait4 for S2 { // $ item=Trait4 item=S2
+        type AssocType = bool // $ item=bool
+        ; // S2Trait4AssocType
+
         fn g(&self) {
             Self::f(&self); // $ item=S2asTrait3::f
             S2::f(&self); // $ item=S2asTrait3::f
+            let x: Self::AssocType = true; // $ item=S2Trait4AssocType $ SPURIOUS: item=S2Trait3AssocType
         }
     }
 }
@@ -828,7 +843,7 @@ mod patterns {
             N0ne => // local variable
                 N0ne
         }
-    } // patterns::test 
+    } // patterns::test
 
     #[rustfmt::skip]
     fn test2() -> Option<i32> { // $ item=Option $ item=i32
