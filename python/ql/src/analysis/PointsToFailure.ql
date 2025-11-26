@@ -1,5 +1,5 @@
 /**
- * @name points-to fails for expression.
+ * @name points-to fails for expression
  * @description Expression does not "point-to" an object which prevents type inference.
  * @kind problem
  * @id py/points-to-failure

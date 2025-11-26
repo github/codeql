@@ -1,5 +1,5 @@
 /**
- * @name Small KDF derived key length.
+ * @name Small KDF derived key length
  * @description KDF derived keys should be a minimum of 128 bits (16 bytes).
  * @assumption If the key length is not explicitly provided (e.g., it is None or otherwise not specified) assumes the length is derived from the hash length.
  * @kind problem

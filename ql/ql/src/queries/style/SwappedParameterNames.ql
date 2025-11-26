@@ -1,5 +1,5 @@
 /**
- * @name Swapped parameter names in overriding predicate.
+ * @name Swapped parameter names in overriding predicate
  * @description Swapping the parameter names in an overriding method indicates an implementation mistake.
  * @kind problem
  * @problem.severity error
