@@ -34,6 +34,7 @@ import semmle.python.types.Exceptions
 import semmle.python.types.Properties
 import semmle.python.types.Descriptors
 import semmle.python.SelfAttribute
+import semmle.python.Metrics
 
 /**
  * An extension of `ControlFlowNode` that provides points-to predicates.

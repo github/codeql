@@ -147,9 +147,6 @@ class Class extends Class_, Scope, AstNode {
   /** Gets a base of this class definition. */
   Expr getABase() { result = this.getParent().getABase() }
 
-  /** Gets the metrics for this class */
-  ClassMetrics getMetrics() { result = this }
-
   /**
    * Gets the qualified name for this class.
    * Should return the same name as the `__qualname__` attribute on classes in Python 3.
