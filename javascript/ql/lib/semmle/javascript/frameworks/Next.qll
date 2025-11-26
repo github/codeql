@@ -32,6 +32,12 @@ module NextJS {
 
   private Folder apiRoot() { result = [pagesRoot(), appRoot()].getFolder("api") }
 
+  private Folder appFolder() {
+    result = appRoot()
+    or
+    result = appFolder().getAFolder()
+  }
+
   /**
    * Gets a "pages" folder in a `Next.js` application.
    * JavaScript files inside these folders are mapped to routes.
@@ -300,8 +306,13 @@ module NextJS {
   class NextAppRouteHandler extends DataFlow::FunctionNode, Http::Servers::StandardRouteHandler {
     NextAppRouteHandler() {
       exists(Module mod |
-        mod.getFile().getParentContainer() = apiFolder() or
-        mod.getFile().getStem() = "middleware"
+        (
+          mod.getFile().getParentContainer() = apiFolder()
+          or
+          mod.getFile().getStem() = "middleware"
+          or
+          mod.getFile().getStem() = "route" and mod.getFile().getParentContainer() = appFolder()
+        )
       |
         this =
           mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue()
