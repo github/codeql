@@ -183,7 +183,9 @@ extensions:
   - addsTo:
       pack: codeql/python-all
       extensible: typeModel
-    data: []
+    data:
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse
+      - ["urllib.parse.ParseResult~Subclass", 'urllib', 'Member[parse].Member[urlparse]']
 
   - addsTo:
       pack: codeql/python-all
