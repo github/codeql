@@ -1,0 +1,82 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function FunctionWithParameter | Node should have one location but has 0. |
+| file://:0:0:0:0 | function FunctionWithSliceOfStructsParameter | Node should have one location but has 0. |
+| file://:0:0:0:0 | function FunctionWithSliceParameter | Node should have one location but has 0. |
+| file://:0:0:0:0 | function FunctionWithVarArgsOfStructsParameter | Node should have one location but has 0. |
+| file://:0:0:0:0 | function FunctionWithVarArgsParameter | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 40 |
+localFlowIsLocal
+| file://:0:0:0:0 | function FunctionWithParameter | main.go:16:7:16:32 | selection of FunctionWithParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithParameter | main.go:24:7:24:32 | selection of FunctionWithParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithSliceOfStructsParameter | main.go:36:7:36:46 | selection of FunctionWithSliceOfStructsParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithSliceParameter | main.go:25:7:25:37 | selection of FunctionWithSliceParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithVarArgsOfStructsParameter | main.go:37:7:37:48 | selection of FunctionWithVarArgsOfStructsParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithVarArgsOfStructsParameter | main.go:38:7:38:48 | selection of FunctionWithVarArgsOfStructsParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithVarArgsParameter | main.go:26:7:26:39 | selection of FunctionWithVarArgsParameter | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function FunctionWithVarArgsParameter | main.go:27:7:27:39 | selection of FunctionWithVarArgsParameter | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:11 | function source | main.go:15:7:15:12 | source | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:11 | function source | main.go:18:26:18:31 | source | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:11 | function source | main.go:22:8:22:13 | source | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:11 | function source | main.go:29:37:29:42 | source | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:11 | function source | main.go:34:22:34:27 | source | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:16:2:16:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:19:2:19:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:24:2:24:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:25:2:25:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:26:2:26:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:27:2:27:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:30:2:30:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:36:2:36:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:37:2:37:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:11:6:11:9 | function sink | main.go:38:2:38:5 | sink | Local flow step does not preserve enclosing callable. |
+argHasPostUpdate
+| main.go:16:7:16:35 | call to FunctionWithParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:16:34:16:34 | s | ArgumentNode is missing PostUpdateNode. |
+| main.go:19:7:19:20 | index expression | ArgumentNode is missing PostUpdateNode. |
+| main.go:24:7:24:43 | call to FunctionWithParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:24:34:24:42 | index expression | ArgumentNode is missing PostUpdateNode. |
+| main.go:25:7:25:45 | call to FunctionWithSliceParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:26:7:26:50 | call to FunctionWithVarArgsParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:27:7:27:47 | []type{args} | ArgumentNode is missing PostUpdateNode. |
+| main.go:27:7:27:47 | call to FunctionWithVarArgsParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:30:7:30:29 | selection of Field | ArgumentNode is missing PostUpdateNode. |
+| main.go:36:7:36:54 | call to FunctionWithSliceOfStructsParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:37:7:37:59 | call to FunctionWithVarArgsOfStructsParameter | ArgumentNode is missing PostUpdateNode. |
+| main.go:38:7:38:56 | []type{args} | ArgumentNode is missing PostUpdateNode. |
+| main.go:38:7:38:56 | call to FunctionWithVarArgsOfStructsParameter | ArgumentNode is missing PostUpdateNode. |

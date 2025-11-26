@@ -1,0 +1,179 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 37 |
+localFlowIsLocal
+| genericfunctions.go:3:6:3:18 | function genericSource | genericfunctions.go:30:8:30:20 | genericSource | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:3:6:3:18 | function genericSource | genericfunctions.go:34:8:34:20 | genericSource | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:3:6:3:18 | function genericSource | genericfunctions.go:38:8:38:20 | genericSource | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:8:6:8:20 | function genericIdentity | genericfunctions.go:43:8:43:22 | genericIdentity | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:8:6:8:20 | function genericIdentity | genericfunctions.go:47:8:47:22 | genericIdentity | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:8:6:8:20 | function genericIdentity | genericfunctions.go:51:8:51:22 | genericIdentity | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:12:6:12:17 | function genericSink1 | genericfunctions.go:57:3:57:14 | genericSink1 | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:16:6:16:17 | function genericSink2 | genericfunctions.go:61:3:61:14 | genericSink2 | Local flow step does not preserve enclosing callable. |
+| genericfunctions.go:20:6:20:17 | function genericSink3 | genericfunctions.go:65:8:65:19 | genericSink3 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:4:7:4:12 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:43:24:43:29 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:47:32:47:37 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:52:10:52:15 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:56:8:56:13 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:60:8:60:13 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | genericfunctions.go:64:8:64:13 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:33:33:33:38 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:38:21:38:26 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:43:10:43:15 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:47:15:47:20 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:52:15:52:20 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:58:14:58:19 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:64:5:64:10 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:69:41:69:46 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:74:22:74:27 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:79:10:79:15 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:83:16:83:21 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:88:16:88:21 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:94:15:94:20 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:100:5:100:10 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:105:45:105:50 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:110:22:110:27 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:115:10:115:15 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:119:16:119:21 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:124:16:124:21 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:130:15:130:20 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:3:6:3:11 | function source | generictypesandmethods.go:136:5:136:10 | source | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:13:2:13:5 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:17:2:17:5 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:21:2:21:5 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:31:3:31:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:35:3:35:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:40:3:40:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:44:3:44:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:48:3:48:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | genericfunctions.go:53:3:53:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:34:3:34:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:38:3:38:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:43:3:43:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:48:3:48:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:54:3:54:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:59:3:59:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:65:3:65:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:70:3:70:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:74:3:74:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:79:3:79:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:84:3:84:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:90:3:90:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:95:3:95:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:101:3:101:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:106:3:106:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:110:3:110:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:115:3:115:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:120:3:120:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:126:3:126:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:131:3:131:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:7:6:7:9 | function sink | generictypesandmethods.go:137:3:137:6 | sink | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:14:28:14:35 | function Identity | generictypesandmethods.go:38:8:38:19 | selection of Identity | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:14:28:14:35 | function Identity | generictypesandmethods.go:42:8:42:19 | selection of Identity | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:15:28:15:33 | function Getter | generictypesandmethods.go:48:8:48:17 | selection of Getter | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:15:28:15:33 | function Getter | generictypesandmethods.go:53:8:53:17 | selection of Getter | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:16:28:16:33 | function Setter | generictypesandmethods.go:58:3:58:12 | selection of Setter | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:16:28:16:33 | function Setter | generictypesandmethods.go:63:8:63:17 | selection of Setter | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:23:31:23:39 | function Identity1 | generictypesandmethods.go:74:8:74:20 | selection of Identity1 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:23:31:23:39 | function Identity1 | generictypesandmethods.go:78:8:78:20 | selection of Identity1 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:24:31:24:37 | function Getter1 | generictypesandmethods.go:84:8:84:18 | selection of Getter1 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:24:31:24:37 | function Getter1 | generictypesandmethods.go:89:8:89:18 | selection of Getter1 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:25:31:25:37 | function Setter1 | generictypesandmethods.go:94:3:94:13 | selection of Setter1 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:25:31:25:37 | function Setter1 | generictypesandmethods.go:99:8:99:18 | selection of Setter1 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:27:31:27:39 | function Identity2 | generictypesandmethods.go:110:8:110:20 | selection of Identity2 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:27:31:27:39 | function Identity2 | generictypesandmethods.go:114:8:114:20 | selection of Identity2 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:28:31:28:37 | function Getter2 | generictypesandmethods.go:120:8:120:18 | selection of Getter2 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:28:31:28:37 | function Getter2 | generictypesandmethods.go:125:8:125:18 | selection of Getter2 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:29:31:29:37 | function Setter2 | generictypesandmethods.go:130:3:130:13 | selection of Setter2 | Local flow step does not preserve enclosing callable. |
+| generictypesandmethods.go:29:31:29:37 | function Setter2 | generictypesandmethods.go:135:8:135:18 | selection of Setter2 | Local flow step does not preserve enclosing callable. |
+argHasPostUpdate
+| genericfunctions.go:13:7:13:7 | u | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:17:7:17:7 | u | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:21:7:21:7 | u | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:31:8:31:8 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:34:28:34:28 | 2 | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:35:8:35:8 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:39:10:39:10 | 2 | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:40:8:40:8 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:43:24:43:31 | call to source | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:44:8:44:8 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:47:32:47:39 | call to source | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:48:8:48:8 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:52:10:52:17 | call to source | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:53:8:53:8 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:57:19:57:19 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:61:24:61:24 | 3 | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:61:27:61:27 | s | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:66:5:66:5 | 3 | ArgumentNode is missing PostUpdateNode. |
+| genericfunctions.go:66:8:66:8 | s | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:34:8:34:16 | selection of Field | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:38:8:38:29 | call to Identity | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:38:21:38:28 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:43:8:43:18 | call to f | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:43:10:43:17 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:48:8:48:19 | call to Getter | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:54:8:54:10 | call to f | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:58:14:58:21 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:59:8:59:16 | selection of Field | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:64:5:64:12 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:65:8:65:16 | selection of Field | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:70:8:70:17 | selection of Field1 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:74:8:74:30 | call to Identity1 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:74:22:74:29 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:79:8:79:18 | call to f | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:79:10:79:17 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:84:8:84:20 | call to Getter1 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:90:8:90:10 | call to f | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:94:15:94:22 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:95:8:95:17 | selection of Field1 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:100:5:100:12 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:101:8:101:17 | selection of Field1 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:106:8:106:17 | selection of Field2 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:110:8:110:30 | call to Identity2 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:110:22:110:29 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:115:8:115:18 | call to f | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:115:10:115:17 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:120:8:120:20 | call to Getter2 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:126:8:126:10 | call to f | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:130:15:130:22 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:131:8:131:17 | selection of Field2 | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:136:5:136:12 | call to source | ArgumentNode is missing PostUpdateNode. |
+| generictypesandmethods.go:137:8:137:17 | selection of Field2 | ArgumentNode is missing PostUpdateNode. |

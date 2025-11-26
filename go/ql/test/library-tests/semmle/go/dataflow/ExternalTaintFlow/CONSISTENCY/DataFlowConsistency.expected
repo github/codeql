@@ -1,0 +1,243 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 3 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 3 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 4 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 4 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Get | Node should have one location but has 0. |
+| file://:0:0:0:0 | function GetElement | Node should have one location but has 0. |
+| file://:0:0:0:0 | function GetMapKey | Node should have one location but has 0. |
+| file://:0:0:0:0 | function GetThroughPointer | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Set | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SetElement | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SetThroughPointer | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Sink1 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SinkManyArgs | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SinkMethod | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Src1 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Src1 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Src2 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Src2 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Src3 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Src3 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SrcArg | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SrcArg | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgArg | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgArgIgnored | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgArrayContentRes | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgCollectionContentRes | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgMapKeyContentRes | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgMapValueContentRes | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgQual | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgRes | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgRes1 | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgResArrayContent | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgResCollectionContent | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgResMapKeyContent | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgResMapValueContent | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepArgResNoQual | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepQualArg | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StepQualRes | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 75 |
+localFlowIsLocal
+| file://:0:0:0:0 | function Get | test.go:168:10:168:15 | selection of Get | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Get | test.go:172:10:172:15 | selection of Get | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Get | test.go:177:10:177:15 | selection of Get | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function GetElement | test.go:103:10:103:24 | selection of GetElement | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function GetMapKey | test.go:117:10:117:23 | selection of GetMapKey | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function GetThroughPointer | test.go:184:10:184:30 | selection of GetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function GetThroughPointer | test.go:188:10:188:30 | selection of GetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function GetThroughPointer | test.go:193:10:193:30 | selection of GetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Set | test.go:164:2:164:7 | selection of Set | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Set | test.go:171:2:171:7 | selection of Set | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Set | test.go:175:2:175:7 | selection of Set | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Set | test.go:176:2:176:7 | selection of Set | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SetElement | test.go:112:19:112:33 | selection of SetElement | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SetThroughPointer | test.go:180:2:180:22 | selection of SetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SetThroughPointer | test.go:187:2:187:22 | selection of SetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SetThroughPointer | test.go:191:2:191:22 | selection of SetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SetThroughPointer | test.go:192:2:192:22 | selection of SetThroughPointer | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:48:2:48:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:62:2:62:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:65:2:65:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:69:2:69:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:73:2:73:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:77:2:77:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:80:2:80:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:84:2:84:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:87:2:87:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:90:2:90:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:92:3:92:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:95:3:95:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:100:2:100:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:103:2:103:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:104:2:104:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:106:3:106:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:109:3:109:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:114:2:114:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:117:2:117:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:119:3:119:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:122:3:122:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:125:3:125:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:128:3:128:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:133:2:133:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:136:2:136:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:138:3:138:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:141:3:141:9 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:146:2:146:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:150:2:150:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:156:2:156:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:161:2:161:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:165:2:165:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:168:2:168:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:172:2:172:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:177:2:177:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:181:2:181:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:184:2:184:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:188:2:188:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:193:2:193:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Sink1 | test.go:206:2:206:8 | selection of Sink1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SinkManyArgs | test.go:199:2:199:15 | selection of SinkManyArgs | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SinkMethod | test.go:49:2:49:24 | selection of SinkMethod | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:39:8:39:13 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:59:9:59:14 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:102:46:102:51 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:112:35:112:40 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:116:42:116:47 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:159:8:159:13 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:164:9:164:14 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:167:15:167:20 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:171:9:171:14 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:175:9:175:14 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:180:24:180:29 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:183:17:183:22 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:187:24:187:29 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src1 | test.go:191:24:191:29 | selection of Src1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src2 | test.go:40:8:40:13 | selection of Src2 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src2 | test.go:41:8:41:14 | selection of Src2 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src3 | test.go:42:14:42:19 | selection of Src3 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Src3 | test.go:43:14:43:20 | selection of Src3 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function SrcArg | test.go:44:2:44:9 | selection of SrcArg | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgArg | test.go:19:2:19:13 | selection of StepArgArg | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgArg | test.go:68:2:68:13 | selection of StepArgArg | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgArgIgnored | test.go:20:2:20:20 | selection of StepArgArgIgnored | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgArgIgnored | test.go:72:2:72:20 | selection of StepArgArgIgnored | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgArrayContentRes | test.go:26:10:26:36 | selection of StepArgArrayContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgArrayContentRes | test.go:99:12:99:38 | selection of StepArgArrayContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgCollectionContentRes | test.go:28:10:28:41 | selection of StepArgCollectionContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgCollectionContentRes | test.go:113:13:113:44 | selection of StepArgCollectionContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgCollectionContentRes | test.go:160:13:160:44 | selection of StepArgCollectionContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgMapKeyContentRes | test.go:30:10:30:37 | selection of StepArgMapKeyContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgMapKeyContentRes | test.go:132:13:132:40 | selection of StepArgMapKeyContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgMapValueContentRes | test.go:32:10:32:39 | selection of StepArgMapValueContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgMapValueContentRes | test.go:145:13:145:42 | selection of StepArgMapValueContentRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgQual | test.go:21:2:21:14 | selection of StepArgQual | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgQual | test.go:76:2:76:19 | selection of StepArgQual | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgRes | test.go:17:10:17:21 | selection of StepArgRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgRes | test.go:61:12:61:23 | selection of StepArgRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgRes1 | test.go:18:13:18:25 | selection of StepArgRes1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgRes1 | test.go:64:15:64:27 | selection of StepArgRes1 | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResArrayContent | test.go:25:15:25:41 | selection of StepArgResArrayContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResArrayContent | test.go:89:12:89:38 | selection of StepArgResArrayContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResCollectionContent | test.go:27:10:27:41 | selection of StepArgResCollectionContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResCollectionContent | test.go:102:13:102:44 | selection of StepArgResCollectionContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResMapKeyContent | test.go:29:10:29:37 | selection of StepArgResMapKeyContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResMapKeyContent | test.go:116:13:116:40 | selection of StepArgResMapKeyContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResMapValueContent | test.go:31:10:31:39 | selection of StepArgResMapValueContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResMapValueContent | test.go:135:13:135:42 | selection of StepArgResMapValueContent | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResNoQual | test.go:24:10:24:30 | selection of StepArgResNoQual | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepArgResNoQual | test.go:86:12:86:32 | selection of StepArgResNoQual | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepQualArg | test.go:23:2:23:14 | selection of StepQualArg | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepQualArg | test.go:83:2:83:28 | selection of StepQualArg | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepQualRes | test.go:22:10:22:22 | selection of StepQualRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StepQualRes | test.go:79:12:79:38 | selection of StepQualRes | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function append | test.go:149:10:149:15 | append | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function copy | test.go:155:2:155:5 | copy | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function make | test.go:148:11:148:14 | make | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function make | test.go:152:12:152:15 | make | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function make | test.go:154:12:154:15 | make | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function make | test.go:158:8:158:11 | make | Local flow step does not preserve enclosing callable. |
+| test.go:7:6:7:8 | function use | test.go:51:2:51:4 | use | Local flow step does not preserve enclosing callable. |
+reverseRead
+| test.go:90:10:90:15 | taint8 | Origin of readStep is missing a PostUpdateNode. |
+| test.go:104:12:104:18 | taint10 | Origin of readStep is missing a PostUpdateNode. |
+| test.go:150:10:150:14 | slice | Origin of readStep is missing a PostUpdateNode. |
+argHasPostUpdate
+| test.go:51:2:51:48 | []type{args} | ArgumentNode is missing PostUpdateNode. |
+| test.go:119:11:119:11 | k | ArgumentNode is missing PostUpdateNode. |
+| test.go:122:11:122:11 | k | ArgumentNode is missing PostUpdateNode. |
+| test.go:125:11:125:11 | k | ArgumentNode is missing PostUpdateNode. |
+| test.go:128:11:128:11 | k | ArgumentNode is missing PostUpdateNode. |
+| test.go:136:10:136:20 | index expression | ArgumentNode is missing PostUpdateNode. |
+| test.go:138:11:138:11 | v | ArgumentNode is missing PostUpdateNode. |
+| test.go:141:11:141:11 | v | ArgumentNode is missing PostUpdateNode. |
+| test.go:148:31:148:31 | 0 | ArgumentNode is missing PostUpdateNode. |
+| test.go:149:10:149:27 | []type{args} | ArgumentNode is missing PostUpdateNode. |
+| test.go:152:27:152:27 | 2 | ArgumentNode is missing PostUpdateNode. |
+| test.go:154:27:154:27 | 2 | ArgumentNode is missing PostUpdateNode. |
+| test.go:156:10:156:18 | index expression | ArgumentNode is missing PostUpdateNode. |
+| test.go:164:9:164:25 | type assertion | ArgumentNode is missing PostUpdateNode. |
+| test.go:165:10:165:13 | selection of F | ArgumentNode is missing PostUpdateNode. |
+| test.go:168:10:168:17 | call to Get | ArgumentNode is missing PostUpdateNode. |
+| test.go:171:9:171:25 | type assertion | ArgumentNode is missing PostUpdateNode. |
+| test.go:172:10:172:17 | call to Get | ArgumentNode is missing PostUpdateNode. |
+| test.go:175:9:175:25 | type assertion | ArgumentNode is missing PostUpdateNode. |
+| test.go:176:9:176:10 | "" | ArgumentNode is missing PostUpdateNode. |
+| test.go:177:10:177:17 | call to Get | ArgumentNode is missing PostUpdateNode. |
+| test.go:180:24:180:40 | type assertion | ArgumentNode is missing PostUpdateNode. |
+| test.go:181:10:181:14 | selection of F | ArgumentNode is missing PostUpdateNode. |
+| test.go:184:10:184:32 | call to GetThroughPointer | ArgumentNode is missing PostUpdateNode. |
+| test.go:187:24:187:40 | type assertion | ArgumentNode is missing PostUpdateNode. |
+| test.go:188:10:188:32 | call to GetThroughPointer | ArgumentNode is missing PostUpdateNode. |
+| test.go:191:24:191:40 | type assertion | ArgumentNode is missing PostUpdateNode. |
+| test.go:192:24:192:25 | "" | ArgumentNode is missing PostUpdateNode. |
+| test.go:193:10:193:32 | call to GetThroughPointer | ArgumentNode is missing PostUpdateNode. |
+| test.go:206:10:206:12 | src | ArgumentNode is missing PostUpdateNode. |
+identityLocalStep
+| test.go:92:3:92:3 | b | Node steps to itself |
+| test.go:95:3:95:3 | b | Node steps to itself |
+| test.go:106:3:106:3 | b | Node steps to itself |
+| test.go:109:3:109:3 | b | Node steps to itself |
+| test.go:119:3:119:3 | b | Node steps to itself |
+| test.go:122:3:122:3 | b | Node steps to itself |
+| test.go:125:3:125:3 | b | Node steps to itself |
+| test.go:128:3:128:3 | b | Node steps to itself |
+| test.go:138:3:138:3 | b | Node steps to itself |
+| test.go:141:3:141:3 | b | Node steps to itself |

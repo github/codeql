@@ -1,0 +1,24 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 18 |
+argHasPostUpdate
+| broken2/test1.go:4:14:4:16 | "a" | ArgumentNode is missing PostUpdateNode. |
+| broken2/test1.go:5:14:5:14 | a | ArgumentNode is missing PostUpdateNode. |

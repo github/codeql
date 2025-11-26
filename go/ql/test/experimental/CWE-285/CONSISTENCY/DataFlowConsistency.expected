@@ -1,0 +1,70 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 3 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 3 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function AcctMgmt | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Authenticate | Node should have one location but has 0. |
+| file://:0:0:0:0 | function ChangeAuthTok | Node should have one location but has 0. |
+| file://:0:0:0:0 | function CloseSession | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Error | Node should have one location but has 0. |
+| file://:0:0:0:0 | function Error | Node should have one location but has 0. |
+| file://:0:0:0:0 | function GetEnv | Node should have one location but has 0. |
+| file://:0:0:0:0 | function GetEnvList | Node should have one location but has 0. |
+| file://:0:0:0:0 | function GetItem | Node should have one location but has 0. |
+| file://:0:0:0:0 | function OpenSession | Node should have one location but has 0. |
+| file://:0:0:0:0 | function PutEnv | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SetCred | Node should have one location but has 0. |
+| file://:0:0:0:0 | function SetItem | Node should have one location but has 0. |
+| file://:0:0:0:0 | function StartFunc | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 53 |
+localFlowIsLocal
+| file://:0:0:0:0 | function AcctMgmt | main.go:25:9:25:18 | selection of AcctMgmt | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Authenticate | main.go:13:9:13:22 | selection of Authenticate | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function Authenticate | main.go:21:8:21:21 | selection of Authenticate | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StartFunc | main.go:10:10:10:22 | selection of StartFunc | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function StartFunc | main.go:18:12:18:24 | selection of StartFunc | Local flow step does not preserve enclosing callable. |
+argHasPostUpdate
+| main.go:10:24:10:25 | "" | ArgumentNode is missing PostUpdateNode. |
+| main.go:10:28:10:29 | "" | ArgumentNode is missing PostUpdateNode. |
+| main.go:13:24:13:24 | 0 | ArgumentNode is missing PostUpdateNode. |
+| main.go:18:26:18:27 | "" | ArgumentNode is missing PostUpdateNode. |
+| main.go:18:30:18:31 | "" | ArgumentNode is missing PostUpdateNode. |
+| main.go:21:23:21:23 | 0 | ArgumentNode is missing PostUpdateNode. |
+| main.go:25:20:25:20 | 0 | ArgumentNode is missing PostUpdateNode. |

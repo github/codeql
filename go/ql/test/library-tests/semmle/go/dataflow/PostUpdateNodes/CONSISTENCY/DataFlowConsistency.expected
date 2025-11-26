@@ -1,0 +1,33 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 23 |
+localFlowIsLocal
+| test.go:7:12:7:12 | function m | test.go:29:2:29:4 | selection of m | Local flow step does not preserve enclosing callable. |
+| test.go:7:12:7:12 | function m | test.go:33:7:33:9 | selection of m | Local flow step does not preserve enclosing callable. |
+| test.go:8:13:8:14 | function mp | test.go:30:2:30:5 | selection of mp | Local flow step does not preserve enclosing callable. |
+| test.go:8:13:8:14 | function mp | test.go:34:8:34:11 | selection of mp | Local flow step does not preserve enclosing callable. |
+reverseRead
+| test.go:23:12:23:12 | a | Origin of readStep is missing a PostUpdateNode. |

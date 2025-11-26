@@ -1,0 +1,49 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 37 |
+localFlowIsLocal
+| file://:0:0:0:0 | function len | ConstantLengthComparison.go:4:18:4:20 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | ConstantLengthComparison.go:5:6:5:8 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | ConstantLengthComparisonGood.go:4:18:4:20 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | ConstantLengthComparisonGood.go:5:6:5:8 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | tst.go:4:5:4:7 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | tst.go:5:10:5:12 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | tst.go:8:18:8:20 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | tst.go:9:6:9:8 | len | Local flow step does not preserve enclosing callable. |

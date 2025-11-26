@@ -1,0 +1,60 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 2 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 3 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 3 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 39 |
+localFlowIsLocal
+| file://:0:0:0:0 | function len | InconsistentLoopOrientation.go:10:26:10:28 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | InconsistentLoopOrientationGood.go:10:26:10:28 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | main.go:9:22:9:24 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | main.go:14:17:14:19 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | main.go:25:26:25:28 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | main.go:31:31:31:33 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | main.go:37:16:37:18 | len | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function len | main.go:37:38:37:40 | len | Local flow step does not preserve enclosing callable. |
+argHasPostUpdate
+| main.go:9:26:9:26 | s | ArgumentNode is missing PostUpdateNode. |
+| main.go:14:21:14:21 | s | ArgumentNode is missing PostUpdateNode. |
+identityLocalStep
+| InconsistentLoopOrientation.go:6:3:6:3 | a | Node steps to itself |
+| InconsistentLoopOrientationGood.go:6:3:6:3 | a | Node steps to itself |
+| main.go:9:26:9:26 | s | Node steps to itself |
+| main.go:14:29:14:29 | l | Node steps to itself |
+| main.go:20:3:20:3 | a | Node steps to itself |

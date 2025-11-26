@@ -1,0 +1,52 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 35 |
+localFlowIsLocal
+| file://:0:0:0:0 | function panic | DuplicateCondition.go:9:3:9:7 | panic | Local flow step does not preserve enclosing callable. |
+| file://:0:0:0:0 | function panic | DuplicateConditionGood.go:9:3:9:7 | panic | Local flow step does not preserve enclosing callable. |
+| funcs.go:3:6:3:10 | function start | DuplicateCondition.go:5:3:5:7 | start | Local flow step does not preserve enclosing callable. |
+| funcs.go:3:6:3:10 | function start | DuplicateConditionGood.go:5:3:5:7 | start | Local flow step does not preserve enclosing callable. |
+| funcs.go:5:6:5:9 | function stop | DuplicateCondition.go:7:3:7:6 | stop | Local flow step does not preserve enclosing callable. |
+| funcs.go:5:6:5:9 | function stop | DuplicateConditionGood.go:7:3:7:6 | stop | Local flow step does not preserve enclosing callable. |
+| tst.go:3:6:3:10 | function check | tst.go:8:11:8:15 | check | Local flow step does not preserve enclosing callable. |
+| tst.go:3:6:3:10 | function check | tst.go:10:18:10:22 | check | Local flow step does not preserve enclosing callable. |
+argHasPostUpdate
+| DuplicateCondition.go:9:9:9:33 | "Message not understood." | ArgumentNode is missing PostUpdateNode. |
+| DuplicateConditionGood.go:9:9:9:33 | "Message not understood." | ArgumentNode is missing PostUpdateNode. |
+| tst.go:8:17:8:18 | 42 | ArgumentNode is missing PostUpdateNode. |
+| tst.go:10:24:10:25 | 23 | ArgumentNode is missing PostUpdateNode. |

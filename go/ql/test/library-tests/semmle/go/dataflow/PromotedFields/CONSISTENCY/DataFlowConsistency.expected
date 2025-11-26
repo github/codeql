@@ -1,0 +1,184 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | [summary param] 0 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 0 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary param] 1 in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0] in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: Argument[0].ArrayElement in copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in max | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in min | Node should have one location but has 0. |
+| file://:0:0:0:0 | [summary] to write: ReturnValue.ArrayElement in append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function append | Node should have one location but has 0. |
+| file://:0:0:0:0 | function cap | Node should have one location but has 0. |
+| file://:0:0:0:0 | function clear | Node should have one location but has 0. |
+| file://:0:0:0:0 | function close | Node should have one location but has 0. |
+| file://:0:0:0:0 | function complex | Node should have one location but has 0. |
+| file://:0:0:0:0 | function copy | Node should have one location but has 0. |
+| file://:0:0:0:0 | function delete | Node should have one location but has 0. |
+| file://:0:0:0:0 | function imag | Node should have one location but has 0. |
+| file://:0:0:0:0 | function len | Node should have one location but has 0. |
+| file://:0:0:0:0 | function make | Node should have one location but has 0. |
+| file://:0:0:0:0 | function max | Node should have one location but has 0. |
+| file://:0:0:0:0 | function min | Node should have one location but has 0. |
+| file://:0:0:0:0 | function new | Node should have one location but has 0. |
+| file://:0:0:0:0 | function panic | Node should have one location but has 0. |
+| file://:0:0:0:0 | function print | Node should have one location but has 0. |
+| file://:0:0:0:0 | function println | Node should have one location but has 0. |
+| file://:0:0:0:0 | function real | Node should have one location but has 0. |
+| file://:0:0:0:0 | function recover | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 35 |
+localFlowIsLocal
+| main.go:3:6:3:11 | function source | main.go:23:31:23:36 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:31:31:31:36 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:40:30:40:35 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:46:32:46:37 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:54:17:54:22 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:62:18:62:23 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:72:17:72:22 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:80:18:80:23 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:91:16:91:21 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:98:17:98:22 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:107:22:107:27 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:114:23:114:28 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:123:23:123:28 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:130:24:130:29 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:139:29:139:34 | source | Local flow step does not preserve enclosing callable. |
+| main.go:3:6:3:11 | function source | main.go:146:30:146:35 | source | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:25:2:25:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:26:2:26:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:27:2:27:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:28:2:28:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:33:2:33:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:34:2:34:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:35:2:35:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:36:2:36:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:41:2:41:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:42:2:42:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:43:2:43:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:44:2:44:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:47:2:47:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:48:2:48:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:49:2:49:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:50:2:50:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:57:2:57:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:58:2:58:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:59:2:59:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:60:2:60:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:65:2:65:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:66:2:66:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:67:2:67:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:68:2:68:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:75:2:75:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:76:2:76:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:77:2:77:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:78:2:78:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:83:2:83:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:84:2:84:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:85:2:85:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:86:2:86:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:92:2:92:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:93:2:93:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:94:2:94:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:95:2:95:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:99:2:99:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:100:2:100:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:101:2:101:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:102:2:102:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:108:2:108:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:109:2:109:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:110:2:110:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:111:2:111:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:115:2:115:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:116:2:116:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:117:2:117:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:118:2:118:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:124:2:124:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:125:2:125:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:126:2:126:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:127:2:127:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:131:2:131:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:132:2:132:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:133:2:133:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:134:2:134:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:140:2:140:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:141:2:141:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:142:2:142:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:143:2:143:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:147:2:147:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:148:2:148:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:149:2:149:5 | sink | Local flow step does not preserve enclosing callable. |
+| main.go:7:6:7:9 | function sink | main.go:150:2:150:5 | sink | Local flow step does not preserve enclosing callable. |
+argHasPostUpdate
+| main.go:25:7:25:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:26:7:26:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:27:7:27:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:28:7:28:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:33:7:33:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:34:7:34:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:35:7:35:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:36:7:36:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:41:7:41:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:42:7:42:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:43:7:43:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:44:7:44:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:47:7:47:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:48:7:48:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:49:7:49:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:50:7:50:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:57:7:57:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:58:7:58:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:59:7:59:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:60:7:60:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:65:7:65:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:66:7:66:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:67:7:67:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:68:7:68:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:75:7:75:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:76:7:76:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:77:7:77:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:78:7:78:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:83:7:83:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:84:7:84:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:85:7:85:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:86:7:86:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:92:7:92:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:93:7:93:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:94:7:94:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:95:7:95:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:99:7:99:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:100:7:100:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:101:7:101:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:102:7:102:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:108:7:108:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:109:7:109:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:110:7:110:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:111:7:111:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:115:7:115:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:116:7:116:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:117:7:117:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:118:7:118:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:124:7:124:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:125:7:125:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:126:7:126:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:127:7:127:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:131:7:131:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:132:7:132:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:133:7:133:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:134:7:134:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:140:7:140:17 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:141:7:141:23 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:142:7:142:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:143:7:143:30 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:147:7:147:18 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:148:7:148:24 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:149:7:149:25 | selection of field | ArgumentNode is missing PostUpdateNode. |
+| main.go:150:7:150:31 | selection of field | ArgumentNode is missing PostUpdateNode. |
