@@ -787,7 +787,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
   }
 
   private class StructDecl extends Declaration, Struct {
-    StructDecl() { this.isStruct() }
+    StructDecl() { this.isStruct() or this.isUnit() }
 
     override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
 
@@ -804,7 +804,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
   }
 
   private class StructVariantDecl extends Declaration, Variant {
-    StructVariantDecl() { this.isStruct() }
+    StructVariantDecl() { this.isStruct() or this.isUnit() }
 
     Enum getEnum() { result.getVariantList().getAVariant() = this }
 
