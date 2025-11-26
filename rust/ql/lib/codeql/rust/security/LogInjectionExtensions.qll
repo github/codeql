@@ -49,4 +49,6 @@ module LogInjection {
    * numeric or boolean type, which is unlikely to expose any vulnerability.
    */
   private class NumericTypeBarrier extends Barrier instanceof Barriers::NumericTypeBarrier { }
+
+  private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }
 }

@@ -1,5 +1,5 @@
 /**
- * Classes to represent barriers commonly used in dataflow and taint tracking
+ * Classes to represent barriers commonly used in data flow and taint tracking
  * configurations.
  */
 
@@ -11,35 +11,26 @@ private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
-/**
- * A node whose type is a numeric or boolean type, which may be an appropriate
- * taint flow barrier for some queries.
- */
+/** A node whose type is a numeric. */
 class NumericTypeBarrier extends DataFlow::Node {
   NumericTypeBarrier() {
-    exists(StructType t, Struct s |
-      t = TypeInference::inferType(this.asExpr()) and
-      s = t.getStruct()
-    |
-      s instanceof Builtins::NumericType or
-      s instanceof Builtins::Bool
-    )
+    TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof
+      Builtins::NumericType
   }
 }
 
-/**
- * A node whose type is an integral (integer) or boolean type, which may be an
- * appropriate taint flow barrier for some queries.
- */
-class IntegralOrBooleanTypeBarrier extends DataFlow::Node {
-  IntegralOrBooleanTypeBarrier() {
-    exists(StructType t, Struct s |
-      t = TypeInference::inferType(this.asExpr()) and
-      s = t.getStruct()
-    |
-      s instanceof Builtins::IntegralType or
-      s instanceof Builtins::Bool
-    )
+/** A node whose type is `bool`. */
+class BooleanTypeBarrier extends DataFlow::Node {
+  BooleanTypeBarrier() {
+    TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof Builtins::Bool
+  }
+}
+
+/** A node whose type is an integral (integer). */
+class IntegralTypeBarrier extends DataFlow::Node {
+  IntegralTypeBarrier() {
+    TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof
+      Builtins::IntegralType
   }
 }
 
