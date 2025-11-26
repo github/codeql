@@ -10,42 +10,52 @@
 overlay[local]
 predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
-/** Gets the file path for a location. */
 overlay[local]
 private string getLocationFilePath(@location_default loc) {
   exists(@file file | locations_default(loc, file, _, _, _, _) | files(file, result))
 }
 
+/**
+ * An element with a single location. Discard if in a changed file.
+ */
 overlay[local]
-private class DiscardableEntityBase extends @element {
-  /** Gets the path to the file in which this element occurs. */
+abstract private class Discardable extends @element {
   abstract string getFilePath();
 
-  /** Holds if this element exists in the base variant. */
   predicate existsInBase() { not isOverlay() }
 
-  /** Gets a textual representation of this discardable element. */
   string toString() { none() }
 }
 
-/**
- * Discard an entity from the base if all its locations are in changed files.
- * Entities with at least one location in an unchanged file are kept.
- */
 overlay[discard_entity]
-private predicate discardEntity(@element e) {
+private predicate discardable(@element e) {
+  e = any(Discardable d | d.existsInBase() and overlayChangedFiles(d.getFilePath()))
+}
+
+/**
+ * An element with potentially multiple locations, e.g., variables, functions and types.
+ * Discard only if all locations are in changed files.
+ */
+overlay[local]
+abstract private class MultiDiscardable extends @element {
+  abstract string getFilePath();
+
+  predicate existsInBase() { not isOverlay() }
+
+  string toString() { none() }
+}
+
+overlay[discard_entity]
+private predicate multiDiscardable(@element e) {
   e =
-    any(DiscardableEntityBase de |
-      de.existsInBase() and
-      overlayChangedFiles(de.getFilePath()) and
-      // Only discard if ALL file paths are in changed files
-      forall(string path | path = de.getFilePath() | overlayChangedFiles(path))
+    any(MultiDiscardable d |
+      d.existsInBase() and
+      forall(string path | path = d.getFilePath() | overlayChangedFiles(path))
     )
 }
 
-/** A discardable variable declaration entry. */
 overlay[local]
-private class DiscardableVarDecl extends DiscardableEntityBase instanceof @var_decl {
+private class DiscardableVarDecl extends Discardable instanceof @var_decl {
   override string getFilePath() {
     exists(@location_default loc | var_decls(this, _, _, _, loc) |
       result = getLocationFilePath(loc)
@@ -53,9 +63,8 @@ private class DiscardableVarDecl extends DiscardableEntityBase instanceof @var_d
   }
 }
 
-/** A discardable variable. */
 overlay[local]
-private class DiscardableVariable extends DiscardableEntityBase instanceof @variable {
+private class DiscardableVariable extends MultiDiscardable instanceof @variable {
   override string getFilePath() {
     exists(@var_decl vd, @location_default loc | var_decls(vd, this, _, _, loc) |
       result = getLocationFilePath(loc)
