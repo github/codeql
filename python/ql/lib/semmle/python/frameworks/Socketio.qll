@@ -17,12 +17,12 @@ private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 module SocketIO {
   /** Provides models for socketio `Server` and `AsyncServer` classes. */
   module Server {
-    /** An instance of a socketio `Server` or `AsyncServer`. */
+    /** Gets an instance of a socketio `Server` or `AsyncServer`. */
     API::Node server() {
       result = API::moduleImport("socketio").getMember(["Server", "AsyncServer"]).getAnInstance()
     }
 
-    /** A decorator that indicates a socketio event handler. */
+    /** Gets a decorator that indicates a socketio event handler. */
     private API::Node serverEventAnnotation() {
       result = server().getMember("event")
       or
