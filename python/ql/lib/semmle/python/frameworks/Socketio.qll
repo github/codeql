@@ -1,10 +1,9 @@
 /**
- * Provides definitions and modelling for the `python-socketio` PyPI package.
+ * Provides definitions and modeling for the `python-socketio` PyPI package.
  * See https://python-socketio.readthedocs.io/en/stable/.
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
@@ -79,7 +78,7 @@ module SocketIO {
     }
   }
 
-  /** Provides modelling for socketio server Namespace/AsyncNamespace classes. */
+  /** Provides modeling for socketio server Namespace/AsyncNamespace classes. */
   module Namespace {
     /** Gets a reference to the `socketio.Namespace` or `socketio.AsyncNamespace` classes or any subclass. */
     API::Node subclassRef() {
