@@ -299,6 +299,7 @@ class ClassWithPointsTo extends Class {
   override string getAQlClass() { none() }
 }
 
+/** Gets the `Object` corresponding to the immutable literal `l`. */
 Object getLiteralObject(ImmutableLiteral l) {
   l instanceof IntegerLiteral and
   (

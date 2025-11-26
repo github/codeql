@@ -368,6 +368,7 @@ predicate scope_raises_unknown(Scope s) {
   )
 }
 
+/** An extension of `ExceptFlowNode` that provides points-to related methods. */
 class ExceptFlowNodeWithPointsTo extends ExceptFlowNode {
   private predicate handledObject_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
     this.getType().(ControlFlowNodeWithPointsTo).refersTo(obj, cls, origin)

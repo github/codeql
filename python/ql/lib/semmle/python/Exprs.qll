@@ -565,6 +565,7 @@ class StringLiteral extends Str_, ImmutableLiteral {
   override string toString() { result = "StringLiteral" }
 }
 
+/** Holds if `n` is a named constant (`True`, `False`, or `None`) with name `id`. */
 predicate name_consts(Name_ n, string id) {
   exists(Variable v | py_variables(v, n) and id = v.getId() |
     id = "True" or id = "False" or id = "None"
