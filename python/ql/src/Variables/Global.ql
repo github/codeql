@@ -1,5 +1,5 @@
 /**
- * @name Use of the 'global' statement.
+ * @name Use of the 'global' statement
  * @description Use of the 'global' statement may indicate poor modularity.
  * @kind problem
  * @problem.severity recommendation
