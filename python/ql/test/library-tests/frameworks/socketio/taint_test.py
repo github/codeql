@@ -1,6 +1,5 @@
 import sys
 import socketio 
-import sys
 
 def ensure_tainted(*args):
     print("tainted", args)
