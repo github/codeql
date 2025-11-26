@@ -16,7 +16,7 @@ private import semmle.code.csharp.internal.Location
  */
 Callable getCallableForDataFlow(Callable c) {
   result = c.getUnboundDeclaration() and
-  result.hasBody() and
+  (result.hasBody() or result instanceof ObjectInitMethod) and
   result.getFile().fromSource()
 }
 
