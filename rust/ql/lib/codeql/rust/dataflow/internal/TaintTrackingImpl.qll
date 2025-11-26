@@ -11,6 +11,20 @@ private import codeql.rust.internal.TypeInference as TypeInference
 private import codeql.rust.internal.Type as Type
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
+/**
+ * Holds if the field `field` should, by default, be excluded from taint steps.
+ * The syntax used to denote the field is the same as for `Field` in
+ * models-as-data.
+ */
+extensible predicate excludeFieldTaintStep(string field);
+
+private predicate excludedTaintStepContent(Content c) {
+  exists(string arg | excludeFieldTaintStep(arg) |
+    FlowSummaryImpl::encodeContentStructField(c, arg) or
+    FlowSummaryImpl::encodeContentTupleField(c, arg)
+  )
+}
+
 module RustTaintTracking implements InputSig<Location, RustDataFlow> {
   predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
@@ -36,13 +50,17 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       // taint is propagated. We limit this to not apply if the type of the
       // operation is a small primitive type as these are often uninteresting
       // (for instance in the case of an injection query).
-      RustDataFlow::readContentStep(pred, _, succ) and
-      not exists(Struct s |
-        s = TypeInference::inferType(succ.asExpr()).(Type::StructType).getStruct()
-      |
-        s instanceof Builtins::NumericType or
-        s instanceof Builtins::Bool or
-        s instanceof Builtins::Char
+      exists(Content c |
+        RustDataFlow::readContentStep(pred, c, succ) and
+        forex(Type::Type t | t = TypeInference::inferType(succ.asExpr()) |
+          not exists(Struct s | s = t.(Type::StructType).getStruct() |
+            s instanceof Builtins::NumericType or
+            s instanceof Builtins::Bool or
+            s instanceof Builtins::Char
+          )
+        ) and
+        not excludedTaintStepContent(c) and
+        not TypeInference::inferType(succ.asExpr()).(Type::EnumType).getEnum().isFieldless()
       )
       or
       // Let all read steps (including those from flow summaries and those that
