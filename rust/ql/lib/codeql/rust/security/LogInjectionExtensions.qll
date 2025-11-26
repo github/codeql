@@ -51,4 +51,7 @@ module LogInjection {
   private class NumericTypeBarrier extends Barrier instanceof Barriers::NumericTypeBarrier { }
 
   private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }
+
+  private class FieldlessEnumTypeBarrier extends Barrier instanceof Barriers::FieldlessEnumTypeBarrier
+  { }
 }
