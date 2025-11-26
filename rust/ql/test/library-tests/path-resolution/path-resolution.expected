@@ -269,7 +269,6 @@ resolvePath
 | main.rs:488:26:488:28 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:492:20:492:23 | Self | main.rs:484:5:484:14 | struct S2 |
 | main.rs:492:20:492:34 | ...::AssocType | main.rs:487:26:489:9 | type AssocType |
-| main.rs:492:20:492:34 | ...::AssocType | main.rs:497:26:499:9 | type AssocType |
 | main.rs:497:10:497:15 | Trait4 | main.rs:478:5:482:5 | trait Trait4 |
 | main.rs:497:21:497:22 | S2 | main.rs:484:5:484:14 | struct S2 |
 | main.rs:498:26:498:29 | bool | {EXTERNAL LOCATION} | struct bool |
@@ -278,7 +277,6 @@ resolvePath
 | main.rs:503:13:503:14 | S2 | main.rs:484:5:484:14 | struct S2 |
 | main.rs:503:13:503:17 | ...::f | main.rs:489:11:493:9 | fn f |
 | main.rs:504:20:504:23 | Self | main.rs:484:5:484:14 | struct S2 |
-| main.rs:504:20:504:34 | ...::AssocType | main.rs:487:26:489:9 | type AssocType |
 | main.rs:504:20:504:34 | ...::AssocType | main.rs:497:26:499:9 | type AssocType |
 | main.rs:521:14:521:16 | Foo | main.rs:511:9:513:9 | trait Foo |
 | main.rs:521:22:521:22 | X | main.rs:519:9:519:21 | struct X |

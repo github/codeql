@@ -11,7 +11,3 @@ multipleCallTargets
 | main.rs:2642:13:2642:31 | ...::from(...) |
 | main.rs:2643:13:2643:31 | ...::from(...) |
 | main.rs:2644:13:2644:31 | ...::from(...) |
-multiplePathResolutions
-| main.rs:2463:41:2463:52 | ...::Output |
-| main.rs:2472:38:2472:49 | ...::Output |
-| main.rs:2484:42:2484:53 | ...::Output |

@@ -489,7 +489,7 @@ mod m16 {
         ; // S2Trait3AssocType
         
         fn f(&self) {
-            let x: Self::AssocType = 42; // $ item=S2Trait3AssocType $ SPURIOUS: item=S2Trait4AssocType
+            let x: Self::AssocType = 42; // $ item=S2Trait3AssocType
         } // S2asTrait3::f
     }
 
@@ -501,7 +501,7 @@ mod m16 {
         fn g(&self) {
             Self::f(&self); // $ item=S2asTrait3::f
             S2::f(&self); // $ item=S2asTrait3::f
-            let x: Self::AssocType = true; // $ item=S2Trait4AssocType $ SPURIOUS: item=S2Trait3AssocType
+            let x: Self::AssocType = true; // $ item=S2Trait4AssocType
         }
     }
 }

@@ -1897,6 +1897,16 @@ private ItemNode resolvePathCandQualified(PathExt qualifier, ItemNode q, PathExt
     q = resolvePathCandQualifier(qualifier, path, name) and
     result = getASuccessor(q, name, ns, kind, useOpt) and
     checkQualifiedVisibility(path, result, kind, useOpt)
+  |
+    // Special case for `Self::AssocType`; this always refers to the associated
+    // type in the enclosing `impl` block, if available.
+    forall(ImplItemNode impl, TypeAliasItemNode alias |
+      qualifier = impl.getASelfPath() and alias = result
+    |
+      alias = impl.getAnAssocItem()
+      or
+      not exists(impl.getAssocItem(name).(TypeAliasItemNode))
+    )
   )
 }
 
