@@ -46,7 +46,7 @@ module LogInjection {
 
   /**
    * A barrier for log injection vulnerabilities for nodes whose type is a
-   * numeric or boolean type, which is unlikely to expose any vulnerability.
+   * numeric type, which is unlikely to expose any vulnerability.
    */
   private class NumericTypeBarrier extends Barrier instanceof Barriers::NumericTypeBarrier { }
 
