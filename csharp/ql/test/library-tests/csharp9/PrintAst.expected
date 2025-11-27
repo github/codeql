@@ -1,17 +1,17 @@
 AnonymousObjectCreation.cs:
 #    5| [Class] AnonObj
-#    7|   5: [Field] l
+#    7|   6: [Field] l
 #    7|     -1: [TypeMention] List<AnonObj>
 #    7|       1: [TypeMention] AnonObj
 #    7|     1: [CastExpr] (...) ...
 #    7|       1: [ObjectCreation] object creation of type List<AnonObj>
-#    9|   6: [Property] Prop1
+#    9|   7: [Property] Prop1
 #    9|     -1: [TypeMention] int
 #    9|     3: [Getter] get_Prop1
 #    9|     4: [Setter] set_Prop1
 #-----|       2: (Parameters)
 #    9|         0: [Parameter] value
-#   11|   7: [Method] M1
+#   11|   8: [Method] M1
 #   11|     -1: [TypeMention] AnonObj
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] t
@@ -29,17 +29,17 @@ AnonymousObjectCreation.cs:
 #   14|       1: [ReturnStmt] return ...;
 #   14|         0: [CastExpr] (...) ...
 #   14|           1: [ObjectCreation] object creation of type AnonObj
-#   17|   8: [DelegateType] D
+#   17|   9: [DelegateType] D
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
 #   17|         -1: [TypeMention] int
-#   19|   9: [Method] M2
+#   19|   10: [Method] M2
 #   19|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   19|       0: [Parameter] x
 #   19|         -1: [TypeMention] int
 #   19|     4: [BlockStmt] {...}
-#   21|   10: [Method] GetM
+#   21|   11: [Method] GetM
 #   21|     -1: [TypeMention] D
 #   21|     4: [BlockStmt] {...}
 #   21|       0: [ReturnStmt] return ...;
@@ -47,7 +47,7 @@ AnonymousObjectCreation.cs:
 #   21|           1: [ExplicitDelegateCreation] delegate creation of type D
 #   21|             0: [ImplicitDelegateCreation] delegate creation of type D
 #   21|               0: [MethodAccess] access to method M2
-#   23|   11: [Method] MethodAdd
+#   23|   12: [Method] MethodAdd
 #   23|     -1: [TypeMention] Void
 #   24|     4: [BlockStmt] {...}
 #   25|       0: [LocalVariableDeclStmt] ... ...;
@@ -59,13 +59,13 @@ AnonymousObjectCreation.cs:
 #   25|             1: [ObjectCreation] object creation of type List<Int32>
 BinaryPattern.cs:
 #    3| [Class] BinaryPattern
-#    5|   5: [Property] P1
+#    5|   6: [Property] P1
 #    5|     -1: [TypeMention] int
 #    5|     3: [Getter] get_P1
 #    5|     4: [Setter] set_P1
 #-----|       2: (Parameters)
 #    5|         0: [Parameter] value
-#    7|   6: [Method] M1
+#    7|   7: [Method] M1
 #    7|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] c
@@ -75,7 +75,7 @@ BinaryPattern.cs:
 #    8|       1: [OrPatternExpr] ... or ...
 #    8|         0: [CharLiteral,ConstantPatternExpr] a
 #    8|         1: [CharLiteral,ConstantPatternExpr] b
-#    9|   7: [Method] M2
+#    9|   8: [Method] M2
 #    9|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] c
@@ -91,7 +91,7 @@ BinaryPattern.cs:
 #   10|             0: [TypeMention] BinaryPattern
 #   10|           3: [PropertyPatternExpr] { ... }
 #   10|             0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 1
-#   11|   8: [Method] M3
+#   11|   9: [Method] M3
 #   11|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] c
@@ -103,7 +103,7 @@ BinaryPattern.cs:
 #   12|           0: [TypeMention] object
 #   12|         1: [VariablePatternExpr] BinaryPattern u
 #   12|           0: [TypeMention] BinaryPattern
-#   14|   9: [Method] M4
+#   14|   10: [Method] M4
 #   14|     -1: [TypeMention] string
 #-----|     2: (Parameters)
 #   14|       0: [Parameter] i
@@ -122,7 +122,7 @@ BinaryPattern.cs:
 #   19|             2: [StringLiteralUtf16] "other"
 CovariantReturn.cs:
 #    1| [Class] A
-#    3|   5: [Method] M1
+#    3|   6: [Method] M1
 #    3|     -1: [TypeMention] A
 #    3|     4: [BlockStmt] {...}
 #    3|       0: [ThrowStmt] throw ...;
@@ -130,14 +130,14 @@ CovariantReturn.cs:
 #    6| [Class] B
 #-----|   3: (Base types)
 #    6|     0: [TypeMention] A
-#    8|   5: [Method] M1
+#    8|   6: [Method] M1
 #    8|     -1: [TypeMention] B
 #    8|     4: [BlockStmt] {...}
 #    8|       0: [ThrowStmt] throw ...;
 #    8|         0: [NullLiteral] null
 Discard.cs:
 #    3| [Class] Discard
-#    5|   5: [Method] M1
+#    5|   6: [Method] M1
 #    5|     -1: [TypeMention] Void
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
@@ -227,7 +227,7 @@ ForeachExtension.cs:
 #   14|           0: [YieldReturnStmt] yield return ...;
 #   14|             0: [LocalVariableAccess] access to local variable i
 #   19| [Class] Program
-#   21|   5: [Method] Main
+#   21|   6: [Method] Main
 #   21|     -1: [TypeMention] Task
 #   22|     4: [BlockStmt] {...}
 #   23|       0: [LocalVariableDeclStmt] ... ...;
@@ -273,7 +273,7 @@ ForeachExtension.cs:
 #   37|             1: [IntLiteral] 2
 #   37|             2: [IntLiteral] 3
 #   38|         2: [BlockStmt] {...}
-#   42|   6: [Method] GetAsyncEnumerator
+#   42|   7: [Method] GetAsyncEnumerator
 #   42|     -1: [TypeMention] IAsyncEnumerator<int>
 #   42|       1: [TypeMention] int
 #   43|     4: [BlockStmt] {...}
@@ -289,7 +289,7 @@ ForeachExtension.cs:
 #   46|         0: [IntLiteral] 1
 FunctionPointer.cs:
 #    3| [Class] FnPointer
-#    5|   5: [Class] Program
+#    5|   6: [Class] Program
 #    7|     5: [Field] pointer
 #    7|       -1: [TypeMention] delegate* default<Int32>
 #    7|       1: [AddressOfExpr] &...
@@ -407,7 +407,7 @@ FunctionPointer.cs:
 #   48|         0: [TypeMention] A
 InitOnlyProperty.cs:
 #    3| [Class] Base
-#    5|   5: [Property] Prop0
+#    5|   6: [Property] Prop0
 #    5|     -1: [TypeMention] int
 #    5|     3: [Getter] get_Prop0
 #    5|       4: [BlockStmt] {...}
@@ -421,13 +421,13 @@ InitOnlyProperty.cs:
 #    5|           0: [AssignExpr] ... = ...
 #    5|             0: [PropertyCall] access to property Prop1
 #    5|             1: [ParameterAccess] access to parameter value
-#    6|   6: [Property] Prop1
+#    6|   7: [Property] Prop1
 #    6|     -1: [TypeMention] int
 #    6|     3: [Getter] get_Prop1
 #    6|     4: [Setter] set_Prop1
 #-----|       2: (Parameters)
 #    6|         0: [Parameter] value
-#    7|   7: [Property] Prop2
+#    7|   8: [Property] Prop2
 #    7|     -1: [TypeMention] int
 #    7|     3: [Getter] get_Prop2
 #    7|     4: [Setter] set_Prop2
@@ -436,13 +436,13 @@ InitOnlyProperty.cs:
 #   11| [Class] Derived
 #-----|   3: (Base types)
 #   11|     0: [TypeMention] Base
-#   13|   5: [Property] Prop1
+#   13|   6: [Property] Prop1
 #   13|     -1: [TypeMention] int
 #   13|     3: [Getter] get_Prop1
 #   13|     4: [Setter] set_Prop1
 #-----|       2: (Parameters)
 #   13|         0: [Parameter] value
-#   14|   6: [Property] Prop2
+#   14|   7: [Property] Prop2
 #   14|     -1: [TypeMention] int
 #   16|     3: [Getter] get_Prop2
 #   16|       4: [BlockStmt] {...}
@@ -466,7 +466,7 @@ InitOnlyProperty.cs:
 #   21|             0: [PropertyCall] access to property Prop0
 #   21|             1: [ParameterAccess] access to parameter value
 #   26| [Class] C1
-#   28|   5: [Method] M1
+#   28|   6: [Method] M1
 #   28|     -1: [TypeMention] Void
 #   29|     4: [BlockStmt] {...}
 #   30|       0: [LocalVariableDeclStmt] ... ...;
@@ -490,7 +490,7 @@ IsExternalInit.cs:
 #    6|   1: [Class] IsExternalInit
 LambdaModifier.cs:
 #    4| [Class] Class1
-#    6|   5: [Method] M1
+#    6|   6: [Method] M1
 #    6|     -1: [TypeMention] Task
 #    7|     4: [BlockStmt] {...}
 #    8|       0: [LocalFunctionStmt] m(...)
@@ -550,7 +550,7 @@ LambdaModifier.cs:
 #   15|                         0: [TypeMention] Task
 LocalFunction.cs:
 #    4| [Class] LocalFunction
-#    6|   5: [Method] M1
+#    6|   6: [Method] M1
 #    6|     -1: [TypeMention] Task
 #    7|     4: [BlockStmt] {...}
 #    8|       0: [LocalVariableDeclStmt] ... ...;
@@ -578,7 +578,7 @@ LocalFunction.cs:
 #   14|             0: [IntLiteral] 2
 #   16|       3: [LocalFunctionStmt] localExtern(...)
 #   16|         0: [LocalFunction] localExtern
-#   19|   6: [Method] M2
+#   19|   7: [Method] M2
 #   19|     -1: [TypeMention] Void
 #   20|     4: [BlockStmt] {...}
 #   21|       0: [LocalFunctionStmt] dup(...)
@@ -610,7 +610,7 @@ LocalFunction.cs:
 #   27|             1: [IntLiteral] 42
 NativeInt.cs:
 #    3| [Class] NativeInt
-#    5|   5: [Method] M1
+#    5|   6: [Method] M1
 #    5|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] j
@@ -654,7 +654,7 @@ NativeInt.cs:
 #   12|             0: [TypeAccess] access to type IntPtr
 #   12|               0: [TypeMention] IntPtr
 #   12|             1: [IntLiteral] 42
-#   15|   6: [Method] M2
+#   15|   7: [Method] M2
 #   15|     -1: [TypeMention] Void
 #   16|     4: [BlockStmt] {...}
 #   17|       0: [LocalVariableDeclStmt] ... ...;
@@ -718,7 +718,7 @@ NativeInt.cs:
 ParenthesizedPattern.cs:
 #    3| [Class] T
 #    5| [Class] ParenthesizedPattern
-#    7|   5: [Method] M1
+#    7|   6: [Method] M1
 #    7|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] o
@@ -738,7 +738,7 @@ ParenthesizedPattern.cs:
 #   13|             0: [VariablePatternExpr] Object p2
 #   13|             3: [PropertyPatternExpr] { ... }
 #   14|         1: [BlockStmt] {...}
-#   18|   6: [Method] M2
+#   18|   7: [Method] M2
 #   18|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] o
@@ -778,23 +778,23 @@ ParenthesizedPattern.cs:
 #   26|               2: [IntLiteral] 5
 Record.cs:
 #    4| [RecordClass] Person
-#    4|   11: [NEOperator] !=
+#    4|   12: [NEOperator] !=
 #-----|     2: (Parameters)
 #    4|       0: [Parameter] left
 #    4|       1: [Parameter] right
-#    4|   12: [EQOperator] ==
+#    4|   13: [EQOperator] ==
 #-----|     2: (Parameters)
 #    4|       0: [Parameter] left
 #    4|       1: [Parameter] right
-#    4|   13: [Property] EqualityContract
+#    4|   14: [Property] EqualityContract
 #    4|     3: [Getter] get_EqualityContract
-#    6|   14: [Property] LastName
+#    6|   15: [Property] LastName
 #    6|     -1: [TypeMention] string
 #    6|     3: [Getter] get_LastName
-#    7|   15: [Property] FirstName
+#    7|   16: [Property] FirstName
 #    7|     -1: [TypeMention] string
 #    7|     3: [Getter] get_FirstName
-#    9|   16: [InstanceConstructor] Person
+#    9|   17: [InstanceConstructor] Person
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] first
 #    9|         -1: [TypeMention] string
@@ -808,20 +808,20 @@ Record.cs:
 #    9|         0: [ParameterAccess] access to parameter first
 #    9|         1: [ParameterAccess] access to parameter last
 #   12| [RecordClass] Teacher
-#   12|   12: [NEOperator] !=
+#   12|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   12|       0: [Parameter] left
 #   12|       1: [Parameter] right
-#   12|   13: [EQOperator] ==
+#   12|   14: [EQOperator] ==
 #-----|     2: (Parameters)
 #   12|       0: [Parameter] left
 #   12|       1: [Parameter] right
-#   12|   14: [Property] EqualityContract
+#   12|   15: [Property] EqualityContract
 #   12|     3: [Getter] get_EqualityContract
-#   14|   15: [Property] Subject
+#   14|   16: [Property] Subject
 #   14|     -1: [TypeMention] string
 #   14|     3: [Getter] get_Subject
-#   16|   16: [InstanceConstructor] Teacher
+#   16|   17: [InstanceConstructor] Teacher
 #-----|     2: (Parameters)
 #   16|       0: [Parameter] first
 #   16|         -1: [TypeMention] string
@@ -836,20 +836,20 @@ Record.cs:
 #   17|       0: [PropertyCall] access to property Subject
 #   17|       1: [ParameterAccess] access to parameter sub
 #   20| [RecordClass] Student
-#   20|   12: [NEOperator] !=
+#   20|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   20|       0: [Parameter] left
 #   20|       1: [Parameter] right
-#   20|   13: [EQOperator] ==
+#   20|   14: [EQOperator] ==
 #-----|     2: (Parameters)
 #   20|       0: [Parameter] left
 #   20|       1: [Parameter] right
-#   20|   14: [Property] EqualityContract
+#   20|   15: [Property] EqualityContract
 #   20|     3: [Getter] get_EqualityContract
-#   22|   15: [Property] Level
+#   22|   16: [Property] Level
 #   22|     -1: [TypeMention] int
 #   22|     3: [Getter] get_Level
-#   24|   16: [InstanceConstructor] Student
+#   24|   17: [InstanceConstructor] Student
 #-----|     2: (Parameters)
 #   24|       0: [Parameter] first
 #   24|         -1: [TypeMention] string
@@ -864,44 +864,44 @@ Record.cs:
 #   24|       0: [PropertyCall] access to property Level
 #   24|       1: [ParameterAccess] access to parameter level
 #   27| [RecordClass] Person1
-#   27|   12: [NEOperator] !=
+#   27|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   27|       0: [Parameter] left
 #   27|       1: [Parameter] right
-#   27|   13: [EQOperator] ==
+#   27|   14: [EQOperator] ==
 #-----|     2: (Parameters)
 #   27|       0: [Parameter] left
 #   27|       1: [Parameter] right
-#   27|   14: [Property] EqualityContract
+#   27|   15: [Property] EqualityContract
 #   27|     3: [Getter] get_EqualityContract
-#   27|   15: [InstanceConstructor,PrimaryConstructor] Person1
+#   27|   16: [InstanceConstructor,PrimaryConstructor] Person1
 #-----|     2: (Parameters)
 #   27|       0: [Parameter] FirstName
 #   27|         -1: [TypeMention] string
 #   27|       1: [Parameter] LastName
 #   27|         -1: [TypeMention] string
-#   27|   16: [Property] FirstName
+#   27|   17: [Property] FirstName
 #   27|     3: [Getter] get_FirstName
 #   27|     4: [Setter] set_FirstName
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] value
-#   27|   17: [Property] LastName
+#   27|   18: [Property] LastName
 #   27|     3: [Getter] get_LastName
 #   27|     4: [Setter] set_LastName
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] value
 #   29| [RecordClass] Teacher1
-#   29|   13: [NEOperator] !=
+#   29|   14: [NEOperator] !=
 #-----|     2: (Parameters)
 #   29|       0: [Parameter] left
 #   29|       1: [Parameter] right
-#   29|   14: [EQOperator] ==
+#   29|   15: [EQOperator] ==
 #-----|     2: (Parameters)
 #   29|       0: [Parameter] left
 #   29|       1: [Parameter] right
-#   29|   15: [Property] EqualityContract
+#   29|   16: [Property] EqualityContract
 #   29|     3: [Getter] get_EqualityContract
-#   29|   16: [InstanceConstructor,PrimaryConstructor] Teacher1
+#   29|   17: [InstanceConstructor,PrimaryConstructor] Teacher1
 #-----|     2: (Parameters)
 #   29|       0: [Parameter] FirstName
 #   29|         -1: [TypeMention] string
@@ -912,23 +912,23 @@ Record.cs:
 #   30|     3: [ConstructorInitializer] call to constructor Person1
 #   30|       0: [ParameterAccess] access to parameter FirstName
 #   30|       1: [ParameterAccess] access to parameter LastName
-#   29|   17: [Property] Subject
+#   29|   18: [Property] Subject
 #   29|     3: [Getter] get_Subject
 #   29|     4: [Setter] set_Subject
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] value
 #   32| [RecordClass] Student1
-#   32|   13: [NEOperator] !=
+#   32|   14: [NEOperator] !=
 #-----|     2: (Parameters)
 #   32|       0: [Parameter] left
 #   32|       1: [Parameter] right
-#   32|   14: [EQOperator] ==
+#   32|   15: [EQOperator] ==
 #-----|     2: (Parameters)
 #   32|       0: [Parameter] left
 #   32|       1: [Parameter] right
-#   32|   15: [Property] EqualityContract
+#   32|   16: [Property] EqualityContract
 #   32|     3: [Getter] get_EqualityContract
-#   32|   16: [InstanceConstructor,PrimaryConstructor] Student1
+#   32|   17: [InstanceConstructor,PrimaryConstructor] Student1
 #-----|     2: (Parameters)
 #   32|       0: [Parameter] FirstName
 #   32|         -1: [TypeMention] string
@@ -939,61 +939,61 @@ Record.cs:
 #   33|     3: [ConstructorInitializer] call to constructor Person1
 #   33|       0: [ParameterAccess] access to parameter FirstName
 #   33|       1: [ParameterAccess] access to parameter LastName
-#   32|   17: [Property] Level
+#   32|   18: [Property] Level
 #   32|     3: [Getter] get_Level
 #   32|     4: [Setter] set_Level
 #-----|       2: (Parameters)
 #   32|         0: [Parameter] value
 #   35| [RecordClass] Pet
-#   35|   12: [NEOperator] !=
+#   35|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] left
 #   35|       1: [Parameter] right
-#   35|   13: [EQOperator] ==
+#   35|   14: [EQOperator] ==
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] left
 #   35|       1: [Parameter] right
-#   35|   14: [Property] EqualityContract
+#   35|   15: [Property] EqualityContract
 #   35|     3: [Getter] get_EqualityContract
-#   35|   15: [InstanceConstructor,PrimaryConstructor] Pet
+#   35|   16: [InstanceConstructor,PrimaryConstructor] Pet
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] Name
 #   35|         -1: [TypeMention] string
-#   35|   16: [Property] Name
+#   35|   17: [Property] Name
 #   35|     3: [Getter] get_Name
 #   35|     4: [Setter] set_Name
 #-----|       2: (Parameters)
 #   35|         0: [Parameter] value
-#   37|   17: [Method] ShredTheFurniture
+#   37|   18: [Method] ShredTheFurniture
 #   37|     -1: [TypeMention] Void
 #   38|     4: [MethodCall] call to method WriteLine
 #   38|       -1: [TypeAccess] access to type Console
 #   38|         0: [TypeMention] Console
 #   38|       0: [StringLiteralUtf16] "Shredding furniture"
 #   41| [RecordClass] Dog
-#   41|   12: [NEOperator] !=
+#   41|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] left
 #   41|       1: [Parameter] right
-#   41|   13: [EQOperator] ==
+#   41|   14: [EQOperator] ==
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] left
 #   41|       1: [Parameter] right
-#   41|   14: [InstanceConstructor,PrimaryConstructor] Dog
+#   41|   15: [InstanceConstructor,PrimaryConstructor] Dog
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] Name
 #   41|         -1: [TypeMention] string
 #   41|     3: [ConstructorInitializer] call to constructor Pet
 #   41|       0: [ParameterAccess] access to parameter Name
-#   41|   15: [Property] EqualityContract
+#   41|   16: [Property] EqualityContract
 #   41|     3: [Getter] get_EqualityContract
-#   43|   16: [Method] WagTail
+#   43|   17: [Method] WagTail
 #   43|     -1: [TypeMention] Void
 #   44|     4: [MethodCall] call to method WriteLine
 #   44|       -1: [TypeAccess] access to type Console
 #   44|         0: [TypeMention] Console
 #   44|       0: [StringLiteralUtf16] "It's tail wagging time"
-#   46|   17: [Method] ToString
+#   46|   18: [Method] ToString
 #   46|     -1: [TypeMention] string
 #   47|     4: [BlockStmt] {...}
 #   48|       0: [LocalVariableDeclStmt] ... ...;
@@ -1013,37 +1013,37 @@ Record.cs:
 #   50|               -1: [LocalVariableAccess] access to local variable s
 #   50|           1: [StringLiteralUtf16] " is a dog"
 #   54| [RecordClass] R1
-#   54|   12: [NEOperator] !=
+#   54|   13: [NEOperator] !=
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] left
 #   54|       1: [Parameter] right
-#   54|   13: [EQOperator] ==
+#   54|   14: [EQOperator] ==
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] left
 #   54|       1: [Parameter] right
-#   54|   14: [Property] EqualityContract
+#   54|   15: [Property] EqualityContract
 #   54|     3: [Getter] get_EqualityContract
-#   54|   15: [InstanceConstructor,PrimaryConstructor] R1
+#   54|   16: [InstanceConstructor,PrimaryConstructor] R1
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] A
 #   54|         -1: [TypeMention] string
-#   54|   16: [Property] A
+#   54|   17: [Property] A
 #   54|     3: [Getter] get_A
 #   54|     4: [Setter] set_A
 #-----|       2: (Parameters)
 #   54|         0: [Parameter] value
 #   56| [RecordClass] R2
-#   56|   13: [NEOperator] !=
+#   56|   14: [NEOperator] !=
 #-----|     2: (Parameters)
 #   56|       0: [Parameter] left
 #   56|       1: [Parameter] right
-#   56|   14: [EQOperator] ==
+#   56|   15: [EQOperator] ==
 #-----|     2: (Parameters)
 #   56|       0: [Parameter] left
 #   56|       1: [Parameter] right
-#   56|   15: [Property] EqualityContract
+#   56|   16: [Property] EqualityContract
 #   56|     3: [Getter] get_EqualityContract
-#   56|   16: [InstanceConstructor,PrimaryConstructor] R2
+#   56|   17: [InstanceConstructor,PrimaryConstructor] R2
 #-----|     2: (Parameters)
 #   56|       0: [Parameter] A
 #   56|         -1: [TypeMention] string
@@ -1051,13 +1051,13 @@ Record.cs:
 #   56|         -1: [TypeMention] string
 #   56|     3: [ConstructorInitializer] call to constructor R1
 #   56|       0: [ParameterAccess] access to parameter A
-#   56|   17: [Property] B
+#   56|   18: [Property] B
 #   56|     3: [Getter] get_B
 #   56|     4: [Setter] set_B
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] value
 #   58| [Class] Record1
-#   60|   5: [Method] M1
+#   60|   6: [Method] M1
 #   60|     -1: [TypeMention] Void
 #   61|     4: [BlockStmt] {...}
 #   62|       0: [LocalVariableDeclStmt] ... ...;
@@ -1084,7 +1084,7 @@ Record.cs:
 #   65|           0: [OperatorCall] call to operator ==
 #   65|             0: [LocalVariableAccess] access to local variable student
 #   65|             1: [LocalVariableAccess] access to local variable person
-#   68|   6: [Method] M2
+#   68|   7: [Method] M2
 #   68|     -1: [TypeMention] Void
 #   69|     4: [BlockStmt] {...}
 #   70|       0: [LocalVariableDeclStmt] ... ...;
@@ -1140,7 +1140,7 @@ Record.cs:
 #   77|           1: [WithExpr] ... with { ... }
 #   77|             0: [LocalVariableAccess] access to local variable p1
 #   77|             1: [ObjectInitializer] { ..., ... }
-#   80|   7: [Method] M3
+#   80|   8: [Method] M3
 #   80|     -1: [TypeMention] Void
 #   81|     4: [BlockStmt] {...}
 #   82|       0: [LocalVariableDeclStmt] ... ...;
@@ -1168,7 +1168,7 @@ Record.cs:
 #   84|                 1: [StringLiteralUtf16] "C"
 RelationalPattern.cs:
 #    3| [Class] RelationalPattern
-#    5|   5: [Method] M1
+#    5|   6: [Method] M1
 #    5|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] c
@@ -1177,7 +1177,7 @@ RelationalPattern.cs:
 #    6|       0: [ParameterAccess] access to parameter c
 #    6|       1: [GEPattern] >= ...
 #    6|         0: [CharLiteral] a
-#    7|   6: [Method] M2
+#    7|   7: [Method] M2
 #    7|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] c
@@ -1186,7 +1186,7 @@ RelationalPattern.cs:
 #    8|       0: [ParameterAccess] access to parameter c
 #    8|       1: [GTPattern] > ...
 #    8|         0: [CharLiteral] a
-#    9|   7: [Method] M3
+#    9|   8: [Method] M3
 #    9|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] c
@@ -1195,7 +1195,7 @@ RelationalPattern.cs:
 #   10|       0: [ParameterAccess] access to parameter c
 #   10|       1: [LEPattern] <= ...
 #   10|         0: [CharLiteral] a
-#   11|   8: [Method] M4
+#   11|   9: [Method] M4
 #   11|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] c
@@ -1204,7 +1204,7 @@ RelationalPattern.cs:
 #   12|       0: [ParameterAccess] access to parameter c
 #   12|       1: [LTPattern] < ...
 #   12|         0: [CharLiteral] a
-#   14|   9: [Method] M5
+#   14|   10: [Method] M5
 #   14|     -1: [TypeMention] string
 #-----|     2: (Parameters)
 #   14|       0: [Parameter] i
@@ -1225,7 +1225,7 @@ RelationalPattern.cs:
 #   20|             2: [StringLiteralUtf16] "other"
 TargetType.cs:
 #    5| [Class] TargetType
-#    7|   5: [Method] M2
+#    7|   6: [Method] M2
 #    7|     -1: [TypeMention] Void
 #    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalVariableDeclStmt] ... ...;
@@ -1356,7 +1356,7 @@ TargetType.cs:
 #   36|                 0: [ObjectCreation] object creation of type TargetType
 #   36|                   0: [TypeMention] TargetType
 #   37|               2: [IntLiteral] 12
-#   40|   6: [ImplicitConversionOperator] implicit conversion
+#   40|   7: [ImplicitConversionOperator] implicit conversion
 #   40|     -1: [TypeMention] int
 #-----|     2: (Parameters)
 #   40|       0: [Parameter] d
@@ -1365,14 +1365,14 @@ TargetType.cs:
 TypeParameterNullability.cs:
 #    1| [Interface] I1
 #    3| [Class] A2
-#    5|   5: [Method] F1`1
+#    5|   6: [Method] F1`1
 #    5|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    5|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] t
 #    5|     4: [BlockStmt] {...}
-#    6|   6: [Method] F2`1
+#    6|   7: [Method] F2`1
 #    6|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    6|       0: [TypeParameter] T
@@ -1381,28 +1381,28 @@ TypeParameterNullability.cs:
 #    6|         -1: [TypeMention] T?
 #    6|           1: [TypeMention] T
 #    6|     4: [BlockStmt] {...}
-#    7|   7: [Method] F3`1
+#    7|   8: [Method] F3`1
 #    7|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    7|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] t
 #    7|     4: [BlockStmt] {...}
-#    8|   8: [Method] F4`1
+#    8|   9: [Method] F4`1
 #    8|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    8|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] t
 #    8|     4: [BlockStmt] {...}
-#    9|   9: [Method] F5`1
+#    9|   10: [Method] F5`1
 #    9|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #    9|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] t
 #    9|     4: [BlockStmt] {...}
-#   10|   10: [Method] F6`1
+#   10|   11: [Method] F6`1
 #   10|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   10|       0: [TypeParameter] T
@@ -1414,14 +1414,14 @@ TypeParameterNullability.cs:
 #   13| [Class] B2
 #-----|   3: (Base types)
 #   13|     0: [TypeMention] A2
-#   15|   5: [Method] F1`1
+#   15|   6: [Method] F1`1
 #   15|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   15|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   15|       0: [Parameter] t
 #   15|     4: [BlockStmt] {...}
-#   16|   6: [Method] F2`1
+#   16|   7: [Method] F2`1
 #   16|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   16|       0: [TypeParameter] T
@@ -1430,21 +1430,21 @@ TypeParameterNullability.cs:
 #   16|         -1: [TypeMention] T?
 #   16|           1: [TypeMention] T
 #   16|     4: [BlockStmt] {...}
-#   17|   7: [Method] F3`1
+#   17|   8: [Method] F3`1
 #   17|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   17|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] t
 #   17|     4: [BlockStmt] {...}
-#   18|   8: [Method] F4`1
+#   18|   9: [Method] F4`1
 #   18|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   18|       0: [TypeParameter] T
 #-----|     2: (Parameters)
 #   18|       0: [Parameter] t
 #   18|     4: [BlockStmt] {...}
-#   19|   9: [Method] F6`1
+#   19|   10: [Method] F6`1
 #   19|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   19|       0: [TypeParameter] T
@@ -1456,7 +1456,7 @@ TypeParameterNullability.cs:
 #   22| [Class] B3
 #-----|   3: (Base types)
 #   22|     0: [TypeMention] A2
-#   24|   5: [Method] F2`1
+#   24|   6: [Method] F2`1
 #   24|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   24|       0: [TypeParameter] T
@@ -1467,7 +1467,7 @@ TypeParameterNullability.cs:
 #   24|     4: [BlockStmt] {...}
 TypePattern.cs:
 #    3| [Class] TypePattern
-#    5|   5: [Method] M1
+#    5|   6: [Method] M1
 #    5|     -1: [TypeMention] object
 #-----|     2: (Parameters)
 #    5|       0: [Parameter] o1
@@ -1516,13 +1516,13 @@ TypePattern.cs:
 #   14|             2: [LocalVariableAccess] access to local variable o
 UnaryPattern.cs:
 #    3| [Class] UnaryPattern
-#    5|   5: [Property] P1
+#    5|   6: [Property] P1
 #    5|     -1: [TypeMention] int
 #    5|     3: [Getter] get_P1
 #    5|     4: [Setter] set_P1
 #-----|       2: (Parameters)
 #    5|         0: [Parameter] value
-#    7|   6: [Method] M1
+#    7|   7: [Method] M1
 #    7|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    7|       0: [Parameter] c
@@ -1531,7 +1531,7 @@ UnaryPattern.cs:
 #    8|       0: [ParameterAccess] access to parameter c
 #    8|       1: [NotPatternExpr] not ...
 #    8|         0: [CharLiteral,ConstantPatternExpr] a
-#    9|   7: [Method] M2
+#    9|   8: [Method] M2
 #    9|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #    9|       0: [Parameter] c
@@ -1540,7 +1540,7 @@ UnaryPattern.cs:
 #   10|       0: [ParameterAccess] access to parameter c
 #   10|       1: [NotPatternExpr] not ...
 #   10|         0: [ConstantPatternExpr,NullLiteral] null
-#   11|   8: [Method] M3
+#   11|   9: [Method] M3
 #   11|     -1: [TypeMention] bool
 #-----|     2: (Parameters)
 #   11|       0: [Parameter] c
@@ -1554,7 +1554,7 @@ UnaryPattern.cs:
 #   12|             0: [TypeMention] UnaryPattern
 #   12|           3: [PropertyPatternExpr] { ... }
 #   12|             0: [ConstantPatternExpr,IntLiteral,LabeledPatternExpr] 1
-#   14|   9: [Method] M4
+#   14|   10: [Method] M4
 #   14|     -1: [TypeMention] string
 #-----|     2: (Parameters)
 #   14|       0: [Parameter] i

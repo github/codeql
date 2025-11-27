@@ -31,7 +31,7 @@ enums.cs:
 #   40|         1: [CastExpr] (...) ...
 #   40|           1: [MemberConstantAccess] access to constant Red
 #   44|   6: [Class] Test
-#   47|     5: [Method] Main
+#   47|     6: [Method] Main
 #   47|       -1: [TypeMention] Void
 #   48|       4: [BlockStmt] {...}
 #   49|         0: [ExprStmt] ...;
@@ -58,7 +58,7 @@ enums.cs:
 #   51|               0: [MemberConstantAccess] access to constant Blue
 #   51|                 -1: [TypeAccess] access to type SparseColor
 #   51|                   0: [TypeMention] SparseColor
-#   54|     6: [Method] StringFromColor
+#   54|     7: [Method] StringFromColor
 #   54|       -1: [TypeMention] string
 #-----|       2: (Parameters)
 #   54|         0: [Parameter] c
