@@ -140,6 +140,9 @@ class EnumType extends Type, TEnum {
 
   EnumType() { this = TEnum(enum) }
 
+  /** Gets the enum that this enum type represents. */
+  Enum getEnum() { result = enum }
+
   override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
   }
