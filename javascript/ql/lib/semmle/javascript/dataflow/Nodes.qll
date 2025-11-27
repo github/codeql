@@ -393,6 +393,9 @@ DataFlow::SourceNode globalObjectRef() {
   // DOM
   result = globalVariable("window")
   or
+  // DOM alias via `document.defaultView`
+  result = globalVariable("document").getAPropertyRead("defaultView")
+  or
   // Node.js
   result = globalVariable("global")
   or
