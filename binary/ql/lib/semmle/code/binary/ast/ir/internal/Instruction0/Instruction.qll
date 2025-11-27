@@ -121,6 +121,12 @@ class CJumpInstruction extends Instruction {
   ConditionJumpTargetOperand getJumpTargetOperand() { result = this.getAnOperand() }
 }
 
+class JumpInstruction extends Instruction {
+  override Opcode::Jump opcode;
+
+  JumpTargetOperand getJumpTargetOperand() { result = this.getAnOperand() }
+}
+
 class RetInstruction extends Instruction {
   override Opcode::Ret opcode;
 }

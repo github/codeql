@@ -64,4 +64,8 @@ class ConditionJumpTargetOperand extends Operand {
   override Tags::CondJumpTargetTag operandTag;
 }
 
+class JumpTargetOperand extends Operand {
+  override Tags::JumpTargetTag operandTag;
+}
+
 class OperandTag = Tags::OperandTag;

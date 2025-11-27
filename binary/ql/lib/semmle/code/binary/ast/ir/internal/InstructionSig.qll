@@ -40,6 +40,8 @@ signature module InstructionSig {
 
   class ConditionJumpTargetOperand extends Operand;
 
+  class JumpTargetOperand extends Operand;
+
   class LeftOperand extends Operand;
 
   class RightOperand extends Operand;
@@ -140,6 +142,10 @@ signature module InstructionSig {
     ConditionOperand getConditionOperand();
 
     ConditionJumpTargetOperand getJumpTargetOperand();
+  }
+
+  class JumpInstruction extends Instruction {
+    JumpTargetOperand getJumpTargetOperand();
   }
 
   class CopyInstruction extends Instruction {

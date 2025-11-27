@@ -381,6 +381,12 @@ module Transform<InstructionSig Input> {
       ConditionJumpTargetOperand getJumpTargetOperand() { result = this.getAnOperand() }
     }
 
+    class JumpInstruction extends Instruction {
+      JumpInstruction() { this.getOpcode() instanceof Opcode::Jump }
+
+      JumpTargetOperand getJumpTargetOperand() { result = this.getAnOperand() }
+    }
+
     class BinaryInstruction extends Instruction {
       BinaryInstruction() { this.getOpcode() instanceof Opcode::BinaryOpcode }
 
@@ -648,6 +654,10 @@ module Transform<InstructionSig Input> {
 
     class ConditionJumpTargetOperand extends Operand {
       ConditionJumpTargetOperand() { this.getOperandTag() instanceof Tags::CondJumpTargetTag }
+    }
+
+    class JumpTargetOperand extends Operand {
+      JumpTargetOperand() { this.getOperandTag() instanceof Tags::JumpTargetTag }
     }
 
     class LeftOperand extends Operand {
