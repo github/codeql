@@ -2078,38 +2078,151 @@ predicate localExprFlow(Expr e1, Expr e2) {
   localExprFlowPlus(e1, e2)
 }
 
+/**
+ * A canonical representation of a field.
+ *
+ * For performance reasons we want a unique `Content` that represents
+ * a given field across any template instantiation of a class.
+ *
+ * This is possible in _almost_ all cases, but there are cases where it is
+ * not possible to map between a field in the uninstantiated template to a
+ * field in the instantiated template. This happens in the case of local class
+ * definitions (because the local class is not the template that constructs
+ * the instantiation - it is the enclosing function). So this abstract class
+ * has two implementations: a non-local case (where we can represent a
+ * canonical field as the field declaration from an uninstantiated class
+ * template or a non-templated class), and a local case (where we simply use
+ * the field from the instantiated class).
+ */
+abstract private class CanonicalField extends Field {
+  /** Gets a field represented by this canonical field. */
+  abstract Field getAField();
+
+  /**
+   * Gets a class that declares a field represented by this canonical field.
+   */
+  abstract Class getADeclaringType();
+
+  /**
+   * Gets a type that this canonical field may have. Note that this may
+   * not be a unique type. For example, consider this case:
+   * ```
+   * template<typename T>
+   * struct S { T x; };
+   *
+   * S<int> s1;
+   * S<char> s2;
+   * ```
+   * In this case the canonical field corresponding to `S::x` has two types:
+   * `int` and `char`.
+   */
+  Type getAType() { result = this.getAField().getType() }
+
+  Type getAnUnspecifiedType() { result = this.getAType().getUnspecifiedType() }
+}
+
+private class NonLocalCanonicalField extends CanonicalField {
+  Class declaringType;
+
+  NonLocalCanonicalField() {
+    declaringType = this.getDeclaringType() and
+    not declaringType.isFromTemplateInstantiation(_) and
+    not declaringType.isLocal() // handled in LocalCanonicalField
+  }
+
+  override Field getAField() {
+    exists(Class c | result.getDeclaringType() = c |
+      // Either the declaring class of the field is a template instantiation
+      // that has been constructed from this canonical declaration
+      c.isConstructedFrom(declaringType) and
+      pragma[only_bind_out](result.getName()) = pragma[only_bind_out](this.getName())
+      or
+      // or this canonical declaration is not a template.
+      not c.isConstructedFrom(_) and
+      result = this
+    )
+  }
+
+  override Class getADeclaringType() {
+    result = this.getDeclaringType()
+    or
+    result.isConstructedFrom(this.getDeclaringType())
+  }
+}
+
+private class LocalCanonicalField extends CanonicalField {
+  Class declaringType;
+
+  LocalCanonicalField() {
+    declaringType = this.getDeclaringType() and
+    declaringType.isLocal()
+  }
+
+  override Field getAField() { result = this }
+
+  override Class getADeclaringType() { result = declaringType }
+}
+
+/**
+ * A canonical representation of a `Union`. See `CanonicalField` for the explanation for
+ * why we need a canonical representation.
+ */
+abstract private class CanonicalUnion extends Union {
+  /** Gets a union represented by this canonical union. */
+  abstract Union getAUnion();
+
+  /** Gets a canonical field of this canonical union. */
+  CanonicalField getACanonicalField() { result.getDeclaringType() = this }
+}
+
+private class NonLocalCanonicalUnion extends CanonicalUnion {
+  NonLocalCanonicalUnion() { not this.isFromTemplateInstantiation(_) and not this.isLocal() }
+
+  override Union getAUnion() {
+    result = this
+    or
+    result.isConstructedFrom(this)
+  }
+}
+
+private class LocalCanonicalUnion extends CanonicalUnion {
+  LocalCanonicalUnion() { this.isLocal() }
+
+  override Union getAUnion() { result = this }
+}
+
 bindingset[f]
 pragma[inline_late]
-private int getFieldSize(Field f) { result = f.getType().getSize() }
+private int getFieldSize(CanonicalField f) { result = max(f.getAType().getSize()) }
 
 /**
  * Gets a field in the union `u` whose size
  * is `bytes` number of bytes.
  */
-private Field getAFieldWithSize(Union u, int bytes) {
-  result = u.getAField() and
+private CanonicalField getAFieldWithSize(CanonicalUnion u, int bytes) {
+  result = u.getACanonicalField() and
   bytes = getFieldSize(result)
 }
 
 cached
 private newtype TContent =
-  TFieldContent(Field f, int indirectionIndex) {
-    // the indirection index for field content starts at 1 (because `TFieldContent` is thought of as
+  TNonUnionContent(CanonicalField f, int indirectionIndex) {
+    // the indirection index for field content starts at 1 (because `TNonUnionContent` is thought of as
     // the address of the field, `FieldAddress` in the IR).
-    indirectionIndex = [1 .. SsaImpl::getMaxIndirectionsForType(f.getUnspecifiedType())] and
+    indirectionIndex = [1 .. max(SsaImpl::getMaxIndirectionsForType(f.getAnUnspecifiedType()))] and
     // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
   } or
-  TUnionContent(Union u, int bytes, int indirectionIndex) {
-    exists(Field f |
-      f = u.getAField() and
+  TUnionContent(CanonicalUnion u, int bytes, int indirectionIndex) {
+    exists(CanonicalField f |
+      f = u.getACanonicalField() and
       bytes = getFieldSize(f) and
       // We key `UnionContent` by the union instead of its fields since a write to one
       // field can be read by any read of the union's fields. Again, the indirection index
       // is 1-based (because 0 is considered the address).
       indirectionIndex =
         [1 .. max(SsaImpl::getMaxIndirectionsForType(getAFieldWithSize(u, bytes)
-                    .getUnspecifiedType())
+                    .getAnUnspecifiedType())
           )]
     )
   } or
@@ -2124,14 +2237,14 @@ private newtype TContent =
  */
 class Content extends TContent {
   /** Gets a textual representation of this element. */
-  abstract string toString();
+  string toString() { none() } // overridden in subclasses
 
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
 
   /** Gets the indirection index of this `Content`. */
-  abstract int getIndirectionIndex();
+  int getIndirectionIndex() { none() } // overridden in subclasses
 
   /**
    * INTERNAL: Do not use.
@@ -2142,7 +2255,7 @@ class Content extends TContent {
    * For example, a write to a field `f` implies that any content of
    * the form `*f` is also cleared.
    */
-  abstract predicate impliesClearOf(Content c);
+  predicate impliesClearOf(Content c) { none() } // overridden in subclasses
 }
 
 /**
@@ -2162,37 +2275,62 @@ private module ContentStars {
 
 private import ContentStars
 
-/** A reference through a non-union instance field. */
+private class TFieldContent = TNonUnionContent or TUnionContent;
+
+/**
+ * A `Content` that references a `Field`. This may be a field of a `struct`,
+ * `class`, or `union`. In the case of a `union` there may be multiple fields
+ * associated with the same `Content`.
+ */
 class FieldContent extends Content, TFieldContent {
-  private Field f;
+  /** Gets a `Field` of this `Content`. */
+  Field getAField() { none() }
+
+  /**
+   * Gets the field associated with this `Content`, if a unique one exists.
+   *
+   * For fields from template instantiations this predicate may still return
+   * more than one field, but all the fields will be constructed from the same
+   * template.
+   */
+  Field getField() { none() } // overridden in subclasses
+
+  override int getIndirectionIndex() { none() } // overridden in subclasses
+
+  override string toString() { none() } // overridden in subclasses
+
+  override predicate impliesClearOf(Content c) { none() } // overridden in subclasses
+}
+
+/** A reference through a non-union instance field. */
+class NonUnionFieldContent extends FieldContent, TNonUnionContent {
+  private CanonicalField f;
   private int indirectionIndex;
 
-  FieldContent() { this = TFieldContent(f, indirectionIndex) }
+  NonUnionFieldContent() { this = TNonUnionContent(f, indirectionIndex) }
 
   override string toString() { result = contentStars(this) + f.toString() }
 
-  Field getField() { result = f }
+  final override Field getField() { result = f.getAField() }
+
+  override Field getAField() { result = this.getField() }
 
   /** Gets the indirection index of this `FieldContent`. */
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) {
-    exists(FieldContent fc |
-      fc = c and
-      fc.getField() = f and
+    exists(int i |
+      c = TNonUnionContent(f, i) and
       // If `this` is `f` then `c` is cleared if it's of the
       // form `*f`, `**f`, etc.
-      fc.getIndirectionIndex() >= indirectionIndex
+      i >= indirectionIndex
     )
   }
 }
 
 /** A reference through an instance field of a union. */
-class UnionContent extends Content, TUnionContent {
-  private Union u;
+class UnionContent extends FieldContent, TUnionContent {
+  private CanonicalUnion u;
   private int indirectionIndex;
   private int bytes;
 
@@ -2200,27 +2338,31 @@ class UnionContent extends Content, TUnionContent {
 
   override string toString() { result = contentStars(this) + u.toString() }
 
+  final override Field getField() { result = unique( | | u.getACanonicalField()).getAField() }
+
   /** Gets a field of the underlying union of this `UnionContent`, if any. */
-  Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
-
-  /** Gets the underlying union of this `UnionContent`. */
-  Union getUnion() { result = u }
-
-  /** Gets the indirection index of this `UnionContent`. */
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  override Field getAField() {
+    exists(CanonicalField cf |
+      cf = u.getACanonicalField() and
+      result = cf.getAField() and
+      getFieldSize(cf) = bytes
+    )
   }
 
+  /** Gets the underlying union of this `UnionContent`. */
+  Union getUnion() { result = u.getAUnion() }
+
+  /** Gets the indirection index of this `UnionContent`. */
+  override int getIndirectionIndex() { result = indirectionIndex }
+
   override predicate impliesClearOf(Content c) {
-    exists(UnionContent uc |
-      uc = c and
-      uc.getUnion() = u and
+    exists(int i |
+      c = TUnionContent(u, _, i) and
       // If `this` is `u` then `c` is cleared if it's of the
       // form `*u`, `**u`, etc. (and we ignore `bytes` because
       // we know the entire union is overwritten because it's a
       // union).
-      uc.getIndirectionIndex() >= indirectionIndex
+      i >= indirectionIndex
     )
   }
 }
@@ -2234,10 +2376,7 @@ class ElementContent extends Content, TElementContent {
 
   ElementContent() { this = TElementContent(indirectionIndex) }
 
-  pragma[inline]
-  override int getIndirectionIndex() {
-    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
-  }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override predicate impliesClearOf(Content c) { none() }
 

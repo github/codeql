@@ -182,7 +182,7 @@ namespace Semmle.Extraction.CSharp
                     var compilerCall = compilationData.CompilerCall;
                     var diagnosticName = compilerCall.GetDiagnosticName();
                     logger.LogInfo($"  Processing compilation {diagnosticName} at {compilerCall.ProjectDirectory}");
-                    var compilerArgs = compilerCall.GetArguments();
+                    var compilerArgs = reader.ReadArguments(compilerCall);
 
                     var compilationIdentifierPath = string.Empty;
                     try

@@ -1,5 +1,6 @@
 import javascript
 
+overlay[local]
 class TestAmdModuleRange extends AmdModuleDefinition::Range {
   TestAmdModuleRange() { this.getCallee().(PropAccess).getQualifiedName() = "test.amd.range" }
 }

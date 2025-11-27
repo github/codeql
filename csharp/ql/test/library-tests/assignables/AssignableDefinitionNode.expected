@@ -31,7 +31,7 @@
 | Assignables.cs:69:13:69:17 | ... = ... | Assignables.cs:69:13:69:17 | ... = ... |
 | Assignables.cs:78:22:78:22 | String s | Assignables.cs:78:22:78:22 | String s |
 | Assignables.cs:82:21:82:33 | String temp = ... | Assignables.cs:82:21:82:33 | String temp = ... |
-| Assignables.cs:84:30:84:30 | Exception e | Assignables.cs:84:30:84:30 | [exception: OutOfMemoryException] Exception e |
+| Assignables.cs:84:30:84:30 | Exception e | Assignables.cs:84:30:84:30 | Exception e |
 | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | ... = ... |
 | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | ... = ... |
 | Assignables.cs:92:9:92:54 | ... = ... | Assignables.cs:92:9:92:54 | ... = ... |
@@ -81,7 +81,6 @@
 | Discards.cs:25:22:25:22 | String _ | Discards.cs:25:22:25:22 | String _ |
 | Finally.cs:7:13:7:17 | Int32 i = ... | Finally.cs:7:13:7:17 | Int32 i = ... |
 | Finally.cs:15:13:15:17 | ... = ... | Finally.cs:15:13:15:17 | ... = ... |
-| Finally.cs:15:13:15:17 | ... = ... | Finally.cs:15:13:15:17 | [finally: exception] ... = ... |
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:23 | Object o = ... |
 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | Int32 i1 |
 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | String s1 |

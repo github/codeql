@@ -13,7 +13,9 @@
 | SSA.cs:98:15:98:22 | access to local variable ssaSink4 |
 | SSA.cs:124:15:124:34 | access to field SsaFieldSink1 |
 | SSA.cs:180:15:180:22 | access to local variable ssaSink5 |
-| Splitting.cs:8:19:8:19 | [b (line 3): true] access to local variable x |
-| Splitting.cs:12:15:12:15 | [b (line 3): false] access to local variable x |
-| Splitting.cs:25:15:25:15 | [b (line 17): true] access to local variable x |
+| Splitting.cs:8:19:8:19 | access to local variable x |
+| Splitting.cs:12:15:12:15 | access to local variable x |
+| Splitting.cs:14:19:14:19 | access to local variable x |
+| Splitting.cs:25:15:25:15 | access to local variable x |
 | Splitting.cs:27:19:27:19 | access to local variable x |
+| Splitting.cs:29:19:29:19 | access to local variable x |

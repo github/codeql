@@ -413,6 +413,235 @@ double test_ternary_nested_of_literals(double m, double n, double o, double p, d
   return output;
 }
 
+int repeated_if_statements(unsigned int rhs) {
+  // Test how many bounds we estimate for `if` statements without `else`
+  // branches where the following node is both a normal phi node and a guard phi
+  // node.
+  if (rhs < 12) { rhs << 1; }
+  if (rhs < 13) { rhs << 1; }
+  if (rhs < 14) { rhs << 1; }
+  if (rhs < 15) { rhs << 1; }
+  if (rhs < 16) { rhs << 1; }
+  return rhs; // rhs has 6 bounds
+}
+
+int ne_phi_nodes(int a, int b) {
+  if (a == 17) {
+    if (b == 23) {
+      a += b;
+    }
+    if (a == 18) {
+      b = 10;
+    }
+  }
+  // The statement below is an NE phi node for the access `a` in both `a == 17`
+  // and `a == 18`.
+  int c = a + b;
+  return a + b;
+}
+
+unsigned int conditional_nested_guards(unsigned int ip) {
+  // This tests a combinatorial explosion that can happen from a large number of
+  // nested linear guards.
+  unsigned int special_number =
+   (14 * ip > (2 * ip + 1) * 17 + (2 * ip + 1 + 1) * 17
+      ? 14 * ip
+      : (2 * ip + 1) * 14 + (2 * ip + 1 + 1) * 17) >
+    (2 * (ip * 14 + 32) +
+      (4 * (ip * 14 + 32) +
+        (2 * ip * 14 + 32) +
+        2 * (ip * 14 + 64) +
+        ((2 * ip + 1) * 14 > (17 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+          ? (2 * ip + 1) * 14
+          : 14 * (2 * ip) > 17 * ip
+            ? 14 * (2 * ip)
+            : 14 * ip) >
+      2 * ip * 14 + (2 * ip + 1) * 17
+        ? 4 * (ip * 14 + 32) +
+          (2 * ip * 14 + 32) +
+          2 * (ip * 14 + 64) +
+          ((2 * ip + 1) * 14 >
+          (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+            ? (2 * ip + 1) * 14
+            : 14 * (2 * ip) > 17 * ip
+              ? 14 * (2 * ip)
+              : 14 * ip)
+        : 2 * ip * 14 + (2 * ip + 1) * 17) >
+    (4 * (ip * 14 + 32) +
+      (2 * ip * 14 + 32) +
+      2 * (ip * 14 + 64) +
+      ((2 * ip + 1) * 14 > (17 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+        ? (2 * ip + 1) * 14
+        : 14 * (2 * ip) > 17 * ip
+          ? 14 * (2 * ip)
+          : 14 * ip) >
+    (14 * ip > (ip + 1) * 17 ? 17 * ip : (ip + 1) * 17)
+      ? 4 * (ip * 14 + 32) +
+        (2 * ip * 14 + 32) +
+        2 * (ip * 14 + 64) +
+        ((2 * ip + 1) * 14 > (17 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+          ? (2 * ip + 1) * 14
+          : 14 * (2 * ip) > 17 * ip
+            ? 14 * (2 * ip)
+            : 14 * ip)
+      : 14 * ip > (ip + 1) * 17
+        ? 14 * ip
+        : (ip + 1) * 14)
+      ? 2 * (ip * 14 + 32) +
+        (4 * (ip * 14 + 32) +
+          (2 * ip * 14 + 32) +
+          2 * (ip * 14 + 64) +
+          ((2 * ip + 1) * 14 >
+          (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+            ? (2 * ip + 1) * 14
+            : 14 * (2 * ip) > 17 * ip
+              ? 14 * (2 * ip)
+              : 14 * ip) >
+        2 * ip * 14 + (2 * ip + 1) * 17
+          ? 4 * (ip * 14 + 32) +
+            (2 * ip * 14 + 32) +
+            2 * (ip * 14 + 64) +
+            ((2 * ip + 1) * 14 >
+            (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+              ? (2 * ip + 1) * 14
+              : 14 * (2 * ip) > 17 * ip
+                ? 14 * (2 * ip)
+                : 14 * ip)
+          : 2 * ip * 14 + (2 * ip + 1) * 17)
+      : 4 * (ip * 14 + 32) +
+            (2 * ip * 14 + 32) +
+            2 * (ip * 14 + 64) +
+            ((2 * ip + 1) * 14 >
+            (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+              ? (2 * ip + 1) * 14
+              : 14 * (2 * ip) > 17 * ip
+                ? 14 * (2 * ip)
+                : 14 * ip) >
+          (14 * ip > (ip + 1) * 17 ? 17 * ip : (ip + 1) * 17)
+        ? 4 * (ip * 14 + 32) +
+          (2 * ip * 14 + 32) +
+          2 * (ip * 14 + 64) +
+          ((2 * ip + 1) * 14 >
+          (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+            ? (2 * ip + 1) * 14
+            : 14 * (2 * ip) > 17 * ip
+              ? 14 * (2 * ip)
+              : 14 * ip)
+        : 14 * ip > (ip + 1) * 17
+          ? 14 * ip
+          : (ip + 1) * 14)
+      ? 14 * ip > (2 * ip + 1) * 17 + (2 * ip + 1 + 1) * 17
+        ? 14 * ip
+        : (2 * ip + 1) * 14 + (2 * ip + 1 + 1) * 17
+      : 2 * (ip * 14 + 32) +
+            (4 * (ip * 14 + 32) +
+              (2 * ip * 14 + 32) +
+              2 * (ip * 14 + 64) +
+              ((2 * ip + 1) * 14 >
+              (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+                ? (2 * ip + 1) * 14
+                : 14 * (2 * ip) > 17 * ip
+                  ? 14 * (2 * ip)
+                  : 14 * ip) >
+            2 * ip * 14 + (2 * ip + 1) * 17
+              ? 4 * (ip * 14 + 32) +
+                (2 * ip * 14 + 32) +
+                2 * (ip * 14 + 64) +
+                ((2 * ip + 1) * 14 >
+                (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+                  ? (2 * ip + 1) * 14
+                  : 14 * (2 * ip) > 17 * ip
+                    ? 14 * (2 * ip)
+                    : 14 * ip)
+              : 2 * ip * 14 + (2 * ip + 1) * 17) >
+          (4 * (ip * 14 + 32) +
+            (2 * ip * 14 + 32) +
+            2 * (ip * 14 + 64) +
+            ((2 * ip + 1) * 14 >
+            (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+              ? (2 * ip + 1) * 14
+              : 14 * (2 * ip) > 17 * ip
+                ? 14 * (2 * ip)
+                : 14 * ip) >
+          (14 * ip > (ip + 1) * 17 ? 17 * ip : (ip + 1) * 17)
+            ? 4 * (ip * 14 + 32) +
+              (2 * ip * 14 + 32) +
+              2 * (ip * 14 + 64) +
+              ((2 * ip + 1) * 14 >
+              (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+                ? (2 * ip + 1) * 14
+                : 14 * (2 * ip) > 17 * ip
+                  ? 14 * (2 * ip)
+                  : 14 * ip)
+            : 14 * ip > (ip + 1) * 17
+              ? 14 * ip
+              : (ip + 1) * 14)
+        ? 2 * (ip * 14 + 32) +
+          (4 * (ip * 14 + 32) +
+            (2 * ip * 14 + 32) +
+            2 * (ip * 14 + 64) +
+            ((2 * ip + 1) * 14 >
+            (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+              ? (2 * ip + 1) * 14
+              : 14 * (2 * ip) > 17 * ip
+                ? 14 * (2 * ip)
+                : 14 * ip) >
+          2 * ip * 14 + (2 * ip + 1) * 17
+            ? 4 * (ip * 14 + 32) +
+              (2 * ip * 14 + 32) +
+              2 * (ip * 14 + 64) +
+              ((2 * ip + 1) * 14 >
+              (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+                ? (2 * ip + 1) * 14
+                : 14 * (2 * ip) > 17 * ip
+                  ? 14 * (2 * ip)
+                  : 14 * ip)
+            : 2 * ip * 14 + (2 * ip + 1) * 17)
+        : 4 * (ip * 14 + 32) +
+              (2 * ip * 14 + 32) +
+              2 * (ip * 14 + 64) +
+              ((2 * ip + 1) * 14 >
+              (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+                ? (2 * ip + 1) * 14
+                : 14 * (2 * ip) > 17 * ip
+                  ? 14 * (2 * ip)
+                  : 14 * ip) >
+            (14 * ip > (ip + 1) * 17 ? 17 * ip : (ip + 1) * 17)
+          ? 4 * (ip * 14 + 32) +
+            (2 * ip * 14 + 32) +
+            2 * (ip * 14 + 64) +
+            ((2 * ip + 1) * 14 >
+            (14 * (2 * ip) > 17 * ip ? 17 * (2 * ip) : 17 * ip)
+              ? (2 * ip + 1) * 14
+              : 14 * (2 * ip) > 17 * ip
+                ? 14 * (2 * ip)
+                : 14 * ip)
+          : 14 * ip > (ip + 1) * 17
+            ? 14 * ip
+            : (ip + 1) * 14; 
+  return special_number;
+}
+
+int many_conditional_assignments(int c1, int c2, int c3, int c4, int c5) {
+  // This tests a combinatorial explosion that can happen from many conditional
+  // assignments, since each conditional assignment doubles the number of
+  // bounds.
+  int x = 0;
+  if (c1) { x += 748596; }
+  if (c2) { x += 84652395; }
+  if (c3) { x += 3675895; }
+  if (c4) { x += 98634; }
+  if (c5) { x += 7834985; }
+  if (c1 && c2) { x += 938457398; }
+  if (c1 && c3) { x += 73895648; }
+  if (c1 && c4) { x += 12345432; }
+  if (c1 && c5) { x += 38847; }
+  if (c2 && c3) { x += 234; }
+  // x now has 2^10 bounds, the 10 additions below give (2^10)^10 bounds
+  int y = x + x + x + x + x + x + x + x + x + x + x + x;
+  return y;
+}
+
 // Test the comma expression.
 unsigned int test_comma01(unsigned int x) {
   unsigned int y = x < 100 ? x : 100;
@@ -700,7 +929,7 @@ void guard_with_exit(int x, int y) {
 
   // This test ensures that we correctly identify
   // that the upper bound for y is max_int when calling `out(y)`.
-  // The RangeSsa will place guardPhy on `out(y)`, and consequently there is no
+  // The RangeSsa will place guardPhi on `out(y)`, and consequently there is no
   // frontier phi node at out(y).
 }
 
@@ -708,7 +937,7 @@ void test(int x) {
   if (x >= 10) {
     return;
   }
-  // The basic below has two predecessors.
+  // The basic block below has two predecessors.
 label:
   out(x);
   goto label;

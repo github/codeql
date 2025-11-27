@@ -4,20 +4,16 @@
 
 private import rust
 private import codeql.rust.Concepts
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.internal.PathResolution
 
 /**
  * A call to the `starts_with` method on a `Path`.
  */
-private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::MethodCallExprCfgNode {
-  StartswithCall() {
-    this.getMethodCallExpr().getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with"
-  }
+private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCallExpr {
+  StartswithCall() { this.getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with" }
 
-  override predicate checks(Cfg::CfgNode e, boolean branch) {
+  override predicate checks(Expr e, boolean branch) {
     e = this.getReceiver() and
     branch = true
   }
@@ -212,4 +208,97 @@ class IntoIteratorTrait extends Trait {
 class StringStruct extends Struct {
   pragma[nomagic]
   StringStruct() { this.getCanonicalPath() = "alloc::string::String" }
+}
+
+/**
+ * The [`Deref` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/core/ops/trait.Deref.html
+ */
+class DerefTrait extends Trait {
+  pragma[nomagic]
+  DerefTrait() { this.getCanonicalPath() = "core::ops::deref::Deref" }
+
+  /** Gets the `deref` function. */
+  Function getDerefFunction() { result = this.(TraitItemNode).getAssocItem("deref") }
+
+  /** Gets the `Target` associated type. */
+  pragma[nomagic]
+  TypeAlias getTargetType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Target"
+  }
+}
+
+/**
+ * The [`Index` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.Index.html
+ */
+class IndexTrait extends Trait {
+  pragma[nomagic]
+  IndexTrait() { this.getCanonicalPath() = "core::ops::index::Index" }
+
+  /** Gets the `index` function. */
+  Function getIndexFunction() { result = this.(TraitItemNode).getAssocItem("index") }
+
+  /** Gets the `Output` associated type. */
+  pragma[nomagic]
+  TypeAlias getOutputType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Output"
+  }
+}
+
+/**
+ * The [`Box` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/boxed/struct.Box.html
+ */
+class BoxStruct extends Struct {
+  pragma[nomagic]
+  BoxStruct() { this.getCanonicalPath() = "alloc::boxed::Box" }
+}
+
+/**
+ * The [`Rc` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/rc/struct.Rc.html
+ */
+class RcStruct extends Struct {
+  pragma[nomagic]
+  RcStruct() { this.getCanonicalPath() = "alloc::rc::Rc" }
+}
+
+/**
+ * The [`Arc` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+ */
+class ArcStruct extends Struct {
+  pragma[nomagic]
+  ArcStruct() { this.getCanonicalPath() = "alloc::sync::Arc" }
+}
+
+/**
+ * The [`Pin` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/pin/struct.Pin.html
+ */
+class PinStruct extends Struct {
+  pragma[nomagic]
+  PinStruct() { this.getCanonicalPath() = "core::pin::Pin" }
+}
+
+/**
+ * The [`Vec` struct][1].
+ *
+ * [1]: https://doc.rust-lang.org/alloc/vec/struct.Vec.html
+ */
+class Vec extends Struct {
+  pragma[nomagic]
+  Vec() { this.getCanonicalPath() = "alloc::vec::Vec" }
+
+  /** Gets the type parameter representing the element type. */
+  TypeParam getElementTypeParam() { result = this.getGenericParamList().getTypeParam(0) }
 }

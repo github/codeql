@@ -141,7 +141,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
 
 private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
   private import java as J
-  private import semmle.code.java.dataflow.internal.BaseSSA
+  private import semmle.code.java.dataflow.internal.BaseSSA as Base
   private import semmle.code.java.dataflow.NullGuards as NullGuards
 
   class NormalExitNode = ControlFlow::NormalExitNode;
@@ -211,10 +211,10 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
         f.getInitializer() = NullGuards::baseNotNullExpr()
       )
       or
-      exists(CatchClause cc, LocalVariableDeclExpr decl, BaseSsaUpdate v |
+      exists(CatchClause cc, LocalVariableDeclExpr decl, Base::SsaExplicitWrite v |
         decl = cc.getVariable() and
         decl = v.getDefiningExpr() and
-        this = v.getAUse()
+        this = v.getARead()
       )
     }
   }
@@ -407,30 +407,8 @@ private module LogicInputCommon {
 }
 
 private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
-  private import semmle.code.java.dataflow.internal.BaseSSA
-
-  final private class FinalBaseSsaVariable = BaseSsaVariable;
-
-  class SsaDefinition extends FinalBaseSsaVariable {
-    GuardsInput::Expr getARead() { result = this.getAUse() }
-  }
-
-  class SsaWriteDefinition extends SsaDefinition instanceof BaseSsaUpdate {
-    GuardsInput::Expr getDefinition() {
-      super.getDefiningExpr().(VariableAssign).getSource() = result or
-      super.getDefiningExpr().(AssignOp) = result
-    }
-  }
-
-  class SsaPhiNode extends SsaDefinition instanceof BaseSsaPhiNode {
-    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
-      super.hasInputFromBlock(inp, bb)
-    }
-  }
-
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(BaseSsaImplicitInit).isParameterDefinition(p)
-  }
+  private import semmle.code.java.dataflow.internal.BaseSSA as Base
+  import Base::Ssa
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 
@@ -438,30 +416,8 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
 }
 
 private module LogicInput_v2 implements GuardsImpl::LogicInputSig {
-  private import semmle.code.java.dataflow.SSA as SSA
-
-  final private class FinalSsaVariable = SSA::SsaVariable;
-
-  class SsaDefinition extends FinalSsaVariable {
-    GuardsInput::Expr getARead() { result = this.getAUse() }
-  }
-
-  class SsaWriteDefinition extends SsaDefinition instanceof SSA::SsaExplicitUpdate {
-    GuardsInput::Expr getDefinition() {
-      super.getDefiningExpr().(VariableAssign).getSource() = result or
-      super.getDefiningExpr().(AssignOp) = result
-    }
-  }
-
-  class SsaPhiNode extends SsaDefinition instanceof SSA::SsaPhiNode {
-    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
-      super.hasInputFromBlock(inp, bb)
-    }
-  }
-
-  predicate parameterDefinition(Parameter p, SsaDefinition def) {
-    def.(SSA::SsaImplicitInit).isParameterDefinition(p)
-  }
+  private import semmle.code.java.dataflow.SSA
+  import Ssa
 
   predicate additionalNullCheck = LogicInputCommon::additionalNullCheck/4;
 

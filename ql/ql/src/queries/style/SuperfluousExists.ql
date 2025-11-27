@@ -1,5 +1,5 @@
 /**
- * @name Superfluous 'exists' conjunct.
+ * @name Superfluous 'exists' conjunct
  * @description Writing 'exists(x)' when the existence of X is implied by another conjunct is bad practice.
  * @kind problem
  * @problem.severity warning

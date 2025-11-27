@@ -40,9 +40,13 @@ fn main() {
     let system_time = std::time::SystemTime::now();
     info!("Current time: {:?}", system_time);
 
-    // GOOD: Numeric data derived from user input (not directly logged)
+    // GOOD: Numeric data derived from user input (indirectly)
     let user_id = username.len();
     info!("User ID length: {}", user_id);
+
+    // GOOD: Numeric data derived from user input (directly)
+    let number = remote_data.parse::<u64>().unwrap_or(0);
+    info!("Number: {}", number);
 
     // More complex test cases
     test_complex_scenarios(&username, &user_input);

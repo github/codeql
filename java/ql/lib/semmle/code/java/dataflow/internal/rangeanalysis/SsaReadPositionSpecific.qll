@@ -8,14 +8,14 @@ private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.controlflow.BasicBlocks as BB
 private import SsaReadPositionCommon
 
-class SsaVariable = Ssa::SsaVariable;
+class SsaVariable = Ssa::SsaDefinition;
 
-class SsaPhiNode = Ssa::SsaPhiNode;
+class SsaPhiNode = Ssa::SsaPhiDefinition;
 
 class BasicBlock = BB::BasicBlock;
 
 /** Gets a basic block in which SSA variable `v` is read. */
-BasicBlock getAReadBasicBlock(SsaVariable v) { result = v.getAUse().getBasicBlock() }
+BasicBlock getAReadBasicBlock(SsaVariable v) { result = v.getARead().getBasicBlock() }
 
 private predicate id(BB::ExprParent x, BB::ExprParent y) { x = y }
 

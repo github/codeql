@@ -68,75 +68,88 @@ variable
 | main.rs:348:9:348:9 | x |
 | main.rs:349:16:349:16 | x |
 | main.rs:354:20:354:20 | x |
-| main.rs:364:5:364:6 | a8 |
-| main.rs:366:9:366:10 | b3 |
-| main.rs:367:9:367:10 | c1 |
-| main.rs:375:20:375:55 | a9 |
-| main.rs:382:13:382:15 | a10 |
-| main.rs:383:13:383:14 | b4 |
-| main.rs:384:13:384:14 | c2 |
-| main.rs:405:13:405:15 | a10 |
-| main.rs:406:13:406:14 | b4 |
-| main.rs:418:9:418:23 | example_closure |
-| main.rs:419:10:419:10 | x |
-| main.rs:421:9:421:10 | n1 |
-| main.rs:426:9:426:26 | immutable_variable |
-| main.rs:427:6:427:6 | x |
-| main.rs:429:9:429:10 | n2 |
-| main.rs:436:9:436:9 | f |
-| main.rs:437:10:437:10 | x |
-| main.rs:441:10:441:10 | x |
-| main.rs:450:14:450:14 | x |
-| main.rs:459:13:459:13 | f |
-| main.rs:460:14:460:14 | x |
-| main.rs:467:9:467:9 | v |
-| main.rs:469:9:469:12 | text |
-| main.rs:476:13:476:13 | a |
-| main.rs:484:13:484:13 | i |
-| main.rs:485:9:485:13 | ref_i |
-| main.rs:491:17:491:17 | x |
-| main.rs:498:22:498:22 | x |
-| main.rs:498:38:498:38 | y |
-| main.rs:507:13:507:13 | x |
-| main.rs:508:9:508:9 | y |
-| main.rs:515:13:515:13 | z |
-| main.rs:516:9:516:9 | w |
-| main.rs:529:13:529:13 | x |
-| main.rs:530:9:530:9 | y |
-| main.rs:537:9:537:9 | x |
-| main.rs:540:9:540:11 | cap |
-| main.rs:548:13:548:13 | x |
-| main.rs:551:9:551:16 | closure1 |
-| main.rs:557:13:557:13 | y |
-| main.rs:560:13:560:20 | closure2 |
-| main.rs:566:13:566:13 | z |
-| main.rs:569:13:569:20 | closure3 |
-| main.rs:577:13:577:13 | i |
-| main.rs:578:9:578:13 | block |
-| main.rs:586:8:586:8 | b |
-| main.rs:587:13:587:13 | x |
-| main.rs:604:13:604:14 | b1 |
-| main.rs:604:23:604:24 | b2 |
-| main.rs:605:9:605:9 | x |
-| main.rs:628:20:628:23 | self |
-| main.rs:632:11:632:14 | self |
-| main.rs:636:23:636:26 | self |
-| main.rs:637:17:637:17 | f |
-| main.rs:637:22:637:22 | n |
-| main.rs:647:13:647:13 | a |
-| main.rs:656:13:656:13 | a |
-| main.rs:665:9:665:9 | x |
-| main.rs:669:9:669:9 | z |
-| main.rs:678:17:678:20 | self |
-| main.rs:684:13:684:13 | a |
-| main.rs:706:9:706:22 | var_from_macro |
-| main.rs:707:9:707:21 | var_in_macro |
-| main.rs:709:9:709:20 | var_in_macro |
-| main.rs:714:15:714:28 | var_in_macro |
-| main.rs:719:9:719:9 | x |
-| main.rs:725:13:725:13 | x |
-| main.rs:726:13:726:15 | cap |
-| main.rs:726:20:726:20 | b |
+| main.rs:364:9:364:9 | x |
+| main.rs:366:18:366:18 | x |
+| main.rs:373:9:373:9 | x |
+| main.rs:375:14:375:14 | y |
+| main.rs:376:25:376:25 | y |
+| main.rs:384:5:384:6 | a8 |
+| main.rs:386:9:386:10 | b3 |
+| main.rs:387:9:387:10 | c1 |
+| main.rs:395:20:395:55 | a9 |
+| main.rs:402:13:402:15 | a10 |
+| main.rs:403:13:403:14 | b4 |
+| main.rs:404:13:404:14 | c2 |
+| main.rs:425:13:425:15 | a10 |
+| main.rs:426:13:426:14 | b4 |
+| main.rs:438:9:438:23 | example_closure |
+| main.rs:439:10:439:10 | x |
+| main.rs:441:9:441:10 | n1 |
+| main.rs:446:9:446:26 | immutable_variable |
+| main.rs:447:6:447:6 | x |
+| main.rs:449:9:449:10 | n2 |
+| main.rs:456:9:456:9 | f |
+| main.rs:457:10:457:10 | x |
+| main.rs:461:10:461:10 | x |
+| main.rs:470:14:470:14 | x |
+| main.rs:479:13:479:13 | f |
+| main.rs:480:14:480:14 | x |
+| main.rs:487:9:487:9 | v |
+| main.rs:489:9:489:12 | text |
+| main.rs:496:13:496:13 | a |
+| main.rs:504:13:504:13 | i |
+| main.rs:505:9:505:13 | ref_i |
+| main.rs:511:17:511:17 | x |
+| main.rs:518:22:518:22 | x |
+| main.rs:518:38:518:38 | y |
+| main.rs:527:13:527:13 | x |
+| main.rs:528:9:528:9 | y |
+| main.rs:535:13:535:13 | z |
+| main.rs:536:9:536:9 | w |
+| main.rs:549:13:549:13 | x |
+| main.rs:550:9:550:9 | y |
+| main.rs:557:9:557:9 | x |
+| main.rs:560:9:560:11 | cap |
+| main.rs:568:13:568:13 | x |
+| main.rs:571:9:571:16 | closure1 |
+| main.rs:577:13:577:13 | y |
+| main.rs:580:13:580:20 | closure2 |
+| main.rs:586:13:586:13 | z |
+| main.rs:589:13:589:20 | closure3 |
+| main.rs:597:13:597:13 | i |
+| main.rs:598:9:598:13 | block |
+| main.rs:606:8:606:8 | b |
+| main.rs:607:13:607:13 | x |
+| main.rs:624:13:624:14 | b1 |
+| main.rs:624:23:624:24 | b2 |
+| main.rs:625:9:625:9 | x |
+| main.rs:648:20:648:23 | self |
+| main.rs:652:11:652:14 | self |
+| main.rs:656:23:656:26 | self |
+| main.rs:657:17:657:17 | f |
+| main.rs:657:22:657:22 | n |
+| main.rs:667:13:667:13 | a |
+| main.rs:676:13:676:13 | a |
+| main.rs:685:9:685:9 | x |
+| main.rs:689:9:689:9 | z |
+| main.rs:698:17:698:20 | self |
+| main.rs:704:13:704:13 | a |
+| main.rs:726:9:726:22 | var_from_macro |
+| main.rs:727:9:727:21 | var_in_macro |
+| main.rs:729:9:729:20 | var_in_macro |
+| main.rs:734:15:734:28 | var_in_macro |
+| main.rs:739:9:739:9 | x |
+| main.rs:745:13:745:13 | x |
+| main.rs:746:13:746:15 | cap |
+| main.rs:746:20:746:20 | b |
+| main.rs:759:13:759:13 | x |
+| main.rs:760:13:760:13 | y |
+| main.rs:762:18:762:18 | y |
+| main.rs:769:13:769:16 | N0ne |
+| main.rs:776:13:776:22 | test_alias |
+| main.rs:778:13:778:16 | test |
+| main.rs:787:13:787:13 | x |
+| main.rs:789:18:789:18 | x |
 variableAccess
 | main.rs:7:20:7:20 | s | main.rs:5:14:5:14 | s |
 | main.rs:12:20:12:20 | i | main.rs:10:14:10:14 | i |
@@ -229,146 +242,159 @@ variableAccess
 | main.rs:355:7:355:7 | x | main.rs:348:9:348:9 | x |
 | main.rs:357:19:357:19 | x | main.rs:354:20:354:20 | x |
 | main.rs:359:19:359:19 | x | main.rs:348:9:348:9 | x |
-| main.rs:370:15:370:16 | a8 | main.rs:364:5:364:6 | a8 |
-| main.rs:371:15:371:16 | b3 | main.rs:366:9:366:10 | b3 |
-| main.rs:372:15:372:16 | c1 | main.rs:367:9:367:10 | c1 |
-| main.rs:377:15:377:16 | a9 | main.rs:375:20:375:55 | a9 |
-| main.rs:386:15:386:17 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:387:15:387:16 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:388:15:388:16 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:391:9:391:10 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:392:9:392:10 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:393:9:393:11 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:395:9:395:11 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:396:9:396:10 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:397:9:397:10 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:399:15:399:17 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:400:15:400:16 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:401:15:401:16 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:408:23:408:25 | a10 | main.rs:405:13:405:15 | a10 |
-| main.rs:409:23:409:24 | b4 | main.rs:406:13:406:14 | b4 |
-| main.rs:413:15:413:17 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:414:15:414:16 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:420:9:420:9 | x | main.rs:419:10:419:10 | x |
-| main.rs:422:9:422:23 | example_closure | main.rs:418:9:418:23 | example_closure |
-| main.rs:423:15:423:16 | n1 | main.rs:421:9:421:10 | n1 |
-| main.rs:428:9:428:9 | x | main.rs:427:6:427:6 | x |
-| main.rs:430:9:430:26 | immutable_variable | main.rs:426:9:426:26 | immutable_variable |
-| main.rs:431:15:431:16 | n2 | main.rs:429:9:429:10 | n2 |
-| main.rs:438:9:438:9 | x | main.rs:437:10:437:10 | x |
-| main.rs:439:15:439:15 | f | main.rs:436:9:436:9 | f |
-| main.rs:443:9:443:9 | x | main.rs:441:10:441:10 | x |
-| main.rs:446:15:446:15 | f | main.rs:436:9:436:9 | f |
-| main.rs:452:17:452:17 | x | main.rs:450:14:450:14 | x |
-| main.rs:461:13:461:13 | x | main.rs:460:14:460:14 | x |
-| main.rs:462:19:462:19 | f | main.rs:459:13:459:13 | f |
-| main.rs:470:12:470:12 | v | main.rs:467:9:467:9 | v |
-| main.rs:471:19:471:22 | text | main.rs:469:9:469:12 | text |
-| main.rs:477:5:477:5 | a | main.rs:476:13:476:13 | a |
-| main.rs:478:15:478:15 | a | main.rs:476:13:476:13 | a |
-| main.rs:479:11:479:11 | a | main.rs:476:13:476:13 | a |
-| main.rs:480:15:480:15 | a | main.rs:476:13:476:13 | a |
-| main.rs:486:14:486:14 | i | main.rs:484:13:484:13 | i |
-| main.rs:487:6:487:10 | ref_i | main.rs:485:9:485:13 | ref_i |
-| main.rs:488:15:488:15 | i | main.rs:484:13:484:13 | i |
-| main.rs:492:6:492:6 | x | main.rs:491:17:491:17 | x |
-| main.rs:493:10:493:10 | x | main.rs:491:17:491:17 | x |
-| main.rs:494:10:494:10 | x | main.rs:491:17:491:17 | x |
-| main.rs:495:12:495:12 | x | main.rs:491:17:491:17 | x |
-| main.rs:499:6:499:6 | x | main.rs:498:22:498:22 | x |
-| main.rs:500:10:500:10 | x | main.rs:498:22:498:22 | x |
-| main.rs:501:10:501:10 | x | main.rs:498:22:498:22 | x |
-| main.rs:502:6:502:6 | y | main.rs:498:38:498:38 | y |
-| main.rs:503:9:503:9 | x | main.rs:498:22:498:22 | x |
-| main.rs:509:27:509:27 | x | main.rs:507:13:507:13 | x |
-| main.rs:510:6:510:6 | y | main.rs:508:9:508:9 | y |
-| main.rs:513:15:513:15 | x | main.rs:507:13:507:13 | x |
-| main.rs:517:19:517:19 | x | main.rs:507:13:507:13 | x |
-| main.rs:519:14:519:14 | z | main.rs:515:13:515:13 | z |
-| main.rs:520:9:520:9 | w | main.rs:516:9:516:9 | w |
-| main.rs:522:7:522:7 | w | main.rs:516:9:516:9 | w |
-| main.rs:525:15:525:15 | z | main.rs:515:13:515:13 | z |
-| main.rs:531:14:531:14 | x | main.rs:529:13:529:13 | x |
-| main.rs:532:6:532:6 | y | main.rs:530:9:530:9 | y |
-| main.rs:533:15:533:15 | x | main.rs:529:13:529:13 | x |
-| main.rs:541:19:541:19 | x | main.rs:537:9:537:9 | x |
-| main.rs:543:5:543:7 | cap | main.rs:540:9:540:11 | cap |
-| main.rs:544:15:544:15 | x | main.rs:537:9:537:9 | x |
-| main.rs:552:19:552:19 | x | main.rs:548:13:548:13 | x |
-| main.rs:554:5:554:12 | closure1 | main.rs:551:9:551:16 | closure1 |
-| main.rs:555:15:555:15 | x | main.rs:548:13:548:13 | x |
-| main.rs:561:9:561:9 | y | main.rs:557:13:557:13 | y |
-| main.rs:563:5:563:12 | closure2 | main.rs:560:13:560:20 | closure2 |
-| main.rs:564:15:564:15 | y | main.rs:557:13:557:13 | y |
-| main.rs:570:9:570:9 | z | main.rs:566:13:566:13 | z |
-| main.rs:572:5:572:12 | closure3 | main.rs:569:13:569:20 | closure3 |
-| main.rs:573:15:573:15 | z | main.rs:566:13:566:13 | z |
-| main.rs:579:9:579:9 | i | main.rs:577:13:577:13 | i |
-| main.rs:582:5:582:9 | block | main.rs:578:9:578:13 | block |
-| main.rs:583:15:583:15 | i | main.rs:577:13:577:13 | i |
-| main.rs:588:15:588:15 | x | main.rs:587:13:587:13 | x |
-| main.rs:589:15:589:15 | x | main.rs:587:13:587:13 | x |
-| main.rs:591:16:591:16 | b | main.rs:586:8:586:8 | b |
-| main.rs:593:9:593:9 | x | main.rs:587:13:587:13 | x |
-| main.rs:594:19:594:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:595:19:595:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:597:9:597:9 | x | main.rs:587:13:587:13 | x |
-| main.rs:598:19:598:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:599:19:599:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:601:15:601:15 | x | main.rs:587:13:587:13 | x |
-| main.rs:607:16:607:17 | b1 | main.rs:604:13:604:14 | b1 |
-| main.rs:609:19:609:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:611:19:611:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:615:16:615:17 | b2 | main.rs:604:23:604:24 | b2 |
-| main.rs:617:19:617:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:619:19:619:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:629:16:629:19 | self | main.rs:628:20:628:23 | self |
-| main.rs:633:9:633:12 | self | main.rs:632:11:632:14 | self |
-| main.rs:639:13:639:16 | self | main.rs:636:23:636:26 | self |
-| main.rs:639:25:639:25 | n | main.rs:637:22:637:22 | n |
-| main.rs:641:9:641:9 | f | main.rs:637:17:637:17 | f |
-| main.rs:642:9:642:9 | f | main.rs:637:17:637:17 | f |
-| main.rs:648:15:648:15 | a | main.rs:647:13:647:13 | a |
-| main.rs:649:5:649:5 | a | main.rs:647:13:647:13 | a |
-| main.rs:650:15:650:15 | a | main.rs:647:13:647:13 | a |
-| main.rs:651:5:651:5 | a | main.rs:647:13:647:13 | a |
-| main.rs:652:15:652:15 | a | main.rs:647:13:647:13 | a |
-| main.rs:657:15:657:15 | a | main.rs:656:13:656:13 | a |
-| main.rs:658:5:658:5 | a | main.rs:656:13:656:13 | a |
-| main.rs:659:15:659:15 | a | main.rs:656:13:656:13 | a |
-| main.rs:660:5:660:5 | a | main.rs:656:13:656:13 | a |
-| main.rs:661:15:661:15 | a | main.rs:656:13:656:13 | a |
-| main.rs:666:20:666:20 | x | main.rs:665:9:665:9 | x |
-| main.rs:667:15:667:15 | x | main.rs:665:9:665:9 | x |
-| main.rs:670:20:670:20 | z | main.rs:669:9:669:9 | z |
-| main.rs:679:10:679:13 | self | main.rs:678:17:678:20 | self |
-| main.rs:685:5:685:5 | a | main.rs:684:13:684:13 | a |
-| main.rs:688:15:688:15 | a | main.rs:684:13:684:13 | a |
-| main.rs:707:9:707:21 | var_in_macro | main.rs:707:9:707:21 | var_in_macro |
-| main.rs:708:15:708:28 | var_from_macro | main.rs:706:9:706:22 | var_from_macro |
-| main.rs:714:30:714:41 | var_in_macro | main.rs:714:15:714:28 | var_in_macro |
-| main.rs:715:15:715:26 | var_in_macro | main.rs:709:9:709:20 | var_in_macro |
-| main.rs:720:5:720:5 | x | main.rs:719:9:719:9 | x |
-| main.rs:721:15:721:15 | x | main.rs:719:9:719:9 | x |
-| main.rs:728:20:728:20 | b | main.rs:726:20:726:20 | b |
-| main.rs:729:13:729:13 | x | main.rs:725:13:725:13 | x |
-| main.rs:732:5:732:7 | cap | main.rs:726:13:726:15 | cap |
-| main.rs:733:15:733:15 | x | main.rs:725:13:725:13 | x |
+| main.rs:365:11:365:11 | x | main.rs:364:9:364:9 | x |
+| main.rs:367:20:367:20 | x | main.rs:366:18:366:18 | x |
+| main.rs:374:11:374:11 | x | main.rs:373:9:373:9 | x |
+| main.rs:377:22:377:22 | y | main.rs:375:14:375:14 | y |
+| main.rs:378:26:378:26 | y | main.rs:376:25:376:25 | y |
+| main.rs:390:15:390:16 | a8 | main.rs:384:5:384:6 | a8 |
+| main.rs:391:15:391:16 | b3 | main.rs:386:9:386:10 | b3 |
+| main.rs:392:15:392:16 | c1 | main.rs:387:9:387:10 | c1 |
+| main.rs:397:15:397:16 | a9 | main.rs:395:20:395:55 | a9 |
+| main.rs:406:15:406:17 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:407:15:407:16 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:408:15:408:16 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:411:9:411:10 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:412:9:412:10 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:413:9:413:11 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:415:9:415:11 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:416:9:416:10 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:417:9:417:10 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:419:15:419:17 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:420:15:420:16 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:421:15:421:16 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:428:23:428:25 | a10 | main.rs:425:13:425:15 | a10 |
+| main.rs:429:23:429:24 | b4 | main.rs:426:13:426:14 | b4 |
+| main.rs:433:15:433:17 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:434:15:434:16 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:440:9:440:9 | x | main.rs:439:10:439:10 | x |
+| main.rs:442:9:442:23 | example_closure | main.rs:438:9:438:23 | example_closure |
+| main.rs:443:15:443:16 | n1 | main.rs:441:9:441:10 | n1 |
+| main.rs:448:9:448:9 | x | main.rs:447:6:447:6 | x |
+| main.rs:450:9:450:26 | immutable_variable | main.rs:446:9:446:26 | immutable_variable |
+| main.rs:451:15:451:16 | n2 | main.rs:449:9:449:10 | n2 |
+| main.rs:458:9:458:9 | x | main.rs:457:10:457:10 | x |
+| main.rs:459:15:459:15 | f | main.rs:456:9:456:9 | f |
+| main.rs:463:9:463:9 | x | main.rs:461:10:461:10 | x |
+| main.rs:466:15:466:15 | f | main.rs:456:9:456:9 | f |
+| main.rs:472:17:472:17 | x | main.rs:470:14:470:14 | x |
+| main.rs:481:13:481:13 | x | main.rs:480:14:480:14 | x |
+| main.rs:482:19:482:19 | f | main.rs:479:13:479:13 | f |
+| main.rs:490:12:490:12 | v | main.rs:487:9:487:9 | v |
+| main.rs:491:19:491:22 | text | main.rs:489:9:489:12 | text |
+| main.rs:497:5:497:5 | a | main.rs:496:13:496:13 | a |
+| main.rs:498:15:498:15 | a | main.rs:496:13:496:13 | a |
+| main.rs:499:11:499:11 | a | main.rs:496:13:496:13 | a |
+| main.rs:500:15:500:15 | a | main.rs:496:13:496:13 | a |
+| main.rs:506:14:506:14 | i | main.rs:504:13:504:13 | i |
+| main.rs:507:6:507:10 | ref_i | main.rs:505:9:505:13 | ref_i |
+| main.rs:508:15:508:15 | i | main.rs:504:13:504:13 | i |
+| main.rs:512:6:512:6 | x | main.rs:511:17:511:17 | x |
+| main.rs:513:10:513:10 | x | main.rs:511:17:511:17 | x |
+| main.rs:514:10:514:10 | x | main.rs:511:17:511:17 | x |
+| main.rs:515:12:515:12 | x | main.rs:511:17:511:17 | x |
+| main.rs:519:6:519:6 | x | main.rs:518:22:518:22 | x |
+| main.rs:520:10:520:10 | x | main.rs:518:22:518:22 | x |
+| main.rs:521:10:521:10 | x | main.rs:518:22:518:22 | x |
+| main.rs:522:6:522:6 | y | main.rs:518:38:518:38 | y |
+| main.rs:523:9:523:9 | x | main.rs:518:22:518:22 | x |
+| main.rs:529:27:529:27 | x | main.rs:527:13:527:13 | x |
+| main.rs:530:6:530:6 | y | main.rs:528:9:528:9 | y |
+| main.rs:533:15:533:15 | x | main.rs:527:13:527:13 | x |
+| main.rs:537:19:537:19 | x | main.rs:527:13:527:13 | x |
+| main.rs:539:14:539:14 | z | main.rs:535:13:535:13 | z |
+| main.rs:540:9:540:9 | w | main.rs:536:9:536:9 | w |
+| main.rs:542:7:542:7 | w | main.rs:536:9:536:9 | w |
+| main.rs:545:15:545:15 | z | main.rs:535:13:535:13 | z |
+| main.rs:551:14:551:14 | x | main.rs:549:13:549:13 | x |
+| main.rs:552:6:552:6 | y | main.rs:550:9:550:9 | y |
+| main.rs:553:15:553:15 | x | main.rs:549:13:549:13 | x |
+| main.rs:561:19:561:19 | x | main.rs:557:9:557:9 | x |
+| main.rs:563:5:563:7 | cap | main.rs:560:9:560:11 | cap |
+| main.rs:564:15:564:15 | x | main.rs:557:9:557:9 | x |
+| main.rs:572:19:572:19 | x | main.rs:568:13:568:13 | x |
+| main.rs:574:5:574:12 | closure1 | main.rs:571:9:571:16 | closure1 |
+| main.rs:575:15:575:15 | x | main.rs:568:13:568:13 | x |
+| main.rs:581:9:581:9 | y | main.rs:577:13:577:13 | y |
+| main.rs:583:5:583:12 | closure2 | main.rs:580:13:580:20 | closure2 |
+| main.rs:584:15:584:15 | y | main.rs:577:13:577:13 | y |
+| main.rs:590:9:590:9 | z | main.rs:586:13:586:13 | z |
+| main.rs:592:5:592:12 | closure3 | main.rs:589:13:589:20 | closure3 |
+| main.rs:593:15:593:15 | z | main.rs:586:13:586:13 | z |
+| main.rs:599:9:599:9 | i | main.rs:597:13:597:13 | i |
+| main.rs:602:5:602:9 | block | main.rs:598:9:598:13 | block |
+| main.rs:603:15:603:15 | i | main.rs:597:13:597:13 | i |
+| main.rs:608:15:608:15 | x | main.rs:607:13:607:13 | x |
+| main.rs:609:15:609:15 | x | main.rs:607:13:607:13 | x |
+| main.rs:611:16:611:16 | b | main.rs:606:8:606:8 | b |
+| main.rs:613:9:613:9 | x | main.rs:607:13:607:13 | x |
+| main.rs:614:19:614:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:615:19:615:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:617:9:617:9 | x | main.rs:607:13:607:13 | x |
+| main.rs:618:19:618:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:619:19:619:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:621:15:621:15 | x | main.rs:607:13:607:13 | x |
+| main.rs:627:16:627:17 | b1 | main.rs:624:13:624:14 | b1 |
+| main.rs:629:19:629:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:631:19:631:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:635:16:635:17 | b2 | main.rs:624:23:624:24 | b2 |
+| main.rs:637:19:637:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:639:19:639:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:649:16:649:19 | self | main.rs:648:20:648:23 | self |
+| main.rs:653:9:653:12 | self | main.rs:652:11:652:14 | self |
+| main.rs:659:13:659:16 | self | main.rs:656:23:656:26 | self |
+| main.rs:659:25:659:25 | n | main.rs:657:22:657:22 | n |
+| main.rs:661:9:661:9 | f | main.rs:657:17:657:17 | f |
+| main.rs:662:9:662:9 | f | main.rs:657:17:657:17 | f |
+| main.rs:668:15:668:15 | a | main.rs:667:13:667:13 | a |
+| main.rs:669:5:669:5 | a | main.rs:667:13:667:13 | a |
+| main.rs:670:15:670:15 | a | main.rs:667:13:667:13 | a |
+| main.rs:671:5:671:5 | a | main.rs:667:13:667:13 | a |
+| main.rs:672:15:672:15 | a | main.rs:667:13:667:13 | a |
+| main.rs:677:15:677:15 | a | main.rs:676:13:676:13 | a |
+| main.rs:678:5:678:5 | a | main.rs:676:13:676:13 | a |
+| main.rs:679:15:679:15 | a | main.rs:676:13:676:13 | a |
+| main.rs:680:5:680:5 | a | main.rs:676:13:676:13 | a |
+| main.rs:681:15:681:15 | a | main.rs:676:13:676:13 | a |
+| main.rs:686:20:686:20 | x | main.rs:685:9:685:9 | x |
+| main.rs:687:15:687:15 | x | main.rs:685:9:685:9 | x |
+| main.rs:690:20:690:20 | z | main.rs:689:9:689:9 | z |
+| main.rs:699:10:699:13 | self | main.rs:698:17:698:20 | self |
+| main.rs:705:5:705:5 | a | main.rs:704:13:704:13 | a |
+| main.rs:708:15:708:15 | a | main.rs:704:13:704:13 | a |
+| main.rs:727:9:727:21 | var_in_macro | main.rs:727:9:727:21 | var_in_macro |
+| main.rs:728:15:728:28 | var_from_macro | main.rs:726:9:726:22 | var_from_macro |
+| main.rs:734:30:734:41 | var_in_macro | main.rs:734:15:734:28 | var_in_macro |
+| main.rs:735:15:735:26 | var_in_macro | main.rs:729:9:729:20 | var_in_macro |
+| main.rs:740:5:740:5 | x | main.rs:739:9:739:9 | x |
+| main.rs:741:15:741:15 | x | main.rs:739:9:739:9 | x |
+| main.rs:748:20:748:20 | b | main.rs:746:20:746:20 | b |
+| main.rs:749:13:749:13 | x | main.rs:745:13:745:13 | x |
+| main.rs:752:5:752:7 | cap | main.rs:746:13:746:15 | cap |
+| main.rs:753:15:753:15 | x | main.rs:745:13:745:13 | x |
+| main.rs:761:19:761:19 | x | main.rs:759:13:759:13 | x |
+| main.rs:768:15:768:15 | y | main.rs:760:13:760:13 | y |
+| main.rs:770:17:770:20 | N0ne | main.rs:769:13:769:16 | N0ne |
+| main.rs:779:13:779:22 | test_alias | main.rs:776:13:776:22 | test_alias |
+| main.rs:780:9:780:12 | test | main.rs:778:13:778:16 | test |
+| main.rs:788:15:788:15 | x | main.rs:787:13:787:13 | x |
+| main.rs:790:20:790:20 | x | main.rs:789:18:789:18 | x |
+| main.rs:793:15:793:15 | x | main.rs:787:13:787:13 | x |
 variableWriteAccess
 | main.rs:27:5:27:6 | x2 | main.rs:25:13:25:14 | x2 |
 | main.rs:29:5:29:6 | x2 | main.rs:25:13:25:14 | x2 |
 | main.rs:36:5:36:5 | x | main.rs:34:13:34:13 | x |
-| main.rs:391:9:391:10 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:392:9:392:10 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:393:9:393:11 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:561:9:561:9 | y | main.rs:557:13:557:13 | y |
-| main.rs:579:9:579:9 | i | main.rs:577:13:577:13 | i |
-| main.rs:593:9:593:9 | x | main.rs:587:13:587:13 | x |
-| main.rs:597:9:597:9 | x | main.rs:587:13:587:13 | x |
-| main.rs:651:5:651:5 | a | main.rs:647:13:647:13 | a |
-| main.rs:660:5:660:5 | a | main.rs:656:13:656:13 | a |
-| main.rs:720:5:720:5 | x | main.rs:719:9:719:9 | x |
-| main.rs:729:13:729:13 | x | main.rs:725:13:725:13 | x |
+| main.rs:411:9:411:10 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:412:9:412:10 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:413:9:413:11 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:581:9:581:9 | y | main.rs:577:13:577:13 | y |
+| main.rs:599:9:599:9 | i | main.rs:597:13:597:13 | i |
+| main.rs:613:9:613:9 | x | main.rs:607:13:607:13 | x |
+| main.rs:617:9:617:9 | x | main.rs:607:13:607:13 | x |
+| main.rs:671:5:671:5 | a | main.rs:667:13:667:13 | a |
+| main.rs:680:5:680:5 | a | main.rs:676:13:676:13 | a |
+| main.rs:740:5:740:5 | x | main.rs:739:9:739:9 | x |
+| main.rs:749:13:749:13 | x | main.rs:745:13:745:13 | x |
 variableReadAccess
 | main.rs:7:20:7:20 | s | main.rs:5:14:5:14 | s |
 | main.rs:12:20:12:20 | i | main.rs:10:14:10:14 | i |
@@ -456,111 +482,124 @@ variableReadAccess
 | main.rs:355:7:355:7 | x | main.rs:348:9:348:9 | x |
 | main.rs:357:19:357:19 | x | main.rs:354:20:354:20 | x |
 | main.rs:359:19:359:19 | x | main.rs:348:9:348:9 | x |
-| main.rs:370:15:370:16 | a8 | main.rs:364:5:364:6 | a8 |
-| main.rs:371:15:371:16 | b3 | main.rs:366:9:366:10 | b3 |
-| main.rs:372:15:372:16 | c1 | main.rs:367:9:367:10 | c1 |
-| main.rs:377:15:377:16 | a9 | main.rs:375:20:375:55 | a9 |
-| main.rs:386:15:386:17 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:387:15:387:16 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:388:15:388:16 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:395:9:395:11 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:396:9:396:10 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:397:9:397:10 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:399:15:399:17 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:400:15:400:16 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:401:15:401:16 | c2 | main.rs:384:13:384:14 | c2 |
-| main.rs:408:23:408:25 | a10 | main.rs:405:13:405:15 | a10 |
-| main.rs:409:23:409:24 | b4 | main.rs:406:13:406:14 | b4 |
-| main.rs:413:15:413:17 | a10 | main.rs:382:13:382:15 | a10 |
-| main.rs:414:15:414:16 | b4 | main.rs:383:13:383:14 | b4 |
-| main.rs:420:9:420:9 | x | main.rs:419:10:419:10 | x |
-| main.rs:422:9:422:23 | example_closure | main.rs:418:9:418:23 | example_closure |
-| main.rs:423:15:423:16 | n1 | main.rs:421:9:421:10 | n1 |
-| main.rs:428:9:428:9 | x | main.rs:427:6:427:6 | x |
-| main.rs:430:9:430:26 | immutable_variable | main.rs:426:9:426:26 | immutable_variable |
-| main.rs:431:15:431:16 | n2 | main.rs:429:9:429:10 | n2 |
-| main.rs:438:9:438:9 | x | main.rs:437:10:437:10 | x |
-| main.rs:439:15:439:15 | f | main.rs:436:9:436:9 | f |
-| main.rs:443:9:443:9 | x | main.rs:441:10:441:10 | x |
-| main.rs:446:15:446:15 | f | main.rs:436:9:436:9 | f |
-| main.rs:452:17:452:17 | x | main.rs:450:14:450:14 | x |
-| main.rs:461:13:461:13 | x | main.rs:460:14:460:14 | x |
-| main.rs:462:19:462:19 | f | main.rs:459:13:459:13 | f |
-| main.rs:470:12:470:12 | v | main.rs:467:9:467:9 | v |
-| main.rs:471:19:471:22 | text | main.rs:469:9:469:12 | text |
-| main.rs:478:15:478:15 | a | main.rs:476:13:476:13 | a |
-| main.rs:480:15:480:15 | a | main.rs:476:13:476:13 | a |
-| main.rs:487:6:487:10 | ref_i | main.rs:485:9:485:13 | ref_i |
-| main.rs:488:15:488:15 | i | main.rs:484:13:484:13 | i |
-| main.rs:492:6:492:6 | x | main.rs:491:17:491:17 | x |
-| main.rs:493:10:493:10 | x | main.rs:491:17:491:17 | x |
-| main.rs:494:10:494:10 | x | main.rs:491:17:491:17 | x |
-| main.rs:495:12:495:12 | x | main.rs:491:17:491:17 | x |
-| main.rs:499:6:499:6 | x | main.rs:498:22:498:22 | x |
-| main.rs:500:10:500:10 | x | main.rs:498:22:498:22 | x |
-| main.rs:501:10:501:10 | x | main.rs:498:22:498:22 | x |
-| main.rs:502:6:502:6 | y | main.rs:498:38:498:38 | y |
-| main.rs:503:9:503:9 | x | main.rs:498:22:498:22 | x |
-| main.rs:510:6:510:6 | y | main.rs:508:9:508:9 | y |
-| main.rs:513:15:513:15 | x | main.rs:507:13:507:13 | x |
-| main.rs:520:9:520:9 | w | main.rs:516:9:516:9 | w |
-| main.rs:522:7:522:7 | w | main.rs:516:9:516:9 | w |
-| main.rs:525:15:525:15 | z | main.rs:515:13:515:13 | z |
-| main.rs:532:6:532:6 | y | main.rs:530:9:530:9 | y |
-| main.rs:533:15:533:15 | x | main.rs:529:13:529:13 | x |
-| main.rs:541:19:541:19 | x | main.rs:537:9:537:9 | x |
-| main.rs:543:5:543:7 | cap | main.rs:540:9:540:11 | cap |
-| main.rs:544:15:544:15 | x | main.rs:537:9:537:9 | x |
-| main.rs:552:19:552:19 | x | main.rs:548:13:548:13 | x |
-| main.rs:554:5:554:12 | closure1 | main.rs:551:9:551:16 | closure1 |
-| main.rs:555:15:555:15 | x | main.rs:548:13:548:13 | x |
-| main.rs:563:5:563:12 | closure2 | main.rs:560:13:560:20 | closure2 |
-| main.rs:564:15:564:15 | y | main.rs:557:13:557:13 | y |
-| main.rs:570:9:570:9 | z | main.rs:566:13:566:13 | z |
-| main.rs:572:5:572:12 | closure3 | main.rs:569:13:569:20 | closure3 |
-| main.rs:573:15:573:15 | z | main.rs:566:13:566:13 | z |
-| main.rs:582:5:582:9 | block | main.rs:578:9:578:13 | block |
-| main.rs:583:15:583:15 | i | main.rs:577:13:577:13 | i |
-| main.rs:588:15:588:15 | x | main.rs:587:13:587:13 | x |
-| main.rs:589:15:589:15 | x | main.rs:587:13:587:13 | x |
-| main.rs:591:16:591:16 | b | main.rs:586:8:586:8 | b |
-| main.rs:594:19:594:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:595:19:595:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:598:19:598:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:599:19:599:19 | x | main.rs:587:13:587:13 | x |
-| main.rs:601:15:601:15 | x | main.rs:587:13:587:13 | x |
-| main.rs:607:16:607:17 | b1 | main.rs:604:13:604:14 | b1 |
-| main.rs:609:19:609:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:611:19:611:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:615:16:615:17 | b2 | main.rs:604:23:604:24 | b2 |
-| main.rs:617:19:617:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:619:19:619:19 | x | main.rs:605:9:605:9 | x |
-| main.rs:629:16:629:19 | self | main.rs:628:20:628:23 | self |
-| main.rs:633:9:633:12 | self | main.rs:632:11:632:14 | self |
-| main.rs:639:13:639:16 | self | main.rs:636:23:636:26 | self |
-| main.rs:639:25:639:25 | n | main.rs:637:22:637:22 | n |
-| main.rs:641:9:641:9 | f | main.rs:637:17:637:17 | f |
-| main.rs:642:9:642:9 | f | main.rs:637:17:637:17 | f |
-| main.rs:648:15:648:15 | a | main.rs:647:13:647:13 | a |
-| main.rs:649:5:649:5 | a | main.rs:647:13:647:13 | a |
-| main.rs:650:15:650:15 | a | main.rs:647:13:647:13 | a |
-| main.rs:652:15:652:15 | a | main.rs:647:13:647:13 | a |
-| main.rs:657:15:657:15 | a | main.rs:656:13:656:13 | a |
-| main.rs:658:5:658:5 | a | main.rs:656:13:656:13 | a |
-| main.rs:659:15:659:15 | a | main.rs:656:13:656:13 | a |
-| main.rs:661:15:661:15 | a | main.rs:656:13:656:13 | a |
-| main.rs:667:15:667:15 | x | main.rs:665:9:665:9 | x |
-| main.rs:679:10:679:13 | self | main.rs:678:17:678:20 | self |
-| main.rs:685:5:685:5 | a | main.rs:684:13:684:13 | a |
-| main.rs:688:15:688:15 | a | main.rs:684:13:684:13 | a |
-| main.rs:707:9:707:21 | var_in_macro | main.rs:707:9:707:21 | var_in_macro |
-| main.rs:708:15:708:28 | var_from_macro | main.rs:706:9:706:22 | var_from_macro |
-| main.rs:714:30:714:41 | var_in_macro | main.rs:714:15:714:28 | var_in_macro |
-| main.rs:715:15:715:26 | var_in_macro | main.rs:709:9:709:20 | var_in_macro |
-| main.rs:721:15:721:15 | x | main.rs:719:9:719:9 | x |
-| main.rs:728:20:728:20 | b | main.rs:726:20:726:20 | b |
-| main.rs:732:5:732:7 | cap | main.rs:726:13:726:15 | cap |
-| main.rs:733:15:733:15 | x | main.rs:725:13:725:13 | x |
+| main.rs:365:11:365:11 | x | main.rs:364:9:364:9 | x |
+| main.rs:367:20:367:20 | x | main.rs:366:18:366:18 | x |
+| main.rs:374:11:374:11 | x | main.rs:373:9:373:9 | x |
+| main.rs:377:22:377:22 | y | main.rs:375:14:375:14 | y |
+| main.rs:378:26:378:26 | y | main.rs:376:25:376:25 | y |
+| main.rs:390:15:390:16 | a8 | main.rs:384:5:384:6 | a8 |
+| main.rs:391:15:391:16 | b3 | main.rs:386:9:386:10 | b3 |
+| main.rs:392:15:392:16 | c1 | main.rs:387:9:387:10 | c1 |
+| main.rs:397:15:397:16 | a9 | main.rs:395:20:395:55 | a9 |
+| main.rs:406:15:406:17 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:407:15:407:16 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:408:15:408:16 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:415:9:415:11 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:416:9:416:10 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:417:9:417:10 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:419:15:419:17 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:420:15:420:16 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:421:15:421:16 | c2 | main.rs:404:13:404:14 | c2 |
+| main.rs:428:23:428:25 | a10 | main.rs:425:13:425:15 | a10 |
+| main.rs:429:23:429:24 | b4 | main.rs:426:13:426:14 | b4 |
+| main.rs:433:15:433:17 | a10 | main.rs:402:13:402:15 | a10 |
+| main.rs:434:15:434:16 | b4 | main.rs:403:13:403:14 | b4 |
+| main.rs:440:9:440:9 | x | main.rs:439:10:439:10 | x |
+| main.rs:442:9:442:23 | example_closure | main.rs:438:9:438:23 | example_closure |
+| main.rs:443:15:443:16 | n1 | main.rs:441:9:441:10 | n1 |
+| main.rs:448:9:448:9 | x | main.rs:447:6:447:6 | x |
+| main.rs:450:9:450:26 | immutable_variable | main.rs:446:9:446:26 | immutable_variable |
+| main.rs:451:15:451:16 | n2 | main.rs:449:9:449:10 | n2 |
+| main.rs:458:9:458:9 | x | main.rs:457:10:457:10 | x |
+| main.rs:459:15:459:15 | f | main.rs:456:9:456:9 | f |
+| main.rs:463:9:463:9 | x | main.rs:461:10:461:10 | x |
+| main.rs:466:15:466:15 | f | main.rs:456:9:456:9 | f |
+| main.rs:472:17:472:17 | x | main.rs:470:14:470:14 | x |
+| main.rs:481:13:481:13 | x | main.rs:480:14:480:14 | x |
+| main.rs:482:19:482:19 | f | main.rs:479:13:479:13 | f |
+| main.rs:490:12:490:12 | v | main.rs:487:9:487:9 | v |
+| main.rs:491:19:491:22 | text | main.rs:489:9:489:12 | text |
+| main.rs:498:15:498:15 | a | main.rs:496:13:496:13 | a |
+| main.rs:500:15:500:15 | a | main.rs:496:13:496:13 | a |
+| main.rs:507:6:507:10 | ref_i | main.rs:505:9:505:13 | ref_i |
+| main.rs:508:15:508:15 | i | main.rs:504:13:504:13 | i |
+| main.rs:512:6:512:6 | x | main.rs:511:17:511:17 | x |
+| main.rs:513:10:513:10 | x | main.rs:511:17:511:17 | x |
+| main.rs:514:10:514:10 | x | main.rs:511:17:511:17 | x |
+| main.rs:515:12:515:12 | x | main.rs:511:17:511:17 | x |
+| main.rs:519:6:519:6 | x | main.rs:518:22:518:22 | x |
+| main.rs:520:10:520:10 | x | main.rs:518:22:518:22 | x |
+| main.rs:521:10:521:10 | x | main.rs:518:22:518:22 | x |
+| main.rs:522:6:522:6 | y | main.rs:518:38:518:38 | y |
+| main.rs:523:9:523:9 | x | main.rs:518:22:518:22 | x |
+| main.rs:530:6:530:6 | y | main.rs:528:9:528:9 | y |
+| main.rs:533:15:533:15 | x | main.rs:527:13:527:13 | x |
+| main.rs:540:9:540:9 | w | main.rs:536:9:536:9 | w |
+| main.rs:542:7:542:7 | w | main.rs:536:9:536:9 | w |
+| main.rs:545:15:545:15 | z | main.rs:535:13:535:13 | z |
+| main.rs:552:6:552:6 | y | main.rs:550:9:550:9 | y |
+| main.rs:553:15:553:15 | x | main.rs:549:13:549:13 | x |
+| main.rs:561:19:561:19 | x | main.rs:557:9:557:9 | x |
+| main.rs:563:5:563:7 | cap | main.rs:560:9:560:11 | cap |
+| main.rs:564:15:564:15 | x | main.rs:557:9:557:9 | x |
+| main.rs:572:19:572:19 | x | main.rs:568:13:568:13 | x |
+| main.rs:574:5:574:12 | closure1 | main.rs:571:9:571:16 | closure1 |
+| main.rs:575:15:575:15 | x | main.rs:568:13:568:13 | x |
+| main.rs:583:5:583:12 | closure2 | main.rs:580:13:580:20 | closure2 |
+| main.rs:584:15:584:15 | y | main.rs:577:13:577:13 | y |
+| main.rs:590:9:590:9 | z | main.rs:586:13:586:13 | z |
+| main.rs:592:5:592:12 | closure3 | main.rs:589:13:589:20 | closure3 |
+| main.rs:593:15:593:15 | z | main.rs:586:13:586:13 | z |
+| main.rs:602:5:602:9 | block | main.rs:598:9:598:13 | block |
+| main.rs:603:15:603:15 | i | main.rs:597:13:597:13 | i |
+| main.rs:608:15:608:15 | x | main.rs:607:13:607:13 | x |
+| main.rs:609:15:609:15 | x | main.rs:607:13:607:13 | x |
+| main.rs:611:16:611:16 | b | main.rs:606:8:606:8 | b |
+| main.rs:614:19:614:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:615:19:615:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:618:19:618:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:619:19:619:19 | x | main.rs:607:13:607:13 | x |
+| main.rs:621:15:621:15 | x | main.rs:607:13:607:13 | x |
+| main.rs:627:16:627:17 | b1 | main.rs:624:13:624:14 | b1 |
+| main.rs:629:19:629:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:631:19:631:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:635:16:635:17 | b2 | main.rs:624:23:624:24 | b2 |
+| main.rs:637:19:637:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:639:19:639:19 | x | main.rs:625:9:625:9 | x |
+| main.rs:649:16:649:19 | self | main.rs:648:20:648:23 | self |
+| main.rs:653:9:653:12 | self | main.rs:652:11:652:14 | self |
+| main.rs:659:13:659:16 | self | main.rs:656:23:656:26 | self |
+| main.rs:659:25:659:25 | n | main.rs:657:22:657:22 | n |
+| main.rs:661:9:661:9 | f | main.rs:657:17:657:17 | f |
+| main.rs:662:9:662:9 | f | main.rs:657:17:657:17 | f |
+| main.rs:668:15:668:15 | a | main.rs:667:13:667:13 | a |
+| main.rs:669:5:669:5 | a | main.rs:667:13:667:13 | a |
+| main.rs:670:15:670:15 | a | main.rs:667:13:667:13 | a |
+| main.rs:672:15:672:15 | a | main.rs:667:13:667:13 | a |
+| main.rs:677:15:677:15 | a | main.rs:676:13:676:13 | a |
+| main.rs:678:5:678:5 | a | main.rs:676:13:676:13 | a |
+| main.rs:679:15:679:15 | a | main.rs:676:13:676:13 | a |
+| main.rs:681:15:681:15 | a | main.rs:676:13:676:13 | a |
+| main.rs:687:15:687:15 | x | main.rs:685:9:685:9 | x |
+| main.rs:699:10:699:13 | self | main.rs:698:17:698:20 | self |
+| main.rs:705:5:705:5 | a | main.rs:704:13:704:13 | a |
+| main.rs:708:15:708:15 | a | main.rs:704:13:704:13 | a |
+| main.rs:727:9:727:21 | var_in_macro | main.rs:727:9:727:21 | var_in_macro |
+| main.rs:728:15:728:28 | var_from_macro | main.rs:726:9:726:22 | var_from_macro |
+| main.rs:734:30:734:41 | var_in_macro | main.rs:734:15:734:28 | var_in_macro |
+| main.rs:735:15:735:26 | var_in_macro | main.rs:729:9:729:20 | var_in_macro |
+| main.rs:741:15:741:15 | x | main.rs:739:9:739:9 | x |
+| main.rs:748:20:748:20 | b | main.rs:746:20:746:20 | b |
+| main.rs:752:5:752:7 | cap | main.rs:746:13:746:15 | cap |
+| main.rs:753:15:753:15 | x | main.rs:745:13:745:13 | x |
+| main.rs:761:19:761:19 | x | main.rs:759:13:759:13 | x |
+| main.rs:768:15:768:15 | y | main.rs:760:13:760:13 | y |
+| main.rs:770:17:770:20 | N0ne | main.rs:769:13:769:16 | N0ne |
+| main.rs:779:13:779:22 | test_alias | main.rs:776:13:776:22 | test_alias |
+| main.rs:780:9:780:12 | test | main.rs:778:13:778:16 | test |
+| main.rs:788:15:788:15 | x | main.rs:787:13:787:13 | x |
+| main.rs:790:20:790:20 | x | main.rs:789:18:789:18 | x |
+| main.rs:793:15:793:15 | x | main.rs:787:13:787:13 | x |
 variableInitializer
 | main.rs:20:9:20:10 | x1 | main.rs:20:14:20:16 | "a" |
 | main.rs:25:13:25:14 | x2 | main.rs:25:18:25:18 | 4 |
@@ -592,62 +631,69 @@ variableInitializer
 | main.rs:334:9:334:9 | x | main.rs:334:13:334:20 | Some(...) |
 | main.rs:337:20:337:20 | x | main.rs:338:18:338:18 | x |
 | main.rs:348:9:348:9 | x | main.rs:348:13:348:18 | Ok(...) |
-| main.rs:418:9:418:23 | example_closure | main.rs:419:9:420:9 | \|...\| x |
-| main.rs:421:9:421:10 | n1 | main.rs:422:9:422:26 | example_closure(...) |
-| main.rs:426:9:426:26 | immutable_variable | main.rs:427:5:428:9 | \|...\| x |
-| main.rs:429:9:429:10 | n2 | main.rs:430:9:430:29 | immutable_variable(...) |
-| main.rs:436:9:436:9 | f | main.rs:437:9:438:9 | \|...\| x |
-| main.rs:459:13:459:13 | f | main.rs:460:13:461:13 | \|...\| x |
-| main.rs:467:9:467:9 | v | main.rs:467:13:467:41 | &... |
-| main.rs:476:13:476:13 | a | main.rs:476:17:476:17 | 0 |
-| main.rs:484:13:484:13 | i | main.rs:484:17:484:17 | 1 |
-| main.rs:485:9:485:13 | ref_i | main.rs:486:9:486:14 | &mut i |
-| main.rs:507:13:507:13 | x | main.rs:507:17:507:17 | 2 |
-| main.rs:508:9:508:9 | y | main.rs:509:9:509:28 | mutate_param(...) |
-| main.rs:515:13:515:13 | z | main.rs:515:17:515:17 | 4 |
-| main.rs:516:9:516:9 | w | main.rs:517:9:517:19 | &mut ... |
-| main.rs:529:13:529:13 | x | main.rs:529:17:529:17 | 1 |
-| main.rs:530:9:530:9 | y | main.rs:531:9:531:14 | &mut x |
-| main.rs:537:9:537:9 | x | main.rs:537:13:537:15 | 100 |
-| main.rs:540:9:540:11 | cap | main.rs:540:15:542:5 | \|...\| ... |
-| main.rs:548:13:548:13 | x | main.rs:548:17:548:17 | 1 |
-| main.rs:551:9:551:16 | closure1 | main.rs:551:20:553:5 | \|...\| ... |
-| main.rs:557:13:557:13 | y | main.rs:557:17:557:17 | 2 |
-| main.rs:560:13:560:20 | closure2 | main.rs:560:24:562:5 | \|...\| ... |
-| main.rs:566:13:566:13 | z | main.rs:566:17:566:17 | 2 |
-| main.rs:569:13:569:20 | closure3 | main.rs:569:24:571:5 | \|...\| ... |
-| main.rs:577:13:577:13 | i | main.rs:577:22:577:22 | 0 |
-| main.rs:578:9:578:13 | block | main.rs:578:17:580:5 | { ... } |
-| main.rs:587:13:587:13 | x | main.rs:587:17:587:17 | 1 |
-| main.rs:605:9:605:9 | x | main.rs:605:13:605:13 | 1 |
-| main.rs:637:17:637:17 | f | main.rs:637:21:640:9 | \|...\| ... |
-| main.rs:647:13:647:13 | a | main.rs:647:17:647:35 | MyStruct {...} |
-| main.rs:656:13:656:13 | a | main.rs:656:17:656:25 | [...] |
-| main.rs:665:9:665:9 | x | main.rs:665:13:665:14 | 16 |
-| main.rs:669:9:669:9 | z | main.rs:669:13:669:14 | 17 |
-| main.rs:684:13:684:13 | a | main.rs:684:17:684:35 | MyStruct {...} |
-| main.rs:706:9:706:22 | var_from_macro | main.rs:707:9:707:25 | MacroExpr |
-| main.rs:707:9:707:21 | var_in_macro | main.rs:707:23:707:24 | 37 |
-| main.rs:709:9:709:20 | var_in_macro | main.rs:709:24:709:25 | 33 |
-| main.rs:714:15:714:28 | var_in_macro | main.rs:714:15:714:28 | 0 |
-| main.rs:725:13:725:13 | x | main.rs:725:17:725:19 | 100 |
-| main.rs:726:13:726:15 | cap | main.rs:726:19:731:5 | \|...\| ... |
+| main.rs:364:9:364:9 | x | main.rs:364:13:364:19 | Some(...) |
+| main.rs:373:9:373:9 | x | main.rs:373:13:373:20 | Some(...) |
+| main.rs:438:9:438:23 | example_closure | main.rs:439:9:440:9 | \|...\| x |
+| main.rs:441:9:441:10 | n1 | main.rs:442:9:442:26 | example_closure(...) |
+| main.rs:446:9:446:26 | immutable_variable | main.rs:447:5:448:9 | \|...\| x |
+| main.rs:449:9:449:10 | n2 | main.rs:450:9:450:29 | immutable_variable(...) |
+| main.rs:456:9:456:9 | f | main.rs:457:9:458:9 | \|...\| x |
+| main.rs:479:13:479:13 | f | main.rs:480:13:481:13 | \|...\| x |
+| main.rs:487:9:487:9 | v | main.rs:487:13:487:41 | &... |
+| main.rs:496:13:496:13 | a | main.rs:496:17:496:17 | 0 |
+| main.rs:504:13:504:13 | i | main.rs:504:17:504:17 | 1 |
+| main.rs:505:9:505:13 | ref_i | main.rs:506:9:506:14 | &mut i |
+| main.rs:527:13:527:13 | x | main.rs:527:17:527:17 | 2 |
+| main.rs:528:9:528:9 | y | main.rs:529:9:529:28 | mutate_param(...) |
+| main.rs:535:13:535:13 | z | main.rs:535:17:535:17 | 4 |
+| main.rs:536:9:536:9 | w | main.rs:537:9:537:19 | &mut ... |
+| main.rs:549:13:549:13 | x | main.rs:549:17:549:17 | 1 |
+| main.rs:550:9:550:9 | y | main.rs:551:9:551:14 | &mut x |
+| main.rs:557:9:557:9 | x | main.rs:557:13:557:15 | 100 |
+| main.rs:560:9:560:11 | cap | main.rs:560:15:562:5 | \|...\| ... |
+| main.rs:568:13:568:13 | x | main.rs:568:17:568:17 | 1 |
+| main.rs:571:9:571:16 | closure1 | main.rs:571:20:573:5 | \|...\| ... |
+| main.rs:577:13:577:13 | y | main.rs:577:17:577:17 | 2 |
+| main.rs:580:13:580:20 | closure2 | main.rs:580:24:582:5 | \|...\| ... |
+| main.rs:586:13:586:13 | z | main.rs:586:17:586:17 | 2 |
+| main.rs:589:13:589:20 | closure3 | main.rs:589:24:591:5 | \|...\| ... |
+| main.rs:597:13:597:13 | i | main.rs:597:22:597:22 | 0 |
+| main.rs:598:9:598:13 | block | main.rs:598:17:600:5 | { ... } |
+| main.rs:607:13:607:13 | x | main.rs:607:17:607:17 | 1 |
+| main.rs:625:9:625:9 | x | main.rs:625:13:625:13 | 1 |
+| main.rs:657:17:657:17 | f | main.rs:657:21:660:9 | \|...\| ... |
+| main.rs:667:13:667:13 | a | main.rs:667:17:667:35 | MyStruct {...} |
+| main.rs:676:13:676:13 | a | main.rs:676:17:676:25 | [...] |
+| main.rs:685:9:685:9 | x | main.rs:685:13:685:14 | 16 |
+| main.rs:689:9:689:9 | z | main.rs:689:13:689:14 | 17 |
+| main.rs:704:13:704:13 | a | main.rs:704:17:704:35 | MyStruct {...} |
+| main.rs:726:9:726:22 | var_from_macro | main.rs:727:9:727:25 | MacroExpr |
+| main.rs:727:9:727:21 | var_in_macro | main.rs:727:23:727:24 | 37 |
+| main.rs:729:9:729:20 | var_in_macro | main.rs:729:24:729:25 | 33 |
+| main.rs:734:15:734:28 | var_in_macro | main.rs:734:15:734:28 | 0 |
+| main.rs:745:13:745:13 | x | main.rs:745:17:745:19 | 100 |
+| main.rs:746:13:746:15 | cap | main.rs:746:19:751:5 | \|...\| ... |
+| main.rs:759:13:759:13 | x | main.rs:759:17:759:24 | Some(...) |
+| main.rs:760:13:760:13 | y | main.rs:761:13:767:9 | match x { ... } |
+| main.rs:776:13:776:22 | test_alias | main.rs:777:13:777:16 | test |
+| main.rs:778:13:778:16 | test | main.rs:779:13:779:24 | test_alias(...) |
+| main.rs:787:13:787:13 | x | main.rs:787:17:787:23 | Some(...) |
 capturedVariable
-| main.rs:537:9:537:9 | x |
-| main.rs:548:13:548:13 | x |
-| main.rs:557:13:557:13 | y |
-| main.rs:566:13:566:13 | z |
-| main.rs:577:13:577:13 | i |
-| main.rs:636:23:636:26 | self |
-| main.rs:725:13:725:13 | x |
+| main.rs:557:9:557:9 | x |
+| main.rs:568:13:568:13 | x |
+| main.rs:577:13:577:13 | y |
+| main.rs:586:13:586:13 | z |
+| main.rs:597:13:597:13 | i |
+| main.rs:656:23:656:26 | self |
+| main.rs:745:13:745:13 | x |
 capturedAccess
-| main.rs:541:19:541:19 | x |
-| main.rs:552:19:552:19 | x |
-| main.rs:561:9:561:9 | y |
-| main.rs:570:9:570:9 | z |
-| main.rs:579:9:579:9 | i |
-| main.rs:639:13:639:16 | self |
-| main.rs:729:13:729:13 | x |
+| main.rs:561:19:561:19 | x |
+| main.rs:572:19:572:19 | x |
+| main.rs:581:9:581:9 | y |
+| main.rs:590:9:590:9 | z |
+| main.rs:599:9:599:9 | i |
+| main.rs:659:13:659:16 | self |
+| main.rs:749:13:749:13 | x |
 nestedFunctionAccess
-| main.rs:449:19:449:19 | f | main.rs:450:9:453:9 | fn f |
-| main.rs:456:23:456:23 | f | main.rs:450:9:453:9 | fn f |
+| main.rs:469:19:469:19 | f | main.rs:470:9:473:9 | fn f |
+| main.rs:476:23:476:23 | f | main.rs:470:9:473:9 | fn f |

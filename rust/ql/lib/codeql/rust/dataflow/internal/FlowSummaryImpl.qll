@@ -9,7 +9,6 @@ private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.Ssa
-private import codeql.rust.controlflow.CfgNodes
 private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
@@ -132,9 +131,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 private import Make<Location, RustDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
-  DataFlowCall getACall(Public::SummarizedCallable sc) {
-    result.asCallCfgNode().getCall().getStaticTarget() = sc
-  }
+  DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
 
   /** Gets the argument of `source` described by `sc`, if any. */
   private Expr getSourceNodeArgument(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
@@ -151,10 +148,9 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     result = expr.(ClosureExpr)
     or
     // The expression is an SSA read of an assignment of a closure
-    exists(Ssa::Definition def, ExprCfgNode value |
-      def.getARead().getAstNode() = expr and
-      def.getAnUltimateDefinition().(Ssa::WriteDefinition).assigns(value) and
-      result = value.getExpr().(ClosureExpr)
+    exists(Ssa::Definition def |
+      def.getARead() = expr and
+      def.getAnUltimateDefinition().(Ssa::WriteDefinition).assigns(result.(ClosureExpr))
     )
   }
 
@@ -164,7 +160,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) {
     s.head() = Impl::Private::SummaryComponent::return(_) and
-    result.asExpr().getExpr() = source.getCall()
+    result.asExpr() = source.getCall()
     or
     exists(ArgumentPosition pos, Expr arg |
       s.head() = Impl::Private::SummaryComponent::parameter(pos) and
@@ -172,13 +168,13 @@ private module StepsInput implements Impl::Private::StepsInputSig {
       result.asParameter() = getCallable(arg).getParam(pos.getPosition())
     )
     or
-    result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() =
+    result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr() =
       getSourceNodeArgument(source, s.headOfSingleton())
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
     exists(CallExprBase call, Expr arg, ArgumentPosition pos |
-      result.asExpr().getExpr() = arg and
+      result.asExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
       call = sink.getCall() and
       arg = pos.getArgument(call)

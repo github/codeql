@@ -72,17 +72,10 @@ class ReverseDnsSource extends Source {
   }
 }
 
-pragma[noinline]
-private predicate conditionControlsCall0(
-  SensitiveExecutionMethodCall call, Expr e, ControlFlow::BooleanSuccessor s
-) {
-  forex(BasicBlock bb | bb = call.getAControlFlowNode().getBasicBlock() | e.controlsBlock(bb, s, _))
-}
-
 private predicate conditionControlsCall(
   SensitiveExecutionMethodCall call, SensitiveExecutionMethod def, Expr e, boolean cond
 ) {
-  exists(ControlFlow::BooleanSuccessor s | cond = s.getValue() | conditionControlsCall0(call, e, s)) and
+  e.(Guard).directlyControls(call.getBasicBlock(), cond) and
   def = call.getTarget().getUnboundDeclaration()
 }
 

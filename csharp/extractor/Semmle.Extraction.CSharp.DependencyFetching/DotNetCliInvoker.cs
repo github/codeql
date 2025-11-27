@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -36,15 +37,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 startInfo.WorkingDirectory = workingDirectory;
             }
-            // Set the .NET CLI language to English to avoid localized output.
-            startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
-            startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
-            startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
+
+            // Set minimal environment variables.
+            foreach (var kvp in IDotNetCliInvoker.MinimalEnvironment)
+            {
+                startInfo.EnvironmentVariables[kvp.Key] = kvp.Value;
+            }
 
             // Configure the proxy settings, if applicable.
             if (this.proxy != null)
             {
-                logger.LogInfo($"Setting up Dependabot proxy at {this.proxy.Address}");
+                logger.LogDebug($"Configuring environment variables for the Dependabot proxy at {this.proxy.Address}");
 
                 startInfo.EnvironmentVariables["HTTP_PROXY"] = this.proxy.Address;
                 startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.proxy.Address;
@@ -57,11 +60,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool RunCommandAux(string args, string? workingDirectory, out IList<string> output, bool silent)
         {
             var dirLog = string.IsNullOrWhiteSpace(workingDirectory) ? "" : $" in {workingDirectory}";
-            logger.LogInfo($"Running '{Exec} {args}'{dirLog}");
             var pi = MakeDotnetStartInfo(args, workingDirectory);
             var threadId = Environment.CurrentManagedThreadId;
             void onOut(string s) => logger.Log(silent ? Severity.Debug : Severity.Info, s, threadId);
             void onError(string s) => logger.LogError(s, threadId);
+            logger.LogInfo($"Running '{Exec} {args}'{dirLog}");
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {

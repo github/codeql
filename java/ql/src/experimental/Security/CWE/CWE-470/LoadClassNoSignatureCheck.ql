@@ -42,9 +42,9 @@ class CheckSignaturesGuard extends Guard instanceof EqualityTest {
 }
 
 predicate signatureChecked(Expr safe) {
-  exists(CheckSignaturesGuard g, SsaVariable v |
-    v.getAUse() = g.getCheckedExpr() and
-    safe = v.getAUse() and
+  exists(CheckSignaturesGuard g, SsaDefinition v |
+    v.getARead() = g.getCheckedExpr() and
+    safe = v.getARead() and
     g.controls(safe.getBasicBlock(), g.(EqualityTest).polarity())
   )
 }

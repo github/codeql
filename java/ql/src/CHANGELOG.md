@@ -1,3 +1,23 @@
+## 1.10.0
+
+### Query Metadata Changes
+
+* Reduced the `security-severity` score of the `java/overly-large-range` query from 5.0 to 4.0 to better reflect its impact.
+* Reduced the `security-severity` score of the `java/insecure-cookie` query from 5.0 to 4.0 to better reflect its impact.
+
+## 1.9.0
+
+### New Queries
+
+* The `java/sensitive-cookie-not-httponly` query has been promoted from experimental to the main query pack.
+* Added a new query, `java/escaping`, to detect values escaping from classes marked as `@ThreadSafe`.
+* Added a new query, `java/not-threadsafe`, to detect data races in classes marked as `@ThreadSafe`.
+* Added a new query, `java/safe-publication`, to detect unsafe publication in classes marked as `@ThreadSafe`.
+
+### Minor Analysis Improvements
+
+* Calls to `String.matches` are now treated as sanitizers for the `java/ssrf` query.
+
 ## 1.8.2
 
 No user-facing changes.

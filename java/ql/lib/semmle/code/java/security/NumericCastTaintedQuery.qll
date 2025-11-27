@@ -46,14 +46,14 @@ class RightShiftOp extends Expr {
 }
 
 private predicate boundedRead(VarRead read) {
-  exists(SsaVariable v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
-    read = v.getAUse() and
+  exists(SsaDefinition v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
+    read = v.getARead() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
     cb.getCondition() = comp
   |
-    comp.getLesserOperand() = v.getAUse() and testIsTrue = true
+    comp.getLesserOperand() = v.getARead() and testIsTrue = true
     or
-    comp.getGreaterOperand() = v.getAUse() and testIsTrue = false
+    comp.getGreaterOperand() = v.getARead() and testIsTrue = false
   )
 }
 
@@ -106,8 +106,9 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(NumericNarrowingCastExpr cast |
-      cast.getExpr() = sink.asExpr() and
+    exists(NumericNarrowingCastExpr cast | cast.getExpr() = sink.asExpr() |
+      result = sink.getLocation()
+      or
       result = cast.getLocation()
     )
   }

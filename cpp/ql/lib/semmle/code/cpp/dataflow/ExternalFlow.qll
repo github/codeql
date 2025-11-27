@@ -15,16 +15,17 @@
  * reading.
  * 1. The `namespace` column selects a namespace.
  * 2. The `type` column selects a type within that namespace. This column can
- *    introduce template names that can be mentioned in the `signature` column.
+ *    introduce template type names that can be mentioned in the `signature` column.
  *    For example, `vector<T,Allocator>` introduces the template names `T` and
- *    `Allocator`.
+ *    `Allocator`. Non-type template parameters cannot be specified.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
- *    Like the `type` column, this column can introduce template names that can
- *    be mentioned in the `signature` column. For example, `insert<InputIt>`
- *    introduces the template name `InputIt`.
+ *    Like the `type` column, this column can introduce template type names
+ *    that can be mentioned in the `signature` column. For example,
+ *    `insert<InputIt>` introduces the template name `InputIt`. Non-type
+ *    template parameters cannot be specified.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
  *    signature is a comma-separated list of types enclosed in parentheses. The
@@ -634,33 +635,79 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canon
 }
 
 /**
+ * Gets the largest index of a template parameter of `templateFunction` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateFunctionParameterIndex(Function templateFunction) {
+  result =
+    max(int index | templateFunction.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
+/** Gets the number of supported template parameters for `templateFunction`. */
+private int getNumberOfSupportedFunctionTemplateArguments(Function templateFunction) {
+  result = count(int i | exists(getSupportedFunctionTemplateArgument(templateFunction, i)) | i)
+}
+
+/** Gets the `i`'th supported template parameter for `templateFunction`. */
+private Locatable getSupportedFunctionTemplateArgument(Function templateFunction, int i) {
+  result = templateFunction.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateFunctionParameterIndex(templateFunction)
+}
+
+/**
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `func:N` (where `N` is the index of the template).
  */
 private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
   exists(Function templateFunction |
     templateFunction = getFullyTemplatedFunction(f) and
-    remaining = templateFunction.getNumberOfTemplateArguments() and
+    remaining = getNumberOfSupportedFunctionTemplateArguments(templateFunction) and
     result = getParameterTypeWithoutTemplateArguments(templateFunction, n, _)
   )
   or
   exists(string mid, TypeTemplateParameter tp, Function templateFunction |
     mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
     templateFunction = getFullyTemplatedFunction(f) and
-    tp = templateFunction.getTemplateArgument(remaining) and
+    tp = getSupportedFunctionTemplateArgument(templateFunction, remaining)
+  |
     result = mid.replaceAll(tp.getName(), "func:" + remaining.toString())
   )
+}
+
+/**
+ * Gets the largest index of a template parameter of `templateClass` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateClassParameterIndex(Class templateClass) {
+  result =
+    max(int index | templateClass.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
+/** Gets the `i`'th supported template parameter for `templateClass`. */
+private Locatable getSupportedClassTemplateArgument(Class templateClass, int i) {
+  result = templateClass.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateClassParameterIndex(templateClass)
+}
+
+/** Gets the number of supported template parameters for `templateClass`. */
+private int getNumberOfSupportedClassTemplateArguments(Class templateClass) {
+  result = count(int i | exists(getSupportedClassTemplateArgument(templateClass, i)) | i)
 }
 
 /**
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `class:N` (where `N` is the index of the template).
  */
+pragma[nomagic]
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
     isClassConstructedFrom(f.getDeclaringType(), template) and
-    remaining = template.getNumberOfTemplateArguments() and
+    remaining = getNumberOfSupportedClassTemplateArguments(template) and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
   or
@@ -672,7 +719,8 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   exists(string mid, TypeTemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
     isClassConstructedFrom(f.getDeclaringType(), template) and
-    tp = template.getTemplateArgument(remaining) and
+    tp = getSupportedClassTemplateArgument(template, remaining)
+  |
     result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
   )
 }
@@ -727,6 +775,7 @@ private string getSignatureWithoutClassTemplateNames(
  * - The `remaining` number of template arguments in `partiallyNormalizedSignature`
  * with their index in `nameArgs`.
  */
+pragma[nomagic]
 private string getSignatureWithoutFunctionTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
@@ -770,6 +819,7 @@ private string getSignatureWithoutFunctionTemplateNames(
  * ```
  * In this case, `normalizedSignature` will be `"(const func:0 &,int,class:1,class:0 *)"`.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments(
   string signature, string type, string name, string normalizedSignature, string typeArgs,
   string nameArgs
@@ -786,6 +836,35 @@ private string getSignatureParameterName(string signature, string type, string n
   exists(string normalizedSignature |
     elementSpecWithArguments(signature, type, name, normalizedSignature, _, _) and
     result = getAtIndex(normalizedSignature, n)
+  )
+}
+
+/**
+ * Gets a `Function` identified by the `(namespace, type, name)` components.
+ *
+ * If `subtypes` is `true` then the result may be an override of the function
+ * identified by the components.
+ */
+pragma[nomagic]
+private Function getFunction(string namespace, string type, boolean subtypes, string name) {
+  elementSpec(namespace, type, subtypes, name, _, _) and
+  (
+    funcHasQualifiedName(result, namespace, name) and
+    subtypes = false and
+    type = ""
+    or
+    exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
+    |
+      // member declared in the named type or a subtype of it
+      subtypes = true and
+      classWithMethod = namedClass.getADerivedClass*()
+      or
+      // member declared directly in the named type
+      subtypes = false and
+      classWithMethod = namedClass
+    )
   )
 }
 
@@ -812,13 +891,17 @@ private string getSignatureParameterName(string signature, string type, string n
  * is `func:n` then the signature name is compared with the `n`'th name
  * in `name`.
  */
-private predicate signatureMatches(Function func, string signature, string type, string name, int i) {
+pragma[nomagic]
+private predicate signatureMatches(
+  Function func, string namespace, string signature, string type, string name, int i
+) {
+  func = getFunction(namespace, type, _, name) and
   exists(string s |
     s = getSignatureParameterName(signature, type, name, i) and
     s = getParameterTypeName(func, i)
   ) and
   if exists(getParameterTypeName(func, i + 1))
-  then signatureMatches(func, signature, type, name, i + 1)
+  then signatureMatches(func, namespace, signature, type, name, i + 1)
   else i = count(signature.indexOf(","))
 }
 
@@ -833,7 +916,7 @@ module ExternalFlowDebug {
    *
    * Exposed for testing purposes.
    */
-  predicate signatureMatches_debug = signatureMatches/5;
+  predicate signatureMatches_debug = signatureMatches/6;
 
   /**
    * INTERNAL: Do not use.
@@ -883,6 +966,7 @@ private predicate parseParens(string s, string betweenParens) { s = "(" + betwee
  * - `signatureWithoutParens` equals `signature`, but with the surrounding
  *    parentheses removed.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments0(
   string signature, string type, string name, string signatureWithoutParens, string typeArgs,
   string nameArgs
@@ -909,7 +993,7 @@ private predicate elementSpecMatchesSignature(
 ) {
   elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
     pragma[only_bind_into](signature), _) and
-  signatureMatches(func, signature, type, name, 0)
+  signatureMatches(func, namespace, signature, type, name, 0)
 }
 
 /**
@@ -953,7 +1037,7 @@ private predicate funcHasQualifiedName(Function func, string namespace, string n
  * Holds if `namedClass` is in namespace `namespace` and has
  * name `type` (excluding any template parameters).
  */
-bindingset[type, namespace]
+bindingset[type]
 pragma[inline_late]
 private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
   exists(string typeWithoutArgs |
@@ -969,17 +1053,14 @@ private predicate classHasQualifiedName(Class namedClass, string namespace, stri
  *    are also returned.
  * 3. The element has name `name`
  * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
- *
- * NOTE: `namespace` is currently not used (since we don't properly extract modules yet).
  */
 pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
+  result = getFunction(namespace, type, subtypes, name) and
   (
     // Non-member functions
-    funcHasQualifiedName(result, namespace, name) and
-    subtypes = false and
     type = "" and
     (
       elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
@@ -989,52 +1070,36 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(Class namedClass, Class classWithMethod |
-      hasClassAndName(classWithMethod, result, name) and
-      classHasQualifiedName(namedClass, namespace, type)
-    |
-      (
-        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
-        or
-        signature = "" and
-        elementSpec(namespace, type, subtypes, name, "", _)
-      ) and
-      (
-        // member declared in the named type or a subtype of it
-        subtypes = true and
-        classWithMethod = namedClass.getADerivedClass*()
-        or
-        // member declared directly in the named type
-        subtypes = false and
-        classWithMethod = namedClass
-      )
-    )
+    elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
     or
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    // Member variables
     signature = "" and
-    exists(Class namedClass, Class classWithMember, MemberVariable member |
-      member.getName() = name and
-      member = classWithMember.getAMember() and
-      namedClass.hasQualifiedName(namespace, type) and
-      result = member
-    |
-      // field declared in the named type or a subtype of it (or an extension of any)
-      subtypes = true and
-      classWithMember = namedClass.getADerivedClass*()
-      or
-      // field declared directly in the named type (or an extension of it)
-      subtypes = false and
-      classWithMember = namedClass
-    )
-    or
-    // Global or namespace variables
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    signature = "" and
-    type = "" and
-    subtypes = false and
-    result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
+    elementSpec(namespace, type, subtypes, name, signature, _)
   )
+  or
+  // Member variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  exists(Class namedClass, Class classWithMember, MemberVariable member |
+    member.getName() = name and
+    member = classWithMember.getAMember() and
+    namedClass.hasQualifiedName(namespace, type) and
+    result = member
+  |
+    // field declared in the named type or a subtype of it (or an extension of any)
+    subtypes = true and
+    classWithMember = namedClass.getADerivedClass*()
+    or
+    // field declared directly in the named type (or an extension of it)
+    subtypes = false and
+    classWithMember = namedClass
+  )
+  or
+  // Global or namespace variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  type = "" and
+  subtypes = false and
+  result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
 }
 
 cached

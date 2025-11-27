@@ -13,9 +13,9 @@ private import codeql.rust.controlflow.ControlFlowGraph
  */
 module Impl {
   private import rust
+  private import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
   private import codeql.rust.elements.internal.generated.ParentChild
   private import codeql.rust.controlflow.ControlFlowGraph
-  private import codeql.rust.elements.internal.MacroCallImpl::Impl as MacroCallImpl
 
   /**
    * Gets the immediate parent of a non-`AstNode` element `e`.
@@ -59,6 +59,9 @@ module Impl {
       )
     }
 
+    /** Holds if this node is inside a CFG scope. */
+    predicate hasEnclosingCfgScope() { exists(this.getEnclosingCfgScope()) }
+
     /** Gets the block that encloses this node, if any. */
     cached
     BlockExpr getEnclosingBlock() {
@@ -71,21 +74,15 @@ module Impl {
     }
 
     /** Holds if this node is inside a macro expansion. */
-    predicate isInMacroExpansion() { MacroCallImpl::isInMacroExpansion(_, this) }
+    predicate isInMacroExpansion() { ElementImpl::MacroExpansion::isInMacroExpansion(this) }
 
     /**
      * Holds if this node exists only as the result of a macro expansion.
      *
      * This is the same as `isInMacroExpansion()`, but excludes AST nodes corresponding
-     * to macro arguments.
+     * to macro arguments, including attribute macro targets.
      */
-    pragma[nomagic]
-    predicate isFromMacroExpansion() {
-      exists(AstNode root |
-        MacroCallImpl::isInMacroExpansion(root, this) and
-        not this = root.(MacroCall).getATokenTreeNode()
-      )
-    }
+    predicate isFromMacroExpansion() { ElementImpl::MacroExpansion::isFromMacroExpansion(this) }
 
     /**
      * Gets a control flow node for this AST node, if any.

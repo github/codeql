@@ -40,6 +40,12 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    */
   Nodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
 
+  /** Gets the control flow node for this element. */
+  ControlFlow::Node getControlFlowNode() { result.getAstNode() = this }
+
+  /** Gets the basic block in which this element occurs. */
+  BasicBlock getBasicBlock() { result = this.getAControlFlowNode().getBasicBlock() }
+
   /**
    * Gets a first control flow node executed within this element.
    */
@@ -81,148 +87,20 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
       result.getAControlFlowNode()
   }
 
-  pragma[noinline]
-  private predicate immediatelyControlsBlockSplit0(
-    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s
-  ) {
-    // Only calculate dominance by explicit recursion for split nodes;
-    // all other nodes can use regular CFG dominance
-    this instanceof Impl::SplitAstNode and
-    cb.getLastNode() = this.getAControlFlowNode() and
-    succ = cb.getASuccessor(s)
-  }
-
-  pragma[noinline]
-  private predicate immediatelyControlsBlockSplit1(
-    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s, BasicBlock pred, SuccessorType t
-  ) {
-    this.immediatelyControlsBlockSplit0(cb, succ, s) and
-    pred = succ.getAPredecessorByType(t) and
-    pred != cb
-  }
-
-  pragma[noinline]
-  private predicate immediatelyControlsBlockSplit2(
-    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s, BasicBlock pred, SuccessorType t
-  ) {
-    this.immediatelyControlsBlockSplit1(cb, succ, s, pred, t) and
-    (
-      succ.dominates(pred)
-      or
-      // `pred` might be another split of this element
-      pred.getLastNode().getAstNode() = this and
-      t = s
-    )
-  }
-
   /**
-   * Holds if basic block `succ` is immediately controlled by this control flow
-   * element with conditional value `s`. That is, `succ` can only be reached from
-   * the callable entry point by going via the `s` edge out of *some* basic block
-   * `pred` ending with this element, and `pred` is an immediate predecessor
-   * of `succ`.
+   * DEPRECATED: Use `Guard` class instead.
    *
-   * Moreover, this control flow element corresponds to multiple control flow nodes,
-   * which is why
-   *
-   * ```ql
-   * exists(ConditionBlock cb |
-   *   cb.getLastNode() = this.getAControlFlowNode() |
-   *   cb.immediatelyControls(succ, s)
-   * )
-   * ```
-   *
-   * does not work.
-   *
-   * `cb` records all of the possible condition blocks for this control flow element
-   * that a path from the callable entry point to `succ` may go through.
-   */
-  pragma[nomagic]
-  private predicate immediatelyControlsBlockSplit(
-    BasicBlock succ, ConditionalSuccessor s, ConditionBlock cb
-  ) {
-    this.immediatelyControlsBlockSplit0(cb, succ, s) and
-    forall(BasicBlock pred, SuccessorType t |
-      this.immediatelyControlsBlockSplit1(cb, succ, s, pred, t)
-    |
-      this.immediatelyControlsBlockSplit2(cb, succ, s, pred, t)
-    )
-  }
-
-  pragma[noinline]
-  private predicate controlsJoinBlockPredecessor(
-    JoinBlock controlled, ConditionalSuccessor s, int i, ConditionBlock cb
-  ) {
-    this.controlsBlockSplit(controlled.getJoinBlockPredecessor(i), s, cb)
-  }
-
-  private predicate controlsJoinBlockSplit(JoinBlock controlled, ConditionalSuccessor s, int i) {
-    i = -1 and
-    this.controlsJoinBlockPredecessor(controlled, s, _, _)
-    or
-    this.controlsJoinBlockSplit(controlled, s, i - 1) and
-    (
-      this.controlsJoinBlockPredecessor(controlled, s, i, _)
-      or
-      controlled.dominates(controlled.getJoinBlockPredecessor(i))
-    )
-  }
-
-  cached
-  private predicate controlsBlockSplit(
-    BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb
-  ) {
-    Stages::GuardsStage::forceCachingInSameStage() and
-    this.immediatelyControlsBlockSplit(controlled, s, cb)
-    or
-    // Equivalent with
-    //
-    // ```ql
-    // exists(JoinBlockPredecessor pred | pred = controlled.getAPredecessor() |
-    //   this.controlsBlockSplit(pred, s)
-    // ) and
-    // forall(JoinBlockPredecessor pred | pred = controlled.getAPredecessor() |
-    //   this.controlsBlockSplit(pred, s)
-    //   or
-    //   controlled.dominates(pred)
-    // )
-    // ```
-    //
-    // but uses no universal recursion for better performance.
-    exists(int last |
-      last = max(int i | exists(controlled.(JoinBlock).getJoinBlockPredecessor(i)))
-    |
-      this.controlsJoinBlockSplit(controlled, s, last)
-    ) and
-    this.controlsJoinBlockPredecessor(controlled, s, _, cb)
-    or
-    not controlled instanceof JoinBlock and
-    this.controlsBlockSplit(controlled.getAPredecessor(), s, cb)
-  }
-
-  /**
    * Holds if basic block `controlled` is controlled by this control flow element
    * with conditional value `s`. That is, `controlled` can only be reached from
    * the callable entry point by going via the `s` edge out of *some* basic block
    * ending with this element.
    *
-   * This predicate is different from
-   *
-   * ```ql
-   * exists(ConditionBlock cb |
-   *   cb.getLastNode() = this.getAControlFlowNode() |
-   *   cb.controls(controlled, s)
-   * )
-   * ```
-   *
-   * as control flow splitting is taken into account.
-   *
    * `cb` records all of the possible condition blocks for this control flow element
    * that a path from the callable entry point to `controlled` may go through.
    */
-  predicate controlsBlock(BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb) {
-    this.controlsBlockSplit(controlled, s, cb)
-    or
+  deprecated predicate controlsBlock(
+    BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb
+  ) {
     cb.getLastNode() = this.getAControlFlowNode() and
     cb.edgeDominates(controlled, s)
   }

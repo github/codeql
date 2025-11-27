@@ -1,3 +1,15 @@
+## 1.7.0
+
+### Query Metadata Changes
+
+* Reduced the `security-severity` score of the `py/overly-large-range` query from 5.0 to 4.0 to better reflect its impact.
+
+## 1.6.8
+
+### Minor Analysis Improvements
+
+* The `py/insecure-cookie` query has been split into multiple queries; with `py/insecure-cookie` checking for cases in which `Secure` flag is not set, `py/client-exposed-cookie` checking for cases in which the `HttpOnly` flag is not set, and the `py/samesite-none` query checking for cases in which the `SameSite` attribute is set to `None`. These queries also now only alert for cases in which the cookie is detected to contain sensitive data.
+
 ## 1.6.7
 
 No user-facing changes.

@@ -1,5 +1,5 @@
 /**
- * @name Fetch a subset of valid access paths of input and output parameters of a method (framework mode).
+ * @name Fetch a subset of valid access paths of input and output parameters of a method (framework mode)
  * @description A list of access paths for input and output parameters of a method. Excludes test and generated code.
  * @kind table
  * @id ruby/utils/modeleditor/framework-mode-access-paths

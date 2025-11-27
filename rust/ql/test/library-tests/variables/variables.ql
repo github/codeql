@@ -35,7 +35,7 @@ module VariableAccessTest implements TestSig {
   private predicate declAt(Variable v, string filepath, int line, boolean inMacro) {
     variable(v) and
     v.getLocation().hasLocationInfo(filepath, _, _, line, _) and
-    if v.getPat().isInMacroExpansion() then inMacro = true else inMacro = false
+    if v.getPat().isFromMacroExpansion() then inMacro = true else inMacro = false
   }
 
   private predicate commmentAt(string text, string filepath, int line) {

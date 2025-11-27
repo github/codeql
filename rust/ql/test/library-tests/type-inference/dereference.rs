@@ -27,10 +27,18 @@ impl<T> Deref for MySmartPointer<T> {
     }
 }
 
+struct S<T>(T);
+
+impl<T> S<T> {
+    fn foo(&self) -> &T {
+        &self.0 // $ fieldof=S
+    }
+}
+
 fn explicit_monomorphic_dereference() {
     // Dereference with method call
     let a1 = MyIntPointer { value: 34i64 };
-    let _b1 = a1.deref(); // $ target=MyIntPointer::deref type=_b1:&T.i64
+    let _b1 = a1.deref(); // $ target=MyIntPointer::deref type=_b1:TRef.i64
 
     // Dereference with overloaded dereference operator
     let a2 = MyIntPointer { value: 34i64 };
@@ -44,7 +52,7 @@ fn explicit_monomorphic_dereference() {
 fn explicit_polymorphic_dereference() {
     // Explicit dereference with type parameter
     let c1 = MySmartPointer { value: 'a' };
-    let _d1 = c1.deref(); // $ target=MySmartPointer::deref type=_d1:&T.char
+    let _d1 = c1.deref(); // $ target=MySmartPointer::deref type=_d1:TRef.char
 
     // Explicit dereference with type parameter
     let c2 = MySmartPointer { value: 'a' };
@@ -58,7 +66,7 @@ fn explicit_polymorphic_dereference() {
 fn explicit_ref_dereference() {
     // Explicit dereference with type parameter
     let e1 = &'a';
-    let _f1 = e1.deref(); // $ target=deref MISSING: type=_f1:&T.char
+    let _f1 = e1.deref(); // $ target=deref type=_f1:TRef.char
 
     // Explicit dereference with type parameter
     let e2 = &'a';
@@ -72,7 +80,7 @@ fn explicit_ref_dereference() {
 fn explicit_box_dereference() {
     // Explicit dereference with type parameter
     let g1: Box<char> = Box::new('a'); // $ target=new
-    let _h1 = g1.deref(); // $ target=deref type=_h1:&T.char
+    let _h1 = g1.deref(); // $ target=deref type=_h1:TRef.char
 
     // Explicit dereference with type parameter
     let g2: Box<char> = Box::new('a'); // $ target=new
@@ -91,6 +99,9 @@ fn implicit_dereference() {
     // Call method on implicitly dereferenced value
     let x = MySmartPointer { value: 34i64 };
     let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
+
+    let z = MySmartPointer { value: S(0i64) };
+    let z_ = z.foo(); // $ MISSING: target=foo type=z_:TRef.i64
 }
 
 mod implicit_deref_coercion_cycle {
@@ -128,6 +139,83 @@ mod implicit_deref_coercion_cycle {
     }
 }
 
+mod ref_vs_mut_ref {
+    trait MyTrait1<T> {
+        fn foo(self) -> T;
+    }
+
+    struct S;
+
+    impl MyTrait1<S> for &S {
+        // MyTrait1::foo1
+        fn foo(self) -> S {
+            S
+        }
+    }
+
+    impl MyTrait1<i64> for &mut S {
+        // MyTrait1::foo2
+        fn foo(self) -> i64 {
+            42
+        }
+    }
+
+    trait MyTrait2<T1, T2> {
+        fn bar(self, arg: T1) -> T2;
+    }
+
+    impl MyTrait2<&S, S> for S {
+        // MyTrait2::bar1
+        fn bar(self, arg: &S) -> S {
+            S
+        }
+    }
+
+    impl MyTrait2<&mut S, i64> for S {
+        // MyTrait2::bar2
+        fn bar(self, arg: &mut S) -> i64 {
+            42
+        }
+    }
+
+    pub fn test() {
+        let x = (&S).foo(); // $ target=MyTrait1::foo1 type=x:S $ SPURIOUS: target=MyTrait1::foo2
+        let y = S.foo(); // $ target=MyTrait1::foo1 type=y:S $ SPURIOUS: target=MyTrait1::foo2
+        let z = (&mut S).foo(); // $ target=MyTrait1::foo2 type=z:i64 $ SPURIOUS: target=MyTrait1::foo1
+
+        let x = S.bar(&S); // $ target=MyTrait2::bar1 type=x:S $ SPURIOUS: target=MyTrait2::bar2
+        let y = S.bar(&mut S); // $ target=MyTrait2::bar2 type=y:i64 $ SPURIOUS: target=MyTrait2::bar1
+    }
+}
+
+// from https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-search
+mod rust_reference_example {
+    struct Foo {}
+
+    trait Bar {
+        fn bar(&self);
+    }
+
+    impl Foo {
+        // bar1
+        fn bar(&mut self) {
+            println!("In struct impl!")
+        }
+    }
+
+    impl Bar for Foo {
+        // bar2
+        fn bar(&self) {
+            println!("In trait impl!")
+        }
+    }
+
+    pub fn main() {
+        let mut f = Foo {};
+        f.bar(); // $ SPURIOUS: target=bar1 $ MISSING: target=bar2
+    }
+}
+
 pub fn test() {
     explicit_monomorphic_dereference(); // $ target=explicit_monomorphic_dereference
     explicit_polymorphic_dereference(); // $ target=explicit_polymorphic_dereference
@@ -135,4 +223,6 @@ pub fn test() {
     explicit_box_dereference(); // $ target=explicit_box_dereference
     implicit_dereference(); // $ target=implicit_dereference
     implicit_deref_coercion_cycle::test(); // $ target=test
+    ref_vs_mut_ref::test(); // $ target=test
+    rust_reference_example::main(); // $ target=main
 }

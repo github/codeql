@@ -380,18 +380,20 @@ private module LogicInput_v1 implements GuardsImpl::LogicInputSig {
     GuardsInput::Expr getARead() { result = this.getAUse().getDef() }
   }
 
-  class SsaWriteDefinition extends SsaDefinition instanceof ExplicitDefinition {
-    GuardsInput::Expr getDefinition() { result = super.getAssignedInstruction() }
+  class SsaExplicitWrite extends SsaDefinition instanceof ExplicitDefinition {
+    GuardsInput::Expr getValue() { result = super.getAssignedInstruction() }
   }
 
-  class SsaPhiNode extends SsaDefinition instanceof PhiNode {
+  class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
     predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
       super.hasInputFromBlock(inp, bb)
     }
   }
 
-  predicate parameterDefinition(GuardsInput::Parameter p, SsaDefinition def) {
-    def.isParameterDefinition(p)
+  class SsaParameterInit extends SsaDefinition {
+    SsaParameterInit() { this.isParameterDefinition(_) }
+
+    GuardsInput::Parameter getParameter() { this.isParameterDefinition(result) }
   }
 
   predicate additionalImpliesStep(
@@ -701,6 +703,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesLt(
     Cpp::Expr left, Cpp::Expr right, int k, boolean isLessThan, boolean testIsTrue
   ) {
@@ -711,6 +714,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesLt(Cpp::Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(GuardValue partValue, GuardCondition part |
       this.(Cpp::BinaryLogicalOperation)
@@ -736,6 +740,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesEq(
     Cpp::Expr left, Cpp::Expr right, int k, boolean areEqual, boolean testIsTrue
   ) {
@@ -755,6 +760,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesEq(Cpp::Expr e, int k, boolean areEqual, GuardValue value) {
     exists(GuardValue partValue, GuardCondition part |
       this.(Cpp::BinaryLogicalOperation)

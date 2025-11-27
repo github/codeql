@@ -136,4 +136,36 @@ void alias_with_fields(bool b) {
     sink(a.i); // $ MISSING: ast,ir
 }
 
+template<typename T>
+union U_with_two_instantiations_of_different_size {
+  int x;
+  T y;
+};
+
+struct LargeStruct {
+  int data[64];
+};
+
+void test_union_with_two_instantiations_of_different_sizes() {
+  // A union's fields is partitioned into "chunks" for field-flow in order to
+  // improve performance (so that a write to a field of a union does not flow
+  // to too many reads that don't happen at runtime). The partitioning is based
+  // the size of the types in the union. So a write to a field of size k only
+  // flows to a read of size k.
+  // Since field-flow is based on uninstantiated types a field can have
+  // multiple sizes if the union is instantiated with types of
+  // different sizes. So to compute the partition we pick the maximum size.
+  // Because of this there are `Content`s corresponding to the union
+  // `U_with_two_instantiations_of_different_size<T>`: The one for size
+  // `sizeof(int)`, and the one for size `sizeof(LargeStruct)` (because
+  // `LargeStruct` is larger than `int`). So the write to `x` writes to the
+  // `Content` for size `sizeof(int)`, and the read of `y` reads from the
+  // `Content` for size `sizeof(LargeStruct)`.
+  U_with_two_instantiations_of_different_size<int> u_int;
+  U_with_two_instantiations_of_different_size<LargeStruct> u_very_large;
+
+  u_int.x = user_input();
+  sink(u_int.y); // $ MISSING: ir
+}
+
 } // namespace Simple
