@@ -39,62 +39,6 @@ class Split extends TSplit {
   string toString() { none() }
 }
 
-module InitializerSplitting {
-  /**
-   * A non-static member with an initializer, for example a field `int Field = 0`.
-   */
-  class InitializedInstanceMember extends Member {
-    InitializedInstanceMember() {
-      exists(AssignExpr ae |
-        not this.isStatic() and
-        expr_parent_top_level(ae, _, this) and
-        not ae = any(Callable c).getExpressionBody()
-      )
-    }
-
-    /** Gets the initializer expression. */
-    AssignExpr getInitializer() { expr_parent_top_level(result, _, this) }
-  }
-
-  /**
-   * Holds if `obinit` is an object initializer method that performs the initialization
-   * of a member via assignment `init`.
-   */
-  predicate obinitInitializes(ObjectInitMethod obinit, AssignExpr init) {
-    exists(InitializedInstanceMember m |
-      obinit.getDeclaringType().getAMember() = m and
-      init = m.getInitializer()
-    )
-  }
-
-  /**
-   * Gets the `i`th member initializer expression for object initializer method `obinit`
-   * in compilation `comp`.
-   */
-  AssignExpr initializedInstanceMemberOrder(ObjectInitMethod obinit, CompilationExt comp, int i) {
-    obinitInitializes(obinit, result) and
-    result =
-      rank[i + 1](AssignExpr ae0, Location l |
-        obinitInitializes(obinit, ae0) and
-        l = ae0.getLocation() and
-        getCompilation(l.getFile()) = comp
-      |
-        ae0 order by l.getStartLine(), l.getStartColumn(), l.getFile().getAbsolutePath()
-      )
-  }
-
-  /**
-   * Gets the last member initializer expression for non-static constructor `c`
-   * in compilation `comp`.
-   */
-  AssignExpr lastInitializer(ObjectInitMethod obinit, CompilationExt comp) {
-    exists(int i |
-      result = initializedInstanceMemberOrder(obinit, comp, i) and
-      not exists(initializedInstanceMemberOrder(obinit, comp, i + 1))
-    )
-  }
-}
-
 module ConditionalCompletionSplitting {
   /**
    * A split for conditional completions. For example, in
