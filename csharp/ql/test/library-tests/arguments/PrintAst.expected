@@ -1,6 +1,6 @@
 arguments.cs:
 #    4| [Class] ArgumentsTest
-#    6|   4: [InstanceConstructor] ArgumentsTest
+#    6|   5: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #    6|       0: [Parameter] x
 #    6|         -1: [TypeMention] int
@@ -9,7 +9,7 @@ arguments.cs:
 #    6|         -1: [TypeMention] int
 #    6|         1: [IntLiteral] 0
 #    7|     4: [BlockStmt] {...}
-#   10|   5: [InstanceConstructor] ArgumentsTest
+#   10|   6: [InstanceConstructor] ArgumentsTest
 #-----|     2: (Parameters)
 #   10|       0: [Parameter] x
 #   10|         -1: [TypeMention] int
@@ -22,7 +22,7 @@ arguments.cs:
 #   12|         0: [AssignExpr] ... = ...
 #   12|           0: [ParameterAccess] access to parameter y
 #   12|           1: [ParameterAccess] access to parameter x
-#   15|   6: [Method] f1
+#   15|   7: [Method] f1
 #   15|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   15|       0: [Parameter] x
@@ -32,7 +32,7 @@ arguments.cs:
 #   15|         -1: [TypeMention] int
 #   15|         1: [IntLiteral] 2
 #   16|     4: [BlockStmt] {...}
-#   19|   7: [Method] f2
+#   19|   8: [Method] f2
 #   19|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   19|       0: [Parameter] x
@@ -46,7 +46,7 @@ arguments.cs:
 #   21|         0: [AssignExpr] ... = ...
 #   21|           0: [ParameterAccess] access to parameter y
 #   21|           1: [ParameterAccess] access to parameter x
-#   24|   8: [Method] f
+#   24|   9: [Method] f
 #   24|     -1: [TypeMention] Void
 #   25|     4: [BlockStmt] {...}
 #   26|       0: [LocalVariableDeclStmt] ... ...;
@@ -73,7 +73,7 @@ arguments.cs:
 #   31|           -1: [TypeMention] ArgumentsTest
 #   31|           0: [IntLiteral] 10
 #   31|           1: [IntLiteral] 5
-#   34|   9: [Method] f3
+#   34|   10: [Method] f3
 #   34|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   34|       0: [Parameter] o
@@ -135,7 +135,7 @@ arguments.cs:
 #   43|             1: [LocalVariableAccess] access to local variable s1
 #   43|           2: [CastExpr] (...) ...
 #   43|             1: [LocalVariableAccess] access to local variable s2
-#   46|   10: [Method] f4
+#   46|   11: [Method] f4
 #   46|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   46|       0: [Parameter] args
@@ -150,13 +150,13 @@ arguments.cs:
 #   48|             -1: [ArrayInitializer] { ..., ... }
 #   48|               0: [NullLiteral] null
 #   48|           1: [NullLiteral] null
-#   51|   11: [Property] Prop
+#   51|   12: [Property] Prop
 #   51|     -1: [TypeMention] int
 #   51|     3: [Getter] get_Prop
 #   51|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] value
-#   53|   12: [Indexer] Item
+#   53|   13: [Indexer] Item
 #   53|     -1: [TypeMention] int
 #-----|     1: (Parameters)
 #   53|       0: [Parameter] a
@@ -176,7 +176,7 @@ arguments.cs:
 #   53|         1: [Parameter] b
 #   53|         2: [Parameter] value
 #   53|       4: [BlockStmt] {...}
-#   55|   13: [Method] f5
+#   55|   14: [Method] f5
 #   55|     -1: [TypeMention] Void
 #   56|     4: [BlockStmt] {...}
 #   57|       0: [ExprStmt] ...;
@@ -237,14 +237,14 @@ arguments.cs:
 #   65|               0: [IntLiteral] 15
 #   65|               1: [IntLiteral] 16
 #   65|           1: [LocalVariableAccess] access to local variable tuple
-#   69|   14: [Method] f6
+#   69|   15: [Method] f6
 #   69|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   68|       1: [DefaultAttribute] [My(...)]
 #   68|         -1: [TypeMention] MyAttribute
 #   68|         0: [BoolLiteral] false
 #   69|     4: [BlockStmt] {...}
-#   72|   15: [Method] f7
+#   72|   16: [Method] f7
 #   72|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   71|       1: [DefaultAttribute] [My(...)]
@@ -253,7 +253,7 @@ arguments.cs:
 #   71|         1: [StringLiteralUtf16] ""
 #   71|         2: [IntLiteral] 0
 #   72|     4: [BlockStmt] {...}
-#   74|   17: [Method] f8`1
+#   74|   18: [Method] f8`1
 #   74|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   74|       0: [TypeParameter] T
@@ -337,7 +337,7 @@ arguments.cs:
 #   86|                 1: [IntLiteral] 1
 #   86|               1: [CastExpr] (...) ...
 #   86|                 1: [IntLiteral] 2
-#   89|   19: [Method] f9`1
+#   89|   20: [Method] f9`1
 #   89|     -1: [TypeMention] Void
 #-----|     1: (Type parameters)
 #   89|       0: [TypeParameter] T
@@ -406,7 +406,7 @@ arguments.cs:
 #  100|               1: [ElementInitializer] call to method Add
 #  100|                 0: [CastExpr] (...) ...
 #  100|                   1: [IntLiteral] 2
-#  103|   20: [Method] f10
+#  103|   21: [Method] f10
 #  103|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #  103|       0: [Parameter] o
@@ -465,22 +465,22 @@ arguments.cs:
 #  116| [Class] MyAttribute
 #-----|   3: (Base types)
 #  116|     0: [TypeMention] Attribute
-#  118|   4: [Field] x
+#  118|   5: [Field] x
 #  118|     -1: [TypeMention] int
-#  119|   5: [Property] y
+#  119|   6: [Property] y
 #  119|     -1: [TypeMention] string
 #  119|     3: [Getter] get_y
 #  119|     4: [Setter] set_y
 #-----|       2: (Parameters)
 #  119|         0: [Parameter] value
-#  120|   6: [InstanceConstructor] MyAttribute
+#  120|   7: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
 #  120|       0: [Parameter] b
 #  120|         -1: [TypeMention] bool
 #  120|     4: [BlockStmt] {...}
 lambdas.cs:
 #    3| [Class] LambdaArgumentsTest
-#    5|   5: [Method] M1
+#    5|   6: [Method] M1
 #    5|     -1: [TypeMention] Void
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
@@ -546,13 +546,13 @@ lambdas.cs:
 #   17|           0: [IntLiteral] 7
 #   17|           1: [IntLiteral] 8
 #   17|           2: [IntLiteral] 9
-#   20|   6: [DelegateType] MyDelegate
+#   20|   7: [DelegateType] MyDelegate
 #-----|     2: (Parameters)
 #   20|       0: [Parameter] x
 #   20|         -1: [TypeMention] int
 #   20|       1: [Parameter] y
 #   20|         -1: [TypeMention] int
-#   22|   7: [Method] M2
+#   22|   8: [Method] M2
 #   22|     -1: [TypeMention] Void
 #   23|     4: [BlockStmt] {...}
 #   24|       0: [LocalVariableDeclStmt] ... ...;
