@@ -629,7 +629,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     n2 = be.getStmtList().getTailExpr() and
     if be.isAsync()
     then
-      prefix1 = TypePath::singleton(getFutureOutputTypeParameter()) and
+      prefix1 = TypePath::singleton(getDynFutureOutputTypeParameter()) and
       prefix2.isEmpty()
     else (
       prefix1.isEmpty() and
@@ -2053,7 +2053,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
         or
         exists(TypePath suffix |
           result = this.resolveRetType(suffix) and
-          path = TypePath::cons(getFutureOutputTypeParameter(), suffix)
+          path = TypePath::cons(getDynFutureOutputTypeParameter(), suffix)
         )
       else result = this.resolveRetType(path)
     }
@@ -3024,11 +3024,16 @@ private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
 }
 
 pragma[nomagic]
-private TraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
+private DynTraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
   result.getTypeAlias() = any(FutureTrait ft).getOutputType()
+}
+
+pragma[nomagic]
+private DynTraitTypeParameter getDynFutureOutputTypeParameter() {
+  result = TDynTraitTypeParameter(any(FutureTrait ft).getOutputType())
 }
 
 pragma[nomagic]
@@ -3047,7 +3052,7 @@ private Type inferBlockExprType(BlockExpr be, TypePath path) {
     result = getFutureTraitType()
     or
     isUnitBlockExpr(be) and
-    path = TypePath::singleton(getFutureOutputTypeParameter()) and
+    path = TypePath::singleton(getDynFutureOutputTypeParameter()) and
     result instanceof UnitType
   ) else (
     isUnitBlockExpr(be) and
@@ -3072,6 +3077,7 @@ final private class AwaitTarget extends Expr {
 }
 
 private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInputSig<AwaitTarget> {
+  pragma[nomagic]
   predicate relevantConstraint(AwaitTarget term, Type constraint) {
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FutureTrait
@@ -3390,7 +3396,7 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
   exists(ClosureExpr ce |
     n = ce and
     path.isEmpty() and
-    result = TDynTraitType(any(FnOnceTrait t))
+    result = TDynTraitType(any(FnOnceTrait t)) // always exists because of the mention in `builtins/mentions.rs`
     or
     n = ce and
     path = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam())) and
