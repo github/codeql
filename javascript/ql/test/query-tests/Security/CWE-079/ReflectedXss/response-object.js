@@ -1,6 +1,6 @@
 const express = require('express');
 
-// Note: We're using express for the taint source in order to to test 'Response'
+// Note: We're using express for the taint source in order to test 'Response'
 // in isolation from the more complicated http frameworks.
 
 express().get('/foo', (req) => {
