@@ -183,7 +183,7 @@ function RegisterExtractorPack(id)
         MsBuildMatcher,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
             prepend = { '--compiler', '"${compiler}"' },
-            order = ORDER_BEFORE
+            order = ORDER_AFTER
         }),
         CreatePatternMatcher({ '^fakes.*%.exe$', 'moles.*%.exe' },
             MatchCompilerName, nil, { trace = false }),
@@ -224,7 +224,7 @@ function RegisterExtractorPack(id)
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$', '^csc$' }, MatchCompilerName,
             extractor, {
             prepend = { '--compiler', '${compiler}' },
-            order = ORDER_BEFORE
+            order = ORDER_AFTER
         }),
         MsBuildMatcher,
         function(compilerName, compilerPath, compilerArguments, _languageId)
