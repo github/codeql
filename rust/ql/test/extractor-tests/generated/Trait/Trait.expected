@@ -13,6 +13,6 @@ getName
 | gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:11:10:13 | Foo |
 getTypeBoundList
 getVisibility
-| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:1:10:3 | Visibility |
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:1:10:3 | pub |
 getWhereClause
 | gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:32:10:54 | WhereClause |
