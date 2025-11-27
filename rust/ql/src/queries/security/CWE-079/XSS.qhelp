@@ -4,8 +4,8 @@
 <qhelp>
 
 <overview>
-<p>Directly writing user input (for example, an HTTP request parameter) to a web
-page, without properly sanitizing the input first, allows for a cross-site
+<p>Directly writing user input (for example, an HTTP request parameter) to a webpage,
+without properly sanitizing the input first, allows for a cross-site
 scripting vulnerability.</p>
 </overview>
 
@@ -23,9 +23,9 @@ scripting:</p>
 <sample src="XSSBad.rs" />
 
 <p>To fix this vulnerability, the user input should be HTML-encoded before being
-included in the response. In the following example <code>encode_text</code> from
+included in the response. In the following example, <code>encode_text</code> from
 the <a href="https://docs.rs/html-escape/latest/html_escape/index.html">html_escape</a>
-crate is used:</p>
+crate is used to achieve this:</p>
 
 <sample src="XSSGood.rs" />
 
@@ -34,15 +34,15 @@ crate is used:</p>
 <references>
 <li>
   OWASP:
-  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">XSS
-  (Cross Site Scripting) Prevention Cheat Sheet</a>.
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">
+Cross Site Scripting Prevention Cheat Sheet</a>.
 </li>
 <li>
   Wikipedia: <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
 </li>
 <li>
   OWASP:
-  <a href="https://owasp.org/www-community/attacks/xss/">Cross-site Scripting (XSS)</a>.
+  <a href="https://owasp.org/www-community/attacks/xss/">Cross Site Scripting (XSS)</a>.
 </li>
 </references>
 </qhelp>
