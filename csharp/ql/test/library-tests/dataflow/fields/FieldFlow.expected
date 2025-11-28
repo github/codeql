@@ -332,18 +332,18 @@ edges
 | B.cs:41:25:41:26 | access to parameter b1 : Box1 [field elem1] : Elem | B.cs:41:13:41:16 | [post] this access : Box2 [field box1, field elem1] : Elem | provenance |  |
 | B.cs:41:25:41:26 | access to parameter b1 : Box1 [field elem2] : Elem | B.cs:41:13:41:16 | [post] this access : Box2 [field box1, field elem2] : Elem | provenance |  |
 | B.cs:41:25:41:26 | access to parameter b1 : Box1 [field elem2] : Elem | B.cs:41:13:41:16 | [post] this access : Box2 [field box1, field elem2] : Elem | provenance |  |
-| C.cs:3:18:3:19 | [post] this access : C [field s1] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | provenance |  |
-| C.cs:3:18:3:19 | [post] this access : C [field s1] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | provenance |  |
+| C.cs:3:18:3:19 | [post] this access : C [field s1] : Elem | C.cs:16:13:16:13 | [post] this access : C [field s1] : Elem | provenance |  |
+| C.cs:3:18:3:19 | [post] this access : C [field s1] : Elem | C.cs:16:13:16:13 | [post] this access : C [field s1] : Elem | provenance |  |
 | C.cs:3:23:3:37 | call to method Source<Elem> : Elem | C.cs:3:18:3:19 | [post] this access : C [field s1] : Elem | provenance |  |
 | C.cs:3:23:3:37 | call to method Source<Elem> : Elem | C.cs:3:18:3:19 | [post] this access : C [field s1] : Elem | provenance |  |
-| C.cs:4:27:4:28 | [post] this access : C [field s2] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s2] : Elem | provenance |  |
-| C.cs:4:27:4:28 | [post] this access : C [field s2] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s2] : Elem | provenance |  |
+| C.cs:4:27:4:28 | [post] this access : C [field s2] : Elem | C.cs:16:13:16:13 | [post] this access : C [field s2] : Elem | provenance |  |
+| C.cs:4:27:4:28 | [post] this access : C [field s2] : Elem | C.cs:16:13:16:13 | [post] this access : C [field s2] : Elem | provenance |  |
 | C.cs:4:32:4:46 | call to method Source<Elem> : Elem | C.cs:4:27:4:28 | [post] this access : C [field s2] : Elem | provenance |  |
 | C.cs:4:32:4:46 | call to method Source<Elem> : Elem | C.cs:4:27:4:28 | [post] this access : C [field s2] : Elem | provenance |  |
 | C.cs:6:30:6:44 | call to method Source<Elem> : Elem | C.cs:26:14:26:15 | access to field s4 | provenance |  |
 | C.cs:6:30:6:44 | call to method Source<Elem> : Elem | C.cs:26:14:26:15 | access to field s4 | provenance |  |
-| C.cs:7:18:7:19 | [post] this access : C [property s5] : Elem | C.cs:16:13:16:13 | this [Return] : C [property s5] : Elem | provenance |  |
-| C.cs:7:18:7:19 | [post] this access : C [property s5] : Elem | C.cs:16:13:16:13 | this [Return] : C [property s5] : Elem | provenance |  |
+| C.cs:7:18:7:19 | [post] this access : C [property s5] : Elem | C.cs:16:13:16:13 | [post] this access : C [property s5] : Elem | provenance |  |
+| C.cs:7:18:7:19 | [post] this access : C [property s5] : Elem | C.cs:16:13:16:13 | [post] this access : C [property s5] : Elem | provenance |  |
 | C.cs:7:37:7:51 | call to method Source<Elem> : Elem | C.cs:7:18:7:19 | [post] this access : C [property s5] : Elem | provenance |  |
 | C.cs:7:37:7:51 | call to method Source<Elem> : Elem | C.cs:7:18:7:19 | [post] this access : C [property s5] : Elem | provenance |  |
 | C.cs:8:30:8:44 | call to method Source<Elem> : Elem | C.cs:28:14:28:15 | access to property s6 | provenance |  |
@@ -372,6 +372,12 @@ edges
 | C.cs:13:9:13:9 | access to local variable c : C [field s3] : Elem | C.cs:21:17:21:18 | this : C [field s3] : Elem | provenance |  |
 | C.cs:13:9:13:9 | access to local variable c : C [property s5] : Elem | C.cs:21:17:21:18 | this : C [property s5] : Elem | provenance |  |
 | C.cs:13:9:13:9 | access to local variable c : C [property s5] : Elem | C.cs:21:17:21:18 | this : C [property s5] : Elem | provenance |  |
+| C.cs:16:13:16:13 | [post] this access : C [field s1] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | provenance |  |
+| C.cs:16:13:16:13 | [post] this access : C [field s1] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | provenance |  |
+| C.cs:16:13:16:13 | [post] this access : C [field s2] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s2] : Elem | provenance |  |
+| C.cs:16:13:16:13 | [post] this access : C [field s2] : Elem | C.cs:16:13:16:13 | this [Return] : C [field s2] : Elem | provenance |  |
+| C.cs:16:13:16:13 | [post] this access : C [property s5] : Elem | C.cs:16:13:16:13 | this [Return] : C [property s5] : Elem | provenance |  |
+| C.cs:16:13:16:13 | [post] this access : C [property s5] : Elem | C.cs:16:13:16:13 | this [Return] : C [property s5] : Elem | provenance |  |
 | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | C.cs:12:15:12:21 | object creation of type C : C [field s1] : Elem | provenance |  |
 | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | C.cs:12:15:12:21 | object creation of type C : C [field s1] : Elem | provenance |  |
 | C.cs:16:13:16:13 | this [Return] : C [field s2] : Elem | C.cs:12:15:12:21 | object creation of type C : C [field s2] : Elem | provenance |  |
@@ -1627,6 +1633,12 @@ nodes
 | C.cs:13:9:13:9 | access to local variable c : C [field s3] : Elem | semmle.label | access to local variable c : C [field s3] : Elem |
 | C.cs:13:9:13:9 | access to local variable c : C [property s5] : Elem | semmle.label | access to local variable c : C [property s5] : Elem |
 | C.cs:13:9:13:9 | access to local variable c : C [property s5] : Elem | semmle.label | access to local variable c : C [property s5] : Elem |
+| C.cs:16:13:16:13 | [post] this access : C [field s1] : Elem | semmle.label | [post] this access : C [field s1] : Elem |
+| C.cs:16:13:16:13 | [post] this access : C [field s1] : Elem | semmle.label | [post] this access : C [field s1] : Elem |
+| C.cs:16:13:16:13 | [post] this access : C [field s2] : Elem | semmle.label | [post] this access : C [field s2] : Elem |
+| C.cs:16:13:16:13 | [post] this access : C [field s2] : Elem | semmle.label | [post] this access : C [field s2] : Elem |
+| C.cs:16:13:16:13 | [post] this access : C [property s5] : Elem | semmle.label | [post] this access : C [property s5] : Elem |
+| C.cs:16:13:16:13 | [post] this access : C [property s5] : Elem | semmle.label | [post] this access : C [property s5] : Elem |
 | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | semmle.label | this [Return] : C [field s1] : Elem |
 | C.cs:16:13:16:13 | this [Return] : C [field s1] : Elem | semmle.label | this [Return] : C [field s1] : Elem |
 | C.cs:16:13:16:13 | this [Return] : C [field s2] : Elem | semmle.label | this [Return] : C [field s2] : Elem |

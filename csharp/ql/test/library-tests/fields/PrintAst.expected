@@ -1,56 +1,56 @@
 fields.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Class] A
-#   10|     6: [Field] X
+#   10|     7: [Field] X
 #   10|       -1: [TypeMention] int
 #   10|       1: [IntLiteral] 1
-#   10|     7: [Field] Y
+#   10|     8: [Field] Y
 #   10|       -1: [TypeMention] int
-#   10|     8: [Field] Z
+#   10|     9: [Field] Z
 #   10|       -1: [TypeMention] int
 #   10|       1: [IntLiteral] 100
 #   13|   2: [Class] B
-#   15|     6: [Field] X
+#   15|     7: [Field] X
 #   15|       -1: [TypeMention] int
 #   15|       1: [IntLiteral] 1
-#   16|     7: [Field] Y
+#   16|     8: [Field] Y
 #   16|       -1: [TypeMention] int
-#   17|     8: [Field] Z
+#   17|     9: [Field] Z
 #   17|       -1: [TypeMention] int
 #   17|       1: [IntLiteral] 100
 #   20|   3: [Class] C`1
 #-----|     1: (Type parameters)
 #   20|       0: [TypeParameter] V
-#   23|     5: [Field] count
+#   23|     6: [Field] count
 #   23|       -1: [TypeMention] int
 #   23|       1: [IntLiteral] 0
-#   25|     6: [InstanceConstructor] C
+#   25|     7: [InstanceConstructor] C
 #   25|       4: [BlockStmt] {...}
 #   25|         0: [ExprStmt] ...;
 #   25|           0: [PostIncrExpr] ...++
 #   25|             0: [FieldAccess] access to field count
-#   27|     7: [Property] Count
+#   27|     8: [Property] Count
 #   27|       -1: [TypeMention] int
 #   27|       3: [Getter] get_Count
 #   27|         4: [BlockStmt] {...}
 #   27|           0: [ReturnStmt] return ...;
 #   27|             0: [FieldAccess] access to field count
 #   31|   4: [Class] Application
-#   34|     6: [Field] finished
+#   34|     7: [Field] finished
 #   34|       -1: [TypeMention] bool
-#   35|     7: [Field] x
+#   35|     8: [Field] x
 #   35|       -1: [TypeMention] double
 #   35|       1: [MethodCall] call to method Sqrt
 #   35|         -1: [TypeAccess] access to type Math
 #   35|           0: [TypeMention] Math
 #   35|         0: [DoubleLiteral] 2
-#   36|     8: [Field] i
+#   36|     9: [Field] i
 #   36|       -1: [TypeMention] int
 #   36|       1: [IntLiteral] 100
-#   37|     9: [Field] s
+#   37|     10: [Field] s
 #   37|       -1: [TypeMention] string
 #   37|       1: [StringLiteralUtf16] "Hello"
-#   39|     10: [Method] Main
+#   39|     11: [Method] Main
 #   39|       -1: [TypeMention] Void
 #   40|       4: [BlockStmt] {...}
 #   41|         0: [LocalVariableDeclStmt] ... ...;
@@ -93,7 +93,7 @@ fields.cs:
 #   45|                 0: [TypeMention] C<int>
 #   45|                   1: [TypeMention] int
 #   50|   5: [Class] Color
-#   53|     5: [Field] Black
+#   53|     6: [Field] Black
 #   53|       -1: [TypeMention] Color
 #   53|       1: [ObjectCreation] object creation of type Color
 #   53|         -1: [TypeMention] Color
@@ -103,7 +103,7 @@ fields.cs:
 #   53|           1: [IntLiteral] 0
 #   53|         2: [CastExpr] (...) ...
 #   53|           1: [IntLiteral] 0
-#   54|     6: [Field] White
+#   54|     7: [Field] White
 #   54|       -1: [TypeMention] Color
 #   54|       1: [ObjectCreation] object creation of type Color
 #   54|         -1: [TypeMention] Color
@@ -113,7 +113,7 @@ fields.cs:
 #   54|           1: [IntLiteral] 255
 #   54|         2: [CastExpr] (...) ...
 #   54|           1: [IntLiteral] 255
-#   56|     7: [InstanceConstructor] Color
+#   56|     8: [InstanceConstructor] Color
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] r
 #   56|           -1: [TypeMention] byte
@@ -123,30 +123,30 @@ fields.cs:
 #   56|           -1: [TypeMention] byte
 #   56|       4: [BlockStmt] {...}
 #   60|   6: [Class] TestBindings
-#   63|     6: [Field] a
+#   63|     7: [Field] a
 #   63|       -1: [TypeMention] int
 #   63|       1: [AddExpr] ... + ...
 #   63|         0: [FieldAccess] access to field b
 #   63|         1: [IntLiteral] 1
-#   64|     7: [Field] b
+#   64|     8: [Field] b
 #   64|       -1: [TypeMention] int
 #   64|       1: [AddExpr] ... + ...
 #   64|         0: [FieldAccess] access to field a
 #   64|         1: [IntLiteral] 1
 #   70| [NamespaceDeclaration] namespace ... { ... }
 #   72|   1: [Class] A
-#   74|     5: [Field] X
+#   74|     6: [Field] X
 #   74|       -1: [TypeMention] int
 #   74|       1: [AddExpr] ... + ...
 #   74|         0: [MemberConstantAccess] access to constant Z
 #   74|           -1: [TypeAccess] access to type B
 #   74|             0: [TypeMention] B
 #   74|         1: [IntLiteral] 1
-#   75|     6: [Field] Y
+#   75|     7: [Field] Y
 #   75|       -1: [TypeMention] int
 #   75|       1: [IntLiteral] 10
 #   78|   2: [Class] B
-#   80|     5: [Field] Z
+#   80|     6: [Field] Z
 #   80|       -1: [TypeMention] int
 #   80|       1: [AddExpr] ... + ...
 #   80|         0: [MemberConstantAccess] access to constant Y
@@ -154,13 +154,13 @@ fields.cs:
 #   80|             0: [TypeMention] A
 #   80|         1: [IntLiteral] 1
 #   83|   3: [Class] C
-#   85|     4: [Field] Foo
+#   85|     5: [Field] Foo
 #   85|       -1: [TypeMention] int
 #   85|       1: [IntLiteral] 1
-#   86|     5: [Field] x
+#   86|     6: [Field] x
 #   86|       -1: [TypeMention] long?
 #   86|         1: [TypeMention] long
-#   87|     6: [InstanceConstructor] C
+#   87|     7: [InstanceConstructor] C
 #   88|       4: [BlockStmt] {...}
 #   89|         0: [ExprStmt] ...;
 #   89|           0: [AssignExpr] ... = ...
@@ -191,12 +191,12 @@ fields.cs:
 #   92|                   1: [CastExpr] (...) ...
 #   92|                     1: [MemberConstantAccess] access to constant Foo
 #   96|   4: [Class] D
-#   98|     4: [InstanceConstructor] D
+#   98|     5: [InstanceConstructor] D
 #-----|       2: (Parameters)
 #   98|         0: [Parameter] d
 #   98|           -1: [TypeMention] int
 #   99|       4: [BlockStmt] {...}
-#  101|     5: [ImplicitConversionOperator] implicit conversion
+#  101|     6: [ImplicitConversionOperator] implicit conversion
 #  101|       -1: [TypeMention] D
 #-----|       2: (Parameters)
 #  101|         0: [Parameter] d
