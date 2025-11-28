@@ -1,4 +1,5 @@
 import os
+import dotnet
 
 def check_build_out(msg, s):
     lines = s.splitlines()
@@ -6,11 +7,13 @@ def check_build_out(msg, s):
         any (("[build-stdout]" in line) and (msg in line) for line in lines)
     ), f"The C# tracer did not interpret the dotnet path-to-application command correctly."
 
+@dotnet.xdist_group_if_macos
 def test1(codeql, csharp):
     codeql.database.create(command="dotnet build")
 
 
 # This test checks that we don't inject any flags when running the application using `dotnet`
+@dotnet.xdist_group_if_macos
 def test2(codeql, csharp, cwd):
     s = codeql.database.create(
         command=[

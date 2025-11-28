@@ -1,3 +1,6 @@
+import dotnet
+
+@dotnet.xdist_group_if_macos
 def test(codeql, csharp):
     codeql.database.init("test-db", source_root=".")
     # the tracer configuration should not inject the extra command-line arguments for these commands

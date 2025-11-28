@@ -1,7 +1,8 @@
 import os
 import runs_on
+import dotnet
 
-
+@dotnet.xdist_group_if_macos
 @runs_on.posix
 def test(codeql, csharp):
     # os.environ["CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK"] = "true"        # NuGet feed check is enabled by default

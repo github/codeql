@@ -1,17 +1,20 @@
 import runs_on
+import dotnet
 
-
+@dotnet.xdist_group_if_macos
 @runs_on.posix
 def test_implicit_build_then_run(codeql, csharp):
     codeql.database.create(command="dotnet test")
 
 
+@dotnet.xdist_group_if_macos
 @runs_on.posix
 def test_explicit_build_then_run(codeql, csharp):
     codeql.database.create(command=["dotnet build -o myout", "dotnet test myout/dotnet_test.dll"])
 
 
 # Explicit build and then run tests using the absolute path.
+@dotnet.xdist_group_if_macos
 @runs_on.posix
 def test_explicit_build_then_run_abs_path(codeql, csharp, cwd):
     codeql.database.create(
