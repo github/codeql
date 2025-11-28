@@ -38,11 +38,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
-            if (!res)
+            var exitCode = dotnetCliInvoker.RunCommandExitCode("--info", silent: false);
+            switch (exitCode)
             {
-                throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
+                case 0:
+                    break;
+                case 143:
+                    logger.LogWarning("Running 'dotnet --info' failed with exit code 143.");
+                    break;
+                default:
+                    throw new Exception($"{dotnetCliInvoker.Exec} --info failed with exit code {exitCode}.");
             }
+
         }
 
         private string GetRestoreArgs(RestoreSettings restoreSettings)
