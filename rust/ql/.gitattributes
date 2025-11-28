@@ -436,7 +436,6 @@
 /lib/codeql/rust/elements/internal/VariantListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VisibilityConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/VisibilityImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/WhereClauseConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/WhereClauseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/WherePredConstructor.qll linguist-generated
