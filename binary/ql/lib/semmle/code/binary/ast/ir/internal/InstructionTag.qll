@@ -1,4 +1,6 @@
 private import Opcode
+private import codeql.util.Boolean
+private import semmle.code.binary.ast.internal.CilInstructions
 
 newtype TInstructionTag =
   SingleTag() or
@@ -39,7 +41,24 @@ newtype TInstructionTag =
   Stage1ZeroTag() or
   Stage1CmpDefTag(ConditionKind k) or
   NegConstZeroTag() or
-  NegSubTag()
+  NegSubTag() or
+  CilLdcSizeTag() or
+  CilLdcConstTag() or
+  CilLdcSubTag() or
+  CilLdcWriteTag() or
+  CilStlocLoadTag() or
+  CilStlocAddTag() or
+  CilStlocConstTag() or
+  CilRelSubTag() or
+  CilRelCJumpTag() or
+  CilRelConstTag(Boolean b) or
+  CilRelRefTag() or
+  CilBoolBranchRefTag() or
+  CilBoolBranchSubTag() or
+  CilBoolBranchConstTag() or
+  CilBoolBranchCJumpTag() or
+  CilUnconditionalBranchTag() or
+  CilUnconditionalBranchRefTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -146,6 +165,59 @@ class InstructionTag extends TInstructionTag {
     or
     this = NegSubTag() and
     result = "NegSub"
+    or
+    this = CilLdcConstTag() and
+    result = "CilLdcConst"
+    or
+    this = CilLdcSizeTag() and
+    result = "CilLdcSize"
+    or
+    this = CilLdcSubTag() and
+    result = "CilLdcSub"
+    or
+    this = CilLdcWriteTag() and
+    result = "CilLdcWrite"
+    or
+    this = CilStlocLoadTag() and
+    result = "CilStlocLoad"
+    or
+    this = CilStlocAddTag() and
+    result = "CilStlocAdd"
+    or
+    this = CilStlocConstTag() and
+    result = "CilStlocConst"
+    or
+    this = CilRelSubTag() and
+    result = "CilRelSub"
+    or
+    this = CilRelCJumpTag() and
+    result = "CilRelCJump"
+    or
+    exists(boolean b |
+      this = CilRelConstTag(b) and
+      result = "CilRelConst(" + b.toString() + ")"
+    )
+    or
+    this = CilRelRefTag() and
+    result = "CilRelRef"
+    or
+    this = CilBoolBranchRefTag() and
+    result = "CilBoolBranchRef"
+    or
+    this = CilBoolBranchSubTag() and
+    result = "CilBoolBranchSub"
+    or
+    this = CilBoolBranchConstTag() and
+    result = "CilBoolBranchConst"
+    or
+    this = CilBoolBranchCJumpTag() and
+    result = "CilBoolBranchCJump"
+    or
+    this = CilUnconditionalBranchTag() and
+    result = "CilUnconditionalBranch"
+    or
+    this = CilUnconditionalBranchRefTag() and
+    result = "CilUnconditionalBranchRef"
   }
 }
 
@@ -170,13 +242,30 @@ newtype VariableTag =
   BtrVarTag() or
   BtrOneVarTag() or
   NegConstZeroVarTag() or
-  MemToSsaVarTag()
+  MemToSsaVarTag() or
+  CilLdcConstVarTag() or
+  CilLdLocVarTag() or
+  CilBinaryVarTag() or
+  CilRelSubVarTag() or
+  CilRelRefVarTag() or
+  CilRelVarTag() or
+  CilBoolBranchConstVarTag() or
+  CilBoolBranchSubVarTag() or
+  CilBoolBranchRefVarTag() or
+  CilUnconditionalBranchRefVarTag()
 
-newtype SynthRegisterTag = CmpRegisterTag()
+newtype SynthRegisterTag =
+  CmpRegisterTag() or
+  StlocVarTag(int index) { any(CilStoreLocal stloc).getLocalVariableIndex() = index }
 
 string stringOfSynthRegisterTag(SynthRegisterTag tag) {
   tag = CmpRegisterTag() and
   result = "cmp_r"
+  or
+  exists(int index |
+    tag = StlocVarTag(index) and
+    result = "stloc_" + index.toString()
+  )
 }
 
 string stringOfVariableTag(VariableTag tag) {
@@ -242,6 +331,36 @@ string stringOfVariableTag(VariableTag tag) {
   or
   tag = MemToSsaVarTag() and
   result = "mem2ssa"
+  or
+  tag = CilLdcConstVarTag() and
+  result = "c"
+  or
+  tag = CilLdLocVarTag() and
+  result = "v"
+  or
+  tag = CilBinaryVarTag() and
+  result = "b"
+  or
+  tag = CilRelSubVarTag() and
+  result = "r_s"
+  or
+  tag = CilRelRefVarTag() and
+  result = "ref"
+  or
+  tag = CilRelVarTag() and
+  result = "r"
+  or
+  tag = CilBoolBranchConstVarTag() and
+  result = "cbb_c"
+  or
+  tag = CilBoolBranchSubVarTag() and
+  result = "cbb_s"
+  or
+  tag = CilUnconditionalBranchRefVarTag() and
+  result = "cub_ir"
+  or
+  tag = CilBoolBranchRefVarTag() and
+  result = "cbb_ir"
 }
 
 newtype TOperandTag =

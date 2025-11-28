@@ -4,7 +4,7 @@ private import Headers
 private import Sections
 private import codeql.util.Unit
 
-private class TElement = @x86_instruction or @operand;
+private class TElement = @x86_instruction or @operand or @il_instruction or @method;
 
 class Element extends TElement {
   final string toString() { none() }
@@ -31,6 +31,10 @@ private class X86OperandElement extends Element {
 
 private class IlInstructionElement extends Element {
   final string toString() { instruction_string(this, result) }
+}
+
+private class CilMethodElement extends Element {
+  final string toString() { methods(this, result, _, _) }
 }
 
 private module Pre {
@@ -240,3 +244,5 @@ class ProgramEntryInstruction extends X86Instruction {
 class ExportedEntryInstruction extends X86Instruction {
   ExportedEntryInstruction() { this.getIndex() = getOffsetOfAnExportedFunction().toBigInt() }
 }
+
+import internal.CilInstructions

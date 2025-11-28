@@ -76,3 +76,29 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
 
   final override predicate isExported() { entry instanceof Raw::ExportedEntryInstruction }
 }
+
+class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
+  Raw::CilMethod method;
+
+  TranslatedCilMethod() { this = TTranslatedCilMethod(method) }
+
+  override Raw::Element getRawElement() { result = method }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
+    none()
+  }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override string getName() { result = method.getName() }
+
+  override predicate isProgramEntryPoint() { none() }
+
+  override predicate isExported() { none() }
+
+  override Instruction getEntry() {
+    result = getTranslatedInstruction(method.getInstruction(0)).getEntry()
+  }
+}

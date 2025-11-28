@@ -26,6 +26,21 @@ abstract class TranslatedX86Instruction extends TranslatedInstruction {
   final override string getDumpId() { result = "i" + instr.getIndex().toString() }
 }
 
+abstract class TranslatedCilInstruction extends TranslatedInstruction {
+  Raw::CilInstruction instr;
+
+  final override Raw::Element getRawElement() { result = instr }
+
+  override string toString() { result = "Translation of " + instr.toString() }
+
+  final override string getDumpId() { result = "i" + instr.getOffset().toString() }
+
+  /**
+   * Gets the i-th stack element (from the top) after this instruction has executed.
+   */
+  abstract Variable getStackElement(int i);
+}
+
 /**
  * An instruction that writes to a destination operand, which may require
  * generating a Store instruction.
@@ -1535,4 +1550,635 @@ class TranslatedX86Neg extends WritingInstruction, TTranslatedX86Neg {
   }
 
   final override Raw::X86Operand getDestinationOperand() { result = instr.getOperand(0) }
+}
+
+class TranslatedCilNop extends TranslatedCilInstruction, TTranslatedCilNop {
+  override Raw::CilNop instr;
+
+  TranslatedCilNop() { this = TTranslatedCilNop(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = SingleTag() and
+    opcode instanceof Opcode::Nop and
+    v.isNone()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+  }
+}
+
+class TranslatedCilLdc extends TranslatedCilInstruction, TTranslatedCilLdc {
+  override Raw::CilLoadConstant instr;
+
+  TranslatedCilLdc() { this = TTranslatedCilLdc(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = SingleTag() and
+    opcode instanceof Opcode::Const and
+    v.asSome() = this.getVariable(CilLdcConstVarTag())
+  }
+
+  override predicate hasTempVariable(VariableTag tag) { tag = CilLdcConstVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override int getConstantValue(InstructionTag tag) {
+    tag = SingleTag() and
+    result = instr.getValue().toInt() // TODO: Also handle floats
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+
+  override Variable getResultVariable() { result = this.getVariable(CilLdcConstVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    i = 0 and
+    result = this.getInstruction(SingleTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+private Variable getCilLocalVariable(int index) {
+  result = getTranslatedVariableSynth(StlocVarTag(index))
+}
+
+class TranslatedCilStloc extends TranslatedCilInstruction, TTranslatedCilStloc {
+  override Raw::CilStoreLocal instr;
+
+  TranslatedCilStloc() { this = TTranslatedCilStloc(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Copy and
+    tag = SingleTag() and
+    v.asSome() = getCilLocalVariable(instr.getLocalVariableIndex())
+  }
+
+  override predicate hasSynthVariable(SynthRegisterTag tag) {
+    tag = StlocVarTag(instr.getLocalVariableIndex())
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = SingleTag() and
+    operandTag = UnaryTag() and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+
+  override Variable getResultVariable() {
+    result = getCilLocalVariable(instr.getLocalVariableIndex())
+  }
+
+  final override Variable getStackElement(int i) {
+    exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
+      i = 0 and
+      result = getTranslatedCilInstruction(pred).getStackElement(1)
+      or
+      i > 0 and
+      result = getTranslatedCilInstruction(pred).getStackElement(i - 1)
+    )
+  }
+}
+
+class TranslatedCilLdloc extends TranslatedCilInstruction, TTranslatedCilLdloc {
+  override Raw::CilLoadLocal instr;
+
+  TranslatedCilLdloc() { this = TTranslatedCilLdloc(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Copy and
+    tag = SingleTag() and
+    v.asSome() = this.getVariable(CilLdLocVarTag())
+  }
+
+  override predicate hasTempVariable(VariableTag tag) { tag = CilLdLocVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = SingleTag() and
+    operandTag = UnaryTag() and
+    result = getCilLocalVariable(instr.getLocalVariableIndex())
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+
+  override Variable getResultVariable() { result = this.getVariable(CilLdLocVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    i = 0 and
+    result = this.getInstruction(SingleTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+class TranslatedCilUnconditionalBranch extends TranslatedCilInstruction,
+  TTranslatedCilUnconditionalBranch
+{
+  override Raw::CilUnconditionalBranchInstruction instr;
+
+  TranslatedCilUnconditionalBranch() { this = TTranslatedCilUnconditionalBranch(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::InstrRef and
+    tag = CilUnconditionalBranchRefTag() and
+    v.asSome() = this.getVariable(CilUnconditionalBranchRefVarTag())
+    or
+    opcode instanceof Opcode::Jump and
+    tag = CilUnconditionalBranchTag() and
+    v.isNone()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilUnconditionalBranchTag() and
+    operandTag = JumpTargetTag() and
+    result = this.getInstruction(CilUnconditionalBranchRefTag()).getResultVariable()
+  }
+
+  override predicate hasTempVariable(VariableTag tag) { tag = CilUnconditionalBranchRefVarTag() }
+
+  override Instruction getReferencedInstruction(InstructionTag tag) {
+    tag = CilUnconditionalBranchRefTag() and
+    result = getTranslatedInstruction(instr.getABranchTarget()).getEntry()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilUnconditionalBranchRefTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilUnconditionalBranchTag())
+    or
+    tag = CilUnconditionalBranchTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getABranchTarget()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilUnconditionalBranchRefTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+abstract class TranslatedCilArithmeticInstruction extends TranslatedCilInstruction,
+  TTranslatedCilArithmeticInstruction
+{
+  override Raw::CilArithmeticInstruction instr;
+
+  abstract Opcode getOpcode();
+
+  TranslatedCilArithmeticInstruction() { this = TTranslatedCilArithmeticInstruction(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode = this.getOpcode() and
+    tag = SingleTag() and
+    v.asSome() = this.getVariable(CilBinaryVarTag())
+  }
+
+  override predicate hasTempVariable(VariableTag tag) { tag = CilBinaryVarTag() }
+
+  override predicate producesResult() { any() }
+
+  final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = SingleTag() and
+    exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
+      operandTag = LeftTag() and
+      result = getTranslatedCilInstruction(pred).getStackElement(1)
+      or
+      operandTag = RightTag() and
+      result = getTranslatedCilInstruction(pred).getStackElement(0)
+    )
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    none()
+  }
+
+  final override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  final override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+
+  final override Variable getResultVariable() { result = this.getVariable(CilBinaryVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    i = 0 and
+    result = this.getInstruction(SingleTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+class TranslatedAddInstruction extends TranslatedCilArithmeticInstruction {
+  override Raw::CilAddInstruction instr;
+
+  override Opcode getOpcode() { result instanceof Opcode::Add }
+}
+
+class TranslatedSubInstruction extends TranslatedCilArithmeticInstruction {
+  override Raw::CilSubInstruction instr;
+
+  override Opcode getOpcode() { result instanceof Opcode::Sub }
+}
+
+class TranslatedCilMulInstruction extends TranslatedCilArithmeticInstruction {
+  override Raw::CilMulInstruction instr;
+
+  override Opcode getOpcode() { result instanceof Opcode::Mul }
+}
+
+class TranslatedCilDivInstruction extends TranslatedCilArithmeticInstruction {
+  override Raw::CilDivInstruction instr;
+
+  override Opcode getOpcode() { result instanceof Opcode::Div }
+}
+
+/**
+ * clt ->
+ * ```
+ * x = sub a b
+ * cjump[lt] less_than_label not_less_than_label
+ * less_than_label:
+ *  result = const 1
+ * not_less_than_label:
+ *  result = const 0
+ * ```
+ */
+abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
+  TTranslatedCilRelationalInstruction
+{
+  override Raw::CilRelationalInstruction instr;
+
+  abstract Opcode::ConditionKind getConditionKind();
+
+  TranslatedRelationalInstruction() { this = TTranslatedCilRelationalInstruction(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Sub and
+    tag = CilRelSubTag() and
+    v.asSome() = this.getVariable(CilRelSubVarTag())
+    or
+    opcode instanceof Opcode::CJump and
+    tag = CilRelCJumpTag() and
+    v.isNone()
+    or
+    opcode instanceof Opcode::InstrRef and
+    tag = CilRelRefTag() and
+    v.asSome() = this.getVariable(CilRelRefVarTag())
+    or
+    opcode instanceof Opcode::Const and
+    tag = CilRelConstTag(_) and
+    v.asSome() = this.getVariable(CilRelVarTag())
+  }
+
+  override predicate producesResult() { any() }
+
+  override predicate hasTempVariable(VariableTag tag) {
+    tag = CilRelSubVarTag()
+    or
+    tag = CilRelRefVarTag()
+    or
+    tag = CilRelVarTag()
+  }
+
+  final override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
+    tag = CilRelCJumpTag() and
+    kind = this.getConditionKind()
+  }
+
+  final override Instruction getReferencedInstruction(InstructionTag tag) {
+    tag = CilRelRefTag() and
+    result = this.getInstruction(CilRelConstTag(true))
+  }
+
+  final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilRelSubTag() and
+    exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
+      operandTag = LeftTag() and
+      result = getTranslatedCilInstruction(pred).getStackElement(1)
+      or
+      operandTag = RightTag() and
+      result = getTranslatedCilInstruction(pred).getStackElement(0)
+    )
+    or
+    tag = CilRelCJumpTag() and
+    (
+      operandTag = CondTag() and
+      result = this.getInstruction(CilRelSubTag()).getResultVariable()
+      or
+      operandTag = CondJumpTargetTag() and
+      result = this.getInstruction(CilRelRefTag()).getResultVariable()
+    )
+  }
+
+  final override int getConstantValue(InstructionTag tag) {
+    tag = CilRelConstTag(true) and
+    result = 1
+    or
+    tag = CilRelConstTag(false) and
+    result = 0
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    none()
+  }
+
+  final override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilRelSubTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilRelRefTag())
+    or
+    tag = CilRelRefTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilRelCJumpTag())
+    or
+    tag = CilRelCJumpTag() and
+    result = this.getInstruction(CilRelConstTag(succType.(BooleanSuccessor).getValue()))
+    or
+    exists(boolean b |
+      tag = CilRelConstTag(b) and
+      succType instanceof DirectSuccessor and
+      result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+    )
+  }
+
+  final override Instruction getEntry() { result = this.getInstruction(CilRelSubTag()) }
+
+  final override Variable getResultVariable() { result = this.getVariable(CilRelVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    i = 0 and
+    result = this.getVariable(CilRelVarTag())
+    or
+    i > 0 and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+class TranslatedCilClt extends TranslatedRelationalInstruction {
+  override Raw::CilClt instr;
+
+  override Opcode::ConditionKind getConditionKind() { result = Opcode::LT() }
+}
+
+class TranslatedCilCgt extends TranslatedRelationalInstruction {
+  override Raw::CilCgt instr;
+
+  override Opcode::ConditionKind getConditionKind() { result = Opcode::GT() }
+}
+
+class TranslatedCilCeq extends TranslatedRelationalInstruction {
+  override Raw::CilCeq instr;
+
+  override Opcode::ConditionKind getConditionKind() { result = Opcode::EQ() }
+}
+
+/**
+ * brtrue target ->
+ * ```
+ * x = sub a 1
+ * cjump[eq] target fallthrough
+ * ```
+ *
+ * brfalse target ->
+ * ```
+ * x = sub a 0
+ * cjump[eq] target fallthrough
+ * ```
+ */
+abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstruction,
+  TTranslatedCilBooleanBranchInstruction
+{
+  override Raw::CilBooleanBranchInstruction instr;
+
+  TranslatedCilBooleanBranchInstruction() { this = TTranslatedCilBooleanBranchInstruction(instr) }
+
+  abstract int getConstantValue();
+
+  final override int getConstantValue(InstructionTag tag) {
+    tag = CilBoolBranchConstTag() and
+    result = this.getConstantValue()
+  }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Const and
+    tag = CilBoolBranchConstTag() and
+    v.asSome() = this.getVariable(CilBoolBranchConstVarTag())
+    or
+    opcode instanceof Opcode::Sub and
+    tag = CilBoolBranchSubTag() and
+    v.asSome() = this.getVariable(CilBoolBranchSubVarTag())
+    or
+    opcode instanceof Opcode::InstrRef and
+    tag = CilBoolBranchRefTag() and
+    v.asSome() = this.getVariable(CilBoolBranchRefVarTag())
+    or
+    opcode instanceof Opcode::CJump and
+    tag = CilBoolBranchCJumpTag() and
+    v.isNone()
+  }
+
+  override predicate hasTempVariable(VariableTag tag) {
+    tag = CilBoolBranchConstVarTag()
+    or
+    tag = CilBoolBranchRefVarTag()
+    or
+    tag = CilBoolBranchSubVarTag()
+  }
+
+  override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
+    tag = CilBoolBranchCJumpTag() and
+    kind = Opcode::EQ()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilBoolBranchCJumpTag() and
+    (
+      operandTag = CondTag() and
+      result = this.getInstruction(CilBoolBranchSubTag()).getResultVariable()
+      or
+      operandTag = CondJumpTargetTag() and
+      result = this.getInstruction(CilBoolBranchRefTag()).getResultVariable()
+    )
+    or
+    tag = CilBoolBranchSubTag() and
+    (
+      operandTag = LeftTag() and
+      result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+      or
+      operandTag = RightTag() and
+      result = this.getInstruction(CilBoolBranchConstTag()).getResultVariable()
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilBoolBranchConstTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilBoolBranchRefTag())
+    or
+    tag = CilBoolBranchRefTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilBoolBranchSubTag())
+    or
+    tag = CilBoolBranchSubTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilBoolBranchCJumpTag())
+    or
+    tag = CilBoolBranchCJumpTag() and
+    (
+      succType.(BooleanSuccessor).getValue() = true and
+      result = getTranslatedInstruction(instr.getABranchTarget()).getEntry()
+      or
+      succType.(BooleanSuccessor).getValue() = false and
+      result = getTranslatedInstruction(instr.getFallThrough()).getEntry()
+    )
+  }
+
+  override Instruction getReferencedInstruction(InstructionTag tag) {
+    tag = CilBoolBranchRefTag() and
+    result = getTranslatedCilInstruction(instr.getABranchTarget()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilBoolBranchConstTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+class TranslatedCilBooleanBranchTrue extends TranslatedCilBooleanBranchInstruction {
+  override Raw::CilBooleanBranchTrue instr;
+
+  final override int getConstantValue() { result = 1 }
+}
+
+class TranslatedCilBooleanBranchFalse extends TranslatedCilBooleanBranchInstruction {
+  override Raw::CilBooleanBranchFalse instr;
+
+  final override int getConstantValue() { result = 0 }
+}
+
+class TranslatedCilRet extends TranslatedCilInstruction, TTranslatedCilRet {
+  Raw::CilMethod m;
+  override Raw::CilIl_ret instr;
+
+  TranslatedCilRet() {
+    this = TTranslatedCilRet(instr) and
+    m = instr.getEnclosingMethod()
+  }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = SingleTag() and
+    v.isNone() and
+    if m.isVoid() then opcode instanceof Opcode::Ret else opcode instanceof Opcode::RetValue
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    not m.isVoid() and
+    tag = SingleTag() and
+    operandTag = UnaryTag() and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) { none() }
+
+  override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
+      i = 0 and
+      result = getTranslatedCilInstruction(pred).getStackElement(1)
+      or
+      i > 0 and
+      result = getTranslatedCilInstruction(pred).getStackElement(i - 1)
+    )
+  }
 }

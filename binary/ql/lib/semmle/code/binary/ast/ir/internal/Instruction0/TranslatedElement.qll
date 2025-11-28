@@ -20,6 +20,10 @@ private predicate shouldTranslateX86Operand(Raw::X86Operand operand) {
   not exists(operand.getUse().(Raw::X86Jmp).getTarget())
 }
 
+private predicate shouldTranslateCilInstr(Raw::CilInstruction instr) { any() }
+
+private predicate shouldTranslateMethod(Raw::CilMethod m) { any() }
+
 newtype TTranslatedElement =
   TTranslatedX86Function(Raw::X86Instruction entry) {
     shouldTranslateX86Instr(entry) and
@@ -31,6 +35,7 @@ newtype TTranslatedElement =
       entry instanceof Raw::ExportedEntryInstruction
     )
   } or
+  TTranslatedCilMethod(Raw::CilMethod m) { shouldTranslateMethod(m) } or
   TTranslatedX86SimpleBinaryInstruction(Raw::X86Instruction instr) {
     shouldTranslateX86Instr(instr) and
     isSimpleBinaryInstruction(instr, _, _)
@@ -65,7 +70,24 @@ newtype TTranslatedElement =
   TTranslatedX86Nop(Raw::X86Nop nop) { shouldTranslateX86Instr(nop) } or
   TTranslatedX86Bt(Raw::X86Bt bt) { shouldTranslateX86Instr(bt) } or
   TTranslatedX86Btr(Raw::X86Btr btr) { shouldTranslateX86Instr(btr) } or
-  TTranslatedX86Neg(Raw::X86Neg neg) { shouldTranslateX86Instr(neg) }
+  TTranslatedX86Neg(Raw::X86Neg neg) { shouldTranslateX86Instr(neg) } or
+  TTranslatedCilNop(Raw::CilNop nop) { shouldTranslateCilInstr(nop) } or
+  TTranslatedCilLdc(Raw::CilLoadConstant ldc) { shouldTranslateCilInstr(ldc) } or
+  TTranslatedCilStloc(Raw::CilStoreLocal stloc) { shouldTranslateCilInstr(stloc) } or
+  TTranslatedCilLdloc(Raw::CilLoadLocal ldloc) { shouldTranslateCilInstr(ldloc) } or
+  TTranslatedCilUnconditionalBranch(Raw::CilUnconditionalBranchInstruction br) {
+    shouldTranslateCilInstr(br)
+  } or
+  TTranslatedCilArithmeticInstruction(Raw::CilArithmeticInstruction arith) {
+    shouldTranslateCilInstr(arith)
+  } or
+  TTranslatedCilRelationalInstruction(Raw::CilRelationalInstruction rel) {
+    shouldTranslateCilInstr(rel)
+  } or
+  TTranslatedCilBooleanBranchInstruction(Raw::CilBooleanBranchInstruction cbr) {
+    shouldTranslateCilInstr(cbr)
+  } or
+  TTranslatedCilRet(Raw::CilIl_ret ret) { shouldTranslateCilInstr(ret) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and
@@ -73,6 +95,11 @@ TranslatedElement getTranslatedElement(Raw::Element raw) {
 }
 
 TranslatedInstruction getTranslatedInstruction(Raw::Element raw) {
+  result.getRawElement() = raw and
+  result.producesResult()
+}
+
+TranslatedCilInstruction getTranslatedCilInstruction(Raw::CilInstruction raw) {
   result.getRawElement() = raw and
   result.producesResult()
 }
