@@ -1,6 +1,7 @@
 import os
+import dotnet
 
-
+@dotnet.xdist_group_if_macos
 def test(codeql, csharp):
     codeql.database.create(command="dotnet pack -o nugetpackage")
     assert os.path.isfile(

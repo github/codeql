@@ -1,6 +1,7 @@
 import os
+import dotnet
 
-
+@dotnet.xdist_group_if_macos
 def test(codeql, csharp):
     # Making sure the reachability test of `nuget.org` succeeds:
     os.environ["CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_FALLBACK_TIMEOUT"] = "1000"

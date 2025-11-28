@@ -1,6 +1,8 @@
 import os
 import shutil
+import dotnet
 
+@dotnet.xdist_group_if_macos
 def test(codeql, csharp, cwd):
     path = os.path.join(cwd, "dependencies")
     os.environ["CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS_DEPENDENCY_DIR"] = path

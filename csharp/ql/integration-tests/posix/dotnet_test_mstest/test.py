@@ -1,12 +1,14 @@
 import runs_on
+import dotnet
 
-
+@dotnet.xdist_group_if_macos
 @runs_on.posix
 def test_implicit_build_and_test(codeql, csharp):
     codeql.database.create(command="dotnet test")
 
 
 # Explicitly build and then run tests.
+@dotnet.xdist_group_if_macos
 @runs_on.posix
 def test_explicit_build_and_test(codeql, csharp):
     # Fix `dotnet test` picking `x64` on arm-based macOS
