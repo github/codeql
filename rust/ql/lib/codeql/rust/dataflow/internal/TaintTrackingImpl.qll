@@ -57,13 +57,14 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
             s instanceof Builtins::NumericType or
             s instanceof Builtins::Bool or
             s instanceof Builtins::Char
-          )
+          ) and
+          not t.(Type::EnumType).getEnum().isFieldless()
         ) and
-        not excludedTaintStepContent(c) and
-        not TypeInference::inferType(succ.asExpr()).(Type::EnumType).getEnum().isFieldless()
+        not excludedTaintStepContent(c)
       )
       or
-      // Let all read steps (including those from flow summaries and those that
+      // In addition to the above, for element and reference content we let
+      // _all_ read steps (including those from flow summaries and those that
       // result in small primitive types) give rise to taint steps.
       exists(SingletonContentSet cs | RustDataFlow::readStep(pred, cs, succ) |
         cs.getContent() instanceof ElementContent
