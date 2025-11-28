@@ -1384,6 +1384,13 @@ module API {
         result = trackUseNode(nd, false, 0, "")
       }
 
+      /**
+       * Gets a node whose forward tracking reaches `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) {
+        result = trackUseNode(nd, _, _, _, _)
+      }
+
       private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
         t.start() and
         rhs(_, nd) and
@@ -1433,6 +1440,11 @@ module API {
       DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
         result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
       }
+
+      /**
+       * Gets a node reached by the backwards tracking of `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) { result = trackDefNode(nd, _) }
 
       private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
         t.startInPromise() and
@@ -1548,8 +1560,14 @@ module API {
       DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) =
         forceLocal(Stage1::trackUseNode/1)(nd, result)
 
+      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackUseNodeAnyState/1)(nd, result)
+
       DataFlow::SourceNode trackDefNode(DataFlow::SourceNode nd) =
         forceLocal(Stage1::trackDefNode/1)(nd, result)
+
+      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) =
+        forceLocal(Stage1::trackDefNodeAnyState/1)(nd, result)
 
       predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
         forceLocal(Stage1::edge/3)(pred, lbl, succ)
