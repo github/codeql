@@ -1,6 +1,8 @@
 private import semmle.code.binary.ast.instructions as Raw
 private import codeql.controlflow.SuccessorType
-private import semmle.code.binary.ast.ir.internal.InstructionTag
+private import semmle.code.binary.ast.ir.internal.Tags
+private import InstructionTag
+private import VariableTag
 private import Instruction
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
 private import codeql.util.Either

@@ -1,10 +1,11 @@
 private import semmle.code.binary.ast.ir.internal.InstructionSig
-private import semmle.code.binary.ast.ir.internal.InstructionTag
+private import semmle.code.binary.ast.ir.internal.Tags
 private import semmle.code.binary.ast.Location
 private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Opcode
 private import codeql.util.Option
 private import codeql.util.Either
+private import codeql.util.Void
 private import semmle.code.binary.ast.ir.internal.TransformInstruction.TransformInstruction
 private import semmle.code.binary.ast.ir.internal.Instruction1.Instruction1
 private import codeql.ssa.Ssa as SsaImpl
@@ -22,6 +23,18 @@ module InstructionInput implements Transform<Instruction1>::TransformInputSig {
 
   class OptionEitherInstructionTranslatedElementTagPair =
     Option<EitherInstructionTranslatedElementTagPair>::Option;
+
+  private newtype TInstructionTag = SingleTag()
+
+  class InstructionTag extends TInstructionTag {
+    string toString() { result = "SingleTag" }
+  }
+
+  private newtype TVariableTag = MemToSsaVarTag()
+
+  class VariableTag extends TVariableTag {
+    string toString() { result = "mem2ssa" }
+  }
 
   private newtype TTranslatedElementTagPair =
     MkTranslatedElementTagPair(TranslatedElement te, InstructionTag tag) {

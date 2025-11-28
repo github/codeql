@@ -1,5 +1,5 @@
 private import Opcode
-private import InstructionTag
+private import Tags
 private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.Location
 
@@ -45,6 +45,14 @@ signature module InstructionSig {
   class LeftOperand extends Operand;
 
   class RightOperand extends Operand;
+
+  class InstructionTag {
+    string toString();
+  }
+
+  class VariableTag {
+    string toString();
+  }
 
   class Variable {
     string toString();

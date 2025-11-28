@@ -1,7 +1,8 @@
 private import semmle.code.binary.ast.Location
 private import codeql.util.Option
 private import TranslatedElement
-private import semmle.code.binary.ast.ir.internal.InstructionTag
+private import semmle.code.binary.ast.ir.internal.Tags
+private import InstructionTag
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
 private import Function
 private import TranslatedInstruction

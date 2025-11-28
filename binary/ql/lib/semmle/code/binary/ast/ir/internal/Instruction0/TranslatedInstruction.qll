@@ -1,12 +1,14 @@
 private import semmle.code.binary.ast.instructions as Raw
 private import TranslatedElement
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
-private import semmle.code.binary.ast.ir.internal.InstructionTag
+private import semmle.code.binary.ast.ir.internal.Tags
+private import InstructionTag
 private import Instruction
 private import Variable
 private import TranslatedFunction
 private import codeql.util.Option
 private import TranslatedOperand
+private import VariableTag
 private import codeql.controlflow.SuccessorType
 private import codeql.util.Either
 

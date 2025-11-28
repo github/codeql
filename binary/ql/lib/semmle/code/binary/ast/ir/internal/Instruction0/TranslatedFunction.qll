@@ -5,7 +5,8 @@ private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
 private import Variable
 private import Instruction
 private import TranslatedInstruction
-private import semmle.code.binary.ast.ir.internal.InstructionTag
+private import semmle.code.binary.ast.ir.internal.Tags
+private import InstructionTag
 private import codeql.controlflow.SuccessorType
 
 abstract class TranslatedFunction extends TranslatedElement {

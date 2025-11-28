@@ -1,6 +1,7 @@
 private import semmle.code.binary.ast.Location
 private import TranslatedElement
-private import semmle.code.binary.ast.ir.internal.InstructionTag as Tags
+private import semmle.code.binary.ast.ir.internal.Tags
+private import InstructionTag
 private import Instruction
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
 private import Function
@@ -10,14 +11,14 @@ private import codeql.controlflow.SuccessorType
 private import BasicBlock
 
 newtype TOperand =
-  MkOperand(TranslatedElement te, Tags::InstructionTag tag, Tags::OperandTag operandTag) {
+  MkOperand(TranslatedElement te, InstructionTag tag, OperandTag operandTag) {
     exists(te.getVariableOperand(tag, operandTag))
   }
 
 class Operand extends TOperand {
   TranslatedElement te;
-  Tags::InstructionTag tag;
-  Tags::TOperandTag operandTag;
+  InstructionTag tag;
+  TOperandTag operandTag;
 
   Operand() { this = MkOperand(te, tag, operandTag) }
 
@@ -37,35 +38,37 @@ class Operand extends TOperand {
 }
 
 class StoreValueOperand extends Operand {
-  override Tags::StoreValueTag operandTag;
+  override StoreValueTag operandTag;
 }
 
 class LeftOperand extends Operand {
-  override Tags::LeftTag operandTag;
+  override LeftTag operandTag;
 }
 
 class RightOperand extends Operand {
-  override Tags::RightTag operandTag;
+  override RightTag operandTag;
 }
 
 class StoreAddressOperand extends Operand {
-  override Tags::StoreAddressTag operandTag;
+  override StoreAddressTag operandTag;
 }
 
 class UnaryOperand extends Operand {
-  override Tags::UnaryTag operandTag;
+  override UnaryTag operandTag;
 }
 
 class ConditionOperand extends Operand {
-  override Tags::CondTag operandTag;
+  override CondTag operandTag;
 }
 
 class ConditionJumpTargetOperand extends Operand {
-  override Tags::CondJumpTargetTag operandTag;
+  override CondJumpTargetTag operandTag;
 }
 
 class JumpTargetOperand extends Operand {
-  override Tags::JumpTargetTag operandTag;
+  override JumpTargetTag operandTag;
 }
+
+private import semmle.code.binary.ast.ir.internal.Tags as Tags
 
 class OperandTag = Tags::OperandTag;

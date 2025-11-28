@@ -1,18 +1,19 @@
 private import TranslatedElement
 private import semmle.code.binary.ast.Location
-private import semmle.code.binary.ast.ir.internal.InstructionTag as Tags
 private import semmle.code.binary.ast.instructions as Raw
+private import VariableTag
+private import semmle.code.binary.ast.ir.internal.Tags
 private import Operand
 
 newtype TVariable =
-  TTempVariable(TranslatedElement te, Tags::VariableTag tag) { hasTempVariable(te, tag) } or
+  TTempVariable(TranslatedElement te, VariableTag tag) { hasTempVariable(te, tag) } or
   TStackPointer() or
   TFramePointer() or
   TRegisterVariableReal(Raw::X86Register r) {
     not r instanceof Raw::RbpRegister and // Handled by FramePointer
     not r instanceof Raw::RspRegister // Handled by StackPointer
   } or
-  TRegisterVariableSynth(Tags::SynthRegisterTag tag) { hasSynthVariable(tag) }
+  TRegisterVariableSynth(SynthRegisterTag tag) { hasSynthVariable(tag) }
 
 abstract class Variable extends TVariable {
   abstract string toString();
@@ -24,11 +25,11 @@ abstract class Variable extends TVariable {
 
 class TempVariable extends Variable, TTempVariable {
   TranslatedElement te;
-  Tags::VariableTag tag;
+  VariableTag tag;
 
   TempVariable() { this = TTempVariable(te, tag) }
 
-  override string toString() { result = te.getDumpId() + "." + Tags::stringOfVariableTag(tag) }
+  override string toString() { result = te.getDumpId() + "." + tag.toString() }
 }
 
 class StackPointer extends Variable, TStackPointer {
@@ -50,7 +51,7 @@ class RegisterVariable extends Variable, TRegisterVariable {
 
   Raw::X86Register getRegister() { none() }
 
-  Tags::SynthRegisterTag getRegisterTag() { none() }
+  SynthRegisterTag getRegisterTag() { none() }
 }
 
 private class RegisterVariableReal extends RegisterVariable, TRegisterVariableReal {
@@ -72,17 +73,16 @@ Variable getTranslatedVariableReal(Raw::X86Register r) {
 }
 
 private class RegisterVariableSynth extends RegisterVariable, TRegisterVariableSynth {
-  Tags::SynthRegisterTag tag;
+  SynthRegisterTag tag;
 
   RegisterVariableSynth() { this = TRegisterVariableSynth(tag) }
 
-  override string toString() { result = Tags::stringOfSynthRegisterTag(tag) }
+  override string toString() { result = stringOfSynthRegisterTag(tag) }
 
-  override Tags::SynthRegisterTag getRegisterTag() { result = tag }
+  override SynthRegisterTag getRegisterTag() { result = tag }
 }
 
-RegisterVariableSynth getTranslatedVariableSynth(Tags::SynthRegisterTag tag) {
+RegisterVariableSynth getTranslatedVariableSynth(SynthRegisterTag tag) {
   result.getRegisterTag() = tag
 }
 
-class VariableTag = Tags::VariableTag;

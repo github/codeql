@@ -1,5 +1,5 @@
 private import semmle.code.binary.ast.ir.internal.InstructionSig
-private import semmle.code.binary.ast.ir.internal.InstructionTag as Tags
+private import semmle.code.binary.ast.ir.internal.Tags
 private import semmle.code.binary.ast.Location
 private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
@@ -21,36 +21,44 @@ module Transform<InstructionSig Input> {
 
     default predicate isRemovedInstruction(Input::Instruction instr) { none() }
 
+    class InstructionTag {
+      string toString();
+    }
+
+    class VariableTag {
+      string toString();
+    }
+
     class TranslatedElement {
       EitherInstructionTranslatedElementTagPair getSuccessor(
-        Tags::InstructionTag tag, SuccessorType succType
+        InstructionTag tag, SuccessorType succType
       );
 
       EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
         Input::Instruction i, SuccessorType succType
       );
 
-      EitherInstructionTranslatedElementTagPair getReferencedInstruction(Tags::InstructionTag tag);
+      EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag);
 
       predicate producesResult();
 
-      int getConstantValue(Tags::InstructionTag tag);
+      int getConstantValue(InstructionTag tag);
 
-      predicate hasTempVariable(Tags::VariableTag tag);
+      predicate hasTempVariable(VariableTag tag);
 
       EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-        Tags::InstructionTag tag, Tags::OperandTag operandTag
+        InstructionTag tag, OperandTag operandTag
       );
 
       Either<Input::Instruction, Input::Operand>::Either getRawElement();
 
       predicate hasInstruction(
-        Opcode opcode, Tags::InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
+        Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
       );
 
-      Input::Function getStaticTarget(Tags::InstructionTag tag);
+      Input::Function getStaticTarget(InstructionTag tag);
 
-      predicate hasJumpCondition(Tags::InstructionTag tag, Opcode::ConditionKind kind);
+      predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind);
 
       string toString();
 
@@ -90,7 +98,7 @@ module Transform<InstructionSig Input> {
 
       TranslatedElement getTranslatedElement();
 
-      Tags::InstructionTag getInstructionTag();
+      InstructionTag getInstructionTag();
     }
 
     class TranslatedElementVariablePair {
@@ -98,7 +106,7 @@ module Transform<InstructionSig Input> {
 
       TranslatedElement getTranslatedElement();
 
-      Tags::VariableTag getVariableTag();
+      VariableTag getVariableTag();
     }
 
     class TranslatedInstruction extends TranslatedElement {
@@ -127,27 +135,29 @@ module Transform<InstructionSig Input> {
 
     private newtype TVariable =
       TOldVariable(Input::Variable v) or
-      TNewVariable(TranslatedElement te, Tags::VariableTag tag) { hasTempVariable(te, tag) }
+      TNewVariable(TranslatedElement te, TransformInput::VariableTag tag) {
+        hasTempVariable(te, tag)
+      }
 
     private Variable getNewVariable(Input::Variable v) { v = result.asOldVariable() }
 
-    private Variable getTempVariable(TranslatedElement te, Tags::VariableTag tag) {
+    private Variable getTempVariable(TranslatedElement te, TransformInput::VariableTag tag) {
       result.isNewVariable(te, tag)
     }
 
     class Variable extends TVariable {
       Input::Variable asOldVariable() { this = TOldVariable(result) }
 
-      predicate isNewVariable(TranslatedElement te, Tags::VariableTag tag) {
+      predicate isNewVariable(TranslatedElement te, TransformInput::VariableTag tag) {
         this = TNewVariable(te, tag)
       }
 
       final string toString() {
         result = this.asOldVariable().toString()
         or
-        exists(Tags::VariableTag tag, TranslatedElement te |
+        exists(TransformInput::VariableTag tag, TranslatedElement te |
           this.isNewVariable(te, tag) and
-          result = te.getDumpId() + "." + Tags::stringOfVariableTag(tag)
+          result = te.getDumpId() + "." + tag.toString()
         )
       }
 
@@ -172,14 +182,18 @@ module Transform<InstructionSig Input> {
       }
     }
 
+    private module MInstructionTag = Either<Input::InstructionTag, TransformInput::InstructionTag>;
+
+    class InstructionTag = MInstructionTag::Either;
+
+    class VariableTag = Either<Input::VariableTag, TransformInput::VariableTag>::Either;
+
     final private class FinalTranslatedElement = TransformInput::TranslatedElement;
 
     private class TranslatedElement extends FinalTranslatedElement {
-      final predicate hasInstruction(
-        Opcode opcode, Tags::InstructionTag tag, Option<Variable>::Option v
-      ) {
+      final predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
         exists(TransformInput::OptionEitherVariableOrTranslatedElementPair o |
-          super.hasInstruction(opcode, tag, o)
+          super.hasInstruction(opcode, tag.asRight(), o)
         |
           o.isNone() and
           v.isNone()
@@ -195,34 +209,36 @@ module Transform<InstructionSig Input> {
         )
       }
 
-      final Instruction getReferencedInstruction(Tags::InstructionTag tag) {
+      final Instruction getReferencedInstruction(InstructionTag tag) {
         exists(TransformInput::EitherInstructionTranslatedElementTagPair e |
-          e = super.getReferencedInstruction(tag)
+          e = super.getReferencedInstruction(tag.asRight())
         |
           result = getNewInstruction(e.asLeft())
           or
           exists(TransformInput::TranslatedElementTagPair p |
             p = e.asRight() and
             result =
-              p.getTranslatedElement().(TranslatedElement).getInstruction(p.getInstructionTag())
+              p.getTranslatedElement()
+                  .(TranslatedElement)
+                  .getInstruction(MInstructionTag::right(p.getInstructionTag()))
           )
         )
       }
 
-      final Instruction getInstruction(Tags::InstructionTag tag) {
-        result = MkInstruction(this, tag)
-      }
+      final Instruction getInstruction(InstructionTag tag) { result = MkInstruction(this, tag) }
 
-      final Instruction getSuccessor(Tags::InstructionTag tag, SuccessorType succType) {
+      final Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
         exists(TransformInput::EitherInstructionTranslatedElementTagPair e |
-          e = super.getSuccessor(tag, succType)
+          e = super.getSuccessor(tag.asRight(), succType)
         |
           result = getNewInstruction(e.asLeft())
           or
           exists(TransformInput::TranslatedElementTagPair p |
             p = e.asRight() and
             result =
-              p.getTranslatedElement().(TranslatedElement).getInstruction(p.getInstructionTag())
+              p.getTranslatedElement()
+                  .(TranslatedElement)
+                  .getInstruction(MInstructionTag::right(p.getInstructionTag()))
           )
         )
       }
@@ -236,14 +252,16 @@ module Transform<InstructionSig Input> {
           exists(TransformInput::TranslatedElementTagPair p |
             p = e.asRight() and
             result =
-              p.getTranslatedElement().(TranslatedElement).getInstruction(p.getInstructionTag())
+              p.getTranslatedElement()
+                  .(TranslatedElement)
+                  .getInstruction(MInstructionTag::right(p.getInstructionTag()))
           )
         )
       }
 
-      final Variable getVariableOperand(Tags::InstructionTag tag, Tags::OperandTag operandTag) {
+      final Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
         exists(TransformInput::EitherVariableOrTranslatedElementVariablePair e |
-          e = super.getVariableOperand(tag, operandTag)
+          e = super.getVariableOperand(tag.asRight(), operandTag)
         |
           result = getNewVariable(e.asLeft())
           or
@@ -264,7 +282,9 @@ module Transform<InstructionSig Input> {
           exists(TransformInput::TranslatedElementTagPair p |
             p = e.asRight() and
             result =
-              p.getTranslatedElement().(TranslatedElement).getInstruction(p.getInstructionTag())
+              p.getTranslatedElement()
+                  .(TranslatedElement)
+                  .getInstruction(MInstructionTag::right(p.getInstructionTag()))
           )
         )
       }
@@ -285,24 +305,26 @@ module Transform<InstructionSig Input> {
             exists(TransformInput::TranslatedElementTagPair p |
               e.asRight() = p and
               result.asSome() =
-                p.getTranslatedElement().(TranslatedElement).getInstruction(p.getInstructionTag())
+                p.getTranslatedElement()
+                    .(TranslatedElement)
+                    .getInstruction(MInstructionTag::right(p.getInstructionTag()))
             )
           )
         )
       }
     }
 
-    private predicate hasInstruction(TranslatedElement te, Tags::InstructionTag tag) {
+    private predicate hasInstruction(TranslatedElement te, InstructionTag tag) {
       te.hasInstruction(_, tag, _)
     }
 
-    private predicate hasTempVariable(TranslatedElement te, Tags::VariableTag tag) {
+    private predicate hasTempVariable(TranslatedElement te, TransformInput::VariableTag tag) {
       te.hasTempVariable(tag)
     }
 
     private newtype TInstruction =
       TOldInstruction(Input::Instruction i) { not TransformInput::isRemovedInstruction(i) } or
-      MkInstruction(TranslatedElement te, Tags::InstructionTag tag) { hasInstruction(te, tag) }
+      MkInstruction(TranslatedElement te, InstructionTag tag) { hasInstruction(te, tag) }
 
     private TranslatedInstruction getTranslatedInstruction(Input::Instruction i) {
       result.getRawElement().asLeft() = i and
@@ -328,7 +350,7 @@ module Transform<InstructionSig Input> {
       private string getOperandString() {
         result =
           " " +
-            strictconcat(Tags::OperandTag op, string s |
+            strictconcat(OperandTag op, string s |
               s = this.getOperand(op).getVariable().toString()
             |
               s, " " order by op.getIndex()
@@ -355,7 +377,7 @@ module Transform<InstructionSig Input> {
 
       Opcode getOpcode() { none() }
 
-      Operand getOperand(Tags::OperandTag operandTag) { none() }
+      Operand getOperand(OperandTag operandTag) { none() }
 
       final Operand getAnOperand() { result = this.getOperand(_) }
 
@@ -374,13 +396,13 @@ module Transform<InstructionSig Input> {
       BasicBlock getBasicBlock() { result.getANode().asInstruction() = this }
 
       Operand getFirstOperand() {
-        exists(Tags::OperandTag operandTag |
+        exists(OperandTag operandTag |
           result = this.getOperand(operandTag) and
           not exists(operandTag.getPredecessorTag())
         )
       }
 
-      Tags::InstructionTag getInstructionTag() { none() }
+      InstructionTag getInstructionTag() { none() }
     }
 
     class RetInstruction extends Instruction {
@@ -406,9 +428,9 @@ module Transform<InstructionSig Input> {
           result = cjump.getKind()
         )
         or
-        exists(TranslatedElement te, Tags::InstructionTag tag |
+        exists(TranslatedElement te, InstructionTag tag |
           this = MkInstruction(te, tag) and
-          te.hasJumpCondition(tag, result)
+          te.hasJumpCondition(tag.asRight(), result)
         )
       }
 
@@ -484,9 +506,9 @@ module Transform<InstructionSig Input> {
           result = call.getStaticTarget()
         )
         or
-        exists(TranslatedElement te, Tags::InstructionTag tag |
+        exists(TranslatedElement te, InstructionTag tag |
           this = MkInstruction(te, tag) and
-          result = te.getStaticTarget(tag)
+          result = te.getStaticTarget(tag.asRight())
         )
       }
 
@@ -516,9 +538,9 @@ module Transform<InstructionSig Input> {
           result = const.getValue()
         )
         or
-        exists(TranslatedElement te, Tags::InstructionTag tag |
+        exists(TranslatedElement te, InstructionTag tag |
           this = MkInstruction(te, tag) and
-          result = te.getConstantValue(tag)
+          result = te.getConstantValue(tag.asRight())
         )
       }
 
@@ -534,7 +556,7 @@ module Transform<InstructionSig Input> {
           result = getNewInstruction(instrRef.getReferencedInstruction())
         )
         or
-        exists(TranslatedElement te, Tags::InstructionTag tag |
+        exists(TranslatedElement te, InstructionTag tag |
           this = MkInstruction(te, tag) and
           result = te.getReferencedInstruction(tag)
         )
@@ -553,7 +575,7 @@ module Transform<InstructionSig Input> {
     private class NewInstruction extends MkInstruction, Instruction {
       Opcode opcode;
       TranslatedElement te;
-      Tags::InstructionTag tag;
+      InstructionTag tag;
 
       NewInstruction() { this = MkInstruction(te, tag) and te.hasInstruction(opcode, tag, _) }
 
@@ -561,7 +583,7 @@ module Transform<InstructionSig Input> {
 
       override string getImmediateValue() { none() }
 
-      override Operand getOperand(Tags::OperandTag operandTag) {
+      override Operand getOperand(OperandTag operandTag) {
         result = MkOperand(te, tag, operandTag)
       }
 
@@ -583,7 +605,7 @@ module Transform<InstructionSig Input> {
         result = this.getAPredecessor().getEnclosingFunction()
       }
 
-      override Tags::InstructionTag getInstructionTag() { result = tag }
+      override InstructionTag getInstructionTag() { result = tag }
     }
 
     private Instruction getInstructionSuccessor(Input::Instruction old, SuccessorType succType) {
@@ -613,7 +635,7 @@ module Transform<InstructionSig Input> {
 
       override Opcode getOpcode() { result = old.getOpcode() }
 
-      override Operand getOperand(Tags::OperandTag operandTag) {
+      override Operand getOperand(OperandTag operandTag) {
         result = getNewOperand(old.getOperand(operandTag))
       }
 
@@ -649,7 +671,7 @@ module Transform<InstructionSig Input> {
 
       override Function getEnclosingFunction() { result = old.getEnclosingFunction() }
 
-      override Tags::InstructionTag getInstructionTag() { result = old.getInstructionTag() }
+      override InstructionTag getInstructionTag() { result.asLeft() = old.getInstructionTag() }
     }
 
     private newtype TOperand =
@@ -659,7 +681,7 @@ module Transform<InstructionSig Input> {
           not TransformInput::isRemovedInstruction(use)
         )
       } or
-      MkOperand(TranslatedElement te, Tags::InstructionTag tag, Tags::OperandTag operandTag) {
+      MkOperand(TranslatedElement te, InstructionTag tag, OperandTag operandTag) {
         exists(te.getVariableOperand(tag, operandTag))
       }
 
@@ -676,19 +698,19 @@ module Transform<InstructionSig Input> {
 
       Location getLocation() { result instanceof EmptyLocation }
 
-      Tags::OperandTag getOperandTag() { none() }
+      OperandTag getOperandTag() { none() }
     }
 
     private class NewOperand extends MkOperand, Operand {
       TranslatedElement te;
-      Tags::InstructionTag tag;
-      Tags::OperandTag operandTag;
+      InstructionTag tag;
+      OperandTag operandTag;
 
       NewOperand() { this = MkOperand(te, tag, operandTag) }
 
       override Variable getVariable() { result = te.getVariableOperand(tag, operandTag) }
 
-      override Tags::OperandTag getOperandTag() { result = operandTag }
+      override OperandTag getOperandTag() { result = operandTag }
     }
 
     private class OldOperand extends TOldOperand, Operand {
@@ -712,39 +734,39 @@ module Transform<InstructionSig Input> {
         )
       }
 
-      override Tags::OperandTag getOperandTag() { result = old.getOperandTag() }
+      override OperandTag getOperandTag() { result = old.getOperandTag() }
     }
 
     class StoreValueOperand extends Operand {
-      StoreValueOperand() { this.getOperandTag() instanceof Tags::StoreValueTag }
+      StoreValueOperand() { this.getOperandTag() instanceof StoreValueTag }
     }
 
     class StoreAddressOperand extends Operand {
-      StoreAddressOperand() { this.getOperandTag() instanceof Tags::StoreAddressTag }
+      StoreAddressOperand() { this.getOperandTag() instanceof StoreAddressTag }
     }
 
     class UnaryOperand extends Operand {
-      UnaryOperand() { this.getOperandTag() instanceof Tags::UnaryTag }
+      UnaryOperand() { this.getOperandTag() instanceof UnaryTag }
     }
 
     class ConditionOperand extends Operand {
-      ConditionOperand() { this.getOperandTag() instanceof Tags::CondTag }
+      ConditionOperand() { this.getOperandTag() instanceof CondTag }
     }
 
     class ConditionJumpTargetOperand extends Operand {
-      ConditionJumpTargetOperand() { this.getOperandTag() instanceof Tags::CondJumpTargetTag }
+      ConditionJumpTargetOperand() { this.getOperandTag() instanceof CondJumpTargetTag }
     }
 
     class JumpTargetOperand extends Operand {
-      JumpTargetOperand() { this.getOperandTag() instanceof Tags::JumpTargetTag }
+      JumpTargetOperand() { this.getOperandTag() instanceof JumpTargetTag }
     }
 
     class LeftOperand extends Operand {
-      LeftOperand() { this.getOperandTag() instanceof Tags::LeftTag }
+      LeftOperand() { this.getOperandTag() instanceof LeftTag }
     }
 
     class RightOperand extends Operand {
-      RightOperand() { this.getOperandTag() instanceof Tags::RightTag }
+      RightOperand() { this.getOperandTag() instanceof RightTag }
     }
 
     additional module BinaryCfg implements BB::CfgSig<Location> {
@@ -916,7 +938,7 @@ module Transform<InstructionSig Input> {
 
         ControlFlowNode getSuccessor(SuccessorType t) {
           t instanceof DirectSuccessor and
-          exists(Instruction i, Tags::OperandTag tag | this.asOperand() = i.getOperand(tag) |
+          exists(Instruction i, OperandTag tag | this.asOperand() = i.getOperand(tag) |
             result.asOperand() = i.getOperand(tag.getSuccessorTag())
             or
             this.asOperand() = i.getOperand(tag) and

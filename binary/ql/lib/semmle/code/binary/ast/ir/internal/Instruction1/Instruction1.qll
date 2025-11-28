@@ -1,11 +1,12 @@
 private import semmle.code.binary.ast.ir.internal.InstructionSig
-private import semmle.code.binary.ast.ir.internal.InstructionTag
+private import semmle.code.binary.ast.ir.internal.Tags
 private import semmle.code.binary.ast.Location
 private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Opcode
 private import codeql.util.Option
 private import codeql.util.Either
 private import codeql.util.Unit
+private import codeql.util.Void
 private import semmle.code.binary.ast.ir.internal.TransformInstruction.TransformInstruction
 private import semmle.code.binary.ast.ir.internal.Instruction0.Instruction0
 
@@ -163,6 +164,36 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
   class OptionEitherInstructionTranslatedElementTagPair =
     Option<EitherInstructionTranslatedElementTagPair>::Option;
 
+  private newtype TInstructionTag =
+    Stage1ZeroTag() or
+    Stage1CmpDefTag(ConditionKind k)
+
+  private newtype TVariableTag = ZeroVarTag()
+
+  class VariableTag extends TVariableTag {
+    VariableTag() { this = ZeroVarTag() }
+
+    string toString() { result = "ZeroVarTag" }
+  }
+
+  class InstructionTag extends TInstructionTag {
+    InstructionTag() {
+      this = Stage1ZeroTag()
+      or
+      this = Stage1CmpDefTag(_)
+    }
+
+    string toString() {
+      this = Stage1ZeroTag() and
+      result = "Stage1ZeroTag"
+      or
+      exists(ConditionKind k |
+        this = Stage1CmpDefTag(k) and
+        result = "Stage1CmpDefTag(" + stringOfConditionKind(k) + ")"
+      )
+    }
+  }
+
   private newtype TTranslatedElementTagPair =
     MkTranslatedElementTagPair(TranslatedElement te, InstructionTag tag) {
       te.hasInstruction(_, tag, _)
@@ -289,7 +320,9 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
       InstructionTag tag, SuccessorType succType
     );
 
-    EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag) { none() }
+    EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag) {
+      none()
+    }
 
     abstract EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction0::Instruction i, SuccessorType succType
