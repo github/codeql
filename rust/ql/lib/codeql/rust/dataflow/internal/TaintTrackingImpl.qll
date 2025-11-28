@@ -18,6 +18,10 @@ private import codeql.rust.frameworks.stdlib.Builtins as Builtins
  */
 extensible predicate excludeFieldTaintStep(string field);
 
+/**
+ * Holds if the content `c` corresponds to a field that has explicitly been
+ * excluded as a taint step.
+ */
 private predicate excludedTaintStepContent(Content c) {
   exists(string arg | excludeFieldTaintStep(arg) |
     FlowSummaryImpl::encodeContentStructField(c, arg) or
@@ -47,19 +51,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       or
       // Read steps give rise to taint steps. This has the effect that if `foo`
       // is tainted and an operation reads from `foo` (e.g., `foo.bar`) then
-      // taint is propagated. We limit this to not apply if the type of the
-      // operation is a small primitive type as these are often uninteresting
-      // (for instance in the case of an injection query).
+      // taint is propagated.
       exists(Content c |
         RustDataFlow::readContentStep(pred, c, succ) and
-        forex(Type::Type t | t = TypeInference::inferType(succ.asExpr()) |
-          not exists(Struct s | s = t.(Type::StructType).getStruct() |
-            s instanceof Builtins::NumericType or
-            s instanceof Builtins::Bool or
-            s instanceof Builtins::Char
-          ) and
-          not t.(Type::EnumType).getEnum().isFieldless()
-        ) and
         not excludedTaintStepContent(c)
       )
       or
