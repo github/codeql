@@ -2431,6 +2431,16 @@ il_operand_string(
   string value: string ref
 );
 
+il_operand_sbyte(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+il_operand_byte(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
 /**
  * Integer operands for IL instructions.
  * Used for ldc.i4 (load constant int32) and similar instructions.

@@ -119,6 +119,10 @@ public class ILExtractor {
         trap.WriteTuple("il_call_target_unresolved", instrId, targetMethodName);
       } else if (instruction.Operand is string str) {
         trap.WriteTuple("il_operand_string", instrId, str);
+      } else if (instruction.Operand is sbyte sb) {
+        trap.WriteTuple("il_operand_sbyte", instrId, sb);
+      } else if (instruction.Operand is byte b) {
+        trap.WriteTuple("il_operand_byte", instrId, b);
       } else if (instruction.Operand is int i) {
         trap.WriteTuple("il_operand_int", instrId, i);
       } else if (instruction.Operand is long l) {
