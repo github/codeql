@@ -32,15 +32,15 @@ impl MyCryptor {
 }
 
 fn test(var_string: &str, var_data: &[u8;16]) {
-    encrypt_with("plaintext", var_data, var_data); // $ MISSING: Sink
+    encrypt_with("plaintext", var_data, var_data);
 
-    let const_key: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    encrypt_with("plaintext", const_key, var_data); // $ MISSING: Sink
+    let const_key: &[u8;16] = &[0u8;16]; // $ Alert[rust/hard-coded-cryptographic-value]
+    encrypt_with("plaintext", const_key, var_data); // $ Sink
 
-    let const_iv: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    encrypt_with("plaintext", var_data, const_iv); // $ MISSING: Sink
+    let const_iv: &[u8;16] = &[0u8;16]; // $ Alert[rust/hard-coded-cryptographic-value]
+    encrypt_with("plaintext", var_data, const_iv); // $ Sink
 
-    encrypt2("plaintext", var_data, var_data); // $ MISSING: Sink
+    encrypt2("plaintext", var_data, var_data);
 
     let const_key2: &[u8;16] = &[1u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
     encrypt2("plaintext", const_key2, var_data); // $ MISSING: Sink
@@ -56,7 +56,7 @@ fn test(var_string: &str, var_data: &[u8;16]) {
     mc1.set_nonce(var_data);
     mc1.encrypt("plaintext", var_data);
 
-    let mc2 = MyCryptor::new("secret"); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    mc2.set_nonce(&[0u8;16]); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    mc2.encrypt("plaintext", &[0u8;16]); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    let mc2 = MyCryptor::new("secret"); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_nonce(&[0u8;16]); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.encrypt("plaintext", &[0u8;16]); // $ Alert[rust/hard-coded-cryptographic-value]
 }

@@ -10,6 +10,11 @@
 | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:22:16:22:24 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:22:16:22:24 | ...::from | a key |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:42:14:42:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:42:14:42:32 | ...::from | a key |
 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:53:14:53:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:53:14:53:32 | ...::from | a key |
+| test_heuristic.rs:37:32:37:39 | [0u8; 16] | test_heuristic.rs:37:32:37:39 | [0u8; 16] | test_heuristic.rs:38:31:38:39 | const_key | This hard-coded value is used as $@. | test_heuristic.rs:38:31:38:39 | const_key | a key |
+| test_heuristic.rs:40:31:40:38 | [0u8; 16] | test_heuristic.rs:40:31:40:38 | [0u8; 16] | test_heuristic.rs:41:41:41:48 | const_iv | This hard-coded value is used as $@. | test_heuristic.rs:41:41:41:48 | const_iv | an initialization vector |
+| test_heuristic.rs:59:30:59:37 | "secret" | test_heuristic.rs:59:30:59:37 | "secret" | test_heuristic.rs:59:30:59:37 | "secret" | This hard-coded value is used as $@. | test_heuristic.rs:59:30:59:37 | "secret" | a password |
+| test_heuristic.rs:60:20:60:27 | [0u8; 16] | test_heuristic.rs:60:20:60:27 | [0u8; 16] | test_heuristic.rs:60:19:60:27 | &... | This hard-coded value is used as $@. | test_heuristic.rs:60:19:60:27 | &... | a nonce |
+| test_heuristic.rs:61:31:61:38 | [0u8; 16] | test_heuristic.rs:61:31:61:38 | [0u8; 16] | test_heuristic.rs:61:30:61:38 | &... | This hard-coded value is used as $@. | test_heuristic.rs:61:30:61:38 | &... | a salt |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref] | test_cipher.rs:19:73:19:78 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref] | test_cipher.rs:18:9:18:14 | const1 [&ref] | provenance |  |
@@ -62,6 +67,14 @@ edges
 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | provenance | MaD:10 |
 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | test_cookie.rs:49:9:49:14 | array3 [element] | provenance |  |
 | test_cookie.rs:53:34:53:39 | array3 [element] | test_cookie.rs:53:14:53:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
+| test_heuristic.rs:37:9:37:17 | const_key [&ref] | test_heuristic.rs:38:31:38:39 | const_key | provenance |  |
+| test_heuristic.rs:37:31:37:39 | &... [&ref] | test_heuristic.rs:37:9:37:17 | const_key [&ref] | provenance |  |
+| test_heuristic.rs:37:32:37:39 | [0u8; 16] | test_heuristic.rs:37:31:37:39 | &... [&ref] | provenance |  |
+| test_heuristic.rs:40:9:40:16 | const_iv [&ref] | test_heuristic.rs:41:41:41:48 | const_iv | provenance |  |
+| test_heuristic.rs:40:30:40:38 | &... [&ref] | test_heuristic.rs:40:9:40:16 | const_iv [&ref] | provenance |  |
+| test_heuristic.rs:40:31:40:38 | [0u8; 16] | test_heuristic.rs:40:30:40:38 | &... [&ref] | provenance |  |
+| test_heuristic.rs:60:20:60:27 | [0u8; 16] | test_heuristic.rs:60:19:60:27 | &... | provenance |  |
+| test_heuristic.rs:61:31:61:38 | [0u8; 16] | test_heuristic.rs:61:30:61:38 | &... | provenance |  |
 models
 | 1 | Sink: <_ as crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
 | 2 | Sink: <biscotti::crypto::master::Key>::from; Argument[0]; credentials-key |
@@ -136,4 +149,17 @@ nodes
 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
 | test_cookie.rs:53:14:53:32 | ...::from | semmle.label | ...::from |
 | test_cookie.rs:53:34:53:39 | array3 [element] | semmle.label | array3 [element] |
+| test_heuristic.rs:37:9:37:17 | const_key [&ref] | semmle.label | const_key [&ref] |
+| test_heuristic.rs:37:31:37:39 | &... [&ref] | semmle.label | &... [&ref] |
+| test_heuristic.rs:37:32:37:39 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_heuristic.rs:38:31:38:39 | const_key | semmle.label | const_key |
+| test_heuristic.rs:40:9:40:16 | const_iv [&ref] | semmle.label | const_iv [&ref] |
+| test_heuristic.rs:40:30:40:38 | &... [&ref] | semmle.label | &... [&ref] |
+| test_heuristic.rs:40:31:40:38 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_heuristic.rs:41:41:41:48 | const_iv | semmle.label | const_iv |
+| test_heuristic.rs:59:30:59:37 | "secret" | semmle.label | "secret" |
+| test_heuristic.rs:60:19:60:27 | &... | semmle.label | &... |
+| test_heuristic.rs:60:20:60:27 | [0u8; 16] | semmle.label | [0u8; 16] |
+| test_heuristic.rs:61:30:61:38 | &... | semmle.label | &... |
+| test_heuristic.rs:61:31:61:38 | [0u8; 16] | semmle.label | [0u8; 16] |
 subpaths
