@@ -12,9 +12,9 @@ private import codeql.rust.internal.Type as Type
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 /**
- * Holds if the field `field` should, by default, be excluded from taint steps.
- * The syntax used to denote the field is the same as for `Field` in
- * models-as-data.
+ * Holds if the field `field` should, by default, be excluded from taint steps
+ * from the containing type to reads of the field. The models-as-data syntax
+ * used to denote the field is the same as for `Field[]` access path elements.
  */
 extensible predicate excludeFieldTaintStep(string field);
 
