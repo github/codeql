@@ -93,6 +93,7 @@ private predicate parseRelevantTypeString(string rawType, string package, string
 }
 
 /** Holds if `global` is a global variable referenced via a the `global` package in a CSV row. */
+overlay[local]
 private predicate isRelevantGlobal(string global) {
   exists(AccessPath path, AccessPathToken token |
     isRelevantFullPath("global", path) and
@@ -103,6 +104,7 @@ private predicate isRelevantGlobal(string global) {
 }
 
 /** An API graph entry point for global variables mentioned in a model. */
+overlay[local?]
 private class GlobalApiEntryPoint extends API::EntryPoint {
   string global;
 
