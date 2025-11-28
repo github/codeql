@@ -121,8 +121,8 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:97:25:97:60 | myMethod2 |
 | isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:97:52:97:52 | myMethod2 |
-| isfromtemplateinstantiation.cpp:110:15:110:15 | definition of var_template | isfromtemplateinstantiation.cpp:110:15:110:15 | var_template |
-| isfromtemplateinstantiation.cpp:110:15:110:15 | var_template | isfromtemplateinstantiation.cpp:110:15:110:15 | var_template |
+| isfromtemplateinstantiation.cpp:110:3:110:14 | definition of var_template | isfromtemplateinstantiation.cpp:110:3:110:14 | var_template |
+| isfromtemplateinstantiation.cpp:110:3:110:14 | var_template | isfromtemplateinstantiation.cpp:110:3:110:14 | var_template |
 | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
 | isfromtemplateinstantiation.cpp:128:7:128:30 | definition of AnotherTemplateClass<T *> | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
 | isfromtemplateinstantiation.cpp:129:6:129:6 | definition of f | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |
