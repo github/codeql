@@ -1280,8 +1280,12 @@ module API {
         nd = MkUse(ref)
         or
         S::isAdditionalUseRoot(nd) and
-        nd = MkUse(ref)
+        nd = mkUseLate(ref)
       }
+
+      bindingset[node]
+      pragma[inline_late]
+      private TApiNode mkUseLate(DataFlow::Node node) { result = MkUse(node) }
 
       private import semmle.javascript.dataflow.TypeTracking
 
