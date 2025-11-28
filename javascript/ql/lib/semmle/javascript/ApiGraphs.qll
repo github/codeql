@@ -1539,6 +1539,25 @@ module API {
 
     private module Stage1 = Stage<Stage1Input>;
 
+    overlay[local]
+    private module Stage1Local {
+      predicate use(TApiNode node, DataFlow::Node ref) = forceLocal(Stage1::use/2)(node, ref)
+
+      predicate rhs(TApiNode node, DataFlow::Node def) = forceLocal(Stage1::rhs/2)(node, def)
+
+      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackUseNode/1)(nd, result)
+
+      DataFlow::SourceNode trackDefNode(DataFlow::SourceNode nd) =
+        forceLocal(Stage1::trackDefNode/1)(nd, result)
+
+      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
+        forceLocal(Stage1::edge/3)(pred, lbl, succ)
+
+      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) =
+        forceLocal(Stage1::getAPromisifiedInvocation/3)(callee, bound, succ, result)
+    }
+
     cached
     private module Cached {
       cached
