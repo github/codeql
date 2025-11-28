@@ -511,7 +511,7 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks for packages that use some standard IO interfaces/methods for reading decompressed data
+   * A standard IO function for reading decompressed data.
    */
   class GeneralReadIoSink extends Sink {
     GeneralReadIoSink() {

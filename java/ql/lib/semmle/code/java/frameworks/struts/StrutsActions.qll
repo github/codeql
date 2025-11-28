@@ -40,12 +40,7 @@ class Struts2ActionClass extends Class {
       getStrutsMapperClass(this) = "org.apache.struts2.dispatcher.mapper.RestfulActionMapper"
     then
       // The "Restful" action mapper maps rest APIs to specific methods
-      result.hasName("index") or
-      result.hasName("create") or
-      result.hasName("editNew") or
-      result.hasName("view") or
-      result.hasName("remove") or
-      result.hasName("update")
+      result.hasName(["index", "create", "editNew", "view", "remove", "update"])
     else
       if
         getStrutsMapperClass(this) = "org.apache.struts2.rest.RestActionMapper" or
@@ -53,13 +48,7 @@ class Struts2ActionClass extends Class {
       then
         // The "Rest" action mapper is provided with the rest plugin, and maps rest APIs to specific
         // methods based on a "ruby-on-rails" style.
-        result.hasName("index") or
-        result.hasName("show") or
-        result.hasName("edit") or
-        result.hasName("editNew") or
-        result.hasName("create") or
-        result.hasName("update") or
-        result.hasName("destroy")
+        result.hasName(["index", "show", "edit", "editNew", "create", "update", "destroy"])
       else
         if exists(getStrutsMapperClass(this))
         then
