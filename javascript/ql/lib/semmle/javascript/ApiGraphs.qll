@@ -1008,6 +1008,9 @@ module API {
         rhs(_, _, rhs) and
         S::inScope(rhs) and
         nd = MkDef(rhs)
+        or
+        S::isAdditionalDefRoot(nd) and
+        nd = mkDefLate(rhs)
       }
 
       /**
@@ -1286,6 +1289,10 @@ module API {
       bindingset[node]
       pragma[inline_late]
       private TApiNode mkUseLate(DataFlow::Node node) { result = MkUse(node) }
+
+      bindingset[node]
+      pragma[inline_late]
+      private TApiNode mkDefLate(DataFlow::Node node) { result = MkDef(node) }
 
       private import semmle.javascript.dataflow.TypeTracking
 
