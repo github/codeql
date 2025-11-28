@@ -7,13 +7,14 @@ module;
  */
 private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
-private @file getXmlFile(@xmllocatable locatable) {
-  exists(@location_default location | xmllocations(locatable, location) |
-    locations_default(location, result, _, _, _, _)
+private string getXmlFile(@xmllocatable locatable) {
+  exists(@location_default location, @file file | xmllocations(locatable, location) |
+    locations_default(location, file, _, _, _, _) and
+    files(file, result)
   )
 }
 
-private @file getXmlFileInBase(@xmllocatable locatable) {
+private string getXmlFileInBase(@xmllocatable locatable) {
   not isOverlay() and
   result = getXmlFile(locatable)
 }
@@ -22,7 +23,7 @@ private @file getXmlFileInBase(@xmllocatable locatable) {
  * Holds if the given `file` was extracted as part of the overlay and was extracted by the HTML/XML
  * extractor.
  */
-private predicate overlayXmlExtracted(@file file) {
+private predicate overlayXmlExtracted(string file) {
   isOverlay() and
   exists(@xmllocatable locatable |
     not files(locatable, _) and not xmlNs(locatable, _, _, _) and file = getXmlFile(locatable)
@@ -35,8 +36,8 @@ private predicate overlayXmlExtracted(@file file) {
  */
 overlay[discard_entity]
 private predicate discardXmlLocatable(@xmllocatable locatable) {
-  exists(@file file | file = getXmlFileInBase(locatable) |
-    exists(string path | files(file, path) | overlayChangedFiles(path))
+  exists(string file | file = getXmlFileInBase(locatable) |
+    overlayChangedFiles(file)
     or
     // The HTML/XML extractor is currently not incremental and may extract more files than those
     // included in overlayChangedFiles.
