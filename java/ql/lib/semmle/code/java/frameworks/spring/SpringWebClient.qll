@@ -72,10 +72,14 @@ private class SpringRestTemplateMethodWithUriVariablesParameter extends Method {
   int getUriVariablesPosition() { result = pos }
 }
 
-/** Gets the first argument, if it is a compile time constant. */
+/** Gets the first argument of `mc`, if it is a compile-time constant. */
 pragma[inline]
 private CompileTimeConstantExpr getConstantUrl(MethodCall mc) { result = mc.getArgument(0) }
 
+/**
+ * Holds if the first argument of `mc` is a compile-time constant URL template
+ * which has its `idx`-th placeholder at the offset `offset`.
+ */
 pragma[inline]
 private predicate urlHasPlaceholderAtOffset(MethodCall mc, int idx, int offset) {
   exists(
@@ -87,15 +91,16 @@ private predicate urlHasPlaceholderAtOffset(MethodCall mc, int idx, int offset) 
   )
 }
 
-private class SpringWebClientRestTemplateGetForObject extends RequestForgerySink {
-  SpringWebClientRestTemplateGetForObject() {
+private class SpringWebClientRestTemplateUriVariable extends RequestForgerySink {
+  SpringWebClientRestTemplateUriVariable() {
     exists(SpringRestTemplateMethodWithUriVariablesParameter m, MethodCall mc, int i |
-      // Note that the first argument is modeled as a request forgery sink
-      // separately. This model is for arguments beyond the first two. There
-      // are two relevant overloads, one with third parameter type `Object...`
-      // and one with third parameter type `Map<String, ?>`. For the latter we
-      // cannot deal with MapValue content easily but there is a default
-      // implicit taint read at sinks that will catch it.
+      // Note that the first argument of `m` is modeled as a request forgery
+      // sink separately. This model is for arguments corresponding to the
+      // `uriVariables` parameter. There are always two relevant overloads, one
+      // with parameter type `Object...` and one with parameter type
+      // `Map<String, ?>`. For the latter we cannot deal with MapValue content
+      // easily but there is a default implicit taint read at sinks that will
+      // catch it.
       mc.getMethod() = m and
       i >= 0 and
       this.asExpr() = mc.getArgument(m.getUriVariablesPosition() + i)
