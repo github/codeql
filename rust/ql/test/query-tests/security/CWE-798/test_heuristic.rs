@@ -34,8 +34,8 @@ impl MyCryptor {
 fn test(var_string: &str, var_data: &[u8;16]) {
     encrypt_with("plaintext", var_data, var_data);
 
-    let const_key: &[u8;16] = &[0u8;16]; // $ Alert[rust/hard-coded-cryptographic-value]
-    encrypt_with("plaintext", const_key, var_data); // $ Sink
+    let const_key: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    encrypt_with("plaintext", const_key, var_data); // $ MISSING: Sink
 
     let const_iv: &[u8;16] = &[0u8;16]; // $ Alert[rust/hard-coded-cryptographic-value]
     encrypt_with("plaintext", var_data, const_iv); // $ Sink

@@ -114,13 +114,13 @@ module HardcodedCryptographicValue {
         (
           argName = "password" and kind = "password"
           or
-          argName = "key" and kind = "key"
-          or
           argName = "iv" and kind = "iv"
           or
           argName = "nonce" and kind = "nonce"
           or
           argName = "salt" and kind = "salt"
+          //
+          // note: matching "key" results in too many false positives
         ) and
         // don't duplicate modeled sinks
         not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = fc)
