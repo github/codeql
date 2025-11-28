@@ -27,7 +27,7 @@ namespace Semmle.Util
                         return;
                     }
 
-                    onOut?.Invoke(e.Data);
+                    onOut?.Invoke($"[PID: {process.Id}] {e.Data}");
                     @out.Add(e.Data);
                 });
             }
