@@ -156,6 +156,22 @@ module Transform<InstructionSig Input> {
       Operand getAnAccess() { result.getVariable() = this }
     }
 
+    class StackPointer extends Variable {
+      StackPointer() { this.asOldVariable() instanceof Input::StackPointer }
+    }
+
+    class FramePointer extends Variable {
+      FramePointer() { this.asOldVariable() instanceof Input::FramePointer }
+    }
+
+    class TempVariable extends Variable {
+      TempVariable() {
+        this.asOldVariable() instanceof Input::TempVariable
+        or
+        this.isNewVariable(_, _)
+      }
+    }
+
     final private class FinalTranslatedElement = TransformInput::TranslatedElement;
 
     private class TranslatedElement extends FinalTranslatedElement {
@@ -574,6 +590,22 @@ module Transform<InstructionSig Input> {
       result = any(TranslatedElement te).getInstructionSuccessor(old, succType)
     }
 
+    private Input::Instruction getASuccessorIfRemoved(Input::Instruction i) {
+      TransformInput::isRemovedInstruction(i) and
+      result = i.getASuccessor()
+    }
+
+    private Input::Instruction getSuccessorFromNonRemoved(Input::Instruction i, SuccessorType t) {
+      result = i.getSuccessor(t) and
+      not TransformInput::isRemovedInstruction(i)
+      or
+      result = getASuccessorIfRemoved(getSuccessorFromNonRemoved(i, t))
+    }
+
+    private Input::Instruction getNonRemovedSuccessor(Input::Instruction i, SuccessorType t) {
+      result = getSuccessorFromNonRemoved(i, t) and not TransformInput::isRemovedInstruction(result)
+    }
+
     private class OldInstruction extends TOldInstruction, Instruction {
       Input::Instruction old;
 
@@ -590,7 +622,7 @@ module Transform<InstructionSig Input> {
       override Instruction getSuccessor(SuccessorType succType) {
         exists(Input::Instruction oldSucc |
           not exists(getInstructionSuccessor(old, _)) and
-          oldSucc = old.getSuccessor(succType) and
+          oldSucc = getNonRemovedSuccessor(old, succType) and
           result = getNewInstruction(oldSucc)
         )
         or

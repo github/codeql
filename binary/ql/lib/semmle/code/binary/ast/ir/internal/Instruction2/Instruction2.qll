@@ -152,7 +152,7 @@ module InstructionInput implements Transform<Instruction1>::TransformInputSig {
   }
 
   private predicate isStackPointerVariable(Instruction1::Variable v) {
-    v.toString() = "rsp" // TODO: Something else here
+    v instanceof Instruction1::StackPointer
   }
 
   /** Holds if `def2 = def1 + k`. */
@@ -242,6 +242,12 @@ module InstructionInput implements Transform<Instruction1>::TransformInputSig {
     exists(TTranslatedLoad(instr))
     or
     exists(TTranslatedStore(instr))
+    or
+    exists(Ssa::Definition def |
+      def.getInstruction() = instr and
+      def.getSourceVariable() instanceof Instruction1::TempVariable and
+      forex(Instruction1::Operand op | op = def.getARead() | isRemovedInstruction(op.getUse())) // TODO: Recursion through forex is bad for performance
+    )
   }
 
   abstract class TranslatedElement extends TTranslatedElement {

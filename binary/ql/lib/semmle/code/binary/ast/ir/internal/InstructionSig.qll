@@ -54,6 +54,12 @@ signature module InstructionSig {
     Operand getAnAccess();
   }
 
+  class StackPointer extends Variable;
+
+  class FramePointer extends Variable;
+
+  class TempVariable extends Variable;
+
   class BasicBlock {
     ControlFlowNode getNode(int index);
 
