@@ -96,8 +96,11 @@ public class ILExtractor {
       var instrId = trap.GetId();
 
       // Basic instruction info
+      // This is super dumb: The instruction.OpCode returns a short instead of a ushort. So without the
+      // cast the value for a clt instruction (which has Value 0xFE01) does not fit in a short (which
+      // has max value 0x7FFF). So it underflows to a negative number.
       trap.WriteTuple("il_instruction", instrId, instruction.Offset,
-                     (int)instruction.OpCode.Code);
+                     (ushort)instruction.OpCode.Value);
 
       trap.WriteTuple("il_instruction_method", instrId,
                       methodId);
