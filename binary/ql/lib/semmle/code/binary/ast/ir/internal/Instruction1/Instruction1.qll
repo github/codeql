@@ -5,152 +5,12 @@ private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Opcode
 private import codeql.util.Option
 private import codeql.util.Either
-private import codeql.util.Unit
 private import codeql.util.Void
 private import semmle.code.binary.ast.ir.internal.TransformInstruction.TransformInstruction
 private import semmle.code.binary.ast.ir.internal.Instruction0.Instruction0
+private import codeql.ssa.Ssa as SsaImpl
 
-private signature module ControlFlowReachableInputSig {
-  class FlowState;
-
-  predicate isSource(Instruction0::Instruction i, FlowState state);
-
-  default predicate isBarrier(Instruction0::Instruction i, FlowState state) { none() }
-
-  default predicate isBarrierOut(Instruction0::Instruction i, FlowState state) { none() }
-
-  default predicate isBarrierIn(Instruction0::Instruction i, FlowState state) { none() }
-
-  predicate isSink(Instruction0::Instruction i, FlowState state);
-}
-
-private module ControlFlowReachable<ControlFlowReachableInputSig Input> {
-  private import Input
-
-  module Make {
-    pragma[nomagic]
-    private predicate inBarrier(Instruction0::Instruction i, FlowState state) {
-      isBarrierIn(i, state) and
-      isSource(i, state)
-    }
-
-    pragma[nomagic]
-    private predicate outBarrier(Instruction0::Instruction i, FlowState state) {
-      isBarrierOut(i, state) and
-      isSink(i, state)
-    }
-
-    pragma[nomagic]
-    private predicate isFullBarrier(Instruction0::Instruction i, FlowState state) {
-      isBarrier(i, state)
-      or
-      isBarrierIn(i, state) and
-      not isSource(i, state)
-      or
-      isBarrierOut(i, state) and
-      not isSink(i, state)
-    }
-
-    pragma[nomagic]
-    private predicate sourceInstruction(Instruction0::Instruction i, FlowState state) {
-      isSource(i, state) and
-      not isFullBarrier(i, state)
-    }
-
-    private predicate sinkInstruction(Instruction0::Instruction i, FlowState state) {
-      isSink(i, state) and
-      not isFullBarrier(i, state)
-    }
-
-    bindingset[i1, i2, state]
-    pragma[inline_late]
-    private predicate stepFilter(
-      Instruction0::Instruction i1, Instruction0::Instruction i2, FlowState state
-    ) {
-      not isFullBarrier(i1, state) and
-      not isFullBarrier(i2, state) and
-      not outBarrier(i1, state) and
-      not inBarrier(i2, state)
-    }
-
-    pragma[nomagic]
-    private predicate rev(Instruction0::Instruction i, FlowState state) {
-      sinkInstruction(i, state)
-      or
-      exists(Instruction0::Instruction i1 |
-        rev(i1, state) and
-        i.getASuccessor() = i1 and
-        stepFilter(i, i1, state)
-      )
-    }
-
-    pragma[nomagic]
-    private predicate fwd(Instruction0::Instruction i, FlowState state) {
-      rev(i, pragma[only_bind_into](state)) and
-      (
-        sourceInstruction(i, state)
-        or
-        exists(Instruction0::Instruction i0 |
-          fwd(i0, pragma[only_bind_into](state)) and
-          i0.getASuccessor() = i and
-          stepFilter(i0, i, state)
-        )
-      )
-    }
-
-    private newtype TNode = MkNode(Instruction0::Instruction i, FlowState state) { fwd(i, state) }
-
-    private class Node extends TNode {
-      Instruction0::Instruction getInstruction() { this = MkNode(result, _) }
-
-      FlowState getState() { this = MkNode(_, result) }
-
-      string toString() { result = this.getInstruction().toString() }
-
-      Node getASuccessor() {
-        exists(Instruction0::Instruction i, FlowState state |
-          this = MkNode(i, pragma[only_bind_into](state)) and
-          result = MkNode(i.getASuccessor(), pragma[only_bind_into](state))
-        )
-      }
-
-      predicate isSource() { sourceInstruction(this.getInstruction(), this.getState()) }
-
-      predicate isSink() { sinkInstruction(this.getInstruction(), this.getState()) }
-    }
-
-    private Node getASuccessor(Node n) { result = n.getASuccessor() }
-
-    private predicate sourceNode(Node n) { n.isSource() }
-
-    private predicate sinkNode(Node n) { n.isSink() }
-
-    private predicate flowsPlus(Node source, Node sink) =
-      doublyBoundedFastTC(getASuccessor/1, sourceNode/1, sinkNode/1)(source, sink)
-
-    predicate flowsTo(Instruction0::Instruction source, Instruction0::Instruction sink) {
-      exists(Node n1, Node n2 |
-        n1.getInstruction() = source and
-        n2.getInstruction() = sink
-      |
-        flowsPlus(n1, n2)
-        or
-        n1 = n2 and
-        n1.isSource() and
-        n2.isSink()
-      )
-    }
-  }
-}
-
-/**
- * This transformation inserts missing comparisons in cases such as:
- * ```
- * sub rax, rbx
- * jz label
- * ```
- */
-private module InstructionInput implements Transform<Instruction0>::TransformInputSig {
+module InstructionInput implements Transform<Instruction0>::TransformInputSig {
   // ------------------------------------------------
   class EitherInstructionTranslatedElementTagPair =
     Either<Instruction0::Instruction, TranslatedElementTagPair>::Either;
@@ -164,34 +24,16 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
   class OptionEitherInstructionTranslatedElementTagPair =
     Option<EitherInstructionTranslatedElementTagPair>::Option;
 
-  private newtype TInstructionTag =
-    Stage1ZeroTag() or
-    Stage1CmpDefTag(ConditionKind k)
-
-  private newtype TVariableTag = ZeroVarTag()
-
-  class VariableTag extends TVariableTag {
-    VariableTag() { this = ZeroVarTag() }
-
-    string toString() { result = "ZeroVarTag" }
-  }
+  private newtype TInstructionTag = SingleTag()
 
   class InstructionTag extends TInstructionTag {
-    InstructionTag() {
-      this = Stage1ZeroTag()
-      or
-      this = Stage1CmpDefTag(_)
-    }
+    string toString() { result = "SingleTag" }
+  }
 
-    string toString() {
-      this = Stage1ZeroTag() and
-      result = "Stage1ZeroTag"
-      or
-      exists(ConditionKind k |
-        this = Stage1CmpDefTag(k) and
-        result = "Stage1CmpDefTag(" + stringOfConditionKind(k) + ")"
-      )
-    }
+  private newtype TVariableTag = MemToSsaVarTag()
+
+  class VariableTag extends TVariableTag {
+    string toString() { result = "mem2ssa" }
   }
 
   private newtype TTranslatedElementTagPair =
@@ -230,99 +72,201 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
     VariableTag getVariableTag() { result = tag }
   }
 
-  private predicate modifiesFlag(Instruction0::Instruction i) {
-    i instanceof Instruction0::SubInstruction
-    or
-    i instanceof Instruction0::AddInstruction
-    or
-    i instanceof Instruction0::ShlInstruction
-    or
-    i instanceof Instruction0::ShrInstruction
-    or
-    i instanceof Instruction0::RolInstruction
-    or
-    i instanceof Instruction0::RorInstruction
-    or
-    i instanceof Instruction0::OrInstruction
-    or
-    i instanceof Instruction0::AndInstruction
-    or
-    i instanceof Instruction0::XorInstruction
-  }
-
-  private module ModifiesFlagToCJumpInput implements ControlFlowReachableInputSig {
-    class FlowState = Unit;
-
-    predicate isSource(Instruction0::Instruction i, FlowState state) {
-      modifiesFlag(i) and exists(state)
-    }
-
-    predicate isSink(Instruction0::Instruction i, FlowState state) {
-      i instanceof Instruction0::CJumpInstruction and exists(state)
-    }
-
-    predicate isBarrierIn(Instruction0::Instruction i, FlowState state) { isSource(i, state) }
-  }
-
-  private module ModifiesFlagToCJump = ControlFlowReachable<ModifiesFlagToCJumpInput>::Make;
-
-  private predicate noWriteToFlagSource(
-    Instruction0::Instruction i, Instruction0::CJumpInstruction cjump, Instruction0::Variable v
-  ) {
-    ModifiesFlagToCJump::flowsTo(i, cjump) and
-    v = cjump.getConditionOperand().getVariable()
-  }
-
-  private module NoWriteToFlagInput implements ControlFlowReachableInputSig {
-    class FlowState = Instruction0::Variable;
-
-    predicate isSource(Instruction0::Instruction i, FlowState state) {
-      noWriteToFlagSource(i, _, state)
-    }
-
-    predicate isSink(Instruction0::Instruction i, FlowState state) {
-      i.(Instruction0::CJumpInstruction).getConditionOperand().getVariable() = state
-    }
-
-    predicate isBarrierIn(Instruction0::Instruction i, FlowState state) { isSource(i, state) }
-
-    predicate isBarrier(Instruction0::Instruction i, FlowState state) {
-      i.getResultVariable() = state
-    }
-  }
-
-  private module NoWriteToFlag = ControlFlowReachable<NoWriteToFlagInput>::Make;
-
-  /**
-   * Holds if there is control-flow from `sub` to a `cmp` instruction with condition kind `kind`.
-   *
-   * There is only a result if the condition part of `cmp` may be undefined.
-   */
-  private predicate controlFlowsToCmp(
-    Instruction0::Instruction i, Instruction0::CJumpInstruction cjump, ConditionKind kind
-  ) {
-    // There is control-flow from i to cjump without a write to the
-    // variable that is used as a condition to cjump
-    NoWriteToFlag::flowsTo(i, cjump) and
-    cjump.getKind() = kind
-  }
-
   // ------------------------------------------------
-  private newtype TTranslatedElement =
-    TTranslatedComparisonInstruction(
-      Instruction0::Instruction i, Instruction0::CJumpInstruction cjump, ConditionKind kind
-    ) {
-      controlFlowsToCmp(i, cjump, kind)
+  private module SsaInput implements SsaImpl::InputSig<Location, Instruction0::BasicBlock> {
+    class SourceVariable = Instruction0::Variable;
+
+    predicate variableWrite(Instruction0::BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      bb.getNode(i).asInstruction().getResultVariable() = v and
+      certain = true
     }
+
+    predicate variableRead(Instruction0::BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      bb.getNode(i).asOperand().getVariable() = v and
+      certain = true
+    }
+  }
+
+  private module Ssa {
+    private module Ssa = SsaImpl::Make<Location, Instruction0::BinaryCfg, SsaInput>;
+
+    class Definition extends Ssa::Definition {
+      Instruction0::Instruction getInstruction() {
+        exists(Instruction0::BasicBlock bb, int i |
+          this.definesAt(_, bb, i) and
+          bb.getNode(i).asInstruction() = result
+        )
+      }
+
+      Instruction0::Operand getARead() {
+        exists(Instruction0::BasicBlock bb, int i |
+          Ssa::ssaDefReachesRead(_, this, bb, i) and
+          result = bb.getNode(i).asOperand()
+        )
+      }
+
+      override string toString() {
+        result = "SSA def(" + this.getInstruction() + ")"
+        or
+        not exists(this.getInstruction()) and
+        result = super.toString()
+      }
+    }
+
+    class PhiNode extends Definition, Ssa::PhiNode {
+      override string toString() { result = Ssa::PhiNode.super.toString() }
+
+      Definition getInput(Instruction0::BasicBlock bb) {
+        Ssa::phiHasInputFromBlock(this, result, bb)
+      }
+
+      Definition getAnInput() { result = this.getInput(_) }
+    }
+
+    class SourceVariable = SsaInput::SourceVariable;
+
+    pragma[nomagic]
+    predicate ssaDefReachesRead(
+      Instruction0::Variable v, Definition def, Instruction0::BasicBlock bb, int i
+    ) {
+      Ssa::ssaDefReachesRead(v, def, bb, i)
+    }
+
+    pragma[nomagic]
+    predicate phiHasInputFromBlock(PhiNode phi, Definition input, Instruction0::BasicBlock bb) {
+      Ssa::phiHasInputFromBlock(phi, input, bb)
+    }
+
+    pragma[nomagic]
+    Instruction0::Instruction getADef(Instruction0::Operand op) {
+      exists(Instruction0::Variable v, Ssa::Definition def, Instruction0::BasicBlock bb, int i |
+        def = getDef(op) and
+        def.definesAt(v, bb, i) and
+        result = bb.getNode(i).asInstruction()
+      )
+    }
+
+    pragma[nomagic]
+    Ssa::Definition getDef(Instruction0::Operand op) {
+      exists(Instruction0::Variable v, Instruction0::BasicBlock bbRead, int iRead |
+        ssaDefReachesRead(v, result, bbRead, iRead) and
+        op = bbRead.getNode(iRead).asOperand()
+      )
+    }
+  }
+
+  private int getInstructionConstantValue(Instruction0::Instruction instr) {
+    result = instr.(Instruction0::ConstInstruction).getValue()
+  }
+
+  pragma[nomagic]
+  private int getConstantValue(Instruction0::Operand op) {
+    result = getInstructionConstantValue(Ssa::getADef(op))
+  }
+
+  private predicate isStackPointerVariable(Instruction0::Variable v) {
+    v instanceof Instruction0::StackPointer
+  }
+
+  /** Holds if `def2 = def1 + k`. */
+  pragma[nomagic]
+  private predicate step(Ssa::Definition def1, Ssa::Definition def2, int k) {
+    exists(Instruction0::BinaryInstruction binary, Ssa::Definition left, int c |
+      left.getARead() = binary.getLeftOperand() and
+      c = getConstantValue(binary.getRightOperand()) and
+      def2.getInstruction() = binary and
+      def1 = left
+    |
+      binary instanceof Instruction0::AddInstruction and
+      k = c
+      or
+      binary instanceof Instruction0::SubInstruction and
+      k = -c
+    )
+    or
+    def2.getInstruction().(Instruction0::CopyInstruction).getOperand() = def1.getARead() and
+    k = 0
+    // or
+    // // TODO: Restrict it non-back edges to prevent non-termination?
+    // def2.(Ssa::PhiNode).getAnInput() = def1 and
+    // k = 0
+  }
+
+  private predicate isSource(Ssa::Definition def, int k) {
+    exists(Ssa::SourceVariable v |
+      v = def.getInstruction().(Instruction0::InitInstruction).getResultVariable() and
+      isStackPointerVariable(v)
+    ) and
+    k = 0
+  }
+
+  private predicate fwd(Ssa::Definition def, int k) {
+    isSource(def, k)
+    or
+    exists(Ssa::Definition def0, int k0 |
+      fwd(def0, k0) and
+      step(def0, def, k - k0)
+    )
+  }
+
+  private int getLoadOffset(Instruction0::LoadInstruction load) {
+    exists(Ssa::Definition def |
+      def.getARead() = load.getOperand() and
+      result = unique(int offset | fwd(def, offset))
+    )
+  }
+
+  private int getStoreOffset(Instruction0::StoreInstruction store) {
+    exists(Ssa::Definition def |
+      def.getARead() = store.getAddressOperand() and
+      result = unique(int offset | fwd(def, offset))
+    )
+  }
+
+  private newtype TTranslatedElement =
+    TTranslatedLoad(Instruction0::LoadInstruction load) { exists(getLoadOffset(load)) } or
+    TTranslatedStore(Instruction0::StoreInstruction store) { exists(getStoreOffset(store)) } or
+    TTranslatedVariable(Instruction0::Function f, int offset) {
+      exists(Instruction0::Instruction instr |
+        offset = getLoadOffset(instr) or offset = getStoreOffset(instr)
+      |
+        instr.getEnclosingFunction() = f
+      )
+    }
+
+  EitherVariableOrTranslatedElementVariablePair getResultVariable(Instruction0::Instruction instr) {
+    none()
+  }
+
+  EitherVariableOrTranslatedElementVariablePair getOperandVariable(Instruction0::Operand op) {
+    exists(
+      Ssa::Definition def, Instruction0::LoadInstruction load, Instruction0::Function f, int offset
+    |
+      def.getInstruction() = load and
+      def.getARead() = op and
+      f = load.getEnclosingFunction() and
+      offset = getLoadOffset(load) and
+      result.asRight().getTranslatedElement() = TTranslatedVariable(f, offset) and
+      result.asRight().getVariableTag() = MemToSsaVarTag()
+    )
+  }
+
+  predicate isRemovedInstruction(Instruction0::Instruction instr) {
+    exists(TTranslatedLoad(instr))
+    or
+    exists(TTranslatedStore(instr))
+    or
+    exists(Ssa::Definition def |
+      def.getInstruction() = instr and
+      def.getSourceVariable() instanceof Instruction0::TempVariable and
+      forex(Instruction0::Operand op | op = def.getARead() | isRemovedInstruction(op.getUse())) // TODO: Recursion through forex is bad for performance
+    )
+  }
 
   abstract class TranslatedElement extends TTranslatedElement {
     abstract EitherInstructionTranslatedElementTagPair getSuccessor(
       InstructionTag tag, SuccessorType succType
     );
-
-    EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag) {
-      none()
-    }
 
     abstract EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction0::Instruction i, SuccessorType succType
@@ -333,6 +277,10 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
     Instruction0::Function getStaticTarget(InstructionTag tag) { none() }
 
     int getConstantValue(InstructionTag tag) { none() }
+
+    EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag) {
+      none()
+    }
 
     predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
 
@@ -348,109 +296,127 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
 
     abstract string toString();
 
-    abstract Either<Instruction0::Instruction, Instruction0::Operand>::Either getRawElement();
+    abstract string getDumpId();
 
-    final string getDumpId() { none() }
+    abstract Either<Instruction0::Instruction, Instruction0::Operand>::Either getRawElement();
+  }
+
+  private class TranslatedVariable extends TranslatedElement {
+    Instruction0::Function f;
+    int offset;
+
+    TranslatedVariable() { this = TTranslatedVariable(f, offset) }
+
+    override EitherInstructionTranslatedElementTagPair getSuccessor(
+      InstructionTag tag, SuccessorType succType
+    ) {
+      none()
+    }
+
+    override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
+      Instruction0::Instruction i, SuccessorType succType
+    ) {
+      none()
+    }
+
+    override predicate producesResult() { none() }
+
+    override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
+      InstructionTag tag, OperandTag operandTag
+    ) {
+      none()
+    }
+
+    override predicate hasTempVariable(VariableTag tag) { tag = MemToSsaVarTag() }
+
+    override predicate hasInstruction(
+      Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
+    ) {
+      none()
+    }
+
+    override string toString() { result = "TranslatedVariable at offset " + offset.toString() }
+
+    override Either<Instruction0::Instruction, Instruction0::Operand>::Either getRawElement() {
+      none()
+    }
+
+    final override string getDumpId() {
+      if offset < 0
+      then result = "v_neg" + (-offset).toString()
+      else result = "v" + offset.toString()
+    }
   }
 
   abstract class TranslatedInstruction extends TranslatedElement {
     Instruction0::Instruction instr;
 
-    abstract EitherInstructionTranslatedElementTagPair getEntry();
-
-    final override Either<Instruction0::Instruction, Instruction0::Operand>::Either getRawElement() {
+    override Either<Instruction0::Instruction, Instruction0::Operand>::Either getRawElement() {
       result.asLeft() = instr
     }
+
+    abstract EitherInstructionTranslatedElementTagPair getEntry();
+
+    final override string getDumpId() { none() }
   }
 
-  private class TranslatedComparisonInstruction extends TranslatedInstruction {
-    ConditionKind kind;
-    Instruction0::CJumpInstruction cjump;
+  private class TranslatedLoadInstruction extends TranslatedInstruction {
+    override Instruction0::LoadInstruction instr;
 
-    TranslatedComparisonInstruction() {
-      this = TTranslatedComparisonInstruction(instr, cjump, kind)
+    TranslatedLoadInstruction() { this = TTranslatedLoad(instr) }
+
+    override EitherInstructionTranslatedElementTagPair getSuccessor(
+      InstructionTag tag, SuccessorType succType
+    ) {
+      none()
     }
 
     override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction0::Instruction i, SuccessorType succType
     ) {
-      i = instr and
-      succType instanceof DirectSuccessor and
-      result.asRight().getTranslatedElement() = this and
-      result.asRight().getInstructionTag() = Stage1ZeroTag()
+      i.getSuccessor(succType) = instr and
+      result.asLeft() = instr.getASuccessor()
     }
+
+    override predicate producesResult() { none() }
+
+    override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
+      InstructionTag tag, OperandTag operandTag
+    ) {
+      none()
+    }
+
+    override predicate hasInstruction(
+      Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
+    ) {
+      none()
+    }
+
+    override string toString() { result = "TranslatedLoadInstruction" }
+
+    final override EitherInstructionTranslatedElementTagPair getEntry() { none() }
+  }
+
+  private class TranslatedStoreInstruction extends TranslatedInstruction {
+    override Instruction0::StoreInstruction instr;
+
+    TranslatedStoreInstruction() { this = TTranslatedStore(instr) }
+
+    int getOffset() { result = getStoreOffset(instr) }
 
     override EitherInstructionTranslatedElementTagPair getSuccessor(
       InstructionTag tag, SuccessorType succType
     ) {
-      tag = Stage1ZeroTag() and
-      succType instanceof DirectSuccessor and
-      result.asRight().getTranslatedElement() = this and
-      result.asRight().getInstructionTag() = Stage1CmpDefTag(kind)
-      or
-      tag = Stage1CmpDefTag(kind) and
+      tag = SingleTag() and
       result.asLeft() = instr.getSuccessor(succType)
     }
 
-    override predicate producesResult() { none() }
-
-    override predicate hasTempVariable(VariableTag tag) { tag = ZeroVarTag() }
-
-    override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
-    ) {
-      tag = Stage1CmpDefTag(kind) and
-      (
-        operandTag = LeftTag() and
-        result.asLeft() = instr.getResultVariable()
-        or
-        operandTag = RightTag() and
-        result.asRight().getTranslatedElement() = this and
-        result.asRight().getVariableTag() = ZeroVarTag()
-      )
-    }
-
-    override predicate hasInstruction(
-      Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
-    ) {
-      tag = Stage1CmpDefTag(kind) and
-      opcode instanceof Sub and
-      v.asSome().asLeft() = cjump.getConditionOperand().getVariable()
-      or
-      tag = Stage1ZeroTag() and
-      opcode instanceof Const and
-      v.asSome().asRight().getTranslatedElement() = this and
-      v.asSome().asRight().getVariableTag() = ZeroVarTag()
-    }
-
-    override int getConstantValue(InstructionTag tag) {
-      tag = Stage1ZeroTag() and
-      result = 0
-    }
-
-    override predicate hasJumpCondition(InstructionTag tag, ConditionKind k) {
-      kind = k and
-      tag = Stage1CmpDefTag(kind)
-    }
-
-    override string toString() { result = "Flag writing for " + instr.toString() }
-
-    override EitherInstructionTranslatedElementTagPair getEntry() { result.asLeft() = instr }
-  }
-
-  class TranslatedOperand extends TranslatedElement {
-    TranslatedOperand() { none() }
-
-    override EitherInstructionTranslatedElementTagPair getSuccessor(
-      InstructionTag tag, SuccessorType succType
-    ) {
-      none()
-    }
-
     override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction0::Instruction i, SuccessorType succType
     ) {
-      none()
+      i.getSuccessor(succType) = instr and
+      result.asRight().getTranslatedElement() = this and
+      result.asRight().getInstructionTag() = SingleTag()
     }
 
     override predicate producesResult() { none() }
@@ -458,22 +424,28 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
       InstructionTag tag, OperandTag operandTag
     ) {
-      none()
+      tag = SingleTag() and
+      operandTag = UnaryTag() and
+      result.asLeft() = instr.getValueOperand().getVariable()
     }
 
     override predicate hasInstruction(
       Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
     ) {
-      none()
+      opcode instanceof Copy and
+      tag = SingleTag() and
+      v.asSome().asRight().getTranslatedElement() =
+        TTranslatedVariable(instr.getEnclosingFunction(), this.getOffset()) and
+      v.asSome().asRight().getVariableTag() = MemToSsaVarTag()
     }
 
-    override string toString() { none() }
+    override string toString() { result = "TranslatedStoreInstruction" }
 
-    OptionEitherInstructionTranslatedElementTagPair getEntry() { none() }
+    final override EitherInstructionTranslatedElementTagPair getEntry() { none() }
+  }
 
-    override Either<Instruction0::Instruction, Instruction0::Operand>::Either getRawElement() {
-      none()
-    }
+  abstract class TranslatedOperand extends TranslatedElement {
+    abstract OptionEitherInstructionTranslatedElementTagPair getEntry();
   }
 }
 
