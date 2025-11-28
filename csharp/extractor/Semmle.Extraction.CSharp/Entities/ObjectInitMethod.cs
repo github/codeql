@@ -5,7 +5,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal sealed class ObjectInitMethod : CachedEntity, IMethodEntity
     {
-        Type ContainingType { get; }
+        private Type ContainingType { get; }
 
         private ObjectInitMethod(Context cx, Type containingType)
             : base(cx)
@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
             this.ContainingType = containingType;
         }
 
-        public string Name => "<object initializer>";
+        public static readonly string Name = "<object initializer>";
 
         public static ObjectInitMethod Create(Context cx, Type containingType)
         {
