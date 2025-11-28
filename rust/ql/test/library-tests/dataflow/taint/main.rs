@@ -99,8 +99,8 @@ mod tuples {
         sink((source_string(1), "".to_string()).1);
 
         sink(source_tuple(2)); // $ hasValueFlow=2
-        sink(source_tuple(2).0); // $ MISSING: hasTaintFlow=2
-        sink(source_tuple(2).1); // $ MISSING: hasTaintFlow=2
+        sink(source_tuple(2).0); // $ hasTaintFlow=2
+        sink(source_tuple(2).1); // $ hasTaintFlow=2
 
         sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())));
         sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).0);
@@ -112,8 +112,8 @@ mod tuples {
 
         sink((source_tuple(4), ("".to_string(), "".to_string())));
         sink((source_tuple(4), ("".to_string(), "".to_string())).0); // $ hasValueFlow=4
-        sink((source_tuple(4), ("".to_string(), "".to_string())).0.0); // $ MISSING: hasTaintFlow=4
-        sink((source_tuple(4), ("".to_string(), "".to_string())).0.1); // $ MISSING: hasTaintFlow=4
+        sink((source_tuple(4), ("".to_string(), "".to_string())).0.0); // $ hasTaintFlow=4
+        sink((source_tuple(4), ("".to_string(), "".to_string())).0.1); // $ hasTaintFlow=4
         sink((source_tuple(4), ("".to_string(), "".to_string())).1);
         sink((source_tuple(4), ("".to_string(), "".to_string())).1.0);
         sink((source_tuple(4), ("".to_string(), "".to_string())).1.1);

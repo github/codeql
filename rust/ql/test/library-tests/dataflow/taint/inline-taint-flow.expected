@@ -109,10 +109,6 @@ nodes
 | main.rs:116:15:116:29 | source_tuple(...) | semmle.label | source_tuple(...) |
 subpaths
 testFailures
-| main.rs:102:14:102:30 | ... .0 | Fixed missing result: hasTaintFlow=2 |
-| main.rs:103:14:103:30 | ... .1 | Fixed missing result: hasTaintFlow=2 |
-| main.rs:115:14:115:68 | ... .0 | Fixed missing result: hasTaintFlow=4 |
-| main.rs:116:14:116:68 | ... .1 | Fixed missing result: hasTaintFlow=4 |
 #select
 | main.rs:13:10:13:14 | ... + ... | main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | $@ | main.rs:12:13:12:22 | source(...) | source(...) |
 | main.rs:17:10:17:10 | b | main.rs:15:17:15:26 | source(...) | main.rs:17:10:17:10 | b | $@ | main.rs:15:17:15:26 | source(...) | source(...) |
