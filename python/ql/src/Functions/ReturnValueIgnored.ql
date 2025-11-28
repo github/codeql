@@ -14,7 +14,7 @@
  */
 
 import python
-import semmle.python.objects.Callables
+private import LegacyPointsTo
 
 predicate meaningful_return_value(Expr val) {
   val instanceof Name

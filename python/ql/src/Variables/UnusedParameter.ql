@@ -14,6 +14,7 @@
 
 import python
 import Definition
+private import LegacyPointsTo
 
 predicate unused_parameter(FunctionValue f, LocalVariable v) {
   v.isParameter() and

@@ -16,6 +16,7 @@
 
 import python
 import Expressions.CallArgs
+private import LegacyPointsTo
 
 from Call call, ClassValue cls, string name, FunctionValue init
 where

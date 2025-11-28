@@ -11,9 +11,10 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from Module m, ModuleMetrics mm
-where mm = m.getMetrics() and mm.getNumberOfLines() > 0
-select m,
+from ModuleMetrics mm
+where mm.getNumberOfLines() > 0
+select mm,
   100.0 * (mm.getNumberOfLinesOfDocStrings().(float) / mm.getNumberOfLines().(float)) as ratio
   order by ratio desc

@@ -61,14 +61,6 @@ class SsaVariable extends @py_ssa_var {
     )
   }
 
-  /** Gets an argument of the phi function defining this variable, pruned of unlikely edges. */
-  SsaVariable getAPrunedPhiInput() {
-    result = this.getAPhiInput() and
-    exists(BasicBlock incoming | incoming = this.getPredecessorBlockForPhiArgument(result) |
-      not incoming.getLastNode().(RaisingNode).unlikelySuccessor(this.getDefinition())
-    )
-  }
-
   /** Gets a variable that ultimately defines this variable and is not itself defined by another variable */
   SsaVariable getAnUltimateDefinition() {
     result = this and not exists(this.getAPhiInput())
@@ -85,15 +77,9 @@ class SsaVariable extends @py_ssa_var {
   string getId() { result = this.getVariable().getId() }
 
   /** Gets the incoming edges for a Phi node. */
-  private BasicBlock getAPredecessorBlockForPhi() {
+  BasicBlock getAPredecessorBlockForPhi() {
     exists(this.getAPhiInput()) and
     result.getASuccessor() = this.getDefinition().getBasicBlock()
-  }
-
-  /** Gets the incoming edges for a Phi node, pruned of unlikely edges. */
-  private BasicBlock getAPrunedPredecessorBlockForPhi() {
-    result = this.getAPredecessorBlockForPhi() and
-    not result.unlikelySuccessor(this.getDefinition().getBasicBlock())
   }
 
   /** Whether it is possible to reach a use of this variable without passing a definition */
@@ -112,38 +98,6 @@ class SsaVariable extends @py_ssa_var {
     exists(BasicBlock incoming |
       incoming = this.getAPredecessorBlockForPhi() and
       not this.getAPhiInput().getDefinition().getBasicBlock().dominates(incoming)
-    )
-  }
-
-  /** Whether this variable may be undefined */
-  predicate maybeUndefined() {
-    not exists(this.getDefinition()) and not py_ssa_phi(this, _) and not this.implicitlyDefined()
-    or
-    this.getDefinition().isDelete()
-    or
-    exists(SsaVariable var | var = this.getAPrunedPhiInput() | var.maybeUndefined())
-    or
-    /*
-     * For phi-nodes, there must be a corresponding phi-input for each control-flow
-     * predecessor. Otherwise, the variable will be undefined on that incoming edge.
-     * WARNING: the same phi-input may cover multiple predecessors, so this check
-     *          cannot be done by counting.
-     */
-
-    exists(BasicBlock incoming |
-      reaches_end(incoming) and
-      incoming = this.getAPrunedPredecessorBlockForPhi() and
-      not this.getAPhiInput().getDefinition().getBasicBlock().dominates(incoming)
-    )
-  }
-
-  private predicate implicitlyDefined() {
-    not exists(this.getDefinition()) and
-    not py_ssa_phi(this, _) and
-    exists(GlobalVariable var | this.getVariable() = var |
-      globallyDefinedName(var.getId())
-      or
-      var.getId() = "__path__" and var.getScope().(Module).isPackageInit()
     )
   }
 
@@ -172,43 +126,6 @@ class SsaVariable extends @py_ssa_var {
     )
   }
 }
-
-private predicate reaches_end(BasicBlock b) {
-  not exits_early(b) and
-  (
-    /* Entry point */
-    not exists(BasicBlock prev | prev.getASuccessor() = b)
-    or
-    exists(BasicBlock prev | prev.getASuccessor() = b | reaches_end(prev))
-  )
-}
-
-private predicate exits_early(BasicBlock b) {
-  exists(FunctionObject f |
-    f.neverReturns() and
-    f.getACall().getBasicBlock() = b
-  )
-}
-
-private predicate gettext_installed() {
-  // Good enough (and fast) approximation
-  exists(Module m | m.getName() = "gettext")
-}
-
-private predicate builtin_constant(string name) {
-  exists(Object::builtin(name))
-  or
-  name = "WindowsError"
-  or
-  name = "_" and gettext_installed()
-}
-
-private predicate auto_name(string name) {
-  name = "__file__" or name = "__builtins__" or name = "__name__"
-}
-
-/** Whether this name is (almost) always defined, ie. it is a builtin or VM defined name */
-predicate globallyDefinedName(string name) { builtin_constant(name) or auto_name(name) }
 
 /** An SSA variable that is backed by a global variable */
 class GlobalSsaVariable extends EssaVariable {

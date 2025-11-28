@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate fewer_than_two_public_methods(Class cls, int methods) {
   (methods = 0 or methods = 1) and

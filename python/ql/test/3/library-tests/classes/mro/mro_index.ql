@@ -5,6 +5,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassObject cls, ClassObject sup, int index
 where

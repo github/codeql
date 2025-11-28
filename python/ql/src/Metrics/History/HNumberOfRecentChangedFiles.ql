@@ -10,11 +10,12 @@
 
 import python
 import external.VCS
+private import LegacyPointsTo
 
-from Module m
+from ModuleMetrics m
 where
   exists(Commit e |
     e.getAnAffectedFile() = m.getFile() and e.daysToNow() <= 180 and not artificialChange(e)
   ) and
-  exists(m.getMetrics().getNumberOfLinesOfCode())
+  exists(m.getNumberOfLinesOfCode())
 select m, 1

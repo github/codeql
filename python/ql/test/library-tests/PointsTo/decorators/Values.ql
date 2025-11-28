@@ -1,6 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
-import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 
 from NameNode f, Context ctx, ObjectInternal v
 where

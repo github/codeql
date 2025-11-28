@@ -6,6 +6,7 @@ private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.types.ImportTime
 
 /**
  * A class whose instances represents Python classes.
@@ -88,7 +89,7 @@ class ClassObject extends Object {
   }
 
   /** Gets the scope associated with this class, if it is not a builtin class */
-  Class getPyClass() { result.getClassObject() = this }
+  ClassWithPointsTo getPyClass() { result.getClassObject() = this }
 
   /** Returns an attribute declared on this class (not on a super-class) */
   Object declaredAttribute(string name) {

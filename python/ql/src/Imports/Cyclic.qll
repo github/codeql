@@ -1,5 +1,6 @@
 import python
 private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 
 predicate is_import_time(Stmt s) { not s.getScope+() instanceof Function }
 

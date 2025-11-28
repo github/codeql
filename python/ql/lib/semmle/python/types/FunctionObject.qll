@@ -1,10 +1,7 @@
 import python
 private import LegacyPointsTo
-import semmle.python.types.Exceptions
-private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.Callables
 private import semmle.python.libraries.Zope
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 
 /** A function object, whether written in Python or builtin */

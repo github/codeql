@@ -15,7 +15,8 @@ private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.objects.TObject
 /* Make ObjectInternal visible to save extra imports in user code */
-import semmle.python.objects.ObjectInternal
+private import semmle.python.objects.ObjectInternal
+private import semmle.python.pointsto.Context
 
 abstract class PointsToExtension extends @py_flow_node {
   string toString() { result = "PointsToExtension with missing toString" }

@@ -9,6 +9,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionMetrics func
 select func, func.getNumberOfCalls() as n order by n desc

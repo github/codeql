@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ControlFlowNode call, Value func
 where call = func.getACall()

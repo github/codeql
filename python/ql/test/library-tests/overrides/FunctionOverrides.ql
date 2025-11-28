@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from PythonFunctionValue f, string overriding, string overridden
 where

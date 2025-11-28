@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate does_nothing(PyFunctionObject f) {
   not exists(Stmt s | s.getScope() = f.getFunction() |
