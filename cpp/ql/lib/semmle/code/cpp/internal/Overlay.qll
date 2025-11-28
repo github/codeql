@@ -37,28 +37,24 @@ private string getMultiLocationFilePath(@element e) {
   //TODO: add other kinds of elements with multiple locations
 }
 
-/** Holds if `e` exists in the base variant. */
+/**
+ * A local helper predicate that holds in the base variant and never in the
+ * overlay variant.
+ */
 overlay[local]
-private predicate existsInBase(@element e) {
-  not isOverlay() and
-  (exists(getSingleLocationFilePath(e)) or exists(getMultiLocationFilePath(e)))
-}
+private predicate holdsInBase() { not isOverlay() }
 
 /**
- * Discard an element with a single location if it is in a changed file.
+ * Discards an element from the base variant if:
+ * - It has a single location in a changed file, or
+ * - All of its locations are in changed files.
  */
 overlay[discard_entity]
-private predicate discardSingleLocationElement(@element e) {
-  existsInBase(e) and
-  overlayChangedFiles(getSingleLocationFilePath(e))
-}
-
-/**
- * Discard an element with multiple locations only if all its locations are in changed files.
- */
-overlay[discard_entity]
-private predicate discardMultiLocationElement(@element e) {
-  existsInBase(e) and
-  exists(getMultiLocationFilePath(e)) and
-  forall(string path | path = getMultiLocationFilePath(e) | overlayChangedFiles(path))
+private predicate discardElement(@element e) {
+  holdsInBase() and
+  (
+    overlayChangedFiles(getSingleLocationFilePath(e))
+    or
+    forex(string path | path = getMultiLocationFilePath(e) | overlayChangedFiles(path))
+  )
 }
