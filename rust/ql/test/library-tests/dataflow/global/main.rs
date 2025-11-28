@@ -320,7 +320,7 @@ async fn async_source() -> i64 {
 
 async fn test_async_await_async_part() {
     let a = async_source().await;
-    sink(a); // $ MISSING: hasValueFlow=1
+    sink(a); // $ hasTaintFlow=1 MISSING: hasValueFlow=1
 
     let b = async {
         let c = source(2);
