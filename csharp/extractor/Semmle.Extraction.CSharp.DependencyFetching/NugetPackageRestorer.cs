@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using NuGet.Versioning;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -89,9 +90,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public static DirectoryInfo[] GetOrderedPackageVersionSubDirectories(string packagePath)
         {
+            // Only consider directories with valid NuGet version names.
             return new DirectoryInfo(packagePath)
                 .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .SelectMany(d => NuGetVersion.TryParse(d.Name, out var version) ? new[] { new { Directory = d, NuGetVersion = version } } : [])
+                .OrderByDescending(dw => dw.NuGetVersion)
+                .Select(dw => dw.Directory)
                 .ToArray();
         }
 
