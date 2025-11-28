@@ -12,15 +12,22 @@ private import codeql.rust.elements.internal.generated.MethodCallExpr
  * be referenced directly.
  */
 module Impl {
+  private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
+  private import codeql.rust.elements.internal.ArgsExprImpl::Impl as ArgsExprImpl
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
+   * NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
+   * function call syntax (such as `Foo::method(x)`), operator calls (such as `x + y`), and
+   * indexing calls (such as `x[y]`).
+   *
    * A method call expression. For example:
    * ```rust
    * x.foo(42);
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends Generated::MethodCallExpr {
+  class MethodCallExpr extends Generated::MethodCallExpr, CallImpl::Call {
     private string toStringPart(int index) {
       index = 0 and
       result = this.getReceiver().toAbbreviatedString()
@@ -39,7 +46,14 @@ module Impl {
       result = strictconcat(int i | | this.toStringPart(i) order by i)
     }
 
-    /** Gets the static target of this method call, if any. */
-    final Function getStaticTarget() { result = super.getStaticTarget() }
+    override Expr getSyntacticArgument(int i) {
+      i = 0 and result = this.getReceiver()
+      or
+      result = this.getPositionalArgument(i - 1)
+    }
+
+    override Expr getPositionalArgument(int i) { result = this.getArgList().getArg(i) }
+
+    override Expr getReceiver() { result = Generated::MethodCallExpr.super.getReceiver() }
   }
 }

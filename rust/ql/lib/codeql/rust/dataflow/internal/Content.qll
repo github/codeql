@@ -163,15 +163,15 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 }
 
 /**
- * A content for the index of an argument to at function call.
+ * A content for the index of an argument to at closure call.
  *
  * Used by the model generator to create flow summaries for higher-order
  * functions.
  */
-final class FunctionCallArgumentContent extends Content, TFunctionCallArgumentContent {
+final class ClosureCallArgumentContent extends Content, TClosureCallArgumentContent {
   private int pos;
 
-  FunctionCallArgumentContent() { this = TFunctionCallArgumentContent(pos) }
+  ClosureCallArgumentContent() { this = TClosureCallArgumentContent(pos) }
 
   int getPosition() { result = pos }
 
@@ -269,8 +269,8 @@ newtype TContent =
         )]
   } or
   TFunctionCallReturnContent() or
-  TFunctionCallArgumentContent(int pos) {
-    pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
+  TClosureCallArgumentContent(int pos) {
+    pos in [0 .. any(ClosureCallExpr c).getNumberOfPositionalArguments()]
   } or
   TCapturedVariableContent(VariableCapture::CapturedVariable v) or
   TReferenceContent()

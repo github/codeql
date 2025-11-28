@@ -5,7 +5,6 @@
  */
 
 private import codeql.rust.elements.internal.generated.CallExpr
-private import codeql.rust.elements.PathExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `CallExpr` and should not
@@ -13,7 +12,10 @@ private import codeql.rust.elements.PathExpr
  */
 module Impl {
   private import rust
+  private import codeql.rust.elements.internal.ArgsExprImpl::Impl as ArgsExprImpl
+  private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
   private import codeql.rust.internal.PathResolution as PathResolution
+  private import codeql.rust.internal.TypeInference as TypeInference
 
   pragma[nomagic]
   Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }
@@ -25,7 +27,34 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A function call expression. For example:
+   * NOTE: Consider using `Call` instead, as that includes all kinds of calls to
+   * functions, and excludes instantiations of tuple structs and tuple enum variants.
+   *
+   * A call expression. For example:
+   * ```rust
+   * foo(42);
+   * foo::<u32, u64>(42);
+   * foo[0](42);
+   * foo(1) = 4;
+   * Option::Some(42); // tuple enum variant instantiation
+   * ```
+   */
+  class CallExpr extends Generated::CallExpr, ArgsExprImpl::ArgsExpr {
+    override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
+
+    override Expr getSyntacticArgument(int i) { result = this.getArgList().getArg(i) }
+
+    // todo: remove once internal query has been updated
+    Expr getArg(int i) { result = this.getSyntacticArgument(i) }
+
+    // todo: remove once internal query has been updated
+    int getNumberOfArgs() { result = this.getNumberOfSyntacticArguments() }
+  }
+
+  /**
+   * A call expression that is _not_ an instantiation of a tuple struct or a tuple enum variant.
+   *
+   * For example:
    * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
@@ -33,33 +62,74 @@ module Impl {
    * foo(1) = 4;
    * ```
    */
-  class CallExpr extends Generated::CallExpr {
-    override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
-
-    /** Gets the struct that this call resolves to, if any. */
-    Struct getStruct() { result = getResolvedFunction(this) }
-
-    /** Gets the variant that this call resolves to, if any. */
-    Variant getVariant() { result = getResolvedFunction(this) }
-
-    pragma[nomagic]
-    private PathResolution::ItemNode getResolvedFunctionAndPos(int pos) {
-      result = getResolvedFunction(this) and
-      exists(this.getArg(pos))
-    }
-
-    /**
-     * Gets the tuple field that matches the `pos`th argument of this call, if any.
-     *
-     * For example, if this call is `Option::Some(42)`, then the tuple field matching
-     * `42` is the first field of `Option::Some`.
-     */
-    pragma[nomagic]
-    TupleField getTupleField(int pos) {
-      exists(PathResolution::ItemNode i | i = this.getResolvedFunctionAndPos(pos) |
-        result.isStructField(i, pos) or
-        result.isVariantField(i, pos)
+  class CallExprCall extends CallExpr, CallImpl::Call {
+    CallExprCall() {
+      forall(Addressable target |
+        // Cannot use `this.getResolvedTarget()` as that results in non-monotonic recursion
+        target = TypeInference::resolveCallTarget(this)
+      |
+        target instanceof Callable
       )
     }
+
+    private predicate isMethodCall() { this.getResolvedTarget() instanceof Method }
+
+    override Expr getPositionalArgument(int i) {
+      if this.isMethodCall()
+      then result = this.getSyntacticArgument(i + 1)
+      else result = super.getSyntacticArgument(i)
+    }
+
+    override Expr getReceiver() { this.isMethodCall() and result = super.getSyntacticArgument(0) }
+  }
+
+  /**
+   * A call expression that instantiates a tuple struct.
+   *
+   * For example:
+   * ```rust
+   * struct S(u32, u64);
+   * let s = S(42, 84);
+   * ```
+   */
+  class TupleStructExpr extends CallExpr {
+    private Struct struct;
+
+    TupleStructExpr() { struct = getResolvedFunction(this) }
+
+    /** Gets the struct that is instantiated. */
+    Struct getStruct() { result = struct }
+
+    /** Gets the `i`th tuple field of the instantiated struct. */
+    pragma[nomagic]
+    TupleField getTupleField(int i) { result = this.getStruct().getTupleField(i) }
+
+    override string getAPrimaryQlClass() { result = "TupleStructExpr" }
+  }
+
+  /**
+   * A call expression that instantiates a tuple enum variant.
+   *
+   * For example:
+   * ```rust
+   * enum E {
+   *     V(u32, u64),
+   * }
+   * let e = E::V(42, 84);
+   * ```
+   */
+  class TupleVariantExpr extends CallExpr {
+    private Variant variant;
+
+    TupleVariantExpr() { variant = getResolvedFunction(this) }
+
+    /** Gets the variant that is instantiated. */
+    Variant getVariant() { result = variant }
+
+    /** Gets the `i`th tuple field of the instantiated variant. */
+    pragma[nomagic]
+    TupleField getTupleField(int i) { result = this.getVariant().getTupleField(i) }
+
+    override string getAPrimaryQlClass() { result = "TupleVariantExpr" }
   }
 }
