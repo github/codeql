@@ -30,6 +30,8 @@ module Transform<InstructionSig Input> {
         Input::Instruction i, SuccessorType succType
       );
 
+      EitherInstructionTranslatedElementTagPair getReferencedInstruction(Tags::InstructionTag tag);
+
       predicate producesResult();
 
       int getConstantValue(Tags::InstructionTag tag);
@@ -173,6 +175,20 @@ module Transform<InstructionSig Input> {
               e.asRight() = tevp and
               v.asSome() = getTempVariable(tevp.getTranslatedElement(), tevp.getVariableTag())
             )
+          )
+        )
+      }
+
+      final Instruction getReferencedInstruction(Tags::InstructionTag tag) {
+        exists(TransformInput::EitherInstructionTranslatedElementTagPair e |
+          e = super.getReferencedInstruction(tag)
+        |
+          result = getNewInstruction(e.asLeft())
+          or
+          exists(TransformInput::TranslatedElementTagPair p |
+            p = e.asRight() and
+            result =
+              p.getTranslatedElement().(TranslatedElement).getInstruction(p.getInstructionTag())
           )
         )
       }
@@ -355,6 +371,12 @@ module Transform<InstructionSig Input> {
       RetInstruction() { this.getOpcode() instanceof Opcode::Ret }
     }
 
+    class RetValueInstruction extends Instruction {
+      RetValueInstruction() { this.getOpcode() instanceof Opcode::RetValue }
+
+      UnaryOperand getReturnValueOperand() { result = this.getAnOperand() }
+    }
+
     class InitInstruction extends Instruction {
       InitInstruction() { this.getOpcode() instanceof Opcode::Init }
     }
@@ -485,6 +507,31 @@ module Transform<InstructionSig Input> {
       }
 
       override string getImmediateValue() { result = this.getValue().toString() }
+    }
+
+    class InstrRefInstruction extends Instruction {
+      InstrRefInstruction() { this.getOpcode() instanceof Opcode::InstrRef }
+
+      Instruction getReferencedInstruction() {
+        exists(Input::InstrRefInstruction instrRef |
+          this = TOldInstruction(instrRef) and
+          result = getNewInstruction(instrRef.getReferencedInstruction())
+        )
+        or
+        exists(TranslatedElement te, Tags::InstructionTag tag |
+          this = MkInstruction(te, tag) and
+          result = te.getReferencedInstruction(tag)
+        )
+      }
+
+      final override string getImmediateValue() {
+        exists(Instruction ref | ref = this.getReferencedInstruction() |
+          result = ref.getResultVariable().toString()
+          or
+          not exists(ref.getResultVariable()) and
+          result = "<reference to instruction without result>"
+        )
+      }
     }
 
     private class NewInstruction extends MkInstruction, Instruction {

@@ -2,6 +2,10 @@ private import Opcode
 
 newtype TInstructionTag =
   SingleTag() or
+  X86JumpInstrRefTag() or
+  X86JumpTag() or
+  X86CJumpInstrRefTag() or
+  X86CJumpTag() or
   WriteTag() or
   InitFramePtrTag() or
   InitStackPtrTag() or
@@ -41,6 +45,18 @@ class InstructionTag extends TInstructionTag {
   final string toString() {
     this = SingleTag() and
     result = "Single"
+    or
+    this = X86JumpInstrRefTag() and
+    result = "X86JumpInstrRef"
+    or
+    this = X86JumpTag() and
+    result = "X86Jump"
+    or
+    this = X86CJumpInstrRefTag() and
+    result = "X86CJumpInstrRef"
+    or
+    this = X86CJumpTag() and
+    result = "X86CJump"
     or
     this = WriteTag() and
     result = "Write"
@@ -134,6 +150,8 @@ class InstructionTag extends TInstructionTag {
 }
 
 newtype VariableTag =
+  X86JumpInstrRefVarTag() or
+  X86CJumpInstrRefVarTag() or
   TestVarTag() or
   ZeroVarTag() or
   ImmediateOperandVarTag() or
@@ -162,6 +180,12 @@ string stringOfSynthRegisterTag(SynthRegisterTag tag) {
 }
 
 string stringOfVariableTag(VariableTag tag) {
+  tag = X86JumpInstrRefVarTag() and
+  result = "j_ir"
+  or
+  tag = X86CJumpInstrRefVarTag() and
+  result = "cj_ir"
+  or
   tag = TestVarTag() and
   result = "t"
   or

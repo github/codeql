@@ -333,40 +333,66 @@ class TranslatedX86Jmp extends TranslatedX86Instruction, TTranslatedX86Jmp {
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    tag = SingleTag() and
+    tag = X86JumpTag() and
     opcode instanceof Opcode::Jump and
     v.isNone() // A jump has no result
+    or
+    exists(instr.getTarget()) and
+    tag = X86JumpInstrRefTag() and
+    opcode instanceof Opcode::InstrRef and
+    v.asSome() = this.getVariable(X86JumpInstrRefVarTag())
   }
 
   override predicate producesResult() { any() }
 
+  override predicate hasTempVariable(VariableTag tag) {
+    exists(instr.getTarget()) and
+    tag = X86JumpInstrRefVarTag()
+  }
+
+  override Instruction getReferencedInstruction(InstructionTag tag) {
+    tag = X86JumpInstrRefTag() and
+    result = getTranslatedInstruction(instr.getTarget()).getEntry()
+  }
+
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = SingleTag() and
+    tag = X86JumpTag() and
     operandTag = JumpTargetTag() and
-    result = this.getTranslatedOperand().getResultVariable()
+    if exists(instr.getTarget())
+    then result = this.getInstruction(X86JumpInstrRefTag()).getResultVariable()
+    else result = this.getTranslatedOperand().getResultVariable()
   }
 
   TranslatedOperand getTranslatedOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    not exists(instr.getTarget()) and
     child = this.getTranslatedOperand() and
     succType instanceof DirectSuccessor and
-    result = this.getInstruction(SingleTag())
+    result = this.getInstruction(X86JumpTag())
   }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
-    tag = SingleTag() and
+    exists(instr.getTarget()) and
+    tag = X86JumpInstrRefTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(X86JumpTag())
+    or
+    tag = X86JumpTag() and
     succType instanceof DirectSuccessor and
     result = getTranslatedInstruction(instr.getTarget()).getEntry()
   }
 
   override Instruction getEntry() {
-    exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
-      result = op.asSome()
-      or
-      op.isNone() and
-      result = this.getInstruction(SingleTag())
-    )
+    if exists(instr.getTarget())
+    then result = this.getInstruction(X86JumpInstrRefTag())
+    else
+      exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
+        result = op.asSome()
+        or
+        op.isNone() and
+        result = this.getInstruction(X86JumpTag())
+      )
   }
 
   override Variable getResultVariable() { none() }
@@ -728,13 +754,18 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
+    exists(instr.getTarget()) and
+    tag = X86CJumpInstrRefTag() and
+    opcode instanceof Opcode::InstrRef and
+    v.asSome() = this.getVariable(X86CJumpInstrRefVarTag())
+    or
     opcode instanceof Opcode::CJump and
-    tag = SingleTag() and
+    tag = X86CJumpTag() and
     v.isNone() // A jump has no result
   }
 
   override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
-    tag = SingleTag() and
+    tag = X86CJumpTag() and
     (
       instr instanceof Raw::X86Jb and kind = Opcode::LT()
       or
@@ -762,15 +793,29 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
     )
   }
 
+  override predicate hasTempVariable(VariableTag tag) {
+    exists(instr.getTarget()) and
+    tag = X86CJumpInstrRefVarTag()
+  }
+
+  override Instruction getReferencedInstruction(InstructionTag tag) {
+    tag = X86CJumpInstrRefTag() and
+    result = getTranslatedInstruction(instr.getTarget()).getEntry()
+  }
+
   override predicate hasSynthVariable(SynthRegisterTag tag) { tag = CmpRegisterTag() }
 
   override predicate producesResult() { any() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = SingleTag() and
+    tag = X86CJumpTag() and
     (
       operandTag = CondJumpTargetTag() and
-      result = this.getTranslatedOperand().getResultVariable()
+      (
+        if exists(instr.getTarget())
+        then result = this.getInstruction(X86CJumpInstrRefTag()).getResultVariable()
+        else result = this.getTranslatedOperand().getResultVariable()
+      )
       or
       operandTag = CondTag() and
       result = getTranslatedVariableSynth(CmpRegisterTag())
@@ -780,13 +825,19 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
   TranslatedOperand getTranslatedOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    not exists(instr.getTarget()) and
     child = this.getTranslatedOperand() and
     succType instanceof DirectSuccessor and
-    result = this.getInstruction(SingleTag())
+    result = this.getInstruction(X86CJumpTag())
   }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
-    tag = SingleTag() and
+    exists(instr.getTarget()) and
+    tag = X86CJumpInstrRefTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(X86CJumpTag())
+    or
+    tag = X86CJumpTag() and
     (
       succType.(BooleanSuccessor).getValue() = true and
       result = getTranslatedInstruction(instr.getTarget()).getEntry()
@@ -797,12 +848,15 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
   }
 
   override Instruction getEntry() {
-    exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
-      result = op.asSome()
-      or
-      op.isNone() and
-      result = this.getInstruction(SingleTag())
-    )
+    if exists(instr.getTarget())
+    then result = this.getInstruction(X86CJumpInstrRefTag())
+    else
+      exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
+        result = op.asSome()
+        or
+        op.isNone() and
+        result = this.getInstruction(X86CJumpTag())
+      )
   }
 
   override Variable getResultVariable() { none() }
@@ -941,8 +995,6 @@ class TranslatedX86Lea extends TranslatedX86Instruction, TTranslatedX86Lea {
   override Variable getResultVariable() {
     result = this.getTranslatedDestOperand().getResultVariable()
   }
-
-  override string toString() { result = TranslatedX86Instruction.super.toString() }
 }
 
 class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {

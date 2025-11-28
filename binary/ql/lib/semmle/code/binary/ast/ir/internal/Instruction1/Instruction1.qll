@@ -289,6 +289,8 @@ private module InstructionInput implements Transform<Instruction0>::TransformInp
       InstructionTag tag, SuccessorType succType
     );
 
+    EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag) { none() }
+
     abstract EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction0::Instruction i, SuccessorType succType
     );

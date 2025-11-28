@@ -19,10 +19,12 @@ private newtype TOpcode =
   TCopy() or
   TJump() or
   TCJump() or
+  TRetValue() or
   TRet() or
   TNop() or
   TNot() or
-  TInit()
+  TInit() or
+  TInstrRef()
 
 class Opcode extends TOpcode {
   string toString() { none() }
@@ -116,12 +118,20 @@ class Ret extends Opcode, TRet {
   override string toString() { result = "Ret" }
 }
 
+class RetValue extends Opcode, TRetValue {
+  override string toString() { result = "RetValue" }
+}
+
 class Nop extends Opcode, TNop {
   override string toString() { result = "Nop" }
 }
 
 class Not extends Opcode, TNot {
   override string toString() { result = "Not" }
+}
+
+class InstrRef extends Opcode, TInstrRef {
+  override string toString() { result = "InstrRef" }
 }
 
 class Init extends Opcode, TInit {

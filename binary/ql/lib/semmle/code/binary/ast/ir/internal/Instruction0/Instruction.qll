@@ -131,6 +131,12 @@ class RetInstruction extends Instruction {
   override Opcode::Ret opcode;
 }
 
+class RetValueInstruction extends Instruction {
+  override Opcode::RetValue opcode;
+
+  UnaryOperand getReturnValueOperand() { result = this.getAnOperand() }
+}
+
 class InitInstruction extends Instruction {
   override Opcode::Init opcode;
 }
@@ -161,6 +167,21 @@ class CallInstruction extends Instruction {
   Function getStaticTarget() { result = TMkFunction(te.getStaticCallTarget(tag)) }
 
   override string getImmediateValue() { result = this.getStaticTarget().getName() }
+}
+
+class InstrRefInstruction extends Instruction {
+  override Opcode::InstrRef opcode;
+
+  Instruction getReferencedInstruction() { result = te.getReferencedInstruction(tag) }
+
+  final override string getImmediateValue() {
+    exists(Instruction ref | ref = this.getReferencedInstruction() |
+      result = ref.getResultVariable().toString()
+      or
+      not exists(ref.getResultVariable()) and
+      result = "<reference to instruction without result>"
+    )
+  }
 }
 
 class BinaryInstruction extends Instruction {

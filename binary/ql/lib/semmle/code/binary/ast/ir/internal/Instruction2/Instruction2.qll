@@ -259,6 +259,10 @@ module InstructionInput implements Transform<Instruction1>::TransformInputSig {
 
     int getConstantValue(InstructionTag tag) { none() }
 
+    EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag) {
+      none()
+    }
+
     predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
 
     predicate hasTempVariable(VariableTag tag) { none() }

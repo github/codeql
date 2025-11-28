@@ -110,6 +110,10 @@ signature module InstructionSig {
 
   class RetInstruction extends Instruction;
 
+  class RetValueInstruction extends Instruction {
+    UnaryOperand getReturnValueOperand();
+  }
+
   class BinaryInstruction extends Instruction {
     LeftOperand getLeftOperand();
 
@@ -146,6 +150,10 @@ signature module InstructionSig {
 
   class JumpInstruction extends Instruction {
     JumpTargetOperand getJumpTargetOperand();
+  }
+
+  class InstrRefInstruction extends Instruction {
+    Instruction getReferencedInstruction();
   }
 
   class CopyInstruction extends Instruction {

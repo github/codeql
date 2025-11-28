@@ -14,7 +14,11 @@ class Opcode = Opcode::Opcode;
 
 private predicate shouldTranslateX86Instr(Raw::X86Instruction instr) { any() }
 
-private predicate shouldTranslateX86Operand(Raw::X86Operand operand) { any() }
+private predicate shouldTranslateX86Operand(Raw::X86Operand operand) {
+  // If it has a target we will synthesize an instruction reference instruction
+  // instead of translating the operand directly.
+  not exists(operand.getUse().(Raw::X86Jmp).getTarget())
+}
 
 newtype TTranslatedElement =
   TTranslatedX86Function(Raw::X86Instruction entry) {
@@ -87,6 +91,8 @@ abstract class TranslatedElement extends TTranslatedElement {
   final Instruction getInstruction(InstructionTag tag) { result = MkInstruction(this, tag) }
 
   int getConstantValue(InstructionTag tag) { none() }
+
+  Instruction getReferencedInstruction(InstructionTag tag) { none() }
 
   abstract Raw::Element getRawElement();
 
