@@ -320,7 +320,7 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
 
     predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
 
-    predicate hasTempVariable(VariableTag tag) { none() }
+    predicate hasTempVariable(TempVariableTag tag) { none() }
 
     predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
