@@ -156,7 +156,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     Either<Instruction1::Instruction, TranslatedElementTagPair>::Either;
 
   class EitherVariableOrTranslatedElementVariablePair =
-    Either<Instruction1::Variable, TranslatedElementVariablePair>::Either;
+    Either<Instruction1::Variable, EitherTranslatedElementVariablePairOrFunctionLocalVariablePair>::Either;
 
   class OptionEitherVariableOrTranslatedElementPair =
     Option<EitherVariableOrTranslatedElementVariablePair>::Option;
@@ -164,9 +164,15 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
   class OptionEitherInstructionTranslatedElementTagPair =
     Option<EitherInstructionTranslatedElementTagPair>::Option;
 
+  class EitherTranslatedElementVariablePairOrFunctionLocalVariablePair =
+    Either<TranslatedElementVariablePair, FunctionLocalVariablePair>::Either;
+
   private newtype TInstructionTag =
-    Stage1ZeroTag() or
-    Stage1CmpDefTag(ConditionKind k)
+    ZeroTag() or
+    CmpDefTag(ConditionKind k) or
+    InitializeParameterTag(Instruction1::Variable v) { isReadBeforeInitialization(v, _) }
+
+  class LocalVariableTag = Void;
 
   private newtype TVariableTag = ZeroVarTag()
 
@@ -177,19 +183,13 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
   }
 
   class InstructionTag extends TInstructionTag {
-    InstructionTag() {
-      this = Stage1ZeroTag()
-      or
-      this = Stage1CmpDefTag(_)
-    }
-
     string toString() {
-      this = Stage1ZeroTag() and
-      result = "Stage1ZeroTag"
+      this = ZeroTag() and
+      result = "ZeroTag"
       or
       exists(ConditionKind k |
-        this = Stage1CmpDefTag(k) and
-        result = "Stage1CmpDefTag(" + stringOfConditionKind(k) + ")"
+        this = CmpDefTag(k) and
+        result = "CmpDefTag(" + stringOfConditionKind(k) + ")"
       )
     }
   }
@@ -228,6 +228,27 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     TranslatedElement getTranslatedElement() { result = te }
 
     VariableTag getVariableTag() { result = tag }
+  }
+
+  private newtype TFunctionLocalVariablePair =
+    MkFunctionLocalVariablePair(Instruction1::Function f, LocalVariableTag tag) {
+      exists(TranslatedElement te |
+        te.getEnclosingFunction() = f and
+        te.hasLocalVariable(tag)
+      )
+    }
+
+  class FunctionLocalVariablePair extends TFunctionLocalVariablePair {
+    Instruction1::Function f;
+    LocalVariableTag tag;
+
+    FunctionLocalVariablePair() { this = MkFunctionLocalVariablePair(f, tag) }
+
+    string toString() { none() }
+
+    Instruction1::Function getFunction() { result = f }
+
+    LocalVariableTag getLocalVariableTag() { result = tag }
   }
 
   private predicate modifiesFlag(Instruction1::Instruction i) {
@@ -330,6 +351,8 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
     abstract predicate producesResult();
 
+    abstract Instruction1::Function getEnclosingFunction();
+
     Instruction1::Function getStaticTarget(InstructionTag tag) { none() }
 
     int getConstantValue(InstructionTag tag) { none() }
@@ -337,6 +360,8 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
 
     predicate hasTempVariable(VariableTag tag) { none() }
+
+    predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
     abstract EitherVariableOrTranslatedElementVariablePair getVariableOperand(
       InstructionTag tag, OperandTag operandTag
@@ -371,24 +396,28 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
       this = TTranslatedComparisonInstruction(instr, cjump, kind)
     }
 
+    final override Instruction1::Function getEnclosingFunction() {
+      result = cjump.getEnclosingFunction()
+    }
+
     override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction1::Instruction i, SuccessorType succType
     ) {
       i = instr and
       succType instanceof DirectSuccessor and
       result.asRight().getTranslatedElement() = this and
-      result.asRight().getInstructionTag() = Stage1ZeroTag()
+      result.asRight().getInstructionTag() = ZeroTag()
     }
 
     override EitherInstructionTranslatedElementTagPair getSuccessor(
       InstructionTag tag, SuccessorType succType
     ) {
-      tag = Stage1ZeroTag() and
+      tag = ZeroTag() and
       succType instanceof DirectSuccessor and
       result.asRight().getTranslatedElement() = this and
-      result.asRight().getInstructionTag() = Stage1CmpDefTag(kind)
+      result.asRight().getInstructionTag() = CmpDefTag(kind)
       or
-      tag = Stage1CmpDefTag(kind) and
+      tag = CmpDefTag(kind) and
       result.asLeft() = instr.getSuccessor(succType)
     }
 
@@ -399,38 +428,38 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
       InstructionTag tag, OperandTag operandTag
     ) {
-      tag = Stage1CmpDefTag(kind) and
+      tag = CmpDefTag(kind) and
       (
         operandTag = LeftTag() and
         result.asLeft() = instr.getResultVariable()
         or
         operandTag = RightTag() and
-        result.asRight().getTranslatedElement() = this and
-        result.asRight().getVariableTag() = ZeroVarTag()
+        result.asRight().asLeft().getTranslatedElement() = this and
+        result.asRight().asLeft().getVariableTag() = ZeroVarTag()
       )
     }
 
     override predicate hasInstruction(
       Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
     ) {
-      tag = Stage1CmpDefTag(kind) and
+      tag = CmpDefTag(kind) and
       opcode instanceof Sub and
       v.asSome().asLeft() = cjump.getConditionOperand().getVariable()
       or
-      tag = Stage1ZeroTag() and
+      tag = ZeroTag() and
       opcode instanceof Const and
-      v.asSome().asRight().getTranslatedElement() = this and
-      v.asSome().asRight().getVariableTag() = ZeroVarTag()
+      v.asSome().asRight().asLeft().getTranslatedElement() = this and
+      v.asSome().asRight().asLeft().getVariableTag() = ZeroVarTag()
     }
 
     override int getConstantValue(InstructionTag tag) {
-      tag = Stage1ZeroTag() and
+      tag = ZeroTag() and
       result = 0
     }
 
     override predicate hasJumpCondition(InstructionTag tag, ConditionKind k) {
       kind = k and
-      tag = Stage1CmpDefTag(kind)
+      tag = CmpDefTag(kind)
     }
 
     override string toString() { result = "Flag writing for " + instr.toString() }
@@ -440,6 +469,8 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
   class TranslatedOperand extends TranslatedElement {
     TranslatedOperand() { none() }
+
+    override Instruction1::Function getEnclosingFunction() { none() }
 
     override EitherInstructionTranslatedElementTagPair getSuccessor(
       InstructionTag tag, SuccessorType succType

@@ -1,4 +1,4 @@
-newtype TVariableTag =
+newtype TTempVariableTag =
   X86JumpInstrRefVarTag() or
   X86CJumpInstrRefVarTag() or
   TestVarTag() or
@@ -30,7 +30,7 @@ newtype TVariableTag =
   CilBoolBranchRefVarTag() or
   CilUnconditionalBranchRefVarTag()
 
-class VariableTag extends TVariableTag {
+class TempVariableTag extends TTempVariableTag {
   string toString() {
     this = X86JumpInstrRefVarTag() and
     result = "j_ir"

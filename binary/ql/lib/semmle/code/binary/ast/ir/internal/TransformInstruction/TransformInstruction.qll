@@ -25,7 +25,11 @@ module Transform<InstructionSig Input> {
       string toString();
     }
 
-    class VariableTag {
+    class TempVariableTag {
+      string toString();
+    }
+
+    class LocalVariableTag {
       string toString();
     }
 
@@ -40,11 +44,15 @@ module Transform<InstructionSig Input> {
 
       EitherInstructionTranslatedElementTagPair getReferencedInstruction(InstructionTag tag);
 
+      Input::Function getEnclosingFunction();
+
       predicate producesResult();
 
       int getConstantValue(InstructionTag tag);
 
-      predicate hasTempVariable(VariableTag tag);
+      predicate hasTempVariable(TempVariableTag tag);
+
+      predicate hasLocalVariable(LocalVariableTag tag);
 
       EitherVariableOrTranslatedElementVariablePair getVariableOperand(
         InstructionTag tag, OperandTag operandTag
@@ -76,7 +84,7 @@ module Transform<InstructionSig Input> {
     class EitherVariableOrTranslatedElementVariablePair {
       Input::Variable asLeft();
 
-      TranslatedElementVariablePair asRight();
+      EitherTranslatedElementVariablePairOrFunctionLocalVariablePair asRight();
     }
 
     // This one only exists because we can't use `Option<Either<Input::Variable, TranslatedElementVariablePair>::Either>::Option` in hasInstruction because of https://github.com/github/codeql-core/issues/5091.
@@ -106,7 +114,19 @@ module Transform<InstructionSig Input> {
 
       TranslatedElement getTranslatedElement();
 
-      VariableTag getVariableTag();
+      TempVariableTag getVariableTag();
+    }
+
+    class FunctionLocalVariablePair {
+      Input::Function getFunction();
+
+      LocalVariableTag getLocalVariableTag();
+    }
+
+    class EitherTranslatedElementVariablePairOrFunctionLocalVariablePair {
+      TranslatedElementVariablePair asLeft();
+
+      FunctionLocalVariablePair asRight();
     }
 
     class TranslatedInstruction extends TranslatedElement {
@@ -135,29 +155,48 @@ module Transform<InstructionSig Input> {
 
     private newtype TVariable =
       TOldVariable(Input::Variable v) or
-      TNewVariable(TranslatedElement te, TransformInput::VariableTag tag) {
+      TNewTempVariable(TranslatedElement te, TransformInput::TempVariableTag tag) {
         hasTempVariable(te, tag)
+      } or
+      TNewLocalVariable(Function f, TransformInput::LocalVariableTag tag) {
+        exists(TranslatedElement te |
+          te.getEnclosingFunction() = f and
+          te.hasLocalVariable(tag)
+        )
       }
 
     private Variable getNewVariable(Input::Variable v) { v = result.asOldVariable() }
 
-    private Variable getTempVariable(TranslatedElement te, TransformInput::VariableTag tag) {
-      result.isNewVariable(te, tag)
+    private Variable getTempVariable(TranslatedElement te, TransformInput::TempVariableTag tag) {
+      result.isNewTempVariable(te, tag)
+    }
+
+    private Variable getLocalVariable(Function tf, TransformInput::LocalVariableTag tag) {
+      result.isNewLocalVariable(tf, tag)
     }
 
     class Variable extends TVariable {
       Input::Variable asOldVariable() { this = TOldVariable(result) }
 
-      predicate isNewVariable(TranslatedElement te, TransformInput::VariableTag tag) {
-        this = TNewVariable(te, tag)
+      predicate isNewTempVariable(TranslatedElement te, TransformInput::TempVariableTag tag) {
+        this = TNewTempVariable(te, tag)
+      }
+
+      predicate isNewLocalVariable(Function tf, TransformInput::LocalVariableTag tag) {
+        this = TNewLocalVariable(tf, tag)
       }
 
       final string toString() {
         result = this.asOldVariable().toString()
         or
-        exists(TransformInput::VariableTag tag, TranslatedElement te |
-          this.isNewVariable(te, tag) and
+        exists(TransformInput::TempVariableTag tag, TranslatedElement te |
+          this.isNewTempVariable(te, tag) and
           result = te.getDumpId() + "." + tag.toString()
+        )
+        or
+        exists(TransformInput::LocalVariableTag tag |
+          this.isNewLocalVariable(_, tag) and
+          result = tag.toString()
         )
       }
 
@@ -166,11 +205,11 @@ module Transform<InstructionSig Input> {
       Operand getAnAccess() { result.getVariable() = this }
     }
 
-    class StackPointer extends Variable {
+    class StackPointer extends LocalVariable {
       StackPointer() { this.asOldVariable() instanceof Input::StackPointer }
     }
 
-    class FramePointer extends Variable {
+    class FramePointer extends LocalVariable {
       FramePointer() { this.asOldVariable() instanceof Input::FramePointer }
     }
 
@@ -178,7 +217,24 @@ module Transform<InstructionSig Input> {
       TempVariable() {
         this.asOldVariable() instanceof Input::TempVariable
         or
-        this.isNewVariable(_, _)
+        this.isNewTempVariable(_, _)
+      }
+    }
+
+    class LocalVariable extends Variable {
+      LocalVariable() {
+        this.asOldVariable() instanceof Input::LocalVariable
+        or
+        this.isNewLocalVariable(_, _)
+      }
+
+      Function getEnclosingFunction() {
+        result = this.asOldVariable().(Input::LocalVariable).getEnclosingFunction()
+        or
+        exists(Function f |
+          this.isNewLocalVariable(f, _) and
+          result = f
+        )
       }
     }
 
@@ -186,7 +242,7 @@ module Transform<InstructionSig Input> {
 
     class InstructionTag = MInstructionTag::Either;
 
-    class VariableTag = Either<Input::VariableTag, TransformInput::VariableTag>::Either;
+    class TempVariableTag = Either<Input::TempVariableTag, TransformInput::TempVariableTag>::Either;
 
     final private class FinalTranslatedElement = TransformInput::TranslatedElement;
 
@@ -201,9 +257,20 @@ module Transform<InstructionSig Input> {
           exists(TransformInput::EitherVariableOrTranslatedElementVariablePair e | e = o.asSome() |
             v.asSome() = getNewVariable(e.asLeft())
             or
-            exists(TransformInput::TranslatedElementVariablePair tevp |
-              e.asRight() = tevp and
-              v.asSome() = getTempVariable(tevp.getTranslatedElement(), tevp.getVariableTag())
+            exists(
+              TransformInput::EitherTranslatedElementVariablePairOrFunctionLocalVariablePair tevp
+            |
+              e.asRight() = tevp
+            |
+              exists(TransformInput::TranslatedElementVariablePair p |
+                tevp.asLeft() = p and
+                v.asSome() = getTempVariable(p.getTranslatedElement(), p.getVariableTag())
+              )
+              or
+              exists(TransformInput::FunctionLocalVariablePair p |
+                tevp.asRight() = p and
+                v.asSome() = getLocalVariable(p.getFunction(), p.getLocalVariableTag())
+              )
             )
           )
         )
@@ -265,9 +332,20 @@ module Transform<InstructionSig Input> {
         |
           result = getNewVariable(e.asLeft())
           or
-          exists(TransformInput::TranslatedElementVariablePair tevp |
-            e.asRight() = tevp and
-            result = getTempVariable(tevp.getTranslatedElement(), tevp.getVariableTag())
+          exists(
+            TransformInput::EitherTranslatedElementVariablePairOrFunctionLocalVariablePair tevp
+          |
+            e.asRight() = tevp
+          |
+            exists(TransformInput::TranslatedElementVariablePair p |
+              tevp.asLeft() = p and
+              result = getTempVariable(p.getTranslatedElement(), p.getVariableTag())
+            )
+            or
+            exists(TransformInput::FunctionLocalVariablePair p |
+              tevp.asRight() = p and
+              result = getLocalVariable(p.getFunction(), p.getLocalVariableTag())
+            )
           )
         )
       }
@@ -318,7 +396,7 @@ module Transform<InstructionSig Input> {
       te.hasInstruction(_, tag, _)
     }
 
-    private predicate hasTempVariable(TranslatedElement te, TransformInput::VariableTag tag) {
+    private predicate hasTempVariable(TranslatedElement te, TransformInput::TempVariableTag tag) {
       te.hasTempVariable(tag)
     }
 
@@ -583,9 +661,7 @@ module Transform<InstructionSig Input> {
 
       override string getImmediateValue() { none() }
 
-      override Operand getOperand(OperandTag operandTag) {
-        result = MkOperand(te, tag, operandTag)
-      }
+      override Operand getOperand(OperandTag operandTag) { result = MkOperand(te, tag, operandTag) }
 
       override Instruction getSuccessor(SuccessorType succType) {
         result = te.getSuccessor(tag, succType)
@@ -662,9 +738,20 @@ module Transform<InstructionSig Input> {
         |
           result = getNewVariable(e.asLeft())
           or
-          exists(TransformInput::TranslatedElementVariablePair tevp |
-            e.asRight() = tevp and
-            result = getTempVariable(tevp.getTranslatedElement(), tevp.getVariableTag())
+          exists(
+            TransformInput::EitherTranslatedElementVariablePairOrFunctionLocalVariablePair tevp
+          |
+            e.asRight() = tevp
+          |
+            exists(TransformInput::TranslatedElementVariablePair p |
+              tevp.asLeft() = p and
+              result = getTempVariable(p.getTranslatedElement(), p.getVariableTag())
+            )
+            or
+            exists(TransformInput::FunctionLocalVariablePair p |
+              tevp.asRight() = p and
+              result = getLocalVariable(p.getFunction(), p.getLocalVariableTag())
+            )
           )
         )
       }
@@ -727,9 +814,20 @@ module Transform<InstructionSig Input> {
         |
           result = getNewVariable(e.asLeft())
           or
-          exists(TransformInput::TranslatedElementVariablePair tevp |
-            e.asRight() = tevp and
-            result = getTempVariable(tevp.getTranslatedElement(), tevp.getVariableTag())
+          exists(
+            TransformInput::EitherTranslatedElementVariablePairOrFunctionLocalVariablePair tevp
+          |
+            e.asRight() = tevp
+          |
+            exists(TransformInput::TranslatedElementVariablePair p |
+              tevp.asLeft() = p and
+              result = getTempVariable(p.getTranslatedElement(), p.getVariableTag())
+            )
+            or
+            exists(TransformInput::FunctionLocalVariablePair p |
+              tevp.asRight() = p and
+              result = getLocalVariable(p.getFunction(), p.getLocalVariableTag())
+            )
           )
         )
       }

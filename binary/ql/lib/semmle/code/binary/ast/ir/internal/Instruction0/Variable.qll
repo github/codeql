@@ -1,19 +1,15 @@
 private import TranslatedElement
 private import semmle.code.binary.ast.Location
 private import semmle.code.binary.ast.instructions as Raw
-private import VariableTag
+private import TempVariableTag
 private import semmle.code.binary.ast.ir.internal.Tags
 private import Operand
+private import TranslatedFunction
+private import Function
 
 newtype TVariable =
-  TTempVariable(TranslatedElement te, VariableTag tag) { hasTempVariable(te, tag) } or
-  TStackPointer() or
-  TFramePointer() or
-  TRegisterVariableReal(Raw::X86Register r) {
-    not r instanceof Raw::RbpRegister and // Handled by FramePointer
-    not r instanceof Raw::RspRegister // Handled by StackPointer
-  } or
-  TRegisterVariableSynth(SynthRegisterTag tag) { hasSynthVariable(tag) }
+  TTempVariable(TranslatedElement te, TempVariableTag tag) { hasTempVariable(te, tag) } or
+  TLocalVariable(TranslatedFunction tf, LocalVariableTag tag) { hasLocalVariable(tf, tag) }
 
 abstract class Variable extends TVariable {
   abstract string toString();
@@ -25,64 +21,34 @@ abstract class Variable extends TVariable {
 
 class TempVariable extends Variable, TTempVariable {
   TranslatedElement te;
-  VariableTag tag;
+  TempVariableTag tag;
 
   TempVariable() { this = TTempVariable(te, tag) }
 
   override string toString() { result = te.getDumpId() + "." + tag.toString() }
 }
 
-class StackPointer extends Variable, TStackPointer {
-  override string toString() { result = "sp" }
+class StackPointer extends LocalVariable {
+  StackPointer() { this.getTag() = X86RegisterTag(any(Raw::RspRegister sp)) }
 }
 
 Variable getStackPointer() { result instanceof StackPointer }
 
-class FramePointer extends Variable, TFramePointer {
-  override string toString() { result = "fp" }
+class FramePointer extends LocalVariable {
+  FramePointer() { this.getTag() = X86RegisterTag(any(Raw::RbpRegister fp)) }
 }
 
 Variable getFramePointer() { result instanceof FramePointer }
 
-class TRegisterVariable = TRegisterVariableReal or TRegisterVariableSynth;
+class LocalVariable extends Variable, TLocalVariable {
+  TranslatedFunction tf;
+  LocalVariableTag tag;
 
-class RegisterVariable extends Variable, TRegisterVariable {
-  override string toString() { none() }
+  LocalVariable() { this = TLocalVariable(tf, tag) }
 
-  Raw::X86Register getRegister() { none() }
+  override string toString() { result = stringOfLocalVariableTag(tag) }
 
-  SynthRegisterTag getRegisterTag() { none() }
+  LocalVariableTag getTag() { result = tag }
+
+  Function getEnclosingFunction() { result = TMkFunction(tf) }
 }
-
-private class RegisterVariableReal extends RegisterVariable, TRegisterVariableReal {
-  Raw::X86Register r;
-
-  RegisterVariableReal() { this = TRegisterVariableReal(r) }
-
-  override string toString() { result = r.toString() }
-
-  override Raw::X86Register getRegister() { result = r }
-}
-
-Variable getTranslatedVariableReal(Raw::X86Register r) {
-  result.(RegisterVariable).getRegister() = r
-  or
-  r instanceof Raw::RspRegister and result instanceof StackPointer
-  or
-  r instanceof Raw::RbpRegister and result instanceof FramePointer
-}
-
-private class RegisterVariableSynth extends RegisterVariable, TRegisterVariableSynth {
-  SynthRegisterTag tag;
-
-  RegisterVariableSynth() { this = TRegisterVariableSynth(tag) }
-
-  override string toString() { result = stringOfSynthRegisterTag(tag) }
-
-  override SynthRegisterTag getRegisterTag() { result = tag }
-}
-
-RegisterVariableSynth getTranslatedVariableSynth(SynthRegisterTag tag) {
-  result.getRegisterTag() = tag
-}
-

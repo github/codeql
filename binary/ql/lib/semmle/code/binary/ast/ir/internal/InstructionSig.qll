@@ -50,7 +50,7 @@ signature module InstructionSig {
     string toString();
   }
 
-  class VariableTag {
+  class TempVariableTag {
     string toString();
   }
 
@@ -62,11 +62,15 @@ signature module InstructionSig {
     Operand getAnAccess();
   }
 
-  class StackPointer extends Variable;
-
-  class FramePointer extends Variable;
-
   class TempVariable extends Variable;
+
+  class LocalVariable extends Variable {
+    Function getEnclosingFunction();
+  }
+
+  class StackPointer extends LocalVariable;
+
+  class FramePointer extends LocalVariable;
 
   class BasicBlock {
     ControlFlowNode getNode(int index);

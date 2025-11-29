@@ -1,4 +1,4 @@
-import binary
+private import binary
 
 // TODO
 class CilVariable instanceof @method {

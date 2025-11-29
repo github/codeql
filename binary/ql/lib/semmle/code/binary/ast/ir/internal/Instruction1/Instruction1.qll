@@ -16,7 +16,7 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     Either<Instruction0::Instruction, TranslatedElementTagPair>::Either;
 
   class EitherVariableOrTranslatedElementVariablePair =
-    Either<Instruction0::Variable, TranslatedElementVariablePair>::Either;
+    Either<Instruction0::Variable, EitherTranslatedElementVariablePairOrFunctionLocalVariablePair>::Either;
 
   class OptionEitherVariableOrTranslatedElementPair =
     Option<EitherVariableOrTranslatedElementVariablePair>::Option;
@@ -24,15 +24,20 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
   class OptionEitherInstructionTranslatedElementTagPair =
     Option<EitherInstructionTranslatedElementTagPair>::Option;
 
+  class EitherTranslatedElementVariablePairOrFunctionLocalVariablePair =
+    Either<TranslatedElementVariablePair, FunctionLocalVariablePair>::Either;
+
   private newtype TInstructionTag = SingleTag()
 
   class InstructionTag extends TInstructionTag {
     string toString() { result = "SingleTag" }
   }
 
-  private newtype TVariableTag = MemToSsaVarTag()
+  class VariableTag = Void;
 
-  class VariableTag extends TVariableTag {
+  private newtype TLocalVariableTag = MemToSsaVarTag()
+
+  class LocalVariableTag extends TLocalVariableTag {
     string toString() { result = "mem2ssa" }
   }
 
@@ -52,6 +57,27 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     TranslatedElement getTranslatedElement() { result = te }
 
     InstructionTag getInstructionTag() { result = tag }
+  }
+
+  private newtype TFunctionLocalVariablePair =
+    MkFunctionLocalVariablePair(Instruction0::Function f, LocalVariableTag tag) {
+      exists(TranslatedElement te |
+        te.getEnclosingFunction() = f and
+        te.hasLocalVariable(tag)
+      )
+    }
+
+  class FunctionLocalVariablePair extends TFunctionLocalVariablePair {
+    Instruction0::Function f;
+    LocalVariableTag tag;
+
+    FunctionLocalVariablePair() { this = MkFunctionLocalVariablePair(f, tag) }
+
+    string toString() { none() }
+
+    Instruction0::Function getFunction() { result = f }
+
+    LocalVariableTag getLocalVariableTag() { result = tag }
   }
 
   private newtype TTranslatedElementVariablePair =
@@ -246,8 +272,8 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
       def.getARead() = op and
       f = load.getEnclosingFunction() and
       offset = getLoadOffset(load) and
-      result.asRight().getTranslatedElement() = TTranslatedVariable(f, offset) and
-      result.asRight().getVariableTag() = MemToSsaVarTag()
+      result.asRight().asRight().getFunction() = f and
+      result.asRight().asRight().getLocalVariableTag() = MemToSsaVarTag()
     )
   }
 
@@ -282,9 +308,13 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
       none()
     }
 
+    Instruction0::Function getEnclosingFunction() { none() }
+
     predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
 
     predicate hasTempVariable(VariableTag tag) { none() }
+
+    predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
     abstract EitherVariableOrTranslatedElementVariablePair getVariableOperand(
       InstructionTag tag, OperandTag operandTag
@@ -327,7 +357,7 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
       none()
     }
 
-    override predicate hasTempVariable(VariableTag tag) { tag = MemToSsaVarTag() }
+    override predicate hasLocalVariable(LocalVariableTag tag) { tag = MemToSsaVarTag() }
 
     override predicate hasInstruction(
       Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
@@ -434,9 +464,8 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     ) {
       opcode instanceof Copy and
       tag = SingleTag() and
-      v.asSome().asRight().getTranslatedElement() =
-        TTranslatedVariable(instr.getEnclosingFunction(), this.getOffset()) and
-      v.asSome().asRight().getVariableTag() = MemToSsaVarTag()
+      v.asSome().asRight().asRight().getFunction() = instr.getEnclosingFunction() and
+      v.asSome().asRight().asRight().getLocalVariableTag() = MemToSsaVarTag()
     }
 
     override string toString() { result = "TranslatedStoreInstruction" }

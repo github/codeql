@@ -79,14 +79,7 @@ class Instruction extends TInstruction {
 
   Location getLocation() { result instanceof EmptyLocation }
 
-  Function getEnclosingFunction() {
-    exists(TranslatedFunction f |
-      result = TMkFunction(f) and
-      f.getEntry() = this
-    )
-    or
-    result = this.getAPredecessor().getEnclosingFunction()
-  }
+  Function getEnclosingFunction() { result = TMkFunction(te.getEnclosingFunction()) }
 
   BasicBlock getBasicBlock() { result.getANode().asInstruction() = this }
 

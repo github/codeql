@@ -27,11 +27,11 @@ abstract class TranslatedFunction extends TranslatedElement {
   abstract predicate isExported();
 
   final override string getDumpId() { result = this.getName() }
+
+  final override TranslatedFunction getEnclosingFunction() { result = this }
 }
 
-TranslatedX86Function getTranslatedFunction(Raw::X86Instruction entry) {
-  result.getRawElement() = entry
-}
+TranslatedFunction getTranslatedFunction(Raw::Element raw) { result.getRawElement() = raw }
 
 class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
   Raw::X86Instruction entry;
@@ -58,6 +58,12 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
     tag = InitStackPtrTag() and
     succType instanceof DirectSuccessor and
     result = getTranslatedInstruction(entry).getEntry()
+    }
+
+  override predicate hasLocalVariable(LocalVariableTag tag) {
+    tag = X86RegisterTag(any(Raw::RspRegister sp))
+    or
+    tag = X86RegisterTag(any(Raw::RbpRegister fp))
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }

@@ -2,7 +2,7 @@ private import semmle.code.binary.ast.instructions as Raw
 private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Tags
 private import InstructionTag
-private import VariableTag
+private import TempVariableTag
 private import Instruction
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
 private import codeql.util.Either
@@ -109,13 +109,17 @@ TranslatedCilInstruction getTranslatedCilInstruction(Raw::CilInstruction raw) {
 abstract class TranslatedElement extends TTranslatedElement {
   abstract predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v);
 
-  predicate hasTempVariable(VariableTag tag) { none() }
+  predicate hasTempVariable(TempVariableTag tag) { none() }
 
   predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) { none() }
 
-  predicate hasSynthVariable(SynthRegisterTag tag) { none() }
+  predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
-  Variable getVariable(VariableTag tag) { result = TTempVariable(this, tag) }
+  final Variable getLocalVariable(LocalVariableTag tag) {
+    result = TLocalVariable(this.getEnclosingFunction(), tag)
+  }
+
+  Variable getVariable(TempVariableTag tag) { result = TTempVariable(this, tag) }
 
   final Instruction getInstruction(InstructionTag tag) { result = MkInstruction(this, tag) }
 
@@ -143,10 +147,17 @@ abstract class TranslatedElement extends TTranslatedElement {
   abstract string getDumpId();
 
   TranslatedFunction getStaticCallTarget(InstructionTag tag) { none() }
+
+  abstract TranslatedFunction getEnclosingFunction();
 }
 
 predicate hasInstruction(TranslatedElement te, InstructionTag tag) { te.hasInstruction(_, tag, _) }
 
-predicate hasTempVariable(TranslatedElement te, VariableTag tag) { te.hasTempVariable(tag) }
+predicate hasTempVariable(TranslatedElement te, TempVariableTag tag) { te.hasTempVariable(tag) }
 
-predicate hasSynthVariable(SynthRegisterTag tag) { any(TranslatedElement te).hasSynthVariable(tag) }
+predicate hasLocalVariable(TranslatedFunction tf, LocalVariableTag tag) {
+  exists(TranslatedElement te |
+    te.getEnclosingFunction() = tf and
+    te.hasLocalVariable(tag)
+  )
+}

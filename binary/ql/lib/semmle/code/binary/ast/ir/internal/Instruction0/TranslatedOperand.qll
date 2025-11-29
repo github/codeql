@@ -9,12 +9,17 @@ private import Instruction
 private import Operand
 private import codeql.controlflow.SuccessorType
 private import Variable
-private import VariableTag
+private import TempVariableTag
+private import TranslatedFunction
 
 abstract class TranslatedOperand extends TranslatedElement {
   abstract TranslatedInstruction getUse();
 
   abstract Option<Instruction>::Option getEntry();
+
+  final override TranslatedFunction getEnclosingFunction() {
+    result = this.getUse().getEnclosingFunction()
+  }
 }
 
 abstract class TranslatedX86Operand extends TranslatedOperand {
@@ -26,7 +31,13 @@ abstract class TranslatedX86Operand extends TranslatedOperand {
 
   override Raw::Element getRawElement() { result = op }
 
-  final override TranslatedX86Instruction getUse() { result = getTranslatedInstruction(op.getUse()) }
+  final Variable getX86RegisterVariable(Raw::X86Register r) {
+    result = this.getLocalVariable(X86RegisterTag(r))
+  }
+
+  final override TranslatedX86Instruction getUse() {
+    result = getTranslatedInstruction(op.getUse())
+  }
 
   final override string toString() { result = "Translation of " + op }
 }
@@ -45,7 +56,11 @@ class TranslatedX86RegisterOperand extends TranslatedX86Operand, TTranslatedX86R
 
   override predicate producesResult() { any() }
 
-  override Variable getResultVariable() { result = getTranslatedVariableReal(op.getRegister()) }
+  override Variable getResultVariable() { result = this.getX86RegisterVariable(op.getRegister()) }
+
+  override predicate hasLocalVariable(LocalVariableTag tag) {
+    tag = X86RegisterTag(op.getRegister())
+  }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
@@ -77,7 +92,7 @@ class TranslatedX86ImmediateOperand extends TranslatedX86Operand, TTranslatedX86
 
   override predicate producesResult() { any() }
 
-  override predicate hasTempVariable(VariableTag tag) { tag = ImmediateOperandVarTag() }
+  override predicate hasTempVariable(TempVariableTag tag) { tag = ImmediateOperandVarTag() }
 
   override Variable getResultVariable() { result = this.getVariable(ImmediateOperandVarTag()) }
 
@@ -107,6 +122,12 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   TranslatedX86MemoryOperand() { this = TTranslatedX86MemoryOperand(op) }
 
   private predicate isLoaded() { this.getUse().isOperandLoaded(op) }
+
+  override predicate hasLocalVariable(LocalVariableTag tag) {
+    tag = X86RegisterTag(op.getBaseRegister().getTarget())
+    or
+    tag = X86RegisterTag(op.getIndexRegister().getTarget())
+  }
 
   private Instruction getSuccessorAfterLoad(InstructionTag tag, SuccessorType succType) {
     this.isLoaded() and
@@ -271,7 +292,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
     or
     this.case6Applies() and
-    result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+    result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     or
     this.case7Applies() and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
@@ -283,7 +304,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
     or
     this.case10Applies() and
-    result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+    result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     or
     this.case11Applies() and
     result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
@@ -347,7 +368,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     (
       if this.isLoaded()
       then result = this.getInstruction(MemoryOperandLoadTag()).getResultVariable()
-      else result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+      else result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     )
     or
     this.case7Applies() and
@@ -374,7 +395,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     this.case10Applies() and
     if this.isLoaded()
     then result = this.getInstruction(MemoryOperandLoadTag()).getResultVariable()
-    else result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+    else result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     or
     this.case11Applies() and
     (
@@ -390,7 +411,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandMulTag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
       operandTag = RightTag() and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
@@ -403,7 +424,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
       result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
       or
       operandTag = RightTag() and
-      result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     )
     or
     // x = x + displacement
@@ -429,7 +450,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandMulTag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
       operandTag = RightTag() and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
@@ -442,7 +463,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
       result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
       or
       operandTag = RightTag() and
-      result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     )
     or
     // Load from [x]
@@ -458,10 +479,10 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandAdd1Tag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
       or
       operandTag = RightTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     )
     or
     // x = x + displacement
@@ -487,10 +508,10 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandAdd1Tag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
       or
       operandTag = RightTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     )
     or
     // Load from [x]
@@ -506,7 +527,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandAdd1Tag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
       or
       operandTag = RightTag() and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
@@ -524,7 +545,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
     operandTag = UnaryTag() and
-    result = getTranslatedVariableReal(op.getBaseRegister().getTarget())
+    result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     // If we are in case6 and we do not need to load the result will be the base register
   }
 
@@ -534,7 +555,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandMulTag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
       operandTag = RightTag() and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
@@ -563,7 +584,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandMulTag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
       operandTag = RightTag() and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
@@ -582,7 +603,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     tag = MemoryOperandAdd1Tag() and
     (
       operandTag = LeftTag() and
-      result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+      result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
       operandTag = RightTag() and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
@@ -600,7 +621,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
     operandTag = UnaryTag() and
-    result = getTranslatedVariableReal(op.getIndexRegister().getTarget())
+    result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     // If we are in case10 and we do not need to load the result will be the index register
   }
 
@@ -746,7 +767,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
       else result = this.case11(tag, operandTag)
   }
 
-  override predicate hasTempVariable(VariableTag tag) {
+  override predicate hasTempVariable(TempVariableTag tag) {
     tag = MemoryOperandAdd1VarTag()
     or
     tag = MemoryOperandAdd2VarTag()

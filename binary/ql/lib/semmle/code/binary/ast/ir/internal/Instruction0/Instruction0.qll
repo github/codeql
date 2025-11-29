@@ -7,5 +7,5 @@ module Instruction0 implements InstructionSig {
   import Variable
   import BasicBlock
   import InstructionTag
-  import VariableTag
+  import TempVariableTag
 }

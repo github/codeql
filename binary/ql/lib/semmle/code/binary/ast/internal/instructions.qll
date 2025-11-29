@@ -85,6 +85,8 @@ module MakeInstructions<InstructionInputSig InstructionInput> {
 
     Location getLocation() { result instanceof EmptyLocation }
 
+    X86Instruction getAPredecessor() { this = result.getASuccessor() }
+
     X86Instruction getASuccessor() {
       result.getIndex() = this.getIndex() + this.getLength().toBigInt()
     }
