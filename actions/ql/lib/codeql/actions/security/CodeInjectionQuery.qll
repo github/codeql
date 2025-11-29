@@ -91,3 +91,25 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a code script. */
 module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
+
+/**
+ * Holds if the flow from `source` to `sink` has critical severity and they are
+ * linked by `event`.
+ */
+pragma[inline]
+predicate criticalSeverity(DataFlow::Node source, DataFlow::Node sink, Event event) {
+  event = getRelevantCriticalEventForSink(sink) and
+  source.(RemoteFlowSource).getEventName() = event.getName()
+}
+
+/** Holds if the flow from `source` to `sink` has medium severity. */
+pragma[inline]
+predicate mediumSeverity(DataFlow::Node source, DataFlow::Node sink) {
+  not criticalSeverity(source, sink, _) and
+  // exclude cases where the sink is a JS script and the expression uses toJson
+  not exists(UsesStep script |
+    script.getCallee() = "actions/github-script" and
+    script.getArgumentExpr("script") = sink.asExpr() and
+    exists(getAToJsonReferenceExpression(sink.asExpr().(Expression).getExpression(), _))
+  )
+}
