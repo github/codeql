@@ -9,6 +9,7 @@ private import codeql.util.Unit
 private import codeql.util.Void
 private import semmle.code.binary.ast.ir.internal.TransformInstruction.TransformInstruction
 private import semmle.code.binary.ast.ir.internal.Instruction1.Instruction1
+private import codeql.ssa.Ssa as SsaImpl
 
 private signature module ControlFlowReachableInputSig {
   class FlowState;
@@ -149,6 +150,8 @@ private module ControlFlowReachable<ControlFlowReachableInputSig Input> {
  * sub rax, rbx
  * jz label
  * ```
+ *
+ * It also synthesises parameter instructions.
  */
 private module InstructionInput implements Transform<Instruction1>::TransformInputSig {
   // ------------------------------------------------
@@ -174,10 +177,10 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
   class LocalVariableTag = Void;
 
-  private newtype TVariableTag = ZeroVarTag()
+  private newtype TTempVariableTag = ZeroVarTag()
 
-  class VariableTag extends TVariableTag {
-    VariableTag() { this = ZeroVarTag() }
+  class TempVariableTag extends TTempVariableTag {
+    TempVariableTag() { this = ZeroVarTag() }
 
     string toString() { result = "ZeroVarTag" }
   }
@@ -190,6 +193,11 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
       exists(ConditionKind k |
         this = CmpDefTag(k) and
         result = "CmpDefTag(" + stringOfConditionKind(k) + ")"
+      )
+      or
+      exists(Instruction1::Variable v |
+        this = InitializeParameterTag(v) and
+        result = "InitializeParameterTag(" + v.toString() + ")"
       )
     }
   }
@@ -213,13 +221,13 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
   }
 
   private newtype TTranslatedElementVariablePair =
-    MkTranslatedElementVariablePair(TranslatedElement te, VariableTag tag) {
+    MkTranslatedElementVariablePair(TranslatedElement te, TempVariableTag tag) {
       te.hasTempVariable(tag)
     }
 
   class TranslatedElementVariablePair extends TTranslatedElementVariablePair {
     TranslatedElement te;
-    VariableTag tag;
+    TempVariableTag tag;
 
     TranslatedElementVariablePair() { this = MkTranslatedElementVariablePair(te, tag) }
 
@@ -227,7 +235,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
     TranslatedElement getTranslatedElement() { result = te }
 
-    VariableTag getVariableTag() { result = tag }
+    TempVariableTag getVariableTag() { result = tag }
   }
 
   private newtype TFunctionLocalVariablePair =
@@ -328,13 +336,106 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     cjump.getKind() = kind
   }
 
+  private module SsaInput implements SsaImpl::InputSig<Location, Instruction1::BasicBlock> {
+    class SourceVariable = Instruction1::Variable;
+
+    predicate variableWrite(Instruction1::BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      bb.getNode(i).asInstruction().getResultVariable() = v and
+      certain = true
+    }
+
+    predicate variableRead(Instruction1::BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      bb.getNode(i).asOperand().getVariable() = v and
+      certain = true
+    }
+  }
+
+  private module Ssa {
+    private module Ssa = SsaImpl::Make<Location, Instruction1::BinaryCfg, SsaInput>;
+
+    class Definition extends Ssa::Definition {
+      Instruction1::Instruction getInstruction() {
+        exists(Instruction1::BasicBlock bb, int i |
+          this.definesAt(_, bb, i) and
+          bb.getNode(i).asInstruction() = result
+        )
+      }
+
+      Instruction1::Operand getARead() {
+        exists(Instruction1::BasicBlock bb, int i |
+          Ssa::ssaDefReachesRead(_, this, bb, i) and
+          result = bb.getNode(i).asOperand()
+        )
+      }
+
+      override string toString() {
+        result = "SSA def(" + this.getInstruction() + ")"
+        or
+        not exists(this.getInstruction()) and
+        result = super.toString()
+      }
+    }
+
+    class PhiNode extends Definition, Ssa::PhiNode {
+      override string toString() { result = Ssa::PhiNode.super.toString() }
+
+      Definition getInput(Instruction1::BasicBlock bb) {
+        Ssa::phiHasInputFromBlock(this, result, bb)
+      }
+
+      Definition getAnInput() { result = this.getInput(_) }
+    }
+
+    class SourceVariable = SsaInput::SourceVariable;
+
+    pragma[nomagic]
+    predicate ssaDefReachesRead(
+      Instruction1::Variable v, Definition def, Instruction1::BasicBlock bb, int i
+    ) {
+      Ssa::ssaDefReachesRead(v, def, bb, i)
+    }
+
+    pragma[nomagic]
+    predicate phiHasInputFromBlock(PhiNode phi, Definition input, Instruction1::BasicBlock bb) {
+      Ssa::phiHasInputFromBlock(phi, input, bb)
+    }
+
+    pragma[nomagic]
+    Instruction1::Instruction getADef(Instruction1::Operand op) {
+      exists(Instruction1::Variable v, Ssa::Definition def, Instruction1::BasicBlock bb, int i |
+        def = getDef(op) and
+        def.definesAt(v, bb, i) and
+        result = bb.getNode(i).asInstruction()
+      )
+    }
+
+    pragma[nomagic]
+    Ssa::Definition getDef(Instruction1::Operand op) {
+      exists(Instruction1::Variable v, Instruction1::BasicBlock bbRead, int iRead |
+        ssaDefReachesRead(v, result, bbRead, iRead) and
+        op = bbRead.getNode(iRead).asOperand()
+      )
+    }
+  }
+
+  private predicate isReadBeforeInitialization(
+    Instruction1::LocalVariable v, Instruction1::Function f
+  ) {
+    exists(Instruction1::Operand op |
+      op.getVariable() = v and
+      op.getEnclosingFunction() = f and
+      not any(Ssa::Definition def).getARead() = op
+    )
+  }
+
   // ------------------------------------------------
   private newtype TTranslatedElement =
     TTranslatedComparisonInstruction(
       Instruction1::Instruction i, Instruction1::CJumpInstruction cjump, ConditionKind kind
     ) {
       controlFlowsToCmp(i, cjump, kind)
-    }
+    } or
+    TTranslatedInitializeParameters(Instruction1::Function f) { isReadBeforeInitialization(_, f) }
 
   abstract class TranslatedElement extends TTranslatedElement {
     abstract EitherInstructionTranslatedElementTagPair getSuccessor(
@@ -359,7 +460,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
     predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
 
-    predicate hasTempVariable(VariableTag tag) { none() }
+    predicate hasTempVariable(TempVariableTag tag) { none() }
 
     predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
@@ -423,7 +524,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
     override predicate producesResult() { none() }
 
-    override predicate hasTempVariable(VariableTag tag) { tag = ZeroVarTag() }
+    override predicate hasTempVariable(TempVariableTag tag) { tag = ZeroVarTag() }
 
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
       InstructionTag tag, OperandTag operandTag
@@ -465,6 +566,88 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     override string toString() { result = "Flag writing for " + instr.toString() }
 
     override EitherInstructionTranslatedElementTagPair getEntry() { result.asLeft() = instr }
+  }
+
+  private predicate parameterHasIndex(Instruction1::Variable v, Instruction1::Function f, int index) {
+    v =
+      rank[index + 1](Instruction1::LocalVariable cand |
+        cand.getEnclosingFunction() = f and
+        isReadBeforeInitialization(cand, f)
+      |
+        cand order by cand.toString() // TODO: Use the right argument ordering. This depends on the calling conventions.
+      )
+  }
+
+  private Instruction1::Variable getFirstParameter(Instruction1::Function f) {
+    parameterHasIndex(result, f, 0)
+  }
+
+  private Instruction1::InitInstruction getStackPointerInitialize(Instruction1::Function f) {
+    result.getResultVariable() instanceof Instruction1::StackPointer and
+    result.getEnclosingFunction() = f
+  }
+
+  private class TranslatedInitializeParameters extends TranslatedInstruction,
+    TTranslatedInitializeParameters
+  {
+    Instruction1::Function func;
+
+    TranslatedInitializeParameters() { this = TTranslatedInitializeParameters(func) }
+
+    final override Instruction1::Function getEnclosingFunction() { result = func }
+
+    override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
+      Instruction1::Instruction i, SuccessorType succType
+    ) {
+      i = getStackPointerInitialize(func) and
+      succType instanceof DirectSuccessor and
+      result.asRight().getTranslatedElement() = this and
+      result.asRight().getInstructionTag() = InitializeParameterTag(getFirstParameter(func))
+    }
+
+    override EitherInstructionTranslatedElementTagPair getSuccessor(
+      InstructionTag tag, SuccessorType succType
+    ) {
+      succType instanceof DirectSuccessor and
+      exists(Instruction1::Variable v, int index |
+        tag = InitializeParameterTag(v) and
+        parameterHasIndex(v, func, index)
+      |
+        exists(Instruction1::Variable u |
+          parameterHasIndex(u, func, index + 1) and
+          result.asRight().getTranslatedElement() = this and
+          result.asRight().getInstructionTag() = InitializeParameterTag(u)
+        )
+        or
+        not parameterHasIndex(_, func, index + 1) and
+        result.asLeft() = getStackPointerInitialize(func).getSuccessor(succType)
+      )
+    }
+
+    override predicate producesResult() { none() }
+
+    override predicate hasTempVariable(TempVariableTag tag) { none() }
+
+    override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
+      InstructionTag tag, OperandTag operandTag
+    ) {
+      none()
+    }
+
+    override predicate hasInstruction(
+      Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
+    ) {
+      opcode instanceof Init and
+      exists(Instruction1::Variable var |
+        isReadBeforeInitialization(var, func) and
+        tag = InitializeParameterTag(var) and
+        v.asSome().asLeft() = var
+      )
+    }
+
+    override string toString() { result = "Initialize parameters in " + func.toString() }
+
+    override EitherInstructionTranslatedElementTagPair getEntry() { none() }
   }
 
   class TranslatedOperand extends TranslatedElement {
