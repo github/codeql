@@ -78,6 +78,7 @@ private import semmle.python.frameworks.Sanic
 private import semmle.python.frameworks.ServerLess
 private import semmle.python.frameworks.Setuptools
 private import semmle.python.frameworks.Simplejson
+private import semmle.python.frameworks.Socketio
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.Stdlib
