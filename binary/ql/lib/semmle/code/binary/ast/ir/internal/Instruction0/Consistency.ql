@@ -1,18 +1,11 @@
-private import TranslatedElement
+private import Instruction0
+import semmle.code.binary.ast.ir.internal.Consistency
+import StagedConsistencyInput<Instruction0>
 private import TranslatedInstruction
-private import semmle.code.binary.ast.ir.internal.InstructionTag
-private import Instruction0::Instruction0
-private import codeql.controlflow.SuccessorType
-
-query predicate nonUniqueSuccessor(Instruction i, SuccessorType t, int k) {
-  k = strictcount(i.getSuccessor(t)) and
-  k > 1
-}
-
-query predicate nonUniqueResultVariable(Instruction i, int k) {
-  strictcount(i.getResultVariable()) = k and
-  k > 1
-}
+private import TranslatedFunction
+private import semmle.code.binary.ast.ir.internal.Opcode
+private import semmle.code.binary.ast.ir.internal.Tags
+private import InstructionTag
 
 query predicate nonUniqueOpcode(TranslatedInstruction ti, InstructionTag tag, int k) {
   strictcount(Opcode opcode | ti.hasInstruction(opcode, tag, _)) = k and
@@ -20,8 +13,20 @@ query predicate nonUniqueOpcode(TranslatedInstruction ti, InstructionTag tag, in
 }
 
 query predicate nonUniqueVariableOperand(
-  TranslatedInstruction ti, InstructionTag tag, OperandTag operandTag, int k
+  TranslatedFunction tf, TranslatedInstruction ti, string s, InstructionTag tag,
+  OperandTag operandTag, int k
 ) {
+  tf = ti.getEnclosingFunction() and
+  s = concat(ti.getAQlClass().toString(), ", ") and
   strictcount(ti.getVariableOperand(tag, operandTag)) = k and
+  k > 1
+}
+
+query predicate nonUniqueResultVariable0(
+  TranslatedFunction tf, TranslatedInstruction ti, string s, int k
+) {
+  tf = ti.getEnclosingFunction() and
+  s = concat(ti.getAQlClass().toString(), ", ") and
+  strictcount(ti.getResultVariable()) = k and
   k > 1
 }
