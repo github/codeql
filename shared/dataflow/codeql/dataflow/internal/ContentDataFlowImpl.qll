@@ -110,7 +110,7 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
 
       FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
 
-      predicate accessPathLimit = ContentConfig::accessPathLimit/0;
+      int accessPathLimit() { result = Lang::accessPathLimit() }
 
       // needed to record reads/stores inside summarized callables
       predicate includeHiddenNodes() { any() }
