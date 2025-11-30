@@ -387,7 +387,8 @@ private module Internal {
       or
       maxSsaRefRank(b1, v) = ssaRefRank(b1, i1, v, _) and
       varBlockStep(v, b1, b2) and
-      ssaRefRank(b2, i2, v, _) = 1
+      ssaRefRank(b2, i2, v, _) = 1 and
+      not (b1 = b2 and i1 = i2)
     }
 
     predicate variableUse(SsaSourceVariable v, IR::Instruction use, ReachableBasicBlock bb, int i) {

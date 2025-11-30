@@ -1,0 +1,10 @@
+reverseRead
+| DivideByZero.go:10:12:10:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:17:12:17:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:24:12:24:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:31:12:31:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:38:12:38:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:45:12:45:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:54:12:54:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:63:12:63:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| DivideByZero.go:72:12:72:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

@@ -1588,4 +1588,8 @@ module IR {
    * in a field/method access, element access, or slice expression.
    */
   EvalImplicitDerefInstruction implicitDerefInstruction(Expr e) { result = MkImplicitDeref(e) }
+
+  Instruction lookThroughImplicitFieldRead(Instruction insn) {
+    result = insn.(ImplicitFieldReadInstruction).getBaseInstruction()
+  }
 }

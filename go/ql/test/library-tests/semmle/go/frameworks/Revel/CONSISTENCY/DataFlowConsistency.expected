@@ -1,0 +1,127 @@
+reverseRead
+| EndToEnd.go:30:35:30:35 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:30:35:30:42 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:36:18:36:18 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:36:18:36:25 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:44:18:44:18 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:44:18:44:25 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:51:20:51:20 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:51:20:51:27 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:58:18:58:18 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:58:18:58:25 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:64:26:64:26 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:64:26:64:33 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:69:22:69:22 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:69:22:69:29 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:74:22:74:22 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:74:22:74:29 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:79:35:79:35 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:79:35:79:42 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:84:22:84:22 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:84:22:84:29 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:89:21:89:21 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:89:21:89:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:94:20:94:20 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| EndToEnd.go:94:20:94:27 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:26:7:26:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:27:7:27:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:27:7:27:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:30:2:30:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:33:7:33:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:37:7:37:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:37:7:37:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:38:24:38:24 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:42:7:42:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:43:24:43:24 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:47:7:47:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:51:7:51:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:52:7:52:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:56:7:56:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:56:7:56:27 | index expression | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:60:7:60:7 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:60:7:60:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:63:2:63:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:70:22:70:22 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:75:7:75:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:76:7:76:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:77:7:77:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:77:7:77:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:78:7:78:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:79:7:79:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:80:7:80:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:82:13:82:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:85:13:85:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:88:13:88:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:89:7:89:28 | index expression | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:91:7:91:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:91:7:91:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:91:7:91:41 | index expression | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:93:28:93:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:96:15:96:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:99:7:99:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:101:7:101:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:103:15:103:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:109:7:109:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:111:7:111:7 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:116:2:116:2 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:116:2:116:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:120:2:120:2 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:120:2:120:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:125:13:125:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:125:13:125:21 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:128:14:128:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:128:14:128:22 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Revel.go:133:13:133:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:34:2:34:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:47:2:47:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:56:2:56:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:57:2:57:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:59:16:59:16 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:61:5:61:5 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:62:3:62:3 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:68:2:68:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:79:5:79:5 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:81:5:81:5 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:83:4:83:4 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:89:2:89:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/app.go:95:10:95:10 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:44:3:44:3 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:51:2:51:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:143:26:143:26 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:144:2:144:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:146:2:146:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:148:5:148:5 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:149:3:149:3 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:153:2:153:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:166:19:166:19 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:168:5:168:5 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:168:33:168:33 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:169:3:169:3 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:174:5:174:5 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:175:3:175:3 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:176:4:176:10 | booking | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/controllers/hotels.go:184:2:184:2 | implicit read of field Controller | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:36:44:36:44 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:40:49:40:49 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:52:2:52:2 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:52:2:52:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:53:2:53:2 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:53:2:53:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:54:2:54:2 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/init.go:54:2:54:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:33:13:33:19 | booking | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:34:13:34:19 | booking | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:35:13:35:19 | booking | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:36:13:36:19 | booking | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:49:9:49:9 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:53:14:53:14 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:53:38:53:38 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:67:3:67:3 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:68:3:68:3 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:69:3:69:3 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:73:39:73:39 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:73:47:73:47 | b | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:81:13:81:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:82:14:82:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:83:17:83:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| examples/booking/app/models/booking.go:84:18:84:18 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

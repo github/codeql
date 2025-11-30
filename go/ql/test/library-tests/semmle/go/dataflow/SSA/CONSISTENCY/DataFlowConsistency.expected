@@ -1,0 +1,3 @@
+reverseRead
+| main.go:97:2:97:8 | wrapper | Origin of readStep is missing a PostUpdateNode. |
+| main.go:117:2:117:2 | p | Origin of readStep is missing a PostUpdateNode. |

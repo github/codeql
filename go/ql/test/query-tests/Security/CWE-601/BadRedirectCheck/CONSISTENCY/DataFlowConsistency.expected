@@ -1,0 +1,3 @@
+reverseRead
+| cves.go:33:14:33:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| cves.go:41:14:41:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

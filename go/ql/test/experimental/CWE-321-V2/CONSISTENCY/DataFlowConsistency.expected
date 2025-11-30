@@ -1,0 +1,3 @@
+reverseRead
+| go-jose.v3.go:16:17:16:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| golang-jwt-v5.go:22:17:22:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

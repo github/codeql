@@ -1,0 +1,3 @@
+reverseRead
+| MissingRegexpAnchor.go:12:42:12:44 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| MissingRegexpAnchorGood.go:12:42:12:44 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

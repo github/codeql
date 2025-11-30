@@ -1,0 +1,3 @@
+reverseRead
+| TaintedPath.go:15:18:15:18 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| TaintedPath.go:84:28:84:32 | files | Origin of readStep is missing a PostUpdateNode. |
