@@ -5,7 +5,6 @@ multipleCallTargets
 | dereference.rs:184:17:184:30 | ... .foo() |
 | dereference.rs:186:17:186:25 | S.bar(...) |
 | dereference.rs:187:17:187:29 | S.bar(...) |
-| main.rs:590:9:590:18 | ...::m(...) |
 | main.rs:2634:13:2634:31 | ...::from(...) |
 | main.rs:2635:13:2635:31 | ...::from(...) |
 | main.rs:2636:13:2636:31 | ...::from(...) |

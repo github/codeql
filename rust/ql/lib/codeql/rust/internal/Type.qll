@@ -385,6 +385,8 @@ TypeParamTypeParameter getPtrTypeParameter() {
 /** A type parameter. */
 abstract class TypeParameter extends Type {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  abstract ItemNode getDeclaringItem();
 }
 
 private class RawTypeParameter = @type_param or @trait or @type_alias or @impl_trait_type_repr;
@@ -402,6 +404,8 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   TypeParamTypeParameter() { this = TTypeParamTypeParameter(typeParam) }
 
   TypeParam getTypeParam() { result = typeParam }
+
+  override ItemNode getDeclaringItem() { result.getTypeParam(_) = typeParam }
 
   override string toString() { result = typeParam.toString() }
 
@@ -436,6 +440,8 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   /** Gets the trait that contains this associated type declaration. */
   TraitItemNode getTrait() { result.getAnAssocItem() = typeAlias }
 
+  override ItemNode getDeclaringItem() { result = this.getTrait() }
+
   override string toString() { result = typeAlias.getName().getText() }
 
   override Location getLocation() { result = typeAlias.getLocation() }
@@ -468,6 +474,8 @@ class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
     result = [this.getTypeParam().toString(), this.getTypeAlias().getName().toString()]
   }
 
+  override ItemNode getDeclaringItem() { none() }
+
   override string toString() { result = "dyn(" + this.toStringInner() + ")" }
 
   override Location getLocation() { result = n.getLocation() }
@@ -482,6 +490,8 @@ class ImplTraitTypeParameter extends TypeParameter, TImplTraitTypeParameter {
   TypeParam getTypeParam() { result = typeParam }
 
   ImplTraitTypeRepr getImplTraitTypeRepr() { result = implTrait }
+
+  override ItemNode getDeclaringItem() { none() }
 
   override string toString() { result = "impl(" + typeParam.toString() + ")" }
 
@@ -501,6 +511,8 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
   SelfTypeParameter() { this = TSelfTypeParameter(trait) }
 
   Trait getTrait() { result = trait }
+
+  override ItemNode getDeclaringItem() { result = trait }
 
   override string toString() { result = "Self [" + trait.toString() + "]" }
 
@@ -528,6 +540,8 @@ class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
   private Function function;
 
   ImplTraitTypeTypeParameter() { impl = function.getAParam().getTypeRepr() }
+
+  override ItemNode getDeclaringItem() { none() }
 
   override Function getFunction() { result = function }
 
