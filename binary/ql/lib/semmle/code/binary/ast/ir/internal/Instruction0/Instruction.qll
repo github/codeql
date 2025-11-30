@@ -144,7 +144,7 @@ class CopyInstruction extends Instruction {
 class LoadInstruction extends Instruction {
   override Opcode::Load opcode;
 
-  UnaryOperand getOperand() { result = this.getAnOperand() }
+  LoadAddressOperand getOperand() { result = this.getAnOperand() }
 }
 
 class StoreInstruction extends Instruction {

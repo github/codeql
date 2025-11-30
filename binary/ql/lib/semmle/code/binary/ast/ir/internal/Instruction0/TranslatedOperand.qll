@@ -440,7 +440,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd2Tag()).getResultVariable()
   }
 
@@ -469,7 +469,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -498,7 +498,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd2Tag()).getResultVariable()
   }
 
@@ -517,7 +517,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -536,7 +536,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -544,7 +544,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   Variable case6(InstructionTag tag, OperandTag operandTag) {
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     // If we are in case6 and we do not need to load the result will be the base register
   }
@@ -574,7 +574,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -593,7 +593,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
   }
 
@@ -612,7 +612,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -620,7 +620,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   Variable case10(InstructionTag tag, OperandTag operandTag) {
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     // If we are in case10 and we do not need to load the result will be the index register
   }
@@ -629,7 +629,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   Variable case11(InstructionTag tag, OperandTag operandTag) {
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = UnaryTag() and
+    operandTag = LoadAddressTag() and
     result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     // If we are in case11 and we do not need to load the result will be the displacement constant
   }

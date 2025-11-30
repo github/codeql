@@ -596,7 +596,7 @@ module Transform<InstructionSig Input> {
     class LoadInstruction extends Instruction {
       LoadInstruction() { this.getOpcode() instanceof Opcode::Load }
 
-      UnaryOperand getOperand() { result = this.getAnOperand() }
+      LoadAddressOperand getOperand() { result = this.getAnOperand() }
     }
 
     class StoreInstruction extends Instruction {
@@ -841,6 +841,10 @@ module Transform<InstructionSig Input> {
 
     class StoreAddressOperand extends Operand {
       StoreAddressOperand() { this.getOperandTag() instanceof StoreAddressTag }
+    }
+
+    class LoadAddressOperand extends Operand {
+      LoadAddressOperand() { this.getOperandTag() instanceof LoadAddressTag }
     }
 
     class UnaryOperand extends Operand {

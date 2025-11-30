@@ -36,6 +36,8 @@ signature module InstructionSig {
 
   class UnaryOperand extends Operand;
 
+  class LoadAddressOperand extends Operand;
+
   class ConditionOperand extends Operand;
 
   class ConditionJumpTargetOperand extends Operand;
@@ -183,7 +185,7 @@ signature module InstructionSig {
   }
 
   class LoadInstruction extends Instruction {
-    UnaryOperand getOperand();
+    LoadAddressOperand getOperand();
   }
 
   class StoreInstruction extends Instruction {

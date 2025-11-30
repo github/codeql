@@ -28,6 +28,7 @@ newtype TOperandTag =
   RightTag() or
   UnaryTag() or
   StoreValueTag() or
+  LoadAddressTag() or
   StoreAddressTag() or
   CallTargetTag() or
   CondTag() or
@@ -43,6 +44,9 @@ class OperandTag extends TOperandTag {
     result = 1
     or
     this = UnaryTag() and
+    result = 0
+    or
+    this = LoadAddressTag() and
     result = 0
     or
     this = StoreValueTag() and
@@ -86,6 +90,9 @@ class OperandTag extends TOperandTag {
     or
     this = UnaryTag() and
     result = "Unary"
+    or
+    this = LoadAddressTag() and
+    result = "LoadAddr"
     or
     this = StoreValueTag() and
     result = "StoreValue"

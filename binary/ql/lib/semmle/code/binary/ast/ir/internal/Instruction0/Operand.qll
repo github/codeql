@@ -57,6 +57,10 @@ class UnaryOperand extends Operand {
   override UnaryTag operandTag;
 }
 
+class LoadAddressOperand extends Operand {
+  override LoadAddressTag operandTag;
+}
+
 class ConditionOperand extends Operand {
   override CondTag operandTag;
 }
