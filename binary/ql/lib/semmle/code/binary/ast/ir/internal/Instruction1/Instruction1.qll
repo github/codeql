@@ -285,16 +285,36 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     )
   }
 
+  private predicate isRemovedAddress0(Instruction0::Instruction instr) {
+    exists(Ssa::Definition def | instr = def.getInstruction() |
+      exists(Instruction0::LoadInstruction load |
+        exists(TTranslatedLoad(load)) and
+        load.getOperand() = unique(| | def.getARead())
+      )
+      or
+      exists(Instruction0::StoreInstruction store |
+        exists(TTranslatedStore(store)) and
+        store.getAddressOperand() = unique(| | def.getARead())
+      )
+    )
+  }
+
+  private predicate isRemovedAddress(Instruction0::Instruction instr) {
+    isRemovedAddress0(instr)
+    or
+    exists(Ssa::Definition def |
+      def.getInstruction() = instr and
+      def.getSourceVariable() instanceof Instruction0::TempVariable and
+      forex(Instruction0::Operand op | op = def.getARead() | isRemovedAddress(op.getUse())) // TODO: Recursion through forex is bad for performance
+    )
+  }
+
   predicate isRemovedInstruction(Instruction0::Instruction instr) {
     exists(TTranslatedLoad(instr))
     or
     exists(TTranslatedStore(instr))
     or
-    exists(Ssa::Definition def |
-      def.getInstruction() = instr and
-      def.getSourceVariable() instanceof Instruction0::TempVariable and
-      forex(Instruction0::Operand op | op = def.getARead() | isRemovedInstruction(op.getUse())) // TODO: Recursion through forex is bad for performance
-    )
+    isRemovedAddress(instr)
   }
 
   abstract class TranslatedElement extends TTranslatedElement {

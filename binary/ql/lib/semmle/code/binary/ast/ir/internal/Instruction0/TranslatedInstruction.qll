@@ -32,6 +32,10 @@ abstract class TranslatedX86Instruction extends TranslatedInstruction {
     or
     result = getTranslatedInstruction(instr.getAPredecessor()).getEnclosingFunction()
   }
+
+  final StackPointer getStackPointer() {
+    result = this.getLocalVariable(X86RegisterTag(any(Raw::RspRegister sp)))
+  }
 }
 
 abstract class TranslatedCilInstruction extends TranslatedInstruction {
@@ -600,7 +604,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
     // esp = esp - x
     tag = PushSubTag() and
     opcode instanceof Opcode::Sub and
-    v.asSome() = getStackPointer()
+    v.asSome() = this.getStackPointer()
     or
     // store [esp], y
     tag = PushStoreTag() and
@@ -619,7 +623,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
     tag = PushSubTag() and
     (
       operandTag = LeftTag() and
-      result = getStackPointer()
+      result = this.getStackPointer()
       or
       operandTag = RightTag() and
       result = this.getInstruction(PushSubConstTag()).getResultVariable()
@@ -631,7 +635,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
       result = this.getTranslatedOperand().getResultVariable()
       or
       operandTag = StoreAddressTag() and
-      result = getStackPointer()
+      result = this.getStackPointer()
     )
   }
 
@@ -1050,7 +1054,7 @@ class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
     // esp = esp + x
     tag = PopAddTag() and
     opcode instanceof Opcode::Add and
-    v.asSome() = getStackPointer()
+    v.asSome() = this.getStackPointer()
   }
 
   override int getConstantValue(InstructionTag tag) {
@@ -1062,13 +1066,13 @@ class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = PopLoadTag() and
-    operandTag = UnaryTag() and
-    result = getStackPointer()
+    operandTag = LoadAddressTag() and
+    result = this.getStackPointer()
     or
     tag = PopAddTag() and
     (
       operandTag = LeftTag() and
-      result = getStackPointer()
+      result = this.getStackPointer()
       or
       operandTag = RightTag() and
       result = this.getInstruction(PopAddConstTag()).getResultVariable()
@@ -1766,7 +1770,9 @@ class TranslatedCilUnconditionalBranch extends TranslatedCilInstruction,
     result = this.getInstruction(CilUnconditionalBranchRefTag()).getResultVariable()
   }
 
-  override predicate hasTempVariable(TempVariableTag tag) { tag = CilUnconditionalBranchRefVarTag() }
+  override predicate hasTempVariable(TempVariableTag tag) {
+    tag = CilUnconditionalBranchRefVarTag()
+  }
 
   override Instruction getReferencedInstruction(InstructionTag tag) {
     tag = CilUnconditionalBranchRefTag() and

@@ -32,13 +32,9 @@ class StackPointer extends LocalVariable {
   StackPointer() { this.getTag() = X86RegisterTag(any(Raw::RspRegister sp)) }
 }
 
-Variable getStackPointer() { result instanceof StackPointer }
-
 class FramePointer extends LocalVariable {
   FramePointer() { this.getTag() = X86RegisterTag(any(Raw::RbpRegister fp)) }
 }
-
-Variable getFramePointer() { result instanceof FramePointer }
 
 class LocalVariable extends Variable, TLocalVariable {
   TranslatedFunction tf;

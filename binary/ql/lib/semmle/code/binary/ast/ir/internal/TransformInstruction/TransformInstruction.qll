@@ -724,7 +724,16 @@ module Transform<InstructionSig Input> {
           result = getNewInstruction(oldSucc)
         )
         or
-        result = getInstructionSuccessor(old, succType)
+        exists(Instruction i | i = getInstructionSuccessor(old, succType) |
+          exists(Input::Instruction iOld | i = TOldInstruction(iOld) |
+            if TransformInput::isRemovedInstruction(iOld)
+            then result = TOldInstruction(getNonRemovedSuccessor(iOld, _))
+            else result = i
+          )
+          or
+          not i instanceof OldInstruction and
+          result = i
+        )
       }
 
       override Location getLocation() { result = old.getLocation() }
