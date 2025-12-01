@@ -1887,26 +1887,43 @@ private predicate checkQualifiedVisibility(
   not i instanceof TypeParam
 }
 
+pragma[nomagic]
+private predicate isImplSelfQualifiedPath(
+  ImplItemNode impl, PathExt qualifier, PathExt path, string name
+) {
+  qualifier = impl.getASelfPath() and
+  qualifier = path.getQualifier() and
+  name = path.getText()
+}
+
+private TypeAliasItemNode resolveSelfAssocType(PathExt qualifier, PathExt path) {
+  exists(ImplItemNode impl, string name |
+    isImplSelfQualifiedPath(impl, qualifier, path, name) and
+    result = impl.getAssocItem(name)
+  )
+}
+
 /**
  * Gets the item that `path` resolves to in `ns` when `qualifier` is the
  * qualifier of `path` and `qualifier` resolves to `q`, if any.
  */
 pragma[nomagic]
 private ItemNode resolvePathCandQualified(PathExt qualifier, ItemNode q, PathExt path, Namespace ns) {
+  // Special case for `Self::AssocType`; this always refers to the associated
+  // type in the enclosing `impl` block, if available.
+  q = resolvePathCandQualifier(qualifier, path, _) and
+  ns.isType() and
+  result = resolveSelfAssocType(qualifier, path)
+  or
+  (
+    not exists(resolveSelfAssocType(qualifier, path))
+    or
+    not ns.isType()
+  ) and
   exists(string name, SuccessorKind kind, UseOption useOpt |
     q = resolvePathCandQualifier(qualifier, path, name) and
     result = getASuccessor(q, name, ns, kind, useOpt) and
     checkQualifiedVisibility(path, result, kind, useOpt)
-  |
-    // Special case for `Self::AssocType`; this always refers to the associated
-    // type in the enclosing `impl` block, if available.
-    forall(ImplItemNode impl, TypeAliasItemNode alias |
-      qualifier = impl.getASelfPath() and alias = result
-    |
-      alias = impl.getAnAssocItem()
-      or
-      not exists(impl.getAssocItem(name).(TypeAliasItemNode))
-    )
   )
 }
 
