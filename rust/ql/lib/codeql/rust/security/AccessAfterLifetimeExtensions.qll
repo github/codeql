@@ -4,7 +4,9 @@
  */
 
 import rust
+private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.security.AccessInvalidPointerExtensions
 private import codeql.rust.internal.Type
 private import codeql.rust.internal.TypeInference as TypeInference
@@ -29,10 +31,11 @@ module AccessAfterLifetime {
 
   /**
    * A data flow sink for accesses to a pointer after its lifetime has ended,
-   * that is, a dereference. We re-use the same sinks as for the accesses to
-   * invalid pointers query.
+   * that is, a dereference.
    */
-  class Sink = AccessInvalidPointer::Sink;
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "AccessAfterLifetime" }
+  }
 
   /**
    * A barrier for accesses to a pointer after its lifetime has ended.
@@ -115,6 +118,18 @@ module AccessAfterLifetime {
     RefExprSource() { this.asExpr().(RefExpr).getExpr() = targetValue }
 
     override Expr getTarget() { result = targetValue }
+  }
+
+  /**
+   * A pointer access using the unary `*` operator.
+   */
+  private class DereferenceSink extends Sink {
+    DereferenceSink() { any(DerefExpr p).getExpr() = this.asExpr() }
+  }
+
+  /** A pointer access from model data. */
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() { sinkNode(this, "pointer-access") }
   }
 
   /**

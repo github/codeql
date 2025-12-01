@@ -55,9 +55,9 @@ mod test_mysql {
         let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
             "SELECT id, name, age FROM person",
             |values: (i64, String, i32)| -> () {
-                sink(values.0); // $ MISSING: hasTaintFlow
-                sink(values.1); // $ MISSING: hasTaintFlow
-                sink(values.2); // $ MISSING: hasTaintFlow
+                sink(values.0); // $ hasTaintFlow
+                sink(values.1); // $ hasTaintFlow
+                sink(values.2); // $ hasTaintFlow
             }
         )?;
 
@@ -71,9 +71,9 @@ mod test_mysql {
             let id: i64 = row.0;
             let name: String = row.1;
             let age: i32 = row.2;
-            sink(id); // $ MISSING: hasTaintFlow
-            sink(name); // $ MISSING: hasTaintFlow
-            sink(age); // $ MISSING: hasTaintFlow
+            sink(id); // $ hasTaintFlow
+            sink(name); // $ hasTaintFlow
+            sink(age); // $ hasTaintFlow
             acc + 1
         })?;
 
@@ -142,9 +142,9 @@ mod test_mysql_async {
         let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
             "SELECT id, name, age FROM person",
             |values: (i64, String, i32)| -> () {
-                sink(values.0); // $ MISSING: hasTaintFlow
-                sink(values.1); // $ MISSING: hasTaintFlow
-                sink(values.2); // $ MISSING: hasTaintFlow
+                sink(values.0); // $ hasTaintFlow
+                sink(values.1); // $ hasTaintFlow
+                sink(values.2); // $ hasTaintFlow
             }
         ).await?;
 
@@ -158,9 +158,9 @@ mod test_mysql_async {
             let id: i64 = row.0;
             let name: String = row.1;
             let age: i32 = row.2;
-            sink(id); // $ MISSING: hasTaintFlow
-            sink(name); // $ MISSING: hasTaintFlow
-            sink(age); // $ MISSING: hasTaintFlow
+            sink(id); // $ hasTaintFlow
+            sink(name); // $ hasTaintFlow
+            sink(age); // $ hasTaintFlow
             acc + 1
         }).await?;
 
