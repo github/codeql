@@ -15,6 +15,12 @@ module StagedConsistencyInput<InstructionSig Input> {
     k > 1
   }
 
+  query predicate nonUniqueOperandVariable(Input::Function f, Input::Operand op, int k) {
+    op.getEnclosingFunction() = f and
+    strictcount(op.getVariable()) = k and
+    k > 1
+  }
+
   query predicate missingSuccessor(Input::Function f, Input::Instruction i) {
     i.getEnclosingFunction() = f and
     not i instanceof Input::RetInstruction and

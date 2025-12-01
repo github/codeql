@@ -155,6 +155,8 @@ private module ControlFlowReachable<ControlFlowReachableInputSig Input> {
  */
 private module InstructionInput implements Transform<Instruction1>::TransformInputSig {
   // ------------------------------------------------
+  class EitherOperandTagOrOperandTag = Either<Instruction1::OperandTag, OperandTag>::Either;
+
   class EitherInstructionTranslatedElementTagPair =
     Either<Instruction1::Instruction, TranslatedElementTagPair>::Either;
 
@@ -164,18 +166,54 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
   class OptionEitherVariableOrTranslatedElementPair =
     Option<EitherVariableOrTranslatedElementVariablePair>::Option;
 
-  class OptionEitherInstructionTranslatedElementTagPair =
-    Option<EitherInstructionTranslatedElementTagPair>::Option;
-
   class EitherTranslatedElementVariablePairOrFunctionLocalVariablePair =
     Either<TranslatedElementVariablePair, FunctionLocalVariablePair>::Either;
+
+  private newtype TOperandTag =
+    ArgOperand(int index) {
+      index =
+        [0 .. max(Instruction1::CallInstruction call |
+            |
+            strictcount(Instruction1::Variable v | deadDefFlowsToCall(v, call))
+          )]
+    }
+
+  class OperandTag extends TOperandTag {
+    int getIndex() { this = ArgOperand(result) }
+
+    EitherOperandTagOrOperandTag getSuccessorTag() {
+      exists(int i |
+        this = ArgOperand(i) and
+        result.asRight() = ArgOperand(i + 1)
+      )
+    }
+
+    EitherOperandTagOrOperandTag getPredecessorTag() {
+      this = ArgOperand(0) and
+      result.asLeft() instanceof Instruction1::CallTargetTag
+      or
+      exists(int i |
+        this = ArgOperand(i + 1) and
+        result.asRight() = ArgOperand(i)
+      )
+    }
+
+    string toString() {
+      exists(int i |
+        this = ArgOperand(i) and
+        result = "ArgOperand(" + i.toString() + ")"
+      )
+    }
+  }
 
   private newtype TInstructionTag =
     ZeroTag() or
     CmpDefTag(ConditionKind k) or
     InitializeParameterTag(Instruction1::Variable v) { isReadBeforeInitialization(v, _) }
 
-  class LocalVariableTag = Void;
+  class LocalVariableTag extends Void {
+    predicate isStackAllocated() { none() }
+  }
 
   private newtype TTempVariableTag = ZeroVarTag()
 
@@ -259,6 +297,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     LocalVariableTag getLocalVariableTag() { result = tag }
   }
 
+  // ------------------------------------------------
   private predicate modifiesFlag(Instruction1::Instruction i) {
     i instanceof Instruction1::SubInstruction
     or
@@ -428,7 +467,49 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     )
   }
 
-  // ------------------------------------------------
+  private predicate isDeadDef(Instruction1::Instruction i) {
+    i.getResultVariable() instanceof Instruction1::LocalVariable and
+    not any(Ssa::Definition def).getInstruction() = i
+  }
+
+  private module DeadDefToCallConfig implements ControlFlowReachableInputSig {
+    class FlowState = Unit;
+
+    predicate isSource(Instruction1::Instruction i, FlowState state) {
+      isDeadDef(i) and exists(state)
+    }
+
+    predicate isSink(Instruction1::Instruction i, FlowState state) {
+      i instanceof Instruction1::CallInstruction and exists(state)
+    }
+
+    predicate isBarrierOut(Instruction1::Instruction i, FlowState state) { isSink(i, state) }
+  }
+
+  private module DeadDefToCall = ControlFlowReachable<DeadDefToCallConfig>::Make;
+
+  private predicate deadDefFlowsToCall(
+    Instruction1::LocalVariable v, Instruction1::CallInstruction call
+  ) {
+    exists(Instruction1::Instruction deadDef |
+      deadDef.getResultVariable() = v and
+      DeadDefToCall::flowsTo(deadDef, call)
+    )
+  }
+
+  predicate hasAdditionalOperand(
+    Instruction1::Instruction i, EitherOperandTagOrOperandTag operandTag,
+    EitherVariableOrTranslatedElementVariablePair v
+  ) {
+    exists(int index, int index0, Instruction1::LocalVariable local |
+      operandTag.asRight().getIndex() = index and
+      local = v.asLeft() and
+      Instruction1::variableHasOrdering(local, index0) and
+      deadDefFlowsToCall(local, i) and
+      if local.isStackAllocated() then index = index0 + 4 else index = index0
+    )
+  }
+
   private newtype TTranslatedElement =
     TTranslatedComparisonInstruction(
       Instruction1::Instruction i, Instruction1::CJumpInstruction cjump, ConditionKind kind
@@ -465,7 +546,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
     abstract EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
+      InstructionTag tag, EitherOperandTagOrOperandTag operandTag
     );
 
     abstract predicate hasInstruction(
@@ -527,14 +608,14 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     override predicate hasTempVariable(TempVariableTag tag) { tag = ZeroVarTag() }
 
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
+      InstructionTag tag, EitherOperandTagOrOperandTag operandTag
     ) {
       tag = CmpDefTag(kind) and
       (
-        operandTag = LeftTag() and
+        operandTag.asLeft() instanceof Instruction1::LeftTag and
         result.asLeft() = instr.getResultVariable()
         or
-        operandTag = RightTag() and
+        operandTag.asLeft() instanceof Instruction1::RightTag and
         result.asRight().asLeft().getTranslatedElement() = this and
         result.asRight().asLeft().getVariableTag() = ZeroVarTag()
       )
@@ -582,8 +663,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     parameterHasIndex(result, f, 0)
   }
 
-  private Instruction1::InitInstruction getStackPointerInitialize(Instruction1::Function f) {
-    result.getResultVariable() instanceof Instruction1::StackPointer and
+  private Instruction1::FunEntryInstruction getFunctionEntry(Instruction1::Function f) {
     result.getEnclosingFunction() = f
   }
 
@@ -599,7 +679,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction1::Instruction i, SuccessorType succType
     ) {
-      i = getStackPointerInitialize(func) and
+      i = getFunctionEntry(func) and
       succType instanceof DirectSuccessor and
       result.asRight().getTranslatedElement() = this and
       result.asRight().getInstructionTag() = InitializeParameterTag(getFirstParameter(func))
@@ -620,7 +700,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
         )
         or
         not parameterHasIndex(_, func, index + 1) and
-        result.asLeft() = getStackPointerInitialize(func).getSuccessor(succType)
+        result.asLeft() = getFunctionEntry(func).getSuccessor(succType)
       )
     }
 
@@ -629,7 +709,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     override predicate hasTempVariable(TempVariableTag tag) { none() }
 
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
+      InstructionTag tag, EitherOperandTagOrOperandTag operandTag
     ) {
       none()
     }
@@ -648,46 +728,6 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
     override string toString() { result = "Initialize parameters in " + func.toString() }
 
     override EitherInstructionTranslatedElementTagPair getEntry() { none() }
-  }
-
-  class TranslatedOperand extends TranslatedElement {
-    TranslatedOperand() { none() }
-
-    override Instruction1::Function getEnclosingFunction() { none() }
-
-    override EitherInstructionTranslatedElementTagPair getSuccessor(
-      InstructionTag tag, SuccessorType succType
-    ) {
-      none()
-    }
-
-    override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
-      Instruction1::Instruction i, SuccessorType succType
-    ) {
-      none()
-    }
-
-    override predicate producesResult() { none() }
-
-    override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
-    ) {
-      none()
-    }
-
-    override predicate hasInstruction(
-      Opcode opcode, InstructionTag tag, OptionEitherVariableOrTranslatedElementPair v
-    ) {
-      none()
-    }
-
-    override string toString() { none() }
-
-    OptionEitherInstructionTranslatedElementTagPair getEntry() { none() }
-
-    override Either<Instruction1::Instruction, Instruction1::Operand>::Either getRawElement() {
-      none()
-    }
   }
 }
 

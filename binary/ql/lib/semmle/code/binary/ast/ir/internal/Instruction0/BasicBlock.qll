@@ -1,6 +1,7 @@
 private import semmle.code.binary.ast.Location
 private import Instruction
 private import Operand
+private import InstructionTag
 private import codeql.controlflow.BasicBlock as BB
 private import codeql.util.Unit
 private import codeql.controlflow.SuccessorType
@@ -86,15 +87,12 @@ module BinaryCfg implements BB::CfgSig<Location> {
 
     ControlFlowNode getSuccessor(SuccessorType t) {
       t instanceof DirectSuccessor and
-      exists(Instruction i, OperandTag tag |
+      exists(Instruction i, OperandTag tag | this.asOperand() = i.getOperand(tag) |
+        result.asOperand() = i.getOperand(tag.getSuccessorTag())
+        or
         this.asOperand() = i.getOperand(tag) and
-        (
-          result.asOperand() = i.getOperand(tag.getSuccessorTag())
-          or
-          this.asOperand() = i.getOperand(tag) and
-          not exists(tag.getSuccessorTag()) and
-          result.asInstruction() = i
-        )
+        not exists(i.getOperand(tag.getSuccessorTag())) and
+        result.asInstruction() = i
       )
       or
       exists(Instruction i | i = this.asInstruction().getSuccessor(t) |

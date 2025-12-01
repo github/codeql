@@ -52,13 +52,23 @@ private module Pre {
       }
     }
 
-    class BaseX86Register extends Internal::X86Register { }
+    class BaseX86Register extends Internal::X86Register {
+      BaseX86Register getASubRegister() { result = super.getASubRegister() }
+    }
 
-    class BaseRipRegister extends BaseX86Register, Internal::RipRegister { }
+    class BaseRipRegister extends BaseX86Register instanceof Internal::RipRegister { }
 
-    class BaseRspRegister extends BaseX86Register, Internal::RspRegister { }
+    class BaseRspRegister extends BaseX86Register instanceof Internal::RspRegister { }
 
-    class BaseRbpRegister extends BaseX86Register, Internal::RbpRegister { }
+    class BaseRbpRegister extends BaseX86Register instanceof Internal::RbpRegister { }
+
+    class BaseRcxRegister extends BaseX86Register instanceof Internal::RcxRegister { }
+
+    class BaseRdxRegister extends BaseX86Register instanceof Internal::RdxRegister { }
+
+    class BaseR8Register extends BaseX86Register instanceof Internal::R8Register { }
+
+    class BaseR9Register extends BaseX86Register instanceof Internal::R9Register { }
 
     class BaseX86Operand extends Internal::X86Operand { }
 
@@ -198,13 +208,23 @@ private module Input implements Internal::InstructionInputSig {
     result = Pre::PreInput::getJumpTarget(b)
   }
 
-  class BaseX86Register extends Pre::Instructions::X86Register { }
+  class BaseX86Register extends Pre::Instructions::X86Register {
+    BaseX86Register getASubRegister() { result = super.getASubRegister() }
+  }
 
-  class BaseRipRegister extends BaseX86Register, Pre::Instructions::RipRegister { }
+  class BaseRipRegister extends BaseX86Register instanceof Pre::Instructions::RipRegister { }
 
-  class BaseRspRegister extends BaseX86Register, Pre::Instructions::RspRegister { }
+  class BaseRspRegister extends BaseX86Register instanceof Pre::Instructions::RspRegister { }
 
-  class BaseRbpRegister extends BaseX86Register, Pre::Instructions::RbpRegister { }
+  class BaseRbpRegister extends BaseX86Register instanceof Pre::Instructions::RbpRegister { }
+
+  class BaseRcxRegister extends BaseX86Register instanceof Pre::Instructions::RcxRegister { }
+
+  class BaseRdxRegister extends BaseX86Register instanceof Pre::Instructions::RdxRegister { }
+
+  class BaseR8Register extends BaseX86Register instanceof Pre::Instructions::R8Register { }
+
+  class BaseR9Register extends BaseX86Register instanceof Pre::Instructions::R9Register { }
 
   class BaseX86Operand extends Pre::Instructions::X86Operand {
     BaseX86Operand() { this.getUse() instanceof BaseX86Instruction }

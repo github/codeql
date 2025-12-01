@@ -24,10 +24,15 @@ private newtype TOpcode =
   TNop() or
   TNot() or
   TInit() or
-  TInstrRef()
+  TInstrRef() or
+  TFunEntry()
 
 class Opcode extends TOpcode {
   string toString() { none() }
+}
+
+class FunEntry extends Opcode, TFunEntry {
+  override string toString() { result = "FunEntry" }
 }
 
 class Load extends Opcode, TLoad {

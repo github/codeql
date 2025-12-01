@@ -15,19 +15,26 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
   class EitherInstructionTranslatedElementTagPair =
     Either<Instruction0::Instruction, TranslatedElementTagPair>::Either;
 
+  class EitherOperandTagOrOperandTag = Either<Instruction0::OperandTag, OperandTag>::Either;
+
   class EitherVariableOrTranslatedElementVariablePair =
     Either<Instruction0::Variable, EitherTranslatedElementVariablePairOrFunctionLocalVariablePair>::Either;
 
   class OptionEitherVariableOrTranslatedElementPair =
     Option<EitherVariableOrTranslatedElementVariablePair>::Option;
 
-  class OptionEitherInstructionTranslatedElementTagPair =
-    Option<EitherInstructionTranslatedElementTagPair>::Option;
-
   class EitherTranslatedElementVariablePairOrFunctionLocalVariablePair =
     Either<TranslatedElementVariablePair, FunctionLocalVariablePair>::Either;
 
   private newtype TInstructionTag = SingleTag()
+
+  class OperandTag extends Void {
+    int getIndex() { none() }
+
+    EitherOperandTagOrOperandTag getSuccessorTag() { none() }
+
+    EitherOperandTagOrOperandTag getPredecessorTag() { none() }
+  }
 
   class InstructionTag extends TInstructionTag {
     string toString() { result = "SingleTag" }
@@ -50,6 +57,22 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
         else result = "v" + offset.toString()
       )
     }
+
+    predicate isStackAllocated() { any() }
+  }
+
+  predicate variableHasOrdering(EitherVariableOrTranslatedElementVariablePair v, int ordering) {
+    exists(Instruction0::Function f, FunctionLocalVariablePair p |
+      p = v.asRight().asRight() and
+      p.getFunction() = f and
+      p =
+        rank[ordering + 1](FunctionLocalVariablePair cand, int index |
+          cand.getFunction() = f and
+          cand.getLocalVariableTag() = MemToSsaVarTag(index)
+        |
+          cand order by index
+        )
+    )
   }
 
   private newtype TTranslatedElementTagPair =
@@ -289,12 +312,12 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     exists(Ssa::Definition def | instr = def.getInstruction() |
       exists(Instruction0::LoadInstruction load |
         exists(TTranslatedLoad(load)) and
-        load.getOperand() = unique(| | def.getARead())
+        load.getOperand() = unique( | | def.getARead())
       )
       or
       exists(Instruction0::StoreInstruction store |
         exists(TTranslatedStore(store)) and
-        store.getAddressOperand() = unique(| | def.getARead())
+        store.getAddressOperand() = unique( | | def.getARead())
       )
     )
   }
@@ -304,7 +327,6 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     or
     exists(Ssa::Definition def |
       def.getInstruction() = instr and
-      def.getSourceVariable() instanceof Instruction0::TempVariable and
       forex(Instruction0::Operand op | op = def.getARead() | isRemovedAddress(op.getUse())) // TODO: Recursion through forex is bad for performance
     )
   }
@@ -315,6 +337,15 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     exists(TTranslatedStore(instr))
     or
     isRemovedAddress(instr)
+    or
+    // Remove initializations of stack/frame pointer initializations if they
+    // are not used
+    exists(Instruction0::InitInstruction init | instr = init |
+      init.getResultVariable() instanceof Instruction0::StackPointer
+      or
+      init.getResultVariable() instanceof Instruction0::FramePointer
+    ) and
+    not any(Ssa::Definition def).getInstruction() = instr
   }
 
   abstract class TranslatedElement extends TTranslatedElement {
@@ -345,7 +376,7 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
     abstract EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
+      InstructionTag tag, EitherOperandTagOrOperandTag operandTag
     );
 
     abstract predicate hasInstruction(
@@ -390,7 +421,7 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     override predicate producesResult() { none() }
 
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
+      InstructionTag tag, EitherOperandTagOrOperandTag operandTag
     ) {
       none()
     }
@@ -416,6 +447,24 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     final override string getDumpId() { result = instr.getResultVariable().toString() } // TODO: Don't use toString
   }
 
+  private Instruction0::Instruction getPredecessorIfRemoved(Instruction0::Instruction instr) {
+    isRemovedInstruction(instr) and
+    result = instr.getAPredecessor()
+  }
+
+  private Instruction0::Instruction getLastNonRemoved(Instruction0::Instruction instr) {
+    result = getPredecessorIfRemoved*(instr) and not isRemovedInstruction(result)
+  }
+
+  private Instruction0::Instruction getSuccessorIfRemoved(Instruction0::Instruction instr) {
+    isRemovedInstruction(instr) and
+    result = instr.getASuccessor()
+  }
+
+  private Instruction0::Instruction getFirstNonRemoved(Instruction0::Instruction instr) {
+    result = getSuccessorIfRemoved*(instr) and not isRemovedInstruction(result)
+  }
+
   private class TranslatedStoreInstruction extends TranslatedInstruction {
     override Instruction0::StoreInstruction instr;
 
@@ -427,13 +476,14 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
       InstructionTag tag, SuccessorType succType
     ) {
       tag = SingleTag() and
-      result.asLeft() = instr.getSuccessor(succType)
+      result.asLeft() = getFirstNonRemoved(instr.getSuccessor(succType))
     }
 
     override EitherInstructionTranslatedElementTagPair getInstructionSuccessor(
       Instruction0::Instruction i, SuccessorType succType
     ) {
-      i.getSuccessor(succType) = instr and
+      i = getLastNonRemoved(instr) and
+      succType instanceof DirectSuccessor and
       result.asRight().getTranslatedElement() = this and
       result.asRight().getInstructionTag() = SingleTag()
     }
@@ -441,10 +491,10 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     override predicate producesResult() { none() }
 
     override EitherVariableOrTranslatedElementVariablePair getVariableOperand(
-      InstructionTag tag, OperandTag operandTag
+      InstructionTag tag, EitherOperandTagOrOperandTag operandTag
     ) {
       tag = SingleTag() and
-      operandTag = UnaryTag() and
+      operandTag.asLeft() instanceof Instruction0::UnaryTag and
       result.asLeft() = instr.getValueOperand().getVariable()
     }
 
@@ -472,10 +522,6 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
     final override string getDumpId() {
       result = instr.getAddressOperand().getVariable().toString()
     } // TODO: Don't use toString
-  }
-
-  abstract class TranslatedOperand extends TranslatedElement {
-    abstract OptionEitherInstructionTranslatedElementTagPair getEntry();
   }
 }
 

@@ -14,7 +14,7 @@ class Function extends TFunction {
 
   string toString() { result = this.getName() }
 
-  Instruction getEntryInstruction() { result = f.getEntry() }
+  FunEntryInstruction getEntryInstruction() { result = f.getEntry() }
 
   BasicBlock getEntryBlock() { result = f.getEntry().getBasicBlock() }
 

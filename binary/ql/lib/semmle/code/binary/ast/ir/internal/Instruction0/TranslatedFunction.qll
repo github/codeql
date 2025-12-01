@@ -16,7 +16,33 @@ abstract class TranslatedFunction extends TranslatedElement {
 
   final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
-  abstract Instruction getEntry();
+  final FunEntryInstruction getEntry() { result = this.getInstruction(FunEntryTag()) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::FunEntry and
+    tag = FunEntryTag() and
+    v.isNone()
+    or
+    this.hasBodyInstruction(opcode, tag, v)
+  }
+
+  final override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = FunEntryTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getBodyEntry()
+    or
+    result = this.getBodySuccessor(tag, succType)
+  }
+
+  abstract predicate hasBodyInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  );
+
+  abstract Instruction getBodyEntry();
+
+  abstract Instruction getBodySuccessor(InstructionTag tag, SuccessorType succType);
 
   abstract string getName();
 
@@ -29,6 +55,8 @@ abstract class TranslatedFunction extends TranslatedElement {
   final override string getDumpId() { result = this.getName() }
 
   final override TranslatedFunction getEnclosingFunction() { result = this }
+
+  abstract predicate hasOrdering(LocalVariableTag tag, int ordering);
 }
 
 TranslatedFunction getTranslatedFunction(Raw::Element raw) { result.getRawElement() = raw }
@@ -40,7 +68,9 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
 
   override Raw::Element getRawElement() { result = entry }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
+  override predicate hasBodyInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
     tag = InitStackPtrTag() and
     opcode instanceof Opcode::Init and
     v.asSome() = this.getLocalVariable(X86RegisterTag(any(Raw::RspRegister sp)))
@@ -50,7 +80,7 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
     v.asSome() = this.getLocalVariable(X86RegisterTag(any(Raw::RbpRegister fp)))
   }
 
-  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+  override Instruction getBodySuccessor(InstructionTag tag, SuccessorType succType) {
     tag = InitFramePtrTag() and
     succType instanceof DirectSuccessor and
     result = this.getInstruction(InitStackPtrTag())
@@ -68,7 +98,7 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
-  final override Instruction getEntry() { result = this.getInstruction(InitFramePtrTag()) }
+  final override Instruction getBodyEntry() { result = this.getInstruction(InitFramePtrTag()) }
 
   final override string getName() {
     if this.isProgramEntryPoint()
@@ -82,6 +112,19 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
   final override predicate isProgramEntryPoint() { entry instanceof Raw::ProgramEntryInstruction }
 
   final override predicate isExported() { entry instanceof Raw::ExportedEntryInstruction }
+
+  final override predicate hasOrdering(LocalVariableTag tag, int ordering) {
+    exists(Raw::X86Register r | tag = X86RegisterTag(r) |
+      // TODO: This hardcodes X64 calling convention for Windows
+      r = any(Raw::RcxRegister rcx).getASubRegister*() and ordering = 0
+      or
+      r = any(Raw::RdxRegister rdx).getASubRegister*() and ordering = 1
+      or
+      r = any(Raw::R8Register r8).getASubRegister*() and ordering = 2
+      or
+      r = any(Raw::R9Register r9).getASubRegister*() and ordering = 3
+    )
+  }
 }
 
 class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
@@ -91,11 +134,13 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
 
   override Raw::Element getRawElement() { result = method }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
+  override predicate hasBodyInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
     none()
   }
 
-  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) { none() }
+  override Instruction getBodySuccessor(InstructionTag tag, SuccessorType succType) { none() }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
@@ -105,7 +150,11 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
 
   override predicate isExported() { none() }
 
-  override Instruction getEntry() {
+  override Instruction getBodyEntry() {
     result = getTranslatedInstruction(method.getInstruction(0)).getEntry()
+  }
+
+  final override predicate hasOrdering(LocalVariableTag tag, int ordering) {
+    none() // I don't think we need to do anything here?
   }
 }

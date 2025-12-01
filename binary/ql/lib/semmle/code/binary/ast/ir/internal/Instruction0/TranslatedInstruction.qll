@@ -93,10 +93,10 @@ abstract class WritingInstruction extends TranslatedX86Instruction {
     tag = WriteTag() and
     this.shouldGenerateStore() and
     (
-      operandTag = StoreValueTag() and
+      operandTag instanceof StoreValueTag and
       result = this.getResultInstruction().getResultVariable()
       or
-      operandTag = StoreAddressTag() and
+      operandTag instanceof StoreAddressTag and
       result = this.getTranslatedDestinationOperand().getAddressVariable()
     )
   }
@@ -269,10 +269,10 @@ class TranslatedX86SimpleBinaryInstruction extends WritingInstruction,
     or
     tag = SingleTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getLeftOperand().getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getRightOperand().getResultVariable()
     )
   }
@@ -325,7 +325,7 @@ class TranslatedX86Call extends TranslatedX86Instruction, TTranslatedX86Call {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
-    operandTag = CallTargetTag() and
+    operandTag instanceof CallTargetTag and
     result = this.getTranslatedOperand().getResultVariable()
   }
 
@@ -392,7 +392,7 @@ class TranslatedX86Jmp extends TranslatedX86Instruction, TTranslatedX86Jmp {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = X86JumpTag() and
-    operandTag = JumpTargetTag() and
+    operandTag instanceof JumpTargetTag and
     if exists(instr.getTarget())
     then result = this.getInstruction(X86JumpInstrRefTag()).getResultVariable()
     else result = this.getTranslatedOperand().getResultVariable()
@@ -458,13 +458,13 @@ abstract class TranslatedCopy extends TranslatedX86Instruction {
     tag = SingleTag() and
     if this.shouldGenerateStore()
     then (
-      operandTag = StoreValueTag() and
+      operandTag instanceof StoreValueTag and
       result = this.getTranslatedSourceOperand().getResultVariable()
       or
-      operandTag = StoreAddressTag() and
+      operandTag instanceof StoreAddressTag and
       result = this.getTranslatedDestOperand().getResultVariable()
     ) else (
-      operandTag = UnaryTag() and
+      operandTag instanceof UnaryTag and
       result = this.getTranslatedSourceOperand().getResultVariable()
     )
   }
@@ -622,19 +622,19 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = PushSubTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getStackPointer()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(PushSubConstTag()).getResultVariable()
     )
     or
     tag = PushStoreTag() and
     (
-      operandTag = StoreValueTag() and
+      operandTag instanceof StoreValueTag and
       result = this.getTranslatedOperand().getResultVariable()
       or
-      operandTag = StoreAddressTag() and
+      operandTag instanceof StoreAddressTag and
       result = this.getStackPointer()
     )
   }
@@ -714,19 +714,19 @@ class TranslatedX86Test extends TranslatedX86Instruction, TTranslatedX86Test {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = TestAndTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getLeftOperand().getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getRightOperand().getResultVariable()
     )
     or
     tag = TestCmpTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getVariable(TestVarTag())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getVariable(ZeroVarTag())
     )
   }
@@ -845,14 +845,14 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = X86CJumpTag() and
     (
-      operandTag = CondJumpTargetTag() and
+      operandTag instanceof CondJumpTargetTag and
       (
         if exists(instr.getTarget())
         then result = this.getInstruction(X86CJumpInstrRefTag()).getResultVariable()
         else result = this.getTranslatedOperand().getResultVariable()
       )
       or
-      operandTag = CondTag() and
+      operandTag instanceof CondTag and
       result = this.getLocalVariable(CmpRegisterTag())
     )
   }
@@ -915,10 +915,10 @@ class TranslatedX86Cmp extends TranslatedX86Instruction, TTranslatedX86Cmp {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getLeftOperand().getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getRightOperand().getResultVariable()
     )
   }
@@ -984,7 +984,7 @@ class TranslatedX86Lea extends TranslatedX86Instruction, TTranslatedX86Lea {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
-    operandTag = UnaryTag() and
+    operandTag instanceof UnaryTag and
     result = this.getTranslatedSourceOperand().getResultVariable()
   }
 
@@ -1066,15 +1066,15 @@ class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = PopLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getStackPointer()
     or
     tag = PopAddTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getStackPointer()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(PopAddConstTag()).getResultVariable()
     )
   }
@@ -1168,10 +1168,10 @@ abstract class TranslatedX86DecOrInc extends WritingInstruction {
     or
     tag = DecOrIncOpTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getTranslatedOperand().getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(DecOrIncConstTag()).getResultVariable()
     )
   }
@@ -1288,28 +1288,28 @@ abstract class TranslatedX86BtBase extends TranslatedX86Instruction {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = BtShiftTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getLeftOperand().getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getRightOperand().getResultVariable()
     )
     or
     tag = BtAndTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getVariable(BtVarTag())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getVariable(BtOneVarTag())
     )
     or
     tag = BtCmpTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getVariable(BtVarTag())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getVariable(BtZeroVarTag())
     )
   }
@@ -1459,23 +1459,23 @@ class TranslatedX86Btr extends TranslatedX86BtBase, TTranslatedX86Btr {
     or
     tag = BtrShiftTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getVariable(BtrOneVarTag())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getRightOperand().getResultVariable()
     )
     or
     tag = BtrNotTag() and
-    operandTag = UnaryTag() and
+    operandTag instanceof UnaryTag and
     result = this.getVariable(BtrVarTag())
     or
     tag = BtrAndTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getLeftOperand().getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getVariable(BtrVarTag())
     )
   }
@@ -1532,10 +1532,10 @@ class TranslatedX86Neg extends WritingInstruction, TTranslatedX86Neg {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = NegSubTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getInstruction(NegConstZeroTag()).getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getTranslatedOperand().getResultVariable()
     )
   }
@@ -1670,7 +1670,7 @@ class TranslatedCilStloc extends TranslatedCilInstruction, TTranslatedCilStloc {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
-    operandTag = UnaryTag() and
+    operandTag instanceof UnaryTag and
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
   }
 
@@ -1718,7 +1718,7 @@ class TranslatedCilLdloc extends TranslatedCilInstruction, TTranslatedCilLdloc {
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
-    operandTag = UnaryTag() and
+    operandTag instanceof UnaryTag and
     result = this.getCilLocalVariable(instr.getLocalVariableIndex())
   }
 
@@ -1766,7 +1766,7 @@ class TranslatedCilUnconditionalBranch extends TranslatedCilInstruction,
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = CilUnconditionalBranchTag() and
-    operandTag = JumpTargetTag() and
+    operandTag instanceof JumpTargetTag and
     result = this.getInstruction(CilUnconditionalBranchRefTag()).getResultVariable()
   }
 
@@ -1824,10 +1824,10 @@ abstract class TranslatedCilArithmeticInstruction extends TranslatedCilInstructi
   final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = SingleTag() and
     exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = getTranslatedCilInstruction(pred).getStackElement(1)
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = getTranslatedCilInstruction(pred).getStackElement(0)
     )
   }
@@ -1942,19 +1942,19 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
   final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = CilRelSubTag() and
     exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = getTranslatedCilInstruction(pred).getStackElement(1)
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = getTranslatedCilInstruction(pred).getStackElement(0)
     )
     or
     tag = CilRelCJumpTag() and
     (
-      operandTag = CondTag() and
+      operandTag instanceof CondTag and
       result = this.getInstruction(CilRelSubTag()).getResultVariable()
       or
-      operandTag = CondJumpTargetTag() and
+      operandTag instanceof CondJumpTargetTag and
       result = this.getInstruction(CilRelRefTag()).getResultVariable()
     )
   }
@@ -2086,19 +2086,19 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = CilBoolBranchCJumpTag() and
     (
-      operandTag = CondTag() and
+      operandTag instanceof CondTag and
       result = this.getInstruction(CilBoolBranchSubTag()).getResultVariable()
       or
-      operandTag = CondJumpTargetTag() and
+      operandTag instanceof CondJumpTargetTag and
       result = this.getInstruction(CilBoolBranchRefTag()).getResultVariable()
     )
     or
     tag = CilBoolBranchSubTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(CilBoolBranchConstTag()).getResultVariable()
     )
   }
@@ -2176,7 +2176,7 @@ class TranslatedCilRet extends TranslatedCilInstruction, TTranslatedCilRet {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     not m.isVoid() and
     tag = SingleTag() and
-    operandTag = UnaryTag() and
+    operandTag instanceof UnaryTag and
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
   }
 

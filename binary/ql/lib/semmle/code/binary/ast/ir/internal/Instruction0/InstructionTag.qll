@@ -3,6 +3,7 @@ private import semmle.code.binary.ast.ir.internal.Opcode
 
 newtype TInstructionTag =
   SingleTag() or
+  FunEntryTag() or
   X86JumpInstrRefTag() or
   X86JumpTag() or
   X86CJumpInstrRefTag() or
@@ -61,6 +62,9 @@ class InstructionTag extends TInstructionTag {
   final string toString() {
     this = SingleTag() and
     result = "Single"
+    or
+    this = FunEntryTag() and
+    result = "FunEntry"
     or
     this = X86JumpInstrRefTag() and
     result = "X86JumpInstrRef"
@@ -208,4 +212,106 @@ class InstructionTag extends TInstructionTag {
     this = CilUnconditionalBranchRefTag() and
     result = "CilUnconditionalBranchRef"
   }
+}
+
+private newtype TOperandTag =
+  TLeftTag() or
+  TRightTag() or
+  TUnaryTag() or
+  TStoreValueTag() or
+  TLoadAddressTag() or
+  TStoreAddressTag() or
+  TCallTargetTag() or
+  TCondTag() or
+  TCondJumpTargetTag() or
+  TJumpTargetTag()
+
+abstract class OperandTag extends TOperandTag {
+  abstract int getIndex();
+
+  abstract OperandTag getSuccessorTag();
+
+  final OperandTag getPredecessorTag() { result.getSuccessorTag() = this }
+
+  abstract string toString();
+}
+
+class LeftTag extends OperandTag, TLeftTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { result instanceof RightTag }
+
+  final override string toString() { result = "Left" }
+}
+
+class RightTag extends OperandTag, TRightTag {
+  final override int getIndex() { result = 1 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "Right" }
+}
+
+class UnaryTag extends OperandTag, TUnaryTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "Unary" }
+}
+
+class StoreValueTag extends OperandTag, TStoreValueTag {
+  final override int getIndex() { result = 1 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "StoreValue" }
+}
+
+class LoadAddressTag extends OperandTag, TLoadAddressTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "LoadAddr" }
+}
+
+class StoreAddressTag extends OperandTag, TStoreAddressTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { result instanceof StoreValueTag }
+
+  final override string toString() { result = "StoreDest" }
+}
+
+class CallTargetTag extends OperandTag, TCallTargetTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "CallTarget" }
+}
+
+class CondTag extends OperandTag, TCondTag {
+  final override int getIndex() { result = 1 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "CondJump" }
+}
+
+class CondJumpTargetTag extends OperandTag, TCondJumpTargetTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { result instanceof CondTag }
+
+  final override string toString() { result = "CondJumpTarget" }
+}
+
+class JumpTargetTag extends OperandTag, TJumpTargetTag {
+  final override int getIndex() { result = 0 }
+
+  final override OperandTag getSuccessorTag() { none() }
+
+  final override string toString() { result = "JumpTarget" }
 }

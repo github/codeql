@@ -410,37 +410,37 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = index * factor
     tag = MemoryOperandMulTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
     )
     or
     // x = x + base
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     )
     or
     // x = x + displacement
     tag = MemoryOperandAdd2Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd2Tag()).getResultVariable()
   }
 
@@ -449,27 +449,27 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = index * factor
     tag = MemoryOperandMulTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
     )
     or
     // x = x + base
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -478,27 +478,27 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = base + index
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     )
     or
     // x = x + displacement
     tag = MemoryOperandAdd2Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd2Tag()).getResultVariable()
   }
 
@@ -507,17 +507,17 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = base + index
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -526,17 +526,17 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = base + displacement
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -544,7 +544,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   Variable case6(InstructionTag tag, OperandTag operandTag) {
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getX86RegisterVariable(op.getBaseRegister().getTarget())
     // If we are in case6 and we do not need to load the result will be the base register
   }
@@ -554,27 +554,27 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = index * factor
     tag = MemoryOperandMulTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
     )
     or
     // x = x + displacement
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -583,17 +583,17 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = index * factor
     tag = MemoryOperandMulTag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstFactorTag()).getResultVariable()
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandMulTag()).getResultVariable()
   }
 
@@ -602,17 +602,17 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     // x = index + displacement
     tag = MemoryOperandAdd1Tag() and
     (
-      operandTag = LeftTag() and
+      operandTag instanceof LeftTag and
       result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
       or
-      operandTag = RightTag() and
+      operandTag instanceof RightTag and
       result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     )
     or
     // Load from [x]
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandAdd1Tag()).getResultVariable()
   }
 
@@ -620,7 +620,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   Variable case10(InstructionTag tag, OperandTag operandTag) {
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getX86RegisterVariable(op.getIndexRegister().getTarget())
     // If we are in case10 and we do not need to load the result will be the index register
   }
@@ -629,7 +629,7 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
   Variable case11(InstructionTag tag, OperandTag operandTag) {
     this.isLoaded() and
     tag = MemoryOperandLoadTag() and
-    operandTag = LoadAddressTag() and
+    operandTag instanceof LoadAddressTag and
     result = this.getInstruction(MemoryOperandConstDisplacementTag()).getResultVariable()
     // If we are in case11 and we do not need to load the result will be the displacement constant
   }

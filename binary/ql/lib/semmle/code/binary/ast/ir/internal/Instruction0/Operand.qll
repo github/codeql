@@ -1,6 +1,5 @@
 private import semmle.code.binary.ast.Location
 private import TranslatedElement
-private import semmle.code.binary.ast.ir.internal.Tags
 private import InstructionTag
 private import Instruction
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
@@ -18,7 +17,7 @@ newtype TOperand =
 class Operand extends TOperand {
   TranslatedElement te;
   InstructionTag tag;
-  TOperandTag operandTag;
+  OperandTag operandTag;
 
   Operand() { this = MkOperand(te, tag, operandTag) }
 
@@ -72,7 +71,3 @@ class ConditionJumpTargetOperand extends Operand {
 class JumpTargetOperand extends Operand {
   override JumpTargetTag operandTag;
 }
-
-private import semmle.code.binary.ast.ir.internal.Tags as Tags
-
-class OperandTag = Tags::OperandTag;

@@ -13,6 +13,8 @@ signature module InstructionInputSig {
 
   class BaseX86Register {
     string toString();
+
+    BaseX86Register getASubRegister();
   }
 
   class BaseRipRegister extends BaseX86Register;
@@ -20,6 +22,14 @@ signature module InstructionInputSig {
   class BaseRspRegister extends BaseX86Register;
 
   class BaseRbpRegister extends BaseX86Register;
+
+  class BaseRcxRegister extends BaseX86Register;
+
+  class BaseRdxRegister extends BaseX86Register;
+
+  class BaseR8Register extends BaseX86Register;
+
+  class BaseR9Register extends BaseX86Register;
 
   class BaseX86RegisterAccess {
     string toString();
@@ -121,6 +131,22 @@ module MakeInstructions<InstructionInputSig InstructionInput> {
   final private class FinalRbpRegister = BaseRbpRegister;
 
   class RbpRegister extends FinalRbpRegister { }
+
+  final private class FinalRcxRegister = BaseRcxRegister;
+
+  class RcxRegister extends FinalRcxRegister { }
+
+  final private class FinalRdxRegister = BaseRdxRegister;
+
+  class RdxRegister extends FinalRdxRegister { }
+
+  final private class FinalR8Register = BaseR8Register;
+
+  class R8Register extends FinalR8Register { }
+
+  final private class FinalR9Register = BaseR9Register;
+
+  class R9Register extends FinalR9Register { }
 
   final private class FinalX86RegisterAccess = BaseX86RegisterAccess;
 
@@ -3953,18 +3979,50 @@ private module InstructionInput0 implements InstructionInputSig {
 
   class BaseX86Register extends @register {
     string toString() { register(this, result) }
+
+    abstract BaseX86Register getASubRegister();
   }
 
   class BaseRipRegister extends BaseX86Register {
     BaseRipRegister() { register(this, "rip") } // TODO: Or eip?
+
+    final override BaseX86Register getASubRegister() { register(result, "eip") }
   }
 
   class BaseRspRegister extends BaseX86Register {
     BaseRspRegister() { register(this, "rsp") } // TODO: Or esp?
+
+    final override BaseX86Register getASubRegister() { register(result, "esp") }
   }
 
   class BaseRbpRegister extends BaseX86Register {
     BaseRbpRegister() { register(this, "rbp") } // TODO: Or ebp?
+
+    final override BaseX86Register getASubRegister() { register(result, "rbp") }
+  }
+
+  class BaseRcxRegister extends BaseX86Register {
+    BaseRcxRegister() { register(this, "rcx") } // TODO: Or ecx?
+
+    final override BaseX86Register getASubRegister() { register(result, "ecx") }
+  }
+
+  class BaseRdxRegister extends BaseX86Register {
+    BaseRdxRegister() { register(this, "rdx") } // TODO: Or edx?
+
+    final override BaseX86Register getASubRegister() { register(result, "edx") }
+  }
+
+  class BaseR8Register extends BaseX86Register {
+    BaseR8Register() { register(this, "r8") }
+
+    final override BaseX86Register getASubRegister() { register(result, "r8d") }
+  }
+
+  class BaseR9Register extends BaseX86Register {
+    BaseR9Register() { register(this, "r9") }
+
+    final override BaseX86Register getASubRegister() { register(result, "r9d") }
   }
 
   class BaseX86RegisterAccess extends @register_access {

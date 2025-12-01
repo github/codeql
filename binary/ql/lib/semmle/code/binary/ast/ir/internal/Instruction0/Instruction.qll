@@ -178,6 +178,10 @@ class InstrRefInstruction extends Instruction {
   }
 }
 
+class FunEntryInstruction extends Instruction {
+  override Opcode::FunEntry opcode;
+}
+
 class BinaryInstruction extends Instruction {
   override Opcode::BinaryOpcode opcode;
 

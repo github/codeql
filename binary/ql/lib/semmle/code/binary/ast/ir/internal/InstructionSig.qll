@@ -9,7 +9,7 @@ signature module InstructionSig {
 
     string toString();
 
-    Instruction getEntryInstruction();
+    FunEntryInstruction getEntryInstruction();
 
     BasicBlock getEntryBlock();
 
@@ -52,6 +52,36 @@ signature module InstructionSig {
     string toString();
   }
 
+  class OperandTag {
+    int getIndex();
+
+    OperandTag getSuccessorTag();
+
+    OperandTag getPredecessorTag();
+
+    string toString();
+  }
+
+  class LeftTag extends OperandTag;
+
+  class RightTag extends OperandTag;
+
+  class UnaryTag extends OperandTag;
+
+  class StoreValueTag extends OperandTag;
+
+  class LoadAddressTag extends OperandTag;
+
+  class StoreAddressTag extends OperandTag;
+
+  class CallTargetTag extends OperandTag;
+
+  class CondTag extends OperandTag;
+
+  class CondJumpTargetTag extends OperandTag;
+
+  class JumpTargetTag extends OperandTag;
+
   class TempVariableTag {
     string toString();
   }
@@ -63,11 +93,15 @@ signature module InstructionSig {
 
     Operand getAnAccess();
   }
+  
+  predicate variableHasOrdering(Variable v, int ordering);
 
   class TempVariable extends Variable;
 
   class LocalVariable extends Variable {
     Function getEnclosingFunction();
+
+    predicate isStackAllocated();
   }
 
   class StackPointer extends LocalVariable;
@@ -159,6 +193,8 @@ signature module InstructionSig {
   class AndInstruction extends BinaryInstruction;
 
   class XorInstruction extends BinaryInstruction;
+
+  class FunEntryInstruction extends Instruction;
 
   class CJumpInstruction extends Instruction {
     ConditionKind getKind();
