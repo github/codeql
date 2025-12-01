@@ -6,6 +6,9 @@ extensions:
       # Builtin deref
       - ["<& as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
       - ["<&mut as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
+      # Index
+      - ["<_ as core::ops::index::Index>::index", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
+      - ["<_ as core::ops::index::IndexMut>::index_mut", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
       # Arithmetic
       - ["<_ as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::ops::arith::Add>::add", "Argument[0]", "ReturnValue", "taint", "manual"]

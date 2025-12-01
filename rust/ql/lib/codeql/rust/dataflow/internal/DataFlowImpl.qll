@@ -90,8 +90,6 @@ final class DataFlowCall extends TDataFlowCall {
  * Holds if `arg` is an argument of `call` at the position `pos`.
  */
 predicate isArgumentForCall(Expr arg, Call call, RustDataFlow::ArgumentPosition pos) {
-  // TODO: Handle index expressions as calls in data flow.
-  not call instanceof IndexExpr and
   arg = pos.getArgument(call)
 }
 
@@ -261,6 +259,30 @@ private module Aliases {
   class LambdaCallKindAlias = LambdaCallKind;
 }
 
+/**
+ * Index assignments like `a[i] = rhs` are treated as `*a.index_mut(i) = rhs`,
+ * so they should in principle be handled by `referenceAssignment`.
+ *
+ * However, this would require support for [generalized reverse flow][1], which
+ * is not yet implemented, so instead we simulate reverse flow where it would
+ * have applied via the model for `<_ as core::ops::index::IndexMut>::index_mut`.
+ *
+ * The same is the case for compound assignments like `a[i] += rhs`, which are
+ * treated as `(*a.index_mut(i)).add_assign(rhs)`.
+ *
+ * [1]: https://github.com/github/codeql/pull/18109
+ */
+predicate indexAssignment(
+  AssignmentOperation assignment, IndexExpr index, Node rhs, PostUpdateNode base, Content c
+) {
+  assignment.getLhs() = index and
+  rhs.asExpr() = assignment.getRhs() and
+  base.getPreUpdateNode().asExpr() = index.getBase() and
+  c instanceof ElementContent and
+  // simulate that the flow summary applies
+  not index.getResolvedTarget().fromSource()
+}
+
 module RustDataFlow implements InputSig<Location> {
   private import Aliases
   private import codeql.rust.dataflow.DataFlow
@@ -360,6 +382,7 @@ module RustDataFlow implements InputSig<Location> {
     node instanceof ClosureParameterNode or
     node instanceof DerefBorrowNode or
     node instanceof DerefOutNode or
+    node instanceof IndexOutNode or
     node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
   }
@@ -552,12 +575,6 @@ module RustDataFlow implements InputSig<Location> {
       access = c.(FieldContent).getAnAccess()
     )
     or
-    exists(IndexExpr arr |
-      c instanceof ElementContent and
-      node1.asExpr() = arr.getBase() and
-      node2.asExpr() = arr
-    )
-    or
     exists(ForExpr for |
       c instanceof ElementContent and
       node1.asExpr() = for.getIterable() and
@@ -581,6 +598,12 @@ module RustDataFlow implements InputSig<Location> {
       c instanceof ReferenceContent and
       node1.(DerefOutNode).getDerefExpr() = deref and
       node2.asExpr() = deref
+    )
+    or
+    exists(IndexExpr index |
+      c instanceof ReferenceContent and
+      node1.(IndexOutNode).getIndexExpr() = index and
+      node2.asExpr() = index
     )
     or
     // Read from function return
@@ -644,13 +667,27 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   pragma[nomagic]
-  private predicate referenceAssignment(Node node1, Node node2, ReferenceContent c) {
-    exists(AssignmentExpr assignment, PrefixExpr deref |
-      assignment.getLhs() = deref and
-      deref.getOperatorName() = "*" and
+  private predicate referenceAssignment(
+    Node node1, Node node2, Expr e, boolean clears, ReferenceContent c
+  ) {
+    exists(AssignmentExpr assignment, Expr lhs |
+      assignment.getLhs() = lhs and
       node1.asExpr() = assignment.getRhs() and
-      node2.asExpr() = deref.getExpr() and
       exists(c)
+    |
+      lhs =
+        any(DerefExpr de |
+          de = node2.(DerefOutNode).getDerefExpr() and
+          e = de.getExpr()
+        ) and
+      clears = true
+      or
+      lhs =
+        any(IndexExpr ie |
+          ie = node2.(IndexOutNode).getIndexExpr() and
+          e = ie.getBase() and
+          clears = false
+        )
     )
   }
 
@@ -694,14 +731,14 @@ module RustDataFlow implements InputSig<Location> {
     or
     fieldAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     or
-    referenceAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
+    referenceAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), _, _, c)
     or
-    exists(AssignmentExpr assignment, IndexExpr index |
-      c instanceof ElementContent and
-      assignment.getLhs() = index and
-      node1.asExpr() = assignment.getRhs() and
-      node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
-    )
+    indexAssignment(any(AssignmentExpr ae), _, node1, node2, c)
+    or
+    // Compund assignment like `a[i] += rhs` are modeled as a store step from `rhs`
+    // to `[post] a[i]`, followed by a taint step into `[post] a`.
+    indexAssignment(any(CompoundAssignmentExpr cae),
+      node2.(PostUpdateNode).getPreUpdateNode().asExpr(), node1, _, c)
     or
     referenceExprToExpr(node1, node2, c)
     or
@@ -738,7 +775,7 @@ module RustDataFlow implements InputSig<Location> {
   predicate clearsContent(Node n, ContentSet cs) {
     fieldAssignment(_, n, cs.(SingletonContentSet).getContent())
     or
-    referenceAssignment(_, n, cs.(SingletonContentSet).getContent())
+    referenceAssignment(_, _, n.asExpr(), true, cs.(SingletonContentSet).getContent())
     or
     FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), cs)
     or
@@ -982,9 +1019,7 @@ private module Cached {
   newtype TDataFlowCall =
     TCall(Call call) {
       Stages::DataFlowStage::ref() and
-      call.hasEnclosingCfgScope() and
-      // TODO: Handle index expressions as calls in data flow.
-      not call instanceof IndexExpr
+      call.hasEnclosingCfgScope()
     } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver

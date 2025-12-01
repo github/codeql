@@ -65,6 +65,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       or
       succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =
         getPostUpdateReverseStep(pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), false)
+      or
+      indexAssignment(any(CompoundAssignmentExpr cae),
+        pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), _, succ, _)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),

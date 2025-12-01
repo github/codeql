@@ -15,11 +15,11 @@ mod arrays {
         let s = source(0);
         let arr = [s; 5];
         sink(arr[2]); // $ hasValueFlow=0
-        sink(*arr.index(2)); // $ MISSING: hasValueFlow=0
+        sink(*arr.index(2)); // $ hasValueFlow=0
 
         let mut arr = source([1]);
         sink(arr[0]); // $ hasTaintFlow=1
-        sink(*arr.index(0)); // $ MISSING: hasTaintFlow=1
+        sink(*arr.index(0)); // $ hasTaintFlow=1
 
         let s = source(2);
         let arr = [s];
@@ -81,13 +81,13 @@ mod indexers {
     pub fn f() {
         let s = source(0);
         let s = S(s);
-        sink(s[0].0); // $ MISSING: hasValueFlow=0
+        sink(s[0].0); // $ hasValueFlow=0
         sink((*s.index(0)).0); // $ hasValueFlow=0
 
         let mut s = S(0);
         sink(s.0);
         s[0] = S(source(1));
-        sink(s.0); // $ MISSING: hasValueFlow=1
+        sink(s.0); // $ hasValueFlow=1
 
         let mut s = S(0);
         sink(s.0);

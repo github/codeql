@@ -905,24 +905,24 @@ readStep
 | main.rs:421:9:421:24 | C {...} | main.rs:384:9:384:20 | C | main.rs:421:22:421:22 | n |
 | main.rs:422:9:422:24 | D {...} | main.rs:385:9:385:20 | D | main.rs:422:22:422:22 | n |
 | main.rs:431:14:431:17 | [post] arr1 [borrowed] | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | [post] arr1 |
-| main.rs:431:14:431:17 | arr1 | file://:0:0:0:0 | element | main.rs:431:14:431:20 | arr1[2] |
+| main.rs:431:14:431:20 | arr1[2] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:431:14:431:20 | arr1[2] |
 | main.rs:435:14:435:17 | [post] arr2 [borrowed] | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | [post] arr2 |
-| main.rs:435:14:435:17 | arr2 | file://:0:0:0:0 | element | main.rs:435:14:435:20 | arr2[4] |
+| main.rs:435:14:435:20 | arr2[4] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:435:14:435:20 | arr2[4] |
 | main.rs:439:14:439:17 | [post] arr3 [borrowed] | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | [post] arr3 |
-| main.rs:439:14:439:17 | arr3 | file://:0:0:0:0 | element | main.rs:439:14:439:20 | arr3[2] |
+| main.rs:439:14:439:20 | arr3[2] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:439:14:439:20 | arr3[2] |
 | main.rs:445:15:445:18 | arr1 | file://:0:0:0:0 | element | main.rs:445:9:445:10 | n1 |
 | main.rs:450:15:450:18 | arr2 | file://:0:0:0:0 | element | main.rs:450:9:450:10 | n2 |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:10:458:10 | a |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:13:458:13 | b |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:16:458:16 | c |
 | main.rs:468:10:468:16 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | [post] mut_arr |
-| main.rs:468:10:468:16 | mut_arr | file://:0:0:0:0 | element | main.rs:468:10:468:19 | mut_arr[1] |
+| main.rs:468:10:468:19 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:468:10:468:19 | mut_arr[1] |
 | main.rs:470:5:470:11 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | [post] mut_arr |
-| main.rs:470:5:470:11 | mut_arr | file://:0:0:0:0 | element | main.rs:470:5:470:14 | mut_arr[1] |
+| main.rs:470:5:470:14 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:470:5:470:14 | mut_arr[1] |
 | main.rs:471:13:471:19 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | [post] mut_arr |
-| main.rs:471:13:471:19 | mut_arr | file://:0:0:0:0 | element | main.rs:471:13:471:22 | mut_arr[1] |
+| main.rs:471:13:471:22 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:471:13:471:22 | mut_arr[1] |
 | main.rs:473:10:473:16 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | [post] mut_arr |
-| main.rs:473:10:473:16 | mut_arr | file://:0:0:0:0 | element | main.rs:473:10:473:19 | mut_arr[0] |
+| main.rs:473:10:473:19 | mut_arr[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:473:10:473:19 | mut_arr[0] |
 | main.rs:479:24:479:33 | [post] source(...) [borrowed] | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | [post] source(...) |
 | main.rs:480:9:480:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:480:10:480:13 | cond |
 | main.rs:480:9:480:20 | TuplePat | file://:0:0:0:0 | tuple.1 | main.rs:480:16:480:19 | name |
@@ -933,7 +933,7 @@ readStep
 | main.rs:483:18:483:18 | [post] n [borrowed] | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | [post] n |
 | main.rs:506:13:506:13 | [post] a [borrowed] | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | [post] a |
 | main.rs:519:10:519:11 | [post] vs [borrowed] | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | [post] vs |
-| main.rs:519:10:519:11 | vs | file://:0:0:0:0 | element | main.rs:519:10:519:14 | vs[0] |
+| main.rs:519:10:519:14 | vs[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:519:10:519:14 | vs[0] |
 | main.rs:520:10:520:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:520:10:520:35 | * ... |
 | main.rs:520:11:520:35 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | [post] ... .unwrap() |
 | main.rs:521:10:521:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:521:10:521:35 | * ... |
@@ -949,7 +949,7 @@ readStep
 | main.rs:536:34:536:34 | [post] x [borrowed] | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | [post] x |
 | main.rs:538:14:538:27 | vs.into_iter() | file://:0:0:0:0 | element | main.rs:538:9:538:9 | v |
 | main.rs:544:10:544:15 | [post] vs_mut [borrowed] | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | [post] vs_mut |
-| main.rs:544:10:544:15 | vs_mut | file://:0:0:0:0 | element | main.rs:544:10:544:18 | vs_mut[0] |
+| main.rs:544:10:544:18 | vs_mut[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:544:10:544:18 | vs_mut[0] |
 | main.rs:545:10:545:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:545:10:545:39 | * ... |
 | main.rs:545:11:545:39 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | [post] ... .unwrap() |
 | main.rs:546:10:546:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:546:10:546:39 | * ... |
@@ -1042,6 +1042,7 @@ storeStep
 | main.rs:467:30:467:30 | 3 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
 | main.rs:468:10:468:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | mut_arr [borrowed] |
 | main.rs:470:5:470:11 | mut_arr | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | mut_arr [borrowed] |
+| main.rs:470:18:470:27 | source(...) | file://:0:0:0:0 | &ref | main.rs:470:5:470:14 | [post] mut_arr[1] [pre-dereferenced] |
 | main.rs:470:18:470:27 | source(...) | file://:0:0:0:0 | element | main.rs:470:5:470:11 | [post] mut_arr |
 | main.rs:471:13:471:19 | mut_arr | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | mut_arr [borrowed] |
 | main.rs:473:10:473:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | mut_arr [borrowed] |
