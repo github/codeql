@@ -296,7 +296,6 @@ resolvePath
 | main.rs:533:16:533:26 | ...::Assoc | main.rs:528:31:530:9 | type Assoc |
 | main.rs:534:13:534:16 | Self | main.rs:525:5:525:22 | struct S3 |
 | main.rs:534:13:534:23 | ...::Assoc | main.rs:532:9:535:9 | fn Assoc |
-| main.rs:534:13:534:23 | ...::Assoc | main.rs:543:9:546:9 | fn Assoc |
 | main.rs:539:10:539:15 | Trait5 | main.rs:508:5:512:5 | trait Trait5 |
 | main.rs:539:21:539:28 | S3::<...> | main.rs:525:5:525:22 | struct S3 |
 | main.rs:539:24:539:27 | bool | {EXTERNAL LOCATION} | struct bool |
@@ -304,7 +303,6 @@ resolvePath
 | main.rs:544:16:544:19 | Self | main.rs:525:5:525:22 | struct S3 |
 | main.rs:544:16:544:26 | ...::Assoc | main.rs:539:32:541:9 | type Assoc |
 | main.rs:545:14:545:17 | Self | main.rs:525:5:525:22 | struct S3 |
-| main.rs:545:14:545:24 | ...::Assoc | main.rs:532:9:535:9 | fn Assoc |
 | main.rs:545:14:545:24 | ...::Assoc | main.rs:543:9:546:9 | fn Assoc |
 | main.rs:562:14:562:16 | Foo | main.rs:552:9:554:9 | trait Foo |
 | main.rs:562:22:562:22 | X | main.rs:560:9:560:21 | struct X |

@@ -531,7 +531,7 @@ mod m16 {
 
         fn Assoc()
             -> Self::Assoc { // $ item=S3i32AssocType
-            Self::Assoc() + 1 // $ item=S3i32AssocFunc $ SPURIOUS: item=S3boolAssocFunc
+            Self::Assoc() + 1 // $ item=S3i32AssocFunc
         } // S3i32AssocFunc
     }
 
@@ -542,7 +542,7 @@ mod m16 {
 
         fn Assoc()
             -> Self::Assoc { // $ item=S3boolAssocType
-            !Self::Assoc() // $ item=S3boolAssocFunc $ SPURIOUS: item=S3i32AssocFunc
+            !Self::Assoc() // $ item=S3boolAssocFunc
         } // S3boolAssocFunc
     }
 }

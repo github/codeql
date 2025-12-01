@@ -1896,10 +1896,11 @@ private predicate isImplSelfQualifiedPath(
   name = path.getText()
 }
 
-private TypeAliasItemNode resolveSelfAssocType(PathExt qualifier, PathExt path) {
+private ItemNode resolveImplSelfQualified(PathExt qualifier, PathExt path, Namespace ns) {
   exists(ImplItemNode impl, string name |
     isImplSelfQualifiedPath(impl, qualifier, path, name) and
-    result = impl.getAssocItem(name)
+    result = impl.getAssocItem(name) and
+    ns = result.getNamespace()
   )
 }
 
@@ -1909,17 +1910,12 @@ private TypeAliasItemNode resolveSelfAssocType(PathExt qualifier, PathExt path) 
  */
 pragma[nomagic]
 private ItemNode resolvePathCandQualified(PathExt qualifier, ItemNode q, PathExt path, Namespace ns) {
-  // Special case for `Self::AssocType`; this always refers to the associated
-  // type in the enclosing `impl` block, if available.
+  // Special case for `Self::Assoc`; this always refers to the associated
+  // item in the enclosing `impl` block, if available.
   q = resolvePathCandQualifier(qualifier, path, _) and
-  ns.isType() and
-  result = resolveSelfAssocType(qualifier, path)
+  result = resolveImplSelfQualified(qualifier, path, ns)
   or
-  (
-    not exists(resolveSelfAssocType(qualifier, path))
-    or
-    not ns.isType()
-  ) and
+  not exists(resolveImplSelfQualified(qualifier, path, ns)) and
   exists(string name, SuccessorKind kind, UseOption useOpt |
     q = resolvePathCandQualifier(qualifier, path, name) and
     result = getASuccessor(q, name, ns, kind, useOpt) and
