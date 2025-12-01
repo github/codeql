@@ -236,6 +236,8 @@ signature module InstructionSig {
 
   class ConstInstruction extends Instruction {
     int getValue();
+
+    string getStringValue();
   }
 
   class ControlFlowNode {

@@ -275,9 +275,7 @@ abstract class CilCall extends CilInstruction {
 
   final predicate hasReturnValue() { il_call_has_return_value(this) }
 
-  string getExternalName() {
-    il_call_target_unresolved(this, result)
-  }
+  string getExternalName() { il_call_target_unresolved(this, result) }
 }
 
 class CilIl_jmp extends @il_il_jmp, CilCall { }
@@ -487,7 +485,9 @@ class CilCpobj extends @il_cpobj, CilInstruction { }
 
 class CilLdobj extends @il_ldobj, CilInstruction { }
 
-class CilLdstr extends @il_ldstr, CilInstruction { }
+class CilLdstr extends @il_ldstr, CilInstruction {
+  string getValue() { il_operand_string(this, result) }
+}
 
 class CilNewobj extends @il_newobj, CilInstruction { }
 

@@ -100,7 +100,13 @@ class ConstInstruction extends Instruction {
 
   int getValue() { result = te.getConstantValue(tag) }
 
-  override string getImmediateValue() { result = this.getValue().toString() }
+  string getStringValue() { result = te.getStringConstant(tag) }
+
+  override string getImmediateValue() {
+    result = this.getValue().toString()
+    or
+    result = this.getStringValue()
+  }
 }
 
 class CJumpInstruction extends Instruction {

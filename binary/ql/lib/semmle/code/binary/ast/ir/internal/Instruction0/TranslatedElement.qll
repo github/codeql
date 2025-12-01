@@ -90,7 +90,8 @@ newtype TTranslatedElement =
     shouldTranslateCilInstr(cbr)
   } or
   TTranslatedCilRet(Raw::CilIl_ret ret) { shouldTranslateCilInstr(ret) } or
-  TTranslatedCilCall(Raw::CilCall call) { shouldTranslateCilInstr(call) }
+  TTranslatedCilCall(Raw::CilCall call) { shouldTranslateCilInstr(call) } or
+  TTranslatedCilLoadString(Raw::CilLdstr ldstr) { shouldTranslateCilInstr(ldstr) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and
@@ -125,6 +126,8 @@ abstract class TranslatedElement extends TTranslatedElement {
   final Instruction getInstruction(InstructionTag tag) { result = MkInstruction(this, tag) }
 
   int getConstantValue(InstructionTag tag) { none() }
+
+  string getStringConstant(InstructionTag tag) { none() }
 
   string getExternalName(InstructionTag tag) { none() }
 

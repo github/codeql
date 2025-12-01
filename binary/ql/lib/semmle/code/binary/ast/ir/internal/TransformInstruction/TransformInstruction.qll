@@ -691,6 +691,13 @@ module Transform<InstructionSig Input> {
         )
       }
 
+      string getStringValue() {
+        exists(Input::ConstInstruction const |
+          this = TOldInstruction(const) and
+          result = const.getStringValue()
+        )
+      }
+
       override string getImmediateValue() { result = this.getValue().toString() }
     }
 
