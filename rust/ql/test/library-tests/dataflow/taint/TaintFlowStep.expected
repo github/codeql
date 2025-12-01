@@ -11,11 +11,12 @@
 | main.rs:33:24:33:24 | s | main.rs:33:18:33:24 | FormatArgsExpr |
 | main.rs:38:23:38:23 | [post] s [borrowed] | main.rs:38:23:38:23 | [post] s |
 | main.rs:38:23:38:23 | s | main.rs:38:23:38:29 | s[...] |
+| main.rs:38:23:38:29 | s[...] [pre-dereferenced] | main.rs:38:23:38:29 | s[...] |
 | main.rs:49:24:49:24 | i | main.rs:49:18:49:24 | FormatArgsExpr |
 | main.rs:54:14:54:16 | [post] arr [borrowed] | main.rs:54:14:54:16 | [post] arr |
-| main.rs:54:14:54:16 | arr | main.rs:54:14:54:19 | arr[1] |
+| main.rs:54:14:54:19 | arr[1] [pre-dereferenced] | main.rs:54:14:54:19 | arr[1] |
 | main.rs:64:24:64:24 | [post] s [borrowed] | main.rs:64:24:64:24 | [post] s |
-| main.rs:64:24:64:24 | s | main.rs:64:24:64:27 | s[1] |
 | main.rs:64:24:64:27 | s[1] | main.rs:64:18:64:27 | FormatArgsExpr |
+| main.rs:64:24:64:27 | s[1] [pre-dereferenced] | main.rs:64:24:64:27 | s[1] |
 | main.rs:69:9:69:12 | [post] arr2 [borrowed] | main.rs:69:9:69:12 | [post] arr2 |
-| main.rs:69:9:69:12 | arr2 | main.rs:69:9:69:15 | arr2[1] |
+| main.rs:69:9:69:15 | arr2[1] [pre-dereferenced] | main.rs:69:9:69:15 | arr2[1] |
