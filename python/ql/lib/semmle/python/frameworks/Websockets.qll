@@ -41,19 +41,20 @@ module Websockets {
     override string getFramework() { result = "websockets" }
   }
 
+  /** Provides taint models for instances of `ServerConnection` objects passed to websocket handlers. */
   module ServerConnection {
     /**
-     * A source of instances of `websockets.asyncio.ServerConnection` and `websockets.threading.ServerConnection`, extend this class to model new instances.
+     * A source of instances of `websockets.asyncio.ServerConnection` and `websockets.sync.ServerConnection`, extend this class to model new instances.
      *
      * This can include instantiations of the class, return values from function
      * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use the predicate `WebSocket::instance()` to get references to instances of `websockets.asyncio.ServerConnection` and `websockets.threading.ServerConnection`.
+     * Use the predicate `WebSocket::instance()` to get references to instances of `websockets.asyncio.ServerConnection` and `websockets.sync.ServerConnection`.
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
-    /** Gets a reference to an instance of `websockets.asyncio.ServerConnection` or `websockets.threading.ServerConnection`. */
+    /** Gets a reference to an instance of `websockets.asyncio.ServerConnection` or `websockets.sync.ServerConnection`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
       result instanceof InstanceSource
@@ -61,7 +62,7 @@ module Websockets {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an instance of `websockets.asyncio.ServerConnection` or `websockets.threading.ServerConnection`. */
+    /** Gets a reference to an instance of `websockets.asyncio.ServerConnection` or `websockets.sync.ServerConnection`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     private class HandlerParam extends DataFlow::Node, InstanceSource {
