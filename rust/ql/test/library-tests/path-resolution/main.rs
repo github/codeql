@@ -504,6 +504,47 @@ mod m16 {
             let x: Self::AssocType = true; // $ item=S2Trait4AssocType
         }
     }
+
+    trait Trait5 {
+        type Assoc; // Trait5Assoc
+
+        fn Assoc() -> Self::Assoc; // $ item=Trait5Assoc
+    }
+
+    #[rustfmt::skip]
+    impl Trait5 for S { // $ item=Trait5 item=I90
+        type Assoc = i32 // $ item=i32
+        ; // AssocType
+
+        fn Assoc()
+            -> Self::Assoc { // $ item=AssocType
+            Self::Assoc() + 1 // $ item=AssocFunc
+        } // AssocFunc
+    }
+
+    struct S3<T3>(T3); // $ item=T3
+
+    #[rustfmt::skip]
+    impl Trait5 for S3<i32> { // $ item=Trait5 item=S3 item=i32
+        type Assoc = i32 // $ item=i32
+        ; // S3i32AssocType
+
+        fn Assoc()
+            -> Self::Assoc { // $ item=S3i32AssocType
+            Self::Assoc() + 1 // $ item=S3i32AssocFunc $ SPURIOUS: item=S3boolAssocFunc
+        } // S3i32AssocFunc
+    }
+
+    #[rustfmt::skip]
+    impl Trait5 for S3<bool> { // $ item=Trait5 item=S3 item=bool
+        type Assoc = bool // $ item=bool
+        ; // S3boolAssocType
+
+        fn Assoc()
+            -> Self::Assoc { // $ item=S3boolAssocType
+            !Self::Assoc() // $ item=S3boolAssocFunc $ SPURIOUS: item=S3i32AssocFunc
+        } // S3boolAssocFunc
+    }
 }
 
 mod trait_visibility {
