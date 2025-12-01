@@ -178,6 +178,14 @@ class InstrRefInstruction extends Instruction {
   }
 }
 
+class ExternalRefInstruction extends Instruction {
+  override Opcode::ExternalRef opcode;
+
+  string getExternalName() { result = te.getExternalName(tag) }
+
+  final override string getImmediateValue() { result = this.getExternalName() }
+}
+
 class FunEntryInstruction extends Instruction {
   override Opcode::FunEntry opcode;
 }

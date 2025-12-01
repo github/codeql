@@ -2411,6 +2411,15 @@ il_branch_target(
   int target_offset: int ref
 );
 
+il_number_of_arguments(
+  int instruction: @il_instruction ref,
+  int number_of_arguments: int ref
+);
+
+il_call_has_return_value(
+  int instruction: @il_instruction ref
+);
+
 /**
  * Unresolved method call targets.
  * The target_method_name is the fully qualified name of the called method.

@@ -270,7 +270,15 @@ class CilDup extends @il_dup, CilInstruction { }
 
 class CilIl_pop extends @il_il_pop, CilInstruction { }
 
-abstract class CilCall extends CilInstruction { }
+abstract class CilCall extends CilInstruction {
+  final int getNumberOfArguments() { il_number_of_arguments(this, result) }
+
+  final predicate hasReturnValue() { il_call_has_return_value(this) }
+
+  string getExternalName() {
+    il_call_target_unresolved(this, result)
+  }
+}
 
 class CilIl_jmp extends @il_il_jmp, CilCall { }
 

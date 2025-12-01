@@ -719,6 +719,17 @@ module Transform<InstructionSig Input> {
       }
     }
 
+    class ExternalRefInstruction extends Instruction {
+      ExternalRefInstruction() { this.getOpcode() instanceof Opcode::ExternalRef }
+
+      string getExternalName() {
+        exists(Input::ExternalRefInstruction extRef |
+          this = TOldInstruction(extRef) and
+          result = extRef.getExternalName()
+        )
+      }
+    }
+
     private class NewInstruction extends MkInstruction, Instruction {
       Opcode opcode;
       TranslatedElement te;

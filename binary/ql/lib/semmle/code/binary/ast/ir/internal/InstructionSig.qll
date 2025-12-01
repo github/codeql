@@ -93,7 +93,7 @@ signature module InstructionSig {
 
     Operand getAnAccess();
   }
-  
+
   predicate variableHasOrdering(Variable v, int ordering);
 
   class TempVariable extends Variable;
@@ -175,6 +175,10 @@ signature module InstructionSig {
   }
 
   class InitInstruction extends Instruction;
+
+  class ExternalRefInstruction extends Instruction {
+    string getExternalName();
+  }
 
   class SubInstruction extends BinaryInstruction;
 

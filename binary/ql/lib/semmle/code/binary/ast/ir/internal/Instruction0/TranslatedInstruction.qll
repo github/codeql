@@ -2198,3 +2198,88 @@ class TranslatedCilRet extends TranslatedCilInstruction, TTranslatedCilRet {
     )
   }
 }
+
+class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
+  override Raw::CilCall instr;
+
+  TranslatedCilCall() { this = TTranslatedCilCall(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Call and
+    tag = CilCallTag() and
+    if instr.hasReturnValue()
+    then v.asSome() = this.getVariable(CallReturnValueTag())
+    else v.isNone()
+    or
+    opcode instanceof Opcode::ExternalRef and
+    tag = CilCallTargetTag() and
+    v.asSome() = this.getVariable(CilCallTargetVarTag())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) {
+    instr.hasReturnValue() and
+    tag = CallReturnValueTag()
+    or
+    tag = CilCallTargetVarTag()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilCallTag() and
+    (
+      exists(int index |
+        operandTag.(CilOperandTag).getIndex() = index and
+        getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(index) = result
+      )
+      or
+      operandTag instanceof CallTargetTag and
+      result = this.getInstruction(CilCallTargetTag()).getResultVariable()
+    )
+  }
+
+  override string getExternalName(InstructionTag tag) {
+    tag = CilCallTargetTag() and
+    result = instr.getExternalName()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilCallTargetTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilCallTag())
+    or
+    tag = CilCallTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilCallTargetTag()) }
+
+  override Variable getResultVariable() {
+    instr.hasReturnValue() and
+    result = this.getVariable(CallReturnValueTag())
+  }
+
+  final override Variable getStackElement(int i) {
+    if instr.hasReturnValue()
+    then
+      // If the call has a return value, it will be on top of the stack
+      if i = 0
+      then result = this.getInstruction(CilCallTag()).getResultVariable()
+      else
+        // Otherwise, get the stack element from the predecessor. However, the call also popped the arguments
+        // off the stack, so we need to adjust the index accordingly.
+        result =
+          getTranslatedCilInstruction(instr.getABackwardPredecessor())
+              .getStackElement(i + instr.getNumberOfArguments() - 1)
+    else
+      // If the call has no return value, just get the stack element from the predecessor, adjusting for the popped arguments.
+      result =
+        getTranslatedCilInstruction(instr.getABackwardPredecessor())
+            .getStackElement(i + instr.getNumberOfArguments())
+  }
+}

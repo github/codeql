@@ -1,5 +1,6 @@
 private import codeql.util.Boolean
 private import semmle.code.binary.ast.ir.internal.Opcode
+private import semmle.code.binary.ast.internal.CilInstructions
 
 newtype TInstructionTag =
   SingleTag() or
@@ -56,7 +57,9 @@ newtype TInstructionTag =
   CilBoolBranchConstTag() or
   CilBoolBranchCJumpTag() or
   CilUnconditionalBranchTag() or
-  CilUnconditionalBranchRefTag()
+  CilUnconditionalBranchRefTag() or
+  CilCallTag() or
+  CilCallTargetTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -211,6 +214,12 @@ class InstructionTag extends TInstructionTag {
     or
     this = CilUnconditionalBranchRefTag() and
     result = "CilUnconditionalBranchRef"
+    or
+    this = CilCallTag() and
+    result = "CilCall"
+    or
+    this = CilCallTargetTag() and
+    result = "CilCallTarget"
   }
 }
 
@@ -224,7 +233,10 @@ private newtype TOperandTag =
   TCallTargetTag() or
   TCondTag() or
   TCondJumpTargetTag() or
-  TJumpTargetTag()
+  TJumpTargetTag() or
+  TCilOperandTag(int i) {
+    i = [0 .. max(CilCall call, int k | k = call.getNumberOfArguments() - 1 | k)]
+  }
 
 abstract class OperandTag extends TOperandTag {
   abstract int getIndex();
@@ -287,7 +299,10 @@ class StoreAddressTag extends OperandTag, TStoreAddressTag {
 class CallTargetTag extends OperandTag, TCallTargetTag {
   final override int getIndex() { result = 0 }
 
-  final override OperandTag getSuccessorTag() { none() }
+  final override OperandTag getSuccessorTag() {
+    // Note: This will be `none` on x86 DBs.
+    result.(CilOperandTag).getCilIndex() = 0
+  }
 
   final override string toString() { result = "CallTarget" }
 }
@@ -314,4 +329,19 @@ class JumpTargetTag extends OperandTag, TJumpTargetTag {
   final override OperandTag getSuccessorTag() { none() }
 
   final override string toString() { result = "JumpTarget" }
+}
+
+class CilOperandTag extends OperandTag, TCilOperandTag {
+  final override int getIndex() { result = this.getCilIndex() }
+
+  final int getCilIndex() { this = TCilOperandTag(result) }
+
+  final override OperandTag getSuccessorTag() {
+    exists(int i |
+      this = TCilOperandTag(i) and
+      result = TCilOperandTag(i + 1)
+    )
+  }
+
+  final override string toString() { result = "CilOperand(" + this.getIndex().toString() + ")" }
 }

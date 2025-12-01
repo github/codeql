@@ -120,6 +120,10 @@ public class ILExtractor {
         var targetMethodName =
             $"{methodRef.DeclaringType.FullName}.{methodRef.Name}";
         trap.WriteTuple("il_call_target_unresolved", instrId, targetMethodName);
+        trap.WriteTuple("il_number_of_arguments", instrId, methodRef.Parameters.Count);
+        if(methodRef.MethodReturnType.ReturnType.MetadataType is not Mono.Cecil.MetadataType.Void) {
+          trap.WriteTuple("il_call_has_return_value", instrId);
+        }
       } else if (instruction.Operand is string str) {
         trap.WriteTuple("il_operand_string", instrId, str);
       } else if (instruction.Operand is sbyte sb) {

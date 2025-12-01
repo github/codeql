@@ -28,7 +28,9 @@ newtype TTempVariableTag =
   CilBoolBranchConstVarTag() or
   CilBoolBranchSubVarTag() or
   CilBoolBranchRefVarTag() or
-  CilUnconditionalBranchRefVarTag()
+  CilUnconditionalBranchRefVarTag() or
+  CallReturnValueTag() or
+  CilCallTargetVarTag()
 
 class TempVariableTag extends TTempVariableTag {
   string toString() {
@@ -121,5 +123,11 @@ class TempVariableTag extends TTempVariableTag {
     or
     this = CilBoolBranchRefVarTag() and
     result = "cbb_ir"
+    or
+    this = CallReturnValueTag() and
+    result = "call_ret"
+    or
+    this = CilCallTargetVarTag() and
+    result = "call_target"
   }
 }
