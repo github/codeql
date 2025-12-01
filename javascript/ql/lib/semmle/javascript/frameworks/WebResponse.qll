@@ -45,6 +45,10 @@ private class ResponseArgumentHeaders extends Http::HeaderDefinition {
   ResponseArgumentHeaders() {
     headerNode = response.getParameter(1).getMember("headers") and
     this = headerNode.asSink()
+    or
+    not exists(response.getParameter(1).getMember("headers")) and
+    headerNode = API::root() and // just bind 'headerNode' to something
+    this = response
   }
 
   ResponseCall getResponse() { result = response }
@@ -80,9 +84,14 @@ private class ResponseArgumentHeaders extends Http::HeaderDefinition {
 
   override predicate defines(string headerName, string headerValue) {
     this.getHeaderNode(headerName).getAValueReachingSink().getStringValue() = headerValue
+    or
+    // If no 'content-type' header is defined, a default one is sent in the HTTP response.
+    not exists(this.getHeaderNode("content-type")) and
+    headerName = "content-type" and
+    headerValue = "text/plain;charset=utf-8"
   }
 
-  override string getAHeaderName() { exists(this.getHeaderNode(result)) }
+  override string getAHeaderName() { exists(this.getHeaderNode(result)) or result = "content-type" }
 
   override Http::RouteHandler getRouteHandler() { none() }
 }

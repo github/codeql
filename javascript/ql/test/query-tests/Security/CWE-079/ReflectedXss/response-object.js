@@ -1,14 +1,14 @@
 const express = require('express');
 
-// Note: We're using using express for the taint source in order to to test 'Response'
+// Note: We're using express for the taint source in order to test 'Response'
 // in isolation from the more complicated http frameworks.
 
 express().get('/foo', (req) => {
     const data = req.body; // $ Source
 
-    new Response(data); // $ Alert
-    new Response(data, {}); // $ Alert
-    new Response(data, { headers: null }); // $ Alert
+    new Response(data);
+    new Response(data, {});
+    new Response(data, { headers: null });
 
     new Response(data, { headers: { 'content-type': 'text/plain'}});
     new Response(data, { headers: { 'content-type': 'text/html'}}); // $ Alert
@@ -23,7 +23,7 @@ express().get('/foo', (req) => {
     new Response(data, { headers: headers2 }); // $ Alert
 
     const headers3 = new Headers();
-    new Response(data, { headers: headers3 }); // $ Alert
+    new Response(data, { headers: headers3 });
 
     const headers4 = new Headers();
     headers4.set('content-type', 'text/plain');
@@ -35,5 +35,9 @@ express().get('/foo', (req) => {
 
     const headers6 = new Headers();
     headers6.set('unrelated-header', 'text/plain');
-    new Response(data, { headers: headers6 }); // $ Alert
+    new Response(data, { headers: headers6 });
+
+    const headers7 = new Headers();
+    headers7.set('unrelated-header', 'text/html');
+    new Response(data, { headers: headers7 });
 });
