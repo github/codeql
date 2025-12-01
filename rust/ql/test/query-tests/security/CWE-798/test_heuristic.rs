@@ -29,9 +29,13 @@ impl MyCryptor {
     fn encrypt(&self, plaintext: &str, salt: &[u8;16]) {
         // ...
     }
+
+    fn set_salt_u64(&self, salt: u64) {
+        // ...
+    }
 }
 
-fn test(var_string: &str, var_data: &[u8;16]) {
+fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
     encrypt_with("plaintext", var_data, var_data);
 
     let const_key: &[u8;16] = &[0u8;16]; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
@@ -59,4 +63,9 @@ fn test(var_string: &str, var_data: &[u8;16]) {
     let mc2 = MyCryptor::new("secret"); // $ Alert[rust/hard-coded-cryptographic-value]
     mc2.set_nonce(&[0u8;16]); // $ Alert[rust/hard-coded-cryptographic-value]
     mc2.encrypt("plaintext", &[0u8;16]); // $ Alert[rust/hard-coded-cryptographic-value]
+
+    mc2.set_salt_u64(0); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(var_u64);
+    mc2.set_salt_u64(var_u64 + 1); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF)); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
 }
