@@ -50,7 +50,7 @@ module Websockets {
      * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use the predicate `WebSocket::instance()` to get references to instances of `websockets.asyncio.ServerConnection` and `websockets.sync.ServerConnection`.
+     * Use the predicate `ServerConnection::instance()` to get references to instances of `websockets.asyncio.ServerConnection` and `websockets.sync.ServerConnection`.
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 

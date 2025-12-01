@@ -34,13 +34,14 @@ s5 = websockets.sync.router.unix_route(Map([
 if __name__ == "__main__":
     import sys
     server = s1 
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "kw":
+    args = sys.argv # $ threatModelSource[commandargs]=sys.argv
+    if len(args) > 1:
+        if args[1] == "kw":
             server = s2
-        elif sys.argv[1] == "route":
+        elif args[1] == "route":
             server = s3
-        elif sys.argv[1] == "unix":
+        elif args[1] == "unix":
             server = s4
-        elif sys.argv[1] == "unix_route":
+        elif args[1] == "unix_route":
             server = s5
     server.serve_forever()
