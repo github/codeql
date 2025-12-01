@@ -125,9 +125,7 @@ edges
 | main.rs:53:5:53:49 | ... .secure(...) | main.rs:53:5:53:63 | ... .secure(...) | provenance | MaD:35 |
 | main.rs:53:5:53:63 | ... .secure(...) | main.rs:53:65:53:69 | build | provenance | MaD:2 Sink:MaD:2 |
 | main.rs:58:9:58:13 | mut a | main.rs:59:13:59:13 | a | provenance |  |
-| main.rs:58:9:58:13 | mut a | main.rs:59:13:59:21 | a.clone() | provenance | MaD:18 |
 | main.rs:58:9:58:13 | mut a | main.rs:60:22:60:22 | a | provenance |  |
-| main.rs:58:9:58:13 | mut a | main.rs:60:22:60:30 | a.clone() | provenance | MaD:18 |
 | main.rs:58:17:58:27 | ...::new | main.rs:58:17:58:44 | ...::new(...) | provenance | Src:MaD:17 MaD:17 |
 | main.rs:58:17:58:44 | ...::new(...) | main.rs:58:9:58:13 | mut a | provenance |  |
 | main.rs:59:13:59:13 | a | main.rs:59:13:59:21 | a.clone() | provenance | MaD:18 |
@@ -135,21 +133,14 @@ edges
 | main.rs:60:22:60:22 | a | main.rs:60:22:60:30 | a.clone() | provenance | MaD:18 |
 | main.rs:60:22:60:30 | a.clone() | main.rs:60:9:60:20 | add_original | provenance | MaD:5 Sink:MaD:5 |
 | main.rs:63:5:63:5 | [SSA] a | main.rs:64:13:64:13 | a | provenance |  |
-| main.rs:63:5:63:5 | [SSA] a | main.rs:64:13:64:21 | a.clone() | provenance | MaD:18 |
 | main.rs:63:5:63:5 | [SSA] a | main.rs:70:29:70:29 | a | provenance |  |
-| main.rs:63:5:63:5 | [SSA] a | main.rs:70:29:70:37 | a.clone() | provenance | MaD:18 |
 | main.rs:63:5:63:5 | [SSA] a | main.rs:79:30:79:30 | a | provenance |  |
-| main.rs:63:5:63:5 | [SSA] a | main.rs:79:30:79:38 | a.clone() | provenance | MaD:18 |
 | main.rs:63:5:63:5 | a | main.rs:64:13:64:13 | a | provenance |  |
-| main.rs:63:5:63:5 | a | main.rs:64:13:64:21 | a.clone() | provenance | MaD:18 |
 | main.rs:63:5:63:5 | a | main.rs:70:29:70:29 | a | provenance |  |
-| main.rs:63:5:63:5 | a | main.rs:70:29:70:37 | a.clone() | provenance | MaD:18 |
 | main.rs:63:5:63:5 | a | main.rs:79:30:79:30 | a | provenance |  |
-| main.rs:63:5:63:5 | a | main.rs:79:30:79:38 | a.clone() | provenance | MaD:18 |
 | main.rs:64:13:64:13 | a | main.rs:64:13:64:21 | a.clone() | provenance | MaD:18 |
 | main.rs:64:13:64:21 | a.clone() | main.rs:64:9:64:11 | add | provenance | MaD:4 Sink:MaD:4 |
 | main.rs:68:9:68:13 | mut b | main.rs:69:20:69:20 | b | provenance |  |
-| main.rs:68:9:68:13 | mut b | main.rs:69:20:69:28 | b.clone() | provenance | MaD:18 |
 | main.rs:68:17:68:29 | ...::named | main.rs:68:17:68:37 | ...::named(...) | provenance | Src:MaD:16 MaD:16 |
 | main.rs:68:17:68:37 | ...::named(...) | main.rs:68:9:68:13 | mut b | provenance |  |
 | main.rs:69:20:69:20 | b | main.rs:69:20:69:28 | b.clone() | provenance | MaD:18 |
@@ -157,15 +148,11 @@ edges
 | main.rs:70:29:70:29 | a | main.rs:70:29:70:37 | a.clone() | provenance | MaD:18 |
 | main.rs:70:29:70:37 | a.clone() | main.rs:70:16:70:27 | add_original | provenance | MaD:9 Sink:MaD:9 |
 | main.rs:71:5:71:5 | [SSA] b | main.rs:72:20:72:20 | b | provenance |  |
-| main.rs:71:5:71:5 | [SSA] b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:18 |
 | main.rs:71:5:71:5 | b | main.rs:72:20:72:20 | b | provenance |  |
-| main.rs:71:5:71:5 | b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:18 |
 | main.rs:72:20:72:20 | b | main.rs:72:20:72:28 | b.clone() | provenance | MaD:18 |
 | main.rs:72:20:72:28 | b.clone() | main.rs:72:16:72:18 | add | provenance | MaD:8 Sink:MaD:8 |
 | main.rs:77:9:77:13 | mut c | main.rs:78:21:78:21 | c | provenance |  |
-| main.rs:77:9:77:13 | mut c | main.rs:78:21:78:29 | c.clone() | provenance | MaD:18 |
 | main.rs:77:9:77:13 | mut c | main.rs:83:21:83:21 | c | provenance |  |
-| main.rs:77:9:77:13 | mut c | main.rs:83:21:83:29 | c.clone() | provenance | MaD:18 |
 | main.rs:77:17:77:28 | ...::from | main.rs:77:17:77:36 | ...::from(...) | provenance | Src:MaD:14 MaD:14 |
 | main.rs:77:17:77:36 | ...::from(...) | main.rs:77:9:77:13 | mut c | provenance |  |
 | main.rs:78:21:78:21 | c | main.rs:78:21:78:29 | c.clone() | provenance | MaD:18 |
@@ -175,9 +162,7 @@ edges
 | main.rs:83:21:83:21 | c | main.rs:83:21:83:29 | c.clone() | provenance | MaD:18 |
 | main.rs:83:21:83:29 | c.clone() | main.rs:83:17:83:19 | add | provenance | MaD:6 Sink:MaD:6 |
 | main.rs:87:9:87:13 | mut d | main.rs:88:13:88:13 | d | provenance |  |
-| main.rs:87:9:87:13 | mut d | main.rs:88:13:88:21 | d.clone() | provenance | MaD:18 |
 | main.rs:87:9:87:13 | mut d | main.rs:94:13:94:13 | d | provenance |  |
-| main.rs:87:9:87:13 | mut d | main.rs:94:13:94:21 | d.clone() | provenance | MaD:18 |
 | main.rs:87:17:87:28 | ...::from | main.rs:87:17:87:36 | ...::from(...) | provenance | Src:MaD:14 MaD:14 |
 | main.rs:87:17:87:36 | ...::from(...) | main.rs:87:9:87:13 | mut d | provenance |  |
 | main.rs:88:13:88:13 | d | main.rs:88:13:88:21 | d.clone() | provenance | MaD:18 |
@@ -188,25 +173,22 @@ edges
 | main.rs:114:5:114:36 | ...::build(...) | main.rs:114:5:114:54 | ... .partitioned(...) | provenance | MaD:33 |
 | main.rs:114:5:114:54 | ... .partitioned(...) | main.rs:114:56:114:60 | build | provenance | MaD:2 Sink:MaD:2 |
 | main.rs:122:9:122:9 | a | main.rs:123:20:123:20 | a | provenance |  |
-| main.rs:122:9:122:9 | a | main.rs:123:20:123:28 | a.clone() | provenance | MaD:18 |
 | main.rs:122:13:122:41 | ...::new | main.rs:122:13:122:58 | ...::new(...) | provenance | Src:MaD:13 MaD:13 |
 | main.rs:122:13:122:58 | ...::new(...) | main.rs:122:9:122:9 | a | provenance |  |
 | main.rs:123:20:123:20 | a | main.rs:123:20:123:28 | a.clone() | provenance | MaD:18 |
 | main.rs:123:20:123:28 | a.clone() | main.rs:123:13:123:18 | insert | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:130:9:130:9 | c | main.rs:131:20:131:20 | c | provenance |  |
-| main.rs:130:9:130:9 | c | main.rs:131:20:131:28 | c.clone() | provenance | MaD:18 |
-| main.rs:130:9:130:9 | c | main.rs:134:13:134:35 | c.set_partitioned(...) | provenance | MaD:25 |
+| main.rs:130:9:130:9 | c | main.rs:134:13:134:13 | c | provenance |  |
 | main.rs:130:13:130:13 | b | main.rs:130:13:130:31 | b.set_secure(...) | provenance | MaD:28 |
 | main.rs:130:13:130:31 | b.set_secure(...) | main.rs:130:9:130:9 | c | provenance |  |
 | main.rs:131:20:131:20 | c | main.rs:131:20:131:28 | c.clone() | provenance | MaD:18 |
 | main.rs:131:20:131:28 | c.clone() | main.rs:131:13:131:18 | insert | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:134:9:134:9 | d | main.rs:135:20:135:20 | d | provenance |  |
-| main.rs:134:9:134:9 | d | main.rs:135:20:135:28 | d.clone() | provenance | MaD:18 |
+| main.rs:134:13:134:13 | c | main.rs:134:13:134:35 | c.set_partitioned(...) | provenance | MaD:25 |
 | main.rs:134:13:134:35 | c.set_partitioned(...) | main.rs:134:9:134:9 | d | provenance |  |
 | main.rs:135:20:135:20 | d | main.rs:135:20:135:28 | d.clone() | provenance | MaD:18 |
 | main.rs:135:20:135:28 | d.clone() | main.rs:135:13:135:18 | insert | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:146:9:146:9 | g | main.rs:147:20:147:20 | g | provenance |  |
-| main.rs:146:9:146:9 | g | main.rs:147:20:147:28 | g.clone() | provenance | MaD:18 |
 | main.rs:146:13:146:13 | f | main.rs:146:13:146:31 | f.set_secure(...) | provenance | MaD:28 |
 | main.rs:146:13:146:31 | f.set_secure(...) | main.rs:146:9:146:9 | g | provenance |  |
 | main.rs:147:20:147:20 | g | main.rs:147:20:147:28 | g.clone() | provenance | MaD:18 |
@@ -216,29 +198,17 @@ edges
 | main.rs:151:13:151:61 | ...::from(...) | main.rs:151:9:151:9 | h | provenance |  |
 | main.rs:152:20:152:20 | h | main.rs:152:13:152:18 | insert | provenance | MaD:1 Sink:MaD:1 |
 | main.rs:155:9:155:9 | i | main.rs:156:20:156:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:156:20:156:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:157:20:157:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:157:20:157:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:158:20:158:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:158:20:158:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:159:20:159:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:159:20:159:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:160:20:160:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:160:20:160:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:161:20:161:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:161:20:161:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:162:20:162:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:162:20:162:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:163:20:163:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:163:20:163:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:164:20:164:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:164:20:164:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:165:20:165:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:165:20:165:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:166:20:166:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:166:20:166:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:9:155:9 | i | main.rs:167:20:167:20 | i | provenance |  |
-| main.rs:155:9:155:9 | i | main.rs:167:20:167:28 | i.clone() | provenance | MaD:18 |
 | main.rs:155:13:155:41 | ...::new | main.rs:155:13:155:58 | ...::new(...) | provenance | Src:MaD:13 MaD:13 |
 | main.rs:155:13:155:58 | ...::new(...) | main.rs:155:9:155:9 | i | provenance |  |
 | main.rs:156:20:156:20 | i | main.rs:156:20:156:28 | i.clone() | provenance | MaD:18 |
@@ -285,31 +255,22 @@ edges
 | main.rs:198:5:198:53 | ... .secure(...) | main.rs:198:5:198:63 | ... .path(...) | provenance | MaD:34 |
 | main.rs:198:5:198:63 | ... .path(...) | main.rs:198:65:198:70 | finish | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:201:5:201:11 | [SSA] cookie1 | main.rs:202:13:202:19 | cookie1 | provenance |  |
-| main.rs:201:5:201:11 | [SSA] cookie1 | main.rs:202:13:202:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:201:5:201:11 | cookie1 | main.rs:202:13:202:19 | cookie1 | provenance |  |
-| main.rs:201:5:201:11 | cookie1 | main.rs:202:13:202:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:202:13:202:19 | cookie1 | main.rs:202:13:202:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:202:13:202:27 | cookie1.clone() | main.rs:202:9:202:11 | add | provenance | MaD:4 Sink:MaD:4 |
 | main.rs:212:5:212:22 | ...::build | main.rs:212:5:212:39 | ...::build(...) | provenance | Src:MaD:15 MaD:15 |
 | main.rs:212:5:212:39 | ...::build(...) | main.rs:212:41:212:46 | finish | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:214:9:214:15 | cookie3 | main.rs:215:13:215:19 | cookie3 | provenance |  |
-| main.rs:214:9:214:15 | cookie3 | main.rs:215:13:215:27 | cookie3.clone() | provenance | MaD:18 |
 | main.rs:214:19:214:34 | ...::new | main.rs:214:19:214:51 | ...::new(...) | provenance | Src:MaD:17 MaD:17 |
 | main.rs:214:19:214:51 | ...::new(...) | main.rs:214:9:214:15 | cookie3 | provenance |  |
 | main.rs:215:13:215:19 | cookie3 | main.rs:215:13:215:27 | cookie3.clone() | provenance | MaD:18 |
 | main.rs:215:13:215:27 | cookie3.clone() | main.rs:215:9:215:11 | add | provenance | MaD:4 Sink:MaD:4 |
 | main.rs:218:5:218:11 | [SSA] cookie2 | main.rs:219:13:219:19 | cookie2 | provenance |  |
-| main.rs:218:5:218:11 | [SSA] cookie2 | main.rs:219:13:219:27 | cookie2.clone() | provenance | MaD:18 |
 | main.rs:218:5:218:11 | cookie2 | main.rs:219:13:219:19 | cookie2 | provenance |  |
-| main.rs:218:5:218:11 | cookie2 | main.rs:219:13:219:27 | cookie2.clone() | provenance | MaD:18 |
 | main.rs:219:13:219:19 | cookie2 | main.rs:219:13:219:27 | cookie2.clone() | provenance | MaD:18 |
 | main.rs:219:13:219:27 | cookie2.clone() | main.rs:219:9:219:11 | add | provenance | MaD:4 Sink:MaD:4 |
 | main.rs:228:5:228:11 | [SSA] cookie1 | main.rs:229:13:229:19 | cookie1 | provenance |  |
-| main.rs:228:5:228:11 | [SSA] cookie1 | main.rs:229:13:229:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:228:5:228:11 | cookie1 | main.rs:229:13:229:19 | cookie1 | provenance |  |
-| main.rs:228:5:228:11 | cookie1 | main.rs:229:13:229:19 | cookie1 | provenance | MaD:39 |
-| main.rs:228:5:228:11 | cookie1 | main.rs:229:13:229:27 | cookie1.clone() | provenance | MaD:39 |
-| main.rs:228:5:228:11 | cookie1 | main.rs:229:13:229:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:229:13:229:19 | cookie1 | main.rs:229:13:229:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:229:13:229:27 | cookie1.clone() | main.rs:229:9:229:11 | add | provenance | MaD:11 Sink:MaD:11 |
 | main.rs:241:9:241:25 | cookie_config_bad | main.rs:242:43:242:59 | cookie_config_bad | provenance |  |
@@ -328,23 +289,18 @@ edges
 | main.rs:260:5:260:57 | ... .secure(...) | main.rs:260:5:260:67 | ... .path(...) | provenance | MaD:34 |
 | main.rs:260:5:260:67 | ... .path(...) | main.rs:260:69:260:74 | finish | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:263:5:263:11 | [SSA] cookie1 | main.rs:264:13:264:19 | cookie1 | provenance |  |
-| main.rs:263:5:263:11 | [SSA] cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:263:5:263:11 | cookie1 | main.rs:264:13:264:19 | cookie1 | provenance |  |
-| main.rs:263:5:263:11 | cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:264:13:264:19 | cookie1 | main.rs:264:13:264:27 | cookie1.clone() | provenance | MaD:18 |
 | main.rs:264:13:264:27 | cookie1.clone() | main.rs:264:9:264:11 | add | provenance | MaD:4 Sink:MaD:4 |
 | main.rs:274:5:274:26 | ...::build | main.rs:274:5:274:43 | ...::build(...) | provenance | Src:MaD:15 MaD:15 |
 | main.rs:274:5:274:43 | ...::build(...) | main.rs:274:45:274:50 | finish | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:276:9:276:15 | cookie3 | main.rs:277:13:277:19 | cookie3 | provenance |  |
-| main.rs:276:9:276:15 | cookie3 | main.rs:277:13:277:27 | cookie3.clone() | provenance | MaD:18 |
 | main.rs:276:19:276:38 | ...::new | main.rs:276:19:276:55 | ...::new(...) | provenance | Src:MaD:17 MaD:17 |
 | main.rs:276:19:276:55 | ...::new(...) | main.rs:276:9:276:15 | cookie3 | provenance |  |
 | main.rs:277:13:277:19 | cookie3 | main.rs:277:13:277:27 | cookie3.clone() | provenance | MaD:18 |
 | main.rs:277:13:277:27 | cookie3.clone() | main.rs:277:9:277:11 | add | provenance | MaD:4 Sink:MaD:4 |
 | main.rs:280:5:280:11 | [SSA] cookie2 | main.rs:281:13:281:19 | cookie2 | provenance |  |
-| main.rs:280:5:280:11 | [SSA] cookie2 | main.rs:281:13:281:27 | cookie2.clone() | provenance | MaD:18 |
 | main.rs:280:5:280:11 | cookie2 | main.rs:281:13:281:19 | cookie2 | provenance |  |
-| main.rs:280:5:280:11 | cookie2 | main.rs:281:13:281:27 | cookie2.clone() | provenance | MaD:18 |
 | main.rs:281:13:281:19 | cookie2 | main.rs:281:13:281:27 | cookie2.clone() | provenance | MaD:18 |
 | main.rs:281:13:281:27 | cookie2.clone() | main.rs:281:9:281:11 | add | provenance | MaD:4 Sink:MaD:4 |
 models
@@ -386,7 +342,6 @@ models
 | 36 | Summary: <poem::session::cookie_config::CookieConfig>::name; Argument[self]; ReturnValue; taint |
 | 37 | Summary: <poem::session::cookie_config::CookieConfig>::path; Argument[self]; ReturnValue; taint |
 | 38 | Summary: <poem::session::cookie_config::CookieConfig>::secure; Argument[self].OptionalBarrier[cookie-secure-arg0]; ReturnValue; taint |
-| 39 | Summary: <poem::web::cookie::Cookie>::set_secure; Argument[self].OptionalBarrier[cookie-secure-arg0]; Argument[self]; taint |
 nodes
 | main.rs:8:19:8:50 | ...::build(...) | semmle.label | ...::build(...) |
 | main.rs:8:19:8:64 | ... .secure(...) | semmle.label | ... .secure(...) |
@@ -526,6 +481,7 @@ nodes
 | main.rs:131:20:131:20 | c | semmle.label | c |
 | main.rs:131:20:131:28 | c.clone() | semmle.label | c.clone() |
 | main.rs:134:9:134:9 | d | semmle.label | d |
+| main.rs:134:13:134:13 | c | semmle.label | c |
 | main.rs:134:13:134:35 | c.set_partitioned(...) | semmle.label | c.set_partitioned(...) |
 | main.rs:135:13:135:18 | insert | semmle.label | insert |
 | main.rs:135:20:135:20 | d | semmle.label | d |

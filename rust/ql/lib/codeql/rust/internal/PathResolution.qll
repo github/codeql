@@ -1010,7 +1010,16 @@ private class StructItemNode extends TypeItemNode, ParameterizableItemNode insta
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+    (
+      this =
+        any(Builtins::BuiltinType t |
+          not t.hasVisibility() and
+          result = t.getDisplayName()
+        )
+      or
+      not this = any(Builtins::BuiltinType t | not t.hasVisibility()) and
+      result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+    )
   }
 }
 

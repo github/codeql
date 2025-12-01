@@ -12,7 +12,6 @@ private import codeql.rust.elements.Call
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.TypeInference as TypeInference
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
@@ -141,18 +140,11 @@ final class ArgumentPosition extends ParameterPosition {
 
 /**
  * Holds if `arg` is an argument of `call` at the position `pos`.
- *
- * Note that this does not hold for the receiever expression of a method call
- * as the synthetic `ReceiverNode` is the argument for the `self` parameter.
  */
-predicate isArgumentForCall(Expr arg, Call call, ParameterPosition pos) {
+predicate isArgumentForCall(Expr arg, Call call, ArgumentPosition pos) {
   // TODO: Handle index expressions as calls in data flow.
   not call instanceof IndexExpr and
-  (
-    call.getPositionalArgument(pos.getPosition()) = arg
-    or
-    call.getReceiver() = arg and pos.isSelf() and not call.receiverImplicitlyBorrowed()
-  )
+  arg = pos.getArgument(call)
 }
 
 /** Provides logic related to SSA. */
@@ -283,14 +275,6 @@ module LocalFlow {
     or
     nodeFrom.asPat().(OrPat).getAPat() = nodeTo.asPat()
     or
-    // Simple value step from receiver expression to receiver node, in case
-    // there is no implicit deref or borrow operation.
-    nodeFrom.asExpr() = nodeTo.(ReceiverNode).getReceiver()
-    or
-    // The dual step of the above, for the post-update nodes.
-    nodeFrom.(PostUpdateNode).getPreUpdateNode().(ReceiverNode).getReceiver() =
-      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr()
-    or
     nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
       getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), true)
   }
@@ -380,7 +364,8 @@ module RustDataFlow implements InputSig<Location> {
     node.(FlowSummaryNode).getSummaryNode().isHidden() or
     node instanceof CaptureNode or
     node instanceof ClosureParameterNode or
-    node instanceof ReceiverNode or
+    node instanceof DerefBorrowNode or
+    node instanceof DerefOutNode or
     node.asExpr() instanceof ParenExpr or
     nodeIsHidden(node.(PostUpdateNode).getPreUpdateNode())
   }
@@ -520,16 +505,16 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   pragma[nomagic]
-  private predicate implicitDerefToReceiver(Node node1, ReceiverNode node2, ReferenceContent c) {
-    TypeInference::receiverHasImplicitDeref(node1.asExpr()) and
-    node1.asExpr() = node2.getReceiver() and
+  private predicate implicitDeref(Node node1, DerefBorrowNode node2, ReferenceContent c) {
+    not node2.isBorrow() and
+    node1.asExpr() = node2.getNode() and
     exists(c)
   }
 
   pragma[nomagic]
-  private predicate implicitBorrowToReceiver(Node node1, ReceiverNode node2, ReferenceContent c) {
-    TypeInference::receiverHasImplicitBorrow(node1.asExpr()) and
-    node1.asExpr() = node2.getReceiver() and
+  private predicate implicitBorrow(Node node1, DerefBorrowNode node2, ReferenceContent c) {
+    node2.isBorrow() and
+    node1.asExpr() = node2.getNode() and
     exists(c)
   }
 
@@ -537,6 +522,15 @@ module RustDataFlow implements InputSig<Location> {
   private predicate referenceExprToExpr(Node node1, Node node2, ReferenceContent c) {
     node1.asExpr() = node2.asExpr().(RefExpr).getExpr() and
     exists(c)
+  }
+
+  private Node getFieldExprContainerNode(FieldExpr fe) {
+    exists(Expr container | container = fe.getContainer() |
+      not any(DerefBorrowNode n).getNode() = container and
+      result.asExpr() = container
+      or
+      result.(DerefBorrowNode).getNode() = container
+    )
   }
 
   pragma[nomagic]
@@ -563,7 +557,7 @@ module RustDataFlow implements InputSig<Location> {
     node1.asPat().(RefPat).getPat() = node2.asPat()
     or
     exists(FieldExpr access |
-      node1.asExpr() = access.getContainer() and
+      node1 = getFieldExprContainerNode(access) and
       node2.asExpr() = access and
       access = c.(FieldContent).getAnAccess()
     )
@@ -593,10 +587,9 @@ module RustDataFlow implements InputSig<Location> {
           .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
     )
     or
-    exists(PrefixExpr deref |
+    exists(DerefExpr deref |
       c instanceof ReferenceContent and
-      deref.getOperatorName() = "*" and
-      node1.asExpr() = deref.getExpr() and
+      node1.(DerefOutNode).getDerefExpr() = deref and
       node2.asExpr() = deref
     )
     or
@@ -616,12 +609,10 @@ module RustDataFlow implements InputSig<Location> {
     referenceExprToExpr(node2.(PostUpdateNode).getPreUpdateNode(),
       node1.(PostUpdateNode).getPreUpdateNode(), c)
     or
-    // Step from receiver expression to receiver node, in case of an implicit
-    // dereference.
-    implicitDerefToReceiver(node1, node2, c)
+    implicitDeref(node1, node2, c)
     or
     // A read step dual to the store step for implicit borrows.
-    implicitBorrowToReceiver(node2.(PostUpdateNode).getPreUpdateNode(),
+    implicitBorrow(node2.(PostUpdateNode).getPreUpdateNode(),
       node1.(PostUpdateNode).getPreUpdateNode(), c)
     or
     VariableCapture::readStep(node1, c, node2)
@@ -657,7 +648,7 @@ module RustDataFlow implements InputSig<Location> {
     exists(AssignmentExpr assignment, FieldExpr access |
       assignment.getLhs() = access and
       node1.asExpr() = assignment.getRhs() and
-      node2.asExpr() = access.getContainer() and
+      node2 = getFieldExprContainerNode(access) and
       access = c.getAnAccess()
     )
   }
@@ -729,9 +720,7 @@ module RustDataFlow implements InputSig<Location> {
     or
     VariableCapture::storeStep(node1, c, node2)
     or
-    // Step from receiver expression to receiver node, in case of an implicit
-    // borrow.
-    implicitBorrowToReceiver(node1, node2, c)
+    implicitBorrow(node1, node2, c)
   }
 
   /**

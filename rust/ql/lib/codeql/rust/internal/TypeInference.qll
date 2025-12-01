@@ -2783,18 +2783,19 @@ private predicate inferOperationType =
   ContextTyping::CheckContextTyping<inferOperationType0/3>::check/2;
 
 pragma[nomagic]
-private Type getFieldExprLookupType(FieldExpr fe, string name) {
+private Type getFieldExprLookupType(FieldExpr fe, string name, boolean isDereferenced) {
   exists(TypePath path |
     result = inferType(fe.getContainer(), path) and
     name = fe.getIdentifier().getText() and
-    isComplexRootStripped(path, result)
+    isComplexRootStripped(path, result) and
+    if path.isEmpty() then isDereferenced = false else isDereferenced = true
   )
 }
 
 pragma[nomagic]
-private Type getTupleFieldExprLookupType(FieldExpr fe, int pos) {
+private Type getTupleFieldExprLookupType(FieldExpr fe, int pos, boolean isDereferenced) {
   exists(string name |
-    result = getFieldExprLookupType(fe, name) and
+    result = getFieldExprLookupType(fe, name, isDereferenced) and
     pos = name.toInt()
   )
 }
@@ -2911,8 +2912,8 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       // mutual recursion; resolving fields requires resolving types and vice versa
       result =
         [
-          TStructFieldDecl(resolveStructFieldExpr(this)).(TDeclaration),
-          TTupleFieldDecl(resolveTupleFieldExpr(this))
+          TStructFieldDecl(resolveStructFieldExpr(this, _)).(TDeclaration),
+          TTupleFieldDecl(resolveTupleFieldExpr(this, _))
         ]
     }
   }
@@ -3415,16 +3416,23 @@ private Type inferCastExprType(CastExpr ce, TypePath path) {
 
 cached
 private module Cached {
-  /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
+  /** Holds if `n` is implicitly dereferenced. */
   cached
-  predicate receiverHasImplicitDeref(AstNode receiver) {
-    any(MethodResolution::MethodCall mc).receiverHasImplicitDeref(receiver)
+  predicate implicitDeref(AstNode n) {
+    any(MethodResolution::MethodCall mc).receiverHasImplicitDeref(n)
+    or
+    n =
+      any(FieldExpr fe |
+        exists(resolveStructFieldExpr(fe, true))
+        or
+        exists(resolveTupleFieldExpr(fe, true))
+      ).getContainer()
   }
 
-  /** Holds if `receiver` is the receiver of a method call with an implicit borrow. */
+  /** Holds if `n` is implicitly borrowed. */
   cached
-  predicate receiverHasImplicitBorrow(AstNode receiver) {
-    any(MethodResolution::MethodCall mc).receiverHasImplicitBorrow(receiver)
+  predicate implicitBorrow(AstNode n) {
+    any(MethodResolution::MethodCall mc).receiverHasImplicitBorrow(n)
   }
 
   /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
@@ -3439,8 +3447,10 @@ private module Cached {
    * Gets the struct field that the field expression `fe` resolves to, if any.
    */
   cached
-  StructField resolveStructFieldExpr(FieldExpr fe) {
-    exists(string name, Type ty | ty = getFieldExprLookupType(fe, pragma[only_bind_into](name)) |
+  StructField resolveStructFieldExpr(FieldExpr fe, boolean isDereferenced) {
+    exists(string name, Type ty |
+      ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), isDereferenced)
+    |
       result = ty.(StructType).getStruct().getStructField(pragma[only_bind_into](name)) or
       result = ty.(UnionType).getUnion().getStructField(pragma[only_bind_into](name))
     )
@@ -3450,10 +3460,10 @@ private module Cached {
    * Gets the tuple field that the field expression `fe` resolves to, if any.
    */
   cached
-  TupleField resolveTupleFieldExpr(FieldExpr fe) {
+  TupleField resolveTupleFieldExpr(FieldExpr fe, boolean isDereferenced) {
     exists(int i |
       result =
-        getTupleFieldExprLookupType(fe, pragma[only_bind_into](i))
+        getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), isDereferenced)
             .(StructType)
             .getStruct()
             .getTupleField(pragma[only_bind_into](i))
