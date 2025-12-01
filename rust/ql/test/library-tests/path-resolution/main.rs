@@ -545,6 +545,32 @@ mod m16 {
             !Self::Assoc() // $ item=S3boolAssocFunc
         } // S3boolAssocFunc
     }
+
+    #[rustfmt::skip]
+    impl S3<i32> { // $ item=S3 item=i32
+        fn f1() -> i32 { // $ item=i32
+            0
+        } // S3i32f1
+    }
+
+    #[rustfmt::skip]
+    impl S3<bool> { // $ item=S3 item=bool
+        fn f1() -> bool { // $ item=bool
+            true
+        } // S3boolf1
+    }
+
+    #[rustfmt::skip]
+    fn foo() {
+        S3::<i32>:: // $ item=i32
+        Assoc(); // $ item=S3i32AssocFunc $ SPURIOUS: item=S3boolAssocFunc
+
+        S3::<bool>:: // $ item=bool
+        f1(); // $ item=S3boolf1 $ SPURIOUS: item=S3i32f1
+        
+        S3::<i32>:: // $ item=i32
+        f1(); // $ item=S3i32f1 $ SPURIOUS: item=S3boolf1
+    }
 }
 
 mod trait_visibility {
