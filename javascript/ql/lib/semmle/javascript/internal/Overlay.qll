@@ -1,4 +1,5 @@
 private import javascript
+private import OverlayXml
 
 /** Holds if the database is an overlay. */
 overlay[local]
@@ -12,8 +13,6 @@ private string getFileFromEntity(@locatable node) {
     json_locations(node, loc)
     or
     yaml_locations(node, loc)
-    or
-    xmllocations(node, loc)
   |
     result = getFileFromLocation(loc)
   )
