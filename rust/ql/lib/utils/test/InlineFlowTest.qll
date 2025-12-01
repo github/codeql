@@ -31,7 +31,12 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
 
   private string getSourceArgString(DataFlow::Node src) {
     defaultSource(src) and
-    result = src.asExpr().(Call).getPositionalArgument(0).toString()
+    exists(Expr arg | arg = src.asExpr().(Call).getPositionalArgument(0) |
+      not arg instanceof ArrayListExpr and
+      result = arg.toString()
+      or
+      result = arg.(ArrayListExpr).getExpr(0).toString()
+    )
     or
     sourceNode(src, _) and
     result =
