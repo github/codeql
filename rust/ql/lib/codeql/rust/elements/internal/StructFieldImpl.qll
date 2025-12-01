@@ -30,7 +30,9 @@ module Impl {
     /** Holds if this record field is named `name` and belongs to the struct `s`. */
     predicate isStructField(Struct s, string name) { this = s.getStructField(name) }
 
-    override string toStringImpl() { result = concat(int i | | this.toStringPart(i) order by i) }
+    override string toStringImpl() {
+      result = strictconcat(int i | | this.toStringPart(i) order by i)
+    }
 
     private string toStringPart(int index) {
       index = 0 and result = this.getVisibility().toAbbreviatedString() + " "
