@@ -77,7 +77,19 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   }
 }
 
-abstract class PathTypeMention extends TypeMention, Path { }
+abstract class PathTypeMention extends TypeMention, Path {
+  abstract Type resolvePathTypeAt(TypePath typePath);
+
+  final override Type resolveTypeAt(TypePath typePath) {
+    result = this.resolvePathTypeAt(typePath) and
+    (
+      not result instanceof TypeParameter
+      or
+      // Prevent type parameters from escaping their scope
+      this = result.(TypeParameter).getDeclaringItem().getAChild*().getADescendant()
+    )
+  }
+}
 
 class AliasPathTypeMention extends PathTypeMention {
   TypeAlias resolved;
@@ -94,7 +106,7 @@ class AliasPathTypeMention extends PathTypeMention {
    * Holds if this path resolved to a type alias with a rhs. that has the
    * resulting type at `typePath`.
    */
-  override Type resolveTypeAt(TypePath typePath) {
+  override Type resolvePathTypeAt(TypePath typePath) {
     result = rhs.resolveTypeAt(typePath) and
     not result = pathGetTypeParameter(resolved, _)
     or
@@ -275,7 +287,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     result = TAssociatedTypeTypeParameter(resolved)
   }
 
-  override Type resolveTypeAt(TypePath typePath) {
+  override Type resolvePathTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result = this.resolveRootType()
     or
@@ -307,7 +319,9 @@ class ImplSelfMention extends PathTypeMention {
 
   ImplSelfMention() { this = impl.getASelfPath() }
 
-  override Type resolveTypeAt(TypePath typePath) { result = resolveImplSelfTypeAt(impl, typePath) }
+  override Type resolvePathTypeAt(TypePath typePath) {
+    result = resolveImplSelfTypeAt(impl, typePath)
+  }
 }
 
 class PathTypeReprMention extends TypeMention, PathTypeRepr {
