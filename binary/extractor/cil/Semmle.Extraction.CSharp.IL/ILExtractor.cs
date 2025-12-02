@@ -19,35 +19,38 @@ public class ILExtractor {
   public void Extract(string dllPath) {
     Console.WriteLine($"Extracting {dllPath}...");
 
-    var assembly = AssemblyDefinition.ReadAssembly(dllPath);
+    // Read and process the assembly in a scoped block so it's disposed before file copy
+    using (var assembly = AssemblyDefinition.ReadAssembly(dllPath)) {
+      // Write file info
+      var fileId = trap.GetId();
+      trap.WriteTuple("files", fileId, dllPath);
 
-    // Write file info
-    var fileId = trap.GetId();
-    trap.WriteTuple("files", fileId, dllPath);
+      // Write assembly info
+      var assemblyId = trap.GetId();
+      trap.WriteTuple("assemblies", assemblyId, fileId, assembly.Name.Name,
+                      assembly.Name.Version.ToString());
 
-    // Write assembly info
-    var assemblyId = trap.GetId();
-    trap.WriteTuple("assemblies", assemblyId, fileId, assembly.Name.Name,
-                    assembly.Name.Version.ToString());
+      foreach (var module in assembly.Modules) {
+        foreach (var type in module.Types) {
+          // Skip compiler-generated types for now
+          if (type.Name.Contains("<") || type.Name.StartsWith("<"))
+            continue;
 
-    foreach (var module in assembly.Modules) {
-      foreach (var type in module.Types) {
-        // Skip compiler-generated types for now
-        if (type.Name.Contains("<") || type.Name.StartsWith("<"))
-          continue;
-
-        ExtractType(type);
+          ExtractType(type);
+        }
       }
     }
 
+    // Copy to source archive (after assembly is closed)
     var cilSourceArchiveDir = Environment.GetEnvironmentVariable(
         "CODEQL_EXTRACTOR_CIL_SOURCE_ARCHIVE_DIR");
     if (string.IsNullOrEmpty(cilSourceArchiveDir)) {
       throw new InvalidOperationException(
           "Environment variable CODEQL_EXTRACTOR_CIL_SOURCE_ARCHIVE_DIR is not set.");
     }
-    var dllArchivePath =
-        Path.Combine(cilSourceArchiveDir, dllPath.Replace(":", "_"));
+    // Convert absolute path to relative for archive: strip leading / or drive letter
+    var relativeDllPath = dllPath.TrimStart('/').Replace(":", "_");
+    var dllArchivePath = Path.Combine(cilSourceArchiveDir, relativeDllPath);
     // Ensure directory exists
     var archiveDir = Path.GetDirectoryName(dllArchivePath);
     if (!Directory.Exists(archiveDir)) {
