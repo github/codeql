@@ -107,9 +107,9 @@ module HardcodedCryptographicValue {
 
     HeuristicSinks() {
       // any argument going to a parameter whose name matches a credential name
-      exists(CallExprBase fc, Function f, int argIndex, string argName |
-        fc.getArg(argIndex) = this.asExpr() and
-        fc.getStaticTarget() = f and
+      exists(Call c, Function f, int argIndex, string argName |
+        c.getPositionalArgument(argIndex) = this.asExpr() and
+        c.getStaticTarget() = f and
         f.getParam(argIndex).getPat().(IdentPat).getName().getText() = argName and
         (
           argName = "password" and kind = "password"
@@ -123,7 +123,7 @@ module HardcodedCryptographicValue {
           // note: matching "key" results in too many false positives
         ) and
         // don't duplicate modeled sinks
-        not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = fc)
+        not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = c)
       )
     }
 
