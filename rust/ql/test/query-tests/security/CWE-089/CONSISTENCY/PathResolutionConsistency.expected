@@ -1,4 +1,4 @@
-multipleCallTargets
+multipleResolvedTargets
 | mysql.rs:15:24:15:39 | ...::from(...) |
 | mysql.rs:16:26:16:85 | ...::from(...) |
 | mysql.rs:18:13:18:66 | ...::from(...) |
