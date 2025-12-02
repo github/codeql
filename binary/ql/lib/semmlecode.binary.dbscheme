@@ -2476,6 +2476,44 @@ il_operand_long(
 );
 
 /**
+ * Float operands for IL instructions.
+ * Used for ldc.r4 (load constant float32) instructions.
+ */
+il_operand_float(
+  int instruction: @il_instruction ref,
+  float value: float ref
+);
+
+/**
+ * Double operands for IL instructions.
+ * Used for ldc.r8 (load constant float64) instructions.
+ */
+il_operand_double(
+  int instruction: @il_instruction ref,
+  float value: float ref
+);
+
+/**
+ * Local variable index operands for IL instructions.
+ * Used for ldloc, stloc, ldloca instructions that reference local variables.
+ */
+il_operand_local_index(
+  int instruction: @il_instruction ref,
+  int index: int ref
+);
+
+/**
+ * Local variables defined in method bodies.
+ * Each local variable has an index and a type.
+ */
+il_local_variable(
+  unique int id: @il_local_variable,
+  int method: @method ref,
+  int index: int ref,
+  string type_name: string ref
+);
+
+/**
  * Exception handlers (try/catch/finally blocks) in methods.
  * Each handler represents a try block with its associated catch/finally/fault handler.
  * 

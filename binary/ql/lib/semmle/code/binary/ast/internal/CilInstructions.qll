@@ -1,8 +1,17 @@
 private import binary
 
-// TODO
-class CilVariable instanceof @method {
-  string toString() { none() }
+/** A local variable defined in a CIL method body. */
+class CilVariable extends @il_local_variable {
+  string toString() { result = "local_" + this.getIndex().toString() }
+
+  /** Gets the method that defines this local variable. */
+  CilMethod getMethod() { il_local_variable(this, result, _, _) }
+
+  /** Gets the index of this local variable in the method's local variable list. */
+  int getIndex() { il_local_variable(this, _, result, _) }
+
+  /** Gets the type name of this local variable. */
+  string getTypeName() { il_local_variable(this, _, _, result) }
 }
 
 class CilParameter instanceof @il_parameter {
@@ -30,7 +39,11 @@ class CilMethod extends @method {
 
   CilInstruction getInstruction(int i) { il_instruction_parent(result, i, this) }
 
-  CilVariable getVariable(int i) { none() } // TODO
+  /** Gets the local variable at the given index in this method. */
+  CilVariable getVariable(int i) {
+    result.getMethod() = this and
+    result.getIndex() = i
+  }
 
   CilParameter getParameter(int i) {
     result.getMethod() = this and
@@ -156,21 +169,36 @@ class CilStarg_S extends @il_starg_S, CilStoreArgument { }
 
 class CilLdloc_S extends @il_ldloc_S, CilLoadLocal {
   override int getLocalVariableIndex() {
-    none() // TODO: Extract
+    il_operand_local_index(this, result)
   }
 }
 
 abstract class CilLoadLocal extends CilInstruction {
   abstract int getLocalVariableIndex();
+
+  /** Gets the local variable that this instruction loads. */
+  CilVariable getLocalVariable() {
+    result = this.getEnclosingMethod().getVariable(this.getLocalVariableIndex())
+  }
 }
 
-abstract class CilLoadAddressOfLocal extends CilInstruction { }
+abstract class CilLoadAddressOfLocal extends CilInstruction {
+  /** Gets the local variable index. */
+  int getLocalVariableIndex() {
+    il_operand_local_index(this, result)
+  }
+
+  /** Gets the local variable whose address this instruction loads. */
+  CilVariable getLocalVariable() {
+    result = this.getEnclosingMethod().getVariable(this.getLocalVariableIndex())
+  }
+}
 
 class CilLdloca_S extends @il_ldloca_S, CilLoadAddressOfLocal { }
 
 class CilStloc_S extends @il_stloc_S, CilStoreLocal {
   override int getLocalVariableIndex() {
-    none() // TODO: Extract
+    il_operand_local_index(this, result)
   }
 }
 
@@ -279,16 +307,28 @@ class CilLdc_I8 extends @il_ldc_I8, CilLoadConstant {
 
 class CilLdc_R4 extends @il_ldc_R4, CilLoadConstant {
   final override string getValue() {
-    none() // TODO
+    exists(float f |
+      il_operand_float(this, f) and
+      result = f.toString()
+    )
   }
+
+  /** Gets the float value loaded by this instruction. */
+  float getFloatValue() { il_operand_float(this, result) }
 
   final override int getSize() { result = 4 } // float32
 }
 
 class CilLdc_R8 extends @il_ldc_R8, CilLoadConstant {
   final override string getValue() {
-    none() // TODO
+    exists(float d |
+      il_operand_double(this, d) and
+      result = d.toString()
+    )
   }
+
+  /** Gets the double value loaded by this instruction. */
+  float getDoubleValue() { il_operand_double(this, result) }
 
   final override int getSize() { result = 8 } // float64
 }
@@ -741,11 +781,11 @@ class CilStarg extends @il_starg, CilInstruction { }
 
 class CilLdloc extends @il_ldloc, CilLoadLocal {
   override int getLocalVariableIndex() {
-    none() // TODO: Extract
+    il_operand_local_index(this, result)
   }
 }
 
-class CilLdloca extends @il_ldloca, CilInstruction { }
+class CilLdloca extends @il_ldloca, CilLoadAddressOfLocal { }
 
 abstract class CilStoreLocal extends CilInstruction {
   abstract int getLocalVariableIndex();
@@ -757,7 +797,7 @@ abstract class CilStoreLocal extends CilInstruction {
 
 class CilStloc extends @il_stloc, CilStoreLocal {
   override int getLocalVariableIndex() {
-    none() // TODO: Extract
+    il_operand_local_index(this, result)
   }
 }
 

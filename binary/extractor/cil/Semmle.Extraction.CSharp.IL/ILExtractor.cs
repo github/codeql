@@ -108,6 +108,15 @@ public class ILExtractor {
   private void ExtractMethodBody(MethodDefinition method, int methodId) {
     var body = method.Body;
 
+    // Extract local variables
+    if (body.HasVariables) {
+      foreach (var variable in body.Variables) {
+        var varId = trap.GetId();
+        trap.WriteTuple("il_local_variable", varId, methodId, variable.Index, 
+                        variable.VariableType.FullName);
+      }
+    }
+
     // Write each IL instruction
     var index = 0;
     foreach (var instruction in body.Instructions) {
@@ -142,6 +151,9 @@ public class ILExtractor {
         if(methodRef.MethodReturnType.ReturnType.MetadataType is not Mono.Cecil.MetadataType.Void) {
           trap.WriteTuple("il_call_has_return_value", instrId);
         }
+      } else if (instruction.Operand is VariableDefinition varDef) {
+        // Local variable reference (ldloc, stloc, ldloca)
+        trap.WriteTuple("il_operand_local_index", instrId, varDef.Index);
       } else if (instruction.Operand is string str) {
         trap.WriteTuple("il_operand_string", instrId, str);
       } else if (instruction.Operand is sbyte sb) {
@@ -152,6 +164,10 @@ public class ILExtractor {
         trap.WriteTuple("il_operand_int", instrId, i);
       } else if (instruction.Operand is long l) {
         trap.WriteTuple("il_operand_long", instrId, l);
+      } else if (instruction.Operand is float f) {
+        trap.WriteTuple("il_operand_float", instrId, f);
+      } else if (instruction.Operand is double d) {
+        trap.WriteTuple("il_operand_double", instrId, d);
       }
 
       index++;
