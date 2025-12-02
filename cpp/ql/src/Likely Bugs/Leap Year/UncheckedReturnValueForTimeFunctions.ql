@@ -76,8 +76,7 @@ module ControlFlowReachability<InputSig Input> {
   }
 }
 
-from FunctionCall fcall, TimeConversionFunction trf, Variable var
-where
+predicate isUnpackedTimeTypeVar(Variable var, FunctionCall fcall, TimeConversionFunction trf) {
   fcall = trf.getACallToThisFunction() and
   fcall instanceof ExprInVoidContext and
   var.getUnderlyingType() instanceof UnpackedTimeType and
@@ -91,11 +90,36 @@ where
       fcall.getAnArgument() = va and
       var.getAnAccess() = va
     )
-  ) and
-  exists(DateStructModifiedFieldAccess dsmfa, VariableAccess modifiedVarAccess |
+  )
+}
+
+predicate isModifiedFieldAccessToTimeConversionSource(
+  ControlFlowNode modifiedVarAccess, Variable var
+) {
+  exists(DateStructModifiedFieldAccess dsmfa |
+    isUnpackedTimeTypeVar(var, _, _) and
     modifiedVarAccess = var.getAnAccess() and
-    modifiedVarAccess = dsmfa.getQualifier() and
-    modifiedVarAccess = fcall.getAPredecessor*()
+    modifiedVarAccess = dsmfa.getQualifier()
+  )
+}
+
+module ModifiedFieldAccessToTimeConversionConfig implements InputSig {
+  predicate isSource(ControlFlowNode modifiedVarAccess) {
+    isModifiedFieldAccessToTimeConversionSource(modifiedVarAccess, _)
+  }
+
+  predicate isSink(ControlFlowNode fcall) { isUnpackedTimeTypeVar(_, fcall, _) }
+}
+
+module ModifiedFieldAccessToTimeConversion =
+  ControlFlowReachability<ModifiedFieldAccessToTimeConversionConfig>;
+
+from FunctionCall fcall, TimeConversionFunction trf, Variable var
+where
+  isUnpackedTimeTypeVar(var, fcall, trf) and
+  exists(VariableAccess modifiedVarAccess |
+    isModifiedFieldAccessToTimeConversionSource(modifiedVarAccess, var) and
+    ModifiedFieldAccessToTimeConversion::flowsTo(modifiedVarAccess, fcall)
   ) and
   // Remove false positives
   not (
