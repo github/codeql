@@ -14,20 +14,47 @@ private import TranslatedFunction
 
 class Opcode = Opcode::Opcode;
 
+/**
+ * Holds if the instruction `instr` should be translated into IR.
+ */
 private predicate shouldTranslateX86Instr(Raw::X86Instruction instr) { any() }
 
+/**
+ * Holds if the operand `operand` should be translated into IR.
+ */
 private predicate shouldTranslateX86Operand(Raw::X86Operand operand) {
   // If it has a target we will synthesize an instruction reference instruction
   // instead of translating the operand directly.
   not exists(operand.getUse().(Raw::X86Jmp).getTarget())
 }
 
+/**
+ * Holds if the instruction `instr` should be translated into IR.
+ */
 private predicate shouldTranslateCilInstr(Raw::CilInstruction instr) { any() }
 
+/**
+ * Holds if the method `m` should be translated into IR.
+ */
 private predicate shouldTranslateMethod(Raw::CilMethod m) { any() }
 
+/**
+ * Holds if the parameter `p` should be translated into IR.
+ */
 private predicate shouldTranslateCilParameter(Raw::CilParameter p) { any() }
 
+/**
+ * The "base type" for all translated elements.
+ *
+ * To add support for a new instruction do the following:
+ * - Define a new branch of this type.
+ * - Add a new class in `TranslatedInstruction.qll` that extends `TranslatedInstruction` (or
+ * a more specific subclass such as `TranslatedX86Instruction`. `TranslatedCilInstruction`, etc).
+ * - Implement the abstract predicates required by the base class. Pay special attention to whether
+ * you also need to implement certain predicates that have a default `none()` implementation. This
+ * is necessary when you want to define a new temporary variable or local variable that is written
+ * to by the instruction.
+ */
 newtype TTranslatedElement =
   TTranslatedX86Function(Raw::X86Instruction entry) {
     shouldTranslateX86Instr(entry) and
@@ -113,58 +140,152 @@ TranslatedCilInstruction getTranslatedCilInstruction(Raw::CilInstruction raw) {
 }
 
 abstract class TranslatedElement extends TTranslatedElement {
+  /**
+   * Holds if this translated element generated an instruction with opcode `opcode` that stores
+   * the result of the instruction in `v` (unless `v.isNone()` holds. In that case the instruction
+   * does not produce a result).
+   *
+   * To obtain the instruction of this `TranslatedElement`, use `this.getInstruction(tag)`.
+   */
   abstract predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v);
 
+  /**
+   * Holds if this translated elements generates a temporary variable with the given tag.
+   *
+   * The variable is "temporary" in the sense that two different translated elements may reuse
+   * the `tag` and they will refer to different variables. This is unlike local variables, which
+   * are unique per function.
+   */
   predicate hasTempVariable(TempVariableTag tag) { none() }
 
+  /**
+   * Holds if this translated element generates a `CJump` instruction when given the tag `tag`, and
+   * the condition kind of the jump is `kind`.
+   */
   predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) { none() }
 
+  /**
+   * Holds if this translated element generates a local variable with the given tag.
+   */
   predicate hasLocalVariable(LocalVariableTag tag) { none() }
 
+  /**
+   * Gets the local variable with the given tag.
+   */
   final Variable getLocalVariable(LocalVariableTag tag) {
     result = TLocalVariable(this.getEnclosingFunction(), tag)
   }
 
-  Variable getVariable(TempVariableTag tag) { result = TTempVariable(this, tag) }
+  /**
+   * Gets the temporary variable with the given tag.
+   */
+  Variable getTempVariable(TempVariableTag tag) { result = TTempVariable(this, tag) }
 
+  /**
+   * Gets the instruction with the given tag.
+   */
   final Instruction getInstruction(InstructionTag tag) { result = MkInstruction(this, tag) }
 
+  /**
+   * Gets the constant value of the instruction with the given tag. This `tag` must refer to
+   * a constant instruction (that is, an instruction for which `hasInstruction(Opcode::Const, tag, _)`
+   * holds.).
+   */
   int getConstantValue(InstructionTag tag) { none() }
 
+  /**
+   * Gets the string constant of the instruction with the given tag. This `tag` must refer to
+   * a string constant instruction (that is, an instruction for which `hasInstruction(Opcode::Const, tag, _)`
+   * holds.)
+   */
   string getStringConstant(InstructionTag tag) { none() }
 
+  /**
+   * Gets the external name referenced by the instruction with the given tag. This `tag` must refer to
+   * an `ExternalRef` (that is, an instruction for which `hasInstruction(Opcode::ExternalRef, tag, _)`
+   * holds.)
+   */
   string getExternalName(InstructionTag tag) { none() }
 
+  /**
+   * Gets the instruction referenced by the instruction with the given tag. This `tag` must refer to
+   * an `InstrRef` (that is, an instruction for which `hasInstruction(Opcode::InstrRef, tag, _)` holds.)
+   */
   Instruction getReferencedInstruction(InstructionTag tag) { none() }
 
+  /**
+   * Gets the raw element that this translated element is a translation of.
+   *
+   * This predicate is important for linking back to the original AST.
+   */
   abstract Raw::Element getRawElement();
 
+  /**
+   * Gets the instruction that should be the successor of the instruction with the given tag
+   * and successor type. The successor type what kind of successor it is. In 99% of the cases
+   * this will be a `DirectSuccessor` (to represent that we proceed to the next instruction in
+   * the normal control flow). In case of conditional jumps, this may also be an
+   * `BooleanSuccessor` to represent that we may proceed to one of two different instructions
+   * depending on the value of a condition.
+   */
   abstract Instruction getSuccessor(InstructionTag tag, SuccessorType succType);
 
+  /**
+   * Gets the successor instruction of the given child translated element for the given successor type.
+   * This predicate is rarely used for translating CIL instructions since they tend to not have children
+   * (but rather have simple integer operands). For X86 instructions with complex operands (such as memory
+   * operands) this predicate is used.
+   */
   abstract Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType);
 
   /**
-   * Gets the variable that should be given as the operandTag operand of the instruction with the given tag.
+   * Gets the variable referred to by the `operandTag` operand of the instruction with the given `tag`.
+   * An operand _must_ refer to exactly 1 operand.
    */
   abstract Variable getVariableOperand(InstructionTag tag, OperandTag operandTag);
 
+  /**
+   * Holds if this is the translated element that produces the result of an instruction/operand. For a given
+   * instruction there should be exactly one `TranslatedElement` for which:
+   * 1. `getRawElement()` returns the instruction, and
+   * 2. ``producesResult()`` holds.
+   */
   abstract predicate producesResult();
 
+  /**
+   * Gets the variable that holds the result after executing the instruction represented by this
+   * translated element.
+   */
   abstract Variable getResultVariable();
 
   abstract string toString();
 
   abstract string getDumpId();
 
+  /**
+   * Gets the `TranslatedFunction` that is called when `tag` represents a call instruction.
+   */
   TranslatedFunction getStaticCallTarget(InstructionTag tag) { none() }
 
+  /**
+   * Gets the enclosing translated function of this translated element.
+   */
   abstract TranslatedFunction getEnclosingFunction();
 }
 
+/**
+ * Holds if the translated element `te` has an instruction with the given `tag`.
+ */
 predicate hasInstruction(TranslatedElement te, InstructionTag tag) { te.hasInstruction(_, tag, _) }
 
+/**
+ * Holds if the translated element `te` has a temporary variable with the given `tag`.
+ */
 predicate hasTempVariable(TranslatedElement te, TempVariableTag tag) { te.hasTempVariable(tag) }
 
+/**
+ * Holds if the translated element `te` has a local variable with the given `tag`.
+ */
 predicate hasLocalVariable(TranslatedFunction tf, LocalVariableTag tag) {
   exists(TranslatedElement te |
     te.getEnclosingFunction() = tf and
