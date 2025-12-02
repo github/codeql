@@ -1,3 +1,7 @@
+## 5.4.2
+
+No user-facing changes.
+
 ## 5.4.1
 
 ### Minor Analysis Improvements
