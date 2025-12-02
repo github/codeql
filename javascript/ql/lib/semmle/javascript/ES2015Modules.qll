@@ -29,6 +29,7 @@ class ES2015Module extends Module {
   override string getName() { result = this.getFile().getStem() }
 
   /** Gets an export declaration in this module. */
+  pragma[nomagic]
   ExportDeclaration getAnExport() { result.getTopLevel() = this }
 
   overlay[global]
@@ -38,6 +39,7 @@ class ES2015Module extends Module {
 
   /** Holds if this module exports variable `v` under the name `name`. */
   overlay[global]
+  pragma[nomagic]
   predicate exportsAs(LexicalName v, string name) { this.getAnExport().exportsAs(v, name) }
 
   override predicate isStrict() {
@@ -345,6 +347,7 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
 
   /** Holds if this export declaration exports variable `v` under the name `name`. */
   overlay[global]
+  pragma[nomagic]
   final predicate exportsAs(LexicalName v, string name) {
     this.exportsDirectlyAs(v, name)
     or
@@ -822,17 +825,30 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
   }
 
   overlay[global]
+  pragma[nomagic]
+  private predicate reExportsFrom(ES2015Module mod, string originalName, string reExportedName) {
+    exists(ExportSpecifier spec |
+      spec = this.getASpecifier() and
+      reExportedName = spec.getExportedName() and
+      originalName = spec.getLocalName() and
+      mod = this.getReExportedES2015Module()
+    )
+  }
+
+  overlay[global]
   override predicate reExportsAs(LexicalName v, string name) {
-    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
-      this.getReExportedES2015Module().exportsAs(v, spec.getLocalName())
+    exists(ES2015Module mod, string originalName |
+      this.reExportsFrom(mod, originalName, name) and
+      mod.exportsAs(v, originalName)
     ) and
     not (this.isTypeOnly() and v instanceof Variable)
   }
 
   overlay[global]
   override DataFlow::Node getReExportedSourceNode(string name) {
-    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
-      result = this.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
+    exists(ES2015Module mod, string originalName |
+      this.reExportsFrom(mod, originalName, name) and
+      result = mod.getAnExport().getSourceNode(originalName)
     )
   }
 }
