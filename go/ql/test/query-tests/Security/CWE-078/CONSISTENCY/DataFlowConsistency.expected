@@ -1,0 +1,11 @@
+reverseRead
+| ArgumentInjection.go:9:10:9:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CommandInjection2.go:13:15:13:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CommandInjection2.go:21:15:21:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CommandInjection2.go:41:15:41:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CommandInjection.go:9:13:9:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| GitSubcommands.go:11:13:11:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| GitSubcommands.go:22:13:22:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| GitSubcommands.go:33:13:33:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| SanitizingDoubleDash.go:9:13:9:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| SanitizingDoubleDash.go:92:13:92:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

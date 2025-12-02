@@ -1,0 +1,2 @@
+reverseRead
+| EmailBad.go:9:10:9:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
