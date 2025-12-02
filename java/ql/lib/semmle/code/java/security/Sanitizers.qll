@@ -3,6 +3,7 @@ overlay[local?]
 module;
 
 import java
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
 
 /**
@@ -27,5 +28,33 @@ class SimpleTypeSanitizer extends DataFlow::Node {
         .getASourceSupertype*()
         .hasQualifiedName("java.time.temporal", "TemporalAccessor") or
     this.getType() instanceof EnumType
+  }
+}
+
+/**
+ * Holds if `guard` holds with branch `branch` if `e` matches a regular expression.
+ *
+ * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
+ *
+ * Use this if you want to define a derived `DataFlow::BarrierGuard` without
+ * make the type recursive. Otherwise use `RegexpCheckBarrier`.
+ */
+predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
+  guard =
+    any(MethodCall method |
+      method.getMethod().getName() = "matches" and
+      e = method.getQualifier() and
+      branch = true
+    )
+}
+
+/**
+ * A check against a regular expression, considered as a barrier guard.
+ *
+ * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
+ */
+class RegexpCheckBarrier extends DataFlow::Node {
+  RegexpCheckBarrier() {
+    this = DataFlow::BarrierGuard<regexpMatchGuardChecks/3>::getABarrierNode()
   }
 }
