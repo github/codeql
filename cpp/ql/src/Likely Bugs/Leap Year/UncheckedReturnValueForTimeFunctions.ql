@@ -14,6 +14,68 @@
 import cpp
 import LeapYear
 
+signature module InputSig {
+  predicate isSource(ControlFlowNode n);
+
+  predicate isSink(ControlFlowNode n);
+}
+
+module ControlFlowReachability<InputSig Input> {
+  pragma[nomagic]
+  private predicate fwd(ControlFlowNode n) {
+    Input::isSource(n)
+    or
+    exists(ControlFlowNode n0 |
+      fwd(n0) and
+      n0.getASuccessor() = n
+    )
+  }
+
+  pragma[nomagic]
+  private predicate rev(ControlFlowNode n) {
+    fwd(n) and
+    (
+      Input::isSink(n)
+      or
+      exists(ControlFlowNode n1 |
+        rev(n1) and
+        n.getASuccessor() = n1
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private predicate prunedSuccessor(ControlFlowNode n1, ControlFlowNode n2) {
+    rev(n1) and
+    rev(n2) and
+    n1.getASuccessor() = n2
+  }
+
+  pragma[nomagic]
+  predicate isSource(ControlFlowNode n) {
+    Input::isSource(n) and
+    rev(n)
+  }
+
+  pragma[nomagic]
+  predicate isSink(ControlFlowNode n) {
+    Input::isSink(n) and
+    rev(n)
+  }
+
+  pragma[nomagic]
+  private predicate successorPlus(ControlFlowNode n1, ControlFlowNode n2) =
+    doublyBoundedFastTC(prunedSuccessor/2, isSource/1, isSink/1)(n1, n2)
+
+  predicate flowsTo(ControlFlowNode n1, ControlFlowNode n2) {
+    successorPlus(n1, n2)
+    or
+    n1 = n2 and
+    isSource(n1) and
+    isSink(n2)
+  }
+}
+
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
   fcall = trf.getACallToThisFunction() and
