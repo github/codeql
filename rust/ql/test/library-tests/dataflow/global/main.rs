@@ -264,7 +264,7 @@ fn test_operator_overloading() {
     let mut a = MyInt { value: 0 };
     let b = MyInt { value: source(35) };
     a *= b;
-    sink(a.value); // $ MISSING: hasValueFlow=35
+    sink(a.value); // $ hasValueFlow=35
 
     // Tests for deref operator.
     let a = MyInt { value: source(27) };

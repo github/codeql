@@ -1,9 +1,6 @@
-| main.rs:4:5:4:8 | 1000 | main.rs:4:5:4:12 | ... + ... |
-| main.rs:4:12:4:12 | i | main.rs:4:5:4:12 | ... + ... |
 | main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |
-| main.rs:13:10:13:10 | a | main.rs:13:10:13:14 | ... + ... |
-| main.rs:13:14:13:14 | 1 | main.rs:13:10:13:14 | ... + ... |
-| main.rs:26:11:26:11 | a | main.rs:26:10:26:11 | - ... |
+| main.rs:16:5:16:5 | [post] b [borrowed] | main.rs:16:5:16:5 | [SSA] b |
+| main.rs:20:5:20:5 | [post] c [borrowed] | main.rs:20:5:20:5 | [SSA] c |
 | main.rs:31:13:31:13 | a | main.rs:31:13:31:19 | a as u8 |
 | main.rs:32:10:32:10 | b | main.rs:32:10:32:17 | b as i64 |
 | main.rs:32:10:32:17 | [post] b as i64 | main.rs:32:10:32:10 | [post] b |

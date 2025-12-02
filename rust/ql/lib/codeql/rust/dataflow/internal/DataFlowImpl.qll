@@ -204,8 +204,11 @@ module LocalFlow {
     )
     or
     // An edge from a pattern/expression to its corresponding SSA definition.
-    nodeFrom.(AstNodeNode).getAstNode() =
-      nodeTo.(SsaNode).asDefinition().(Ssa::WriteDefinition).getWriteAccess()
+    exists(AstNode n |
+      n = nodeTo.(SsaNode).asDefinition().(Ssa::WriteDefinition).getWriteAccess() and
+      n = nodeFrom.(AstNodeNode).getAstNode() and
+      not n = any(CompoundAssignmentExpr cae).getLhs()
+    )
     or
     nodeFrom.(SourceParameterNode).getParameter().(Param).getPat() = nodeTo.asPat()
     or
@@ -422,13 +425,23 @@ module RustDataFlow implements InputSig<Location> {
 
   final class ReturnKind = ReturnKindAlias;
 
+  private Function getStaticTargetExt(Call c) {
+    result = c.getStaticTarget()
+    or
+    not exists(c.getStaticTarget()) and
+    exists(TraitItemNode t, string methodName |
+      c.(Operation).isOverloaded(t, methodName, _) and
+      result = t.getAssocItem(methodName)
+    )
+  }
+
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
     exists(Call c | c = call.asCall() |
       result.asCfgScope() = c.getARuntimeTarget()
       or
       exists(SummarizedCallable sc, Function staticTarget |
-        staticTarget = c.getStaticTarget() and
+        staticTarget = getStaticTargetExt(c) and
         sc = result.asSummarizedCallable()
       |
         sc = staticTarget
@@ -625,8 +638,18 @@ module RustDataFlow implements InputSig<Location> {
     implicitDeref(node1, node2, c)
     or
     // A read step dual to the store step for implicit borrows.
-    implicitBorrow(node2.(PostUpdateNode).getPreUpdateNode(),
-      node1.(PostUpdateNode).getPreUpdateNode(), c)
+    exists(Node n | implicitBorrow(n, node1.(PostUpdateNode).getPreUpdateNode(), c) |
+      node2.(PostUpdateNode).getPreUpdateNode() = n
+      or
+      // For compound assignments into variables like `x += y`, we do not want flow into
+      // `[post] x`, as that would create spurious flow when `x` is a parameter. Instead,
+      // we add the step directly into the SSA definition for `x` after the update.
+      exists(CompoundAssignmentExpr cae, Expr lhs |
+        lhs = cae.getLhs() and
+        lhs = node2.(SsaNode).asDefinition().(Ssa::WriteDefinition).getWriteAccess() and
+        n = TExprNode(lhs)
+      )
+    )
     or
     VariableCapture::readStep(node1, c, node2)
   }

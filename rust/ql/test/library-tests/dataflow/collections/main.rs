@@ -44,7 +44,7 @@ mod arrays {
 
         let mut arr = [0];
         arr[0] += source(6);
-        sink(arr[0]); // $ MISSING: hasTaintFlow=6
+        sink(arr[0]); // $ hasTaintFlow=6
     }
 }
 
@@ -97,18 +97,18 @@ mod indexers {
         let mut s = S(0i64);
         sink(s.0);
         s[0] += S(source(3));
-        sink(s.0); // $ MISSING: hasTaintFlow=3
+        sink(s.0); // $ hasTaintFlow=3
 
         let mut s = S(0i64);
         sink(s.0);
         *s.index_mut(0) += S(source(5));
         s[0] += S(source(5));
-        sink(s.0); // $ MISSING: hasTaintFlow=5
+        sink(s.0); // $ hasTaintFlow=5
 
         let mut s = S(0i64);
         sink(s.0);
         (*s.index_mut(0)).add_assign(S(source(6)));
-        sink(s.0); // $ MISSING: hasTaintFlow=6
+        sink(s.0); // $ hasTaintFlow=6
     }
 }
 

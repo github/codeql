@@ -14,11 +14,11 @@ fn addition() {
 
     let mut b = source(58);
     b += 2;
-    sink(b); // $ MISSING: hasTaintFlow=58 $ SPURIOUS: hasValueFlow=58
+    sink(b); // $ hasTaintFlow=58
 
     let mut c = 0;
     c += source(99);
-    sink(c); // $ MISSING: hasTaintFlow=99
+    sink(c); // $ hasTaintFlow=99
 }
 
 fn negation() {
