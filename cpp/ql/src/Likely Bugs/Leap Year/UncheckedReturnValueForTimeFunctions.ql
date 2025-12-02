@@ -114,6 +114,31 @@ module ModifiedFieldAccessToTimeConversionConfig implements InputSig {
 module ModifiedFieldAccessToTimeConversion =
   ControlFlowReachability<ModifiedFieldAccessToTimeConversionConfig>;
 
+module SafeTimeGatheringFunctionCallToTimeConversionFunctionCallConfig implements InputSig {
+  predicate isSource(ControlFlowNode n) {
+    n = any(SafeTimeGatheringFunction stgf).getACallToThisFunction()
+  }
+
+  predicate isSink(ControlFlowNode fcall) { ModifiedFieldAccessToTimeConversion::isSink(fcall) }
+}
+
+module SafeTimeGatheringFunctionCallToTimeConversionFunctionCall =
+  ControlFlowReachability<SafeTimeGatheringFunctionCallToTimeConversionFunctionCallConfig>;
+
+module SafeTimeGatheringFunctionCallToModifiedFieldAccessConfig implements InputSig {
+  predicate isSource(ControlFlowNode n) {
+    n = any(SafeTimeGatheringFunction stgf).getACallToThisFunction() and
+    SafeTimeGatheringFunctionCallToTimeConversionFunctionCall::isSource(n)
+  }
+
+  predicate isSink(ControlFlowNode modifiedVarAccess) {
+    ModifiedFieldAccessToTimeConversion::flowsTo(modifiedVarAccess, _)
+  }
+}
+
+module SafeTimeGatheringFunctionCallToModifiedFieldAccess =
+  ControlFlowReachability<SafeTimeGatheringFunctionCallToModifiedFieldAccessConfig>;
+
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
   isUnpackedTimeTypeVar(var, fcall, trf) and
@@ -125,13 +150,10 @@ where
   not (
     // Remove any instance where the predecessor is a SafeTimeGatheringFunction and no change to the data happened in between
     exists(FunctionCall pred |
-      pred = fcall.getAPredecessor*() and
-      exists(SafeTimeGatheringFunction stgf | pred = stgf.getACallToThisFunction()) and
-      not exists(DateStructModifiedFieldAccess dsmfa, VariableAccess modifiedVarAccess |
-        modifiedVarAccess = var.getAnAccess() and
-        modifiedVarAccess = dsmfa.getQualifier() and
-        modifiedVarAccess = fcall.getAPredecessor*() and
-        modifiedVarAccess = pred.getASuccessor*()
+      SafeTimeGatheringFunctionCallToTimeConversionFunctionCall::flowsTo(pred, fcall) and
+      not exists(VariableAccess modifiedVarAccess |
+        ModifiedFieldAccessToTimeConversion::flowsTo(modifiedVarAccess, fcall) and
+        SafeTimeGatheringFunctionCallToModifiedFieldAccess::flowsTo(pred, modifiedVarAccess)
       )
     )
     or
