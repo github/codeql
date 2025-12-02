@@ -1195,11 +1195,23 @@ configLocations(
 @configLocatable = @config | @configName | @configValue;
 
 /*- Database metadata -*/
+
+/**
+ * The CLI will automatically emit applicable tuples for this table,
+ * such as `databaseMetadata("isOverlay", "true")` when building an
+ * overlay database.
+ */
 databaseMetadata(
   string metadataKey: string ref,
   string value: string ref
 );
 
+/*- Overlay support -*/
+
+/**
+ * The CLI will automatically emit tuples for each new/modified/deleted file
+ * when building an overlay database.
+ */
 overlayChangedFiles(
   string path: string ref
 );
