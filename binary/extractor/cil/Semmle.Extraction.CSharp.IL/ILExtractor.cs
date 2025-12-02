@@ -86,10 +86,22 @@ public class ILExtractor {
       ExtractMethodBody(method, methodId);
     }
 
+    // If it's an instance method we generate a 'this' parameter and
+    // place it at index 0.
+    int paramStartIndex = 0;
+    if (!method.IsStatic)
+    {
+      var thisId = trap.GetId();
+      trap.WriteTuple("il_parameter", thisId, methodId, 0, "#this");
+      // We set the index for the actual parameters to start at 1
+      // so that we don't get overlapping indices.
+      paramStartIndex = 1;
+    }
+
     for(int i = 0; i < method.Parameters.Count; i++) {
       var param = method.Parameters[i];
       var paramId = trap.GetId();
-      trap.WriteTuple("il_parameter", paramId, methodId, i, param.Name);
+      trap.WriteTuple("il_parameter", paramId, methodId, i + paramStartIndex, param.Name);
     }
   }
 
