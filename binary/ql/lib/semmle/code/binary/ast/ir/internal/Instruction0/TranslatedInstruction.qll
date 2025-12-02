@@ -375,7 +375,7 @@ class TranslatedX86Jmp extends TranslatedX86Instruction, TTranslatedX86Jmp {
     exists(instr.getTarget()) and
     tag = X86JumpInstrRefTag() and
     opcode instanceof Opcode::InstrRef and
-    v.asSome() = this.getVariable(X86JumpInstrRefVarTag())
+    v.asSome() = this.getTempVariable(X86JumpInstrRefVarTag())
   }
 
   override predicate producesResult() { any() }
@@ -599,7 +599,7 @@ class TranslatedX86Push extends TranslatedX86Instruction, TTranslatedX86Push {
     // x = 8
     tag = PushSubConstTag() and
     opcode instanceof Opcode::Const and
-    v.asSome() = this.getVariable(PushConstVarTag())
+    v.asSome() = this.getTempVariable(PushConstVarTag())
     or
     // esp = esp - x
     tag = PushSubTag() and
@@ -693,11 +693,11 @@ class TranslatedX86Test extends TranslatedX86Instruction, TTranslatedX86Test {
   ) {
     tag = TestAndTag() and
     opcode instanceof Opcode::And and
-    v.asSome() = this.getVariable(TestVarTag())
+    v.asSome() = this.getTempVariable(TestVarTag())
     or
     tag = TestZeroTag() and
     opcode instanceof Opcode::Const and
-    v.asSome() = this.getVariable(ZeroVarTag())
+    v.asSome() = this.getTempVariable(ZeroVarTag())
     or
     tag = TestCmpTag() and
     opcode instanceof Opcode::Sub and
@@ -724,10 +724,10 @@ class TranslatedX86Test extends TranslatedX86Instruction, TTranslatedX86Test {
     tag = TestCmpTag() and
     (
       operandTag instanceof LeftTag and
-      result = this.getVariable(TestVarTag())
+      result = this.getTempVariable(TestVarTag())
       or
       operandTag instanceof RightTag and
-      result = this.getVariable(ZeroVarTag())
+      result = this.getTempVariable(ZeroVarTag())
     )
   }
 
@@ -792,7 +792,7 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
     exists(instr.getTarget()) and
     tag = X86CJumpInstrRefTag() and
     opcode instanceof Opcode::InstrRef and
-    v.asSome() = this.getVariable(X86CJumpInstrRefVarTag())
+    v.asSome() = this.getTempVariable(X86CJumpInstrRefVarTag())
     or
     opcode instanceof Opcode::CJump and
     tag = X86CJumpTag() and
@@ -1049,7 +1049,7 @@ class TranslatedX86Pop extends TranslatedX86Instruction, TTranslatedX86Pop {
     // x = 8
     tag = PopAddConstTag() and
     opcode instanceof Opcode::Const and
-    v.asSome() = this.getVariable(PopConstVarTag())
+    v.asSome() = this.getTempVariable(PopConstVarTag())
     or
     // esp = esp + x
     tag = PopAddTag() and
@@ -1149,7 +1149,7 @@ abstract class TranslatedX86DecOrInc extends WritingInstruction {
     or
     tag = DecOrIncConstTag() and
     opcode instanceof Opcode::Const and
-    v.asSome() = this.getVariable(DecOrIncConstVarTag())
+    v.asSome() = this.getTempVariable(DecOrIncConstVarTag())
     or
     tag = DecOrIncOpTag() and
     opcode = this.getOpcode() and
@@ -1264,15 +1264,15 @@ abstract class TranslatedX86BtBase extends TranslatedX86Instruction {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     opcode instanceof Opcode::Shl and
     tag = BtShiftTag() and
-    v.asSome() = this.getVariable(BtVarTag())
+    v.asSome() = this.getTempVariable(BtVarTag())
     or
     opcode instanceof Opcode::And and
     tag = BtAndTag() and
-    v.asSome() = this.getVariable(BtVarTag())
+    v.asSome() = this.getTempVariable(BtVarTag())
     or
     opcode instanceof Opcode::Const and
     tag = BtOneTag() and
-    v.asSome() = this.getVariable(BtOneVarTag())
+    v.asSome() = this.getTempVariable(BtOneVarTag())
     or
     opcode instanceof Opcode::Sub and
     tag = BtCmpTag() and
@@ -1280,7 +1280,7 @@ abstract class TranslatedX86BtBase extends TranslatedX86Instruction {
     or
     opcode instanceof Opcode::Const and
     tag = BtZeroTag() and
-    v.asSome() = this.getVariable(BtZeroVarTag())
+    v.asSome() = this.getTempVariable(BtZeroVarTag())
   }
 
   override predicate producesResult() { any() }
@@ -1298,19 +1298,19 @@ abstract class TranslatedX86BtBase extends TranslatedX86Instruction {
     tag = BtAndTag() and
     (
       operandTag instanceof LeftTag and
-      result = this.getVariable(BtVarTag())
+      result = this.getTempVariable(BtVarTag())
       or
       operandTag instanceof RightTag and
-      result = this.getVariable(BtOneVarTag())
+      result = this.getTempVariable(BtOneVarTag())
     )
     or
     tag = BtCmpTag() and
     (
       operandTag instanceof LeftTag and
-      result = this.getVariable(BtVarTag())
+      result = this.getTempVariable(BtVarTag())
       or
       operandTag instanceof RightTag and
-      result = this.getVariable(BtZeroVarTag())
+      result = this.getTempVariable(BtZeroVarTag())
     )
   }
 
@@ -1432,19 +1432,19 @@ class TranslatedX86Btr extends TranslatedX86BtBase, TTranslatedX86Btr {
     or
     tag = BtrOneTag() and
     opcode instanceof Opcode::Const and
-    v.asSome() = this.getVariable(BtrOneVarTag())
+    v.asSome() = this.getTempVariable(BtrOneVarTag())
     or
     tag = BtrShiftTag() and
     opcode instanceof Opcode::Shl and
-    v.asSome() = this.getVariable(BtrVarTag())
+    v.asSome() = this.getTempVariable(BtrVarTag())
     or
     tag = BtrNotTag() and
     opcode instanceof Opcode::Not and
-    v.asSome() = this.getVariable(BtrVarTag())
+    v.asSome() = this.getTempVariable(BtrVarTag())
     or
     tag = BtrAndTag() and
     opcode instanceof Opcode::And and
-    v.asSome() = this.getVariable(BtrVarTag())
+    v.asSome() = this.getTempVariable(BtrVarTag())
   }
 
   override int getConstantValue(InstructionTag tag) {
@@ -1460,7 +1460,7 @@ class TranslatedX86Btr extends TranslatedX86BtBase, TTranslatedX86Btr {
     tag = BtrShiftTag() and
     (
       operandTag instanceof LeftTag and
-      result = this.getVariable(BtrOneVarTag())
+      result = this.getTempVariable(BtrOneVarTag())
       or
       operandTag instanceof RightTag and
       result = this.getRightOperand().getResultVariable()
@@ -1468,7 +1468,7 @@ class TranslatedX86Btr extends TranslatedX86BtBase, TTranslatedX86Btr {
     or
     tag = BtrNotTag() and
     operandTag instanceof UnaryTag and
-    result = this.getVariable(BtrVarTag())
+    result = this.getTempVariable(BtrVarTag())
     or
     tag = BtrAndTag() and
     (
@@ -1476,7 +1476,7 @@ class TranslatedX86Btr extends TranslatedX86BtBase, TTranslatedX86Btr {
       result = this.getLeftOperand().getResultVariable()
       or
       operandTag instanceof RightTag and
-      result = this.getVariable(BtrVarTag())
+      result = this.getTempVariable(BtrVarTag())
     )
   }
 
@@ -1513,7 +1513,7 @@ class TranslatedX86Neg extends WritingInstruction, TTranslatedX86Neg {
   ) {
     opcode instanceof Opcode::Const and
     tag = NegConstZeroTag() and
-    v.asSome() = this.getVariable(NegConstZeroVarTag())
+    v.asSome() = this.getTempVariable(NegConstZeroVarTag())
     or
     opcode instanceof Opcode::Sub and
     tag = NegSubTag() and
@@ -1614,7 +1614,7 @@ class TranslatedCilLdc extends TranslatedCilInstruction, TTranslatedCilLdc {
   ) {
     tag = SingleTag() and
     opcode instanceof Opcode::Const and
-    v.asSome() = this.getVariable(CilLdcConstVarTag())
+    v.asSome() = this.getTempVariable(CilLdcConstVarTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag) { tag = CilLdcConstVarTag() }
@@ -1638,7 +1638,7 @@ class TranslatedCilLdc extends TranslatedCilInstruction, TTranslatedCilLdc {
 
   override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
-  override Variable getResultVariable() { result = this.getVariable(CilLdcConstVarTag()) }
+  override Variable getResultVariable() { result = this.getTempVariable(CilLdcConstVarTag()) }
 
   final override Variable getStackElement(int i) {
     i = 0 and
@@ -1709,7 +1709,7 @@ class TranslatedCilLdloc extends TranslatedCilInstruction, TTranslatedCilLdloc {
   ) {
     opcode instanceof Opcode::Copy and
     tag = SingleTag() and
-    v.asSome() = this.getVariable(CilLdLocVarTag())
+    v.asSome() = this.getTempVariable(CilLdLocVarTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag) { tag = CilLdLocVarTag() }
@@ -1732,7 +1732,7 @@ class TranslatedCilLdloc extends TranslatedCilInstruction, TTranslatedCilLdloc {
 
   override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
-  override Variable getResultVariable() { result = this.getVariable(CilLdLocVarTag()) }
+  override Variable getResultVariable() { result = this.getTempVariable(CilLdLocVarTag()) }
 
   final override Variable getStackElement(int i) {
     i = 0 and
@@ -1755,7 +1755,7 @@ class TranslatedCilUnconditionalBranch extends TranslatedCilInstruction,
   ) {
     opcode instanceof Opcode::InstrRef and
     tag = CilUnconditionalBranchRefTag() and
-    v.asSome() = this.getVariable(CilUnconditionalBranchRefVarTag())
+    v.asSome() = this.getTempVariable(CilUnconditionalBranchRefVarTag())
     or
     opcode instanceof Opcode::Jump and
     tag = CilUnconditionalBranchTag() and
@@ -1814,7 +1814,7 @@ abstract class TranslatedCilArithmeticInstruction extends TranslatedCilInstructi
   ) {
     opcode = this.getOpcode() and
     tag = SingleTag() and
-    v.asSome() = this.getVariable(CilBinaryVarTag())
+    v.asSome() = this.getTempVariable(CilBinaryVarTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag) { tag = CilBinaryVarTag() }
@@ -1844,7 +1844,7 @@ abstract class TranslatedCilArithmeticInstruction extends TranslatedCilInstructi
 
   final override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
-  final override Variable getResultVariable() { result = this.getVariable(CilBinaryVarTag()) }
+  final override Variable getResultVariable() { result = this.getTempVariable(CilBinaryVarTag()) }
 
   final override Variable getStackElement(int i) {
     i = 0 and
@@ -1904,7 +1904,7 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
   ) {
     opcode instanceof Opcode::Sub and
     tag = CilRelSubTag() and
-    v.asSome() = this.getVariable(CilRelSubVarTag())
+    v.asSome() = this.getTempVariable(CilRelSubVarTag())
     or
     opcode instanceof Opcode::CJump and
     tag = CilRelCJumpTag() and
@@ -1912,11 +1912,11 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
     or
     opcode instanceof Opcode::InstrRef and
     tag = CilRelRefTag() and
-    v.asSome() = this.getVariable(CilRelRefVarTag())
+    v.asSome() = this.getTempVariable(CilRelRefVarTag())
     or
     opcode instanceof Opcode::Const and
     tag = CilRelConstTag(_) and
-    v.asSome() = this.getVariable(CilRelVarTag())
+    v.asSome() = this.getTempVariable(CilRelVarTag())
   }
 
   override predicate producesResult() { any() }
@@ -1992,11 +1992,11 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
 
   final override Instruction getEntry() { result = this.getInstruction(CilRelSubTag()) }
 
-  final override Variable getResultVariable() { result = this.getVariable(CilRelVarTag()) }
+  final override Variable getResultVariable() { result = this.getTempVariable(CilRelVarTag()) }
 
   final override Variable getStackElement(int i) {
     i = 0 and
-    result = this.getVariable(CilRelVarTag())
+    result = this.getTempVariable(CilRelVarTag())
     or
     i > 0 and
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
@@ -2053,15 +2053,15 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
   ) {
     opcode instanceof Opcode::Const and
     tag = CilBoolBranchConstTag() and
-    v.asSome() = this.getVariable(CilBoolBranchConstVarTag())
+    v.asSome() = this.getTempVariable(CilBoolBranchConstVarTag())
     or
     opcode instanceof Opcode::Sub and
     tag = CilBoolBranchSubTag() and
-    v.asSome() = this.getVariable(CilBoolBranchSubVarTag())
+    v.asSome() = this.getTempVariable(CilBoolBranchSubVarTag())
     or
     opcode instanceof Opcode::InstrRef and
     tag = CilBoolBranchRefTag() and
-    v.asSome() = this.getVariable(CilBoolBranchRefVarTag())
+    v.asSome() = this.getTempVariable(CilBoolBranchRefVarTag())
     or
     opcode instanceof Opcode::CJump and
     tag = CilBoolBranchCJumpTag() and
@@ -2210,12 +2210,12 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
     opcode instanceof Opcode::Call and
     tag = CilCallTag() and
     if instr.hasReturnValue()
-    then v.asSome() = this.getVariable(CallReturnValueTag())
+    then v.asSome() = this.getTempVariable(CallReturnValueTag())
     else v.isNone()
     or
     opcode instanceof Opcode::ExternalRef and
     tag = CilCallTargetTag() and
-    v.asSome() = this.getVariable(CilCallTargetVarTag())
+    v.asSome() = this.getTempVariable(CilCallTargetVarTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag) {
@@ -2261,7 +2261,7 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
 
   override Variable getResultVariable() {
     instr.hasReturnValue() and
-    result = this.getVariable(CallReturnValueTag())
+    result = this.getTempVariable(CallReturnValueTag())
   }
 
   final override Variable getStackElement(int i) {
@@ -2294,7 +2294,7 @@ class TranslatedCilLoadString extends TranslatedCilInstruction, TTranslatedCilLo
   ) {
     opcode instanceof Opcode::Const and
     tag = SingleTag() and
-    v.asSome() = this.getVariable(CilLoadStringVarTag())
+    v.asSome() = this.getTempVariable(CilLoadStringVarTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag) { tag = CilLoadStringVarTag() }
@@ -2318,7 +2318,7 @@ class TranslatedCilLoadString extends TranslatedCilInstruction, TTranslatedCilLo
 
   override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
-  override Variable getResultVariable() { result = this.getVariable(CilLoadStringVarTag()) }
+  override Variable getResultVariable() { result = this.getTempVariable(CilLoadStringVarTag()) }
 
   final override Variable getStackElement(int i) {
     i = 0 and
@@ -2339,7 +2339,7 @@ class TranslatedCilLoadArg extends TranslatedCilInstruction, TTranslatedCilLoadA
   ) {
     opcode instanceof Opcode::Copy and
     tag = SingleTag() and
-    v.asSome() = this.getVariable(CilLoadArgVarTag())
+    v.asSome() = this.getTempVariable(CilLoadArgVarTag())
   }
 
   override predicate hasTempVariable(TempVariableTag tag) { tag = CilLoadArgVarTag() }
@@ -2362,7 +2362,7 @@ class TranslatedCilLoadArg extends TranslatedCilInstruction, TTranslatedCilLoadA
 
   override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
-  override Variable getResultVariable() { result = this.getVariable(CilLoadArgVarTag()) }
+  override Variable getResultVariable() { result = this.getTempVariable(CilLoadArgVarTag()) }
 
   final override Variable getStackElement(int i) {
     i = 0 and

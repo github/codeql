@@ -94,7 +94,7 @@ class TranslatedX86ImmediateOperand extends TranslatedX86Operand, TTranslatedX86
 
   override predicate hasTempVariable(TempVariableTag tag) { tag = ImmediateOperandVarTag() }
 
-  override Variable getResultVariable() { result = this.getVariable(ImmediateOperandVarTag()) }
+  override Variable getResultVariable() { result = this.getTempVariable(ImmediateOperandVarTag()) }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
@@ -108,7 +108,7 @@ class TranslatedX86ImmediateOperand extends TranslatedX86Operand, TTranslatedX86
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
     opcode instanceof Opcode::Const and
     tag = ImmediateOperandConstTag() and
-    v.asSome() = this.getVariable(ImmediateOperandVarTag())
+    v.asSome() = this.getTempVariable(ImmediateOperandVarTag())
   }
 
   override Option<Instruction>::Option getEntry() {
@@ -786,65 +786,65 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstFactorVarTag())
       or
       opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
-      v.asSome() = this.getVariable(MemoryOperandMulVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandMulVarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd2Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd2VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd2VarTag())
     )
     or
     this.case2Applies() and
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstFactorVarTag())
       or
       opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
-      v.asSome() = this.getVariable(MemoryOperandMulVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandMulVarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
     )
     or
     this.case3Applies() and
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstDisplacementTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstDisplacementVarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd2Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd2VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd2VarTag())
     )
     or
     this.case4Applies() and
     opcode instanceof Opcode::Add and
     tag = MemoryOperandAdd1Tag() and
-    v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+    v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
     or
     this.case5Applies() and
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstDisplacementTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstDisplacementVarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
     )
     or
     this.case6Applies() and
@@ -854,37 +854,37 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstFactorVarTag())
       or
       opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
-      v.asSome() = this.getVariable(MemoryOperandMulVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandMulVarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
     )
     or
     this.case8Applies() and
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstFactorTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstFactorVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstFactorVarTag())
       or
       opcode instanceof Opcode::Mul and
       tag = MemoryOperandMulTag() and
-      v.asSome() = this.getVariable(MemoryOperandMulVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandMulVarTag())
     )
     or
     this.case9Applies() and
     (
       opcode instanceof Opcode::Const and
       tag = MemoryOperandConstDisplacementTag() and
-      v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandConstDisplacementVarTag())
       or
       opcode instanceof Opcode::Add and
       tag = MemoryOperandAdd1Tag() and
-      v.asSome() = this.getVariable(MemoryOperandAdd1VarTag())
+      v.asSome() = this.getTempVariable(MemoryOperandAdd1VarTag())
     )
     or
     this.case10Applies() and
@@ -893,12 +893,12 @@ class TranslatedX86MemoryOperand extends TranslatedX86Operand, TTranslatedX86Mem
     this.case11Applies() and
     opcode instanceof Opcode::Const and
     tag = MemoryOperandConstDisplacementTag() and
-    v.asSome() = this.getVariable(MemoryOperandConstDisplacementVarTag())
+    v.asSome() = this.getTempVariable(MemoryOperandConstDisplacementVarTag())
     or
     this.isLoaded() and
     opcode instanceof Opcode::Load and
     tag = MemoryOperandLoadTag() and
-    v.asSome() = this.getVariable(MemoryOperandLoadVarTag())
+    v.asSome() = this.getTempVariable(MemoryOperandLoadVarTag())
   }
 
   override Option<Instruction>::Option getEntry() {
