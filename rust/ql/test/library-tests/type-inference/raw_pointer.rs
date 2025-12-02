@@ -1,47 +1,47 @@
 use std::ptr::null_mut;
 
 fn raw_pointer_const_deref(x: *const i32) -> i32 {
-    let _y = unsafe { *x }; // $ MISSING: type=_y:i32
+    let _y = unsafe { *x }; // $ type=_y:i32
     0
 }
 
 fn raw_pointer_mut_deref(x: *mut bool) -> i32 {
-    let _y = unsafe { *x }; // $ MISSING: type=_y:bool
+    let _y = unsafe { *x }; // $ type=_y:bool
     0
 }
 
 fn raw_const_borrow() {
     let a: i64 = 10;
-    let x = &raw const a; // $ MISSING: type=x:TPtrConst.i64
+    let x = &raw const a; // $ type=x:TPtrConst.i64
     unsafe {
-        let _y = *x; // $ type=_y:i64 SPURIOUS: target=deref
+        let _y = *x; // $ type=_y:i64
     }
 }
 
 fn raw_mut_borrow() {
     let mut a = 10i32;
-    let x = &raw mut a; // $ MISSING: type=x:TPtrMut.i32
+    let x = &raw mut a; // $ type=x:TPtrMut.i32
     unsafe {
-        let _y = *x; // $ type=_y:i32 SPURIOUS: target=deref
+        let _y = *x; // $ type=_y:i32
     }
 }
 
 fn raw_mut_write(cond: bool) {
     let a = 10i32;
     // The type of `x` must be inferred from the write below.
-    let ptr_written = null_mut(); // $ target=null_mut MISSING: type=ptr_written:TPtrMut.i32
+    let ptr_written = null_mut(); // $ target=null_mut type=ptr_written:TPtrMut.i32
     if cond {
         unsafe {
             // NOTE: This write is undefined behavior because `x` is a null pointer.
             *ptr_written = a;
-            let _y = *ptr_written; // $ MISSING: type=_y:i32
+            let _y = *ptr_written; // $ type=_y:i32
         }
     }
 }
 
 fn raw_type_from_deref(cond: bool) {
     // The type of `x` must be inferred from the read below.
-    let ptr_read = null_mut(); // $ target=null_mut MISSING: type=ptr_read:TPtrMut.i64
+    let ptr_read = null_mut(); // $ target=null_mut type=ptr_read:TPtrMut.i64
     if cond {
         unsafe {
             // NOTE: This read is undefined behavior because `x` is a null pointer.

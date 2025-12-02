@@ -431,7 +431,10 @@ module CertainTypeInference {
     or
     result = inferLiteralType(n, path, true)
     or
-    result = inferRefNodeType(n) and
+    result = inferRefPatType(n) and
+    path.isEmpty()
+    or
+    result = inferRefExprType(n) and
     path.isEmpty()
     or
     result = inferLogicalOperationType(n, path)
@@ -606,10 +609,14 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     strictcount(Expr e | bodyReturns(n1, e)) = 1
   )
   or
-  (
-    n1 = n2.(RefExpr).getExpr() or
-    n1 = n2.(RefPat).getPat()
-  ) and
+  exists(RefExpr re |
+    n2 = re and
+    n1 = re.getExpr() and
+    prefix1.isEmpty() and
+    prefix2 = TypePath::singleton(inferRefExprType(re).getPositionalTypeParameter(0))
+  )
+  or
+  n1 = n2.(RefPat).getPat() and
   prefix1.isEmpty() and
   prefix2 = TypePath::singleton(getRefTypeParameter())
   or
@@ -709,9 +716,7 @@ private predicate lubCoercion(AstNode parent, AstNode child, TypePath prefix) {
  * of `n2` at `prefix2`, but type information should only propagate from `n1` to
  * `n2`.
  */
-private predicate typeEqualityNonSymmetric(
-  AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2
-) {
+private predicate typeEqualityAsymmetric(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
   lubCoercion(n2, n1, prefix2) and
   prefix1.isEmpty()
   or
@@ -723,6 +728,13 @@ private predicate typeEqualityNonSymmetric(
     not lubCoercion(mid, n1, _) and
     prefix1 = prefixMid.append(suffix)
   )
+  or
+  // When `n2` is `*n1` propagate type information from a raw pointer type
+  // parameter at `n1`. The other direction is handled in
+  // `inferDereferencedExprPtrType`.
+  n1 = n2.(DerefExpr).getExpr() and
+  prefix1 = TypePath::singleton(getPtrTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
@@ -735,7 +747,7 @@ private Type inferTypeEquality(AstNode n, TypePath path) {
     or
     typeEquality(n2, prefix2, n, prefix1)
     or
-    typeEqualityNonSymmetric(n2, prefix2, n, prefix1)
+    typeEqualityAsymmetric(n2, prefix2, n, prefix1)
   )
 }
 
@@ -2952,16 +2964,21 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
   )
 }
 
+/** Gets the root type of the reference expression `ref`. */
+pragma[nomagic]
+private Type inferRefExprType(RefExpr ref) {
+  if ref.isRaw()
+  then
+    ref.isMut() and result instanceof PtrMutType
+    or
+    ref.isConst() and result instanceof PtrConstType
+  else result instanceof RefType
+}
+
 /** Gets the root type of the reference node `ref`. */
 pragma[nomagic]
-private Type inferRefNodeType(AstNode ref) {
-  (
-    ref = any(IdentPat ip | ip.isRef()).getName()
-    or
-    ref instanceof RefExpr
-    or
-    ref instanceof RefPat
-  ) and
+private Type inferRefPatType(AstNode ref) {
+  (ref = any(IdentPat ip | ip.isRef()).getName() or ref instanceof RefPat) and
   result instanceof RefType
 }
 
@@ -3142,6 +3159,21 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
       exprPath.isCons(getRefTypeParameter(), path0) and
       path0.isCons(getSliceTypeParameter(), path)
     )
+  )
+}
+
+/**
+ * Gets the inferred type of `n` at `path` when `n` occurs in a dereference
+ * expression `*n` and when `n` is known to have a raw pointer type.
+ *
+ * The other direction is handled in `typeEqualityAsymmetric`.
+ */
+private Type inferDereferencedExprPtrType(AstNode n, TypePath path) {
+  exists(DerefExpr de, PtrType type, TypePath suffix |
+    de.getExpr() = n and
+    type = inferType(de.getExpr()) and
+    result = inferType(de, suffix) and
+    path = TypePath::cons(type.getPositionalTypeParameter(0), suffix)
   )
 }
 
@@ -3543,6 +3575,8 @@ private module Cached {
       result = inferAwaitExprType(n, path)
       or
       result = inferIndexExprType(n, path)
+      or
+      result = inferDereferencedExprPtrType(n, path)
       or
       result = inferForLoopExprType(n, path)
       or

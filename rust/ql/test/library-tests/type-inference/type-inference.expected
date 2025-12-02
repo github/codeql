@@ -2256,24 +2256,24 @@ inferCertainType
 | main.rs:1803:13:1803:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1803:17:1803:33 | ...::my_func(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1806:26:1806:30 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1806:26:1806:30 | SelfParam | TRef | file://:0:0:0:0 | * |
-| main.rs:1806:26:1806:30 | SelfParam | TRef.TPtr | main.rs:1805:14:1805:23 | T |
+| main.rs:1806:26:1806:30 | SelfParam | TRef | file://:0:0:0:0 | *mut |
+| main.rs:1806:26:1806:30 | SelfParam | TRef.TPtrMut | main.rs:1805:14:1805:23 | T |
 | main.rs:1806:39:1808:13 | { ... } |  | {EXTERNAL LOCATION} | & |
 | main.rs:1806:39:1808:13 | { ... } | TRef | main.rs:1805:14:1805:23 | T |
 | main.rs:1807:26:1807:32 | &... |  | {EXTERNAL LOCATION} | & |
 | main.rs:1807:29:1807:32 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1807:29:1807:32 | self | TRef | file://:0:0:0:0 | * |
-| main.rs:1807:29:1807:32 | self | TRef.TPtr | main.rs:1805:14:1805:23 | T |
+| main.rs:1807:29:1807:32 | self | TRef | file://:0:0:0:0 | *mut |
+| main.rs:1807:29:1807:32 | self | TRef.TPtrMut | main.rs:1805:14:1805:23 | T |
 | main.rs:1810:31:1812:13 | { ... } |  | main.rs:1805:14:1805:23 | T |
-| main.rs:1816:13:1816:13 | p |  | file://:0:0:0:0 | * |
-| main.rs:1816:13:1816:13 | p | TPtr | {EXTERNAL LOCATION} | i32 |
+| main.rs:1816:13:1816:13 | p |  | file://:0:0:0:0 | *mut |
+| main.rs:1816:13:1816:13 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1816:27:1816:32 | &mut v |  | {EXTERNAL LOCATION} | & |
-| main.rs:1817:26:1817:26 | p |  | file://:0:0:0:0 | * |
-| main.rs:1817:26:1817:26 | p | TPtr | {EXTERNAL LOCATION} | i32 |
+| main.rs:1817:26:1817:26 | p |  | file://:0:0:0:0 | *mut |
+| main.rs:1817:26:1817:26 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1818:26:1818:48 | ...::my_method(...) |  | {EXTERNAL LOCATION} | & |
 | main.rs:1818:46:1818:47 | &p |  | {EXTERNAL LOCATION} | & |
-| main.rs:1818:47:1818:47 | p |  | file://:0:0:0:0 | * |
-| main.rs:1818:47:1818:47 | p | TPtr | {EXTERNAL LOCATION} | i32 |
+| main.rs:1818:47:1818:47 | p |  | file://:0:0:0:0 | *mut |
+| main.rs:1818:47:1818:47 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1819:13:1819:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1819:17:1819:37 | ...::my_func(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1825:16:1837:5 | { ... } |  | {EXTERNAL LOCATION} | () |
@@ -4422,52 +4422,52 @@ inferCertainType
 | pattern_matching.rs:843:5:843:32 | patterns_in_let_statements(...) |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:844:5:844:37 | patterns_in_function_parameters(...) |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:845:5:845:30 | patterns_in_control_flow(...) |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:3:28:3:28 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:3:28:3:28 | x | TPtr | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:3:28:3:28 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:3:28:3:28 | x | TPtrConst | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:3:50:6:1 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:4:24:4:24 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:4:24:4:24 | x | TPtr | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:8:26:8:26 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:8:26:8:26 | x | TPtr | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:4:24:4:24 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:4:24:4:24 | x | TPtrConst | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:8:26:8:26 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:8:26:8:26 | x | TPtrMut | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:8:47:11:1 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:9:24:9:24 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:9:24:9:24 | x | TPtr | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:9:24:9:24 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:9:24:9:24 | x | TPtrMut | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:13:23:19:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:14:9:14:9 | a |  | {EXTERNAL LOCATION} | i64 |
-| raw_pointer.rs:15:9:15:9 | x |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:15:13:15:24 | &raw const a |  | {EXTERNAL LOCATION} | & |
+| raw_pointer.rs:15:9:15:9 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:15:13:15:24 | &raw const a |  | file://:0:0:0:0 | *const |
 | raw_pointer.rs:15:24:15:24 | a |  | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:16:5:18:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:17:19:17:19 | x |  | {EXTERNAL LOCATION} | & |
+| raw_pointer.rs:17:19:17:19 | x |  | file://:0:0:0:0 | *const |
 | raw_pointer.rs:21:21:27:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:22:13:22:13 | a |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:22:17:22:21 | 10i32 |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:23:9:23:9 | x |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:23:13:23:22 | &raw mut a |  | {EXTERNAL LOCATION} | & |
+| raw_pointer.rs:23:9:23:9 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:23:13:23:22 | &raw mut a |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:23:22:23:22 | a |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:24:5:26:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:25:19:25:19 | x |  | {EXTERNAL LOCATION} | & |
+| raw_pointer.rs:25:19:25:19 | x |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:29:18:29:21 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:29:30:40:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:30:9:30:9 | a |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:30:13:30:17 | 10i32 |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:32:9:32:19 | ptr_written |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:32:23:32:32 | null_mut(...) |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:32:9:32:19 | ptr_written |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:32:23:32:32 | null_mut(...) |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:33:5:39:5 | if cond {...} |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:33:8:33:11 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:34:9:38:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:36:14:36:24 | ptr_written |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:36:14:36:24 | ptr_written |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:36:28:36:28 | a |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:37:23:37:33 | ptr_written |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:37:23:37:33 | ptr_written |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:42:24:42:27 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:42:36:51:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:44:9:44:16 | ptr_read |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:44:20:44:29 | null_mut(...) |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:44:9:44:16 | ptr_read |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:44:20:44:29 | null_mut(...) |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:45:5:50:5 | if cond {...} |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:45:8:45:11 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:46:9:49:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:48:17:48:18 | _y |  | {EXTERNAL LOCATION} | i64 |
-| raw_pointer.rs:48:28:48:35 | ptr_read |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:48:28:48:35 | ptr_read |  | file://:0:0:0:0 | *mut |
 | raw_pointer.rs:53:15:60:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:54:5:54:32 | raw_pointer_const_deref(...) |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:54:29:54:31 | &10 |  | {EXTERNAL LOCATION} | & |
@@ -8560,8 +8560,8 @@ inferType
 | main.rs:1803:13:1803:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1803:17:1803:33 | ...::my_func(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1806:26:1806:30 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1806:26:1806:30 | SelfParam | TRef | file://:0:0:0:0 | * |
-| main.rs:1806:26:1806:30 | SelfParam | TRef.TPtr | main.rs:1805:14:1805:23 | T |
+| main.rs:1806:26:1806:30 | SelfParam | TRef | file://:0:0:0:0 | *mut |
+| main.rs:1806:26:1806:30 | SelfParam | TRef.TPtrMut | main.rs:1805:14:1805:23 | T |
 | main.rs:1806:39:1808:13 | { ... } |  | {EXTERNAL LOCATION} | & |
 | main.rs:1806:39:1808:13 | { ... } | TRef | main.rs:1805:14:1805:23 | T |
 | main.rs:1807:17:1807:34 | { ... } |  | {EXTERNAL LOCATION} | & |
@@ -8569,17 +8569,17 @@ inferType
 | main.rs:1807:26:1807:32 | &... |  | {EXTERNAL LOCATION} | & |
 | main.rs:1807:26:1807:32 | &... | TRef | main.rs:1805:14:1805:23 | T |
 | main.rs:1807:27:1807:32 | * ... |  | main.rs:1805:14:1805:23 | T |
-| main.rs:1807:28:1807:32 | * ... |  | file://:0:0:0:0 | * |
-| main.rs:1807:28:1807:32 | * ... | TPtr | main.rs:1805:14:1805:23 | T |
+| main.rs:1807:28:1807:32 | * ... |  | file://:0:0:0:0 | *mut |
+| main.rs:1807:28:1807:32 | * ... | TPtrMut | main.rs:1805:14:1805:23 | T |
 | main.rs:1807:29:1807:32 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1807:29:1807:32 | self | TRef | file://:0:0:0:0 | * |
-| main.rs:1807:29:1807:32 | self | TRef.TPtr | main.rs:1805:14:1805:23 | T |
+| main.rs:1807:29:1807:32 | self | TRef | file://:0:0:0:0 | *mut |
+| main.rs:1807:29:1807:32 | self | TRef.TPtrMut | main.rs:1805:14:1805:23 | T |
 | main.rs:1810:31:1812:13 | { ... } |  | main.rs:1805:14:1805:23 | T |
 | main.rs:1811:17:1811:28 | ...::default(...) |  | main.rs:1805:14:1805:23 | T |
 | main.rs:1815:17:1815:17 | v |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1815:21:1815:22 | 42 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:1816:13:1816:13 | p |  | file://:0:0:0:0 | * |
-| main.rs:1816:13:1816:13 | p | TPtr | {EXTERNAL LOCATION} | i32 |
+| main.rs:1816:13:1816:13 | p |  | file://:0:0:0:0 | *mut |
+| main.rs:1816:13:1816:13 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1816:27:1816:32 | &mut v |  | {EXTERNAL LOCATION} | & |
 | main.rs:1816:27:1816:32 | &mut v | TRef | {EXTERNAL LOCATION} | i32 |
 | main.rs:1816:32:1816:32 | v |  | {EXTERNAL LOCATION} | i32 |
@@ -8587,8 +8587,8 @@ inferType
 | main.rs:1817:13:1817:13 | x | TRef | {EXTERNAL LOCATION} | i32 |
 | main.rs:1817:17:1817:40 | { ... } |  | {EXTERNAL LOCATION} | & |
 | main.rs:1817:17:1817:40 | { ... } | TRef | {EXTERNAL LOCATION} | i32 |
-| main.rs:1817:26:1817:26 | p |  | file://:0:0:0:0 | * |
-| main.rs:1817:26:1817:26 | p | TPtr | {EXTERNAL LOCATION} | i32 |
+| main.rs:1817:26:1817:26 | p |  | file://:0:0:0:0 | *mut |
+| main.rs:1817:26:1817:26 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1817:26:1817:38 | p.my_method() |  | {EXTERNAL LOCATION} | & |
 | main.rs:1817:26:1817:38 | p.my_method() | TRef | {EXTERNAL LOCATION} | i32 |
 | main.rs:1818:13:1818:13 | x |  | {EXTERNAL LOCATION} | & |
@@ -8598,10 +8598,10 @@ inferType
 | main.rs:1818:26:1818:48 | ...::my_method(...) |  | {EXTERNAL LOCATION} | & |
 | main.rs:1818:26:1818:48 | ...::my_method(...) | TRef | {EXTERNAL LOCATION} | i32 |
 | main.rs:1818:46:1818:47 | &p |  | {EXTERNAL LOCATION} | & |
-| main.rs:1818:46:1818:47 | &p | TRef | file://:0:0:0:0 | * |
-| main.rs:1818:46:1818:47 | &p | TRef.TPtr | {EXTERNAL LOCATION} | i32 |
-| main.rs:1818:47:1818:47 | p |  | file://:0:0:0:0 | * |
-| main.rs:1818:47:1818:47 | p | TPtr | {EXTERNAL LOCATION} | i32 |
+| main.rs:1818:46:1818:47 | &p | TRef | file://:0:0:0:0 | *mut |
+| main.rs:1818:46:1818:47 | &p | TRef.TPtrMut | {EXTERNAL LOCATION} | i32 |
+| main.rs:1818:47:1818:47 | p |  | file://:0:0:0:0 | *mut |
+| main.rs:1818:47:1818:47 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1819:13:1819:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1819:17:1819:37 | ...::my_func(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1825:16:1837:5 | { ... } |  | {EXTERNAL LOCATION} | () |
@@ -12815,71 +12815,86 @@ inferType
 | pattern_matching.rs:843:5:843:32 | patterns_in_let_statements(...) |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:844:5:844:37 | patterns_in_function_parameters(...) |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:845:5:845:30 | patterns_in_control_flow(...) |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:3:28:3:28 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:3:28:3:28 | x | TPtr | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:3:28:3:28 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:3:28:3:28 | x | TPtrConst | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:3:50:6:1 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:4:24:4:24 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:4:24:4:24 | x | TPtr | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:4:9:4:10 | _y |  | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:4:14:4:26 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:4:23:4:24 | * ... |  | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:4:24:4:24 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:4:24:4:24 | x | TPtrConst | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:5:5:5:5 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:8:26:8:26 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:8:26:8:26 | x | TPtr | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:8:26:8:26 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:8:26:8:26 | x | TPtrMut | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:8:47:11:1 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:9:24:9:24 | x |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:9:24:9:24 | x | TPtr | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:9:9:9:10 | _y |  | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:9:14:9:26 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:9:23:9:24 | * ... |  | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:9:24:9:24 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:9:24:9:24 | x | TPtrMut | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:10:5:10:5 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:13:23:19:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:14:9:14:9 | a |  | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:14:18:14:19 | 10 |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:14:18:14:19 | 10 |  | {EXTERNAL LOCATION} | i64 |
-| raw_pointer.rs:15:9:15:9 | x |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:15:9:15:9 | x | TRef | {EXTERNAL LOCATION} | i64 |
-| raw_pointer.rs:15:13:15:24 | &raw const a |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:15:13:15:24 | &raw const a | TRef | {EXTERNAL LOCATION} | i64 |
+| raw_pointer.rs:15:9:15:9 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:15:9:15:9 | x | TPtrConst | {EXTERNAL LOCATION} | i64 |
+| raw_pointer.rs:15:13:15:24 | &raw const a |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:15:13:15:24 | &raw const a | TPtrConst | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:15:24:15:24 | a |  | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:16:5:18:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:17:13:17:14 | _y |  | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:17:18:17:19 | * ... |  | {EXTERNAL LOCATION} | i64 |
-| raw_pointer.rs:17:19:17:19 | x |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:17:19:17:19 | x | TRef | {EXTERNAL LOCATION} | i64 |
+| raw_pointer.rs:17:19:17:19 | x |  | file://:0:0:0:0 | *const |
+| raw_pointer.rs:17:19:17:19 | x | TPtrConst | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:21:21:27:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:22:13:22:13 | a |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:22:17:22:21 | 10i32 |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:23:9:23:9 | x |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:23:9:23:9 | x | TRef | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:23:13:23:22 | &raw mut a |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:23:13:23:22 | &raw mut a | TRef | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:23:9:23:9 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:23:9:23:9 | x | TPtrMut | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:23:13:23:22 | &raw mut a |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:23:13:23:22 | &raw mut a | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:23:22:23:22 | a |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:24:5:26:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:25:13:25:14 | _y |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:25:18:25:19 | * ... |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:25:19:25:19 | x |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:25:19:25:19 | x | TRef | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:25:19:25:19 | x |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:25:19:25:19 | x | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:29:18:29:21 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:29:30:40:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:30:9:30:9 | a |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:30:13:30:17 | 10i32 |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:32:9:32:19 | ptr_written |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:32:23:32:32 | null_mut(...) |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:32:9:32:19 | ptr_written |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:32:9:32:19 | ptr_written | TPtrMut | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:32:23:32:32 | null_mut(...) |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:32:23:32:32 | null_mut(...) | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:33:5:39:5 | if cond {...} |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:33:8:33:11 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:33:13:39:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:34:9:38:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:36:13:36:24 | * ... |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:36:13:36:28 | ... = ... |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:36:14:36:24 | ptr_written |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:36:14:36:24 | ptr_written |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:36:14:36:24 | ptr_written | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:36:28:36:28 | a |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:37:23:37:33 | ptr_written |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:37:17:37:18 | _y |  | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:37:22:37:33 | * ... |  | {EXTERNAL LOCATION} | i32 |
+| raw_pointer.rs:37:23:37:33 | ptr_written |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:37:23:37:33 | ptr_written | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:42:24:42:27 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:42:36:51:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| raw_pointer.rs:44:9:44:16 | ptr_read |  | file://:0:0:0:0 | * |
-| raw_pointer.rs:44:20:44:29 | null_mut(...) |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:44:9:44:16 | ptr_read |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:44:9:44:16 | ptr_read | TPtrMut | {EXTERNAL LOCATION} | i64 |
+| raw_pointer.rs:44:20:44:29 | null_mut(...) |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:44:20:44:29 | null_mut(...) | TPtrMut | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:45:5:50:5 | if cond {...} |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:45:8:45:11 | cond |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:45:13:50:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:46:9:49:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:48:17:48:18 | _y |  | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:48:27:48:35 | * ... |  | {EXTERNAL LOCATION} | i64 |
-| raw_pointer.rs:48:28:48:35 | ptr_read |  | file://:0:0:0:0 | * |
+| raw_pointer.rs:48:28:48:35 | ptr_read |  | file://:0:0:0:0 | *mut |
+| raw_pointer.rs:48:28:48:35 | ptr_read | TPtrMut | {EXTERNAL LOCATION} | i64 |
 | raw_pointer.rs:53:15:60:1 | { ... } |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:54:5:54:32 | raw_pointer_const_deref(...) |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:54:29:54:31 | &10 |  | {EXTERNAL LOCATION} | & |

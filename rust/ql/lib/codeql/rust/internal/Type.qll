@@ -339,10 +339,27 @@ class NeverType extends Type, TNeverType {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
-class PtrType extends StructType {
-  PtrType() { this.getStruct() instanceof Builtins::PtrType }
+abstract class PtrType extends StructType {
+  override Location getLocation() { result instanceof EmptyLocation }
+}
 
-  override string toString() { result = "*" }
+pragma[nomagic]
+TypeParamTypeParameter getPtrTypeParameter() {
+  result = any(PtrType t).getPositionalTypeParameter(0)
+}
+
+class PtrMutType extends PtrType {
+  PtrMutType() { this.getStruct() instanceof Builtins::PtrMutType }
+
+  override string toString() { result = "*mut" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+class PtrConstType extends PtrType {
+  PtrConstType() { this.getStruct() instanceof Builtins::PtrConstType }
+
+  override string toString() { result = "*const" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
@@ -375,11 +392,6 @@ class UnknownType extends Type, TUnknownType {
   override string toString() { result = "(context typed)" }
 
   override Location getLocation() { result instanceof EmptyLocation }
-}
-
-pragma[nomagic]
-TypeParamTypeParameter getPtrTypeParameter() {
-  result = any(PtrType t).getPositionalTypeParameter(0)
 }
 
 /** A type parameter. */

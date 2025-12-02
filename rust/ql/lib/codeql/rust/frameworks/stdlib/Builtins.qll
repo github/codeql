@@ -176,15 +176,18 @@ class RefMutType extends BuiltinType {
   override string getDisplayName() { result = "&mut" }
 }
 
-/** The builtin pointer type `*const T`. */
-class PtrType extends BuiltinType {
-  PtrType() { this.getName() = "Ptr" }
+/** A builtin raw pointer type `*const T` or `*mut T`. */
+abstract class PtrType extends BuiltinType { }
+
+/** The builtin raw pointer type `*const T`. */
+class PtrConstType extends PtrType {
+  PtrConstType() { this.getName() = "PtrConst" }
 
   override string getDisplayName() { result = "*const" }
 }
 
-/** The builtin pointer type `*mut T`. */
-class PtrMutType extends BuiltinType {
+/** The builtin raw pointer type `*mut T`. */
+class PtrMutType extends PtrType {
   PtrMutType() { this.getName() = "PtrMut" }
 
   override string getDisplayName() { result = "*mut" }
