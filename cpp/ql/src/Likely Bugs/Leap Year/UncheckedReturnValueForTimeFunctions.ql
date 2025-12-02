@@ -139,6 +139,24 @@ module SafeTimeGatheringFunctionCallToModifiedFieldAccessConfig implements Input
 module SafeTimeGatheringFunctionCallToModifiedFieldAccess =
   ControlFlowReachability<SafeTimeGatheringFunctionCallToModifiedFieldAccessConfig>;
 
+module ModifiedMonthFieldAccessToTimeConversionConfig implements InputSig {
+  predicate isSource(ControlFlowNode n) {
+    exists(Variable var, MonthFieldAccess mfa, AssignExpr ae |
+      n = mfa and
+      isUnpackedTimeTypeVar(var, _, _) and
+      mfa.getQualifier() = var.getAnAccess() and
+      mfa.isModified() and
+      ae = mfa.getEnclosingElement() and
+      ae.getAnOperand().getValue().toInt() = 1
+    )
+  }
+
+  predicate isSink(ControlFlowNode fcall) { ModifiedFieldAccessToTimeConversion::flowsTo(_, fcall) }
+}
+
+module ModifiedMonthFieldAccessToTimeConversion =
+  ControlFlowReachability<ModifiedMonthFieldAccessToTimeConversionConfig>;
+
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
   isUnpackedTimeTypeVar(var, fcall, trf) and
@@ -158,13 +176,7 @@ where
     )
     or
     // Remove any instance where the year is changed, but the month is set to 1 (year wrapping)
-    exists(MonthFieldAccess mfa, AssignExpr ae |
-      mfa.getQualifier() = var.getAnAccess() and
-      mfa.isModified() and
-      mfa = fcall.getAPredecessor*() and
-      ae = mfa.getEnclosingElement() and
-      ae.getAnOperand().getValue().toInt() = 1
-    )
+    ModifiedMonthFieldAccessToTimeConversion::isSink(fcall)
   )
 select fcall,
   "$@: Return value of $@ function should be verified to check for any error because variable $@ is not guaranteed to be safe.",
