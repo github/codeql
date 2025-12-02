@@ -20,18 +20,6 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
     Stages::DataFlowStage::ref() and
     model = "" and
     (
-      exists(BinaryExpr binary |
-        binary.getOperatorName() = ["+", "-", "*", "/", "%", "&", "|", "^", "<<", ">>"] and
-        pred.asExpr() = [binary.getLhs(), binary.getRhs()] and
-        succ.asExpr() = binary
-      )
-      or
-      exists(PrefixExpr prefix |
-        prefix.getOperatorName() = ["-", "!"] and
-        pred.asExpr() = prefix.getExpr() and
-        succ.asExpr() = prefix
-      )
-      or
       pred.asExpr() = succ.asExpr().(CastExpr).getExpr()
       or
       exists(IndexExpr index |

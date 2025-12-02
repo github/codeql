@@ -131,6 +131,7 @@ module Impl {
      * Holds if this operation is overloaded to the method `methodName` of the
      * trait `trait`.
      */
+    pragma[nomagic]
     predicate isOverloaded(Trait trait, string methodName, int borrows) {
       isOverloaded(this.getOperatorName(), this.getNumberOfOperands(), trait.getCanonicalPath(),
         methodName, borrows)
