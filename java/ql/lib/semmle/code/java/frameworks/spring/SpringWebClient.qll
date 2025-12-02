@@ -33,7 +33,7 @@ class SpringWebClient extends Interface {
 
 /**
  * A method on `org.springframework.web.client.RestTemplate`
- * which has a parameter `uriVariables` (which can have type `Object..` or
+ * which has a parameter `uriVariables` (which can have type `Object...` or
  * `Map<String, ?>`) which contains variables to be expanded into the URL
  * template in parameter 0.
  */
