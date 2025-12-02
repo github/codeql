@@ -98,7 +98,7 @@ void Test01() {
 	x = sizeof(SOME_SIZEOF_MACRO_CAST) * 3; //BUG: ArgumentIsSizeofOrOperation
 
 	x = SOME_SIZEOF_MACRO2; // GOOD
-	x = sizeof(SOME_SIZEOF_MACRO2); //BUG: SizeOfConstIntMacro, ArgumentIsSizeofOrOperation
+	x = sizeof(SOME_SIZEOF_MACRO2); //BUG: ArgumentIsSizeofOrOperation
 
 	x = sizeof(a) / sizeof(int); // GOOD
 
