@@ -407,41 +407,47 @@ class CilBlt_un extends @il_blt_un, CilRelationalBranchInstruction { }
 
 class CilSwitch extends @il_switch, CilInstruction { }
 
-class CilLdind_I1 extends @il_ldind_I1, CilInstruction { }
+/** An instruction that loads a value indirectly through a pointer. */
+abstract class CilLoadIndirectInstruction extends CilInstruction { }
 
-class CilLdind_U1 extends @il_ldind_U1, CilInstruction { }
+class CilLdind_I1 extends @il_ldind_I1, CilLoadIndirectInstruction { }
 
-class CilLdind_I2 extends @il_ldind_I2, CilInstruction { }
+class CilLdind_U1 extends @il_ldind_U1, CilLoadIndirectInstruction { }
 
-class CilLdind_U2 extends @il_ldind_U2, CilInstruction { }
+class CilLdind_I2 extends @il_ldind_I2, CilLoadIndirectInstruction { }
 
-class CilLdind_I4 extends @il_ldind_I4, CilInstruction { }
+class CilLdind_U2 extends @il_ldind_U2, CilLoadIndirectInstruction { }
 
-class CilLdind_U4 extends @il_ldind_U4, CilInstruction { }
+class CilLdind_I4 extends @il_ldind_I4, CilLoadIndirectInstruction { }
 
-class CilLdind_I8 extends @il_ldind_I8, CilInstruction { }
+class CilLdind_U4 extends @il_ldind_U4, CilLoadIndirectInstruction { }
 
-class CilLdind_I extends @il_ldind_I, CilInstruction { }
+class CilLdind_I8 extends @il_ldind_I8, CilLoadIndirectInstruction { }
 
-class CilLdind_R4 extends @il_ldind_R4, CilInstruction { }
+class CilLdind_I extends @il_ldind_I, CilLoadIndirectInstruction { }
 
-class CilLdind_R8 extends @il_ldind_R8, CilInstruction { }
+class CilLdind_R4 extends @il_ldind_R4, CilLoadIndirectInstruction { }
 
-class CilLdind_Ref extends @il_ldind_Ref, CilInstruction { }
+class CilLdind_R8 extends @il_ldind_R8, CilLoadIndirectInstruction { }
 
-class CilStind_Ref extends @il_stind_Ref, CilInstruction { }
+class CilLdind_Ref extends @il_ldind_Ref, CilLoadIndirectInstruction { }
 
-class CilStind_I1 extends @il_stind_I1, CilInstruction { }
+/** An instruction that stores a value indirectly through a pointer. */
+abstract class CilStoreIndirectInstruction extends CilInstruction { }
 
-class CilStind_I2 extends @il_stind_I2, CilInstruction { }
+class CilStind_Ref extends @il_stind_Ref, CilStoreIndirectInstruction { }
 
-class CilStind_I4 extends @il_stind_I4, CilInstruction { }
+class CilStind_I1 extends @il_stind_I1, CilStoreIndirectInstruction { }
 
-class CilStind_I8 extends @il_stind_I8, CilInstruction { }
+class CilStind_I2 extends @il_stind_I2, CilStoreIndirectInstruction { }
 
-class CilStind_R4 extends @il_stind_R4, CilInstruction { }
+class CilStind_I4 extends @il_stind_I4, CilStoreIndirectInstruction { }
 
-class CilStind_R8 extends @il_stind_R8, CilInstruction { }
+class CilStind_I8 extends @il_stind_I8, CilStoreIndirectInstruction { }
+
+class CilStind_R4 extends @il_stind_R4, CilStoreIndirectInstruction { }
+
+class CilStind_R8 extends @il_stind_R8, CilStoreIndirectInstruction { }
 
 abstract class CilBinaryInstruction extends CilInstruction { }
 
@@ -490,21 +496,24 @@ class CilNeg extends @il_neg, CilUnaryInstruction { }
 
 class CilNot extends @il_not, CilUnaryInstruction { }
 
-class CilConv_I1 extends @il_conv_I1, CilUnaryInstruction { }
+/** An instruction that converts a value from one type to another. */
+abstract class CilConversionInstruction extends CilUnaryInstruction { }
 
-class CilConv_I2 extends @il_conv_I2, CilUnaryInstruction { }
+class CilConv_I1 extends @il_conv_I1, CilConversionInstruction { }
 
-class CilConv_I4 extends @il_conv_I4, CilUnaryInstruction { }
+class CilConv_I2 extends @il_conv_I2, CilConversionInstruction { }
 
-class CilConv_I8 extends @il_conv_I8, CilUnaryInstruction { }
+class CilConv_I4 extends @il_conv_I4, CilConversionInstruction { }
 
-class CilConv_R4 extends @il_conv_R4, CilUnaryInstruction { }
+class CilConv_I8 extends @il_conv_I8, CilConversionInstruction { }
 
-class CilConv_R8 extends @il_conv_R8, CilUnaryInstruction { }
+class CilConv_R4 extends @il_conv_R4, CilConversionInstruction { }
 
-class CilConv_U4 extends @il_conv_U4, CilUnaryInstruction { }
+class CilConv_R8 extends @il_conv_R8, CilConversionInstruction { }
 
-class CilConv_U8 extends @il_conv_U8, CilUnaryInstruction { }
+class CilConv_U4 extends @il_conv_U4, CilConversionInstruction { }
+
+class CilConv_U8 extends @il_conv_U8, CilConversionInstruction { }
 
 class CilCallvirt extends @il_callvirt, CilCall { }
 
@@ -522,45 +531,57 @@ class CilCastclass extends @il_castclass, CilInstruction { }
 
 class CilIsinst extends @il_isinst, CilInstruction { }
 
-class CilConv_R_Un extends @il_conv_R_Un, CilInstruction { }
+class CilConv_R_Un extends @il_conv_R_Un, CilConversionInstruction { }
 
 class CilUnbox extends @il_unbox, CilInstruction { }
 
 class CilThrow extends @il_throw, CilInstruction { }
 
-class CilLdfld extends @il_ldfld, CilInstruction { }
+/** An instruction that loads a field value. */
+abstract class CilLoadFieldInstruction extends CilInstruction { }
 
-class CilLdflda extends @il_ldflda, CilInstruction { }
+/** An instruction that loads an instance field value. */
+class CilLdfld extends @il_ldfld, CilLoadFieldInstruction { }
 
-class CilStfld extends @il_stfld, CilInstruction { }
+/** An instruction that loads the address of an instance field. */
+class CilLdflda extends @il_ldflda, CilLoadFieldInstruction { }
 
-class CilLdsfld extends @il_ldsfld, CilInstruction { }
+/** An instruction that loads a static field value. */
+class CilLdsfld extends @il_ldsfld, CilLoadFieldInstruction { }
 
-class CilLdsflda extends @il_ldsflda, CilInstruction { }
+/** An instruction that loads the address of a static field. */
+class CilLdsflda extends @il_ldsflda, CilLoadFieldInstruction { }
 
-class CilStsfld extends @il_stsfld, CilInstruction { }
+/** An instruction that stores a value to a field. */
+abstract class CilStoreFieldInstruction extends CilInstruction { }
+
+/** An instruction that stores a value to an instance field. */
+class CilStfld extends @il_stfld, CilStoreFieldInstruction { }
+
+/** An instruction that stores a value to a static field. */
+class CilStsfld extends @il_stsfld, CilStoreFieldInstruction { }
 
 class CilStobj extends @il_stobj, CilInstruction { }
 
-class CilConv_ovf_I1_Un extends @il_conv_ovf_I1_Un, CilInstruction { }
+class CilConv_ovf_I1_Un extends @il_conv_ovf_I1_Un, CilConversionInstruction { }
 
-class CilConv_ovf_I2_Un extends @il_conv_ovf_I2_Un, CilInstruction { }
+class CilConv_ovf_I2_Un extends @il_conv_ovf_I2_Un, CilConversionInstruction { }
 
-class CilConv_ovf_I4_Un extends @il_conv_ovf_I4_Un, CilInstruction { }
+class CilConv_ovf_I4_Un extends @il_conv_ovf_I4_Un, CilConversionInstruction { }
 
-class CilConv_ovf_I8_Un extends @il_conv_ovf_I8_Un, CilInstruction { }
+class CilConv_ovf_I8_Un extends @il_conv_ovf_I8_Un, CilConversionInstruction { }
 
-class CilConv_ovf_U1_Un extends @il_conv_ovf_U1_Un, CilInstruction { }
+class CilConv_ovf_U1_Un extends @il_conv_ovf_U1_Un, CilConversionInstruction { }
 
-class CilConv_ovf_U2_Un extends @il_conv_ovf_U2_Un, CilInstruction { }
+class CilConv_ovf_U2_Un extends @il_conv_ovf_U2_Un, CilConversionInstruction { }
 
-class CilConv_ovf_U4_Un extends @il_conv_ovf_U4_Un, CilInstruction { }
+class CilConv_ovf_U4_Un extends @il_conv_ovf_U4_Un, CilConversionInstruction { }
 
-class CilConv_ovf_U8_Un extends @il_conv_ovf_U8_Un, CilInstruction { }
+class CilConv_ovf_U8_Un extends @il_conv_ovf_U8_Un, CilConversionInstruction { }
 
-class CilConv_ovf_I_Un extends @il_conv_ovf_I_Un, CilInstruction { }
+class CilConv_ovf_I_Un extends @il_conv_ovf_I_Un, CilConversionInstruction { }
 
-class CilConv_ovf_U_Un extends @il_conv_ovf_U_Un, CilInstruction { }
+class CilConv_ovf_U_Un extends @il_conv_ovf_U_Un, CilConversionInstruction { }
 
 class CilBox extends @il_box, CilInstruction { }
 
@@ -570,65 +591,71 @@ class CilLdlen extends @il_ldlen, CilInstruction { }
 
 class CilLdelema extends @il_ldelema, CilInstruction { }
 
-class CilLdelem_I1 extends @il_ldelem_I1, CilInstruction { }
+/** An instruction that loads an element from an array. */
+abstract class CilLoadElementInstruction extends CilInstruction { }
 
-class CilLdelem_U1 extends @il_ldelem_U1, CilInstruction { }
+class CilLdelem_I1 extends @il_ldelem_I1, CilLoadElementInstruction { }
 
-class CilLdelem_I2 extends @il_ldelem_I2, CilInstruction { }
+class CilLdelem_U1 extends @il_ldelem_U1, CilLoadElementInstruction { }
 
-class CilLdelem_U2 extends @il_ldelem_U2, CilInstruction { }
+class CilLdelem_I2 extends @il_ldelem_I2, CilLoadElementInstruction { }
 
-class CilLdelem_I4 extends @il_ldelem_I4, CilInstruction { }
+class CilLdelem_U2 extends @il_ldelem_U2, CilLoadElementInstruction { }
 
-class CilLdelem_U4 extends @il_ldelem_U4, CilInstruction { }
+class CilLdelem_I4 extends @il_ldelem_I4, CilLoadElementInstruction { }
 
-class CilLdelem_I8 extends @il_ldelem_I8, CilInstruction { }
+class CilLdelem_U4 extends @il_ldelem_U4, CilLoadElementInstruction { }
 
-class CilLdelem_I extends @il_ldelem_I, CilInstruction { }
+class CilLdelem_I8 extends @il_ldelem_I8, CilLoadElementInstruction { }
 
-class CilLdelem_R4 extends @il_ldelem_R4, CilInstruction { }
+class CilLdelem_I extends @il_ldelem_I, CilLoadElementInstruction { }
 
-class CilLdelem_R8 extends @il_ldelem_R8, CilInstruction { }
+class CilLdelem_R4 extends @il_ldelem_R4, CilLoadElementInstruction { }
 
-class CilLdelem_Ref extends @il_ldelem_Ref, CilInstruction { }
+class CilLdelem_R8 extends @il_ldelem_R8, CilLoadElementInstruction { }
 
-class CilStelem_I extends @il_stelem_I, CilInstruction { }
+class CilLdelem_Ref extends @il_ldelem_Ref, CilLoadElementInstruction { }
 
-class CilStelem_I1 extends @il_stelem_I1, CilInstruction { }
+/** An instruction that stores an element to an array. */
+abstract class CilStoreElementInstruction extends CilInstruction { }
 
-class CilStelem_I2 extends @il_stelem_I2, CilInstruction { }
+class CilStelem_I extends @il_stelem_I, CilStoreElementInstruction { }
 
-class CilStelem_I4 extends @il_stelem_I4, CilInstruction { }
+class CilStelem_I1 extends @il_stelem_I1, CilStoreElementInstruction { }
 
-class CilStelem_I8 extends @il_stelem_I8, CilInstruction { }
+class CilStelem_I2 extends @il_stelem_I2, CilStoreElementInstruction { }
 
-class CilStelem_R4 extends @il_stelem_R4, CilInstruction { }
+class CilStelem_I4 extends @il_stelem_I4, CilStoreElementInstruction { }
 
-class CilStelem_R8 extends @il_stelem_R8, CilInstruction { }
+class CilStelem_I8 extends @il_stelem_I8, CilStoreElementInstruction { }
 
-class CilStelem_Ref extends @il_stelem_Ref, CilInstruction { }
+class CilStelem_R4 extends @il_stelem_R4, CilStoreElementInstruction { }
 
-class CilLdelem extends @il_ldelem, CilInstruction { }
+class CilStelem_R8 extends @il_stelem_R8, CilStoreElementInstruction { }
 
-class CilStelem extends @il_stelem, CilInstruction { }
+class CilStelem_Ref extends @il_stelem_Ref, CilStoreElementInstruction { }
+
+class CilLdelem extends @il_ldelem, CilLoadElementInstruction { }
+
+class CilStelem extends @il_stelem, CilStoreElementInstruction { }
 
 class CilUnbox_any extends @il_unbox_any, CilInstruction { }
 
-class CilConv_ovf_I1 extends @il_conv_ovf_I1, CilInstruction { }
+class CilConv_ovf_I1 extends @il_conv_ovf_I1, CilConversionInstruction { }
 
-class CilConv_ovf_U1 extends @il_conv_ovf_U1, CilInstruction { }
+class CilConv_ovf_U1 extends @il_conv_ovf_U1, CilConversionInstruction { }
 
-class CilConv_ovf_I2 extends @il_conv_ovf_I2, CilInstruction { }
+class CilConv_ovf_I2 extends @il_conv_ovf_I2, CilConversionInstruction { }
 
-class CilConv_ovf_U2 extends @il_conv_ovf_U2, CilInstruction { }
+class CilConv_ovf_U2 extends @il_conv_ovf_U2, CilConversionInstruction { }
 
-class CilConv_ovf_I4 extends @il_conv_ovf_I4, CilInstruction { }
+class CilConv_ovf_I4 extends @il_conv_ovf_I4, CilConversionInstruction { }
 
-class CilConv_ovf_U4 extends @il_conv_ovf_U4, CilInstruction { }
+class CilConv_ovf_U4 extends @il_conv_ovf_U4, CilConversionInstruction { }
 
-class CilConv_ovf_I8 extends @il_conv_ovf_I8, CilInstruction { }
+class CilConv_ovf_I8 extends @il_conv_ovf_I8, CilConversionInstruction { }
 
-class CilConv_ovf_U8 extends @il_conv_ovf_U8, CilInstruction { }
+class CilConv_ovf_U8 extends @il_conv_ovf_U8, CilConversionInstruction { }
 
 class CilRefanyval extends @il_refanyval, CilInstruction { }
 
@@ -638,15 +665,15 @@ class CilMkrefany extends @il_mkrefany, CilInstruction { }
 
 class CilLdtoken extends @il_ldtoken, CilInstruction { }
 
-class CilConv_U2 extends @il_conv_U2, CilInstruction { }
+class CilConv_U2 extends @il_conv_U2, CilConversionInstruction { }
 
-class CilConv_U1 extends @il_conv_U1, CilInstruction { }
+class CilConv_U1 extends @il_conv_U1, CilConversionInstruction { }
 
-class CilConv_I extends @il_conv_I, CilInstruction { }
+class CilConv_I extends @il_conv_I, CilConversionInstruction { }
 
-class CilConv_ovf_I extends @il_conv_ovf_I, CilInstruction { }
+class CilConv_ovf_I extends @il_conv_ovf_I, CilConversionInstruction { }
 
-class CilConv_ovf_U extends @il_conv_ovf_U, CilInstruction { }
+class CilConv_ovf_U extends @il_conv_ovf_U, CilConversionInstruction { }
 
 class CilAdd_ovf extends @il_add_ovf, CilAddInstruction { }
 
@@ -666,9 +693,9 @@ class CilLeave extends @il_leave, CilInstruction { }
 
 class CilLeave_s extends @il_leave_s, CilInstruction { }
 
-class CilStind_i extends @il_stind_i, CilInstruction { }
+class CilStind_i extends @il_stind_i, CilStoreIndirectInstruction { }
 
-class CilConv_U extends @il_conv_U, CilInstruction { }
+class CilConv_U extends @il_conv_U, CilConversionInstruction { }
 
 class CilPrefix7 extends @il_prefix7, CilInstruction { }
 
