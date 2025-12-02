@@ -31,7 +31,8 @@ newtype TTempVariableTag =
   CilUnconditionalBranchRefVarTag() or
   CallReturnValueTag() or
   CilCallTargetVarTag() or
-  CilLoadStringVarTag()
+  CilLoadStringVarTag() or
+  CilLoadArgVarTag()
 
 class TempVariableTag extends TTempVariableTag {
   string toString() {
@@ -133,5 +134,8 @@ class TempVariableTag extends TTempVariableTag {
     or
     this = CilLoadStringVarTag() and
     result = "ldstr"
+    or
+    this = CilLoadArgVarTag() and
+    result = "ldarg"
   }
 }

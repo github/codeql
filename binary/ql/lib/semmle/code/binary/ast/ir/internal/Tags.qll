@@ -6,7 +6,8 @@ private import semmle.code.binary.ast.internal.instructions
 newtype LocalVariableTag =
   CmpRegisterTag() or
   X86RegisterTag(X86Register r) or
-  StlocVarTag(int index) { any(CilStoreLocal stloc).getLocalVariableIndex() = index }
+  StlocVarTag(int index) { any(CilStoreLocal stloc).getLocalVariableIndex() = index } or
+  CilParameterVarTag(int index) { any(CilParameter p).getIndex() = index }
 
 string stringOfLocalVariableTag(LocalVariableTag tag) {
   tag = CmpRegisterTag() and
@@ -20,5 +21,10 @@ string stringOfLocalVariableTag(LocalVariableTag tag) {
   exists(X86Register r |
     tag = X86RegisterTag(r) and
     result = r.toString()
+  )
+  or
+  exists(int index |
+    tag = CilParameterVarTag(index) and
+    result = "param_" + index.toString()
   )
 }

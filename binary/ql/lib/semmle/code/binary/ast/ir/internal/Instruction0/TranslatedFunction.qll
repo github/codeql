@@ -127,6 +127,54 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
   }
 }
 
+class TranslatedCilParameter extends TranslatedElement, TTranslatedCilParameter {
+  Raw::CilParameter p;
+
+  TranslatedCilParameter() { this = TTranslatedCilParameter(p) }
+
+  override Raw::Element getRawElement() { result = p }
+
+  override Variable getResultVariable() { none() }
+
+  override TranslatedFunction getEnclosingFunction() {
+    result = getTranslatedFunction(p.getMethod())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
+    opcode instanceof Opcode::Init and
+    tag = SingleTag() and
+    v.asSome() = this.getLocalVariable(CilParameterVarTag(p.getIndex()))
+  }
+
+  override predicate hasLocalVariable(LocalVariableTag tag) {
+    tag = CilParameterVarTag(p.getIndex())
+  }
+
+  override string getDumpId() { result = p.getName() }
+
+  override string toString() { result = "Translation of " + p.getName() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override predicate producesResult() { any() }
+
+  final override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    result = this.getEnclosingFunction().getChildSuccessor(this, succType)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    none()
+  }
+
+  Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+}
+
+private TranslatedCilParameter getTranslatedParameter(Raw::CilParameter p) {
+  result.getRawElement() = p and
+  result.producesResult()
+}
+
 class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
   Raw::CilMethod method;
 
@@ -142,7 +190,21 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
 
   override Instruction getBodySuccessor(InstructionTag tag, SuccessorType succType) { none() }
 
-  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+  private TranslatedCilParameter getParameter(int index) {
+    result = getTranslatedParameter(method.getParameter(index))
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    exists(int index |
+      child = this.getParameter(index) and
+      succType instanceof DirectSuccessor
+    |
+      result = this.getParameter(index + 1).getEntry()
+      or
+      not exists(this.getParameter(index + 1)) and
+      result = getTranslatedInstruction(method.getInstruction(0)).getEntry()
+    )
+  }
 
   override string getName() { result = method.getName() }
 
@@ -151,6 +213,9 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
   override predicate isExported() { none() }
 
   override Instruction getBodyEntry() {
+    result = this.getParameter(0).getEntry()
+    or
+    not exists(this.getParameter(0)) and
     result = getTranslatedInstruction(method.getInstruction(0)).getEntry()
   }
 

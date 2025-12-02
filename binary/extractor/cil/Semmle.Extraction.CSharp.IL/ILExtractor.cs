@@ -85,6 +85,12 @@ public class ILExtractor {
     if (method.HasBody) {
       ExtractMethodBody(method, methodId);
     }
+
+    for(int i = 0; i < method.Parameters.Count; i++) {
+      var param = method.Parameters[i];
+      var paramId = trap.GetId();
+      trap.WriteTuple("il_parameter", paramId, methodId, i, param.Name);
+    }
   }
 
   private void ExtractMethodBody(MethodDefinition method, int methodId) {

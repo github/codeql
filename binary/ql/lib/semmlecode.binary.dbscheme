@@ -2420,6 +2420,13 @@ il_call_has_return_value(
   int instruction: @il_instruction ref
 );
 
+il_parameter(
+  unique int p: @il_parameter,
+  int method: @method ref,
+  int index: int ref,
+  string name: string ref
+);
+
 /**
  * Unresolved method call targets.
  * The target_method_name is the fully qualified name of the called method.

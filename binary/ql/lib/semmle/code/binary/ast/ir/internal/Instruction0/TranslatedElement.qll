@@ -26,6 +26,8 @@ private predicate shouldTranslateCilInstr(Raw::CilInstruction instr) { any() }
 
 private predicate shouldTranslateMethod(Raw::CilMethod m) { any() }
 
+private predicate shouldTranslateCilParameter(Raw::CilParameter p) { any() }
+
 newtype TTranslatedElement =
   TTranslatedX86Function(Raw::X86Instruction entry) {
     shouldTranslateX86Instr(entry) and
@@ -91,7 +93,9 @@ newtype TTranslatedElement =
   } or
   TTranslatedCilRet(Raw::CilIl_ret ret) { shouldTranslateCilInstr(ret) } or
   TTranslatedCilCall(Raw::CilCall call) { shouldTranslateCilInstr(call) } or
-  TTranslatedCilLoadString(Raw::CilLdstr ldstr) { shouldTranslateCilInstr(ldstr) }
+  TTranslatedCilLoadString(Raw::CilLdstr ldstr) { shouldTranslateCilInstr(ldstr) } or
+  TTranslatedCilParameter(Raw::CilParameter param) { shouldTranslateCilParameter(param) } or
+  TTranslatedCilLoadArg(Raw::CilLoadArgument ldstr) { shouldTranslateCilInstr(ldstr) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and

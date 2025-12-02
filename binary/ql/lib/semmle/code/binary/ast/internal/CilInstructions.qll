@@ -5,6 +5,16 @@ class CilVariable instanceof @method {
   string toString() { none() }
 }
 
+class CilParameter instanceof @il_parameter {
+  string toString() { result = this.getName() }
+
+  CilMethod getMethod() { il_parameter(this, result, _, _) }
+
+  int getIndex() { il_parameter(this, _, result, _) }
+
+  string getName() { il_parameter(this, _, _, result) }
+}
+
 class CilMethod extends @method {
   string getName() { methods(this, result, _, _) }
 
@@ -21,6 +31,11 @@ class CilMethod extends @method {
   CilInstruction getInstruction(int i) { il_instruction_parent(result, i, this) }
 
   CilVariable getVariable(int i) { none() } // TODO
+
+  CilParameter getParameter(int i) {
+    result.getMethod() = this and
+    result.getIndex() = i
+  }
 }
 
 pragma[nomagic]
@@ -77,13 +92,21 @@ class CilNop extends @il_nop, CilInstruction { }
 
 class CilBreak extends @il_break, CilInstruction { }
 
-class CilLdarg_0 extends @il_ldarg_0, CilInstruction { }
+class CilLdarg_0 extends @il_ldarg_0, CilLoadArgument {
+  override int getArgumentIndex() { result = 0 }
+}
 
-class CilLdarg_1 extends @il_ldarg_1, CilInstruction { }
+class CilLdarg_1 extends @il_ldarg_1, CilLoadArgument {
+  override int getArgumentIndex() { result = 1 }
+}
 
-class CilLdarg_2 extends @il_ldarg_2, CilInstruction { }
+class CilLdarg_2 extends @il_ldarg_2, CilLoadArgument {
+  override int getArgumentIndex() { result = 2 }
+}
 
-class CilLdarg_3 extends @il_ldarg_3, CilInstruction { }
+class CilLdarg_3 extends @il_ldarg_3, CilLoadArgument {
+  override int getArgumentIndex() { result = 3 }
+}
 
 class CilLdloc_0 extends @il_ldloc_0, CilLoadLocal {
   override int getLocalVariableIndex() { result = 0 }
@@ -117,11 +140,15 @@ class CilStloc_3 extends @il_stloc_3, CilStoreLocal {
   override int getLocalVariableIndex() { result = 3 }
 }
 
-abstract class CilLoadArgument extends CilInstruction { }
+abstract class CilLoadArgument extends CilInstruction {
+  abstract int getArgumentIndex();
+}
 
-class CilLdarg_S extends @il_ldarg_S, CilLoadArgument { }
+class CilLdarg_S extends @il_ldarg_S, CilLoadArgument {
+  override int getArgumentIndex() { il_operand_byte(this, result) }
+}
 
-class CilLdarga_S extends @il_ldarga_S, CilLoadArgument { }
+class CilLdarga_S extends @il_ldarga_S, CilInstruction { }
 
 abstract class CilStoreArgument extends CilInstruction { }
 
@@ -677,7 +704,9 @@ class CilLdftn extends @il_ldftn, CilInstruction { }
 
 class CilLdvirtftn extends @il_ldvirtftn, CilInstruction { }
 
-class CilLdarg extends @il_ldarg, CilInstruction { }
+class CilLdarg extends @il_ldarg, CilLoadArgument {
+  override int getArgumentIndex() { il_operand_int(this, result) }
+}
 
 class CilLdarga extends @il_ldarga, CilInstruction { }
 
