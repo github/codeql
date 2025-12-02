@@ -447,7 +447,7 @@ module Directive {
    * ```
    */
   class UseCacheDirective extends KnownDirective {
-    UseCacheDirective() { this.getDirectiveText().regexpMatch("use cache(: (remote|private))?") }
+    UseCacheDirective() { this.getDirectiveText().regexpMatch("use cache(:.*)?") }
   }
 }
 
