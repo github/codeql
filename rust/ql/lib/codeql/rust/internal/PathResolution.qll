@@ -774,8 +774,11 @@ private TypeItemNode resolveBuiltin(TypeRepr tr) {
   tr instanceof RefTypeRepr and
   result instanceof Builtins::RefType
   or
-  tr instanceof PtrTypeRepr and
-  result instanceof Builtins::PtrType
+  tr.(PtrTypeRepr).isConst() and
+  result instanceof Builtins::PtrConstType
+  or
+  tr.(PtrTypeRepr).isMut() and
+  result instanceof Builtins::PtrMutType
   or
   result.(Builtins::TupleType).getArity() = tr.(TupleTypeRepr).getNumberOfFields()
 }
