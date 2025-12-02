@@ -5,6 +5,7 @@ module;
 import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.frameworks.Regex
 
 /**
  * A node whose type is a simple type unlikely to carry taint, such as primitives and their boxed counterparts,
@@ -40,12 +41,25 @@ class SimpleTypeSanitizer extends DataFlow::Node {
  * make the type recursive. Otherwise use `RegexpCheckBarrier`.
  */
 predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
-  guard =
-    any(MethodCall method |
-      method.getMethod().getName() = "matches" and
-      e = method.getQualifier() and
-      branch = true
+  exists(Method method, MethodCall mc |
+    method = mc.getMethod() and
+    guard = mc and
+    branch = true
+  |
+    // `String.matches` and other `matches` methods.
+    method.getName() = "matches" and
+    e = mc.getQualifier()
+    or
+    method instanceof PatternMatchesMethod and
+    e = mc.getArgument(1)
+    or
+    method instanceof MatcherMatchesMethod and
+    exists(MethodCall matcherCall |
+      matcherCall.getMethod() instanceof PatternMatcherMethod and
+      e = matcherCall.getArgument(0) and
+      DataFlow::localExprFlow(matcherCall, mc.getQualifier())
     )
+  )
 }
 
 /**
