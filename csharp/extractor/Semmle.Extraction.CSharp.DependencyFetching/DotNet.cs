@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void Info()
         {
-            // Allow up to three retry attempts to run `dotnet --info`, to mitigate transient issues
+            // Allow up to four attempts (with up to three retries) to run `dotnet --info`, to mitigate transient issues
             for (int attempt = 0; attempt < 4; attempt++)
             {
                 var exitCode = dotnetCliInvoker.RunCommandExitCode("--info", silent: false);
@@ -220,21 +220,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RunCommand(dotnet).
                 Argument("--info");
             var script = info.Script;
-            for (int attempt = 0; attempt < 4; attempt++)
+            for (var attempt = 0; attempt < 4; attempt++)
             {
+                var attemptCopy = attempt; // Capture in local variable
                 script = BuildScript.Bind(script, ret =>
-                {
-                    switch (ret)
                     {
-                        case 0:
-                            return BuildScript.Success;
-                        case 143 when attempt < 3:
-                            HandleRetryExitCode143(dotnet, attempt, logger);
-                            return info.Script;
-                        default:
-                            return BuildScript.Failure;
-                    }
-                });
+                        switch (ret)
+                        {
+                            case 0:
+                                return BuildScript.Success;
+                            case 143 when attemptCopy < 3:
+                                HandleRetryExitCode143(dotnet, attemptCopy, logger);
+                                return info.Script;
+                            default:
+                                return BuildScript.Failure;
+                        }
+                    });
             }
             return script;
         }
