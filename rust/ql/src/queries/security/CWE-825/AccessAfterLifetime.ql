@@ -26,7 +26,8 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node instanceof AccessAfterLifetime::Source and
     // exclude cases with sources in macros, since these results are difficult to interpret
-    not node.asExpr().isFromMacroExpansion()
+    not node.asExpr().isFromMacroExpansion() and
+    AccessAfterLifetime::sourceValueScope(node, _, _)
   }
 
   predicate isSink(DataFlow::Node node) {
@@ -36,7 +37,8 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
     // include only results inside `unsafe` blocks, as other results tend to be false positives
     (
       node.asExpr().getEnclosingBlock*().isUnsafe() or
-      node.asExpr().getEnclosingCallable().(Function).isUnsafe()
+      node.asExpr().getEnclosingCallable().(Function).isUnsafe() or
+      not exists(node.asExpr())
     )
   }
 

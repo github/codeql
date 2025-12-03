@@ -31,12 +31,18 @@ module AccessAfterLifetime {
 
   /**
    * A data flow sink for accesses to a pointer after its lifetime has ended,
-   * that is, a dereference.
+   * that is, a dereference. We re-use the same sinks as for the accesses to
+   * invalid pointers query.
    */
-  abstract class Sink extends QuerySink::Range {
-    override string getSinkType() { result = "AccessAfterLifetime" }
-  }
+  class Sink = AccessInvalidPointer::Sink;
 
+  // /**
+  //  * A data flow sink for accesses to a pointer after its lifetime has ended,
+  //  * that is, a dereference.
+  //  */
+  // abstract class Sink extends QuerySink::Range {
+  //   override string getSinkType() { result = "AccessAfterLifetime" }
+  // }
   /**
    * A barrier for accesses to a pointer after its lifetime has ended.
    */
@@ -115,21 +121,12 @@ module AccessAfterLifetime {
   private class RefExprSource extends Source {
     Expr targetValue;
 
-    RefExprSource() { this.asExpr().(RefExpr).getExpr() = targetValue }
+    RefExprSource() {
+      this.asExpr().(RefExpr).getExpr() = targetValue and
+      this.asExpr().(RefExpr).isRaw()
+    }
 
     override Expr getTarget() { result = targetValue }
-  }
-
-  /**
-   * A pointer access using the unary `*` operator.
-   */
-  private class DereferenceSink extends Sink {
-    DereferenceSink() { any(DerefExpr p).getExpr() = this.asExpr() }
-  }
-
-  /** A pointer access from model data. */
-  private class ModelsAsDataSink extends Sink {
-    ModelsAsDataSink() { sinkNode(this, "pointer-access") }
   }
 
   /**
