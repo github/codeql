@@ -345,17 +345,7 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
 
   /** Holds if this export declaration exports variable `v` under the name `name`. */
   overlay[global]
-  final predicate exportsAs(LexicalName v, string name) {
-    this.exportsDirectlyAs(v, name)
-    or
-    this.(ReExportDeclaration).reExportsAs(v, name)
-  }
-
-  /**
-   * Holds if this export declaration exports variable `v` under the name `name`,
-   * not counting re-exports.
-   */
-  predicate exportsDirectlyAs(LexicalName v, string name) { none() }
+  abstract predicate exportsAs(LexicalName v, string name);
 
   /**
    * Gets the data flow node corresponding to the value this declaration exports
@@ -379,17 +369,7 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
    * to module `a` or possibly to some other module from which `a` re-exports.
    */
   overlay[global]
-  final DataFlow::Node getSourceNode(string name) {
-    result = this.getDirectSourceNode(name)
-    or
-    result = this.(ReExportDeclaration).getReExportedSourceNode(name)
-  }
-
-  /**
-   * Gets the data flow node corresponding to the value this declaration exports
-   * under the name `name`, not including sources that come from a re-export.
-   */
-  DataFlow::Node getDirectSourceNode(string name) { none() }
+  abstract DataFlow::Node getSourceNode(string name);
 
   /** Holds if is declared with the `type` keyword, so only types are exported. */
   predicate isTypeOnly() { has_type_keyword(this) }
@@ -441,20 +421,20 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
   override ConstantString getImportedPath() { result = this.getChildExpr(0) }
 
   overlay[global]
-  override predicate reExportsAs(LexicalName v, string name) {
+  override predicate exportsAs(LexicalName v, string name) {
     this.getReExportedES2015Module().exportsAs(v, name) and
-    not isShadowedFromBulkExport(this.getEnclosingModule(), name)
+    not isShadowedFromBulkExport(this, name)
   }
 
   overlay[global]
-  override DataFlow::Node getReExportedSourceNode(string name) {
+  override DataFlow::Node getSourceNode(string name) {
     result = this.getReExportedES2015Module().getAnExport().getSourceNode(name)
   }
 }
 
 /**
- * Holds if bulk re-exports in `mod` should not re-export `name` because there is an explicit export
- * of that name in `mod`.
+ * Holds if the given bulk export `reExport` should not re-export `name` because there is an explicit export
+ * of that name in the same module.
  *
  * At compile time, shadowing works across declaration spaces.
  * For instance, directly exporting an interface `X` will block a variable `X` from being re-exported:
@@ -466,8 +446,8 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
  * but we ignore this subtlety.
  */
 overlay[global]
-private predicate isShadowedFromBulkExport(Module mod, string name) {
-  exists(ExportNamedDeclaration other | other.getTopLevel() = mod |
+private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, string name) {
+  exists(ExportNamedDeclaration other | other.getTopLevel() = reExport.getEnclosingModule() |
     other.getAnExportedDecl().getName() = name
     or
     other.getASpecifier().getExportedName() = name
@@ -488,7 +468,8 @@ class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declar
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = this.getChild(0) }
 
-  override predicate exportsDirectlyAs(LexicalName v, string name) {
+  overlay[global]
+  override predicate exportsAs(LexicalName v, string name) {
     name = "default" and v = this.getADecl().getVariable()
   }
 
@@ -500,7 +481,8 @@ class ExportDefaultDeclaration extends ExportDeclaration, @export_default_declar
     )
   }
 
-  override DataFlow::Node getDirectSourceNode(string name) {
+  overlay[global]
+  override DataFlow::Node getSourceNode(string name) {
     name = "default" and result = DataFlow::valueNode(this.getOperand())
   }
 }
@@ -542,20 +524,21 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
   /** Gets the variable declaration, if any, exported by this named export. */
   VarDecl getADecl() { result = this.getAnExportedDecl() }
 
-  override predicate exportsDirectlyAs(LexicalName v, string name) {
-    (
-      exists(LexicalDecl vd | vd = this.getAnExportedDecl() |
-        name = vd.getName() and v = vd.getALexicalName()
-      )
+  overlay[global]
+  override predicate exportsAs(LexicalName v, string name) {
+    exists(LexicalDecl vd | vd = this.getAnExportedDecl() |
+      name = vd.getName() and v = vd.getALexicalName()
+    )
+    or
+    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
+      v = spec.getLocal().(LexicalAccess).getALexicalName()
       or
-      exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
-        v = spec.getLocal().(LexicalAccess).getALexicalName()
-      )
-    ) and
-    not (this.isTypeOnly() and v instanceof Variable)
+      this.(ReExportDeclaration).getReExportedES2015Module().exportsAs(v, spec.getLocalName())
+    )
   }
 
-  override DataFlow::Node getDirectSourceNode(string name) {
+  overlay[global]
+  override DataFlow::Node getSourceNode(string name) {
     exists(VarDef d | d.getTarget() = this.getADecl() |
       name = d.getTarget().(VarDecl).getName() and
       result = DataFlow::valueNode(d.getSource())
@@ -571,11 +554,12 @@ class ExportNamedDeclaration extends ExportDeclaration, @export_named_declaratio
     exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
       not exists(this.getImportedPath()) and result = DataFlow::valueNode(spec.getLocal())
       or
-      // For `export * as B from ".."`, we use the ExportNamespaceSpecifier as a representative for the
-      // object that gets exposed as `B`.
-      this instanceof ReExportDeclaration and
-      spec instanceof ExportNamespaceSpecifier and
-      result = DataFlow::valueNode(spec)
+      exists(ReExportDeclaration red | red = this |
+        result = red.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
+        or
+        spec instanceof ExportNamespaceSpecifier and
+        result = DataFlow::valueNode(spec)
+      )
     )
   }
 
@@ -600,6 +584,19 @@ private class ExportNamespaceStep extends PreCallGraphStep {
         exprt.(ReExportDeclaration).getReExportedES2015Module().getAnExport().getSourceNode(prop) and
       succ = DataFlow::valueNode(spec)
     )
+  }
+}
+
+/**
+ * An export declaration with the `type` modifier.
+ */
+private class TypeOnlyExportDeclaration extends ExportNamedDeclaration {
+  TypeOnlyExportDeclaration() { this.isTypeOnly() }
+
+  overlay[global]
+  override predicate exportsAs(LexicalName v, string name) {
+    super.exportsAs(v, name) and
+    not v instanceof Variable
   }
 }
 
@@ -780,20 +777,6 @@ abstract class ReExportDeclaration extends ExportDeclaration {
     Stages::Imports::ref() and
     result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
   }
-
-  /**
-   * Holds if this re-export declaration ultimately re-exports `v` (from another module)
-   * under the given `name`.
-   */
-  overlay[global]
-  abstract predicate reExportsAs(LexicalName v, string name);
-
-  /**
-   * Gets the data flow node (from another module) corresponding to the value that is re-exported
-   * under the name `name`.
-   */
-  overlay[global]
-  abstract DataFlow::Node getReExportedSourceNode(string name);
 }
 
 /** A literal path expression appearing in a re-export declaration. */
@@ -820,21 +803,6 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
   override ConstantString getImportedPath() {
     result = ExportNamedDeclaration.super.getImportedPath()
   }
-
-  overlay[global]
-  override predicate reExportsAs(LexicalName v, string name) {
-    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
-      this.getReExportedES2015Module().exportsAs(v, spec.getLocalName())
-    ) and
-    not (this.isTypeOnly() and v instanceof Variable)
-  }
-
-  overlay[global]
-  override DataFlow::Node getReExportedSourceNode(string name) {
-    exists(ExportSpecifier spec | spec = this.getASpecifier() and name = spec.getExportedName() |
-      result = this.getReExportedES2015Module().getAnExport().getSourceNode(spec.getLocalName())
-    )
-  }
 }
 
 /**
@@ -851,4 +819,16 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
  */
 class OriginalExportDeclaration extends ExportDeclaration {
   OriginalExportDeclaration() { not this instanceof ReExportDeclaration }
+
+  overlay[global]
+  override predicate exportsAs(LexicalName v, string name) {
+    this.(ExportDefaultDeclaration).exportsAs(v, name) or
+    this.(ExportNamedDeclaration).exportsAs(v, name)
+  }
+
+  overlay[global]
+  override DataFlow::Node getSourceNode(string name) {
+    result = this.(ExportDefaultDeclaration).getSourceNode(name) or
+    result = this.(ExportNamedDeclaration).getSourceNode(name)
+  }
 }
