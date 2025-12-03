@@ -48,6 +48,7 @@ private predicate areLibrariesCompatible(
 }
 
 /** Treats `WebSocket` as an entry point for API graphs. */
+overlay[local?]
 private class WebSocketEntryPoint extends API::EntryPoint {
   WebSocketEntryPoint() { this = "global.WebSocket" }
 
@@ -55,6 +56,7 @@ private class WebSocketEntryPoint extends API::EntryPoint {
 }
 
 /** Treats `SockJS` as an entry point for API graphs. */
+overlay[local?]
 private class SockJSEntryPoint extends API::EntryPoint {
   SockJSEntryPoint() { this = "global.SockJS" }
 

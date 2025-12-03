@@ -9,6 +9,7 @@ private import javascript
  */
 module Webix {
   /** The global variable `webix` as an entry point for API graphs. */
+  overlay[local?]
   private class WebixGlobalEntry extends API::EntryPoint {
     WebixGlobalEntry() { this = "WebixGlobalEntry" }
 
