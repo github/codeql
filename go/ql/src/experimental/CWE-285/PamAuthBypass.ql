@@ -70,5 +70,6 @@ module PamStartToAuthenticateFlow = TaintTracking::Global<PamStartToAuthenticate
 from DataFlow::Node source, DataFlow::Node sink
 where
   not isInTestFile(source.asExpr()) and
-  (PamStartToAuthenticateFlow::flow(source, sink) and not PamStartToAcctMgmtFlow::flow(source, _))
+  PamStartToAuthenticateFlow::flow(source, sink) and
+  not PamStartToAcctMgmtFlow::flowFrom(source)
 select source, "This Pam transaction may not be secure."

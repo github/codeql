@@ -154,7 +154,7 @@ module FlowToPrintFlow = DataFlow::Global<FlowToPrintConfig>;
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
-  FlowToPrintFlow::flow(authCodeUrlCall.getResult(), _)
+  FlowToPrintFlow::flowFrom(authCodeUrlCall.getResult())
 }
 
 /** Get a data-flow node that reads the value of `os.Stdin`. */
