@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.generated.MethodCallExpr
  */
 module Impl {
   private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
-  private import codeql.rust.elements.internal.ArgsExprImpl::Impl as ArgsExprImpl
+  private import codeql.rust.elements.internal.InvocationExprImpl::Impl as InvocationExprImpl
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -46,11 +46,9 @@ module Impl {
       result = strictconcat(int i | | this.toStringPart(i) order by i)
     }
 
-    override Expr getSyntacticArgument(int i) {
-      i = 0 and result = this.getReceiver()
-      or
-      result = this.getPositionalArgument(i - 1)
-    }
+    override Expr getSyntacticPositionalArgument(int i) { result = this.getArgList().getArg(i) }
+
+    override Expr getSyntacticReceiver() { result = Generated::MethodCallExpr.super.getReceiver() }
 
     override Expr getPositionalArgument(int i) { result = this.getArgList().getArg(i) }
 

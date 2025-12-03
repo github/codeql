@@ -1624,10 +1624,7 @@ private module MethodResolution {
     }
 
     override Expr getArg(ArgumentPosition pos) {
-      pos.isSelf() and
-      result = MethodCallExpr.super.getReceiver()
-      or
-      result = super.getArgList().getArg(pos.asPosition())
+      result = MethodCallExpr.super.getSyntacticArgument(pos)
     }
 
     override predicate supportsAutoDerefAndBorrow() { any() }
@@ -1685,9 +1682,9 @@ private module MethodResolution {
 
     override Expr getArg(ArgumentPosition pos) {
       pos.isSelf() and
-      result = super.getSyntacticArgument(0)
+      result = super.getSyntacticPositionalArgument(0)
       or
-      result = super.getSyntacticArgument(pos.asPosition() + 1)
+      result = super.getSyntacticPositionalArgument(pos.asPosition() + 1)
     }
 
     // needed for `TypeQualifierIsInstantiationOfImplSelfInput`
@@ -2383,7 +2380,7 @@ private module NonMethodResolution {
     }
 
     AstNode getNodeAt(FunctionPosition pos) {
-      result = this.getSyntacticArgument(pos.asPosition())
+      result = this.getSyntacticArgument(pos.asArgumentPosition())
       or
       result = this and pos.isReturn()
     }
@@ -3415,7 +3412,7 @@ private Type inferDynamicCallExprType(Expr n, TypePath path) {
       or
       // Propagate the function's parameter type to the arguments
       exists(int index |
-        n = ce.getCall().getSyntacticArgument(index) and
+        n = ce.getCall().getSyntacticPositionalArgument(index) and
         path =
           path0.stripPrefix(fnParameterPath(ce.getCall().getArgList().getNumberOfArgs(), index))
       )
@@ -3631,7 +3628,7 @@ private module Debug {
     result = inferType(n, path)
   }
 
-  Addressable debugResolveCallTarget(ArgsExpr c) {
+  Addressable debugResolveCallTarget(InvocationExpr c) {
     c = getRelevantLocatable() and
     result = resolveCallTarget(c)
   }

@@ -4,6 +4,7 @@
  * INTERNAL: Do not use.
  */
 
+private import rust
 private import codeql.rust.elements.internal.generated.IndexExpr
 
 /**
@@ -12,7 +13,6 @@ private import codeql.rust.elements.internal.generated.IndexExpr
  */
 module Impl {
   private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
-  private import codeql.rust.elements.internal.ArgsExprImpl::Impl as ArgsExprImpl
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -28,7 +28,7 @@ module Impl {
         this.getBase().toAbbreviatedString() + "[" + this.getIndex().toAbbreviatedString() + "]"
     }
 
-    override Expr getSyntacticArgument(int i) {
+    override Expr getSyntacticPositionalArgument(int i) {
       i = 0 and result = this.getBase()
       or
       i = 1 and result = this.getIndex()

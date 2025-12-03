@@ -210,13 +210,18 @@ module ExprTrees {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
   }
 
-  class ArgsExprTree extends StandardPostOrderTree instanceof ArgsExpr {
-    ArgsExprTree() {
+  class InvocationExprTree extends StandardPostOrderTree instanceof InvocationExpr {
+    InvocationExprTree() {
       not this instanceof CallExpr and
       not this instanceof BinaryLogicalOperation
     }
 
-    override AstNode getChildNode(int i) { result = super.getSyntacticArgument(i) }
+    override AstNode getChildNode(int i) {
+      i = 0 and
+      result = super.getSyntacticReceiver()
+      or
+      result = super.getSyntacticPositionalArgument(i - 1)
+    }
   }
 
   class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
@@ -295,7 +300,7 @@ module ExprTrees {
     override AstNode getChildNode(int i) {
       i = 0 and result = super.getFunction()
       or
-      result = super.getSyntacticArgument(i - 1)
+      result = super.getSyntacticPositionalArgument(i - 1)
     }
   }
 
@@ -531,10 +536,6 @@ module ExprTrees {
     override AstNode getChildNode(int i) {
       result = super.getStructExprFieldList().getField(i).getExpr()
     }
-  }
-
-  class RefExprTree extends StandardPostOrderTree instanceof RefExpr {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
   }
 
   class ReturnExprTree extends StandardPostOrderTree instanceof ReturnExpr {

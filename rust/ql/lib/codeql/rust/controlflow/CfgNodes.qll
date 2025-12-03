@@ -258,7 +258,8 @@ final class CallExprCfgNode extends Nodes::CallExprCfgNode {
 
   /** Gets the `i`th argument of this call. */
   ExprCfgNode getSyntacticArgument(int i) {
-    any(ChildMapping mapping).hasCfgChild(node, node.getSyntacticArgument(i), this, result)
+    any(ChildMapping mapping)
+        .hasCfgChild(node, node.getSyntacticPositionalArgument(i), this, result)
   }
 }
 

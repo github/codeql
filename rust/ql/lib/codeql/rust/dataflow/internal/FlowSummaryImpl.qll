@@ -50,7 +50,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() }
 
-  string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
+  string encodeParameterPosition(RustDataFlow::ParameterPosition pos) { result = pos.toString() }
 
   string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) { result = pos.toString() }
 
@@ -105,7 +105,9 @@ module Input implements InputSig<Location, RustDataFlow> {
   string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
 
   bindingset[token]
-  ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
+  RustDataFlow::ParameterPosition decodeUnknownParameterPosition(
+    AccessPath::AccessPathTokenBase token
+  ) {
     // needed to support `Argument[x..y]` ranges
     token.getName() = "Argument" and
     result.getPosition() = AccessPath::parseInt(token.getAnArgument())
@@ -132,7 +134,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 
   /** Gets the argument of `source` described by `sc`, if any. */
   private Expr getSourceNodeArgument(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
-    exists(ArgumentPosition pos |
+    exists(RustDataFlow::ArgumentPosition pos |
       sc = Impl::Private::SummaryComponent::argument(pos) and
       result = pos.getArgument(source.getCall())
     )
@@ -159,7 +161,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     s.head() = Impl::Private::SummaryComponent::return(_) and
     result.asExpr() = source.getCall()
     or
-    exists(ArgumentPosition pos, Expr arg |
+    exists(RustDataFlow::ArgumentPosition pos, Expr arg |
       s.head() = Impl::Private::SummaryComponent::parameter(pos) and
       arg = getSourceNodeArgument(source, s.tail().headOfSingleton()) and
       result.asParameter() = getCallable(arg).getParam(pos.getPosition())
@@ -170,7 +172,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(ArgsExpr call, Expr arg, ArgumentPosition pos |
+    exists(InvocationExpr call, Expr arg, RustDataFlow::ArgumentPosition pos |
       result.asExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
       call = sink.getCall() and

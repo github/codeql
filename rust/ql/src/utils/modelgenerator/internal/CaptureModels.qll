@@ -67,8 +67,9 @@ module ModelGeneratorCommonInput implements
 
   string parameterExactAccess(R::ParamBase p) {
     result =
-      "Argument[" + any(DataFlowImpl::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
-        "]"
+      "Argument[" +
+        any(DataFlowImpl::RustDataFlow::ParameterPosition pos | p = pos.getParameterIn(_))
+            .toString() + "]"
   }
 
   string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
@@ -78,12 +79,16 @@ module ModelGeneratorCommonInput implements
   }
 
   bindingset[c]
-  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsApproximateOutput(
+    QualifiedCallable c, DataFlowImpl::RustDataFlow::ParameterPosition pos
+  ) {
     result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsExactOutput(
+    QualifiedCallable c, DataFlowImpl::RustDataFlow::ParameterPosition pos
+  ) {
     result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
@@ -134,7 +139,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   predicate isCallback(DataFlow::ContentSet cs) {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       c instanceof FunctionCallReturnContent or
-      c instanceof ClosureCallArgumentContent
+      c instanceof FunctionCallArgumentContent
     )
   }
 
@@ -145,7 +150,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
     or
     exists(Content c | cs = DataFlowImpl::TSingletonContentSet(c) |
       exists(int pos |
-        pos = c.(ClosureCallArgumentContent).getPosition() and
+        pos = c.(FunctionCallArgumentContent).getPosition() and
         result = "Parameter" and
         arg = pos.toString()
       )

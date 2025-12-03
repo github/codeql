@@ -10,6 +10,7 @@ private import codeql.dataflow.internal.DataFlowImpl
 private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
+private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
@@ -86,61 +87,9 @@ final class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * The position of a parameter in a function.
- *
- * In Rust there is a 1-to-1 correspondence between parameter positions and
- * arguments positions, so we use the same underlying type for both.
- */
-final class ParameterPosition extends TParameterPosition {
-  /** Gets the underlying integer position, if any. */
-  int getPosition() { this = TPositionalParameterPosition(result) }
-
-  predicate hasPosition() { exists(this.getPosition()) }
-
-  /** Holds if this position represents the `self` position. */
-  predicate isSelf() { this = TSelfParameterPosition() }
-
-  /**
-   * Holds if this position represents a reference to a closure itself. Only
-   * used for tracking flow through captured variables.
-   */
-  predicate isClosureSelf() { this = TClosureSelfParameterPosition() }
-
-  /** Gets a textual representation of this position. */
-  string toString() {
-    result = this.getPosition().toString()
-    or
-    result = "self" and this.isSelf()
-    or
-    result = "closure self" and this.isClosureSelf()
-  }
-
-  ParamBase getParameterIn(ParamList ps) {
-    result = ps.getParam(this.getPosition())
-    or
-    result = ps.getSelfParam() and this.isSelf()
-  }
-}
-
-/**
- * The position of an argument in a call.
- *
- * In Rust there is a 1-to-1 correspondence between parameter positions and
- * arguments positions, so we use the same underlying type for both.
- */
-final class ArgumentPosition extends ParameterPosition {
-  /** Gets the argument of `call` at this position, if any. */
-  Expr getArgument(Call call) {
-    result = call.getPositionalArgument(this.getPosition())
-    or
-    result = call.(MethodCall).getReceiver() and this.isSelf()
-  }
-}
-
-/**
  * Holds if `arg` is an argument of `call` at the position `pos`.
  */
-predicate isArgumentForCall(Expr arg, Call call, ArgumentPosition pos) {
+predicate isArgumentForCall(Expr arg, Call call, RustDataFlow::ArgumentPosition pos) {
   // TODO: Handle index expressions as calls in data flow.
   not call instanceof IndexExpr and
   arg = pos.getArgument(call)
@@ -292,8 +241,8 @@ predicate lambdaCreationExpr(Expr creation) {
  * Holds if `call` is a lambda call of kind `kind` where `receiver` is the
  * invoked expression.
  */
-predicate lambdaCallExpr(ClosureCallExpr call, LambdaCallKind kind, Expr receiver) {
-  receiver = call.getClosureExpr() and
+predicate lambdaCallExpr(CallExprImpl::DynamicCallExpr call, LambdaCallKind kind, Expr receiver) {
+  receiver = call.getFunction() and
   exists(kind)
 }
 
@@ -304,10 +253,6 @@ private module Aliases {
   class ReturnKindAlias = ReturnKind;
 
   class DataFlowCallAlias = DataFlowCall;
-
-  class ParameterPositionAlias = ParameterPosition;
-
-  class ArgumentPositionAlias = ArgumentPosition;
 
   class ContentAlias = Content;
 
@@ -339,6 +284,58 @@ module RustDataFlow implements InputSig<Location> {
   class PostUpdateNode = DataFlow::PostUpdateNode;
 
   final class CastNode = Node::CastNode;
+
+  /**
+   * The position of a parameter in a function.
+   *
+   * In Rust there is a 1-to-1 correspondence between parameter positions and
+   * arguments positions, so we use the same underlying type for both.
+   */
+  final class ParameterPosition extends TParameterPosition {
+    /** Gets the underlying integer position, if any. */
+    int getPosition() { this = TPositionalParameterPosition(result) }
+
+    predicate hasPosition() { exists(this.getPosition()) }
+
+    /** Holds if this position represents the `self` position. */
+    predicate isSelf() { this = TSelfParameterPosition() }
+
+    /**
+     * Holds if this position represents a reference to a closure itself. Only
+     * used for tracking flow through captured variables.
+     */
+    predicate isClosureSelf() { this = TClosureSelfParameterPosition() }
+
+    /** Gets a textual representation of this position. */
+    string toString() {
+      result = this.getPosition().toString()
+      or
+      result = "self" and this.isSelf()
+      or
+      result = "closure self" and this.isClosureSelf()
+    }
+
+    ParamBase getParameterIn(ParamList ps) {
+      result = ps.getParam(this.getPosition())
+      or
+      result = ps.getSelfParam() and this.isSelf()
+    }
+  }
+
+  /**
+   * The position of an argument in a call.
+   *
+   * In Rust there is a 1-to-1 correspondence between parameter positions and
+   * arguments positions, so we use the same underlying type for both.
+   */
+  final class ArgumentPosition extends ParameterPosition {
+    /** Gets the argument of `call` at this position, if any. */
+    Expr getArgument(Call call) {
+      result = call.getPositionalArgument(this.getPosition())
+      or
+      result = call.(MethodCall).getReceiver() and this.isSelf()
+    }
+  }
 
   /** Holds if `p` is a parameter of `c` at the position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
@@ -448,10 +445,6 @@ module RustDataFlow implements InputSig<Location> {
   final class ContentApprox = Content; // TODO: Implement if needed
 
   ContentApprox getContentApprox(Content c) { result = c }
-
-  class ParameterPosition = ParameterPositionAlias;
-
-  class ArgumentPosition = ArgumentPositionAlias;
 
   /**
    * Holds if the parameter position `ppos` matches the argument position
@@ -664,7 +657,7 @@ module RustDataFlow implements InputSig<Location> {
   pragma[nomagic]
   additional predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExpr ce, TupleField tf, int pos |
-      node1.asExpr() = ce.getSyntacticArgument(pos) and
+      node1.asExpr() = ce.getSyntacticPositionalArgument(pos) and
       node2.asExpr() = ce and
       c = TTupleFieldContent(tf)
     |
@@ -716,7 +709,7 @@ module RustDataFlow implements InputSig<Location> {
     exists(DataFlowCall call, int i |
       isArgumentNode(node1, call, TPositionalParameterPosition(i)) and
       lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
-      c.(ClosureCallArgumentContent).getPosition() = i
+      c.(FunctionCallArgumentContent).getPosition() = i
     )
     or
     VariableCapture::storeStep(node1, c, node2)
@@ -825,7 +818,7 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     (
-      receiver.asExpr() = call.asCall().(ClosureCallExpr).getClosureExpr()
+      receiver.asExpr() = call.asCall().(CallExprImpl::DynamicCallExpr).getFunction()
       or
       call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode())
     ) and

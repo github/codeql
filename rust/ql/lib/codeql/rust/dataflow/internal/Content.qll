@@ -5,6 +5,7 @@
 private import rust
 private import codeql.rust.frameworks.stdlib.Builtins
 private import DataFlowImpl
+private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
 /**
  * A path to a value contained in an object. For example a field name of a struct.
@@ -168,10 +169,10 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
  * Used by the model generator to create flow summaries for higher-order
  * functions.
  */
-final class ClosureCallArgumentContent extends Content, TClosureCallArgumentContent {
+final class FunctionCallArgumentContent extends Content, TFunctionCallArgumentContent {
   private int pos;
 
-  ClosureCallArgumentContent() { this = TClosureCallArgumentContent(pos) }
+  FunctionCallArgumentContent() { this = TFunctionCallArgumentContent(pos) }
 
   int getPosition() { result = pos }
 
@@ -269,8 +270,8 @@ newtype TContent =
         )]
   } or
   TFunctionCallReturnContent() or
-  TClosureCallArgumentContent(int pos) {
-    pos in [0 .. any(ClosureCallExpr c).getNumberOfPositionalArguments()]
+  TFunctionCallArgumentContent(int pos) {
+    pos in [0 .. any(CallExprImpl::DynamicCallExpr c).getNumberOfPositionalArguments()]
   } or
   TCapturedVariableContent(VariableCapture::CapturedVariable v) or
   TReferenceContent()

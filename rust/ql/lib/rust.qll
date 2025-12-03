@@ -6,7 +6,7 @@ import codeql.Locations
 import codeql.files.FileSystem
 import codeql.rust.elements.Operation
 import codeql.rust.elements.ArithmeticOperation
-import codeql.rust.elements.ArgsExpr
+import codeql.rust.elements.InvocationExpr
 import codeql.rust.elements.AssignmentOperation
 import codeql.rust.elements.BitwiseOperation
 import codeql.rust.elements.ComparisonOperation

@@ -167,7 +167,7 @@ final class NameNode extends AstNodeNode, TNameNode {
  */
 abstract class ParameterNode extends Node {
   /** Holds if this node is a parameter of `c` at position `pos`. */
-  abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
+  abstract predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos);
 }
 
 final class SourceParameterNode extends AstNodeNode, ParameterNode, TSourceParameterNode {
@@ -175,12 +175,12 @@ final class SourceParameterNode extends AstNodeNode, ParameterNode, TSourceParam
 
   SourceParameterNode() { this = TSourceParameterNode(n) }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+  override predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos) {
     n = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
   }
 
   /** Get the parameter position of this parameter. */
-  ParameterPosition getPosition() { this.isParameterOf(_, result) }
+  RustDataFlow::ParameterPosition getPosition() { this.isParameterOf(_, result) }
 
   /** Gets the parameter in the CFG that this node corresponds to. */
   ParamBase getParameter() { result = n }
@@ -188,13 +188,13 @@ final class SourceParameterNode extends AstNodeNode, ParameterNode, TSourceParam
 
 /** A parameter for a library callable with a flow summary. */
 final class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
-  private ParameterPosition pos_;
+  private RustDataFlow::ParameterPosition pos_;
 
   SummaryParameterNode() {
     FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), pos_)
   }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+  override predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos) {
     this.getSummarizedCallable() = c.asSummarizedCallable() and pos = pos_
   }
 }
@@ -210,7 +210,7 @@ final class ClosureParameterNode extends ParameterNode, TClosureSelfReferenceNod
 
   final override CfgScope getCfgScope() { result = cfgScope }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+  override predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos) {
     cfgScope = c.asCfgScope() and pos.isClosureSelf()
   }
 

@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.CallExpr
  */
 module Impl {
   private import rust
-  private import codeql.rust.elements.internal.ArgsExprImpl::Impl as ArgsExprImpl
+  private import codeql.rust.elements.internal.InvocationExprImpl::Impl as InvocationExprImpl
   private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
   private import codeql.rust.internal.PathResolution as PathResolution
   private import codeql.rust.internal.TypeInference as TypeInference
@@ -24,6 +24,8 @@ module Impl {
   PathResolution::ItemNode getResolvedFunction(CallExpr ce) {
     result = PathResolution::resolvePath(getFunctionPath(ce))
   }
+
+  private Expr getSyntacticArg(CallExpr ce, int i) { result = ce.getArgList().getArg(i) }
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -38,20 +40,20 @@ module Impl {
    * Option::Some(42); // tuple variant instantiation
    * ```
    */
-  class CallExpr extends Generated::CallExpr, ArgsExprImpl::ArgsExpr {
+  class CallExpr extends Generated::CallExpr, InvocationExprImpl::InvocationExpr {
     override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
 
-    override Expr getSyntacticArgument(int i) { result = this.getArgList().getArg(i) }
+    override Expr getSyntacticPositionalArgument(int i) { result = getSyntacticArg(this, i) }
 
     // todo: remove once internal query has been updated
-    Expr getArg(int i) { result = this.getSyntacticArgument(i) }
+    Expr getArg(int i) { result = getSyntacticArg(this, i) }
 
     // todo: remove once internal query has been updated
     int getNumberOfArgs() { result = this.getNumberOfSyntacticArguments() }
   }
 
   /**
-   * A call expression that is _not_ an instantiation of a tuple struct or a tuple enum variant.
+   * A call expression that is _not_ an instantiation of a tuple struct or a tuple variant.
    *
    * For example:
    * ```rust
@@ -67,7 +69,23 @@ module Impl {
       not this instanceof TupleVariantExpr
     }
 
-    override Expr getPositionalArgument(int i) { result = super.getSyntacticArgument(i) }
+    override Expr getPositionalArgument(int i) { result = getSyntacticArg(this, i) }
+  }
+
+  /**
+   * A call expression that targets a closure (or any value that implements
+   * `Fn`, `FnMut`, or `FnOnce`).
+   *
+   * Dynamic calls never have a static target, and the set of potential
+   * run-time targets is only available internally to the data flow library.
+   */
+  class DynamicCallExpr extends CallExprCall {
+    DynamicCallExpr() {
+      exists(Expr f | f = this.getFunction() |
+        // All calls to complex expressions and local variable accesses are lambda calls
+        f instanceof PathExpr implies f = any(Variable v).getAnAccess()
+      )
+    }
   }
 
   /**
@@ -77,20 +95,20 @@ module Impl {
    * layer, we do not check that the resolved target is a method in the charpred,
    * instead we check this in `getPositionalArgument` and `getReceiver`.
    */
-  class CallExprMethodCall extends CallExprCall, CallImpl::MethodCall {
-    CallExprMethodCall() { not this instanceof ClosureCallExpr }
+  class CallExprMethodCall extends CallImpl::MethodCall instanceof CallExprCall {
+    CallExprMethodCall() { not this instanceof DynamicCallExpr }
 
     private predicate isInFactMethodCall() { this.getResolvedTarget() instanceof Method }
 
     override Expr getPositionalArgument(int i) {
       if this.isInFactMethodCall()
-      then result = this.getSyntacticArgument(i + 1)
-      else result = this.getSyntacticArgument(i)
+      then result = getSyntacticArg(this, i + 1)
+      else result = getSyntacticArg(this, i)
     }
 
     override Expr getReceiver() {
       this.isInFactMethodCall() and
-      result = super.getSyntacticArgument(0)
+      result = getSyntacticArg(this, 0)
     }
   }
 
@@ -119,7 +137,7 @@ module Impl {
   }
 
   /**
-   * A call expression that instantiates a tuple enum variant.
+   * A call expression that instantiates a tuple variant.
    *
    * For example:
    * ```rust

@@ -25,7 +25,7 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
 }
 
 // TODO: Take other calls into account
-abstract private class CallExprBase extends ArgsExpr { }
+abstract private class CallExprBase extends InvocationExpr { }
 
 private class CallExprCallExprBase extends CallExpr, CallExprBase { }
 

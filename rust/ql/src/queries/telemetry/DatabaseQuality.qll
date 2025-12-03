@@ -6,6 +6,7 @@
 
 import rust
 import codeql.util.ReportStats
+import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 import codeql.rust.internal.TypeInference as TypeInference
 
 /**
@@ -20,7 +21,7 @@ private class RelevantFile extends File {
 
 module CallTargetStats implements StatsSig {
   // TODO: Take other calls into account
-  abstract private class CallExprBase extends ArgsExpr { }
+  abstract private class CallExprBase extends InvocationExpr { }
 
   private class CallExprCallExprBase extends CallExpr, CallExprBase { }
 
@@ -34,7 +35,7 @@ module CallTargetStats implements StatsSig {
   additional predicate isNotOkCall(CallExprBase c) {
     c.getFile() instanceof RelevantFile and
     not exists(c.getResolvedTarget()) and
-    not c instanceof ClosureCallExpr
+    not c instanceof CallExprImpl::DynamicCallExpr
   }
 
   int getNumberOfNotOk() { result = count(CallExprBase c | isNotOkCall(c)) }

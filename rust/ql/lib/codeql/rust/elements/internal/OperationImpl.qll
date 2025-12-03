@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Impl {
   private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
-  private import codeql.rust.elements.internal.ArgsExprImpl::Impl as ArgsExprImpl
+  private import codeql.rust.elements.internal.InvocationExprImpl::Impl as InvocationExprImpl
 
   /**
    * Holds if the operator `op` with arity `arity` is overloaded to a trait with
@@ -108,14 +108,14 @@ module Impl {
    * for `Add::add(x, y)`, and `x += y` is syntactic sugar for
    * `AddAssign::add_assign(&mut x, y)`.
    */
-  abstract class Operation extends ArgsExprImpl::ArgsExpr {
+  abstract class Operation extends InvocationExprImpl::InvocationExpr {
     /** Gets the operator name of this operation, if it exists. */
     abstract string getOperatorName();
 
     /** Gets the `n`th operand of this operation, if any. */
     abstract Expr getOperand(int n);
 
-    override Expr getSyntacticArgument(int i) { result = this.getOperand(i) }
+    override Expr getSyntacticPositionalArgument(int i) { result = this.getOperand(i) }
 
     /**
      * Gets the number of operands of this operation.
@@ -140,7 +140,7 @@ module Impl {
   private class OperationMethodCall extends CallImpl::MethodCall instanceof Operation {
     OperationMethodCall() { super.isOverloaded(_, _, _) }
 
-    override Expr getPositionalArgument(int i) { result = super.getOperand(i + 1) and i >= 0 }
+    override Expr getPositionalArgument(int i) { result = super.getOperand(i + 1) }
 
     override Expr getReceiver() { result = super.getOperand(0) }
   }
