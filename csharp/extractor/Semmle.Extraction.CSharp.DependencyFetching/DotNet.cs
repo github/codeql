@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         return;
                     case 143 when attempt < 3:
                         HandleRetryExitCode143(dotnetCliInvoker.Exec, attempt, logger);
-                        break;
+                        continue;
                     default:
                         throw new Exception($"{dotnetCliInvoker.Exec} --info failed with exit code {exitCode}.");
                 }
