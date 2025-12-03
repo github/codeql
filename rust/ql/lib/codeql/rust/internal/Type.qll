@@ -352,16 +352,12 @@ class PtrMutType extends PtrType {
   PtrMutType() { this.getStruct() instanceof Builtins::PtrMutType }
 
   override string toString() { result = "*mut" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 class PtrConstType extends PtrType {
   PtrConstType() { this.getStruct() instanceof Builtins::PtrConstType }
 
   override string toString() { result = "*const" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
