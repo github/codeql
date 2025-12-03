@@ -278,6 +278,16 @@ module MakeModelGeneratorFactory<
     predicate isAdditionalContentFlowStep(Lang::Node nodeFrom, Lang::Node nodeTo);
 
     /**
+     * Gets the access path limit for content flow analysis.
+     */
+    default int contentAccessPathLimit() { result = 2 }
+
+    /**
+     * Gets the internal access path limit for content flow analysis.
+     */
+    default int contentAccessPathLimitInternal() { result = Lang::accessPathLimit() }
+
+    /**
      * Holds if the content set `c` is field like.
      */
     predicate isField(Lang::ContentSet c);
@@ -650,7 +660,10 @@ module MakeModelGeneratorFactory<
           exists(Type t | t = n.(NodeExtended).getType() and not isRelevantType(t))
         }
 
-        int accessPathLimit() { result = 2 }
+        predicate accessPathLimit = SummaryModelGeneratorInput::contentAccessPathLimit/0;
+
+        predicate accessPathLimitInternal =
+          SummaryModelGeneratorInput::contentAccessPathLimitInternal/0;
 
         predicate isRelevantContent(DataFlow::ContentSet s) { isRelevantContent0(s) }
 
