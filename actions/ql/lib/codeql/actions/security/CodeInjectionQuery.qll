@@ -19,12 +19,7 @@ class CodeInjectionSink extends DataFlow::Node {
 Event getRelevantCriticalEventForSink(DataFlow::Node sink) {
   inPrivilegedContext(sink.asExpr(), result) and
   not exists(ControlCheck check | check.protects(sink.asExpr(), result, "code-injection")) and
-  // exclude cases where the sink is a JS script and the expression uses toJson
-  not exists(UsesStep script |
-    script.getCallee() = "actions/github-script" and
-    script.getArgumentExpr("script") = sink.asExpr() and
-    exists(getAToJsonReferenceExpression(sink.asExpr().(Expression).getExpression(), _))
-  )
+  not isGithubScriptUsingToJson(sink.asExpr())
 }
 
 /**
@@ -112,10 +107,17 @@ predicate mediumSeverityCodeInjection(
 ) {
   CodeInjectionFlow::flowPath(source, sink) and
   not criticalSeverityCodeInjection(source, sink, _) and
-  // exclude cases where the sink is a JS script and the expression uses toJson
-  not exists(UsesStep script |
+  not isGithubScriptUsingToJson(sink.getNode().asExpr())
+}
+
+/**
+ * Holds if `expr` is the `script` input to `actions/github-script` and it uses
+ * `toJson`.
+ */
+predicate isGithubScriptUsingToJson(Expression expr) {
+  exists(UsesStep script |
     script.getCallee() = "actions/github-script" and
-    script.getArgumentExpr("script") = sink.getNode().asExpr() and
-    exists(getAToJsonReferenceExpression(sink.getNode().asExpr().(Expression).getExpression(), _))
+    script.getArgumentExpr("script") = expr and
+    exists(getAToJsonReferenceExpression(expr.getExpression(), _))
   )
 }
