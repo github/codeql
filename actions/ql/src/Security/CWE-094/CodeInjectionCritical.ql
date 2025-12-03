@@ -20,9 +20,7 @@ import CodeInjectionFlow::PathGraph
 import codeql.actions.security.ControlChecks
 
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event event
-where
-  CodeInjectionFlow::flowPath(source, sink) and
-  criticalSeverity(source.getNode(), sink.getNode(), event)
+where criticalSeverityCodeInjection(source, sink, event)
 select sink.getNode(), source, sink,
   "Potential code injection in $@, which may be controlled by an external user ($@).", sink,
   sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

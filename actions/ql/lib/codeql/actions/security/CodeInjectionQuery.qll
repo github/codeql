@@ -93,23 +93,29 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
 module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
 
 /**
- * Holds if the flow from `source` to `sink` has critical severity and they are
- * linked by `event`.
+ * Holds if there is a code injection flow from `source` to `sink` with
+ * critical severity, linked by `event`.
  */
-pragma[inline]
-predicate criticalSeverity(DataFlow::Node source, DataFlow::Node sink, Event event) {
-  event = getRelevantCriticalEventForSink(sink) and
-  source.(RemoteFlowSource).getEventName() = event.getName()
+predicate criticalSeverityCodeInjection(
+  CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event event
+) {
+  CodeInjectionFlow::flowPath(source, sink) and
+  event = getRelevantCriticalEventForSink(sink.getNode()) and
+  source.getNode().(RemoteFlowSource).getEventName() = event.getName()
 }
 
-/** Holds if the flow from `source` to `sink` has medium severity. */
-pragma[inline]
-predicate mediumSeverity(DataFlow::Node source, DataFlow::Node sink) {
-  not criticalSeverity(source, sink, _) and
+/**
+ * Holds if there is a code injection flow from `source` to `sink` with medium severity.
+ */
+predicate mediumSeverityCodeInjection(
+  CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+) {
+  CodeInjectionFlow::flowPath(source, sink) and
+  not criticalSeverityCodeInjection(source, sink, _) and
   // exclude cases where the sink is a JS script and the expression uses toJson
   not exists(UsesStep script |
     script.getCallee() = "actions/github-script" and
-    script.getArgumentExpr("script") = sink.asExpr() and
-    exists(getAToJsonReferenceExpression(sink.asExpr().(Expression).getExpression(), _))
+    script.getArgumentExpr("script") = sink.getNode().asExpr() and
+    exists(getAToJsonReferenceExpression(sink.getNode().asExpr().(Expression).getExpression(), _))
   )
 }
