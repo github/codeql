@@ -1808,7 +1808,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A field in a tuple struct or tuple enum variant.
+   * A field in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust
@@ -2942,16 +2942,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * NOTE: Consider using `Call` instead, as that includes all kinds of calls to
-   * functions, and excludes instantiations of tuple structs and tuple enum variants.
+   * NOTE: Consider using `Call` instead, as that excludes call expressions that are
+   * instantiations of tuple structs and tuple variants.
    *
    * A call expression. For example:
    * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
    * foo[0](42);
-   * foo(1) = 4;
-   * Option::Some(42); // tuple enum variant instantiation
+   * Option::Some(42); // tuple variant instantiation
    * ```
    */
   class CallExpr extends @call_expr, Expr {
@@ -4383,8 +4382,8 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
-   * function call syntax (such as `Foo::method(x)`), operator calls (such as `x + y`), and
-   * indexing calls (such as `x[y]`).
+   * call syntax (such as `Foo::method(x)`), operation syntax (such as `x + y`), and
+   * indexing syntax (such as `x[y]`).
    *
    * A method call expression. For example:
    * ```rust
@@ -5523,7 +5522,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A list of fields in a tuple struct or tuple enum variant.
+   * A list of fields in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust

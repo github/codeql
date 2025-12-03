@@ -17,7 +17,7 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A field in a tuple struct or tuple enum variant.
+   * A field in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust

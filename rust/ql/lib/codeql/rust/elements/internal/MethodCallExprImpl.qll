@@ -18,8 +18,8 @@ module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
-   * function call syntax (such as `Foo::method(x)`), operator calls (such as `x + y`), and
-   * indexing calls (such as `x[y]`).
+   * call syntax (such as `Foo::method(x)`), operation syntax (such as `x + y`), and
+   * indexing syntax (such as `x[y]`).
    *
    * A method call expression. For example:
    * ```rust

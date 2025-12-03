@@ -17,16 +17,15 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
-   * NOTE: Consider using `Call` instead, as that includes all kinds of calls to
-   * functions, and excludes instantiations of tuple structs and tuple enum variants.
+   * NOTE: Consider using `Call` instead, as that excludes call expressions that are
+   * instantiations of tuple structs and tuple variants.
    *
    * A call expression. For example:
    * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
    * foo[0](42);
-   * foo(1) = 4;
-   * Option::Some(42); // tuple enum variant instantiation
+   * Option::Some(42); // tuple variant instantiation
    * ```
    * INTERNAL: Do not reference the `Generated::CallExpr` class directly.
    * Use the subclass `CallExpr`, where the following predicates are available.
