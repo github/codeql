@@ -17,6 +17,4 @@ module Flow = DataFlow::Global<FlowConfig>;
 
 import Flow::PathGraph
 
-from DataFlow::Node source, DataFlow::Node sink
-where Flow::flow(source, sink)
-select sink
+query predicate flow(DataFlow::Node sink) { Flow::flowTo(sink) }

@@ -18,13 +18,13 @@ namespace ObInit {
 
         static void Foo() {
             A a = new A();
-            Sink(a.s);
+            Sink(a.s); // $ flow
 
             A a2 = new A(0, 0);
-            Sink(a2.s);
+            Sink(a2.s); // $ MISSING: flow
 
             B b = new B();
-            Sink(b.s);
+            Sink(b.s); // $ MISSING: flow
         }
     }
 }

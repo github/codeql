@@ -14,16 +14,16 @@ private module Initializers {
    * A non-static member with an initializer, for example a field `int Field = 0`.
    */
   class InitializedInstanceMember extends Member {
+    private AssignExpr ae;
+
     InitializedInstanceMember() {
-      exists(AssignExpr ae |
-        not this.isStatic() and
-        expr_parent_top_level(ae, _, this) and
-        not ae = any(Callable c).getExpressionBody()
-      )
+      not this.isStatic() and
+      expr_parent_top_level(ae, _, this) and
+      not ae = any(Callable c).getExpressionBody()
     }
 
     /** Gets the initializer expression. */
-    AssignExpr getInitializer() { expr_parent_top_level(result, _, this) }
+    AssignExpr getInitializer() { result = ae }
   }
 
   /**
@@ -54,7 +54,7 @@ private module Initializers {
   }
 
   /**
-   * Gets the last member initializer expression for non-static constructor `c`
+   * Gets the last member initializer expression for object initializer method `obinit`
    * in compilation `comp`.
    */
   AssignExpr lastInitializer(ObjectInitMethod obinit, CompilationExt comp) {
@@ -224,6 +224,13 @@ predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
       or
       last(callable.(Constructor).getInitializer(), last, c) and
       not callable.hasBody()
+      or
+      // This is only relevant in the context of compilation errors, since
+      // normally the existence of an object initializer call implies the
+      // existence of an initializer.
+      last(callable.(Constructor).getObjectInitializerCall(), last, c) and
+      not callable.(Constructor).hasInitializer() and
+      not callable.hasBody()
     )
   or
   last(Initializers::lastInitializer(scope, _), last, c)
@@ -278,8 +285,15 @@ private class ConstructorTree extends ControlFlowTree instanceof Constructor {
   final override predicate succ(AstNode pred, AstNode succ, Completion c) {
     exists(CompilationExt comp |
       last(this.getObjectInitializerCall(comp), pred, c) and
-      c instanceof NormalCompletion and
+      c instanceof NormalCompletion
+    |
       first(this.getInitializer(comp), succ)
+      or
+      // This is only relevant in the context of compilation errors, since
+      // normally the existence of an object initializer call implies the
+      // existence of an initializer.
+      not exists(this.getInitializer(comp)) and
+      first(this.getBody(comp), succ)
     )
   }
 }

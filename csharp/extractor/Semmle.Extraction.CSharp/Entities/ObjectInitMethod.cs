@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
             this.ContainingType = containingType;
         }
 
-        public static readonly string Name = "<object initializer>";
+        private static readonly string Name = "<object initializer>";
 
         public static ObjectInitMethod Create(Context cx, Type containingType)
         {
