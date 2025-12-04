@@ -44,12 +44,6 @@ module Impl {
     override string toStringImpl() { result = this.getFunction().toAbbreviatedString() + "(...)" }
 
     override Expr getSyntacticPositionalArgument(int i) { result = getSyntacticArg(this, i) }
-
-    // todo: remove once internal query has been updated
-    Expr getArg(int i) { result = getSyntacticArg(this, i) }
-
-    // todo: remove once internal query has been updated
-    int getNumberOfArgs() { result = this.getNumberOfSyntacticArguments() }
   }
 
   /**
