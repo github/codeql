@@ -88,5 +88,5 @@ import InsecureCookieFlow::PathGraph
 from InsecureCookieFlow::PathNode sourceNode, InsecureCookieFlow::PathNode sinkNode
 where
   InsecureCookieFlow::flowPath(sourceNode, sinkNode) and
-  not PartitionedCookieFlow::flow(_, sinkNode.getNode())
+  not PartitionedCookieFlow::flowTo(sinkNode.getNode())
 select sinkNode.getNode(), sourceNode, sinkNode, "Cookie attribute 'Secure' is not set to true."

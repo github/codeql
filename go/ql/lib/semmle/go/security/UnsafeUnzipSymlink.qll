@@ -32,7 +32,7 @@ module UnsafeUnzipSymlink {
    * Holds if `node` is an archive header field read that flows to a `path/filepath.EvalSymlinks` call.
    */
   private predicate symlinksEvald(DataFlow::Node node) {
-    EvalSymlinksFlow::flow(getASimilarReadNode(node), _)
+    EvalSymlinksFlow::flowFrom(getASimilarReadNode(node))
   }
 
   private module Config implements DataFlow::ConfigSig {
