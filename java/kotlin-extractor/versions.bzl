@@ -1,9 +1,5 @@
 # when updating this list, `bazel mod tidy` should be run from `codeql` to update `MODULE.bazel`
 VERSIONS = [
-    "1.6.0",
-    "1.6.20",
-    "1.7.0",
-    "1.7.20",
     "1.8.0",
     "1.9.0-Beta",
     "1.9.20-Beta",
