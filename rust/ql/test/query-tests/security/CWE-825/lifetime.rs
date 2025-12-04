@@ -840,7 +840,7 @@ struct MyProcessor {
 impl Processor for MyProcessor {
 	fn process(ptr: *const i64) -> i64 {
 		unsafe {
-			return *ptr; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=local_value
+			return *ptr; // good
 		}
 	}
 }
@@ -848,7 +848,7 @@ impl Processor for MyProcessor {
 fn generic_caller<T: Processor>() -> i64
 {
 	let local_value: i64 = 10;
-	let ptr = &local_value as *const i64; // $ Source[rust/access-after-lifetime-ended]=local_value
+	let ptr = &local_value as *const i64;
 
 	return T::process(ptr);
 }
