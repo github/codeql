@@ -1645,7 +1645,7 @@ open class KotlinFileExtractor(
         extractMethodAndParameterTypeAccesses: Boolean,
         typeSubstitution: TypeSubstitution?,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-    ) =
+    ) : Label<out DbCallable> =
         forceExtractFunction(
                 f,
                 parentId,
@@ -2975,12 +2975,22 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
-                    extractVariable(s.delegate, callable, blockId, 0)
+                    // For Kotlin < 2.3, s.deligate is not-nullable. Cast to a be nullable,
+                    // as a workaround to silence warnings for kotlin < 2.3 about the elvis
+                    // operator being redundant.
+                    // For Kotlin >= 2.3, the cast is redundant, so we need to silence that warning
+
+                    @Suppress("USELESS_CAST")
+                    val delegate = (s.delegate as IrVariable?) ?: run {
+                        logger.errorElement("Local delegated property is missing delegate", s)
+                        return
+                    }
+                    extractVariable(delegate, callable, blockId, 0)
 
                     val propId = tw.getFreshIdLabel<DbKt_property>()
                     tw.writeKtProperties(propId, s.name.asString())
                     tw.writeHasLocation(propId, locId)
-                    tw.writeKtPropertyDelegates(propId, useVariable(s.delegate))
+                    tw.writeKtPropertyDelegates(propId, useVariable(delegate))
 
                     // Getter:
                     extractStatement(s.getter, callable, blockId, 1)
