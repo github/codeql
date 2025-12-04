@@ -97,7 +97,7 @@ class ExternalApiDataNode extends DataFlow::Node instanceof Sink { }
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { ExternalAPIUsedWithUntrustedDataFlow::flow(_, this) }
+  UntrustedExternalApiDataNode() { ExternalAPIUsedWithUntrustedDataFlow::flowTo(this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() { ExternalAPIUsedWithUntrustedDataFlow::flow(result, this) }
@@ -110,7 +110,7 @@ private newtype TExternalApi =
   /** An external API sink with `name`. */
   MkExternalApiNode(string name) {
     exists(Sink sink |
-      ExternalAPIUsedWithUntrustedDataFlow::flow(_, sink) and
+      ExternalAPIUsedWithUntrustedDataFlow::flowTo(sink) and
       name = sink.getApiName()
     )
   }

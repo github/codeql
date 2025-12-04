@@ -1770,7 +1770,7 @@ proc_macro.rs:
 #   16|                                                                                             getIdentifier(): [NameRef] items
 #   15|                                                                                     getMatchArmList(): [MatchArmList] MatchArmList
 #   15|                                                                                       getArm(0): [MatchArm] ... => ...
-#   15|                                                                                         getExpr(): [CallExpr] ...::RepInterp(...)
+#   15|                                                                                         getExpr(): [TupleStructExpr] ...::RepInterp(...)
 #   15|                                                                                           getArgList(): [ArgList] ArgList
 #   15|                                                                                             getArg(0): [VariableAccess] _x
 #   15|                                                                                               getPath(): [Path] _x

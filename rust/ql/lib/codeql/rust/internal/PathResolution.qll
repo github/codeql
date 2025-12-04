@@ -2046,7 +2046,7 @@ private ItemNode resolvePathCand(PathExt path) {
     or
     exists(CallExpr ce |
       path = CallExprImpl::getFunctionPath(ce) and
-      result.(ParameterizableItemNode).getArity() = ce.getNumberOfArgs()
+      result.(ParameterizableItemNode).getArity() = ce.getArgList().getNumberOfArgs()
     )
   )
 }

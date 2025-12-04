@@ -50,7 +50,7 @@ module FullServerSideRequestForgeryFlow = TaintTracking::Global<FullServerSideRe
  */
 predicate fullyControlledRequest(Http::Client::Request request) {
   forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
-    FullServerSideRequestForgeryFlow::flow(_, urlPart)
+    FullServerSideRequestForgeryFlow::flowTo(urlPart)
   )
 }
 

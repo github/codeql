@@ -15,7 +15,7 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A field in a tuple struct or tuple enum variant.
+   * A field in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust

@@ -39,6 +39,11 @@ module HardcodedCryptographicValueConfig implements DataFlow::ConfigSig {
     //  case like `[0, 0, 0, 0]`)
     isSource(node)
   }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    // make sinks barriers so that we only report the closest instance
+    isSink(node)
+  }
 }
 
 module HardcodedCryptographicValueFlow = TaintTracking::Global<HardcodedCryptographicValueConfig>;

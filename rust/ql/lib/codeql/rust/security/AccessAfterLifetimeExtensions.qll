@@ -100,9 +100,9 @@ module AccessAfterLifetime {
     a = b.getEnclosingBlock*()
     or
     // propagate through function calls (static target)
-    exists(CallExprBase ce |
-      mayEncloseOnStack(a, ce.getEnclosingBlock()) and
-      ce.getStaticTarget() = b.getEnclosingCallable()
+    exists(Call call |
+      mayEncloseOnStack(a, call.getEnclosingBlock()) and
+      call.getStaticTarget() = b.getEnclosingCallable()
     )
     or
     // propagate through function calls (runtime target)

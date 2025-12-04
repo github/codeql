@@ -75,6 +75,9 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
     /** Gets a limit on the number of reads out of sources and number of stores into sinks. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }
 
+    /** Gets the access path limit used in the internal invocation of the standard data flow library. */
+    default int accessPathLimitInternal() { result = Lang::accessPathLimit() }
+
     /** Holds if `c` is relevant for reads out of sources or stores into sinks. */
     default predicate isRelevantContent(ContentSet c) { any() }
   }
@@ -110,7 +113,7 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
 
       FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
 
-      predicate accessPathLimit = ContentConfig::accessPathLimit/0;
+      predicate accessPathLimit = ContentConfig::accessPathLimitInternal/0;
 
       // needed to record reads/stores inside summarized callables
       predicate includeHiddenNodes() { any() }
@@ -272,6 +275,16 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
           this = TAccessPathCons(head, tail) and
           result = head + "." + tail
         )
+      }
+
+      /**
+       * Gets the length of this access path.
+       */
+      int length() {
+        this = TAccessPathNil() and
+        result = 0
+        or
+        result = this.getTail().length() + 1
       }
 
       /**

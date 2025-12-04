@@ -85,7 +85,7 @@ private module JxBrowserFlow = DataFlow::Global<JxBrowserFlowConfig>;
 
 deprecated query predicate problems(DataFlow::Node src, string message) {
   JxBrowserFlowConfig::isSource(src) and
-  not JxBrowserFlow::flow(src, _) and
+  not JxBrowserFlow::flowFrom(src) and
   not isSafeJxBrowserVersion() and
   message = "This JxBrowser instance may not check HTTPS certificates."
 }
