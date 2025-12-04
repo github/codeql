@@ -95,7 +95,7 @@ module Impl {
    * layer, we do not check that the resolved target is a method in the charpred,
    * instead we check this in `getPositionalArgument` and `getReceiver`.
    */
-  class CallExprMethodCall extends CallImpl::MethodCall instanceof CallExprCall {
+  class CallExprMethodCall extends CallImpl::MethodCall, CallExprCall {
     CallExprMethodCall() { not this instanceof DynamicCallExpr }
 
     private predicate isInFactMethodCall() { this.getResolvedTarget() instanceof Method }
