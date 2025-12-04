@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using NuGet.Versioning;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -27,7 +28,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.newestRuntimes = new(GetNewestRuntimes);
         }
 
-        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(.+)\]$")]
+        [GeneratedRegex(@"^(\S+)\s(\d+\.\d+\.\d+(-[a-z]+\.\d+\.\d+\.\d+)?)\s\[(.+)\]$")]
         private static partial Regex RuntimeRegex();
 
         /// <summary>
@@ -44,9 +45,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             listed.ForEach(r =>
             {
                 var match = regex.Match(r);
-                if (match.Success)
+                if (match.Success && NuGetVersion.TryParse(match.Groups[2].Value, out var version))
                 {
-                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new DotNetVersion(match.Groups[6].Value, match.Groups[2].Value, match.Groups[4].Value, match.Groups[5].Value));
+                    runtimes.AddOrUpdateToLatest(match.Groups[1].Value, new DotNetVersion(match.Groups[4].Value, version));
                 }
             });
 
