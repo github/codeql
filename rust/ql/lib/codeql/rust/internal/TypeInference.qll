@@ -609,12 +609,12 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     strictcount(Expr e | bodyReturns(n1, e)) = 1
   )
   or
-  exists(RefExpr re |
-    n2 = re and
-    n1 = re.getExpr() and
-    prefix1.isEmpty() and
-    prefix2 = TypePath::singleton(inferRefExprType(re).getPositionalTypeParameter(0))
-  )
+  n2 =
+    any(RefExpr re |
+      n1 = re.getExpr() and
+      prefix1.isEmpty() and
+      prefix2 = TypePath::singleton(inferRefExprType(re).getPositionalTypeParameter(0))
+    )
   or
   n1 = n2.(RefPat).getPat() and
   prefix1.isEmpty() and
@@ -3162,6 +3162,12 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   )
 }
 
+pragma[nomagic]
+private Type getInferredDerefType(DerefExpr de, TypePath path) { result = inferType(de, path) }
+
+pragma[nomagic]
+private PtrType getInferredDerefExprPtrType(DerefExpr de) { result = inferType(de.getExpr()) }
+
 /**
  * Gets the inferred type of `n` at `path` when `n` occurs in a dereference
  * expression `*n` and when `n` is known to have a raw pointer type.
@@ -3171,8 +3177,8 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
 private Type inferDereferencedExprPtrType(AstNode n, TypePath path) {
   exists(DerefExpr de, PtrType type, TypePath suffix |
     de.getExpr() = n and
-    type = inferType(de.getExpr()) and
-    result = inferType(de, suffix) and
+    type = getInferredDerefExprPtrType(de) and
+    result = getInferredDerefType(de, suffix) and
     path = TypePath::cons(type.getPositionalTypeParameter(0), suffix)
   )
 }

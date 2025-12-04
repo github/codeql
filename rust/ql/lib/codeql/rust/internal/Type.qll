@@ -339,9 +339,7 @@ class NeverType extends Type, TNeverType {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
-abstract class PtrType extends StructType {
-  override Location getLocation() { result instanceof EmptyLocation }
-}
+abstract class PtrType extends StructType { }
 
 pragma[nomagic]
 TypeParamTypeParameter getPtrTypeParameter() {
