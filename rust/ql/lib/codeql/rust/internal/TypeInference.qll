@@ -13,8 +13,6 @@ private import codeql.rust.internal.CachedStages
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
-private import codeql.rust.elements.Call
-private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
 class Type = T::Type;
@@ -228,11 +226,6 @@ module Consistency {
       strictcount(impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(selfTypePath)) > 1
     )
   }
-}
-
-/** A method, that is, a function with a `self` parameter. */
-private class Method extends Function {
-  Method() { this.hasSelfParam() }
 }
 
 /** A function without a `self` parameter. */
@@ -962,6 +955,24 @@ private Type getCallExprTypeQualifier(CallExpr ce, TypePath path) {
 }
 
 /**
+ * Gets the trait qualifier of function call `ce`, if any.
+ *
+ * For example, the trait qualifier of `Default::<i32>::default()` is `Default`.
+ */
+pragma[nomagic]
+private Trait getCallExprTraitQualifier(CallExpr ce) {
+  exists(PathExt qualifierPath |
+    qualifierPath = getCallExprPathQualifier(ce) and
+    result = resolvePath(qualifierPath) and
+    // When the qualifier is `Self` and resolves to a trait, it's inside a
+    // trait method's default implementation. This is not a dispatch whose
+    // target is inferred from the type of the receiver, but should always
+    // resolve to the function in the trait block as path resolution does.
+    not qualifierPath.isUnqualified("Self")
+  )
+}
+
+/**
  * Provides functionality related to context-based typing of calls.
  */
 private module ContextTyping {
@@ -1244,14 +1255,17 @@ private module MethodResolution {
 
   pragma[nomagic]
   private predicate methodCallTraitCandidate(Element mc, Trait trait) {
-    exists(string name, int arity |
-      mc.(MethodCall).hasNameAndArity(name, arity) and
-      methodTraitInfo(name, arity, trait)
-    |
-      not mc.(Call).hasTrait()
-      or
-      trait = mc.(Call).getTrait()
-    )
+    mc =
+      any(MethodCall mc0 |
+        exists(string name, int arity |
+          mc0.hasNameAndArity(name, arity) and
+          methodTraitInfo(name, arity, trait)
+        |
+          not mc0.hasTrait()
+          or
+          trait = mc0.getTrait()
+        )
+      )
   }
 
   private module MethodTraitIsVisible = TraitIsVisible<methodCallTraitCandidate/2>;
@@ -1296,7 +1310,7 @@ private module MethodResolution {
       or
       methodCallVisibleTraitCandidate(mc, i)
       or
-      i.(ImplItemNode).resolveTraitTy() = mc.(Call).getTrait()
+      i.(ImplItemNode).resolveTraitTy() = mc.getTrait()
     )
   }
 
@@ -1323,7 +1337,7 @@ private module MethodResolution {
     |
       methodCallVisibleImplTraitCandidate(mc, impl)
       or
-      impl.resolveTraitTy() = mc.(Call).getTrait()
+      impl.resolveTraitTy() = mc.getTrait()
     )
   }
 
@@ -1350,18 +1364,24 @@ private module MethodResolution {
   abstract class MethodCall extends Expr {
     abstract predicate hasNameAndArity(string name, int arity);
 
-    abstract Expr getArgument(ArgumentPosition pos);
+    abstract Expr getArg(ArgumentPosition pos);
 
     abstract predicate supportsAutoDerefAndBorrow();
 
+    /** Gets the trait targeted by this call, if any. */
+    abstract Trait getTrait();
+
+    /** Holds if this call targets a trait. */
+    predicate hasTrait() { exists(this.getTrait()) }
+
     AstNode getNodeAt(FunctionPosition apos) {
-      result = this.getArgument(apos.asArgumentPosition())
+      result = this.getArg(apos.asArgumentPosition())
       or
       result = this and apos.isReturn()
     }
 
     Type getArgumentTypeAt(ArgumentPosition pos, TypePath path) {
-      result = inferType(this.getArgument(pos), path)
+      result = inferType(this.getArg(pos), path)
     }
 
     private Type getReceiverTypeAt(TypePath path) {
@@ -1587,12 +1607,12 @@ private module MethodResolution {
 
     predicate receiverHasImplicitDeref(AstNode receiver) {
       exists(this.resolveCallTarget(_, ".ref", false)) and
-      receiver = this.getArgument(CallImpl::TSelfArgumentPosition())
+      receiver = this.getArg(any(ArgumentPosition pos | pos.isSelf()))
     }
 
-    predicate receiverHasImplicitBorrow(AstNode receiver) {
+    predicate argumentHasImplicitBorrow(AstNode arg) {
       exists(this.resolveCallTarget(_, "", true)) and
-      receiver = this.getArgument(CallImpl::TSelfArgumentPosition())
+      arg = this.getArg(any(ArgumentPosition pos | pos.isSelf()))
     }
   }
 
@@ -1603,35 +1623,36 @@ private module MethodResolution {
       arity = super.getArgList().getNumberOfArgs()
     }
 
-    override Expr getArgument(ArgumentPosition pos) {
-      pos.isSelf() and
-      result = MethodCallExpr.super.getReceiver()
-      or
-      result = super.getArgList().getArg(pos.asPosition())
+    override Expr getArg(ArgumentPosition pos) {
+      result = MethodCallExpr.super.getSyntacticArgument(pos)
     }
 
     override predicate supportsAutoDerefAndBorrow() { any() }
+
+    override Trait getTrait() { none() }
   }
 
-  private class MethodCallIndexExpr extends MethodCall, IndexExpr {
+  private class MethodCallIndexExpr extends MethodCall instanceof IndexExpr {
     pragma[nomagic]
     override predicate hasNameAndArity(string name, int arity) {
       name = "index" and
       arity = 1
     }
 
-    override Expr getArgument(ArgumentPosition pos) {
+    override Expr getArg(ArgumentPosition pos) {
       pos.isSelf() and
-      result = this.getBase()
+      result = super.getBase()
       or
       pos.asPosition() = 0 and
-      result = this.getIndex()
+      result = super.getIndex()
     }
 
     override predicate supportsAutoDerefAndBorrow() { any() }
+
+    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
   }
 
-  private class MethodCallCallExpr extends MethodCall, CallExpr {
+  private class MethodCallCallExpr extends MethodCall instanceof CallExpr {
     MethodCallCallExpr() {
       exists(getCallExprPathQualifier(this)) and
       // even if a method cannot be resolved by path resolution, it may still
@@ -1656,14 +1677,14 @@ private module MethodResolution {
     pragma[nomagic]
     override predicate hasNameAndArity(string name, int arity) {
       name = CallExprImpl::getFunctionPath(this).getText() and
-      arity = this.getArgList().getNumberOfArgs() - 1
+      arity = super.getArgList().getNumberOfArgs() - 1
     }
 
-    override Expr getArgument(ArgumentPosition pos) {
+    override Expr getArg(ArgumentPosition pos) {
       pos.isSelf() and
-      result = this.getArg(0)
+      result = super.getSyntacticPositionalArgument(0)
       or
-      result = this.getArgList().getArg(pos.asPosition() + 1)
+      result = super.getSyntacticPositionalArgument(pos.asPosition() + 1)
     }
 
     // needed for `TypeQualifierIsInstantiationOfImplSelfInput`
@@ -1672,38 +1693,55 @@ private module MethodResolution {
     }
 
     override predicate supportsAutoDerefAndBorrow() { none() }
+
+    override Trait getTrait() { result = getCallExprTraitQualifier(this) }
   }
 
-  final class MethodCallOperation extends MethodCall, Operation {
+  final class MethodCallOperation extends MethodCall instanceof Operation {
     pragma[nomagic]
     override predicate hasNameAndArity(string name, int arity) {
-      name = this.(Call).getMethodName() and
-      arity = this.getNumberOfOperands() - 1
+      super.isOverloaded(_, name, _) and
+      arity = super.getNumberOfOperands() - 1
     }
 
-    override Expr getArgument(ArgumentPosition pos) { result = this.(Call).getArgument(pos) }
+    override Expr getArg(ArgumentPosition pos) {
+      pos.isSelf() and
+      result = super.getOperand(0)
+      or
+      result = super.getOperand(pos.asPosition() + 1)
+    }
+
+    private predicate implicitBorrowAt(ArgumentPosition pos) {
+      exists(int borrows | super.isOverloaded(_, _, borrows) |
+        pos.isSelf() and borrows >= 1
+        or
+        pos.asPosition() = 0 and borrows = 2
+      )
+    }
 
     override Type getArgumentTypeAt(ArgumentPosition pos, TypePath path) {
-      if this.(Call).implicitBorrowAt(pos, true)
+      if this.implicitBorrowAt(pos)
       then
         result instanceof RefType and
         path.isEmpty()
         or
         exists(TypePath path0 |
-          result = inferType(this.getArgument(pos), path0) and
+          result = inferType(this.getArg(pos), path0) and
           path = TypePath::cons(getRefTypeParameter(), path0)
         )
-      else result = inferType(this.getArgument(pos), path)
+      else result = inferType(this.getArg(pos), path)
     }
 
-    override predicate receiverHasImplicitBorrow(AstNode receiver) {
+    override predicate argumentHasImplicitBorrow(AstNode arg) {
       exists(ArgumentPosition pos |
-        this.(Call).implicitBorrowAt(pos, true) and
-        receiver = this.getArgument(pos)
+        this.implicitBorrowAt(pos) and
+        arg = this.getArg(pos)
       )
     }
 
     override predicate supportsAutoDerefAndBorrow() { none() }
+
+    override Trait getTrait() { super.isOverloaded(result, _, _) }
   }
 
   pragma[nomagic]
@@ -2274,14 +2312,17 @@ private module NonMethodResolution {
 
   pragma[nomagic]
   private predicate blanketLikeCallTraitCandidate(Element fc, Trait trait) {
-    exists(string name, int arity |
-      fc.(NonMethodCall).hasNameAndArity(name, arity) and
-      functionInfoBlanketLikeRelevantPos(_, name, arity, _, trait, _, _, _, _)
-    |
-      not fc.(Call).hasTrait()
-      or
-      trait = fc.(Call).getTrait()
-    )
+    fc =
+      any(NonMethodCall nmc |
+        exists(string name, int arity |
+          nmc.hasNameAndArity(name, arity) and
+          functionInfoBlanketLikeRelevantPos(_, name, arity, _, trait, _, _, _, _)
+        |
+          not nmc.hasTrait()
+          or
+          trait = nmc.getTrait()
+        )
+      )
   }
 
   private module BlanketTraitIsVisible = TraitIsVisible<blanketLikeCallTraitCandidate/2>;
@@ -2323,9 +2364,15 @@ private module NonMethodResolution {
       )
     }
 
+    /** Gets the trait targeted by this call, if any. */
+    Trait getTrait() { result = getCallExprTraitQualifier(this) }
+
+    /** Holds if this call targets a trait. */
+    predicate hasTrait() { exists(this.getTrait()) }
+
     pragma[nomagic]
     NonMethodFunction resolveAssocCallTargetCand(ImplItemNode i) {
-      not this.(Call).hasTrait() and
+      not this.hasTrait() and
       result = this.getPathResolutionResolved() and
       result = i.getASuccessor(_)
       or
@@ -2333,7 +2380,7 @@ private module NonMethodResolution {
     }
 
     AstNode getNodeAt(FunctionPosition pos) {
-      result = this.getArg(pos.asPosition())
+      result = this.getSyntacticArgument(pos.asArgumentPosition())
       or
       result = this and pos.isReturn()
     }
@@ -2358,7 +2405,7 @@ private module NonMethodResolution {
     pragma[nomagic]
     predicate hasTraitResolved(TraitItemNode trait, NonMethodFunction resolved) {
       resolved = this.getPathResolutionResolved() and
-      trait = this.(Call).getTrait()
+      trait = this.getTrait()
     }
 
     /**
@@ -2366,7 +2413,7 @@ private module NonMethodResolution {
      */
     pragma[nomagic]
     ItemNode resolveCallTargetViaPathResolution() {
-      not this.(Call).hasTrait() and
+      not this.hasTrait() and
       result = this.getPathResolutionResolved() and
       not FunctionOverloading::functionResolutionDependsOnArgument(_, result, _, _, _)
     }
@@ -2391,7 +2438,7 @@ private module NonMethodResolution {
 
     pragma[nomagic]
     NonMethodFunction resolveTraitFunctionViaPathResolution(TraitItemNode trait) {
-      this.(Call).hasTrait() and
+      this.hasTrait() and
       result = this.getPathResolutionResolved() and
       result = trait.getASuccessor(_)
     }
@@ -2703,7 +2750,7 @@ private predicate inferNonMethodCallType =
  * A matching configuration for resolving types of operations like `a + b`.
  */
 private module OperationMatchingInput implements MatchingInputSig {
-  private import codeql.rust.elements.internal.OperationImpl as OperationImpl
+  private import codeql.rust.elements.internal.OperationImpl::Impl as OperationImpl
   import FunctionPositionMatchingInput
 
   class Declaration extends MethodCallMatchingInput::Declaration {
@@ -3365,8 +3412,9 @@ private Type inferDynamicCallExprType(Expr n, TypePath path) {
       or
       // Propagate the function's parameter type to the arguments
       exists(int index |
-        n = ce.getCall().getArgList().getArg(index) and
-        path = path0.stripPrefix(fnParameterPath(ce.getCall().getNumberOfArgs(), index))
+        n = ce.getCall().getSyntacticPositionalArgument(index) and
+        path =
+          path0.stripPrefix(fnParameterPath(ce.getCall().getArgList().getNumberOfArgs(), index))
       )
     )
     or
@@ -3376,16 +3424,17 @@ private Type inferDynamicCallExprType(Expr n, TypePath path) {
       ce.getTypeAt(TypePath::nil()).(DynTraitType).getTrait() instanceof FnOnceTrait
     |
       // Propagate the type of arguments to the parameter types of closure
-      exists(int index |
+      exists(int index, ArgList args |
         n = ce and
-        arity = ce.getCall().getNumberOfArgs() and
-        result = inferType(ce.getCall().getArg(index), path0) and
+        args = ce.getCall().getArgList() and
+        arity = args.getNumberOfArgs() and
+        result = inferType(args.getArg(index), path0) and
         path = closureParameterPath(arity, index).append(path0)
       )
       or
       // Propagate the type of the call expression to the return type of the closure
       n = ce and
-      arity = ce.getCall().getNumberOfArgs() and
+      arity = ce.getCall().getArgList().getNumberOfArgs() and
       result = inferType(ce.getCall(), path0) and
       path = closureReturnPath().append(path0)
     )
@@ -3432,12 +3481,12 @@ private module Cached {
   /** Holds if `n` is implicitly borrowed. */
   cached
   predicate implicitBorrow(AstNode n) {
-    any(MethodResolution::MethodCall mc).receiverHasImplicitBorrow(n)
+    any(MethodResolution::MethodCall mc).argumentHasImplicitBorrow(n)
   }
 
   /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
   cached
-  Addressable resolveCallTarget(Call call) {
+  Addressable resolveCallTarget(Expr call) {
     result = call.(MethodResolution::MethodCall).resolveCallTarget(_, _, _)
     or
     result = call.(NonMethodResolution::NonMethodCall).resolveCallTarget()
@@ -3579,7 +3628,7 @@ private module Debug {
     result = inferType(n, path)
   }
 
-  Addressable debugResolveCallTarget(Call c) {
+  Addressable debugResolveCallTarget(InvocationExpr c) {
     c = getRelevantLocatable() and
     result = resolveCallTarget(c)
   }

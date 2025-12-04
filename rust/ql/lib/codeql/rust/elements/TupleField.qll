@@ -10,7 +10,7 @@ import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
- * A field in a tuple struct or tuple enum variant.
+ * A field in a tuple struct or tuple variant.
  *
  * For example:
  * ```rust

@@ -1808,7 +1808,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A field in a tuple struct or tuple enum variant.
+   * A field in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust
@@ -2942,23 +2942,57 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
+   * NOTE: Consider using `Call` instead, as that excludes call expressions that are
+   * instantiations of tuple structs and tuple variants.
+   *
+   * A call expression. For example:
+   * ```rust
+   * foo(42);
+   * foo::<u32, u64>(42);
+   * foo[0](42);
+   * Option::Some(42); // tuple variant instantiation
+   * ```
    */
-  class CallExprBase extends @call_expr_base, Expr {
-    /**
-     * Gets the argument list of this call expression base, if it exists.
-     */
-    ArgList getArgList() { call_expr_base_arg_lists(this, result) }
+  class CallExpr extends @call_expr, Expr {
+    override string toString() { result = "CallExpr" }
 
     /**
-     * Gets the `index`th attr of this call expression base (0-based).
+     * Gets the argument list of this call expression, if it exists.
      */
-    Attr getAttr(int index) { call_expr_base_attrs(this, index, result) }
+    ArgList getArgList() { call_expr_arg_lists(this, result) }
 
     /**
-     * Gets the number of attrs of this call expression base.
+     * Gets the `index`th attr of this call expression (0-based).
      */
-    int getNumberOfAttrs() { result = count(int i | call_expr_base_attrs(this, i, _)) }
+    Attr getAttr(int index) { call_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this call expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | call_expr_attrs(this, i, _)) }
+
+    /**
+     * Gets the function of this call expression, if it exists.
+     */
+    Expr getFunction() { call_expr_functions(this, result) }
+  }
+
+  private Element getImmediateChildOfCallExpr(CallExpr e, int index) {
+    exists(int n, int nArgList, int nAttr, int nFunction |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nFunction = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList()
+        or
+        result = e.getAttr(index - nArgList)
+        or
+        index = nAttr and result = e.getFunction()
+      )
+    )
   }
 
   /**
@@ -4347,6 +4381,76 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
+   * call syntax (such as `Foo::method(x)`), operation syntax (such as `x + y`), and
+   * indexing syntax (such as `x[y]`).
+   *
+   * A method call expression. For example:
+   * ```rust
+   * x.foo(42);
+   * x.foo::<u32, u64>(42);
+   * ```
+   */
+  class MethodCallExpr extends @method_call_expr, Expr {
+    override string toString() { result = "MethodCallExpr" }
+
+    /**
+     * Gets the argument list of this method call expression, if it exists.
+     */
+    ArgList getArgList() { method_call_expr_arg_lists(this, result) }
+
+    /**
+     * Gets the `index`th attr of this method call expression (0-based).
+     */
+    Attr getAttr(int index) { method_call_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this method call expression.
+     */
+    int getNumberOfAttrs() { result = count(int i | method_call_expr_attrs(this, i, _)) }
+
+    /**
+     * Gets the generic argument list of this method call expression, if it exists.
+     */
+    GenericArgList getGenericArgList() { method_call_expr_generic_arg_lists(this, result) }
+
+    /**
+     * Gets the identifier of this method call expression, if it exists.
+     */
+    NameRef getIdentifier() { method_call_expr_identifiers(this, result) }
+
+    /**
+     * Gets the receiver of this method call expression, if it exists.
+     */
+    Expr getReceiver() { method_call_expr_receivers(this, result) }
+  }
+
+  private Element getImmediateChildOfMethodCallExpr(MethodCallExpr e, int index) {
+    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nGenericArgList = nAttr + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nReceiver = nIdentifier + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList()
+        or
+        result = e.getAttr(index - nArgList)
+        or
+        index = nAttr and result = e.getGenericArgList()
+        or
+        index = nGenericArgList and result = e.getIdentifier()
+        or
+        index = nIdentifier and result = e.getReceiver()
+      )
+    )
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A reference to a name.
    *
    * For example:
@@ -5418,7 +5522,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A list of fields in a tuple struct or tuple enum variant.
+   * A list of fields in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust
@@ -6035,43 +6139,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A function call expression. For example:
-   * ```rust
-   * foo(42);
-   * foo::<u32, u64>(42);
-   * foo[0](42);
-   * foo(1) = 4;
-   * ```
-   */
-  class CallExpr extends @call_expr, CallExprBase {
-    override string toString() { result = "CallExpr" }
-
-    /**
-     * Gets the function of this call expression, if it exists.
-     */
-    Expr getFunction() { call_expr_functions(this, result) }
-  }
-
-  private Element getImmediateChildOfCallExpr(CallExpr e, int index) {
-    exists(int n, int nArgList, int nAttr, int nFunction |
-      n = 0 and
-      nArgList = n + 1 and
-      nAttr = nArgList + e.getNumberOfAttrs() and
-      nFunction = nAttr + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getArgList()
-        or
-        result = e.getAttr(index - nArgList)
-        or
-        index = nAttr and result = e.getFunction()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * An extern block containing foreign function declarations.
    *
    * For example:
@@ -6463,57 +6530,6 @@ module Raw {
         index = nName and result = e.getTokenTree()
         or
         index = nTokenTree and result = e.getVisibility()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A method call expression. For example:
-   * ```rust
-   * x.foo(42);
-   * x.foo::<u32, u64>(42);
-   * ```
-   */
-  class MethodCallExpr extends @method_call_expr, CallExprBase {
-    override string toString() { result = "MethodCallExpr" }
-
-    /**
-     * Gets the generic argument list of this method call expression, if it exists.
-     */
-    GenericArgList getGenericArgList() { method_call_expr_generic_arg_lists(this, result) }
-
-    /**
-     * Gets the identifier of this method call expression, if it exists.
-     */
-    NameRef getIdentifier() { method_call_expr_identifiers(this, result) }
-
-    /**
-     * Gets the receiver of this method call expression, if it exists.
-     */
-    Expr getReceiver() { method_call_expr_receivers(this, result) }
-  }
-
-  private Element getImmediateChildOfMethodCallExpr(MethodCallExpr e, int index) {
-    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
-      n = 0 and
-      nArgList = n + 1 and
-      nAttr = nArgList + e.getNumberOfAttrs() and
-      nGenericArgList = nAttr + 1 and
-      nIdentifier = nGenericArgList + 1 and
-      nReceiver = nIdentifier + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getArgList()
-        or
-        result = e.getAttr(index - nArgList)
-        or
-        index = nAttr and result = e.getGenericArgList()
-        or
-        index = nGenericArgList and result = e.getIdentifier()
-        or
-        index = nIdentifier and result = e.getReceiver()
       )
     )
   }
@@ -7907,6 +7923,8 @@ module Raw {
     or
     result = getImmediateChildOfBreakExpr(e, index)
     or
+    result = getImmediateChildOfCallExpr(e, index)
+    or
     result = getImmediateChildOfCastExpr(e, index)
     or
     result = getImmediateChildOfClosureExpr(e, index)
@@ -7966,6 +7984,8 @@ module Raw {
     result = getImmediateChildOfMacroTypeRepr(e, index)
     or
     result = getImmediateChildOfMatchExpr(e, index)
+    or
+    result = getImmediateChildOfMethodCallExpr(e, index)
     or
     result = getImmediateChildOfNameRef(e, index)
     or
@@ -8047,8 +8067,6 @@ module Raw {
     or
     result = getImmediateChildOfBlockExpr(e, index)
     or
-    result = getImmediateChildOfCallExpr(e, index)
-    or
     result = getImmediateChildOfExternBlock(e, index)
     or
     result = getImmediateChildOfExternCrate(e, index)
@@ -8058,8 +8076,6 @@ module Raw {
     result = getImmediateChildOfMacroDef(e, index)
     or
     result = getImmediateChildOfMacroRules(e, index)
-    or
-    result = getImmediateChildOfMethodCallExpr(e, index)
     or
     result = getImmediateChildOfModule(e, index)
     or

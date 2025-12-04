@@ -12,18 +12,17 @@ private import codeql.rust.dataflow.Ssa
 private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
-  private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
   private import codeql.rust.frameworks.stdlib.Stdlib
 
   class SummarizedCallableBase = Function;
 
   abstract private class SourceSinkBase extends AstNode {
     /** Gets the associated call. */
-    abstract CallExprBase getCall();
+    abstract Call getCall();
 
     /** Holds if the associated call resolves to `path`. */
     final predicate callResolvesTo(string path) {
-      path = this.getCall().getStaticTarget().(Addressable).getCanonicalPath()
+      path = this.getCall().getResolvedTarget().getCanonicalPath()
     }
   }
 
@@ -36,7 +35,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
     CallExprFunction() { this = call.getFunction() }
 
-    override CallExpr getCall() { result = call }
+    override Call getCall() { result = call }
   }
 
   private class MethodCallExprNameRef extends SourceBase, SinkBase {
@@ -51,11 +50,9 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() }
 
-  string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
+  string encodeParameterPosition(RustDataFlow::ParameterPosition pos) { result = pos.toString() }
 
-  string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) {
-    result = encodeParameterPosition(pos)
-  }
+  string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) { result = pos.toString() }
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
@@ -108,7 +105,9 @@ module Input implements InputSig<Location, RustDataFlow> {
   string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
 
   bindingset[token]
-  ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
+  RustDataFlow::ParameterPosition decodeUnknownParameterPosition(
+    AccessPath::AccessPathTokenBase token
+  ) {
     // needed to support `Argument[x..y]` ranges
     token.getName() = "Argument" and
     result.getPosition() = AccessPath::parseInt(token.getAnArgument())
@@ -135,7 +134,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 
   /** Gets the argument of `source` described by `sc`, if any. */
   private Expr getSourceNodeArgument(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
-    exists(ArgumentPosition pos |
+    exists(RustDataFlow::ArgumentPosition pos |
       sc = Impl::Private::SummaryComponent::argument(pos) and
       result = pos.getArgument(source.getCall())
     )
@@ -162,7 +161,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     s.head() = Impl::Private::SummaryComponent::return(_) and
     result.asExpr() = source.getCall()
     or
-    exists(ArgumentPosition pos, Expr arg |
+    exists(RustDataFlow::ArgumentPosition pos, Expr arg |
       s.head() = Impl::Private::SummaryComponent::parameter(pos) and
       arg = getSourceNodeArgument(source, s.tail().headOfSingleton()) and
       result.asParameter() = getCallable(arg).getParam(pos.getPosition())
@@ -173,7 +172,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(CallExprBase call, Expr arg, ArgumentPosition pos |
+    exists(InvocationExpr call, Expr arg, RustDataFlow::ArgumentPosition pos |
       result.asExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
       call = sink.getCall() and
