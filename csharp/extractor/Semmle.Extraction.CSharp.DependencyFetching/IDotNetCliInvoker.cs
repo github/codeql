@@ -31,6 +31,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         bool RunCommand(string args, bool silent = true);
 
         /// <summary>
+        /// Execute `dotnet <paramref name="args"/>` and return the exit code.
+        /// If `silent` is true the output of the command is logged as `debug` otherwise as `info`.
+        /// </summary>
+        int RunCommandExitCode(string args, bool silent = true);
+
+        /// <summary>
         /// Execute `dotnet <paramref name="args"/>` and return true if the command succeeded, otherwise false.
         /// The output of the command is returned in `output`.
         /// If `silent` is true the output of the command is logged as `debug` otherwise as `info`.
