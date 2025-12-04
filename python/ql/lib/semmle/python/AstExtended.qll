@@ -218,6 +218,9 @@ class DictItemListParent extends DictItemListParent_ { }
 /** A list of strings (the primitive type string not Bytes or Unicode) */
 class StringList extends StringList_ { }
 
+/** A list of template strings. */
+class TemplateStringList extends TemplateStringList_ { }
+
 /** A list of aliases in an import statement */
 class AliasList extends AliasList_ { }
 
@@ -273,3 +276,9 @@ class ParamSpec extends ParamSpec_, TypeParameter {
 
   override Expr getAChildNode() { result = this.getName() }
 }
+
+/** A template string literal. */
+class TemplateString extends TemplateString_, Expr { }
+
+/** An (implicitly) concatenated list of template strings. */
+class JoinedTemplateString extends JoinedTemplateString_, Expr { }
