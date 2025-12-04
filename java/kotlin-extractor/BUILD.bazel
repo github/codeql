@@ -126,11 +126,6 @@ kt_javac_options(
             module_name = "codeql-kotlin-extractor",
             # resource_strip_prefix is very nit-picky: the following makes it work from
             # `codeql`, `@codeql_kotlin_embeddable` and `semmle-code`
-            resource_strip_prefix = (
-                ("../%s/" % repo_name() if repo_name() else "") +
-                ("%s/" % package_name() if package_name() else "") +
-                v
-            ),
             resources = [
                 ":resources-%s" % v,
             ],
