@@ -111,6 +111,7 @@ private fun subProjectedType(
     } ?: makeTypeProjection(t.substituteTypeArguments(substitutionMap), outerVariance)
 
 private fun IrTypeArgument.upperBound(context: IrPluginContext) =
+    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     when (this) {
         is IrStarProjection -> context.irBuiltIns.anyNType
         is IrTypeProjection ->
@@ -125,6 +126,7 @@ private fun IrTypeArgument.upperBound(context: IrPluginContext) =
     }
 
 private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
+    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     when (this) {
         is IrStarProjection -> context.irBuiltIns.nothingType
         is IrTypeProjection ->
@@ -209,6 +211,7 @@ fun IrClass.toRawType(): IrType {
 }
 
 fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
+    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     when (this) {
         is IrStarProjection -> this
         is IrTypeProjection ->

@@ -415,6 +415,7 @@ open class KotlinFileExtractor(
 
     private fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
         with("class modifiers", c) {
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (c.modality) {
                 Modality.FINAL -> addModifiers(id, "final")
                 Modality.SEALED -> addModifiers(id, "sealed")
@@ -2801,6 +2802,7 @@ open class KotlinFileExtractor(
 
     private fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         with("body", b) {
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (b) {
                 is IrBlockBody -> extractBlockBody(b, callable)
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)

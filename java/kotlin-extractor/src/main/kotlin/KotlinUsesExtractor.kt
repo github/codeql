@@ -1836,6 +1836,7 @@ open class KotlinUsesExtractor(
 
         // Note this function doesn't return a signature because type arguments are never
         // incorporated into function signatures.
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         return when (arg) {
             is IrStarProjection -> {
                 val anyTypeLabel =
