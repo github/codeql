@@ -209,4 +209,7 @@ fn main() {
 
     println!("test_lifetimes_example_good:");
     test_lifetimes_example_good();
+
+    println!("test_generic:");
+    test_generic();
 }
