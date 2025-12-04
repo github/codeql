@@ -33,7 +33,7 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
       )
       or
       // 3rd party actions returning the PR head ref
-      exists(StepsExpression e, UsesStep step |
+      exists(StepOutputExpression e, UsesStep step |
         source.asExpr() = e and
         e.getStepId() = step.getId() and
         (
@@ -86,7 +86,7 @@ private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
       )
       or
       // 3rd party actions returning the PR head sha
-      exists(StepsExpression e, UsesStep step |
+      exists(StepOutputExpression e, UsesStep step |
         source.asExpr() = e and
         e.getStepId() = step.getId() and
         (
@@ -243,7 +243,7 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       exists(string value, Expression expr |
         value.regexpMatch(".*(head|branch|ref).*") and expr = this.getArgumentExpr("ref")
       |
-        expr.(StepsExpression).getStepId() = value
+        expr.(StepOutputExpression).getStepId() = value
         or
         expr.(SimpleReferenceExpression).getFieldName() = value and
         not expr instanceof GitHubExpression
@@ -278,7 +278,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       exists(string value, Expression expr |
         value.regexpMatch(".*(head|sha|commit).*") and expr = this.getArgumentExpr("ref")
       |
-        expr.(StepsExpression).getStepId() = value
+        expr.(StepOutputExpression).getStepId() = value
         or
         expr.(SimpleReferenceExpression).getFieldName() = value and
         not expr instanceof GitHubExpression
