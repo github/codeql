@@ -25,11 +25,21 @@ import UnsignedGEZero
 //
 // So to reduce the number of false positives, we do not report a result if
 // the comparison is in a macro expansion. Similarly for template
-// instantiations.
+// instantiations. We also exclude comparisons in static asserts, as these
+// should be pointless.
 from ComparisonOperation cmp, SmallSide ss, float left, float right, boolean value, string reason
 where
   not cmp.isInMacroExpansion() and
   not cmp.isFromTemplateInstantiation(_) and
+  not exists(StaticAssert s | s.getCondition() = cmp.getParent*()) and
+  not exists(Declaration d | d.getATemplateArgument() = cmp.getParent*()) and
+  not exists(Variable v |
+    v.isConstexpr()
+    or
+    v.isConst() and v.isStatic()
+  |
+    v.getInitializer().getExpr() = cmp.getParent*()
+  ) and
   not functionContainsDisabledCode(cmp.getEnclosingFunction()) and
   reachablePointlessComparison(cmp, left, right, value, ss) and
   // a comparison between an enum and zero is always valid because whether
