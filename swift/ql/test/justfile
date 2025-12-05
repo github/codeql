@@ -1,0 +1,11 @@
+import "../justfile"
+
+all_checks := default_db_checks + """\
+    --check-repeated-labels \
+    --check-redefined-labels \
+    --check-use-before-definition \
+    --consistency-queries=""" + consistency_queries
+
+
+[no-cd]
+test *ARGS=".": (_codeql_test "swift" "" all_checks ARGS)
