@@ -23,6 +23,7 @@
 | [...]/csharp/tools/[...]/Mono.Posix.NETStandard.dll |
 | [...]/csharp/tools/[...]/NaturalSort.Extension.dll |
 | [...]/csharp/tools/[...]/Newtonsoft.Json.dll |
+| [...]/csharp/tools/[...]/NuGet.Versioning.dll |
 | [...]/csharp/tools/[...]/StructuredLogger.dll |
 | [...]/csharp/tools/[...]/System.AppContext.dll |
 | [...]/csharp/tools/[...]/System.Buffers.dll |

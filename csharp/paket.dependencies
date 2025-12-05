@@ -7,6 +7,7 @@ strategy: max
 nuget Basic.CompilerLog.Util 0.9.21
 nuget Mono.Posix.NETStandard
 nuget Newtonsoft.Json
+nuget NuGet.Versioning
 nuget xunit
 nuget xunit.runner.visualstudio
 nuget xunit.runner.utility
