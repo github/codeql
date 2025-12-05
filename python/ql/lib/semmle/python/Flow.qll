@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 private import semmle.python.internal.CachedStages
 private import codeql.controlflow.BasicBlock as BB
