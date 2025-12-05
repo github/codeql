@@ -26,18 +26,18 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node instanceof AccessAfterLifetime::Source and
     // exclude cases with sources in macros, since these results are difficult to interpret
-    not node.asExpr().isFromMacroExpansion()
+    not node.asExpr().isFromMacroExpansion() and
+    AccessAfterLifetime::sourceValueScope(node, _, _)
   }
 
   predicate isSink(DataFlow::Node node) {
     node instanceof AccessAfterLifetime::Sink and
-    // exclude cases with sinks in macros, since these results are difficult to interpret
+    // Exclude cases with sinks in macros, since these results are difficult to interpret
     not node.asExpr().isFromMacroExpansion() and
-    // include only results inside `unsafe` blocks, as other results tend to be false positives
-    (
-      node.asExpr().getEnclosingBlock*().isUnsafe() or
-      node.asExpr().getEnclosingCallable().(Function).isUnsafe()
-    )
+    // TODO: Remove this condition if it can be done without negatively
+    // impacting performance. This condition only include nodes with
+    // corresponding to an expression. This excludes sinks from models-as-data.
+    exists(node.asExpr())
   }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessAfterLifetime::Barrier }
