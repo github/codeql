@@ -418,8 +418,8 @@ inferCertainType
 | dereference.rs:151:16:151:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:151:16:151:19 | SelfParam | TRef | dereference.rs:147:5:147:13 | S |
 | dereference.rs:151:27:153:9 | { ... } |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:158:16:158:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:158:16:158:19 | SelfParam | TRef | dereference.rs:147:5:147:13 | S |
+| dereference.rs:158:16:158:19 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:158:16:158:19 | SelfParam | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:158:29:160:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:164:16:164:19 | SelfParam |  | dereference.rs:163:5:165:5 | Self [trait MyTrait2] |
 | dereference.rs:164:22:164:24 | arg |  | dereference.rs:163:20:163:21 | T1 |
@@ -428,20 +428,20 @@ inferCertainType
 | dereference.rs:169:22:169:24 | arg | TRef | dereference.rs:147:5:147:13 | S |
 | dereference.rs:169:36:171:9 | { ... } |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:176:16:176:19 | SelfParam |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:176:22:176:24 | arg |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:176:22:176:24 | arg | TRef | dereference.rs:147:5:147:13 | S |
+| dereference.rs:176:22:176:24 | arg |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:176:22:176:24 | arg | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:176:42:178:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:181:19:188:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:182:17:182:20 | (...) |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:182:18:182:19 | &S |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:184:17:184:24 | (...) |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:184:18:184:23 | &mut S |  | {EXTERNAL LOCATION} | & |
+| dereference.rs:184:17:184:24 | (...) |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:184:18:184:23 | &mut S |  | {EXTERNAL LOCATION} | &mut |
 | dereference.rs:186:23:186:24 | &S |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:187:23:187:28 | &mut S |  | {EXTERNAL LOCATION} | & |
+| dereference.rs:187:23:187:28 | &mut S |  | {EXTERNAL LOCATION} | &mut |
 | dereference.rs:196:16:196:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:196:16:196:20 | SelfParam | TRef | dereference.rs:195:5:197:5 | Self [trait Bar] |
-| dereference.rs:201:16:201:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:201:16:201:24 | SelfParam | TRef | dereference.rs:193:5:193:17 | Foo |
+| dereference.rs:201:16:201:24 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:201:16:201:24 | SelfParam | TRefMut | dereference.rs:193:5:193:17 | Foo |
 | dereference.rs:201:27:203:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:202:22:202:38 | "In struct impl!\\n" |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:202:22:202:38 | "In struct impl!\\n" | TRef | {EXTERNAL LOCATION} | str |
@@ -1793,19 +1793,19 @@ inferCertainType
 | main.rs:1374:13:1374:13 | x | T.T42 | main.rs:1332:5:1332:22 | S5 |
 | main.rs:1374:13:1374:13 | x | T.T42.T5 | main.rs:1307:5:1308:14 | S2 |
 | main.rs:1376:22:1376:25 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1389:16:1389:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1389:16:1389:24 | SelfParam | TRef | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
+| main.rs:1389:16:1389:24 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1389:16:1389:24 | SelfParam | TRefMut | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
 | main.rs:1389:27:1389:31 | value |  | main.rs:1387:19:1387:19 | S |
-| main.rs:1391:21:1391:29 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1391:21:1391:29 | SelfParam | TRef | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
+| main.rs:1391:21:1391:29 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1391:21:1391:29 | SelfParam | TRefMut | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
 | main.rs:1391:32:1391:36 | value |  | main.rs:1387:19:1387:19 | S |
 | main.rs:1391:42:1393:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1392:13:1392:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1392:13:1392:16 | self | TRef | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
+| main.rs:1392:13:1392:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1392:13:1392:16 | self | TRefMut | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
 | main.rs:1392:22:1392:26 | value |  | main.rs:1387:19:1387:19 | S |
-| main.rs:1398:16:1398:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1398:16:1398:24 | SelfParam | TRef | main.rs:1381:5:1385:5 | MyOption |
-| main.rs:1398:16:1398:24 | SelfParam | TRef.T | main.rs:1396:10:1396:10 | T |
+| main.rs:1398:16:1398:24 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1398:16:1398:24 | SelfParam | TRefMut | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1398:16:1398:24 | SelfParam | TRefMut.T | main.rs:1396:10:1396:10 | T |
 | main.rs:1398:27:1398:31 | value |  | main.rs:1396:10:1396:10 | T |
 | main.rs:1398:37:1398:38 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1402:26:1404:9 | { ... } |  | main.rs:1381:5:1385:5 | MyOption |
@@ -1848,7 +1848,7 @@ inferCertainType
 | main.rs:1432:17:1432:18 | x4 |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1432:22:1432:36 | ...::new(...) |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1433:9:1433:33 | ...::set(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:1433:23:1433:29 | &mut x4 |  | {EXTERNAL LOCATION} | & |
+| main.rs:1433:23:1433:29 | &mut x4 |  | {EXTERNAL LOCATION} | &mut |
 | main.rs:1433:28:1433:29 | x4 |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1434:18:1434:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | & |
 | main.rs:1434:18:1434:23 | "{:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
@@ -2042,13 +2042,13 @@ inferCertainType
 | main.rs:1607:16:1613:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1612:15:1612:17 | &... |  | {EXTERNAL LOCATION} | & |
 | main.rs:1612:16:1612:17 | &x |  | {EXTERNAL LOCATION} | & |
-| main.rs:1623:17:1623:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1623:17:1623:25 | SelfParam | TRef | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1623:17:1623:25 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1623:17:1623:25 | SelfParam | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1623:28:1625:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1624:13:1624:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1624:13:1624:16 | self | TRef | main.rs:1617:5:1620:5 | MyFlag |
-| main.rs:1624:26:1624:29 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1624:26:1624:29 | self | TRef | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1624:13:1624:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1624:13:1624:16 | self | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1624:26:1624:29 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1624:26:1624:29 | self | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1631:15:1631:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:1631:15:1631:19 | SelfParam | TRef | main.rs:1628:5:1628:13 | S |
 | main.rs:1631:31:1633:9 | { ... } |  | {EXTERNAL LOCATION} | & |
@@ -2095,7 +2095,7 @@ inferCertainType
 | main.rs:1654:20:1654:24 | &true |  | {EXTERNAL LOCATION} | & |
 | main.rs:1654:21:1654:24 | true |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1659:9:1659:31 | ...::flip(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:1659:22:1659:30 | &mut flag |  | {EXTERNAL LOCATION} | & |
+| main.rs:1659:22:1659:30 | &mut flag |  | {EXTERNAL LOCATION} | &mut |
 | main.rs:1660:18:1660:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | & |
 | main.rs:1660:18:1660:23 | "{:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | main.rs:1660:18:1660:29 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
@@ -2267,7 +2267,7 @@ inferCertainType
 | main.rs:1810:31:1812:13 | { ... } |  | main.rs:1805:14:1805:23 | T |
 | main.rs:1816:13:1816:13 | p |  | {EXTERNAL LOCATION} | *mut |
 | main.rs:1816:13:1816:13 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
-| main.rs:1816:27:1816:32 | &mut v |  | {EXTERNAL LOCATION} | & |
+| main.rs:1816:27:1816:32 | &mut v |  | {EXTERNAL LOCATION} | &mut |
 | main.rs:1817:26:1817:26 | p |  | {EXTERNAL LOCATION} | *mut |
 | main.rs:1817:26:1817:26 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1818:26:1818:48 | ...::my_method(...) |  | {EXTERNAL LOCATION} | & |
@@ -2297,15 +2297,15 @@ inferCertainType
 | main.rs:1860:29:1860:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1861:20:1861:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1861:29:1861:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1868:23:1868:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1868:23:1868:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1868:23:1868:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1868:23:1868:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1868:34:1868:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1868:45:1871:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1869:13:1869:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1869:13:1869:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1869:13:1869:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1869:13:1869:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1869:23:1869:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1870:13:1870:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1870:13:1870:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1870:13:1870:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1870:13:1870:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1870:23:1870:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1876:16:1876:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1876:22:1876:24 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2315,15 +2315,15 @@ inferCertainType
 | main.rs:1878:29:1878:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1879:20:1879:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1879:29:1879:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1886:23:1886:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1886:23:1886:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1886:23:1886:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1886:23:1886:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1886:34:1886:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1886:45:1889:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1887:13:1887:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1887:13:1887:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1887:13:1887:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1887:13:1887:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1887:23:1887:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1888:13:1888:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1888:13:1888:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1888:13:1888:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1888:13:1888:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1888:23:1888:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1894:16:1894:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1894:22:1894:24 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2333,15 +2333,15 @@ inferCertainType
 | main.rs:1896:29:1896:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1897:20:1897:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1897:29:1897:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1903:23:1903:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1903:23:1903:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1903:23:1903:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1903:23:1903:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1903:34:1903:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1903:45:1906:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1904:13:1904:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1904:13:1904:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1904:13:1904:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1904:13:1904:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1904:23:1904:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1905:13:1905:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1905:13:1905:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1905:13:1905:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1905:13:1905:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1905:23:1905:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1911:16:1911:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1911:22:1911:24 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2351,15 +2351,15 @@ inferCertainType
 | main.rs:1913:29:1913:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1914:20:1914:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1914:29:1914:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1920:23:1920:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1920:23:1920:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1920:23:1920:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1920:23:1920:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1920:34:1920:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1920:45:1923:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1921:13:1921:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1921:13:1921:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1921:13:1921:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1921:13:1921:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1921:23:1921:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1922:13:1922:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1922:13:1922:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1922:13:1922:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1922:13:1922:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1922:23:1922:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1928:16:1928:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1928:22:1928:24 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2369,15 +2369,15 @@ inferCertainType
 | main.rs:1930:29:1930:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1931:20:1931:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1931:29:1931:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1937:23:1937:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1937:23:1937:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1937:23:1937:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1937:23:1937:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1937:34:1937:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1937:45:1940:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1938:13:1938:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1938:13:1938:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1938:13:1938:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1938:13:1938:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1938:23:1938:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1939:13:1939:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1939:13:1939:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1939:13:1939:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1939:13:1939:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1939:23:1939:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1945:19:1945:22 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1945:25:1945:27 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2387,15 +2387,15 @@ inferCertainType
 | main.rs:1947:29:1947:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1948:20:1948:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1948:29:1948:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1954:26:1954:34 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1954:26:1954:34 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1954:26:1954:34 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1954:26:1954:34 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1954:37:1954:39 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1954:48:1957:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1955:13:1955:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1955:13:1955:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1955:13:1955:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1955:13:1955:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1955:23:1955:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1956:13:1956:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1956:13:1956:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1956:13:1956:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1956:13:1956:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1956:23:1956:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1962:18:1962:21 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1962:24:1962:26 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2405,15 +2405,15 @@ inferCertainType
 | main.rs:1964:29:1964:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1965:20:1965:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1965:29:1965:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1971:25:1971:33 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1971:25:1971:33 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1971:25:1971:33 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1971:25:1971:33 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1971:36:1971:38 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1971:47:1974:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1972:13:1972:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1972:13:1972:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1972:13:1972:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1972:13:1972:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1972:23:1972:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1973:13:1973:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1973:13:1973:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1973:13:1973:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1973:13:1973:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1973:23:1973:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1979:19:1979:22 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1979:25:1979:27 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2423,15 +2423,15 @@ inferCertainType
 | main.rs:1981:29:1981:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1982:20:1982:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1982:29:1982:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1988:26:1988:34 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1988:26:1988:34 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1988:26:1988:34 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1988:26:1988:34 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1988:37:1988:39 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1988:48:1991:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1989:13:1989:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1989:13:1989:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1989:13:1989:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1989:13:1989:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1989:23:1989:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
-| main.rs:1990:13:1990:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1990:13:1990:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1990:13:1990:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1990:13:1990:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1990:23:1990:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1996:16:1996:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1996:22:1996:24 | rhs |  | {EXTERNAL LOCATION} | u32 |
@@ -2441,15 +2441,15 @@ inferCertainType
 | main.rs:1998:30:1998:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:1999:20:1999:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1999:30:1999:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2005:23:2005:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:2005:23:2005:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2005:23:2005:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2005:23:2005:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2005:34:2005:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2005:44:2008:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2006:13:2006:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2006:13:2006:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2006:13:2006:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2006:13:2006:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2006:24:2006:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2007:13:2007:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2007:13:2007:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2007:13:2007:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2007:13:2007:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2007:24:2007:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2013:16:2013:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2013:22:2013:24 | rhs |  | {EXTERNAL LOCATION} | u32 |
@@ -2459,15 +2459,15 @@ inferCertainType
 | main.rs:2015:30:2015:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2016:20:2016:23 | self |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2016:30:2016:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2022:23:2022:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:2022:23:2022:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2022:23:2022:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2022:23:2022:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2022:34:2022:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2022:44:2025:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2023:13:2023:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2023:13:2023:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2023:13:2023:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2023:13:2023:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2023:24:2023:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2024:13:2024:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2024:13:2024:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2024:13:2024:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2024:13:2024:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2024:24:2024:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2030:16:2030:19 | SelfParam |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2030:30:2035:9 | { ... } |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -2760,10 +2760,10 @@ inferCertainType
 | main.rs:2236:9:2236:16 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2236:9:2236:16 | { ... } | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:2245:13:2245:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
-| main.rs:2245:13:2245:42 | SelfParam | Ptr | {EXTERNAL LOCATION} | & |
-| main.rs:2245:13:2245:42 | SelfParam | Ptr.TRef | main.rs:2239:5:2239:14 | S2 |
-| main.rs:2246:13:2246:15 | _cx |  | {EXTERNAL LOCATION} | & |
-| main.rs:2246:13:2246:15 | _cx | TRef | {EXTERNAL LOCATION} | Context |
+| main.rs:2245:13:2245:42 | SelfParam | Ptr | {EXTERNAL LOCATION} | &mut |
+| main.rs:2245:13:2245:42 | SelfParam | Ptr.TRefMut | main.rs:2239:5:2239:14 | S2 |
+| main.rs:2246:13:2246:15 | _cx |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2246:13:2246:15 | _cx | TRefMut | {EXTERNAL LOCATION} | Context |
 | main.rs:2247:44:2249:9 | { ... } |  | {EXTERNAL LOCATION} | Poll |
 | main.rs:2247:44:2249:9 | { ... } | T | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2252:41:2254:5 | { ... } |  | main.rs:2252:16:2252:39 | impl ... |
@@ -2851,14 +2851,14 @@ inferCertainType
 | main.rs:2370:13:2370:38 | MyVec {...} |  | main.rs:2363:5:2366:5 | MyVec |
 | main.rs:2370:27:2370:36 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2370:27:2370:36 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2373:17:2373:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:2373:17:2373:25 | SelfParam | TRef | main.rs:2363:5:2366:5 | MyVec |
-| main.rs:2373:17:2373:25 | SelfParam | TRef.T | main.rs:2368:10:2368:10 | T |
+| main.rs:2373:17:2373:25 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2373:17:2373:25 | SelfParam | TRefMut | main.rs:2363:5:2366:5 | MyVec |
+| main.rs:2373:17:2373:25 | SelfParam | TRefMut.T | main.rs:2368:10:2368:10 | T |
 | main.rs:2373:28:2373:32 | value |  | main.rs:2368:10:2368:10 | T |
 | main.rs:2373:38:2375:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2374:13:2374:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2374:13:2374:16 | self | TRef | main.rs:2363:5:2366:5 | MyVec |
-| main.rs:2374:13:2374:16 | self | TRef.T | main.rs:2368:10:2368:10 | T |
+| main.rs:2374:13:2374:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2374:13:2374:16 | self | TRefMut | main.rs:2363:5:2366:5 | MyVec |
+| main.rs:2374:13:2374:16 | self | TRefMut.T | main.rs:2368:10:2368:10 | T |
 | main.rs:2374:28:2374:32 | value |  | main.rs:2368:10:2368:10 | T |
 | main.rs:2382:18:2382:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:2382:18:2382:22 | SelfParam | TRef | main.rs:2363:5:2366:5 | MyVec |
@@ -3075,7 +3075,7 @@ inferCertainType
 | main.rs:2628:19:2628:26 | strings1 |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2628:28:2628:29 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2629:9:2629:33 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2629:18:2629:30 | &mut strings1 |  | {EXTERNAL LOCATION} | & |
+| main.rs:2629:18:2629:30 | &mut strings1 |  | {EXTERNAL LOCATION} | &mut |
 | main.rs:2629:23:2629:30 | strings1 |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2629:32:2629:33 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2630:9:2630:28 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
@@ -3794,13 +3794,13 @@ inferCertainType
 | pattern_matching.rs:264:22:264:33 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:269:13:269:23 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:269:27:269:30 | 5i32 |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val |  | {EXTERNAL LOCATION} | & |
+| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val |  | {EXTERNAL LOCATION} | &mut |
 | pattern_matching.rs:270:16:270:26 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:271:17:271:17 | x |  | {EXTERNAL LOCATION} | & |
+| pattern_matching.rs:271:17:271:17 | x |  | {EXTERNAL LOCATION} | &mut |
 | pattern_matching.rs:271:22:275:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| pattern_matching.rs:272:17:272:29 | ref_mut_bound |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:272:33:272:33 | x |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:273:15:273:27 | ref_mut_bound |  | {EXTERNAL LOCATION} | & |
+| pattern_matching.rs:272:17:272:29 | ref_mut_bound |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:272:33:272:33 | x |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:273:15:273:27 | ref_mut_bound |  | {EXTERNAL LOCATION} | &mut |
 | pattern_matching.rs:274:22:274:38 | "Ref mut pattern\\n" |  | {EXTERNAL LOCATION} | & |
 | pattern_matching.rs:274:22:274:38 | "Ref mut pattern\\n" | TRef | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:274:22:274:38 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
@@ -3896,9 +3896,9 @@ inferCertainType
 | pattern_matching.rs:338:22:338:47 | "Dereferenced binding: {}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | pattern_matching.rs:338:22:338:60 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:338:22:338:60 | { ... } |  | {EXTERNAL LOCATION} | () |
-| pattern_matching.rs:342:11:342:28 | &mut mutable_value |  | {EXTERNAL LOCATION} | & |
+| pattern_matching.rs:342:11:342:28 | &mut mutable_value |  | {EXTERNAL LOCATION} | &mut |
 | pattern_matching.rs:342:16:342:28 | mutable_value |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:343:9:343:18 | &mut ... |  | {EXTERNAL LOCATION} | & |
+| pattern_matching.rs:343:9:343:18 | &mut ... |  | {EXTERNAL LOCATION} | &mut |
 | pattern_matching.rs:343:18:343:18 | x |  | {EXTERNAL LOCATION} | & |
 | pattern_matching.rs:343:23:346:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:344:17:344:29 | mut_ref_bound |  | {EXTERNAL LOCATION} | & |
@@ -4472,7 +4472,7 @@ inferCertainType
 | raw_pointer.rs:54:5:54:32 | raw_pointer_const_deref(...) |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:54:29:54:31 | &10 |  | {EXTERNAL LOCATION} | & |
 | raw_pointer.rs:55:5:55:36 | raw_pointer_mut_deref(...) |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:55:27:55:35 | &mut true |  | {EXTERNAL LOCATION} | & |
+| raw_pointer.rs:55:27:55:35 | &mut true |  | {EXTERNAL LOCATION} | &mut |
 | raw_pointer.rs:55:32:55:35 | true |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:56:5:56:22 | raw_const_borrow(...) |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:57:5:57:20 | raw_mut_borrow(...) |  | {EXTERNAL LOCATION} | () |
@@ -5286,8 +5286,8 @@ inferType
 | dereference.rs:151:16:151:19 | SelfParam | TRef | dereference.rs:147:5:147:13 | S |
 | dereference.rs:151:27:153:9 | { ... } |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:152:13:152:13 | S |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:158:16:158:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:158:16:158:19 | SelfParam | TRef | dereference.rs:147:5:147:13 | S |
+| dereference.rs:158:16:158:19 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:158:16:158:19 | SelfParam | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:158:29:160:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:159:13:159:14 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:159:13:159:14 | 42 |  | {EXTERNAL LOCATION} | i64 |
@@ -5299,55 +5299,45 @@ inferType
 | dereference.rs:169:36:171:9 | { ... } |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:170:13:170:13 | S |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:176:16:176:19 | SelfParam |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:176:22:176:24 | arg |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:176:22:176:24 | arg | TRef | dereference.rs:147:5:147:13 | S |
+| dereference.rs:176:22:176:24 | arg |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:176:22:176:24 | arg | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:176:42:178:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:177:13:177:14 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:177:13:177:14 | 42 |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:181:19:188:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:182:13:182:13 | x |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:182:13:182:13 | x |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:182:17:182:20 | (...) |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:182:17:182:20 | (...) | TRef | dereference.rs:147:5:147:13 | S |
 | dereference.rs:182:17:182:26 | ... .foo() |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:182:17:182:26 | ... .foo() |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:182:18:182:19 | &S |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:182:18:182:19 | &S | TRef | dereference.rs:147:5:147:13 | S |
 | dereference.rs:182:19:182:19 | S |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:183:13:183:13 | y |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:183:13:183:13 | y |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:183:17:183:17 | S |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:183:17:183:23 | S.foo() |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:183:17:183:23 | S.foo() |  | {EXTERNAL LOCATION} | i64 |
-| dereference.rs:184:13:184:13 | z |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:184:13:184:13 | z |  | {EXTERNAL LOCATION} | i64 |
-| dereference.rs:184:17:184:24 | (...) |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:184:17:184:24 | (...) | TRef | dereference.rs:147:5:147:13 | S |
-| dereference.rs:184:17:184:30 | ... .foo() |  | dereference.rs:147:5:147:13 | S |
+| dereference.rs:184:17:184:24 | (...) |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:184:17:184:24 | (...) | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:184:17:184:30 | ... .foo() |  | {EXTERNAL LOCATION} | i64 |
-| dereference.rs:184:18:184:23 | &mut S |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:184:18:184:23 | &mut S | TRef | dereference.rs:147:5:147:13 | S |
+| dereference.rs:184:18:184:23 | &mut S |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:184:18:184:23 | &mut S | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:184:23:184:23 | S |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:186:13:186:13 | x |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:186:13:186:13 | x |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:186:17:186:17 | S |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:186:17:186:25 | S.bar(...) |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:186:17:186:25 | S.bar(...) |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:186:23:186:24 | &S |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:186:23:186:24 | &S | TRef | dereference.rs:147:5:147:13 | S |
 | dereference.rs:186:24:186:24 | S |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:187:13:187:13 | y |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:187:13:187:13 | y |  | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:187:17:187:17 | S |  | dereference.rs:147:5:147:13 | S |
-| dereference.rs:187:17:187:29 | S.bar(...) |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:187:17:187:29 | S.bar(...) |  | {EXTERNAL LOCATION} | i64 |
-| dereference.rs:187:23:187:28 | &mut S |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:187:23:187:28 | &mut S | TRef | dereference.rs:147:5:147:13 | S |
+| dereference.rs:187:23:187:28 | &mut S |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:187:23:187:28 | &mut S | TRefMut | dereference.rs:147:5:147:13 | S |
 | dereference.rs:187:28:187:28 | S |  | dereference.rs:147:5:147:13 | S |
 | dereference.rs:196:16:196:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:196:16:196:20 | SelfParam | TRef | dereference.rs:195:5:197:5 | Self [trait Bar] |
-| dereference.rs:201:16:201:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| dereference.rs:201:16:201:24 | SelfParam | TRef | dereference.rs:193:5:193:17 | Foo |
+| dereference.rs:201:16:201:24 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| dereference.rs:201:16:201:24 | SelfParam | TRefMut | dereference.rs:193:5:193:17 | Foo |
 | dereference.rs:201:27:203:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:202:13:202:39 | MacroExpr |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:202:22:202:38 | "In struct impl!\\n" |  | {EXTERNAL LOCATION} | & |
@@ -7606,20 +7596,20 @@ inferType
 | main.rs:1376:17:1376:38 | ... .get_input() | E | {EXTERNAL LOCATION} | bool |
 | main.rs:1376:17:1376:38 | ... .get_input() | T | {EXTERNAL LOCATION} | bool |
 | main.rs:1376:22:1376:25 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1389:16:1389:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1389:16:1389:24 | SelfParam | TRef | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
+| main.rs:1389:16:1389:24 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1389:16:1389:24 | SelfParam | TRefMut | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
 | main.rs:1389:27:1389:31 | value |  | main.rs:1387:19:1387:19 | S |
-| main.rs:1391:21:1391:29 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1391:21:1391:29 | SelfParam | TRef | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
+| main.rs:1391:21:1391:29 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1391:21:1391:29 | SelfParam | TRefMut | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
 | main.rs:1391:32:1391:36 | value |  | main.rs:1387:19:1387:19 | S |
 | main.rs:1391:42:1393:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1392:13:1392:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1392:13:1392:16 | self | TRef | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
+| main.rs:1392:13:1392:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1392:13:1392:16 | self | TRefMut | main.rs:1387:5:1394:5 | Self [trait MyTrait] |
 | main.rs:1392:13:1392:27 | self.set(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:1392:22:1392:26 | value |  | main.rs:1387:19:1387:19 | S |
-| main.rs:1398:16:1398:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1398:16:1398:24 | SelfParam | TRef | main.rs:1381:5:1385:5 | MyOption |
-| main.rs:1398:16:1398:24 | SelfParam | TRef.T | main.rs:1396:10:1396:10 | T |
+| main.rs:1398:16:1398:24 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1398:16:1398:24 | SelfParam | TRefMut | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1398:16:1398:24 | SelfParam | TRefMut.T | main.rs:1396:10:1396:10 | T |
 | main.rs:1398:27:1398:31 | value |  | main.rs:1396:10:1396:10 | T |
 | main.rs:1398:37:1398:38 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1402:26:1404:9 | { ... } |  | main.rs:1381:5:1385:5 | MyOption |
@@ -7688,9 +7678,9 @@ inferType
 | main.rs:1432:22:1432:36 | ...::new(...) |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1432:22:1432:36 | ...::new(...) | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1433:9:1433:33 | ...::set(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:1433:23:1433:29 | &mut x4 |  | {EXTERNAL LOCATION} | & |
-| main.rs:1433:23:1433:29 | &mut x4 | TRef | main.rs:1381:5:1385:5 | MyOption |
-| main.rs:1433:23:1433:29 | &mut x4 | TRef.T | main.rs:1416:5:1417:13 | S |
+| main.rs:1433:23:1433:29 | &mut x4 |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1433:23:1433:29 | &mut x4 | TRefMut | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1433:23:1433:29 | &mut x4 | TRefMut.T | main.rs:1416:5:1417:13 | S |
 | main.rs:1433:28:1433:29 | x4 |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1433:28:1433:29 | x4 | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1433:32:1433:32 | S |  | main.rs:1416:5:1417:13 | S |
@@ -8119,16 +8109,16 @@ inferType
 | main.rs:1612:16:1612:17 | &x | TRef.T | main.rs:1593:5:1593:13 | S |
 | main.rs:1612:17:1612:17 | x |  | main.rs:1595:5:1595:26 | MyStruct |
 | main.rs:1612:17:1612:17 | x | T | main.rs:1593:5:1593:13 | S |
-| main.rs:1623:17:1623:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1623:17:1623:25 | SelfParam | TRef | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1623:17:1623:25 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1623:17:1623:25 | SelfParam | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1623:28:1625:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1624:13:1624:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1624:13:1624:16 | self | TRef | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1624:13:1624:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1624:13:1624:16 | self | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1624:13:1624:21 | self.bool |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1624:13:1624:34 | ... = ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1624:25:1624:34 | ! ... |  | {EXTERNAL LOCATION} | bool |
-| main.rs:1624:26:1624:29 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1624:26:1624:29 | self | TRef | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1624:26:1624:29 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1624:26:1624:29 | self | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1624:26:1624:34 | self.bool |  | {EXTERNAL LOCATION} | bool |
 | main.rs:1631:15:1631:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:1631:15:1631:19 | SelfParam | TRef | main.rs:1628:5:1628:13 | S |
@@ -8220,8 +8210,8 @@ inferType
 | main.rs:1658:17:1658:20 | flag |  | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1658:24:1658:41 | ...::default(...) |  | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1659:9:1659:31 | ...::flip(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:1659:22:1659:30 | &mut flag |  | {EXTERNAL LOCATION} | & |
-| main.rs:1659:22:1659:30 | &mut flag | TRef | main.rs:1617:5:1620:5 | MyFlag |
+| main.rs:1659:22:1659:30 | &mut flag |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1659:22:1659:30 | &mut flag | TRefMut | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1659:27:1659:30 | flag |  | main.rs:1617:5:1620:5 | MyFlag |
 | main.rs:1660:18:1660:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | & |
 | main.rs:1660:18:1660:23 | "{:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
@@ -8580,8 +8570,8 @@ inferType
 | main.rs:1815:21:1815:22 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1816:13:1816:13 | p |  | {EXTERNAL LOCATION} | *mut |
 | main.rs:1816:13:1816:13 | p | TPtrMut | {EXTERNAL LOCATION} | i32 |
-| main.rs:1816:27:1816:32 | &mut v |  | {EXTERNAL LOCATION} | & |
-| main.rs:1816:27:1816:32 | &mut v | TRef | {EXTERNAL LOCATION} | i32 |
+| main.rs:1816:27:1816:32 | &mut v |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1816:27:1816:32 | &mut v | TRefMut | {EXTERNAL LOCATION} | i32 |
 | main.rs:1816:32:1816:32 | v |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1817:13:1817:13 | x |  | {EXTERNAL LOCATION} | & |
 | main.rs:1817:13:1817:13 | x | TRef | {EXTERNAL LOCATION} | i32 |
@@ -8649,18 +8639,18 @@ inferType
 | main.rs:1861:20:1861:33 | ... + ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1861:29:1861:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1861:29:1861:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1868:23:1868:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1868:23:1868:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1868:23:1868:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1868:23:1868:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1868:34:1868:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1868:45:1871:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1869:13:1869:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1869:13:1869:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1869:13:1869:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1869:13:1869:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1869:13:1869:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1869:13:1869:27 | ... += ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1869:23:1869:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1869:23:1869:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1870:13:1870:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1870:13:1870:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1870:13:1870:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1870:13:1870:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1870:13:1870:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1870:13:1870:27 | ... += ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1870:23:1870:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8679,18 +8669,18 @@ inferType
 | main.rs:1879:20:1879:33 | ... - ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1879:29:1879:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1879:29:1879:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1886:23:1886:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1886:23:1886:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1886:23:1886:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1886:23:1886:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1886:34:1886:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1886:45:1889:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1887:13:1887:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1887:13:1887:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1887:13:1887:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1887:13:1887:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1887:13:1887:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1887:13:1887:27 | ... -= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1887:23:1887:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1887:23:1887:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1888:13:1888:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1888:13:1888:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1888:13:1888:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1888:13:1888:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1888:13:1888:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1888:13:1888:27 | ... -= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1888:23:1888:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8709,18 +8699,18 @@ inferType
 | main.rs:1897:20:1897:33 | ... * ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1897:29:1897:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1897:29:1897:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1903:23:1903:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1903:23:1903:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1903:23:1903:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1903:23:1903:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1903:34:1903:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1903:45:1906:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1904:13:1904:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1904:13:1904:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1904:13:1904:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1904:13:1904:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1904:13:1904:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1904:13:1904:27 | ... *= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1904:23:1904:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1904:23:1904:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1905:13:1905:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1905:13:1905:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1905:13:1905:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1905:13:1905:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1905:13:1905:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1905:13:1905:27 | ... *= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1905:23:1905:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8739,18 +8729,18 @@ inferType
 | main.rs:1914:20:1914:33 | ... / ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1914:29:1914:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1914:29:1914:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1920:23:1920:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1920:23:1920:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1920:23:1920:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1920:23:1920:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1920:34:1920:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1920:45:1923:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1921:13:1921:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1921:13:1921:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1921:13:1921:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1921:13:1921:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1921:13:1921:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1921:13:1921:27 | ... /= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1921:23:1921:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1921:23:1921:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1922:13:1922:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1922:13:1922:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1922:13:1922:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1922:13:1922:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1922:13:1922:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1922:13:1922:27 | ... /= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1922:23:1922:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8769,18 +8759,18 @@ inferType
 | main.rs:1931:20:1931:33 | ... % ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1931:29:1931:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1931:29:1931:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1937:23:1937:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1937:23:1937:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1937:23:1937:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1937:23:1937:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1937:34:1937:36 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1937:45:1940:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1938:13:1938:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1938:13:1938:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1938:13:1938:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1938:13:1938:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1938:13:1938:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1938:13:1938:27 | ... %= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1938:23:1938:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1938:23:1938:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1939:13:1939:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1939:13:1939:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1939:13:1939:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1939:13:1939:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1939:13:1939:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1939:13:1939:27 | ... %= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1939:23:1939:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8799,18 +8789,18 @@ inferType
 | main.rs:1948:20:1948:33 | ... & ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1948:29:1948:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1948:29:1948:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1954:26:1954:34 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1954:26:1954:34 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1954:26:1954:34 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1954:26:1954:34 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1954:37:1954:39 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1954:48:1957:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1955:13:1955:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1955:13:1955:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1955:13:1955:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1955:13:1955:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1955:13:1955:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1955:13:1955:27 | ... &= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1955:23:1955:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1955:23:1955:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1956:13:1956:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1956:13:1956:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1956:13:1956:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1956:13:1956:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1956:13:1956:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1956:13:1956:27 | ... &= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1956:23:1956:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8829,18 +8819,18 @@ inferType
 | main.rs:1965:20:1965:33 | ... \| ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1965:29:1965:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1965:29:1965:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1971:25:1971:33 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1971:25:1971:33 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1971:25:1971:33 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1971:25:1971:33 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1971:36:1971:38 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1971:47:1974:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1972:13:1972:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1972:13:1972:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1972:13:1972:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1972:13:1972:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1972:13:1972:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1972:13:1972:27 | ... \|= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1972:23:1972:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1972:23:1972:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1973:13:1973:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1973:13:1973:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1973:13:1973:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1973:13:1973:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1973:13:1973:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1973:13:1973:27 | ... \|= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1973:23:1973:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8859,18 +8849,18 @@ inferType
 | main.rs:1982:20:1982:33 | ... ^ ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1982:29:1982:31 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1982:29:1982:33 | rhs.y |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1988:26:1988:34 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:1988:26:1988:34 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1988:26:1988:34 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1988:26:1988:34 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1988:37:1988:39 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1988:48:1991:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:1989:13:1989:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1989:13:1989:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1989:13:1989:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1989:13:1989:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1989:13:1989:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1989:13:1989:27 | ... ^= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1989:23:1989:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1989:23:1989:27 | rhs.x |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:1990:13:1990:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:1990:13:1990:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:1990:13:1990:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:1990:13:1990:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:1990:13:1990:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1990:13:1990:27 | ... ^= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:1990:23:1990:25 | rhs |  | main.rs:1843:5:1848:5 | Vec2 |
@@ -8887,17 +8877,17 @@ inferType
 | main.rs:1999:20:1999:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1999:20:1999:32 | ... << ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:1999:30:1999:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2005:23:2005:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:2005:23:2005:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2005:23:2005:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2005:23:2005:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2005:34:2005:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2005:44:2008:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2006:13:2006:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2006:13:2006:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2006:13:2006:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2006:13:2006:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2006:13:2006:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2006:13:2006:26 | ... <<= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:2006:24:2006:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2007:13:2007:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2007:13:2007:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2007:13:2007:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2007:13:2007:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2007:13:2007:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2007:13:2007:26 | ... <<= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:2007:24:2007:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
@@ -8913,17 +8903,17 @@ inferType
 | main.rs:2016:20:2016:25 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2016:20:2016:32 | ... >> ... |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2016:30:2016:32 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2022:23:2022:31 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:2022:23:2022:31 | SelfParam | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2022:23:2022:31 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2022:23:2022:31 | SelfParam | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2022:34:2022:36 | rhs |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2022:44:2025:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2023:13:2023:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2023:13:2023:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2023:13:2023:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2023:13:2023:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2023:13:2023:18 | self.x |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2023:13:2023:26 | ... >>= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:2023:24:2023:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
-| main.rs:2024:13:2024:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2024:13:2024:16 | self | TRef | main.rs:1843:5:1848:5 | Vec2 |
+| main.rs:2024:13:2024:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2024:13:2024:16 | self | TRefMut | main.rs:1843:5:1848:5 | Vec2 |
 | main.rs:2024:13:2024:18 | self.y |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2024:13:2024:26 | ... >>= ... |  | {EXTERNAL LOCATION} | () |
 | main.rs:2024:24:2024:26 | rhs |  | {EXTERNAL LOCATION} | u32 |
@@ -9380,10 +9370,10 @@ inferType
 | main.rs:2236:9:2236:16 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2236:9:2236:16 | { ... } | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:2245:13:2245:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
-| main.rs:2245:13:2245:42 | SelfParam | Ptr | {EXTERNAL LOCATION} | & |
-| main.rs:2245:13:2245:42 | SelfParam | Ptr.TRef | main.rs:2239:5:2239:14 | S2 |
-| main.rs:2246:13:2246:15 | _cx |  | {EXTERNAL LOCATION} | & |
-| main.rs:2246:13:2246:15 | _cx | TRef | {EXTERNAL LOCATION} | Context |
+| main.rs:2245:13:2245:42 | SelfParam | Ptr | {EXTERNAL LOCATION} | &mut |
+| main.rs:2245:13:2245:42 | SelfParam | Ptr.TRefMut | main.rs:2239:5:2239:14 | S2 |
+| main.rs:2246:13:2246:15 | _cx |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2246:13:2246:15 | _cx | TRefMut | {EXTERNAL LOCATION} | Context |
 | main.rs:2247:44:2249:9 | { ... } |  | {EXTERNAL LOCATION} | Poll |
 | main.rs:2247:44:2249:9 | { ... } | T | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2248:13:2248:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
@@ -9561,14 +9551,14 @@ inferType
 | main.rs:2370:27:2370:36 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2370:27:2370:36 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2370:27:2370:36 | ...::new(...) | T | main.rs:2368:10:2368:10 | T |
-| main.rs:2373:17:2373:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| main.rs:2373:17:2373:25 | SelfParam | TRef | main.rs:2363:5:2366:5 | MyVec |
-| main.rs:2373:17:2373:25 | SelfParam | TRef.T | main.rs:2368:10:2368:10 | T |
+| main.rs:2373:17:2373:25 | SelfParam |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2373:17:2373:25 | SelfParam | TRefMut | main.rs:2363:5:2366:5 | MyVec |
+| main.rs:2373:17:2373:25 | SelfParam | TRefMut.T | main.rs:2368:10:2368:10 | T |
 | main.rs:2373:28:2373:32 | value |  | main.rs:2368:10:2368:10 | T |
 | main.rs:2373:38:2375:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2374:13:2374:16 | self |  | {EXTERNAL LOCATION} | & |
-| main.rs:2374:13:2374:16 | self | TRef | main.rs:2363:5:2366:5 | MyVec |
-| main.rs:2374:13:2374:16 | self | TRef.T | main.rs:2368:10:2368:10 | T |
+| main.rs:2374:13:2374:16 | self |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2374:13:2374:16 | self | TRefMut | main.rs:2363:5:2366:5 | MyVec |
+| main.rs:2374:13:2374:16 | self | TRefMut.T | main.rs:2368:10:2368:10 | T |
 | main.rs:2374:13:2374:21 | self.data |  | {EXTERNAL LOCATION} | Vec |
 | main.rs:2374:13:2374:21 | self.data | A | {EXTERNAL LOCATION} | Global |
 | main.rs:2374:13:2374:21 | self.data | T | main.rs:2368:10:2368:10 | T |
@@ -9952,13 +9942,13 @@ inferType
 | main.rs:2628:19:2628:26 | strings1 | TArray.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2628:28:2628:29 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2629:9:2629:33 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2629:13:2629:13 | s |  | {EXTERNAL LOCATION} | & |
-| main.rs:2629:13:2629:13 | s | TRef | {EXTERNAL LOCATION} | & |
-| main.rs:2629:13:2629:13 | s | TRef.TRef | {EXTERNAL LOCATION} | str |
-| main.rs:2629:18:2629:30 | &mut strings1 |  | {EXTERNAL LOCATION} | & |
-| main.rs:2629:18:2629:30 | &mut strings1 | TRef | {EXTERNAL LOCATION} | [;] |
-| main.rs:2629:18:2629:30 | &mut strings1 | TRef.TArray | {EXTERNAL LOCATION} | & |
-| main.rs:2629:18:2629:30 | &mut strings1 | TRef.TArray.TRef | {EXTERNAL LOCATION} | str |
+| main.rs:2629:13:2629:13 | s |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2629:13:2629:13 | s | TRefMut | {EXTERNAL LOCATION} | & |
+| main.rs:2629:13:2629:13 | s | TRefMut.TRef | {EXTERNAL LOCATION} | str |
+| main.rs:2629:18:2629:30 | &mut strings1 |  | {EXTERNAL LOCATION} | &mut |
+| main.rs:2629:18:2629:30 | &mut strings1 | TRefMut | {EXTERNAL LOCATION} | [;] |
+| main.rs:2629:18:2629:30 | &mut strings1 | TRefMut.TArray | {EXTERNAL LOCATION} | & |
+| main.rs:2629:18:2629:30 | &mut strings1 | TRefMut.TArray.TRef | {EXTERNAL LOCATION} | str |
 | main.rs:2629:23:2629:30 | strings1 |  | {EXTERNAL LOCATION} | [;] |
 | main.rs:2629:23:2629:30 | strings1 | TArray | {EXTERNAL LOCATION} | & |
 | main.rs:2629:23:2629:30 | strings1 | TArray.TRef | {EXTERNAL LOCATION} | str |
@@ -11538,26 +11528,26 @@ inferType
 | pattern_matching.rs:269:13:269:23 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:269:27:269:30 | 5i32 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:270:5:276:5 | match ... { ... } |  | {EXTERNAL LOCATION} | () |
-| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val | TRef | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:270:11:270:26 | &mut ref_mut_val | TRefMut | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:270:16:270:26 | ref_mut_val |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:271:17:271:17 | x |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:271:17:271:17 | x | TRef | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:271:17:271:17 | x | TRef.TRef | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:271:17:271:17 | x |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:271:17:271:17 | x | TRefMut | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:271:17:271:17 | x | TRefMut.TRefMut | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:271:22:275:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| pattern_matching.rs:272:17:272:29 | ref_mut_bound |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:272:17:272:29 | ref_mut_bound | TRef | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:272:17:272:29 | ref_mut_bound | TRef.TRef | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:272:33:272:33 | x |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:272:33:272:33 | x | TRef | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:272:33:272:33 | x | TRef.TRef | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:272:17:272:29 | ref_mut_bound |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:272:17:272:29 | ref_mut_bound | TRefMut | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:272:17:272:29 | ref_mut_bound | TRefMut.TRefMut | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:272:33:272:33 | x |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:272:33:272:33 | x | TRefMut | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:272:33:272:33 | x | TRefMut.TRefMut | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:13:273:27 | * ... |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:13:273:32 | ... += ... |  | {EXTERNAL LOCATION} | () |
-| pattern_matching.rs:273:14:273:27 | * ... |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:273:14:273:27 | * ... | TRef | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:273:15:273:27 | ref_mut_bound |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:273:15:273:27 | ref_mut_bound | TRef | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:273:15:273:27 | ref_mut_bound | TRef.TRef | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:273:14:273:27 | * ... |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:273:14:273:27 | * ... | TRefMut | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:273:15:273:27 | ref_mut_bound |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:273:15:273:27 | ref_mut_bound | TRefMut | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:273:15:273:27 | ref_mut_bound | TRefMut.TRefMut | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:273:32:273:32 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:274:22:274:38 | "Ref mut pattern\\n" |  | {EXTERNAL LOCATION} | & |
 | pattern_matching.rs:274:22:274:38 | "Ref mut pattern\\n" | TRef | {EXTERNAL LOCATION} | str |
@@ -11681,11 +11671,11 @@ inferType
 | pattern_matching.rs:338:22:338:60 | { ... } |  | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:338:50:338:60 | deref_bound |  | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:342:5:347:5 | match ... { ... } |  | {EXTERNAL LOCATION} | () |
-| pattern_matching.rs:342:11:342:28 | &mut mutable_value |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:342:11:342:28 | &mut mutable_value | TRef | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:342:11:342:28 | &mut mutable_value |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:342:11:342:28 | &mut mutable_value | TRefMut | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:342:16:342:28 | mutable_value |  | {EXTERNAL LOCATION} | i32 |
-| pattern_matching.rs:343:9:343:18 | &mut ... |  | {EXTERNAL LOCATION} | & |
-| pattern_matching.rs:343:9:343:18 | &mut ... | TRef | {EXTERNAL LOCATION} | i32 |
+| pattern_matching.rs:343:9:343:18 | &mut ... |  | {EXTERNAL LOCATION} | &mut |
+| pattern_matching.rs:343:9:343:18 | &mut ... | TRefMut | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:343:18:343:18 | x |  | {EXTERNAL LOCATION} | & |
 | pattern_matching.rs:343:18:343:18 | x | TRef | {EXTERNAL LOCATION} | i32 |
 | pattern_matching.rs:343:23:346:9 | { ... } |  | {EXTERNAL LOCATION} | () |
@@ -12901,8 +12891,8 @@ inferType
 | raw_pointer.rs:54:29:54:31 | &10 | TRef | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:54:30:54:31 | 10 |  | {EXTERNAL LOCATION} | i32 |
 | raw_pointer.rs:55:5:55:36 | raw_pointer_mut_deref(...) |  | {EXTERNAL LOCATION} | i32 |
-| raw_pointer.rs:55:27:55:35 | &mut true |  | {EXTERNAL LOCATION} | & |
-| raw_pointer.rs:55:27:55:35 | &mut true | TRef | {EXTERNAL LOCATION} | bool |
+| raw_pointer.rs:55:27:55:35 | &mut true |  | {EXTERNAL LOCATION} | &mut |
+| raw_pointer.rs:55:27:55:35 | &mut true | TRefMut | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:55:32:55:35 | true |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:56:5:56:22 | raw_const_borrow(...) |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:57:5:57:20 | raw_mut_borrow(...) |  | {EXTERNAL LOCATION} | () |

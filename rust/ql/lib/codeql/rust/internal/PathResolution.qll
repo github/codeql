@@ -771,8 +771,12 @@ private TypeItemNode resolveBuiltin(TypeRepr tr) {
   tr instanceof ArrayTypeRepr and
   result instanceof Builtins::ArrayType
   or
-  tr instanceof RefTypeRepr and
-  result instanceof Builtins::RefType
+  tr =
+    any(RefTypeRepr rtr |
+      if rtr.isMut()
+      then result instanceof Builtins::RefMutType
+      else result instanceof Builtins::RefSharedType
+    )
   or
   tr.(PtrTypeRepr).isConst() and
   result instanceof Builtins::PtrConstType
