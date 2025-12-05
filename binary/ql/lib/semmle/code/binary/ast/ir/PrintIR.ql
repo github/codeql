@@ -103,12 +103,17 @@ private int getBlockOrderingInFunction(Function f, BasicBlock bb) {
   bb =
     rank[result + 1](BasicBlock bb2, string s, int d |
       bb2.getEnclosingFunction() = f and
-      d = distanceFromEntry(f.getEntryBlock(), bb2) and
+      (
+        d = distanceFromEntry(f.getEntryBlock(), bb2)
+        or
+        // Unreachable blocks get a large distance so they sort last
+        not exists(distanceFromEntry(f.getEntryBlock(), bb2)) and d = 999999
+      ) and
       s =
-        strictconcat(int i, string instr |
+        concat(int i, string instr |
           instr = bb2.getNode(i).asInstruction().toString()
         |
-          instr order by i
+          instr, "" order by i
         )
     |
       bb2 order by d, s
@@ -134,7 +139,12 @@ private class PrintableIRBlock extends PrintableNode, TPrintableBasicBlock {
 
   override Location getLocation() { result = block.getLocation() }
 
-  override string getLabel() { result = "Block " + this.getOrder() }
+  override string getLabel() {
+    result = "Block " + this.getOrder()
+    or
+    not exists(this.getOrder()) and
+    result = "Block (unordered)"
+  }
 
   override int getOrder() { result = getBlockIndex(block) }
 
