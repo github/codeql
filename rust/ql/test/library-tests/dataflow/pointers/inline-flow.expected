@@ -1,5 +1,6 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
+| 2 | Summary: <&mut as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
 edges
 | main.rs:17:13:17:13 | a | main.rs:18:18:18:18 | a | provenance |  |
 | main.rs:17:17:17:26 | source(...) | main.rs:17:13:17:13 | a | provenance |  |
@@ -40,17 +41,17 @@ edges
 | main.rs:59:34:59:34 | p [&ref] | main.rs:59:33:59:34 | * ... | provenance | MaD:1 |
 | main.rs:73:10:73:10 | [post] b [&ref] | main.rs:74:15:74:15 | b [&ref] | provenance |  |
 | main.rs:73:14:73:23 | source(...) | main.rs:73:10:73:10 | [post] b [&ref] | provenance |  |
-| main.rs:74:15:74:15 | b [&ref] | main.rs:74:14:74:15 | * ... | provenance | MaD:1 |
+| main.rs:74:15:74:15 | b [&ref] | main.rs:74:14:74:15 | * ... | provenance | MaD:2 |
 | main.rs:90:11:90:16 | [post] &mut a [&ref] | main.rs:90:16:90:16 | [post] a | provenance |  |
 | main.rs:90:16:90:16 | [post] a | main.rs:91:14:91:14 | a | provenance |  |
 | main.rs:90:21:90:30 | source(...) | main.rs:90:11:90:16 | [post] &mut a [&ref] | provenance |  |
 | main.rs:105:10:105:10 | [post] c [&ref] | main.rs:106:15:106:15 | c [&ref] | provenance |  |
 | main.rs:105:14:105:23 | source(...) | main.rs:105:10:105:10 | [post] c [&ref] | provenance |  |
-| main.rs:106:15:106:15 | c [&ref] | main.rs:106:14:106:15 | * ... | provenance | MaD:1 |
+| main.rs:106:15:106:15 | c [&ref] | main.rs:106:14:106:15 | * ... | provenance | MaD:2 |
 | main.rs:112:13:112:21 | ref mut a | main.rs:112:21:112:21 | a [&ref] | provenance |  |
 | main.rs:112:21:112:21 | a [&ref] | main.rs:113:15:113:15 | a [&ref] | provenance |  |
 | main.rs:112:25:112:34 | source(...) | main.rs:112:13:112:21 | ref mut a | provenance |  |
-| main.rs:113:15:113:15 | a [&ref] | main.rs:113:14:113:15 | * ... | provenance | MaD:1 |
+| main.rs:113:15:113:15 | a [&ref] | main.rs:113:14:113:15 | * ... | provenance | MaD:2 |
 | main.rs:149:14:149:24 | ...: MyNumber [MyNumber] | main.rs:150:11:150:11 | m [MyNumber] | provenance |  |
 | main.rs:150:11:150:11 | m [MyNumber] | main.rs:151:9:151:34 | ...::MyNumber(...) [MyNumber] | provenance |  |
 | main.rs:151:9:151:34 | ...::MyNumber(...) [MyNumber] | main.rs:151:28:151:33 | number | provenance |  |
@@ -92,7 +93,7 @@ edges
 | main.rs:210:17:210:17 | [post] p [&ref] | main.rs:211:15:211:15 | p [&ref] | provenance |  |
 | main.rs:210:20:210:29 | source(...) | main.rs:200:29:200:38 | ...: i64 | provenance |  |
 | main.rs:210:20:210:29 | source(...) | main.rs:210:17:210:17 | [post] p [&ref] | provenance |  |
-| main.rs:211:15:211:15 | p [&ref] | main.rs:211:14:211:15 | * ... | provenance | MaD:1 |
+| main.rs:211:15:211:15 | p [&ref] | main.rs:211:14:211:15 | * ... | provenance | MaD:2 |
 | main.rs:218:17:218:22 | [post] &mut n [&ref] | main.rs:218:22:218:22 | [post] n | provenance |  |
 | main.rs:218:22:218:22 | [post] n | main.rs:219:14:219:14 | n | provenance |  |
 | main.rs:218:25:218:34 | source(...) | main.rs:200:29:200:38 | ...: i64 | provenance |  |

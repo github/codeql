@@ -224,21 +224,33 @@ TypeParamTypeParameter getArrayTypeParameter() {
   result = any(ArrayType t).getPositionalTypeParameter(0)
 }
 
-/**
- * A reference type.
- *
- * Reference types like `& i64` are modeled as normal generic types
- * with a single type argument.
- */
-class RefType extends StructType {
-  RefType() { this.getStruct() instanceof Builtins::RefType }
+abstract class RefType extends StructType { }
+
+pragma[nomagic]
+TypeParamTypeParameter getRefTypeParameter() {
+  result = any(RefType t).getPositionalTypeParameter(0)
+}
+
+class RefMutType extends RefType {
+  RefMutType() { this.getStruct() instanceof Builtins::RefMutType }
+
+  override string toString() { result = "&mut" }
+}
+
+pragma[nomagic]
+TypeParamTypeParameter getRefMutTypeParameter() {
+  result = any(RefMutType t).getPositionalTypeParameter(0)
+}
+
+class RefSharedType extends RefType {
+  RefSharedType() { this.getStruct() instanceof Builtins::RefSharedType }
 
   override string toString() { result = "&" }
 }
 
 pragma[nomagic]
-TypeParamTypeParameter getRefTypeParameter() {
-  result = any(RefType t).getPositionalTypeParameter(0)
+TypeParamTypeParameter getRefSharedTypeParameter() {
+  result = any(RefSharedType t).getPositionalTypeParameter(0)
 }
 
 /**
