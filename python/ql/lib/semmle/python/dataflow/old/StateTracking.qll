@@ -9,9 +9,7 @@
  */
 
 import python
-private import semmle.python.pointsto.PointsTo
-private import semmle.python.pointsto.PointsToContext
-private import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 
 /** A state that should be tracked. */
 abstract class TrackableState extends string {

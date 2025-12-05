@@ -7,10 +7,11 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from NumericObject n
 where
-  exists(IntegerLiteral i | i.getLiteralObject() = n |
+  exists(IntegerLiteral i | getLiteralObject(i) = n |
     i.getEnclosingModule().getFile().getShortName() = "test.py"
   )
 select n.toString(), n.repr()

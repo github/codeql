@@ -1,6 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo
-private import semmle.python.pointsto.PointsToContext
+private import LegacyPointsTo
 import Util
 
 predicate ssa_variable_points_to(

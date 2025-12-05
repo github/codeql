@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassObject c
 where not c.isNewStyle() and c.declaresAttribute("__slots__") and not c.failedInference()

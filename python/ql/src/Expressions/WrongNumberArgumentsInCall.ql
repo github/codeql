@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import CallArgs
 
 from Call call, FunctionValue func, string too, string should, int limit
