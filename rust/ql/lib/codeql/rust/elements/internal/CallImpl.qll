@@ -39,9 +39,6 @@ module Impl {
     /** Gets an argument of this call. */
     Expr getAnArgument() { result = this.getArgument(_) }
 
-    // todo: remove once internal query has been updated
-    Expr getReceiver() { none() }
-
     /**
      * Gets the `i`th positional argument of this call.
      *
@@ -70,9 +67,6 @@ module Impl {
 
     /** Gets the name of the function called, if any. */
     string getTargetName() { result = this.getStaticTarget().getName().getText() }
-
-    // todo: remove once internal query has been updated
-    string getMethodName() { result = this.getTargetName() }
 
     /** Gets a runtime target of this call, if any. */
     pragma[nomagic]
@@ -110,6 +104,6 @@ module Impl {
      * x[y];              // `x` is receiver
      * ```
      */
-    override Expr getReceiver() { none() }
+    Expr getReceiver() { none() }
   }
 }
