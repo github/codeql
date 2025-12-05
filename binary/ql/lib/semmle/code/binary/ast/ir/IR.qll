@@ -3,6 +3,7 @@ import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Opcode
 private import semmle.code.binary.ast.ir.internal.Tags
 private import codeql.controlflow.BasicBlock as BB
+private import semmle.code.binary.dataflow.Ssa
 
 private module FinalInstruction {
   private import internal.Instruction2.Instruction2::Instruction2 as Instruction
@@ -33,6 +34,10 @@ private module FinalInstruction {
     OperandTag getOperandTag() { result = super.getOperandTag() }
 
     Location getLocation() { result = super.getLocation() }
+
+    Ssa::Definition getDef() { result.getARead() = this }
+
+    Instruction getAnyDef() { result = this.getDef().getAnUltimateDefinition().asInstruction() }
   }
 
   class StoreValueOperand extends Operand instanceof Instruction::StoreValueOperand { }
@@ -227,6 +232,8 @@ private module FinalInstruction {
     InstructionTag getInstructionTag() { result = super.getInstructionTag() }
 
     Operand getFirstOperand() { result = super.getFirstOperand() }
+
+    Operand getAUse() { result.getDef().asInstruction() = this }
   }
 
   class RetInstruction extends Instruction instanceof Instruction::RetInstruction { }

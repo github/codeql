@@ -6,21 +6,15 @@ private predicate variableReadCertain(BasicBlock bb, int i, Operand va, Variable
   va = v.getAnAccess()
 }
 
-module SsaInput implements SsaImplCommon::InputSig<Location, BinaryCfg::BasicBlock> {
+private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = Variable;
 
-  predicate variableWrite(BinaryCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    v = bb.getNode(i).asInstruction().getResultVariable() and
+  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    bb.getNode(i).asInstruction().getResultVariable() = v and
     certain = true
-    // or
-    // certain = true and
-    // bb.isFunctionEntryBasicBlock() and
-    // i = -1 and
-    // // TODO: Generalize beyond rsp
-    // v.(RegisterVariable).getRegister().toString() = "rsp"
   }
 
-  predicate variableRead(BinaryCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     variableReadCertain(bb, i, _, v) and certain = true
   }
 }

@@ -9,8 +9,6 @@ module Ssa {
   private import semmle.code.binary.ast.ir.IR
   private import internal.SsaImpl as SsaImpl
 
-  class Variable = SsaImpl::SsaInput::SourceVariable;
-
   /** A static single assignment (SSA) definition. */
   class Definition extends SsaImpl::Definition {
     final ControlFlowNode getControlFlowNode() {
@@ -27,6 +25,8 @@ module Ssa {
       result = this.getAPhiInputOrPriorDefinition*() and
       not result instanceof PhiDefinition
     }
+
+    Instruction asInstruction() { result = this.getControlFlowNode().asInstruction() }
 
     /** Gets the function of this SSA definition. */
     Function getFunction() { result = this.getBasicBlock().getEnclosingFunction() }
@@ -45,9 +45,7 @@ module Ssa {
     /** Gets the underlying write access. */
     final Instruction getWriteAccess() { result = write }
 
-    predicate assigns(Operand value) {
-      value = write.(CopyInstruction).getOperand()
-    }
+    predicate assigns(Operand value) { value = write.(CopyInstruction).getOperand() }
   }
 
   class PhiDefinition extends Definition, SsaImpl::PhiDefinition {
