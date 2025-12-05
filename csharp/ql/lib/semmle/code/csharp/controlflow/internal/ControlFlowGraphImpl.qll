@@ -6,9 +6,64 @@
 import csharp
 private import codeql.controlflow.Cfg as CfgShared
 private import Completion
-private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Compilation
+
+private module Initializers {
+  /**
+   * A non-static member with an initializer, for example a field `int Field = 0`.
+   */
+  class InitializedInstanceMember extends Member {
+    private AssignExpr ae;
+
+    InitializedInstanceMember() {
+      not this.isStatic() and
+      expr_parent_top_level(ae, _, this) and
+      not ae = any(Callable c).getExpressionBody()
+    }
+
+    /** Gets the initializer expression. */
+    AssignExpr getInitializer() { result = ae }
+  }
+
+  /**
+   * Holds if `obinit` is an object initializer method that performs the initialization
+   * of a member via assignment `init`.
+   */
+  predicate obinitInitializes(ObjectInitMethod obinit, AssignExpr init) {
+    exists(InitializedInstanceMember m |
+      obinit.getDeclaringType().getAMember() = m and
+      init = m.getInitializer()
+    )
+  }
+
+  /**
+   * Gets the `i`th member initializer expression for object initializer method `obinit`
+   * in compilation `comp`.
+   */
+  AssignExpr initializedInstanceMemberOrder(ObjectInitMethod obinit, CompilationExt comp, int i) {
+    obinitInitializes(obinit, result) and
+    result =
+      rank[i + 1](AssignExpr ae0, Location l |
+        obinitInitializes(obinit, ae0) and
+        l = ae0.getLocation() and
+        getCompilation(l.getFile()) = comp
+      |
+        ae0 order by l.getStartLine(), l.getStartColumn(), l.getFile().getAbsolutePath()
+      )
+  }
+
+  /**
+   * Gets the last member initializer expression for object initializer method `obinit`
+   * in compilation `comp`.
+   */
+  AssignExpr lastInitializer(ObjectInitMethod obinit, CompilationExt comp) {
+    exists(int i |
+      result = initializedInstanceMemberOrder(obinit, comp, i) and
+      not exists(initializedInstanceMemberOrder(obinit, comp, i + 1))
+    )
+  }
+}
 
 /** An element that defines a new CFG scope. */
 class CfgScope extends Element, @top_level_exprorstmt_parent {
@@ -19,7 +74,7 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
         any(Callable c |
           c.(Constructor).hasInitializer()
           or
-          InitializerSplitting::constructorInitializes(c, _)
+          Initializers::obinitInitializes(c, _)
           or
           c.hasBody()
         )
@@ -146,13 +201,15 @@ private predicate expr_parent_top_level_adjusted2(
 predicate scopeFirst(CfgScope scope, AstNode first) {
   scope =
     any(Callable c |
-      if exists(c.(Constructor).getInitializer())
-      then first(c.(Constructor).getInitializer(), first)
+      if exists(c.(Constructor).getObjectInitializerCall())
+      then first(c.(Constructor).getObjectInitializerCall(), first)
       else
-        if InitializerSplitting::constructorInitializes(c, _)
-        then first(InitializerSplitting::constructorInitializeOrder(c, _, 0), first)
+        if exists(c.(Constructor).getInitializer())
+        then first(c.(Constructor).getInitializer(), first)
         else first(c.getBody(), first)
     )
+  or
+  first(Initializers::initializedInstanceMemberOrder(scope, _, 0), first)
   or
   expr_parent_top_level_adjusted2(any(Expr e | first(e, first)), _, scope) and
   not scope instanceof Callable
@@ -165,12 +222,38 @@ predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
       last(callable.getBody(), last, c) and
       not c instanceof GotoCompletion
       or
-      last(InitializerSplitting::lastConstructorInitializer(scope, _), last, c) and
+      last(callable.(Constructor).getInitializer(), last, c) and
+      not callable.hasBody()
+      or
+      // This is only relevant in the context of compilation errors, since
+      // normally the existence of an object initializer call implies the
+      // existence of an initializer.
+      last(callable.(Constructor).getObjectInitializerCall(), last, c) and
+      not callable.(Constructor).hasInitializer() and
       not callable.hasBody()
     )
   or
+  last(Initializers::lastInitializer(scope, _), last, c)
+  or
   expr_parent_top_level_adjusted2(any(Expr e | last(e, last, c)), _, scope) and
   not scope instanceof Callable
+}
+
+private class ObjectInitTree extends ControlFlowTree instanceof ObjectInitMethod {
+  final override predicate propagatesAbnormal(AstNode child) { none() }
+
+  final override predicate first(AstNode first) { none() }
+
+  final override predicate last(AstNode last, Completion c) { none() }
+
+  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    exists(CompilationExt comp, int i |
+      // Flow from one member initializer to the next
+      last(Initializers::initializedInstanceMemberOrder(this, comp, i), pred, c) and
+      c instanceof NormalCompletion and
+      first(Initializers::initializedInstanceMemberOrder(this, comp, i + 1), succ)
+    )
+  }
 }
 
 private class ConstructorTree extends ControlFlowTree instanceof Constructor {
@@ -187,17 +270,29 @@ private class ConstructorTree extends ControlFlowTree instanceof Constructor {
     comp = getCompilation(result.getFile())
   }
 
+  pragma[noinline]
+  private MethodCall getObjectInitializerCall(CompilationExt comp) {
+    result = super.getObjectInitializerCall() and
+    comp = getCompilation(result.getFile())
+  }
+
+  pragma[noinline]
+  private ConstructorInitializer getInitializer(CompilationExt comp) {
+    result = super.getInitializer() and
+    comp = getCompilation(result.getFile())
+  }
+
   final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    exists(CompilationExt comp, int i, AssignExpr ae |
-      ae = InitializerSplitting::constructorInitializeOrder(this, comp, i) and
-      last(ae, pred, c) and
+    exists(CompilationExt comp |
+      last(this.getObjectInitializerCall(comp), pred, c) and
       c instanceof NormalCompletion
     |
-      // Flow from one member initializer to the next
-      first(InitializerSplitting::constructorInitializeOrder(this, comp, i + 1), succ)
+      first(this.getInitializer(comp), succ)
       or
-      // Flow from last member initializer to constructor body
-      ae = InitializerSplitting::lastConstructorInitializer(this, comp) and
+      // This is only relevant in the context of compilation errors, since
+      // normally the existence of an object initializer call implies the
+      // existence of an initializer.
+      not exists(this.getInitializer(comp)) and
       first(this.getBody(comp), succ)
     )
   }
@@ -837,13 +932,7 @@ module Expressions {
         last(this, pred, c) and
         con = super.getConstructor() and
         comp = getCompilation(this.getFile()) and
-        c instanceof NormalCompletion
-      |
-        // Flow from constructor initializer to first member initializer
-        first(InitializerSplitting::constructorInitializeOrder(con, comp, 0), succ)
-        or
-        // Flow from constructor initializer to first element of constructor body
-        not exists(InitializerSplitting::constructorInitializeOrder(con, comp, _)) and
+        c instanceof NormalCompletion and
         first(con.getBody(comp), succ)
       )
     }

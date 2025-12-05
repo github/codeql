@@ -1,4 +1,4 @@
-| AccessorCalls.cs:1:7:1:19 | enter AccessorCalls | AccessorCalls.cs:1:7:1:19 | exit AccessorCalls | 5 |
+| AccessorCalls.cs:1:7:1:19 | enter AccessorCalls | AccessorCalls.cs:1:7:1:19 | exit AccessorCalls | 7 |
 | AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:23:5:25 | exit get_Item | 4 |
 | AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:33:5:35 | exit set_Item | 4 |
 | AccessorCalls.cs:7:32:7:34 | enter add_Event | AccessorCalls.cs:7:32:7:34 | exit add_Event | 4 |
@@ -12,12 +12,12 @@
 | AccessorCalls.cs:56:10:56:11 | enter M7 | AccessorCalls.cs:56:10:56:11 | exit M7 | 24 |
 | AccessorCalls.cs:61:10:61:11 | enter M8 | AccessorCalls.cs:61:10:61:11 | exit M8 | 30 |
 | AccessorCalls.cs:66:10:66:11 | enter M9 | AccessorCalls.cs:66:10:66:11 | exit M9 | 58 |
-| ArrayCreation.cs:1:7:1:19 | enter ArrayCreation | ArrayCreation.cs:1:7:1:19 | exit ArrayCreation | 5 |
+| ArrayCreation.cs:1:7:1:19 | enter ArrayCreation | ArrayCreation.cs:1:7:1:19 | exit ArrayCreation | 7 |
 | ArrayCreation.cs:3:11:3:12 | enter M1 | ArrayCreation.cs:3:11:3:12 | exit M1 | 5 |
 | ArrayCreation.cs:5:12:5:13 | enter M2 | ArrayCreation.cs:5:12:5:13 | exit M2 | 6 |
 | ArrayCreation.cs:7:11:7:12 | enter M3 | ArrayCreation.cs:7:11:7:12 | exit M3 | 8 |
 | ArrayCreation.cs:9:12:9:13 | enter M4 | ArrayCreation.cs:9:12:9:13 | exit M4 | 13 |
-| Assert.cs:5:7:5:17 | enter AssertTests | Assert.cs:5:7:5:17 | exit AssertTests | 5 |
+| Assert.cs:5:7:5:17 | enter AssertTests | Assert.cs:5:7:5:17 | exit AssertTests | 7 |
 | Assert.cs:7:10:7:11 | enter M1 | Assert.cs:9:20:9:20 | access to parameter b | 4 |
 | Assert.cs:7:10:7:11 | exit M1 | Assert.cs:7:10:7:11 | exit M1 | 1 |
 | Assert.cs:7:10:7:11 | exit M1 (abnormal) | Assert.cs:7:10:7:11 | exit M1 (abnormal) | 1 |
@@ -163,11 +163,11 @@
 | Assert.cs:138:10:138:12 | exit M13 | Assert.cs:138:10:138:12 | exit M13 | 1 |
 | Assert.cs:138:10:138:12 | exit M13 (abnormal) | Assert.cs:138:10:138:12 | exit M13 (abnormal) | 1 |
 | Assert.cs:141:9:141:15 | return ...; | Assert.cs:138:10:138:12 | exit M13 (normal) | 2 |
-| Assignments.cs:1:7:1:17 | enter Assignments | Assignments.cs:1:7:1:17 | exit Assignments | 5 |
+| Assignments.cs:1:7:1:17 | enter Assignments | Assignments.cs:1:7:1:17 | exit Assignments | 7 |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 34 |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... | 4 |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | exit + | 6 |
-| BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | exit BreakInTry | 5 |
+| BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | exit BreakInTry | 7 |
 | BreakInTry.cs:3:10:3:11 | enter M1 | BreakInTry.cs:7:33:7:36 | access to parameter args | 5 |
 | BreakInTry.cs:3:10:3:11 | exit M1 (normal) | BreakInTry.cs:3:10:3:11 | exit M1 | 2 |
 | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | BreakInTry.cs:7:13:11:13 | foreach (... ... in ...) ... | 1 |
@@ -197,18 +197,18 @@
 | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | 1 |
 | BreakInTry.cs:65:26:65:28 | String arg | BreakInTry.cs:67:21:67:31 | ... == ... | 6 |
 | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; | 1 |
-| CompileTimeOperators.cs:3:7:3:26 | enter CompileTimeOperators | CompileTimeOperators.cs:3:7:3:26 | exit CompileTimeOperators | 5 |
+| CompileTimeOperators.cs:3:7:3:26 | enter CompileTimeOperators | CompileTimeOperators.cs:3:7:3:26 | exit CompileTimeOperators | 7 |
 | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:5:9:5:15 | exit Default | 6 |
 | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof | CompileTimeOperators.cs:10:9:10:14 | exit Sizeof | 6 |
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | exit Typeof | 6 |
 | CompileTimeOperators.cs:20:12:20:17 | enter Nameof | CompileTimeOperators.cs:20:12:20:17 | exit Nameof | 6 |
-| CompileTimeOperators.cs:26:7:26:22 | enter GotoInTryFinally | CompileTimeOperators.cs:26:7:26:22 | exit GotoInTryFinally | 5 |
+| CompileTimeOperators.cs:26:7:26:22 | enter GotoInTryFinally | CompileTimeOperators.cs:26:7:26:22 | exit GotoInTryFinally | 7 |
 | CompileTimeOperators.cs:28:10:28:10 | enter M | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | 9 |
 | CompileTimeOperators.cs:28:10:28:10 | exit M | CompileTimeOperators.cs:28:10:28:10 | exit M | 1 |
 | CompileTimeOperators.cs:28:10:28:10 | exit M (abnormal) | CompileTimeOperators.cs:28:10:28:10 | exit M (abnormal) | 1 |
 | CompileTimeOperators.cs:39:9:39:34 | ...; | CompileTimeOperators.cs:39:9:39:33 | call to method WriteLine | 3 |
 | CompileTimeOperators.cs:40:9:40:11 | End: | CompileTimeOperators.cs:28:10:28:10 | exit M (normal) | 5 |
-| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | 5 |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | 7 |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | 2 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | ConditionalAccess.cs:3:12:3:13 | exit M1 | 2 |
 | ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:38 | call to method ToString | 1 |
@@ -245,7 +245,7 @@
 | ConditionalAccess.cs:32:10:32:11 | exit M8 (normal) | ConditionalAccess.cs:32:10:32:11 | exit M8 | 2 |
 | ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:24 | call to method Out | 1 |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | 8 |
-| Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | exit Conditions | 5 |
+| Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | exit Conditions | 7 |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:5:13:5:15 | access to parameter inc | 4 |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr (normal) | Conditions.cs:3:10:3:19 | exit IncrOrDecr | 2 |
 | Conditions.cs:6:13:6:16 | ...; | Conditions.cs:6:13:6:15 | ...++ | 3 |
@@ -334,7 +334,7 @@
 | Conditions.cs:145:27:145:29 | "b" | Conditions.cs:145:27:145:29 | "b" | 1 |
 | Conditions.cs:147:13:147:49 | ...; | Conditions.cs:147:13:147:48 | call to method WriteLine | 6 |
 | Conditions.cs:149:13:149:49 | ...; | Conditions.cs:149:13:149:48 | call to method WriteLine | 6 |
-| ExitMethods.cs:6:7:6:17 | enter ExitMethods | ExitMethods.cs:6:7:6:17 | exit ExitMethods | 5 |
+| ExitMethods.cs:6:7:6:17 | enter ExitMethods | ExitMethods.cs:6:7:6:17 | exit ExitMethods | 7 |
 | ExitMethods.cs:8:10:8:11 | enter M1 | ExitMethods.cs:8:10:8:11 | exit M1 | 8 |
 | ExitMethods.cs:14:10:14:11 | enter M2 | ExitMethods.cs:14:10:14:11 | exit M2 | 8 |
 | ExitMethods.cs:20:10:20:11 | enter M3 | ExitMethods.cs:20:10:20:11 | exit M3 | 7 |
@@ -383,7 +383,7 @@
 | Extensions.cs:10:24:10:29 | enter ToBool | Extensions.cs:10:24:10:29 | exit ToBool | 8 |
 | Extensions.cs:15:23:15:33 | enter CallToInt32 | Extensions.cs:15:23:15:33 | exit CallToInt32 | 5 |
 | Extensions.cs:20:17:20:20 | enter Main | Extensions.cs:20:17:20:20 | exit Main | 20 |
-| Finally.cs:3:14:3:20 | enter Finally | Finally.cs:3:14:3:20 | exit Finally | 5 |
+| Finally.cs:3:14:3:20 | enter Finally | Finally.cs:3:14:3:20 | exit Finally | 7 |
 | Finally.cs:7:10:7:11 | enter M1 | Finally.cs:15:13:15:40 | call to method WriteLine | 11 |
 | Finally.cs:7:10:7:11 | exit M1 | Finally.cs:7:10:7:11 | exit M1 | 1 |
 | Finally.cs:7:10:7:11 | exit M1 (abnormal) | Finally.cs:7:10:7:11 | exit M1 (abnormal) | 1 |
@@ -464,9 +464,9 @@
 | Finally.cs:161:30:161:30 | Exception e | Finally.cs:161:39:161:54 | ... == ... | 5 |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:163:17:163:42 | call to method WriteLine | 6 |
 | Finally.cs:165:13:168:13 | catch {...} | Finally.cs:167:17:167:37 | call to method WriteLine | 5 |
-| Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | exit ExceptionA | 5 |
-| Finally.cs:173:11:173:20 | enter ExceptionB | Finally.cs:173:11:173:20 | exit ExceptionB | 5 |
-| Finally.cs:174:11:174:20 | enter ExceptionC | Finally.cs:174:11:174:20 | exit ExceptionC | 5 |
+| Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | exit ExceptionA | 7 |
+| Finally.cs:173:11:173:20 | enter ExceptionB | Finally.cs:173:11:173:20 | exit ExceptionB | 7 |
+| Finally.cs:174:11:174:20 | enter ExceptionC | Finally.cs:174:11:174:20 | exit ExceptionC | 7 |
 | Finally.cs:176:10:176:11 | enter M9 | Finally.cs:180:17:180:18 | access to parameter b1 | 6 |
 | Finally.cs:176:10:176:11 | exit M9 | Finally.cs:176:10:176:11 | exit M9 | 1 |
 | Finally.cs:176:10:176:11 | exit M9 (abnormal) | Finally.cs:176:10:176:11 | exit M9 (abnormal) | 1 |
@@ -511,7 +511,7 @@
 | Finally.cs:263:10:263:12 | exit M13 | Finally.cs:263:10:263:12 | exit M13 | 1 |
 | Finally.cs:263:10:263:12 | exit M13 (abnormal) | Finally.cs:263:10:263:12 | exit M13 (abnormal) | 1 |
 | Finally.cs:263:10:263:12 | exit M13 (normal) | Finally.cs:263:10:263:12 | exit M13 (normal) | 1 |
-| Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | exit Foreach | 5 |
+| Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | exit Foreach | 7 |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:8:29:8:32 | access to parameter args | 3 |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | exit M1 | 2 |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | 1 |
@@ -539,19 +539,22 @@
 | Foreach.cs:36:10:36:11 | exit M6 (normal) | Foreach.cs:36:10:36:11 | exit M6 | 2 |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
+| Initializers.cs:3:7:3:18 | enter <object initializer> | Initializers.cs:3:7:3:18 | exit <object initializer> | 14 |
 | Initializers.cs:3:7:3:18 | enter Initializers | Initializers.cs:3:7:3:18 | exit Initializers | 4 |
-| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 16 |
-| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 16 |
+| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 7 |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 7 |
 | Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 22 |
 | Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:16:18:16 | exit H | 5 |
-| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 11 |
-| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 12 |
+| Initializers.cs:20:11:20:23 | enter <object initializer> | Initializers.cs:20:11:20:23 | exit <object initializer> | 9 |
+| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 7 |
+| Initializers.cs:26:11:26:13 | enter <object initializer> | Initializers.cs:26:11:26:13 | exit <object initializer> | 6 |
+| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 11 |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 9 |
-| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 14 |
-| Initializers.cs:39:7:39:23 | enter IndexInitializers | Initializers.cs:39:7:39:23 | exit IndexInitializers | 5 |
-| Initializers.cs:41:11:41:18 | enter Compound | Initializers.cs:41:11:41:18 | exit Compound | 5 |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 13 |
+| Initializers.cs:39:7:39:23 | enter IndexInitializers | Initializers.cs:39:7:39:23 | exit IndexInitializers | 7 |
+| Initializers.cs:41:11:41:18 | enter Compound | Initializers.cs:41:11:41:18 | exit Compound | 7 |
 | Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | exit Test | 105 |
-| LoopUnrolling.cs:5:7:5:19 | enter LoopUnrolling | LoopUnrolling.cs:5:7:5:19 | exit LoopUnrolling | 5 |
+| LoopUnrolling.cs:5:7:5:19 | enter LoopUnrolling | LoopUnrolling.cs:5:7:5:19 | exit LoopUnrolling | 7 |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:9:13:9:28 | ... == ... | 7 |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 (normal) | LoopUnrolling.cs:7:10:7:11 | exit M1 | 2 |
 | LoopUnrolling.cs:10:13:10:19 | return ...; | LoopUnrolling.cs:10:13:10:19 | return ...; | 1 |
@@ -609,9 +612,9 @@
 | LoopUnrolling.cs:94:10:94:12 | exit M11 (normal) | LoopUnrolling.cs:94:10:94:12 | exit M11 | 2 |
 | LoopUnrolling.cs:97:9:100:9 | foreach (... ... in ...) ... | LoopUnrolling.cs:97:9:100:9 | foreach (... ... in ...) ... | 1 |
 | LoopUnrolling.cs:97:22:97:22 | String x | LoopUnrolling.cs:99:13:99:32 | call to method WriteLine | 5 |
-| MultiImplementationA.cs:4:7:4:8 | call to constructor Object | MultiImplementationA.cs:4:7:4:8 | {...} | 2 |
 | MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationA.cs:4:7:4:8 | enter C1 | 1 |
 | MultiImplementationA.cs:4:7:4:8 | exit C1 (normal) | MultiImplementationA.cs:4:7:4:8 | exit C1 | 2 |
+| MultiImplementationA.cs:4:7:4:8 | this access | MultiImplementationA.cs:4:7:4:8 | {...} | 4 |
 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | 1 |
 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 | 1 |
 | MultiImplementationA.cs:6:28:6:31 | null | MultiImplementationA.cs:6:22:6:31 | exit get_P1 (abnormal) | 3 |
@@ -624,6 +627,9 @@
 | MultiImplementationA.cs:8:16:8:16 | enter M | MultiImplementationA.cs:8:16:8:16 | enter M | 1 |
 | MultiImplementationA.cs:8:16:8:16 | exit M | MultiImplementationA.cs:8:16:8:16 | exit M | 1 |
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:16:8:16 | exit M (abnormal) | 3 |
+| MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | 1 |
+| MultiImplementationA.cs:11:7:11:8 | exit <object initializer> (normal) | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> | 2 |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:24:32:24:34 | ... = ... | 7 |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | exit get_Item (normal) | 2 |
 | MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | enter get_Item | 1 |
 | MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | exit get_Item | 1 |
@@ -637,9 +643,9 @@
 | MultiImplementationA.cs:16:17:16:18 | exit M1 (normal) | MultiImplementationA.cs:16:17:16:18 | exit M1 | 2 |
 | MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:18:9:18:22 | M2(...) | 2 |
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | exit M2 | 4 |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 14 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
+| MultiImplementationA.cs:20:12:20:13 | this access | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 9 |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | enter C2 | 1 |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | 2 |
 | MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:27:21:29 | {...} | 3 |
@@ -649,35 +655,36 @@
 | MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | MultiImplementationA.cs:23:28:23:35 | enter implicit conversion | 1 |
 | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion | 1 |
 | MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (normal) | 2 |
-| MultiImplementationA.cs:28:7:28:8 | call to constructor Object | MultiImplementationA.cs:28:7:28:8 | {...} | 2 |
 | MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationA.cs:28:7:28:8 | enter C3 | 1 |
 | MultiImplementationA.cs:28:7:28:8 | exit C3 (normal) | MultiImplementationA.cs:28:7:28:8 | exit C3 | 2 |
+| MultiImplementationA.cs:28:7:28:8 | this access | MultiImplementationA.cs:28:7:28:8 | {...} | 4 |
 | MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 | 5 |
-| MultiImplementationA.cs:34:15:34:16 | call to constructor Object | MultiImplementationA.cs:34:15:34:16 | {...} | 2 |
 | MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationA.cs:34:15:34:16 | enter C4 | 1 |
 | MultiImplementationA.cs:34:15:34:16 | exit C4 (normal) | MultiImplementationA.cs:34:15:34:16 | exit C4 | 2 |
+| MultiImplementationA.cs:34:15:34:16 | this access | MultiImplementationA.cs:34:15:34:16 | {...} | 4 |
 | MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationA.cs:36:9:36:10 | enter M1 | 1 |
 | MultiImplementationA.cs:36:9:36:10 | exit M1 | MultiImplementationA.cs:36:9:36:10 | exit M1 | 1 |
 | MultiImplementationA.cs:36:14:36:28 | {...} | MultiImplementationA.cs:36:9:36:10 | exit M1 (abnormal) | 4 |
 | MultiImplementationA.cs:37:9:37:10 | enter M2 | MultiImplementationA.cs:37:9:37:10 | exit M2 | 6 |
-| MultiImplementationB.cs:1:7:1:8 | call to constructor Object | MultiImplementationB.cs:1:7:1:8 | {...} | 2 |
+| MultiImplementationB.cs:1:7:1:8 | this access | MultiImplementationB.cs:1:7:1:8 | {...} | 4 |
 | MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 (normal) | 2 |
 | MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationA.cs:7:21:7:23 | exit get_P2 (normal) | 4 |
 | MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationA.cs:7:41:7:43 | exit set_P2 (normal) | 2 |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) | 2 |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:22:32:22:34 | ... = ... | 7 |
 | MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationA.cs:14:31:14:31 | exit get_Item (abnormal) | 3 |
 | MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationA.cs:15:36:15:38 | exit get_Item (abnormal) | 4 |
 | MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationB.cs:13:60:13:62 | {...} | 1 |
 | MultiImplementationB.cs:15:5:17:5 | {...} | MultiImplementationB.cs:16:9:16:31 | M2(...) | 2 |
 | MultiImplementationB.cs:16:9:16:31 | enter M2 | MultiImplementationB.cs:16:9:16:31 | exit M2 | 5 |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | 12 |
+| MultiImplementationB.cs:18:12:18:13 | this access | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | 7 |
 | MultiImplementationB.cs:19:24:19:24 | 1 | MultiImplementationB.cs:19:27:19:29 | {...} | 3 |
 | MultiImplementationB.cs:20:11:20:25 | {...} | MultiImplementationA.cs:22:6:22:7 | exit ~C2 (abnormal) | 4 |
 | MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (abnormal) | 3 |
-| MultiImplementationB.cs:25:7:25:8 | call to constructor Object | MultiImplementationB.cs:25:7:25:8 | {...} | 2 |
-| MultiImplementationB.cs:30:15:30:16 | call to constructor Object | MultiImplementationB.cs:30:15:30:16 | {...} | 2 |
+| MultiImplementationB.cs:25:7:25:8 | this access | MultiImplementationB.cs:25:7:25:8 | {...} | 4 |
+| MultiImplementationB.cs:30:15:30:16 | this access | MultiImplementationB.cs:30:15:30:16 | {...} | 4 |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | exit M1 (normal) | 2 |
-| NullCoalescing.cs:1:7:1:20 | enter NullCoalescing | NullCoalescing.cs:1:7:1:20 | exit NullCoalescing | 5 |
+| NullCoalescing.cs:1:7:1:20 | enter NullCoalescing | NullCoalescing.cs:1:7:1:20 | exit NullCoalescing | 7 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | 2 |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:9:3:10 | exit M1 | 3 |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 | 1 |
@@ -715,9 +722,10 @@
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:16:17:16:18 | "" | 5 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:17:13:17:19 | (...) ... | 5 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | exit M6 | 4 |
-| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | exit Partial | 12 |
-| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | exit Partial | 12 |
-| Patterns.cs:3:7:3:14 | enter Patterns | Patterns.cs:3:7:3:14 | exit Patterns | 5 |
+| PartialImplementationA.cs:1:15:1:21 | enter <object initializer> | PartialImplementationA.cs:1:15:1:21 | exit <object initializer> | 10 |
+| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | exit Partial | 7 |
+| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | exit Partial | 7 |
+| Patterns.cs:3:7:3:14 | enter Patterns | Patterns.cs:3:7:3:14 | exit Patterns | 7 |
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:8:18:8:23 | Int32 i1 | 8 |
 | Patterns.cs:8:13:8:23 | [false] ... is ... | Patterns.cs:8:13:8:23 | [false] ... is ... | 1 |
 | Patterns.cs:8:13:8:23 | [true] ... is ... | Patterns.cs:8:13:8:23 | [true] ... is ... | 1 |
@@ -811,7 +819,7 @@
 | Patterns.cs:95:29:95:38 | [no-match] ... or ... | Patterns.cs:95:29:95:38 | [no-match] ... or ... | 1 |
 | Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:36:95:38 | access to constant B | 1 |
 | Patterns.cs:96:9:98:9 | {...} | Patterns.cs:97:13:97:38 | call to method WriteLine | 4 |
-| PostDominance.cs:3:7:3:19 | enter PostDominance | PostDominance.cs:3:7:3:19 | exit PostDominance | 5 |
+| PostDominance.cs:3:7:3:19 | enter PostDominance | PostDominance.cs:3:7:3:19 | exit PostDominance | 7 |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:5:10:5:11 | exit M1 | 7 |
 | PostDominance.cs:10:10:10:11 | enter M2 | PostDominance.cs:12:18:12:21 | null | 5 |
 | PostDominance.cs:10:10:10:11 | exit M2 (normal) | PostDominance.cs:10:10:10:11 | exit M2 | 2 |
@@ -825,11 +833,11 @@
 | PostDominance.cs:19:13:19:21 | [true] ... is ... | PostDominance.cs:19:13:19:21 | [true] ... is ... | 1 |
 | PostDominance.cs:20:45:20:53 | nameof(...) | PostDominance.cs:17:10:17:11 | exit M3 (abnormal) | 4 |
 | PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:17:10:17:11 | exit M3 (normal) | 4 |
-| Qualifiers.cs:1:7:1:16 | enter Qualifiers | Qualifiers.cs:1:7:1:16 | exit Qualifiers | 5 |
+| Qualifiers.cs:1:7:1:16 | enter Qualifiers | Qualifiers.cs:1:7:1:16 | exit Qualifiers | 7 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | exit Method | 4 |
 | Qualifiers.cs:8:23:8:34 | enter StaticMethod | Qualifiers.cs:8:23:8:34 | exit StaticMethod | 4 |
 | Qualifiers.cs:10:10:10:10 | enter M | Qualifiers.cs:10:10:10:10 | exit M | 58 |
-| Switch.cs:3:7:3:12 | enter Switch | Switch.cs:3:7:3:12 | exit Switch | 5 |
+| Switch.cs:3:7:3:12 | enter Switch | Switch.cs:3:7:3:12 | exit Switch | 7 |
 | Switch.cs:5:10:5:11 | enter M1 | Switch.cs:5:10:5:11 | exit M1 | 6 |
 | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:14:18:14:20 | "a" | 6 |
 | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:10:10:10:11 | exit M2 | 1 |
@@ -947,20 +955,20 @@
 | Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:18:171:18 | 3 | 2 |
 | Switch.cs:172:17:172:46 | ...; | Switch.cs:173:17:173:22 | break; | 4 |
 | Switch.cs:174:13:174:20 | default: | Switch.cs:176:17:176:22 | break; | 5 |
-| TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses | 5 |
+| TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses | 7 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:18:7:22 | Int32 j | 13 |
 | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | 1 |
 | TypeAccesses.cs:7:13:7:22 | [true] ... is ... | TypeAccesses.cs:7:13:7:22 | [true] ... is ... | 1 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 5 |
-| VarDecls.cs:3:7:3:14 | enter VarDecls | VarDecls.cs:3:7:3:14 | exit VarDecls | 5 |
+| VarDecls.cs:3:7:3:14 | enter VarDecls | VarDecls.cs:3:7:3:14 | exit VarDecls | 7 |
 | VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:5:18:5:19 | exit M1 | 19 |
 | VarDecls.cs:13:12:13:13 | enter M2 | VarDecls.cs:13:12:13:13 | exit M2 | 13 |
 | VarDecls.cs:19:7:19:8 | enter M3 | VarDecls.cs:25:20:25:20 | access to parameter b | 11 |
 | VarDecls.cs:25:20:25:28 | ... ? ... : ... | VarDecls.cs:19:7:19:8 | exit M3 | 4 |
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:24:25:24 | access to local variable x | 1 |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:28:25:28 | access to local variable y | 1 |
-| VarDecls.cs:28:11:28:11 | enter C | VarDecls.cs:28:11:28:11 | exit C | 5 |
+| VarDecls.cs:28:11:28:11 | enter C | VarDecls.cs:28:11:28:11 | exit C | 7 |
 | VarDecls.cs:28:41:28:47 | enter Dispose | VarDecls.cs:28:41:28:47 | exit Dispose | 4 |
 | cflow.cs:5:17:5:20 | enter Main | cflow.cs:11:13:11:17 | ... > ... | 15 |
 | cflow.cs:5:17:5:20 | exit Main (normal) | cflow.cs:5:17:5:20 | exit Main | 2 |
@@ -1034,7 +1042,7 @@
 | cflow.cs:127:48:127:49 | "" | cflow.cs:127:48:127:49 | "" | 1 |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | access to field Field | 2 |
 | cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | exit set_Prop | 8 |
-| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 9 |
+| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 11 |
 | cflow.cs:134:5:134:15 | enter ControlFlow | cflow.cs:134:5:134:15 | exit ControlFlow | 9 |
 | cflow.cs:136:12:136:22 | enter ControlFlow | cflow.cs:136:12:136:22 | exit ControlFlow | 8 |
 | cflow.cs:138:40:138:40 | enter + | cflow.cs:138:40:138:40 | exit + | 9 |
@@ -1132,17 +1140,17 @@
 | cflow.cs:264:25:264:25 | access to local variable i | cflow.cs:264:25:264:30 | ... < ... | 3 |
 | cflow.cs:265:9:267:9 | {...} | cflow.cs:264:33:264:35 | ...++ | 5 |
 | cflow.cs:268:9:276:9 | try {...} ... | cflow.cs:275:13:275:41 | call to method WriteLine | 7 |
-| cflow.cs:282:5:282:18 | enter ControlFlowSub | cflow.cs:282:5:282:18 | exit ControlFlowSub | 5 |
+| cflow.cs:282:5:282:18 | enter ControlFlowSub | cflow.cs:282:5:282:18 | exit ControlFlowSub | 7 |
 | cflow.cs:284:5:284:18 | enter ControlFlowSub | cflow.cs:284:5:284:18 | exit ControlFlowSub | 5 |
 | cflow.cs:286:5:286:18 | enter ControlFlowSub | cflow.cs:286:5:286:18 | exit ControlFlowSub | 7 |
-| cflow.cs:289:7:289:18 | enter DelegateCall | cflow.cs:289:7:289:18 | exit DelegateCall | 5 |
+| cflow.cs:289:7:289:18 | enter DelegateCall | cflow.cs:289:7:289:18 | exit DelegateCall | 7 |
 | cflow.cs:291:12:291:12 | enter M | cflow.cs:291:12:291:12 | exit M | 6 |
-| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | exit NegationInConstructor | 5 |
+| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | exit NegationInConstructor | 7 |
 | cflow.cs:298:10:298:10 | enter M | cflow.cs:300:46:300:50 | ... > ... | 7 |
 | cflow.cs:300:44:300:51 | [false] !... | cflow.cs:300:44:300:51 | [false] !... | 1 |
 | cflow.cs:300:44:300:51 | [true] !... | cflow.cs:300:44:300:51 | [true] !... | 1 |
 | cflow.cs:300:44:300:64 | ... && ... | cflow.cs:298:10:298:10 | exit M | 5 |
 | cflow.cs:300:56:300:56 | access to parameter s | cflow.cs:300:56:300:64 | ... != ... | 3 |
-| cflow.cs:304:7:304:18 | enter LambdaGetter | cflow.cs:304:7:304:18 | exit LambdaGetter | 5 |
+| cflow.cs:304:7:304:18 | enter LambdaGetter | cflow.cs:304:7:304:18 | exit LambdaGetter | 7 |
 | cflow.cs:306:60:310:5 | enter (...) => ... | cflow.cs:306:60:310:5 | exit (...) => ... | 9 |
 | cflow.cs:306:60:310:5 | enter get__getter | cflow.cs:306:60:310:5 | exit get__getter | 4 |

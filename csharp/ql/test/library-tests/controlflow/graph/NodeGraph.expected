@@ -1,6 +1,8 @@
 | AccessorCalls.cs:1:7:1:19 | call to constructor Object | AccessorCalls.cs:1:7:1:19 | {...} |  |
-| AccessorCalls.cs:1:7:1:19 | enter AccessorCalls | AccessorCalls.cs:1:7:1:19 | call to constructor Object |  |
+| AccessorCalls.cs:1:7:1:19 | call to method <object initializer> | AccessorCalls.cs:1:7:1:19 | call to constructor Object |  |
+| AccessorCalls.cs:1:7:1:19 | enter AccessorCalls | AccessorCalls.cs:1:7:1:19 | this access |  |
 | AccessorCalls.cs:1:7:1:19 | exit AccessorCalls (normal) | AccessorCalls.cs:1:7:1:19 | exit AccessorCalls |  |
+| AccessorCalls.cs:1:7:1:19 | this access | AccessorCalls.cs:1:7:1:19 | call to method <object initializer> |  |
 | AccessorCalls.cs:1:7:1:19 | {...} | AccessorCalls.cs:1:7:1:19 | exit AccessorCalls (normal) |  |
 | AccessorCalls.cs:5:23:5:25 | enter get_Item | AccessorCalls.cs:5:30:5:30 | access to parameter i |  |
 | AccessorCalls.cs:5:23:5:25 | exit get_Item (normal) | AccessorCalls.cs:5:23:5:25 | exit get_Item |  |
@@ -304,8 +306,10 @@
 | AccessorCalls.cs:73:78:73:81 | dynamic access to element | AccessorCalls.cs:73:74:73:82 | (..., ...) |  |
 | AccessorCalls.cs:73:80:73:80 | 1 | AccessorCalls.cs:73:78:73:81 | dynamic access to element |  |
 | ArrayCreation.cs:1:7:1:19 | call to constructor Object | ArrayCreation.cs:1:7:1:19 | {...} |  |
-| ArrayCreation.cs:1:7:1:19 | enter ArrayCreation | ArrayCreation.cs:1:7:1:19 | call to constructor Object |  |
+| ArrayCreation.cs:1:7:1:19 | call to method <object initializer> | ArrayCreation.cs:1:7:1:19 | call to constructor Object |  |
+| ArrayCreation.cs:1:7:1:19 | enter ArrayCreation | ArrayCreation.cs:1:7:1:19 | this access |  |
 | ArrayCreation.cs:1:7:1:19 | exit ArrayCreation (normal) | ArrayCreation.cs:1:7:1:19 | exit ArrayCreation |  |
+| ArrayCreation.cs:1:7:1:19 | this access | ArrayCreation.cs:1:7:1:19 | call to method <object initializer> |  |
 | ArrayCreation.cs:1:7:1:19 | {...} | ArrayCreation.cs:1:7:1:19 | exit ArrayCreation (normal) |  |
 | ArrayCreation.cs:3:11:3:12 | enter M1 | ArrayCreation.cs:3:27:3:27 | 0 |  |
 | ArrayCreation.cs:3:11:3:12 | exit M1 (normal) | ArrayCreation.cs:3:11:3:12 | exit M1 |  |
@@ -336,8 +340,10 @@
 | ArrayCreation.cs:9:45:9:45 | 2 | ArrayCreation.cs:9:48:9:48 | 3 |  |
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:43:9:50 | { ..., ... } |  |
 | Assert.cs:5:7:5:17 | call to constructor Object | Assert.cs:5:7:5:17 | {...} |  |
-| Assert.cs:5:7:5:17 | enter AssertTests | Assert.cs:5:7:5:17 | call to constructor Object |  |
+| Assert.cs:5:7:5:17 | call to method <object initializer> | Assert.cs:5:7:5:17 | call to constructor Object |  |
+| Assert.cs:5:7:5:17 | enter AssertTests | Assert.cs:5:7:5:17 | this access |  |
 | Assert.cs:5:7:5:17 | exit AssertTests (normal) | Assert.cs:5:7:5:17 | exit AssertTests |  |
+| Assert.cs:5:7:5:17 | this access | Assert.cs:5:7:5:17 | call to method <object initializer> |  |
 | Assert.cs:5:7:5:17 | {...} | Assert.cs:5:7:5:17 | exit AssertTests (normal) |  |
 | Assert.cs:7:10:7:11 | enter M1 | Assert.cs:8:5:12:5 | {...} |  |
 | Assert.cs:7:10:7:11 | exit M1 (abnormal) | Assert.cs:7:10:7:11 | exit M1 |  |
@@ -795,8 +801,10 @@
 | Assert.cs:140:33:140:34 | access to parameter b3 | Assert.cs:140:9:140:35 | call to method AssertTrueFalse |  |
 | Assert.cs:141:9:141:15 | return ...; | Assert.cs:138:10:138:12 | exit M13 (normal) | return |
 | Assignments.cs:1:7:1:17 | call to constructor Object | Assignments.cs:1:7:1:17 | {...} |  |
-| Assignments.cs:1:7:1:17 | enter Assignments | Assignments.cs:1:7:1:17 | call to constructor Object |  |
+| Assignments.cs:1:7:1:17 | call to method <object initializer> | Assignments.cs:1:7:1:17 | call to constructor Object |  |
+| Assignments.cs:1:7:1:17 | enter Assignments | Assignments.cs:1:7:1:17 | this access |  |
 | Assignments.cs:1:7:1:17 | exit Assignments (normal) | Assignments.cs:1:7:1:17 | exit Assignments |  |
+| Assignments.cs:1:7:1:17 | this access | Assignments.cs:1:7:1:17 | call to method <object initializer> |  |
 | Assignments.cs:1:7:1:17 | {...} | Assignments.cs:1:7:1:17 | exit Assignments (normal) |  |
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:4:5:15:5 | {...} |  |
 | Assignments.cs:3:10:3:10 | exit M (normal) | Assignments.cs:3:10:3:10 | exit M |  |
@@ -840,8 +848,10 @@
 | Assignments.cs:19:9:19:17 | return ...; | Assignments.cs:17:40:17:40 | exit + (normal) | return |
 | Assignments.cs:19:16:19:16 | access to parameter x | Assignments.cs:19:9:19:17 | return ...; |  |
 | BreakInTry.cs:1:7:1:16 | call to constructor Object | BreakInTry.cs:1:7:1:16 | {...} |  |
-| BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | call to constructor Object |  |
+| BreakInTry.cs:1:7:1:16 | call to method <object initializer> | BreakInTry.cs:1:7:1:16 | call to constructor Object |  |
+| BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | this access |  |
 | BreakInTry.cs:1:7:1:16 | exit BreakInTry (normal) | BreakInTry.cs:1:7:1:16 | exit BreakInTry |  |
+| BreakInTry.cs:1:7:1:16 | this access | BreakInTry.cs:1:7:1:16 | call to method <object initializer> |  |
 | BreakInTry.cs:1:7:1:16 | {...} | BreakInTry.cs:1:7:1:16 | exit BreakInTry (normal) |  |
 | BreakInTry.cs:3:10:3:11 | enter M1 | BreakInTry.cs:4:5:18:5 | {...} |  |
 | BreakInTry.cs:3:10:3:11 | exit M1 (normal) | BreakInTry.cs:3:10:3:11 | exit M1 |  |
@@ -942,8 +952,10 @@
 | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:21:67:31 | ... == ... |  |
 | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:56:10:56:11 | exit M4 (normal) | break, return |
 | CompileTimeOperators.cs:3:7:3:26 | call to constructor Object | CompileTimeOperators.cs:3:7:3:26 | {...} |  |
-| CompileTimeOperators.cs:3:7:3:26 | enter CompileTimeOperators | CompileTimeOperators.cs:3:7:3:26 | call to constructor Object |  |
+| CompileTimeOperators.cs:3:7:3:26 | call to method <object initializer> | CompileTimeOperators.cs:3:7:3:26 | call to constructor Object |  |
+| CompileTimeOperators.cs:3:7:3:26 | enter CompileTimeOperators | CompileTimeOperators.cs:3:7:3:26 | this access |  |
 | CompileTimeOperators.cs:3:7:3:26 | exit CompileTimeOperators (normal) | CompileTimeOperators.cs:3:7:3:26 | exit CompileTimeOperators |  |
+| CompileTimeOperators.cs:3:7:3:26 | this access | CompileTimeOperators.cs:3:7:3:26 | call to method <object initializer> |  |
 | CompileTimeOperators.cs:3:7:3:26 | {...} | CompileTimeOperators.cs:3:7:3:26 | exit CompileTimeOperators (normal) |  |
 | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:6:5:8:5 | {...} |  |
 | CompileTimeOperators.cs:5:9:5:15 | exit Default (normal) | CompileTimeOperators.cs:5:9:5:15 | exit Default |  |
@@ -966,8 +978,10 @@
 | CompileTimeOperators.cs:22:9:22:25 | return ...; | CompileTimeOperators.cs:20:12:20:17 | exit Nameof (normal) | return |
 | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | CompileTimeOperators.cs:22:9:22:25 | return ...; |  |
 | CompileTimeOperators.cs:26:7:26:22 | call to constructor Object | CompileTimeOperators.cs:26:7:26:22 | {...} |  |
-| CompileTimeOperators.cs:26:7:26:22 | enter GotoInTryFinally | CompileTimeOperators.cs:26:7:26:22 | call to constructor Object |  |
+| CompileTimeOperators.cs:26:7:26:22 | call to method <object initializer> | CompileTimeOperators.cs:26:7:26:22 | call to constructor Object |  |
+| CompileTimeOperators.cs:26:7:26:22 | enter GotoInTryFinally | CompileTimeOperators.cs:26:7:26:22 | this access |  |
 | CompileTimeOperators.cs:26:7:26:22 | exit GotoInTryFinally (normal) | CompileTimeOperators.cs:26:7:26:22 | exit GotoInTryFinally |  |
+| CompileTimeOperators.cs:26:7:26:22 | this access | CompileTimeOperators.cs:26:7:26:22 | call to method <object initializer> |  |
 | CompileTimeOperators.cs:26:7:26:22 | {...} | CompileTimeOperators.cs:26:7:26:22 | exit GotoInTryFinally (normal) |  |
 | CompileTimeOperators.cs:28:10:28:10 | enter M | CompileTimeOperators.cs:29:5:41:5 | {...} |  |
 | CompileTimeOperators.cs:28:10:28:10 | exit M (abnormal) | CompileTimeOperators.cs:28:10:28:10 | exit M |  |
@@ -990,8 +1004,10 @@
 | CompileTimeOperators.cs:40:14:40:38 | ...; | CompileTimeOperators.cs:40:32:40:36 | "End" |  |
 | CompileTimeOperators.cs:40:32:40:36 | "End" | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine |  |
 | ConditionalAccess.cs:1:7:1:23 | call to constructor Object | ConditionalAccess.cs:1:7:1:23 | {...} |  |
-| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | call to constructor Object |  |
+| ConditionalAccess.cs:1:7:1:23 | call to method <object initializer> | ConditionalAccess.cs:1:7:1:23 | call to constructor Object |  |
+| ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | this access |  |
 | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess |  |
+| ConditionalAccess.cs:1:7:1:23 | this access | ConditionalAccess.cs:1:7:1:23 | call to method <object initializer> |  |
 | ConditionalAccess.cs:1:7:1:23 | {...} | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess (normal) |  |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i |  |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | ConditionalAccess.cs:3:12:3:13 | exit M1 |  |
@@ -1085,8 +1101,10 @@
 | ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:70:41:78 | ... + ... |  |
 | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:70:41:83 | ... + ... |  |
 | Conditions.cs:1:7:1:16 | call to constructor Object | Conditions.cs:1:7:1:16 | {...} |  |
-| Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | call to constructor Object |  |
+| Conditions.cs:1:7:1:16 | call to method <object initializer> | Conditions.cs:1:7:1:16 | call to constructor Object |  |
+| Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | this access |  |
 | Conditions.cs:1:7:1:16 | exit Conditions (normal) | Conditions.cs:1:7:1:16 | exit Conditions |  |
+| Conditions.cs:1:7:1:16 | this access | Conditions.cs:1:7:1:16 | call to method <object initializer> |  |
 | Conditions.cs:1:7:1:16 | {...} | Conditions.cs:1:7:1:16 | exit Conditions (normal) |  |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:4:5:9:5 | {...} |  |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr (normal) | Conditions.cs:3:10:3:19 | exit IncrOrDecr |  |
@@ -1427,8 +1445,10 @@
 | Conditions.cs:149:44:149:46 | {...} | Conditions.cs:149:38:149:47 | $"..." |  |
 | Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:149:44:149:46 | {...} |  |
 | ExitMethods.cs:6:7:6:17 | call to constructor Object | ExitMethods.cs:6:7:6:17 | {...} |  |
-| ExitMethods.cs:6:7:6:17 | enter ExitMethods | ExitMethods.cs:6:7:6:17 | call to constructor Object |  |
+| ExitMethods.cs:6:7:6:17 | call to method <object initializer> | ExitMethods.cs:6:7:6:17 | call to constructor Object |  |
+| ExitMethods.cs:6:7:6:17 | enter ExitMethods | ExitMethods.cs:6:7:6:17 | this access |  |
 | ExitMethods.cs:6:7:6:17 | exit ExitMethods (normal) | ExitMethods.cs:6:7:6:17 | exit ExitMethods |  |
+| ExitMethods.cs:6:7:6:17 | this access | ExitMethods.cs:6:7:6:17 | call to method <object initializer> |  |
 | ExitMethods.cs:6:7:6:17 | {...} | ExitMethods.cs:6:7:6:17 | exit ExitMethods (normal) |  |
 | ExitMethods.cs:8:10:8:11 | enter M1 | ExitMethods.cs:9:5:12:5 | {...} |  |
 | ExitMethods.cs:8:10:8:11 | exit M1 (normal) | ExitMethods.cs:8:10:8:11 | exit M1 |  |
@@ -1639,8 +1659,10 @@
 | Extensions.cs:25:23:25:32 | access to method Parse | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> |  |
 | Extensions.cs:25:23:25:32 | delegate creation of type Func<String,Boolean> | Extensions.cs:25:9:25:33 | call to method ToBool |  |
 | Finally.cs:3:14:3:20 | call to constructor Object | Finally.cs:3:14:3:20 | {...} |  |
-| Finally.cs:3:14:3:20 | enter Finally | Finally.cs:3:14:3:20 | call to constructor Object |  |
+| Finally.cs:3:14:3:20 | call to method <object initializer> | Finally.cs:3:14:3:20 | call to constructor Object |  |
+| Finally.cs:3:14:3:20 | enter Finally | Finally.cs:3:14:3:20 | this access |  |
 | Finally.cs:3:14:3:20 | exit Finally (normal) | Finally.cs:3:14:3:20 | exit Finally |  |
+| Finally.cs:3:14:3:20 | this access | Finally.cs:3:14:3:20 | call to method <object initializer> |  |
 | Finally.cs:3:14:3:20 | {...} | Finally.cs:3:14:3:20 | exit Finally (normal) |  |
 | Finally.cs:7:10:7:11 | enter M1 | Finally.cs:8:5:17:5 | {...} |  |
 | Finally.cs:7:10:7:11 | exit M1 (abnormal) | Finally.cs:7:10:7:11 | exit M1 |  |
@@ -1906,16 +1928,22 @@
 | Finally.cs:167:17:167:38 | ...; | Finally.cs:167:35:167:36 | "" |  |
 | Finally.cs:167:35:167:36 | "" | Finally.cs:167:17:167:37 | call to method WriteLine |  |
 | Finally.cs:172:11:172:20 | call to constructor Exception | Finally.cs:172:11:172:20 | {...} |  |
-| Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | call to constructor Exception |  |
+| Finally.cs:172:11:172:20 | call to method <object initializer> | Finally.cs:172:11:172:20 | call to constructor Exception |  |
+| Finally.cs:172:11:172:20 | enter ExceptionA | Finally.cs:172:11:172:20 | this access |  |
 | Finally.cs:172:11:172:20 | exit ExceptionA (normal) | Finally.cs:172:11:172:20 | exit ExceptionA |  |
+| Finally.cs:172:11:172:20 | this access | Finally.cs:172:11:172:20 | call to method <object initializer> |  |
 | Finally.cs:172:11:172:20 | {...} | Finally.cs:172:11:172:20 | exit ExceptionA (normal) |  |
 | Finally.cs:173:11:173:20 | call to constructor Exception | Finally.cs:173:11:173:20 | {...} |  |
-| Finally.cs:173:11:173:20 | enter ExceptionB | Finally.cs:173:11:173:20 | call to constructor Exception |  |
+| Finally.cs:173:11:173:20 | call to method <object initializer> | Finally.cs:173:11:173:20 | call to constructor Exception |  |
+| Finally.cs:173:11:173:20 | enter ExceptionB | Finally.cs:173:11:173:20 | this access |  |
 | Finally.cs:173:11:173:20 | exit ExceptionB (normal) | Finally.cs:173:11:173:20 | exit ExceptionB |  |
+| Finally.cs:173:11:173:20 | this access | Finally.cs:173:11:173:20 | call to method <object initializer> |  |
 | Finally.cs:173:11:173:20 | {...} | Finally.cs:173:11:173:20 | exit ExceptionB (normal) |  |
 | Finally.cs:174:11:174:20 | call to constructor Exception | Finally.cs:174:11:174:20 | {...} |  |
-| Finally.cs:174:11:174:20 | enter ExceptionC | Finally.cs:174:11:174:20 | call to constructor Exception |  |
+| Finally.cs:174:11:174:20 | call to method <object initializer> | Finally.cs:174:11:174:20 | call to constructor Exception |  |
+| Finally.cs:174:11:174:20 | enter ExceptionC | Finally.cs:174:11:174:20 | this access |  |
 | Finally.cs:174:11:174:20 | exit ExceptionC (normal) | Finally.cs:174:11:174:20 | exit ExceptionC |  |
+| Finally.cs:174:11:174:20 | this access | Finally.cs:174:11:174:20 | call to method <object initializer> |  |
 | Finally.cs:174:11:174:20 | {...} | Finally.cs:174:11:174:20 | exit ExceptionC (normal) |  |
 | Finally.cs:176:10:176:11 | enter M9 | Finally.cs:177:5:193:5 | {...} |  |
 | Finally.cs:176:10:176:11 | exit M9 (abnormal) | Finally.cs:176:10:176:11 | exit M9 |  |
@@ -2067,8 +2095,10 @@
 | Finally.cs:272:13:272:19 | ...; | Finally.cs:272:13:272:13 | access to parameter i |  |
 | Finally.cs:272:18:272:18 | 3 | Finally.cs:272:13:272:18 | ... + ... |  |
 | Foreach.cs:4:7:4:13 | call to constructor Object | Foreach.cs:4:7:4:13 | {...} |  |
-| Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | call to constructor Object |  |
+| Foreach.cs:4:7:4:13 | call to method <object initializer> | Foreach.cs:4:7:4:13 | call to constructor Object |  |
+| Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | this access |  |
 | Foreach.cs:4:7:4:13 | exit Foreach (normal) | Foreach.cs:4:7:4:13 | exit Foreach |  |
+| Foreach.cs:4:7:4:13 | this access | Foreach.cs:4:7:4:13 | call to method <object initializer> |  |
 | Foreach.cs:4:7:4:13 | {...} | Foreach.cs:4:7:4:13 | exit Foreach (normal) |  |
 | Foreach.cs:6:10:6:11 | enter M1 | Foreach.cs:7:5:10:5 | {...} |  |
 | Foreach.cs:6:10:6:11 | exit M1 (normal) | Foreach.cs:6:10:6:11 | exit M1 |  |
@@ -2129,38 +2159,33 @@
 | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:18:38:34 | (..., ...) |  |
 | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |  |
 | Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |  |
+| Initializers.cs:3:7:3:18 | enter <object initializer> | Initializers.cs:5:9:5:9 | this access |  |
 | Initializers.cs:3:7:3:18 | enter Initializers | Initializers.cs:3:7:3:18 | {...} |  |
+| Initializers.cs:3:7:3:18 | exit <object initializer> (normal) | Initializers.cs:3:7:3:18 | exit <object initializer> |  |
 | Initializers.cs:3:7:3:18 | exit Initializers (normal) | Initializers.cs:3:7:3:18 | exit Initializers |  |
 | Initializers.cs:3:7:3:18 | {...} | Initializers.cs:3:7:3:18 | exit Initializers (normal) |  |
 | Initializers.cs:5:9:5:9 | this access | Initializers.cs:5:13:5:13 | access to field H |  |
-| Initializers.cs:5:9:5:9 | this access | Initializers.cs:5:13:5:13 | access to field H |  |
-| Initializers.cs:5:9:5:17 | ... = ... | Initializers.cs:6:9:6:9 | this access |  |
 | Initializers.cs:5:9:5:17 | ... = ... | Initializers.cs:6:9:6:9 | this access |  |
 | Initializers.cs:5:13:5:13 | access to field H | Initializers.cs:5:17:5:17 | 1 |  |
-| Initializers.cs:5:13:5:13 | access to field H | Initializers.cs:5:17:5:17 | 1 |  |
-| Initializers.cs:5:13:5:17 | ... + ... | Initializers.cs:5:9:5:17 | ... = ... |  |
 | Initializers.cs:5:13:5:17 | ... + ... | Initializers.cs:5:9:5:17 | ... = ... |  |
 | Initializers.cs:5:17:5:17 | 1 | Initializers.cs:5:13:5:17 | ... + ... |  |
-| Initializers.cs:5:17:5:17 | 1 | Initializers.cs:5:13:5:17 | ... + ... |  |
-| Initializers.cs:6:9:6:9 | access to property G | Initializers.cs:6:25:6:31 | ... = ... |  |
 | Initializers.cs:6:9:6:9 | access to property G | Initializers.cs:6:25:6:31 | ... = ... |  |
 | Initializers.cs:6:9:6:9 | this access | Initializers.cs:6:27:6:27 | access to field H |  |
-| Initializers.cs:6:9:6:9 | this access | Initializers.cs:6:27:6:27 | access to field H |  |
-| Initializers.cs:6:25:6:31 | ... = ... | Initializers.cs:8:20:8:22 | {...} |  |
-| Initializers.cs:6:25:6:31 | ... = ... | Initializers.cs:10:28:10:30 | {...} |  |
-| Initializers.cs:6:27:6:27 | access to field H | Initializers.cs:6:31:6:31 | 2 |  |
+| Initializers.cs:6:25:6:31 | ... = ... | Initializers.cs:3:7:3:18 | exit <object initializer> (normal) |  |
 | Initializers.cs:6:27:6:27 | access to field H | Initializers.cs:6:31:6:31 | 2 |  |
 | Initializers.cs:6:27:6:31 | ... + ... | Initializers.cs:6:9:6:9 | access to property G |  |
-| Initializers.cs:6:27:6:31 | ... + ... | Initializers.cs:6:9:6:9 | access to property G |  |
 | Initializers.cs:6:31:6:31 | 2 | Initializers.cs:6:27:6:31 | ... + ... |  |
-| Initializers.cs:6:31:6:31 | 2 | Initializers.cs:6:27:6:31 | ... + ... |  |
-| Initializers.cs:8:5:8:16 | call to constructor Object | Initializers.cs:5:9:5:9 | this access |  |
-| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | call to constructor Object |  |
+| Initializers.cs:8:5:8:16 | call to constructor Object | Initializers.cs:8:20:8:22 | {...} |  |
+| Initializers.cs:8:5:8:16 | call to method <object initializer> | Initializers.cs:8:5:8:16 | call to constructor Object |  |
+| Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | this access |  |
 | Initializers.cs:8:5:8:16 | exit Initializers (normal) | Initializers.cs:8:5:8:16 | exit Initializers |  |
+| Initializers.cs:8:5:8:16 | this access | Initializers.cs:8:5:8:16 | call to method <object initializer> |  |
 | Initializers.cs:8:20:8:22 | {...} | Initializers.cs:8:5:8:16 | exit Initializers (normal) |  |
-| Initializers.cs:10:5:10:16 | call to constructor Object | Initializers.cs:5:9:5:9 | this access |  |
-| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | call to constructor Object |  |
+| Initializers.cs:10:5:10:16 | call to constructor Object | Initializers.cs:10:28:10:30 | {...} |  |
+| Initializers.cs:10:5:10:16 | call to method <object initializer> | Initializers.cs:10:5:10:16 | call to constructor Object |  |
+| Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | this access |  |
 | Initializers.cs:10:5:10:16 | exit Initializers (normal) | Initializers.cs:10:5:10:16 | exit Initializers |  |
+| Initializers.cs:10:5:10:16 | this access | Initializers.cs:10:5:10:16 | call to method <object initializer> |  |
 | Initializers.cs:10:28:10:30 | {...} | Initializers.cs:10:5:10:16 | exit Initializers (normal) |  |
 | Initializers.cs:12:10:12:10 | enter M | Initializers.cs:13:5:16:5 | {...} |  |
 | Initializers.cs:12:10:12:10 | exit M (normal) | Initializers.cs:12:10:12:10 | exit M |  |
@@ -2187,25 +2212,30 @@
 | Initializers.cs:18:16:18:16 | exit H (normal) | Initializers.cs:18:16:18:16 | exit H |  |
 | Initializers.cs:18:16:18:20 | ... = ... | Initializers.cs:18:16:18:16 | exit H (normal) |  |
 | Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... |  |
-| Initializers.cs:20:11:20:23 | call to constructor Object | Initializers.cs:22:23:22:23 | this access |  |
-| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | call to constructor Object |  |
+| Initializers.cs:20:11:20:23 | call to constructor Object | Initializers.cs:20:11:20:23 | {...} |  |
+| Initializers.cs:20:11:20:23 | call to method <object initializer> | Initializers.cs:20:11:20:23 | call to constructor Object |  |
+| Initializers.cs:20:11:20:23 | enter <object initializer> | Initializers.cs:22:23:22:23 | this access |  |
+| Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | this access |  |
+| Initializers.cs:20:11:20:23 | exit <object initializer> (normal) | Initializers.cs:20:11:20:23 | exit <object initializer> |  |
 | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) | Initializers.cs:20:11:20:23 | exit NoConstructor |  |
+| Initializers.cs:20:11:20:23 | this access | Initializers.cs:20:11:20:23 | call to method <object initializer> |  |
 | Initializers.cs:20:11:20:23 | {...} | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) |  |
 | Initializers.cs:22:23:22:23 | this access | Initializers.cs:22:27:22:27 | 0 |  |
 | Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:23:23:23:23 | this access |  |
 | Initializers.cs:22:27:22:27 | 0 | Initializers.cs:22:23:22:27 | ... = ... |  |
 | Initializers.cs:23:23:23:23 | this access | Initializers.cs:23:27:23:27 | 1 |  |
-| Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:20:11:20:23 | {...} |  |
+| Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:20:11:20:23 | exit <object initializer> (normal) |  |
 | Initializers.cs:23:27:23:27 | 1 | Initializers.cs:23:23:23:27 | ... = ... |  |
+| Initializers.cs:26:11:26:13 | enter <object initializer> | Initializers.cs:28:13:28:13 | this access |  |
+| Initializers.cs:26:11:26:13 | exit <object initializer> (normal) | Initializers.cs:26:11:26:13 | exit <object initializer> |  |
 | Initializers.cs:28:13:28:13 | this access | Initializers.cs:28:17:28:17 | 2 |  |
-| Initializers.cs:28:13:28:13 | this access | Initializers.cs:28:17:28:17 | 2 |  |
-| Initializers.cs:28:13:28:17 | ... = ... | Initializers.cs:31:24:31:33 | {...} |  |
-| Initializers.cs:28:13:28:17 | ... = ... | Initializers.cs:35:27:35:40 | {...} |  |
+| Initializers.cs:28:13:28:17 | ... = ... | Initializers.cs:26:11:26:13 | exit <object initializer> (normal) |  |
 | Initializers.cs:28:17:28:17 | 2 | Initializers.cs:28:13:28:17 | ... = ... |  |
-| Initializers.cs:28:17:28:17 | 2 | Initializers.cs:28:13:28:17 | ... = ... |  |
-| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:17:31:20 | call to constructor NoConstructor |  |
+| Initializers.cs:31:9:31:11 | call to method <object initializer> | Initializers.cs:31:17:31:20 | call to constructor NoConstructor |  |
+| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | this access |  |
 | Initializers.cs:31:9:31:11 | exit Sub (normal) | Initializers.cs:31:9:31:11 | exit Sub |  |
-| Initializers.cs:31:17:31:20 | call to constructor NoConstructor | Initializers.cs:28:13:28:13 | this access |  |
+| Initializers.cs:31:9:31:11 | this access | Initializers.cs:31:9:31:11 | call to method <object initializer> |  |
+| Initializers.cs:31:17:31:20 | call to constructor NoConstructor | Initializers.cs:31:24:31:33 | {...} |  |
 | Initializers.cs:31:24:31:33 | {...} | Initializers.cs:31:26:31:31 | ...; |  |
 | Initializers.cs:31:26:31:26 | this access | Initializers.cs:31:30:31:30 | 3 |  |
 | Initializers.cs:31:26:31:30 | ... = ... | Initializers.cs:31:9:31:11 | exit Sub (normal) |  |
@@ -2219,9 +2249,11 @@
 | Initializers.cs:33:31:33:35 | ... = ... | Initializers.cs:33:9:33:11 | exit Sub (normal) |  |
 | Initializers.cs:33:31:33:36 | ...; | Initializers.cs:33:31:33:31 | this access |  |
 | Initializers.cs:33:35:33:35 | access to parameter i | Initializers.cs:33:31:33:35 | ... = ... |  |
-| Initializers.cs:35:9:35:11 | call to constructor NoConstructor | Initializers.cs:28:13:28:13 | this access |  |
-| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | call to constructor NoConstructor |  |
+| Initializers.cs:35:9:35:11 | call to constructor NoConstructor | Initializers.cs:35:27:35:40 | {...} |  |
+| Initializers.cs:35:9:35:11 | call to method <object initializer> | Initializers.cs:35:9:35:11 | call to constructor NoConstructor |  |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | this access |  |
 | Initializers.cs:35:9:35:11 | exit Sub (normal) | Initializers.cs:35:9:35:11 | exit Sub |  |
+| Initializers.cs:35:9:35:11 | this access | Initializers.cs:35:9:35:11 | call to method <object initializer> |  |
 | Initializers.cs:35:27:35:40 | {...} | Initializers.cs:35:29:35:38 | ...; |  |
 | Initializers.cs:35:29:35:29 | this access | Initializers.cs:35:33:35:33 | access to parameter i |  |
 | Initializers.cs:35:29:35:37 | ... = ... | Initializers.cs:35:9:35:11 | exit Sub (normal) |  |
@@ -2230,12 +2262,16 @@
 | Initializers.cs:35:33:35:37 | ... + ... | Initializers.cs:35:29:35:37 | ... = ... |  |
 | Initializers.cs:35:37:35:37 | access to parameter j | Initializers.cs:35:33:35:37 | ... + ... |  |
 | Initializers.cs:39:7:39:23 | call to constructor Object | Initializers.cs:39:7:39:23 | {...} |  |
-| Initializers.cs:39:7:39:23 | enter IndexInitializers | Initializers.cs:39:7:39:23 | call to constructor Object |  |
+| Initializers.cs:39:7:39:23 | call to method <object initializer> | Initializers.cs:39:7:39:23 | call to constructor Object |  |
+| Initializers.cs:39:7:39:23 | enter IndexInitializers | Initializers.cs:39:7:39:23 | this access |  |
 | Initializers.cs:39:7:39:23 | exit IndexInitializers (normal) | Initializers.cs:39:7:39:23 | exit IndexInitializers |  |
+| Initializers.cs:39:7:39:23 | this access | Initializers.cs:39:7:39:23 | call to method <object initializer> |  |
 | Initializers.cs:39:7:39:23 | {...} | Initializers.cs:39:7:39:23 | exit IndexInitializers (normal) |  |
 | Initializers.cs:41:11:41:18 | call to constructor Object | Initializers.cs:41:11:41:18 | {...} |  |
-| Initializers.cs:41:11:41:18 | enter Compound | Initializers.cs:41:11:41:18 | call to constructor Object |  |
+| Initializers.cs:41:11:41:18 | call to method <object initializer> | Initializers.cs:41:11:41:18 | call to constructor Object |  |
+| Initializers.cs:41:11:41:18 | enter Compound | Initializers.cs:41:11:41:18 | this access |  |
 | Initializers.cs:41:11:41:18 | exit Compound (normal) | Initializers.cs:41:11:41:18 | exit Compound |  |
+| Initializers.cs:41:11:41:18 | this access | Initializers.cs:41:11:41:18 | call to method <object initializer> |  |
 | Initializers.cs:41:11:41:18 | {...} | Initializers.cs:41:11:41:18 | exit Compound (normal) |  |
 | Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:52:5:66:5 | {...} |  |
 | Initializers.cs:51:10:51:13 | exit Test (normal) | Initializers.cs:51:10:51:13 | exit Test |  |
@@ -2342,8 +2378,10 @@
 | Initializers.cs:64:54:64:54 | 0 | Initializers.cs:64:50:64:54 | ... + ... |  |
 | Initializers.cs:64:59:64:61 | "1" | Initializers.cs:64:46:64:61 | ... = ... |  |
 | LoopUnrolling.cs:5:7:5:19 | call to constructor Object | LoopUnrolling.cs:5:7:5:19 | {...} |  |
-| LoopUnrolling.cs:5:7:5:19 | enter LoopUnrolling | LoopUnrolling.cs:5:7:5:19 | call to constructor Object |  |
+| LoopUnrolling.cs:5:7:5:19 | call to method <object initializer> | LoopUnrolling.cs:5:7:5:19 | call to constructor Object |  |
+| LoopUnrolling.cs:5:7:5:19 | enter LoopUnrolling | LoopUnrolling.cs:5:7:5:19 | this access |  |
 | LoopUnrolling.cs:5:7:5:19 | exit LoopUnrolling (normal) | LoopUnrolling.cs:5:7:5:19 | exit LoopUnrolling |  |
+| LoopUnrolling.cs:5:7:5:19 | this access | LoopUnrolling.cs:5:7:5:19 | call to method <object initializer> |  |
 | LoopUnrolling.cs:5:7:5:19 | {...} | LoopUnrolling.cs:5:7:5:19 | exit LoopUnrolling (normal) |  |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:8:5:13:5 | {...} |  |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 (normal) | LoopUnrolling.cs:7:10:7:11 | exit M1 |  |
@@ -2558,9 +2596,11 @@
 | LoopUnrolling.cs:99:13:99:33 | ...; | LoopUnrolling.cs:99:31:99:31 | access to local variable x |  |
 | LoopUnrolling.cs:99:31:99:31 | access to local variable x | LoopUnrolling.cs:99:13:99:32 | call to method WriteLine |  |
 | MultiImplementationA.cs:4:7:4:8 | call to constructor Object | MultiImplementationA.cs:4:7:4:8 | {...} |  |
-| MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationA.cs:4:7:4:8 | call to constructor Object |  |
-| MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationB.cs:1:7:1:8 | call to constructor Object |  |
+| MultiImplementationA.cs:4:7:4:8 | call to method <object initializer> | MultiImplementationA.cs:4:7:4:8 | call to constructor Object |  |
+| MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationA.cs:4:7:4:8 | this access |  |
+| MultiImplementationA.cs:4:7:4:8 | enter C1 | MultiImplementationB.cs:1:7:1:8 | this access |  |
 | MultiImplementationA.cs:4:7:4:8 | exit C1 (normal) | MultiImplementationA.cs:4:7:4:8 | exit C1 |  |
+| MultiImplementationA.cs:4:7:4:8 | this access | MultiImplementationA.cs:4:7:4:8 | call to method <object initializer> |  |
 | MultiImplementationA.cs:4:7:4:8 | {...} | MultiImplementationA.cs:4:7:4:8 | exit C1 (normal) |  |
 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationA.cs:6:28:6:31 | null |  |
 | MultiImplementationA.cs:6:22:6:31 | enter get_P1 | MultiImplementationB.cs:3:22:3:22 | 0 |  |
@@ -2588,6 +2628,9 @@
 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) | MultiImplementationA.cs:8:16:8:16 | exit M |  |
 | MultiImplementationA.cs:8:23:8:32 | throw ... | MultiImplementationA.cs:8:16:8:16 | exit M (abnormal) | exception |
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:23:8:32 | throw ... |  |
+| MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | MultiImplementationA.cs:13:16:13:16 | this access |  |
+| MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | MultiImplementationB.cs:11:16:11:16 | this access |  |
+| MultiImplementationA.cs:11:7:11:8 | exit <object initializer> (normal) | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> |  |
 | MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:13:20:13:20 | 0 |  |
 | MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access |  |
 | MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:13:16:13:20 | ... = ... |  |
@@ -2615,11 +2658,13 @@
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:21:18:21 | 0 |  |
 | MultiImplementationA.cs:18:9:18:22 | exit M2 (normal) | MultiImplementationA.cs:18:9:18:22 | exit M2 |  |
 | MultiImplementationA.cs:18:21:18:21 | 0 | MultiImplementationA.cs:18:9:18:22 | exit M2 (normal) |  |
-| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:13:16:13:16 | this access |  |
-| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object |  |
-| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | call to constructor Object |  |
+| MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:22:20:31 | {...} |  |
+| MultiImplementationA.cs:20:12:20:13 | call to method <object initializer> | MultiImplementationA.cs:20:12:20:13 | call to constructor Object |  |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | this access |  |
+| MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationB.cs:18:12:18:13 | this access |  |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | MultiImplementationA.cs:20:12:20:13 | exit C2 |  |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | MultiImplementationA.cs:20:12:20:13 | exit C2 |  |
+| MultiImplementationA.cs:20:12:20:13 | this access | MultiImplementationA.cs:20:12:20:13 | call to method <object initializer> |  |
 | MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:24:20:29 | ...; |  |
 | MultiImplementationA.cs:20:24:20:24 | this access | MultiImplementationA.cs:20:28:20:28 | access to parameter i |  |
 | MultiImplementationA.cs:20:24:20:28 | ... = ... | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) |  |
@@ -2643,21 +2688,25 @@
 | MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | exit implicit conversion (normal) |  |
 | MultiImplementationA.cs:24:16:24:16 | access to property P | MultiImplementationA.cs:24:32:24:34 | ... = ... |  |
 | MultiImplementationA.cs:24:16:24:16 | this access | MultiImplementationA.cs:24:34:24:34 | 0 |  |
-| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:20:22:20:31 | {...} |  |
+| MultiImplementationA.cs:24:32:24:34 | ... = ... | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> (normal) |  |
 | MultiImplementationA.cs:24:34:24:34 | 0 | MultiImplementationA.cs:24:16:24:16 | access to property P |  |
 | MultiImplementationA.cs:28:7:28:8 | call to constructor Object | MultiImplementationA.cs:28:7:28:8 | {...} |  |
-| MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationA.cs:28:7:28:8 | call to constructor Object |  |
-| MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationB.cs:25:7:25:8 | call to constructor Object |  |
+| MultiImplementationA.cs:28:7:28:8 | call to method <object initializer> | MultiImplementationA.cs:28:7:28:8 | call to constructor Object |  |
+| MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationA.cs:28:7:28:8 | this access |  |
+| MultiImplementationA.cs:28:7:28:8 | enter C3 | MultiImplementationB.cs:25:7:25:8 | this access |  |
 | MultiImplementationA.cs:28:7:28:8 | exit C3 (normal) | MultiImplementationA.cs:28:7:28:8 | exit C3 |  |
+| MultiImplementationA.cs:28:7:28:8 | this access | MultiImplementationA.cs:28:7:28:8 | call to method <object initializer> |  |
 | MultiImplementationA.cs:28:7:28:8 | {...} | MultiImplementationA.cs:28:7:28:8 | exit C3 (normal) |  |
 | MultiImplementationA.cs:30:21:30:23 | enter get_P3 | MultiImplementationA.cs:30:34:30:37 | null |  |
 | MultiImplementationA.cs:30:21:30:23 | exit get_P3 (abnormal) | MultiImplementationA.cs:30:21:30:23 | exit get_P3 |  |
 | MultiImplementationA.cs:30:28:30:37 | throw ... | MultiImplementationA.cs:30:21:30:23 | exit get_P3 (abnormal) | exception |
 | MultiImplementationA.cs:30:34:30:37 | null | MultiImplementationA.cs:30:28:30:37 | throw ... |  |
 | MultiImplementationA.cs:34:15:34:16 | call to constructor Object | MultiImplementationA.cs:34:15:34:16 | {...} |  |
-| MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationA.cs:34:15:34:16 | call to constructor Object |  |
-| MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationB.cs:30:15:30:16 | call to constructor Object |  |
+| MultiImplementationA.cs:34:15:34:16 | call to method <object initializer> | MultiImplementationA.cs:34:15:34:16 | call to constructor Object |  |
+| MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationA.cs:34:15:34:16 | this access |  |
+| MultiImplementationA.cs:34:15:34:16 | enter C4 | MultiImplementationB.cs:30:15:30:16 | this access |  |
 | MultiImplementationA.cs:34:15:34:16 | exit C4 (normal) | MultiImplementationA.cs:34:15:34:16 | exit C4 |  |
+| MultiImplementationA.cs:34:15:34:16 | this access | MultiImplementationA.cs:34:15:34:16 | call to method <object initializer> |  |
 | MultiImplementationA.cs:34:15:34:16 | {...} | MultiImplementationA.cs:34:15:34:16 | exit C4 (normal) |  |
 | MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationA.cs:36:14:36:28 | {...} |  |
 | MultiImplementationA.cs:36:9:36:10 | enter M1 | MultiImplementationB.cs:32:17:32:17 | 0 |  |
@@ -2672,6 +2721,8 @@
 | MultiImplementationA.cs:37:16:37:26 | throw ...; | MultiImplementationA.cs:37:9:37:10 | exit M2 (abnormal) | exception |
 | MultiImplementationA.cs:37:22:37:25 | null | MultiImplementationA.cs:37:16:37:26 | throw ...; |  |
 | MultiImplementationB.cs:1:7:1:8 | call to constructor Object | MultiImplementationB.cs:1:7:1:8 | {...} |  |
+| MultiImplementationB.cs:1:7:1:8 | call to method <object initializer> | MultiImplementationB.cs:1:7:1:8 | call to constructor Object |  |
+| MultiImplementationB.cs:1:7:1:8 | this access | MultiImplementationB.cs:1:7:1:8 | call to method <object initializer> |  |
 | MultiImplementationB.cs:1:7:1:8 | {...} | MultiImplementationA.cs:4:7:4:8 | exit C1 (normal) |  |
 | MultiImplementationB.cs:3:22:3:22 | 0 | MultiImplementationA.cs:6:22:6:31 | exit get_P1 (normal) |  |
 | MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationB.cs:4:34:4:34 | 1 |  |
@@ -2694,7 +2745,9 @@
 | MultiImplementationB.cs:16:9:16:31 | exit M2 (abnormal) | MultiImplementationB.cs:16:9:16:31 | exit M2 |  |
 | MultiImplementationB.cs:16:21:16:30 | throw ... | MultiImplementationB.cs:16:9:16:31 | exit M2 (abnormal) | exception |
 | MultiImplementationB.cs:16:27:16:30 | null | MultiImplementationB.cs:16:21:16:30 | throw ... |  |
-| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:11:16:11:16 | this access |  |
+| MultiImplementationB.cs:18:12:18:13 | call to constructor Object | MultiImplementationB.cs:18:22:18:36 | {...} |  |
+| MultiImplementationB.cs:18:12:18:13 | call to method <object initializer> | MultiImplementationB.cs:18:12:18:13 | call to constructor Object |  |
+| MultiImplementationB.cs:18:12:18:13 | this access | MultiImplementationB.cs:18:12:18:13 | call to method <object initializer> |  |
 | MultiImplementationB.cs:18:22:18:36 | {...} | MultiImplementationB.cs:18:30:18:33 | null |  |
 | MultiImplementationB.cs:18:24:18:34 | throw ...; | MultiImplementationA.cs:20:12:20:13 | exit C2 (abnormal) | exception |
 | MultiImplementationB.cs:18:30:18:33 | null | MultiImplementationB.cs:18:24:18:34 | throw ...; |  |
@@ -2708,16 +2761,22 @@
 | MultiImplementationB.cs:21:56:21:59 | null | MultiImplementationB.cs:21:50:21:59 | throw ... |  |
 | MultiImplementationB.cs:22:16:22:16 | access to property P | MultiImplementationB.cs:22:32:22:34 | ... = ... |  |
 | MultiImplementationB.cs:22:16:22:16 | this access | MultiImplementationB.cs:22:34:22:34 | 1 |  |
-| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationB.cs:18:22:18:36 | {...} |  |
+| MultiImplementationB.cs:22:32:22:34 | ... = ... | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> (normal) |  |
 | MultiImplementationB.cs:22:34:22:34 | 1 | MultiImplementationB.cs:22:16:22:16 | access to property P |  |
 | MultiImplementationB.cs:25:7:25:8 | call to constructor Object | MultiImplementationB.cs:25:7:25:8 | {...} |  |
+| MultiImplementationB.cs:25:7:25:8 | call to method <object initializer> | MultiImplementationB.cs:25:7:25:8 | call to constructor Object |  |
+| MultiImplementationB.cs:25:7:25:8 | this access | MultiImplementationB.cs:25:7:25:8 | call to method <object initializer> |  |
 | MultiImplementationB.cs:25:7:25:8 | {...} | MultiImplementationA.cs:28:7:28:8 | exit C3 (normal) |  |
 | MultiImplementationB.cs:30:15:30:16 | call to constructor Object | MultiImplementationB.cs:30:15:30:16 | {...} |  |
+| MultiImplementationB.cs:30:15:30:16 | call to method <object initializer> | MultiImplementationB.cs:30:15:30:16 | call to constructor Object |  |
+| MultiImplementationB.cs:30:15:30:16 | this access | MultiImplementationB.cs:30:15:30:16 | call to method <object initializer> |  |
 | MultiImplementationB.cs:30:15:30:16 | {...} | MultiImplementationA.cs:34:15:34:16 | exit C4 (normal) |  |
 | MultiImplementationB.cs:32:17:32:17 | 0 | MultiImplementationA.cs:36:9:36:10 | exit M1 (normal) |  |
 | NullCoalescing.cs:1:7:1:20 | call to constructor Object | NullCoalescing.cs:1:7:1:20 | {...} |  |
-| NullCoalescing.cs:1:7:1:20 | enter NullCoalescing | NullCoalescing.cs:1:7:1:20 | call to constructor Object |  |
+| NullCoalescing.cs:1:7:1:20 | call to method <object initializer> | NullCoalescing.cs:1:7:1:20 | call to constructor Object |  |
+| NullCoalescing.cs:1:7:1:20 | enter NullCoalescing | NullCoalescing.cs:1:7:1:20 | this access |  |
 | NullCoalescing.cs:1:7:1:20 | exit NullCoalescing (normal) | NullCoalescing.cs:1:7:1:20 | exit NullCoalescing |  |
+| NullCoalescing.cs:1:7:1:20 | this access | NullCoalescing.cs:1:7:1:20 | call to method <object initializer> |  |
 | NullCoalescing.cs:1:7:1:20 | {...} | NullCoalescing.cs:1:7:1:20 | exit NullCoalescing (normal) |  |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i |  |
 | NullCoalescing.cs:3:9:3:10 | exit M1 (normal) | NullCoalescing.cs:3:9:3:10 | exit M1 |  |
@@ -2792,31 +2851,32 @@
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:13:17:24 | ... ?? ... | non-null |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:17:9:17:24 | ... = ... |  |
 | NullCoalescing.cs:17:19:17:19 | access to parameter i | NullCoalescing.cs:17:13:17:19 | (...) ... |  |
-| PartialImplementationA.cs:3:12:3:18 | call to constructor Object | PartialImplementationB.cs:3:16:3:16 | this access |  |
-| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | call to constructor Object |  |
+| PartialImplementationA.cs:1:15:1:21 | enter <object initializer> | PartialImplementationB.cs:3:16:3:16 | this access |  |
+| PartialImplementationA.cs:1:15:1:21 | exit <object initializer> (normal) | PartialImplementationA.cs:1:15:1:21 | exit <object initializer> |  |
+| PartialImplementationA.cs:3:12:3:18 | call to constructor Object | PartialImplementationA.cs:3:27:3:29 | {...} |  |
+| PartialImplementationA.cs:3:12:3:18 | call to method <object initializer> | PartialImplementationA.cs:3:12:3:18 | call to constructor Object |  |
+| PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | this access |  |
 | PartialImplementationA.cs:3:12:3:18 | exit Partial (normal) | PartialImplementationA.cs:3:12:3:18 | exit Partial |  |
+| PartialImplementationA.cs:3:12:3:18 | this access | PartialImplementationA.cs:3:12:3:18 | call to method <object initializer> |  |
 | PartialImplementationA.cs:3:27:3:29 | {...} | PartialImplementationA.cs:3:12:3:18 | exit Partial (normal) |  |
 | PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:20:3:20 | 0 |  |
-| PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:20:3:20 | 0 |  |
-| PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:5:16:5:16 | this access |  |
 | PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:5:16:5:16 | this access |  |
 | PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:16:3:20 | ... = ... |  |
-| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:16:3:20 | ... = ... |  |
-| PartialImplementationB.cs:4:12:4:18 | call to constructor Object | PartialImplementationB.cs:3:16:3:16 | this access |  |
-| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | call to constructor Object |  |
+| PartialImplementationB.cs:4:12:4:18 | call to constructor Object | PartialImplementationB.cs:4:22:4:24 | {...} |  |
+| PartialImplementationB.cs:4:12:4:18 | call to method <object initializer> | PartialImplementationB.cs:4:12:4:18 | call to constructor Object |  |
+| PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | this access |  |
 | PartialImplementationB.cs:4:12:4:18 | exit Partial (normal) | PartialImplementationB.cs:4:12:4:18 | exit Partial |  |
+| PartialImplementationB.cs:4:12:4:18 | this access | PartialImplementationB.cs:4:12:4:18 | call to method <object initializer> |  |
 | PartialImplementationB.cs:4:22:4:24 | {...} | PartialImplementationB.cs:4:12:4:18 | exit Partial (normal) |  |
 | PartialImplementationB.cs:5:16:5:16 | access to property P | PartialImplementationB.cs:5:32:5:34 | ... = ... |  |
-| PartialImplementationB.cs:5:16:5:16 | access to property P | PartialImplementationB.cs:5:32:5:34 | ... = ... |  |
 | PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:34:5:34 | 0 |  |
-| PartialImplementationB.cs:5:16:5:16 | this access | PartialImplementationB.cs:5:34:5:34 | 0 |  |
-| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationA.cs:3:27:3:29 | {...} |  |
-| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationB.cs:4:22:4:24 | {...} |  |
-| PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:16:5:16 | access to property P |  |
+| PartialImplementationB.cs:5:32:5:34 | ... = ... | PartialImplementationA.cs:1:15:1:21 | exit <object initializer> (normal) |  |
 | PartialImplementationB.cs:5:34:5:34 | 0 | PartialImplementationB.cs:5:16:5:16 | access to property P |  |
 | Patterns.cs:3:7:3:14 | call to constructor Object | Patterns.cs:3:7:3:14 | {...} |  |
-| Patterns.cs:3:7:3:14 | enter Patterns | Patterns.cs:3:7:3:14 | call to constructor Object |  |
+| Patterns.cs:3:7:3:14 | call to method <object initializer> | Patterns.cs:3:7:3:14 | call to constructor Object |  |
+| Patterns.cs:3:7:3:14 | enter Patterns | Patterns.cs:3:7:3:14 | this access |  |
 | Patterns.cs:3:7:3:14 | exit Patterns (normal) | Patterns.cs:3:7:3:14 | exit Patterns |  |
+| Patterns.cs:3:7:3:14 | this access | Patterns.cs:3:7:3:14 | call to method <object initializer> |  |
 | Patterns.cs:3:7:3:14 | {...} | Patterns.cs:3:7:3:14 | exit Patterns (normal) |  |
 | Patterns.cs:5:10:5:11 | enter M1 | Patterns.cs:6:5:43:5 | {...} |  |
 | Patterns.cs:5:10:5:11 | exit M1 (normal) | Patterns.cs:5:10:5:11 | exit M1 |  |
@@ -3045,8 +3105,10 @@
 | Patterns.cs:97:13:97:39 | ...; | Patterns.cs:97:31:97:37 | "not C" |  |
 | Patterns.cs:97:31:97:37 | "not C" | Patterns.cs:97:13:97:38 | call to method WriteLine |  |
 | PostDominance.cs:3:7:3:19 | call to constructor Object | PostDominance.cs:3:7:3:19 | {...} |  |
-| PostDominance.cs:3:7:3:19 | enter PostDominance | PostDominance.cs:3:7:3:19 | call to constructor Object |  |
+| PostDominance.cs:3:7:3:19 | call to method <object initializer> | PostDominance.cs:3:7:3:19 | call to constructor Object |  |
+| PostDominance.cs:3:7:3:19 | enter PostDominance | PostDominance.cs:3:7:3:19 | this access |  |
 | PostDominance.cs:3:7:3:19 | exit PostDominance (normal) | PostDominance.cs:3:7:3:19 | exit PostDominance |  |
+| PostDominance.cs:3:7:3:19 | this access | PostDominance.cs:3:7:3:19 | call to method <object initializer> |  |
 | PostDominance.cs:3:7:3:19 | {...} | PostDominance.cs:3:7:3:19 | exit PostDominance (normal) |  |
 | PostDominance.cs:5:10:5:11 | enter M1 | PostDominance.cs:6:5:8:5 | {...} |  |
 | PostDominance.cs:5:10:5:11 | exit M1 (normal) | PostDominance.cs:5:10:5:11 | exit M1 |  |
@@ -3084,8 +3146,10 @@
 | PostDominance.cs:21:9:21:29 | ...; | PostDominance.cs:21:27:21:27 | access to parameter s |  |
 | PostDominance.cs:21:27:21:27 | access to parameter s | PostDominance.cs:21:9:21:28 | call to method WriteLine |  |
 | Qualifiers.cs:1:7:1:16 | call to constructor Object | Qualifiers.cs:1:7:1:16 | {...} |  |
-| Qualifiers.cs:1:7:1:16 | enter Qualifiers | Qualifiers.cs:1:7:1:16 | call to constructor Object |  |
+| Qualifiers.cs:1:7:1:16 | call to method <object initializer> | Qualifiers.cs:1:7:1:16 | call to constructor Object |  |
+| Qualifiers.cs:1:7:1:16 | enter Qualifiers | Qualifiers.cs:1:7:1:16 | this access |  |
 | Qualifiers.cs:1:7:1:16 | exit Qualifiers (normal) | Qualifiers.cs:1:7:1:16 | exit Qualifiers |  |
+| Qualifiers.cs:1:7:1:16 | this access | Qualifiers.cs:1:7:1:16 | call to method <object initializer> |  |
 | Qualifiers.cs:1:7:1:16 | {...} | Qualifiers.cs:1:7:1:16 | exit Qualifiers (normal) |  |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:28:7:31 | null |  |
 | Qualifiers.cs:7:16:7:21 | exit Method (normal) | Qualifiers.cs:7:16:7:21 | exit Method |  |
@@ -3151,8 +3215,10 @@
 | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | Qualifiers.cs:30:13:30:46 | call to method Method |  |
 | Qualifiers.cs:30:13:30:46 | call to method Method | Qualifiers.cs:30:9:30:46 | ... = ... |  |
 | Switch.cs:3:7:3:12 | call to constructor Object | Switch.cs:3:7:3:12 | {...} |  |
-| Switch.cs:3:7:3:12 | enter Switch | Switch.cs:3:7:3:12 | call to constructor Object |  |
+| Switch.cs:3:7:3:12 | call to method <object initializer> | Switch.cs:3:7:3:12 | call to constructor Object |  |
+| Switch.cs:3:7:3:12 | enter Switch | Switch.cs:3:7:3:12 | this access |  |
 | Switch.cs:3:7:3:12 | exit Switch (normal) | Switch.cs:3:7:3:12 | exit Switch |  |
+| Switch.cs:3:7:3:12 | this access | Switch.cs:3:7:3:12 | call to method <object initializer> |  |
 | Switch.cs:3:7:3:12 | {...} | Switch.cs:3:7:3:12 | exit Switch (normal) |  |
 | Switch.cs:5:10:5:11 | enter M1 | Switch.cs:6:5:8:5 | {...} |  |
 | Switch.cs:5:10:5:11 | exit M1 (normal) | Switch.cs:5:10:5:11 | exit M1 |  |
@@ -3478,8 +3544,10 @@
 | Switch.cs:175:42:175:46 | "def" | Switch.cs:175:17:175:47 | call to method WriteLine |  |
 | Switch.cs:176:17:176:22 | break; | Switch.cs:163:10:163:12 | exit M16 (normal) | break |
 | TypeAccesses.cs:1:7:1:18 | call to constructor Object | TypeAccesses.cs:1:7:1:18 | {...} |  |
-| TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | call to constructor Object |  |
+| TypeAccesses.cs:1:7:1:18 | call to method <object initializer> | TypeAccesses.cs:1:7:1:18 | call to constructor Object |  |
+| TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | this access |  |
 | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses (normal) | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses |  |
+| TypeAccesses.cs:1:7:1:18 | this access | TypeAccesses.cs:1:7:1:18 | call to method <object initializer> |  |
 | TypeAccesses.cs:1:7:1:18 | {...} | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses (normal) |  |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:4:5:9:5 | {...} |  |
 | TypeAccesses.cs:3:10:3:10 | exit M (normal) | TypeAccesses.cs:3:10:3:10 | exit M |  |
@@ -3503,8 +3571,10 @@
 | TypeAccesses.cs:8:13:8:27 | Type t = ... | TypeAccesses.cs:3:10:3:10 | exit M (normal) |  |
 | TypeAccesses.cs:8:17:8:27 | typeof(...) | TypeAccesses.cs:8:13:8:27 | Type t = ... |  |
 | VarDecls.cs:3:7:3:14 | call to constructor Object | VarDecls.cs:3:7:3:14 | {...} |  |
-| VarDecls.cs:3:7:3:14 | enter VarDecls | VarDecls.cs:3:7:3:14 | call to constructor Object |  |
+| VarDecls.cs:3:7:3:14 | call to method <object initializer> | VarDecls.cs:3:7:3:14 | call to constructor Object |  |
+| VarDecls.cs:3:7:3:14 | enter VarDecls | VarDecls.cs:3:7:3:14 | this access |  |
 | VarDecls.cs:3:7:3:14 | exit VarDecls (normal) | VarDecls.cs:3:7:3:14 | exit VarDecls |  |
+| VarDecls.cs:3:7:3:14 | this access | VarDecls.cs:3:7:3:14 | call to method <object initializer> |  |
 | VarDecls.cs:3:7:3:14 | {...} | VarDecls.cs:3:7:3:14 | exit VarDecls (normal) |  |
 | VarDecls.cs:5:18:5:19 | enter M1 | VarDecls.cs:6:5:11:5 | {...} |  |
 | VarDecls.cs:5:18:5:19 | exit M1 (normal) | VarDecls.cs:5:18:5:19 | exit M1 |  |
@@ -3554,8 +3624,10 @@
 | VarDecls.cs:25:24:25:24 | access to local variable x | VarDecls.cs:25:20:25:28 | ... ? ... : ... |  |
 | VarDecls.cs:25:28:25:28 | access to local variable y | VarDecls.cs:25:20:25:28 | ... ? ... : ... |  |
 | VarDecls.cs:28:11:28:11 | call to constructor Object | VarDecls.cs:28:11:28:11 | {...} |  |
-| VarDecls.cs:28:11:28:11 | enter C | VarDecls.cs:28:11:28:11 | call to constructor Object |  |
+| VarDecls.cs:28:11:28:11 | call to method <object initializer> | VarDecls.cs:28:11:28:11 | call to constructor Object |  |
+| VarDecls.cs:28:11:28:11 | enter C | VarDecls.cs:28:11:28:11 | this access |  |
 | VarDecls.cs:28:11:28:11 | exit C (normal) | VarDecls.cs:28:11:28:11 | exit C |  |
+| VarDecls.cs:28:11:28:11 | this access | VarDecls.cs:28:11:28:11 | call to method <object initializer> |  |
 | VarDecls.cs:28:11:28:11 | {...} | VarDecls.cs:28:11:28:11 | exit C (normal) |  |
 | VarDecls.cs:28:41:28:47 | enter Dispose | VarDecls.cs:28:51:28:53 | {...} |  |
 | VarDecls.cs:28:41:28:47 | exit Dispose (normal) | VarDecls.cs:28:41:28:47 | exit Dispose |  |
@@ -3855,8 +3927,10 @@
 | cflow.cs:127:68:127:81 | ...; | cflow.cs:127:68:127:72 | this access |  |
 | cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:68:127:80 | ... = ... |  |
 | cflow.cs:129:5:129:15 | call to constructor Object | cflow.cs:130:5:132:5 | {...} |  |
-| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | call to constructor Object |  |
+| cflow.cs:129:5:129:15 | call to method <object initializer> | cflow.cs:129:5:129:15 | call to constructor Object |  |
+| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | this access |  |
 | cflow.cs:129:5:129:15 | exit ControlFlow (normal) | cflow.cs:129:5:129:15 | exit ControlFlow |  |
+| cflow.cs:129:5:129:15 | this access | cflow.cs:129:5:129:15 | call to method <object initializer> |  |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:131:9:131:18 | ...; |  |
 | cflow.cs:131:9:131:13 | this access | cflow.cs:131:17:131:17 | access to parameter s |  |
 | cflow.cs:131:9:131:17 | ... = ... | cflow.cs:129:5:129:15 | exit ControlFlow (normal) |  |
@@ -4231,8 +4305,10 @@
 | cflow.cs:275:13:275:41 | call to method WriteLine | cflow.cs:261:49:261:53 | exit Yield (normal) | , return |
 | cflow.cs:275:13:275:42 | ...; | cflow.cs:275:31:275:40 | "not dead" |  |
 | cflow.cs:275:31:275:40 | "not dead" | cflow.cs:275:13:275:41 | call to method WriteLine |  |
-| cflow.cs:282:5:282:18 | enter ControlFlowSub | cflow.cs:282:24:282:27 | call to constructor ControlFlow |  |
+| cflow.cs:282:5:282:18 | call to method <object initializer> | cflow.cs:282:24:282:27 | call to constructor ControlFlow |  |
+| cflow.cs:282:5:282:18 | enter ControlFlowSub | cflow.cs:282:5:282:18 | this access |  |
 | cflow.cs:282:5:282:18 | exit ControlFlowSub (normal) | cflow.cs:282:5:282:18 | exit ControlFlowSub |  |
+| cflow.cs:282:5:282:18 | this access | cflow.cs:282:5:282:18 | call to method <object initializer> |  |
 | cflow.cs:282:24:282:27 | call to constructor ControlFlow | cflow.cs:282:31:282:33 | {...} |  |
 | cflow.cs:282:31:282:33 | {...} | cflow.cs:282:5:282:18 | exit ControlFlowSub (normal) |  |
 | cflow.cs:284:5:284:18 | enter ControlFlowSub | cflow.cs:284:32:284:35 | call to constructor ControlFlowSub |  |
@@ -4246,8 +4322,10 @@
 | cflow.cs:286:34:286:45 | call to method ToString | cflow.cs:286:29:286:32 | call to constructor ControlFlowSub |  |
 | cflow.cs:286:48:286:50 | {...} | cflow.cs:286:5:286:18 | exit ControlFlowSub (normal) |  |
 | cflow.cs:289:7:289:18 | call to constructor Object | cflow.cs:289:7:289:18 | {...} |  |
-| cflow.cs:289:7:289:18 | enter DelegateCall | cflow.cs:289:7:289:18 | call to constructor Object |  |
+| cflow.cs:289:7:289:18 | call to method <object initializer> | cflow.cs:289:7:289:18 | call to constructor Object |  |
+| cflow.cs:289:7:289:18 | enter DelegateCall | cflow.cs:289:7:289:18 | this access |  |
 | cflow.cs:289:7:289:18 | exit DelegateCall (normal) | cflow.cs:289:7:289:18 | exit DelegateCall |  |
+| cflow.cs:289:7:289:18 | this access | cflow.cs:289:7:289:18 | call to method <object initializer> |  |
 | cflow.cs:289:7:289:18 | {...} | cflow.cs:289:7:289:18 | exit DelegateCall (normal) |  |
 | cflow.cs:291:12:291:12 | enter M | cflow.cs:291:38:291:38 | access to parameter f |  |
 | cflow.cs:291:12:291:12 | exit M (normal) | cflow.cs:291:12:291:12 | exit M |  |
@@ -4255,8 +4333,10 @@
 | cflow.cs:291:38:291:41 | delegate call | cflow.cs:291:12:291:12 | exit M (normal) |  |
 | cflow.cs:291:40:291:40 | 0 | cflow.cs:291:38:291:41 | delegate call |  |
 | cflow.cs:296:5:296:25 | call to constructor Object | cflow.cs:296:52:296:54 | {...} |  |
-| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | call to constructor Object |  |
+| cflow.cs:296:5:296:25 | call to method <object initializer> | cflow.cs:296:5:296:25 | call to constructor Object |  |
+| cflow.cs:296:5:296:25 | enter NegationInConstructor | cflow.cs:296:5:296:25 | this access |  |
 | cflow.cs:296:5:296:25 | exit NegationInConstructor (normal) | cflow.cs:296:5:296:25 | exit NegationInConstructor |  |
+| cflow.cs:296:5:296:25 | this access | cflow.cs:296:5:296:25 | call to method <object initializer> |  |
 | cflow.cs:296:52:296:54 | {...} | cflow.cs:296:5:296:25 | exit NegationInConstructor (normal) |  |
 | cflow.cs:298:10:298:10 | enter M | cflow.cs:299:5:301:5 | {...} |  |
 | cflow.cs:298:10:298:10 | exit M (normal) | cflow.cs:298:10:298:10 | exit M |  |
@@ -4276,8 +4356,10 @@
 | cflow.cs:300:61:300:64 | null | cflow.cs:300:56:300:64 | ... != ... |  |
 | cflow.cs:300:70:300:71 | "" | cflow.cs:300:9:300:72 | object creation of type NegationInConstructor |  |
 | cflow.cs:304:7:304:18 | call to constructor Object | cflow.cs:304:7:304:18 | {...} |  |
-| cflow.cs:304:7:304:18 | enter LambdaGetter | cflow.cs:304:7:304:18 | call to constructor Object |  |
+| cflow.cs:304:7:304:18 | call to method <object initializer> | cflow.cs:304:7:304:18 | call to constructor Object |  |
+| cflow.cs:304:7:304:18 | enter LambdaGetter | cflow.cs:304:7:304:18 | this access |  |
 | cflow.cs:304:7:304:18 | exit LambdaGetter (normal) | cflow.cs:304:7:304:18 | exit LambdaGetter |  |
+| cflow.cs:304:7:304:18 | this access | cflow.cs:304:7:304:18 | call to method <object initializer> |  |
 | cflow.cs:304:7:304:18 | {...} | cflow.cs:304:7:304:18 | exit LambdaGetter (normal) |  |
 | cflow.cs:306:60:310:5 | (...) => ... | cflow.cs:306:60:310:5 | exit get__getter (normal) |  |
 | cflow.cs:306:60:310:5 | enter (...) => ... | cflow.cs:307:5:310:5 | {...} |  |

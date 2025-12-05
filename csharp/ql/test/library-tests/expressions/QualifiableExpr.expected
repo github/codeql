@@ -1,12 +1,17 @@
+| FoldedLiterals.cs:1:7:1:20 | call to method <object initializer> | FoldedLiterals.cs:1:7:1:20 | this access |
+| MethodAccess.cs:3:7:3:18 | call to method <object initializer> | MethodAccess.cs:3:7:3:18 | this access |
 | MethodAccess.cs:8:20:8:21 | access to local function M1 | MethodAccess.cs:8:20:8:21 | this access |
 | MethodAccess.cs:9:13:9:14 | access to method M2 | MethodAccess.cs:9:13:9:14 | this access |
 | MethodAccess.cs:10:13:10:19 | access to method M2 | MethodAccess.cs:10:13:10:16 | this access |
 | MethodAccess.cs:12:13:12:27 | access to method M3 | MethodAccess.cs:12:13:12:24 | access to type MethodAccess |
+| Qualifiers.cs:3:7:3:16 | call to method <object initializer> | Qualifiers.cs:3:7:3:16 | this access |
 | Qualifiers.cs:7:21:7:35 | call to method Instance<Int32> | Qualifiers.cs:7:21:7:35 | this access |
 | Qualifiers.cs:9:22:9:42 | call to method Instance<Boolean> | Qualifiers.cs:9:22:9:25 | this access |
+| ReducedExpression.cs:2:7:2:18 | call to method <object initializer> | ReducedExpression.cs:2:7:2:18 | this access |
 | expressions.cs:45:20:45:20 | access to field f | expressions.cs:45:20:45:20 | this access |
 | expressions.cs:51:13:51:34 | access to field name | expressions.cs:51:13:51:29 | access to type Class |
 | expressions.cs:52:13:52:23 | call to method Foo | expressions.cs:52:13:52:17 | access to type Class |
+| expressions.cs:58:19:58:23 | call to method <object initializer> | expressions.cs:58:19:58:23 | this access |
 | expressions.cs:64:20:64:27 | access to property Length | expressions.cs:64:20:64:20 | access to parameter s |
 | expressions.cs:75:35:75:46 | call to method Equals | expressions.cs:75:35:75:35 | access to parameter s |
 | expressions.cs:76:30:76:30 | access to field f | expressions.cs:76:30:76:30 | this access |
@@ -20,6 +25,10 @@
 | expressions.cs:85:41:85:51 | access to indexer | expressions.cs:85:41:85:44 | this access |
 | expressions.cs:87:13:87:20 | access to array element | expressions.cs:87:13:87:17 | access to local variable array |
 | expressions.cs:89:13:89:26 | access to array element | expressions.cs:89:13:89:23 | access to local variable inlinearray |
+| expressions.cs:104:15:104:15 | call to method <object initializer> | expressions.cs:104:15:104:15 | this access |
+| expressions.cs:108:15:108:15 | call to method <object initializer> | expressions.cs:108:15:108:15 | this access |
+| expressions.cs:133:13:133:18 | call to method <object initializer> | expressions.cs:133:13:133:18 | this access |
+| expressions.cs:134:13:134:18 | call to method <object initializer> | expressions.cs:134:13:134:18 | this access |
 | expressions.cs:138:17:138:22 | access to field f | expressions.cs:138:17:138:20 | this access |
 | expressions.cs:139:17:139:55 | call to method MainAccesses | expressions.cs:139:17:139:20 | base access |
 | expressions.cs:149:13:149:40 | call to method WriteLine | expressions.cs:149:13:149:19 | access to type Console |
@@ -33,9 +42,13 @@
 | expressions.cs:191:36:191:38 | access to method G | expressions.cs:191:36:191:36 | access to type X |
 | expressions.cs:198:25:198:37 | access to local function LocalFunction | expressions.cs:198:25:198:37 | this access |
 | expressions.cs:199:19:199:31 | access to local function LocalFunction | expressions.cs:199:19:199:31 | this access |
+| expressions.cs:207:11:207:11 | call to method <object initializer> | expressions.cs:207:11:207:11 | this access |
+| expressions.cs:216:18:216:18 | call to method <object initializer> | expressions.cs:216:18:216:18 | this access |
+| expressions.cs:227:18:227:23 | call to method <object initializer> | expressions.cs:227:18:227:23 | this access |
 | expressions.cs:234:17:234:21 | access to event Click | expressions.cs:234:17:234:21 | this access |
 | expressions.cs:235:17:235:21 | access to event Click | expressions.cs:235:17:235:21 | this access |
 | expressions.cs:240:13:240:17 | access to event Click | expressions.cs:240:13:240:17 | this access |
+| expressions.cs:250:16:250:26 | call to method <object initializer> | expressions.cs:250:16:250:26 | this access |
 | expressions.cs:252:13:252:20 | access to field OkButton | expressions.cs:252:13:252:20 | this access |
 | expressions.cs:253:13:253:20 | access to field OkButton | expressions.cs:253:13:253:20 | this access |
 | expressions.cs:253:13:253:26 | access to event Click | expressions.cs:253:13:253:20 | access to field OkButton |
@@ -44,30 +57,48 @@
 | expressions.cs:255:13:255:24 | access to field CancelButton | expressions.cs:255:13:255:24 | this access |
 | expressions.cs:255:13:255:30 | access to event Click | expressions.cs:255:13:255:24 | access to field CancelButton |
 | expressions.cs:255:52:255:68 | access to method CancelButtonClick | expressions.cs:255:52:255:68 | this access |
+| expressions.cs:271:16:271:24 | call to method <object initializer> | expressions.cs:271:16:271:24 | this access |
 | expressions.cs:279:44:279:52 | access to property Length | expressions.cs:279:44:279:45 | access to parameter iv |
 | expressions.cs:280:33:280:41 | access to property Length | expressions.cs:280:33:280:34 | access to parameter iv |
 | expressions.cs:281:17:281:23 | access to indexer | expressions.cs:281:17:281:20 | access to local variable temp |
 | expressions.cs:281:27:281:31 | access to indexer | expressions.cs:281:27:281:28 | access to parameter iv |
+| expressions.cs:292:11:292:27 | call to method <object initializer> | expressions.cs:292:11:292:27 | this access |
+| expressions.cs:306:19:306:23 | call to method <object initializer> | expressions.cs:306:19:306:23 | this access |
+| expressions.cs:311:16:311:20 | call to method <object initializer> | expressions.cs:311:16:311:20 | this access |
 | expressions.cs:315:13:315:22 | access to field value | expressions.cs:315:13:315:16 | this access |
 | expressions.cs:320:20:320:26 | access to field value | expressions.cs:320:20:320:20 | access to parameter d |
+| expressions.cs:330:11:330:32 | call to method <object initializer> | expressions.cs:330:11:330:32 | this access |
+| expressions.cs:341:18:341:22 | call to method <object initializer> | expressions.cs:341:18:341:22 | this access |
 | expressions.cs:346:37:346:37 | access to field x | expressions.cs:346:37:346:37 | this access |
 | expressions.cs:346:48:346:48 | access to field x | expressions.cs:346:48:346:48 | this access |
 | expressions.cs:347:37:347:37 | access to field y | expressions.cs:347:37:347:37 | this access |
 | expressions.cs:347:48:347:48 | access to field y | expressions.cs:347:48:347:48 | this access |
+| expressions.cs:351:18:351:26 | call to method <object initializer> | expressions.cs:351:18:351:26 | this access |
 | expressions.cs:356:40:356:41 | access to field p1 | expressions.cs:356:40:356:41 | this access |
 | expressions.cs:356:52:356:53 | access to field p1 | expressions.cs:356:52:356:53 | this access |
 | expressions.cs:357:40:357:41 | access to field p2 | expressions.cs:357:40:357:41 | this access |
 | expressions.cs:357:52:357:53 | access to field p2 | expressions.cs:357:52:357:53 | this access |
+| expressions.cs:361:18:361:27 | call to method <object initializer> | expressions.cs:361:18:361:27 | this access |
 | expressions.cs:364:15:364:16 | access to field p1 | expressions.cs:364:15:364:16 | this access |
 | expressions.cs:365:15:365:16 | access to field p2 | expressions.cs:365:15:365:16 | this access |
 | expressions.cs:367:40:367:41 | access to field p1 | expressions.cs:367:40:367:41 | this access |
 | expressions.cs:368:40:368:41 | access to field p2 | expressions.cs:368:40:368:41 | this access |
+| expressions.cs:372:18:372:24 | call to method <object initializer> | expressions.cs:372:18:372:24 | this access |
 | expressions.cs:376:22:376:33 | access to field phoneNumbers | expressions.cs:376:22:376:33 | this access |
 | expressions.cs:378:43:378:46 | access to field name | expressions.cs:378:43:378:46 | this access |
 | expressions.cs:378:57:378:60 | access to field name | expressions.cs:378:57:378:60 | this access |
 | expressions.cs:379:57:379:68 | access to field phoneNumbers | expressions.cs:379:57:379:68 | this access |
+| expressions.cs:383:18:383:30 | call to method <object initializer> | expressions.cs:383:18:383:30 | this access |
 | expressions.cs:455:29:455:47 | call to method WriteLine | expressions.cs:455:29:455:35 | access to type Console |
+| expressions.cs:463:11:463:23 | call to method <object initializer> | expressions.cs:463:11:463:23 | this access |
+| expressions.cs:481:20:481:22 | call to method <object initializer> | expressions.cs:481:20:481:22 | this access |
 | expressions.cs:483:17:483:26 | access to field value | expressions.cs:483:17:483:20 | this access |
 | expressions.cs:488:32:488:39 | access to field value | expressions.cs:488:32:488:33 | access to parameter c1 |
 | expressions.cs:488:43:488:50 | access to field value | expressions.cs:488:43:488:44 | access to parameter c2 |
+| expressions.cs:495:11:495:25 | call to method <object initializer> | expressions.cs:495:11:495:25 | this access |
+| expressions.cs:501:11:501:20 | call to method <object initializer> | expressions.cs:501:11:501:20 | this access |
+| expressions.cs:513:12:513:24 | call to method <object initializer> | expressions.cs:513:12:513:24 | this access |
+| expressions.cs:518:11:518:17 | call to method <object initializer> | expressions.cs:518:11:518:17 | this access |
+| expressions.cs:520:11:520:17 | call to method <object initializer> | expressions.cs:520:11:520:17 | this access |
+| expressions.cs:522:11:522:33 | call to method <object initializer> | expressions.cs:522:11:522:33 | this access |
 | expressions.cs:530:21:530:25 | call to method Api | expressions.cs:530:21:530:25 | this access |

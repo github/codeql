@@ -1,6 +1,6 @@
 Tuples.cs:
 #    3| [Class] Tuples
-#    5|   5: [Method] M1
+#    5|   6: [Method] M1
 #    5|     -1: [TypeMention] Void
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
@@ -99,7 +99,7 @@ Tuples.cs:
 #   29|           0: [FieldAccess] access to field Item2
 #   29|             -1: [FieldAccess] access to field Item2
 #   29|               -1: [LocalVariableAccess] access to local variable x
-#   32|   6: [Method] M2
+#   32|   7: [Method] M2
 #   32|     -1: [TypeMention] Void
 #   33|     4: [BlockStmt] {...}
 #   34|       0: [LocalVariableDeclStmt] ... ...;
@@ -144,7 +144,7 @@ Tuples.cs:
 #   40|         0: [MethodCall] call to method Sink
 #   40|           0: [FieldAccess] access to field Item10
 #   40|             -1: [LocalVariableAccess] access to local variable x
-#   43|   7: [Method] M3
+#   43|   8: [Method] M3
 #   43|     -1: [TypeMention] Void
 #   44|     4: [BlockStmt] {...}
 #   45|       0: [LocalVariableDeclStmt] ... ...;
@@ -201,7 +201,7 @@ Tuples.cs:
 #   52|           0: [CastExpr] (...) ...
 #   52|             1: [FieldAccess] access to field Item2
 #   52|               -1: [LocalVariableAccess] access to local variable y
-#   55|   8: [Method] M4
+#   55|   9: [Method] M4
 #   55|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   55|       0: [Parameter] s
@@ -352,34 +352,34 @@ Tuples.cs:
 #   91|             0: [MethodCall] call to method Sink
 #   91|               0: [CastExpr] (...) ...
 #   91|                 1: [LocalVariableAccess] access to local variable q
-#   95|   9: [RecordClass] R1
-#   95|     12: [NEOperator] !=
+#   95|   10: [RecordClass] R1
+#   95|     13: [NEOperator] !=
 #-----|       2: (Parameters)
 #   95|         0: [Parameter] left
 #   95|         1: [Parameter] right
-#   95|     13: [EQOperator] ==
+#   95|     14: [EQOperator] ==
 #-----|       2: (Parameters)
 #   95|         0: [Parameter] left
 #   95|         1: [Parameter] right
-#   95|     14: [Property] EqualityContract
+#   95|     15: [Property] EqualityContract
 #   95|       3: [Getter] get_EqualityContract
-#   95|     15: [InstanceConstructor,PrimaryConstructor] R1
+#   95|     16: [InstanceConstructor,PrimaryConstructor] R1
 #-----|       2: (Parameters)
 #   95|         0: [Parameter] i
 #   95|           -1: [TypeMention] string
 #   95|         1: [Parameter] j
 #   95|           -1: [TypeMention] int
-#   95|     16: [Property] i
+#   95|     17: [Property] i
 #   95|       3: [Getter] get_i
 #   95|       4: [Setter] set_i
 #-----|         2: (Parameters)
 #   95|           0: [Parameter] value
-#   95|     17: [Property] j
+#   95|     18: [Property] j
 #   95|       3: [Getter] get_j
 #   95|       4: [Setter] set_j
 #-----|         2: (Parameters)
 #   95|           0: [Parameter] value
-#   97|   10: [Method] M5
+#   97|   11: [Method] M5
 #   97|     -1: [TypeMention] Void
 #   98|     4: [BlockStmt] {...}
 #   99|       0: [LocalVariableDeclStmt] ... ...;
@@ -428,7 +428,7 @@ Tuples.cs:
 #  111|             0: [CastExpr] (...) ...
 #  111|               1: [LocalVariableAccess] access to local variable y
 #  112|         3: [BreakStmt] break;
-#  116|   11: [Method] M6
+#  116|   12: [Method] M6
 #  116|     -1: [TypeMention] Void
 #  117|     4: [BlockStmt] {...}
 #  118|       0: [LocalVariableDeclStmt] ... ...;
@@ -504,13 +504,13 @@ Tuples.cs:
 #  134|       12: [ExprStmt] ...;
 #  134|         0: [MethodCall] call to method Sink
 #  134|           0: [LocalVariableAccess] access to local variable y4
-#  137|   12: [Method] Sink
+#  137|   13: [Method] Sink
 #  137|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #  137|       0: [Parameter] o
 #  137|         -1: [TypeMention] object
 #  137|     4: [BlockStmt] {...}
-#  139|   15: [Method] Source`1
+#  139|   16: [Method] Source`1
 #  139|     -1: [TypeMention] T
 #-----|     1: (Type parameters)
 #  139|       0: [TypeParameter] T

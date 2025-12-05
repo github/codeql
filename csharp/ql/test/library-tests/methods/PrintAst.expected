@@ -1,7 +1,7 @@
 methods.cs:
 #    4| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Class] TestRef
-#   10|     5: [Method] Swap
+#   10|     6: [Method] Swap
 #   10|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   10|         0: [Parameter] x
@@ -22,7 +22,7 @@ methods.cs:
 #   14|           0: [AssignExpr] ... = ...
 #   14|             0: [ParameterAccess] access to parameter y
 #   14|             1: [LocalVariableAccess] access to local variable temp
-#   17|     6: [Method] Main
+#   17|     7: [Method] Main
 #   17|       -1: [TypeMention] Void
 #   18|       4: [BlockStmt] {...}
 #   19|         0: [LocalVariableDeclStmt] ... ...;
@@ -57,7 +57,7 @@ methods.cs:
 #   22|             2: [CastExpr] (...) ...
 #   22|               1: [LocalVariableAccess] access to local variable j
 #   26|   2: [Class] TestOut
-#   29|     5: [Method] Divide
+#   29|     6: [Method] Divide
 #   29|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] x
@@ -81,7 +81,7 @@ methods.cs:
 #   32|             1: [RemExpr] ... % ...
 #   32|               0: [ParameterAccess] access to parameter x
 #   32|               1: [ParameterAccess] access to parameter y
-#   35|     6: [Method] Main
+#   35|     7: [Method] Main
 #   35|       -1: [TypeMention] Void
 #   36|       4: [BlockStmt] {...}
 #   37|         0: [LocalVariableDeclStmt] ... ...;
@@ -105,7 +105,7 @@ methods.cs:
 #   39|             2: [CastExpr] (...) ...
 #   39|               1: [LocalVariableAccess] access to local variable rem
 #   43|   3: [Class] Console
-#   46|     5: [Method] Write
+#   46|     6: [Method] Write
 #   46|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   46|         0: [Parameter] fmt
@@ -114,7 +114,7 @@ methods.cs:
 #   46|           -1: [TypeMention] Object[]
 #   46|             1: [TypeMention] object
 #   46|       4: [BlockStmt] {...}
-#   47|     6: [Method] WriteLine
+#   47|     7: [Method] WriteLine
 #   47|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   47|         0: [Parameter] fmt
@@ -124,7 +124,7 @@ methods.cs:
 #   47|             1: [TypeMention] object
 #   47|       4: [BlockStmt] {...}
 #   50|   4: [Class] TestOverloading
-#   53|     5: [Method] F
+#   53|     6: [Method] F
 #   53|       -1: [TypeMention] Void
 #   54|       4: [BlockStmt] {...}
 #   55|         0: [ExprStmt] ...;
@@ -132,7 +132,7 @@ methods.cs:
 #   55|             -1: [TypeAccess] access to type Console
 #   55|               0: [TypeMention] Console
 #   55|             0: [StringLiteralUtf16] "F()"
-#   58|     6: [Method] F
+#   58|     7: [Method] F
 #   58|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   58|         0: [Parameter] x
@@ -143,7 +143,7 @@ methods.cs:
 #   60|             -1: [TypeAccess] access to type Console
 #   60|               0: [TypeMention] Console
 #   60|             0: [StringLiteralUtf16] "F(object)"
-#   63|     7: [Method] F
+#   63|     8: [Method] F
 #   63|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   63|         0: [Parameter] x
@@ -154,7 +154,7 @@ methods.cs:
 #   65|             -1: [TypeAccess] access to type Console
 #   65|               0: [TypeMention] Console
 #   65|             0: [StringLiteralUtf16] "F(int)"
-#   68|     8: [Method] F
+#   68|     9: [Method] F
 #   68|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   68|         0: [Parameter] x
@@ -165,7 +165,7 @@ methods.cs:
 #   70|             -1: [TypeAccess] access to type Console
 #   70|               0: [TypeMention] Console
 #   70|             0: [StringLiteralUtf16] "F(double)"
-#   73|     11: [Method] F`1
+#   73|     12: [Method] F`1
 #   73|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   73|         0: [TypeParameter] T
@@ -178,7 +178,7 @@ methods.cs:
 #   75|             -1: [TypeAccess] access to type Console
 #   75|               0: [TypeMention] Console
 #   75|             0: [StringLiteralUtf16] "F<T>(T)"
-#   78|     12: [Method] F
+#   78|     13: [Method] F
 #   78|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   78|         0: [Parameter] x
@@ -191,7 +191,7 @@ methods.cs:
 #   80|             -1: [TypeAccess] access to type Console
 #   80|               0: [TypeMention] Console
 #   80|             0: [StringLiteralUtf16] "F(double, double)"
-#   83|     13: [Method] Main
+#   83|     14: [Method] Main
 #   83|       -1: [TypeMention] Void
 #   84|       4: [BlockStmt] {...}
 #   85|         0: [ExprStmt] ...;
@@ -352,7 +352,7 @@ methods.cs:
 #  135|                 -1: [TypeAccess] access to type Boolean
 #  135|                   0: [TypeMention] bool
 #  140|   7: [Class] TestDefaultParameters
-#  142|     4: [Method] Method1
+#  142|     5: [Method] Method1
 #  142|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  142|         0: [Parameter] x
@@ -360,7 +360,7 @@ methods.cs:
 #  142|         1: [Parameter] y
 #  142|           -1: [TypeMention] int
 #  143|       4: [BlockStmt] {...}
-#  146|     5: [Method] Method2
+#  146|     6: [Method] Method2
 #  146|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  146|         0: [Parameter] a
@@ -379,12 +379,12 @@ methods.cs:
 #  146|             0: [StringLiteralUtf16] "a"
 #  146|             1: [StringLiteralUtf16] "b"
 #  147|       4: [BlockStmt] {...}
-#  150|     6: [InstanceConstructor] TestDefaultParameters
+#  150|     7: [InstanceConstructor] TestDefaultParameters
 #-----|       2: (Parameters)
 #  150|         0: [Parameter] x
 #  150|           -1: [TypeMention] int
 #  151|       4: [BlockStmt] {...}
-#  154|     7: [InstanceConstructor] TestDefaultParameters
+#  154|     8: [InstanceConstructor] TestDefaultParameters
 #-----|       2: (Parameters)
 #  154|         0: [Parameter] x
 #  154|           -1: [TypeMention] string
@@ -394,7 +394,7 @@ methods.cs:
 #  154|           1: [ObjectCreation] object creation of type Double
 #  154|             0: [TypeMention] double
 #  155|       4: [BlockStmt] {...}
-#  158|     8: [DelegateType] Del
+#  158|     9: [DelegateType] Del
 #-----|       2: (Parameters)
 #  158|         0: [Parameter] a
 #  158|           -1: [TypeMention] string
@@ -405,7 +405,7 @@ methods.cs:
 #  158|           -1: [TypeMention] double
 #  158|           1: [ObjectCreation] object creation of type Double
 #  158|             0: [TypeMention] double
-#  160|     9: [Indexer] Item
+#  160|     10: [Indexer] Item
 #  160|       -1: [TypeMention] int
 #-----|       1: (Parameters)
 #  160|         0: [Parameter] x
@@ -477,7 +477,7 @@ methods.cs:
 #  185|   9: [Class] TestCollidingMethods`1
 #-----|     1: (Type parameters)
 #  185|       0: [TypeParameter] T
-#  187|     5: [Method] M
+#  187|     6: [Method] M
 #  187|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  187|         0: [Parameter] p1
@@ -485,7 +485,7 @@ methods.cs:
 #  187|         1: [Parameter] p2
 #  187|           -1: [TypeMention] int
 #  187|       4: [BlockStmt] {...}
-#  188|     6: [Method] M
+#  188|     7: [Method] M
 #  188|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  188|         0: [Parameter] p1
@@ -493,7 +493,7 @@ methods.cs:
 #  188|         1: [Parameter] p2
 #  188|           -1: [TypeMention] int
 #  188|       4: [BlockStmt] {...}
-#  190|     7: [Method] Calls
+#  190|     8: [Method] Calls
 #  190|       -1: [TypeMention] Void
 #  191|       4: [BlockStmt] {...}
 #  192|         0: [LocalVariableDeclStmt] ... ...;
@@ -525,13 +525,13 @@ methods.cs:
 #  197|             -1: [LocalVariableAccess] access to local variable y
 #  197|             0: [IntLiteral] 1
 #  197|             1: [IntLiteral] 1
-#  200|     8: [Class] Nested
-#  202|       4: [InstanceConstructor] Nested
+#  200|     9: [Class] Nested
+#  202|       5: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  202|           0: [Parameter] p1
 #  202|             -1: [TypeMention] int
 #  202|         4: [BlockStmt] {...}
-#  203|       5: [InstanceConstructor] Nested
+#  203|       6: [InstanceConstructor] Nested
 #-----|         2: (Parameters)
 #  203|           0: [Parameter] p1
 #  203|             -1: [TypeMention] T

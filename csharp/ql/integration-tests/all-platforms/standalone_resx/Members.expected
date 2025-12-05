@@ -1,4 +1,5 @@
 | Program | Program.<Main>$ |
+| Program | Program.<object initializer> |
 | Program | Program.Program |
 | Resx.Test1.Test2.test | Resx.Test1.Test2.test.Culture |
 | Resx.Test1.Test2.test | Resx.Test1.Test2.test.GetResourceString |

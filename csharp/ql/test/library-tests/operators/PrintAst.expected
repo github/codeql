@@ -1,18 +1,18 @@
 operators.cs:
 #    5| [NamespaceDeclaration] namespace ... { ... }
 #    7|   1: [Class] IntVector
-#   10|     4: [InstanceConstructor] IntVector
+#   10|     5: [InstanceConstructor] IntVector
 #-----|       2: (Parameters)
 #   10|         0: [Parameter] length
 #   10|           -1: [TypeMention] int
 #   10|       4: [BlockStmt] {...}
-#   12|     5: [Property] Length
+#   12|     6: [Property] Length
 #   12|       -1: [TypeMention] int
 #   12|       3: [Getter] get_Length
 #   12|         4: [BlockStmt] {...}
 #   12|           0: [ReturnStmt] return ...;
 #   12|             0: [IntLiteral] 4
-#   14|     6: [Indexer] Item
+#   14|     7: [Indexer] Item
 #   14|       -1: [TypeMention] int
 #-----|       1: (Parameters)
 #   14|         0: [Parameter] index
@@ -28,7 +28,7 @@ operators.cs:
 #   14|           0: [Parameter] index
 #   14|           1: [Parameter] value
 #   14|         4: [BlockStmt] {...}
-#   16|     7: [IncrementOperator] ++
+#   16|     8: [IncrementOperator] ++
 #   16|       -1: [TypeMention] IntVector
 #-----|       2: (Parameters)
 #   16|         0: [Parameter] iv
@@ -66,7 +66,7 @@ operators.cs:
 #   21|         2: [ReturnStmt] return ...;
 #   21|           0: [LocalVariableAccess] access to local variable temp
 #   26|   2: [Class] TestUnaryOperator
-#   29|     5: [Method] Main
+#   29|     6: [Method] Main
 #   29|       -1: [TypeMention] Void
 #   30|       4: [BlockStmt] {...}
 #   31|         0: [LocalVariableDeclStmt] ... ...;
@@ -90,9 +90,9 @@ operators.cs:
 #   34|             1: [OperatorCall] call to operator ++
 #   34|               0: [LocalVariableAccess] access to local variable iv1
 #   39|   3: [Struct] Digit
-#   42|     5: [Field] value
+#   42|     6: [Field] value
 #   42|       -1: [TypeMention] byte
-#   44|     6: [InstanceConstructor] Digit
+#   44|     7: [InstanceConstructor] Digit
 #-----|       2: (Parameters)
 #   44|         0: [Parameter] value
 #   44|           -1: [TypeMention] byte
@@ -115,7 +115,7 @@ operators.cs:
 #   48|             0: [FieldAccess] access to field value
 #   48|               -1: [ThisAccess] this access
 #   48|             1: [ParameterAccess] access to parameter value
-#   51|     7: [ImplicitConversionOperator] implicit conversion
+#   51|     8: [ImplicitConversionOperator] implicit conversion
 #   51|       -1: [TypeMention] byte
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] d
@@ -124,7 +124,7 @@ operators.cs:
 #   53|         0: [ReturnStmt] return ...;
 #   53|           0: [FieldAccess] access to field value
 #   53|             -1: [ParameterAccess] access to parameter d
-#   56|     8: [ExplicitConversionOperator] explicit conversion
+#   56|     9: [ExplicitConversionOperator] explicit conversion
 #   56|       -1: [TypeMention] Digit
 #-----|       2: (Parameters)
 #   56|         0: [Parameter] b
@@ -135,7 +135,7 @@ operators.cs:
 #   58|             -1: [TypeMention] Digit
 #   58|             0: [ParameterAccess] access to parameter b
 #   63|   4: [Class] TestConversionOperator
-#   66|     5: [Method] Main
+#   66|     6: [Method] Main
 #   66|       -1: [TypeMention] Void
 #   67|       4: [BlockStmt] {...}
 #   68|         0: [LocalVariableDeclStmt] ... ...;

@@ -26,7 +26,7 @@ namespaces.cs:
 #   72|   1: [Class] A`1
 #-----|     1: (Type parameters)
 #   72|       0: [TypeParameter] T
-#   75|     5: [Class] B
+#   75|     6: [Class] B
 #   79|   2: [Class] A
 #   83| [NamespaceDeclaration] namespace ... { ... }
 #   90| [NamespaceDeclaration] namespace ... { ... }
