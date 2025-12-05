@@ -48,6 +48,22 @@ Event getRelevantCachePoisoningEventForSink(DataFlow::Node sink) {
   )
 }
 
+private predicate codeInjectionAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Uses step |
+    pred instanceof FileSource and
+    pred.asExpr().(Step).getAFollowingStep() = step and
+    succ.asExpr() = step and
+    madSink(succ, "code-injection")
+  )
+  or
+  exists(Run run |
+    pred instanceof FileSource and
+    pred.asExpr().(Step).getAFollowingStep() = run and
+    succ.asExpr() = run.getScript() and
+    exists(run.getScript().getAFileReadCommand())
+  )
+}
+
 /**
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a code script.
@@ -58,19 +74,7 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(Uses step |
-      pred instanceof FileSource and
-      pred.asExpr().(Step).getAFollowingStep() = step and
-      succ.asExpr() = step and
-      madSink(succ, "code-injection")
-    )
-    or
-    exists(Run run |
-      pred instanceof FileSource and
-      pred.asExpr().(Step).getAFollowingStep() = run and
-      succ.asExpr() = run.getScript() and
-      exists(run.getScript().getAFileReadCommand())
-    )
+    codeInjectionAdditionalFlowStep(pred, succ)
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
@@ -86,6 +90,64 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a code script. */
 module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
+
+private predicate knownSafeAction(string action) {
+  action =
+    [
+      // Setup actions - version/cache outputs are deterministic
+      "actions/setup-java",
+      "actions/setup-python",
+      "actions/setup-node",
+      "actions/setup-go",
+      "actions/setup-dotnet",
+      "actions/cache",
+      "actions/download-artifact",
+      "actions/configure-pages",
+      "actions/attest-build-provenance",
+      "actions/create-github-app-token",
+      "oracle-actions/setup-java",
+      "spring-io/artifactory-deploy-action",
+      "YunaBraska/java-info-action",
+      // Docker actions - digest/version outputs are system-generated
+      "docker/build-push-action",
+      "docker/metadata-action",
+      "docker/setup-buildx-action",
+      // PR/repo automation - outputs are GitHub-assigned identifiers
+      "dorny/test-reporter",
+      "peter-evans/create-pull-request",
+      // AWS actions - outputs are AWS-generated identifiers
+      "aws-actions/aws-codebuild-run-build",
+      // Security/crypto actions - outputs are cryptographic, not user-controllable
+      "crazy-max/ghaction-import-gpg",
+      // Hardware/system info actions - outputs are deterministic
+      "SimonShi1994/cpu-cores"
+    ]
+}
+
+/**
+ * A taint-tracking configuration for step outputs
+ * that are used to construct and evaluate a code script.
+ */
+private module CodeInjectionFromStepOutputConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(StepOutputExpression soe, UsesStep us |
+      soe = source.asExpr() and soe.getStepId() = us.getId()
+    |
+      not knownSafeAction(us.getCallee())
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    codeInjectionAdditionalFlowStep(pred, succ)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/** Tracks flow of unsafe user input that is used to construct and evaluate a code script. */
+module CodeInjectionFromStepOutputFlow = TaintTracking::Global<CodeInjectionFromStepOutputConfig>;
 
 /**
  * Holds if there is a code injection flow from `source` to `sink` with
@@ -107,6 +169,16 @@ predicate mediumSeverityCodeInjection(
 ) {
   CodeInjectionFlow::flowPath(source, sink) and
   not criticalSeverityCodeInjection(source, sink, _) and
+  not isGithubScriptUsingToJson(sink.getNode().asExpr())
+}
+
+/**
+ * Holds if there is a code injection flow from `source` to `sink` with low severity.
+ */
+predicate lowSeverityCodeInjection(
+  CodeInjectionFromStepOutputFlow::PathNode source, CodeInjectionFromStepOutputFlow::PathNode sink
+) {
+  CodeInjectionFromStepOutputFlow::flowPath(source, sink) and
   not isGithubScriptUsingToJson(sink.getNode().asExpr())
 }
 
