@@ -556,13 +556,18 @@ class NeverTypeReprMention extends TypeMention, NeverTypeRepr {
 }
 
 class PtrTypeReprMention extends TypeMention instanceof PtrTypeRepr {
+  private PtrType resolveRootType() {
+    super.isConst() and result instanceof PtrConstType
+    or
+    super.isMut() and result instanceof PtrMutType
+  }
+
   override Type resolveTypeAt(TypePath path) {
-    path.isEmpty() and
-    result instanceof PtrType
+    path.isEmpty() and result = this.resolveRootType()
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(getPtrTypeParameter(), suffix)
+      path = TypePath::cons(this.resolveRootType().getPositionalTypeParameter(0), suffix)
     )
   }
 }
