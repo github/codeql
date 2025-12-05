@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 
 /** A basic block which terminates in a condition, splitting the subsequent control flow */
