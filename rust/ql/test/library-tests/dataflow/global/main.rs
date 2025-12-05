@@ -381,15 +381,15 @@ mod not_trait_dispatch {
 
         // This call is to the default method implementation.
         let n1 = t.get_double_number();
-        sink(n1); // $ hasTaintFlow=3 SPURIOUS: hasValueFlow=44
+        sink(n1); // $ hasTaintFlow=3
 
         // This call is to the default method implementation.
         let n2 = HasNumbers::get_double_number(&t);
-        sink(n2); // $ hasTaintFlow=3 SPURIOUS: hasValueFlow=44
+        sink(n2); // $ hasTaintFlow=3
 
         // This call is to the default function implementation.
         let n3 = Three::get_default();
-        sink(n3); // $ hasValueFlow=0 SPURIOUS: hasValueFlow=1
+        sink(n3); // $ hasValueFlow=0
 
         let i = TwentyTwo;
         let n4 = i.get_double_number();
