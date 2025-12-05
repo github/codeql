@@ -1,5 +1,6 @@
 private import Instruction0
 import semmle.code.binary.ast.ir.internal.Consistency
+private import codeql.controlflow.SuccessorType
 import StagedConsistencyInput<Instruction0>
 private import TranslatedInstruction
 private import TranslatedFunction
@@ -28,5 +29,15 @@ query predicate nonUniqueResultVariable0(
   tf = ti.getEnclosingFunction() and
   s = concat(ti.getAQlClass().toString(), ", ") and
   strictcount(ti.getResultVariable()) = k and
+  k > 1
+}
+
+query predicate nonUniqueSuccessor0(
+  TranslatedFunction tf, InstructionTag tag, TranslatedInstruction ti, string s, SuccessorType t,
+  int k
+) {
+  tf = ti.getEnclosingFunction() and
+  s = concat(ti.getAQlClass().toString(), ", ") and
+  strictcount(ti.getSuccessor(tag, t)) = k and
   k > 1
 }

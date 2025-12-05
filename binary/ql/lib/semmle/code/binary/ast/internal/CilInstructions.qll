@@ -366,6 +366,7 @@ abstract class CilBranchInstruction extends CilInstruction {
   CilInstruction getABranchTarget() {
     exists(CilMethod m, int delta |
       il_branch_target(this, delta) and
+      this.getEnclosingMethod() = m and
       hasMethodAndOffset(m, delta, result)
     )
   }

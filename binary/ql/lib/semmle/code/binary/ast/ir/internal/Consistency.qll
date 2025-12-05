@@ -28,4 +28,16 @@ module StagedConsistencyInput<InstructionSig Input> {
     exists(i.getAPredecessor()) and
     not exists(i.getASuccessor())
   }
+
+  query predicate nonLocalSuccessor(Input::Function f1, Input::Function f2, Input::Instruction i, SuccessorType t) {
+    i.getEnclosingFunction() = f1 and
+    i.getSuccessor(t).getEnclosingFunction() = f2 and
+    f1 != f2
+  }
+
+  query predicate successorMissingFunction(Input::Function f, Input::Instruction i1, Input::Instruction i2, SuccessorType t) {
+    i1.getEnclosingFunction() = f and
+    i1.getSuccessor(t) = i2 and
+    not exists(i2.getEnclosingFunction())
+  }
 }
