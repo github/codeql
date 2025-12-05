@@ -125,6 +125,7 @@ build_cil() {
   # Copy tool scripts
   mkdir -p "${cil_folder}/tools"
   cp "${SCRIPT_DIR}/tools/cil/"* "${cil_folder}/tools/"
+  chmod +x "${cil_folder}/tools/"*.sh
 
   echo "CIL extractor built successfully to ${cil_folder}"
 }

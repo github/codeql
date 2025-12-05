@@ -2,52 +2,60 @@
 
 set -eu
 
-if [[ -z "${CODEQL_EXTRACTOR_CSHARPIL_ROOT:-}" ]]; then
-  export CODEQL_EXTRACTOR_CSHARPIL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Get the extractor root directory
+if [[ -z "${CODEQL_EXTRACTOR_CIL_ROOT:-}" ]]; then
+  export CODEQL_EXTRACTOR_CIL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fi
 
 # Get the trap directory from CodeQL environment
-TRAP_DIR="${CODEQL_EXTRACTOR_CSHARPIL_TRAP_DIR}"
-SRC_ARCHIVE="${CODEQL_EXTRACTOR_CSHARPIL_SOURCE_ARCHIVE_DIR}"
+TRAP_DIR="${CODEQL_EXTRACTOR_CIL_TRAP_DIR}"
+SRC_ARCHIVE="${CODEQL_EXTRACTOR_CIL_SOURCE_ARCHIVE_DIR}"
 
 echo "C# IL Extractor: Starting extraction"
 echo "Source root: $(pwd)"
 echo "TRAP directory: ${TRAP_DIR}"
+echo "Extractor root: ${CODEQL_EXTRACTOR_CIL_ROOT}"
 
 # Ensure TRAP directory exists
 mkdir -p "${TRAP_DIR}"
+mkdir -p "${SRC_ARCHIVE}"
 
-# Find all DLL and EXE files in the source root
-EXTRACTOR_PATH="${CODEQL_EXTRACTOR_CSHARPIL_ROOT}/extractor/Semmle.Extraction.CSharp.IL/bin/Debug/net8.0/Semmle.Extraction.CSharp.IL"
+# Determine the platform-specific extractor path
+case "$(uname -s)-$(uname -m)" in
+  Darwin-arm64)
+    PLATFORM_DIR="osx-arm64"
+    ;;
+  Darwin-x86_64)
+    PLATFORM_DIR="osx-x64"
+    ;;
+  Linux-x86_64)
+    PLATFORM_DIR="linux-x64"
+    ;;
+  *)
+    PLATFORM_DIR="win64"
+    ;;
+esac
 
-if [[ ! -f "${EXTRACTOR_PATH}" ]]; then
-  echo "ERROR: Extractor not found at ${EXTRACTOR_PATH}"
-  echo "Please build the extractor first with: dotnet build extractor/Semmle.Extraction.CSharp.IL"
+EXTRACTOR_DLL="${CODEQL_EXTRACTOR_CIL_ROOT}/tools/${PLATFORM_DIR}/Semmle.Extraction.CSharp.IL.dll"
+
+if [[ ! -f "${EXTRACTOR_DLL}" ]]; then
+  echo "ERROR: Extractor not found at ${EXTRACTOR_DLL}"
   exit 1
 fi
 
-# Extract all DLL and EXE files
-FILE_COUNT=0
-find . -type f \( -name "*.dll" -o -name "*.exe" \) | while read -r assembly; do
-  echo "Extracting: ${assembly}"
-  
-  # Normalize the assembly path (remove leading ./)
-  normalized_path="${assembly#./}"
-  
-  # Create a unique trap file name based on the assembly path
-  TRAP_FILE="${TRAP_DIR}/$(echo "${assembly}" | sed 's/[^a-zA-Z0-9]/_/g').trap"
-  
-  # Run the extractor
-  "${EXTRACTOR_PATH}" "${assembly}" "${TRAP_FILE}" || echo "Warning: Failed to extract ${assembly}"
-  
-  # Copy the assembly to the source archive
-  ARCHIVE_PATH="${SRC_ARCHIVE}/${normalized_path}"
-  ARCHIVE_DIR="$(dirname "${ARCHIVE_PATH}")"
-  mkdir -p "${ARCHIVE_DIR}"
-  cp "${assembly}" "${ARCHIVE_PATH}"
-  echo "Archived: ${assembly} -> ${ARCHIVE_PATH}"
-  
-  FILE_COUNT=$((FILE_COUNT + 1))
-done
+# Create a temporary file list
+FILE_LIST=$(mktemp)
+trap "rm -f ${FILE_LIST}" EXIT
 
-echo "C# IL Extractor: Completed extraction of ${FILE_COUNT} assemblies"
+# Find all DLL and EXE files in the source root
+find . -type f \( -name "*.dll" -o -name "*.exe" \) > "${FILE_LIST}"
+
+FILE_COUNT=$(wc -l < "${FILE_LIST}" | tr -d ' ')
+echo "Found ${FILE_COUNT} assemblies to extract"
+
+if [[ "${FILE_COUNT}" -gt 0 ]]; then
+  # Run the extractor with the file list
+  dotnet "${EXTRACTOR_DLL}" "${FILE_LIST}"
+fi
+
+echo "C# IL Extractor: Completed extraction"
