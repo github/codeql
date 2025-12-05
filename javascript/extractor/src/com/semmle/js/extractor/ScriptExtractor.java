@@ -38,10 +38,34 @@ public class ScriptExtractor implements IExtractor {
     return extension.equals(".cjs") || (extension.equals(".js") && "commonjs".equals(packageType));
   }
 
+  private boolean isMinified(String source) {
+    // If the average line length is over 200 characters, consider the file minified.
+    int numberOfLineBreaks = 0;
+    for (int i = 0; i < source.length(); i++) {
+      char c = source.charAt(i);
+      if (c == '\n') {
+        numberOfLineBreaks++;
+      } else if (c == '\r') {
+        numberOfLineBreaks++;
+        if (i + 1 < source.length() && source.charAt(i + 1) == '\n') {
+          i++; // skip the next \n in case of \r\n
+        }
+      }
+    }
+    int averageLineLength =
+        numberOfLineBreaks == 0 ? source.length() : source.length() / numberOfLineBreaks;
+    return averageLineLength > 200;
+  }
+
   @Override
   public ParseResultInfo extract(TextualExtractor textualExtractor) {
     LocationManager locationManager = textualExtractor.getLocationManager();
     String source = textualExtractor.getSource();
+
+    if (!config.isAllowMinified() && isMinified(source)) {
+      return ParseResultInfo.skipped("File appears to be minified.");
+    }
+
     String shebangLine = null, shebangLineTerm = null;
 
     if (source.startsWith("#!")) {

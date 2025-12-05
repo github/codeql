@@ -549,10 +549,15 @@ public class FileExtractor {
           new TextualExtractor(
               trapwriter, locationManager, source, config.getExtractLines(), metrics, extractedFile);
       ParseResultInfo loc = extractor.extract(textualExtractor);
-      int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
-      int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
-      trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
-      trapwriter.addTuple("filetype", fileLabel, fileType.toString());
+      if (loc.getSkipReason() != null) {
+        System.err.println("Skipping file " + extractedFile + ": " + loc.getSkipReason());
+        System.err.flush();
+      } else {
+        int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
+        int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
+        trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
+        trapwriter.addTuple("filetype", fileLabel, fileType.toString());
+      }
       metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
       metrics.writeTimingsToTrap(trapwriter);
       successful = true;
