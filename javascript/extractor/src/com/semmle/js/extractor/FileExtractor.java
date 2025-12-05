@@ -552,7 +552,7 @@ public class FileExtractor {
       if (loc.getSkipReason() != null) {
         System.err.println("Skipping file " + extractedFile + ": " + loc.getSkipReason());
         System.err.flush();
-      } else{
+      } else {
         int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
         int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
         trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
