@@ -22,12 +22,10 @@ predicate isTypeDangerousForSizeof(Expr e) {
       else type = e.getUnspecifiedType()
     )
   |
-    (
-      type instanceof IntegralOrEnumType and
-      // ignore string literals
-      not type instanceof WideCharType and
-      not type instanceof CharType
-    )
+    type instanceof IntegralOrEnumType and
+    // ignore string literals
+    not type instanceof WideCharType and
+    not type instanceof CharType
   )
 }
 
