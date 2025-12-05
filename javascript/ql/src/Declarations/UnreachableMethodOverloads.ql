@@ -1,4 +1,5 @@
 /**
+ * @deprecated
  * @name Unreachable method overloads
  * @description Having multiple overloads with the same parameter types in TypeScript
  *              makes all overloads except the first one unreachable, as the compiler
@@ -7,8 +8,7 @@
  * @problem.severity warning
  * @id js/unreachable-method-overloads
  * @precision high
- * @tags quality
- *       reliability
+ * @tags reliability
  *       correctness
  *       typescript
  */
