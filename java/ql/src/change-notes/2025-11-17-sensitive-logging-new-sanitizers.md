@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Operations that extract only a fixed-length prefix or suffix of a string (for example, `substring` in Java or `take` in Kotlin), when limited to a length of at most 7 characters, are now treated as sanitizers for the `java/sensitive-log` query.  
