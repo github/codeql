@@ -176,7 +176,6 @@ edges
 | lifetime.rs:630:10:630:25 | &... | lifetime.rs:630:3:630:6 | str2 | provenance |  |
 | lifetime.rs:654:4:654:7 | str2 | lifetime.rs:655:22:655:25 | str2 | provenance |  |
 | lifetime.rs:654:11:654:35 | ... + ... | lifetime.rs:654:4:654:7 | str2 | provenance |  |
-| lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:654:4:654:7 | str2 | provenance |  |
 | lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:654:11:654:35 | ... + ... | provenance | MaD:2 |
 | lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:654:11:654:35 | ... + ... | provenance | MaD:1 |
 | lifetime.rs:655:4:655:7 | ref1 | lifetime.rs:659:15:659:18 | ref1 | provenance |  |

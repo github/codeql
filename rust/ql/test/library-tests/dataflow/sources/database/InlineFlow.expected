@@ -54,7 +54,6 @@ edges
 | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | test.rs:64:21:67:11 | TryExpr | provenance |  |
 | test.rs:64:21:67:11 | TryExpr | test.rs:64:13:64:17 | total | provenance |  |
 | test.rs:64:26:64:35 | query_fold | test.rs:64:76:64:83 | ...: i64 | provenance | Src:MaD:2  |
-| test.rs:64:76:64:83 | ...: i64 | test.rs:64:86:67:9 | { ... } | provenance |  |
 | test.rs:64:76:64:83 | ...: i64 | test.rs:65:18:65:20 | row | provenance |  |
 | test.rs:64:76:64:83 | ...: i64 | test.rs:66:19:66:21 | row | provenance |  |
 | test.rs:64:86:67:9 | { ... } | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | provenance | MaD:13 |
@@ -87,7 +86,6 @@ edges
 | test.rs:151:21:154:16 | await ... [Ok] | test.rs:151:21:154:17 | TryExpr | provenance |  |
 | test.rs:151:21:154:17 | TryExpr | test.rs:151:13:151:17 | total | provenance |  |
 | test.rs:151:26:151:35 | query_fold | test.rs:151:76:151:83 | ...: i64 | provenance | Src:MaD:4  |
-| test.rs:151:76:151:83 | ...: i64 | test.rs:151:86:154:9 | { ... } | provenance |  |
 | test.rs:151:76:151:83 | ...: i64 | test.rs:152:18:152:20 | row | provenance |  |
 | test.rs:151:76:151:83 | ...: i64 | test.rs:153:19:153:21 | row | provenance |  |
 | test.rs:151:86:154:9 | { ... } | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | provenance | MaD:14 |

@@ -137,7 +137,6 @@ edges
 | test_logging.rs:94:11:94:28 | MacroExpr | test_logging.rs:94:5:94:9 | ...::log | provenance | MaD:12 Sink:MaD:12 |
 | test_logging.rs:96:9:96:10 | m2 | test_logging.rs:97:11:97:18 | MacroExpr | provenance |  |
 | test_logging.rs:96:14:96:49 | ... + ... | test_logging.rs:96:9:96:10 | m2 | provenance |  |
-| test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:9:96:10 | m2 | provenance |  |
 | test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:14:96:49 | ... + ... | provenance | MaD:18 |
 | test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:14:96:49 | ... + ... | provenance | MaD:17 |
 | test_logging.rs:96:41:96:49 | &password [&ref] | test_logging.rs:96:14:96:49 | ... + ... | provenance | MaD:17 |

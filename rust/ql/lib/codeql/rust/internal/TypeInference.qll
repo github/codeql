@@ -9,6 +9,7 @@ private import TypeMention
 private import typeinference.FunctionType
 private import typeinference.FunctionOverloading as FunctionOverloading
 private import typeinference.BlanketImplementation as BlanketImplementation
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
@@ -672,7 +673,7 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
 
 /**
  * Holds if `child` is a child of `parent`, and the Rust compiler applies [least
- * upper bound (LUB) coercion](1) to infer the type of `parent` from the type of
+ * upper bound (LUB) coercion][1] to infer the type of `parent` from the type of
  * `child`.
  *
  * In this case, we want type information to only flow from `child` to `parent`,
@@ -1645,9 +1646,14 @@ private module MethodResolution {
   }
 
   private class MethodCallIndexExpr extends MethodCall instanceof IndexExpr {
+    private predicate isInMutableContext() {
+      // todo: does not handle all cases yet
+      VariableImpl::assignmentOperationDescendant(_, this)
+    }
+
     pragma[nomagic]
     override predicate hasNameAndArity(string name, int arity) {
-      name = "index" and
+      (if this.isInMutableContext() then name = "index_mut" else name = "index") and
       arity = 1
     }
 
@@ -1661,7 +1667,11 @@ private module MethodResolution {
 
     override predicate supportsAutoDerefAndBorrow() { any() }
 
-    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
+    override Trait getTrait() {
+      if this.isInMutableContext()
+      then result.getCanonicalPath() = "core::ops::index::IndexMut"
+      else result.getCanonicalPath() = "core::ops::index::Index"
+    }
   }
 
   private class MethodCallCallExpr extends MethodCall instanceof CallExpr {

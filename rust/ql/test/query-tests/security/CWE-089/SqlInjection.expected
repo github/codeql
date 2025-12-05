@@ -52,7 +52,6 @@ edges
 | mysql.rs:17:13:17:24 | unsafe_query | mysql.rs:42:39:42:50 | unsafe_query | provenance |  |
 | mysql.rs:17:13:17:24 | unsafe_query | mysql.rs:75:31:75:42 | unsafe_query | provenance |  |
 | mysql.rs:17:13:17:24 | unsafe_query | mysql.rs:80:26:80:37 | unsafe_query | provenance |  |
-| mysql.rs:18:13:18:83 | ... + ... | mysql.rs:17:13:17:24 | unsafe_query | provenance |  |
 | mysql.rs:18:13:18:83 | ... + ... | mysql.rs:18:13:18:89 | ... + ... | provenance | MaD:27 |
 | mysql.rs:18:13:18:83 | ... + ... | mysql.rs:18:13:18:89 | ... + ... | provenance | MaD:28 |
 | mysql.rs:18:13:18:89 | ... + ... | mysql.rs:17:13:17:24 | unsafe_query | provenance |  |
@@ -99,7 +98,6 @@ edges
 | mysql.rs:102:13:102:24 | unsafe_query | mysql.rs:121:24:121:35 | unsafe_query | provenance |  |
 | mysql.rs:102:13:102:24 | unsafe_query | mysql.rs:149:31:149:42 | unsafe_query | provenance |  |
 | mysql.rs:102:13:102:24 | unsafe_query | mysql.rs:154:26:154:37 | unsafe_query | provenance |  |
-| mysql.rs:103:13:103:83 | ... + ... | mysql.rs:102:13:102:24 | unsafe_query | provenance |  |
 | mysql.rs:103:13:103:83 | ... + ... | mysql.rs:103:13:103:89 | ... + ... | provenance | MaD:27 |
 | mysql.rs:103:13:103:83 | ... + ... | mysql.rs:103:13:103:89 | ... + ... | provenance | MaD:28 |
 | mysql.rs:103:13:103:89 | ... + ... | mysql.rs:102:13:102:24 | unsafe_query | provenance |  |
@@ -143,7 +141,6 @@ edges
 | sqlx.rs:54:26:54:39 | &remote_string [&ref] | sqlx.rs:54:9:54:22 | unsafe_query_2 [&ref] | provenance |  |
 | sqlx.rs:54:27:54:39 | remote_string | sqlx.rs:54:26:54:39 | &remote_string [&ref] | provenance |  |
 | sqlx.rs:55:9:55:22 | unsafe_query_3 | sqlx.rs:81:29:81:42 | unsafe_query_3 | provenance |  |
-| sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:9:55:22 | unsafe_query_3 | provenance |  |
 | sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:26:55:102 | ... + ... | provenance | MaD:27 |
 | sqlx.rs:55:26:55:96 | ... + ... | sqlx.rs:55:26:55:102 | ... + ... | provenance | MaD:28 |
 | sqlx.rs:55:26:55:102 | ... + ... | sqlx.rs:55:9:55:22 | unsafe_query_3 | provenance |  |
@@ -174,7 +171,6 @@ edges
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:136:55:136:68 | unsafe_query_1 | provenance |  |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:145:55:145:68 | unsafe_query_1 | provenance |  |
 | sqlx.rs:102:9:102:22 | unsafe_query_1 | sqlx.rs:153:29:153:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:9:102:22 | unsafe_query_1 | provenance |  |
 | sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:26:102:102 | ... + ... | provenance | MaD:27 |
 | sqlx.rs:102:26:102:96 | ... + ... | sqlx.rs:102:26:102:102 | ... + ... | provenance | MaD:28 |
 | sqlx.rs:102:26:102:102 | ... + ... | sqlx.rs:102:9:102:22 | unsafe_query_1 | provenance |  |
@@ -199,7 +195,6 @@ edges
 | sqlx.rs:173:25:173:85 | ... .text() [Ok] | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | provenance | MaD:32 |
 | sqlx.rs:173:25:173:118 | ... .unwrap_or(...) | sqlx.rs:173:9:173:21 | remote_string | provenance |  |
 | sqlx.rs:175:9:175:22 | unsafe_query_1 | sqlx.rs:188:29:188:42 | unsafe_query_1 | provenance |  |
-| sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:9:175:22 | unsafe_query_1 | provenance |  |
 | sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:26:175:102 | ... + ... | provenance | MaD:27 |
 | sqlx.rs:175:26:175:96 | ... + ... | sqlx.rs:175:26:175:102 | ... + ... | provenance | MaD:28 |
 | sqlx.rs:175:26:175:102 | ... + ... | sqlx.rs:175:9:175:22 | unsafe_query_1 | provenance |  |
