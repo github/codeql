@@ -53,6 +53,8 @@ predicate isSizeOfExprOperandMacroInvocationAConstInteger(
   // Special case for token pasting operator
   not exists(Macro m | m = mi.getMacro() | m.getBody().toString().regexpMatch("^.*\\s*##\\s*.*$")) and
   // Special case for multichar literal integers that are exactly 4 character long (i.e. 'val1')
+  // in these cases, the precompiler turns the string value into an integer, making it appear to be
+  // a const macro of interest, but strings should be ignored.
   not exists(Macro m | m = mi.getMacro() | m.getBody().toString().regexpMatch("^'.{4}'$")) and
   // Special case macros that are known to be used in buffer streams
   // where it is common index into a buffer or allocate a buffer size based on a constant
