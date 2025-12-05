@@ -37,10 +37,18 @@ predicate ignorableSizeof(SizeofExprOperator sizeofExpr) {
   // using the special magic number constant already defined
   exists(MacroInvocation mi |
     (
+      // Generally ignore anything from these linux headers
       mi.getMacro().getFile().getBaseName() in [
           "minmax.h", "build_bug.h", "kernel.h", "bug.h", "sigcontext.h"
         ] and
       mi.getMacro().getFile().getRelativePath().toLowerCase().matches("%linux%")
+      or
+      // Sometimes the same macros are copied into other files, so also check the macro name
+      // this is redundant, but the first check above blocks all macros in these headers
+      // while this second check blocks any copies of these specific macros if found elsewhere.
+      mi.getMacroName() = "FP_XSTATE_MAGIC2_SIZE"
+      or
+      mi.getMacroName() = "__typecheck"
     ) and
     mi.getAnExpandedElement() = sizeofExpr
   )
@@ -56,28 +64,20 @@ predicate ignorableSizeof(SizeofExprOperator sizeofExpr) {
   // LLVM has known test cases under gcc-torture, ignore any hits under any matching directory
   // see for example 20020226-1.c
   sizeofExpr.getFile().getRelativePath().toLowerCase().matches("%gcc-%torture%")
+  or
+  // The user seems to be ignoring the output of the sizeof by casting the sizeof to void
+  // this has been observed as a common pattern in assert macros (I believe for disabling asserts in release builds).
+  // NOTE: having to check the conversion's type rather than the conversion itself
+  // i.e., checking if VoidConversion
+  // as nesting in parenthesis creats a ParenConversion
+  sizeofExpr.getExplicitlyConverted().getUnspecifiedType() instanceof VoidType
+  or
+  // A common macro seen that gets size of arguments, considered ignorable
+  exists(MacroInvocation mi |
+    mi.getMacroName() = "_SDT_ARGSIZE" and mi.getAnExpandedElement() = sizeofExpr
+  )
 }
 
 class CandidateSizeofCall extends SizeofExprOperator {
   CandidateSizeofCall() { not ignorableSizeof(this) }
-}
-
-/**
- * Holds if `type` is a `Type` that typically should not be used for `sizeof` in macros or function return values.
- */
-predicate isTypeDangerousForSizeof(Expr e) {
-  exists(Type type |
-    (
-      if e.getImplicitlyConverted().hasExplicitConversion()
-      then type = e.getExplicitlyConverted().getType()
-      else type = e.getUnspecifiedType()
-    )
-  |
-    (
-      type instanceof IntegralOrEnumType and
-      // ignore string literals
-      not type instanceof WideCharType and
-      not type instanceof CharType
-    )
-  )
 }

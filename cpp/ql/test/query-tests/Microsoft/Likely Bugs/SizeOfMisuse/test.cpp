@@ -128,9 +128,14 @@ void Test01() {
 
 #define _T(x) L ## x
 
+#define SAFE_ASSERT(e)                          (((void)sizeof(e)))
+
 void test02_FalsePositives()
 {
 	int x = WNULL_SIZE;
 	x = sizeof(RKF_PATH_UTIL_STREAM_MARKER);
-	sizeof(_T('\0'));
+	sizeof(_T('\0')); // GOOD: ignorable sizeof use
+
+	SAFE_ASSERT(sizeof(int) == 4); // GOOD: ignorable sizeof use
+	SAFE_ASSERT(BAD_MACRO_CONST); // GOOD: ignorable sizeof use
 }

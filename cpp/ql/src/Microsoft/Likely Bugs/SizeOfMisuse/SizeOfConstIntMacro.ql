@@ -11,6 +11,26 @@
 import cpp
 import SizeOfTypeUtils
 
+/**
+ * Holds if `type` is a `Type` that typically should not be used for `sizeof` in macros or function return values.
+ */
+predicate isTypeDangerousForSizeof(Expr e) {
+  exists(Type type |
+    (
+      if e.getImplicitlyConverted().hasExplicitConversion()
+      then type = e.getExplicitlyConverted().getType()
+      else type = e.getUnspecifiedType()
+    )
+  |
+    (
+      type instanceof IntegralOrEnumType and
+      // ignore string literals
+      not type instanceof WideCharType and
+      not type instanceof CharType
+    )
+  )
+}
+
 int countMacros(Expr e) { result = count(MacroInvocation mi | mi.getExpr() = e | mi) }
 
 predicate isSizeOfExprOperandMacroInvocationAConstInteger(
@@ -35,7 +55,16 @@ predicate isSizeOfExprOperandMacroInvocationAConstInteger(
   // Special case for token pasting operator
   not exists(Macro m | m = mi.getMacro() | m.getBody().toString().regexpMatch("^.*\\s*##\\s*.*$")) and
   // Special case for multichar literal integers that are exactly 4 character long (i.e. 'val1')
-  not exists(Macro m | m = mi.getMacro() | m.getBody().toString().regexpMatch("^'.{4}'$"))
+  not exists(Macro m | m = mi.getMacro() | m.getBody().toString().regexpMatch("^'.{4}'$")) and
+  // Special case macros that are known to be used in buffer streams
+  // where it is common index into a buffer or allocate a buffer size based on a constant
+  // this includes known protocol constants and magic numbers
+  not (
+    // ignoring any string looking like a magic number, part of the smb2 protocol or csc protocol
+    mi.getMacroName().toLowerCase().matches(["%magic%", "%smb2%", "csc_%"]) and
+    // but only ignore if the macro does not also appear to be a size or length macro
+    not mi.getMacroName().toLowerCase().matches(["%size%", "%length%"])
+  )
 }
 
 from CandidateSizeofCall sizeofExpr, MacroInvocation mi, string inMacro
