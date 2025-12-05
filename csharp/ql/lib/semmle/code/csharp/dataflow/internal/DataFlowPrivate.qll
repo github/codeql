@@ -3050,8 +3050,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     exists(AssignableDefinition def |
       def.getTargetAccess() = fa and
       nodeFrom.asExpr() = def.getSource() and
-      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeTo = TFlowInsensitiveFieldNode(f)
+    |
       nodeFrom.getEnclosingCallable() instanceof Constructor
+      or
+      nodeFrom.getEnclosingCallable() instanceof ObjectInitMethod
     )
     or
     nodeFrom = TFlowInsensitiveFieldNode(f) and
