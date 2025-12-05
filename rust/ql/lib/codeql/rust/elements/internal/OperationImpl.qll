@@ -30,6 +30,7 @@ module Impl {
       op = "!" and path = "core::ops::bit::Not" and method = "not" and borrows = 0
       or
       // Dereference
+      // todo: handle `core::ops::deref::DerefMut`
       op = "*" and path = "core::ops::deref::Deref" and method = "deref" and borrows = 1
     )
     or
