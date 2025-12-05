@@ -102,7 +102,7 @@ module AccessAfterLifetime {
     // propagate through function calls
     exists(Call call |
       mayEncloseOnStack(a, call.getEnclosingBlock()) and
-      [call.getStaticTarget(), call.getARuntimeTarget()] = b.getEnclosingCallable()
+      call.getARuntimeTarget() = b.getEnclosingCallable()
     )
   }
 
