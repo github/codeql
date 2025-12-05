@@ -1,7 +1,7 @@
 private import Opcode
 private import codeql.util.Boolean
 private import semmle.code.binary.ast.internal.CilInstructions
-private import semmle.code.binary.ast.internal.instructions
+private import semmle.code.binary.ast.internal.X86Instructions
 
 newtype LocalVariableTag =
   CmpRegisterTag() or

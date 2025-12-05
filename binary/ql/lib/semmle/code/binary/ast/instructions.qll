@@ -1,4 +1,4 @@
-private import internal.instructions as Internal
+private import internal.X86Instructions as Internal
 private import binary
 private import Headers
 private import Sections
