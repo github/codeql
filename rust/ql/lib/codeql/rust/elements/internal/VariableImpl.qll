@@ -676,12 +676,12 @@ module Impl {
     predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
   }
 
-  /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
-  private predicate assignmentExprDescendant(AssignmentExpr ae, Expr e) {
-    e = ae.getLhs()
+  /** Holds if `e` occurs in the LHS of an assignment operation. */
+  predicate assignmentOperationDescendant(AssignmentOperation ao, Expr e) {
+    e = ao.getLhs()
     or
     exists(Expr mid |
-      assignmentExprDescendant(ae, mid) and
+      assignmentOperationDescendant(ao, mid) and
       getImmediateParentAdj(e) = mid and
       not mid instanceof DerefExpr and
       not mid instanceof FieldExpr and
@@ -696,7 +696,7 @@ module Impl {
     cached
     VariableWriteAccess() {
       Cached::ref() and
-      assignmentExprDescendant(ae, this)
+      assignmentOperationDescendant(ae, this)
     }
 
     /** Gets the assignment expression that has this write access in the left-hand side. */

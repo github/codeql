@@ -1,6 +1,12 @@
-multipleCallTargets
+multipleResolvedTargets
 | deallocation.rs:354:11:354:29 | ...::from(...) |
 | deallocation.rs:355:11:355:29 | ...::from(...) |
+| lifetime.rs:217:17:217:25 | * ... |
 | lifetime.rs:610:13:610:31 | ...::from(...) |
 | lifetime.rs:611:13:611:31 | ...::from(...) |
 | lifetime.rs:628:13:628:31 | ...::from(...) |
+| lifetime.rs:630:11:630:25 | * ... |
+| lifetime.rs:692:12:692:14 | * ... |
+| lifetime.rs:693:12:693:14 | * ... |
+| lifetime.rs:694:12:694:14 | * ... |
+| lifetime.rs:734:11:734:13 | * ... |
