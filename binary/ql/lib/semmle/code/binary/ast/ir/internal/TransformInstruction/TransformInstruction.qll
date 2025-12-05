@@ -659,6 +659,8 @@ module Transform<InstructionSig Input> {
         )
       }
 
+      CallTargetOperand getTargetOperand() { result = this.getAnOperand() }
+
       override string getImmediateValue() { result = this.getStaticTarget().getName() }
     }
 
@@ -972,6 +974,10 @@ module Transform<InstructionSig Input> {
 
     class LeftOperand extends Operand {
       LeftOperand() { this.getOperandTag() instanceof LeftTag }
+    }
+
+    class CallTargetOperand extends Operand {
+      CallTargetOperand() { this.getOperandTag() instanceof CallTargetTag }
     }
 
     class RightOperand extends Operand {

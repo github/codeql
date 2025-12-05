@@ -166,6 +166,8 @@ class CallInstruction extends Instruction {
 
   Function getStaticTarget() { result = TMkFunction(te.getStaticCallTarget(tag)) }
 
+  CallTargetOperand getTargetOperand() { result = this.getAnOperand() }
+
   override string getImmediateValue() { result = this.getStaticTarget().getName() }
 }
 

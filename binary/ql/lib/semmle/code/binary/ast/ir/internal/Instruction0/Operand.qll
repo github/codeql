@@ -71,3 +71,7 @@ class ConditionJumpTargetOperand extends Operand {
 class JumpTargetOperand extends Operand {
   override JumpTargetTag operandTag;
 }
+
+class CallTargetOperand extends Operand {
+  override CallTargetTag operandTag;
+}

@@ -28,6 +28,8 @@ signature module InstructionSig {
     Function getEnclosingFunction();
 
     OperandTag getOperandTag();
+
+    Location getLocation();
   }
 
   class StoreValueOperand extends Operand;
@@ -47,6 +49,8 @@ signature module InstructionSig {
   class LeftOperand extends Operand;
 
   class RightOperand extends Operand;
+
+  class CallTargetOperand extends Operand;
 
   class InstructionTag {
     string toString();
@@ -160,6 +164,8 @@ signature module InstructionSig {
     BasicBlock getBasicBlock();
 
     InstructionTag getInstructionTag();
+
+    Operand getFirstOperand();
   }
 
   class RetInstruction extends Instruction;
@@ -221,6 +227,12 @@ signature module InstructionSig {
   }
 
   class CallInstruction extends Instruction {
+    CallTargetOperand getTargetOperand();
+
+    /**
+     * Gets the static target of this function call, if it is known (and the
+     * function exists in the database).
+     */
     Function getStaticTarget();
   }
 
@@ -248,5 +260,7 @@ signature module InstructionSig {
     Function getEnclosingFunction();
 
     Location getLocation();
+
+    string toString();
   }
 }
