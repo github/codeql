@@ -1,9 +1,0 @@
-identityLocalStep
-| HardcodedKeysGood.go:20:3:20:5 | ret | Node steps to itself |
-| sanitizer.go:26:3:26:7 | bytes | Node steps to itself |
-| sanitizer.go:39:3:39:5 | ret | Node steps to itself |
-| sanitizer.go:49:3:49:7 | bytes | Node steps to itself |
-| sanitizer.go:70:12:70:17 | length | Node steps to itself |
-| sanitizer.go:71:27:71:33 | sources | Node steps to itself |
-| sanitizer.go:71:35:71:35 | r | Node steps to itself |
-| sanitizer.go:71:42:71:53 | sourceLength | Node steps to itself |

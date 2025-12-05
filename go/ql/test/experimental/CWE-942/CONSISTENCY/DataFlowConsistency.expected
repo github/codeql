@@ -13,6 +13,3 @@ reverseRead
 | CorsMisconfiguration.go:170:14:170:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | CorsMisconfiguration.go:194:17:194:19 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | CorsMisconfiguration.go:206:14:206:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| CorsMisconfiguration.go:208:13:208:18 | origin | Node steps to itself |
-| CorsMisconfiguration.go:235:6:235:8 | try | Node steps to itself |

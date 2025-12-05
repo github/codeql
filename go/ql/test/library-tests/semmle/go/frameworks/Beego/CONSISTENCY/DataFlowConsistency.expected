@@ -14,6 +14,3 @@ reverseRead
 | test.go:318:20:318:22 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | test.go:324:17:324:19 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | test.go:324:17:324:25 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| test.go:278:3:278:14 | genericFiles | Node steps to itself |
-| test.go:278:21:278:25 | files | Node steps to itself |

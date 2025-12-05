@@ -1,4 +1,0 @@
-identityLocalStep
-| DatabaseCallInLoop.go:9:3:9:4 | db | Node steps to itself |
-| test.go:21:12:21:13 | db | Node steps to itself |
-| test.go:25:15:25:16 | db | Node steps to itself |

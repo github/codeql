@@ -1,11 +1,5 @@
 reverseRead
-| pkg1/embedding.go:56:29:56:39 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| pkg1/embedding.go:57:33:57:46 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| pkg1/embedding.go:58:14:58:22 | implicit read of field embedder | Origin of readStep is missing a PostUpdateNode. |
-| pkg1/embedding.go:58:31:58:42 | implicit read of field embedder | Origin of readStep is missing a PostUpdateNode. |
 | pkg1/tst.go:43:6:43:6 | t | Origin of readStep is missing a PostUpdateNode. |
 | pkg1/tst.go:46:6:46:6 | t | Origin of readStep is missing a PostUpdateNode. |
-| pkg1/tst.go:50:2:50:2 | t | Origin of readStep is missing a PostUpdateNode. |
 | pkg1/tst.go:53:6:53:7 | t2 | Origin of readStep is missing a PostUpdateNode. |
 | pkg1/tst.go:55:6:55:7 | t2 | Origin of readStep is missing a PostUpdateNode. |
-| promoted.go:18:6:18:6 | t | Origin of readStep is missing a PostUpdateNode. |
