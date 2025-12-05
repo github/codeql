@@ -1,5 +1,5 @@
 models
-| 1 | Summary: <_ as alloc::string::ToString>::to_string; Argument[self]; ReturnValue; taint |
+| 1 | Summary: <_ as alloc::string::ToString>::to_string; Argument[self].Reference; ReturnValue; taint |
 | 2 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
 | 3 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
 | 4 | Summary: <_ as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
@@ -31,12 +31,12 @@ edges
 | main.rs:52:14:52:29 | ...::from(...) | main.rs:52:9:52:10 | s2 | provenance |  |
 | main.rs:52:27:52:28 | s1 | main.rs:52:14:52:29 | ...::from(...) | provenance | MaD:2 |
 | main.rs:52:27:52:28 | s1 | main.rs:52:14:52:29 | ...::from(...) | provenance | MaD:5 |
-| main.rs:57:9:57:10 | s1 | main.rs:58:14:58:27 | s1.to_string() | provenance | MaD:1 |
+| main.rs:57:9:57:10 | s1 | main.rs:58:14:58:15 | s1 | provenance |  |
 | main.rs:57:14:57:29 | source_slice(...) | main.rs:57:9:57:10 | s1 | provenance |  |
 | main.rs:58:9:58:10 | s2 | main.rs:59:10:59:11 | s2 | provenance |  |
+| main.rs:58:14:58:15 | s1 | main.rs:58:14:58:27 | s1.to_string() | provenance | MaD:1 |
 | main.rs:58:14:58:27 | s1.to_string() | main.rs:58:9:58:10 | s2 | provenance |  |
 | main.rs:63:9:63:9 | s | main.rs:64:16:64:16 | s | provenance |  |
-| main.rs:63:9:63:9 | s | main.rs:64:16:64:25 | s.as_str() | provenance | MaD:7 |
 | main.rs:63:13:63:22 | source(...) | main.rs:63:9:63:9 | s | provenance |  |
 | main.rs:64:16:64:16 | s | main.rs:64:16:64:25 | s.as_str() | provenance | MaD:7 |
 | main.rs:68:9:68:9 | s | main.rs:70:34:70:61 | MacroExpr | provenance |  |
@@ -91,6 +91,7 @@ nodes
 | main.rs:57:9:57:10 | s1 | semmle.label | s1 |
 | main.rs:57:14:57:29 | source_slice(...) | semmle.label | source_slice(...) |
 | main.rs:58:9:58:10 | s2 | semmle.label | s2 |
+| main.rs:58:14:58:15 | s1 | semmle.label | s1 |
 | main.rs:58:14:58:27 | s1.to_string() | semmle.label | s1.to_string() |
 | main.rs:59:10:59:11 | s2 | semmle.label | s2 |
 | main.rs:63:9:63:9 | s | semmle.label | s |

@@ -8,6 +8,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from Class cls, string reason
 where exists(ClassObject c | c.getPyClass() = cls | c.failedInference(reason))

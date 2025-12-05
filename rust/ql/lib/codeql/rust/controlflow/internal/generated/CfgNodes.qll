@@ -654,21 +654,49 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * A function call expression. For example:
+     * NOTE: Consider using `Call` instead, as that excludes call expressions that are
+     * instantiations of tuple structs and tuple variants.
+     *
+     * A call expression. For example:
      * ```rust
      * foo(42);
      * foo::<u32, u64>(42);
      * foo[0](42);
-     * foo(1) = 4;
+     * Option::Some(42); // tuple variant instantiation
      * ```
      */
-    final class CallExprCfgNode extends CfgNodeFinal, CallExprBaseCfgNode {
+    final class CallExprCfgNode extends CfgNodeFinal, ExprCfgNode {
       private CallExpr node;
 
       CallExprCfgNode() { node = this.getAstNode() }
 
       /** Gets the underlying `CallExpr`. */
       CallExpr getCallExpr() { result = node }
+
+      /**
+       * Gets the argument list of this call expression, if it exists.
+       */
+      ArgList getArgList() { result = node.getArgList() }
+
+      /**
+       * Holds if `getArgList()` exists.
+       */
+      predicate hasArgList() { exists(this.getArgList()) }
+
+      /**
+       * Gets the `index`th attr of this call expression (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this call expression.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this call expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
        * Gets the function of this call expression, if it exists.
@@ -681,62 +709,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getFunction()` exists.
        */
       predicate hasFunction() { exists(this.getFunction()) }
-    }
-
-    final private class ParentCallExprBase extends ParentAstNode, CallExprBase {
-      override predicate relevantChild(AstNode child) { none() }
-    }
-
-    /**
-     * A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-     */
-    final class CallExprBaseCfgNode extends CfgNodeFinal, ExprCfgNode {
-      private CallExprBase node;
-
-      CallExprBaseCfgNode() { node = this.getAstNode() }
-
-      /** Gets the underlying `CallExprBase`. */
-      CallExprBase getCallExprBase() { result = node }
-
-      /**
-       * Gets the argument list of this call expression base, if it exists.
-       */
-      ArgList getArgList() { result = node.getArgList() }
-
-      /**
-       * Holds if `getArgList()` exists.
-       */
-      predicate hasArgList() { exists(this.getArgList()) }
-
-      /**
-       * Gets the `index`th attr of this call expression base (0-based).
-       */
-      Attr getAttr(int index) { result = node.getAttr(index) }
-
-      /**
-       * Gets any of the attrs of this call expression base.
-       */
-      Attr getAnAttr() { result = this.getAttr(_) }
-
-      /**
-       * Gets the number of attrs of this call expression base.
-       */
-      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
-
-      /**
-       * Gets the `index`th argument of this call expression base (0-based).
-       */
-      Expr getArg(int index) { result = node.getArg(index) }
-
-      /**
-       * Gets any of the arguments of this call expression base.
-       */
-      Expr getAnArg() { result = this.getArg(_) }
-
-      /**
-       * Gets the number of arguments of this call expression base.
-       */
-      int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
     }
 
     final private class ParentCastExpr extends ParentAstNode, CastExpr {
@@ -2071,19 +2043,48 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
+     * NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
+     * call syntax (such as `Foo::method(x)`), operation syntax (such as `x + y`), and
+     * indexing syntax (such as `x[y]`).
+     *
      * A method call expression. For example:
      * ```rust
      * x.foo(42);
      * x.foo::<u32, u64>(42);
      * ```
      */
-    final class MethodCallExprCfgNode extends CfgNodeFinal, CallExprBaseCfgNode {
+    final class MethodCallExprCfgNode extends CfgNodeFinal, ExprCfgNode {
       private MethodCallExpr node;
 
       MethodCallExprCfgNode() { node = this.getAstNode() }
 
       /** Gets the underlying `MethodCallExpr`. */
       MethodCallExpr getMethodCallExpr() { result = node }
+
+      /**
+       * Gets the argument list of this method call expression, if it exists.
+       */
+      ArgList getArgList() { result = node.getArgList() }
+
+      /**
+       * Holds if `getArgList()` exists.
+       */
+      predicate hasArgList() { exists(this.getArgList()) }
+
+      /**
+       * Gets the `index`th attr of this method call expression (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this method call expression.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this method call expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
        * Gets the generic argument list of this method call expression, if it exists.

@@ -26,15 +26,16 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
   predicate defaultSource(DataFlow::Node source) { callTargetName(source.asExpr(), "source") }
 
   predicate defaultSink(DataFlow::Node sink) {
-    any(CallExpr call | callTargetName(call, "sink")).getAnArg() = sink.asExpr()
+    any(CallExpr call | callTargetName(call, "sink")).getASyntacticArgument() = sink.asExpr()
   }
 
   private string getSourceArgString(DataFlow::Node src) {
     defaultSource(src) and
-    result = src.asExpr().(CallExpr).getArg(0).toString()
+    result = src.asExpr().(Call).getPositionalArgument(0).toString()
     or
     sourceNode(src, _) and
-    result = src.(Node::FlowSummaryNode).getSourceElement().getCall().getArg(0).toString() and
+    result =
+      src.(Node::FlowSummaryNode).getSourceElement().getCall().getPositionalArgument(0).toString() and
     // Don't use the result if it contains spaces
     not result.matches("% %")
   }

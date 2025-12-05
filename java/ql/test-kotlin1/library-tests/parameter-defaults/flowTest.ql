@@ -25,9 +25,7 @@ module Config implements DataFlow::ConfigSig {
 
 module Flow = DataFlow::Global<Config>;
 
-predicate isSunk(StringLiteral sl) {
-  exists(DataFlow::Node source | Flow::flow(source, _) and sl = source.asExpr())
-}
+predicate isSunk(StringLiteral sl) { Flow::flowFromExpr(sl) }
 
 query predicate shouldBeSunkButIsnt(ShouldBeSunk src) { not isSunk(src) }
 

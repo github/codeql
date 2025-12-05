@@ -1,0 +1,7 @@
+reverseRead
+| ConditionalBypassBad.go:9:5:9:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| ConditionalBypassGood.go:9:5:9:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| condition.go:9:5:9:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| condition.go:16:5:16:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| condition.go:16:41:16:41 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| condition.go:23:5:23:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

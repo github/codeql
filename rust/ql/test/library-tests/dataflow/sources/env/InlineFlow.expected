@@ -7,7 +7,7 @@ models
 | 6 | Source: std::env::var; ReturnValue.Field[core::result::Result::Ok(0)]; environment |
 | 7 | Source: std::env::var_os; ReturnValue.Field[core::option::Option::Some(0)]; environment |
 | 8 | Summary: <_ as core::iter::traits::iterator::Iterator>::collect; Argument[self].Element; ReturnValue.Element; value |
-| 9 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 9 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 10 | Summary: <core::option::Option>::expect; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 11 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 12 | Summary: <core::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |

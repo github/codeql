@@ -1,5 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 from Value sup, Value cls
 where Expressions::requireSubClass(cls, sup)

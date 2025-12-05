@@ -6,6 +6,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from Scope s, string name, Object val
 where

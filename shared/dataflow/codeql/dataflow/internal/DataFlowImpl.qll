@@ -208,6 +208,28 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     /**
+     * Holds if data can flow from `source` to some sink.
+     * This is a local predicate that only has results local to the overlay/base database.
+     */
+    predicate flowFromLocal(Node source) = forceLocal(Flow::flowFrom/1)(source)
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFrom(Node source) {
+      Flow::flowFrom(source)
+      or
+      // If we are overlay informed (i.e. we are not diff-informed), we
+      // merge in the local results which includes the base database results.
+      flowFromLocal(source) and Config::observeOverlayInformedIncrementalMode()
+    }
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFromExpr(Lang::DataFlowExpr source) { flowFrom(exprNode(source)) }
+
+    /**
      * Holds if data can flow from some source to `sink`.
      * This is a local predicate that only has results local to the overlay/base database.
      */
@@ -3500,6 +3522,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         flowPath(source0, sink0) and source0.getNode() = source and sink0.getNode() = sink
       )
     }
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFrom(Node source) { exists(PathNode n | n.isSource() and n.getNode() = source) }
+
+    /**
+     * Holds if data can flow from `source` to some sink.
+     */
+    predicate flowFromExpr(Expr source) { flowFrom(exprNode(source)) }
 
     /**
      * Holds if data can flow from some source to `sink`.

@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate main_eq_name(If i) {
   exists(Name n, StringLiteral m, Compare c |

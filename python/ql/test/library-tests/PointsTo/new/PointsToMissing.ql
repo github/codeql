@@ -1,6 +1,6 @@
 import python
 import Util
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 /* This test should return _no_ results. */
 predicate relevant_node(ControlFlowNode n) {

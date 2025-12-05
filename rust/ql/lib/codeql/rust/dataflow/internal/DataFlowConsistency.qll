@@ -19,10 +19,6 @@ private module Input implements InputSig<Location, RustDataFlow> {
   predicate postWithInFlowExclude(RustDataFlow::Node n) {
     n instanceof Node::FlowSummaryNode
     or
-    // We allow flow into post-update node for receiver expressions (from the
-    // synthetic post receiever node).
-    n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = any(Node::ReceiverNode r).getReceiver()
-    or
     n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_, _)
     or
     FlowSummaryImpl::Private::Steps::sourceLocalStep(_, n, _)

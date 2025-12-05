@@ -87,7 +87,7 @@ private class UrlTransmittedSink extends CleartextTransmissionSink {
     // exclude `tel:` and similar URLs. These URLs necessarily contain
     // sensitive data which you expect to transmit only by making the
     // phone call (or similar operation).
-    not ExcludeUrlFlow::flow(_, this)
+    not ExcludeUrlFlow::flowTo(this)
   }
 }
 

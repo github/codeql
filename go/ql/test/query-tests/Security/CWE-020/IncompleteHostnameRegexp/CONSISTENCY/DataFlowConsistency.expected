@@ -1,0 +1,5 @@
+reverseRead
+| IncompleteHostnameRegexp.go:12:42:12:44 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| IncompleteHostnameRegexpGood2.go:12:42:12:44 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| IncompleteHostnameRegexpGood.go:12:42:12:44 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:18:57:18:57 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

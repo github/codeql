@@ -3,7 +3,6 @@ private import codeql.rust.internal.TypeInference
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.internal.Type
 private import codeql.rust.internal.TypeMention
-private import codeql.rust.elements.Call
 
 private newtype TFunctionPosition =
   TArgumentFunctionPosition(ArgumentPosition pos) or

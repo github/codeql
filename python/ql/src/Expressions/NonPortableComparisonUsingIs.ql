@@ -13,6 +13,7 @@
 
 import python
 import IsComparisons
+private import LegacyPointsTo
 
 from Compare comp, Cmpop op, ClassValue c
 where

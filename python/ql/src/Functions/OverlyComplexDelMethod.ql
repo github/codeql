@@ -12,11 +12,12 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionValue method
 where
   exists(ClassValue c |
     c.declaredAttribute("__del__") = method and
-    method.getScope().getMetrics().getCyclomaticComplexity() > 3
+    method.getScope().(FunctionMetrics).getCyclomaticComplexity() > 3
   )
 select method, "Overly complex '__del__' method."

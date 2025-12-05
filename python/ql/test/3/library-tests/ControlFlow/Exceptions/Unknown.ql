@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from RaisingNode r
 where r.raisesUnknownType()
