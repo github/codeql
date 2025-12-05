@@ -1,2 +1,2 @@
-multipleCallTargets
+multipleResolvedTargets
 | my_struct.rs:25:19:25:37 | ...::from(...) |
