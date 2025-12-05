@@ -1,4 +1,6 @@
 /** Standard builtin types and modules */
+overlay[local]
+module;
 
 import python
 

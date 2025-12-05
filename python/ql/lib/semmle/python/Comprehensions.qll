@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 
 /** The base class for list, set and dictionary comprehensions, and generator expressions. */
