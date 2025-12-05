@@ -1,5 +1,0 @@
----
-category: fix
----
-
-- Fixed a bug in the Python extractor's import handling where failing to find an import in `find_module` would cause a `KeyError` to be raised. (Contributed by @akoeplinger.)

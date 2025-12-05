@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Fixed a bug in the Next.js model that would cause the analysis to miss server-side taint sources in the `app/pages` folder.
