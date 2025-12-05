@@ -2975,7 +2975,7 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
-                    // For Kotlin < 2.3, s.deligate is not-nullable. Cast to a be nullable,
+                    // For Kotlin < 2.3, s.delegate is not-nullable. Cast to a be nullable,
                     // as a workaround to silence warnings for kotlin < 2.3 about the elvis
                     // operator being redundant.
                     // For Kotlin >= 2.3, the cast is redundant, so we need to silence that warning

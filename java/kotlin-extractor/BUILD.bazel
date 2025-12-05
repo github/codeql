@@ -124,8 +124,6 @@ kt_javac_options(
             javac_opts = ":javac-options",
             kotlinc_opts = ":kotlinc-options-%s" % v,
             module_name = "codeql-kotlin-extractor",
-            # resource_strip_prefix is very nit-picky: the following makes it work from
-            # `codeql`, `@codeql_kotlin_embeddable` and `semmle-code`
             resources = [
                 ":resources-%s" % v,
             ],

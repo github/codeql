@@ -7,7 +7,6 @@ module(
 
 bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
-# bazel_dep(name = "rules_java", version = "7.2.0")
 bazel_dep(name = "rules_java", version = "7.2.0")
 bazel_dep(name = "rules_android", version = "0.6.4")
 bazel_dep(name = "bazel_features", version = "1.25.0")
@@ -28,10 +27,10 @@ use_repo(
     "com_github_google_ksp",
     "com_github_jetbrains_kotlin",
     "com_github_pinterest_ktlint",
+    "kotlin_build_tools_impl",
     "kotlinx_serialization_core_jvm",
     "kotlinx_serialization_json",
     "kotlinx_serialization_json_jvm",
-    "kotlin_build_tools_impl",
 )
 
 register_toolchains("//kotlin/internal:default_toolchain")
