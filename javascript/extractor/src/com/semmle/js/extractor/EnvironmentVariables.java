@@ -101,4 +101,12 @@ public class EnvironmentVariables {
   public static boolean isActionsExtractor() {
     return Env.systemEnv().getNonEmpty(CODEQL_EXTRACTOR_ACTIONS_WIP_DATABASE_ENV_VAR) != null;
   }
+
+  public static boolean allowMinifiedFiles() {
+    String env = Env.systemEnv().getNonEmpty("CODEQL_EXTRACTOR_JAVASCRIPT_ALLOW_MINIFIED_FILES");
+    if (env == null) {
+      return false; // default is to not allow minified files
+    }
+    return Boolean.parseBoolean(env);
+  }
 }

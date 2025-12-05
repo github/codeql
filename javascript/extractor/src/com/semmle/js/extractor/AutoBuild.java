@@ -408,8 +408,10 @@ public class AutoBuild {
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
 
     // exclude files whose name strongly suggests they are minified
-    patterns.add("-**/*.min.js");
-    patterns.add("-**/*-min.js");
+    if (!EnvironmentVariables.allowMinifiedFiles()) {
+      patterns.add("-**/*.min.js");
+      patterns.add("-**/*-min.js");
+    }
 
     // exclude `node_modules` and `bower_components`
     patterns.add("-**/node_modules");
@@ -1074,6 +1076,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     config = config.withSourceType(getSourceType());
     config = config.withVirtualSourceRoot(virtualSourceRoot);
     if (defaultEncoding != null) config = config.withDefaultEncoding(defaultEncoding);
+    config = config.withAllowMinified(EnvironmentVariables.allowMinifiedFiles());
     return config;
   }
 

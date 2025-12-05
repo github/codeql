@@ -62,7 +62,7 @@ public class ScriptExtractor implements IExtractor {
     LocationManager locationManager = textualExtractor.getLocationManager();
     String source = textualExtractor.getSource();
 
-    if (isMinified(source)) {
+    if (!config.isAllowMinified() && isMinified(source)) {
       return ParseResultInfo.skipped("File appears to be minified.");
     }
 
