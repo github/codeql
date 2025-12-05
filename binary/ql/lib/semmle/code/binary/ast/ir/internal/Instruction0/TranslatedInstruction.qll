@@ -2372,3 +2372,98 @@ class TranslatedCilLoadArg extends TranslatedCilInstruction, TTranslatedCilLoadA
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
   }
 }
+
+/**
+ * Translation for CIL ldind.* instructions (load indirect through pointer).
+ * These instructions pop an address from the stack and push the value at that address.
+ */
+class TranslatedCilLoadIndirect extends TranslatedCilInstruction, TTranslatedCilLoadIndirect {
+  override Raw::CilLoadIndirectInstruction instr;
+
+  TranslatedCilLoadIndirect() { this = TTranslatedCilLoadIndirect(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Load and
+    tag = CilLdindLoadTag() and
+    v.asSome() = this.getTempVariable(CilLdindVarTag())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) { tag = CilLdindVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilLdindLoadTag() and
+    operandTag instanceof LoadAddressTag and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilLdindLoadTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilLdindLoadTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(CilLdindVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    i = 0 and
+    result = this.getInstruction(CilLdindLoadTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+  }
+}
+
+/**
+ * Translation for CIL stind.* instructions (store indirect through pointer).
+ * These instructions pop a value and an address from the stack, then store the value at that address.
+ */
+class TranslatedCilStoreIndirect extends TranslatedCilInstruction, TTranslatedCilStoreIndirect {
+  override Raw::CilStoreIndirectInstruction instr;
+
+  TranslatedCilStoreIndirect() { this = TTranslatedCilStoreIndirect(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::Store and
+    tag = CilStindStoreTag() and
+    v.isNone()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilStindStoreTag() and
+    exists(Raw::CilInstruction pred | pred = instr.getABackwardPredecessor() |
+      operandTag instanceof StoreAddressTag and
+      result = getTranslatedCilInstruction(pred).getStackElement(1)
+      or
+      operandTag instanceof StoreValueTag and
+      result = getTranslatedCilInstruction(pred).getStackElement(0)
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilStindStoreTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilStindStoreTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+  }
+}

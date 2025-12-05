@@ -122,7 +122,9 @@ newtype TTranslatedElement =
   TTranslatedCilCall(Raw::CilCall call) { shouldTranslateCilInstr(call) } or
   TTranslatedCilLoadString(Raw::CilLdstr ldstr) { shouldTranslateCilInstr(ldstr) } or
   TTranslatedCilParameter(Raw::CilParameter param) { shouldTranslateCilParameter(param) } or
-  TTranslatedCilLoadArg(Raw::CilLoadArgument ldstr) { shouldTranslateCilInstr(ldstr) }
+  TTranslatedCilLoadArg(Raw::CilLoadArgument ldstr) { shouldTranslateCilInstr(ldstr) } or
+  TTranslatedCilLoadIndirect(Raw::CilLoadIndirectInstruction ldind) { shouldTranslateCilInstr(ldind) } or
+  TTranslatedCilStoreIndirect(Raw::CilStoreIndirectInstruction stind) { shouldTranslateCilInstr(stind) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and

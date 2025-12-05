@@ -59,7 +59,9 @@ newtype TInstructionTag =
   CilUnconditionalBranchTag() or
   CilUnconditionalBranchRefTag() or
   CilCallTag() or
-  CilCallTargetTag()
+  CilCallTargetTag() or
+  CilLdindLoadTag() or
+  CilStindStoreTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -220,6 +222,12 @@ class InstructionTag extends TInstructionTag {
     or
     this = CilCallTargetTag() and
     result = "CilCallTarget"
+    or
+    this = CilLdindLoadTag() and
+    result = "CilLdindLoad"
+    or
+    this = CilStindStoreTag() and
+    result = "CilStindStore"
   }
 }
 
