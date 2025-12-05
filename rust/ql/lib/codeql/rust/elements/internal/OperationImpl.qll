@@ -140,7 +140,7 @@ module Impl {
   private class OperationMethodCall extends CallImpl::MethodCall instanceof Operation {
     OperationMethodCall() { super.isOverloaded(_, _, _) }
 
-    override Expr getPositionalArgument(int i) { result = super.getOperand(i + 1) }
+    override Expr getPositionalArgument(int i) { result = super.getOperand(i + 1) and i >= 0 }
 
     override Expr getReceiver() { result = super.getOperand(0) }
   }

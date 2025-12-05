@@ -183,11 +183,7 @@ edges
 | test.rs:389:61:389:66 | [post] buffer | test.rs:392:23:392:33 | buffer[...] | provenance |  |
 | test.rs:391:23:391:28 | buffer | test.rs:391:22:391:28 | &buffer | provenance |  |
 | test.rs:392:23:392:33 | buffer[...] | test.rs:392:22:392:33 | &... | provenance |  |
-| test.rs:399:63:399:73 | &mut reader [&ref] | test.rs:399:63:399:73 | [post] &mut reader [&ref] | provenance | MaD:13 |
 | test.rs:399:63:399:73 | &mut reader [&ref] | test.rs:399:76:399:87 | [post] &mut buffer1 [&ref] | provenance | MaD:13 |
-| test.rs:399:63:399:73 | [post] &mut reader [&ref] | test.rs:399:68:399:73 | [post] reader | provenance |  |
-| test.rs:399:68:399:73 | [post] reader | test.rs:403:31:403:36 | reader | provenance |  |
-| test.rs:399:68:399:73 | [post] reader | test.rs:408:55:408:60 | reader | provenance |  |
 | test.rs:399:68:399:73 | reader | test.rs:399:63:399:73 | &mut reader [&ref] | provenance |  |
 | test.rs:399:76:399:87 | [post] &mut buffer1 [&ref] | test.rs:399:81:399:87 | [post] buffer1 | provenance |  |
 | test.rs:399:81:399:87 | [post] buffer1 | test.rs:400:19:400:40 | buffer1[...] | provenance |  |
@@ -261,15 +257,7 @@ edges
 | test.rs:447:61:447:66 | [post] buffer | test.rs:450:23:450:33 | buffer[...] | provenance |  |
 | test.rs:448:19:448:24 | buffer | test.rs:448:18:448:24 | &buffer | provenance |  |
 | test.rs:450:23:450:33 | buffer[...] | test.rs:450:22:450:33 | &... | provenance |  |
-| test.rs:457:63:457:74 | &mut reader2 [&ref] | test.rs:457:63:457:74 | [post] &mut reader2 [&ref] | provenance | MaD:13 |
 | test.rs:457:63:457:74 | &mut reader2 [&ref] | test.rs:457:77:457:88 | [post] &mut buffer1 [&ref] | provenance | MaD:13 |
-| test.rs:457:63:457:74 | [post] &mut reader2 [&ref] | test.rs:457:68:457:74 | [post] reader2 | provenance |  |
-| test.rs:457:68:457:74 | [post] reader2 | test.rs:461:31:461:37 | reader2 | provenance |  |
-| test.rs:457:68:457:74 | [post] reader2 | test.rs:467:44:467:50 | reader2 | provenance |  |
-| test.rs:457:68:457:74 | [post] reader2 | test.rs:479:26:479:32 | reader2 | provenance |  |
-| test.rs:457:68:457:74 | [post] reader2 | test.rs:486:31:486:37 | reader2 | provenance |  |
-| test.rs:457:68:457:74 | [post] reader2 | test.rs:493:31:493:37 | reader2 | provenance |  |
-| test.rs:457:68:457:74 | [post] reader2 | test.rs:500:31:500:37 | reader2 | provenance |  |
 | test.rs:457:68:457:74 | reader2 | test.rs:457:63:457:74 | &mut reader2 [&ref] | provenance |  |
 | test.rs:457:77:457:88 | [post] &mut buffer1 [&ref] | test.rs:457:82:457:88 | [post] buffer1 | provenance |  |
 | test.rs:457:82:457:88 | [post] buffer1 | test.rs:458:19:458:40 | buffer1[...] | provenance |  |
@@ -473,8 +461,6 @@ nodes
 | test.rs:392:22:392:33 | &... | semmle.label | &... |
 | test.rs:392:23:392:33 | buffer[...] | semmle.label | buffer[...] |
 | test.rs:399:63:399:73 | &mut reader [&ref] | semmle.label | &mut reader [&ref] |
-| test.rs:399:63:399:73 | [post] &mut reader [&ref] | semmle.label | [post] &mut reader [&ref] |
-| test.rs:399:68:399:73 | [post] reader | semmle.label | [post] reader |
 | test.rs:399:68:399:73 | reader | semmle.label | reader |
 | test.rs:399:76:399:87 | [post] &mut buffer1 [&ref] | semmle.label | [post] &mut buffer1 [&ref] |
 | test.rs:399:81:399:87 | [post] buffer1 | semmle.label | [post] buffer1 |
@@ -543,8 +529,6 @@ nodes
 | test.rs:450:22:450:33 | &... | semmle.label | &... |
 | test.rs:450:23:450:33 | buffer[...] | semmle.label | buffer[...] |
 | test.rs:457:63:457:74 | &mut reader2 [&ref] | semmle.label | &mut reader2 [&ref] |
-| test.rs:457:63:457:74 | [post] &mut reader2 [&ref] | semmle.label | [post] &mut reader2 [&ref] |
-| test.rs:457:68:457:74 | [post] reader2 | semmle.label | [post] reader2 |
 | test.rs:457:68:457:74 | reader2 | semmle.label | reader2 |
 | test.rs:457:77:457:88 | [post] &mut buffer1 [&ref] | semmle.label | [post] &mut buffer1 [&ref] |
 | test.rs:457:82:457:88 | [post] buffer1 | semmle.label | [post] buffer1 |
