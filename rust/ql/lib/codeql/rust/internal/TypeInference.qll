@@ -3527,7 +3527,7 @@ private module Cached {
    * any.
    *
    * The parameter `dispatch` is `true` if and only if the resolved target is a
-   * trait item because the a precise target could not be determined from the
+   * trait item because a precise target could not be determined from the
    * types (for instance in the presence of generics or `dyn` types)
    */
   cached
