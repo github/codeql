@@ -94,6 +94,6 @@ module Impl {
     }
 
     /** Gets the resolved target (function or tuple struct/variant), if any. */
-    Addressable getResolvedTarget() { result = TypeInference::resolveCallTarget(this) }
+    Addressable getResolvedTarget() { result = TypeInference::resolveCallTarget(this, _) }
   }
 }

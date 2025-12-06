@@ -337,6 +337,69 @@ fn test_async_await() {
     futures::executor::block_on(test_async_await_async_part());
 }
 
+mod not_trait_dispatch {
+    use super::{sink, source};
+
+    trait HasNumbers {
+        fn get_number(&self) -> i64;
+
+        fn get_double_number(&self) -> i64 {
+            self.get_number() * 2
+        }
+
+        fn get_default() -> i64 {
+            source(0)
+        }
+    }
+
+    struct Three;
+
+    impl HasNumbers for Three {
+        fn get_number(&self) -> i64 {
+            source(3)
+        }
+    }
+
+    struct TwentyTwo;
+
+    impl HasNumbers for TwentyTwo {
+        fn get_number(&self) -> i64 {
+            22
+        }
+
+        fn get_double_number(&self) -> i64 {
+            source(44)
+        }
+
+        fn get_default() -> i64 {
+            source(1)
+        }
+    }
+
+    fn test_non_trait_dispatch() {
+        let t = Three;
+
+        // This call is to the default method implementation.
+        let n1 = t.get_double_number();
+        sink(n1); // $ hasTaintFlow=3
+
+        // This call is to the default method implementation.
+        let n2 = HasNumbers::get_double_number(&t);
+        sink(n2); // $ hasTaintFlow=3
+
+        // This call is to the default function implementation.
+        let n3 = Three::get_default();
+        sink(n3); // $ hasValueFlow=0
+
+        let i = TwentyTwo;
+        let n4 = i.get_double_number();
+        sink(n4); // $ hasValueFlow=44
+
+        let n5 = TwentyTwo::get_default();
+        sink(n5); // $ hasValueFlow=1
+    }
+}
+
 fn main() {
     data_out_of_call();
     data_out_of_call_side_effect1();
