@@ -28,6 +28,10 @@ private string getSingleLocationFilePath(@element e) {
     type_decls(e, _, loc)
     or
     namespace_decls(e, _, loc, _)
+    or
+    macroinvocations(e, _, loc, _)
+    or
+    preprocdirects(e, _, loc)
   |
     result = getLocationFilePath(loc)
   )
