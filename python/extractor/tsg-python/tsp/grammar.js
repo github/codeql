@@ -297,12 +297,21 @@ module.exports = grammar({
       )
     ),
 
+    exception_list: $ => seq(
+      field('element', $.expression),
+      repeat1(
+        seq(
+          ',',
+          field('element', $.expression))
+        )
+      ),
+
     except_clause: $ => seq(
       'except',
       optional(seq(
-        field('type', $.expression),
+        field('type', choice($.expression, $.exception_list)),
         optional(seq(
-          choice('as', ','),
+          'as',
           field('alias', $.expression)
         ))
       )),
@@ -314,7 +323,7 @@ module.exports = grammar({
       'except',
       '*',
       seq(
-        field('type', $.expression),
+        field('type', choice($.expression, $.exception_list)),
         optional(seq(
           'as',
           field('alias', $.expression)
