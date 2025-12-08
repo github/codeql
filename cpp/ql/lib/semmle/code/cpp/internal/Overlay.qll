@@ -20,9 +20,13 @@ private string getLocationFilePath(@location_default loc) {
  */
 overlay[local]
 private string getSingleLocationFilePath(@element e) {
-  // @var_decl has a direct location in the var_decls relation
-  exists(@location_default loc | var_decls(e, _, _, _, loc) | result = getLocationFilePath(loc))
-  //TODO: add other kinds of elements with single locations
+  exists(@location_default loc |
+    var_decls(e, _, _, _, loc)
+    or
+    fun_decls(e, _, _, _, loc)
+  |
+    result = getLocationFilePath(loc)
+  )
 }
 
 /**
@@ -30,11 +34,13 @@ private string getSingleLocationFilePath(@element e) {
  */
 overlay[local]
 private string getMultiLocationFilePath(@element e) {
-  // @variable gets its location(s) from its @var_decl(s)
-  exists(@var_decl vd, @location_default loc | var_decls(vd, e, _, _, loc) |
+  exists(@location_default loc |
+    exists(@var_decl vd | var_decls(vd, e, _, _, loc))
+    or
+    exists(@fun_decl fd | fun_decls(fd, e, _, _, loc))
+  |
     result = getLocationFilePath(loc)
   )
-  //TODO: add other kinds of elements with multiple locations
 }
 
 /**
