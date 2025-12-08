@@ -7,6 +7,7 @@
  */
 
 import VulnerableCalls
+import semmle.code.binary.ast.ir.IR
 
 /**
  * Exports all methods that can reach vulnerable calls.
@@ -39,6 +40,6 @@ query predicate vulnerableCallLocations(
   string id
 ) {
   call.getVulnerabilityId() = id and
-  call.getEnclosingVulnerableMethod().hasFullyQualifiedName(callerNamespace, callerClassName, callerMethodName) and
-  targetFqn = call.getCallTargetFullyQualifiedName()
+  call.getEnclosingFunction().hasFullyQualifiedName(callerNamespace, callerClassName, callerMethodName) and
+  targetFqn = call.getTargetOperand().getAnyDef().(ExternalRefInstruction).getFullyQualifiedName()
 }
