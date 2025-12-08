@@ -158,7 +158,8 @@ private predicate relatedArgSpec(Callable c, string spec) {
     summaryModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _, _) or
     summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _, _) or
     sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
-    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
+    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
+    barrierModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
   |
     c = interpretElement(namespace, type, subtypes, name, signature, ext, _)
   )
@@ -255,6 +256,25 @@ module SourceSinkInterpretationInput implements
         e = baseSink and originalInput = input
         or
         correspondingKotlinParameterDefaultsArgSpec(baseSink, e, originalInput, input)
+      )
+    )
+  }
+
+  predicate barrierElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      SourceOrSinkElement baseBarrier, string originalOutput, QlBuiltins::ExtensionId madId
+    |
+      barrierModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
+        madId) and
+      model = "MaD:" + madId.toString() and
+      baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
+      (
+        e = baseBarrier and output = originalOutput
+        or
+        correspondingKotlinParameterDefaultsArgSpec(baseBarrier, e, originalOutput, output)
       )
     )
   }
