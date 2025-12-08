@@ -12,7 +12,7 @@
 (assignment !type) @assign
 { let @assign.node = (ast-node @assign "Assign") }
 
-[ (expression_list) (tuple) (tuple_pattern) (pattern_list) (index_expression_list) ] @tuple
+[ (expression_list) (tuple) (tuple_pattern) (pattern_list) (index_expression_list) (exception_list)] @tuple
 { let @tuple.node = (ast-node @tuple "Tuple") }
 
 (list_pattern) @list
@@ -3445,6 +3445,9 @@
     (tuple element: (_) @elt) @parent
 
     (tuple_pattern element: (_) @elt) @parent
+
+    ; An exception list, as in `except A, B, C: ...`
+    (exception_list element: (_) @elt) @parent
 ]
 {
     edge @parent.node -> @elt.node
@@ -3480,6 +3483,7 @@
     (parenthesized_expression inner: (_) @elt)
     (set element: (_) @elt)
     (match_sequence_pattern (_) @elt)
+    (exception_list element: (_) @elt)
 ] @seq
 {
     attr (@elt.node) _inherited_ctx = @seq.node
