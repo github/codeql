@@ -102,18 +102,18 @@ fn explicit_box_dereference() {
 fn implicit_dereference() {
     // Call method on implicitly dereferenced value
     let x = MyIntPointer { value: 34i64 };
-    let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
+    let _y = x.is_positive(); // $ target=is_positive type=_y:bool
 
     // Call method on implicitly dereferenced value
     let x = MySmartPointer { value: 34i64 };
-    let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
+    let _y = x.is_positive(); // $ target=is_positive type=_y:bool
 
     let z = MySmartPointer { value: S(0i64) };
-    let z_ = z.foo(); // $ MISSING: target=foo type=z_:TRef.i64
+    let z_ = z.foo(); // $ target=foo type=z_:TRef.i64
 
-    let v = Vec::new(); // $ target=new $ MISSING: type=v:T.i32
+    let v = Vec::new(); // $ target=new type=v:T.i32
     let mut x = MySmartPointer { value: v };
-    x.push(0); // $ MISSING: target=push
+    x.push(0); // $ target=push
 }
 
 mod implicit_deref_coercion_cycle {

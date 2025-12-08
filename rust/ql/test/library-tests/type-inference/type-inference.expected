@@ -4608,13 +4608,18 @@ inferType
 | blanket_impl.rs:55:18:55:25 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:55:18:55:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:55:20:55:21 | x5 |  | blanket_impl.rs:6:5:7:14 | S1 |
+| blanket_impl.rs:56:13:56:14 | x6 |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:56:18:56:19 | S2 |  | blanket_impl.rs:9:5:10:14 | S2 |
+| blanket_impl.rs:56:18:56:31 | S2.duplicate() |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:57:18:57:25 | "{x6:?}\\n" |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:57:18:57:25 | "{x6:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:57:18:57:25 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:57:18:57:25 | { ... } |  | {EXTERNAL LOCATION} | () |
+| blanket_impl.rs:57:20:57:21 | x6 |  | blanket_impl.rs:6:5:7:14 | S1 |
+| blanket_impl.rs:58:13:58:14 | x7 |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:58:18:58:22 | (...) |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:58:18:58:22 | (...) | TRef | blanket_impl.rs:9:5:10:14 | S2 |
+| blanket_impl.rs:58:18:58:34 | ... .duplicate() |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:58:19:58:21 | &S2 |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:58:19:58:21 | &S2 | TRef | blanket_impl.rs:9:5:10:14 | S2 |
 | blanket_impl.rs:58:20:58:21 | S2 |  | blanket_impl.rs:9:5:10:14 | S2 |
@@ -4622,6 +4627,7 @@ inferType
 | blanket_impl.rs:59:18:59:25 | "{x7:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | blanket_impl.rs:59:18:59:25 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:59:18:59:25 | { ... } |  | {EXTERNAL LOCATION} | () |
+| blanket_impl.rs:59:20:59:21 | x7 |  | blanket_impl.rs:6:5:7:14 | S1 |
 | blanket_impl.rs:68:24:68:24 | x |  | {EXTERNAL LOCATION} | i64 |
 | blanket_impl.rs:68:32:68:32 | y |  | blanket_impl.rs:67:5:69:5 | Self [trait Trait1] |
 | blanket_impl.rs:72:24:72:24 | x |  | {EXTERNAL LOCATION} | i64 |
@@ -5249,14 +5255,18 @@ inferType
 | dereference.rs:104:9:104:9 | x |  | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:104:13:104:41 | MyIntPointer {...} |  | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:104:35:104:39 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:105:9:105:10 | _y |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:105:14:105:14 | x |  | dereference.rs:5:1:7:1 | MyIntPointer |
+| dereference.rs:105:14:105:28 | x.is_positive() |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:108:9:108:9 | x |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:108:9:108:9 | x | T | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:108:13:108:43 | MySmartPointer {...} |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:108:13:108:43 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:108:37:108:41 | 34i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:109:9:109:10 | _y |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:109:14:109:14 | x |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:109:14:109:14 | x | T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:109:14:109:28 | x.is_positive() |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:111:9:111:9 | z |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:111:9:111:9 | z | T | dereference.rs:38:1:38:15 | S |
 | dereference.rs:111:9:111:9 | z | T.T | {EXTERNAL LOCATION} | i64 |
@@ -5266,24 +5276,35 @@ inferType
 | dereference.rs:111:37:111:43 | S(...) |  | dereference.rs:38:1:38:15 | S |
 | dereference.rs:111:37:111:43 | S(...) | T | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:111:39:111:42 | 0i64 |  | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:112:9:112:10 | z_ |  | {EXTERNAL LOCATION} | & |
+| dereference.rs:112:9:112:10 | z_ | TRef | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:112:14:112:14 | z |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:112:14:112:14 | z | T | dereference.rs:38:1:38:15 | S |
 | dereference.rs:112:14:112:14 | z | T.T | {EXTERNAL LOCATION} | i64 |
+| dereference.rs:112:14:112:20 | z.foo() |  | {EXTERNAL LOCATION} | & |
+| dereference.rs:112:14:112:20 | z.foo() | TRef | {EXTERNAL LOCATION} | i64 |
 | dereference.rs:114:9:114:9 | v |  | {EXTERNAL LOCATION} | Vec |
 | dereference.rs:114:9:114:9 | v | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:114:9:114:9 | v | T | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:114:13:114:22 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
 | dereference.rs:114:13:114:22 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:114:13:114:22 | ...::new(...) | T | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:115:13:115:13 | x |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:115:13:115:13 | x | T | {EXTERNAL LOCATION} | Vec |
 | dereference.rs:115:13:115:13 | x | T.A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:115:13:115:13 | x | T.T | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:115:17:115:43 | MySmartPointer {...} |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:115:17:115:43 | MySmartPointer {...} | T | {EXTERNAL LOCATION} | Vec |
 | dereference.rs:115:17:115:43 | MySmartPointer {...} | T.A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:115:17:115:43 | MySmartPointer {...} | T.T | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:115:41:115:41 | v |  | {EXTERNAL LOCATION} | Vec |
 | dereference.rs:115:41:115:41 | v | A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:115:41:115:41 | v | T | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:116:5:116:5 | x |  | dereference.rs:18:1:20:1 | MySmartPointer |
 | dereference.rs:116:5:116:5 | x | T | {EXTERNAL LOCATION} | Vec |
 | dereference.rs:116:5:116:5 | x | T.A | {EXTERNAL LOCATION} | Global |
+| dereference.rs:116:5:116:5 | x | T.T | {EXTERNAL LOCATION} | i32 |
+| dereference.rs:116:5:116:13 | x.push(...) |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:116:12:116:12 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:143:19:151:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | dereference.rs:144:17:144:26 | key_to_key |  | {EXTERNAL LOCATION} | HashMap |
@@ -10781,7 +10802,18 @@ inferType
 | main.rs:2902:21:2902:34 | path2.unwrap() |  | main.rs:2879:5:2879:25 | PathBuf |
 | main.rs:2904:13:2904:20 | pathbuf1 |  | main.rs:2879:5:2879:25 | PathBuf |
 | main.rs:2904:24:2904:37 | ...::new(...) |  | main.rs:2879:5:2879:25 | PathBuf |
+| main.rs:2905:13:2905:20 | pathbuf2 |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2905:13:2905:20 | pathbuf2 | E | {EXTERNAL LOCATION} | () |
+| main.rs:2905:13:2905:20 | pathbuf2 | T | main.rs:2879:5:2879:25 | PathBuf |
 | main.rs:2905:24:2905:31 | pathbuf1 |  | main.rs:2879:5:2879:25 | PathBuf |
+| main.rs:2905:24:2905:46 | pathbuf1.canonicalize() |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2905:24:2905:46 | pathbuf1.canonicalize() | E | {EXTERNAL LOCATION} | () |
+| main.rs:2905:24:2905:46 | pathbuf1.canonicalize() | T | main.rs:2879:5:2879:25 | PathBuf |
+| main.rs:2906:13:2906:20 | pathbuf3 |  | main.rs:2879:5:2879:25 | PathBuf |
+| main.rs:2906:24:2906:31 | pathbuf2 |  | {EXTERNAL LOCATION} | Result |
+| main.rs:2906:24:2906:31 | pathbuf2 | E | {EXTERNAL LOCATION} | () |
+| main.rs:2906:24:2906:31 | pathbuf2 | T | main.rs:2879:5:2879:25 | PathBuf |
+| main.rs:2906:24:2906:40 | pathbuf2.unwrap() |  | main.rs:2879:5:2879:25 | PathBuf |
 | main.rs:2912:14:2912:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:2912:14:2912:18 | SelfParam | TRef | main.rs:2911:5:2913:5 | Self [trait MyTrait] |
 | main.rs:2919:14:2919:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
