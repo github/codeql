@@ -1,7 +1,7 @@
 /**
  * Provides database quality statistics that are reported by
  * `rust/telemetry/extractor-information`
- * and perhaps warned about by `rust/diagnostics/database-quality`.
+ * and perhaps warned about by `rust/diagnostic/database-quality`.
  */
 
 import rust
