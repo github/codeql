@@ -24,6 +24,37 @@ private module FinalInstruction {
     Type getDeclaringType() { result = super.getDeclaringType() }
 
     predicate isPublic() { super.isPublic() }
+
+    /**
+     * Gets the fully qualified name of this method in the format:
+     * "Namespace.ClassName.MethodName".
+     *
+     * If no declaring type exists, only the method name is returned.
+     */
+    string getFullyQualifiedName() {
+      exists(Type t | t = this.getDeclaringType() | result = t.getFullName() + "." + this.getName())
+      or
+      not exists(this.getDeclaringType()) and
+      result = this.getName()
+    }
+
+    /**
+     * Holds if this method matches the given namespace, class name, and method name.
+     *
+     * If no declaring type exists, `namespace = className = ""`.
+     */
+    predicate hasFullyQualifiedName(string namespace, string className, string methodName) {
+      exists(Type t | t = this.getDeclaringType() |
+        t.getNamespace() = namespace and
+        t.getName() = className and
+        this.getName() = methodName
+      )
+      or
+      not exists(this.getDeclaringType()) and
+      namespace = "" and
+      className = "" and
+      this.getName() = methodName
+    }
   }
 
   class Type instanceof Instruction::Type {
@@ -279,6 +310,13 @@ private module FinalInstruction {
         namespace = s.regexpCapture(r, 1) and
         className = s.regexpCapture(r, 2) and
         methodName = s.regexpCapture(r, 3)
+      )
+    }
+
+    string getFullyQualifiedName() {
+      exists(string namespace, string className, string methodName |
+        this.hasFullyQualifiedName(namespace, className, methodName) and
+        result = namespace + "." + className + "." + methodName
       )
     }
   }
