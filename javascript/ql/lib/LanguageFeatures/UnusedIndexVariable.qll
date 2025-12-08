@@ -1,7 +1,7 @@
 /**
  * Provides a predicate for identifying unused index variables in loops.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

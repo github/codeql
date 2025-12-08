@@ -3,7 +3,7 @@
  * as nodes corresponding to function definitions or nodes corresponding to
  * parameters.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

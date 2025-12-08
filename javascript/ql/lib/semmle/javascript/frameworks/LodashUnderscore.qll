@@ -9,7 +9,7 @@ module LodashUnderscore {
   /**
    * A data flow node that accesses a given member of `lodash` or `underscore`.
    */
-  overlay[local]
+  overlay[local?]
   abstract class Member extends DataFlow::SourceNode {
     /** Gets the name of the accessed member. */
     abstract string getName();
@@ -18,7 +18,7 @@ module LodashUnderscore {
   /**
    * An import of `lodash` or `underscore` accessing a given member of that package.
    */
-  overlay[local]
+  overlay[local?]
   private class DefaultMember extends Member {
     string name;
 
@@ -41,14 +41,14 @@ module LodashUnderscore {
    * In addition to normal imports, this supports per-method imports such as `require("lodash.map")` and `require("lodash/map")`.
    * In addition, the global variable `_` is assumed to refer to `lodash` or `underscore`.
    */
-  overlay[local]
+  overlay[local?]
   DataFlow::SourceNode member(string name) { result.(Member).getName() = name }
 
   /**
    * Holds if `name` is the name of a member exported from the `lodash` package
    * which has a corresponding `lodash.xxx` NPM package.
    */
-  overlay[local]
+  overlay[local?]
   private predicate isLodashMember(string name) {
     // Can be generated using Object.keys(require('lodash'))
     name =
@@ -185,7 +185,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashEach extends DataFlow::SummarizedCallable {
     LodashEach() { this = "_.each-like" }
 
@@ -201,7 +201,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashMap extends DataFlow::SummarizedCallable {
     LodashMap() { this = "_.map" }
 
@@ -220,7 +220,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashFlatMap extends DataFlow::SummarizedCallable {
     LodashFlatMap() { this = "_.flatMap" }
 
@@ -242,7 +242,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashFlatMapDeep extends DataFlow::SummarizedCallable {
     LodashFlatMapDeep() { this = "_.flatMapDeep" }
 
@@ -266,7 +266,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashReduce extends DataFlow::SummarizedCallable {
     LodashReduce() { this = "_.reduce-like" }
 
@@ -285,7 +285,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LoashSortBy extends DataFlow::SummarizedCallable {
     LoashSortBy() { this = "_.sortBy-like" }
 
@@ -303,7 +303,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashMinMaxBy extends DataFlow::SummarizedCallable {
     LodashMinMaxBy() { this = "_.minBy / _.maxBy" }
 
@@ -317,7 +317,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashPartition extends DataFlow::SummarizedCallable {
     LodashPartition() { this = "_.partition" }
 
@@ -331,7 +331,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class UnderscoreMapObject extends DataFlow::SummarizedCallable {
     UnderscoreMapObject() { this = "_.mapObject" }
 
@@ -352,7 +352,7 @@ module LodashUnderscore {
     }
   }
 
-  overlay[local]
+  overlay[local?]
   private class LodashTap extends DataFlow::SummarizedCallable {
     LodashTap() { this = "_.tap" }
 

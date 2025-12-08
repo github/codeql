@@ -17,7 +17,7 @@ private import semmle.javascript.dataflow.internal.DataFlowNode
  *   process.stdout.write(fs.readFileSync(process.argv[i], 'utf8'));
  * ```
  */
-overlay[local]
+overlay[local?]
 class NodeModule extends Module {
   NodeModule() {
     is_module(this) and
@@ -234,7 +234,7 @@ predicate findNodeModulesFolder(Folder f, Folder nodeModules, int distance) {
 /**
  * A Node.js `require` variable.
  */
-overlay[local]
+overlay[local?]
 private class RequireVariable extends Variable {
   RequireVariable() {
     this = any(ModuleScope m).getVariable("require")
@@ -247,7 +247,7 @@ private class RequireVariable extends Variable {
   }
 }
 
-overlay[local]
+overlay[local?]
 private predicate isModuleModule(EarlyStageNode nd) {
   exists(ImportDeclaration imp | imp.getRawImportPath() = "module" |
     nd = TDestructuredModuleImportNode(imp)
@@ -261,7 +261,7 @@ private predicate isModuleModule(EarlyStageNode nd) {
   )
 }
 
-overlay[local]
+overlay[local?]
 private predicate isCreateRequire(EarlyStageNode nd) {
   exists(PropAccess prop |
     isModuleModule(TValueNode(prop.getBase())) and
@@ -291,7 +291,7 @@ private predicate isCreateRequire(EarlyStageNode nd) {
 /**
  * Holds if `nd` may refer to `require`, either directly or modulo local data flow.
  */
-overlay[local]
+overlay[local?]
 cached
 private predicate isRequire(EarlyStageNode nd) {
   exists(VarAccess access |
@@ -334,7 +334,7 @@ private predicate isRequire(EarlyStageNode nd) {
  * require('fs')
  * ```
  */
-overlay[local]
+overlay[local?]
 class Require extends CallExpr, Import {
   Require() { isRequire(TValueNode(this.getCallee())) }
 

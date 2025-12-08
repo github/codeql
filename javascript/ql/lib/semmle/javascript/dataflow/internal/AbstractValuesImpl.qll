@@ -3,7 +3,7 @@
  *
  * Provides a representation for abstract values.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

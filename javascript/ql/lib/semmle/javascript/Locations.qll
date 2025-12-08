@@ -1,5 +1,5 @@
 /** Provides classes for working with locations and program elements that have locations. */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript
@@ -32,7 +32,7 @@ final class Location extends @location_default {
   int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
 
   /** Holds if this location starts before location `that`. */
-  overlay[caller]
+  overlay[caller?]
   pragma[inline]
   predicate startsBefore(Location that) {
     exists(string f, int sl1, int sc1, int sl2, int sc2 |
@@ -46,7 +46,7 @@ final class Location extends @location_default {
   }
 
   /** Holds if this location ends after location `that`. */
-  overlay[caller]
+  overlay[caller?]
   pragma[inline]
   predicate endsAfter(Location that) {
     exists(string f, int el1, int ec1, int el2, int ec2 |

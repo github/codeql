@@ -17,7 +17,7 @@
  * Flow through global variables, object properties or function calls is not
  * modeled (except for immediately invoked functions as explained above).
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

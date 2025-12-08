@@ -7,7 +7,7 @@
  * For performance reasons, all subclasses of `CustomAbstractValueDefinition`
  * should be part of the standard library.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

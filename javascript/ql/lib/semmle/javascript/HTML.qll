@@ -1,5 +1,5 @@
 /** Provides classes for working with HTML documents. */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

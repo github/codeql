@@ -3,7 +3,7 @@
  *
  * Contains the raw data type underlying `DataFlow::Node`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

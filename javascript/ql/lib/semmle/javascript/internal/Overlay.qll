@@ -2,10 +2,10 @@ private import javascript
 private import OverlayXml
 
 /** Holds if the database is an overlay. */
-overlay[local]
+overlay[local?]
 private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
-overlay[local]
+overlay[local?]
 private string getFileFromEntity(@locatable node) {
   exists(@location loc |
     hasLocation(node, loc)
@@ -19,11 +19,11 @@ private string getFileFromEntity(@locatable node) {
 }
 
 /** Holds if `file` was changed or deleted in the overlay. */
-overlay[local]
+overlay[local?]
 private predicate discardFile(string file) { isOverlay() and overlayChangedFiles(file) }
 
 /** Holds if `node` is in the `file` and is part of the overlay base database. */
-overlay[local]
+overlay[local?]
 private predicate discardableEntity(string file, @locatable node) {
   not isOverlay() and file = getFileFromEntity(node)
 }
@@ -34,7 +34,7 @@ private predicate discardEntity(@locatable node) {
   exists(string file | discardableEntity(file, node) and discardFile(file))
 }
 
-overlay[local]
+overlay[local?]
 private string getFileFromLocation(@location loc) {
   exists(@file file |
     locations_default(loc, file, _, _, _, _) and
@@ -43,7 +43,7 @@ private string getFileFromLocation(@location loc) {
 }
 
 /** Holds if `loc` is in the `file` and is part of the overlay base database. */
-overlay[local]
+overlay[local?]
 private predicate discardableLocation(string file, @location node) {
   not isOverlay() and file = getFileFromLocation(node)
 }

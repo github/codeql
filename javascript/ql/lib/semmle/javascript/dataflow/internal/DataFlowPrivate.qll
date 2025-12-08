@@ -1,4 +1,4 @@
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript
@@ -1108,7 +1108,7 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
 }
 
 bindingset[node, fun]
-overlay[caller]
+overlay[caller?]
 pragma[inline_late]
 private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
   node.getContainer() = fun.getEnclosingContainer()
@@ -1517,7 +1517,7 @@ private Node getPostUpdateForStore(Node base) {
 }
 
 /** Gets node to target with a store to the given `base` object.. */
-overlay[caller]
+overlay[caller?]
 pragma[inline]
 private Node getStoreTarget(DataFlow::Node base) {
   result = getPostUpdateForStore(base)

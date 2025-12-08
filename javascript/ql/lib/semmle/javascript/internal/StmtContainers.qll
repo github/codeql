@@ -4,7 +4,7 @@
  * Provides predicates and classes for relating nodes to their
  * enclosing `StmtContainer`.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript
@@ -48,7 +48,7 @@ class NodeInStmtContainer extends Locatable, @node_in_stmt_container {
   /**
    * Gets the function or toplevel to which this node belongs.
    */
-  overlay[caller]
+  overlay[caller?]
   pragma[inline]
   final StmtContainer getContainer() { result = getStmtContainer(this) }
 }
