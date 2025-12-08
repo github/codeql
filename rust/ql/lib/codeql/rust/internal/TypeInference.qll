@@ -7,6 +7,7 @@ private import PathResolution
 private import Type
 private import Type as T
 private import TypeMention
+private import typeinference.DerefChain
 private import typeinference.FunctionType
 private import typeinference.FunctionOverloading as FunctionOverloading
 private import typeinference.BlanketImplementation as BlanketImplementation
@@ -1535,24 +1536,13 @@ private module MethodResolution {
      * Same as `getACandidateReceiverTypeAt`, but without borrows.
      */
     pragma[nomagic]
-    private Type getACandidateReceiverTypeAtNoBorrow(string derefChain, TypePath path) {
+    Type getACandidateReceiverTypeAtNoBorrow(DerefChain derefChain, TypePath path) {
       result = this.getReceiverTypeAt(path) and
       derefChain = ""
       or
-      this.supportsAutoDerefAndBorrow() and
-      exists(TypePath path0, Type t0, string derefChain0 |
-        this.hasNoCompatibleTargetMutBorrow(derefChain0) and
-        t0 = this.getACandidateReceiverTypeAtNoBorrow(derefChain0, path0)
-      |
-        path0.isCons(getRefTypeParameter(_), path) and
-        result = t0 and
-        derefChain = derefChain0 + ".ref"
-        or
-        path0.isEmpty() and
-        path = path0 and
-        t0 = getStringStruct() and
-        result = getStrStruct() and
-        derefChain = derefChain0 + ".str"
+      exists(DerefImplItemNode impl, DerefChain suffix |
+        result = ImplicitDeref::getDereferencedCandidateReceiverType(this, impl, suffix, path) and
+        derefChain = DerefChain::cons(impl, suffix)
       )
     }
 
@@ -1566,7 +1556,7 @@ private module MethodResolution {
      */
     pragma[nomagic]
     private predicate hasIncompatibleTarget(
-      ImplOrTraitItemNode i, string derefChain, BorrowKind borrow, Type root
+      ImplOrTraitItemNode i, DerefChain derefChain, BorrowKind borrow, Type root
     ) {
       exists(TypePath path |
         ReceiverIsInstantiationOfSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this,
@@ -1583,7 +1573,7 @@ private module MethodResolution {
      */
     pragma[nomagic]
     private predicate hasIncompatibleBlanketLikeTarget(
-      ImplItemNode impl, string derefChain, BorrowKind borrow
+      ImplItemNode impl, DerefChain derefChain, BorrowKind borrow
     ) {
       ReceiverIsNotInstantiationOfBlanketLikeSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this,
           derefChain, borrow), impl, _, _)
@@ -1596,7 +1586,9 @@ private module MethodResolution {
      * Same as `getACandidateReceiverTypeAt`, but excludes pseudo types `!` and `unknown`.
      */
     pragma[nomagic]
-    Type getANonPseudoCandidateReceiverTypeAt(string derefChain, BorrowKind borrow, TypePath path) {
+    Type getANonPseudoCandidateReceiverTypeAt(
+      DerefChain derefChain, BorrowKind borrow, TypePath path
+    ) {
       result = this.getACandidateReceiverTypeAt(derefChain, borrow, path) and
       result != TNeverType() and
       result != TUnknownType()
@@ -1604,7 +1596,7 @@ private module MethodResolution {
 
     pragma[nomagic]
     private Type getComplexStrippedType(
-      string derefChain, BorrowKind borrow, TypePath strippedTypePath
+      DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath
     ) {
       result = this.getANonPseudoCandidateReceiverTypeAt(derefChain, borrow, strippedTypePath) and
       isComplexRootStripped(strippedTypePath, result)
@@ -1612,7 +1604,7 @@ private module MethodResolution {
 
     bindingset[derefChain, borrow, strippedTypePath, strippedType]
     private predicate hasNoCompatibleNonBlanketLikeTargetCheck(
-      string derefChain, BorrowKind borrow, TypePath strippedTypePath, Type strippedType
+      DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath, Type strippedType
     ) {
       forall(ImplOrTraitItemNode i |
         methodCallNonBlanketCandidate(this, _, i, _, strippedTypePath, strippedType)
@@ -1623,7 +1615,7 @@ private module MethodResolution {
 
     bindingset[derefChain, borrow, strippedTypePath, strippedType]
     private predicate hasNoCompatibleTargetCheck(
-      string derefChain, BorrowKind borrow, TypePath strippedTypePath, Type strippedType
+      DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath, Type strippedType
     ) {
       this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, borrow, strippedTypePath,
         strippedType) and
@@ -1634,7 +1626,7 @@ private module MethodResolution {
 
     bindingset[derefChain, borrow, strippedTypePath, strippedType]
     private predicate hasNoCompatibleNonBlanketTargetCheck(
-      string derefChain, BorrowKind borrow, TypePath strippedTypePath, Type strippedType
+      DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath, Type strippedType
     ) {
       this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, borrow, strippedTypePath,
         strippedType) and
@@ -1648,7 +1640,7 @@ private module MethodResolution {
     // forex using recursion
     pragma[nomagic]
     private predicate hasNoCompatibleTargetNoBorrowToIndex(
-      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+      DerefChain derefChain, TypePath strippedTypePath, Type strippedType, int n
     ) {
       (
         this.supportsAutoDerefAndBorrow()
@@ -1671,7 +1663,7 @@ private module MethodResolution {
      * have a matching method target.
      */
     pragma[nomagic]
-    predicate hasNoCompatibleTargetNoBorrow(string derefChain) {
+    predicate hasNoCompatibleTargetNoBorrow(DerefChain derefChain) {
       exists(Type strippedType |
         this.hasNoCompatibleTargetNoBorrowToIndex(derefChain, _, strippedType,
           getLastLookupTypeIndex(strippedType))
@@ -1681,7 +1673,7 @@ private module MethodResolution {
     // forex using recursion
     pragma[nomagic]
     private predicate hasNoCompatibleNonBlanketTargetNoBorrowToIndex(
-      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+      DerefChain derefChain, TypePath strippedTypePath, Type strippedType, int n
     ) {
       (
         this.supportsAutoDerefAndBorrow()
@@ -1705,7 +1697,7 @@ private module MethodResolution {
      * a matching non-blanket method target.
      */
     pragma[nomagic]
-    predicate hasNoCompatibleNonBlanketTargetNoBorrow(string derefChain) {
+    predicate hasNoCompatibleNonBlanketTargetNoBorrow(DerefChain derefChain) {
       exists(Type strippedType |
         this.hasNoCompatibleNonBlanketTargetNoBorrowToIndex(derefChain, _, strippedType,
           getLastLookupTypeIndex(strippedType))
@@ -1715,7 +1707,7 @@ private module MethodResolution {
     // forex using recursion
     pragma[nomagic]
     private predicate hasNoCompatibleTargetSharedBorrowToIndex(
-      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+      DerefChain derefChain, TypePath strippedTypePath, Type strippedType, int n
     ) {
       this.hasNoCompatibleTargetNoBorrow(derefChain) and
       strippedType =
@@ -1735,7 +1727,7 @@ private module MethodResolution {
      * by a shared borrow, does not have a matching method target.
      */
     pragma[nomagic]
-    predicate hasNoCompatibleTargetSharedBorrow(string derefChain) {
+    predicate hasNoCompatibleTargetSharedBorrow(DerefChain derefChain) {
       exists(Type strippedType |
         this.hasNoCompatibleTargetSharedBorrowToIndex(derefChain, _, strippedType,
           getLastLookupTypeIndex(strippedType))
@@ -1745,7 +1737,7 @@ private module MethodResolution {
     // forex using recursion
     pragma[nomagic]
     private predicate hasNoCompatibleTargetMutBorrowToIndex(
-      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+      DerefChain derefChain, TypePath strippedTypePath, Type strippedType, int n
     ) {
       this.hasNoCompatibleTargetSharedBorrow(derefChain) and
       strippedType =
@@ -1764,7 +1756,7 @@ private module MethodResolution {
      * by a `mut` borrow, does not have a matching method target.
      */
     pragma[nomagic]
-    predicate hasNoCompatibleTargetMutBorrow(string derefChain) {
+    predicate hasNoCompatibleTargetMutBorrow(DerefChain derefChain) {
       exists(Type strippedType |
         this.hasNoCompatibleTargetMutBorrowToIndex(derefChain, _, strippedType,
           getLastLookupTypeIndex(strippedType))
@@ -1774,7 +1766,7 @@ private module MethodResolution {
     // forex using recursion
     pragma[nomagic]
     private predicate hasNoCompatibleNonBlanketTargetSharedBorrowToIndex(
-      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+      DerefChain derefChain, TypePath strippedTypePath, Type strippedType, int n
     ) {
       this.hasNoCompatibleTargetNoBorrow(derefChain) and
       strippedType =
@@ -1794,7 +1786,7 @@ private module MethodResolution {
      * by a shared borrow, does not have a matching non-blanket method target.
      */
     pragma[nomagic]
-    predicate hasNoCompatibleNonBlanketTargetSharedBorrow(string derefChain) {
+    predicate hasNoCompatibleNonBlanketTargetSharedBorrow(DerefChain derefChain) {
       exists(Type strippedType |
         this.hasNoCompatibleNonBlanketTargetSharedBorrowToIndex(derefChain, _, strippedType,
           getLastLookupTypeIndex(strippedType))
@@ -1804,7 +1796,7 @@ private module MethodResolution {
     // forex using recursion
     pragma[nomagic]
     private predicate hasNoCompatibleNonBlanketTargetMutBorrowToIndex(
-      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+      DerefChain derefChain, TypePath strippedTypePath, Type strippedType, int n
     ) {
       this.hasNoCompatibleNonBlanketTargetSharedBorrow(derefChain) and
       strippedType =
@@ -1824,7 +1816,7 @@ private module MethodResolution {
      * by a `mut` borrow, does not have a matching non-blanket method target.
      */
     pragma[nomagic]
-    predicate hasNoCompatibleNonBlanketTargetMutBorrow(string derefChain) {
+    predicate hasNoCompatibleNonBlanketTargetMutBorrow(DerefChain derefChain) {
       exists(Type strippedType |
         this.hasNoCompatibleNonBlanketTargetMutBorrowToIndex(derefChain, _, strippedType,
           getLastLookupTypeIndex(strippedType))
@@ -1844,7 +1836,7 @@ private module MethodResolution {
      * [1]: https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.candidate-receivers
      */
     pragma[nomagic]
-    Type getACandidateReceiverTypeAt(string derefChain, BorrowKind borrow, TypePath path) {
+    Type getACandidateReceiverTypeAt(DerefChain derefChain, BorrowKind borrow, TypePath path) {
       result = this.getACandidateReceiverTypeAtNoBorrow(derefChain, path) and
       borrow.isNoBorrow()
       or
@@ -1877,21 +1869,24 @@ private module MethodResolution {
      * `derefChain` and the enum `borrow`.
      */
     pragma[nomagic]
-    Method resolveCallTarget(ImplOrTraitItemNode i, string derefChain, BorrowKind borrow) {
+    Method resolveCallTarget(ImplOrTraitItemNode i, DerefChain derefChain, BorrowKind borrow) {
       exists(MethodCallCand mcc |
         mcc = MkMethodCallCand(this, derefChain, borrow) and
         result = mcc.resolveCallTarget(i)
       )
     }
 
-    predicate receiverHasImplicitDeref(AstNode receiver) {
-      exists(this.resolveCallTarget(_, ".ref", TNoBorrowKind())) and
-      receiver = this.getArg(any(ArgumentPosition pos | pos.isSelf()))
-    }
-
-    predicate argumentHasImplicitBorrow(AstNode arg, boolean isMutable) {
-      exists(this.resolveCallTarget(_, "", TSomeBorrowKind(isMutable))) and
-      arg = this.getArg(any(ArgumentPosition pos | pos.isSelf()))
+    /**
+     * Holds if the argument `arg` of this call has been implicitly dereferenced
+     * and borrowed according to `derefChain` and `borrow`, in order to be able to
+     * resolve the call target.
+     */
+    predicate argumentHasImplicitDerefChainBorrow(
+      AstNode arg, DerefChain derefChain, BorrowKind borrow
+    ) {
+      exists(this.resolveCallTarget(_, derefChain, borrow)) and
+      arg = this.getArg(any(ArgumentPosition pos | pos.isSelf())) and
+      not (derefChain.isEmpty() and borrow.isNoBorrow())
     }
   }
 
@@ -2029,10 +2024,14 @@ private module MethodResolution {
       result = inferType(this.getArg(pos), path)
     }
 
-    override predicate argumentHasImplicitBorrow(AstNode arg, boolean isMutable) {
-      exists(ArgumentPosition pos |
+    override predicate argumentHasImplicitDerefChainBorrow(
+      AstNode arg, DerefChain derefChain, BorrowKind borrow
+    ) {
+      exists(ArgumentPosition pos, boolean isMutable |
         this.implicitBorrowAt(pos, isMutable) and
-        arg = this.getArg(pos)
+        arg = this.getArg(pos) and
+        derefChain = DerefChain::nil() and
+        borrow = TSomeBorrowKind(isMutable)
       )
     }
 
@@ -2048,14 +2047,14 @@ private module MethodResolution {
   }
 
   private newtype TMethodCallCand =
-    MkMethodCallCand(MethodCall mc, string derefChain, BorrowKind borrow) {
+    MkMethodCallCand(MethodCall mc, DerefChain derefChain, BorrowKind borrow) {
       exists(mc.getACandidateReceiverTypeAt(derefChain, borrow, _))
     }
 
   /** A method call with a dereference chain and a potential borrow. */
   private class MethodCallCand extends MkMethodCallCand {
     MethodCall mc_;
-    string derefChain;
+    DerefChain derefChain;
     BorrowKind borrow;
 
     MethodCallCand() { this = MkMethodCallCand(mc_, derefChain, borrow) }
@@ -2147,9 +2146,77 @@ private module MethodResolution {
       MethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, i, result)
     }
 
-    string toString() { result = mc_.toString() + " [" + derefChain + "; " + borrow + "]" }
+    string toString() {
+      result = mc_.toString() + " [" + derefChain.toString() + "; " + borrow + "]"
+    }
 
     Location getLocation() { result = mc_.getLocation() }
+  }
+
+  /**
+   * Provides logic for resolving implicit `Deref::deref` calls.
+   */
+  private module ImplicitDeref {
+    private newtype TMethodCallDerefCand =
+      MkMethodCallDerefCand(MethodCall mc, DerefChain derefChain) {
+        mc.supportsAutoDerefAndBorrow() and
+        mc.hasNoCompatibleTargetMutBorrow(derefChain) and
+        exists(mc.getACandidateReceiverTypeAtNoBorrow(derefChain, _))
+      }
+
+    /** A method call with a dereference chain. */
+    private class MethodCallDerefCand extends MkMethodCallDerefCand {
+      MethodCall mc;
+      DerefChain derefChain;
+
+      MethodCallDerefCand() { this = MkMethodCallDerefCand(mc, derefChain) }
+
+      Type getTypeAt(TypePath path) {
+        result = substituteLookupTraits(mc.getACandidateReceiverTypeAtNoBorrow(derefChain, path)) and
+        result != TNeverType() and
+        result != TUnknownType()
+      }
+
+      string toString() { result = mc.toString() + " [" + derefChain.toString() + "]" }
+
+      Location getLocation() { result = mc.getLocation() }
+    }
+
+    private module MethodCallSatisfiesDerefConstraintInput implements
+      SatisfiesConstraintInputSig<MethodCallDerefCand>
+    {
+      pragma[nomagic]
+      predicate relevantConstraint(MethodCallDerefCand mc, Type constraint) {
+        exists(mc) and
+        constraint.(TraitType).getTrait() instanceof DerefTrait
+      }
+
+      predicate useUniversalConditions() { none() }
+    }
+
+    private module MethodCallSatisfiesDerefConstraint =
+      SatisfiesConstraint<MethodCallDerefCand, MethodCallSatisfiesDerefConstraintInput>;
+
+    pragma[nomagic]
+    private AssociatedTypeTypeParameter getDerefTargetTypeParameter() {
+      result.getTypeAlias() = any(DerefTrait ft).getTargetType()
+    }
+
+    /**
+     * Gets the type of the receiver of `mc` at `path` after applying the implicit
+     * dereference inside `impl`, following the existing dereference chain `derefChain`.
+     */
+    pragma[nomagic]
+    Type getDereferencedCandidateReceiverType(
+      MethodCall mc, DerefImplItemNode impl, DerefChain derefChain, TypePath path
+    ) {
+      exists(MethodCallDerefCand mcc, TypePath exprPath |
+        mcc = MkMethodCallDerefCand(mc, derefChain) and
+        MethodCallSatisfiesDerefConstraint::satisfiesConstraintTypeThrough(mcc, impl, _, exprPath,
+          result) and
+        exprPath.isCons(getDerefTargetTypeParameter(), path)
+      )
+    }
   }
 
   private module ReceiverSatisfiesBlanketLikeConstraintInput implements
@@ -2378,8 +2445,19 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
   class AccessEnvironment = string;
 
   bindingset[derefChain, borrow]
-  additional AccessEnvironment encodeDerefChainBorrow(string derefChain, BorrowKind borrow) {
+  private AccessEnvironment encodeDerefChainBorrow(DerefChain derefChain, BorrowKind borrow) {
     result = derefChain + ";" + borrow
+  }
+
+  bindingset[derefChainBorrow]
+  additional predicate decodeDerefChainBorrow(
+    string derefChainBorrow, DerefChain derefChain, BorrowKind borrow
+  ) {
+    exists(string regexp |
+      regexp = "^(.*);(.*)$" and
+      derefChain = derefChainBorrow.regexpCapture(regexp, 1) and
+      borrow.toString() = derefChainBorrow.regexpCapture(regexp, 2)
+    )
   }
 
   final private class MethodCallFinal = MethodResolution::MethodCall;
@@ -2404,7 +2482,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
 
     pragma[nomagic]
     private Type getInferredSelfType(AccessPosition apos, string derefChainBorrow, TypePath path) {
-      exists(string derefChain, BorrowKind borrow |
+      exists(DerefChain derefChain, BorrowKind borrow |
         result = this.getACandidateReceiverTypeAt(derefChain, borrow, path) and
         derefChainBorrow = encodeDerefChainBorrow(derefChain, borrow) and
         apos.isSelf()
@@ -2440,7 +2518,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
     }
 
     Method getTarget(ImplOrTraitItemNode i, string derefChainBorrow) {
-      exists(string derefChain, BorrowKind borrow |
+      exists(DerefChain derefChain, BorrowKind borrow |
         derefChainBorrow = encodeDerefChainBorrow(derefChain, borrow) and
         result = this.resolveCallTarget(i, derefChain, borrow) // mutual recursion; resolving method calls requires resolving types and vice versa
       )
@@ -2493,31 +2571,59 @@ private Type inferMethodCallType0(
 }
 
 pragma[nomagic]
-private Type inferMethodCallType1(AstNode n, boolean isReturn, TypePath path) {
-  exists(
-    MethodCallMatchingInput::Access a, MethodCallMatchingInput::AccessPosition apos,
-    string derefChainBorrow, TypePath path0
-  |
-    result = inferMethodCallType0(a, apos, n, derefChainBorrow, path0) and
+private Type inferMethodCallTypeNonSelf(AstNode n, boolean isReturn, TypePath path) {
+  exists(MethodCallMatchingInput::AccessPosition apos |
+    result = inferMethodCallType0(_, apos, n, _, path) and
+    not apos.isSelf() and
     if apos.isReturn() then isReturn = true else isReturn = false
-  |
-    (
-      not apos.isSelf()
-      or
-      derefChainBorrow = ";"
-    ) and
-    path = path0
-    or
-    // adjust for implicit deref
-    apos.isSelf() and
-    derefChainBorrow = MethodCallMatchingInput::encodeDerefChainBorrow(".ref", TNoBorrowKind()) and
-    path = TypePath::cons(getRefTypeParameter(_), path0)
-    or
-    // adjust for implicit borrow
-    apos.isSelf() and
-    derefChainBorrow = MethodCallMatchingInput::encodeDerefChainBorrow("", TSomeBorrowKind(_)) and
-    path0.isCons(getRefTypeParameter(_), path)
   )
+}
+
+pragma[nomagic]
+private Type inferMethodCallTypeSelf(
+  AstNode n, DerefChain derefChain, BorrowKind borrow, TypePath path
+) {
+  exists(MethodCallMatchingInput::AccessPosition apos, string derefChainBorrow |
+    result = inferMethodCallType0(_, apos, n, derefChainBorrow, path) and
+    apos.isSelf() and
+    MethodCallMatchingInput::decodeDerefChainBorrow(derefChainBorrow, derefChain, borrow)
+  )
+  or
+  // adjust for implicit borrow
+  exists(TypePath path0, BorrowKind borrow0 |
+    result = inferMethodCallTypeSelf(n, derefChain, borrow0, path0) and
+    path0.isCons(borrow0.getRefType().getPositionalTypeParameter(0), path) and
+    borrow.isNoBorrow()
+  )
+  or
+  // adjust for implicit deref
+  exists(
+    DerefChain derefChain0, Type t0, TypePath path0, DerefImplItemNode impl, Type selfParamType,
+    TypePath selfPath
+  |
+    t0 = inferMethodCallTypeSelf(n, derefChain0, borrow, path0) and
+    derefChain0.isCons(impl, derefChain) and
+    borrow.isNoBorrow() and
+    selfParamType = impl.resolveSelfParamTypeStrippedAt(selfPath)
+  |
+    result = selfParamType and
+    path = selfPath and
+    not result instanceof TypeParameter
+    or
+    exists(TypeParameter tp, TypePath pathToTypeParam, TypePath suffix |
+      impl.returnTypeStrippedMentionsTypeParameterAt(tp, pathToTypeParam) and
+      path0 = pathToTypeParam.appendInverse(suffix) and
+      result = t0 and
+      path = selfPath.append(suffix)
+    )
+  )
+}
+
+private Type inferMethodCallTypePreCheck(AstNode n, boolean isReturn, TypePath path) {
+  result = inferMethodCallTypeNonSelf(n, isReturn, path)
+  or
+  result = inferMethodCallTypeSelf(n, DerefChain::nil(), TNoBorrowKind(), path) and
+  isReturn = false
 }
 
 /**
@@ -2525,7 +2631,7 @@ private Type inferMethodCallType1(AstNode n, boolean isReturn, TypePath path) {
  * argument/receiver of a method call.
  */
 private predicate inferMethodCallType =
-  ContextTyping::CheckContextTyping<inferMethodCallType1/3>::check/2;
+  ContextTyping::CheckContextTyping<inferMethodCallTypePreCheck/3>::check/2;
 
 /**
  * Provides logic for resolving calls to non-method items. This includes
@@ -3127,19 +3233,28 @@ private predicate inferOperationType =
   ContextTyping::CheckContextTyping<inferOperationType0/3>::check/2;
 
 pragma[nomagic]
-private Type getFieldExprLookupType(FieldExpr fe, string name, boolean isDereferenced) {
+private Type getFieldExprLookupType(FieldExpr fe, string name, DerefChain derefChain) {
   exists(TypePath path |
     result = inferType(fe.getContainer(), path) and
     name = fe.getIdentifier().getText() and
-    isComplexRootStripped(path, result) and
-    if path.isEmpty() then isDereferenced = false else isDereferenced = true
+    isComplexRootStripped(path, result)
+  |
+    // TODO: Support full derefence chains as for method calls
+    path.isEmpty() and
+    derefChain = DerefChain::nil()
+    or
+    exists(DerefImplItemNode impl, TypeParamTypeParameter tp |
+      tp = impl.getFirstSelfTypeParameter() and
+      path.getHead() = tp and
+      derefChain = DerefChain::singleton(impl)
+    )
   )
 }
 
 pragma[nomagic]
-private Type getTupleFieldExprLookupType(FieldExpr fe, int pos, boolean isDereferenced) {
+private Type getTupleFieldExprLookupType(FieldExpr fe, int pos, DerefChain derefChain) {
   exists(string name |
-    result = getFieldExprLookupType(fe, name, isDereferenced) and
+    result = getFieldExprLookupType(fe, name, derefChain) and
     pos = name.toInt()
   )
 }
@@ -3340,9 +3455,6 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 
 pragma[nomagic]
 private StructType getStrStruct() { result = TDataType(any(Builtins::Str s)) }
-
-pragma[nomagic]
-private StructType getStringStruct() { result = TDataType(any(StringStruct s)) }
 
 pragma[nomagic]
 private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
@@ -3800,20 +3912,27 @@ private module Cached {
   /** Holds if `n` is implicitly dereferenced. */
   cached
   predicate implicitDeref(AstNode n) {
-    any(MethodResolution::MethodCall mc).receiverHasImplicitDeref(n)
-    or
-    n =
-      any(FieldExpr fe |
-        exists(resolveStructFieldExpr(fe, true))
-        or
-        exists(resolveTupleFieldExpr(fe, true))
-      ).getContainer()
+    exists(DerefChain derefChain, DerefImplItemNode impl |
+      impl.resolveSelfTyBuiltin() instanceof Builtins::RefType and
+      derefChain = DerefChain::singleton(impl)
+    |
+      any(MethodResolution::MethodCall mc)
+          .argumentHasImplicitDerefChainBorrow(n, derefChain, TNoBorrowKind())
+      or
+      n =
+        any(FieldExpr fe |
+          exists(resolveStructFieldExpr(fe, derefChain))
+          or
+          exists(resolveTupleFieldExpr(fe, derefChain))
+        ).getContainer()
+    )
   }
 
   /** Holds if `n` is implicitly borrowed. */
   cached
   predicate implicitBorrow(AstNode n, boolean isMutable) {
-    any(MethodResolution::MethodCall mc).argumentHasImplicitBorrow(n, isMutable)
+    any(MethodResolution::MethodCall mc)
+        .argumentHasImplicitDerefChainBorrow(n, DerefChain::nil(), TSomeBorrowKind(isMutable))
   }
 
   /**
@@ -3843,9 +3962,9 @@ private module Cached {
    * Gets the struct field that the field expression `fe` resolves to, if any.
    */
   cached
-  StructField resolveStructFieldExpr(FieldExpr fe, boolean isDereferenced) {
+  StructField resolveStructFieldExpr(FieldExpr fe, DerefChain derefChain) {
     exists(string name, DataType ty |
-      ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), isDereferenced)
+      ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), derefChain)
     |
       result = ty.(StructType).getTypeItem().getStructField(pragma[only_bind_into](name)) or
       result = ty.(UnionType).getTypeItem().getStructField(pragma[only_bind_into](name))
@@ -3856,10 +3975,10 @@ private module Cached {
    * Gets the tuple field that the field expression `fe` resolves to, if any.
    */
   cached
-  TupleField resolveTupleFieldExpr(FieldExpr fe, boolean isDereferenced) {
+  TupleField resolveTupleFieldExpr(FieldExpr fe, DerefChain derefChain) {
     exists(int i |
       result =
-        getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), isDereferenced)
+        getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), derefChain)
             .(StructType)
             .getTypeItem()
             .getTupleField(pragma[only_bind_into](i))
