@@ -42,7 +42,7 @@ Running a quick query
 
    .. code-block:: ql
 
-        from MethodAccess ma
+        from MethodCall ma
         where
             ma.getMethod().hasName("equals") and
             ma.getArgument(0).(StringLiteral).getValue() = ""
@@ -72,9 +72,9 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +==================================================================================================+===================================================================================================================+===================================================================================================+
 | ``import java``                                                                                  | Imports the standard CodeQL libraries for Java and Kotlin.                                                        | Every query begins with one or more ``import`` statements.                                        |
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
-| ``from MethodAccess ma``                                                                         | Defines the variables for the query.                                                                              | We use:                                                                                           |
+| ``from MethodCall ma``                                                                         | Defines the variables for the query.                                                                              | We use:                                                                                           |
 |                                                                                                  | Declarations are of the form:                                                                                     |                                                                                                   |
-|                                                                                                  | ``<type> <variable name>``                                                                                        | - a ``MethodAccess`` variable for call expressions                                                |
+|                                                                                                  | ``<type> <variable name>``                                                                                        | - a ``MethodCall`` variable for call expressions                                                |
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
 | ``where ma.getMethod().hasName("equals") and ma.getArgument(0).(StringLiteral).getValue() = ""`` | Defines a condition on the variables.                                                                             | ``ma.getMethod().hasName("equals")`` restricts ``ma`` to only calls to methods call ``equals``.   |
 |                                                                                                  |                                                                                                                   |                                                                                                   |
