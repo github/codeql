@@ -1,5 +1,6 @@
 /// This file contains tests for dereferencing with through the `Deref` trait.
 use std::ops::Deref;
+use std::ops::DerefMut;
 
 struct MyIntPointer {
     value: i64,
@@ -24,6 +25,13 @@ impl<T> Deref for MySmartPointer<T> {
     // MySmartPointer::deref
     fn deref(&self) -> &T {
         &self.value // $ fieldof=MySmartPointer
+    }
+}
+
+impl<T> DerefMut for MySmartPointer<T> {
+    // MySmartPointer::deref_mut
+    fn deref_mut(&mut self) -> &mut T {
+        &mut self.value // $ fieldof=MySmartPointer
     }
 }
 
@@ -102,6 +110,10 @@ fn implicit_dereference() {
 
     let z = MySmartPointer { value: S(0i64) };
     let z_ = z.foo(); // $ MISSING: target=foo type=z_:TRef.i64
+
+    let v = Vec::new(); // $ target=new $ MISSING: type=v:T.i32
+    let mut x = MySmartPointer { value: v };
+    x.push(0); // $ MISSING: target=push
 }
 
 mod implicit_deref_coercion_cycle {
