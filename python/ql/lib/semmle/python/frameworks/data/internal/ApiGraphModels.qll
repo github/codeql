@@ -393,20 +393,31 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
+pragma[nomagic]
+private predicate isTypeMentionedInModel(string type) {
+  sourceModel(type, _, _, _) or
+  sinkModel(type, _, _, _) or
+  summaryModel(type, _, _, _, _, _) or
+  typeModel(_, type, _)
+}
+
+overlay[global]
+private predicate isTypeUsedGlobal(string type) {
+  isTypeMentionedInModel(type) and any(TypeModel tm).isTypeUsed(type)
+}
+
+overlay[local]
+private predicate isTypeUsedLocal(string type) = forceLocal(isTypeUsedGlobal/1)(type)
+
 /**
  * Holds if rows involving `type` might be relevant for the analysis of this database.
  */
 predicate isRelevantType(string type) {
-  (
-    sourceModel(type, _, _, _) or
-    sinkModel(type, _, _, _) or
-    summaryModel(type, _, _, _, _, _) or
-    typeModel(_, type, _)
-  ) and
+  isTypeMentionedInModel(type) and
   (
     Specific::isTypeUsed(type)
     or
-    any(TypeModel model).isTypeUsed(type)
+    isTypeUsedLocal(type)
     or
     exists(TestAllModels t)
   )
