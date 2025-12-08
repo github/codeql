@@ -194,6 +194,10 @@ edges
 | lifetime.rs:798:9:798:12 | &val | lifetime.rs:798:2:798:12 | return ... | provenance |  |
 | lifetime.rs:802:6:802:8 | ptr | lifetime.rs:808:23:808:25 | ptr | provenance |  |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | lifetime.rs:802:6:802:8 | ptr | provenance |  |
+| lifetime.rs:841:13:841:27 | ...: ... | lifetime.rs:843:12:843:14 | ptr | provenance |  |
+| lifetime.rs:851:6:851:8 | ptr | lifetime.rs:853:20:853:22 | ptr | provenance |  |
+| lifetime.rs:851:12:851:23 | &local_value | lifetime.rs:851:6:851:8 | ptr | provenance |  |
+| lifetime.rs:853:20:853:22 | ptr | lifetime.rs:841:13:841:27 | ...: ... | provenance |  |
 | main.rs:18:9:18:10 | p1 [&ref] | main.rs:21:19:21:20 | p1 | provenance |  |
 | main.rs:18:9:18:10 | p1 [&ref] | main.rs:29:19:29:20 | p1 | provenance |  |
 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | main.rs:18:9:18:10 | p1 [&ref] | provenance |  |
@@ -409,6 +413,11 @@ nodes
 | lifetime.rs:802:6:802:8 | ptr | semmle.label | ptr |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | semmle.label | get_pointer(...) |
 | lifetime.rs:808:23:808:25 | ptr | semmle.label | ptr |
+| lifetime.rs:841:13:841:27 | ...: ... | semmle.label | ...: ... |
+| lifetime.rs:843:12:843:14 | ptr | semmle.label | ptr |
+| lifetime.rs:851:6:851:8 | ptr | semmle.label | ptr |
+| lifetime.rs:851:12:851:23 | &local_value | semmle.label | &local_value |
+| lifetime.rs:853:20:853:22 | ptr | semmle.label | ptr |
 | main.rs:18:9:18:10 | p1 [&ref] | semmle.label | p1 [&ref] |
 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | semmle.label | ...::as_ptr(...) [&ref] |
 | main.rs:18:26:18:28 | &b1 | semmle.label | &b1 |
