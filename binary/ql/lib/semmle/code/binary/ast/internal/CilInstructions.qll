@@ -195,9 +195,7 @@ abstract class CilStoreArgument extends CilInstruction { }
 class CilStarg_S extends @il_starg_S, CilStoreArgument { }
 
 class CilLdloc_S extends @il_ldloc_S, CilLoadLocal {
-  override int getLocalVariableIndex() {
-    il_operand_local_index(this, result)
-  }
+  override int getLocalVariableIndex() { il_operand_local_index(this, result) }
 }
 
 abstract class CilLoadLocal extends CilInstruction {
@@ -211,9 +209,7 @@ abstract class CilLoadLocal extends CilInstruction {
 
 abstract class CilLoadAddressOfLocal extends CilInstruction {
   /** Gets the local variable index. */
-  int getLocalVariableIndex() {
-    il_operand_local_index(this, result)
-  }
+  int getLocalVariableIndex() { il_operand_local_index(this, result) }
 
   /** Gets the local variable whose address this instruction loads. */
   CilVariable getLocalVariable() {
@@ -224,9 +220,7 @@ abstract class CilLoadAddressOfLocal extends CilInstruction {
 class CilLdloca_S extends @il_ldloca_S, CilLoadAddressOfLocal { }
 
 class CilStloc_S extends @il_stloc_S, CilStoreLocal {
-  override int getLocalVariableIndex() {
-    il_operand_local_index(this, result)
-  }
+  override int getLocalVariableIndex() { il_operand_local_index(this, result) }
 }
 
 class CilLdnull extends @il_ldnull, CilInstruction { }
@@ -808,9 +802,7 @@ class CilLdarga extends @il_ldarga, CilInstruction { }
 class CilStarg extends @il_starg, CilInstruction { }
 
 class CilLdloc extends @il_ldloc, CilLoadLocal {
-  override int getLocalVariableIndex() {
-    il_operand_local_index(this, result)
-  }
+  override int getLocalVariableIndex() { il_operand_local_index(this, result) }
 }
 
 class CilLdloca extends @il_ldloca, CilLoadAddressOfLocal { }
@@ -824,9 +816,7 @@ abstract class CilStoreLocal extends CilInstruction {
 }
 
 class CilStloc extends @il_stloc, CilStoreLocal {
-  override int getLocalVariableIndex() {
-    il_operand_local_index(this, result)
-  }
+  override int getLocalVariableIndex() { il_operand_local_index(this, result) }
 }
 
 class CilLocalloc extends @il_localloc, CilInstruction { }
