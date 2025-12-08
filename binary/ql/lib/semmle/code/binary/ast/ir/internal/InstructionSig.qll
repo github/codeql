@@ -4,6 +4,21 @@ private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.Location
 
 signature module InstructionSig {
+
+  class Type {
+    Function getAFunction();
+
+    string toString();
+
+    string getFullName();
+
+    string getNamespace();
+
+    string getName();
+
+    Location getLocation();
+  }
+
   class Function {
     string getName();
 
@@ -16,6 +31,10 @@ signature module InstructionSig {
     Location getLocation();
 
     predicate isProgramEntryPoint();
+
+    Type getDeclaringType();
+
+    predicate isPublic();
   }
 
   class Operand {

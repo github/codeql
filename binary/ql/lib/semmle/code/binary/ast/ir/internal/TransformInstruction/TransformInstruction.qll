@@ -180,6 +180,24 @@ module Transform<InstructionSig Input> {
       Location getLocation() { result = this.getEntryInstruction().getLocation() }
 
       predicate isProgramEntryPoint() { super.isProgramEntryPoint() }
+
+      Type getDeclaringType() { result = super.getDeclaringType() }
+
+      predicate isPublic() { super.isPublic() }
+    }
+
+    class Type instanceof Input::Type {
+      Function getAFunction() { result = super.getAFunction() }
+
+      string toString() { result = super.toString() }
+
+      string getFullName() { result = super.getFullName() }
+
+      string getNamespace() { result = super.getNamespace() }
+
+      string getName() { result = super.getName() }
+
+      Location getLocation() { result = super.getLocation() }
     }
 
     private newtype TVariable =

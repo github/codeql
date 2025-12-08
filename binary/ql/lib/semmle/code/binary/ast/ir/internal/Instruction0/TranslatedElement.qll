@@ -44,6 +44,8 @@ private predicate shouldTranslateMethod(Raw::CilMethod m) { any() }
  */
 private predicate shouldTranslateCilParameter(Raw::CilParameter p) { any() }
 
+private predicate shouldTranslatedCilType(Raw::CilType t) { any() }
+
 /**
  * The "base type" for all translated elements.
  *
@@ -124,8 +126,13 @@ newtype TTranslatedElement =
   TTranslatedCilLoadString(Raw::CilLdstr ldstr) { shouldTranslateCilInstr(ldstr) } or
   TTranslatedCilParameter(Raw::CilParameter param) { shouldTranslateCilParameter(param) } or
   TTranslatedCilLoadArg(Raw::CilLoadArgument ldstr) { shouldTranslateCilInstr(ldstr) } or
-  TTranslatedCilLoadIndirect(Raw::CilLoadIndirectInstruction ldind) { shouldTranslateCilInstr(ldind) } or
-  TTranslatedCilStoreIndirect(Raw::CilStoreIndirectInstruction stind) { shouldTranslateCilInstr(stind) }
+  TTranslatedCilLoadIndirect(Raw::CilLoadIndirectInstruction ldind) {
+    shouldTranslateCilInstr(ldind)
+  } or
+  TTranslatedCilStoreIndirect(Raw::CilStoreIndirectInstruction stind) {
+    shouldTranslateCilInstr(stind)
+  } or
+  TTranslatedCilType(Raw::CilType type) { shouldTranslatedCilType(type) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and

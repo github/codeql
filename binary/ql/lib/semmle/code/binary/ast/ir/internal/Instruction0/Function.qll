@@ -2,6 +2,7 @@ private import TranslatedFunction
 private import Instruction
 private import semmle.code.binary.ast.Location
 private import BasicBlock
+private import Type
 
 newtype TFunction = TMkFunction(TranslatedFunction f)
 
@@ -22,5 +23,7 @@ class Function extends TFunction {
 
   predicate isProgramEntryPoint() { f.isProgramEntryPoint() }
 
-  predicate isExported() { f.isExported() }
+  predicate isPublic() { f.isPublic() }
+
+  Type getDeclaringType() { result.getAFunction() = this }
 }

@@ -51,7 +51,7 @@ abstract class TranslatedFunction extends TranslatedElement {
 
   abstract predicate isProgramEntryPoint();
 
-  abstract predicate isExported();
+  abstract predicate isPublic();
 
   final override string getDumpId() { result = this.getName() }
 
@@ -105,14 +105,14 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
     if this.isProgramEntryPoint()
     then result = "Program_entry_function"
     else
-      if this.isExported()
+      if this.isPublic()
       then result = "Exported_function_" + entry.getIndex()
       else result = "Function_" + entry.getIndex()
   }
 
   final override predicate isProgramEntryPoint() { entry instanceof Raw::ProgramEntryInstruction }
 
-  final override predicate isExported() { entry instanceof Raw::ExportedEntryInstruction }
+  final override predicate isPublic() { entry instanceof Raw::ExportedEntryInstruction }
 
   final override predicate hasOrdering(LocalVariableTag tag, int ordering) {
     exists(Raw::X86Register r | tag = X86RegisterTag(r) |
@@ -217,7 +217,7 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
 
   override predicate isProgramEntryPoint() { none() }
 
-  override predicate isExported() { none() }
+  override predicate isPublic() { any() } // TODO: We need to extract this
 
   override Instruction getBodyEntry() {
     result = this.getParameter(0).getEntry()

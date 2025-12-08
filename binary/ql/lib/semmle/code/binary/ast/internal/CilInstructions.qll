@@ -1,5 +1,26 @@
 private import binary
 
+/**
+ * A CIL type (class, struct, interface, etc.).
+ */
+class CilType extends @type {
+  string toString() { result = this.getName() }
+
+  /** Gets the full name of this type (e.g., "System.Collections.Generic.List`1"). */
+  string getFullName() { types(this, result, _, _) }
+
+  /** Gets the namespace of this type (e.g., "System.Collections.Generic"). */
+  string getNamespace() { types(this, _, result, _) }
+
+  /** Gets the simple name of this type (e.g., "List`1"). */
+  string getName() { types(this, _, _, result) }
+
+  /** Gets a method declared in this type. */
+  CilMethod getAMethod() { result.getDeclaringType() = this }
+
+  Location getLocation() { none() } // TODO: Extract
+}
+
 /** A local variable defined in a CIL method body. */
 class CilVariable extends @il_local_variable {
   string toString() { result = "local_" + this.getIndex().toString() }
@@ -51,6 +72,8 @@ class CilMethod extends @method {
     result.getMethod() = this and
     result.getIndex() = i
   }
+
+  CilType getDeclaringType() { methods(this, _, _, result) }
 
   Location getLocation() { none() } // TODO: Extract
 }

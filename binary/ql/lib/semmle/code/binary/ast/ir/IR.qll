@@ -20,6 +20,24 @@ private module FinalInstruction {
     Location getLocation() { result = super.getLocation() }
 
     predicate isProgramEntryPoint() { super.isProgramEntryPoint() }
+
+    Type getDeclaringType() { result = super.getDeclaringType() }
+
+    predicate isPublic() { super.isPublic() }
+  }
+
+  class Type instanceof Instruction::Type {
+    Function getAFunction() { result = super.getAFunction() }
+
+    string toString() { result = super.toString() }
+
+    string getFullName() { result = super.getFullName() }
+
+    string getNamespace() { result = super.getNamespace() }
+
+    string getName() { result = super.getName() }
+
+    Location getLocation() { result = super.getLocation() }
   }
 
   class Operand instanceof Instruction::Operand {
