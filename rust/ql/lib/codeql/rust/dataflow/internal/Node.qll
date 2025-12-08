@@ -350,7 +350,8 @@ final private class ExprOutNode extends ExprNode, OutNode {
   ExprOutNode() {
     exists(Call call |
       call = this.asExpr() and
-      not call instanceof DerefExpr // Handled by `DerefOutNode`
+      not call instanceof DerefExpr and // Handled by `DerefOutNode`
+      not call instanceof IndexExpr // Handled by `IndexOutNode`
     )
   }
 
@@ -385,6 +386,32 @@ class DerefOutNode extends OutNode, TDerefOutNode {
   override Location getLocation() { result = de.getLocation() }
 
   override string toString() { result = de.toString() + " [pre-dereferenced]" }
+}
+
+/**
+ * A node that represents the value of a `x[y]` expression _before_ implicit
+ * dereferencing:
+ *
+ * `x[y]` equivalent to `*x.index(y)`, and this node represents the
+ * `x.index(y)` part.
+ */
+class IndexOutNode extends OutNode, TIndexOutNode {
+  IndexExpr ie;
+
+  IndexOutNode() { this = TIndexOutNode(ie, false) }
+
+  IndexExpr getIndexExpr() { result = ie }
+
+  override CfgScope getCfgScope() { result = ie.getEnclosingCfgScope() }
+
+  override DataFlowCall getCall(ReturnKind kind) {
+    result.asCall() = ie and
+    kind = TNormalReturnKind()
+  }
+
+  override Location getLocation() { result = ie.getLocation() }
+
+  override string toString() { result = ie.toString() + " [pre-dereferenced]" }
 }
 
 final class SummaryOutNode extends FlowSummaryNode, OutNode {
@@ -476,6 +503,18 @@ class DerefOutPostUpdateNode extends PostUpdateNode, TDerefOutNode {
   override Location getLocation() { result = de.getLocation() }
 }
 
+class IndexOutPostUpdateNode extends PostUpdateNode, TIndexOutNode {
+  IndexExpr ie;
+
+  IndexOutPostUpdateNode() { this = TIndexOutNode(ie, true) }
+
+  override IndexOutNode getPreUpdateNode() { result = TIndexOutNode(ie, false) }
+
+  override CfgScope getCfgScope() { result = ie.getEnclosingCfgScope() }
+
+  override Location getLocation() { result = ie.getLocation() }
+}
+
 final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
   private FlowSummaryNode pre;
 
@@ -514,7 +553,10 @@ newtype TNode =
   TExprPostUpdateNode(Expr e) {
     e.hasEnclosingCfgScope() and
     (
-      isArgumentForCall(e, _, _)
+      isArgumentForCall(e, _, _) and
+      // For compound assignments into variables like `x += y`, we do not want flow into
+      // `[post] x`, as that would create spurious flow when `x` is a parameter.
+      not (e = any(CompoundAssignmentExpr cae).getLhs() and e instanceof VariableAccess)
       or
       lambdaCallExpr(_, _, e)
       or
@@ -526,7 +568,6 @@ newtype TNode =
       or
       e =
         [
-          any(IndexExpr i).getBase(), //
           any(FieldExpr access).getContainer(), //
           any(TryExpr try).getExpr(), //
           any(AwaitExpr a).getExpr(), //
@@ -542,6 +583,7 @@ newtype TNode =
     borrow = true
   } or
   TDerefOutNode(DerefExpr de, Boolean isPost) or
+  TIndexOutNode(IndexExpr ie, Boolean isPost) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
   TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
     forall(AstNode n | n = sn.getSinkElement() or n = sn.getSourceElement() |
