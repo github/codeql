@@ -24,6 +24,8 @@ private string getSingleLocationFilePath(@element e) {
     var_decls(e, _, _, _, loc)
     or
     fun_decls(e, _, _, _, loc)
+    or
+    type_decls(e, _, loc)
   |
     result = getLocationFilePath(loc)
   )
@@ -38,6 +40,8 @@ private string getMultiLocationFilePath(@element e) {
     exists(@var_decl vd | var_decls(vd, e, _, _, loc))
     or
     exists(@fun_decl fd | fun_decls(fd, e, _, _, loc))
+    or
+    exists(@type_decl td | type_decls(td, e, loc))
   |
     result = getLocationFilePath(loc)
   )
