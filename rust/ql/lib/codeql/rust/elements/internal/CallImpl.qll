@@ -63,7 +63,7 @@ module Impl {
     }
 
     /** Gets the resolved target of this call, if any. */
-    Function getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
+    Function getStaticTarget() { result = TypeInference::resolveCallTarget(this, _) }
 
     /** Gets the name of the function called, if any. */
     string getTargetName() { result = this.getStaticTarget().getName().getText() }
@@ -73,9 +73,9 @@ module Impl {
     Function getARuntimeTarget() {
       result.hasImplementation() and
       (
-        result = this.getStaticTarget()
+        result = TypeInference::resolveCallTarget(this, _)
         or
-        result.implements(this.getStaticTarget())
+        result.implements(TypeInference::resolveCallTarget(this, true))
       )
     }
   }

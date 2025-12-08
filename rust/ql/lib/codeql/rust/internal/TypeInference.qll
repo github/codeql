@@ -3522,12 +3522,27 @@ private module Cached {
     any(MethodResolution::MethodCall mc).argumentHasImplicitBorrow(n)
   }
 
-  /** Gets an item (function or tuple struct/variant) that `call` resolves to, if any. */
+  /**
+   * Gets an item (function or tuple struct/variant) that `call` resolves to, if
+   * any.
+   *
+   * The parameter `dispatch` is `true` if and only if the resolved target is a
+   * trait item because a precise target could not be determined from the
+   * types (for instance in the presence of generics or `dyn` types)
+   */
   cached
-  Addressable resolveCallTarget(Expr call) {
-    result = call.(MethodResolution::MethodCall).resolveCallTarget(_, _, _)
+  Addressable resolveCallTarget(InvocationExpr call, boolean dispatch) {
+    dispatch = false and
+    result = call.(NonMethodResolution::NonMethodCall).resolveCallTargetViaPathResolution()
     or
-    result = call.(NonMethodResolution::NonMethodCall).resolveCallTarget()
+    exists(ImplOrTraitItemNode i |
+      i instanceof TraitItemNode and dispatch = true
+      or
+      i instanceof ImplItemNode and dispatch = false
+    |
+      result = call.(MethodResolution::MethodCall).resolveCallTarget(i, _, _) or
+      result = call.(NonMethodResolution::NonMethodCall).resolveCallTargetViaTypeInference(i)
+    )
   }
 
   /**
@@ -3668,9 +3683,9 @@ private module Debug {
     result = inferType(n, path)
   }
 
-  Addressable debugResolveCallTarget(InvocationExpr c) {
+  Addressable debugResolveCallTarget(InvocationExpr c, boolean dispatch) {
     c = getRelevantLocatable() and
-    result = resolveCallTarget(c)
+    result = resolveCallTarget(c, dispatch)
   }
 
   predicate debugConditionSatisfiesConstraint(
