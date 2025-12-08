@@ -1441,24 +1441,13 @@ private module MethodResolution {
      * Same as `getACandidateReceiverTypeAt`, but without borrows.
      */
     pragma[nomagic]
-    private Type getACandidateReceiverTypeAtNoBorrow(string derefChain, TypePath path) {
+    Type getACandidateReceiverTypeAtNoBorrow(string derefChain, TypePath path) {
       result = this.getReceiverTypeAt(path) and
       derefChain = ""
       or
-      this.supportsAutoDerefAndBorrow() and
-      exists(TypePath path0, Type t0, string derefChain0 |
-        this.hasNoCompatibleTargetMutBorrow(derefChain0) and
-        t0 = this.getACandidateReceiverTypeAtNoBorrow(derefChain0, path0)
-      |
-        path0.isCons(getRefTypeParameter(), path) and
-        result = t0 and
-        derefChain = derefChain0 + ".ref"
-        or
-        path0.isEmpty() and
-        path = path0 and
-        t0 = getStringStruct() and
-        result = getStrStruct() and
-        derefChain = derefChain0 + ".str"
+      exists(ImplicitDeref::DerefImplItemNode impl, string derefChain0 |
+        result = ImplicitDeref::getDereferencedCandidateReceiverType(this, impl, derefChain0, path) and
+        derefChain = derefChain0 + "." + impl.getId()
       )
     }
 
@@ -1698,8 +1687,11 @@ private module MethodResolution {
     }
 
     predicate receiverHasImplicitDeref(AstNode receiver) {
-      exists(this.resolveCallTarget(_, ".ref", TNoBorrowKind())) and
-      receiver = this.getArg(any(ArgumentPosition pos | pos.isSelf()))
+      exists(ImplicitDeref::DerefImplItemNode impl |
+        impl.isRefImpl() and
+        exists(this.resolveCallTarget(_, "." + impl.getId(), TNoBorrowKind())) and
+        receiver = this.getArg(any(ArgumentPosition pos | pos.isSelf()))
+      )
     }
 
     predicate argumentHasImplicitBorrow(AstNode arg, BorrowKind borrow) {
@@ -1967,6 +1959,98 @@ private module MethodResolution {
     string toString() { result = mc_.toString() + " [" + derefChain + "; " + borrow + "]" }
 
     Location getLocation() { result = mc_.getLocation() }
+  }
+
+  module ImplicitDeref {
+    private import codeql.rust.elements.internal.generated.Raw
+    private import codeql.rust.elements.internal.generated.Synth
+
+    /** An `impl` block that implements the `Deref` trait. */
+    class DerefImplItemNode extends ImplItemNode {
+      DerefImplItemNode() { this.resolveTraitTy() instanceof DerefTrait }
+
+      /**
+       * Holds if this `impl` block is the special `Deref` implementation for
+       * `&T` or `&mut T`:
+       *
+       * ```rust
+       * impl<T: ?Sized> const Deref for &T
+       * ```
+       *
+       * or
+       *
+       * ```rust
+       * impl<T: ?Sized> const Deref for &mut T
+       * ```
+       */
+      predicate isRefImpl() { this.resolveSelfTyBuiltin() instanceof Builtins::RefType }
+
+      /** Gets an internal unique ID used to identify this block amongst all `Deref` impl blocks. */
+      int getId() { idOfRaw(Synth::convertAstNodeToRaw(this), result) }
+    }
+
+    private class DerefImplItemRaw extends Raw::Impl {
+      DerefImplItemRaw() { this = Synth::convertAstNodeToRaw(any(DerefImplItemNode i)) }
+    }
+
+    private predicate id(DerefImplItemRaw x, DerefImplItemRaw y) { x = y }
+
+    private predicate idOfRaw(DerefImplItemRaw x, int y) = equivalenceRelation(id/2)(x, y)
+
+    private newtype TMethodCallDerefCand =
+      MkMethodCallDerefCand(MethodCall mc, string derefChain) {
+        mc.supportsAutoDerefAndBorrow() and
+        mc.hasNoCompatibleTargetMutBorrow(derefChain) and
+        exists(mc.getACandidateReceiverTypeAtNoBorrow(derefChain, _))
+      }
+
+    private class MethodCallDerefCand extends MkMethodCallDerefCand {
+      MethodCall mc_;
+      string derefChain;
+
+      MethodCallDerefCand() { this = MkMethodCallDerefCand(mc_, derefChain) }
+
+      MethodCall getMethodCall() { result = mc_ }
+
+      Type getTypeAt(TypePath path) {
+        result = substituteLookupTraits(mc_.getACandidateReceiverTypeAtNoBorrow(derefChain, path)) and
+        not result = TNeverType() and
+        not result = TUnknownType()
+      }
+
+      string toString() { result = mc_.toString() + " [" + derefChain + "]" }
+
+      Location getLocation() { result = mc_.getLocation() }
+    }
+
+    private module MethodCallSatisfiesConstraintInput implements
+      SatisfiesConstraintInputSig<MethodCallDerefCand>
+    {
+      pragma[nomagic]
+      predicate relevantConstraint(MethodCallDerefCand mc, Type constraint) {
+        exists(mc) and
+        constraint.(TraitType).getTrait() instanceof DerefTrait
+      }
+
+      predicate useUniversalConditions() { none() }
+    }
+
+    pragma[nomagic]
+    private AssociatedTypeTypeParameter getDerefTargetTypeParameter() {
+      result.getTypeAlias() = any(DerefTrait ft).getTargetType()
+    }
+
+    pragma[nomagic]
+    Type getDereferencedCandidateReceiverType(
+      MethodCall mc, DerefImplItemNode impl, string derefChain, TypePath path
+    ) {
+      exists(MethodCallDerefCand mcc, TypePath exprPath |
+        mcc = MkMethodCallDerefCand(mc, derefChain) and
+        SatisfiesConstraint<MethodCallDerefCand, MethodCallSatisfiesConstraintInput>::satisfiesConstraintType(mcc,
+          impl, _, exprPath, result) and
+        exprPath.isCons(getDerefTargetTypeParameter(), path)
+      )
+    }
   }
 
   private module ReceiverSatisfiesBlanketLikeConstraintInput implements
@@ -2347,9 +2431,12 @@ private Type inferMethodCallType1(AstNode n, boolean isReturn, TypePath path) {
     path = path0
     or
     // adjust for implicit deref
-    apos.isSelf() and
-    derefChainBorrow = ".ref;" and
-    path = TypePath::cons(getRefTypeParameter(), path0)
+    exists(MethodResolution::ImplicitDeref::DerefImplItemNode impl |
+      impl.isRefImpl() and
+      apos.isSelf() and
+      derefChainBorrow = "." + impl.getId() + ";" and
+      path = TypePath::cons(getRefTypeParameter(), path0)
+    )
     or
     // adjust for implicit borrow
     apos.isSelf() and
@@ -3155,9 +3242,6 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 
 pragma[nomagic]
 private StructType getStrStruct() { result = TStruct(any(Builtins::Str s)) }
-
-pragma[nomagic]
-private StructType getStringStruct() { result = TStruct(any(StringStruct s)) }
 
 pragma[nomagic]
 private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
