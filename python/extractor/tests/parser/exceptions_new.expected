@@ -1,0 +1,64 @@
+Module: [1, 0] - [9, 0]
+  body: [
+    Try: [1, 0] - [1, 4]
+      body: [
+        Pass: [2, 4] - [2, 8]
+      ]
+      orelse: []
+      handlers: [
+        ExceptStmt: [3, 0] - [3, 12]
+          type:
+            Tuple: [3, 7] - [3, 11]
+              elts: [
+                Name: [3, 7] - [3, 8]
+                  variable: Variable('a', None)
+                  ctx: Load
+                Name: [3, 10] - [3, 11]
+                  variable: Variable('b', None)
+                  ctx: Load
+              ]
+              ctx: Load
+          name: None
+          body: [
+            Pass: [4, 4] - [4, 8]
+          ]
+        ExceptStmt: [5, 0] - [5, 14]
+          type:
+            Tuple: [5, 8] - [5, 12]
+              elts: [
+                Name: [5, 8] - [5, 9]
+                  variable: Variable('c', None)
+                  ctx: Load
+                Name: [5, 11] - [5, 12]
+                  variable: Variable('d', None)
+                  ctx: Load
+              ]
+              ctx: Load
+              parenthesised: True
+          name: None
+          body: [
+            Pass: [6, 4] - [6, 8]
+          ]
+        ExceptStmt: [7, 0] - [7, 19]
+          type:
+            Tuple: [7, 8] - [7, 12]
+              elts: [
+                Name: [7, 8] - [7, 9]
+                  variable: Variable('e', None)
+                  ctx: Load
+                Name: [7, 11] - [7, 12]
+                  variable: Variable('f', None)
+                  ctx: Load
+              ]
+              ctx: Load
+              parenthesised: True
+          name:
+            Name: [7, 17] - [7, 18]
+              variable: Variable('g', None)
+              ctx: Store
+          body: [
+            Pass: [8, 4] - [8, 8]
+          ]
+      ]
+      finalbody: []
+  ]
