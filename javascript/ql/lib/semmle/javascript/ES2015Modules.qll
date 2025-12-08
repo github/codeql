@@ -1,5 +1,5 @@
 /** Provides classes for working with ECMAScript 2015 modules. */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

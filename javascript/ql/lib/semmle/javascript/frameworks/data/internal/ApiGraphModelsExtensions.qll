@@ -1,7 +1,7 @@
 /**
  * Defines extensible predicates for contributing library models from data extensions.
  */
-overlay[local]
+overlay[local?]
 module;
 
 /**

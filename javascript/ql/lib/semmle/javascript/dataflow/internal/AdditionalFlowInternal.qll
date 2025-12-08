@@ -5,7 +5,7 @@ private import semmle.javascript.dataflow.internal.DataFlowPrivate
 /**
  * Gets a data-flow node synthesized using `AdditionalFlowInternal#needsSynthesizedNode`.
  */
-overlay[local]
+overlay[local?]
 DataFlow::Node getSynthesizedNode(AstNode node, string tag) {
   result = TGenericSynthesizedNode(node, tag, _)
 }
@@ -13,7 +13,7 @@ DataFlow::Node getSynthesizedNode(AstNode node, string tag) {
 /**
  * An extension to `AdditionalFlowStep` with additional internal-only predicates.
  */
-overlay[local]
+overlay[local?]
 class AdditionalFlowInternal extends DataFlow::AdditionalFlowStep {
   /**
    * Holds if a data-flow node should be synthesized for the pair `(node, tag)`.

@@ -2,7 +2,7 @@
  * Provides classes for working with basic blocks, and predicates for computing
  * liveness information for local variables.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript
@@ -320,7 +320,7 @@ module Public {
     /**
      * Holds if this basic block strictly dominates `bb`.
      */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     predicate strictlyDominates(ReachableBasicBlock bb) { this = immediateDominator+(bb) }
 
@@ -329,14 +329,14 @@ module Public {
      *
      * This predicate is reflexive: each reachable basic block dominates itself.
      */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     predicate dominates(ReachableBasicBlock bb) { this = immediateDominator*(bb) }
 
     /**
      * Holds if this basic block strictly post-dominates `bb`.
      */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     predicate strictlyPostDominates(ReachableBasicBlock bb) { this = immediatePostDominator+(bb) }
 
@@ -345,7 +345,7 @@ module Public {
      *
      * This predicate is reflexive: each reachable basic block post-dominates itself.
      */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     predicate postDominates(ReachableBasicBlock bb) { this = immediatePostDominator*(bb) }
   }

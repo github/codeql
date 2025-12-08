@@ -1,5 +1,5 @@
 /** Provides classes and predicates for working with variable definitions and uses. */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

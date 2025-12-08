@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for the 'js/useless-expression' query.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

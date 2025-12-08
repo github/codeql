@@ -14,7 +14,7 @@
  * to the same value have the same access paths, so access paths are neither sound nor
  * complete as an approximation of expression semantics.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

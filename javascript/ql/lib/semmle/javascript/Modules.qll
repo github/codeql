@@ -3,7 +3,7 @@
  * ECMAScript 2015-style modules, and the older CommonJS and AMD-style
  * modules.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript
