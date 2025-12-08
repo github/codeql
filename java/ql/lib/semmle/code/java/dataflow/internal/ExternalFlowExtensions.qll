@@ -21,6 +21,14 @@ extensible predicate sinkModel(
 );
 
 /**
+ * Holds if a barrier model exists for the given parameters.
+ */
+extensible predicate barrierModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if a summary model exists for the given parameters.
  */
 extensible predicate summaryModel(

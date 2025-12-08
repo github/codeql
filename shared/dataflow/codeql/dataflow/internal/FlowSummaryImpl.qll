@@ -2052,6 +2052,14 @@ module Make<
           Element n, string input, string kind, Provenance provenance, string model
         );
 
+        /**
+         * Holds if an external barrier specification exists for `n` with output specification
+         * `output` and kind `kind`.
+         */
+        predicate barrierElement(
+          Element n, string output, string kind, Provenance provenance, string model
+        );
+
         class SourceOrSinkElement extends Element;
 
         /** An entity used to interpret a source/sink specification. */
@@ -2105,7 +2113,8 @@ module Make<
 
         private predicate sourceSinkSpec(string spec) {
           sourceElement(_, spec, _, _, _) or
-          sinkElement(_, spec, _, _, _)
+          sinkElement(_, spec, _, _, _) or
+          barrierElement(_, spec, _, _, _)
         }
 
         private module AccessPath = AccessPathSyntax::AccessPath<sourceSinkSpec/1>;
@@ -2160,11 +2169,22 @@ module Make<
           )
         }
 
+        private predicate barrierElementRef(
+          InterpretNode ref, SourceSinkAccessPath output, string kind, string model
+        ) {
+          exists(SourceOrSinkElement e |
+            barrierElement(e, output, kind, _, model) and
+            if outputNeedsReferenceExt(output.getToken(0))
+            then e = ref.getCallTarget()
+            else e = ref.asElement()
+          )
+        }
+
         /** Holds if the first `n` tokens of `output` resolve to the given interpretation. */
         private predicate interpretOutput(
           SourceSinkAccessPath output, int n, InterpretNode ref, InterpretNode node
         ) {
-          sourceElementRef(ref, output, _, _) and
+          (sourceElementRef(ref, output, _, _) or barrierElementRef(ref, output, _, _)) and
           n = 0 and
           (
             if output = ""
@@ -2277,6 +2297,17 @@ module Make<
           exists(InterpretNode ref, SourceSinkAccessPath input |
             sinkElementRef(ref, input, kind, model) and
             interpretInput(input, input.getNumToken(), ref, node)
+          )
+        }
+
+        /**
+         * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+         * model.
+         */
+        predicate isBarrierNode(InterpretNode node, string kind, string model) {
+          exists(InterpretNode ref, SourceSinkAccessPath output |
+            barrierElementRef(ref, output, kind, model) and
+            interpretOutput(output, output.getNumToken(), ref, node)
           )
         }
 
