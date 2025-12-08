@@ -554,6 +554,8 @@ newtype TNode =
     e.hasEnclosingCfgScope() and
     (
       isArgumentForCall(e, _, _) and
+      // For compound assignments into variables like `x += y`, we do not want flow into
+      // `[post] x`, as that would create spurious flow when `x` is a parameter.
       not (e = any(CompoundAssignmentExpr cae).getLhs() and e instanceof VariableAccess)
       or
       lambdaCallExpr(_, _, e)

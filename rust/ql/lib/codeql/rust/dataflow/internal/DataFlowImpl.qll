@@ -428,6 +428,9 @@ module RustDataFlow implements InputSig<Location> {
   private Function getStaticTargetExt(Call c) {
     result = c.getStaticTarget()
     or
+    // If the static target of an overloaded operation cannot be resolved, we fall
+    // back to the trait method as the target. This ensures that the flow models
+    // still apply.
     not exists(c.getStaticTarget()) and
     exists(TraitItemNode t, string methodName |
       c.(Operation).isOverloaded(t, methodName, _) and
