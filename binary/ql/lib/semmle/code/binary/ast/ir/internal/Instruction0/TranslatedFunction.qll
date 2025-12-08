@@ -1,3 +1,4 @@
+private import semmle.code.binary.ast.Location
 private import semmle.code.binary.ast.instructions as Raw
 private import TranslatedElement
 private import codeql.util.Option
@@ -125,6 +126,8 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
       r = any(Raw::R9Register r9).getASubRegister*() and ordering = 3
     )
   }
+
+  final override Location getLocation() { result = entry.getLocation() }
 }
 
 class TranslatedCilParameter extends TranslatedElement, TTranslatedCilParameter {
@@ -133,6 +136,8 @@ class TranslatedCilParameter extends TranslatedElement, TTranslatedCilParameter 
   TranslatedCilParameter() { this = TTranslatedCilParameter(p) }
 
   override Raw::Element getRawElement() { result = p }
+
+  final override Location getLocation() { result = p.getLocation() }
 
   override Variable getResultVariable() { none() }
 
@@ -181,6 +186,8 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
   TranslatedCilMethod() { this = TTranslatedCilMethod(method) }
 
   override Raw::Element getRawElement() { result = method }
+
+  final override Location getLocation() { result = method.getLocation() }
 
   override predicate hasBodyInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v

@@ -1,3 +1,4 @@
+private import semmle.code.binary.ast.Location
 private import semmle.code.binary.ast.instructions as Raw
 private import TranslatedElement
 private import codeql.util.Option
@@ -40,6 +41,8 @@ abstract class TranslatedX86Operand extends TranslatedOperand {
   }
 
   final override string toString() { result = "Translation of " + op }
+
+  final override Location getLocation() { none() } // TODO: Implement this
 }
 
 TranslatedOperand getTranslatedOperand(Raw::Element op) {

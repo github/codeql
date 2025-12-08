@@ -1,4 +1,5 @@
 private import semmle.code.binary.ast.instructions as Raw
+private import semmle.code.binary.ast.Location
 private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.ir.internal.Tags
 private import InstructionTag
@@ -273,6 +274,8 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the enclosing translated function of this translated element.
    */
   abstract TranslatedFunction getEnclosingFunction();
+
+  abstract Location getLocation();
 }
 
 /**

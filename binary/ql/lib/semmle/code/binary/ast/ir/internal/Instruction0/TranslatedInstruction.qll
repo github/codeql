@@ -1,3 +1,4 @@
+private import semmle.code.binary.ast.Location
 private import semmle.code.binary.ast.instructions as Raw
 private import TranslatedElement
 private import semmle.code.binary.ast.ir.internal.Opcode as Opcode
@@ -36,6 +37,8 @@ abstract class TranslatedX86Instruction extends TranslatedInstruction {
   final StackPointer getStackPointer() {
     result = this.getLocalVariable(X86RegisterTag(any(Raw::RspRegister sp)))
   }
+
+  final override Location getLocation() { result = instr.getLocation() }
 }
 
 abstract class TranslatedCilInstruction extends TranslatedInstruction {
@@ -59,6 +62,8 @@ abstract class TranslatedCilInstruction extends TranslatedInstruction {
   final Variable getCilLocalVariable(int index) {
     result = this.getLocalVariable(StlocVarTag(index))
   }
+
+  final override Location getLocation() { result = instr.getLocation() }
 }
 
 /**

@@ -22,6 +22,8 @@ class CilParameter instanceof @il_parameter {
   int getIndex() { il_parameter(this, _, result, _) }
 
   string getName() { il_parameter(this, _, _, result) }
+
+  Location getLocation() { none() } // TODO: Extract
 }
 
 class CilMethod extends @method {
@@ -49,6 +51,8 @@ class CilMethod extends @method {
     result.getMethod() = this and
     result.getIndex() = i
   }
+
+  Location getLocation() { none() } // TODO: Extract
 }
 
 pragma[nomagic]
