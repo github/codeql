@@ -16,5 +16,6 @@ codeql_csharp_library(
         "//csharp/extractor/Semmle.Extraction.CSharp",
         "//csharp/extractor/Semmle.Util",
         "@paket.main//newtonsoft.json",
+        "@paket.main//nuget.versioning",
     ],
 )
