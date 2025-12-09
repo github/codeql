@@ -588,6 +588,36 @@ private module Cached {
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
     }
+
+    bindingset[this]
+    private signature class ParamSig;
+
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue gv, P param);
+    }
+
+    cached // nothing is actually cached
+    module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        Guards::Guards_v3::Guard g, Expr e, Guards::GuardValue gv, P param
+      ) {
+        guardChecks(g, e, gv, param)
+      }
+
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, P param
+      ) {
+        Guards::Guards_v3::ParameterizedValidationWrapper<P, guardChecksAdjTypes/4>::guardChecksDef(g,
+          def, val, param)
+      }
+
+      private Node getABarrierNodeImpl(P param) {
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/1;
+    }
   }
 
   cached

@@ -159,7 +159,8 @@ private predicate relatedArgSpec(Callable c, string spec) {
     summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _, _) or
     sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
     sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
-    barrierModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
+    barrierModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
+    barrierGuardModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _, _)
   |
     c = interpretElement(namespace, type, subtypes, name, signature, ext, _)
   )
@@ -267,8 +268,28 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
       SourceOrSinkElement baseBarrier, string originalOutput, QlBuiltins::ExtensionId madId
     |
-      barrierModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
-        madId) and
+      barrierModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind,
+        provenance, madId) and
+      model = "MaD:" + madId.toString() and
+      baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
+      (
+        e = baseBarrier and output = originalOutput
+        or
+        correspondingKotlinParameterDefaultsArgSpec(baseBarrier, e, originalOutput, output)
+      )
+    )
+  }
+
+  predicate barrierGuardElement(
+    Element e, string output, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      SourceOrSinkElement baseBarrier, string originalOutput, QlBuiltins::ExtensionId madId
+    |
+      barrierGuardModel(namespace, type, subtypes, name, signature, ext, originalOutput,
+        acceptingvalue, kind, provenance, madId) and
       model = "MaD:" + madId.toString() and
       baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
