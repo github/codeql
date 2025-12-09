@@ -8,6 +8,7 @@ import rust
 import codeql.util.ReportStats
 import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 import codeql.rust.internal.TypeInference as TypeInference
+import codeql.rust.internal.Type
 
 /**
  * A file that is included in the quality statistics.
@@ -30,7 +31,8 @@ module CallTargetStats implements StatsSig {
     RelevantInvocationExpr() {
       this.getFile() instanceof RelevantFile and
       not this instanceof CallExprImpl::DynamicCallExpr and
-      not this = any(Operation o | not o.isOverloaded(_, _, _))
+      not this = any(Operation o | not o.isOverloaded(_, _, _)) and
+      not this = any(DerefExpr de | TypeInference::inferType(de.getExpr()) instanceof PtrType)
     }
   }
 
