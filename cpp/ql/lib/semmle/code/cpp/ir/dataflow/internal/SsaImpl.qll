@@ -1064,8 +1064,8 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
     int indirectionIndex
   ) {
-    IRGuards::Guards_v1::ValidationWrapperWithState<int, guardChecksInstr/4>::guardChecksDef(g, def,
-      val, indirectionIndex)
+    IRGuards::Guards_v1::ParameterizedValidationWrapper<int, guardChecksInstr/4>::guardChecksDef(g,
+      def, val, indirectionIndex)
   }
 
   Node getABarrierNode(int indirectionIndex) {
