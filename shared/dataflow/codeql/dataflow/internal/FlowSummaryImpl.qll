@@ -215,6 +215,35 @@ module Make<
         ]
     }
 
+    class AcceptingValue extends string {
+      AcceptingValue() {
+        this =
+          [
+            "true",
+            "false",
+            "no-exception",
+            "zero",
+            "not-zero",
+            "null",
+            "not-null",
+          ]
+      }
+
+      predicate isTrue() { this = "true" }
+
+      predicate isFalse() { this = "false" }
+
+      predicate isNoException() { this = "no-exception" }
+
+      predicate isZero() { this = "zero" }
+
+      predicate isNotZero() { this = "not-zero" }
+
+      predicate isNull() { this = "null" }
+
+      predicate isNotNull() { this = "not-null" }
+    }
+
     /**
      * A class used to represent provenance values for MaD models.
      *
@@ -2015,6 +2044,12 @@ module Make<
         not exists(interpretComponent(c))
       }
 
+      /** Holds if `acceptingvalue` is not a valid barrier guard accepting-value. */
+      bindingset[acceptingvalue]
+      predicate invalidAcceptingValue(string acceptingvalue) {
+        not acceptingvalue instanceof AcceptingValue
+      }
+
       /** Holds if `provenance` is not a valid provenance value. */
       bindingset[provenance]
       predicate invalidProvenance(string provenance) { not provenance instanceof Provenance }
@@ -2058,6 +2093,15 @@ module Make<
          */
         predicate barrierElement(
           Element n, string output, string kind, Provenance provenance, string model
+        );
+
+        /**
+         * Holds if an external barrier guard specification exists for `n` with input
+         * specification `input`, accepting value `acceptingvalue`, and kind `kind`.
+         */
+        predicate barrierGuardElement(
+          Element n, string input, AcceptingValue acceptingvalue, string kind,
+          Provenance provenance, string model
         );
 
         class SourceOrSinkElement extends Element;
@@ -2114,7 +2158,8 @@ module Make<
         private predicate sourceSinkSpec(string spec) {
           sourceElement(_, spec, _, _, _) or
           sinkElement(_, spec, _, _, _) or
-          barrierElement(_, spec, _, _, _)
+          barrierElement(_, spec, _, _, _) or
+          barrierGuardElement(_, spec, _, _, _, _)
         }
 
         private module AccessPath = AccessPathSyntax::AccessPath<sourceSinkSpec/1>;
@@ -2180,6 +2225,18 @@ module Make<
           )
         }
 
+        private predicate barrierGuardElementRef(
+          InterpretNode ref, SourceSinkAccessPath input, AcceptingValue acceptingvalue, string kind,
+          string model
+        ) {
+          exists(SourceOrSinkElement e |
+            barrierGuardElement(e, input, acceptingvalue, kind, _, model) and
+            if inputNeedsReferenceExt(input.getToken(0))
+            then e = ref.getCallTarget()
+            else e = ref.asElement()
+          )
+        }
+
         /** Holds if the first `n` tokens of `output` resolve to the given interpretation. */
         private predicate interpretOutput(
           SourceSinkAccessPath output, int n, InterpretNode ref, InterpretNode node
@@ -2240,7 +2297,7 @@ module Make<
         private predicate interpretInput(
           SourceSinkAccessPath input, int n, InterpretNode ref, InterpretNode node
         ) {
-          sinkElementRef(ref, input, _, _) and
+          (sinkElementRef(ref, input, _, _) or barrierGuardElementRef(ref, input, _, _, _)) and
           n = 0 and
           (
             if input = ""
@@ -2308,6 +2365,19 @@ module Make<
           exists(InterpretNode ref, SourceSinkAccessPath output |
             barrierElementRef(ref, output, kind, model) and
             interpretOutput(output, output.getNumToken(), ref, node)
+          )
+        }
+
+        /**
+         * Holds if `node` is specified as a barrier guard argument with the
+         * given kind in a MaD flow model.
+         */
+        predicate isBarrierGuardNode(
+          InterpretNode node, AcceptingValue acceptingvalue, string kind, string model
+        ) {
+          exists(InterpretNode ref, SourceSinkAccessPath input |
+            barrierGuardElementRef(ref, input, acceptingvalue, kind, model) and
+            interpretInput(input, input.getNumToken(), ref, node)
           )
         }
 
