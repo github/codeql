@@ -1,6 +1,6 @@
 StringInterpolation.cs:
 #    3| [Class] MyStringInterpolationClass
-#    6|   5: [Method] M
+#    6|   6: [Method] M
 #    6|     -1: [TypeMention] Void
 #    7|     4: [BlockStmt] {...}
 #    8|       0: [LocalVariableDeclStmt] ... ...;
