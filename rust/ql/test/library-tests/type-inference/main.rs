@@ -2626,7 +2626,7 @@ mod loops {
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:TArray.TRef.str
         for s in &strings1 {} // $ type=s:TRef.TRef.str
-        for s in &mut strings1 {} // $ type=s:TRef.TRef.str
+        for s in &mut strings1 {} // $ type=s:TRefMut.TRef.str
         for s in strings1 {} // $ type=s:TRef.str
 
         let strings2 = // $ type=strings2:TArray.String
@@ -2888,8 +2888,8 @@ pub mod path_buf {
         let path3 = path2.unwrap(); // $ target=unwrap type=path3:PathBuf
 
         let pathbuf1 = PathBuf::new(); // $ target=new certainType=pathbuf1:PathBuf
-        let pathbuf2 = pathbuf1.canonicalize(); // $ MISSING: target=canonicalize
-        let pathbuf3 = pathbuf2.unwrap(); // $ MISSING: target=unwrap type=pathbuf3:PathBuf
+        let pathbuf2 = pathbuf1.canonicalize(); // $ target=canonicalize
+        let pathbuf3 = pathbuf2.unwrap(); // $ target=unwrap type=pathbuf3:PathBuf
     }
 }
 

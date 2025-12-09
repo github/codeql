@@ -1059,9 +1059,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       pragma[nomagic]
       private predicate satisfiesConstraintTypeMention1(
-        HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
+        TypePath pathToTypeParamInSub
       ) {
-        exists(TypeAbstraction abs, TypeMention sub, TypeParameter tp |
+        exists(TypeMention sub, TypeParameter tp |
           satisfiesConstraintTypeMention0(tt, constraint, abs, sub, path, tp) and
           tp = abs.getATypeParameter() and
           sub.resolveTypeAt(pathToTypeParamInSub) = tp
@@ -1073,17 +1074,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * with the type `t` at `path`.
        */
       pragma[nomagic]
-      predicate satisfiesConstraintType(HasTypeTree tt, Type constraint, TypePath path, Type t) {
-        exists(TypeAbstraction abs |
-          satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
-          not t = abs.getATypeParameter()
-        )
+      predicate satisfiesConstraintType(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path, Type t
+      ) {
+        satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
+        not t = abs.getATypeParameter()
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMention1(tt, constraint, prefix0, pathToTypeParamInSub) and
+          satisfiesConstraintTypeMention1(tt, abs, constraint, prefix0, pathToTypeParamInSub) and
           tt.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
+      }
+
+      /**
+       * Holds if the type tree at `tt` satisfies the constraint `constraint`
+       * with the type `t` at `path`.
+       */
+      pragma[nomagic]
+      predicate satisfiesConstraintType(HasTypeTree tt, Type constraint, TypePath path, Type t) {
+        satisfiesConstraintType(tt, _, constraint, path, t)
         or
         hasTypeConstraint(tt, constraint, constraint) and
         t = tt.getTypeAt(path)
