@@ -9,17 +9,10 @@ private import Completion as Comp
 private import Comp
 private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow as Cfg
-private import semmle.code.csharp.controlflow.internal.PreSsa
 
 cached
 private module Cached {
   private import semmle.code.csharp.Caching
-
-  cached
-  newtype TBooleanSplitSubKind =
-    TSsaBooleanSplitSubKind(PreSsa::Definition def) {
-      Stages::ControlFlowStage::forceCachingInSameStage()
-    }
 
   cached
   newtype TSplitKind = TConditionalCompletionSplitKind()
