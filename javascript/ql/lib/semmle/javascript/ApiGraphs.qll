@@ -1240,7 +1240,7 @@ module API {
       }
 
       /**
-       * Holds if `ref` is a reference to a field/accessor that should have en incoming edge from base labelled `lbl`.
+       * Holds if `ref` is a reference to a field/accessor that should have an incoming edge from base labelled `lbl`.
        *
        * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
        * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
