@@ -44,12 +44,12 @@ public class Test  {
 
         @Override 
         public void afterConnectionClosed(WebSocketSession s, CloseStatus c) {
-            sink(s); // $ hasTaintFlow
+            sink(s); // $hasTaintFlow
         }
 
         @Override 
         public void handleTransportError(WebSocketSession s, Throwable exc) { 
-            sink(s);  // $ hasTaintFlow
+            sink(s);  // $hasTaintFlow
         }
 
     }
