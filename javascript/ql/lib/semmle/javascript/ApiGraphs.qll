@@ -1336,7 +1336,7 @@ module API {
        * The flow from `nd` to that node may be inter-procedural, and is further described by three
        * flags:
        *
-       *   - `promisified`: if true `true`, the flow goes through a promisification;
+       *   - `promisified`: if `true`, the flow goes through a promisification;
        *   - `boundArgs`: for function values, tracks how many arguments have been bound throughout
        *     the flow. To ensure termination, we somewhat arbitrarily constrain the number of bound
        *     arguments to be at most ten.
