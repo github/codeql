@@ -162,3 +162,8 @@ extensions:
       extensible: sourceModel
     data:
       - ["java.io", "FileInputStream", True, "FileInputStream", "", "", "Argument[this]", "file", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["java.io", "File", True, "getName", "()", "", "ReturnValue", "path-injection", "manual"]
