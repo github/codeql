@@ -163,6 +163,19 @@ module SourceSinkInterpretationInput implements
     )
   }
 
+  predicate barrierElement(
+    Element n, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
+  predicate barrierGuardElement(
+    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
   // Note that due to embedding, which is currently implemented via some
   // Methods having multiple qualified names, a given Method is liable to have
   // more than one SourceOrSinkElement, one for each of the names it claims.
