@@ -15,5 +15,13 @@ extensions:
     data: []
   - addsTo:
       pack: codeql/java-all
+      extensible: barrierModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
+      extensible: barrierGuardModel
+    data: []
+  - addsTo:
+      pack: codeql/java-all
       extensible: neutralModel
     data: []
