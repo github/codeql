@@ -1280,21 +1280,21 @@ module Make<
       }
     }
 
-    signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+    signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv);
 
     bindingset[this]
     signature class StateSig;
 
     private module WithState<StateSig State> {
-      signature predicate guardChecksSig(Guard g, Expr e, boolean branch, State state);
+      signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv, State state);
     }
 
     /**
      * Extends a `BarrierGuard` input predicate with wrapped invocations.
      */
     module ValidationWrapper<guardChecksSig/3 guardChecks0> {
-      private predicate guardChecksWithState(Guard g, Expr e, boolean branch, Unit state) {
-        guardChecks0(g, e, branch) and exists(state)
+      private predicate guardChecksWithState(Guard g, Expr e, GuardValue gv, Unit state) {
+        guardChecks0(g, e, gv) and exists(state)
       }
 
       private module StatefulWrapper = ValidationWrapperWithState<Unit, guardChecksWithState/4>;
@@ -1366,7 +1366,7 @@ module Make<
        * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
        */
       private predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
-        guardChecks0(g, e, val.asBooleanValue(), state)
+        guardChecks0(g, e, val, state)
         or
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g = call and

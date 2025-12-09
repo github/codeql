@@ -568,8 +568,10 @@ private module Cached {
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(Guards::Guards_v3::Guard g, Expr e, boolean branch) {
-        guardChecks(g, e, branch)
+      private predicate guardChecksAdjTypes(
+        Guards::Guards_v3::Guard g, Expr e, Guards::GuardValue gv
+      ) {
+        guardChecks(g, e, gv.asBooleanValue())
       }
 
       private predicate guardChecksWithWrappers(
