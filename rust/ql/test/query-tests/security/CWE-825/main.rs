@@ -143,6 +143,9 @@ fn main() {
     println!("test_vec_reserve:");
     test_vec_reserve();
 
+    println!("test_pointer_converted_to_reference:");
+    test_pointer_converted_to_reference();
+
     // ---
 
     println!("test_local_dangling:");
