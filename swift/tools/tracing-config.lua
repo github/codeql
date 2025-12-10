@@ -127,6 +127,9 @@ function RegisterExtractorPack(id)
         if compilerArguments.argv[1] == '-emit-supported-features' then
             return nil
         end
+        if compilerArguments.argv[1] == '-scan-dependencies' then
+            return nil
+        end
 
         strip_unsupported_args(compilerArguments.argv)
         replace_resource_dir(compilerPath, compilerArguments.argv)
