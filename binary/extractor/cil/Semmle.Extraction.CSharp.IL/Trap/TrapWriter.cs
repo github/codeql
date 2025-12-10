@@ -54,6 +54,12 @@ public class TrapWriter : IDisposable {
       case long l:
         writer.Write(l);
         break;
+      case float f:
+        WriteFloat(f);
+        break;
+      case double d:
+        WriteDouble(d);
+        break;
       case string s:
         // Escape string and wrap in quotes
         writer.Write('"');
@@ -67,6 +73,24 @@ public class TrapWriter : IDisposable {
         writer.Write(value.ToString());
         break;
     }
+  }
+
+  private void WriteFloat(float f) {
+    // Use InvariantCulture to ensure decimal point is '.' not ','
+    var str = f.ToString("G", System.Globalization.CultureInfo.InvariantCulture);
+    writer.Write(str);
+    // Ensure there's always a decimal point so CodeQL parses it as a float
+    if (!str.Contains('.') && !str.Contains('E') && !str.Contains('e'))
+      writer.Write(".0");
+  }
+
+  private void WriteDouble(double d) {
+    // Use InvariantCulture to ensure decimal point is '.' not ','
+    var str = d.ToString("G", System.Globalization.CultureInfo.InvariantCulture);
+    writer.Write(str);
+    // Ensure there's always a decimal point so CodeQL parses it as a float
+    if (!str.Contains('.') && !str.Contains('E') && !str.Contains('e'))
+      writer.Write(".0");
   }
 
   private string EscapeString(string s) {
