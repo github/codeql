@@ -564,12 +564,14 @@ private module Cached {
       DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
-    signature predicate guardChecksSig(Guards::Guard g, Expr e, boolean branch);
+    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue gv);
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(Guards::Guards_v3::Guard g, Expr e, boolean branch) {
-        guardChecks(g, e, branch)
+      private predicate guardChecksAdjTypes(
+        Guards::Guards_v3::Guard g, Expr e, Guards::GuardValue gv
+      ) {
+        guardChecks(g, e, gv)
       }
 
       private predicate guardChecksWithWrappers(
