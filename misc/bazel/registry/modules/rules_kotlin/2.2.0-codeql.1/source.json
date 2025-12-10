@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-4STROYYIW8ChW+LIXBQVurVwhEK3jSSf4iv430OlNA0=",
+    "url": "https://github.com/bazelbuild/rules_kotlin/releases/download/v2.2.0/rules_kotlin-v2.2.0.tar.gz",
+    "patches": {
+        "codeql_do_not_emit_jdeps.patch": "sha256-gIlhXEY71vlCkpr5wj2vm3yv6RwcuKLhgbTGqdVvQfU=",
+        "codeql_add_language_version_option.patch": "sha256-HoH8NWXxmYHmm/SxaugRdXgMntvcQx5gRLW2yQIvWhM="
+    },
+    "patch_strip": 1
+}

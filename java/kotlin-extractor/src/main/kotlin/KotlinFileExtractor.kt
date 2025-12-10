@@ -415,6 +415,7 @@ open class KotlinFileExtractor(
 
     private fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
         with("class modifiers", c) {
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (c.modality) {
                 Modality.FINAL -> addModifiers(id, "final")
                 Modality.SEALED -> addModifiers(id, "sealed")
@@ -1644,7 +1645,7 @@ open class KotlinFileExtractor(
         extractMethodAndParameterTypeAccesses: Boolean,
         typeSubstitution: TypeSubstitution?,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-    ) =
+    ) : Label<out DbCallable> =
         forceExtractFunction(
                 f,
                 parentId,
@@ -2801,6 +2802,7 @@ open class KotlinFileExtractor(
 
     private fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         with("body", b) {
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (b) {
                 is IrBlockBody -> extractBlockBody(b, callable)
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
@@ -2973,12 +2975,22 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
-                    extractVariable(s.delegate, callable, blockId, 0)
+                    // For Kotlin < 2.3, s.delegate is not-nullable. Cast to a be nullable,
+                    // as a workaround to silence warnings for kotlin < 2.3 about the elvis
+                    // operator being redundant.
+                    // For Kotlin >= 2.3, the cast is redundant, so we need to silence that warning
+
+                    @Suppress("USELESS_CAST")
+                    val delegate = (s.delegate as IrVariable?) ?: run {
+                        logger.errorElement("Local delegated property is missing delegate", s)
+                        return
+                    }
+                    extractVariable(delegate, callable, blockId, 0)
 
                     val propId = tw.getFreshIdLabel<DbKt_property>()
                     tw.writeKtProperties(propId, s.name.asString())
                     tw.writeHasLocation(propId, locId)
-                    tw.writeKtPropertyDelegates(propId, useVariable(s.delegate))
+                    tw.writeKtPropertyDelegates(propId, useVariable(delegate))
 
                     // Getter:
                     extractStatement(s.getter, callable, blockId, 1)
