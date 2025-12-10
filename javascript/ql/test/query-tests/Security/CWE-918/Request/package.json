@@ -8,6 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "15.1.7"
+    "next": "15.1.9"
   }
 }

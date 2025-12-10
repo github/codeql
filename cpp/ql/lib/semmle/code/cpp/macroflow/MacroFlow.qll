@@ -38,8 +38,10 @@ module MacroFlow {
    * based on the given configuration.
    */
   module Make<ConfigSig Config> {
+    private predicate hasChildSink(Expr e) { Config::isSink(e.getAChild*()) }
+
     private predicate rev(MacroInvocation mi) {
-      Config::isSink(mi.getExpr())
+      hasChildSink(mi.getExpr())
       or
       exists(MacroInvocation mi1 | rev(mi1) | mi.getParentInvocation() = mi1)
     }
@@ -61,7 +63,7 @@ module MacroFlow {
     private newtype TNode =
       TMacroInvocationNode(MacroInvocation mi) { fwd(mi) } or
       TExprNode(Expr e) {
-        Config::isSink(e) and
+        hasChildSink(e) and
         (
           exists(MacroInvocation mi |
             fwd(mi) and
@@ -138,7 +140,7 @@ module MacroFlow {
       )
     }
 
-    private predicate isSinkNode(Node n) { Config::isSink(n.(ExprNode).getExpr()) }
+    private predicate isSinkNode(Node n) { hasChildSink(n.(ExprNode).getExpr()) }
 
     private predicate isSourceNode(Node n) {
       isSource(n.(MacroInvocationNode).getMacroInvocation())
@@ -159,9 +161,16 @@ module MacroFlow {
       isSinkNode(n2)
     }
 
-    predicate flowsTo(Node n, ExprNode n2, Expr e) {
+    predicate flowsTo(Node n, ExprNode n2, Expr e, boolean exact) {
       stepsStar(n, n2) and
-      n2.getExpr() = e
+      Config::isSink(e) and
+      (
+        n2.getExpr() = e and
+        exact = true
+        or
+        n2.getExpr().getAChild+() = e and
+        exact = false
+      )
     }
 
     /**
