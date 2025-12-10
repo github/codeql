@@ -32,10 +32,6 @@ public class ILExtractor {
 
       foreach (var module in assembly.Modules) {
         foreach (var type in module.Types) {
-          // Skip compiler-generated types for now
-          if (type.Name.Contains("<") || type.Name.StartsWith("<"))
-            continue;
-
           ExtractType(type);
         }
       }
@@ -64,8 +60,22 @@ public class ILExtractor {
     var typeId = trap.GetId();
     typeIds[type.FullName] = typeId;
 
+    // For nested types, we need to construct proper namespace and name
+    // Cecil uses '/' for nested types (e.g., "Outer/Inner") but the call targets use '.'
+    // So we normalize to dot notation for consistency
+    var fullName = type.FullName.Replace('/', '.');
+    var typeName = type.Name;
+    string typeNamespace;
+    
+    if (type.IsNested && type.DeclaringType != null) {
+      // For nested types, the namespace is the parent type's full name
+      typeNamespace = type.DeclaringType.FullName.Replace('/', '.');
+    } else {
+      typeNamespace = type.Namespace;
+    }
+
     // Write type info
-    trap.WriteTuple("types", typeId, type.FullName, type.Namespace, type.Name);
+    trap.WriteTuple("types", typeId, fullName, typeNamespace, typeName);
 
     foreach (var method in type.Methods) {
       // Skip some special methods
@@ -73,6 +83,13 @@ public class ILExtractor {
         continue;
 
       ExtractMethod(method, typeId);
+    }
+
+    // Extract nested types (includes compiler-generated state machines)
+    if (type.HasNestedTypes) {
+      foreach (var nestedType in type.NestedTypes) {
+        ExtractType(nestedType);
+      }
     }
   }
 
@@ -146,9 +163,9 @@ public class ILExtractor {
         // Branch target
         trap.WriteTuple("il_branch_target", instrId, targetInstr.Offset);
       } else if (instruction.Operand is MethodReference methodRef) {
-        // Method call - we'll resolve this in a second pass
-        var targetMethodName =
-            $"{methodRef.DeclaringType.FullName}.{methodRef.Name}";
+        // Method call - normalize nested type separators from '/' to '.'
+        var declaringTypeName = methodRef.DeclaringType.FullName.Replace('/', '.');
+        var targetMethodName = $"{declaringTypeName}.{methodRef.Name}";
         trap.WriteTuple("il_call_target_unresolved", instrId, targetMethodName);
         trap.WriteTuple("il_number_of_arguments", instrId, methodRef.Parameters.Count);
         if(methodRef.MethodReturnType.ReturnType.MetadataType is not Mono.Cecil.MetadataType.Void) {

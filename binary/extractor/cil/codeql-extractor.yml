@@ -13,3 +13,4 @@ file_types:
     extensions:
       - .exe
       - .dll
+dbscheme: semmlecode.binary.dbscheme
