@@ -36,6 +36,8 @@ edges
 | test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:45:17:45:25 | ControlFlowNode for file_path | provenance |  |
 | test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:49:15:49:23 | ControlFlowNode for file_path | provenance |  |
 | test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:50:19:50:27 | ControlFlowNode for file_path | provenance |  |
+| test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:54:15:54:23 | ControlFlowNode for file_path | provenance |  |
+| test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:55:19:55:27 | ControlFlowNode for file_path | provenance |  |
 | test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:59:40:59:48 | ControlFlowNode for file_path | provenance |  |
 | test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:61:23:61:31 | ControlFlowNode for file_path | provenance |  |
 | test.py:28:26:28:34 | ControlFlowNode for file_path | test.py:62:21:62:29 | ControlFlowNode for file_path | provenance |  |
@@ -79,6 +81,8 @@ nodes
 | test.py:45:17:45:25 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:49:15:49:23 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:50:19:50:27 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:54:15:54:23 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
+| test.py:55:19:55:27 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:59:40:59:48 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:61:23:61:31 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:62:21:62:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
@@ -107,6 +111,8 @@ subpaths
 | test.py:45:17:45:25 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:45:17:45:25 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:49:15:49:23 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:49:15:49:23 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:50:19:50:27 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:50:19:50:27 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:54:15:54:23 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:54:15:54:23 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
+| test.py:55:19:55:27 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:55:19:55:27 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:59:40:59:48 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:59:40:59:48 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:61:23:61:31 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:61:23:61:31 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:62:21:62:29 | ControlFlowNode for file_path | test.py:10:16:10:24 | ControlFlowNode for file_path | test.py:62:21:62:29 | ControlFlowNode for file_path | This uncontrolled file extraction is $@. | test.py:10:16:10:24 | ControlFlowNode for file_path | depends on this user controlled data |
