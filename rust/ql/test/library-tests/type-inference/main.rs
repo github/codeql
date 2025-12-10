@@ -3036,6 +3036,39 @@ mod context_typed {
     }
 }
 
+mod literal_overlap {
+    trait MyTrait {
+        fn f(self) -> Self;
+    }
+
+    impl MyTrait for i32 {
+        // i32f
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    impl MyTrait for usize {
+        // usizef
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    impl<T> MyTrait for &T {
+        // Reff
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    pub fn f() -> usize {
+        let mut x = 0;
+        x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f target=Reff
+        x
+    }
+}
+
 mod blanket_impl;
 mod closure;
 mod dereference;
