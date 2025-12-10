@@ -1,4 +1,4 @@
-- description: Security-and-quality queries for Rust
 - queries: .
-- apply: security-and-quality-selectors.yml
-  from: codeql/suite-helpers
+- include:
+    tags contain:
+      - type-inference-warmup
