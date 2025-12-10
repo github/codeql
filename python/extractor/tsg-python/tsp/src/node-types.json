@@ -242,6 +242,10 @@
         "named": true
       },
       {
+        "type": "concatenated_template_string",
+        "named": true
+      },
+      {
         "type": "dictionary",
         "named": true
       },
@@ -303,6 +307,10 @@
       },
       {
         "type": "subscript",
+        "named": true
+      },
+      {
+        "type": "template_string",
         "named": true
       },
       {
@@ -995,6 +1003,21 @@
       "types": [
         {
           "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "concatenated_template_string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "template_string",
           "named": true
         }
       ]
@@ -2461,6 +2484,10 @@
           "named": true
         },
         {
+          "type": "concatenated_template_string",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -2470,6 +2497,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "template_string",
           "named": true
         },
         {
@@ -3252,6 +3283,52 @@
           {
             "type": "primary_expression",
             "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "template_string",
+    "named": true,
+    "fields": {
+      "interpolation": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "interpolation",
+            "named": true
+          }
+        ]
+      },
+      "prefix": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      },
+      "string_content": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "string_content",
+            "named": true
+          }
+        ]
+      },
+      "suffix": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
           }
         ]
       }
