@@ -27,7 +27,7 @@ private import codeql.ruby.dataflow.FlowSummary
  * A remote flow source originating from a CSV source row.
  */
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
+  RemoteFlowSourceFromCsv() { ModelOutput::sourceNode(this, "remote") }
 
   override string getSourceType() { result = "Remote flow (from model)" }
 }

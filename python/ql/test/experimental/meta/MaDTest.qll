@@ -17,7 +17,7 @@ module MadSinkTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlow::Node sink, string kind |
-      sink = ModelOutput::getASinkNode(kind).asSink() and
+      ModelOutput::sinkNode(sink, kind) and
       location = sink.getLocation() and
       element = sink.toString() and
       value = prettyNodeForInlineTest(sink) and
@@ -34,7 +34,7 @@ module MadSourceTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlow::Node source, string kind |
-      source = ModelOutput::getASourceNode(kind).asSource() and
+      ModelOutput::sourceNode(source, kind) and
       location = source.getLocation() and
       element = source.toString() and
       value = prettyNodeForInlineTest(source) and

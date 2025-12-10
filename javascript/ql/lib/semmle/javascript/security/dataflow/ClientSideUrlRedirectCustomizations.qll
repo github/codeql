@@ -268,6 +268,6 @@ module ClientSideUrlRedirect {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "url-redirection") }
   }
 }

@@ -75,7 +75,7 @@ module UrlRedirect {
   }
 
   private class ExternalUrlRedirectSink extends Sink {
-    ExternalUrlRedirectSink() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+    ExternalUrlRedirectSink() { ModelOutput::sinkNode(this, "url-redirection") }
   }
 
   /**

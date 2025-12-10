@@ -116,6 +116,6 @@ module CodeInjection {
   }
 
   private class ExternalCodeInjectionSink extends Sink {
-    ExternalCodeInjectionSink() { this = ModelOutput::getASinkNode("code-injection").asSink() }
+    ExternalCodeInjectionSink() { ModelOutput::sinkNode(this, "code-injection") }
   }
 }
