@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: barrierGuardModel
+    data:
+      - ['django', 'Member[utils].Member[http].Member[url_has_allowed_host_and_scheme].Argument[0,url:]', "true", 'url-redirection']

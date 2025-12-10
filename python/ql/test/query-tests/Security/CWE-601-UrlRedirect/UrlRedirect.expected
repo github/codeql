@@ -52,7 +52,6 @@ edges
 | test.py:81:17:81:46 | ControlFlowNode for Attribute() | test.py:81:5:81:13 | ControlFlowNode for untrusted | provenance |  |
 | test.py:82:5:82:10 | ControlFlowNode for unsafe | test.py:83:21:83:26 | ControlFlowNode for unsafe | provenance |  |
 | test.py:90:5:90:13 | ControlFlowNode for untrusted | test.py:93:18:93:26 | ControlFlowNode for untrusted | provenance |  |
-| test.py:90:5:90:13 | ControlFlowNode for untrusted | test.py:95:25:95:33 | ControlFlowNode for untrusted | provenance |  |
 | test.py:90:17:90:23 | ControlFlowNode for request | test.py:90:17:90:28 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | test.py:90:17:90:28 | ControlFlowNode for Attribute | test.py:90:17:90:46 | ControlFlowNode for Attribute() | provenance | dict.get |
 | test.py:90:17:90:46 | ControlFlowNode for Attribute() | test.py:90:5:90:13 | ControlFlowNode for untrusted | provenance |  |
@@ -123,7 +122,6 @@ nodes
 | test.py:90:17:90:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:90:17:90:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:93:18:93:26 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
-| test.py:95:25:95:33 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
 | test.py:111:5:111:13 | ControlFlowNode for untrusted | semmle.label | ControlFlowNode for untrusted |
 | test.py:111:17:111:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:111:17:111:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
@@ -150,7 +148,6 @@ subpaths
 | test.py:76:21:76:26 | ControlFlowNode for unsafe | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:76:21:76:26 | ControlFlowNode for unsafe | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:83:21:83:26 | ControlFlowNode for unsafe | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:83:21:83:26 | ControlFlowNode for unsafe | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:93:18:93:26 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:93:18:93:26 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
-| test.py:95:25:95:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:95:25:95:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:114:25:114:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:114:25:114:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:140:25:140:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:140:25:140:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test.py:148:25:148:33 | ControlFlowNode for untrusted | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:148:25:148:33 | ControlFlowNode for untrusted | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

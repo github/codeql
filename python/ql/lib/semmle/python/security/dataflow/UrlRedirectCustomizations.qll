@@ -7,6 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.frameworks.data.ModelsAsData
@@ -156,4 +157,23 @@ module UrlRedirect {
 
   /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  private predicate urlCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    exists(API::CallNode call, API::Node parameter |
+      parameter = call.getAParameter() and
+      parameter = ModelOutput::getABarrierGuardNode("url-redirection", branch)
+    |
+      g = call.asCfgNode() and
+      node = parameter.asSink().asCfgNode()
+    )
+  }
+
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { this = DataFlow::BarrierGuard<urlCheck/3>::getABarrierNode() }
+
+    override predicate sanitizes(FlowState state) {
+      // sanitize all flow states
+      any()
+    }
+  }
 }
