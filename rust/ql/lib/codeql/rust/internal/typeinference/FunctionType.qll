@@ -256,8 +256,10 @@ module ArgIsInstantiationOf<
     ArgSubstIsInstantiationOf::isInstantiationOf(arg, i, constraint)
   }
 
-  predicate argIsNotInstantiationOf(Arg arg, ImplOrTraitItemNode i, AssocFunctionType constraint) {
-    ArgSubstIsInstantiationOf::isNotInstantiationOf(arg, i, constraint)
+  predicate argIsNotInstantiationOf(
+    Arg arg, ImplOrTraitItemNode i, AssocFunctionType constraint, TypePath path
+  ) {
+    ArgSubstIsInstantiationOf::isNotInstantiationOf(arg, i, constraint, path)
   }
 }
 

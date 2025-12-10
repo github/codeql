@@ -3064,7 +3064,7 @@ mod literal_overlap {
 
     pub fn f() -> usize {
         let mut x = 0;
-        x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f target=Reff
+        x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f
         x
     }
 }

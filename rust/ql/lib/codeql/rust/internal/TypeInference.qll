@@ -1430,11 +1430,19 @@ private module MethodResolution {
      * Holds if the method inside `i` with matching name and arity can be ruled
      * out as a target of this call, because the candidate receiver type represented
      * by `derefChain` and `borrow` is incompatible with the `self` parameter type.
+     *
+     * The types are incompatible because they disagree on a concrete type somewhere
+     * inside `root`.
      */
     pragma[nomagic]
-    private predicate hasIncompatibleTarget(ImplOrTraitItemNode i, string derefChain, boolean borrow) {
-      ReceiverIsInstantiationOfSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this, derefChain,
-          borrow), i, _)
+    private predicate hasIncompatibleTarget(
+      ImplOrTraitItemNode i, string derefChain, boolean borrow, Type root
+    ) {
+      exists(TypePath path |
+        ReceiverIsInstantiationOfSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this,
+            derefChain, borrow), i, _, path) and
+        path.isCons(root.getATypeParameter(), _)
+      )
     }
 
     /**
@@ -1448,7 +1456,7 @@ private module MethodResolution {
       ImplItemNode impl, string derefChain, boolean borrow
     ) {
       ReceiverIsNotInstantiationOfBlanketLikeSelfParam::argIsNotInstantiationOf(MkMethodCallCand(this,
-          derefChain, borrow), impl, _)
+          derefChain, borrow), impl, _, _)
       or
       ReceiverSatisfiesBlanketLikeConstraint::dissatisfiesBlanketConstraint(MkMethodCallCand(this,
           derefChain, borrow), impl)
@@ -1479,7 +1487,7 @@ private module MethodResolution {
       forall(ImplOrTraitItemNode i |
         methodCallNonBlanketCandidate(this, _, i, _, strippedTypePath, strippedType)
       |
-        this.hasIncompatibleTarget(i, derefChain, borrow)
+        this.hasIncompatibleTarget(i, derefChain, borrow, strippedType)
       )
     }
 
@@ -1818,7 +1826,7 @@ private module MethodResolution {
      */
     pragma[nomagic]
     private predicate hasIncompatibleInherentTarget(Impl impl) {
-      ReceiverIsNotInstantiationOfInherentSelfParam::argIsNotInstantiationOf(this, impl, _)
+      ReceiverIsNotInstantiationOfInherentSelfParam::argIsNotInstantiationOf(this, impl, _, _)
     }
 
     /**
