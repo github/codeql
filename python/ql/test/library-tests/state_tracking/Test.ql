@@ -1,5 +1,6 @@
 import python
 import Lib
+private import LegacyPointsTo
 
 from ControlFlowNode f, TrackableState state, Context ctx, boolean sense
 where

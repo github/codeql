@@ -107,10 +107,7 @@ class XmlAccessType extends EnumConstant {
  */
 class JaxbMemberAnnotation extends JaxbAnnotationType {
   JaxbMemberAnnotation() {
-    this.hasName("XmlElement") or
-    this.hasName("XmlAttribute") or
-    this.hasName("XmlElementRefs") or
-    this.hasName("XmlElements")
+    this.hasName(["XmlElement", "XmlAttribute", "XmlElementRefs", "XmlElements"])
   }
 }
 

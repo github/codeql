@@ -1,5 +1,6 @@
 import python
+private import LegacyPointsTo
 
-from Module m, int n
-where n = m.getMetrics().getNumberOfLinesOfComments()
+from ModuleMetrics m, int n
+where n = m.getNumberOfLinesOfComments()
 select m.toString(), n

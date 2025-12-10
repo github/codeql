@@ -1,5 +1,5 @@
 /**
- * @name Use of 'if' with a 'none()' branch.
+ * @name Use of 'if' with a 'none()' branch
  * @description Using 'if p() then q() else none()' is bad style. It should be rewritten as 'p() and q()'.
  * @kind problem
  * @problem.severity warning

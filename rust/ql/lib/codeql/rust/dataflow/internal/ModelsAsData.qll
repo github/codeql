@@ -47,7 +47,6 @@ private import rust
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred

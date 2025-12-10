@@ -1,4 +1,5 @@
 import python
+private import semmle.python.types.ModuleObject
 
 private predicate is_normal_module(ModuleObject m) {
   m instanceof BuiltinModuleObject

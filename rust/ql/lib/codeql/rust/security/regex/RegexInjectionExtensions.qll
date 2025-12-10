@@ -53,10 +53,10 @@ module RegexInjection {
    */
   private class NewSink extends Sink {
     NewSink() {
-      exists(CallExprBase call, Addressable a |
-        call.getStaticTarget() = a and
-        a.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
-        this.asExpr() = call.getArg(0) and
+      exists(Call call, Function f |
+        call.getStaticTarget() = f and
+        f.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
+        this.asExpr() = call.getPositionalArgument(0) and
         not this.asExpr() instanceof LiteralExpr
       )
     }
@@ -89,11 +89,12 @@ module RegexInjection {
 
   /**
    * A barrier for regular expression injection vulnerabilities for nodes whose
-   * type is an integral or boolean type, which is unlikely to expose any vulnerability.
+   * type is an integral type, which is unlikely to expose any vulnerability.
    *
    * We don't include floating point types in this barrier, as `.` is a special character
    * in regular expressions.
    */
-  private class IntegralOrBooleanTypeBarrier extends Barrier instanceof Barriers::IntegralOrBooleanTypeBarrier
-  { }
+  private class IntegralTypeBarrier extends Barrier instanceof Barriers::IntegralTypeBarrier { }
+
+  private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }
 }

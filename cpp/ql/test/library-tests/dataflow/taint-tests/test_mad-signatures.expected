@@ -26843,6 +26843,24 @@ getParameterTypeName
 | atl.cpp:71:5:71:17 | _U_STRINGorID | 0 | unsigned int |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | 0 | LPCTSTR |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | 0 | const char * |
+| atl.cpp:96:5:96:10 | CA2AEX | 0 | LPCSTR |
+| atl.cpp:96:5:96:10 | CA2AEX | 0 | const char * |
+| atl.cpp:96:5:96:10 | CA2AEX | 1 | UINT |
+| atl.cpp:96:5:96:10 | CA2AEX | 1 | unsigned int |
+| atl.cpp:97:5:97:10 | CA2AEX | 0 | LPCSTR |
+| atl.cpp:97:5:97:10 | CA2AEX | 0 | const char * |
+| atl.cpp:124:5:124:11 | CA2CAEX | 0 | LPCSTR |
+| atl.cpp:124:5:124:11 | CA2CAEX | 0 | const char * |
+| atl.cpp:124:5:124:11 | CA2CAEX | 1 | UINT |
+| atl.cpp:124:5:124:11 | CA2CAEX | 1 | unsigned int |
+| atl.cpp:125:5:125:11 | CA2CAEX | 0 | LPCSTR |
+| atl.cpp:125:5:125:11 | CA2CAEX | 0 | const char * |
+| atl.cpp:149:5:149:10 | CA2WEX | 0 | LPCSTR |
+| atl.cpp:149:5:149:10 | CA2WEX | 0 | const char * |
+| atl.cpp:149:5:149:10 | CA2WEX | 1 | UINT |
+| atl.cpp:149:5:149:10 | CA2WEX | 1 | unsigned int |
+| atl.cpp:150:5:150:10 | CA2WEX | 0 | LPCSTR |
+| atl.cpp:150:5:150:10 | CA2WEX | 0 | const char * |
 | atl.cpp:196:12:196:14 | Add | 0 | INARGTYPclass:0 |
 | atl.cpp:198:12:198:17 | Append | 0 | const CAtlArray & |
 | atl.cpp:199:10:199:13 | Copy | 0 | const CAtlArray & |
@@ -27083,6 +27101,10 @@ getParameterTypeName
 | atl.cpp:940:10:940:18 | SetString | 0 | PCXSTR |
 | atl.cpp:940:10:940:18 | SetString | 0 | const class:0 * |
 | atl.cpp:942:11:942:20 | operator[] | 0 | int |
+| atl.cpp:1018:10:1018:10 | operator= | 0 | MakeOther && |
+| atl.cpp:1018:10:1018:10 | operator= | 0 | const MakeOther & |
+| atl.cpp:1023:10:1023:10 | operator= | 0 | MakeOther && |
+| atl.cpp:1023:10:1023:10 | operator= | 0 | const MakeOther & |
 | atl.cpp:1036:5:1036:12 | CStringT | 0 | const VARIANT & |
 | atl.cpp:1036:5:1036:12 | CStringT | 0 | const tagVARIANT & |
 | atl.cpp:1037:5:1037:12 | CStringT | 0 | const VARIANT & |
@@ -27286,6 +27308,8 @@ getParameterTypeName
 | standalone_iterators.cpp:20:7:20:7 | operator= | 0 | const int_iterator_by_trait & |
 | standalone_iterators.cpp:20:7:20:7 | operator= | 0 | int_iterator_by_trait && |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | 0 | int |
+| standalone_iterators.cpp:28:13:28:13 | operator= | 0 | const iterator_traits & |
+| standalone_iterators.cpp:28:13:28:13 | operator= | 0 | iterator_traits && |
 | standalone_iterators.cpp:36:7:36:7 | operator= | 0 | const non_iterator & |
 | standalone_iterators.cpp:36:7:36:7 | operator= | 0 | non_iterator && |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | 0 | int |
@@ -27297,6 +27321,8 @@ getParameterTypeName
 | standalone_iterators.cpp:66:30:66:39 | operator++ | 0 | int |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | 0 | int |
 | standalone_iterators.cpp:70:31:70:39 | operator= | 0 | int |
+| standalone_iterators.cpp:74:13:74:13 | operator= | 0 | const iterator_traits & |
+| standalone_iterators.cpp:74:13:74:13 | operator= | 0 | iterator_traits && |
 | standalone_iterators.cpp:82:7:82:7 | container | 0 | const container & |
 | standalone_iterators.cpp:82:7:82:7 | container | 0 | container && |
 | standalone_iterators.cpp:82:7:82:7 | operator= | 0 | const container & |

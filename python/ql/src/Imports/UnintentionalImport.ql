@@ -13,6 +13,8 @@
  */
 
 import python
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 
 predicate import_star(ImportStar imp, ModuleValue exporter) {
   exporter.importedAs(imp.getImportedModuleName())

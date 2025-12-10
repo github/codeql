@@ -1347,7 +1347,6 @@ module Public {
   }
 }
 
-private import Private
 private import Public
 
 class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {

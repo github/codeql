@@ -1,5 +1,5 @@
 /**
- * @name Using a different parameter name than used in the super-predicate.
+ * @name Using a different parameter name than used in the super-predicate
  * @description Using another parameter can be an indication of copy-pasted code, or a mistake.
  * @kind problem
  * @problem.severity warning

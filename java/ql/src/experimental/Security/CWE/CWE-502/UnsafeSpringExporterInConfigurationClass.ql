@@ -1,5 +1,5 @@
 /**
- * @name Unsafe deserialization with Spring's remote service exporters.
+ * @name Unsafe deserialization with Spring's remote service exporters
  * @description A Spring bean, which is based on RemoteInvocationSerializingExporter,
  *              initializes an endpoint that uses ObjectInputStream to deserialize
  *              incoming data. In the worst case, that may lead to remote code execution.

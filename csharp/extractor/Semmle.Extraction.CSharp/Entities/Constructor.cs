@@ -74,6 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     case SyntaxKind.BaseConstructorInitializer:
                         initializerType = Symbol.ContainingType.BaseType!;
+                        ExtractObjectInitCall(trapFile);
                         break;
                     case SyntaxKind.ThisConstructorInitializer:
                         initializerType = Symbol.ContainingType;
@@ -90,10 +91,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 var primaryInfo = Context.GetSymbolInfo(primaryInitializer);
                 var primarySymbol = primaryInfo.Symbol;
 
+                ExtractObjectInitCall(trapFile);
                 ExtractSourceInitializer(trapFile, primarySymbol?.ContainingType, (IMethodSymbol?)primarySymbol, primaryInitializer.ArgumentList, primaryInitializer.GetLocation());
             }
             else if (Symbol.MethodKind is MethodKind.Constructor)
             {
+                ExtractObjectInitCall(trapFile);
                 var baseType = Symbol.ContainingType.BaseType;
                 if (baseType is null)
                 {
@@ -125,6 +128,27 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 trapFile.expr_call(new Expression(info), baseConstructorTarget);
             }
+        }
+
+        private void ExtractObjectInitCall(TextWriter trapFile)
+        {
+            var target = ObjectInitMethod.Create(Context, ContainingType!);
+
+            var type = Context.Compilation.GetSpecialType(SpecialType.System_Void);
+
+            var info = new ExpressionInfo(Context,
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                Location,
+                Kinds.ExprKind.METHOD_INVOCATION,
+                this,
+                -2,
+                isCompilerGenerated: true,
+                null);
+            var obinitCall = new Expression(info);
+
+            trapFile.expr_call(obinitCall, target);
+
+            Expressions.This.CreateImplicit(Context, Symbol.ContainingType, Location, obinitCall, -1);
         }
 
         private void ExtractSourceInitializer(TextWriter trapFile, ITypeSymbol? type, IMethodSymbol? symbol, ArgumentListSyntax arguments, Microsoft.CodeAnalysis.Location location)

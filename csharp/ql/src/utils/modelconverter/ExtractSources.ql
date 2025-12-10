@@ -1,5 +1,5 @@
 /**
- * @name Extract MaD source model rows.
+ * @name Extract MaD source model rows
  * @description This extracts the Models as data source model rows.
  * @id cs/utils/modelconverter/generate-data-extensions-source
  */

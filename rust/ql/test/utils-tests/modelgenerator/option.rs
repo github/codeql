@@ -325,7 +325,8 @@ impl<T> MyOption<T> {
     }
 
     // summary=<test::option::MyOption>::get_or_insert_with;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated
-    // MISSING: Mutating `self` parameter.
+    // summary=<test::option::MyOption>::get_or_insert_with;Argument[0].ReturnValue;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=<test::option::MyOption>::get_or_insert_with;Argument[0].ReturnValue;ReturnValue.Reference;value;dfc-generated
     pub fn get_or_insert_with<F>(&mut self, f: F) -> &mut T
     where
         F: FnOnce() -> T,

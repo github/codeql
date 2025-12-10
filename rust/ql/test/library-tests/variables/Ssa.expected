@@ -196,6 +196,13 @@ definition
 | main.rs:748:17:750:9 | SSA phi(x) | main.rs:745:13:745:13 | x |
 | main.rs:749:13:749:13 | x | main.rs:745:13:745:13 | x |
 | main.rs:752:5:752:13 | <captured exit> x | main.rs:745:13:745:13 | x |
+| main.rs:759:13:759:13 | x | main.rs:759:13:759:13 | x |
+| main.rs:760:13:760:13 | y | main.rs:760:13:760:13 | y |
+| main.rs:769:13:769:16 | N0ne | main.rs:769:13:769:16 | N0ne |
+| main.rs:776:13:776:22 | test_alias | main.rs:776:13:776:22 | test_alias |
+| main.rs:778:13:778:16 | test | main.rs:778:13:778:16 | test |
+| main.rs:787:13:787:13 | x | main.rs:787:13:787:13 | x |
+| main.rs:789:18:789:18 | x | main.rs:789:18:789:18 | x |
 read
 | main.rs:5:14:5:14 | s | main.rs:5:14:5:14 | s | main.rs:7:20:7:20 | s |
 | main.rs:10:14:10:14 | i | main.rs:10:14:10:14 | i | main.rs:12:20:12:20 | i |
@@ -404,6 +411,14 @@ read
 | main.rs:746:13:746:15 | cap | main.rs:746:13:746:15 | cap | main.rs:752:5:752:7 | cap |
 | main.rs:746:20:746:20 | b | main.rs:746:20:746:20 | b | main.rs:748:20:748:20 | b |
 | main.rs:752:5:752:13 | <captured exit> x | main.rs:745:13:745:13 | x | main.rs:753:15:753:15 | x |
+| main.rs:759:13:759:13 | x | main.rs:759:13:759:13 | x | main.rs:761:19:761:19 | x |
+| main.rs:760:13:760:13 | y | main.rs:760:13:760:13 | y | main.rs:768:15:768:15 | y |
+| main.rs:769:13:769:16 | N0ne | main.rs:769:13:769:16 | N0ne | main.rs:770:17:770:20 | N0ne |
+| main.rs:776:13:776:22 | test_alias | main.rs:776:13:776:22 | test_alias | main.rs:779:13:779:22 | test_alias |
+| main.rs:778:13:778:16 | test | main.rs:778:13:778:16 | test | main.rs:780:9:780:12 | test |
+| main.rs:787:13:787:13 | x | main.rs:787:13:787:13 | x | main.rs:788:15:788:15 | x |
+| main.rs:787:13:787:13 | x | main.rs:787:13:787:13 | x | main.rs:793:15:793:15 | x |
+| main.rs:789:18:789:18 | x | main.rs:789:18:789:18 | x | main.rs:790:20:790:20 | x |
 firstRead
 | main.rs:5:14:5:14 | s | main.rs:5:14:5:14 | s | main.rs:7:20:7:20 | s |
 | main.rs:10:14:10:14 | i | main.rs:10:14:10:14 | i | main.rs:12:20:12:20 | i |
@@ -570,6 +585,13 @@ firstRead
 | main.rs:746:13:746:15 | cap | main.rs:746:13:746:15 | cap | main.rs:752:5:752:7 | cap |
 | main.rs:746:20:746:20 | b | main.rs:746:20:746:20 | b | main.rs:748:20:748:20 | b |
 | main.rs:752:5:752:13 | <captured exit> x | main.rs:745:13:745:13 | x | main.rs:753:15:753:15 | x |
+| main.rs:759:13:759:13 | x | main.rs:759:13:759:13 | x | main.rs:761:19:761:19 | x |
+| main.rs:760:13:760:13 | y | main.rs:760:13:760:13 | y | main.rs:768:15:768:15 | y |
+| main.rs:769:13:769:16 | N0ne | main.rs:769:13:769:16 | N0ne | main.rs:770:17:770:20 | N0ne |
+| main.rs:776:13:776:22 | test_alias | main.rs:776:13:776:22 | test_alias | main.rs:779:13:779:22 | test_alias |
+| main.rs:778:13:778:16 | test | main.rs:778:13:778:16 | test | main.rs:780:9:780:12 | test |
+| main.rs:787:13:787:13 | x | main.rs:787:13:787:13 | x | main.rs:788:15:788:15 | x |
+| main.rs:789:18:789:18 | x | main.rs:789:18:789:18 | x | main.rs:790:20:790:20 | x |
 adjacentReads
 | main.rs:27:5:27:6 | x2 | main.rs:25:13:25:14 | x2 | main.rs:28:15:28:16 | x2 | main.rs:29:10:29:11 | x2 |
 | main.rs:41:9:41:10 | x3 | main.rs:41:9:41:10 | x3 | main.rs:42:15:42:16 | x3 | main.rs:44:9:44:10 | x3 |
@@ -616,6 +638,7 @@ adjacentReads
 | main.rs:676:13:676:13 | a | main.rs:676:13:676:13 | a | main.rs:677:15:677:15 | a | main.rs:678:5:678:5 | a |
 | main.rs:676:13:676:13 | a | main.rs:676:13:676:13 | a | main.rs:678:5:678:5 | a | main.rs:679:15:679:15 | a |
 | main.rs:685:9:685:9 | x | main.rs:685:9:685:9 | x | main.rs:686:20:686:20 | x | main.rs:687:15:687:15 | x |
+| main.rs:787:13:787:13 | x | main.rs:787:13:787:13 | x | main.rs:788:15:788:15 | x | main.rs:793:15:793:15 | x |
 phi
 | main.rs:210:9:210:44 | SSA phi(a3) | main.rs:210:9:210:44 | a3 | main.rs:210:22:210:23 | a3 |
 | main.rs:210:9:210:44 | SSA phi(a3) | main.rs:210:9:210:44 | a3 | main.rs:210:42:210:43 | a3 |
@@ -773,3 +796,8 @@ assigns
 | main.rs:745:13:745:13 | x | main.rs:745:17:745:19 | 100 |
 | main.rs:746:13:746:15 | cap | main.rs:746:19:751:5 | \|...\| ... |
 | main.rs:749:13:749:13 | x | main.rs:749:17:749:19 | 200 |
+| main.rs:759:13:759:13 | x | main.rs:759:17:759:24 | Some(...) |
+| main.rs:760:13:760:13 | y | main.rs:761:13:767:9 | match x { ... } |
+| main.rs:776:13:776:22 | test_alias | main.rs:777:13:777:16 | test |
+| main.rs:778:13:778:16 | test | main.rs:779:13:779:24 | test_alias(...) |
+| main.rs:787:13:787:13 | x | main.rs:787:17:787:23 | Some(...) |

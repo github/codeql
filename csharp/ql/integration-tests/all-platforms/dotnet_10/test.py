@@ -1,3 +1,5 @@
+import pytest
+
 def test1(codeql, csharp):
     codeql.database.create()
 

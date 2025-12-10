@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate isInsideLoop(AstNode node) {
   node.getParentNode() instanceof While

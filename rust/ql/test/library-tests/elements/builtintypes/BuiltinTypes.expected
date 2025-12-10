@@ -1,6 +1,8 @@
 | struct Array |  |
-| struct Ptr |  |
+| struct PtrConst |  |
+| struct PtrMut |  |
 | struct Ref |  |
+| struct RefMut |  |
 | struct Slice |  |
 | struct Tuple0 |  |
 | struct Tuple1 |  |

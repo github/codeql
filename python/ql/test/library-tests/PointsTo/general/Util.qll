@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 string repr(Object o) {
   not o instanceof StringObject and not o = theBoundMethodType() and result = o.toString()

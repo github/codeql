@@ -129,7 +129,7 @@ module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefC
 
 predicate pointerArithOverflow(PointerArithmeticInstruction pai, int delta) {
   pointerArithOverflow0(pai, delta) and
-  PointerArithmeticToDerefFlow::flow(DataFlow::instructionNode(pai), _)
+  PointerArithmeticToDerefFlow::flowFrom(DataFlow::instructionNode(pai))
 }
 
 bindingset[v]

@@ -12,6 +12,7 @@
 
 import python
 import ClassAttributes
+private import LegacyPointsTo
 
 predicate guarded_by_other_attribute(SelfAttributeRead a, CheckClass c) {
   c.sometimesDefines(a.getName()) and

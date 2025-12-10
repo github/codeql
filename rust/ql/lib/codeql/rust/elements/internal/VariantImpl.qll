@@ -36,17 +36,27 @@ module Impl {
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }
 
+    /** Gets the number of fields of this variant. */
+    int getNumberOfFields() {
+      not this.hasFieldList() and
+      result = 0
+      or
+      result = this.getFieldList().(StructFieldList).getNumberOfFields()
+      or
+      result = this.getFieldList().(TupleFieldList).getNumberOfFields()
+    }
+
     /** Holds if this variant uses tuple fields. */
     pragma[nomagic]
     predicate isTuple() { this.getFieldList() instanceof TupleFieldList }
 
-    /**
-     * Holds if this variant uses struct fields.
-     *
-     * Empty variants are considered to use struct fields.
-     */
+    /** Holds if this variant uses struct fields. */
     pragma[nomagic]
-    predicate isStruct() { not this.isTuple() }
+    predicate isStruct() { this.getFieldList() instanceof StructFieldList }
+
+    /** Holds if this variant does not have a field list. */
+    pragma[nomagic]
+    predicate isUnit() { not this.hasFieldList() }
 
     /** Gets the enum that this variant belongs to. */
     Enum getEnum() { this = result.getVariantList().getAVariant() }

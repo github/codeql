@@ -8,7 +8,6 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["<tokio::net::tcp::stream::TcpStream>::peek", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
-      - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
-      - ["<tokio::net::tcp::stream::TcpStream>::try_read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
-      - ["<tokio::net::tcp::stream::TcpStream>::try_read_buf", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["<tokio::net::tcp::stream::TcpStream>::peek", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
+      - ["<tokio::net::tcp::stream::TcpStream>::try_read", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
+      - ["<tokio::net::tcp::stream::TcpStream>::try_read_buf", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]

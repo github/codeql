@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from PropertyObject prop, ClassObject cls
 where cls.declaredAttribute(_) = prop and not cls.failedInference() and not cls.isNewStyle()

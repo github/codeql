@@ -15,8 +15,8 @@ class SourceLocatable extends Locatable {
   SourceLocatable() { this.fromSource() }
 }
 
-query predicate multipleCallTargets(SourceLocatable a) {
-  PathResolutionConsistency::multipleCallTargets(a, _)
+query predicate multipleResolvedTargets(SourceLocatable a) {
+  PathResolutionConsistency::multipleResolvedTargets(a, _)
 }
 
 query predicate multiplePathResolutions(SourceLocatable a) {

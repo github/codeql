@@ -28,12 +28,13 @@ private class SensitiveDataCall extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveDataCall() {
-    exists(CallExprBase call, string name |
+    exists(InvocationExpr call, Addressable target, string name |
       call = this.asExpr() and
+      target = call.getResolvedTarget() and
       name =
         [
-          call.getStaticTarget().(Function).getName().getText(),
-          call.(CallExpr).getVariant().getName().getText(),
+          target.(Function).getName().getText(),
+          target.(Variant).getName().getText(),
         ] and
       HeuristicNames::nameIndicatesSensitiveData(name, classification)
     )

@@ -13,10 +13,14 @@
 
 import python
 import Variables.MonkeyPatched
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 
 /* Local variable part */
 predicate initialized_as_local(PlaceHolder use) {
-  exists(SsaVariable l, Function f | f = use.getScope() and l.getAUse() = use.getAFlowNode() |
+  exists(SsaVariableWithPointsTo l, Function f |
+    f = use.getScope() and l.getAUse() = use.getAFlowNode()
+  |
     l.getVariable() instanceof LocalVariable and
     not l.maybeUndefined()
   )

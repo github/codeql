@@ -9,7 +9,8 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from Module m, int n
-where n = m.getMetrics().getNumberOfLines()
+from ModuleMetrics m, int n
+where n = m.getNumberOfLines()
 select m, n order by n desc

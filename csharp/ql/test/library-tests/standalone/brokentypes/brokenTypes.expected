@@ -1,7 +1,15 @@
 | BrokenTypes.cs:2:14:2:13 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:2:14:2:13 | call to method <object initializer> | Void | VoidType |
+| BrokenTypes.cs:2:14:2:13 | this access |  | UnknownType |
 | BrokenTypes.cs:5:14:5:16 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:5:14:5:16 | call to method <object initializer> | Void | VoidType |
+| BrokenTypes.cs:5:14:5:16 | this access | var | UnknownType |
 | BrokenTypes.cs:7:14:7:14 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:7:14:7:14 | call to method <object initializer> | Void | VoidType |
+| BrokenTypes.cs:7:14:7:14 | this access | C | Class |
 | BrokenTypes.cs:13:14:13:20 | call to constructor Object | object | ObjectType |
+| BrokenTypes.cs:13:14:13:20 | call to method <object initializer> | Void | VoidType |
+| BrokenTypes.cs:13:14:13:20 | this access | Program | Class |
 | BrokenTypes.cs:17:11:17:12 | access to local variable x1 | C | Class |
 | BrokenTypes.cs:17:11:17:22 | C x1 = ... | C | Class |
 | BrokenTypes.cs:17:16:17:22 | object creation of type C | C | Class |

@@ -60,8 +60,13 @@ module SqlInjection {
   }
 
   /**
-   * A barrier for SQL injection vulnerabilities for nodes whose type is a numeric or
-   * boolean type, which is unlikely to expose any vulnerability.
+   * A barrier for SQL injection vulnerabilities for nodes whose type is a numeric
+   * type, which is unlikely to expose any vulnerability.
    */
   private class NumericTypeBarrier extends Barrier instanceof Barriers::NumericTypeBarrier { }
+
+  private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }
+
+  private class FieldlessEnumTypeBarrier extends Barrier instanceof Barriers::FieldlessEnumTypeBarrier
+  { }
 }

@@ -1,0 +1,23 @@
+reverseRead
+| SqlInjection.go:11:3:11:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| SqlInjection.go:11:3:11:17 | call to Query | Origin of readStep is missing a PostUpdateNode. |
+| SqlInjectionGood.go:10:14:10:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| SqlInjectionGood.go:10:14:10:28 | call to Query | Origin of readStep is missing a PostUpdateNode. |
+| issue48.go:17:25:17:27 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| issue48.go:21:3:21:21 | RequestDataFromJson | Origin of readStep is missing a PostUpdateNode. |
+| issue48.go:27:26:27:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| issue48.go:31:3:31:22 | RequestDataFromJson2 | Origin of readStep is missing a PostUpdateNode. |
+| issue48.go:37:24:37:26 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| issue48.go:40:3:40:22 | RequestDataFromJson3 | Origin of readStep is missing a PostUpdateNode. |
+| main.go:15:63:15:63 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:15:63:15:75 | call to Query | Origin of readStep is missing a PostUpdateNode. |
+| main.go:16:63:16:63 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:30:13:30:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:34:3:34:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:40:25:40:27 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:43:3:43:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:49:28:49:30 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:52:3:52:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:58:28:58:30 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:61:4:61:15 | star expression | Origin of readStep is missing a PostUpdateNode. |
+| main.go:68:18:68:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

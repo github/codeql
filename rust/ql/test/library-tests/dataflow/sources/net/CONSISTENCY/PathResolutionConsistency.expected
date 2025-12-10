@@ -1,4 +1,4 @@
-multipleCallTargets
+multipleResolvedTargets
 | test.rs:59:62:59:77 | ...::from(...) |
 | test.rs:66:58:66:73 | ...::from(...) |
 | test.rs:389:30:389:67 | pinned.poll_read(...) |

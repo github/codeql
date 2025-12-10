@@ -1,4 +1,20 @@
-multipleCallTargets
+multipleResolvedTargets
+| test_logging.rs:214:13:214:22 | * ... |
+| test_logging.rs:214:13:214:22 | * ... |
+| test_logging.rs:214:13:214:22 | * ... |
+| test_logging.rs:214:13:214:22 | * ... |
+| test_logging.rs:217:13:217:22 | * ... |
+| test_logging.rs:217:13:217:22 | * ... |
+| test_logging.rs:217:13:217:22 | * ... |
+| test_logging.rs:217:13:217:22 | * ... |
+| test_logging.rs:223:13:223:28 | * ... |
+| test_logging.rs:223:13:223:28 | * ... |
+| test_logging.rs:223:13:223:28 | * ... |
+| test_logging.rs:223:13:223:28 | * ... |
+| test_logging.rs:226:13:226:28 | * ... |
+| test_logging.rs:226:13:226:28 | * ... |
+| test_logging.rs:226:13:226:28 | * ... |
+| test_logging.rs:226:13:226:28 | * ... |
 | test_storage.rs:13:10:13:33 | ...::from(...) |
 | test_storage.rs:17:10:17:35 | ...::from(...) |
 | test_storage.rs:21:10:21:35 | ...::from(...) |

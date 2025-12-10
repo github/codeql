@@ -20,7 +20,7 @@ module FlowStepTest implements TestSig {
   predicate hasActualResult(Location l, string element, string tag, string value) {
     tag = "taintReachesReturn" and
     value = "" and
-    exists(DataFlow::Node source | Flow::flow(source, _) |
+    exists(DataFlow::Node source | Flow::flowFrom(source) |
       l = source.getLocation() and
       element = source.toString()
     )

@@ -6,8 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
+import codeql.rust.elements.ArgList
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `CallExpr` and should not
@@ -15,18 +17,52 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * A function call expression. For example:
+   * NOTE: Consider using `Call` instead, as that excludes call expressions that are
+   * instantiations of tuple structs and tuple variants.
+   *
+   * A call expression. For example:
    * ```rust
    * foo(42);
    * foo::<u32, u64>(42);
    * foo[0](42);
-   * foo(1) = 4;
+   * Option::Some(42); // tuple variant instantiation
    * ```
    * INTERNAL: Do not reference the `Generated::CallExpr` class directly.
    * Use the subclass `CallExpr`, where the following predicates are available.
    */
-  class CallExpr extends Synth::TCallExpr, CallExprBaseImpl::CallExprBase {
+  class CallExpr extends Synth::TCallExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "CallExpr" }
+
+    /**
+     * Gets the argument list of this call expression, if it exists.
+     */
+    ArgList getArgList() {
+      result =
+        Synth::convertArgListFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getArgList())
+    }
+
+    /**
+     * Holds if `getArgList()` exists.
+     */
+    final predicate hasArgList() { exists(this.getArgList()) }
+
+    /**
+     * Gets the `index`th attr of this call expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this call expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this call expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the function of this call expression, if it exists.

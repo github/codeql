@@ -1,24 +1,16 @@
 using System;
 using System.IO;
+using NuGet.Versioning;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal record DotNetVersion : IComparable<DotNetVersion>
     {
         private readonly string dir;
-        private readonly Version version;
-        private readonly Version? preReleaseVersion;
-        private readonly string? preReleaseVersionType;
-        private bool IsPreRelease => preReleaseVersionType is not null && preReleaseVersion is not null;
+        private readonly NuGetVersion version;
 
-        private string FullVersion
-        {
-            get
-            {
-                var preRelease = IsPreRelease ? $"-{preReleaseVersionType}.{preReleaseVersion}" : "";
-                return this.version + preRelease;
-            }
-        }
+        private string FullVersion =>
+            version.ToString();
 
         public string FullPath => Path.Combine(dir, FullVersion);
 
@@ -48,37 +40,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
 
-        public DotNetVersion(string dir, string version, string preReleaseVersionType, string preReleaseVersion)
+        public DotNetVersion(string dir, NuGetVersion version)
         {
             this.dir = dir;
-            this.version = Version.Parse(version);
-            if (!string.IsNullOrEmpty(preReleaseVersion) && !string.IsNullOrEmpty(preReleaseVersionType))
-            {
-                this.preReleaseVersionType = preReleaseVersionType;
-                this.preReleaseVersion = Version.Parse(preReleaseVersion);
-            }
+            this.version = version;
         }
 
-        public int CompareTo(DotNetVersion? other)
-        {
-            var c = version.CompareTo(other?.version);
-            if (c == 0 && IsPreRelease)
-            {
-                if (!other!.IsPreRelease)
-                {
-                    return -1;
-                }
-
-                // Both are pre-release like runtime versions.
-                // The pre-release version types are sorted alphabetically (e.g. alpha, beta, preview, rc)
-                // and the pre-release version types are more important that the pre-release version numbers.
-                return preReleaseVersionType != other!.preReleaseVersionType
-                    ? preReleaseVersionType!.CompareTo(other!.preReleaseVersionType)
-                    : preReleaseVersion!.CompareTo(other!.preReleaseVersion);
-            }
-
-            return c;
-        }
+        public int CompareTo(DotNetVersion? other) =>
+            version.CompareTo(other?.version);
 
         public override string ToString() => FullPath;
     }

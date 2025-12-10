@@ -1,3 +1,4 @@
+| main.rs:2:5:2:12 | ... + ... | {EXTERNAL LOCATION} | fn add |
 | main.rs:13:5:13:13 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:17:13:17:23 | get_data(...) | main.rs:12:1:14:1 | fn get_data |
 | main.rs:18:5:18:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
@@ -59,6 +60,8 @@
 | main.rs:212:13:212:34 | ...::new(...) | main.rs:205:5:208:5 | fn new |
 | main.rs:212:24:212:33 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:214:5:214:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:236:11:236:15 | * ... | {EXTERNAL LOCATION} | fn deref |
+| main.rs:236:11:236:15 | * ... | {EXTERNAL LOCATION} | fn deref |
 | main.rs:242:28:242:36 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:244:13:244:17 | ... + ... | main.rs:220:5:223:5 | fn add |
 | main.rs:245:5:245:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
@@ -75,6 +78,8 @@
 | main.rs:266:5:266:10 | ... *= ... | main.rs:227:5:229:5 | fn mul_assign |
 | main.rs:267:5:267:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:270:28:270:37 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:272:13:272:29 | * ... | {EXTERNAL LOCATION} | fn deref |
+| main.rs:272:13:272:29 | * ... | {EXTERNAL LOCATION} | fn deref |
 | main.rs:272:14:272:29 | ...::deref(...) | main.rs:235:5:237:5 | fn deref |
 | main.rs:273:5:273:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:275:28:275:37 | source(...) | main.rs:1:1:3:1 | fn source |
@@ -101,14 +106,31 @@
 | main.rs:335:5:335:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:337:5:337:62 | ...::block_on(...) | {EXTERNAL LOCATION} | fn block_on |
 | main.rs:337:33:337:61 | test_async_await_async_part(...) | main.rs:321:1:331:1 | fn test_async_await_async_part |
-| main.rs:341:5:341:22 | data_out_of_call(...) | main.rs:16:1:19:1 | fn data_out_of_call |
-| main.rs:342:5:342:35 | data_out_of_call_side_effect1(...) | main.rs:35:1:40:1 | fn data_out_of_call_side_effect1 |
-| main.rs:343:5:343:35 | data_out_of_call_side_effect2(...) | main.rs:42:1:50:1 | fn data_out_of_call_side_effect2 |
-| main.rs:344:5:344:21 | data_in_to_call(...) | main.rs:56:1:59:1 | fn data_in_to_call |
-| main.rs:345:5:345:23 | data_through_call(...) | main.rs:65:1:69:1 | fn data_through_call |
-| main.rs:346:5:346:34 | data_through_nested_function(...) | main.rs:79:1:88:1 | fn data_through_nested_function |
-| main.rs:348:5:348:24 | data_out_of_method(...) | main.rs:136:1:146:1 | fn data_out_of_method |
-| main.rs:349:5:349:28 | data_in_to_method_call(...) | main.rs:153:1:163:1 | fn data_in_to_method_call |
-| main.rs:350:5:350:25 | data_through_method(...) | main.rs:171:1:183:1 | fn data_through_method |
-| main.rs:352:5:352:31 | test_operator_overloading(...) | main.rs:240:1:278:1 | fn test_operator_overloading |
-| main.rs:353:5:353:22 | test_async_await(...) | main.rs:333:1:338:1 | fn test_async_await |
+| main.rs:347:13:347:29 | self.get_number() | main.rs:358:9:360:9 | fn get_number |
+| main.rs:347:13:347:29 | self.get_number() | main.rs:366:9:368:9 | fn get_number |
+| main.rs:347:13:347:33 | ... * ... | {EXTERNAL LOCATION} | fn mul |
+| main.rs:351:13:351:21 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:359:13:359:21 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:371:13:371:22 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:375:13:375:21 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:383:18:383:38 | t.get_double_number() | main.rs:346:9:348:9 | fn get_double_number |
+| main.rs:384:9:384:16 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:387:18:387:50 | ...::get_double_number(...) | main.rs:346:9:348:9 | fn get_double_number |
+| main.rs:388:9:388:16 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:391:18:391:37 | ...::get_default(...) | main.rs:350:9:352:9 | fn get_default |
+| main.rs:392:9:392:16 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:395:18:395:38 | i.get_double_number() | main.rs:370:9:372:9 | fn get_double_number |
+| main.rs:396:9:396:16 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:398:18:398:41 | ...::get_default(...) | main.rs:374:9:376:9 | fn get_default |
+| main.rs:399:9:399:16 | sink(...) | main.rs:5:1:7:1 | fn sink |
+| main.rs:404:5:404:22 | data_out_of_call(...) | main.rs:16:1:19:1 | fn data_out_of_call |
+| main.rs:405:5:405:35 | data_out_of_call_side_effect1(...) | main.rs:35:1:40:1 | fn data_out_of_call_side_effect1 |
+| main.rs:406:5:406:35 | data_out_of_call_side_effect2(...) | main.rs:42:1:50:1 | fn data_out_of_call_side_effect2 |
+| main.rs:407:5:407:21 | data_in_to_call(...) | main.rs:56:1:59:1 | fn data_in_to_call |
+| main.rs:408:5:408:23 | data_through_call(...) | main.rs:65:1:69:1 | fn data_through_call |
+| main.rs:409:5:409:34 | data_through_nested_function(...) | main.rs:79:1:88:1 | fn data_through_nested_function |
+| main.rs:411:5:411:24 | data_out_of_method(...) | main.rs:136:1:146:1 | fn data_out_of_method |
+| main.rs:412:5:412:28 | data_in_to_method_call(...) | main.rs:153:1:163:1 | fn data_in_to_method_call |
+| main.rs:413:5:413:25 | data_through_method(...) | main.rs:171:1:183:1 | fn data_through_method |
+| main.rs:415:5:415:31 | test_operator_overloading(...) | main.rs:240:1:278:1 | fn test_operator_overloading |
+| main.rs:416:5:416:22 | test_async_await(...) | main.rs:333:1:338:1 | fn test_async_await |

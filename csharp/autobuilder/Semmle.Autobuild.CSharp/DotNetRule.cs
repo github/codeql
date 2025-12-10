@@ -48,7 +48,7 @@ namespace Semmle.Autobuild.CSharp
                 {
                     // When a custom .NET CLI has been installed, `dotnet --info` has already been executed
                     // to verify the installation.
-                    var ret = dotNetPath is null ? GetInfoCommand(builder.Actions, dotNetPath, environment) : BuildScript.Success;
+                    var ret = dotNetPath is null ? DotNet.InfoScript(builder.Actions, DotNetCommand(builder.Actions, dotNetPath), environment, builder.Logger) : BuildScript.Success;
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
                     {
                         var cleanCommand = GetCleanCommand(builder.Actions, dotNetPath, environment);
@@ -110,14 +110,6 @@ namespace Semmle.Autobuild.CSharp
 
         private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
             dotNetPath is not null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
-
-        private static BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
-        {
-            var info = new CommandBuilder(actions, null, environment).
-                RunCommand(DotNetCommand(actions, dotNetPath)).
-                Argument("--info");
-            return info.Script;
-        }
 
         private static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {
