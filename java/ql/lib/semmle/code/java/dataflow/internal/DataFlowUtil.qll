@@ -375,6 +375,29 @@ class ContentSet instanceof Content {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `gv`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate valueGuardChecksSig(Guard g, Expr e, GuardValue gv);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuardValue<valueGuardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+  }
+}
+
+/**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
  * The expression `e` is expected to be a syntactic part of the guard `g`.
@@ -390,9 +413,10 @@ signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
-    SsaFlow::asNode(result) =
-      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+  private predicate guardChecks0(Guard g, Expr e, GuardValue gv) {
+    guardChecks(g, e, gv.asBooleanValue())
   }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() { result = BarrierGuardValue<guardChecks0/3>::getABarrierNode() }
 }
