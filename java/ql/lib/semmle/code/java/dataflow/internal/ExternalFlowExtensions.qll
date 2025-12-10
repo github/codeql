@@ -4,6 +4,8 @@
 overlay[local?]
 module;
 
+private import codeql.mad.static.MaD as SharedMaD
+
 /**
  * Holds if a source model exists for the given parameters.
  */
@@ -93,3 +95,7 @@ extensible predicate experimentalSummaryModel(
   string input, string output, string kind, string provenance, string filter,
   QlBuiltins::ExtensionId madId
 );
+
+module Extensions implements SharedMaD::ExtensionsSig {
+  import ExternalFlowExtensions
+}

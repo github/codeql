@@ -98,8 +98,13 @@ private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.MaD as SharedMaD
+
+private module MaD = SharedMaD::ModelsAsData<Extensions>;
+
+import MaD
 
 /**
  * A class for activating additional model rows.
@@ -214,11 +219,12 @@ predicate summaryModel(
  * This predicate should only be used in tests.
  */
 predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  MaD::interpretModelForTest(madId, model)
+  or
   exists(
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance
   |
-    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) or
     Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
       provenance, _, madId)
   |
@@ -231,7 +237,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   |
-    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) or
     Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
       provenance, _, madId)
   |
@@ -244,8 +249,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string output, string kind, string provenance
   |
-    summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) or
     Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
       output, kind, provenance, _, madId)
   |
@@ -253,7 +256,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
       "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
-  //TODO: possibly barrier models?
 }
 
 /** Holds if a neutral model exists for the given parameters. */
