@@ -102,7 +102,47 @@ private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.mad.static.MaD as SharedMaD
 
-private module MaD = SharedMaD::ModelsAsData<Extensions>;
+private module MadInput implements SharedMaD::InputSig {
+  /** Holds if a source model exists for the given parameters. */
+  predicate additionalSourceModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
+            madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+
+  /** Holds if a sink model exists for the given parameters. */
+  predicate additionalSinkModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+
+  /** Holds if a summary model exists for the given parameters. */
+  predicate additionalSummaryModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+            provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+}
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
 import MaD
 
@@ -152,34 +192,6 @@ abstract private class ActiveExperimentalModelsInternal extends string {
 
 deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
-  )
-}
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
-  )
-}
-
 /** Holds if a barrier model exists for the given parameters. */
 predicate barrierModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -196,21 +208,6 @@ predicate barrierGuardModel(
 ) {
   Extensions::barrierGuardModel(package, type, subtypes, name, signature, ext, input,
     acceptingvalue, kind, provenance, madId)
-}
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-          provenance, madId)
-  )
 }
 
 /**

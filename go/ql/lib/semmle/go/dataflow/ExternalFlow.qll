@@ -96,7 +96,9 @@ private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.mad.static.MaD as SharedMaD
 
-private module MaD = SharedMaD::ModelsAsData<Extensions>;
+private module MadInput implements SharedMaD::InputSig { }
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
 import MaD
 

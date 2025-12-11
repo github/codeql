@@ -106,10 +106,6 @@ private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
 private import codeql.mad.static.MaD as SharedMaD
 
-private module MaD = SharedMaD::ModelsAsData<Extensions>;
-
-import MaD
-
 /**
  * A unit class for adding additional source model rows.
  *
@@ -149,91 +145,79 @@ predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 /** Holds if `row` is a summary model. */
 predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, string model
-) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
-  ) and
-  provenance = "manual" and
-  model = ""
-  or
-  exists(QlBuiltins::ExtensionId madId |
-    Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId) and
-    model = "MaD:" + madId.toString()
-  )
+private module MadInput implements SharedMaD::InputSig {
+  /** Holds if a source model exists for the given parameters. */
+  predicate additionalSourceModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(string row |
+      sourceModel(row) and
+      row.splitAt(";", 0) = namespace and
+      row.splitAt(";", 1) = type and
+      row.splitAt(";", 2) = subtypes.toString() and
+      subtypes = [true, false] and
+      row.splitAt(";", 3) = name and
+      row.splitAt(";", 4) = signature and
+      row.splitAt(";", 5) = ext and
+      row.splitAt(";", 6) = output and
+      row.splitAt(";", 7) = kind
+    ) and
+    provenance = "manual" and
+    model = ""
+  }
+
+  /** Holds if a sink model exists for the given parameters. */
+  predicate additionalSinkModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    exists(string row |
+      sinkModel(row) and
+      row.splitAt(";", 0) = namespace and
+      row.splitAt(";", 1) = type and
+      row.splitAt(";", 2) = subtypes.toString() and
+      subtypes = [true, false] and
+      row.splitAt(";", 3) = name and
+      row.splitAt(";", 4) = signature and
+      row.splitAt(";", 5) = ext and
+      row.splitAt(";", 6) = input and
+      row.splitAt(";", 7) = kind
+    ) and
+    provenance = "manual" and
+    model = ""
+  }
+
+  /**
+   * Holds if a summary model exists for the given parameters.
+   *
+   * This predicate does not expand `@` to `*`s.
+   */
+  predicate additionalSummaryModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    exists(string row |
+      summaryModel(row) and
+      row.splitAt(";", 0) = namespace and
+      row.splitAt(";", 1) = type and
+      row.splitAt(";", 2) = subtypes.toString() and
+      subtypes = [true, false] and
+      row.splitAt(";", 3) = name and
+      row.splitAt(";", 4) = signature and
+      row.splitAt(";", 5) = ext and
+      row.splitAt(";", 6) = input and
+      row.splitAt(";", 7) = output and
+      row.splitAt(";", 8) = kind
+    ) and
+    provenance = "manual" and
+    model = ""
+  }
 }
 
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, string model
-) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
-  ) and
-  provenance = "manual" and
-  model = ""
-  or
-  exists(QlBuiltins::ExtensionId madId |
-    Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId) and
-    model = "MaD:" + madId.toString()
-  )
-}
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
-/**
- * Holds if a summary model exists for the given parameters.
- *
- * This predicate does not expand `@` to `*`s.
- */
-private predicate summaryModel0(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, string model
-) {
-  exists(string row |
-    summaryModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind
-  ) and
-  provenance = "manual" and
-  model = ""
-  or
-  exists(QlBuiltins::ExtensionId madId |
-    Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId) and
-    model = "MaD:" + madId.toString()
-  )
-}
+import MaD
 
 /**
  * Holds if `input` is `input0`, but with all occurrences of `@` replaced
@@ -256,7 +240,7 @@ predicate summaryModel(
   string input, string output, string kind, string provenance, string model
 ) {
   exists(string input0, string output0 |
-    summaryModel0(namespace, type, subtypes, name, signature, ext, input0, output0, kind,
+    MaD::summaryModel(namespace, type, subtypes, name, signature, ext, input0, output0, kind,
       provenance, model) and
     expandInputAndOutput(input0, input, output0, output,
       [0 .. Private::getMaxElementContentIndirectionIndex() - 1])

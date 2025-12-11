@@ -88,7 +88,7 @@
  */
 
 import csharp
-import ExternalFlowExtensions
+private import ExternalFlowExtensions::Extensions as Extensions
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
@@ -103,7 +103,9 @@ private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.mad.static.MaD as SharedMaD
 
-private module MaD = SharedMaD::ModelsAsData<Extensions>;
+private module MadInput implements SharedMaD::InputSig { }
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
 import MaD
 
@@ -169,7 +171,7 @@ module ModelValidation {
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
-    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
+    predicate neutralKind(string kind) { Extensions::neutralModel(_, _, _, _, kind, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
@@ -186,7 +188,7 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
       or
-      neutralModel(namespace, type, name, signature, _, provenance) and
+      Extensions::neutralModel(namespace, type, name, signature, _, provenance) and
       ext = "" and
       pred = "neutral"
     |
@@ -229,7 +231,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = true
+  Extensions::neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private predicate elementSpec(
@@ -501,19 +503,17 @@ private predicate interpretSummary(
   UnboundCallable c, string input, string output, string kind, string provenance, string model
 ) {
   exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    QlBuiltins::ExtensionId madId
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
-    model = "MaD:" + madId.toString() and
+      model) and
     c = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
 predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, kind, provenance) and
+    Extensions::neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, true, name, signature, "")
   )
 }

@@ -51,7 +51,39 @@ signature module ExtensionsSig {
   );
 }
 
-module ModelsAsData<ExtensionsSig Extensions> {
+signature module InputSig {
+  /**
+   * Holds if a source model exists for the given parameters.
+   */
+  default predicate additionalSourceModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if a sink model exists for the given parameters.
+   */
+  default predicate additionalSinkModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if a summary model exists for the given parameters.
+   */
+  default predicate additionalSummaryModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    none()
+  }
+}
+
+module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
   /**
    * Holds if the given extension tuple `madId` should pretty-print as `model`.
    *
@@ -122,10 +154,61 @@ module ModelsAsData<ExtensionsSig Extensions> {
     )
   }
 
+  /**
+   * Holds if a source model exists for the given parameters.
+   */
+  predicate sourceModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
+        provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+    or
+    Input::additionalSourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
+      provenance, model)
+  }
+
+  /**
+   * Holds if a sink model exists for the given parameters.
+   */
+  predicate sinkModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind,
+        provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+    or
+    Input::additionalSinkModel(namespace, type, subtypes, name, signature, ext, input, kind,
+      provenance, model)
+  }
+
+  /**
+   * Holds if a summary model exists for the given parameters.
+   */
+  predicate summaryModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+        provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+    or
+    Input::additionalSummaryModel(namespace, type, subtypes, name, signature, ext, input, output,
+      kind, provenance, model)
+  }
+
   private predicate relevantNamespace(string namespace) {
-    Extensions::sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
-    Extensions::sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
-    Extensions::summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
+    sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
+    sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
+    summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
   }
 
   private predicate namespaceLink(string shortns, string longns) {
@@ -157,8 +240,7 @@ module ModelsAsData<ExtensionsSig Extensions> {
         strictcount(string subns, string type, boolean subtypes, string name, string signature,
           string ext, string output, string provenance |
           canonicalNamespaceLink(namespace, subns) and
-          Extensions::sourceModel(subns, type, subtypes, name, signature, ext, output, kind,
-            provenance, _)
+          sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance, _)
         )
       or
       part = "sink" and
@@ -166,8 +248,7 @@ module ModelsAsData<ExtensionsSig Extensions> {
         strictcount(string subns, string type, boolean subtypes, string name, string signature,
           string ext, string input, string provenance |
           canonicalNamespaceLink(namespace, subns) and
-          Extensions::sinkModel(subns, type, subtypes, name, signature, ext, input, kind,
-            provenance, _)
+          sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance, _)
         )
       or
       part = "summary" and
@@ -175,8 +256,8 @@ module ModelsAsData<ExtensionsSig Extensions> {
         strictcount(string subns, string type, boolean subtypes, string name, string signature,
           string ext, string input, string output, string provenance |
           canonicalNamespaceLink(namespace, subns) and
-          Extensions::summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind,
-            provenance, _)
+          summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance,
+            _)
         )
     )
   }
