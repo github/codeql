@@ -86,7 +86,7 @@
  */
 
 private import go
-private import internal.ExternalFlowExtensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl

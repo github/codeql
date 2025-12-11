@@ -101,7 +101,7 @@ private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.ExternalFlowExtensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
 private import codeql.mad.static.MaD as SharedMaD
