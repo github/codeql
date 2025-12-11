@@ -81,6 +81,9 @@ signature module InputSig {
   ) {
     none()
   }
+
+  /** Get the separator used between namespace segments. */
+  default string namespaceSegmentSeparator() { result = "." }
 }
 
 module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
@@ -214,7 +217,7 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
   private predicate namespaceLink(string shortns, string longns) {
     relevantNamespace(shortns) and
     relevantNamespace(longns) and
-    longns.prefix(longns.indexOf(".")) = shortns
+    longns.prefix(longns.indexOf(Input::namespaceSegmentSeparator())) = shortns
   }
 
   private predicate canonicalNamespace(string namespace) {
