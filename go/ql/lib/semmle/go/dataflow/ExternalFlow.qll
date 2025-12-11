@@ -262,6 +262,10 @@ private predicate elementSpec(
   or
   sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
+  barrierModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
@@ -397,6 +401,54 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private boolean convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result = true
+    or
+    av.isFalse() and result = false
+    // Remaining cases are not supported yet, they depend on the shared Guards library.
+    // or
+    // av.isNoException() and result.getDualValue().isThrowsException()
+    // or
+    // av.isZero() and result.asIntValue() = 0
+    // or
+    // av.isNotZero() and result.getDualValue().asIntValue() = 0
+    // or
+    // av.isNull() and result.isNullValue()
+    // or
+    // av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(DataFlow::Node g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue)
+    |
+      g.asExpr().(CallExpr).getAnArgument() = e // TODO: qualifier?
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+  }
 }
 
 import Cached
@@ -412,6 +464,12 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  * model.
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends Public::SummarizedCallable {
