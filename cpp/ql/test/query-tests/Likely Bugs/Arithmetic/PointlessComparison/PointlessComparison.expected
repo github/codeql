@@ -50,4 +50,9 @@
 | PointlessComparison.cpp:43:6:43:29 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |
 | PointlessComparison.cpp:44:6:44:28 | ... >= ... | Comparison is always true because ... >> ... >= 140737488355327.5. |
 | RegressionTests.cpp:57:7:57:22 | ... <= ... | Comparison is always true because * ... <= 4294967295. |
+| RegressionTests.cpp:131:17:131:25 | ... < ... | Comparison is always true because 43 <= ... + .... |
+| RegressionTests.cpp:135:26:135:52 | ... < ... | Comparison is always false because 16 >= ... * .... |
+| RegressionTests.cpp:140:50:140:61 | ... < ... | Comparison is always false because ... * ... >= 84. |
+| RegressionTests.cpp:154:21:154:31 | ... < ... | Comparison is always false because ... - ... >= 34. |
+| RegressionTests.cpp:154:21:154:31 | ... < ... | Comparison is always false because ... - ... >= 38. |
 | Templates.cpp:9:10:9:24 | ... <= ... | Comparison is always true because local <= 32767. |
