@@ -10,6 +10,7 @@
 | main.rs:307:13:307:15 | num | Variable 'num' is not used. |
 | main.rs:342:25:342:25 | y | Variable 'y' is not used. |
 | main.rs:345:28:345:28 | a | Variable 'a' is not used. |
+| main.rs:348:9:348:9 | p | Variable 'p' is not used. |
 | main.rs:366:9:366:13 | right | Variable 'right' is not used. |
 | main.rs:372:9:372:14 | right2 | Variable 'right2' is not used. |
 | main.rs:383:13:383:13 | y | Variable 'y' is not used. |

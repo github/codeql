@@ -345,7 +345,7 @@ fn if_lets_matches() {
         MyPoint { x: 3, y: a } => { // $ Alert[rust/unused-variable]
         }
         MyPoint { x: 4, .. } => {}
-        p => { // $ MISSING: Alert[rust/unused-variable]
+        p => { // $ Alert[rust/unused-variable]
         }
     }
 
