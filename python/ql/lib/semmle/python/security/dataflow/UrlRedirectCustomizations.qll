@@ -7,6 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.frameworks.data.ModelsAsData
@@ -95,6 +96,9 @@ module UrlRedirect {
     }
   }
 
+  /**
+   * A sink for URL redirection defined via models-as-data.
+   */
   private class SinkFromModel extends Sink {
     SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }
@@ -156,4 +160,15 @@ module UrlRedirect {
 
   /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() {
+      this = DataFlow::ExternalBarrierGuard::getAnExternalBarrierNode("url-redirection")
+    }
+
+    override predicate sanitizes(FlowState state) {
+      // sanitize all flow states
+      any()
+    }
+  }
 }

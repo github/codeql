@@ -54,12 +54,24 @@ private class DefaultXssSink extends XssSink {
   }
 }
 
-/** A default sanitizer that considers numeric and boolean typed data safe for writing to output. */
 private class DefaultXssSanitizer extends XssSanitizer {
-  DefaultXssSanitizer() {
+  DefaultXssSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
+}
+
+/** A sanitizer that considers numeric and boolean typed data safe for writing to output. */
+private class PrimitiveSanitizer extends XssSanitizer {
+  PrimitiveSanitizer() {
     this.getType() instanceof NumericType or
-    this.getType() instanceof BooleanType or
-    // Match `org.springframework.web.util.HtmlUtils.htmlEscape` and possibly other methods like it.
+    this.getType() instanceof BooleanType
+  }
+}
+
+/**
+ * A call to `org.springframework.web.util.HtmlUtils.htmlEscape`, or possibly
+ * other methods like it, considered as a sanitizer for XSS.
+ */
+private class HtmlEscapeXssSanitizer extends XssSanitizer {
+  HtmlEscapeXssSanitizer() {
     this.asExpr().(MethodCall).getMethod().getName().regexpMatch("(?i)html_?escape.*")
   }
 }

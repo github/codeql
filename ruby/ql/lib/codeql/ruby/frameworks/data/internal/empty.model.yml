@@ -18,6 +18,16 @@ extensions:
 
   - addsTo:
       pack: codeql/ruby-all
+      extensible: barrierModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: barrierGuardModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
       extensible: neutralModel
     data: []
 
