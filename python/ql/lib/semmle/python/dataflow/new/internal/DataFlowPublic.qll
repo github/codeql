@@ -615,6 +615,12 @@ private module WithParam<ParamSig P> {
   signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch, P param);
 }
 
+/**
+ * Provides a set of barrier nodes for a guard that validates a node.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
 module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check with parameter `param`. */
   ExprNode getABarrierNode(P param) {
@@ -627,10 +633,16 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
   }
 }
 
+/**
+ * Provides a set of barrier nodes for a guard that validates a node as described by an external predicate.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
 module ExternalBarrierGuard {
   private import semmle.python.ApiGraphs
 
-  predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
+  private predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
     exists(API::CallNode call, API::Node parameter |
       parameter = call.getAParameter() and
       parameter = ModelOutput::getABarrierGuardNode(kind, branch)
