@@ -96,6 +96,9 @@ module UrlRedirect {
     }
   }
 
+  /**
+   * A sink for URL redirection defined via models-as-data.
+   */
   private class SinkFromModel extends Sink {
     SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }
