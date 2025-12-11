@@ -86,7 +86,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions as FlowExtensions
+private import internal.ExternalFlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -94,6 +94,13 @@ private import internal.FlowSummaryImpl::Public as Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.MaD as SharedMaD
+
+private module MaD = SharedMaD::ModelsAsData<Extensions>;
+
+import MaD
+
+module FlowExtensions = Extensions;
 
 /** Gets the prefix for a group of packages. */
 private string groupPrefix() { result = "group:" }
@@ -175,46 +182,6 @@ predicate neutralModel(
 ) {
   exists(string packageOrGroup | package = getPackage(packageOrGroup) |
     FlowExtensions::neutralModel(packageOrGroup, type, name, signature, kind, provenance)
-  )
-}
-
-/**
- * Holds if the given extension tuple `madId` should pretty-print as `model`.
- *
- * This predicate should only be used in tests.
- */
-predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    FlowExtensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId) and
-    model =
-      "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + output + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    FlowExtensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind,
-      provenance, madId) and
-    model =
-      "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId) and
-    model =
-      "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
 }
 

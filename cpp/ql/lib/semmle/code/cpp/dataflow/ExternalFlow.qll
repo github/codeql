@@ -101,9 +101,14 @@ private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
+private import codeql.mad.static.MaD as SharedMaD
+
+private module MaD = SharedMaD::ModelsAsData<Extensions>;
+
+import MaD
 
 /**
  * A unit class for adding additional source model rows.
@@ -227,49 +232,6 @@ private predicate summaryModel0(
     Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
       provenance, madId) and
     model = "MaD:" + madId.toString()
-  )
-}
-
-/**
- * Holds if the given extension tuple `madId` should pretty-print as `model`.
- *
- * This predicate should only be used in tests.
- */
-predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId)
-  |
-    model =
-      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
-        + ext + "; " + output + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId)
-  |
-    model =
-      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId)
-  |
-    model =
-      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
-        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
 }
 
