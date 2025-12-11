@@ -75,8 +75,8 @@ csharp73.cs:
 #   22|           -1: [TypeMention] Span<int>
 #   22|             1: [TypeMention] int
 #   22|           0: [LocalVariableAccess] access to local variable t
-#   22|           1: [OperatorCall] call to operator implicit conversion
-#   22|             0: [ArrayCreation] array creation of type Int32[]
+#   22|           1: [CastExpr] (...) ...
+#   22|             1: [ArrayCreation] array creation of type Int32[]
 #   22|               -1: [TypeMention] Int32[]
 #   22|                 1: [TypeMention] int
 #   22|               0: [IntLiteral] 10
