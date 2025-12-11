@@ -281,21 +281,21 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierGuardElement(
-    Element e, string output, Public::AcceptingValue acceptingvalue, string kind,
+    Element e, string input, Public::AcceptingValue acceptingvalue, string kind,
     Public::Provenance provenance, string model
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseBarrier, string originalOutput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseBarrier, string originalInput, QlBuiltins::ExtensionId madId
     |
-      barrierGuardModel(namespace, type, subtypes, name, signature, ext, originalOutput,
+      barrierGuardModel(namespace, type, subtypes, name, signature, ext, originalInput,
         acceptingvalue, kind, provenance, madId) and
       model = "MaD:" + madId.toString() and
       baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
-        e = baseBarrier and output = originalOutput
+        e = baseBarrier and input = originalInput
         or
-        correspondingKotlinParameterDefaultsArgSpec(baseBarrier, e, originalOutput, output)
+        correspondingKotlinParameterDefaultsArgSpec(baseBarrier, e, originalInput, input)
       )
     )
   }
