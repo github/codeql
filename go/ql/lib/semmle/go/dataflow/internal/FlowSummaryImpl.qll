@@ -137,11 +137,9 @@ module SourceSinkInterpretationInput implements
     SourceOrSinkElement e, string output, string kind, Public::Provenance provenance, string model
   ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext,
-      QlBuiltins::ExtensionId madId
+      string package, string type, boolean subtypes, string name, string signature, string ext
     |
-      sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
+      sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, model) and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -154,11 +152,9 @@ module SourceSinkInterpretationInput implements
     SourceOrSinkElement e, string input, string kind, Public::Provenance provenance, string model
   ) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext,
-      QlBuiltins::ExtensionId madId
+      string package, string type, boolean subtypes, string name, string signature, string ext
     |
-      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
+      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, model) and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
@@ -504,12 +500,10 @@ module Private {
       string model
     ) {
       exists(
-        string namespace, string type, boolean subtypes, string name, string signature, string ext,
-        QlBuiltins::ExtensionId madId
+        string namespace, string type, boolean subtypes, string name, string signature, string ext
       |
         summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
-          provenance, madId) and
-        model = "MaD:" + madId.toString() and
+          provenance, model) and
         c.asFunction() =
           interpretElement(namespace, type, subtypes, name, signature, ext).asEntity()
       )

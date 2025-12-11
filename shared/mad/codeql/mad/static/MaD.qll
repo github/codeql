@@ -49,6 +49,11 @@ signature module ExtensionsSig {
   predicate neutralModel(
     string namespace, string type, string name, string signature, string kind, string provenance
   );
+
+  /**
+   * Holds if the package `package` is part of the group `group`.
+   */
+  predicate packageGrouping(string group, string package);
 }
 
 signature module InputSig {
@@ -157,6 +162,27 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     )
   }
 
+  /** Gets the prefix for a group of packages/namespaces. */
+  private string groupPrefix() { result = "group:" }
+
+  /**
+   * Gets a package/namespace represented by `namespaceOrGroup`.
+   *
+   * If `namespaceOrGroup` is of the form `group:<groupname>` then `result` is a
+   * package/namespace in the group `<groupname>`, as determined by `packageGrouping`.
+   * Otherwise, `result` is `namespaceOrGroup`.
+   */
+  bindingset[namespaceOrGroup]
+  private string getNamespace(string namespaceOrGroup) {
+    not exists(string group | namespaceOrGroup = groupPrefix() + group) and
+    result = namespaceOrGroup
+    or
+    exists(string group |
+      Extensions::packageGrouping(group, result) and
+      namespaceOrGroup = groupPrefix() + group
+    )
+  }
+
   /**
    * Holds if a source model exists for the given parameters.
    */
@@ -164,14 +190,16 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance, string model
   ) {
-    exists(QlBuiltins::ExtensionId madId |
-      Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
-        provenance, madId) and
-      model = "MaD:" + madId.toString()
+    exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
+      exists(QlBuiltins::ExtensionId madId |
+        Extensions::sourceModel(namespaceOrGroup, type, subtypes, name, signature, ext, output,
+          kind, provenance, madId) and
+        model = "MaD:" + madId.toString()
+      )
+      or
+      Input::additionalSourceModel(namespaceOrGroup, type, subtypes, name, signature, ext, output,
+        kind, provenance, model)
     )
-    or
-    Input::additionalSourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
-      provenance, model)
   }
 
   /**
@@ -181,14 +209,42 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance, string model
   ) {
-    exists(QlBuiltins::ExtensionId madId |
-      Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind,
+    exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
+      exists(QlBuiltins::ExtensionId madId |
+        Extensions::sinkModel(namespaceOrGroup, type, subtypes, name, signature, ext, input, kind,
+          provenance, madId) and
+        model = "MaD:" + madId.toString()
+      )
+      or
+      Input::additionalSinkModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
+        kind, provenance, model)
+    )
+  }
+
+  /** Holds if a barrier model exists for the given parameters. */
+  predicate barrierModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(string namespaceOrGroup, QlBuiltins::ExtensionId madId |
+      namespace = getNamespace(namespaceOrGroup) and
+      Extensions::barrierModel(namespaceOrGroup, type, subtypes, name, signature, ext, output, kind,
         provenance, madId) and
       model = "MaD:" + madId.toString()
     )
-    or
-    Input::additionalSinkModel(namespace, type, subtypes, name, signature, ext, input, kind,
-      provenance, model)
+  }
+
+  /** Holds if a barrier guard model exists for the given parameters. */
+  predicate barrierGuardModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string acceptingvalue, string kind, string provenance, string model
+  ) {
+    exists(string namespaceOrGroup, QlBuiltins::ExtensionId madId |
+      namespace = getNamespace(namespaceOrGroup) and
+      Extensions::barrierGuardModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
+        acceptingvalue, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
   }
 
   /**
@@ -198,14 +254,27 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string input, string output, string kind, string provenance, string model
   ) {
-    exists(QlBuiltins::ExtensionId madId |
-      Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
-        provenance, madId) and
-      model = "MaD:" + madId.toString()
+    exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
+      exists(QlBuiltins::ExtensionId madId |
+        Extensions::summaryModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
+          output, kind, provenance, madId) and
+        model = "MaD:" + madId.toString()
+      )
+      or
+      Input::additionalSummaryModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
+        output, kind, provenance, model)
     )
-    or
-    Input::additionalSummaryModel(namespace, type, subtypes, name, signature, ext, input, output,
-      kind, provenance, model)
+  }
+
+  /**
+   * Holds if a neutral model exists for the given parameters.
+   */
+  predicate neutralModel(
+    string namespace, string type, string name, string signature, string kind, string provenance
+  ) {
+    exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
+      Extensions::neutralModel(namespaceOrGroup, type, name, signature, kind, provenance)
+    )
   }
 
   private predicate relevantNamespace(string namespace) {

@@ -192,24 +192,6 @@ abstract private class ActiveExperimentalModelsInternal extends string {
 
 deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
 
-/** Holds if a barrier model exists for the given parameters. */
-predicate barrierModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  Extensions::barrierModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
-    madId)
-}
-
-/** Holds if a barrier guard model exists for the given parameters. */
-predicate barrierGuardModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string acceptingvalue, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  Extensions::barrierGuardModel(package, type, subtypes, name, signature, ext, input,
-    acceptingvalue, kind, provenance, madId)
-}
-
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
  *
@@ -254,9 +236,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
         ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
 }
-
-/** Holds if a neutral model exists for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/6;
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
