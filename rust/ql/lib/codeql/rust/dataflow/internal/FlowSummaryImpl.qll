@@ -11,6 +11,20 @@ private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.Ssa
 private import Content
 
+predicate encodeContentTupleField(TupleFieldContent c, string arg) {
+  exists(Addressable a, int pos, string prefix |
+    arg = prefix + "(" + pos + ")" and prefix = a.getCanonicalPath()
+  |
+    c.isStructField(a, pos) or c.isVariantField(a, pos)
+  )
+}
+
+predicate encodeContentStructField(StructFieldContent c, string arg) {
+  exists(Addressable a, string field | arg = a.getCanonicalPath() + "::" + field |
+    c.isStructField(a, field) or c.isVariantField(a, field)
+  )
+}
+
 module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.frameworks.stdlib.Stdlib
 
@@ -58,24 +72,11 @@ module Input implements InputSig<Location, RustDataFlow> {
     exists(Content c | cs = TSingletonContentSet(c) |
       result = "Field" and
       (
-        exists(Addressable a, int pos, string prefix |
-          arg = prefix + "(" + pos + ")" and prefix = a.getCanonicalPath()
-        |
-          c.(TupleFieldContent).isStructField(a, pos)
-          or
-          c.(TupleFieldContent).isVariantField(a, pos)
-        )
+        encodeContentTupleField(c, arg)
         or
-        exists(Addressable a, string field | arg = a.getCanonicalPath() + "::" + field |
-          c.(StructFieldContent).isStructField(a, field)
-          or
-          c.(StructFieldContent).isVariantField(a, field)
-        )
+        encodeContentStructField(c, arg)
         or
-        exists(int pos |
-          c = TTuplePositionContent(pos) and
-          arg = pos.toString()
-        )
+        exists(int pos | c = TTuplePositionContent(pos) and arg = pos.toString())
       )
       or
       result = "Reference" and

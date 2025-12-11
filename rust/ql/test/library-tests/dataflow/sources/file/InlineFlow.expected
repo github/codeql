@@ -41,20 +41,26 @@ models
 edges
 | test.rs:12:13:12:18 | buffer | test.rs:13:14:13:19 | buffer | provenance |  |
 | test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:43 | ...::read [Ok] | provenance | Src:MaD:11  |
+| test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:55 | ...::read(...) | provenance | Src:MaD:12 MaD:12 |
 | test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
 | test.rs:12:31:12:43 | ...::read [Ok] | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | MaD:12 |
+| test.rs:12:31:12:55 | ...::read(...) | test.rs:12:13:12:18 | buffer | provenance |  |
 | test.rs:12:31:12:55 | ...::read(...) [Ok] | test.rs:12:31:12:56 | TryExpr | provenance |  |
 | test.rs:12:31:12:56 | TryExpr | test.rs:12:13:12:18 | buffer | provenance |  |
 | test.rs:17:13:17:18 | buffer | test.rs:18:14:18:19 | buffer | provenance |  |
 | test.rs:17:31:17:38 | ...::read | test.rs:17:31:17:38 | ...::read [Ok] | provenance | Src:MaD:11  |
+| test.rs:17:31:17:38 | ...::read | test.rs:17:31:17:50 | ...::read(...) | provenance | Src:MaD:12 MaD:12 |
 | test.rs:17:31:17:38 | ...::read | test.rs:17:31:17:50 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
 | test.rs:17:31:17:38 | ...::read [Ok] | test.rs:17:31:17:50 | ...::read(...) [Ok] | provenance | MaD:12 |
+| test.rs:17:31:17:50 | ...::read(...) | test.rs:17:13:17:18 | buffer | provenance |  |
 | test.rs:17:31:17:50 | ...::read(...) [Ok] | test.rs:17:31:17:51 | TryExpr | provenance |  |
 | test.rs:17:31:17:51 | TryExpr | test.rs:17:13:17:18 | buffer | provenance |  |
 | test.rs:22:13:22:18 | buffer | test.rs:23:14:23:19 | buffer | provenance |  |
 | test.rs:22:22:22:39 | ...::read_to_string | test.rs:22:22:22:39 | ...::read_to_string [Ok] | provenance | Src:MaD:14  |
+| test.rs:22:22:22:39 | ...::read_to_string | test.rs:22:22:22:51 | ...::read_to_string(...) | provenance | Src:MaD:15 MaD:15 |
 | test.rs:22:22:22:39 | ...::read_to_string | test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | provenance | Src:MaD:14  |
 | test.rs:22:22:22:39 | ...::read_to_string [Ok] | test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | provenance | MaD:15 |
+| test.rs:22:22:22:51 | ...::read_to_string(...) | test.rs:22:13:22:18 | buffer | provenance |  |
 | test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | test.rs:22:22:22:52 | TryExpr | provenance |  |
 | test.rs:22:22:22:52 | TryExpr | test.rs:22:13:22:18 | buffer | provenance |  |
 | test.rs:29:13:29:16 | path | test.rs:30:14:30:17 | path | provenance |  |
@@ -262,19 +268,25 @@ edges
 nodes
 | test.rs:12:13:12:18 | buffer | semmle.label | buffer |
 | test.rs:12:31:12:43 | ...::read | semmle.label | ...::read |
+| test.rs:12:31:12:43 | ...::read | semmle.label | ...::read |
 | test.rs:12:31:12:43 | ...::read [Ok] | semmle.label | ...::read [Ok] |
+| test.rs:12:31:12:55 | ...::read(...) | semmle.label | ...::read(...) |
 | test.rs:12:31:12:55 | ...::read(...) [Ok] | semmle.label | ...::read(...) [Ok] |
 | test.rs:12:31:12:56 | TryExpr | semmle.label | TryExpr |
 | test.rs:13:14:13:19 | buffer | semmle.label | buffer |
 | test.rs:17:13:17:18 | buffer | semmle.label | buffer |
 | test.rs:17:31:17:38 | ...::read | semmle.label | ...::read |
+| test.rs:17:31:17:38 | ...::read | semmle.label | ...::read |
 | test.rs:17:31:17:38 | ...::read [Ok] | semmle.label | ...::read [Ok] |
+| test.rs:17:31:17:50 | ...::read(...) | semmle.label | ...::read(...) |
 | test.rs:17:31:17:50 | ...::read(...) [Ok] | semmle.label | ...::read(...) [Ok] |
 | test.rs:17:31:17:51 | TryExpr | semmle.label | TryExpr |
 | test.rs:18:14:18:19 | buffer | semmle.label | buffer |
 | test.rs:22:13:22:18 | buffer | semmle.label | buffer |
 | test.rs:22:22:22:39 | ...::read_to_string | semmle.label | ...::read_to_string |
+| test.rs:22:22:22:39 | ...::read_to_string | semmle.label | ...::read_to_string |
 | test.rs:22:22:22:39 | ...::read_to_string [Ok] | semmle.label | ...::read_to_string [Ok] |
+| test.rs:22:22:22:51 | ...::read_to_string(...) | semmle.label | ...::read_to_string(...) |
 | test.rs:22:22:22:51 | ...::read_to_string(...) [Ok] | semmle.label | ...::read_to_string(...) [Ok] |
 | test.rs:22:22:22:52 | TryExpr | semmle.label | TryExpr |
 | test.rs:23:14:23:19 | buffer | semmle.label | buffer |
@@ -503,7 +515,10 @@ subpaths
 testFailures
 #select
 | test.rs:13:14:13:19 | buffer | test.rs:12:31:12:43 | ...::read | test.rs:13:14:13:19 | buffer | $@ | test.rs:12:31:12:43 | ...::read | ...::read |
+| test.rs:13:14:13:19 | buffer | test.rs:12:31:12:43 | ...::read | test.rs:13:14:13:19 | buffer | $@ | test.rs:12:31:12:43 | ...::read | ...::read |
 | test.rs:18:14:18:19 | buffer | test.rs:17:31:17:38 | ...::read | test.rs:18:14:18:19 | buffer | $@ | test.rs:17:31:17:38 | ...::read | ...::read |
+| test.rs:18:14:18:19 | buffer | test.rs:17:31:17:38 | ...::read | test.rs:18:14:18:19 | buffer | $@ | test.rs:17:31:17:38 | ...::read | ...::read |
+| test.rs:23:14:23:19 | buffer | test.rs:22:22:22:39 | ...::read_to_string | test.rs:23:14:23:19 | buffer | $@ | test.rs:22:22:22:39 | ...::read_to_string | ...::read_to_string |
 | test.rs:23:14:23:19 | buffer | test.rs:22:22:22:39 | ...::read_to_string | test.rs:23:14:23:19 | buffer | $@ | test.rs:22:22:22:39 | ...::read_to_string | ...::read_to_string |
 | test.rs:30:14:30:25 | path.clone() | test.rs:29:22:29:25 | path | test.rs:30:14:30:25 | path.clone() | $@ | test.rs:29:22:29:25 | path | path |
 | test.rs:31:14:31:35 | ... .as_path() | test.rs:29:22:29:25 | path | test.rs:31:14:31:35 | ... .as_path() | $@ | test.rs:29:22:29:25 | path | path |

@@ -185,10 +185,13 @@ edges
 | main.rs:306:30:306:56 | ...::take_second(...) [MyInt] | main.rs:306:9:306:26 | MyInt {...} [MyInt] | provenance |  |
 | main.rs:306:55:306:55 | b [MyInt] | main.rs:293:26:293:37 | ...: MyInt [MyInt] | provenance |  |
 | main.rs:306:55:306:55 | b [MyInt] | main.rs:306:30:306:56 | ...::take_second(...) [MyInt] | provenance |  |
+| main.rs:315:32:319:1 | { ... } | main.rs:322:13:322:26 | async_source(...) | provenance |  |
 | main.rs:315:32:319:1 | { ... } | main.rs:334:41:334:54 | async_source(...) | provenance |  |
 | main.rs:316:9:316:9 | a | main.rs:315:32:319:1 | { ... } | provenance |  |
 | main.rs:316:9:316:9 | a | main.rs:317:10:317:10 | a | provenance |  |
 | main.rs:316:13:316:21 | source(...) | main.rs:316:9:316:9 | a | provenance |  |
+| main.rs:322:9:322:9 | a | main.rs:323:10:323:10 | a | provenance |  |
+| main.rs:322:13:322:26 | async_source(...) | main.rs:322:9:322:9 | a | provenance |  |
 | main.rs:326:13:326:13 | c | main.rs:327:14:327:14 | c | provenance |  |
 | main.rs:326:17:326:25 | source(...) | main.rs:326:13:326:13 | c | provenance |  |
 | main.rs:334:9:334:9 | a | main.rs:335:10:335:10 | a | provenance |  |
@@ -419,6 +422,9 @@ nodes
 | main.rs:316:9:316:9 | a | semmle.label | a |
 | main.rs:316:13:316:21 | source(...) | semmle.label | source(...) |
 | main.rs:317:10:317:10 | a | semmle.label | a |
+| main.rs:322:9:322:9 | a | semmle.label | a |
+| main.rs:322:13:322:26 | async_source(...) | semmle.label | async_source(...) |
+| main.rs:323:10:323:10 | a | semmle.label | a |
 | main.rs:326:13:326:13 | c | semmle.label | c |
 | main.rs:326:17:326:25 | source(...) | semmle.label | source(...) |
 | main.rs:327:14:327:14 | c | semmle.label | c |
@@ -503,6 +509,7 @@ testFailures
 | main.rs:302:10:302:10 | c | main.rs:299:28:299:36 | source(...) | main.rs:302:10:302:10 | c | $@ | main.rs:299:28:299:36 | source(...) | source(...) |
 | main.rs:307:10:307:10 | c | main.rs:305:28:305:37 | source(...) | main.rs:307:10:307:10 | c | $@ | main.rs:305:28:305:37 | source(...) | source(...) |
 | main.rs:317:10:317:10 | a | main.rs:316:13:316:21 | source(...) | main.rs:317:10:317:10 | a | $@ | main.rs:316:13:316:21 | source(...) | source(...) |
+| main.rs:323:10:323:10 | a | main.rs:316:13:316:21 | source(...) | main.rs:323:10:323:10 | a | $@ | main.rs:316:13:316:21 | source(...) | source(...) |
 | main.rs:327:14:327:14 | c | main.rs:326:17:326:25 | source(...) | main.rs:327:14:327:14 | c | $@ | main.rs:326:17:326:25 | source(...) | source(...) |
 | main.rs:335:10:335:10 | a | main.rs:316:13:316:21 | source(...) | main.rs:335:10:335:10 | a | $@ | main.rs:316:13:316:21 | source(...) | source(...) |
 | main.rs:384:14:384:15 | n1 | main.rs:359:13:359:21 | source(...) | main.rs:384:14:384:15 | n1 | $@ | main.rs:359:13:359:21 | source(...) | source(...) |
