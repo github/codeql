@@ -600,12 +600,49 @@ signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean br
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
+    result = ParameterizedBarrierGuard<Unit, extendedGuardChecks/4>::getABarrierNode(_)
+  }
+
+  private predicate extendedGuardChecks(GuardNode g, ControlFlowNode node, boolean branch, Unit u) {
+    guardChecks(g, node, branch)
+  }
+}
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch, P param);
+}
+
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check with parameter `param`. */
+  ExprNode getABarrierNode(P param) {
     exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
       AdjacentUses::useOfDef(def, node) and
-      guardChecks(g, node, branch) and
+      guardChecks(g, node, branch, param) and
       AdjacentUses::useOfDef(def, result.asCfgNode()) and
       g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
+  }
+}
+
+module ExternalBarrierGuard {
+  private import semmle.python.ApiGraphs
+
+  predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
+    exists(API::CallNode call, API::Node parameter |
+      parameter = call.getAParameter() and
+      parameter = ModelOutput::getABarrierGuardNode(kind, branch)
+    |
+      g = call.asCfgNode() and
+      node = parameter.asSink().asCfgNode()
+    )
+  }
+
+  /** Gets a node that is an external barrier of the given kind. */
+  ExprNode getAnExternalBarrierNode(string kind) {
+    result = ParameterizedBarrierGuard<string, guardCheck/4>::getABarrierNode(kind)
   }
 }
 
