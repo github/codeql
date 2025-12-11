@@ -85,6 +85,7 @@
 | [...]/csharp/tools/[...]/System.IO.Pipes.dll |
 | [...]/csharp/tools/[...]/System.IO.UnmanagedMemoryStream.dll |
 | [...]/csharp/tools/[...]/System.IO.dll |
+| [...]/csharp/tools/[...]/System.Linq.AsyncEnumerable.dll |
 | [...]/csharp/tools/[...]/System.Linq.Expressions.dll |
 | [...]/csharp/tools/[...]/System.Linq.Parallel.dll |
 | [...]/csharp/tools/[...]/System.Linq.Queryable.dll |
@@ -101,6 +102,7 @@
 | [...]/csharp/tools/[...]/System.Net.Quic.dll |
 | [...]/csharp/tools/[...]/System.Net.Requests.dll |
 | [...]/csharp/tools/[...]/System.Net.Security.dll |
+| [...]/csharp/tools/[...]/System.Net.ServerSentEvents.dll |
 | [...]/csharp/tools/[...]/System.Net.ServicePoint.dll |
 | [...]/csharp/tools/[...]/System.Net.Sockets.dll |
 | [...]/csharp/tools/[...]/System.Net.WebClient.dll |
@@ -169,6 +171,7 @@
 | [...]/csharp/tools/[...]/System.Text.Encodings.Web.dll |
 | [...]/csharp/tools/[...]/System.Text.Json.dll |
 | [...]/csharp/tools/[...]/System.Text.RegularExpressions.dll |
+| [...]/csharp/tools/[...]/System.Threading.AccessControl.dll |
 | [...]/csharp/tools/[...]/System.Threading.Channels.dll |
 | [...]/csharp/tools/[...]/System.Threading.Overlapped.dll |
 | [...]/csharp/tools/[...]/System.Threading.Tasks.Dataflow.dll |

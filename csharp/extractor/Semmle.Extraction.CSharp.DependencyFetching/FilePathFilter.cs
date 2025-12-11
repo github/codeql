@@ -55,12 +55,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 else
                 {
-                    logger.LogInfo($"Invalid filter: {filter}");
+                    logger.LogWarning($"Invalid filter: {filter}");
                     continue;
                 }
 
                 var regex = new FilePattern(filterText).RegexPattern;
-                logger.LogInfo($"Filtering {(include ? "in" : "out")} files matching '{regex}'. Original glob filter: '{filter}'");
+                logger.LogDebug($"Filtering {(include ? "in" : "out")} files matching '{regex}'. Original glob filter: '{filter}'");
                 pathFilters.Add(new PathFilter(new Regex(regex, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), include));
             }
 
@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 if (!include)
                 {
-                    logger.LogInfo($"Excluding '{f.FileInfo.FullName}'");
+                    logger.LogDebug($"Excluding '{f.FileInfo.FullName}'");
                 }
 
                 return include;
