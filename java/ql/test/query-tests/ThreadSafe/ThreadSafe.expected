@@ -43,3 +43,4 @@
 | examples/Test.java:60:5:60:10 | this.y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/Test.java:60:5:60:10 | this.y | this expression |
 | examples/Test.java:74:5:74:10 | this.y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/Test.java:74:5:74:10 | this.y | this expression |
 | examples/Test.java:74:14:74:14 | y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/Test.java:74:14:74:14 | y | this expression |
+| examples/ThreadSafeInitializers.java:45:9:45:14 | this.y | This field access (publicly accessible via $@) is not protected by any monitor, but the class is annotated as @ThreadSafe. | examples/ThreadSafeInitializers.java:45:9:45:14 | this.y | this expression |
