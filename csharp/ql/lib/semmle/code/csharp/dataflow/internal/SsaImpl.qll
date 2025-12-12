@@ -5,9 +5,9 @@
 import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
-private import semmle.code.csharp.controlflow.internal.PreSsa
 private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
   class SourceVariable = Ssa::SourceVariable;
@@ -783,7 +783,7 @@ cached
 private module Cached {
   cached
   newtype TSourceVariable =
-    TLocalVar(Callable c, PreSsa::SimpleLocalScopeVariable v) {
+    TLocalVar(Callable c, BaseSsa::SimpleLocalScopeVariable v) {
       c = v.getCallable()
       or
       // Local scope variables can be captured

@@ -1,9 +1,9 @@
 import csharp
-private import semmle.code.csharp.controlflow.internal.PreSsa
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" use-use implementation. */
 predicate useReaches(
-  LocalScopeVariableRead read, PreSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
+  LocalScopeVariableRead read, BaseSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
 ) {
   read.getTarget() = v and cfn = read.getAControlFlowNode().getASuccessor()
   or
