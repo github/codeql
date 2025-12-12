@@ -235,6 +235,19 @@ module SourceSinkInterpretationInput implements
     )
   }
 
+  predicate barrierElement(
+    Element n, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
+  predicate barrierGuardElement(
+    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
   class SourceOrSinkElement = Element;
 
   private newtype TInterpretNode =
