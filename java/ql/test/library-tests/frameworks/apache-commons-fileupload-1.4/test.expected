@@ -1,0 +1,45 @@
+models
+| 1 | Summary: org.apache.commons.fileupload.util; Streams; true; asString; (InputStream); ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: org.apache.commons.fileupload.util; Streams; true; asString; (InputStream,String); ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: org.apache.commons.fileupload.util; Streams; true; copy; (InputStream,OutputStream,boolean); ; Argument[0]; Argument[1]; taint; manual |
+| 4 | Summary: org.apache.commons.fileupload.util; Streams; true; copy; (InputStream,OutputStream,boolean,byte[]); ; Argument[0]; Argument[1]; taint; manual |
+edges
+| Test.java:21:30:21:50 | (...)... : InputStream | Test.java:30:31:30:32 | in : InputStream | provenance |  |
+| Test.java:21:43:21:50 | source(...) : Object | Test.java:21:30:21:50 | (...)... : InputStream | provenance |  |
+| Test.java:24:22:24:42 | (...)... : InputStream | Test.java:33:32:33:34 | in2 : InputStream | provenance |  |
+| Test.java:24:35:24:42 | source(...) : Object | Test.java:24:22:24:42 | (...)... : InputStream | provenance |  |
+| Test.java:30:31:30:32 | in : InputStream | Test.java:30:35:30:36 | os [post update] : ByteArrayOutputStream | provenance | MaD:4 |
+| Test.java:30:35:30:36 | os [post update] : ByteArrayOutputStream | Test.java:31:9:31:10 | os | provenance |  |
+| Test.java:33:32:33:34 | in2 : InputStream | Test.java:33:37:33:39 | os2 [post update] : ByteArrayOutputStream | provenance | MaD:3 |
+| Test.java:33:37:33:39 | os2 [post update] : ByteArrayOutputStream | Test.java:34:9:34:11 | os2 | provenance |  |
+| Test.java:42:30:42:50 | (...)... : InputStream | Test.java:44:37:44:38 | in : InputStream | provenance |  |
+| Test.java:42:43:42:50 | source(...) : Object | Test.java:42:30:42:50 | (...)... : InputStream | provenance |  |
+| Test.java:44:20:44:39 | asString(...) : String | Test.java:45:9:45:14 | result | provenance |  |
+| Test.java:44:37:44:38 | in : InputStream | Test.java:44:20:44:39 | asString(...) : String | provenance | MaD:1 |
+| Test.java:47:31:47:51 | (...)... : InputStream | Test.java:49:47:49:49 | in1 : InputStream | provenance |  |
+| Test.java:47:44:47:51 | source(...) : Object | Test.java:47:31:47:51 | (...)... : InputStream | provenance |  |
+| Test.java:49:30:49:58 | asString(...) : String | Test.java:50:18:50:24 | result1 | provenance |  |
+| Test.java:49:47:49:49 | in1 : InputStream | Test.java:49:30:49:58 | asString(...) : String | provenance | MaD:2 |
+nodes
+| Test.java:21:30:21:50 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:21:43:21:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:24:22:24:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:24:35:24:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:30:31:30:32 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:30:35:30:36 | os [post update] : ByteArrayOutputStream | semmle.label | os [post update] : ByteArrayOutputStream |
+| Test.java:31:9:31:10 | os | semmle.label | os |
+| Test.java:33:32:33:34 | in2 : InputStream | semmle.label | in2 : InputStream |
+| Test.java:33:37:33:39 | os2 [post update] : ByteArrayOutputStream | semmle.label | os2 [post update] : ByteArrayOutputStream |
+| Test.java:34:9:34:11 | os2 | semmle.label | os2 |
+| Test.java:42:30:42:50 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:42:43:42:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:44:20:44:39 | asString(...) : String | semmle.label | asString(...) : String |
+| Test.java:44:37:44:38 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:45:9:45:14 | result | semmle.label | result |
+| Test.java:47:31:47:51 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:47:44:47:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:49:30:49:58 | asString(...) : String | semmle.label | asString(...) : String |
+| Test.java:49:47:49:49 | in1 : InputStream | semmle.label | in1 : InputStream |
+| Test.java:50:18:50:24 | result1 | semmle.label | result1 |
+subpaths
+testFailures
