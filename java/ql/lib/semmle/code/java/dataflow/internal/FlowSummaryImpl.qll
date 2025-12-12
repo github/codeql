@@ -228,11 +228,10 @@ module SourceSinkInterpretationInput implements
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSource, string originalOutput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseSource, string originalOutput
     |
       sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
-        madId) and
-      model = "MaD:" + madId.toString() and
+        model) and
       baseSource = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSource and output = originalOutput
@@ -247,11 +246,10 @@ module SourceSinkInterpretationInput implements
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSink, string originalInput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseSink, string originalInput
     |
       sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance,
-        madId) and
-      model = "MaD:" + madId.toString() and
+        model) and
       baseSink = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSink and originalInput = input
@@ -266,11 +264,10 @@ module SourceSinkInterpretationInput implements
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseBarrier, string originalOutput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseBarrier, string originalOutput
     |
       barrierModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind,
-        provenance, madId) and
-      model = "MaD:" + madId.toString() and
+        provenance, model) and
       baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseBarrier and output = originalOutput
@@ -286,11 +283,10 @@ module SourceSinkInterpretationInput implements
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseBarrier, string originalInput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseBarrier, string originalInput
     |
       barrierGuardModel(namespace, type, subtypes, name, signature, ext, originalInput,
-        acceptingvalue, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
+        acceptingvalue, kind, provenance, model) and
       baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseBarrier and input = originalInput
@@ -384,12 +380,10 @@ module Private {
     ) {
       exists(
         string namespace, string type, boolean subtypes, string name, string signature, string ext,
-        string originalInput, string originalOutput, Callable baseCallable,
-        QlBuiltins::ExtensionId madId
+        string originalInput, string originalOutput, Callable baseCallable
       |
         summaryModel(namespace, type, subtypes, name, signature, ext, originalInput, originalOutput,
-          kind, provenance, madId) and
-        model = "MaD:" + madId.toString() and
+          kind, provenance, model) and
         baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext, isExact) and
         (
           c.asCallable() = baseCallable and input = originalInput and output = originalOutput

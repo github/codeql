@@ -86,7 +86,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions as FlowExtensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -94,129 +94,18 @@ private import internal.FlowSummaryImpl::Public as Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.MaD as SharedMaD
+
+private module MadInput implements SharedMaD::InputSig { }
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
+
+import MaD
+
+module FlowExtensions = Extensions;
 
 /** Gets the prefix for a group of packages. */
 private string groupPrefix() { result = "group:" }
-
-/**
- * Gets a package represented by `packageOrGroup`.
- *
- * If `packageOrGroup` is of the form `group:<groupname>` then `result` is a
- * package in the group `<groupname>`, as determined by `packageGrouping`.
- * Otherwise, `result` is `packageOrGroup`.
- */
-bindingset[packageOrGroup]
-private string getPackage(string packageOrGroup) {
-  not exists(string group | packageOrGroup = groupPrefix() + group) and result = packageOrGroup
-  or
-  exists(string group |
-    FlowExtensions::packageGrouping(group, result) and
-    packageOrGroup = groupPrefix() + group
-  )
-}
-
-/**
- * Holds if a source model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate sourceModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  exists(string packageOrGroup |
-    package = getPackage(packageOrGroup) and
-    FlowExtensions::sourceModel(packageOrGroup, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId)
-  )
-}
-
-/**
- * Holds if a sink model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate sinkModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
-    FlowExtensions::sinkModel(packageOrGroup, type, subtypes, name, signature, ext, input, kind,
-      provenance, madId)
-  )
-}
-
-/**
- * Holds if a summary model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
-    FlowExtensions::summaryModel(packageOrGroup, type, subtypes, name, signature, ext, input,
-      output, kind, provenance, madId)
-  )
-}
-
-/**
- * Holds if a neutral model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate neutralModel(
-  string package, string type, string name, string signature, string kind, string provenance
-) {
-  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
-    FlowExtensions::neutralModel(packageOrGroup, type, name, signature, kind, provenance)
-  )
-}
-
-/**
- * Holds if the given extension tuple `madId` should pretty-print as `model`.
- *
- * This predicate should only be used in tests.
- */
-predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    FlowExtensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId) and
-    model =
-      "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + output + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    FlowExtensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind,
-      provenance, madId) and
-    model =
-      "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId) and
-    model =
-      "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
-  )
-}
 
 bindingset[p]
 private string cleanPackage(string p) {
@@ -431,6 +320,10 @@ private predicate elementSpec(
   or
   sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
+  barrierModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
@@ -566,6 +459,54 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private boolean convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result = true
+    or
+    av.isFalse() and result = false
+    // Remaining cases are not supported yet, they depend on the shared Guards library.
+    // or
+    // av.isNoException() and result.getDualValue().isThrowsException()
+    // or
+    // av.isZero() and result.asIntValue() = 0
+    // or
+    // av.isNotZero() and result.getDualValue().asIntValue() = 0
+    // or
+    // av.isNull() and result.isNullValue()
+    // or
+    // av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(DataFlow::Node g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue)
+    |
+      g.asExpr().(CallExpr).getAnArgument() = e // TODO: qualifier?
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+  }
 }
 
 import Cached
@@ -581,6 +522,12 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  * model.
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends Public::SummarizedCallable {
