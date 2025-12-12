@@ -1,6 +1,31 @@
+# github.com/andybalholm/brotli v1.0.0
+github.com/andybalholm/brotli
 # github.com/gofiber/fiber v1.14.6
 ## explicit
 github.com/gofiber/fiber
-# github.com/gofiber/utils v0.0.10
+# github.com/gofiber/utils v1.2.0
 ## explicit
 github.com/gofiber/utils
+# github.com/gorilla/schema v1.1.0
+github.com/gorilla/schema
+# github.com/klauspost/compress v1.10.7
+github.com/klauspost/compress/flate
+github.com/klauspost/compress/gzip
+github.com/klauspost/compress/zlib
+# github.com/mattn/go-colorable v0.1.7
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.12
+github.com/mattn/go-isatty
+# github.com/valyala/bytebufferpool v1.0.0
+github.com/valyala/bytebufferpool
+# github.com/valyala/fasthttp v1.16.0
+github.com/valyala/fasthttp
+github.com/valyala/fasthttp/fasthttputil
+github.com/valyala/fasthttp/reuseport
+github.com/valyala/fasthttp/stackless
+# github.com/valyala/tcplisten v0.0.0-20161114210144-ceec8f93295a
+github.com/valyala/tcplisten
+# golang.org/x/sys v0.0.0-20200602225109-6fdc65e7d980
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+golang.org/x/sys/windows
