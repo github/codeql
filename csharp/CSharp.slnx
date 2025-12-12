@@ -1,7 +1,11 @@
 <Solution>
-  <Project Path="autobuilder/Semmle.Autobuild.Cpp.Tests/Semmle.Autobuild.Cpp.Tests.csproj" />
+  <Project Path="autobuilder/Semmle.Autobuild.Cpp.Tests/Semmle.Autobuild.Cpp.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
   <Project Path="autobuilder/Semmle.Autobuild.Cpp/Semmle.Autobuild.Cpp.csproj" />
-  <Project Path="autobuilder/Semmle.Autobuild.CSharp.Tests/Semmle.Autobuild.CSharp.Tests.csproj" />
+  <Project Path="autobuilder/Semmle.Autobuild.CSharp.Tests/Semmle.Autobuild.CSharp.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
   <Project Path="autobuilder/Semmle.Autobuild.CSharp/Semmle.Autobuild.CSharp.csproj" />
   <Project Path="autobuilder/Semmle.Autobuild.Shared/Semmle.Autobuild.Shared.csproj" />
   <Project Path="extractor/Semmle.Extraction.CSharp.DependencyFetching/Semmle.Extraction.CSharp.DependencyFetching.csproj" />
