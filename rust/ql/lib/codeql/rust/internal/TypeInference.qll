@@ -1,6 +1,7 @@
 /** Provides functionality for inferring types. */
 
 private import codeql.util.Boolean
+private import codeql.util.Option
 private import rust
 private import PathResolution
 private import Type
@@ -234,6 +235,110 @@ private class NonMethodFunction extends Function {
   NonMethodFunction() { not this.hasSelfParam() }
 }
 
+private module ImplOrTraitItemNodeOption = Option<ImplOrTraitItemNode>;
+
+private class ImplOrTraitItemNodeOption = ImplOrTraitItemNodeOption::Option;
+
+private class FunctionDeclaration extends Function {
+  /** Holds if this function is associated with `i`. */
+  predicate isAssoc(ImplOrTraitItemNode i) { this = i.getASuccessor(_) }
+
+  /** Holds if this is a free function. */
+  predicate isFree() { not this = any(ImplOrTraitItemNode i).getAnAssocItem() }
+
+  /** Holds if this function is valid for `i`. */
+  predicate isDeclaration(ImplOrTraitItemNodeOption i) {
+    i.isNone() and
+    this.isFree()
+    or
+    this.isAssoc(i.asSome())
+  }
+
+  /**
+   * Holds if this function is valid for `i`. If `i` is a trait or `impl` block then
+   * this function must be declared directly inside `i`.
+   */
+  predicate isDeclarationStrict(ImplOrTraitItemNodeOption i) {
+    i.isNone() and
+    this.isFree()
+    or
+    this = i.asSome().getAnAssocItem()
+  }
+
+  TypeParameter getTypeParameter(ImplOrTraitItemNodeOption i, TypeParameterPosition ppos) {
+    this.isDeclaration(i) and
+    (
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+      or
+      typeParamMatchPosition(i.asSome().getTypeParam(_), result, ppos)
+      or
+      ppos.isImplicit() and result = TSelfTypeParameter(i.asSome())
+      or
+      ppos.isImplicit() and
+      result.(AssociatedTypeTypeParameter).getTrait() = i.asSome()
+      or
+      ppos.isImplicit() and
+      this = result.(ImplTraitTypeTypeParameter).getFunction()
+    )
+  }
+
+  pragma[nomagic]
+  Type getParameterType(ImplOrTraitItemNodeOption i, FunctionPosition pos, TypePath path) {
+    this.isDeclaration(i) and
+    (
+      not pos.isReturn() and
+      result = getAssocFunctionTypeAt(this, i.asSome(), pos, path)
+      or
+      i.isNone() and
+      exists(Param p |
+        p = this.getParam(pos.asPosition()) and
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
+      )
+    )
+  }
+
+  private Type resolveRetType(ImplOrTraitItemNodeOption i, TypePath path) {
+    this.isDeclaration(i) and
+    (
+      exists(FunctionPosition pos |
+        result = getAssocFunctionTypeAt(this, i.asSome(), pos, path) and
+        pos.isReturn()
+      )
+      or
+      i.isNone() and
+      result = getReturnTypeMention(this).resolveTypeAt(path)
+    )
+  }
+
+  Type getReturnType(ImplOrTraitItemNodeOption i, TypePath path) {
+    if this.isAsync()
+    then
+      this.isDeclaration(i) and
+      path.isEmpty() and
+      result = getFutureTraitType()
+      or
+      exists(TypePath suffix |
+        result = this.resolveRetType(i, suffix) and
+        path = TypePath::cons(getDynFutureOutputTypeParameter(), suffix)
+      )
+    else result = this.resolveRetType(i, path)
+  }
+
+  Type getDeclaredType(ImplOrTraitItemNodeOption i, FunctionPosition pos, TypePath path) {
+    result = this.getParameterType(i, pos, path)
+    or
+    pos.isReturn() and
+    result = this.getReturnType(i, path)
+  }
+
+  string toStringExt(ImplOrTraitItemNode i) {
+    if this = i.getAnAssocItem()
+    then result = this.toString()
+    else
+      result = this + " [" + [i.(Impl).getSelfTy().toString(), i.(Trait).getName().toString()] + "]"
+  }
+}
+
 pragma[nomagic]
 private TypeMention getCallExprTypeMentionArgument(CallExpr ce, TypeArgumentPosition apos) {
   exists(Path p, int i | p = CallExprImpl::getFunctionPath(ce) |
@@ -308,13 +413,12 @@ module CertainTypeInference {
   }
 
   pragma[nomagic]
-  private Type getCallExprType(CallExpr ce, Path p, Function f, TypePath tp) {
-    callResolvesTo(ce, p, f) and
-    result =
-      [
-        f.(MethodCallMatchingInput::Declaration).getReturnType(tp),
-        f.(NonMethodCallMatchingInput::Declaration).getReturnType(tp)
-      ]
+  private Type getCallExprType(CallExpr ce, Path p, FunctionDeclaration f, TypePath path) {
+    exists(ImplOrTraitItemNodeOption i |
+      callResolvesTo(ce, p, f) and
+      result = f.getReturnType(i, path) and
+      f.isDeclarationStrict(i)
+    )
   }
 
   pragma[nomagic]
@@ -2084,62 +2188,34 @@ private module MethodResolution {
 private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSig {
   import FunctionPositionMatchingInput
 
-  final class Declaration extends Function {
+  private class MethodDeclaration extends Method, FunctionDeclaration { }
+
+  private newtype TDeclaration =
+    MkDeclaration(ImplOrTraitItemNode i, MethodDeclaration m) { m.isAssoc(i) }
+
+  final class Declaration extends MkDeclaration {
+    ImplOrTraitItemNode i_;
+    ImplOrTraitItemNodeOption somei;
+    MethodDeclaration m;
+
+    Declaration() {
+      this = MkDeclaration(i_, m) and
+      somei.asSome() = i_
+    }
+
+    predicate isMethod(ImplOrTraitItemNode i, Method method) { this = MkDeclaration(i, method) }
+
     TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
-      or
-      exists(ImplOrTraitItemNode i | this = i.getAnAssocItem() |
-        typeParamMatchPosition(i.getTypeParam(_), result, ppos)
-        or
-        ppos.isImplicit() and result = TSelfTypeParameter(i)
-        or
-        ppos.isImplicit() and
-        result.(AssociatedTypeTypeParameter).getTrait() = i
-      )
-      or
-      ppos.isImplicit() and
-      this = result.(ImplTraitTypeTypeParameter).getFunction()
-    }
-
-    pragma[nomagic]
-    Type getParameterType(DeclarationPosition dpos, TypePath path) {
-      exists(Param p, int i |
-        p = this.getParam(i) and
-        i = dpos.asPosition() and
-        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
-      )
-      or
-      dpos.isSelf() and
-      exists(SelfParam self |
-        self = pragma[only_bind_into](this.getSelfParam()) and
-        result = getSelfParamTypeMention(self).resolveTypeAt(path)
-      )
-    }
-
-    private Type resolveRetType(TypePath path) {
-      result = getReturnTypeMention(this).resolveTypeAt(path)
-    }
-
-    pragma[nomagic]
-    Type getReturnType(TypePath path) {
-      if this.isAsync()
-      then
-        path.isEmpty() and
-        result = getFutureTraitType()
-        or
-        exists(TypePath suffix |
-          result = this.resolveRetType(suffix) and
-          path = TypePath::cons(getDynFutureOutputTypeParameter(), suffix)
-        )
-      else result = this.resolveRetType(path)
+      result = m.getTypeParameter(somei, ppos)
     }
 
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      result = this.getParameterType(dpos, path)
-      or
-      dpos.isReturn() and
-      result = this.getReturnType(path)
+      result = m.getDeclaredType(somei, dpos, path)
     }
+
+    string toString() { result = m.toStringExt(i_) }
+
+    Location getLocation() { result = m.getLocation() }
   }
 
   class AccessEnvironment = string;
@@ -2208,14 +2284,19 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
       result = this.getInferredNonSelfType(apos, path)
     }
 
-    Declaration getTarget(ImplOrTraitItemNode i, string derefChainBorrow) {
+    Method getTarget(ImplOrTraitItemNode i, string derefChainBorrow) {
       exists(string derefChain, boolean borrow |
         derefChainBorrow = encodeDerefChainBorrow(derefChain, borrow) and
         result = this.resolveCallTarget(i, derefChain, borrow) // mutual recursion; resolving method calls requires resolving types and vice versa
       )
     }
 
-    Declaration getTarget(string derefChainBorrow) { result = this.getTarget(_, derefChainBorrow) }
+    Declaration getTarget(string derefChainBorrow) {
+      exists(ImplOrTraitItemNode i, Method m |
+        m = this.getTarget(i, derefChainBorrow) and
+        result = MkDeclaration(i, m)
+      )
+    }
 
     /**
      * Holds if the return type of this call at `path` may have to be inferred
@@ -2467,13 +2548,6 @@ private module NonMethodResolution {
       NonMethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, i, result)
     }
 
-    pragma[inline]
-    ItemNode resolveCallTarget() {
-      result = this.resolveCallTargetViaPathResolution()
-      or
-      result = this.resolveCallTargetViaTypeInference(_)
-    }
-
     pragma[nomagic]
     NonMethodFunction resolveTraitFunctionViaPathResolution(TraitItemNode trait) {
       this.hasTrait() and
@@ -2594,6 +2668,72 @@ private module NonMethodResolution {
     ArgsAreInstantiationsOf<NonMethodArgsAreInstantiationsOfInput>;
 }
 
+abstract private class TupleConstructor extends Addressable {
+  abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
+
+  abstract Type getParameterType(FunctionPosition pos, TypePath path);
+
+  abstract Type getReturnType(TypePath path);
+
+  Type getDeclaredType(FunctionPosition pos, TypePath path) {
+    result = this.getParameterType(pos, path)
+    or
+    pos.isReturn() and
+    result = this.getReturnType(path)
+    or
+    pos.isSelf() and
+    result = this.getReturnType(path)
+  }
+}
+
+private class TupleStruct extends TupleConstructor, Struct {
+  TupleStruct() { this.isTuple() }
+
+  override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+    typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+  }
+
+  override Type getParameterType(FunctionPosition pos, TypePath path) {
+    exists(int i |
+      result = this.getTupleField(i).getTypeRepr().(TypeMention).resolveTypeAt(path) and
+      i = pos.asPosition()
+    )
+  }
+
+  override Type getReturnType(TypePath path) {
+    result = TStruct(this) and
+    path.isEmpty()
+    or
+    result = TTypeParamTypeParameter(this.getGenericParamList().getATypeParam()) and
+    path = TypePath::singleton(result)
+  }
+}
+
+private class TupleVariant extends TupleConstructor, Variant {
+  TupleVariant() { this.isTuple() }
+
+  override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+    typeParamMatchPosition(this.getEnum().getGenericParamList().getATypeParam(), result, ppos)
+  }
+
+  override Type getParameterType(FunctionPosition pos, TypePath path) {
+    exists(int i |
+      result = this.getTupleField(i).getTypeRepr().(TypeMention).resolveTypeAt(path) and
+      i = pos.asPosition()
+    )
+  }
+
+  override Type getReturnType(TypePath path) {
+    exists(Enum enum | enum = this.getEnum() |
+      result = TEnum(enum) and
+      path.isEmpty()
+      or
+      result = TTypeParamTypeParameter(enum.getGenericParamList().getATypeParam()) and
+      path = TypePath::singleton(result)
+    )
+  }
+}
+
 /**
  * A matching configuration for resolving types of calls like
  * `foo::bar(baz)` where the target is not a method.
@@ -2604,7 +2744,15 @@ private module NonMethodResolution {
 private module NonMethodCallMatchingInput implements MatchingInputSig {
   import FunctionPositionMatchingInput
 
-  abstract class Declaration extends AstNode {
+  private class NonMethodFunctionDeclaration extends NonMethodFunction, FunctionDeclaration { }
+
+  private newtype TDeclaration =
+    TNonMethodFunctionDeclaration(ImplOrTraitItemNodeOption i, NonMethodFunctionDeclaration f) {
+      f.isDeclaration(i)
+    } or
+    TTupleConstructorDeclaration(TupleConstructor tc)
+
+  abstract class Declaration extends TDeclaration {
     abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
 
     pragma[nomagic]
@@ -2618,69 +2766,20 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
       dpos.isReturn() and
       result = this.getReturnType(path)
     }
+
+    abstract string toString();
+
+    abstract Location getLocation();
   }
 
-  abstract additional class TupleDeclaration extends Declaration {
-    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      result = super.getDeclaredType(dpos, path)
-      or
-      dpos.isSelf() and
-      result = this.getReturnType(path)
-    }
-  }
+  private class NonMethodFunctionDecl extends Declaration, TNonMethodFunctionDeclaration {
+    private ImplOrTraitItemNodeOption i;
+    private NonMethodFunctionDeclaration f;
 
-  private class TupleStructDecl extends TupleDeclaration, Struct {
-    TupleStructDecl() { this.isTuple() }
+    NonMethodFunctionDecl() { this = TNonMethodFunctionDeclaration(i, f) }
 
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
-    }
-
-    override Type getParameterType(DeclarationPosition dpos, TypePath path) {
-      exists(int pos |
-        result = this.getTupleField(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) and
-        pos = dpos.asPosition()
-      )
-    }
-
-    override Type getReturnType(TypePath path) {
-      result = TStruct(this) and
-      path.isEmpty()
-      or
-      result = TTypeParamTypeParameter(this.getGenericParamList().getATypeParam()) and
-      path = TypePath::singleton(result)
-    }
-  }
-
-  private class TupleVariantDecl extends TupleDeclaration, Variant {
-    TupleVariantDecl() { this.isTuple() }
-
-    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      typeParamMatchPosition(this.getEnum().getGenericParamList().getATypeParam(), result, ppos)
-    }
-
-    override Type getParameterType(DeclarationPosition dpos, TypePath path) {
-      exists(int pos |
-        result = this.getTupleField(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) and
-        pos = dpos.asPosition()
-      )
-    }
-
-    override Type getReturnType(TypePath path) {
-      exists(Enum enum | enum = this.getEnum() |
-        result = TEnum(enum) and
-        path.isEmpty()
-        or
-        result = TTypeParamTypeParameter(enum.getGenericParamList().getATypeParam()) and
-        path = TypePath::singleton(result)
-      )
-    }
-  }
-
-  private class NonMethodFunctionDecl extends Declaration, NonMethodFunction instanceof MethodCallMatchingInput::Declaration
-  {
-    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      result = MethodCallMatchingInput::Declaration.super.getTypeParameter(ppos)
+      result = f.getTypeParameter(i, ppos)
     }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
@@ -2701,20 +2800,40 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
       //
       // we need to match `i32` against the type parameter `T` of the `impl` block.
       dpos.isSelf() and
-      exists(ImplOrTraitItemNode i |
-        this = i.getAnAssocItem() and
-        result = resolveImplOrTraitType(i, path)
-      )
+      result = resolveImplOrTraitType(i.asSome(), path)
       or
-      exists(FunctionPosition fpos |
-        result = MethodCallMatchingInput::Declaration.super.getParameterType(fpos, path) and
-        dpos = fpos.getFunctionCallAdjusted(this)
-      )
+      result = f.getParameterType(i, dpos, path)
     }
 
-    override Type getReturnType(TypePath path) {
-      result = MethodCallMatchingInput::Declaration.super.getReturnType(path)
+    override Type getReturnType(TypePath path) { result = f.getReturnType(i, path) }
+
+    override string toString() {
+      i.isNone() and result = f.toString()
+      or
+      result = f.toStringExt(i.asSome())
     }
+
+    override Location getLocation() { result = f.getLocation() }
+  }
+
+  private class TupleConstructorDeclaration extends Declaration, TTupleConstructorDeclaration {
+    TupleConstructor tc;
+
+    TupleConstructorDeclaration() { this = TTupleConstructorDeclaration(tc) }
+
+    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      result = tc.getTypeParameter(ppos)
+    }
+
+    override Type getParameterType(DeclarationPosition dpos, TypePath path) {
+      result = tc.getParameterType(dpos, path)
+    }
+
+    override Type getReturnType(TypePath path) { result = tc.getReturnType(path) }
+
+    override string toString() { result = tc.toString() }
+
+    override Location getLocation() { result = tc.getLocation() }
   }
 
   class Access extends NonMethodResolution::NonMethodCall, ContextTyping::ContextTypedCallCand {
@@ -2731,8 +2850,22 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
       result = inferType(this.getNodeAt(apos), path)
     }
 
+    pragma[inline]
     Declaration getTarget() {
-      result = this.resolveCallTarget() // potential mutual recursion; resolving some associated function calls requires resolving types
+      exists(ImplOrTraitItemNodeOption i, NonMethodFunctionDeclaration f |
+        result = TNonMethodFunctionDeclaration(i, f)
+      |
+        f = this.resolveCallTargetViaTypeInference(i.asSome()) // mutual recursion; resolving some associated function calls requires resolving types
+        or
+        f = this.resolveTraitFunctionViaPathResolution(i.asSome())
+        or
+        f = this.resolveCallTargetViaPathResolution() and
+        f.isDeclarationStrict(i)
+      )
+      or
+      exists(ItemNode i | i = this.resolveCallTargetViaPathResolution() |
+        result = TTupleConstructorDeclaration(i)
+      )
     }
 
     /**
@@ -2741,21 +2874,17 @@ private module NonMethodCallMatchingInput implements MatchingInputSig {
      */
     pragma[nomagic]
     predicate hasUnknownTypeAt(FunctionPosition pos, TypePath path) {
-      exists(ImplOrTraitItemNode i |
-        this.hasUnknownTypeAt(i,
-          [
-            this.resolveCallTargetViaPathResolution().(NonMethodFunction),
-            this.resolveCallTargetViaTypeInference(i),
-            this.resolveTraitFunctionViaPathResolution(i)
-          ], pos, path)
+      exists(ImplOrTraitItemNodeOption i, NonMethodFunctionDeclaration f |
+        TNonMethodFunctionDeclaration(i, f) = this.getTarget() and
+        this.hasUnknownTypeAt(i.asSome(), f, pos, path)
       )
       or
       // Tuple declarations, such as `Result::Ok(...)`, may also be context typed
-      exists(TupleDeclaration td, TypeParameter tp |
-        td = this.resolveCallTargetViaPathResolution() and
+      exists(TupleConstructor tc, TypeParameter tp |
+        tc = this.resolveCallTargetViaPathResolution() and
         pos.isReturn() and
-        tp = td.getReturnType(path) and
-        not tp = td.getParameterType(_, _) and
+        tp = tc.getReturnType(path) and
+        not tp = tc.getParameterType(_, _) and
         // check that no explicit type arguments have been supplied for `tp`
         not exists(TypeArgumentPosition tapos |
           exists(this.getTypeArgument(tapos, _)) and
@@ -2793,9 +2922,9 @@ private module OperationMatchingInput implements MatchingInputSig {
 
   class Declaration extends MethodCallMatchingInput::Declaration {
     private Method getSelfOrImpl() {
-      result = this
+      result = m
       or
-      this.implements(result)
+      m.implements(result)
     }
 
     pragma[nomagic]
@@ -2813,29 +2942,18 @@ private module OperationMatchingInput implements MatchingInputSig {
     }
 
     pragma[nomagic]
-    private Type getParameterType(DeclarationPosition dpos, TypePath path) {
-      exists(TypePath path0 |
-        result = super.getParameterType(dpos, path0) and
-        if this.borrowsAt(dpos) then path0.isCons(getRefTypeParameter(), path) else path0 = path
-      )
-    }
-
-    pragma[nomagic]
     private predicate derefsReturn() { this.getSelfOrImpl() = any(DerefTrait t).getDerefFunction() }
 
-    pragma[nomagic]
-    private Type getReturnType(TypePath path) {
-      exists(TypePath path0 |
-        result = super.getReturnType(path0) and
-        if this.derefsReturn() then path0.isCons(getRefTypeParameter(), path) else path0 = path
-      )
-    }
-
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      result = this.getParameterType(dpos, path)
-      or
-      dpos.isReturn() and
-      result = this.getReturnType(path)
+      exists(TypePath path0 |
+        result = super.getDeclaredType(dpos, path0) and
+        if
+          this.borrowsAt(dpos)
+          or
+          dpos.isReturn() and this.derefsReturn()
+        then path0.isCons(getRefTypeParameter(), path)
+        else path0 = path
+      )
     }
   }
 
@@ -2848,7 +2966,9 @@ private module OperationMatchingInput implements MatchingInputSig {
     }
 
     Declaration getTarget() {
-      result = this.resolveCallTarget(_, _, _) // mutual recursion
+      exists(ImplOrTraitItemNode i |
+        result.isMethod(i, this.resolveCallTarget(i, _, _)) // mutual recursion
+      )
     }
   }
 }
@@ -3315,7 +3435,7 @@ private Type inferStructPatType(AstNode n, TypePath path) {
 private module TupleStructPatMatchingInput implements MatchingInputSig {
   import FunctionPositionMatchingInput
 
-  class Declaration = NonMethodCallMatchingInput::TupleDeclaration;
+  class Declaration = TupleConstructor;
 
   class Access extends TupleStructPat {
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
@@ -3408,12 +3528,9 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
  * first-class function.
  */
 final private class InvokedClosureExpr extends Expr {
-  private CallExpr call;
+  private CallExprImpl::DynamicCallExpr call;
 
-  InvokedClosureExpr() {
-    call.getFunction() = this and
-    (not this instanceof PathExpr or this = any(Variable v).getAnAccess())
-  }
+  InvokedClosureExpr() { call.getFunction() = this }
 
   Type getTypeAt(TypePath path) { result = inferType(this, path) }
 
