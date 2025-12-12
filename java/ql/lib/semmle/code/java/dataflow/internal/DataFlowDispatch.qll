@@ -60,7 +60,7 @@ private module DispatchImpl {
       not (
         // Only use summarized callables with generated summaries in case
         // the static call target is not in the source code.
-        // Note that if applyGeneratedModel holds it implies that there doesn't
+        // Note that if `applyGeneratedModel` holds it implies that there doesn't
         // exist a manual model.
         exists(Callable staticTarget | staticTarget = call.getCallee().getSourceDeclaration() |
           staticTarget.fromSource() and not staticTarget.isStub()
