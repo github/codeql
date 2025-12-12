@@ -18,6 +18,7 @@
 | [...]/csharp/tools/[...]/Microsoft.NET.StringTools.dll |
 | [...]/csharp/tools/[...]/Microsoft.VisualBasic.Core.dll |
 | [...]/csharp/tools/[...]/Microsoft.VisualBasic.dll |
+| [...]/csharp/tools/[...]/Microsoft.VisualStudio.SolutionPersistence.dll |
 | [...]/csharp/tools/[...]/Microsoft.Win32.Primitives.dll |
 | [...]/csharp/tools/[...]/Microsoft.Win32.Registry.dll |
 | [...]/csharp/tools/[...]/Mono.Posix.NETStandard.dll |
