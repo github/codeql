@@ -4,7 +4,7 @@
 overlay[local?]
 module;
 
-private import codeql.mad.static.MaD as SharedMaD
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
 /**
  * Holds if a source model exists for the given parameters.

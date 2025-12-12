@@ -100,7 +100,7 @@ private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
-private import codeql.mad.static.MaD as SharedMaD
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
 private module MadInput implements SharedMaD::InputSig {
   /** Holds if a source model exists for the given parameters. */

@@ -101,7 +101,7 @@ private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import codeql.mad.ModelValidation as SharedModelVal
-private import codeql.mad.static.MaD as SharedMaD
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
 private module MadInput implements SharedMaD::InputSig { }
 

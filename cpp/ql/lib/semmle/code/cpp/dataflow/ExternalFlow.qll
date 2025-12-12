@@ -104,7 +104,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
-private import codeql.mad.static.MaD as SharedMaD
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
 /**
  * A unit class for adding additional source model rows.
