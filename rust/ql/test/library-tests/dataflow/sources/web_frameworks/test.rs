@@ -21,8 +21,8 @@ mod poem_test {
     fn my_poem_handler_2(
         Path((a, b)): Path<(String, String)>, // $ Alert[rust/summary/taint-sources]
     ) -> String {
-        sink(a); // $ MISSING: hasTaintFlow
-        sink(b); // $ MISSING: hasTaintFlow
+        sink(a); // $ hasTaintFlow
+        sink(b); // $ hasTaintFlow
 
         "".to_string()
     }
@@ -47,8 +47,8 @@ mod poem_test {
     fn my_poem_handler_4(
         Path(MyStruct { a, b }): Path<MyStruct>, // $ Alert[rust/summary/taint-sources]
     ) -> String {
-        sink(a); // $ MISSING: hasTaintFlow
-        sink(b); // $ MISSING: hasTaintFlow
+        sink(a); // $ hasTaintFlow
+        sink(b); // $ hasTaintFlow
 
         "".to_string()
     }
@@ -57,8 +57,8 @@ mod poem_test {
     fn my_poem_handler_5(
         Path(ms): Path<MyStruct>, // $ Alert[rust/summary/taint-sources]
     ) -> String {
-        sink(ms.a); // $ MISSING: hasTaintFlow
-        sink(ms.b); // $ MISSING: hasTaintFlow
+        sink(ms.a); // $ hasTaintFlow
+        sink(ms.b); // $ hasTaintFlow
 
         "".to_string()
     }
@@ -119,7 +119,7 @@ mod actix_test {
     async fn my_actix_handler_3(
         web::Query(a): web::Query<String>,
     ) -> String {
-        sink(a); // $ MISSING: hasTaintFlow
+        sink(a); // $ hasTaintFlow=my_actix_handler_3
 
         "".to_string()
     }

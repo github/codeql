@@ -13,6 +13,7 @@
 
 import python
 import Equality
+private import LegacyPointsTo
 
 predicate class_stores_to_attribute(ClassValue cls, SelfAttributeStore store, string name) {
   exists(FunctionValue f |

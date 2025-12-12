@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassMetrics cls
 select cls, cls.getAfferentCoupling() as n order by n desc

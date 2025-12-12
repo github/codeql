@@ -24,11 +24,11 @@ struct MyStruct {
 
 impl MyStruct {
     fn set_data(&mut self, n: i64) {
-        (*self).data = n // todo: implicit deref not yet supported
+        self.data = n
     }
 
     fn get_data(&self) -> i64 {
-        (*self).data // todo: implicit deref not yet supported
+        self.data
     }
 }
 
@@ -225,7 +225,7 @@ impl Add for MyInt {
 
 impl MulAssign<MyInt> for MyInt {
     fn mul_assign(&mut self, rhs: MyInt) {
-        (*self).value = rhs.value; // todo: implicit deref not yet supported
+        self.value = rhs.value;
     }
 }
 
@@ -264,7 +264,7 @@ fn test_operator_overloading() {
     let mut a = MyInt { value: 0 };
     let b = MyInt { value: source(35) };
     a *= b;
-    sink(a.value); // $ MISSING: hasValueFlow=35
+    sink(a.value); // $ hasValueFlow=35
 
     // Tests for deref operator.
     let a = MyInt { value: source(27) };
@@ -274,7 +274,7 @@ fn test_operator_overloading() {
 
     let a = MyInt { value: source(28) };
     let c = *a;
-    sink(c); // $ hasTaintFlow=28 MISSING: hasValueFlow=28
+    sink(c); // $ hasValueFlow=28
 }
 
 trait MyTrait2 {
@@ -320,7 +320,7 @@ async fn async_source() -> i64 {
 
 async fn test_async_await_async_part() {
     let a = async_source().await;
-    sink(a); // $ MISSING: hasValueFlow=1
+    sink(a); // $ hasTaintFlow=1 MISSING: hasValueFlow=1
 
     let b = async {
         let c = source(2);
@@ -335,6 +335,69 @@ fn test_async_await() {
     sink(a); // $ hasValueFlow=1
 
     futures::executor::block_on(test_async_await_async_part());
+}
+
+mod not_trait_dispatch {
+    use super::{sink, source};
+
+    trait HasNumbers {
+        fn get_number(&self) -> i64;
+
+        fn get_double_number(&self) -> i64 {
+            self.get_number() * 2
+        }
+
+        fn get_default() -> i64 {
+            source(0)
+        }
+    }
+
+    struct Three;
+
+    impl HasNumbers for Three {
+        fn get_number(&self) -> i64 {
+            source(3)
+        }
+    }
+
+    struct TwentyTwo;
+
+    impl HasNumbers for TwentyTwo {
+        fn get_number(&self) -> i64 {
+            22
+        }
+
+        fn get_double_number(&self) -> i64 {
+            source(44)
+        }
+
+        fn get_default() -> i64 {
+            source(1)
+        }
+    }
+
+    fn test_non_trait_dispatch() {
+        let t = Three;
+
+        // This call is to the default method implementation.
+        let n1 = t.get_double_number();
+        sink(n1); // $ hasTaintFlow=3
+
+        // This call is to the default method implementation.
+        let n2 = HasNumbers::get_double_number(&t);
+        sink(n2); // $ hasTaintFlow=3
+
+        // This call is to the default function implementation.
+        let n3 = Three::get_default();
+        sink(n3); // $ hasValueFlow=0
+
+        let i = TwentyTwo;
+        let n4 = i.get_double_number();
+        sink(n4); // $ hasValueFlow=44
+
+        let n5 = TwentyTwo::get_default();
+        sink(n5); // $ hasValueFlow=1
+    }
 }
 
 fn main() {

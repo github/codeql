@@ -1,5 +1,5 @@
 import python
-import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 
 bindingset[which]
 string locate(Location l, string which) {

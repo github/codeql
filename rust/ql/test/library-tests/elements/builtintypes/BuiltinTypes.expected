@@ -1,5 +1,5 @@
 | struct Array |  |
-| struct Ptr |  |
+| struct PtrConst |  |
 | struct PtrMut |  |
 | struct Ref |  |
 | struct RefMut |  |

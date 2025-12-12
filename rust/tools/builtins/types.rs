@@ -28,7 +28,7 @@ struct Slice<TSlice>;
 struct Array<TArray, const N: usize>;
 struct Ref<TRef>;
 struct RefMut<TRefMut>;
-struct Ptr<TPtr>;
+struct PtrConst<TPtrConst>;
 struct PtrMut<TPtrMut>;
 
 // tuples

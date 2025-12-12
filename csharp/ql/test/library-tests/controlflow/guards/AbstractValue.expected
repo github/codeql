@@ -117,6 +117,8 @@
 | not  | Guards.cs:162:24:162:24 | access to parameter o |
 | not  | Guards.cs:285:17:285:17 | access to parameter o |
 | not  | Guards.cs:287:17:287:17 | access to parameter o |
+| not null | Assert.cs:5:7:5:17 | call to method <object initializer> |
+| not null | Assert.cs:5:7:5:17 | this access |
 | not null | Assert.cs:9:20:9:20 | access to parameter b |
 | not null | Assert.cs:9:31:9:32 | "" |
 | not null | Assert.cs:10:9:10:13 | access to type Debug |
@@ -228,6 +230,8 @@
 | not null | Assert.cs:94:16:94:24 | ... && ... |
 | not null | Assert.cs:94:22:94:24 | !... |
 | not null | Assert.cs:94:23:94:24 | access to parameter b2 |
+| not null | Collections.cs:7:14:7:24 | call to method <object initializer> |
+| not null | Collections.cs:7:14:7:24 | this access |
 | not null | Collections.cs:11:13:11:13 | access to local variable b |
 | not null | Collections.cs:11:13:11:32 | Boolean b = ... |
 | not null | Collections.cs:11:17:11:20 | access to parameter args |
@@ -496,6 +500,8 @@
 | not null | Collections.cs:102:9:102:15 | access to type Console |
 | not null | Collections.cs:102:9:102:31 | call to method WriteLine |
 | not null | Collections.cs:102:27:102:30 | access to parameter args |
+| not null | Guards.cs:3:14:3:19 | call to method <object initializer> |
+| not null | Guards.cs:3:14:3:19 | this access |
 | not null | Guards.cs:10:13:10:25 | !... |
 | not null | Guards.cs:10:14:10:25 | !... |
 | not null | Guards.cs:10:16:10:24 | ... == ... |

@@ -705,7 +705,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if `app` is _not_ a possible instantiation of `constraint`.
+       * Holds if `app` is _not_ a possible instantiation of `constraint`, because `app`
+       * and `constraint` differ on concrete types at `path`.
        *
        * This is an approximation of `not isInstantiationOf(app, abs, constraint)`, but
        * defined without a negative occurrence of `isInstantiationOf`.
@@ -719,9 +720,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `isInstantiationOf` nor `isNotInstantiationOf` will hold.
        */
       pragma[nomagic]
-      predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint constraint) {
+      predicate isNotInstantiationOf(
+        App app, TypeAbstraction abs, Constraint constraint, TypePath path
+      ) {
         // `app` and `constraint` differ on a concrete type
-        exists(Type t, Type t2, TypePath path |
+        exists(Type t, Type t2 |
           t = resolveTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
           app.getTypeAt(path) = t2 and
@@ -983,6 +986,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
       }
 
+      private module SatisfiesConstraintIsInstantiationOf =
+        IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>;
+
       /**
        * Holds if `tt` satisfies `constraint` through `abs`, `sub`, and `constraintMention`.
        */
@@ -1004,10 +1010,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // constraint we need to find the right implementation, which is the
           // one where the type instantiates the precondition.
           if multipleConstraintImplementations(type, constraint)
-          then
-            IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt,
-              abs, condition)
+          then SatisfiesConstraintIsInstantiationOf::isInstantiationOf(tt, abs, condition)
           else any()
+        )
+      }
+
+      pragma[nomagic]
+      private predicate isNotInstantiationOf(
+        HasTypeTree tt, TypeAbstraction abs, TypeMention condition, Type root
+      ) {
+        exists(TypePath path |
+          SatisfiesConstraintIsInstantiationOf::isNotInstantiationOf(tt, abs, condition, path) and
+          path.isCons(root.getATypeParameter(), _)
         )
       }
 
@@ -1040,8 +1054,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             forex(TypeAbstraction abs, TypeMention condition |
               rootTypesSatisfaction(type, constraint, abs, condition, _)
             |
-              IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isNotInstantiationOf(tt,
-                abs, condition)
+              isNotInstantiationOf(tt, abs, condition, type)
             )
           )
         )

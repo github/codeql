@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.generated.TupleFieldList
  */
 module Impl {
   /**
-   * A list of fields in a tuple struct or tuple enum variant.
+   * A list of fields in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust

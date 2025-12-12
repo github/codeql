@@ -12,6 +12,7 @@ namespace Semmle.Extraction.Tests
         private string lastArgs = "";
         public string WorkingDirectory { get; private set; } = "";
         public bool Success { get; set; } = true;
+        public int ExitCode { get; set; } = 0;
 
         public DotNetCliInvokerStub(IList<string> output)
         {
@@ -24,6 +25,12 @@ namespace Semmle.Extraction.Tests
         {
             lastArgs = args;
             return Success;
+        }
+
+        public int RunCommandExitCode(string args, bool silent)
+        {
+            lastArgs = args;
+            return ExitCode;
         }
 
         public bool RunCommand(string args, out IList<string> output, bool silent)
@@ -83,7 +90,7 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetInfoFailure()
         {
             // Setup
-            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>()) { Success = false };
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>()) { ExitCode = 1 };
 
             // Execute
             try
@@ -94,7 +101,7 @@ namespace Semmle.Extraction.Tests
             // Verify
             catch (Exception e)
             {
-                Assert.Equal("dotnet --info failed.", e.Message);
+                Assert.Equal("dotnet --info failed with exit code 1.", e.Message);
                 return;
             }
             Assert.Fail("Expected exception");

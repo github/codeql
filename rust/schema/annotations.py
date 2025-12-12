@@ -228,41 +228,35 @@ class _:
     loop_body: drop
 
 
-class CallExprBase(Expr):
-    """
-    A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-    """
-    arg_list: optional["ArgList"] | child
-    attrs: list["Attr"] | child
-    args: list["Expr"] | synth
-
-
-@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(CallExpr, cfg=True)
 class _:
     """
-    A function call expression. For example:
+    NOTE: Consider using `Call` instead, as that excludes call expressions that are
+    instantiations of tuple structs and tuple variants.
+
+    A call expression. For example:
     ```rust
     foo(42);
     foo::<u32, u64>(42);
     foo[0](42);
-    foo(1) = 4;
+    Option::Some(42); // tuple variant instantiation
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(MethodCallExpr, cfg=True)
 class _:
     """
+    NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
+    call syntax (such as `Foo::method(x)`), operation syntax (such as `x + y`), and
+    indexing syntax (such as `x[y]`).
+
     A method call expression. For example:
     ```rust
     x.foo(42);
     x.foo::<u32, u64>(42);
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
 @annotate(MatchArm)
@@ -1926,7 +1920,7 @@ class _:
 @annotate(TupleField)
 class _:
     """
-    A field in a tuple struct or tuple enum variant.
+    A field in a tuple struct or tuple variant.
 
     For example:
     ```rust
@@ -1939,7 +1933,7 @@ class _:
 @annotate(TupleFieldList)
 class _:
     """
-    A list of fields in a tuple struct or tuple enum variant.
+    A list of fields in a tuple struct or tuple variant.
 
     For example:
     ```rust

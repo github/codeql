@@ -218,6 +218,8 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
     )
   }
 
+  int contentAccessPathLimitInternal() { result = 2 }
+
   predicate isField(DataFlow::ContentSet c) {
     c instanceof DataFlowUtil::FieldContent or
     c instanceof DataFlowUtil::SyntheticFieldContent

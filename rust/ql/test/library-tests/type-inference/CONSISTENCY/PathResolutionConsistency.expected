@@ -1,14 +1,35 @@
-multipleCallTargets
+multipleResolvedTargets
+| blanket_impl.rs:33:13:33:17 | * ... |
 | dereference.rs:69:15:69:24 | e1.deref() |
+| dereference.rs:73:15:73:17 | * ... |
+| dereference.rs:77:16:77:18 | * ... |
 | dereference.rs:182:17:182:26 | ... .foo() |
 | dereference.rs:183:17:183:23 | S.foo() |
 | dereference.rs:184:17:184:30 | ... .foo() |
 | dereference.rs:186:17:186:25 | S.bar(...) |
 | dereference.rs:187:17:187:29 | S.bar(...) |
-| main.rs:590:9:590:18 | ...::m(...) |
+| dyn_type.rs:65:20:65:23 | * ... |
+| dyn_type.rs:69:21:69:24 | * ... |
+| dyn_type.rs:90:10:90:13 | * ... |
+| invalid/main.rs:69:13:69:17 | * ... |
+| invalid/main.rs:76:13:76:17 | * ... |
+| main.rs:1077:14:1077:18 | * ... |
+| main.rs:1159:26:1159:30 | * ... |
+| main.rs:1504:14:1504:21 | * ... |
+| main.rs:1504:16:1504:20 | * ... |
+| main.rs:1509:14:1509:18 | * ... |
+| main.rs:1540:27:1540:29 | * ... |
+| main.rs:1654:17:1654:24 | * ... |
+| main.rs:1654:18:1654:24 | * ... |
+| main.rs:1792:17:1792:21 | * ... |
+| main.rs:1807:28:1807:32 | * ... |
+| main.rs:2440:13:2440:18 | * ... |
 | main.rs:2634:13:2634:31 | ...::from(...) |
 | main.rs:2635:13:2635:31 | ...::from(...) |
 | main.rs:2636:13:2636:31 | ...::from(...) |
 | main.rs:2642:13:2642:31 | ...::from(...) |
 | main.rs:2643:13:2643:31 | ...::from(...) |
 | main.rs:2644:13:2644:31 | ...::from(...) |
+| main.rs:3067:13:3067:17 | x.f() |
+| pattern_matching.rs:273:13:273:27 | * ... |
+| pattern_matching.rs:273:14:273:27 | * ... |

@@ -11,6 +11,8 @@
 
 import python
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.types.FunctionObject
+private import semmle.python.pointsto.Context
 
 private newtype TTInvocation =
   TInvocation(FunctionObject f, Context c) {

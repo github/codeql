@@ -9,7 +9,7 @@ using Semmle.Extraction.CSharp.Populators;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity
+    internal abstract class Method : CachedSymbol<IMethodSymbol>, IExpressionParentEntity, IStatementParentEntity, IMethodEntity
     {
         protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }

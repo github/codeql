@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassObject sub, ClassObject base
 where

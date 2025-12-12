@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["NHibernate", "ISession", True, "CreateSQLQuery", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["NHibernate", "IStatelessSession", True, "CreateSQLQuery", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["NHibernate.Impl", "AbstractSessionImpl", True, "CreateSQLQuery", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]

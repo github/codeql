@@ -260,6 +260,8 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
     )
   }
 
+  int contentAccessPathLimitInternal() { result = 2 }
+
   bindingset[d]
   private string getFullyQualifiedName(Declaration d) {
     exists(string qualifier, string name |

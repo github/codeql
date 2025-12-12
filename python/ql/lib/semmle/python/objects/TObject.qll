@@ -6,6 +6,7 @@ private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.internal.CachedStages
+private import semmle.python.pointsto.Context
 
 /**
  * Internal type backing `ObjectInternal` and `Value`

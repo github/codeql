@@ -245,6 +245,67 @@ module Stdlib {
     }
   }
 
+  /**
+   * Provides models for the `urllib.parse.ParseResult` class
+   *
+   * See https://docs.python.org/3.9/library/urllib.parse.html#urllib.parse.ParseResult.
+   */
+  module ParseResult {
+    /** Gets a reference to the `urllib.parse.ParseResult` class. */
+    API::Node classRef() {
+      result = API::moduleImport("urllib").getMember("parse").getMember("ParseResult")
+      or
+      result = ModelOutput::getATypeNode("urllib.parse.ParseResult~Subclass").getASubclass*()
+    }
+
+    /**
+     * A source of instances of `urllib.parse.ParseResult`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `ParseResult::instance()` to get references to instances of `urllib.parse.ParseResult`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `urllib.parse.ParseResult`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.ParseResult`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `urllib.parse.ParseResult`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `urllib.parse.ParseResult`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "urllib.parse.ParseResult" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() {
+        result in [
+            "netloc", "path", "params", "query", "fragment", "username", "password", "hostname",
+            "port"
+          ]
+      }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { none() }
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // logging
   // ---------------------------------------------------------------------------

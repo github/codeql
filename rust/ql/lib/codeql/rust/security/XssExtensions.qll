@@ -53,9 +53,9 @@ module Xss {
   /** A call to a function with "escape" or "encode" in its name. */
   private class HeuristicHtmlEncodingBarrier extends Barrier {
     HeuristicHtmlEncodingBarrier() {
-      exists(Call fc |
-        fc.getStaticTarget().getName().getText().regexpMatch(".*(escape|encode).*") and
-        fc.getArgument(_) = this.asExpr()
+      exists(Call c |
+        c.getStaticTarget().getName().getText().regexpMatch(".*(escape|encode).*") and
+        c.getAnArgument() = this.asExpr()
       )
     }
   }

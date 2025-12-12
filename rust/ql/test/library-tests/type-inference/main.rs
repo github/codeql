@@ -587,7 +587,7 @@ mod impl_overlap {
         println!("{:?}", S3::m(&w, x)); // $ target=S3<T>::m
 
         S4.m(); // $ target=<S4_as_MyTrait1>::m
-        S4::m(&S4); // $ target=<S4_as_MyTrait1>::m $ SPURIOUS: target=MyTrait1::m
+        S4::m(&S4); // $ target=<S4_as_MyTrait1>::m
         S5(0i32).m(); // $ target=<S5<i32>_as_MyTrait1>::m
         S5::m(&S5(0i32)); // $ target=<S5<i32>_as_MyTrait1>::m
         S5(true).m(); // $ target=MyTrait1::m
@@ -3033,6 +3033,39 @@ mod context_typed {
 
         let y = Default::default(); // $ type=y:i32 target=default
         x.push(y); // $ target=push
+    }
+}
+
+mod literal_overlap {
+    trait MyTrait {
+        fn f(self) -> Self;
+    }
+
+    impl MyTrait for i32 {
+        // i32f
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    impl MyTrait for usize {
+        // usizef
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    impl<T> MyTrait for &T {
+        // Reff
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    pub fn f() -> usize {
+        let mut x = 0;
+        x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f
+        x
     }
 }
 

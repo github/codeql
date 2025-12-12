@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionMetrics func
 select func, func.getNumberOfParametersWithoutDefault() as n order by n desc

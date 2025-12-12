@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from FunctionObject func
 where func.neverReturns()

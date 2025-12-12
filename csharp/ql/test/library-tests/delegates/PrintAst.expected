@@ -16,7 +16,7 @@ delegates.cs:
 #    9|       1: [Parameter] d
 #    9|         -1: [TypeMention] double
 #   11|   3: [Class] A
-#   14|     5: [Method] M1
+#   14|     6: [Method] M1
 #   14|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   14|         0: [Parameter] a
@@ -33,13 +33,13 @@ delegates.cs:
 #   14|                 1: [ParameterAccess] access to parameter a
 #   14|               1: [ParameterAccess] access to parameter b
 #   18|   4: [Class] B
-#   21|     5: [DelegateType] D2
+#   21|     6: [DelegateType] D2
 #-----|       2: (Parameters)
 #   21|         0: [Parameter] c
 #   21|           -1: [TypeMention] int
 #   21|         1: [Parameter] d
 #   21|           -1: [TypeMention] double
-#   23|     6: [Method] M1
+#   23|     7: [Method] M1
 #   23|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] f
@@ -54,7 +54,7 @@ delegates.cs:
 #   23|               0: [TypeAccess] access to type Int32
 #   23|                 0: [TypeMention] int
 #   23|               1: [ParameterAccess] access to parameter g
-#   25|     7: [Method] M2
+#   25|     8: [Method] M2
 #   25|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   25|         0: [Parameter] k
@@ -62,7 +62,7 @@ delegates.cs:
 #   25|         1: [Parameter] l
 #   25|           -1: [TypeMention] double
 #   25|       4: [BlockStmt] {...}
-#   27|     8: [Method] M3
+#   27|     9: [Method] M3
 #   27|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   27|         0: [Parameter] g
@@ -74,7 +74,7 @@ delegates.cs:
 #   27|               0: [ParameterAccess] access to parameter g
 #   27|             1: [UnaryPlusExpr] +...
 #   27|               0: [ParameterAccess] access to parameter g
-#   29|     9: [Method] M4
+#   29|     10: [Method] M4
 #   29|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   29|         0: [Parameter] g
@@ -87,7 +87,7 @@ delegates.cs:
 #   33|       0: [Parameter] value
 #   33|         -1: [TypeMention] T
 #   35|   6: [Class] X
-#   38|     5: [Method] F
+#   38|     6: [Method] F
 #   38|       -1: [TypeMention] bool
 #-----|       2: (Parameters)
 #   38|         0: [Parameter] i
@@ -97,7 +97,7 @@ delegates.cs:
 #   38|           0: [LTExpr] ... < ...
 #   38|             0: [ParameterAccess] access to parameter i
 #   38|             1: [IntLiteral] 2
-#   40|     6: [Method] G
+#   40|     7: [Method] G
 #   40|       -1: [TypeMention] bool
 #-----|       2: (Parameters)
 #   40|         0: [Parameter] s
@@ -110,26 +110,26 @@ delegates.cs:
 #   44|       0: [Parameter] x
 #   44|         -1: [TypeMention] int
 #   46|   8: [Class] C
-#   49|     5: [Method] M1
+#   49|     6: [Method] M1
 #   49|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   49|         0: [Parameter] i
 #   49|           -1: [TypeMention] int
 #   49|       4: [BlockStmt] {...}
-#   50|     6: [Method] M2
+#   50|     7: [Method] M2
 #   50|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   50|         0: [Parameter] i
 #   50|           -1: [TypeMention] int
 #   50|       4: [BlockStmt] {...}
-#   51|     7: [Method] M3
+#   51|     8: [Method] M3
 #   51|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   51|         0: [Parameter] i
 #   51|           -1: [TypeMention] int
 #   51|       4: [BlockStmt] {...}
 #   55|   9: [Class] Test
-#   58|     5: [Method] Main
+#   58|     6: [Method] Main
 #   58|       -1: [TypeMention] Void
 #   59|       4: [BlockStmt] {...}
 #   60|         0: [LocalVariableDeclStmt] ... ...;
@@ -250,25 +250,25 @@ delegates.cs:
 #   81|           0: [LocalVariableDeclExpr] ContextCallback d
 #   81|             0: [TypeMention] ContextCallback
 #   86|   10: [Class] E
-#   88|     5: [Field] Field
+#   88|     6: [Field] Field
 #   88|       -1: [TypeMention] Action<int>
 #   88|         1: [TypeMention] int
-#   89|     6: [Property] Property
+#   89|     7: [Property] Property
 #   89|       -1: [TypeMention] Action<int>
 #   89|         1: [TypeMention] int
 #   89|       3: [Getter] get_Property
 #   89|       4: [Setter] set_Property
 #-----|         2: (Parameters)
 #   89|           0: [Parameter] value
-#   90|     7: [Field] FieldPtr
+#   90|     8: [Field] FieldPtr
 #   90|       -1: [TypeMention] delegate* default<Int32,Void>
-#   91|     8: [Property] PropertyPtr
+#   91|     9: [Property] PropertyPtr
 #   91|       -1: [TypeMention] delegate* default<Int32,Void>
 #   91|       3: [Getter] get_PropertyPtr
 #   91|       4: [Setter] set_PropertyPtr
 #-----|         2: (Parameters)
 #   91|           0: [Parameter] value
-#   93|     9: [Method] M
+#   93|     10: [Method] M
 #   93|       -1: [TypeMention] Void
 #   94|       4: [BlockStmt] {...}
 #   95|         0: [ExprStmt] ...;

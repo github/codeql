@@ -32,5 +32,5 @@ class BasicBarrierGuard extends DataFlow::CallNode {
 deprecated class ConsistencyConfig extends ConsistencyConfiguration {
   ConsistencyConfig() { this = "ConsistencyConfig" }
 
-  override DataFlow::Node getAnAlert() { Flow::flow(_, result) }
+  override DataFlow::Node getAnAlert() { Flow::flowTo(result) }
 }
