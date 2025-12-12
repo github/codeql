@@ -662,6 +662,30 @@ module Make<
       unsupportedCallable(callable, _, _, _)
     }
 
+    private predicate isRelevantSource(
+      SourceElement e, string output, string kind, Provenance provenance, string model
+    ) {
+      e.isSource(output, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isSource(_, kind, p, _))
+      )
+    }
+
+    private predicate isRelevantSink(
+      SinkElement e, string input, string kind, Provenance provenance, string model
+    ) {
+      e.isSink(input, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isSink(_, kind, p, _))
+      )
+    }
+
     private predicate summarySpec(string spec) {
       exists(SummarizedCallable c |
         c.propagatesFlow(spec, _, _, _)
@@ -669,9 +693,9 @@ module Make<
         c.propagatesFlow(_, spec, _, _)
       )
       or
-      any(SourceElement s).isSource(spec, _, _, _)
+      isRelevantSource(_, spec, _, _, _)
       or
-      any(SinkElement s).isSink(spec, _, _, _)
+      isRelevantSink(_, spec, _, _, _)
     }
 
     import AccessPathSyntax::AccessPath<summarySpec/1>
@@ -1034,7 +1058,7 @@ module Make<
       SourceElement source, SummaryComponentStack s, string kind, string model
     ) {
       exists(string outSpec |
-        source.isSource(outSpec, kind, _, model) and
+        isRelevantSource(source, outSpec, kind, _, model) and
         External::interpretSpec(outSpec, s)
       )
     }
@@ -1057,7 +1081,7 @@ module Make<
       SinkElement sink, SummaryComponentStack s, string kind, string model
     ) {
       exists(string inSpec |
-        sink.isSink(inSpec, kind, _, model) and
+        isRelevantSink(sink, inSpec, kind, _, model) and
         External::interpretSpec(inSpec, s)
       )
     }
