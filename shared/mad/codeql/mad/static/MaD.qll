@@ -87,8 +87,12 @@ signature module InputSig {
     none()
   }
 
-  /** Get the separator used between namespace segments. */
+  /** Gets the separator used between namespace segments. */
   default string namespaceSegmentSeparator() { result = "." }
+
+  /** Gets a cleaned-up version of the namespace for presentation in model coverage. */
+  bindingset[ns]
+  default string cleanNamespace(string ns) { result = ns }
 }
 
 module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
@@ -278,9 +282,11 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
   }
 
   private predicate relevantNamespace(string namespace) {
-    sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
-    sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
-    summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
+    exists(string ns | namespace = Input::cleanNamespace(ns) |
+      sourceModel(ns, _, _, _, _, _, _, _, _, _) or
+      sinkModel(ns, _, _, _, _, _, _, _, _, _) or
+      summaryModel(ns, _, _, _, _, _, _, _, _, _, _)
+    )
   }
 
   private predicate namespaceLink(string shortns, string longns) {
@@ -309,25 +315,28 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     (
       part = "source" and
       n =
-        strictcount(string subns, string type, boolean subtypes, string name, string signature,
-          string ext, string output, string provenance |
-          canonicalNamespaceLink(namespace, subns) and
+        strictcount(string subns, string subnsClean, string type, boolean subtypes, string name,
+          string signature, string ext, string output, string provenance |
+          canonicalNamespaceLink(namespace, subnsClean) and
+          subnsClean = Input::cleanNamespace(subns) and
           sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance, _)
         )
       or
       part = "sink" and
       n =
-        strictcount(string subns, string type, boolean subtypes, string name, string signature,
-          string ext, string input, string provenance |
-          canonicalNamespaceLink(namespace, subns) and
+        strictcount(string subns, string subnsClean, string type, boolean subtypes, string name,
+          string signature, string ext, string input, string provenance |
+          canonicalNamespaceLink(namespace, subnsClean) and
+          subnsClean = Input::cleanNamespace(subns) and
           sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance, _)
         )
       or
       part = "summary" and
       n =
-        strictcount(string subns, string type, boolean subtypes, string name, string signature,
-          string ext, string input, string output, string provenance |
-          canonicalNamespaceLink(namespace, subns) and
+        strictcount(string subns, string subnsClean, string type, boolean subtypes, string name,
+          string signature, string ext, string input, string output, string provenance |
+          canonicalNamespaceLink(namespace, subnsClean) and
+          subnsClean = Input::cleanNamespace(subns) and
           summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance,
             _)
         )

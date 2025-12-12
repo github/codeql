@@ -96,7 +96,21 @@ private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.mad.static.MaD as SharedMaD
 
-private module MadInput implements SharedMaD::InputSig { }
+private module MadInput implements SharedMaD::InputSig {
+  string namespaceSegmentSeparator() { result = "/" }
+
+  bindingset[p]
+  string cleanNamespace(string p) {
+    exists(string noPrefix |
+      p = fixedVersionPrefix() + noPrefix
+      or
+      not p = fixedVersionPrefix() + any(string s) and
+      noPrefix = p
+    |
+      result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
+    )
+  }
+}
 
 private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
@@ -106,78 +120,6 @@ module FlowExtensions = Extensions;
 
 /** Gets the prefix for a group of packages. */
 private string groupPrefix() { result = "group:" }
-
-bindingset[p]
-private string cleanPackage(string p) {
-  exists(string noPrefix |
-    p = fixedVersionPrefix() + noPrefix
-    or
-    not p = fixedVersionPrefix() + any(string s) and
-    noPrefix = p
-  |
-    result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
-  )
-}
-
-private predicate relevantPackage(string package) {
-  exists(string p | package = cleanPackage(p) |
-    sourceModel(p, _, _, _, _, _, _, _, _, _) or
-    sinkModel(p, _, _, _, _, _, _, _, _, _) or
-    summaryModel(p, _, _, _, _, _, _, _, _, _, _)
-  )
-}
-
-private predicate packageLink(string shortpkg, string longpkg) {
-  relevantPackage(shortpkg) and
-  relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf("/")) = shortpkg
-}
-
-private predicate canonicalPackage(string package) {
-  relevantPackage(package) and not packageLink(_, package)
-}
-
-private predicate canonicalPkgLink(string package, string subpkg) {
-  canonicalPackage(package) and
-  (subpkg = package or packageLink(package, subpkg))
-}
-
-/**
- * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
- * which have MaD framework coverage (including `package` itself).
- */
-predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance, string x |
-        canonicalPkgLink(package, subpkg) and
-        subpkg = cleanPackage(x) and
-        sourceModel(x, type, subtypes, name, signature, ext, output, kind, provenance, _)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance, string x |
-        canonicalPkgLink(package, subpkg) and
-        subpkg = cleanPackage(x) and
-        sinkModel(x, type, subtypes, name, signature, ext, input, kind, provenance, _)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance, string x |
-        canonicalPkgLink(package, subpkg) and
-        subpkg = cleanPackage(x) and
-        summaryModel(x, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
-      )
-  )
-}
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
