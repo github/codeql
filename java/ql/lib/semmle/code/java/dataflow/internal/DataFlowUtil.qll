@@ -234,6 +234,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2, string model) {
     simpleAstFlowStep(node1.asExpr(), node2.asExpr())
     or
     captureValueStep(node1, node2)
+    or
+    ExceptionFlow::localStep(node1, node2)
   ) and
   model = ""
   or
