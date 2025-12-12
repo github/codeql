@@ -58,4 +58,6 @@ extensible predicate packageGrouping(string group, string package);
 
 module Extensions implements SharedMaD::ExtensionsSig {
   import ExternalFlowExtensions
+
+  predicate namespaceGrouping = packageGrouping/2;
 }

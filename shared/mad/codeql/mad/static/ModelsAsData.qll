@@ -51,9 +51,9 @@ signature module ExtensionsSig {
   );
 
   /**
-   * Holds if the package `package` is part of the group `group`.
+   * Holds if the namespace `namespace` is part of the group `group`.
    */
-  predicate packageGrouping(string group, string package);
+  predicate namespaceGrouping(string group, string namespace);
 }
 
 signature module InputSig {
@@ -166,14 +166,14 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     )
   }
 
-  /** Gets the prefix for a group of packages/namespaces. */
+  /** Gets the prefix for a group of namespaces. */
   private string groupPrefix() { result = "group:" }
 
   /**
-   * Gets a package/namespace represented by `namespaceOrGroup`.
+   * Gets a namespace represented by `namespaceOrGroup`.
    *
    * If `namespaceOrGroup` is of the form `group:<groupname>` then `result` is a
-   * package/namespace in the group `<groupname>`, as determined by `packageGrouping`.
+   * namespace in the group `<groupname>`, as determined by `namespaceGrouping`.
    * Otherwise, `result` is `namespaceOrGroup`.
    */
   bindingset[namespaceOrGroup]
@@ -182,7 +182,7 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     result = namespaceOrGroup
     or
     exists(string group |
-      Extensions::packageGrouping(group, result) and
+      Extensions::namespaceGrouping(group, result) and
       namespaceOrGroup = groupPrefix() + group
     )
   }

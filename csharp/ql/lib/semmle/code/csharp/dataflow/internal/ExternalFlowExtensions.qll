@@ -54,5 +54,5 @@ extensible predicate neutralModel(
 module Extensions implements SharedMaD::ExtensionsSig {
   import ExternalFlowExtensions
 
-  predicate packageGrouping(string group, string package) { none() }
+  predicate namespaceGrouping(string group, string namespace) { none() }
 }
