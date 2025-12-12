@@ -25,13 +25,24 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
 }
 
 /**
+ * Gets the (unbound) property `System.Collections.Generic.KeyValuePair.Value`.
+ */
+private Property keyValuePairValue() {
+  result.hasFullyQualifiedName("System.Collections.Generic", "KeyValuePair`2", "Value")
+}
+
+/**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(node) and
-  c.isElement()
+  (
+    c.isElement()
+    or
+    c.isProperty(keyValuePairValue())
+  )
 }
 
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
