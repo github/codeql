@@ -95,9 +95,3 @@ reverseRead
 | rpc/notes/service.twirp.go:1278:11:1278:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | rpc/notes/service.twirp.go:1292:23:1292:26 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | server/main.go:33:19:33:19 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| rpc/notes/service.twirp.go:60:6:60:15 | clientOpts | Node steps to itself |
-| rpc/notes/service.twirp.go:199:6:199:15 | clientOpts | Node steps to itself |
-| rpc/notes/service.twirp.go:852:6:852:15 | serverOpts | Node steps to itself |
-| rpc/notes/service.twirp.go:854:29:854:38 | serverOpts | Node steps to itself |
-| rpc/notes/service.twirp.go:965:4:965:9 | copied | Node steps to itself |

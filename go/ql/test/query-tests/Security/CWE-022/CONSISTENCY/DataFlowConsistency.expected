@@ -1,22 +1,3 @@
 reverseRead
 | TaintedPath.go:15:18:15:18 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | TaintedPath.go:84:28:84:32 | files | Origin of readStep is missing a PostUpdateNode. |
-identityLocalStep
-| UnsafeUnzipSymlink.go:26:18:26:18 | r | Node steps to itself |
-| UnsafeUnzipSymlink.go:30:29:30:34 | target | Node steps to itself |
-| UnsafeUnzipSymlink.go:42:22:42:27 | target | Node steps to itself |
-| UnsafeUnzipSymlink.go:58:18:58:18 | r | Node steps to itself |
-| UnsafeUnzipSymlink.go:62:3:62:7 | links | Node steps to itself |
-| UnsafeUnzipSymlink.go:79:18:79:18 | r | Node steps to itself |
-| UnsafeUnzipSymlink.go:85:29:85:34 | target | Node steps to itself |
-| UnsafeUnzipSymlink.go:94:18:94:18 | r | Node steps to itself |
-| UnsafeUnzipSymlink.go:98:29:98:34 | target | Node steps to itself |
-| UnsafeUnzipSymlink.go:121:32:121:32 | r | Node steps to itself |
-| UnsafeUnzipSymlink.go:125:29:125:34 | target | Node steps to itself |
-| UnsafeUnzipSymlink.go:146:32:146:32 | r | Node steps to itself |
-| UnsafeUnzipSymlink.go:150:29:150:34 | target | Node steps to itself |
-| UnsafeUnzipSymlinkGood.go:30:18:30:18 | r | Node steps to itself |
-| UnsafeUnzipSymlinkGood.go:34:33:34:38 | target | Node steps to itself |
-| UnsafeUnzipSymlinkGood.go:46:26:46:31 | target | Node steps to itself |
-| UnsafeUnzipSymlinkGood.go:72:18:72:18 | r | Node steps to itself |
-| UnsafeUnzipSymlinkGood.go:76:41:76:46 | target | Node steps to itself |

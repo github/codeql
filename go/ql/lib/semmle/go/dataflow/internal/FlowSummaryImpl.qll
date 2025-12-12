@@ -397,17 +397,13 @@ module SourceSinkInterpretationInput implements
   }
 
   private DataFlow::Node skipImplicitFieldReads(DataFlow::Node n) {
-    not exists(lookThroughImplicitFieldRead(n)) and result = n
+    not exists(IR::lookThroughImplicitFieldRead(n.asInstruction())) and result = n
     or
-    result = skipImplicitFieldReads(lookThroughImplicitFieldRead(n))
-  }
-
-  private DataFlow::Node lookThroughImplicitFieldRead(DataFlow::Node n) {
-    result.asInstruction() =
-      n.(DataFlow::InstructionNode)
-          .asInstruction()
-          .(IR::ImplicitFieldReadInstruction)
-          .getBaseInstruction()
+    exists(DataFlow::Node mid |
+      mid.asInstruction() = IR::lookThroughImplicitFieldRead(n.asInstruction())
+    |
+      result = skipImplicitFieldReads(mid)
+    )
   }
 
   /** Provides additional sink specification logic. */

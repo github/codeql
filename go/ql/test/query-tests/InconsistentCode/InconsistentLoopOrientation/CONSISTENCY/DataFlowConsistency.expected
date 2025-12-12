@@ -1,6 +1,0 @@
-identityLocalStep
-| InconsistentLoopOrientation.go:6:3:6:3 | a | Node steps to itself |
-| InconsistentLoopOrientationGood.go:6:3:6:3 | a | Node steps to itself |
-| main.go:9:26:9:26 | s | Node steps to itself |
-| main.go:14:29:14:29 | l | Node steps to itself |
-| main.go:20:3:20:3 | a | Node steps to itself |
