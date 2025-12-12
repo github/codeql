@@ -89,7 +89,7 @@ if [[ "$CLEAN" == false && -z "$CLI_FOLDER" ]]; then
 fi
 
 build_cil() {
-  local tools_folder="${CLI_FOLDER}/cil/tools/osx-arm64"
+  local tools_folder="${CLI_FOLDER}/cil/tools/osx64"
   local cil_folder="${CLI_FOLDER}/cil"
 
   pushd "${SCRIPT_DIR}/extractor/cil" > /dev/null
