@@ -32,7 +32,7 @@ jobs:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
         id: os_version
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
@@ -77,7 +77,7 @@ jobs:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
         id: os_version
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
