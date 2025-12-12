@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Prompts can be constructed to bypass the original purposes of an agent and lead to sensitive data leak or 
+operations that were not intended.
+</p>
+</overview>
+
+<recommendation>
+Sanitize user input and also avoid using user input in developer or system level prompts.
+</recommendation>
+
+<example>
+<p>In the following examples, the cases marked GOOD show secure prompt construction; whereas in the case marked BAD they may be susceptible to prompt injection.</p>
+<sample src="examples/TODO.py" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/PromptInjection">PromptInjection</a>.</li>
+</references>
+
+</qhelp>

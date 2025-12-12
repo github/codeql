@@ -1,0 +1,18 @@
+edges
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_instructions.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for request | agent_instructions.py:7:13:7:19 | ControlFlowNode for request | provenance |  |
+| agent_instructions.py:7:5:7:9 | ControlFlowNode for input | agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | provenance |  |
+| agent_instructions.py:7:13:7:19 | ControlFlowNode for request | agent_instructions.py:7:13:7:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_instructions.py:7:13:7:24 | ControlFlowNode for Attribute | agent_instructions.py:7:13:7:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| agent_instructions.py:7:13:7:37 | ControlFlowNode for Attribute() | agent_instructions.py:7:5:7:9 | ControlFlowNode for input | provenance |  |
+nodes
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_instructions.py:7:5:7:9 | ControlFlowNode for input | semmle.label | ControlFlowNode for input |
+| agent_instructions.py:7:13:7:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_instructions.py:7:13:7:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| agent_instructions.py:7:13:7:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
+#select
+| agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |

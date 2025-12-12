@@ -54,6 +54,7 @@ private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Numpy
+private import semmle.python.frameworks.OpenAI
 private import semmle.python.frameworks.Opml
 private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Pandas
