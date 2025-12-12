@@ -7683,8 +7683,11 @@ inferType
 | main.rs:1425:26:1425:27 | x2 |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1425:26:1425:27 | x2 | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1428:17:1428:18 | x3 |  | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1428:17:1428:18 | x3 | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1428:22:1428:36 | ...::new(...) |  | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1428:22:1428:36 | ...::new(...) | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1429:9:1429:10 | x3 |  | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1429:9:1429:10 | x3 | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1429:9:1429:22 | x3.call_set(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:1429:21:1429:21 | S |  | main.rs:1416:5:1417:13 | S |
 | main.rs:1430:18:1430:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | & |
@@ -7692,6 +7695,7 @@ inferType
 | main.rs:1430:18:1430:27 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | main.rs:1430:18:1430:27 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:1430:26:1430:27 | x3 |  | main.rs:1381:5:1385:5 | MyOption |
+| main.rs:1430:26:1430:27 | x3 | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1432:17:1432:18 | x4 |  | main.rs:1381:5:1385:5 | MyOption |
 | main.rs:1432:17:1432:18 | x4 | T | main.rs:1416:5:1417:13 | S |
 | main.rs:1432:22:1432:36 | ...::new(...) |  | main.rs:1381:5:1385:5 | MyOption |
