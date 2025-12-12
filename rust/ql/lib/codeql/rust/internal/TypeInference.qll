@@ -267,11 +267,6 @@ private TypeMention getTypeAnnotation(AstNode n) {
     n = p.getPat() and
     result = p.getTypeRepr()
   )
-  or
-  exists(Function f |
-    result = getReturnTypeMention(f) and
-    n = f.getFunctionBody()
-  )
 }
 
 /** Gets the type of `n`, which has an explicit type annotation. */
@@ -280,6 +275,17 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
   or
   result = n.(ShorthandSelfParameterMention).resolveTypeAt(path)
+}
+
+pragma[nomagic]
+private Type inferFunctionBodyType(AstNode n, TypePath path) {
+  exists(Function f |
+    n = f.getFunctionBody() and
+    result = getReturnTypeMention(f).resolveTypeAt(path) and
+    not exists(ImplTraitReturnType i | i.getFunction() = f |
+      result = i or result = i.getATypeParameter()
+    )
+  )
 }
 
 /**
@@ -418,6 +424,8 @@ module CertainTypeInference {
   Type inferCertainType(AstNode n, TypePath path) {
     result = inferAnnotatedType(n, path) and
     Stages::TypeInferenceStage::ref()
+    or
+    result = inferFunctionBodyType(n, path)
     or
     result = inferCertainCallExprType(n, path)
     or
