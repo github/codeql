@@ -1,9 +1,0 @@
-multipleResolvedTargets
-| option.rs:34:18:34:22 | * ... |
-| option.rs:61:15:61:19 | * ... |
-| option.rs:69:15:69:19 | * ... |
-| option.rs:306:9:306:13 | * ... |
-| option.rs:335:13:335:17 | * ... |
-| option.rs:483:27:483:29 | * ... |
-| summaries.rs:87:5:87:6 | * ... |
-| summaries.rs:92:5:92:6 | * ... |

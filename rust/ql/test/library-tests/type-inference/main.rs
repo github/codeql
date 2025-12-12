@@ -1424,7 +1424,6 @@ mod option_methods {
         x2.set(S); // $ target=MyOption::set
         println!("{:?}", x2);
 
-        // missing type `S` from `MyOption<S>` (but can resolve `MyTrait<S>`)
         let mut x3 = MyOption::new(); // $ target=new
         x3.call_set(S); // $ target=call_set
         println!("{:?}", x3);
@@ -2626,7 +2625,7 @@ mod loops {
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:TArray.TRef.str
         for s in &strings1 {} // $ type=s:TRef.TRef.str
-        for s in &mut strings1 {} // $ type=s:TRef.TRef.str
+        for s in &mut strings1 {} // $ type=s:TRefMut.TRef.str
         for s in strings1 {} // $ type=s:TRef.str
 
         let strings2 = // $ type=strings2:TArray.String
