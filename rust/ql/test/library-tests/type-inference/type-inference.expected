@@ -2754,9 +2754,7 @@ inferCertainType
 | main.rs:2224:18:2224:21 | SelfParam |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2224:24:2224:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2227:25:2229:5 | { ... } |  | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2231:41:2233:5 | { ... } |  | main.rs:2231:16:2231:39 | impl ... |
 | main.rs:2232:9:2232:20 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
-| main.rs:2235:41:2237:5 | { ... } |  | main.rs:2235:16:2235:39 | impl ... |
 | main.rs:2236:9:2236:16 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2236:9:2236:16 | { ... } | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:2245:13:2245:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
@@ -2766,7 +2764,6 @@ inferCertainType
 | main.rs:2246:13:2246:15 | _cx | TRef | {EXTERNAL LOCATION} | Context |
 | main.rs:2247:44:2249:9 | { ... } |  | {EXTERNAL LOCATION} | Poll |
 | main.rs:2247:44:2249:9 | { ... } | T | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2252:41:2254:5 | { ... } |  | main.rs:2252:16:2252:39 | impl ... |
 | main.rs:2256:22:2264:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2257:9:2257:12 | f1(...) |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2257:9:2257:12 | f1(...) | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
@@ -2788,7 +2785,6 @@ inferCertainType
 | main.rs:2286:15:2286:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:2286:15:2286:19 | SelfParam | TRef | main.rs:2268:5:2269:14 | S1 |
 | main.rs:2286:22:2286:23 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2289:37:2291:5 | { ... } |  | main.rs:2289:16:2289:35 | impl ... + ... |
 | main.rs:2294:18:2294:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:2294:18:2294:22 | SelfParam | TRef | main.rs:2293:5:2295:5 | Self [trait MyTrait] |
 | main.rs:2298:18:2298:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
@@ -2801,7 +2797,6 @@ inferCertainType
 | main.rs:2305:25:2305:28 | self |  | {EXTERNAL LOCATION} | & |
 | main.rs:2305:25:2305:28 | self | TRef | main.rs:2271:5:2271:22 | S3 |
 | main.rs:2305:25:2305:28 | self | TRef.T3 | main.rs:2303:10:2303:17 | T |
-| main.rs:2310:45:2312:5 | { ... } |  | main.rs:2310:28:2310:43 | impl ... |
 | main.rs:2314:41:2314:41 | t |  | main.rs:2314:26:2314:38 | B |
 | main.rs:2314:52:2316:5 | { ... } |  | main.rs:2314:23:2314:23 | A |
 | main.rs:2315:9:2315:9 | t |  | main.rs:2314:26:2314:38 | B |
@@ -9386,11 +9381,13 @@ inferType
 | main.rs:2224:24:2224:25 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2227:25:2229:5 | { ... } |  | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2228:9:2228:10 | S1 |  | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2231:41:2233:5 | { ... } |  | main.rs:2231:16:2231:39 | impl ... |
+| main.rs:2231:41:2233:5 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2231:41:2233:5 | { ... } | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2232:9:2232:20 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2232:9:2232:20 | { ... } | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2232:17:2232:18 | S1 |  | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2235:41:2237:5 | { ... } |  | main.rs:2235:16:2235:39 | impl ... |
+| main.rs:2235:41:2237:5 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2235:41:2237:5 | { ... } | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:2236:9:2236:16 | { ... } |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2236:9:2236:16 | { ... } | dyn(Output) | {EXTERNAL LOCATION} | () |
 | main.rs:2245:13:2245:42 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
@@ -9403,9 +9400,8 @@ inferType
 | main.rs:2248:13:2248:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
 | main.rs:2248:13:2248:38 | ...::Ready(...) | T | main.rs:2221:5:2221:14 | S1 |
 | main.rs:2248:36:2248:37 | S1 |  | main.rs:2221:5:2221:14 | S1 |
-| main.rs:2252:41:2254:5 | { ... } |  | main.rs:2252:16:2252:39 | impl ... |
+| main.rs:2252:41:2254:5 | { ... } |  | main.rs:2239:5:2239:14 | S2 |
 | main.rs:2253:9:2253:10 | S2 |  | main.rs:2239:5:2239:14 | S2 |
-| main.rs:2253:9:2253:10 | S2 |  | main.rs:2252:16:2252:39 | impl ... |
 | main.rs:2256:22:2264:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2257:9:2257:12 | f1(...) |  | {EXTERNAL LOCATION} | dyn Future |
 | main.rs:2257:9:2257:12 | f1(...) | dyn(Output) | main.rs:2221:5:2221:14 | S1 |
@@ -9443,9 +9439,8 @@ inferType
 | main.rs:2286:15:2286:19 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:2286:15:2286:19 | SelfParam | TRef | main.rs:2268:5:2269:14 | S1 |
 | main.rs:2286:22:2286:23 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2289:37:2291:5 | { ... } |  | main.rs:2289:16:2289:35 | impl ... + ... |
+| main.rs:2289:37:2291:5 | { ... } |  | main.rs:2268:5:2269:14 | S1 |
 | main.rs:2290:9:2290:10 | S1 |  | main.rs:2268:5:2269:14 | S1 |
-| main.rs:2290:9:2290:10 | S1 |  | main.rs:2289:16:2289:35 | impl ... + ... |
 | main.rs:2294:18:2294:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | main.rs:2294:18:2294:22 | SelfParam | TRef | main.rs:2293:5:2295:5 | Self [trait MyTrait] |
 | main.rs:2298:18:2298:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
@@ -9464,9 +9459,8 @@ inferType
 | main.rs:2305:25:2305:28 | self | TRef | main.rs:2271:5:2271:22 | S3 |
 | main.rs:2305:25:2305:28 | self | TRef.T3 | main.rs:2303:10:2303:17 | T |
 | main.rs:2306:13:2306:21 | t.clone() |  | main.rs:2303:10:2303:17 | T |
-| main.rs:2310:45:2312:5 | { ... } |  | main.rs:2310:28:2310:43 | impl ... |
+| main.rs:2310:45:2312:5 | { ... } |  | main.rs:2268:5:2269:14 | S1 |
 | main.rs:2311:9:2311:10 | S1 |  | main.rs:2268:5:2269:14 | S1 |
-| main.rs:2311:9:2311:10 | S1 |  | main.rs:2310:28:2310:43 | impl ... |
 | main.rs:2314:41:2314:41 | t |  | main.rs:2314:26:2314:38 | B |
 | main.rs:2314:52:2316:5 | { ... } |  | main.rs:2314:23:2314:23 | A |
 | main.rs:2315:9:2315:9 | t |  | main.rs:2314:26:2314:38 | B |
