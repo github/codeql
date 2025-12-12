@@ -631,6 +631,10 @@ edges
 | CollectionFlow.cs:550:60:550:60 | access to local variable a : A | CollectionFlow.cs:550:58:550:62 | { ..., ... } : null [element] : A | provenance |  |
 | CollectionFlow.cs:551:14:551:17 | access to local variable span : ReadOnlySpan<A> | CollectionFlow.cs:551:14:551:20 | access to indexer | provenance | MaD:24 |
 | CollectionFlow.cs:551:14:551:17 | access to local variable span : ReadOnlySpan<T> [element] : A | CollectionFlow.cs:551:14:551:20 | access to indexer | provenance | MaD:24 |
+| CollectionFlow.cs:555:13:555:13 | access to local variable a : A | CollectionFlow.cs:556:19:556:19 | access to local variable a : A | provenance |  |
+| CollectionFlow.cs:555:17:555:23 | object creation of type A : A | CollectionFlow.cs:555:13:555:13 | access to local variable a : A | provenance |  |
+| CollectionFlow.cs:556:9:556:12 | [post] access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:557:14:557:17 | access to parameter dict | provenance |  |
+| CollectionFlow.cs:556:19:556:19 | access to local variable a : A | CollectionFlow.cs:556:9:556:12 | [post] access to parameter dict : Dictionary<T,T> [element, property Value] : A | provenance | MaD:11 |
 nodes
 | CollectionFlow.cs:14:40:14:41 | ts : A[] [element] : A | semmle.label | ts : A[] [element] : A |
 | CollectionFlow.cs:14:40:14:41 | ts : null [element] : A | semmle.label | ts : null [element] : A |
@@ -1170,6 +1174,11 @@ nodes
 | CollectionFlow.cs:551:14:551:17 | access to local variable span : ReadOnlySpan<A> | semmle.label | access to local variable span : ReadOnlySpan<A> |
 | CollectionFlow.cs:551:14:551:17 | access to local variable span : ReadOnlySpan<T> [element] : A | semmle.label | access to local variable span : ReadOnlySpan<T> [element] : A |
 | CollectionFlow.cs:551:14:551:20 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:555:13:555:13 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:555:17:555:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:556:9:556:12 | [post] access to parameter dict : Dictionary<T,T> [element, property Value] : A | semmle.label | [post] access to parameter dict : Dictionary<T,T> [element, property Value] : A |
+| CollectionFlow.cs:556:19:556:19 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:557:14:557:17 | access to parameter dict | semmle.label | access to parameter dict |
 subpaths
 | CollectionFlow.cs:50:20:50:22 | access to local variable as : null [element] : A | CollectionFlow.cs:24:34:24:35 | ts : null [element] : A | CollectionFlow.cs:24:41:24:45 | access to array element : A | CollectionFlow.cs:50:14:50:23 | call to method First<A> |
 | CollectionFlow.cs:68:20:68:23 | access to field As : A[] [element] : A | CollectionFlow.cs:24:34:24:35 | ts : A[] [element] : A | CollectionFlow.cs:24:41:24:45 | access to array element : A | CollectionFlow.cs:68:14:68:24 | call to method First<A> |
@@ -1372,3 +1381,4 @@ subpaths
 | CollectionFlow.cs:542:42:542:48 | object creation of type A : A | CollectionFlow.cs:542:42:542:48 | object creation of type A : A | CollectionFlow.cs:544:14:544:22 | access to indexer | $@ | CollectionFlow.cs:544:14:544:22 | access to indexer | access to indexer |
 | CollectionFlow.cs:549:17:549:23 | object creation of type A : A | CollectionFlow.cs:549:17:549:23 | object creation of type A : A | CollectionFlow.cs:551:14:551:20 | access to indexer | $@ | CollectionFlow.cs:551:14:551:20 | access to indexer | access to indexer |
 | CollectionFlow.cs:550:32:550:63 | object creation of type ReadOnlySpan<A> : ReadOnlySpan<A> | CollectionFlow.cs:550:32:550:63 | object creation of type ReadOnlySpan<A> : ReadOnlySpan<A> | CollectionFlow.cs:551:14:551:20 | access to indexer | $@ | CollectionFlow.cs:551:14:551:20 | access to indexer | access to indexer |
+| CollectionFlow.cs:555:17:555:23 | object creation of type A : A | CollectionFlow.cs:555:17:555:23 | object creation of type A : A | CollectionFlow.cs:557:14:557:17 | access to parameter dict | $@ | CollectionFlow.cs:557:14:557:17 | access to parameter dict | access to parameter dict |

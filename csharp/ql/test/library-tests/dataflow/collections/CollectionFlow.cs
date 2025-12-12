@@ -554,6 +554,6 @@ public class CollectionFlow
     public void ImplicitMapValueRead(Dictionary<int, A> dict) {
         var a = new A();
         dict[0] = a;
-        Sink(dict); // no taint flow
+        Sink(dict); // taint flow
     }
 }
