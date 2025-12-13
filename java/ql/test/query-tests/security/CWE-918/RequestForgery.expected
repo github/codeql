@@ -253,35 +253,91 @@
 | SanitizationTests.java:122:60:122:79 | new URI(...) | SanitizationTests.java:121:94:121:125 | getParameter(...) : String | SanitizationTests.java:122:60:122:79 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:121:94:121:125 | getParameter(...) | user-provided value |
 | SanitizationTests.java:123:25:123:33 | unsafer10 | SanitizationTests.java:121:94:121:125 | getParameter(...) : String | SanitizationTests.java:123:25:123:33 | unsafer10 | Potential server-side request forgery due to a $@. | SanitizationTests.java:121:94:121:125 | getParameter(...) | user-provided value |
 | SpringSSRF.java:32:39:32:59 | ... + ... | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:32:39:32:59 | ... + ... | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:33:35:33:48 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:35:33:48 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:34:34:34:47 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:34:34:47 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:35:39:35:52 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:35:39:35:52 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:36:69:36:82 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:36:69:36:82 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:37:73:37:86 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:37:73:37:86 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:40:69:40:97 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:40:69:40:97 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:42:69:42:119 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:42:69:42:119 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:44:41:44:54 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:44:41:44:54 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:45:40:45:62 | new URI(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:45:40:45:62 | new URI(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:46:42:46:55 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:46:42:46:55 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:47:40:47:53 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:47:40:47:53 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:48:30:48:43 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:48:30:48:43 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:49:33:49:46 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:49:33:49:46 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:50:41:50:54 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:50:41:50:54 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:51:42:51:55 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:51:42:51:55 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:56:44:56:46 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:56:44:56:46 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:58:35:58:37 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:58:35:58:37 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:59:35:59:37 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:59:35:59:37 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:60:38:60:40 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:60:38:60:40 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:61:39:61:41 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:61:39:61:41 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:62:37:62:39 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:62:37:62:39 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:63:36:63:38 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:63:36:63:38 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:64:44:64:46 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:64:44:64:46 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:70:49:70:51 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:70:49:70:51 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:71:58:71:60 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:71:58:71:60 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:72:57:72:59 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:72:57:72:59 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:73:66:73:68 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:73:66:73:68 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:74:57:74:59 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:74:57:74:59 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
-| SpringSSRF.java:75:66:75:68 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:75:66:75:68 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:33:69:33:82 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:69:33:82 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:34:73:34:86 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:73:34:86 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:35:87:35:100 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:35:87:35:100 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:38:69:38:97 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:38:69:38:97 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:40:69:40:119 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:40:69:40:119 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:43:35:43:48 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:43:35:43:48 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:44:91:44:104 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:44:91:44:104 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:45:95:45:108 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:45:95:45:108 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:46:109:46:122 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:46:109:46:122 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:49:91:49:119 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:49:91:49:119 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:51:91:51:141 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:51:91:51:141 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:54:34:54:47 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:54:34:54:47 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:55:79:55:92 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:55:79:55:92 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:56:83:56:96 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:56:83:56:96 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:57:97:57:110 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:57:97:57:110 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:60:79:60:107 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:60:79:60:107 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:62:79:62:129 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:62:79:62:129 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:65:39:65:52 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:65:39:65:52 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:66:69:66:82 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:66:69:66:82 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:67:73:67:86 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:67:73:67:86 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:68:87:68:100 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:68:87:68:100 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:71:69:71:97 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:71:69:71:97 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:73:69:73:119 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:73:69:73:119 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:76:41:76:54 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:76:41:76:54 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:77:93:77:106 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:77:93:77:106 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:78:97:78:110 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:78:97:78:110 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:79:111:79:124 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:79:111:79:124 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:82:93:82:121 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:82:93:82:121 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:84:93:84:143 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:84:93:84:143 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:87:40:87:62 | new URI(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:87:40:87:62 | new URI(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:88:92:88:105 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:88:92:88:105 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:89:96:89:109 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:89:96:89:109 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:90:110:90:123 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:90:110:90:123 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:93:92:93:120 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:93:92:93:120 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:95:92:95:142 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:95:92:95:142 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:98:42:98:55 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:98:42:98:55 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:99:80:99:93 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:99:80:99:93 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:100:84:100:97 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:100:84:100:97 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:101:98:101:111 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:101:98:101:111 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:104:80:104:108 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:104:80:104:108 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:106:80:106:130 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:106:80:106:130 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:109:40:109:53 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:109:40:109:53 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:110:92:110:105 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:110:92:110:105 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:111:96:111:109 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:111:96:111:109 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:112:110:112:123 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:112:110:112:123 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:115:92:115:120 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:115:92:115:120 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:117:92:117:142 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:117:92:117:142 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:120:30:120:43 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:120:30:120:43 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:121:68:121:81 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:121:68:121:81 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:122:72:122:85 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:122:72:122:85 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:123:86:123:99 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:123:86:123:99 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:126:68:126:96 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:126:68:126:96 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:128:68:128:118 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:128:68:128:118 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:131:33:131:46 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:131:33:131:46 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:132:49:132:62 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:132:49:132:62 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:133:53:133:66 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:133:53:133:66 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:134:67:134:80 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:134:67:134:80 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:137:49:137:77 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:137:49:137:77 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:139:49:139:99 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:139:49:139:99 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:142:41:142:54 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:142:41:142:54 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:143:57:143:70 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:143:57:143:70 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:144:61:144:74 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:144:61:144:74 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:145:75:145:88 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:145:75:145:88 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:148:57:148:85 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:148:57:148:85 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:150:57:150:107 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:150:57:150:107 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:153:42:153:55 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:153:42:153:55 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:154:58:154:71 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:154:58:154:71 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:155:62:155:75 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:155:62:155:75 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:156:76:156:89 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:156:76:156:89 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:159:58:159:86 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:159:58:159:86 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:161:58:161:108 | of(...) | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:161:58:161:108 | of(...) | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:168:44:168:46 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:168:44:168:46 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:170:35:170:37 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:170:35:170:37 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:171:35:171:37 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:171:35:171:37 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:172:38:172:40 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:172:38:172:40 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:173:39:173:41 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:173:39:173:41 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:174:37:174:39 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:174:37:174:39 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:175:36:175:38 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:175:36:175:38 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:176:44:176:46 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:176:44:176:46 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:182:49:182:51 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:182:49:182:51 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:183:58:183:60 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:183:58:183:60 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:184:57:184:59 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:184:57:184:59 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:185:66:185:68 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:185:66:185:68 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:186:57:186:59 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:186:57:186:59 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
+| SpringSSRF.java:187:66:187:68 | uri | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:187:66:187:68 | uri | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
 | URLClassLoaderSSRF.java:18:64:18:85 | new URL[] | URLClassLoaderSSRF.java:16:26:16:52 | getParameter(...) : String | URLClassLoaderSSRF.java:18:64:18:85 | new URL[] | Potential server-side request forgery due to a $@. | URLClassLoaderSSRF.java:16:26:16:52 | getParameter(...) | user-provided value |
 | URLClassLoaderSSRF.java:30:64:30:85 | new URL[] | URLClassLoaderSSRF.java:28:26:28:52 | getParameter(...) : String | URLClassLoaderSSRF.java:30:64:30:85 | new URL[] | Potential server-side request forgery due to a $@. | URLClassLoaderSSRF.java:28:26:28:52 | getParameter(...) | user-provided value |
 | URLClassLoaderSSRF.java:44:64:44:85 | new URL[] | URLClassLoaderSSRF.java:40:26:40:52 | getParameter(...) : String | URLClassLoaderSSRF.java:44:64:44:85 | new URL[] | Potential server-side request forgery due to a $@. | URLClassLoaderSSRF.java:40:26:40:52 | getParameter(...) | user-provided value |
@@ -778,45 +834,123 @@ edges
 | SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | SanitizationTests.java:122:60:122:79 | new URI(...) : URI | provenance | Config |
 | SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | SanitizationTests.java:122:60:122:79 | new URI(...) : URI | provenance | MaD:285 |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:32:39:32:59 | ... + ... | provenance | Src:MaD:277 Sink:MaD:264 |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:35:33:48 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:262 |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:34:34:47 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:263 |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:35:39:35:52 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:265 |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:36:69:36:82 | fooResourceUrl | provenance | Src:MaD:277  |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:37:73:37:86 | fooResourceUrl | provenance | Src:MaD:277  |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:40:83:40:96 | fooResourceUrl : String | provenance | Src:MaD:277  |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:42:105:42:118 | fooResourceUrl : String | provenance | Src:MaD:277  |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:44:41:44:54 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:268 |
-| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | provenance | Src:MaD:277  |
-| SpringSSRF.java:40:83:40:96 | fooResourceUrl : String | SpringSSRF.java:40:69:40:97 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:42:105:42:118 | fooResourceUrl : String | SpringSSRF.java:42:69:42:119 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:45:40:45:62 | new URI(...) | provenance | Config Sink:MaD:269 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:45:40:45:62 | new URI(...) | provenance | MaD:285 Sink:MaD:269 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:46:42:46:55 | fooResourceUrl | provenance | Sink:MaD:270 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:47:40:47:53 | fooResourceUrl | provenance | Sink:MaD:271 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:48:30:48:43 | fooResourceUrl | provenance | Sink:MaD:272 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:49:33:49:46 | fooResourceUrl | provenance | Sink:MaD:261 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:50:41:50:54 | fooResourceUrl | provenance | Sink:MaD:266 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:51:42:51:55 | fooResourceUrl | provenance | Sink:MaD:267 |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | SpringSSRF.java:54:35:54:48 | fooResourceUrl : String | provenance |  |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:56:44:56:46 | uri | provenance | Sink:MaD:255 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:58:35:58:37 | uri | provenance | Sink:MaD:250 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:59:35:59:37 | uri | provenance | Sink:MaD:256 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:60:38:60:40 | uri | provenance | Sink:MaD:249 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:61:39:61:41 | uri | provenance | Sink:MaD:253 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:62:37:62:39 | uri | provenance | Sink:MaD:254 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:63:36:63:38 | uri | provenance | Sink:MaD:251 |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | SpringSSRF.java:64:44:64:46 | uri | provenance | Sink:MaD:252 |
-| SpringSSRF.java:54:35:54:48 | fooResourceUrl : String | SpringSSRF.java:54:27:54:49 | new URI(...) : URI | provenance | Config |
-| SpringSSRF.java:54:35:54:48 | fooResourceUrl : String | SpringSSRF.java:54:27:54:49 | new URI(...) : URI | provenance | MaD:285 |
-| SpringSSRF.java:54:35:54:48 | fooResourceUrl : String | SpringSSRF.java:67:35:67:48 | fooResourceUrl : String | provenance |  |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | SpringSSRF.java:70:49:70:51 | uri | provenance | Sink:MaD:243 |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | SpringSSRF.java:71:58:71:60 | uri | provenance | Sink:MaD:244 |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | SpringSSRF.java:72:57:72:59 | uri | provenance | Sink:MaD:245 |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | SpringSSRF.java:73:66:73:68 | uri | provenance | Sink:MaD:247 |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | SpringSSRF.java:74:57:74:59 | uri | provenance | Sink:MaD:246 |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | SpringSSRF.java:75:66:75:68 | uri | provenance | Sink:MaD:248 |
-| SpringSSRF.java:67:35:67:48 | fooResourceUrl : String | SpringSSRF.java:67:27:67:49 | new URI(...) : URI | provenance | Config |
-| SpringSSRF.java:67:35:67:48 | fooResourceUrl : String | SpringSSRF.java:67:27:67:49 | new URI(...) : URI | provenance | MaD:285 |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:69:33:82 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:73:34:86 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:35:87:35:100 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:43:35:43:48 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:262 |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:44:91:44:104 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:45:95:45:108 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:46:109:46:122 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:54:34:54:47 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:263 |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:55:79:55:92 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:56:83:56:96 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:57:97:57:110 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:65:39:65:52 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:265 |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:66:69:66:82 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:67:73:67:86 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:68:87:68:100 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:76:41:76:54 | fooResourceUrl | provenance | Src:MaD:277 Sink:MaD:268 |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:77:93:77:106 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:78:97:78:110 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:79:111:79:124 | fooResourceUrl | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | provenance | Src:MaD:277  |
+| SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | SpringSSRF.java:38:69:38:97 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | SpringSSRF.java:40:69:40:119 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | SpringSSRF.java:49:91:49:119 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | SpringSSRF.java:51:91:51:141 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | SpringSSRF.java:60:79:60:107 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | SpringSSRF.java:62:79:62:129 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | SpringSSRF.java:71:69:71:97 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | SpringSSRF.java:73:69:73:119 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | SpringSSRF.java:82:93:82:121 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | SpringSSRF.java:84:93:84:143 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:87:40:87:62 | new URI(...) | provenance | Config Sink:MaD:269 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:87:40:87:62 | new URI(...) | provenance | MaD:285 Sink:MaD:269 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:88:92:88:105 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:89:96:89:109 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:90:110:90:123 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:98:42:98:55 | fooResourceUrl | provenance | Sink:MaD:270 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:99:80:99:93 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:100:84:100:97 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:101:98:101:111 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:109:40:109:53 | fooResourceUrl | provenance | Sink:MaD:271 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:110:92:110:105 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:111:96:111:109 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:112:110:112:123 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:120:30:120:43 | fooResourceUrl | provenance | Sink:MaD:272 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:121:68:121:81 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:122:72:122:85 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:123:86:123:99 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:131:33:131:46 | fooResourceUrl | provenance | Sink:MaD:261 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:132:49:132:62 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:133:53:133:66 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:134:67:134:80 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:142:41:142:54 | fooResourceUrl | provenance | Sink:MaD:266 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:143:57:143:70 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:144:61:144:74 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:145:75:145:88 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:153:42:153:55 | fooResourceUrl | provenance | Sink:MaD:267 |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:154:58:154:71 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:155:62:155:75 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:156:76:156:89 | fooResourceUrl | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | SpringSSRF.java:93:92:93:120 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | SpringSSRF.java:95:92:95:142 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | SpringSSRF.java:104:80:104:108 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | SpringSSRF.java:106:80:106:130 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | SpringSSRF.java:115:92:115:120 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | SpringSSRF.java:117:92:117:142 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | SpringSSRF.java:126:68:126:96 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | SpringSSRF.java:128:68:128:118 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | SpringSSRF.java:137:49:137:77 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | SpringSSRF.java:139:49:139:99 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | SpringSSRF.java:148:57:148:85 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | SpringSSRF.java:150:57:150:107 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | SpringSSRF.java:159:58:159:86 | of(...) | provenance | MaD:289 |
+| SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | SpringSSRF.java:161:58:161:108 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:168:44:168:46 | uri | provenance | Sink:MaD:255 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:170:35:170:37 | uri | provenance | Sink:MaD:250 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:171:35:171:37 | uri | provenance | Sink:MaD:256 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:172:38:172:40 | uri | provenance | Sink:MaD:249 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:173:39:173:41 | uri | provenance | Sink:MaD:253 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:174:37:174:39 | uri | provenance | Sink:MaD:254 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:175:36:175:38 | uri | provenance | Sink:MaD:251 |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:176:44:176:46 | uri | provenance | Sink:MaD:252 |
+| SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | provenance | Config |
+| SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | provenance | MaD:285 |
+| SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | SpringSSRF.java:179:35:179:48 | fooResourceUrl : String | provenance |  |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | SpringSSRF.java:182:49:182:51 | uri | provenance | Sink:MaD:243 |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | SpringSSRF.java:183:58:183:60 | uri | provenance | Sink:MaD:244 |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | SpringSSRF.java:184:57:184:59 | uri | provenance | Sink:MaD:245 |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | SpringSSRF.java:185:66:185:68 | uri | provenance | Sink:MaD:247 |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | SpringSSRF.java:186:57:186:59 | uri | provenance | Sink:MaD:246 |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | SpringSSRF.java:187:66:187:68 | uri | provenance | Sink:MaD:248 |
+| SpringSSRF.java:179:35:179:48 | fooResourceUrl : String | SpringSSRF.java:179:27:179:49 | new URI(...) : URI | provenance | Config |
+| SpringSSRF.java:179:35:179:48 | fooResourceUrl : String | SpringSSRF.java:179:27:179:49 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:16:26:16:52 | getParameter(...) : String | URLClassLoaderSSRF.java:17:31:17:33 | url : String | provenance | Src:MaD:277  |
 | URLClassLoaderSSRF.java:17:23:17:34 | new URI(...) : URI | URLClassLoaderSSRF.java:18:74:18:76 | uri : URI | provenance |  |
 | URLClassLoaderSSRF.java:17:31:17:33 | url : String | URLClassLoaderSSRF.java:17:23:17:34 | new URI(...) : URI | provenance | Config |
@@ -1683,42 +1817,120 @@ nodes
 | SanitizationTests.java:123:25:123:33 | unsafer10 | semmle.label | unsafer10 |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | SpringSSRF.java:32:39:32:59 | ... + ... | semmle.label | ... + ... |
-| SpringSSRF.java:33:35:33:48 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:34:34:34:47 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:35:39:35:52 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:36:69:36:82 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:37:73:37:86 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:40:69:40:97 | of(...) | semmle.label | of(...) |
-| SpringSSRF.java:40:83:40:96 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
-| SpringSSRF.java:42:69:42:119 | of(...) | semmle.label | of(...) |
-| SpringSSRF.java:42:105:42:118 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
-| SpringSSRF.java:44:41:44:54 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:45:40:45:62 | new URI(...) | semmle.label | new URI(...) |
-| SpringSSRF.java:45:48:45:61 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
-| SpringSSRF.java:46:42:46:55 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:47:40:47:53 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:48:30:48:43 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:49:33:49:46 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:50:41:50:54 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:51:42:51:55 | fooResourceUrl | semmle.label | fooResourceUrl |
-| SpringSSRF.java:54:27:54:49 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SpringSSRF.java:54:35:54:48 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
-| SpringSSRF.java:56:44:56:46 | uri | semmle.label | uri |
-| SpringSSRF.java:58:35:58:37 | uri | semmle.label | uri |
-| SpringSSRF.java:59:35:59:37 | uri | semmle.label | uri |
-| SpringSSRF.java:60:38:60:40 | uri | semmle.label | uri |
-| SpringSSRF.java:61:39:61:41 | uri | semmle.label | uri |
-| SpringSSRF.java:62:37:62:39 | uri | semmle.label | uri |
-| SpringSSRF.java:63:36:63:38 | uri | semmle.label | uri |
-| SpringSSRF.java:64:44:64:46 | uri | semmle.label | uri |
-| SpringSSRF.java:67:27:67:49 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SpringSSRF.java:67:35:67:48 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
-| SpringSSRF.java:70:49:70:51 | uri | semmle.label | uri |
-| SpringSSRF.java:71:58:71:60 | uri | semmle.label | uri |
-| SpringSSRF.java:72:57:72:59 | uri | semmle.label | uri |
-| SpringSSRF.java:73:66:73:68 | uri | semmle.label | uri |
-| SpringSSRF.java:74:57:74:59 | uri | semmle.label | uri |
-| SpringSSRF.java:75:66:75:68 | uri | semmle.label | uri |
+| SpringSSRF.java:33:69:33:82 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:34:73:34:86 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:35:87:35:100 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:38:69:38:97 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:40:69:40:119 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:43:35:43:48 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:44:91:44:104 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:45:95:45:108 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:46:109:46:122 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:49:91:49:119 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:51:91:51:141 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:54:34:54:47 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:55:79:55:92 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:56:83:56:96 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:57:97:57:110 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:60:79:60:107 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:62:79:62:129 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:65:39:65:52 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:66:69:66:82 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:67:73:67:86 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:68:87:68:100 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:71:69:71:97 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:73:69:73:119 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:76:41:76:54 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:77:93:77:106 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:78:97:78:110 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:79:111:79:124 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:82:93:82:121 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:84:93:84:143 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:87:40:87:62 | new URI(...) | semmle.label | new URI(...) |
+| SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:88:92:88:105 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:89:96:89:109 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:90:110:90:123 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:93:92:93:120 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:95:92:95:142 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:98:42:98:55 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:99:80:99:93 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:100:84:100:97 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:101:98:101:111 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:104:80:104:108 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:106:80:106:130 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:109:40:109:53 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:110:92:110:105 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:111:96:111:109 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:112:110:112:123 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:115:92:115:120 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:117:92:117:142 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:120:30:120:43 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:121:68:121:81 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:122:72:122:85 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:123:86:123:99 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:126:68:126:96 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:128:68:128:118 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:131:33:131:46 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:132:49:132:62 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:133:53:133:66 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:134:67:134:80 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:137:49:137:77 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:139:49:139:99 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:142:41:142:54 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:143:57:143:70 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:144:61:144:74 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:145:75:145:88 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:148:57:148:85 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:150:57:150:107 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:153:42:153:55 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:154:58:154:71 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:155:62:155:75 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:156:76:156:89 | fooResourceUrl | semmle.label | fooResourceUrl |
+| SpringSSRF.java:159:58:159:86 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:161:58:161:108 | of(...) | semmle.label | of(...) |
+| SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:166:27:166:49 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:168:44:168:46 | uri | semmle.label | uri |
+| SpringSSRF.java:170:35:170:37 | uri | semmle.label | uri |
+| SpringSSRF.java:171:35:171:37 | uri | semmle.label | uri |
+| SpringSSRF.java:172:38:172:40 | uri | semmle.label | uri |
+| SpringSSRF.java:173:39:173:41 | uri | semmle.label | uri |
+| SpringSSRF.java:174:37:174:39 | uri | semmle.label | uri |
+| SpringSSRF.java:175:36:175:38 | uri | semmle.label | uri |
+| SpringSSRF.java:176:44:176:46 | uri | semmle.label | uri |
+| SpringSSRF.java:179:27:179:49 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SpringSSRF.java:179:35:179:48 | fooResourceUrl : String | semmle.label | fooResourceUrl : String |
+| SpringSSRF.java:182:49:182:51 | uri | semmle.label | uri |
+| SpringSSRF.java:183:58:183:60 | uri | semmle.label | uri |
+| SpringSSRF.java:184:57:184:59 | uri | semmle.label | uri |
+| SpringSSRF.java:185:66:185:68 | uri | semmle.label | uri |
+| SpringSSRF.java:186:57:186:59 | uri | semmle.label | uri |
+| SpringSSRF.java:187:66:187:68 | uri | semmle.label | uri |
 | URLClassLoaderSSRF.java:16:26:16:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | URLClassLoaderSSRF.java:17:23:17:34 | new URI(...) : URI | semmle.label | new URI(...) : URI |
 | URLClassLoaderSSRF.java:17:31:17:33 | url : String | semmle.label | url : String |
