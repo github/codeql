@@ -88,7 +88,7 @@
  */
 
 import csharp
-import ExternalFlowExtensions
+private import ExternalFlowExtensions::Extensions as Extensions
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
@@ -101,100 +101,13 @@ private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
-/**
- * Holds if the given extension tuple `madId` should pretty-print as `model`.
- *
- * This predicate should only be used in tests.
- */
-predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
-    model =
-      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
-        + ext + "; " + output + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
-    model =
-      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
-    model =
-      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
-        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
-  )
-}
+private module MadInput implements SharedMaD::InputSig { }
 
-private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
-}
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
-private predicate namespaceLink(string shortns, string longns) {
-  relevantNamespace(shortns) and
-  relevantNamespace(longns) and
-  longns.prefix(longns.indexOf(".")) = shortns
-}
-
-private predicate canonicalNamespace(string namespace) {
-  relevantNamespace(namespace) and not namespaceLink(_, namespace)
-}
-
-private predicate canonicalNamespaceLink(string namespace, string subns) {
-  canonicalNamespace(namespace) and
-  (subns = namespace or namespaceLink(namespace, subns))
-}
-
-/**
- * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
- * `namespace` which have MaD framework coverage (including `namespace`
- * itself).
- */
-predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
-  namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
-        canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance, _)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
-        canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance, _)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
-        canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
-      )
-  )
-}
+import MaD
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
@@ -258,7 +171,7 @@ module ModelValidation {
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
-    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
+    predicate neutralKind(string kind) { Extensions::neutralModel(_, _, _, _, kind, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
@@ -275,7 +188,7 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
       or
-      neutralModel(namespace, type, name, signature, _, provenance) and
+      Extensions::neutralModel(namespace, type, name, signature, _, provenance) and
       ext = "" and
       pred = "neutral"
     |
@@ -318,7 +231,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = true
+  Extensions::neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private predicate elementSpec(
@@ -590,19 +503,17 @@ private predicate interpretSummary(
   UnboundCallable c, string input, string output, string kind, string provenance, string model
 ) {
   exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    QlBuiltins::ExtensionId madId
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
-    model = "MaD:" + madId.toString() and
+      model) and
     c = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
 predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, kind, provenance) and
+    Extensions::neutralModel(namespace, type, name, signature, kind, provenance) and
     c = interpretElement(namespace, type, true, name, signature, "")
   )
 }
