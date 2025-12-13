@@ -37,7 +37,7 @@
  * they represent; additionally, indefinite abstract values record
  * the source of imprecision that caused them to arise.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

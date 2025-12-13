@@ -1,7 +1,7 @@
 /**
  * Provides classes for reasoning about `extend`-like functions.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

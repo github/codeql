@@ -4,7 +4,7 @@
  * This information is only available for snapshots that have been extracted with
  * the `--extract-program-text` flag.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

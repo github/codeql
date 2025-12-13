@@ -3,7 +3,7 @@
  *
  * JavaScript's old SSA library is still responsible for the ordinary SSA flow.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript as js

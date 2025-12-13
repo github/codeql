@@ -15,7 +15,7 @@ private import AngularJS
 /**
  * Holds if `nd` is a reference to the `angular` variable.
  */
-overlay[local]
+overlay[local?]
 DataFlow::SourceNode angular() {
   // either as a global
   result = DataFlow::globalVarRef("angular")

@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with expressions that evaluate to constant values.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

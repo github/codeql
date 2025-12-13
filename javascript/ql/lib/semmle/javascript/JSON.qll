@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with JSON data.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

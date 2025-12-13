@@ -41,7 +41,7 @@ class Location = JS::Location;
  * The model generator must explicitly generate the step between `(package)` and `(package).foo`, for example.
  */
 bindingset[rawType]
-overlay[caller]
+overlay[caller?]
 predicate parseTypeString(string rawType, string package, string qualifiedName) {
   exists(string regexp |
     regexp = "('[^']+'|[^.]+)(.*)" and
@@ -56,7 +56,7 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
-overlay[local]
+overlay[local?]
 predicate isPackageUsed(string package) {
   package = "global"
   or
@@ -70,7 +70,7 @@ predicate isPackageUsed(string package) {
 }
 
 bindingset[type]
-overlay[local]
+overlay[local?]
 predicate isTypeUsed(string type) {
   exists(string package |
     parseTypeString(type, package, _) and
@@ -82,10 +82,10 @@ predicate isTypeUsed(string type) {
  * Holds if `type` can be obtained from an instance of `otherType` due to
  * language semantics modeled by `getExtraNodeFromType`.
  */
-overlay[local]
+overlay[local?]
 predicate hasImplicitTypeModel(string type, string otherType) { none() }
 
-overlay[local]
+overlay[local?]
 pragma[nomagic]
 private predicate parseRelevantTypeString(string rawType, string package, string qualifiedName) {
   isRelevantFullPath(rawType, _) and
