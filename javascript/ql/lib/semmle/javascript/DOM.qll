@@ -192,6 +192,7 @@ module DOM {
    * A data flow node or other program element that may refer to
    * a DOM element.
    */
+  overlay[global]
   abstract class Element extends Locatable {
     ElementDefinition defn;
 

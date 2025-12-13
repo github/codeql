@@ -126,11 +126,11 @@ getAffectedStateAccessPath
 | react-redux.jsx:61:13:61:25 | manualReducer | manual |
 | trivial.js:130:14:130:46 | wrapper ...  state) | wrapped |
 getADispatchFunctionNode
-| react-redux.jsx:65:20:65:32 | use moduleImport("react-redux").getMember("exports").getMember("useDispatch").getReturn() |
+| react-redux.jsx:65:20:65:32 | use useDispatch() |
 getADispatchedValueNode
-| react-redux.jsx:27:12:30:5 | def entryPoint("react-redux-connect").getParameter(1).getMember("manualAction").getReturn() |
-| react-redux.jsx:69:18:69:39 | def moduleImport("react-redux").getMember("exports").getMember("useDispatch").getReturn().getParameter(0) |
-| react-redux.jsx:70:18:70:38 | def moduleImport("react-redux").getMember("exports").getMember("useDispatch").getReturn().getParameter(0) |
+| react-redux.jsx:27:12:30:5 | def {\\n      ... x\\n    } |
+| react-redux.jsx:69:18:69:39 | def manualA ... urce()) |
+| react-redux.jsx:70:18:70:38 | def asyncAc ... urce()) |
 getAnUntypedActionInReducer
 | exportedReducer.js:12:20:12:25 | action |
 | react-redux.jsx:32:31:32:36 | action |
@@ -167,23 +167,23 @@ reducerToStateStep
 | react-redux.jsx:39:42:39:55 | action.payload | react-redux.jsx:87:32:87:56 | state.m ... lValue2 |
 | react-redux.jsx:44:27:46:14 | [1, 2,  ...      }) | react-redux.jsx:88:32:88:56 | state.m ... lValue3 |
 getRootStateAccessPath
-| manual | react-redux.jsx:86:31:86:42 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("manual") |
-| manual | react-redux.jsx:87:32:87:43 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("manual") |
-| manual | react-redux.jsx:88:32:88:43 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("manual") |
-| manual.manualValue | react-redux.jsx:86:31:86:54 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("manual").getMember("manualValue") |
-| manual.manualValue2 | react-redux.jsx:87:32:87:56 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("manual").getMember("manualValue2") |
-| manual.manualValue3 | react-redux.jsx:88:32:88:56 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("manual").getMember("manualValue3") |
-| toolkit | react-redux.jsx:84:32:84:44 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit") |
-| toolkit | react-redux.jsx:85:24:85:36 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit") |
-| toolkit.asyncValue | react-redux.jsx:85:24:85:47 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit").getMember("asyncValue") |
-| toolkit.value | react-redux.jsx:84:32:84:50 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit").getMember("value") |
-| x1 | accessPaths.js:8:16:8:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
-| x1 | accessPaths.js:8:44:8:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x1") |
-| x2 | accessPaths.js:9:16:9:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
-| x2 | accessPaths.js:9:44:9:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x2") |
-| x3 | accessPaths.js:10:16:10:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
-| x3 | accessPaths.js:10:44:10:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x3") |
-| x4 | accessPaths.js:11:16:11:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
-| x4 | accessPaths.js:11:44:11:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x4") |
-| x5 | accessPaths.js:12:16:12:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
-| x5 | accessPaths.js:12:44:12:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x5") |
+| manual | react-redux.jsx:86:31:86:42 | use state.manual |
+| manual | react-redux.jsx:87:32:87:43 | use state.manual |
+| manual | react-redux.jsx:88:32:88:43 | use state.manual |
+| manual.manualValue | react-redux.jsx:86:31:86:54 | use state.m ... alValue |
+| manual.manualValue2 | react-redux.jsx:87:32:87:56 | use state.m ... lValue2 |
+| manual.manualValue3 | react-redux.jsx:88:32:88:56 | use state.m ... lValue3 |
+| toolkit | react-redux.jsx:84:32:84:44 | use state.toolkit |
+| toolkit | react-redux.jsx:85:24:85:36 | use state.toolkit |
+| toolkit.asyncValue | react-redux.jsx:85:24:85:47 | use state.t ... ncValue |
+| toolkit.value | react-redux.jsx:84:32:84:50 | use state.toolkit.value |
+| x1 | accessPaths.js:8:16:8:52 | use useSele ... ate.x1) |
+| x1 | accessPaths.js:8:44:8:51 | use state.x1 |
+| x2 | accessPaths.js:9:16:9:52 | use useSele ... ate.x2) |
+| x2 | accessPaths.js:9:44:9:51 | use state.x2 |
+| x3 | accessPaths.js:10:16:10:52 | use useSele ... ate.x3) |
+| x3 | accessPaths.js:10:44:10:51 | use state.x3 |
+| x4 | accessPaths.js:11:16:11:52 | use useSele ... ate.x4) |
+| x4 | accessPaths.js:11:44:11:51 | use state.x4 |
+| x5 | accessPaths.js:12:16:12:52 | use useSele ... ate.x5) |
+| x5 | accessPaths.js:12:44:12:51 | use state.x5 |

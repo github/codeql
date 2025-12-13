@@ -16,6 +16,7 @@ module SQL {
    * An dataflow node that sanitizes a string to make it safe to embed into
    * a SQL command.
    */
+  overlay[global]
   abstract class SqlSanitizer extends DataFlow::Node {
     DataFlow::Node input;
     DataFlow::Node output;
