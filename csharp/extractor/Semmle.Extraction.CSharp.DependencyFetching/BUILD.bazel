@@ -15,6 +15,7 @@ codeql_csharp_library(
     deps = [
         "//csharp/extractor/Semmle.Extraction.CSharp",
         "//csharp/extractor/Semmle.Util",
+        "@paket.main//microsoft.visualstudio.solutionpersistence",
         "@paket.main//newtonsoft.json",
         "@paket.main//nuget.versioning",
     ],

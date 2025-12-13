@@ -15,3 +15,4 @@ nuget Microsoft.NET.Test.Sdk
 nuget Microsoft.CodeAnalysis.CSharp 5.0.0
 nuget Microsoft.CodeAnalysis 5.0.0
 nuget Microsoft.Build 18.0.2
+nuget Microsoft.VisualStudio.SolutionPersistence
