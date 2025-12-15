@@ -106,11 +106,19 @@ impl MyFlag {
     }
 
     fn get_data(self) -> i64 {
-        if self.flag { 0 } else { source(2) }
+        if self.flag {
+            0
+        } else {
+            source(2)
+        }
     }
 
     fn data_through(self, n: i64) -> i64 {
-        if self.flag { 0 } else { n }
+        if self.flag {
+            0
+        } else {
+            n
+        }
     }
 }
 
@@ -120,11 +128,19 @@ impl MyTrait for MyFlag {
     }
 
     fn get_data_trait(self) -> i64 {
-        if self.flag { 0 } else { source(21) }
+        if self.flag {
+            0
+        } else {
+            source(21)
+        }
     }
 
     fn data_through_trait(self, n: i64) -> i64 {
-        if self.flag { 0 } else { n }
+        if self.flag {
+            0
+        } else {
+            n
+        }
     }
 }
 
@@ -275,6 +291,10 @@ fn test_operator_overloading() {
     let a = MyInt { value: source(28) };
     let c = *a;
     sink(c); // $ hasValueFlow=28
+
+    let a = MyInt { value: source(29) };
+    let c = a.min(1042);
+    sink(c); // $ MISSING: hasValueFlow=29
 }
 
 trait MyTrait2 {
