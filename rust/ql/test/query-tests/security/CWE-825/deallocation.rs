@@ -137,6 +137,100 @@ pub fn test_ptr_invalid(mode: i32) {
 	}
 }
 
+struct MyObject {
+	value: i64
+}
+
+impl MyObject {
+	fn is_zero(&self) -> bool {
+		self.value == 0
+	}
+}
+
+pub unsafe fn test_ptr_invalid_conditions(mode: i32) {
+	let layout = std::alloc::Layout::new::<MyObject>();
+
+	// --- mutable pointer ---
+
+	let mut ptr = std::alloc::alloc(layout) as *mut MyObject;
+	(*ptr).value = 0; // good
+
+	if mode == 121 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
+	}
+
+	if ptr.is_null() {
+		let v = (*ptr).value; // $ Alert[rust/access-invalid-pointer]
+		println!("	cond1 v = {v}");
+	} else {
+		let v = (*ptr).value; // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - unreachable with null pointer
+		println!("	cond2 v = {v}");
+	}
+
+	if mode == 122 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
+	}
+
+	if !(ptr.is_null()) {
+		let v = (*ptr).value; // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - unreachable with null pointer
+		println!("	cond3 v = {v}");
+	} else {
+		let v = (*ptr).value; // $ Alert[rust/access-invalid-pointer]
+		println!("	cond4 v = {v}");
+	}
+
+	if mode == 123 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
+	}
+
+	if ptr.is_null() || (*ptr).value == 0 { // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - deref is protected by short-circuiting
+		println!("	cond5");
+	}
+
+	if ptr.is_null() || (*ptr).is_zero() { // $ SPURIOUS: Alert[rust/access-invalid-pointer] good - deref is protected by short-circuiting
+		println!("	cond6");
+	}
+
+	if !ptr.is_null() || (*ptr).value == 0 { // $ Alert[rust/access-invalid-pointer]
+		println!("	cond7");
+	}
+
+	if mode == 124 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
+	}
+
+	if ptr.is_null() && (*ptr).is_zero() { // $ Alert[rust/access-invalid-pointer]
+		println!("	cond8");
+	}
+
+	if mode == 125 { // (causes a panic below)
+		ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
+	}
+
+	if (*ptr).is_zero() || ptr.is_null() { // $ Alert[rust/access-invalid-pointer]
+		println!("	cond9");
+	}
+
+	// --- immutable pointer ---
+
+	let const_ptr;
+
+	if mode == 126 { // (causes a panic below)
+		const_ptr = std::ptr::null_mut(); // $ Source[rust/access-invalid-pointer]
+	} else {
+		const_ptr = std::alloc::alloc(layout) as *mut MyObject;
+		(*const_ptr).value = 0; // good
+	}
+
+	if const_ptr.is_null() {
+		let v = (*const_ptr).value; // $ Alert[rust/access-invalid-pointer]
+		println!("	cond10 v = {v}");
+	} else {
+		let v = (*const_ptr).value; // $ good - unreachable with null pointer
+		println!("	cond11 v = {v}");
+	}
+}
+
 // --- drop ---
 
 struct MyBuffer {

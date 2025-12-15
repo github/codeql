@@ -1,4 +1,6 @@
 /** Provides classes for working with syntax errors. */
+overlay[local?]
+module;
 
 import javascript
 

@@ -1,3 +1,23 @@
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+No user-facing changes.
+
+## 5.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the Python extractor's import handling where failing to find an import in `find_module` would cause a `KeyError` to be raised. (Contributed by @akoeplinger.)
+
+## 5.0.0
+
+### Breaking Changes
+
+- The classes `ControlFlowNode`, `Expr`, and `Module` no longer expose predicates that invoke the points-to analysis. To access these predicates, import the module `LegacyPointsTo` and follow the instructions given therein.
+
 ## 4.1.0
 
 ### New Features

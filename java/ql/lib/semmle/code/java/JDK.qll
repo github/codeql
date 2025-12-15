@@ -321,12 +321,7 @@ class WriteObjectMethod extends Method {
 class ReadObjectMethod extends Method {
   ReadObjectMethod() {
     this.getDeclaringType() instanceof TypeObjectInputStream and
-    (
-      this.hasName("readObject") or
-      this.hasName("readObjectOverride") or
-      this.hasName("readUnshared") or
-      this.hasName("resolveObject")
-    )
+    this.hasName(["readObject", "readObjectOverride", "readUnshared", "resolveObject"])
   }
 }
 

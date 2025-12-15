@@ -422,9 +422,11 @@ private module ClosureLibraryUri {
   }
 }
 
+overlay[local?]
 private class QueryStringStringification extends DataFlow::SummarizedCallable {
   QueryStringStringification() { this = "query-string stringification" }
 
+  overlay[global]
   override DataFlow::InvokeNode getACall() {
     result =
       API::moduleImport(["querystring", "query-string", "querystringify", "qs"])

@@ -1,3 +1,26 @@
+## 1.10.3
+
+### Minor Analysis Improvements
+
+* Java analysis no longer forces `--source` and `--target` compiler flags for Maven builds. This allows Maven to use the project's own compiler configuration, improving build compatibility.
+
+## 1.10.2
+
+No user-facing changes.
+
+## 1.10.1
+
+### Minor Analysis Improvements
+
+* Operations that extract only a fixed-length prefix or suffix of a string (for example, `substring` in Java or `take` in Kotlin), when limited to a length of at most 7 characters, are now treated as sanitizers for the `java/sensitive-log` query.  
+
+## 1.10.0
+
+### Query Metadata Changes
+
+* Reduced the `security-severity` score of the `java/overly-large-range` query from 5.0 to 4.0 to better reflect its impact.
+* Reduced the `security-severity` score of the `java/insecure-cookie` query from 5.0 to 4.0 to better reflect its impact.
+
 ## 1.9.0
 
 ### New Queries

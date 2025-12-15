@@ -29,9 +29,17 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
-            if (Context.ExtractLocation(Symbol) && (!IsDefault || IsBestSourceLocation))
+
+            if (Symbol.IsImplicitlyDeclared)
             {
-                WriteLocationToTrap(trapFile.constructor_location, this, Location);
+                var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
+                trapFile.numlines(this, lineCounts);
+            }
+            ExtractCompilerGenerated(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
             }
 
             if (MakeSynthetic)
@@ -40,12 +48,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
             }
 
-            if (Symbol.IsImplicitlyDeclared)
+            if (Context.ExtractLocation(Symbol) && (!IsDefault || IsBestSourceLocation))
             {
-                var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
-                trapFile.numlines(this, lineCounts);
+                WriteLocationToTrap(trapFile.constructor_location, this, Location);
             }
-            ExtractCompilerGenerated(trapFile);
+
         }
 
         protected override void ExtractInitializers(TextWriter trapFile)
@@ -53,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Do not extract initializers for constructed types.
             // Extract initializers for constructors with a body, primary constructors
             // and default constructors for classes and structs declared in source code.
-            if (Block is null && ExpressionBody is null && !MakeSynthetic)
+            if (Block is null && ExpressionBody is null && !MakeSynthetic || Context.OnlyScaffold)
             {
                 return;
             }
@@ -106,6 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
 
                 var baseConstructorTarget = Create(Context, baseConstructor);
+
                 var info = new ExpressionInfo(Context,
                     AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
                     Location,
@@ -179,7 +187,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
 
-        private bool MakeSynthetic => IsPrimary || (IsDefault && IsBestSourceLocation);
+        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)

@@ -703,6 +703,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesLt(
     Cpp::Expr left, Cpp::Expr right, int k, boolean isLessThan, boolean testIsTrue
   ) {
@@ -713,6 +714,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesLt(Cpp::Expr e, int k, boolean isLessThan, GuardValue value) {
     exists(GuardValue partValue, GuardCondition part |
       this.(Cpp::BinaryLogicalOperation)
@@ -738,6 +740,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesEq(
     Cpp::Expr left, Cpp::Expr right, int k, boolean areEqual, boolean testIsTrue
   ) {
@@ -757,6 +760,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[nomagic]
   override predicate comparesEq(Cpp::Expr e, int k, boolean areEqual, GuardValue value) {
     exists(GuardValue partValue, GuardCondition part |
       this.(Cpp::BinaryLogicalOperation)

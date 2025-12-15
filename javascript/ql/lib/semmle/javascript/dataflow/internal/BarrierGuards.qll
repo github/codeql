@@ -358,25 +358,18 @@ module MakeStateBarrierGuard<
   }
 
   /**
-   * Gets a logical `and` expression, or parenthesized expression, that contains `guard`.
+   * Gets any of the ancestors of `guard` that preserves the value of `possibleOutcome`. Includes the guard itself.
    */
-  private Expr getALogicalAndParent(BarrierGuard guard) {
-    barrierGuardIsRelevant(guard) and result = guard.asExpr()
+  private Expr getALogicalOperatorParent(BarrierGuard guard, boolean possibleOutcome) {
+    barrierGuardIsRelevant(guard) and result = guard.asExpr() and possibleOutcome = [true, false]
     or
-    result.(LogAndExpr).getAnOperand() = getALogicalAndParent(guard)
+    result.(LogOrExpr).getAnOperand() = getALogicalOperatorParent(guard, possibleOutcome) and
+    possibleOutcome = false
     or
-    result.getUnderlyingValue() = getALogicalAndParent(guard)
-  }
-
-  /**
-   * Gets a logical `or` expression, or parenthesized expression, that contains `guard`.
-   */
-  private Expr getALogicalOrParent(BarrierGuard guard) {
-    barrierGuardIsRelevant(guard) and result = guard.asExpr()
+    result.(LogAndExpr).getAnOperand() = getALogicalOperatorParent(guard, possibleOutcome) and
+    possibleOutcome = true
     or
-    result.(LogOrExpr).getAnOperand() = getALogicalOrParent(guard)
-    or
-    result.getUnderlyingValue() = getALogicalOrParent(guard)
+    result.getUnderlyingValue() = getALogicalOperatorParent(guard, possibleOutcome)
   }
 
   final private class FinalFunction = Function;
@@ -394,15 +387,7 @@ module MakeStateBarrierGuard<
       exists(BarrierGuard guard |
         barrierGuardIsRelevant(guard) and
         exists(Expr e |
-          exists(Expr returnExpr |
-            returnExpr = guard.asExpr()
-            or
-            // ad hoc support for conjunctions:
-            getALogicalAndParent(guard) = returnExpr and guardOutcome = true
-            or
-            // ad hoc support for disjunctions:
-            getALogicalOrParent(guard) = returnExpr and guardOutcome = false
-          |
+          exists(Expr returnExpr | returnExpr = getALogicalOperatorParent(guard, guardOutcome) |
             exists(SsaExplicitDefinition ssa |
               ssa.getDef().getSource() = returnExpr and
               ssa.getVariable().getAUse() = this.getAReturnedExpr()

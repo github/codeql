@@ -4,6 +4,8 @@
  * Regular expression literals are represented as an abstract syntax tree of regular expression
  * terms.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
@@ -150,6 +152,7 @@ class RegExpTerm extends Locatable, @regexpterm {
    * /[a-z]+/g; // YES - Regexp literals are always used as regexp
    * ```
    */
+  overlay[global]
   predicate isUsedAsRegExp() {
     exists(RegExpParent parent | parent = this.getRootTerm().getParent() |
       parent instanceof RegExpLiteral
@@ -964,6 +967,7 @@ class RegExpParseError extends Error, @regexp_parse_error {
 /**
  * Holds if `func` is a method defined on `String.prototype` with name `name`.
  */
+overlay[global]
 private predicate isNativeStringMethod(Function func, string name) {
   exists(ExternalInstanceMemberDecl decl |
     decl.hasQualifiedName("String", name) and
@@ -975,6 +979,7 @@ private predicate isNativeStringMethod(Function func, string name) {
  * Holds if `name` is the name of a property on a Match object returned by `String.prototype.match`,
  * not including array indices.
  */
+overlay[global]
 private predicate isMatchObjectProperty(string name) {
   any(ExternalInstanceMemberDecl decl).hasQualifiedName("Array", name)
   or
@@ -982,6 +987,7 @@ private predicate isMatchObjectProperty(string name) {
 }
 
 /** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
+overlay[global]
 private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
   call.getMethodName() = ["match", "matchAll"] and
   call.getNumArgument() = 1 and
@@ -1006,10 +1012,11 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
 /**
  * Holds if `value` is used in a way that suggests it returns a number.
  */
+overlay[global]
 pragma[inline]
 private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   any(Comparison compare)
-      .hasOperands(value.getALocalUse().asExpr(), any(Expr e | e.analyze().getAType() = TTNumber()))
+      .hasOperands(value.getALocalUse().asExpr(), any(Expr e | canBeNumber(e.analyze())))
   or
   value.flowsToExpr(any(ArithmeticExpr e).getAnOperand())
   or
@@ -1024,20 +1031,31 @@ private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   )
 }
 
+bindingset[node]
+overlay[global]
+pragma[inline_late]
+private predicate canBeString(DataFlow::AnalyzedNode node) { node.getAType() = TTString() }
+
+bindingset[node]
+overlay[global]
+pragma[inline_late]
+private predicate canBeNumber(DataFlow::AnalyzedNode node) { node.getAType() = TTNumber() }
+
 /**
  * Holds if `source` may be interpreted as a regular expression.
  */
+overlay[global]
 cached
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
   Stages::Taint::ref() and
-  source.analyze().getAType() = TTString() and
+  canBeString(source) and
   (
     // The first argument to an invocation of `RegExp` (with or without `new`).
     source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
     or
     // The argument of a call that coerces the argument to a regular expression.
     exists(DataFlow::MethodCallNode mce, string methodName |
-      mce.getReceiver().analyze().getAType() = TTString() and
+      canBeString(mce.getReceiver()) and
       mce.getMethodName() = methodName and
       not exists(Function func | func = mce.getACallee() |
         not isNativeStringMethod(func, methodName)
@@ -1073,6 +1091,7 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
   t.start() and
   re = result and
@@ -1090,6 +1109,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private DataFlow::Node regExpSource(DataFlow::Node re) {
   result = regExpSource(re, DataFlow::TypeBackTracker::end())
 }
@@ -1098,6 +1118,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re) {
  * A node whose value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 abstract class RegExpPatternSource extends DataFlow::Node {
   /**
    * Gets a node where the pattern of this node is parsed as a part of
@@ -1126,6 +1147,7 @@ abstract class RegExpPatternSource extends DataFlow::Node {
 /**
  * A regular expression literal, viewed as the pattern source for itself.
  */
+overlay[global]
 private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::ValueNode {
   override RegExpLiteral astNode;
 
@@ -1145,6 +1167,7 @@ private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::
  * A node whose string value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private class StringRegExpPatternSource extends RegExpPatternSource {
   DataFlow::Node parse;
 
@@ -1169,6 +1192,7 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
  * A node whose string value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   DataFlow::Node parse;
 
@@ -1331,6 +1355,7 @@ module RegExp {
   /**
    * Gets the AST of a regular expression object that can flow to `node`.
    */
+  overlay[global]
   RegExpTerm getRegExpObjectFromNode(DataFlow::Node node) {
     exists(DataFlow::RegExpCreationNode regexp |
       regexp.getAReference().flowsTo(node) and
@@ -1342,6 +1367,7 @@ module RegExp {
    * Gets the AST of a regular expression that can flow to `node`,
    * including `RegExp` objects as well as strings interpreted as regular expressions.
    */
+  overlay[global]
   RegExpTerm getRegExpFromNode(DataFlow::Node node) {
     result = getRegExpObjectFromNode(node)
     or

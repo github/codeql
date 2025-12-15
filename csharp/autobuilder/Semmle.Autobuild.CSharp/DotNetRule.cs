@@ -84,11 +84,7 @@ namespace Semmle.Autobuild.CSharp
             var temp = FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var shouldCleanUp);
             return DotNet.WithDotNet(builder.Actions, builder.Logger, builder.Paths.Select(x => x.Item1), temp, shouldCleanUp, ensureDotNetAvailable, builder.Options.DotNetVersion, installDir =>
             {
-                var env = new Dictionary<string, string>
-                {
-                    { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
-                    { "MSBUILDDISABLENODEREUSE", "1" }
-                };
+                var env = DotNet.MinimalEnvironment.ToDictionary();
                 if (installDir is not null)
                 {
                     // The installation succeeded, so use the newly installed .NET

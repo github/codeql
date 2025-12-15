@@ -1,6 +1,8 @@
 /**
  * Contains a summary for propagating exceptions out of callbacks
  */
+overlay[local?]
+module;
 
 private import javascript
 private import FlowSummaryUtil

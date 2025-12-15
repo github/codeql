@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 /**
  * A Python property:
@@ -77,32 +78,32 @@ class BuiltinPropertyObject extends PropertyObject {
 }
 
 private predicate property_getter(CallNode decorated, FunctionObject getter) {
-  decorated.getFunction().refersTo(thePropertyType()) and
-  decorated.getArg(0).refersTo(getter)
+  decorated.getFunction().(ControlFlowNodeWithPointsTo).refersTo(thePropertyType()) and
+  decorated.getArg(0).(ControlFlowNodeWithPointsTo).refersTo(getter)
 }
 
 private predicate property_setter(CallNode decorated, FunctionObject setter) {
   property_getter(decorated, _) and
   exists(CallNode setter_call, AttrNode prop_setter |
-    prop_setter.getObject("setter").refersTo(decorated)
+    prop_setter.getObject("setter").(ControlFlowNodeWithPointsTo).refersTo(decorated)
   |
-    setter_call.getArg(0).refersTo(setter) and
+    setter_call.getArg(0).(ControlFlowNodeWithPointsTo).refersTo(setter) and
     setter_call.getFunction() = prop_setter
   )
   or
-  decorated.getFunction().refersTo(thePropertyType()) and
-  decorated.getArg(1).refersTo(setter)
+  decorated.getFunction().(ControlFlowNodeWithPointsTo).refersTo(thePropertyType()) and
+  decorated.getArg(1).(ControlFlowNodeWithPointsTo).refersTo(setter)
 }
 
 private predicate property_deleter(CallNode decorated, FunctionObject deleter) {
   property_getter(decorated, _) and
   exists(CallNode deleter_call, AttrNode prop_deleter |
-    prop_deleter.getObject("deleter").refersTo(decorated)
+    prop_deleter.getObject("deleter").(ControlFlowNodeWithPointsTo).refersTo(decorated)
   |
-    deleter_call.getArg(0).refersTo(deleter) and
+    deleter_call.getArg(0).(ControlFlowNodeWithPointsTo).refersTo(deleter) and
     deleter_call.getFunction() = prop_deleter
   )
   or
-  decorated.getFunction().refersTo(thePropertyType()) and
-  decorated.getArg(2).refersTo(deleter)
+  decorated.getFunction().(ControlFlowNodeWithPointsTo).refersTo(thePropertyType()) and
+  decorated.getArg(2).(ControlFlowNodeWithPointsTo).refersTo(deleter)
 }

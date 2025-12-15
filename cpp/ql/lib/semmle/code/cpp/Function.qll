@@ -171,12 +171,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nth parameter of this function. There is no result for the
    * implicit `this` parameter, and there is no `...` varargs pseudo-parameter.
    */
+  pragma[nomagic]
   Parameter getParameter(int n) { params(unresolveElement(result), underlyingElement(this), n, _) }
 
   /**
    * Gets a parameter of this function. There is no result for the implicit
    * `this` parameter, and there is no `...` varargs pseudo-parameter.
    */
+  pragma[nomagic]
   Parameter getAParameter() { params(unresolveElement(result), underlyingElement(this), _, _) }
 
   /**

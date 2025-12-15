@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import javascript
 
 /**
@@ -31,6 +34,7 @@ class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
   /**
    * Gets the canonical name of the namespace being defined.
    */
+  overlay[global]
   deprecated Namespace getNamespace() { result.getADefinition() = this }
 }
 
@@ -111,11 +115,13 @@ class TypeDefinition extends AstNode, @type_definition {
   /**
    * Gets the canonical name of the type being defined.
    */
+  overlay[global]
   deprecated TypeName getTypeName() { result.getADefinition() = this }
 
   /**
    * Gets the type defined by this declaration.
    */
+  overlay[global]
   deprecated Type getType() { ast_node_type(this.getIdentifier(), result) }
 
   override string getAPrimaryQlClass() { result = "TypeDefinition" }
@@ -221,6 +227,7 @@ class ExternalModuleReference extends Expr, Import, @external_module_reference {
 }
 
 /** A literal path expression appearing in an external module reference. */
+overlay[global]
 deprecated private class LiteralExternalModulePath extends PathExpr, ConstantString {
   LiteralExternalModulePath() {
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
@@ -268,6 +275,7 @@ class TypeAliasDeclaration extends @type_alias_declaration, TypeParameterized, S
   /**
    * Gets the canonical name of the type being defined.
    */
+  overlay[global]
   deprecated TypeName getTypeName() { result.getADefinition() = this }
 
   override string getAPrimaryQlClass() { result = "TypeAliasDeclaration" }
@@ -548,6 +556,7 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
   /**
    * Gets the canonical name of the namespace referenced by this name.
    */
+  overlay[global]
   deprecated Namespace getNamespace() { result = this.getADeclaration().getNamespace() }
 
   override DeclarationSpace getDeclarationSpace() { result = "namespace" }
@@ -568,6 +577,7 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
    * Has no result if this occurs in a TypeScript file that was extracted
    * without type information.
    */
+  overlay[global]
   deprecated override Type getType() { ast_node_type(this, result) }
 
   override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
@@ -692,6 +702,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
   /**
    * Gets the canonical name of the type being accessed.
    */
+  overlay[global]
   deprecated TypeName getTypeName() { ast_node_symbol(this, result) }
 
   override string getAPrimaryQlClass() { result = "TypeAccess" }
@@ -1379,6 +1390,7 @@ class LocalNamespaceDecl extends VarDecl, NamespaceRef {
   /**
    * Gets the canonical name of the namespace being defined or aliased by this name.
    */
+  overlay[global]
   deprecated Namespace getNamespace() { ast_node_symbol(this, result) }
 }
 
@@ -1397,6 +1409,7 @@ class NamespaceAccess extends TypeExpr, NamespaceRef, @namespace_access {
   /**
    * Gets the canonical name of the namespace being accessed.
    */
+  overlay[global]
   deprecated Namespace getNamespace() { ast_node_symbol(this, result) }
 
   override string getAPrimaryQlClass() { result = "NamespaceAccess" }
@@ -1506,6 +1519,7 @@ class EnumDeclaration extends NamespaceDefinition, @enum_declaration, AST::Value
   /**
    * Gets the canonical name of the type being defined.
    */
+  overlay[global]
   deprecated TypeName getTypeName() { ast_node_symbol(this, result) }
 
   /**
@@ -1594,6 +1608,7 @@ class EnumMember extends AstNode, @enum_member {
   /**
    * Gets the canonical name of the type defined by this enum member.
    */
+  overlay[global]
   deprecated TypeName getTypeName() { ast_node_symbol(this, result) }
 
   override string getAPrimaryQlClass() { result = "EnumMember" }
@@ -1762,6 +1777,7 @@ class TypeRootFolder extends Folder {
   /**
    * Gets the priority with which this type root folder should be used from within the given search root.
    */
+  overlay[global]
   int getSearchPriority(Folder searchRoot) {
     findNodeModulesFolder(searchRoot, this.getNodeModulesFolder(), result)
   }
@@ -1780,6 +1796,7 @@ class TypeRootFolder extends Folder {
  * For instance, there may be many AST nodes representing different uses of the
  * `number` keyword, but there only exists one `number` type.
  */
+overlay[global]
 deprecated class Type extends @type {
   /**
    * Gets a string representation of this type.
@@ -1984,6 +2001,7 @@ deprecated class Type extends @type {
  *
  * A union type or intersection type, such as `string | number` or `T & U`.
  */
+overlay[global]
 deprecated class UnionOrIntersectionType extends Type, @union_or_intersection_type {
   /**
    * Gets the `i`th member of this union or intersection, starting at 0.
@@ -2012,6 +2030,7 @@ deprecated class UnionOrIntersectionType extends Type, @union_or_intersection_ty
  * Note that the `boolean` type is represented as the union `true | false`,
  * but is still displayed as `boolean` in string representations.
  */
+overlay[global]
 deprecated class UnionType extends UnionOrIntersectionType, @union_type { }
 
 /**
@@ -2022,6 +2041,7 @@ deprecated class UnionType extends UnionOrIntersectionType, @union_type { }
  *
  * An intersection type, such as `T & {x: number}`.
  */
+overlay[global]
 deprecated class IntersectionType extends UnionOrIntersectionType, @intersection_type { }
 
 /**
@@ -2040,6 +2060,7 @@ deprecated class IntersectionType extends UnionOrIntersectionType, @intersection
  * Foreign array-like objects such as `HTMLCollection` are not normal JavaScript arrays,
  * and their corresponding types are not considered array types either.
  */
+overlay[global]
 deprecated class ArrayType extends Type {
   ArrayType() {
     this instanceof @tuple_type or
@@ -2061,6 +2082,7 @@ deprecated class ArrayType extends Type {
  *
  * An array type such as `Array<string>`, or equivalently, `string[]`.
  */
+overlay[global]
 deprecated class PlainArrayType extends ArrayType, TypeReference {
   PlainArrayType() { this.hasQualifiedName("Array") }
 
@@ -2075,6 +2097,7 @@ deprecated class PlainArrayType extends ArrayType, TypeReference {
  *
  * A read-only array type such as `ReadonlyArray<string>`.
  */
+overlay[global]
 deprecated class ReadonlyArrayType extends ArrayType, TypeReference {
   ReadonlyArrayType() { this.hasQualifiedName("ReadonlyArray") }
 }
@@ -2087,6 +2110,7 @@ deprecated class ReadonlyArrayType extends ArrayType, TypeReference {
  *
  * A tuple type, such as `[number, string]`.
  */
+overlay[global]
 deprecated class TupleType extends ArrayType, @tuple_type {
   /**
    * Gets the `i`th member of this tuple type, starting at 0.
@@ -2148,6 +2172,7 @@ deprecated class TupleType extends ArrayType, @tuple_type {
  *
  * The predefined `any` type.
  */
+overlay[global]
 deprecated class AnyType extends Type, @any_type { }
 
 /**
@@ -2158,6 +2183,7 @@ deprecated class AnyType extends Type, @any_type { }
  *
  * The predefined `unknown` type.
  */
+overlay[global]
 deprecated class UnknownType extends Type, @unknown_type { }
 
 /**
@@ -2168,6 +2194,7 @@ deprecated class UnknownType extends Type, @unknown_type { }
  *
  * The predefined `string` type.
  */
+overlay[global]
 deprecated class StringType extends Type, @string_type { }
 
 /**
@@ -2178,6 +2205,7 @@ deprecated class StringType extends Type, @string_type { }
  *
  * The predefined `number` type.
  */
+overlay[global]
 deprecated class NumberType extends Type, @number_type { }
 
 /**
@@ -2188,6 +2216,7 @@ deprecated class NumberType extends Type, @number_type { }
  *
  * The predefined `bigint` type.
  */
+overlay[global]
 deprecated class BigIntType extends Type, @bigint_type { }
 
 /**
@@ -2198,6 +2227,7 @@ deprecated class BigIntType extends Type, @bigint_type { }
  *
  * A boolean, number, or string literal type.
  */
+overlay[global]
 deprecated class LiteralType extends Type, @literal_type {
   /**
    * Gets the string value of this literal.
@@ -2213,6 +2243,7 @@ deprecated class LiteralType extends Type, @literal_type {
  *
  * The boolean literal type `true` or `false`.
  */
+overlay[global]
 deprecated class BooleanLiteralType extends LiteralType, @boolean_literal_type {
   /**
    * Gets the boolean value represented by this type.
@@ -2227,6 +2258,7 @@ deprecated class BooleanLiteralType extends LiteralType, @boolean_literal_type {
 /**
  * A number literal as a static type.
  */
+overlay[global]
 deprecated class NumberLiteralType extends LiteralType, @number_literal_type {
   override string getStringValue() { type_literal_value(this, result) }
 
@@ -2249,6 +2281,7 @@ deprecated class NumberLiteralType extends LiteralType, @number_literal_type {
  *
  * A string literal as a static type.
  */
+overlay[global]
 deprecated class StringLiteralType extends LiteralType, @string_literal_type {
   override string getStringValue() { type_literal_value(this, result) }
 }
@@ -2261,6 +2294,7 @@ deprecated class StringLiteralType extends LiteralType, @string_literal_type {
  *
  * A bigint literal as a static type.
  */
+overlay[global]
 deprecated class BigIntLiteralType extends LiteralType {
   override string getStringValue() { type_literal_value(this, result) }
 
@@ -2283,6 +2317,7 @@ deprecated class BigIntLiteralType extends LiteralType {
  *
  * The `boolean` type, internally represented as the union type `true | false`.
  */
+overlay[global]
 deprecated class BooleanType extends UnionType {
   BooleanType() {
     this.getAnElementType() instanceof @true_type and
@@ -2299,6 +2334,7 @@ deprecated class BooleanType extends UnionType {
  *
  * The `string` type or a string literal type.
  */
+overlay[global]
 deprecated class StringLikeType extends Type {
   StringLikeType() {
     this instanceof StringType or
@@ -2314,6 +2350,7 @@ deprecated class StringLikeType extends Type {
  *
  * The `number` type or a number literal type.
  */
+overlay[global]
 deprecated class NumberLikeType extends Type {
   NumberLikeType() {
     this instanceof NumberType or
@@ -2329,6 +2366,7 @@ deprecated class NumberLikeType extends Type {
  *
  * The `boolean`, `true,` or `false` type.
  */
+overlay[global]
 deprecated class BooleanLikeType extends Type {
   BooleanLikeType() {
     this instanceof BooleanType or
@@ -2344,6 +2382,7 @@ deprecated class BooleanLikeType extends Type {
  *
  * The `void` type.
  */
+overlay[global]
 deprecated class VoidType extends Type, @void_type { }
 
 /**
@@ -2354,6 +2393,7 @@ deprecated class VoidType extends Type, @void_type { }
  *
  * The `undefined` type.
  */
+overlay[global]
 deprecated class UndefinedType extends Type, @undefined_type { }
 
 /**
@@ -2364,6 +2404,7 @@ deprecated class UndefinedType extends Type, @undefined_type { }
  *
  * The `null` type.
  */
+overlay[global]
 deprecated class NullType extends Type, @null_type { }
 
 /**
@@ -2374,6 +2415,7 @@ deprecated class NullType extends Type, @null_type { }
  *
  * The `never` type.
  */
+overlay[global]
 deprecated class NeverType extends Type, @never_type { }
 
 /**
@@ -2384,6 +2426,7 @@ deprecated class NeverType extends Type, @never_type { }
  *
  * The `symbol` type or a specific `unique symbol` type.
  */
+overlay[global]
 deprecated class SymbolType extends Type, @symbol_type { }
 
 /**
@@ -2394,6 +2437,7 @@ deprecated class SymbolType extends Type, @symbol_type { }
  *
  * The `symbol` type.
  */
+overlay[global]
 deprecated class PlainSymbolType extends SymbolType, @plain_symbol_type { }
 
 /**
@@ -2404,6 +2448,7 @@ deprecated class PlainSymbolType extends SymbolType, @plain_symbol_type { }
  *
  * A `unique symbol` type.
  */
+overlay[global]
 deprecated class UniqueSymbolType extends SymbolType, @unique_symbol_type {
   /**
    * Gets the canonical name of the variable exposing the symbol.
@@ -2438,6 +2483,7 @@ deprecated class UniqueSymbolType extends SymbolType, @unique_symbol_type {
  *
  * The `object` type.
  */
+overlay[global]
 deprecated class ObjectKeywordType extends Type, @objectkeyword_type { }
 
 /**
@@ -2448,6 +2494,7 @@ deprecated class ObjectKeywordType extends Type, @objectkeyword_type { }
  *
  * A type that refers to a class, interface, enum, or enum member.
  */
+overlay[global]
 deprecated class TypeReference extends Type, @type_reference {
   /**
    * Gets the canonical name of the type being referenced.
@@ -2506,6 +2553,7 @@ deprecated class TypeReference extends Type, @type_reference {
  *
  * A type that refers to a class, possibly with type arguments.
  */
+overlay[global]
 deprecated class ClassType extends TypeReference {
   ClassDefinition declaration;
 
@@ -2525,6 +2573,7 @@ deprecated class ClassType extends TypeReference {
  *
  * A type that refers to an interface, possibly with type arguents.
  */
+overlay[global]
 deprecated class InterfaceType extends TypeReference {
   InterfaceDeclaration declaration;
 
@@ -2544,6 +2593,7 @@ deprecated class InterfaceType extends TypeReference {
  *
  * A type that refers to an enum.
  */
+overlay[global]
 deprecated class EnumType extends TypeReference {
   EnumDeclaration declaration;
 
@@ -2563,6 +2613,7 @@ deprecated class EnumType extends TypeReference {
  *
  * A type that refers to the value of an enum member.
  */
+overlay[global]
 deprecated class EnumLiteralType extends TypeReference {
   EnumMember declaration;
 
@@ -2582,6 +2633,7 @@ deprecated class EnumLiteralType extends TypeReference {
  *
  * A type that refers to a type alias.
  */
+overlay[global]
 deprecated class TypeAliasReference extends TypeReference {
   TypeAliasReference() { type_alias(this, _) }
 
@@ -2601,6 +2653,7 @@ deprecated class TypeAliasReference extends TypeReference {
  *
  * An anonymous interface type, such as `{ x: number }`.
  */
+overlay[global]
 deprecated class AnonymousInterfaceType extends Type, @object_type { }
 
 /**
@@ -2611,6 +2664,7 @@ deprecated class AnonymousInterfaceType extends Type, @object_type { }
  *
  * A type that refers to a type variable.
  */
+overlay[global]
 deprecated class TypeVariableType extends Type, @typevariable_type {
   /**
    * Gets a syntactic declaration of this type variable.
@@ -2656,6 +2710,7 @@ deprecated class TypeVariableType extends Type, @typevariable_type {
  *
  * A type that refers to a type variable declared on a class, interface or function.
  */
+overlay[global]
 deprecated class CanonicalTypeVariableType extends TypeVariableType, @canonical_type_variable_type {
   override TypeName getHostType() { result = this.getCanonicalName().getParent() }
 
@@ -2681,6 +2736,7 @@ deprecated class CanonicalTypeVariableType extends TypeVariableType, @canonical_
  * - `<T>(x: T) => T`
  * - `<S, T>(x: S, y: T) => T`.
  */
+overlay[global]
 deprecated class LexicalTypeVariableType extends TypeVariableType, @lexical_type_variable_type {
   override string getName() {
     types(this, _, result) // The toString value contains the name.
@@ -2703,6 +2759,7 @@ deprecated class LexicalTypeVariableType extends TypeVariableType, @lexical_type
  * }
  * ```
  */
+overlay[global]
 deprecated class ThisType extends Type, @this_type {
   /**
    * Gets the type containing the `this` type.
@@ -2721,6 +2778,7 @@ deprecated class ThisType extends Type, @this_type {
  * The type of a named value, `typeof X`, typically denoting the type of
  * a class constructor, namespace object, enum object, or module object.
  */
+overlay[global]
 deprecated class TypeofType extends Type, @typeof_type {
   /**
    * Gets the canonical name of the named value.
@@ -2801,6 +2859,7 @@ module SignatureKind {
  *
  * A function or constructor signature in a TypeScript type.
  */
+overlay[global]
 deprecated class CallSignatureType extends @signature_type {
   /**
    * Gets a value indicating if this is a function or constructor signature.
@@ -2955,6 +3014,7 @@ deprecated class CallSignatureType extends @signature_type {
  *
  * A function call signature in a type, that is, a signature without the `new` keyword.
  */
+overlay[global]
 deprecated class FunctionCallSignatureType extends CallSignatureType, @function_signature_type { }
 
 /**
@@ -2965,6 +3025,7 @@ deprecated class FunctionCallSignatureType extends CallSignatureType, @function_
  *
  * A constructor call signature in a type, that is, a signature with the `new` keyword.
  */
+overlay[global]
 deprecated class ConstructorCallSignatureType extends CallSignatureType, @constructor_signature_type
 { }
 
@@ -2976,6 +3037,7 @@ deprecated class ConstructorCallSignatureType extends CallSignatureType, @constr
  * - It has one type parameter, say, `T`
  * - It has a `then` method whose first argument is a callback that takes a `T` as argument.
  */
+overlay[global]
 deprecated private class PromiseTypeName extends TypeName {
   PromiseTypeName() {
     // The name must suggest it is a promise.
@@ -3005,6 +3067,7 @@ deprecated private class PromiseTypeName extends TypeName {
  * This includes types whose name and `then` method signature suggest it is a promise,
  * such as `PromiseLike<T>` and `Thenable<T>`.
  */
+overlay[global]
 deprecated class PromiseType extends TypeReference {
   PromiseType() {
     this.getNumTypeArgument() = 1 and

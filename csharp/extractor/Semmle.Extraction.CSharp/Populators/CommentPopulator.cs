@@ -12,6 +12,10 @@ namespace Semmle.Extraction.CSharp.Populators
     {
         public static void ExtractCommentBlocks(Context cx, CommentProcessor gen)
         {
+            if (cx.OnlyScaffold)
+            {
+                return;
+            }
             cx.Try(null, null, () =>
             {
                 gen.GenerateBindings((entity, duplicationGuardKey, block, binding) =>
@@ -34,6 +38,10 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public static void ExtractComment(Context cx, SyntaxTrivia trivia)
         {
+            if (cx.OnlyScaffold)
+            {
+                return;
+            }
             switch (trivia.Kind())
             {
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:

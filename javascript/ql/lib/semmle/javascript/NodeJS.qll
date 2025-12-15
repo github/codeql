@@ -17,6 +17,7 @@ private import semmle.javascript.dataflow.internal.DataFlowNode
  *   process.stdout.write(fs.readFileSync(process.argv[i], 'utf8'));
  * ```
  */
+overlay[local?]
 class NodeModule extends Module {
   NodeModule() {
     is_module(this) and
@@ -36,11 +37,13 @@ class NodeModule extends Module {
    * Gets an abstract value representing one or more values that may flow
    * into this module's `module.exports` property.
    */
+  overlay[global]
   pragma[noinline]
   DefiniteAbstractValue getAModuleExportsValue() {
     result = this.getAModuleExportsProperty().getAValue()
   }
 
+  overlay[global]
   pragma[noinline]
   private AbstractProperty getAModuleExportsProperty() {
     result.getBase().(AbstractModuleObject).getModule() = this and
@@ -52,12 +55,14 @@ class NodeModule extends Module {
    * For performance this predicate only computes relevant expressions (in `getAModuleExportsCandidate`).
    * So if using this predicate - consider expanding the list of relevant expressions.
    */
+  overlay[global]
   DataFlow::AnalyzedNode getAModuleExportsNode() {
     result = getAModuleExportsCandidate() and
     result.getAValue() = this.getAModuleExportsValue()
   }
 
   /** Gets a symbol exported by this module. */
+  overlay[global]
   override string getAnExportedSymbol() {
     result = super.getAnExportedSymbol()
     or
@@ -70,6 +75,7 @@ class NodeModule extends Module {
     )
   }
 
+  overlay[global]
   override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
     exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
@@ -114,6 +120,7 @@ class NodeModule extends Module {
     )
   }
 
+  overlay[global]
   override DataFlow::Node getABulkExportedNode() {
     Stages::Imports::ref() and
     exists(DataFlow::PropWrite write |
@@ -124,6 +131,7 @@ class NodeModule extends Module {
   }
 
   /** Gets a symbol that the module object inherits from its prototypes. */
+  overlay[global]
   private string getAnImplicitlyExportedSymbol() {
     exists(ExternalConstructor ec | ec = this.getPrototypeOfExportedExpr() |
       result = ec.getAMember().getName()
@@ -136,6 +144,7 @@ class NodeModule extends Module {
   }
 
   /** Gets an externs declaration of the prototype object of a value exported by this module. */
+  overlay[global]
   private ExternalConstructor getPrototypeOfExportedExpr() {
     exists(AbstractValue exported | exported = this.getAModuleExportsValue() |
       result instanceof ObjectExternal
@@ -146,6 +155,7 @@ class NodeModule extends Module {
     )
   }
 
+  overlay[global]
   deprecated override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     exists(string pathval | pathval = path.getValue() |
@@ -224,6 +234,7 @@ predicate findNodeModulesFolder(Folder f, Folder nodeModules, int distance) {
 /**
  * A Node.js `require` variable.
  */
+overlay[local?]
 private class RequireVariable extends Variable {
   RequireVariable() {
     this = any(ModuleScope m).getVariable("require")
@@ -236,6 +247,7 @@ private class RequireVariable extends Variable {
   }
 }
 
+overlay[local?]
 private predicate isModuleModule(EarlyStageNode nd) {
   exists(ImportDeclaration imp | imp.getRawImportPath() = "module" |
     nd = TDestructuredModuleImportNode(imp)
@@ -249,6 +261,7 @@ private predicate isModuleModule(EarlyStageNode nd) {
   )
 }
 
+overlay[local?]
 private predicate isCreateRequire(EarlyStageNode nd) {
   exists(PropAccess prop |
     isModuleModule(TValueNode(prop.getBase())) and
@@ -278,6 +291,7 @@ private predicate isCreateRequire(EarlyStageNode nd) {
 /**
  * Holds if `nd` may refer to `require`, either directly or modulo local data flow.
  */
+overlay[local?]
 cached
 private predicate isRequire(EarlyStageNode nd) {
   exists(VarAccess access |
@@ -320,6 +334,7 @@ private predicate isRequire(EarlyStageNode nd) {
  * require('fs')
  * ```
  */
+overlay[local?]
 class Require extends CallExpr, Import {
   Require() { isRequire(TValueNode(this.getCallee())) }
 

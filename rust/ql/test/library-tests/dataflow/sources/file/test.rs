@@ -23,7 +23,7 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
         sink(buffer); // $ hasTaintFlow="file.txt"
     }
 
-    for entry in fs::read_dir("directory")? {
+    for entry in fs::read_dir("directory")? { // $ Alert[rust/summary/taint-sources]
         let e = entry?;
 
         let path = e.path(); // $ Alert[rust/summary/taint-sources]
@@ -48,7 +48,7 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
         sink(file_name.clone().as_encoded_bytes()); // $ MISSING: hasTaintFlow
         sink(file_name); // $ hasTaintFlow
     }
-    for entry in std::path::Path::new("directory").read_dir()? {
+    for entry in std::path::Path::new("directory").read_dir()? { // $ Alert[rust/summary/taint-sources]
         let e = entry?;
 
         let path = e.path(); // $ Alert[rust/summary/taint-sources]

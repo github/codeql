@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Cookies without the <code>HttpOnly</code> flag set are accessible to client-side scripts such as JavaScript running in the same origin. 
+In case of a Cross-Site Scripting (XSS) vulnerability, the cookie can be stolen by a malicious script.
+If a sensitive cookie does not need to be accessed directly by client-side JS, the <code>HttpOnly</code> flag should be set.</p>
+</overview>
+
+<recommendation>
+<p>
+Set the <code>HttpOnly</code> flag to <code>true</code> for authentication cookies to ensure they are not accessible to client-side scripts.
+</p> 
+<p>
+When using ASP.NET Core, <code>CookiePolicyOptions</code> can be used to set a default policy for cookies.
+
+When using ASP.NET Web Forms, a default may also be configured in the <code>Web.config</code> file, using the <code>httpOnlyCookies</code> attribute of the 
+the <code>&lt;httpCookies&gt;</code> element.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+In the example below, <code>Microsoft.AspNetCore.Http.CookieOptions.HttpOnly</code> is set to <code>true</code>.
+</p>
+
+<sample src="httponlyflagcore.cs" />
+
+<p>
+In the following example, <code>CookiePolicyOptions</code> are set programmatically to configure defaults.
+</p>
+
+<sample src="cookiepolicyoptions.cs" />
+
+<p>
+In the example below, <code>System.Web.HttpCookie.HttpOnly</code> is set to <code>true</code>.
+</p>
+
+<sample src="httponlyflag.cs" />
+
+<p>
+In the example below, the <code>httpOnlyCookies</code> attribute is set to <code>true</code> in the <code>Web.config</code> file.
+</p>
+<sample src="Web.config"/>
+
+</example>
+
+<references>
+
+<li>ASP.Net Core docs: <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.cookieoptions.httponly">CookieOptions.HttpOnly Property</a>.</li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a> Header.</li>
+<li>Web Forms docs: <a href="https://msdn.microsoft.com/en-us/library/system.web.httpcookie.httponly(v=vs.110).aspx">HttpCookie.HttpOnly Property</a>.</li>
+<li>Web Forms docs: <a href="https://msdn.microsoft.com/library/ms228262%28v=vs.100%29.aspx">httpCookies Element</a>.</li>
+<li>PortSwigger: <a href="https://portswigger.net/kb/issues/00500600_cookie-without-httponly-flag-set">Cookie without HttpOnly flag set</a></li>
+
+</references>
+</qhelp>

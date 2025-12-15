@@ -4,6 +4,7 @@ aliases:
 display_name: "C#"
 version: 1.22.1
 column_kind: "utf16"
+overlay_support_version: 20250626
 extra_env_vars:
   DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
 build_modes:
@@ -73,3 +74,8 @@ options:
       [EXPERIMENTAL] The value is a path to the MsBuild binary log file that should be extracted.
       This option only works when `--build-mode none` is also specified.
     type: array
+  buildless_dependency_dir:
+    title: The path where buildless (standalone) extraction should keep dependencies.
+    description: >
+      If set, the buildless (standalone) extractor will store dependencies in this directory.
+    type: string

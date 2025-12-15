@@ -1,0 +1,8 @@
+testFailures
+constAccess
+| main.rs:17:13:17:24 | GLOBAL_CONST | main.rs:1:1:1:29 | Const |
+| main.rs:19:13:19:24 | STRING_CONST | main.rs:2:1:2:35 | Const |
+| main.rs:21:13:21:33 | ...::ASSOC_CONST | main.rs:9:5:9:33 | Const |
+| main.rs:23:13:23:35 | ...::MODULE_CONST | main.rs:13:5:13:38 | Const |
+| main.rs:25:8:25:19 | GLOBAL_CONST | main.rs:1:1:1:29 | Const |
+| main.rs:29:16:29:36 | ...::ASSOC_CONST | main.rs:9:5:9:33 | Const |

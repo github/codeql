@@ -1,5 +1,5 @@
 /**
- * @name Sensitive cookie missing `HttpOnly` attribute.
+ * @name Sensitive cookie missing `HttpOnly` attribute
  * @description Cookies without the `HttpOnly` attribute set can be accessed by JS scripts, making them more vulnerable to XSS attacks.
  * @kind problem
  * @problem.severity warning

@@ -1,4 +1,6 @@
 /** Provides classes for working with JSDoc comments. */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages
@@ -627,6 +629,7 @@ module JSDoc {
   /**
    * A statement container which may declare JSDoc name aliases.
    */
+  overlay[global]
   deprecated class Environment extends StmtContainer {
     /**
      * Gets the fully qualified name aliased by the given unqualified name

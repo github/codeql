@@ -12,9 +12,10 @@
  */
 
 import python
+private import LegacyPointsTo
 import semmle.python.strings
 
-from Expr e, ClassValue t
+from ExprWithPointsTo e, ClassValue t
 where
   exists(BinaryExpr b |
     b.getOp() instanceof Mod and

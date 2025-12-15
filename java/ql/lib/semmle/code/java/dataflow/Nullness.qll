@@ -113,7 +113,7 @@ predicate dereference(Expr e) {
  *
  * The `VarAccess` is included for nicer error reporting.
  */
-private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
+private ControlFlowNode varDereference(SsaDefinition v, VarAccess va) {
   dereference(result.asExpr()) and
   result.asExpr() = sameValue(v, va)
 }
@@ -121,7 +121,7 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 /**
  * The first dereference of a variable in a given `BasicBlock`.
  */
-private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAccess va) {
+private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaDefinition v, VarAccess va) {
   exists(ControlFlowNode n |
     varDereference(v, va) = n and
     n.getBasicBlock() = bb and
@@ -135,14 +135,14 @@ private predicate firstVarDereferenceInBlock(BasicBlock bb, SsaVariable v, VarAc
 }
 
 /** A variable suspected of being `null`. */
-private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, Expr reason) {
+private predicate varMaybeNull(SsaDefinition v, ControlFlowNode node, string msg, Expr reason) {
   // A variable compared to null might be null.
   exists(Expr e |
     reason = e and
     msg = "as suggested by $@ null guard" and
     guardSuggestsVarMaybeNull(e, v) and
-    node = v.getCfgNode() and
-    not v instanceof SsaPhiNode and
+    node = v.getControlFlowNode() and
+    not v instanceof SsaPhiDefinition and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
     not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and
@@ -151,13 +151,13 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
       not exists(MethodCall ma | ma.getAnArgument().getAChildExpr*() = e)
     ) and
     // Don't use a guard as reason if there is a null assignment.
-    not v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
+    not v.(SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource() = nullExpr()
   )
   or
   // A parameter might be null if there is a null argument somewhere.
   exists(Parameter p, Expr arg |
-    v.(SsaImplicitInit).isParameterDefinition(p) and
-    node = v.getCfgNode() and
+    v.(SsaParameterInit).getParameter() = p and
+    node = v.getControlFlowNode() and
     p.getAnArgument() = arg and
     reason = arg and
     msg = "because of $@ null argument" and
@@ -167,7 +167,7 @@ private predicate varMaybeNull(SsaVariable v, ControlFlowNode node, string msg, 
   or
   // If the source of a variable is null then the variable may be null.
   exists(VariableAssign def |
-    v.(SsaExplicitUpdate).getDefiningExpr() = def and
+    v.(SsaExplicitWrite).getDefiningExpr() = def and
     def.getSource() = nullExpr(node.asExpr()) and
     reason = def and
     msg = "because of $@ assignment"
@@ -179,26 +179,26 @@ private Expr nonEmptyExpr() {
   // An array creation with a known positive size is trivially non-empty.
   result.(ArrayCreationExpr).getFirstDimensionSize() > 0
   or
-  exists(SsaVariable v |
+  exists(SsaDefinition v |
     // A use of an array variable is non-empty if...
-    result = v.getAUse() and
+    result = v.getARead() and
     v.getSourceVariable().getType() instanceof Array
   |
     // ...its definition is non-empty...
-    v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = nonEmptyExpr()
+    v.(SsaExplicitWrite).getValue() = nonEmptyExpr()
     or
     // ...or it is guarded by a condition proving its length to be non-zero.
     exists(ConditionBlock cond, boolean branch, FieldAccess length |
       cond.controls(result.getBasicBlock(), branch) and
       cond.getCondition() = nonZeroGuard(length, branch) and
       length.getField().hasName("length") and
-      length.getQualifier() = v.getAUse()
+      length.getQualifier() = v.getARead()
     )
   )
   or
-  exists(SsaVariable v |
+  exists(SsaDefinition v |
     // A use of a Collection variable is non-empty if...
-    result = v.getAUse() and
+    result = v.getARead() and
     v.getSourceVariable().getType() instanceof CollectionType and
     exists(ConditionBlock cond, boolean branch, Expr c |
       // ...it is guarded by a condition...
@@ -216,13 +216,13 @@ private Expr nonEmptyExpr() {
       // ...and the condition proves that it is non-empty, either by using the `isEmpty` method...
       c.(MethodCall).getMethod().hasName("isEmpty") and
       branch = false and
-      c.(MethodCall).getQualifier() = v.getAUse()
+      c.(MethodCall).getQualifier() = v.getARead()
       or
       // ...or a check on its `size`.
       exists(MethodCall size |
         c = nonZeroGuard(size, branch) and
         size.getMethod().hasName("size") and
-        size.getQualifier() = v.getAUse()
+        size.getQualifier() = v.getARead()
       )
     )
   )
@@ -249,9 +249,9 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
 }
 
 private module NullnessConfig implements ControlFlowReachability::ConfigSig {
-  predicate source(ControlFlowNode node, SsaVariable def) { varMaybeNull(def, node, _, _) }
+  predicate source(ControlFlowNode node, SsaDefinition def) { varMaybeNull(def, node, _, _) }
 
-  predicate sink(ControlFlowNode node, SsaVariable def) { varDereference(def, _) = node }
+  predicate sink(ControlFlowNode node, SsaDefinition def) { varDereference(def, _) = node }
 
   predicate barrierValue(GuardValue gv) { gv.isNullness(false) }
 
@@ -266,7 +266,7 @@ private module NullnessFlow = ControlFlowReachability::Flow<NullnessConfig>;
  * Holds if the dereference of `v` at `va` might be `null`.
  */
 predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) {
-  exists(SsaVariable origin, SsaVariable ssa, ControlFlowNode src, ControlFlowNode sink |
+  exists(SsaDefinition origin, SsaDefinition ssa, ControlFlowNode src, ControlFlowNode sink |
     varMaybeNull(origin, src, msg, reason) and
     NullnessFlow::flow(src, origin, sink, ssa) and
     ssa.getSourceVariable() = v and
@@ -278,9 +278,9 @@ predicate nullDeref(SsaSourceVariable v, VarAccess va, string msg, Expr reason) 
  * A dereference of a variable that is always `null`.
  */
 predicate alwaysNullDeref(SsaSourceVariable v, VarAccess va) {
-  exists(BasicBlock bb, SsaVariable ssa |
-    forall(SsaVariable def | def = ssa.getAnUltimateDefinition() |
-      def.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() = alwaysNullExpr()
+  exists(BasicBlock bb, SsaDefinition ssa |
+    forall(SsaDefinition def | def = ssa.getAnUltimateDefinition() |
+      def.(SsaExplicitWrite).getValue() = alwaysNullExpr()
     )
     or
     nullGuardControls(ssa, true, bb) and

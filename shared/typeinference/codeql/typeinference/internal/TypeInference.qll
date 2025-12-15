@@ -449,7 +449,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * - `abs` is a type abstraction that introduces type variables that are
      *   free in `condition` and `constraint`,
      * - and for every instantiation of the type parameters from `abs` the
-     *   resulting `condition` satisifies the constraint given by `constraint`.
+     *   resulting `condition` satisfies the constraint given by `constraint`.
+     * - `transitive` corresponds to whether any further constraints satisfied
+     *   through `constraint` should also apply to `condition`.
      *
      * Example in C#:
      * ```csharp
@@ -487,7 +489,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * should be empty.
      */
     predicate conditionSatisfiesConstraint(
-      TypeAbstraction abs, TypeMention condition, TypeMention constraint
+      TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
     );
   }
 
@@ -578,7 +580,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
-      private predicate satisfiesConcreteTypesFromIndex(
+      private predicate satisfiesConcreteTypesToIndex(
         App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
         exists(Type t, TypePath path |
@@ -586,13 +588,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
         ) and
         // Recurse unless we are at the first path
-        if i = 0 then any() else satisfiesConcreteTypesFromIndex(app, abs, constraint, i - 1)
+        if i = 0 then any() else satisfiesConcreteTypesToIndex(app, abs, constraint, i - 1)
       }
 
       /** Holds if all the concrete types in `constraint` also occur in `app`. */
       pragma[nomagic]
       private predicate satisfiesConcreteTypes(App app, TypeAbstraction abs, Constraint constraint) {
-        satisfiesConcreteTypesFromIndex(app, abs, constraint,
+        satisfiesConcreteTypesToIndex(app, abs, constraint,
           max(int i | exists(getNthPath(constraint, i))))
       }
 
@@ -620,7 +622,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
-      private predicate typeParametersEqualFromIndexBase(
+      private predicate typeParametersEqualToIndexBase(
         App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp, TypePath path
       ) {
         path = getNthTypeParameterPath(constraint, tp, 0) and
@@ -630,15 +632,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
-      private predicate typeParametersEqualFromIndex(
+      private predicate typeParametersEqualToIndex(
         App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp, Type t, int i
       ) {
         exists(TypePath path |
           t = app.getTypeAt(path) and
           if i = 0
-          then typeParametersEqualFromIndexBase(app, abs, constraint, tp, path)
+          then typeParametersEqualToIndexBase(app, abs, constraint, tp, path)
           else (
-            typeParametersEqualFromIndex(app, abs, constraint, tp, t, i - 1) and
+            typeParametersEqualToIndex(app, abs, constraint, tp, t, i - 1) and
             path = getNthTypeParameterPath(constraint, tp, i)
           )
         )
@@ -655,19 +657,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           exists(int n | n = max(int i | exists(getNthTypeParameterPath(constraint, tp, i))) |
             // If the largest index is 0, then there are no equalities to check as
             // the type parameter only occurs once.
-            if n = 0 then any() else typeParametersEqualFromIndex(app, abs, constraint, tp, _, n)
+            if n = 0 then any() else typeParametersEqualToIndex(app, abs, constraint, tp, _, n)
           )
         )
       }
 
-      private predicate typeParametersHaveEqualInstantiationFromIndex(
+      private predicate typeParametersHaveEqualInstantiationToIndex(
         App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
         exists(TypeParameter tp | tp = getNthTypeParameter(abs, i) |
           typeParametersEqual(app, abs, constraint, tp) and
           if i = 0
           then any()
-          else typeParametersHaveEqualInstantiationFromIndex(app, abs, constraint, i - 1)
+          else typeParametersHaveEqualInstantiationToIndex(app, abs, constraint, i - 1)
         )
       }
 
@@ -697,7 +699,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           not exists(getNthTypeParameter(abs, _))
           or
           exists(int n | n = max(int i | exists(getNthTypeParameter(abs, i))) |
-            typeParametersHaveEqualInstantiationFromIndex(app, abs, constraint, n)
+            typeParametersHaveEqualInstantiationToIndex(app, abs, constraint, n)
           )
         )
       }
@@ -754,13 +756,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         private predicate typeCondition(
           Type type, TypeAbstraction abs, TypeMentionTypeTree condition
         ) {
-          conditionSatisfiesConstraint(abs, condition, _) and
+          conditionSatisfiesConstraint(abs, condition, _, _) and
           type = resolveTypeMentionRoot(condition)
         }
 
         pragma[nomagic]
         private predicate typeConstraint(Type type, TypeMentionTypeTree constraint) {
-          conditionSatisfiesConstraint(_, _, constraint) and
+          conditionSatisfiesConstraint(_, _, constraint, _) and
           type = resolveTypeMentionRoot(constraint)
         }
 
@@ -781,12 +783,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeAbstraction abs, TypeMention condition, TypeMention constraint, TypePath path, Type t
       ) {
         // base case
-        conditionSatisfiesConstraint(abs, condition, constraint) and
+        conditionSatisfiesConstraint(abs, condition, constraint, _) and
         constraint.resolveTypeAt(path) = t
         or
         // recursive case
         exists(TypeAbstraction midAbs, TypeMention midConstraint, TypeMention midCondition |
-          conditionSatisfiesConstraint(abs, condition, midConstraint) and
+          conditionSatisfiesConstraint(abs, condition, midConstraint, true) and
           // NOTE: `midAbs` describe the free type variables in `midCondition`, hence
           // we use that for instantiation check.
           IsInstantiationOf<TypeMentionTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
@@ -990,7 +992,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
-          useUniversalConditions() and
+          useUniversalConditions() and // todo: remove, and instead check constraints
           not exists(countConstraintImplementations(type, constraint)) and
           conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
           resolveTypeMentionRoot(condition) = abs.getATypeParameter() and

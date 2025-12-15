@@ -1,6 +1,7 @@
 import python
+private import LegacyPointsTo
 
-from ControlFlowNode arg, CallNode call, string debug
+from ControlFlowNodeWithPointsTo arg, CallNode call, string debug
 where
   call.getAnArg() = arg and
   call.getFunction().(NameNode).getId() = "check" and

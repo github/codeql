@@ -174,7 +174,7 @@ macro_expansion.rs:
 #    1|           getPath(): [Path] MyTrait
 #    1|             getSegment(): [PathSegment] MyTrait
 #    1|               getIdentifier(): [NameRef] MyTrait
-#    3|   getItem(1): [Function] fn foo
+#    3|   getItem(1): [Function] (item with attribute macro expansion)
 #    4|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    4|       getItem(0): [Function] fn foo
 #    4|         getParamList(): [ParamList] ParamList
@@ -190,7 +190,7 @@ macro_expansion.rs:
 #    5|                         getIdentifier(): [NameRef] concat
 #    5|                     getTokenTree(): [TokenTree] TokenTree
 #    5|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#    7|             getStatement(1): [Function] fn inner
+#    7|             getStatement(1): [Function] (item with attribute macro expansion)
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
@@ -202,16 +202,12 @@ macro_expansion.rs:
 #    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_1
-#    8|               getParamList(): [ParamList] ParamList
 #    7|               getAttr(0): [Attr] Attr
 #    7|                 getMeta(): [Meta] Meta
 #    7|                   getPath(): [Path] repeat
 #    7|                     getSegment(): [PathSegment] repeat
 #    7|                       getIdentifier(): [NameRef] repeat
 #    7|                   getTokenTree(): [TokenTree] TokenTree
-#    8|               getFunctionBody(): [BlockExpr] { ... }
-#    8|                 getStmtList(): [StmtList] StmtList
-#    8|               getName(): [Name] inner
 #   10|             getStatement(2): [ExprStmt] ExprStmt
 #   10|               getExpr(): [CallExpr] inner_0(...)
 #   10|                 getArgList(): [ArgList] ArgList
@@ -242,7 +238,7 @@ macro_expansion.rs:
 #    5|                         getIdentifier(): [NameRef] concat
 #    5|                     getTokenTree(): [TokenTree] TokenTree
 #    5|                     getMacroCallExpansion(): [StringLiteralExpr] "Hello world!"
-#    7|             getStatement(1): [Function] fn inner
+#    7|             getStatement(1): [Function] (item with attribute macro expansion)
 #    8|               getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    8|                 getItem(0): [Function] fn inner_0
 #    8|                   getParamList(): [ParamList] ParamList
@@ -254,16 +250,12 @@ macro_expansion.rs:
 #    8|                   getFunctionBody(): [BlockExpr] { ... }
 #    8|                     getStmtList(): [StmtList] StmtList
 #    8|                   getName(): [Name] inner_1
-#    8|               getParamList(): [ParamList] ParamList
 #    7|               getAttr(0): [Attr] Attr
 #    7|                 getMeta(): [Meta] Meta
 #    7|                   getPath(): [Path] repeat
 #    7|                     getSegment(): [PathSegment] repeat
 #    7|                       getIdentifier(): [NameRef] repeat
 #    7|                   getTokenTree(): [TokenTree] TokenTree
-#    8|               getFunctionBody(): [BlockExpr] { ... }
-#    8|                 getStmtList(): [StmtList] StmtList
-#    8|               getName(): [Name] inner
 #   10|             getStatement(2): [ExprStmt] ExprStmt
 #   10|               getExpr(): [CallExpr] inner_0(...)
 #   10|                 getArgList(): [ArgList] ArgList
@@ -280,53 +272,14 @@ macro_expansion.rs:
 #   11|                       getIdentifier(): [NameRef] inner_1
 #    4|         getName(): [Name] foo_new
 #    4|         getVisibility(): [Visibility] Visibility
-#    4|     getParamList(): [ParamList] ParamList
 #    3|     getAttr(0): [Attr] Attr
 #    3|       getMeta(): [Meta] Meta
 #    3|         getPath(): [Path] add_one
 #    3|           getSegment(): [PathSegment] add_one
 #    3|             getIdentifier(): [NameRef] add_one
-#    4|     getFunctionBody(): [BlockExpr] { ... }
-#    4|       getStmtList(): [StmtList] StmtList
-#    5|         getStatement(0): [ExprStmt] ExprStmt
-#    5|           getExpr(): [AssignmentExpr] ... = ...
-#    5|             getLhs(): [UnderscoreExpr] _
-#    5|             getRhs(): [MacroExpr] MacroExpr
-#    5|               getMacroCall(): [MacroCall] concat!...
-#    5|                 getPath(): [Path] concat
-#    5|                   getSegment(): [PathSegment] concat
-#    5|                     getIdentifier(): [NameRef] concat
-#    5|                 getTokenTree(): [TokenTree] TokenTree
-#    7|         getStatement(1): [Function] fn inner
-#    8|           getParamList(): [ParamList] ParamList
-#    7|           getAttr(0): [Attr] Attr
-#    7|             getMeta(): [Meta] Meta
-#    7|               getPath(): [Path] repeat
-#    7|                 getSegment(): [PathSegment] repeat
-#    7|                   getIdentifier(): [NameRef] repeat
-#    7|               getTokenTree(): [TokenTree] TokenTree
-#    8|           getFunctionBody(): [BlockExpr] { ... }
-#    8|             getStmtList(): [StmtList] StmtList
-#    8|           getName(): [Name] inner
-#   10|         getStatement(2): [ExprStmt] ExprStmt
-#   10|           getExpr(): [CallExpr] inner_0(...)
-#   10|             getArgList(): [ArgList] ArgList
-#   10|             getFunction(): [PathExpr] inner_0
-#   10|               getPath(): [Path] inner_0
-#   10|                 getSegment(): [PathSegment] inner_0
-#   10|                   getIdentifier(): [NameRef] inner_0
-#   11|         getStatement(3): [ExprStmt] ExprStmt
-#   11|           getExpr(): [CallExpr] inner_1(...)
-#   11|             getArgList(): [ArgList] ArgList
-#   11|             getFunction(): [PathExpr] inner_1
-#   11|               getPath(): [Path] inner_1
-#   11|                 getSegment(): [PathSegment] inner_1
-#   11|                   getIdentifier(): [NameRef] inner_1
-#    4|     getName(): [Name] foo
-#    4|     getVisibility(): [Visibility] Visibility
-#   14|   getItem(2): [Function] fn bar
+#   14|   getItem(2): [Function] (item with attribute macro expansion)
 #   15|     getAttributeMacroExpansion(): [MacroItems] MacroItems
-#   15|       getItem(0): [Function] fn bar_0
+#   15|       getItem(0): [Function] (item with attribute macro expansion)
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_0
 #   16|             getParamList(): [ParamList] ParamList
@@ -340,17 +293,12 @@ macro_expansion.rs:
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_0_new
 #   16|             getVisibility(): [Visibility] Visibility
-#   16|         getParamList(): [ParamList] ParamList
 #   15|         getAttr(0): [Attr] Attr
 #   15|           getMeta(): [Meta] Meta
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   16|         getFunctionBody(): [BlockExpr] { ... }
-#   16|           getStmtList(): [StmtList] StmtList
-#   16|         getName(): [Name] bar_0
-#   16|         getVisibility(): [Visibility] Visibility
-#   15|       getItem(1): [Function] fn bar_1
+#   15|       getItem(1): [Function] (item with attribute macro expansion)
 #   16|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   16|           getItem(0): [Function] fn bar_1
 #   16|             getParamList(): [ParamList] ParamList
@@ -364,17 +312,11 @@ macro_expansion.rs:
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_1_new
 #   16|             getVisibility(): [Visibility] Visibility
-#   16|         getParamList(): [ParamList] ParamList
 #   15|         getAttr(0): [Attr] Attr
 #   15|           getMeta(): [Meta] Meta
 #   15|             getPath(): [Path] add_one
 #   15|               getSegment(): [PathSegment] add_one
 #   15|                 getIdentifier(): [NameRef] add_one
-#   16|         getFunctionBody(): [BlockExpr] { ... }
-#   16|           getStmtList(): [StmtList] StmtList
-#   16|         getName(): [Name] bar_1
-#   16|         getVisibility(): [Visibility] Visibility
-#   16|     getParamList(): [ParamList] ParamList
 #   14|     getAttr(0): [Attr] Attr
 #   14|       getMeta(): [Meta] Meta
 #   14|         getPath(): [Path] repeat
@@ -386,22 +328,13 @@ macro_expansion.rs:
 #   15|         getPath(): [Path] add_one
 #   15|           getSegment(): [PathSegment] add_one
 #   15|             getIdentifier(): [NameRef] add_one
-#   16|     getFunctionBody(): [BlockExpr] { ... }
-#   16|       getStmtList(): [StmtList] StmtList
-#   16|     getName(): [Name] bar
-#   16|     getVisibility(): [Visibility] Visibility
-#   18|   getItem(3): [Function] fn baz
+#   18|   getItem(3): [Function] (item with attribute macro expansion)
 #   18|     getAttributeMacroExpansion(): [MacroItems] MacroItems
-#   19|     getParamList(): [ParamList] ParamList
 #   18|     getAttr(0): [Attr] Attr
 #   18|       getMeta(): [Meta] Meta
 #   18|         getPath(): [Path] erase
 #   18|           getSegment(): [PathSegment] erase
 #   18|             getIdentifier(): [NameRef] erase
-#   19|     getFunctionBody(): [BlockExpr] { ... }
-#   19|       getStmtList(): [StmtList] StmtList
-#   19|     getName(): [Name] baz
-#   19|     getVisibility(): [Visibility] Visibility
 #   22|   getItem(4): [MacroRules] MacroRules
 #   22|     getName(): [Name] hello
 #   22|     getTokenTree(): [TokenTree] TokenTree
@@ -410,7 +343,7 @@ macro_expansion.rs:
 #   28|     getVisibility(): [Visibility] Visibility
 #   30|   getItem(6): [Impl] impl S { ... }
 #   30|     getAssocItemList(): [AssocItemList] AssocItemList
-#   31|       getAssocItem(0): [Function] fn bzz
+#   31|       getAssocItem(0): [Function] (item with attribute macro expansion)
 #   32|         getAttributeMacroExpansion(): [MacroItems] MacroItems
 #   32|           getItem(0): [Function] fn bzz_0
 #   32|             getParamList(): [ParamList] ParamList
@@ -556,24 +489,12 @@ macro_expansion.rs:
 #   31|                                               getIdentifier(): [NameRef] _print
 #   32|             getName(): [Name] bzz_2
 #   32|             getVisibility(): [Visibility] Visibility
-#   32|         getParamList(): [ParamList] ParamList
 #   31|         getAttr(0): [Attr] Attr
 #   31|           getMeta(): [Meta] Meta
 #   31|             getPath(): [Path] repeat
 #   31|               getSegment(): [PathSegment] repeat
 #   31|                 getIdentifier(): [NameRef] repeat
 #   31|             getTokenTree(): [TokenTree] TokenTree
-#   32|         getFunctionBody(): [BlockExpr] { ... }
-#   32|           getStmtList(): [StmtList] StmtList
-#   33|             getStatement(0): [ExprStmt] ExprStmt
-#   33|               getExpr(): [MacroExpr] MacroExpr
-#   33|                 getMacroCall(): [MacroCall] hello!...
-#   33|                   getPath(): [Path] hello
-#   33|                     getSegment(): [PathSegment] hello
-#   33|                       getIdentifier(): [NameRef] hello
-#   33|                   getTokenTree(): [TokenTree] TokenTree
-#   32|         getName(): [Name] bzz
-#   32|         getVisibility(): [Visibility] Visibility
 #   30|     getSelfTy(): [PathTypeRepr] S
 #   30|       getPath(): [Path] S
 #   30|         getSegment(): [PathSegment] S
@@ -739,7 +660,7 @@ macro_expansion.rs:
 #   71|                   getSegment(): [PathSegment] i32
 #   71|                     getIdentifier(): [NameRef] i32
 #   72|         getTailExpr(): [CastExpr] a as ...
-#   72|           getExpr(): [PathExpr,VariableAccess] a
+#   72|           getExpr(): [VariableAccess] a
 #   72|             getPath(): [Path] a
 #   72|               getSegment(): [PathSegment] a
 #   72|                 getIdentifier(): [NameRef] a
@@ -817,7 +738,7 @@ macro_expansion.rs:
 #   84|             getFunctionBody(): [BlockExpr] { ... }
 #   84|               getStmtList(): [StmtList] StmtList
 #   84|                 getTailExpr(): [MatchExpr] match self { ... }
-#   83|                   getScrutinee(): [PathExpr,VariableAccess] self
+#   83|                   getScrutinee(): [VariableAccess] self
 #   83|                     getPath(): [Path] self
 #   83|                       getSegment(): [PathSegment] self
 #   83|                         getIdentifier(): [NameRef] self
@@ -830,7 +751,7 @@ macro_expansion.rs:
 #   85|                           getArgList(): [ArgList] ArgList
 #   83|                             getArg(0): [StringLiteralExpr] "field"
 #   85|                             getArg(1): [RefExpr] &field
-#   85|                               getExpr(): [PathExpr,VariableAccess] field
+#   85|                               getExpr(): [VariableAccess] field
 #   85|                                 getPath(): [Path] field
 #   85|                                   getSegment(): [PathSegment] field
 #   85|                                     getIdentifier(): [NameRef] field
@@ -839,7 +760,7 @@ macro_expansion.rs:
 #   83|                             getArgList(): [ArgList] ArgList
 #   83|                               getArg(0): [StringLiteralExpr] "MyDerive"
 #   83|                             getIdentifier(): [NameRef] debug_struct
-#   83|                             getReceiver(): [PathExpr,VariableAccess] f
+#   83|                             getReceiver(): [VariableAccess] f
 #   83|                               getPath(): [Path] f
 #   83|                                 getSegment(): [PathSegment] f
 #   83|                                   getIdentifier(): [NameRef] f
@@ -915,11 +836,11 @@ macro_expansion.rs:
 #   89|               getStmtList(): [StmtList] StmtList
 #   89|                 getTailExpr(): [MatchExpr] match ... { ... }
 #   88|                   getScrutinee(): [TupleExpr] TupleExpr
-#   88|                     getField(0): [PathExpr,VariableAccess] self
+#   88|                     getField(0): [VariableAccess] self
 #   88|                       getPath(): [Path] self
 #   88|                         getSegment(): [PathSegment] self
 #   88|                           getIdentifier(): [NameRef] self
-#   88|                     getField(1): [PathExpr,VariableAccess] other
+#   88|                     getField(1): [VariableAccess] other
 #   88|                       getPath(): [Path] other
 #   88|                         getSegment(): [PathSegment] other
 #   88|                           getIdentifier(): [NameRef] other
@@ -1043,7 +964,7 @@ macro_expansion.rs:
 #   98|             getParamList(): [ParamList] ParamList
 #   99|             getFunctionBody(): [BlockExpr] { ... }
 #   99|               getStmtList(): [StmtList] StmtList
-#   99|                 getTailExpr(): [PathExpr] CONST_MyDeriveUnion
+#   99|                 getTailExpr(): [ConstAccess] CONST_MyDeriveUnion
 #   99|                   getPath(): [Path] CONST_MyDeriveUnion
 #   99|                     getSegment(): [PathSegment] CONST_MyDeriveUnion
 #   99|                       getIdentifier(): [NameRef] CONST_MyDeriveUnion
@@ -1155,7 +1076,7 @@ proc_macro.rs:
 #    6|                   getMacroCallExpansion(): [MatchExpr] match ... { ... }
 #    6|                     getScrutinee(): [CallExpr] ...::parse::<...>(...)
 #    6|                       getArgList(): [ArgList] ArgList
-#    6|                         getArg(0): [PathExpr,VariableAccess] attr
+#    6|                         getArg(0): [VariableAccess] attr
 #    6|                           getPath(): [Path] attr
 #    6|                             getSegment(): [PathSegment] attr
 #    6|                               getIdentifier(): [NameRef] attr
@@ -1177,7 +1098,7 @@ proc_macro.rs:
 #    6|                             getIdentifier(): [NameRef] parse
 #    6|                     getMatchArmList(): [MatchArmList] MatchArmList
 #    6|                       getArm(0): [MatchArm] ... => data
-#    6|                         getExpr(): [PathExpr,VariableAccess] data
+#    6|                         getExpr(): [VariableAccess] data
 #    6|                           getPath(): [Path] data
 #    6|                             getSegment(): [PathSegment] data
 #    6|                               getIdentifier(): [NameRef] data
@@ -1203,7 +1124,7 @@ proc_macro.rs:
 #    6|                                     getArg(0): [MethodCallExpr] err.to_compile_error()
 #    6|                                       getArgList(): [ArgList] ArgList
 #    6|                                       getIdentifier(): [NameRef] to_compile_error
-#    6|                                       getReceiver(): [PathExpr,VariableAccess] err
+#    6|                                       getReceiver(): [VariableAccess] err
 #    6|                                         getPath(): [Path] err
 #    6|                                           getSegment(): [PathSegment] err
 #    6|                                             getIdentifier(): [NameRef] err
@@ -1247,7 +1168,7 @@ proc_macro.rs:
 #    7|               getMacroCallExpansion(): [MatchExpr] match ... { ... }
 #    7|                 getScrutinee(): [CallExpr] ...::parse::<...>(...)
 #    7|                   getArgList(): [ArgList] ArgList
-#    7|                     getArg(0): [PathExpr,VariableAccess] item
+#    7|                     getArg(0): [VariableAccess] item
 #    7|                       getPath(): [Path] item
 #    7|                         getSegment(): [PathSegment] item
 #    7|                           getIdentifier(): [NameRef] item
@@ -1269,7 +1190,7 @@ proc_macro.rs:
 #    7|                         getIdentifier(): [NameRef] parse
 #    7|                 getMatchArmList(): [MatchArmList] MatchArmList
 #    7|                   getArm(0): [MatchArm] ... => data
-#    7|                     getExpr(): [PathExpr,VariableAccess] data
+#    7|                     getExpr(): [VariableAccess] data
 #    7|                       getPath(): [Path] data
 #    7|                         getSegment(): [PathSegment] data
 #    7|                           getIdentifier(): [NameRef] data
@@ -1295,7 +1216,7 @@ proc_macro.rs:
 #    7|                                 getArg(0): [MethodCallExpr] err.to_compile_error()
 #    7|                                   getArgList(): [ArgList] ArgList
 #    7|                                   getIdentifier(): [NameRef] to_compile_error
-#    7|                                   getReceiver(): [PathExpr,VariableAccess] err
+#    7|                                   getReceiver(): [VariableAccess] err
 #    7|                                     getPath(): [Path] err
 #    7|                                       getSegment(): [PathSegment] err
 #    7|                                         getIdentifier(): [NameRef] err
@@ -1352,7 +1273,7 @@ proc_macro.rs:
 #   10|                         getInitializer(): [MethodCallExpr] ast.clone()
 #   10|                           getArgList(): [ArgList] ArgList
 #   10|                           getIdentifier(): [NameRef] clone
-#   10|                           getReceiver(): [PathExpr,VariableAccess] ast
+#   10|                           getReceiver(): [VariableAccess] ast
 #   10|                             getPath(): [Path] ast
 #   10|                               getSegment(): [PathSegment] ast
 #   10|                                 getIdentifier(): [NameRef] ast
@@ -1362,7 +1283,7 @@ proc_macro.rs:
 #   11|                         getExpr(): [AssignmentExpr] ... = ...
 #   11|                           getLhs(): [FieldExpr] ... .ident
 #   11|                             getContainer(): [FieldExpr] new_ast.sig
-#   11|                               getContainer(): [PathExpr,VariableAccess] new_ast
+#   11|                               getContainer(): [VariableAccess] new_ast
 #   11|                                 getPath(): [Path] new_ast
 #   11|                                   getSegment(): [PathSegment] new_ast
 #   11|                                     getIdentifier(): [NameRef] new_ast
@@ -1399,14 +1320,14 @@ proc_macro.rs:
 #   11|                                                       getArg(0): [FormatArgsArg] FormatArgsArg
 #   11|                                                         getExpr(): [FieldExpr] ... .ident
 #   11|                                                           getContainer(): [FieldExpr] ast.sig
-#   11|                                                             getContainer(): [PathExpr,VariableAccess] ast
+#   11|                                                             getContainer(): [VariableAccess] ast
 #   11|                                                               getPath(): [Path] ast
 #   11|                                                                 getSegment(): [PathSegment] ast
 #   11|                                                                   getIdentifier(): [NameRef] ast
 #   11|                                                             getIdentifier(): [NameRef] sig
 #   11|                                                           getIdentifier(): [NameRef] ident
 #   11|                                                       getArg(1): [FormatArgsArg] FormatArgsArg
-#   11|                                                         getExpr(): [PathExpr,VariableAccess] i
+#   11|                                                         getExpr(): [VariableAccess] i
 #   11|                                                           getPath(): [Path] i
 #   11|                                                             getSegment(): [PathSegment] i
 #   11|                                                               getIdentifier(): [NameRef] i
@@ -1438,7 +1359,7 @@ proc_macro.rs:
 #   11|                                 getIdentifier(): [NameRef] span
 #   11|                                 getReceiver(): [FieldExpr] ... .ident
 #   11|                                   getContainer(): [FieldExpr] ast.sig
-#   11|                                     getContainer(): [PathExpr,VariableAccess] ast
+#   11|                                     getContainer(): [VariableAccess] ast
 #   11|                                       getPath(): [Path] ast
 #   11|                                         getSegment(): [PathSegment] ast
 #   11|                                           getIdentifier(): [NameRef] ast
@@ -1454,14 +1375,14 @@ proc_macro.rs:
 #   11|                                     getIdentifier(): [NameRef] Ident
 #   11|                                 getSegment(): [PathSegment] new
 #   11|                                   getIdentifier(): [NameRef] new
-#   12|                       getTailExpr(): [PathExpr,VariableAccess] new_ast
+#   12|                       getTailExpr(): [VariableAccess] new_ast
 #   12|                         getPath(): [Path] new_ast
 #   12|                           getSegment(): [PathSegment] new_ast
 #   12|                             getIdentifier(): [NameRef] new_ast
 #    9|               getIdentifier(): [NameRef] map
 #    8|               getReceiver(): [ParenExpr] (...)
 #    8|                 getExpr(): [RangeExpr] 0..number
-#    8|                   getEnd(): [PathExpr,VariableAccess] number
+#    8|                   getEnd(): [VariableAccess] number
 #    8|                     getPath(): [Path] number
 #    8|                       getSegment(): [PathSegment] number
 #    8|                         getIdentifier(): [NameRef] number
@@ -1693,7 +1614,7 @@ proc_macro.rs:
 #   16|                                                                             getInitializer(): [MethodCallExpr] items.quote_into_iter()
 #   15|                                                                               getArgList(): [ArgList] ArgList
 #   15|                                                                               getIdentifier(): [NameRef] quote_into_iter
-#   16|                                                                               getReceiver(): [PathExpr,VariableAccess] items
+#   16|                                                                               getReceiver(): [VariableAccess] items
 #   16|                                                                                 getPath(): [Path] items
 #   16|                                                                                   getSegment(): [PathSegment] items
 #   16|                                                                                     getIdentifier(): [NameRef] items
@@ -1704,11 +1625,11 @@ proc_macro.rs:
 #   15|                                                                                 getName(): [Name] i
 #   15|                                                                           getStatement(1): [LetStmt] let ... = ...
 #   15|                                                                             getInitializer(): [BinaryExpr] ... | ...
-#   15|                                                                               getLhs(): [PathExpr,VariableAccess] has_iter
+#   15|                                                                               getLhs(): [VariableAccess] has_iter
 #   15|                                                                                 getPath(): [Path] has_iter
 #   15|                                                                                   getSegment(): [PathSegment] has_iter
 #   15|                                                                                     getIdentifier(): [NameRef] has_iter
-#   15|                                                                               getRhs(): [PathExpr,VariableAccess] i
+#   15|                                                                               getRhs(): [VariableAccess] i
 #   15|                                                                                 getPath(): [Path] i
 #   15|                                                                                   getSegment(): [PathSegment] i
 #   15|                                                                                     getIdentifier(): [NameRef] i
@@ -1725,7 +1646,7 @@ proc_macro.rs:
 #   16|                                                               getTokenTree(): [TokenTree] TokenTree
 #   15|                                                               getMacroCallExpansion(): [MacroBlockExpr] MacroBlockExpr
 #   15|                                             getStatement(3): [LetStmt] let _ = has_iter
-#   15|                                               getInitializer(): [PathExpr,VariableAccess] has_iter
+#   15|                                               getInitializer(): [VariableAccess] has_iter
 #   15|                                                 getPath(): [Path] has_iter
 #   15|                                                   getSegment(): [PathSegment] has_iter
 #   15|                                                     getIdentifier(): [NameRef] has_iter
@@ -1843,7 +1764,7 @@ proc_macro.rs:
 #   16|                                                                                     getScrutinee(): [MethodCallExpr] items.next()
 #   15|                                                                                       getArgList(): [ArgList] ArgList
 #   15|                                                                                       getIdentifier(): [NameRef] next
-#   16|                                                                                       getReceiver(): [PathExpr,VariableAccess] items
+#   16|                                                                                       getReceiver(): [VariableAccess] items
 #   16|                                                                                         getPath(): [Path] items
 #   16|                                                                                           getSegment(): [PathSegment] items
 #   16|                                                                                             getIdentifier(): [NameRef] items
@@ -1851,7 +1772,7 @@ proc_macro.rs:
 #   15|                                                                                       getArm(0): [MatchArm] ... => ...
 #   15|                                                                                         getExpr(): [CallExpr] ...::RepInterp(...)
 #   15|                                                                                           getArgList(): [ArgList] ArgList
-#   15|                                                                                             getArg(0): [PathExpr] _x
+#   15|                                                                                             getArg(0): [VariableAccess] _x
 #   15|                                                                                               getPath(): [Path] _x
 #   15|                                                                                                 getSegment(): [PathSegment] _x
 #   15|                                                                                                   getIdentifier(): [NameRef] _x
@@ -1955,12 +1876,12 @@ proc_macro.rs:
 #   16|                                                                         getExpr(): [CallExpr] ...::to_tokens(...)
 #   16|                                                                           getArgList(): [ArgList] ArgList
 #   16|                                                                             getArg(0): [RefExpr] &items
-#   16|                                                                               getExpr(): [PathExpr,VariableAccess] items
+#   16|                                                                               getExpr(): [VariableAccess] items
 #   16|                                                                                 getPath(): [Path] items
 #   16|                                                                                   getSegment(): [PathSegment] items
 #   16|                                                                                     getIdentifier(): [NameRef] items
 #   15|                                                                             getArg(1): [RefExpr] &mut _s
-#   15|                                                                               getExpr(): [PathExpr] _s
+#   15|                                                                               getExpr(): [VariableAccess] _s
 #   15|                                                                                 getPath(): [Path] _s
 #   15|                                                                                   getSegment(): [PathSegment] _s
 #   15|                                                                                     getIdentifier(): [NameRef] _s
@@ -2072,7 +1993,7 @@ proc_macro.rs:
 #   15|                                         getIdentifier(): [NameRef] quote_token_with_context
 #   16|                                     getTokenTree(): [TokenTree] TokenTree
 #   15|                                     getMacroCallExpansion(): [MacroBlockExpr] MacroBlockExpr
-#   15|                   getTailExpr(): [PathExpr] _s
+#   15|                   getTailExpr(): [VariableAccess] _s
 #   15|                     getPath(): [Path] _s
 #   15|                       getSegment(): [PathSegment] _s
 #   15|                         getIdentifier(): [NameRef] _s
@@ -2119,7 +2040,7 @@ proc_macro.rs:
 #   22|               getMacroCallExpansion(): [MatchExpr] match ... { ... }
 #   22|                 getScrutinee(): [CallExpr] ...::parse::<...>(...)
 #   22|                   getArgList(): [ArgList] ArgList
-#   22|                     getArg(0): [PathExpr,VariableAccess] item
+#   22|                     getArg(0): [VariableAccess] item
 #   22|                       getPath(): [Path] item
 #   22|                         getSegment(): [PathSegment] item
 #   22|                           getIdentifier(): [NameRef] item
@@ -2141,7 +2062,7 @@ proc_macro.rs:
 #   22|                         getIdentifier(): [NameRef] parse
 #   22|                 getMatchArmList(): [MatchArmList] MatchArmList
 #   22|                   getArm(0): [MatchArm] ... => data
-#   22|                     getExpr(): [PathExpr,VariableAccess] data
+#   22|                     getExpr(): [VariableAccess] data
 #   22|                       getPath(): [Path] data
 #   22|                         getSegment(): [PathSegment] data
 #   22|                           getIdentifier(): [NameRef] data
@@ -2167,7 +2088,7 @@ proc_macro.rs:
 #   22|                                 getArg(0): [MethodCallExpr] err.to_compile_error()
 #   22|                                   getArgList(): [ArgList] ArgList
 #   22|                                   getIdentifier(): [NameRef] to_compile_error
-#   22|                                   getReceiver(): [PathExpr,VariableAccess] err
+#   22|                                   getReceiver(): [VariableAccess] err
 #   22|                                     getPath(): [Path] err
 #   22|                                       getSegment(): [PathSegment] err
 #   22|                                         getIdentifier(): [NameRef] err
@@ -2202,7 +2123,7 @@ proc_macro.rs:
 #   23|           getInitializer(): [MethodCallExpr] ast.clone()
 #   23|             getArgList(): [ArgList] ArgList
 #   23|             getIdentifier(): [NameRef] clone
-#   23|             getReceiver(): [PathExpr,VariableAccess] ast
+#   23|             getReceiver(): [VariableAccess] ast
 #   23|               getPath(): [Path] ast
 #   23|                 getSegment(): [PathSegment] ast
 #   23|                   getIdentifier(): [NameRef] ast
@@ -2212,7 +2133,7 @@ proc_macro.rs:
 #   24|           getExpr(): [AssignmentExpr] ... = ...
 #   24|             getLhs(): [FieldExpr] ... .ident
 #   24|               getContainer(): [FieldExpr] new_ast.sig
-#   24|                 getContainer(): [PathExpr,VariableAccess] new_ast
+#   24|                 getContainer(): [VariableAccess] new_ast
 #   24|                   getPath(): [Path] new_ast
 #   24|                     getSegment(): [PathSegment] new_ast
 #   24|                       getIdentifier(): [NameRef] new_ast
@@ -2249,7 +2170,7 @@ proc_macro.rs:
 #   24|                                         getArg(0): [FormatArgsArg] FormatArgsArg
 #   24|                                           getExpr(): [FieldExpr] ... .ident
 #   24|                                             getContainer(): [FieldExpr] ast.sig
-#   24|                                               getContainer(): [PathExpr,VariableAccess] ast
+#   24|                                               getContainer(): [VariableAccess] ast
 #   24|                                                 getPath(): [Path] ast
 #   24|                                                   getSegment(): [PathSegment] ast
 #   24|                                                     getIdentifier(): [NameRef] ast
@@ -2282,7 +2203,7 @@ proc_macro.rs:
 #   24|                   getIdentifier(): [NameRef] span
 #   24|                   getReceiver(): [FieldExpr] ... .ident
 #   24|                     getContainer(): [FieldExpr] ast.sig
-#   24|                       getContainer(): [PathExpr,VariableAccess] ast
+#   24|                       getContainer(): [VariableAccess] ast
 #   24|                         getPath(): [Path] ast
 #   24|                           getSegment(): [PathSegment] ast
 #   24|                             getIdentifier(): [NameRef] ast
@@ -2396,12 +2317,12 @@ proc_macro.rs:
 #   26|                                           getExpr(): [CallExpr] ...::to_tokens(...)
 #   26|                                             getArgList(): [ArgList] ArgList
 #   26|                                               getArg(0): [RefExpr] &ast
-#   26|                                                 getExpr(): [PathExpr,VariableAccess] ast
+#   26|                                                 getExpr(): [VariableAccess] ast
 #   26|                                                   getPath(): [Path] ast
 #   26|                                                     getSegment(): [PathSegment] ast
 #   26|                                                       getIdentifier(): [NameRef] ast
 #   25|                                               getArg(1): [RefExpr] &mut _s
-#   25|                                                 getExpr(): [PathExpr] _s
+#   25|                                                 getExpr(): [VariableAccess] _s
 #   25|                                                   getPath(): [Path] _s
 #   25|                                                     getSegment(): [PathSegment] _s
 #   25|                                                       getIdentifier(): [NameRef] _s
@@ -2441,12 +2362,12 @@ proc_macro.rs:
 #   27|                                           getExpr(): [CallExpr] ...::to_tokens(...)
 #   27|                                             getArgList(): [ArgList] ArgList
 #   27|                                               getArg(0): [RefExpr] &new_ast
-#   27|                                                 getExpr(): [PathExpr,VariableAccess] new_ast
+#   27|                                                 getExpr(): [VariableAccess] new_ast
 #   27|                                                   getPath(): [Path] new_ast
 #   27|                                                     getSegment(): [PathSegment] new_ast
 #   27|                                                       getIdentifier(): [NameRef] new_ast
 #   25|                                               getArg(1): [RefExpr] &mut _s
-#   25|                                                 getExpr(): [PathExpr] _s
+#   25|                                                 getExpr(): [VariableAccess] _s
 #   25|                                                   getPath(): [Path] _s
 #   25|                                                     getSegment(): [PathSegment] _s
 #   25|                                                       getIdentifier(): [NameRef] _s
@@ -2503,7 +2424,7 @@ proc_macro.rs:
 #   25|                                         getIdentifier(): [NameRef] quote_token_with_context
 #   27|                                     getTokenTree(): [TokenTree] TokenTree
 #   25|                                     getMacroCallExpansion(): [MacroBlockExpr] MacroBlockExpr
-#   25|                   getTailExpr(): [PathExpr] _s
+#   25|                   getTailExpr(): [VariableAccess] _s
 #   25|                     getPath(): [Path] _s
 #   25|                       getSegment(): [PathSegment] _s
 #   25|                         getIdentifier(): [NameRef] _s
@@ -2583,7 +2504,7 @@ proc_macro.rs:
 #   38|               getMacroCallExpansion(): [MatchExpr] match ... { ... }
 #   38|                 getScrutinee(): [CallExpr] ...::parse::<...>(...)
 #   38|                   getArgList(): [ArgList] ArgList
-#   38|                     getArg(0): [PathExpr,VariableAccess] input
+#   38|                     getArg(0): [VariableAccess] input
 #   38|                       getPath(): [Path] input
 #   38|                         getSegment(): [PathSegment] input
 #   38|                           getIdentifier(): [NameRef] input
@@ -2605,7 +2526,7 @@ proc_macro.rs:
 #   38|                         getIdentifier(): [NameRef] parse
 #   38|                 getMatchArmList(): [MatchArmList] MatchArmList
 #   38|                   getArm(0): [MatchArm] ... => data
-#   38|                     getExpr(): [PathExpr,VariableAccess] data
+#   38|                     getExpr(): [VariableAccess] data
 #   38|                       getPath(): [Path] data
 #   38|                         getSegment(): [PathSegment] data
 #   38|                           getIdentifier(): [NameRef] data
@@ -2631,7 +2552,7 @@ proc_macro.rs:
 #   38|                                 getArg(0): [MethodCallExpr] err.to_compile_error()
 #   38|                                   getArgList(): [ArgList] ArgList
 #   38|                                   getIdentifier(): [NameRef] to_compile_error
-#   38|                                   getReceiver(): [PathExpr,VariableAccess] err
+#   38|                                   getReceiver(): [VariableAccess] err
 #   38|                                     getPath(): [Path] err
 #   38|                                       getSegment(): [PathSegment] err
 #   38|                                         getIdentifier(): [NameRef] err
@@ -2665,7 +2586,7 @@ proc_macro.rs:
 #   39|         getStatement(1): [LetStmt] let ... = ...
 #   39|           getInitializer(): [RefExpr] &...
 #   39|             getExpr(): [FieldExpr] ast.ident
-#   39|               getContainer(): [PathExpr,VariableAccess] ast
+#   39|               getContainer(): [VariableAccess] ast
 #   39|                 getPath(): [Path] ast
 #   39|                   getSegment(): [PathSegment] ast
 #   39|                     getIdentifier(): [NameRef] ast
@@ -2702,7 +2623,7 @@ proc_macro.rs:
 #   40|                                     getTokenTree(): [TokenTree] TokenTree
 #   40|                                     getMacroCallExpansion(): [FormatArgsExpr] FormatArgsExpr
 #   40|                                       getArg(0): [FormatArgsArg] FormatArgsArg
-#   40|                                         getExpr(): [PathExpr,VariableAccess] name
+#   40|                                         getExpr(): [VariableAccess] name
 #   40|                                           getPath(): [Path] name
 #   40|                                             getSegment(): [PathSegment] name
 #   40|                                               getIdentifier(): [NameRef] name
@@ -2731,7 +2652,7 @@ proc_macro.rs:
 #   40|               getArg(1): [MethodCallExpr] name.span()
 #   40|                 getArgList(): [ArgList] ArgList
 #   40|                 getIdentifier(): [NameRef] span
-#   40|                 getReceiver(): [PathExpr,VariableAccess] name
+#   40|                 getReceiver(): [VariableAccess] name
 #   40|                   getPath(): [Path] name
 #   40|                     getSegment(): [PathSegment] name
 #   40|                       getIdentifier(): [NameRef] name
@@ -2855,7 +2776,7 @@ proc_macro.rs:
 #   42|                                                 getExpr(): [CallExpr] ...::push_ident(...)
 #   42|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -2891,12 +2812,12 @@ proc_macro.rs:
 #   42|                                           getExpr(): [CallExpr] ...::to_tokens(...)
 #   42|                                             getArgList(): [ArgList] ArgList
 #   42|                                               getArg(0): [RefExpr] &const_ident
-#   42|                                                 getExpr(): [PathExpr,VariableAccess] const_ident
+#   42|                                                 getExpr(): [VariableAccess] const_ident
 #   42|                                                   getPath(): [Path] const_ident
 #   42|                                                     getSegment(): [PathSegment] const_ident
 #   42|                                                       getIdentifier(): [NameRef] const_ident
 #   41|                                               getArg(1): [RefExpr] &mut _s
-#   41|                                                 getExpr(): [PathExpr] _s
+#   41|                                                 getExpr(): [VariableAccess] _s
 #   41|                                                   getPath(): [Path] _s
 #   41|                                                     getSegment(): [PathSegment] _s
 #   41|                                                       getIdentifier(): [NameRef] _s
@@ -2946,7 +2867,7 @@ proc_macro.rs:
 #   41|                                                 getExpr(): [CallExpr] ...::push_colon(...)
 #   41|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -2985,7 +2906,7 @@ proc_macro.rs:
 #   42|                                                 getExpr(): [CallExpr] ...::push_ident(...)
 #   42|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3031,7 +2952,7 @@ proc_macro.rs:
 #   41|                                                 getExpr(): [CallExpr] ...::push_eq(...)
 #   41|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3070,7 +2991,7 @@ proc_macro.rs:
 #   42|                                                 getExpr(): [CallExpr] ...::parse(...)
 #   42|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3116,7 +3037,7 @@ proc_macro.rs:
 #   41|                                                 getExpr(): [CallExpr] ...::push_semi(...)
 #   41|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3155,7 +3076,7 @@ proc_macro.rs:
 #   44|                                                 getExpr(): [CallExpr] ...::push_ident(...)
 #   44|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3201,7 +3122,7 @@ proc_macro.rs:
 #   44|                                                 getExpr(): [CallExpr] ...::push_ident(...)
 #   44|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3247,7 +3168,7 @@ proc_macro.rs:
 #   44|                                                 getExpr(): [CallExpr] ...::push_ident(...)
 #   44|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3283,12 +3204,12 @@ proc_macro.rs:
 #   44|                                           getExpr(): [CallExpr] ...::to_tokens(...)
 #   44|                                             getArgList(): [ArgList] ArgList
 #   44|                                               getArg(0): [RefExpr] &name
-#   44|                                                 getExpr(): [PathExpr,VariableAccess] name
+#   44|                                                 getExpr(): [VariableAccess] name
 #   44|                                                   getPath(): [Path] name
 #   44|                                                     getSegment(): [PathSegment] name
 #   44|                                                       getIdentifier(): [NameRef] name
 #   41|                                               getArg(1): [RefExpr] &mut _s
-#   41|                                                 getExpr(): [PathExpr] _s
+#   41|                                                 getExpr(): [VariableAccess] _s
 #   41|                                                   getPath(): [Path] _s
 #   41|                                                     getSegment(): [PathSegment] _s
 #   41|                                                       getIdentifier(): [NameRef] _s
@@ -3338,7 +3259,7 @@ proc_macro.rs:
 #   45|                                                 getExpr(): [CallExpr] ...::push_group(...)
 #   45|                                                   getArgList(): [ArgList] ArgList
 #   41|                                                     getArg(0): [RefExpr] &mut _s
-#   41|                                                       getExpr(): [PathExpr] _s
+#   41|                                                       getExpr(): [VariableAccess] _s
 #   41|                                                         getPath(): [Path] _s
 #   41|                                                           getSegment(): [PathSegment] _s
 #   41|                                                             getIdentifier(): [NameRef] _s
@@ -3463,7 +3384,7 @@ proc_macro.rs:
 #   45|                                                                                           getExpr(): [CallExpr] ...::push_ident(...)
 #   45|                                                                                             getArgList(): [ArgList] ArgList
 #   41|                                                                                               getArg(0): [RefExpr] &mut _s
-#   41|                                                                                                 getExpr(): [PathExpr] _s
+#   41|                                                                                                 getExpr(): [VariableAccess] _s
 #   41|                                                                                                   getPath(): [Path] _s
 #   41|                                                                                                     getSegment(): [PathSegment] _s
 #   41|                                                                                                       getIdentifier(): [NameRef] _s
@@ -3509,7 +3430,7 @@ proc_macro.rs:
 #   45|                                                                                           getExpr(): [CallExpr] ...::push_ident(...)
 #   45|                                                                                             getArgList(): [ArgList] ArgList
 #   41|                                                                                               getArg(0): [RefExpr] &mut _s
-#   41|                                                                                                 getExpr(): [PathExpr] _s
+#   41|                                                                                                 getExpr(): [VariableAccess] _s
 #   41|                                                                                                   getPath(): [Path] _s
 #   41|                                                                                                     getSegment(): [PathSegment] _s
 #   41|                                                                                                       getIdentifier(): [NameRef] _s
@@ -3555,7 +3476,7 @@ proc_macro.rs:
 #   41|                                                                                           getExpr(): [CallExpr] ...::push_group(...)
 #   41|                                                                                             getArgList(): [ArgList] ArgList
 #   41|                                                                                               getArg(0): [RefExpr] &mut _s
-#   41|                                                                                                 getExpr(): [PathExpr] _s
+#   41|                                                                                                 getExpr(): [VariableAccess] _s
 #   41|                                                                                                   getPath(): [Path] _s
 #   41|                                                                                                     getSegment(): [PathSegment] _s
 #   41|                                                                                                       getIdentifier(): [NameRef] _s
@@ -3631,7 +3552,7 @@ proc_macro.rs:
 #   41|                                                                                           getExpr(): [CallExpr] ...::push_rarrow(...)
 #   41|                                                                                             getArgList(): [ArgList] ArgList
 #   41|                                                                                               getArg(0): [RefExpr] &mut _s
-#   41|                                                                                                 getExpr(): [PathExpr] _s
+#   41|                                                                                                 getExpr(): [VariableAccess] _s
 #   41|                                                                                                   getPath(): [Path] _s
 #   41|                                                                                                     getSegment(): [PathSegment] _s
 #   41|                                                                                                       getIdentifier(): [NameRef] _s
@@ -3670,7 +3591,7 @@ proc_macro.rs:
 #   45|                                                                                           getExpr(): [CallExpr] ...::push_ident(...)
 #   45|                                                                                             getArgList(): [ArgList] ArgList
 #   41|                                                                                               getArg(0): [RefExpr] &mut _s
-#   41|                                                                                                 getExpr(): [PathExpr] _s
+#   41|                                                                                                 getExpr(): [VariableAccess] _s
 #   41|                                                                                                   getPath(): [Path] _s
 #   41|                                                                                                     getSegment(): [PathSegment] _s
 #   41|                                                                                                       getIdentifier(): [NameRef] _s
@@ -3716,7 +3637,7 @@ proc_macro.rs:
 #   46|                                                                                           getExpr(): [CallExpr] ...::push_group(...)
 #   46|                                                                                             getArgList(): [ArgList] ArgList
 #   41|                                                                                               getArg(0): [RefExpr] &mut _s
-#   41|                                                                                                 getExpr(): [PathExpr] _s
+#   41|                                                                                                 getExpr(): [VariableAccess] _s
 #   41|                                                                                                   getPath(): [Path] _s
 #   41|                                                                                                     getSegment(): [PathSegment] _s
 #   41|                                                                                                       getIdentifier(): [NameRef] _s
@@ -3766,12 +3687,12 @@ proc_macro.rs:
 #   46|                                                                                                         getExpr(): [CallExpr] ...::to_tokens(...)
 #   46|                                                                                                           getArgList(): [ArgList] ArgList
 #   46|                                                                                                             getArg(0): [RefExpr] &const_ident
-#   46|                                                                                                               getExpr(): [PathExpr,VariableAccess] const_ident
+#   46|                                                                                                               getExpr(): [VariableAccess] const_ident
 #   46|                                                                                                                 getPath(): [Path] const_ident
 #   46|                                                                                                                   getSegment(): [PathSegment] const_ident
 #   46|                                                                                                                     getIdentifier(): [NameRef] const_ident
 #   41|                                                                                                             getArg(1): [RefExpr] &mut _s
-#   41|                                                                                                               getExpr(): [PathExpr] _s
+#   41|                                                                                                               getExpr(): [VariableAccess] _s
 #   41|                                                                                                                 getPath(): [Path] _s
 #   41|                                                                                                                   getSegment(): [PathSegment] _s
 #   41|                                                                                                                     getIdentifier(): [NameRef] _s
@@ -3785,7 +3706,7 @@ proc_macro.rs:
 #   41|                                                                                                                   getIdentifier(): [NameRef] ToTokens
 #   41|                                                                                                               getSegment(): [PathSegment] to_tokens
 #   41|                                                                                                                 getIdentifier(): [NameRef] to_tokens
-#   41|                                                                                                       getTailExpr(): [PathExpr] _s
+#   41|                                                                                                       getTailExpr(): [VariableAccess] _s
 #   41|                                                                                                         getPath(): [Path] _s
 #   41|                                                                                                           getSegment(): [PathSegment] _s
 #   41|                                                                                                             getIdentifier(): [NameRef] _s
@@ -3831,7 +3752,7 @@ proc_macro.rs:
 #   41|                                                                                   getIdentifier(): [NameRef] quote_token_with_context
 #   45|                                                                               getTokenTree(): [TokenTree] TokenTree
 #   41|                                                                               getMacroCallExpansion(): [MacroBlockExpr] MacroBlockExpr
-#   41|                                                             getTailExpr(): [PathExpr] _s
+#   41|                                                             getTailExpr(): [VariableAccess] _s
 #   41|                                                               getPath(): [Path] _s
 #   41|                                                                 getSegment(): [PathSegment] _s
 #   41|                                                                   getIdentifier(): [NameRef] _s
@@ -3877,7 +3798,7 @@ proc_macro.rs:
 #   41|                                         getIdentifier(): [NameRef] quote_token_with_context
 #   44|                                     getTokenTree(): [TokenTree] TokenTree
 #   41|                                     getMacroCallExpansion(): [MacroBlockExpr] MacroBlockExpr
-#   41|                   getTailExpr(): [PathExpr] _s
+#   41|                   getTailExpr(): [VariableAccess] _s
 #   41|                     getPath(): [Path] _s
 #   41|                       getSegment(): [PathSegment] _s
 #   41|                         getIdentifier(): [NameRef] _s
