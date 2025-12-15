@@ -3038,7 +3038,13 @@ mod context_typed {
 
 mod literal_overlap {
     trait MyTrait {
+        // MyTrait::f
         fn f(self) -> Self;
+
+        // MyTrait::g
+        fn g(&self, other: &Self) -> &Self {
+            self.f() // $ target=Reff
+        }
     }
 
     impl MyTrait for i32 {
@@ -3066,6 +3072,12 @@ mod literal_overlap {
         let mut x = 0;
         x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f
         x
+    }
+
+    fn g() {
+        let x: usize = 0;
+        let y = &1;
+        let z = x.g(y); // $ target=MyTrait::g
     }
 }
 
