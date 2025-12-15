@@ -98,8 +98,53 @@ private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.ModelsAsData as SharedMaD
+
+private module MadInput implements SharedMaD::InputSig {
+  /** Holds if a source model exists for the given parameters. */
+  predicate additionalSourceModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
+            madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+
+  /** Holds if a sink model exists for the given parameters. */
+  predicate additionalSinkModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+
+  /** Holds if a summary model exists for the given parameters. */
+  predicate additionalSummaryModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+            provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+}
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
+
+import MaD
 
 /**
  * A class for activating additional model rows.
@@ -147,78 +192,18 @@ abstract private class ActiveExperimentalModelsInternal extends string {
 
 deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
-  )
-}
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
-  )
-}
-
-/** Holds if a barrier model exists for the given parameters. */
-predicate barrierModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  Extensions::barrierModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
-    madId)
-}
-
-/** Holds if a barrier guard model exists for the given parameters. */
-predicate barrierGuardModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string acceptingvalue, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  Extensions::barrierGuardModel(package, type, subtypes, name, signature, ext, input,
-    acceptingvalue, kind, provenance, madId)
-}
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId)
-    or
-    any(ActiveExperimentalModelsInternal q)
-        .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-          provenance, madId)
-  )
-}
-
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
  *
  * This predicate should only be used in tests.
  */
 predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  MaD::interpretModelForTest(madId, model)
+  or
   exists(
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance
   |
-    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) or
     Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
       provenance, _, madId)
   |
@@ -231,7 +216,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   |
-    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) or
     Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
       provenance, _, madId)
   |
@@ -244,75 +228,12 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string output, string kind, string provenance
   |
-    summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) or
     Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
       output, kind, provenance, _, madId)
   |
     model =
       "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
-  )
-  //TODO: possibly barrier models?
-}
-
-/** Holds if a neutral model exists for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/6;
-
-private predicate relevantPackage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _, _)
-}
-
-private predicate packageLink(string shortpkg, string longpkg) {
-  relevantPackage(shortpkg) and
-  relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
-}
-
-private predicate canonicalPackage(string package) {
-  relevantPackage(package) and not packageLink(_, package)
-}
-
-private predicate canonicalPkgLink(string package, string subpkg) {
-  canonicalPackage(package) and
-  (subpkg = package or packageLink(package, subpkg))
-}
-
-/**
- * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
- * which have MaD framework coverage (including `package` itself).
- */
-predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
-        canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance, _)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
-        canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance, _)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
-        canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance,
-          _)
-      )
-    // TODO: possibly barrier models?
   )
 }
 

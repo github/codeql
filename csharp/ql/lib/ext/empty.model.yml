@@ -13,6 +13,16 @@ extensions:
 
   - addsTo:
       pack: codeql/csharp-all
+      extensible: barrierModel
+    data: []
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: barrierGuardModel
+    data: []
+
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: summaryModel
     data: []
 
