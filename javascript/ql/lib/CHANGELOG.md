@@ -1,3 +1,7 @@
+## 2.6.18
+
+No user-facing changes.
+
 ## 2.6.17
 
 No user-facing changes.

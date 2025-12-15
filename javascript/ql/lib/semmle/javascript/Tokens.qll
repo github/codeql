@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with the token-based representation of JavaScript programs.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

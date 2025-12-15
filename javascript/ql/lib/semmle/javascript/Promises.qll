@@ -186,13 +186,13 @@ module Promises {
   /**
    * Gets the pseudo-field used to describe resolved values in a promise.
    */
-  overlay[local]
+  overlay[local?]
   string valueProp() { result = "$PromiseResolveField$" }
 
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
-  overlay[local]
+  overlay[local?]
   string errorProp() { result = "$PromiseRejectField$" }
 
   /** A property set containing the pseudo-properites of a promise object. */

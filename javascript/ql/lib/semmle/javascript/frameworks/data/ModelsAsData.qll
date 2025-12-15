@@ -48,7 +48,7 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
   }
 }
 
-overlay[local]
+overlay[local?]
 private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
   string type;
   string path;

@@ -1,5 +1,5 @@
 name: codeql/mad
-version: 1.0.38-dev
+version: 1.0.39-dev
 groups: shared
 library: true
 dependencies:
