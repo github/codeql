@@ -13,6 +13,10 @@ private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 private newtype TCallable =
   TFunction(R::Function api, string path) {
     path = api.getCanonicalPath() and
+    // A canonical path can contain `;` as the syntax for array types use `;`.
+    // This does not work with the shared model generator, so for now we just
+    // exclude canonical paths with `;`s.
+    not exists(api.getCanonicalPath().indexOf(";")) and
     (
       // This excludes closures (these are not exported API endpoints) and
       // functions without a `pub` visibility. A function can be `pub` without
