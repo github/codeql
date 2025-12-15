@@ -7,7 +7,7 @@ models
 | 6 | Source: main::enum_source; ReturnValue.Field[main::MyFieldEnum::D::field_d]; test-source |
 | 7 | Source: main::simple_source; ReturnValue; test-source |
 | 8 | Source: main::source_into_function::pass_source; Argument[1].Parameter[0]; test-source |
-| 9 | Summary: <_ as core::cmp::Ord>::max; Argument[self]; ReturnValue; value |
+| 9 | Summary: <_ as core::cmp::Ord>::max; Argument[self,0]; ReturnValue; value |
 | 10 | Summary: <_ as core::cmp::PartialOrd>::lt; Argument[self].Reference; ReturnValue; taint |
 | 11 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
 | 12 | Summary: main::apply; Argument[0]; Argument[1].Parameter[0]; value |

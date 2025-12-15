@@ -116,6 +116,10 @@ extensions:
       - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Ord
+      - ["<_ as core::cmp::Ord>::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::max", "Argument[self,0]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::clamp", "Argument[self,0,1]", "ReturnValue", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
