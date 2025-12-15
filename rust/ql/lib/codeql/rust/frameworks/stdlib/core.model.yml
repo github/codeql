@@ -96,6 +96,8 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Pin
       - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
+      # This model is not precise, but helps in cases the a `Pin` is implicitly dereferenced.
+      - ["<core::pin::Pin>::new", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::new_unchecked", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
       - ["<core::pin::Pin>::into_inner", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::into_inner_unchecked", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
