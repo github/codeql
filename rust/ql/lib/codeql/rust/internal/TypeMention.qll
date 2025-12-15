@@ -20,11 +20,11 @@ abstract class TypeMention extends AstNode {
 class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TTuple(super.getNumberOfFields())
+    result.(TupleType).getArity() = super.getNumberOfFields()
     or
     exists(TypePath suffix, int i |
       result = super.getField(i).(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfFields(), i), suffix)
+      path = TypePath::cons(getTupleTypeParameter(super.getNumberOfFields(), i), suffix)
     )
   }
 }
@@ -32,11 +32,11 @@ class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
 class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedArgList {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TTuple(super.getNumberOfTypeArgs())
+    result.(TupleType).getArity() = super.getNumberOfTypeArgs()
     or
     exists(TypePath suffix, int index |
       result = super.getTypeArg(index).getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
+      path = TypePath::cons(getTupleTypeParameter(super.getNumberOfTypeArgs(), index), suffix)
     )
   }
 }
@@ -44,11 +44,11 @@ class ParenthesizedArgListMention extends TypeMention instanceof ParenthesizedAr
 class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TArrayType()
+    result instanceof ArrayType
     or
     exists(TypePath suffix |
       result = super.getElementTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TArrayTypeParameter(), suffix)
+      path = TypePath::cons(getArrayTypeParameter(), suffix)
     )
   }
 }
@@ -56,11 +56,11 @@ class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
 class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TRefType()
+    result instanceof RefType
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TRefTypeParameter(), suffix)
+      path = TypePath::cons(getRefTypeParameter(), suffix)
     )
   }
 }
@@ -68,11 +68,11 @@ class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
 class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TSliceType()
+    result instanceof SliceType
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TSliceTypeParameter(), suffix)
+      path = TypePath::cons(getSliceTypeParameter(), suffix)
     )
   }
 }
@@ -291,6 +291,9 @@ class NonAliasPathTypeMention extends PathTypeMention {
       result = this.getSelfTraitBoundArg().resolveTypeAt(suffix) and
       typePath = TypePath::cons(TSelfTypeParameter(resolved), suffix)
     )
+    or
+    not this.getSegment().hasTraitTypeRepr() and
+    result = this.getSegment().getTypeRepr().(TypeMention).resolveTypeAt(typePath)
   }
 }
 
@@ -426,11 +429,11 @@ class ShorthandSelfParameterMention extends TypeMention instanceof SelfParam {
     then
       // `fn f(&self, ...)`
       typePath.isEmpty() and
-      result = TRefType()
+      result instanceof RefType
       or
       exists(TypePath suffix |
         result = this.resolveSelfType(suffix) and
-        typePath = TypePath::cons(TRefTypeParameter(), suffix)
+        typePath = TypePath::cons(getRefTypeParameter(), suffix)
       )
     else
       // `fn f(self, ...)`
@@ -541,11 +544,11 @@ class NeverTypeReprMention extends TypeMention, NeverTypeRepr {
 class PtrTypeReprMention extends TypeMention instanceof PtrTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
-    result = TPtrType()
+    result instanceof PtrType
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(TPtrTypeParameter(), suffix)
+      path = TypePath::cons(getPtrTypeParameter(), suffix)
     )
   }
 }

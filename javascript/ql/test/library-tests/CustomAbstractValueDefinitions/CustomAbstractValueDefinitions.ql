@@ -4,6 +4,7 @@ import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 import semmle.javascript.dataflow.internal.AbstractPropertiesImpl as AbstractPropertiesImpl
 import semmle.javascript.dataflow.CustomAbstractValueDefinitions
 
+overlay[local]
 class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition {
   DataFlow::ValueNode node;
 

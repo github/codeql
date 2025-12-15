@@ -63,7 +63,7 @@ module HardcodedCryptographicValue {
    * A literal, considered as a flow source.
    */
   private class LiteralSource extends Source {
-    LiteralSource() { this.asExpr().getExpr() instanceof LiteralExpr }
+    LiteralSource() { this.asExpr() instanceof LiteralExpr }
   }
 
   /**
@@ -75,8 +75,8 @@ module HardcodedCryptographicValue {
    */
   private class ArrayListSource extends Source {
     ArrayListSource() {
-      this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
-      this.asExpr().getExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
+      this.asExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
+      this.asExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
     }
   }
 
@@ -106,7 +106,7 @@ module HardcodedCryptographicValue {
       exists(CallExprBase ce |
         ce.getStaticTarget().(Addressable).getCanonicalPath() =
           ["getrandom::fill", "getrandom::getrandom"] and
-        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0)
+        this.asExpr().getParentNode*() = ce.getArgList().getArg(0)
       )
     }
   }

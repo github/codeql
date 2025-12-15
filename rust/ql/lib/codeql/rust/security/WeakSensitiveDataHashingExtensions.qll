@@ -189,7 +189,7 @@ class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
     exists(CallExpr call |
       sinkNode(input, "hasher-input") and
       call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
-      call = this.asExpr().getExpr() and
+      call = this.asExpr() and
       algorithmName = call.getFunction().(PathExpr).getPath().getQualifier().getText()
     )
   }

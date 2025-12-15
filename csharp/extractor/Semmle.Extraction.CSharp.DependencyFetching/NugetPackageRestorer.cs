@@ -24,12 +24,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNet dotnet;
         private readonly DependabotProxy? dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
-        private readonly TemporaryDirectory legacyPackageDirectory;
-        private readonly TemporaryDirectory missingPackageDirectory;
+        private readonly DependencyDirectory legacyPackageDirectory;
+        private readonly DependencyDirectory missingPackageDirectory;
         private readonly ILogger logger;
         private readonly ICompilationInfoContainer compilationInfoContainer;
 
-        public TemporaryDirectory PackageDirectory { get; }
+        public DependencyDirectory PackageDirectory { get; }
 
         public NugetPackageRestorer(
             FileProvider fileProvider,
@@ -48,9 +48,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
 
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("packages"), "package", logger);
-            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("legacypackages"), "legacy package", logger);
-            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("missingpackages"), "missing package", logger);
+            PackageDirectory = new DependencyDirectory("packages", "package", logger);
+            legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
+            missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
         }
 
         public string? TryRestore(string package)

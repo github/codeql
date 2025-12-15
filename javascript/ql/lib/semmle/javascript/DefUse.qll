@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with variable definitions and uses. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -231,6 +233,7 @@ class VarUse extends ControlFlowNode, @varref instanceof RValue {
    *
    * For global variables, each definition is considered to reach each use.
    */
+  overlay[global]
   VarDef getADef() {
     result = this.getSsaVariable().getDefinition().getAContributingVarDef() or
     result.getAVariable() = this.getVariable().(GlobalVariable)
@@ -241,5 +244,6 @@ class VarUse extends ControlFlowNode, @varref instanceof RValue {
    *
    * This predicate is only defined for variables that can be SSA-converted.
    */
+  overlay[global]
   SsaVariable getSsaVariable() { result.getAUse() = this }
 }

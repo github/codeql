@@ -52,10 +52,10 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
     (
       lock.asExpr() = t.getLockAccess()
       or
-      exists(SsaExplicitUpdate lockbool |
+      exists(SsaExplicitWrite lockbool |
         // Using the value of `t.getLockAccess()` ensures that it is a `tryLock` call.
-        lock.asExpr() = lockbool.getAUse() and
-        lockbool.getDefiningExpr().(VariableAssign).getSource() = t.getLockAccess()
+        lock.asExpr() = lockbool.getARead() and
+        lockbool.getValue() = t.getLockAccess()
       )
     ) and
     (

@@ -237,7 +237,6 @@
 /lib/codeql/rust/elements/internal/BecomeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BlockExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/BlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated

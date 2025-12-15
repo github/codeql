@@ -6,7 +6,6 @@
 private import codeql.util.Unit
 private import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.security.Barriers as Barriers
@@ -57,8 +56,8 @@ module RegexInjection {
       exists(CallExprBase call, Addressable a |
         call.getStaticTarget() = a and
         a.getCanonicalPath() = "<regex::regex::string::Regex>::new" and
-        this.asExpr().getExpr() = call.getArg(0) and
-        not this.asExpr() instanceof LiteralExprCfgNode
+        this.asExpr() = call.getArg(0) and
+        not this.asExpr() instanceof LiteralExpr
       )
     }
   }
@@ -78,7 +77,6 @@ module RegexInjection {
       // A barrier is any call to a function named `escape`, in particular this
       // makes calls to `regex::escape` a barrier.
       this.asExpr()
-          .getExpr()
           .(CallExpr)
           .getFunction()
           .(PathExpr)
@@ -91,11 +89,12 @@ module RegexInjection {
 
   /**
    * A barrier for regular expression injection vulnerabilities for nodes whose
-   * type is an integral or boolean type, which is unlikely to expose any vulnerability.
+   * type is an integral type, which is unlikely to expose any vulnerability.
    *
    * We don't include floating point types in this barrier, as `.` is a special character
    * in regular expressions.
    */
-  private class IntegralOrBooleanTypeBarrier extends Barrier instanceof Barriers::IntegralOrBooleanTypeBarrier
-  { }
+  private class IntegralTypeBarrier extends Barrier instanceof Barriers::IntegralTypeBarrier { }
+
+  private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }
 }

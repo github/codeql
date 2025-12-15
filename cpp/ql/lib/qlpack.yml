@@ -1,5 +1,5 @@
 name: codeql/cpp-all
-version: 6.1.0
+version: 6.1.3
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
@@ -22,3 +22,4 @@ dataExtensions:
   - ext/deallocation/*.model.yml
   - ext/allocation/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true

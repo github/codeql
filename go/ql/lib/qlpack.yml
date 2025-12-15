@@ -1,11 +1,12 @@
 name: codeql/go-all
-version: 5.0.2
+version: 5.0.5
 groups: go
 dbscheme: go.dbscheme
 extractor: go
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/threat-models: ${workspace}

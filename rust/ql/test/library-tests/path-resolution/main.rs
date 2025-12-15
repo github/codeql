@@ -790,6 +790,49 @@ mod impl_with_attribute_macro {
     } // impl_with_attribute_macro::test
 }
 
+mod patterns {
+    #[rustfmt::skip]
+    pub fn test() -> Option<i32> { // $ item=Option $ item=i32
+        let x = Some(42); // $ item=Some
+        let y : Option<i32> = match x { // $ item=Option $ item=i32
+            Some(y) => { // $ item=Some
+                None // $ item=None
+            }
+            None => // $ item=None
+                None // $ item=None
+        };
+        match y {
+            N0ne => // local variable
+                N0ne
+        }
+    } // patterns::test 
+
+    #[rustfmt::skip]
+    fn test2() -> Option<i32> { // $ item=Option $ item=i32
+        let test_alias = test; // $ item=patterns::test
+        let test = test_alias();
+        test
+    }
+
+    #[rustfmt::skip]
+    const z: i32 // $ item=i32
+        = 0; // constz
+
+    #[rustfmt::skip]
+    fn test3() {
+        let x = Some(0); // $ item=Some
+        match x {
+            Some(x) // $ item=Some
+                => x,
+            _ => 0
+        };
+        match x {
+            Some(z) => z, // $ item=Some item=constz
+            _ => 0
+        };
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -826,4 +869,5 @@ fn main() {
     AStruct::z_on_type(); // $ item=I124
     AStruct {}.z_on_instance(); // $ item=I123 item=I125
     impl_with_attribute_macro::test(); // $ item=impl_with_attribute_macro::test
+    patterns::test(); // $ item=patterns::test
 }

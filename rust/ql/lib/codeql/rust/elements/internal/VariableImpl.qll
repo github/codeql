@@ -1,8 +1,9 @@
 private import rust
 private import codeql.rust.controlflow.ControlFlowGraph
+private import codeql.rust.internal.PathResolution as PathResolution
 private import codeql.rust.elements.internal.generated.ParentChild as ParentChild
+private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.elements.internal.PathImpl::Impl as PathImpl
-private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
@@ -98,7 +99,7 @@ module Impl {
    * pattern.
    */
   cached
-  private predicate variableDecl(AstNode definingNode, Name name, string text) {
+  predicate variableDecl(AstNode definingNode, Name name, string text) {
     Cached::ref() and
     exists(SelfParam sp |
       name = sp.getName() and
@@ -117,11 +118,7 @@ module Impl {
         not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
       ) and
       text = name.getText() and
-      // exclude for now anything starting with an uppercase character, which may be a reference to
-      // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-      // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-      // naming guidelines, which they generally do, but they're not enforced.
-      not text.charAt(0).isUppercase() and
+      not PathResolution::identPatIsResolvable(pat) and
       // exclude parameters from functions without a body as these are trait method declarations
       // without implementations
       not exists(Function f | not f.hasBody() and f.getAParam().getPat() = pat) and
@@ -666,7 +663,7 @@ module Impl {
   }
 
   /** A variable access. */
-  class VariableAccess extends PathExprBaseImpl::PathExprBase {
+  class VariableAccess extends PathExprBase {
     private string name;
     private Variable v;
 
@@ -677,10 +674,6 @@ module Impl {
 
     /** Holds if this access is a capture. */
     predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
-
-    override string toStringImpl() { result = name }
-
-    override string getAPrimaryQlClass() { result = "VariableAccess" }
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
@@ -722,7 +715,7 @@ module Impl {
   }
 
   /** A nested function access. */
-  class NestedFunctionAccess extends PathExprBaseImpl::PathExprBase {
+  class NestedFunctionAccess extends PathExprBase {
     private Function f;
 
     NestedFunctionAccess() { nestedFunctionAccess(_, f, this) }

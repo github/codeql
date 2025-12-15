@@ -1,3 +1,15 @@
+## 1.7.3
+
+No user-facing changes.
+
+## 1.7.2
+
+No user-facing changes.
+
+## 1.7.1
+
+No user-facing changes.
+
 ## 1.7.0
 
 ### Query Metadata Changes

@@ -1,5 +1,5 @@
 /**
- * @name Dangerous use of transformation after operation.
+ * @name Dangerous use of transformation after operation
  * @description By using the transformation after the operation, you are doing a pointless and dangerous action.
  * @kind problem
  * @id cpp/dangerous-use-of-transformation-after-operation

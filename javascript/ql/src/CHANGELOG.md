@@ -1,3 +1,17 @@
+## 2.2.3
+
+No user-facing changes.
+
+## 2.2.2
+
+No user-facing changes.
+
+## 2.2.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the Next.js model that would cause the analysis to miss server-side taint sources in the `app/pages` folder.
+
 ## 2.2.0
 
 ### Query Metadata Changes

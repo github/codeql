@@ -1,3 +1,15 @@
+## 1.5.3
+
+No user-facing changes.
+
+## 1.5.2
+
+No user-facing changes.
+
+## 1.5.1
+
+No user-facing changes.
+
 ## 1.5.0
 
 ### New Queries
@@ -180,7 +192,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query.
 
 ## 1.0.10
 

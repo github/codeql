@@ -9,7 +9,6 @@ module Ssa {
   private import rust
   private import codeql.rust.controlflow.BasicBlocks
   private import codeql.rust.controlflow.ControlFlowGraph
-  private import codeql.rust.controlflow.CfgNodes
   private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
   private import internal.SsaImpl as SsaImpl
 
@@ -51,7 +50,7 @@ module Ssa {
      * }
      * ```
      */
-    final CfgNode getARead() { result = SsaImpl::getARead(this) }
+    final Expr getARead() { result = SsaImpl::getARead(this) }
 
     /**
      * Gets a first control flow node that reads the value of this SSA definition.
@@ -80,7 +79,7 @@ module Ssa {
      * }
      * ```
      */
-    final CfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
+    final Expr getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
@@ -108,7 +107,7 @@ module Ssa {
      * }
      * ```
      */
-    final predicate hasAdjacentReads(CfgNode read1, CfgNode read2) {
+    final predicate hasAdjacentReads(Expr read1, Expr read2) {
       SsaImpl::adjacentReadPair(this, read1, read2)
     }
 
@@ -168,28 +167,28 @@ module Ssa {
    * ```
    */
   class WriteDefinition extends Definition, SsaImpl::WriteDefinition {
-    private CfgNode write;
+    private AstNode write;
 
     WriteDefinition() {
-      exists(BasicBlock bb, int i, Variable v, CfgNode n |
+      exists(BasicBlock bb, int i, Variable v, AstNode n |
         this.definesAt(v, bb, i) and
-        SsaImpl::variableWriteActual(bb, i, v, n)
+        SsaImpl::variableWriteActual(bb, i, v, n.getACfgNode())
       |
-        write.(VariableAccessCfgNode).getAccess().getVariable() = v and
+        write.(VariableAccess).getVariable() = v and
         (
-          write = n.(AssignmentExprCfgNode).getAWriteAccess()
+          write = n.(AssignmentExpr).getAWriteAccess()
           or
-          write = n.(CompoundAssignmentExprCfgNode).getLhs()
+          write = n.(CompoundAssignmentExpr).getLhs()
         )
         or
-        not n instanceof AssignmentExprCfgNode and
-        not n instanceof CompoundAssignmentExprCfgNode and
+        not n instanceof AssignmentExpr and
+        not n instanceof CompoundAssignmentExpr and
         write = n
       )
     }
 
     /** Gets the underlying write access. */
-    final CfgNode getWriteAccess() { result = write }
+    final AstNode getWriteAccess() { result = write }
 
     /**
      * Holds if this SSA definition assigns `value` to the underlying
@@ -199,19 +198,19 @@ module Ssa {
      * `let` statement, `let x = value`. Note that patterns on the lhs. are
      * currently not supported.
      */
-    predicate assigns(ExprCfgNode value) {
-      exists(AssignmentExprCfgNode ae |
+    predicate assigns(Expr value) {
+      exists(AssignmentExpr ae |
         ae.getLhs() = write and
         ae.getRhs() = value
       )
       or
-      exists(IdentPatCfgNode pat | pat.getName() = write |
-        exists(LetStmtCfgNode ls |
+      exists(IdentPat pat | pat.getName() = write |
+        exists(LetStmt ls |
           pat = ls.getPat() and
           ls.getInitializer() = value
         )
         or
-        exists(LetExprCfgNode le |
+        exists(LetExpr le |
           pat = le.getPat() and
           le.getScrutinee() = value
         )
