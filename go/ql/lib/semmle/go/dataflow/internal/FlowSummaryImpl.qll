@@ -163,6 +163,19 @@ module SourceSinkInterpretationInput implements
     )
   }
 
+  predicate barrierElement(
+    Element n, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
+  predicate barrierGuardElement(
+    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
   // Note that due to embedding, which is currently implemented via some
   // Methods having multiple qualified names, a given Method is liable to have
   // more than one SourceOrSinkElement, one for each of the names it claims.
@@ -384,17 +397,13 @@ module SourceSinkInterpretationInput implements
   }
 
   private DataFlow::Node skipImplicitFieldReads(DataFlow::Node n) {
-    not exists(lookThroughImplicitFieldRead(n)) and result = n
+    not exists(IR::lookThroughImplicitFieldRead(n.asInstruction())) and result = n
     or
-    result = skipImplicitFieldReads(lookThroughImplicitFieldRead(n))
-  }
-
-  private DataFlow::Node lookThroughImplicitFieldRead(DataFlow::Node n) {
-    result.asInstruction() =
-      n.(DataFlow::InstructionNode)
-          .asInstruction()
-          .(IR::ImplicitFieldReadInstruction)
-          .getBaseInstruction()
+    exists(DataFlow::Node mid |
+      mid.asInstruction() = IR::lookThroughImplicitFieldRead(n.asInstruction())
+    |
+      result = skipImplicitFieldReads(mid)
+    )
   }
 
   /** Provides additional sink specification logic. */

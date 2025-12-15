@@ -445,7 +445,15 @@ module RustDataFlow implements InputSig<Location> {
       or
       exists(SummarizedCallable sc, Function staticTarget |
         staticTarget = getStaticTargetExt(c) and
-        sc = result.asSummarizedCallable()
+        sc = result.asSummarizedCallable() and
+        // Only use summarized callables with generated summaries in case
+        // the static call target is not in the source code.
+        // Note that if `applyGeneratedModel` holds it implies that there doesn't
+        // exist a manual model.
+        not (
+          staticTarget.fromSource() and
+          sc.applyGeneratedModel()
+        )
       |
         sc = staticTarget
         or

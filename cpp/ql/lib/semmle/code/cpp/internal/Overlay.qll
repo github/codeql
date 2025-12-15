@@ -2,6 +2,8 @@
  * Defines entity discard predicates for C++ overlay analysis.
  */
 
+private import OverlayXml
+
 /**
  * Holds always for the overlay variant and never for the base variant.
  * This local predicate is used to define local predicates that behave

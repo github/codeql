@@ -40,6 +40,7 @@ Microsoft.VisualBasic,,,6,,,,,,,,,,,,,,,,,,,1,5
 Microsoft.Win32,,4,2,,,,,,,,,,,,,,,,,,4,,2
 Mono.Linker,,,278,,,,,,,,,,,,,,,,,,,127,151
 MySql.Data.MySqlClient,48,,,,,,,,,,,,48,,,,,,,,,,
+NHibernate,3,,,,,,,,,,,,3,,,,,,,,,,
 Newtonsoft.Json,,,91,,,,,,,,,,,,,,,,,,,73,18
 ServiceStack,194,,7,27,,,,,75,,,,92,,,,,,,,,7,
 SourceGenerators,,,5,,,,,,,,,,,,,,,,,,,,5
