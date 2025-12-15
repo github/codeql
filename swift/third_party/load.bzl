@@ -5,6 +5,10 @@ load("//misc/bazel:lfs.bzl", "lfs_archive", "lfs_files")
 
 _override = {
     # these are used to test new artifacts. Must be empty before merging to main
+    "swift-prebuilt-macOS-swift-6.2.3-RELEASE-137.tar.zst": "a96536acde3a054a2528feedbb6ffa71fb7ffa6b68f0838f2f007e7474fc0b84",
+    "swift-prebuilt-Linux-swift-6.2.3-RELEASE-137.tar.zst": "ad8d6611bfd3c749435e44fa25a300082efb308c21c5da1305c65bd2c5d8fec4",
+    "resource-dir-macOS-swift-6.2.3-RELEASE-137.zip": "e358d99dab2bf07d70a06d8d4119c05ee40e33cdc659ad787595dc56cb405755",
+    "resource-dir-Linux-swift-6.2.3-RELEASE-137.zip": "ab0279edb35706dbd5c238f6ea29b2a275bb837e1d6485e150801551c7f0740e",
 }
 
 _staging_url = "https://github.com/dsp-testing/codeql-swift-artifacts/releases/download/staging-{}/{}"
