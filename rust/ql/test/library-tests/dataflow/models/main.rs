@@ -31,6 +31,20 @@ enum MyPosEnum {
     B(i64),
 }
 
+// has a manual flow model with flow from second argument to the return value
+// and a wrong generated model with flow from first argument to the return value
+fn snd(a: i64, b: i64) -> i64 {
+    0
+}
+
+fn test_snd() {
+    let s1 = source(99);
+    sink(snd(0, s1)); // $ hasValueFlow=99
+
+    let s2 = source(88);
+    sink(snd(s2, 0)); // $ SPURIOUS: hasValueFlow=88
+}
+
 // has a flow model
 fn get_var_pos(e: MyPosEnum) -> i64 {
     0
