@@ -24,8 +24,7 @@ models
 | 23 | Summary: main::set_tuple_element; Argument[0]; ReturnValue.Field[1]; value |
 | 24 | Summary: main::set_var_field; Argument[0]; ReturnValue.Field[main::MyFieldEnum::D::field_d]; value |
 | 25 | Summary: main::set_var_pos; Argument[0]; ReturnValue.Field[main::MyPosEnum::B(0)]; value |
-| 26 | Summary: main::snd; Argument[0]; ReturnValue; value |
-| 27 | Summary: main::snd; Argument[1]; ReturnValue; value |
+| 26 | Summary: main::snd; Argument[1]; ReturnValue; value |
 edges
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
 | main.rs:15:9:15:9 | s | main.rs:16:19:16:19 | s | provenance |  |
@@ -40,14 +39,8 @@ edges
 | main.rs:41:9:41:10 | s1 | main.rs:42:17:42:18 | s1 | provenance |  |
 | main.rs:41:14:41:23 | source(...) | main.rs:41:9:41:10 | s1 | provenance |  |
 | main.rs:41:14:41:23 | source(...) | main.rs:41:9:41:10 | s1 | provenance |  |
-| main.rs:42:17:42:18 | s1 | main.rs:42:10:42:19 | snd(...) | provenance | MaD:27 |
-| main.rs:42:17:42:18 | s1 | main.rs:42:10:42:19 | snd(...) | provenance | MaD:27 |
-| main.rs:44:9:44:10 | s2 | main.rs:45:14:45:15 | s2 | provenance |  |
-| main.rs:44:9:44:10 | s2 | main.rs:45:14:45:15 | s2 | provenance |  |
-| main.rs:44:14:44:23 | source(...) | main.rs:44:9:44:10 | s2 | provenance |  |
-| main.rs:44:14:44:23 | source(...) | main.rs:44:9:44:10 | s2 | provenance |  |
-| main.rs:45:14:45:15 | s2 | main.rs:45:10:45:19 | snd(...) | provenance | MaD:26 |
-| main.rs:45:14:45:15 | s2 | main.rs:45:10:45:19 | snd(...) | provenance | MaD:26 |
+| main.rs:42:17:42:18 | s1 | main.rs:42:10:42:19 | snd(...) | provenance | MaD:26 |
+| main.rs:42:17:42:18 | s1 | main.rs:42:10:42:19 | snd(...) | provenance | MaD:26 |
 | main.rs:54:9:54:9 | s | main.rs:55:27:55:27 | s | provenance |  |
 | main.rs:54:9:54:9 | s | main.rs:55:27:55:27 | s | provenance |  |
 | main.rs:54:13:54:21 | source(...) | main.rs:54:9:54:9 | s | provenance |  |
@@ -347,14 +340,6 @@ nodes
 | main.rs:42:10:42:19 | snd(...) | semmle.label | snd(...) |
 | main.rs:42:17:42:18 | s1 | semmle.label | s1 |
 | main.rs:42:17:42:18 | s1 | semmle.label | s1 |
-| main.rs:44:9:44:10 | s2 | semmle.label | s2 |
-| main.rs:44:9:44:10 | s2 | semmle.label | s2 |
-| main.rs:44:14:44:23 | source(...) | semmle.label | source(...) |
-| main.rs:44:14:44:23 | source(...) | semmle.label | source(...) |
-| main.rs:45:10:45:19 | snd(...) | semmle.label | snd(...) |
-| main.rs:45:10:45:19 | snd(...) | semmle.label | snd(...) |
-| main.rs:45:14:45:15 | s2 | semmle.label | s2 |
-| main.rs:45:14:45:15 | s2 | semmle.label | s2 |
 | main.rs:54:9:54:9 | s | semmle.label | s |
 | main.rs:54:9:54:9 | s | semmle.label | s |
 | main.rs:54:13:54:21 | source(...) | semmle.label | source(...) |
@@ -700,8 +685,6 @@ invalidSpecComponent
 | main.rs:26:10:26:18 | coerce(...) | main.rs:25:13:25:22 | source(...) | main.rs:26:10:26:18 | coerce(...) | $@ | main.rs:25:13:25:22 | source(...) | source(...) |
 | main.rs:42:10:42:19 | snd(...) | main.rs:41:14:41:23 | source(...) | main.rs:42:10:42:19 | snd(...) | $@ | main.rs:41:14:41:23 | source(...) | source(...) |
 | main.rs:42:10:42:19 | snd(...) | main.rs:41:14:41:23 | source(...) | main.rs:42:10:42:19 | snd(...) | $@ | main.rs:41:14:41:23 | source(...) | source(...) |
-| main.rs:45:10:45:19 | snd(...) | main.rs:44:14:44:23 | source(...) | main.rs:45:10:45:19 | snd(...) | $@ | main.rs:44:14:44:23 | source(...) | source(...) |
-| main.rs:45:10:45:19 | snd(...) | main.rs:44:14:44:23 | source(...) | main.rs:45:10:45:19 | snd(...) | $@ | main.rs:44:14:44:23 | source(...) | source(...) |
 | main.rs:56:10:56:24 | get_var_pos(...) | main.rs:54:13:54:21 | source(...) | main.rs:56:10:56:24 | get_var_pos(...) | $@ | main.rs:54:13:54:21 | source(...) | source(...) |
 | main.rs:56:10:56:24 | get_var_pos(...) | main.rs:54:13:54:21 | source(...) | main.rs:56:10:56:24 | get_var_pos(...) | $@ | main.rs:54:13:54:21 | source(...) | source(...) |
 | main.rs:71:33:71:33 | i | main.rs:67:13:67:21 | source(...) | main.rs:71:33:71:33 | i | $@ | main.rs:67:13:67:21 | source(...) | source(...) |

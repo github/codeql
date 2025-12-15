@@ -42,7 +42,7 @@ fn test_snd() {
     sink(snd(0, s1)); // $ hasValueFlow=99
 
     let s2 = source(88);
-    sink(snd(s2, 0)); // $ SPURIOUS: hasValueFlow=88
+    sink(snd(s2, 0));
 }
 
 // has a flow model
