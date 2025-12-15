@@ -1,8 +1,9 @@
 private import rust
+private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking
-private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.DataFlow as RustDataFlow
 private import codeql.rust.dataflow.FlowSummary
-private import DataFlowImpl
+private import DataFlowImpl as DataFlowImpl
 private import Node as Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -29,15 +30,19 @@ private predicate excludedTaintStepContent(Content c) {
   )
 }
 
-module RustTaintTracking implements InputSig<Location, RustDataFlow> {
-  predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+module RustTaintTrackingGen<DataFlowImpl::RustDataFlowInputSig I> implements
+  InputSig<Location, DataFlowImpl::RustDataFlowGen<I>>
+{
+  private module TheDataFlow = DataFlowImpl::RustDataFlowGen<I>;
+
+  predicate defaultTaintSanitizer(TheDataFlow::Node node) { none() }
 
   /**
    * Holds if the additional step from `pred` to `succ` should be included in all
    * global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
+  predicate defaultAdditionalTaintStep(TheDataFlow::Node pred, TheDataFlow::Node succ, string model) {
     Stages::DataFlowStage::ref() and
     model = "" and
     (
@@ -53,14 +58,14 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       // is tainted and an operation reads from `foo` (e.g., `foo.bar`) then
       // taint is propagated.
       exists(Content c |
-        RustDataFlow::readContentStep(pred, c, succ) and
+        TheDataFlow::readContentStep(pred, c, succ) and
         not excludedTaintStepContent(c)
       )
       or
       // In addition to the above, for element and reference content we let
       // _all_ read steps (including those from flow summaries and those that
       // result in small primitive types) give rise to taint steps.
-      exists(SingletonContentSet cs | RustDataFlow::readStep(pred, cs, succ) |
+      exists(SingletonContentSet cs | TheDataFlow::readStep(pred, cs, succ) |
         cs.getContent() instanceof ElementContent
         or
         cs.getContent() instanceof ReferenceContent
@@ -79,9 +84,11 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       )
       or
       succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =
-        getPostUpdateReverseStep(pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), false)
+        DataFlowImpl::getPostUpdateReverseStep(pred.(Node::PostUpdateNode)
+              .getPreUpdateNode()
+              .asExpr(), false)
       or
-      indexAssignment(any(CompoundAssignmentExpr cae),
+      DataFlowImpl::indexAssignment(any(CompoundAssignmentExpr cae),
         pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), _, succ, _)
     )
     or
@@ -94,19 +101,22 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
    * and inputs to additional taint steps.
    */
   bindingset[node]
-  predicate defaultImplicitTaintRead(DataFlow::Node node, ContentSet cs) {
+  predicate defaultImplicitTaintRead(TheDataFlow::Node node, ContentSet cs) {
     exists(node) and
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       c instanceof ElementContent or
       c instanceof ReferenceContent
-    ) and
+    ) // and
     // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
-    not optionalStep(node, _, _)
+    // FIXME:
+    // not optionalStep(node, _, _)
   }
 
   /**
    * Holds if the additional step from `src` to `sink` should be considered in
    * speculative taint flow exploration.
    */
-  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
+  predicate speculativeTaintStep(TheDataFlow::Node src, TheDataFlow::Node sink) { none() }
 }
+
+module RustTaintTracking = RustTaintTrackingGen<DataFlowImpl::RustDataFlowInput>;

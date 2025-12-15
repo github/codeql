@@ -10,16 +10,16 @@ single-file: true  # dump models into a single file per crate (we do not have pr
 # if a target has a dependency in this same list, it should be listed after that dependency
 targets:
 - name: rust
-- name: libc
-- name: log
-- name: memchr
-- name: once_cell
-- name: rand
-- name: smallvec
-- name: serde
-- name: tokio
-- name: reqwest
-- name: rocket
-- name: actix-web
-- name: hyper
-- name: clap
+# - name: libc
+# - name: log
+# - name: memchr
+# - name: once_cell
+# - name: rand
+# - name: smallvec
+# - name: serde
+# - name: tokio
+# - name: reqwest
+# - name: rocket
+# - name: actix-web
+# - name: hyper
+# - name: clap

@@ -8,8 +8,8 @@ extensions:
       - ["<libc::unix::linux_like::linux::gnu::__c_anonymous_ptrace_syscall_info_data as core::clone::Clone>::clone", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
       - ["<libc::unix::linux_like::linux::gnu::sifields_sigchld as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "dfc-generated"]
       - ["<libc::unix::linux_like::linux::gnu::sifields_sigchld as core::clone::Clone>::clone", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
-      - ["<style::style::StyleChecker>::check_file", "Argument[0]", "Argument[self]", "taint", "df-generated"]
-      - ["<style_tests::style::StyleChecker>::check_file", "Argument[0]", "Argument[self]", "taint", "df-generated"]
+      - ["<style::style::StyleChecker>::check_file", "Argument[0].Field[alloc::borrow::Cow::Owned(0)]", "Argument[self].Reference.Field[style::style::StyleChecker::path].Field[style_tests::style::StyleChecker::path]", "value", "dfc-generated"]
+      - ["<style_tests::style::StyleChecker>::check_file", "Argument[0].Field[alloc::borrow::Cow::Owned(0)]", "Argument[self].Reference.Field[style::style::StyleChecker::path].Field[style_tests::style::StyleChecker::path]", "value", "dfc-generated"]
       - ["libc::unix::linux_like::CMSG_LEN", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["libc::unix::linux_like::CMSG_SPACE", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["libc::unix::linux_like::IPOPT_CLASS", "Argument[0]", "ReturnValue", "taint", "df-generated"]
@@ -80,12 +80,8 @@ extensions:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
-      - ["<style::style::StyleChecker>::check_file", "Argument[0]", "alloc-layout", "df-generated"]
-      - ["<style::style::StyleChecker>::check_file", "Argument[0]", "alloc-size", "df-generated"]
       - ["<style::style::StyleChecker>::check_file", "Argument[0]", "path-injection", "df-generated"]
       - ["<style::style::StyleChecker>::finalize", "Argument[self]", "path-injection", "df-generated"]
-      - ["<style_tests::style::StyleChecker>::check_file", "Argument[0]", "alloc-layout", "df-generated"]
-      - ["<style_tests::style::StyleChecker>::check_file", "Argument[0]", "alloc-size", "df-generated"]
       - ["<style_tests::style::StyleChecker>::check_file", "Argument[0]", "path-injection", "df-generated"]
       - ["<style_tests::style::StyleChecker>::finalize", "Argument[self]", "path-injection", "df-generated"]
   - addsTo:

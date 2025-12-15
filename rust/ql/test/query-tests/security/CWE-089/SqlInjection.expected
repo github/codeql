@@ -126,14 +126,15 @@ edges
 | sqlx.rs:47:22:47:37 | ...::args(...) [element] | sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | provenance | MaD:25 |
 | sqlx.rs:47:22:47:44 | ... .nth(...) [Some] | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | provenance | MaD:30 |
 | sqlx.rs:47:22:47:77 | ... .unwrap_or(...) | sqlx.rs:47:9:47:18 | arg_string | provenance |  |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:54:27:54:39 | remote_string | provenance |  |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:55:84:55:96 | remote_string | provenance |  |
-| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:59:17:59:72 | MacroExpr | provenance |  |
+| sqlx.rs:48:9:48:21 | remote_string | sqlx.rs:49:25:49:37 | remote_string | provenance |  |
 | sqlx.rs:48:25:48:46 | ...::get | sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | provenance | Src:MaD:23  |
 | sqlx.rs:48:25:48:69 | ...::get(...) [Ok] | sqlx.rs:48:25:48:78 | ... .unwrap() | provenance | MaD:31 |
 | sqlx.rs:48:25:48:78 | ... .unwrap() | sqlx.rs:48:25:48:85 | ... .text() [Ok] | provenance | MaD:33 |
 | sqlx.rs:48:25:48:85 | ... .text() [Ok] | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | provenance | MaD:32 |
 | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | sqlx.rs:48:9:48:21 | remote_string | provenance |  |
+| sqlx.rs:49:25:49:37 | remote_string | sqlx.rs:54:27:54:39 | remote_string | provenance |  |
+| sqlx.rs:49:25:49:37 | remote_string | sqlx.rs:55:84:55:96 | remote_string | provenance |  |
+| sqlx.rs:49:25:49:37 | remote_string | sqlx.rs:59:17:59:72 | MacroExpr | provenance |  |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:38 | unsafe_query_1 [&ref] | provenance |  |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | provenance |  |
 | sqlx.rs:53:27:53:36 | arg_string | sqlx.rs:53:26:53:36 | &arg_string [&ref] | provenance |  |
@@ -149,6 +150,7 @@ edges
 | sqlx.rs:56:9:56:22 | unsafe_query_4 | sqlx.rs:82:29:82:42 | unsafe_query_4 | provenance |  |
 | sqlx.rs:59:17:59:72 | ...::format(...) | sqlx.rs:59:17:59:72 | { ... } | provenance |  |
 | sqlx.rs:59:17:59:72 | ...::must_use(...) | sqlx.rs:56:9:56:22 | unsafe_query_4 | provenance |  |
+| sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:34 |
 | sqlx.rs:59:17:59:72 | MacroExpr | sqlx.rs:59:17:59:72 | ...::format(...) | provenance | MaD:34 |
 | sqlx.rs:59:17:59:72 | { ... } | sqlx.rs:59:17:59:72 | ...::must_use(...) | provenance | MaD:35 |
 | sqlx.rs:78:25:78:38 | unsafe_query_1 [&ref] | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() [&ref] | provenance | MaD:29 |
@@ -338,6 +340,7 @@ nodes
 | sqlx.rs:48:25:48:78 | ... .unwrap() | semmle.label | ... .unwrap() |
 | sqlx.rs:48:25:48:85 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
 | sqlx.rs:48:25:48:118 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| sqlx.rs:49:25:49:37 | remote_string | semmle.label | remote_string |
 | sqlx.rs:53:9:53:22 | unsafe_query_1 [&ref] | semmle.label | unsafe_query_1 [&ref] |
 | sqlx.rs:53:26:53:36 | &arg_string [&ref] | semmle.label | &arg_string [&ref] |
 | sqlx.rs:53:27:53:36 | arg_string | semmle.label | arg_string |

@@ -286,7 +286,11 @@ predicate indexAssignment(
   not index.getResolvedTarget().fromSource()
 }
 
-module RustDataFlow implements InputSig<Location> {
+signature module RustDataFlowInputSig {
+  predicate includeDynamicTargets();
+}
+
+module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location> {
   private import Aliases
   private import codeql.rust.dataflow.DataFlow
   private import Node as Node
@@ -441,7 +445,11 @@ module RustDataFlow implements InputSig<Location> {
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
     exists(Call c | c = call.asCall() |
+      Input::includeDynamicTargets() and
       result.asCfgScope() = c.getARuntimeTarget()
+      or
+      not Input::includeDynamicTargets() and
+      result.asCfgScope() = c.getStaticTarget()
       or
       exists(SummarizedCallable sc, Function staticTarget |
         staticTarget = getStaticTargetExt(c) and
@@ -908,6 +916,12 @@ module RustDataFlow implements InputSig<Location> {
   class DataFlowSecondLevelScope = Void;
 }
 
+module RustDataFlowInput implements RustDataFlowInputSig {
+  predicate includeDynamicTargets() { any() }
+}
+
+module RustDataFlow = RustDataFlowGen<RustDataFlowInput>;
+
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.rust.internal.CachedStages
@@ -1079,7 +1093,7 @@ private module Cached {
   }
 
   cached
-  newtype TParameterPosition =
+  newtype TParameterPositioni =
     TPositionalParameterPosition(int i) {
       i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
       or
@@ -1089,6 +1103,8 @@ private module Cached {
     } or
     TClosureSelfParameterPosition() or
     TSelfParameterPosition()
+
+  final class TParameterPosition = TParameterPositioni;
 
   cached
   newtype TReturnKind = TNormalReturnKind()

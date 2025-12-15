@@ -19,6 +19,7 @@ edges
 | request_forgery_tests.rs:16:27:16:49 | ...::format(...) | request_forgery_tests.rs:16:27:16:49 | { ... } | provenance |  |
 | request_forgery_tests.rs:16:27:16:49 | ...::must_use(...) | request_forgery_tests.rs:16:13:16:15 | url | provenance |  |
 | request_forgery_tests.rs:16:27:16:49 | MacroExpr | request_forgery_tests.rs:16:27:16:49 | ...::format(...) | provenance | MaD:3 |
+| request_forgery_tests.rs:16:27:16:49 | MacroExpr | request_forgery_tests.rs:16:27:16:49 | ...::format(...) | provenance | MaD:3 |
 | request_forgery_tests.rs:16:27:16:49 | { ... } | request_forgery_tests.rs:16:27:16:49 | ...::must_use(...) | provenance | MaD:4 |
 | request_forgery_tests.rs:17:38:17:41 | &url [&ref] | request_forgery_tests.rs:17:25:17:36 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | request_forgery_tests.rs:17:39:17:41 | url | request_forgery_tests.rs:17:38:17:41 | &url [&ref] | provenance |  |
@@ -26,12 +27,14 @@ edges
 | request_forgery_tests.rs:20:27:20:57 | ...::format(...) | request_forgery_tests.rs:20:27:20:57 | { ... } | provenance |  |
 | request_forgery_tests.rs:20:27:20:57 | ...::must_use(...) | request_forgery_tests.rs:20:13:20:15 | url | provenance |  |
 | request_forgery_tests.rs:20:27:20:57 | MacroExpr | request_forgery_tests.rs:20:27:20:57 | ...::format(...) | provenance | MaD:3 |
+| request_forgery_tests.rs:20:27:20:57 | MacroExpr | request_forgery_tests.rs:20:27:20:57 | ...::format(...) | provenance | MaD:3 |
 | request_forgery_tests.rs:20:27:20:57 | { ... } | request_forgery_tests.rs:20:27:20:57 | ...::must_use(...) | provenance | MaD:4 |
 | request_forgery_tests.rs:21:38:21:41 | &url [&ref] | request_forgery_tests.rs:21:25:21:36 | ...::get | provenance | MaD:1 Sink:MaD:1 |
 | request_forgery_tests.rs:21:39:21:41 | url | request_forgery_tests.rs:21:38:21:41 | &url [&ref] | provenance |  |
 | request_forgery_tests.rs:24:13:24:15 | url | request_forgery_tests.rs:25:39:25:41 | url | provenance |  |
 | request_forgery_tests.rs:24:27:24:70 | ...::format(...) | request_forgery_tests.rs:24:27:24:70 | { ... } | provenance |  |
 | request_forgery_tests.rs:24:27:24:70 | ...::must_use(...) | request_forgery_tests.rs:24:13:24:15 | url | provenance |  |
+| request_forgery_tests.rs:24:27:24:70 | MacroExpr | request_forgery_tests.rs:24:27:24:70 | ...::format(...) | provenance | MaD:3 |
 | request_forgery_tests.rs:24:27:24:70 | MacroExpr | request_forgery_tests.rs:24:27:24:70 | ...::format(...) | provenance | MaD:3 |
 | request_forgery_tests.rs:24:27:24:70 | { ... } | request_forgery_tests.rs:24:27:24:70 | ...::must_use(...) | provenance | MaD:4 |
 | request_forgery_tests.rs:25:38:25:41 | &url [&ref] | request_forgery_tests.rs:25:25:25:36 | ...::get | provenance | MaD:1 Sink:MaD:1 |

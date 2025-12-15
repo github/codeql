@@ -1,2 +1,15 @@
 unexpectedModel
+| Unexpected summary found: <test::option::MyOption as core::convert::From>::from;Argument[0].Field[test::option::MyOption::MySome(0)];ReturnValue.Field[test::option::MyOption::MySome(0)].Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::as_mut;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Field[test::option::MyOption::MySome(0)].Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::as_ref;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Field[test::option::MyOption::MySome(0)].Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::get_or_insert;Argument[0];Argument[self].Field[test::option::MyOption::MySome(0)];value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::get_or_insert;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::get_or_insert_default;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::get_or_insert_with;Argument[0].ReturnValue;Argument[self].Field[test::option::MyOption::MySome(0)];value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::get_or_insert_with;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::insert;Argument[0];Argument[self].Field[test::option::MyOption::MySome(0)];value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::insert;Argument[self].Field[test::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
+| Unexpected summary found: <test::option::MyOption>::take_if;Argument[self].Field[test::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated |
+| Unexpected summary found: test::summaries::read_int;Argument[0];ReturnValue;value;dfc-generated |
+| Unexpected summary found: test::summaries::set_int;Argument[1];Argument[0];value;dfc-generated |
 expectedModel

@@ -7,6 +7,7 @@ edges
 | main.rs:9:32:9:56 | ...::format(...) | main.rs:9:32:9:56 | { ... } | provenance |  |
 | main.rs:9:32:9:56 | ...::must_use(...) | main.rs:9:17:9:20 | body | provenance |  |
 | main.rs:9:32:9:56 | MacroExpr | main.rs:9:32:9:56 | ...::format(...) | provenance | MaD:3 |
+| main.rs:9:32:9:56 | MacroExpr | main.rs:9:32:9:56 | ...::format(...) | provenance | MaD:3 |
 | main.rs:9:32:9:56 | { ... } | main.rs:9:32:9:56 | ...::must_use(...) | provenance | MaD:4 |
 | main.rs:10:31:10:34 | body | main.rs:10:13:10:29 | ...::html | provenance | MaD:1 Sink:MaD:1 |
 models

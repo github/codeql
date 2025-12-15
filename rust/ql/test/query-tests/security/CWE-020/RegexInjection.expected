@@ -9,6 +9,7 @@ edges
 | main.rs:5:25:5:44 | ...::format(...) | main.rs:5:25:5:44 | { ... } | provenance |  |
 | main.rs:5:25:5:44 | ...::must_use(...) | main.rs:5:9:5:13 | regex | provenance |  |
 | main.rs:5:25:5:44 | MacroExpr | main.rs:5:25:5:44 | ...::format(...) | provenance | MaD:3 |
+| main.rs:5:25:5:44 | MacroExpr | main.rs:5:25:5:44 | ...::format(...) | provenance | MaD:3 |
 | main.rs:5:25:5:44 | { ... } | main.rs:5:25:5:44 | ...::must_use(...) | provenance | MaD:4 |
 | main.rs:6:26:6:30 | regex | main.rs:6:25:6:30 | &regex | provenance |  |
 models

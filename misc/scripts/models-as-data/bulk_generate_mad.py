@@ -44,6 +44,15 @@ gitroot = (
 build_dir = pathlib.Path(gitroot, "mad-generation-build")
 
 
+def database_dir_for_project(name: str) -> pathlib.Path:
+    return build_dir / f"{name}-db"
+
+
+def database_for_project_exists(name: str) -> pathlib.Path:
+    path = database_dir_for_project(name)
+    return path.exists()
+
+
 # A project to generate models for
 Project = TypedDict(
     "Project",
@@ -175,7 +184,7 @@ def clone_projects(projects: List[Project]) -> List[tuple[Project, str]]:
 
 def build_database(
     language: str, extractor_options, project: Project, project_dir: str
-) -> str | None:
+) -> bool:
     """
     Build a CodeQL database for a project.
 
@@ -186,12 +195,12 @@ def build_database(
         project_dir: Path to the CodeQL database.
 
     Returns:
-        The path to the created database directory.
+        True if the build was successful, False otherwise.
     """
     name = project["name"]
 
     # Create database directory path
-    database_dir = build_dir / f"{name}-db"
+    database_dir = database_dir_for_project(name)
 
     # Only build the database if it doesn't already exist
     if not database_dir.exists():
@@ -214,13 +223,13 @@ def build_database(
             print(f"Successfully created database at {database_dir}")
         except subprocess.CalledProcessError as e:
             print(f"Failed to create database for {name}: {e}")
-            return None
+            return False
     else:
         print(
             f"Skipping database creation for {name} as it already exists at {database_dir}"
         )
 
-    return database_dir
+    return True
 
 
 def generate_models(config, args, project: Project, database_dir: str) -> None:
@@ -251,7 +260,7 @@ def generate_models(config, args, project: Project, database_dir: str) -> None:
 
 def build_databases_from_projects(
     language: str, extractor_options, projects: List[Project]
-) -> List[tuple[Project, str | None]]:
+) -> List[tuple[Project, bool]]:
     """
     Build databases for all projects in parallel.
 
@@ -261,7 +270,7 @@ def build_databases_from_projects(
         projects: List of projects to build databases for.
 
     Returns:
-        List of (project_name, database_dir) pairs, where database_dir is None if the build failed.
+        List of (project_name, success) pairs, where success is False if the build failed.
     """
     # Clone projects in parallel
     print("=== Cloning projects ===")
@@ -332,8 +341,9 @@ def download_dca_databases(
     language: str,
     experiment_names: list[str],
     pat: str,
+    reuse_databases: bool,
     projects: List[Project],
-) -> List[tuple[Project, str | None]]:
+) -> List[tuple[Project, bool]]:
     """
     Download databases from a DCA experiment.
     Args:
@@ -341,11 +351,12 @@ def download_dca_databases(
         pat: Personal Access Token for GitHub API authentication.
         projects: List of projects to download databases for.
     Returns:
-        List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
+        List of (project_name, success) pairs, where success is False if the download failed.
     """
     print("\n=== Finding projects ===")
     project_map = {project["name"]: project for project in projects}
-    analyzed_databases = {n: None for n in project_map}
+
+    analyzed_databases = {}
     for experiment_name in experiment_names:
         response = get_json_from_github(
             f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
@@ -358,11 +369,11 @@ def download_dca_databases(
             artifact_name = analyzed_database["artifact_name"]
             pretty_name = pretty_name_from_artifact_name(artifact_name)
 
-            if not pretty_name in analyzed_databases:
+            if not pretty_name in project_map:
                 print(f"Skipping {pretty_name} as it is not in the list of projects")
                 continue
 
-            if analyzed_databases[pretty_name] is not None:
+            if pretty_name in analyzed_databases:
                 print(
                     f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
                 )
@@ -376,8 +387,9 @@ def download_dca_databases(
         )
         sys.exit(1)
 
-    def download_and_decompress(analyzed_database: dict) -> str:
+    def download_and_decompress(analyzed_database: dict) -> bool:
         artifact_name = analyzed_database["artifact_name"]
+        pretty_name = pretty_name_from_artifact_name(artifact_name)
         repository = analyzed_database["repository"]
         run_id = analyzed_database["run_id"]
         print(f"=== Finding artifact: {artifact_name} ===")
@@ -407,15 +419,18 @@ def download_dca_databases(
             with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
                 # And we just untar it to the same directory as the zip file
                 tar_ref.extractall(artifact_unzipped_location)
-        ret = artifact_unzipped_location / language
-        print(f"Decompression complete: {ret}")
-        return ret
+        database_location = database_dir_for_project(pretty_name)
+        # Move the database to the canonical location
+        shutil.move(artifact_unzipped_location / language, database_location)
+
+        print(f"Decompression complete: {database_location}")
+        return True
 
     results = run_in_parallel(
         download_and_decompress,
         list(analyzed_databases.values()),
         on_error=lambda db, exc: print(
-            f"ERROR: Failed to download and decompress {db["artifact_name"]}: {exc}"
+            f"ERROR: Failed to download and decompress {db['artifact_name']}: {exc}"
         ),
         error_summary=lambda failures: print(
             f"ERROR: Failed to download {len(failures)} databases: {', '.join(item[0] for item in failures)}"
@@ -460,6 +475,13 @@ def main(config, args) -> None:
     # Create build directory if it doesn't exist
     build_dir.mkdir(parents=True, exist_ok=True)
 
+    # Check if reusing databases is given and all databases exist
+    reuse_databases = args.reuse_databases
+    all_databases_exist = reuse_databases and
+        all_exist = all(
+            database_for_project_exists(project["name"]) for project in projects
+        )
+
     database_results = []
     match get_strategy(config):
         case "repo":
@@ -487,6 +509,7 @@ def main(config, args) -> None:
                     language,
                     experiment_names,
                     pat,
+                    args.reuse_databases,
                     projects,
                 )
 
@@ -494,7 +517,7 @@ def main(config, args) -> None:
     print("\n=== Generating models ===")
 
     failed_builds = [
-        project["name"] for project, db_dir in database_results if db_dir is None
+        project["name"] for project, success in database_results if not success
     ]
     if failed_builds:
         print(
@@ -506,8 +529,9 @@ def main(config, args) -> None:
     for project, _ in database_results:
         clean_up_mad_destination_for_project(config, project["name"])
 
-    for project, database_dir in database_results:
-        if database_dir is not None:
+    for project, success in database_results:
+        database_dir = database_dir_for_project(project["name"])
+        if success:
             generate_models(config, args, project, database_dir)
 
 
@@ -542,6 +566,12 @@ if __name__ == "__main__":
         type=int,
         help="What `--threads` value to pass to `codeql` (default %(default)s)",
         default=0,
+    )
+    parser.add_argument(
+        "--reuse-databases",
+        type=bool,
+        help="Whether to reuse existing databases instead of rebuilding them",
+        default=False,
     )
     args = parser.parse_args()
 

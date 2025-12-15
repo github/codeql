@@ -4,7 +4,7 @@ models
 | 3 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
 | 4 | Summary: <_ as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
 | 5 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
-| 6 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Reference; ReturnValue; value |
+| 6 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0]; ReturnValue; taint |
 | 7 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
 | 8 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
 | 9 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |

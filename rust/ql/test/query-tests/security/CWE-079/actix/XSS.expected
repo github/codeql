@@ -10,6 +10,7 @@ edges
 | main.rs:13:9:22:18 | ...::format(...) | main.rs:13:9:22:18 | { ... } | provenance |  |
 | main.rs:13:9:22:18 | ...::must_use(...) | main.rs:12:9:12:12 | html | provenance |  |
 | main.rs:13:9:22:18 | MacroExpr | main.rs:13:9:22:18 | ...::format(...) | provenance | MaD:4 |
+| main.rs:13:9:22:18 | MacroExpr | main.rs:13:9:22:18 | ...::format(...) | provenance | MaD:4 |
 | main.rs:13:9:22:18 | { ... } | main.rs:13:9:22:18 | ...::must_use(...) | provenance | MaD:5 |
 | main.rs:25:15:25:18 | html | main.rs:25:5:25:13 | ...::new | provenance | MaD:1 Sink:MaD:1 |
 models

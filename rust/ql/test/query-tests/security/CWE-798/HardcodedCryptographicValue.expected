@@ -65,6 +65,7 @@ edges
 | test_cookie.rs:38:9:38:14 | array2 | test_cookie.rs:42:34:42:39 | array2 | provenance |  |
 | test_cookie.rs:38:18:38:37 | ...::from(...) | test_cookie.rs:38:9:38:14 | array2 | provenance |  |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:8 |
+| test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:18:38:37 | ...::from(...) | provenance | MaD:18 |
 | test_cookie.rs:42:34:42:39 | array2 | test_cookie.rs:42:14:42:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
 | test_cookie.rs:49:9:49:14 | array3 [element] | test_cookie.rs:53:34:53:39 | array3 [element] | provenance |  |
 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | provenance | MaD:20 |
@@ -80,7 +81,6 @@ edges
 | test_heuristic.rs:70:23:70:35 | ... << ... | test_heuristic.rs:70:22:70:62 | ... ^ ... | provenance | MaD:15 |
 | test_heuristic.rs:70:34:70:35 | 32 | test_heuristic.rs:70:23:70:35 | ... << ... | provenance | MaD:17 |
 | test_heuristic.rs:70:34:70:35 | 32 | test_heuristic.rs:70:23:70:35 | ... << ... | provenance | MaD:16 |
-| test_heuristic.rs:70:34:70:35 | 32 | test_heuristic.rs:70:23:70:35 | ... << ... | provenance | MaD:18 |
 | test_heuristic.rs:70:41:70:61 | ... & ... | test_heuristic.rs:70:22:70:62 | ... ^ ... | provenance | MaD:14 |
 | test_heuristic.rs:70:41:70:61 | ... & ... | test_heuristic.rs:70:22:70:62 | ... ^ ... | provenance | MaD:13 |
 | test_heuristic.rs:70:52:70:61 | 0xFFFFFFFF | test_heuristic.rs:70:41:70:61 | ... & ... | provenance | MaD:12 |
@@ -103,7 +103,7 @@ models
 | 15 | Summary: <_ as core::ops::bit::BitXor>::bitxor; Argument[self]; ReturnValue; taint |
 | 16 | Summary: <_ as core::ops::bit::Shl>::shl; Argument[0].Reference; ReturnValue; taint |
 | 17 | Summary: <_ as core::ops::bit::Shl>::shl; Argument[0]; ReturnValue; taint |
-| 18 | Summary: <core::u64 as core::ops::bit::Shl>::shl; Argument[0]; ReturnValue; taint |
+| 18 | Summary: <alloc::vec::Vec as core::convert::From>::from; Argument[0]; ReturnValue; taint |
 | 19 | Summary: <generic_array::GenericArray>::from_slice; Argument[0].Reference; ReturnValue.Reference; value |
 | 20 | Summary: alloc::vec::from_elem; Argument[0]; ReturnValue.Element; value |
 nodes
