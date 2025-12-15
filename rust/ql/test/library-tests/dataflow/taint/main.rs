@@ -11,7 +11,7 @@ fn sink(s: i64) {
 fn addition() {
     let a = source(42);
     sink(a + 1); // $ hasTaintFlow=42
-
+    sink(1 + a); // $ hasTaintFlow=42
 
     let mut b = source(58);
     b += 2;
@@ -22,24 +22,24 @@ fn addition() {
     sink(c); // $ hasTaintFlow=99
 }
 
-fn negation() {
-    let a = source(17);
-    sink(-a); // $ hasTaintFlow=17
+fn more_ops() {
+    let a = source(1);
+    sink(-a); // $ hasTaintFlow=1
+
+    sink(!source(2)); // $ hasTaintFlow=2
+
+    sink(source(3) - 3); // $ hasTaintFlow=3
+    sink(4i64 - source(4)); // $ hasTaintFlow=4
+
+    sink(source(5) * 5); // $ hasTaintFlow=5
+    sink(6i64 * source(6)); // $ hasTaintFlow=6
+
+    sink(source(7) << 7); // $ hasTaintFlow=7
+    sink(8i64 << source(8)); // $ hasTaintFlow=8
+
+    sink(source(9) ^ 9); // $ hasTaintFlow=9
+    sink(10i64 ^ source(10)); // $ hasTaintFlow=10
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 fn cast() {
     let a = source(77);
@@ -135,12 +135,80 @@ mod tuples {
     }
 }
 
+use std::ops::{Add, Sub, Mul, Shl, Shr, BitOr, AddAssign, SubAssign, MulAssign, ShlAssign, ShrAssign, BitXorAssign, Neg, Not};
+
+fn std_ops() {
+    sink(source(1).add(2i64)); // $ hasTaintFlow=1
+    sink(source(1).add(2)); // $ MISSING: hasTaintFlow=1
+    sink(1i64.add(source(2))); // $ hasTaintFlow=2
+    sink(1.add(source(2))); // $ MISSING: hasTaintFlow=2
+
+    sink(source(1).sub(2i64)); // $ hasTaintFlow=1
+    sink(source(1).sub(2)); // $ MISSING: hasTaintFlow=1
+    sink(1i64.sub(source(2))); // $ hasTaintFlow=2
+    sink(1.sub(source(2))); // $ MISSING: hasTaintFlow=2
+
+    sink(source(1).mul(2i64)); // $ hasTaintFlow=1
+    sink(source(1).mul(2)); // $ MISSING: hasTaintFlow=1
+    sink(1i64.mul(source(2))); // $ hasTaintFlow=2
+    sink(1.mul(source(2))); // $ MISSING: hasTaintFlow=2
+
+    sink(source(1).shl(2i64)); // $ hasTaintFlow=1
+    sink(source(1).shl(2)); // $ hasTaintFlow=1
+    sink(1i64.shl(source(2))); // $ hasTaintFlow=2
+
+    sink(source(1).shr(2i64)); // $ hasTaintFlow=1
+    sink(source(1).shr(2)); // $ hasTaintFlow=1
+    sink(1i64.shr(source(2))); // $ hasTaintFlow=2
+
+    sink(source(1).bitor(2i64)); // $ hasTaintFlow=1
+    sink(source(1).bitor(2)); // $ MISSING: hasTaintFlow=1
+    sink(1i64.bitor(source(2))); // $ hasTaintFlow=2
+    sink(1.bitor(source(2))); // $ MISSING: hasTaintFlow=2
+
+    let mut a: i64 = 1;
+    a.add_assign(source(2));
+    a.sub_assign(source(3));
+    a.mul_assign(source(4));
+    a.shl_assign(source(5));
+    a.shr_assign(source(6));
+    a.bitxor_assign(source(7));
+    sink(a); // $ hasTaintFlow=2 hasTaintFlow=3 hasTaintFlow=4 hasTaintFlow=5 hasTaintFlow=6 hasTaintFlow=7
+
+    sink(source(1).neg()); // $ hasTaintFlow=1
+    sink(source(1).not()); // $ hasTaintFlow=1
+}
+
+mod wrapping {
+    use std::num::Wrapping;
+    use std::ops::AddAssign;
+
+    fn source(i: i64) -> Wrapping<i64> {
+        Wrapping(i)
+    }
+
+    fn sink(s: Wrapping<i64>) {
+        println!("{}", s);
+    }
+
+    pub fn wrapping() {
+        let mut a: Wrapping<i64> = Wrapping(1);
+        a.add_assign(source(2));
+        a.add_assign(Wrapping(crate::source(3)));
+        a += source(4);
+        a += std::num::Wrapping(crate::source(5));
+        sink(a); // $ hasTaintFlow=2 hasTaintFlow=4 MISSING: hasTaintFlow=3 hasTaintFlow=5
+    }
+}
+
 fn main() {
     addition();
-    negation();
+    more_ops();
     cast();
     string_slice();
     array_source::array_tainted();
     array_sink::array_with_taint();
     tuples::tuples();
+    std_ops();
+    wrapping::wrapping();
 }

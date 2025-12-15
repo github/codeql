@@ -41,3 +41,14 @@
 | main.rs:133:14:133:66 | ... .1 | main.rs:133:14:133:68 | ... .0 |
 | main.rs:134:14:134:64 | TupleExpr | main.rs:134:14:134:66 | ... .1 |
 | main.rs:134:14:134:66 | ... .1 | main.rs:134:14:134:68 | ... .1 |
+| main.rs:170:5:170:5 | [post] a [implicit borrow] | main.rs:170:5:170:5 | [post] a |
+| main.rs:171:5:171:5 | [post] a [implicit borrow] | main.rs:171:5:171:5 | [post] a |
+| main.rs:172:5:172:5 | [post] a [implicit borrow] | main.rs:172:5:172:5 | [post] a |
+| main.rs:173:5:173:5 | [post] a [implicit borrow] | main.rs:173:5:173:5 | [post] a |
+| main.rs:174:5:174:5 | [post] a [implicit borrow] | main.rs:174:5:174:5 | [post] a |
+| main.rs:175:5:175:5 | [post] a [implicit borrow] | main.rs:175:5:175:5 | [post] a |
+| main.rs:191:24:191:24 | s | main.rs:191:18:191:24 | FormatArgsExpr |
+| main.rs:196:9:196:9 | [post] a [implicit borrow] | main.rs:196:9:196:9 | [post] a |
+| main.rs:197:9:197:9 | [post] a [implicit borrow] | main.rs:197:9:197:9 | [post] a |
+| main.rs:198:9:198:9 | [post] a [implicit borrow] | main.rs:198:9:198:9 | [SSA] a |
+| main.rs:199:9:199:9 | [post] a [implicit borrow] | main.rs:199:9:199:9 | [SSA] a |
