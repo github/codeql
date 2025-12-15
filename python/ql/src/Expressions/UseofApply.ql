@@ -10,8 +10,9 @@
  */
 
 import python
+private import LegacyPointsTo
 private import semmle.python.types.Builtins
 
-from CallNode call, ControlFlowNode func
+from CallNode call, ControlFlowNodeWithPointsTo func
 where major_version() = 2 and call.getFunction() = func and func.pointsTo(Value::named("apply"))
 select call, "Call to the obsolete builtin function 'apply'."

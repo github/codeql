@@ -1,6 +1,7 @@
 import python
+private import LegacyPointsTo
 
-from ControlFlowNode f, Object o, ControlFlowNode x
+from ControlFlowNodeWithPointsTo f, Object o, ControlFlowNode x
 where
   f.refersTo(o, x) and
   exists(CallNode call | call.getFunction().getNode().(Name).getId() = "use" and call.getArg(0) = f)

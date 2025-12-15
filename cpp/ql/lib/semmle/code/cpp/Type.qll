@@ -1146,7 +1146,7 @@ class DerivedType extends Type, @derivedtype {
  * decltype(a) b;
  * ```
  */
-class Decltype extends Type {
+class Decltype extends Type, NameQualifyingElement {
   Decltype() { decltypes(underlyingElement(this), _, 0, _, _) }
 
   override string getAPrimaryQlClass() { result = "Decltype" }
@@ -1187,7 +1187,7 @@ class Decltype extends Type {
 
   override string toString() { result = "decltype(...)" }
 
-  override string getName() { none() }
+  override string getName() { result = "decltype(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -1247,7 +1247,7 @@ class TypeofType extends Type {
 
   override string toString() { result = "typeof(...)" }
 
-  override string getName() { none() }
+  override string getName() { result = "typeof(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -1311,8 +1311,6 @@ class TypeofTypeType extends TypeofType {
   Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
 
   override string getAPrimaryQlClass() { result = "TypeofTypeType" }
-
-  override string toString() { result = "typeof(...)" }
 }
 
 /**
@@ -1394,7 +1392,7 @@ class IntrinsicTransformedType extends Type {
 
   override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
 
-  override string getName() { none() }
+  override string getName() { result = this.getIntrinsicName() + "(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 

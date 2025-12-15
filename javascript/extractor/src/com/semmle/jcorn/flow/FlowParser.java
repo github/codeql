@@ -141,6 +141,7 @@ public class FlowParser extends ESNextParser {
       options.onRecoverableError(this.onRecoverableError);
     }
 
+    @SuppressWarnings("ReturnValueIgnored")
     private void commit() {
       // commit buffered tokens
       options.onToken(this.onToken);

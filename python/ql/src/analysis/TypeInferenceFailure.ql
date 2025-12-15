@@ -8,8 +8,9 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from ControlFlowNode f, Object o
+from ControlFlowNodeWithPointsTo f, Object o
 where
   f.refersTo(o) and
   not f.refersTo(o, _, _)

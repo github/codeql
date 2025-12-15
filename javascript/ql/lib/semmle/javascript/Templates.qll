@@ -1,4 +1,6 @@
 /** Provides classes for working with ECMAScript 2015-style template expressions. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -58,6 +60,7 @@ class TemplateLiteral extends Expr, @template_literal {
    */
   int getNumElement() { result = count(this.getAnElement()) }
 
+  overlay[global]
   override predicate isImpure() { this.getAnElement().isImpure() }
 
   override string getAPrimaryQlClass() { result = "TemplateLiteral" }

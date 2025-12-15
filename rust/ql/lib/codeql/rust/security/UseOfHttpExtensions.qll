@@ -50,7 +50,7 @@ module UseOfHttp {
    * An HTTP string literal as a source.
    */
   private class HttpStringLiteralAsSource extends Source {
-    HttpStringLiteralAsSource() { this.asExpr().getExpr() instanceof HttpStringLiteral }
+    HttpStringLiteralAsSource() { this.asExpr() instanceof HttpStringLiteral }
   }
 
   /**

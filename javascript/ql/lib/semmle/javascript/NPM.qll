@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with NPM module definitions and dependencies.
  */
+overlay[local?]
+module;
 
 import javascript
 private import NodeModuleResolutionImpl

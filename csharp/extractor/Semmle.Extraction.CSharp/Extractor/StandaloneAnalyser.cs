@@ -8,9 +8,17 @@ namespace Semmle.Extraction.CSharp
 {
     public class StandaloneAnalyser : Analyser
     {
-        public StandaloneAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, bool addAssemblyTrapPrefix)
-            : base(pm, logger, pathTransformer, pathCache, addAssemblyTrapPrefix)
+        public StandaloneAnalyser(IProgressMonitor pm, ILogger logger, PathTransformer pathTransformer, IPathCache pathCache, IOverlayInfo overlayInfo, bool addAssemblyTrapPrefix)
+            : base(pm, logger, pathTransformer, pathCache, overlayInfo, addAssemblyTrapPrefix)
         {
+        }
+
+        private void LogDiagnostics()
+        {
+            foreach (var error in GetFilteredDiagnostics())
+            {
+                Logger.LogDebug($"  Compilation error: {error}");
+            }
         }
 
         public void Initialize(string outputPath, IEnumerable<(string, string)> compilationInfos, CSharpCompilation compilationIn, CommonOptions options)
@@ -20,6 +28,7 @@ namespace Semmle.Extraction.CSharp
             this.options = options;
             LogExtractorInfo();
             SetReferencePaths();
+            LogDiagnostics();
         }
     }
 }

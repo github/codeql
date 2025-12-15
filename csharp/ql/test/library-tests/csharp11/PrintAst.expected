@@ -1234,9 +1234,9 @@ StaticInterfaceMembers.cs:
 #   49|       1: [PropertyCall] access to property Real
 #   49|         -1: [ParameterAccess] access to parameter n
 #   51|   14: [Method] Inc
-#   51|     -1: [TypeMention] Complex
 #   51|     -1: [TypeMention] INumber<Complex>
 #   51|       1: [TypeMention] Complex
+#   51|     -1: [TypeMention] Complex
 #-----|     2: (Parameters)
 #   51|       0: [Parameter] other
 #   51|         -1: [TypeMention] Complex
@@ -1254,9 +1254,9 @@ StaticInterfaceMembers.cs:
 #   52|           1: [PropertyCall] access to property Imaginary
 #   52|             -1: [ParameterAccess] access to parameter other
 #   54|   15: [Method] Dec
-#   54|     -1: [TypeMention] Complex
 #   54|     -1: [TypeMention] INumber<Complex>
 #   54|       1: [TypeMention] Complex
+#   54|     -1: [TypeMention] Complex
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] other
 #   54|         -1: [TypeMention] Complex

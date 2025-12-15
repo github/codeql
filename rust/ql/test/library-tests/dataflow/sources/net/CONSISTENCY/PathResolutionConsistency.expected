@@ -7,4 +7,3 @@ multipleCallTargets
 | test.rs:447:30:447:67 | pinned.poll_read(...) |
 | test.rs:470:26:470:54 | pinned.poll_fill_buf(...) |
 | test.rs:519:50:519:66 | ...::from(...) |
-| test.rs:519:50:519:66 | ...::from(...) |

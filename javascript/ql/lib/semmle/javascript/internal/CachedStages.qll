@@ -40,6 +40,7 @@ module Stages {
   /**
    * The `ast` stage.
    */
+  overlay[local?]
   cached
   module Ast {
     /**
@@ -84,6 +85,7 @@ module Stages {
   /**
    * The `basicblocks` stage.
    */
+  overlay[local?]
   cached
   module BasicBlocks {
     /**
@@ -110,6 +112,7 @@ module Stages {
   /**
    * The part of data flow computed before flow summary nodes.
    */
+  overlay[local?]
   cached
   module EarlyDataFlowStage {
     /**
@@ -134,6 +137,7 @@ module Stages {
   /**
    * The `dataflow` stage.
    */
+  overlay[local?]
   cached
   module DataFlowStage {
     /**
@@ -167,8 +171,6 @@ module Stages {
       or
       exists(any(DataFlow::PropRef ref).getBase())
       or
-      exists(any(DataFlow::ClassNode cls))
-      or
       exists(any(DataFlow::CallNode node).getArgument(_))
       or
       exists(any(DataFlow::CallNode node).getAnArgument())
@@ -201,8 +203,6 @@ module Stages {
       1 = 1
       or
       exists(any(Import i).getImportedModule())
-      or
-      exists(DataFlow::moduleImport(_))
       or
       exists(any(ReExportDeclaration d).getReExportedModule())
       or

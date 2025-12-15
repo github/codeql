@@ -33,8 +33,6 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      any(ControlFlowElement cfe).controlsBlock(_, _, _)
-      or
       exists(GuardedExpr ge)
       or
       forceCachingInSameStageRev()

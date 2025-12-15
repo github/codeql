@@ -5,7 +5,7 @@ lib.rs:
 #    1|     getVisibility(): [Visibility] Visibility
 macro_in_library.rs:
 #    1| [SourceFile] SourceFile
-#    1|   getItem(0): [MacroCall] 
+#    1|   getItem(0): [MacroCall] (item with attribute macro expansion)
 #    2|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    2|       getItem(0): [Function] fn foo
 #    2|         getParamList(): [ParamList] ParamList

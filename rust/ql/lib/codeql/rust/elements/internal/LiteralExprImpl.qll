@@ -68,7 +68,7 @@ module Impl {
    * [1]: https://doc.rust-lang.org/reference/tokens.html#string-literals
    */
   class StringLiteralExpr extends LiteralExpr {
-    StringLiteralExpr() { this.getTextValue().regexpMatch("r?#*\".*\"#*") }
+    StringLiteralExpr() { this.getTextValue().charAt(0) = ["\"", "r"] }
 
     override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
   }

@@ -13,12 +13,31 @@ module NextJS {
    */
   PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
 
+  bindingset[base, name]
+  pragma[inline_late]
+  private Folder getOptionalFolder(Folder base, string name) {
+    result = base.getFolder(name)
+    or
+    not exists(base.getFolder(name)) and
+    result = base
+  }
+
+  private Folder packageRoot() { result = getANextPackage().getFile().getParentContainer() }
+
+  private Folder srcRoot() { result = getOptionalFolder(packageRoot(), "src") }
+
+  private Folder appRoot() { result = srcRoot().getFolder("app") }
+
+  private Folder pagesRoot() { result = [srcRoot(), appRoot()].getFolder("pages") }
+
+  private Folder apiRoot() { result = [pagesRoot(), appRoot()].getFolder("api") }
+
   /**
    * Gets a "pages" folder in a `Next.js` application.
    * JavaScript files inside these folders are mapped to routes.
    */
   Folder getAPagesFolder() {
-    result = getANextPackage().getFile().getParentContainer().getFolder("pages")
+    result = pagesRoot()
     or
     result = getAPagesFolder().getAFolder()
   }
@@ -217,8 +236,7 @@ module NextJS {
    * the App Router (`app/api/`) Next.js 13+ structures.
    */
   Folder apiFolder() {
-    result =
-      getANextPackage().getFile().getParentContainer().getFolder(["pages", "app"]).getFolder("api") or
+    result = apiRoot() or
     result = apiFolder().getAFolder()
   }
 

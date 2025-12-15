@@ -163,8 +163,9 @@ edges
 | main.rs:352:11:352:12 | s1 [A] | main.rs:356:11:356:12 | s1 [A] | provenance |  |
 | main.rs:353:9:353:25 | ...::A(...) [A] | main.rs:353:24:353:24 | n | provenance |  |
 | main.rs:353:24:353:24 | n | main.rs:353:35:353:35 | n | provenance |  |
-| main.rs:356:11:356:12 | s1 [A] | main.rs:357:9:357:25 | ...::A(...) [A] | provenance |  |
+| main.rs:356:11:356:12 | s1 [A] | main.rs:357:9:357:45 | ... \| ... [A] | provenance |  |
 | main.rs:357:9:357:25 | ...::A(...) [A] | main.rs:357:24:357:24 | n | provenance |  |
+| main.rs:357:9:357:45 | ... \| ... [A] | main.rs:357:9:357:25 | ...::A(...) [A] | provenance |  |
 | main.rs:357:24:357:24 | n | main.rs:357:55:357:55 | n | provenance |  |
 | main.rs:368:9:368:10 | s1 [A] | main.rs:370:11:370:12 | s1 [A] | provenance |  |
 | main.rs:368:14:368:26 | A(...) [A] | main.rs:368:9:368:10 | s1 [A] | provenance |  |
@@ -173,8 +174,9 @@ edges
 | main.rs:370:11:370:12 | s1 [A] | main.rs:374:11:374:12 | s1 [A] | provenance |  |
 | main.rs:371:9:371:12 | A(...) [A] | main.rs:371:11:371:11 | n | provenance |  |
 | main.rs:371:11:371:11 | n | main.rs:371:22:371:22 | n | provenance |  |
-| main.rs:374:11:374:12 | s1 [A] | main.rs:375:9:375:12 | A(...) [A] | provenance |  |
+| main.rs:374:11:374:12 | s1 [A] | main.rs:375:9:375:19 | ... \| ... [A] | provenance |  |
 | main.rs:375:9:375:12 | A(...) [A] | main.rs:375:11:375:11 | n | provenance |  |
+| main.rs:375:9:375:19 | ... \| ... [A] | main.rs:375:9:375:12 | A(...) [A] | provenance |  |
 | main.rs:375:11:375:11 | n | main.rs:375:29:375:29 | n | provenance |  |
 | main.rs:389:9:389:10 | s1 [C] | main.rs:393:11:393:12 | s1 [C] | provenance |  |
 | main.rs:389:14:391:5 | ...::C {...} [C] | main.rs:389:9:389:10 | s1 [C] | provenance |  |
@@ -183,8 +185,9 @@ edges
 | main.rs:393:11:393:12 | s1 [C] | main.rs:397:11:397:12 | s1 [C] | provenance |  |
 | main.rs:394:9:394:38 | ...::C {...} [C] | main.rs:394:36:394:36 | n | provenance |  |
 | main.rs:394:36:394:36 | n | main.rs:394:48:394:48 | n | provenance |  |
-| main.rs:397:11:397:12 | s1 [C] | main.rs:398:9:398:38 | ...::C {...} [C] | provenance |  |
+| main.rs:397:11:397:12 | s1 [C] | main.rs:398:9:398:71 | ... \| ... [C] | provenance |  |
 | main.rs:398:9:398:38 | ...::C {...} [C] | main.rs:398:36:398:36 | n | provenance |  |
+| main.rs:398:9:398:71 | ... \| ... [C] | main.rs:398:9:398:38 | ...::C {...} [C] | provenance |  |
 | main.rs:398:36:398:36 | n | main.rs:398:81:398:81 | n | provenance |  |
 | main.rs:409:9:409:10 | s1 [C] | main.rs:413:11:413:12 | s1 [C] | provenance |  |
 | main.rs:409:14:411:5 | C {...} [C] | main.rs:409:9:409:10 | s1 [C] | provenance |  |
@@ -193,8 +196,9 @@ edges
 | main.rs:413:11:413:12 | s1 [C] | main.rs:417:11:417:12 | s1 [C] | provenance |  |
 | main.rs:414:9:414:24 | C {...} [C] | main.rs:414:22:414:22 | n | provenance |  |
 | main.rs:414:22:414:22 | n | main.rs:414:34:414:34 | n | provenance |  |
-| main.rs:417:11:417:12 | s1 [C] | main.rs:418:9:418:24 | C {...} [C] | provenance |  |
+| main.rs:417:11:417:12 | s1 [C] | main.rs:418:9:418:43 | ... \| ... [C] | provenance |  |
 | main.rs:418:9:418:24 | C {...} [C] | main.rs:418:22:418:22 | n | provenance |  |
+| main.rs:418:9:418:43 | ... \| ... [C] | main.rs:418:9:418:24 | C {...} [C] | provenance |  |
 | main.rs:418:22:418:22 | n | main.rs:418:53:418:53 | n | provenance |  |
 | main.rs:430:9:430:12 | arr1 [element] | main.rs:431:14:431:17 | arr1 [element] | provenance |  |
 | main.rs:430:16:430:33 | [...] [element] | main.rs:430:9:430:12 | arr1 [element] | provenance |  |
@@ -443,6 +447,7 @@ nodes
 | main.rs:353:35:353:35 | n | semmle.label | n |
 | main.rs:356:11:356:12 | s1 [A] | semmle.label | s1 [A] |
 | main.rs:357:9:357:25 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
+| main.rs:357:9:357:45 | ... \| ... [A] | semmle.label | ... \| ... [A] |
 | main.rs:357:24:357:24 | n | semmle.label | n |
 | main.rs:357:55:357:55 | n | semmle.label | n |
 | main.rs:368:9:368:10 | s1 [A] | semmle.label | s1 [A] |
@@ -454,6 +459,7 @@ nodes
 | main.rs:371:22:371:22 | n | semmle.label | n |
 | main.rs:374:11:374:12 | s1 [A] | semmle.label | s1 [A] |
 | main.rs:375:9:375:12 | A(...) [A] | semmle.label | A(...) [A] |
+| main.rs:375:9:375:19 | ... \| ... [A] | semmle.label | ... \| ... [A] |
 | main.rs:375:11:375:11 | n | semmle.label | n |
 | main.rs:375:29:375:29 | n | semmle.label | n |
 | main.rs:389:9:389:10 | s1 [C] | semmle.label | s1 [C] |
@@ -465,6 +471,7 @@ nodes
 | main.rs:394:48:394:48 | n | semmle.label | n |
 | main.rs:397:11:397:12 | s1 [C] | semmle.label | s1 [C] |
 | main.rs:398:9:398:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:398:9:398:71 | ... \| ... [C] | semmle.label | ... \| ... [C] |
 | main.rs:398:36:398:36 | n | semmle.label | n |
 | main.rs:398:81:398:81 | n | semmle.label | n |
 | main.rs:409:9:409:10 | s1 [C] | semmle.label | s1 [C] |
@@ -476,6 +483,7 @@ nodes
 | main.rs:414:34:414:34 | n | semmle.label | n |
 | main.rs:417:11:417:12 | s1 [C] | semmle.label | s1 [C] |
 | main.rs:418:9:418:24 | C {...} [C] | semmle.label | C {...} [C] |
+| main.rs:418:9:418:43 | ... \| ... [C] | semmle.label | ... \| ... [C] |
 | main.rs:418:22:418:22 | n | semmle.label | n |
 | main.rs:418:53:418:53 | n | semmle.label | n |
 | main.rs:430:9:430:12 | arr1 [element] | semmle.label | arr1 [element] |

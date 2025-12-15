@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate calls_close(Call c) { exists(Attribute a | c.getFunc() = a and a.getName() = "close") }
 
@@ -22,7 +23,7 @@ predicate only_stmt_in_finally(Try t, Call c) {
   )
 }
 
-predicate points_to_context_manager(ControlFlowNode f, ClassValue cls) {
+predicate points_to_context_manager(ControlFlowNodeWithPointsTo f, ClassValue cls) {
   forex(Value v | f.pointsTo(v) | v.getClass() = cls) and
   cls.isContextManager()
 }

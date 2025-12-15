@@ -3,6 +3,7 @@
 | [...]/csharp/tools/[...]/MessagePack.Annotations.dll |
 | [...]/csharp/tools/[...]/MessagePack.dll |
 | [...]/csharp/tools/[...]/Microsoft.Bcl.AsyncInterfaces.dll |
+| [...]/csharp/tools/[...]/Microsoft.Bcl.Memory.dll |
 | [...]/csharp/tools/[...]/Microsoft.Build.Framework.dll |
 | [...]/csharp/tools/[...]/Microsoft.Build.Utilities.Core.dll |
 | [...]/csharp/tools/[...]/Microsoft.Build.dll |
@@ -20,6 +21,7 @@
 | [...]/csharp/tools/[...]/Microsoft.Win32.Primitives.dll |
 | [...]/csharp/tools/[...]/Microsoft.Win32.Registry.dll |
 | [...]/csharp/tools/[...]/Mono.Posix.NETStandard.dll |
+| [...]/csharp/tools/[...]/NaturalSort.Extension.dll |
 | [...]/csharp/tools/[...]/Newtonsoft.Json.dll |
 | [...]/csharp/tools/[...]/StructuredLogger.dll |
 | [...]/csharp/tools/[...]/System.AppContext.dll |

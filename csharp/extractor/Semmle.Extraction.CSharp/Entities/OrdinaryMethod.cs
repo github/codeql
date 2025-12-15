@@ -34,6 +34,16 @@ namespace Semmle.Extraction.CSharp.Entities
             var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
+            PopulateGenerics(trapFile);
+            Overrides(trapFile);
+            ExtractRefReturn(trapFile, Symbol, this);
+            ExtractCompilerGenerated(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             if (IsSourceDeclaration)
             {
                 foreach (var declaration in Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
@@ -47,11 +57,6 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 WriteLocationsToTrap(trapFile.method_location, this, Locations);
             }
-
-            PopulateGenerics(trapFile);
-            Overrides(trapFile);
-            ExtractRefReturn(trapFile, Symbol, this);
-            ExtractCompilerGenerated(trapFile);
         }
 
         private bool IsCompilerGeneratedDelegate() =>

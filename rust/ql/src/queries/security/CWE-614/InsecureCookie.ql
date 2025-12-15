@@ -39,9 +39,9 @@ module InsecureCookieConfig implements DataFlow::ConfigSig {
     node instanceof Sink
   }
 
-  predicate isBarrier(DataFlow::Node node) {
-    // setting the 'secure' attribute to true
-    cookieSetNode(node, "secure", true)
+  predicate isBarrierIn(DataFlow::Node node) {
+    // setting the 'secure' attribute
+    cookieSetNode(node, "secure", _)
     or
     node instanceof Barrier
   }

@@ -24,7 +24,7 @@ class FieldWithTags extends FieldDecl {
    * For example: the tag `json:"word" binding:"required,alpha"` yields `key: "json", value: "word"`
    * and `key: "binding" values: "required","alpha"`.
    */
-  predicate getTagByKeyValue(string key, string value) {
+  predicate hasTagKeyValue(string key, string value) {
     exists(string tag, string key_value, string values |
       this.getTag().toString() = tag and
       // Each key_value is like key:"value1,value2"
@@ -50,7 +50,7 @@ class AlphanumericStructFieldRead extends DataFlow::Node {
     exists(FieldWithTags decl, Field field, string tag |
       this = field.getARead() and
       field.getDeclaration() = decl.getNameExpr(0) and
-      decl.getTagByKeyValue(key, tag) and
+      decl.hasTagKeyValue(key, tag) and
       isAlphanumericValidationKind(tag)
     )
   }

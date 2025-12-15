@@ -9,10 +9,11 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from IfExp e, ClassObject cls1, ClassObject cls2
 where
-  e.getBody().refersTo(_, cls1, _) and
-  e.getOrelse().refersTo(_, cls2, _) and
+  e.getBody().(ExprWithPointsTo).refersTo(_, cls1, _) and
+  e.getOrelse().(ExprWithPointsTo).refersTo(_, cls2, _) and
   cls1 != cls2
 select e

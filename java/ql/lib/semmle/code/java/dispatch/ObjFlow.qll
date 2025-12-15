@@ -10,7 +10,7 @@
 import java
 private import VirtualDispatch
 private import semmle.code.java.controlflow.Guards
-private import semmle.code.java.dataflow.internal.BaseSSA
+private import semmle.code.java.dataflow.internal.BaseSSA as Base
 private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow
@@ -71,21 +71,24 @@ private predicate callFlowStep(Node n1, Node n2) {
  * flow, calls, returns, fields, array reads or writes, or container taint steps.
  */
 private predicate step(Node n1, Node n2) {
-  exists(BaseSsaVariable v, BaseSsaVariable def |
-    def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+  exists(Base::SsaDefinition v, Base::SsaDefinition def |
+    def.(Base::SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
     or
-    def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
+    def.(Base::SsaParameterInit).getParameter() = n1.asParameter()
     or
     exists(EnhancedForStmt for |
-      for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+      for.getVariable() = def.(Base::SsaExplicitWrite).getDefiningExpr() and
       for.getExpr() = n1.asExpr()
     )
   |
-    v.getAnUltimateDefinition() = def and
-    v.getAUse() = n2.asExpr()
+    (
+      v.(Base::SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def or
+      v.getAnUltimateDefinition() = def
+    ) and
+    v.getARead() = n2.asExpr()
   )
   or
-  baseSsaAdjacentUseUse(n1.asExpr(), n2.asExpr())
+  Base::baseSsaAdjacentUseUse(n1.asExpr(), n2.asExpr())
   or
   exists(Callable c | n1.(InstanceParameterNode).getCallable() = c |
     exists(InstanceAccess ia |
