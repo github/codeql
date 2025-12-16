@@ -57,6 +57,10 @@ module TaintedPath {
     PathAsSink() { this = any(FileSystemAccess fsa).getAPathArgument() }
   }
 
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "path-injection") }
+  }
+
   /**
    * A numeric- or boolean-typed node, considered a sanitizer for path traversal.
    */
