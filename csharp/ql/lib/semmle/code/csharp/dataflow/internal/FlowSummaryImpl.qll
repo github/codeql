@@ -18,14 +18,24 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
 
   class SummarizedCallableBase = UnboundCallable;
 
+  predicate callableFromSource(SummarizedCallableBase c) {
+    c.fromSource() and
+    not c.getFile().isStub() and
+    not (
+      c.getFile().extractedQlTest() and
+      (
+        c.getBody() instanceof ThrowElement or
+        c.getBody().(BlockStmt).getStmt(0) instanceof ThrowElement
+      )
+    )
+  }
+
   class SourceBase = Void;
 
   class SinkBase = Void;
 
   predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
-    interpretNeutral(c, kind, provenance) and
-    // isExact is not needed for C#.
-    isExact = false
+    interpretNeutral(c, kind, provenance, isExact)
   }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
@@ -216,7 +226,7 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
       sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+      e = interpretElement(namespace, type, subtypes, name, signature, ext, _)
     )
   }
 
@@ -227,7 +237,7 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
       sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, model) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+      e = interpretElement(namespace, type, subtypes, name, signature, ext, _)
     )
   }
 
@@ -238,7 +248,7 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
       barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+      e = interpretElement(namespace, type, subtypes, name, signature, ext, _)
     )
   }
 
@@ -251,7 +261,7 @@ module SourceSinkInterpretationInput implements
     |
       barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingvalue,
         kind, provenance, model) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+      e = interpretElement(namespace, type, subtypes, name, signature, ext, _)
     )
   }
 
@@ -448,13 +458,14 @@ private class SummarizedCallableWithCallback extends Public::SummarizedCallable 
   SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Public::Provenance provenance,
+    boolean isExact, string model
   ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[delegate-self]" and
     preservesValue = true and
+    provenance = "hq-generated" and
+    isExact = true and
     model = "heuristic-callback"
   }
-
-  override predicate hasProvenance(Public::Provenance provenance) { provenance = "hq-generated" }
 }

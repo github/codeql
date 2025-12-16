@@ -848,7 +848,7 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
         FlowSummaryImpl::Private::SummarizedCallableImpl sc,
         FlowSummaryImpl::Private::SummaryComponentStack input, ContentSet readSet
       |
-        sc.propagatesFlow(input, _, _, _) and
+        sc.propagatesFlow(input, _, _, _, _, _) and
         input.contains(FlowSummaryImpl::Private::SummaryComponent::content(readSet)) and
         c.getAStoreContent() = readSet.getAReadContent()
       )
@@ -1021,7 +1021,6 @@ private class InstanceCallable extends Callable {
   private Location l;
 
   InstanceCallable() {
-    this = any(DataFlowCallable dfc).asCallable(l) and
     not this.(Modifiable).isStatic() and
     // local functions and delegate capture `this` and should therefore
     // not have a `this` parameter
@@ -1119,6 +1118,7 @@ private module Cached {
       p = c.asCallable(_).(CallableUsedInSource).getAParameter()
     } or
     TInstanceParameterNode(InstanceCallable c, Location l) {
+      c = any(DataFlowCallable dfc).asCallable(l) and
       c instanceof CallableUsedInSource and
       l = c.getARelevantLocation()
     } or
