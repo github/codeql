@@ -3,7 +3,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.LogInjection
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for tracking untrusted user input used in log entries.

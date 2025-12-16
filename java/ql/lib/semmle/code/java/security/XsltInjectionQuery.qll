@@ -5,8 +5,8 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XmlParsers
 import semmle.code.java.security.XsltInjection
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.Sanitizers
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in XSLT transformation.

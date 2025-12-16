@@ -4,7 +4,7 @@ import java
 private import semmle.code.java.security.internal.ArraySizing
 private import semmle.code.java.security.internal.BoundingChecks
 private import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A dataflow configuration to reason about improper validation of code-specified array index.

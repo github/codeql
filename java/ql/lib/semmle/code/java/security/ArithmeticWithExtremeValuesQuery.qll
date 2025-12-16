@@ -1,9 +1,9 @@
 /** Provides predicates and classes for reasoning about arithmetic with extreme values. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.security.ArithmeticCommon
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A field representing an extreme value.

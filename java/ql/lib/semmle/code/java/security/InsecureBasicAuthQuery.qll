@@ -4,7 +4,7 @@ import java
 import semmle.code.java.security.HttpsUrls
 import semmle.code.java.security.InsecureBasicAuth
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint tracking configuration for the Basic authentication scheme

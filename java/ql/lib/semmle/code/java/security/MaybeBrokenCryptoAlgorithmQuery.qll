@@ -5,11 +5,11 @@
 import java
 private import semmle.code.configfiles.ConfigFiles
 private import semmle.code.java.security.Encryption
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.RangeUtils
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.frameworks.Properties
-import semmle.code.java.dataflow.ExternalFlow
 
 /** A reference to an insecure cryptographic algorithm. */
 abstract class InsecureAlgorithm extends Expr {

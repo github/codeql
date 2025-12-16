@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.security.InsecureLdapAuth
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for `ldap://` URL in LDAP authentication.

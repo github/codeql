@@ -1,10 +1,10 @@
 /** Provides taint-tracking flow to reason about XPath injection queries. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.XPath
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for reasoning about XPath injection vulnerabilities.

@@ -2,9 +2,9 @@
 
 import java
 private import semmle.code.java.security.Encryption
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.Sanitizers
-import semmle.code.java.dataflow.ExternalFlow
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { this.getValue().length() < 100 }

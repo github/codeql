@@ -1,10 +1,10 @@
 /** Provides taint tracking configurations to be used in remote XXE queries. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.XxeQuery
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated remote user input that is used in XML external entity expansion.

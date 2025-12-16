@@ -4,7 +4,7 @@ module;
 
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsufficientKeySize
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data flow configuration for tracking key sizes used in cryptographic algorithms.

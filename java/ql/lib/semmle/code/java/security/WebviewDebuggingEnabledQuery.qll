@@ -4,8 +4,8 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.SecurityTests
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
-import semmle.code.java.dataflow.ExternalFlow
 
 /** Holds if `ex` looks like a check that this is a debug build. */
 private predicate isDebugCheck(Expr ex) {

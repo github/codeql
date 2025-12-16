@@ -3,7 +3,7 @@
 import java
 import Encryption
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A configuration for finding RSA ciphers initialized without using OAEP padding.

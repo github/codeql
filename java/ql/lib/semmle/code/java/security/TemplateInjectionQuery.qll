@@ -4,7 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.TemplateInjection
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A taint tracking configuration to reason about server-side template injection (SST) vulnerabilities */
 module TemplateInjectionFlowConfig implements DataFlow::ConfigSig {

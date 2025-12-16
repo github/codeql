@@ -5,7 +5,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data-flow configuration that tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.

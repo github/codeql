@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.RequestForgery
 import semmle.code.java.security.UnsafeAndroidAccess
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint configuration tracking flow from untrusted inputs to a resource fetching call.

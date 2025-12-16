@@ -6,7 +6,6 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.regex.RegexFlowConfigs
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
-import semmle.code.java.dataflow.ExternalFlow
 
 /** A sink for polynomial redos queries, where a regex is matched. */
 class PolynomialRedosSink extends DataFlow::Node {

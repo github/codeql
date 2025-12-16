@@ -1,10 +1,10 @@
 /** Provides a taint-tracking configuration to reason about externally controlled format string vulnerabilities. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.StringFormat
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A string format sink node.

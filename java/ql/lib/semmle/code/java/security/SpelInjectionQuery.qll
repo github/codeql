@@ -1,11 +1,11 @@
 /** Provides taint tracking and dataflow configurations to be used in SpEL injection queries. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.spring.SpringExpression
 private import semmle.code.java.security.SpelInjection
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input

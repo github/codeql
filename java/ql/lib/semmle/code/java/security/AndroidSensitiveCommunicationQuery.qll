@@ -4,8 +4,8 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Gets regular expression for matching names of Android variables that indicate the value being held contains sensitive information.

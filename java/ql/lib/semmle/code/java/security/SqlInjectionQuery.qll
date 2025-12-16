@@ -7,10 +7,10 @@
  */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.QueryInjection
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in SQL queries.

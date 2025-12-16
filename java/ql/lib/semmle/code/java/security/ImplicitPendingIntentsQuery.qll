@@ -7,7 +7,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.PendingIntent
 import semmle.code.java.security.ImplicitPendingIntents
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint tracking configuration for implicit `PendingIntent`s

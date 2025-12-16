@@ -1,11 +1,11 @@
 /** Provides taint-tracking configuration to reason about arithmetic with uncontrolled values. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.RandomQuery
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.ArithmeticCommon
-import semmle.code.java.dataflow.ExternalFlow
 
 private class TaintSource extends DataFlow::ExprNode {
   TaintSource() {

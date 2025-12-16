@@ -1,10 +1,10 @@
 /** Provides a taint tracking configuration to reason about response splitting vulnerabilities. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.ResponseSplitting
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for response splitting vulnerabilities.

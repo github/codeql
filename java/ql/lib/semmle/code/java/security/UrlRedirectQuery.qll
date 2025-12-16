@@ -1,9 +1,9 @@
 /** Provides a taint-tracking configuration for reasoning about URL redirections. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.UrlRedirect
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for reasoning about URL redirections.

@@ -4,7 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.AndroidIntentRedirection
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A taint tracking configuration for tainted Intents being used to start Android components. */
 module IntentRedirectionConfig implements DataFlow::ConfigSig {

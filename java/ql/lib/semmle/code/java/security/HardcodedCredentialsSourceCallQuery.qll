@@ -5,7 +5,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data-flow configuration that tracks hardcoded expressions flowing to a parameter whose name suggests

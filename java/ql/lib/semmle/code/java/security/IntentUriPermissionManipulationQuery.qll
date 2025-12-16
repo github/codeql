@@ -4,10 +4,10 @@
  */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.DataFlow
 private import IntentUriPermissionManipulation
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint tracking configuration for user-provided Intents being returned to third party apps.

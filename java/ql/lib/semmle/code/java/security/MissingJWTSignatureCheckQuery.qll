@@ -3,7 +3,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.JWT
-import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Models flow from signing keys assignments to qualifiers of JWT insecure parsers.

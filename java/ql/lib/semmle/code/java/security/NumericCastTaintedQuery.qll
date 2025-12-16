@@ -2,11 +2,11 @@
 
 import java
 private import semmle.code.java.arithmetic.Overflow
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.RangeAnalysis
 private import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A `CastExpr` that is a narrowing cast.
