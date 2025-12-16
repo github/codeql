@@ -133,7 +133,8 @@ newtype TTranslatedElement =
     shouldTranslateCilInstr(stind)
   } or
   TTranslatedCilType(Raw::CilType type) { shouldTranslatedCilType(type) } or
-  TTranslatedNewObject(Raw::CilNewobj newObj) { shouldTranslateCilInstr(newObj) }
+  TTranslatedNewObject(Raw::CilNewobj newObj) { shouldTranslateCilInstr(newObj) } or
+  TTranslatedDup(Raw::CilDup dup) { shouldTranslateCilInstr(dup) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and
