@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { exists(c.getBlock()) }
+
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
   ReturnKind getStandardReturnValueKind() { result = getReturnValueKind("") }
