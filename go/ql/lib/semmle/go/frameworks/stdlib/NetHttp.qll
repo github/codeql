@@ -157,7 +157,7 @@ module NetHttp {
       |
         this = call.getASyntacticArgument() and
         callable = call.getACalleeIncludingExternals() and
-        callable.propagatesFlow(input, output, _, _)
+        callable.propagatesFlow(input, output, _, _, _, _)
       |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
