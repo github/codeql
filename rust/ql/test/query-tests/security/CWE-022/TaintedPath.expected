@@ -19,7 +19,6 @@ edges
 | src/main.rs:9:9:9:17 | file_path | src/main.rs:11:24:11:32 | file_path | provenance |  |
 | src/main.rs:9:21:9:44 | ...::from(...) | src/main.rs:9:9:9:17 | file_path | provenance |  |
 | src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:9 |
-| src/main.rs:9:35:9:43 | file_name | src/main.rs:9:21:9:44 | ...::from(...) | provenance | MaD:14 |
 | src/main.rs:11:24:11:32 | file_path | src/main.rs:11:5:11:22 | ...::read_to_string | provenance | MaD:6 Sink:MaD:6 |
 | src/main.rs:50:51:50:59 | file_path | src/main.rs:52:32:52:40 | file_path | provenance |  |
 | src/main.rs:52:9:52:17 | file_path [&ref] | src/main.rs:53:21:53:29 | file_path [&ref] | provenance |  |
@@ -125,7 +124,6 @@ models
 | 11 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 12 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 13 | Summary: <std::path::Path>::new; Argument[0].Reference; ReturnValue.Reference; value |
-| 14 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue; taint |
 nodes
 | src/main.rs:7:11:7:19 | file_name | semmle.label | file_name |
 | src/main.rs:9:9:9:17 | file_path | semmle.label | file_path |
