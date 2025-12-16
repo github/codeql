@@ -13,8 +13,6 @@ multipleResolvedTargets
 | dyn_type.rs:90:10:90:13 | * ... |
 | invalid/main.rs:69:13:69:17 | * ... |
 | invalid/main.rs:76:13:76:17 | * ... |
-| main.rs:841:9:841:14 | x.m2() |
-| main.rs:842:9:842:14 | y.m2() |
 | main.rs:1092:14:1092:18 | * ... |
 | main.rs:1174:26:1174:30 | * ... |
 | main.rs:1518:14:1518:21 | * ... |

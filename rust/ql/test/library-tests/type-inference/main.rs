@@ -838,8 +838,8 @@ mod function_trait_bounds {
     }
 
     fn bound_overlap<T: MyTrait2 + MyTrait3>(x: T, y: &T) {
-        x.m2(); // $ target=MyTrait2::m2 $ SPURIOUS: target=MyTrait3::m2
-        y.m2(); // $ target=MyTrait3::m2 $ SPURIOUS: target=MyTrait2::m2
+        x.m2(); // $ target=MyTrait2::m2
+        y.m2(); // $ target=MyTrait3::m2
     }
 
     pub fn f() {
