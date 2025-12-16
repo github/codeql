@@ -14,7 +14,7 @@ module NetLdap {
   /**
    * Flow summary for `Net::LDAP.new`. This method establishes a connection to a LDAP server.
    */
-  private class LdapConnSummary extends SummarizedCallable {
+  private class LdapConnSummary extends SummarizedCallable::Range {
     LdapConnSummary() { this = "Net::LDAP.new" }
 
     override MethodCall getACall() { result = any(NetLdapConnection l).asExpr().getExpr() }
@@ -27,7 +27,7 @@ module NetLdap {
   /**
    * Flow summary for `Net::LDAP.Filter`.
    */
-  private class LdapFilterSummary extends SummarizedCallable {
+  private class LdapFilterSummary extends SummarizedCallable::Range {
     LdapFilterSummary() { this = "Net::LDAP::Filter" }
 
     override MethodCall getACall() { result = any(NetLdapFilter l).asExpr().getExpr() }

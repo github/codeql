@@ -13,7 +13,7 @@ module Pg {
   /**
    * Flow summary for `PG.new()`. This method initializes a database connection.
    */
-  private class SqlSummary extends SummarizedCallable {
+  private class SqlSummary extends SummarizedCallable::Range {
     SqlSummary() { this = "PG.new()" }
 
     override MethodCall getACall() { result = any(PgConnection c).asExpr().getExpr() }
