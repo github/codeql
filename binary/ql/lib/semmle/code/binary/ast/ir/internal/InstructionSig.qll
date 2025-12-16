@@ -4,7 +4,6 @@ private import codeql.controlflow.SuccessorType
 private import semmle.code.binary.ast.Location
 
 signature module InstructionSig {
-
   class Type {
     Function getAFunction();
 
@@ -265,6 +264,12 @@ signature module InstructionSig {
     int getValue();
 
     string getStringValue();
+  }
+
+  class FieldAddressInstruction extends Instruction {
+    UnaryOperand getBaseOperand();
+
+    string getFieldName();
   }
 
   class ControlFlowNode {

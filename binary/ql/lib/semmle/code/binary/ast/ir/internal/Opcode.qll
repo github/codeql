@@ -24,6 +24,7 @@ private newtype TOpcode =
   TNop() or
   TNot() or
   TInit() or
+  TFieldAddress() or
   // TODO: Ideally, this should either be removed when we handle unresolved CIL calls better.
   TExternalRef() or
   TFunEntry()
@@ -142,6 +143,10 @@ class ExternalRef extends Opcode, TExternalRef {
 
 class Init extends Opcode, TInit {
   override string toString() { result = "Init" }
+}
+
+class FieldAddress extends Opcode, TFieldAddress {
+  override string toString() { result = "FieldAddress" }
 }
 
 newtype ConditionKind =

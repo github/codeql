@@ -321,6 +321,12 @@ private module FinalInstruction {
     }
   }
 
+  class FieldAddressInstruction extends Instruction instanceof Instruction::FieldAddressInstruction {
+    UnaryOperand getBaseOperand() { result = super.getBaseOperand() }
+
+    string getFieldName() { result = super.getFieldName() }
+  }
+
   class SubInstruction extends BinaryInstruction instanceof Instruction::SubInstruction { }
 
   class AddInstruction extends BinaryInstruction instanceof Instruction::AddInstruction { }

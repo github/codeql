@@ -732,6 +732,21 @@ module Transform<InstructionSig Input> {
       }
     }
 
+    class FieldAddressInstruction extends Instruction {
+      FieldAddressInstruction() { this.getOpcode() instanceof Opcode::FieldAddress }
+
+      UnaryOperand getBaseOperand() { result = this.getAnOperand() }
+
+      string getFieldName() {
+        exists(Input::FieldAddressInstruction fieldAddr |
+          this = TOldInstruction(fieldAddr) and
+          result = fieldAddr.getFieldName()
+        )
+      }
+
+      final override string getImmediateValue() { result = this.getFieldName() }
+    }
+
     private class NewInstruction extends MkInstruction, Instruction {
       Opcode opcode;
       TranslatedElement te;

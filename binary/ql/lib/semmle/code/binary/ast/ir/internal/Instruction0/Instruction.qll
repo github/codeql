@@ -179,6 +179,16 @@ class ExternalRefInstruction extends Instruction {
   final override string getImmediateValue() { result = this.getExternalName() }
 }
 
+class FieldAddressInstruction extends Instruction {
+  override Opcode::FieldAddress opcode;
+
+  UnaryOperand getBaseOperand() { result = this.getAnOperand() }
+
+  string getFieldName() { result = te.getFieldName(tag) }
+
+  final override string getImmediateValue() { result = this.getFieldName() }
+}
+
 class FunEntryInstruction extends Instruction {
   override Opcode::FunEntry opcode;
 }
