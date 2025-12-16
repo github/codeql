@@ -2400,3 +2400,108 @@ class TranslatedCilStoreIndirect extends TranslatedCilInstruction, TTranslatedCi
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
   }
 }
+
+// Translate a `nobjc<constructor>` CIL instruction to:
+// 1. x = init
+// 2. call co constructor(x, args...)
+class TranslatedNewObject extends TranslatedCilInstruction, TTranslatedNewObject {
+  override Raw::CilNewobj instr;
+
+  TranslatedNewObject() { this = TTranslatedNewObject(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    not exists(instr.getConstructor()) and
+    opcode instanceof Opcode::ExternalRef and
+    tag = CilNewObjExternalRefTag() and
+    v.asSome() = this.getTempVariable(CilNewObjCallExternalVarTag())
+    or
+    opcode instanceof Opcode::Init and
+    tag = CilNewObjInitTag() and
+    v.asSome() = this.getTempVariable(CilNewObjInitVarTag())
+    or
+    opcode instanceof Opcode::Call and
+    tag = CilNewObjCallTag() and
+    v.isNone()
+  }
+
+  override string getExternalName(InstructionTag tag) {
+    not exists(instr.getConstructor()) and
+    tag = CilCallTargetTag() and
+    result = instr.getExternalName()
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) {
+    tag = CilNewObjInitVarTag()
+    or
+    not exists(instr.getConstructor()) and tag = CilNewObjCallExternalVarTag()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilNewObjCallTag() and
+    (
+      not exists(instr.getConstructor()) and
+      operandTag instanceof CallTargetTag and
+      result = this.getInstruction(CilNewObjExternalRefTag()).getResultVariable()
+      or
+      exists(int i | i = operandTag.(CilOperandTag).getCilIndex() |
+        // The 0'th argument to the constructor is the just-zero-initialized new object
+        if i = 0
+        then result = this.getInstruction(CilNewObjInitTag()).getResultVariable()
+        else
+          // And the other arguments are the constructor arguments
+          result =
+            getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+      )
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilNewObjInitTag() and
+    succType instanceof DirectSuccessor and
+    (
+      if exists(instr.getConstructor())
+      then result = this.getInstruction(CilNewObjCallTag())
+      else result = this.getInstruction(CilNewObjExternalRefTag())
+    )
+    or
+    not exists(instr.getConstructor()) and
+    (
+      tag = CilNewObjExternalRefTag() and
+      succType instanceof DirectSuccessor and
+      result = this.getInstruction(CilNewObjCallTag())
+    )
+    or
+    tag = CilNewObjCallTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilNewObjInitTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(CilNewObjInitVarTag()) }
+
+  final override TranslatedCilMethod getStaticCallTarget(InstructionTag tag) {
+    tag = CilNewObjCallTag() and
+    result = getTranslatedFunction(instr.getConstructor())
+  }
+
+  final override Variable getStackElement(int i) {
+    // The new top element is the constructed object
+    if i = 0
+    then result = this.getTempVariable(CilNewObjInitVarTag())
+    else
+      // And the other arguments have been popped off the stack.
+      // Note: We don't subtract 1 because the number of arguments is actually
+      // one more than `instr.getNumberOfArguments()` since we the 0'th
+      // argument is the newly-constructed object.
+      result =
+        getTranslatedCilInstruction(instr.getABackwardPredecessor())
+            .getStackElement(i + instr.getNumberOfArguments())
+  }
+}

@@ -132,7 +132,8 @@ newtype TTranslatedElement =
   TTranslatedCilStoreIndirect(Raw::CilStoreIndirectInstruction stind) {
     shouldTranslateCilInstr(stind)
   } or
-  TTranslatedCilType(Raw::CilType type) { shouldTranslatedCilType(type) }
+  TTranslatedCilType(Raw::CilType type) { shouldTranslatedCilType(type) } or
+  TTranslatedNewObject(Raw::CilNewobj newObj) { shouldTranslateCilInstr(newObj) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and

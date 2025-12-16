@@ -362,9 +362,13 @@ class CilDup extends @il_dup, CilInstruction { }
 
 class CilIl_pop extends @il_il_pop, CilInstruction { }
 
-abstract class CilCall extends CilInstruction {
+abstract class CilCallOrNewObject extends CilInstruction {
   final int getNumberOfArguments() { il_number_of_arguments(this, result) }
 
+  final string getExternalName() { il_call_target_unresolved(this, result) }
+}
+
+abstract class CilCall extends CilCallOrNewObject {
   final predicate hasReturnValue() { il_call_has_return_value(this) }
 
   CilMethod getTarget() { result.getFullyQualifiedName() = this.getExternalName() }
@@ -591,7 +595,10 @@ class CilLdstr extends @il_ldstr, CilInstruction {
   string getValue() { il_operand_string(this, result) }
 }
 
-class CilNewobj extends @il_newobj, CilInstruction { }
+class CilNewobj extends @il_newobj, CilCallOrNewObject {
+  /** ... If it exists. */
+  CilMethod getConstructor() { result.getFullyQualifiedName() = this.getExternalName() }
+}
 
 class CilCastclass extends @il_castclass, CilInstruction { }
 
