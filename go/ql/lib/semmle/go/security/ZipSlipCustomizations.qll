@@ -53,18 +53,6 @@ module ZipSlip {
     }
   }
 
-  /**
-   * A zipped file, excluded from for zip slip.
-   */
-  class ZipFileOpen extends Sanitizer {
-    ZipFileOpen() {
-      this =
-        any(DataFlow::MethodCallNode mcn |
-          mcn.getTarget().hasQualifiedName("archive/zip", "File", "Open")
-        ).getResult(0)
-    }
-  }
-
   /** A path-traversal sink, considered as a taint sink for zip slip. */
   class TaintedPathSinkAsSink extends Sink instanceof TaintedPath::Sink {
     TaintedPathSinkAsSink() {

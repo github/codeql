@@ -1,6 +1,11 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: barrierModel
+    data:
+      - ["archive/zip", "File", True, "Open", "", "", "ReturnValue[0]", "go/zipslip", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["archive/zip", "", False, "FileInfoHeader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
