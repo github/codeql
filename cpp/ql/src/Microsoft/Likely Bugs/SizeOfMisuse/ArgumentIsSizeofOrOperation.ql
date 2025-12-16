@@ -11,11 +11,46 @@
 import cpp
 import SizeOfTypeUtils
 
+predicate isIgnorableBinaryOperation(BinaryOperation op) {
+  // FP case: precompilation type checking idiom of the form:
+  //    sizeof((type *)0 == (ptr))
+  op instanceof EqualityOperation and
+  exists(Literal zeroOperand, Expr other, Type t |
+    other = op.getAnOperand() and
+    other != zeroOperand and
+    zeroOperand = op.getAnOperand() and
+    zeroOperand.getValue().toInt() = 0 and
+    zeroOperand.getImplicitlyConverted().hasExplicitConversion() and
+    zeroOperand.getExplicitlyConverted().getUnspecifiedType() = t and
+    // often 'NULL' is defined as (void *)0, ignore these cases
+    not t instanceof VoidPointerType and
+    (
+      // Apparently derived types, eg., functoin pointers, aren't PointerType
+      // according to codeql, so special casing them out here.
+      other.getUnspecifiedType() instanceof DerivedType
+      or
+      other.getUnspecifiedType() instanceof PointerType
+    )
+  )
+}
+
+class CandidateOperation extends Operation {
+  CandidateOperation() {
+    // For now only considering binary operations
+    // TODO: Unary operations may be of interest but need special care
+    // as pointer deref, and address-of are unary operations.
+    // It is therefore more likely to get false positives if unary operations are included.
+    // To be considered in the future.
+    this instanceof BinaryOperation and
+    not isIgnorableBinaryOperation(this)
+  }
+}
+
 from CandidateSizeofCall sizeofExpr, string message, Expr op
 where
   exists(string tmpMsg |
     (
-      op instanceof BinaryOperation and tmpMsg = "binary operator"
+      op instanceof CandidateOperation and tmpMsg = "binary operator"
       or
       op instanceof SizeofOperator and tmpMsg = "sizeof"
     ) and
