@@ -85,6 +85,12 @@ public class ILExtractor {
       ExtractMethod(method, typeId);
     }
 
+    // Extract fields
+    foreach (var field in type.Fields) {
+      var fieldId = trap.GetId();
+      ExtractField(field, typeId);
+    }
+
     // Extract nested types (includes compiler-generated state machines)
     if (type.HasNestedTypes) {
       foreach (var nestedType in type.NestedTypes) {
@@ -123,6 +129,11 @@ public class ILExtractor {
       var paramId = trap.GetId();
       trap.WriteTuple("il_parameter", paramId, methodId, i + paramStartIndex, param.Name);
     }
+  }
+
+  private void ExtractField(FieldDefinition field, int typeId) {
+    var fieldId = trap.GetId();
+    trap.WriteTuple("fields", fieldId, field.Name, typeId);
   }
 
   private void ExtractMethodBody(MethodDefinition method, int methodId) {
@@ -174,6 +185,9 @@ public class ILExtractor {
       } else if (instruction.Operand is VariableDefinition varDef) {
         // Local variable reference (ldloc, stloc, ldloca)
         trap.WriteTuple("il_operand_local_index", instrId, varDef.Index);
+      } else if (instruction.Operand is FieldReference fieldRef) {
+        var declaringTypeName = fieldRef.DeclaringType.FullName.Replace('/', '.');
+        trap.WriteTuple("il_field_operand", instrId, declaringTypeName, fieldRef.Name);
       } else if (instruction.Operand is string str) {
         trap.WriteTuple("il_operand_string", instrId, str);
       } else if (instruction.Operand is sbyte sb) {

@@ -2141,6 +2141,12 @@ methods(
   int type_id: @type ref
 );
 
+fields(
+  unique int id: @field,
+  string name: string ref,
+  int type_id: @type ref
+);
+
 case @il_instruction.mnemonic of
   0 = @il_nop
 | 1 = @il_break
@@ -2436,6 +2442,12 @@ il_parameter(
 il_call_target_unresolved(
   int instruction: @il_instruction ref,
   string target_method_name: string ref
+);
+
+il_field_operand(
+  int instruction: @il_instruction ref,
+  string declaring_type_name: string ref,
+  string field_name: string ref
 );
 
 /**

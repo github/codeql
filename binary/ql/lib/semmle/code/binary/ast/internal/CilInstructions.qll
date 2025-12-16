@@ -1,5 +1,15 @@
 private import binary
 
+class CilField extends @field {
+  string toString() { result = this.getName() }
+
+  string getName() { fields(this, result, _) }
+
+  CilType getDeclaringType() { fields(this, _, result) }
+
+  Location getLocation() { none() } // TODO: Extract
+}
+
 /**
  * A CIL type (class, struct, interface, etc.).
  */
@@ -17,6 +27,9 @@ class CilType extends @type {
 
   /** Gets a method declared in this type. */
   CilMethod getAMethod() { result.getDeclaringType() = this }
+
+  /** Gets a field declared by this type. */
+  CilField getAField() { result.getDeclaringType() = this }
 
   Location getLocation() { none() } // TODO: Extract
 }
@@ -625,14 +638,33 @@ class CilLdsfld extends @il_ldsfld, CilLoadFieldInstruction { }
 /** An instruction that loads the address of a static field. */
 class CilLdsflda extends @il_ldsflda, CilLoadFieldInstruction { }
 
+pragma[nomagic]
+private predicate fieldHasDeclaringTypeNameAndName(
+  string declaringTypeName, string fieldName, CilField f
+) {
+  f.getDeclaringType().getFullName() = declaringTypeName and
+  f.getName() = fieldName
+}
+
 /** An instruction that stores a value to a field. */
-abstract class CilStoreFieldInstruction extends CilInstruction { }
+abstract class CilStoreFieldInstruction extends CilInstruction {
+  CilField getField() {
+    exists(string declaringTypeName, string fieldName |
+      il_field_operand(this, declaringTypeName, fieldName) and
+      fieldHasDeclaringTypeNameAndName(declaringTypeName, fieldName, result)
+    )
+  }
+
+  predicate isStatic() { none() }
+}
 
 /** An instruction that stores a value to an instance field. */
 class CilStfld extends @il_stfld, CilStoreFieldInstruction { }
 
 /** An instruction that stores a value to a static field. */
-class CilStsfld extends @il_stsfld, CilStoreFieldInstruction { }
+class CilStsfld extends @il_stsfld, CilStoreFieldInstruction {
+  final override predicate isStatic() { any() }
+}
 
 class CilStobj extends @il_stobj, CilInstruction { }
 
