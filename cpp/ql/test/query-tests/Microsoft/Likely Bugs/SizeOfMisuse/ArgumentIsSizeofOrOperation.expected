@@ -1,6 +1,6 @@
-| test.cpp:89:6:89:29 | sizeof(<expr>) | $@: $@ of $@ inside sizeof. | test.cpp:89:6:89:29 | sizeof(<expr>) | binary operator | test.cpp:66:6:66:11 | Test01 | Usage | test.cpp:89:13:89:28 | ... / ... | binary operator |
-| test.cpp:96:6:96:30 | sizeof(<expr>) | $@: $@ of $@ inside sizeof. | test.cpp:96:6:96:30 | sizeof(<expr>) | binary operator | test.cpp:66:6:66:11 | Test01 | Usage | test.cpp:96:13:96:29 | ... * ... | binary operator |
-| test.cpp:98:6:98:35 | sizeof(<expr>) | $@: $@ of $@ inside sizeof. | test.cpp:98:6:98:35 | sizeof(<expr>) | binary operator | test.cpp:66:6:66:11 | Test01 | Usage | test.cpp:98:13:98:34 | ... * ... | binary operator |
-| test.cpp:101:6:101:31 | sizeof(<expr>) | $@: $@ of $@ inside sizeof. | test.cpp:101:6:101:31 | sizeof(<expr>) | sizeof | test.cpp:66:6:66:11 | Test01 | Usage | test.cpp:101:13:101:30 | sizeof(int) | sizeof |
-| test.cpp:120:6:120:24 | sizeof(<expr>) | $@: $@ of $@ inside sizeof. | test.cpp:120:6:120:24 | sizeof(<expr>) | sizeof | test.cpp:66:6:66:11 | Test01 | Usage | test.cpp:120:13:120:23 | sizeof(int) | sizeof |
-| test.cpp:121:6:121:18 | sizeof(<expr>) | $@: $@ of $@ inside sizeof. | test.cpp:121:6:121:18 | sizeof(<expr>) | binary operator | test.cpp:66:6:66:11 | Test01 | Usage | test.cpp:121:13:121:17 | ... + ... | binary operator |
+| test.cpp:89:6:89:29 | sizeof(<expr>) | sizeof has a binary operator argument: $@. | test.cpp:89:13:89:28 | ... / ... | ... / ... |
+| test.cpp:96:6:96:30 | sizeof(<expr>) | sizeof has a binary operator argument: $@. | test.cpp:96:13:96:29 | ... * ... | ... * ... |
+| test.cpp:98:6:98:35 | sizeof(<expr>) | sizeof has a binary operator argument: $@. | test.cpp:98:13:98:34 | ... * ... | ... * ... |
+| test.cpp:101:6:101:31 | sizeof(<expr>) | sizeof has a sizeof operation argument: $@. | test.cpp:101:13:101:30 | sizeof(int) | sizeof(int) |
+| test.cpp:120:6:120:24 | sizeof(<expr>) | sizeof has a sizeof operation argument: $@. | test.cpp:120:13:120:23 | sizeof(int) | sizeof(int) |
+| test.cpp:121:6:121:18 | sizeof(<expr>) | sizeof has a binary operator argument: $@. | test.cpp:121:13:121:17 | ... + ... | ... + ... |

@@ -46,18 +46,13 @@ class CandidateOperation extends Operation {
   }
 }
 
-from CandidateSizeofCall sizeofExpr, string message, Expr op
+from CandidateSizeofCall sizeofExpr, string inMacro, string argType, Expr op
 where
-  exists(string tmpMsg |
-    (
-      op instanceof CandidateOperation and tmpMsg = "binary operator"
-      or
-      op instanceof SizeofOperator and tmpMsg = "sizeof"
-    ) and
-    if sizeofExpr.isInMacroExpansion()
-    then message = tmpMsg + "(in a macro expansion)"
-    else message = tmpMsg
+  (
+    op instanceof CandidateOperation and argType = "binary operator"
+    or
+    op instanceof SizeofOperator and argType = "sizeof operation"
   ) and
+  (if sizeofExpr.isInMacroExpansion() then inMacro = " (in a macro expansion) " else inMacro = " ") and
   op = sizeofExpr.getExprOperand()
-select sizeofExpr, "$@: $@ of $@ inside sizeof.", sizeofExpr, message,
-  sizeofExpr.getEnclosingFunction(), "Usage", op, message
+select sizeofExpr, "sizeof" + inMacro + "has a " + argType + " argument: $@.", op, op.toString()
