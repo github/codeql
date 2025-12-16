@@ -827,6 +827,21 @@ mod function_trait_bounds {
         }
     }
 
+    trait MyTrait2 {
+        // MyTrait2::m2
+        fn m2(self);
+    }
+
+    trait MyTrait3 {
+        // MyTrait3::m2
+        fn m2(&self);
+    }
+
+    fn bound_overlap<T: MyTrait2 + MyTrait3>(x: T, y: &T) {
+        x.m2(); // $ target=MyTrait2::m2 $ SPURIOUS: target=MyTrait3::m2
+        y.m2(); // $ target=MyTrait3::m2 $ SPURIOUS: target=MyTrait2::m2
+    }
+
     pub fn f() {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
