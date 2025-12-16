@@ -2616,3 +2616,66 @@ class TranslatedCilStoreField extends TranslatedCilInstruction, TTranslatedCilSt
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
   }
 }
+
+class TranslatedCilLoadField extends TranslatedCilInstruction, TTranslatedCilLoadField {
+  override Raw::CilLdfld instr;
+
+  TranslatedCilLoadField() { this = TTranslatedCilLoadField(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::FieldAddress and
+    tag = CilLoadFieldAddressTag() and
+    v.asSome() = this.getTempVariable(CilLoadFieldAddressVarTag())
+    or
+    opcode instanceof Opcode::Load and
+    tag = CilLoadFieldLoadTag() and
+    v.asSome() = this.getTempVariable(CilLoadFieldLoadVarTag())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) {
+    tag = CilLoadFieldAddressVarTag() or tag = CilLoadFieldLoadVarTag()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilLoadFieldAddressTag() and
+    operandTag instanceof UnaryTag and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    or
+    tag = CilLoadFieldLoadTag() and
+    operandTag instanceof LoadAddressTag and
+    result = this.getInstruction(CilLoadFieldAddressTag()).getResultVariable()
+  }
+
+  final override string getFieldName(InstructionTag tag) {
+    tag = CilLoadFieldAddressTag() and
+    result = instr.getField().getName()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilLoadFieldAddressTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilLoadFieldLoadTag())
+    or
+    tag = CilLoadFieldLoadTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilLoadFieldAddressTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(CilLoadFieldLoadVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    i = 0 and
+    result = this.getInstruction(CilLoadFieldLoadTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+  }
+}

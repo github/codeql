@@ -624,19 +624,38 @@ class CilUnbox extends @il_unbox, CilInstruction { }
 class CilThrow extends @il_throw, CilInstruction { }
 
 /** An instruction that loads a field value. */
-abstract class CilLoadFieldInstruction extends CilInstruction { }
+abstract class CilLoadFieldInstruction extends CilInstruction {
+  CilField getField() {
+    exists(string declaringTypeName, string fieldName |
+      il_field_operand(this, declaringTypeName, fieldName) and
+      fieldHasDeclaringTypeNameAndName(declaringTypeName, fieldName, result)
+    )
+  }
+
+  predicate isStatic() { none() }
+
+  predicate onlyComputesAddress() { none() }
+}
 
 /** An instruction that loads an instance field value. */
 class CilLdfld extends @il_ldfld, CilLoadFieldInstruction { }
 
 /** An instruction that loads the address of an instance field. */
-class CilLdflda extends @il_ldflda, CilLoadFieldInstruction { }
+class CilLdflda extends @il_ldflda, CilLoadFieldInstruction {
+  final override predicate onlyComputesAddress() { any() }
+}
 
 /** An instruction that loads a static field value. */
-class CilLdsfld extends @il_ldsfld, CilLoadFieldInstruction { }
+class CilLdsfld extends @il_ldsfld, CilLoadFieldInstruction {
+  final override predicate isStatic() { any() }
+}
 
 /** An instruction that loads the address of a static field. */
-class CilLdsflda extends @il_ldsflda, CilLoadFieldInstruction { }
+class CilLdsflda extends @il_ldsflda, CilLoadFieldInstruction {
+  final override predicate isStatic() { any() }
+
+  final override predicate onlyComputesAddress() { any() }
+}
 
 pragma[nomagic]
 private predicate fieldHasDeclaringTypeNameAndName(

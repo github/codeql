@@ -182,4 +182,22 @@ namespace TestNamespace
             }
         }
     }
+
+    public class WriteToField
+    {
+        public int value;
+        public WriteToField(int x)
+        {
+            value = x;
+        }
+    }
+
+    public class B
+    {
+        public static int LoadFromField()
+        {
+            WriteToField a = new WriteToField(5);
+            return a.value;
+        }
+    }
 }

@@ -58,7 +58,9 @@ newtype TInstructionTag =
   CilNewObjCallTag() or
   CilNewObjExternalRefTag() or
   CilStoreFieldAddressTag() or
-  CilStoreFieldStoreTag()
+  CilStoreFieldStoreTag() or
+  CilLoadFieldAddressTag() or
+  CilLoadFieldLoadTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -216,6 +218,12 @@ class InstructionTag extends TInstructionTag {
     or
     this = CilStoreFieldStoreTag() and
     result = "CilStoreFieldStore"
+    or
+    this = CilLoadFieldAddressTag() and
+    result = "CilLoadFieldAddress"
+    or
+    this = CilLoadFieldLoadTag() and
+    result = "CilLoadFieldLoad"
   }
 }
 
