@@ -41,6 +41,8 @@ module SuspiciousCharacterInRegexpConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexpPattern }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/suspicious-character-in-regex") }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 

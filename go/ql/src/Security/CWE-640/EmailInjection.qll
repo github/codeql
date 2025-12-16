@@ -21,6 +21,8 @@ module EmailInjection {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+    predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/email-injection") }
+
     predicate observeDiffInformedIncrementalMode() { any() }
   }
 

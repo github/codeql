@@ -20,7 +20,10 @@ module LogInjection {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      barrierNode(node, "go/log-injection")
+    }
 
     predicate observeDiffInformedIncrementalMode() { any() }
   }

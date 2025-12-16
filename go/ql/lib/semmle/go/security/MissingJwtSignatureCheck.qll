@@ -20,6 +20,8 @@ module MissingJwtSignatureCheck {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+    predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/missing-jwt-signature-check") }
+
     predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       any(AdditionalFlowStep s).step(nodeFrom, nodeTo)
     }

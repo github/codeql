@@ -28,7 +28,10 @@ module NormalHashFunctionFlow {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Barrier or
+      barrierNode(node, "go/weak-sensitive-data-hashing")
+    }
 
     predicate isBarrierIn(DataFlow::Node node) {
       // make sources barriers so that we only report the closest instance
@@ -61,7 +64,10 @@ module ComputationallyExpensiveHashFunctionFlow {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Barrier or
+      barrierNode(node, "go/weak-sensitive-data-hashing")
+    }
 
     predicate isBarrierIn(DataFlow::Node node) {
       // make sources barriers so that we only report the closest instance

@@ -71,6 +71,8 @@ module TlsVersionFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/insecure-tls") }
 }
 
 /**
@@ -194,6 +196,8 @@ module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/insecure-tls") }
 
   /**
    * Declare sinks as out-sanitizers in order to avoid producing superfluous paths where a cipher

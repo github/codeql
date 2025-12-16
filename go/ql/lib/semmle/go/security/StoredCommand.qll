@@ -25,7 +25,9 @@ module StoredCommand {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjection::Sink }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjection::Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof CommandInjection::Sanitizer or barrierNode(node, "go/stored-command")
+    }
 
     predicate observeDiffInformedIncrementalMode() { any() }
   }

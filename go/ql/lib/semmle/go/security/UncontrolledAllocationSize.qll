@@ -18,7 +18,10 @@ module UncontrolledAllocationSize {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      barrierNode(node, "go/uncontrolled-allocation-size")
+    }
 
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |

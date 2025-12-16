@@ -61,6 +61,8 @@ module StackTraceExposureConfig implements DataFlow::ConfigSig {
     |
       cgn.dominates(node.getBasicBlock())
     )
+    or
+    barrierNode(node, "go/stack-trace-exposure")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
