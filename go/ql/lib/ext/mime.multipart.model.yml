@@ -1,6 +1,23 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: barrierModel
+    data:
+      #  The only way to create a `mime/multipart.FileHeader` is to create a
+      #  `mime/multipart.Form`, which creates the `Filename` field of each
+      #  `mime/multipart.FileHeader` by calling `Part.FileName`, which calls
+      #  `path/filepath.Base` on its return value. In general `path/filepath.Base`
+      #  is not a sanitizer for path traversal, but in this specific case where the
+      #  output is going to be used as a filename rather than a directory name, it
+      #  is adequate.
+      - ["mime/multipart", "FileHeader", False, "Filename", "", "", "", "path-injection", "manual"]
+      # `Part.FileName` calls `path/filepath.Base` on its return value. In
+      # general `path/filepath.Base` is not a sanitizer for path traversal, but in
+      # this specific case where the output is going to be used as a filename
+      # rather than a directory name, it is adequate.
+      - ["mime/multipart", "Part", False, "FileName", "", "", "ReturnValue", "path-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["mime/multipart", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
