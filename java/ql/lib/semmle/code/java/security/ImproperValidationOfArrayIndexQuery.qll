@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.security.internal.ArraySizing
 private import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration to reason about improper validation
@@ -15,7 +16,10 @@ module ImproperValidationOfArrayIndexConfig implements DataFlow::ConfigSig {
     any(CheckableArrayAccess caa).canThrowOutOfBounds(sink.asExpr())
   }
 
-  predicate isBarrier(DataFlow::Node node) { node.getType() instanceof BooleanType }
+  predicate isBarrier(DataFlow::Node node) {
+    node.getType() instanceof BooleanType or
+    barrierNode(node, "java/improper-validation-of-array-index")
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 

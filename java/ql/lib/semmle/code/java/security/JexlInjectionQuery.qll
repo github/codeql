@@ -3,7 +3,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A sink for Expresssion Language injection vulnerabilities via Jexl,
@@ -47,6 +47,8 @@ module JexlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/jexl-expression-injection") }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JexlInjectionAdditionalTaintStep c).step(node1, node2)

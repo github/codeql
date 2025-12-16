@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.Sanitizers
+import semmle.code.java.dataflow.ExternalFlow
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { this.getValue().length() < 100 }
@@ -31,7 +32,10 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof SimpleTypeSanitizer or
+    barrierNode(node, "java/weak-cryptographic-algorithm")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 

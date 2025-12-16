@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.HttpsUrls
 private import semmle.code.java.security.Sanitizers
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint tracking configuration for HTTP connections.
@@ -18,7 +19,10 @@ module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
     any(HttpUrlsAdditionalTaintStep c).step(node1, node2)
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof SimpleTypeSanitizer or
+    barrierNode(node, "java/non-https-url")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.SecurityTests
 private import semmle.code.java.dataflow.FlowSinks
+import semmle.code.java.dataflow.ExternalFlow
 
 /** Holds if `ex` looks like a check that this is a debug build. */
 private predicate isDebugCheck(Expr ex) {
@@ -43,6 +44,8 @@ module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
     exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))
     or
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
+    or
+    barrierNode(node, "java/android/webview-debugging-enabled")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

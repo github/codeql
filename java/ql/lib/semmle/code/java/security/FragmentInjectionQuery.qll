@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.FragmentInjection
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -13,6 +14,8 @@ module FragmentInjectionTaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof FragmentInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/android/fragment-injection") }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(FragmentInjectionAdditionalTaintStep c).step(n1, n2)

@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.ArithmeticCommon
+import semmle.code.java.dataflow.ExternalFlow
 
 /** A taint-tracking configuration to reason about overflow from unvalidated input. */
 module ArithmeticOverflowConfig implements DataFlow::ConfigSig {
@@ -10,7 +11,10 @@ module ArithmeticOverflowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    overflowBarrier(n) or
+    barrierNode(n, "java/tainted-arithmetic")
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
@@ -33,6 +37,9 @@ deprecated module RemoteUserInputOverflowConfig = ArithmeticOverflowConfig;
 /** A taint-tracking configuration to reason about underflow from unvalidated input. */
 module ArithmeticUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
+
+    underflowBarrier(n) or
+    barrierNode(n, "java/tainted-arithmetic")
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 

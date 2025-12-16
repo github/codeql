@@ -4,6 +4,7 @@ module;
 
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsufficientKeySize
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data flow configuration for tracking key sizes used in cryptographic algorithms.
@@ -17,6 +18,10 @@ module KeySizeConfig implements DataFlow::StateConfigSig {
 
   predicate isSink(DataFlow::Node sink, KeySizeState state) {
     sink.(InsufficientKeySizeSink).hasState(state)
+  }
+
+  predicate isBarrier(DataFlow::Node node, KeySizeState state) {
+    barrierNode(node, "java/insufficient-key-size")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

@@ -68,6 +68,8 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureRandomnessSink }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/insecure-randomness") }
+
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
   predicate isBarrierOut(DataFlow::Node n) { isSink(n) }

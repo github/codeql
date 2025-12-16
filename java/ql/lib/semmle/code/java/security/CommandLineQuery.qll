@@ -53,7 +53,10 @@ module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof CommandInjectionSanitizer or
+    barrierNode(node, "java/command-line-injection")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(CommandInjectionAdditionalTaintStep s).step(n1, n2)

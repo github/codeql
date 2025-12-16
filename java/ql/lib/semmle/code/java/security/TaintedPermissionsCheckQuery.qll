@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * The `org.apache.shiro.subject.Subject` class.
@@ -59,6 +60,8 @@ module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PermissionsConstruction p).getInput()
   }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/tainted-permissions-check") }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 

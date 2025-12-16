@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.RequestForgery
 import semmle.code.java.security.UnsafeAndroidAccess
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint configuration tracking flow from untrusted inputs to a resource fetching call.
@@ -14,7 +15,10 @@ module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof RequestForgerySanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof RequestForgerySanitizer or
+    barrierNode(sanitizer, "java/android/unsafe-android-webview-fetch")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

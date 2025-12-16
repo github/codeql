@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.LogInjection
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for tracking untrusted user input used in log entries.
@@ -12,7 +13,10 @@ module LogInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof LogInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof LogInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof LogInjectionSanitizer or
+    barrierNode(node, "java/log-injection")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(LogInjectionAdditionalTaintStep c).step(node1, node2)

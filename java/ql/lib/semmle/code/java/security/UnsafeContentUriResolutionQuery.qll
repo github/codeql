@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.UnsafeContentUriResolution
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration to find paths from remote sources to content URI resolutions.
@@ -14,7 +15,8 @@ module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof ContentUriResolutionSink }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof ContentUriResolutionSanitizer
+    sanitizer instanceof ContentUriResolutionSanitizer or
+    barrierNode(sanitizer, "java/android/unsafe-content-uri-resolution")
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {

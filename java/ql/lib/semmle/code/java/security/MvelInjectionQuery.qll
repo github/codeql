@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.MvelInjection
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -14,7 +15,10 @@ module MvelInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MvelEvaluationSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof MvelInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof MvelInjectionSanitizer or
+    barrierNode(sanitizer, "java/mvel-expression-injection")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(MvelInjectionAdditionalTaintStep c).step(node1, node2)

@@ -5,6 +5,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data-flow configuration that tracks hardcoded expressions flowing to a parameter whose name suggests
@@ -14,6 +15,10 @@ module HardcodedCredentialSourceCallConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof HardcodedExpr }
 
   predicate isSink(DataFlow::Node n) { n.asExpr() instanceof FinalCredentialsSourceSink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/hardcoded-credential-sensitive-call")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

@@ -3,6 +3,7 @@
 import java
 import Encryption
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A configuration for finding RSA ciphers initialized without using OAEP padding.
@@ -20,6 +21,8 @@ module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(CryptoAlgoSpec cr | sink.asExpr() = cr.getAlgoSpec())
   }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/rsa-without-oaep") }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

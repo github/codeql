@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.security.InsecureLdapAuth
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for `ldap://` URL in LDAP authentication.
@@ -13,6 +14,8 @@ module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/insecure-ldap-auth") }
 
   /** Method call of `env.put()`. */
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {

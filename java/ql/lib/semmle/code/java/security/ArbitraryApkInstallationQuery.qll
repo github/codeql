@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.ArbitraryApkInstallation
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A dataflow configuration for flow from an external source of an APK to the
@@ -22,6 +23,10 @@ module ApkInstallationConfig implements DataFlow::ConfigSig {
         InstallPackageActionFlow::flowToExpr(ma.getQualifier())
       )
     )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/android/arbitrary-apk-installation")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

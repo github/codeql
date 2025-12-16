@@ -10,6 +10,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.QueryInjection
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in SQL queries.
@@ -19,7 +20,9 @@ module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof SimpleTypeSanitizer or barrierNode(node, "java/sql-injection")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(AdditionalQueryInjectionTaintStep s).step(node1, node2)

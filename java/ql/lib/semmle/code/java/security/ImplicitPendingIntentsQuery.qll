@@ -7,6 +7,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.PendingIntent
 import semmle.code.java.security.ImplicitPendingIntents
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint tracking configuration for implicit `PendingIntent`s
@@ -23,7 +24,10 @@ module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
     sink instanceof ImplicitPendingIntentSink and state instanceof MutablePendingIntent
   }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof ExplicitIntentSanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof ExplicitIntentSanitizer or
+    barrierNode(sanitizer, "java/android/implicit-pendingintents")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, node2)

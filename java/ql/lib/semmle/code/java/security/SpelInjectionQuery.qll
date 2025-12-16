@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.spring.SpringExpression
 private import semmle.code.java.security.SpelInjection
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -14,6 +15,8 @@ module SpelInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/spel-expression-injection") }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(SpelExpressionInjectionAdditionalTaintStep c).step(node1, node2)

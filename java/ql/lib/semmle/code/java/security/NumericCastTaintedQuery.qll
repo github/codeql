@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.RangeAnalysis
 private import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A `CastExpr` that is a narrowing cast.
@@ -98,7 +99,8 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
     node.getType() instanceof SmallType or
     smallExpr(node.asExpr()) or
     node.getEnclosingCallable() instanceof HashCodeMethod or
-    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
+    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr()) or
+    barrierNode(node, "java/tainted-numeric-cast")
   }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }

@@ -28,7 +28,10 @@ abstract class ExecTaintedEnvironmentSanitizer extends DataFlow::Node { }
 module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof ExecTaintedEnvironmentSanitizer }
+  predicate isBarrier(DataFlow::Node barrier) {
+    barrier instanceof ExecTaintedEnvironmentSanitizer or
+    barrierNode(barrier, "java/exec-tainted-environment")
+  }
 
   predicate isSink(DataFlow::Node sink) {
     sinkNode(sink, "environment-injection")

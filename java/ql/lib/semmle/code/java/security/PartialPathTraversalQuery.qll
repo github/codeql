@@ -5,6 +5,7 @@ import semmle.code.java.security.PartialPathTraversal
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -16,6 +17,10 @@ module PartialPathTraversalFromRemoteConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     any(PartialPathTraversalMethodCall ma).getQualifier() = node.asExpr()
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/partial-path-traversal-from-remote")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.security.ArithmeticCommon
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A field representing an extreme value.
@@ -38,7 +39,10 @@ module MaxValueFlowConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
-  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    overflowBarrier(n) or
+    barrierNode(n, "java/extreme-value-arithmetic")
+  }
 }
 
 /** Dataflow from maximum values to an underflow. */
@@ -51,6 +55,9 @@ module MinValueFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+
+    underflowBarrier(n) or
+    barrierNode(n, "java/extreme-value-arithmetic")
 
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 

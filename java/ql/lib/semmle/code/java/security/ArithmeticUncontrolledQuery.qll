@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.RandomQuery
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.ArithmeticCommon
+import semmle.code.java.dataflow.ExternalFlow
 
 private class TaintSource extends DataFlow::ExprNode {
   TaintSource() {
@@ -18,7 +19,10 @@ module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    overflowBarrier(n) or
+    barrierNode(n, "java/uncontrolled-arithmetic")
+  }
 
   predicate observeDiffInformedIncrementalMode() {
     any() // merged with ArithmeticUncontrolledUnderflow in ArithmeticUncontrolled.ql
@@ -38,6 +42,9 @@ module ArithmeticUncontrolledOverflowFlow =
 /** A taint-tracking configuration to reason about underflow from arithmetic with uncontrolled values. */
 module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
+
+    underflowBarrier(n) or
+    barrierNode(n, "java/uncontrolled-arithmetic")
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 

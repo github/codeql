@@ -6,6 +6,7 @@ import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.security.JndiInjection
 private import semmle.code.java.security.Sanitizers
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in JNDI lookup.
@@ -17,7 +18,8 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof SimpleTypeSanitizer or
-    node instanceof JndiInjectionSanitizer
+    node instanceof JndiInjectionSanitizer or
+    barrierNode(node, "java/jndi-injection")
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {

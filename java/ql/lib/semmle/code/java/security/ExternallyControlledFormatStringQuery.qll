@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.StringFormat
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A string format sink node.
@@ -21,7 +22,9 @@ module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof StringFormatSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof NumericType or node.getType() instanceof BooleanType
+    node.getType() instanceof NumericType or
+    node.getType() instanceof BooleanType or
+    barrierNode(node, "java/tainted-format-string")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

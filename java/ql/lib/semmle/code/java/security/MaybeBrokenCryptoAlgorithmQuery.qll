@@ -9,6 +9,7 @@ private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.RangeUtils
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.frameworks.Properties
+import semmle.code.java.dataflow.ExternalFlow
 
 /** A reference to an insecure cryptographic algorithm. */
 abstract class InsecureAlgorithm extends Expr {
@@ -75,7 +76,8 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node n) {
     objectToString(n.asExpr()) or
-    n.getType().getErasure() instanceof TypeObject
+    n.getType().getErasure() instanceof TypeObject or
+    barrierNode(n, "java/potentially-weak-cryptographic-algorithm")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
