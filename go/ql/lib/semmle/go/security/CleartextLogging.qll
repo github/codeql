@@ -22,15 +22,8 @@ module CleartextLogging {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isBarrier(DataFlow::Node node) {
-      node instanceof Barrier
-      or
+      node instanceof Barrier or
       barrierNode(node, "go/clear-text-logging")
-      or
-      exists(DataFlow::CallNode call | node = call.getResult() |
-        call.getTarget() = Builtin::error().getType().getMethod("Error")
-        or
-        call.getTarget().(Method).hasQualifiedName("fmt", "Stringer", "String")
-      )
     }
 
     predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
