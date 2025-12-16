@@ -33,12 +33,16 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
   }
 }
 
-private class SummarizedCallableFromModel extends SummarizedCallable {
+private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string type;
   string path;
+  string input_;
+  string output_;
+  string kind;
+  string model_;
 
   SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
+    ModelOutput::relevantSummaryModel(type, path, input_, output_, kind, model_) and
     this = type + ";" + path
   }
 
@@ -52,14 +56,13 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
-      kind = "value" and
-      preservesValue = true
-      or
-      kind = "taint" and
-      preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = "manual" and
+    isExact = true and
+    model = model_
   }
 }
