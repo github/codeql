@@ -94,6 +94,10 @@ module RequestForgery {
     HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
   }
 
+  private class ExternalRequestForgerySanitizer extends Sanitizer {
+    ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
+  }
+
   /**
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard.

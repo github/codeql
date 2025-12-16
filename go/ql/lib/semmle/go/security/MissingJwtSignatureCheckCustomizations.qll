@@ -54,4 +54,8 @@ module MissingJwtSignatureCheck {
   private class DefaultSink extends Sink {
     DefaultSink() { sinkNode(this, "jwt") }
   }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "jwt") }
+  }
 }

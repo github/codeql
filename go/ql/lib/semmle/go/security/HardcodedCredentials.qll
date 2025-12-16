@@ -47,6 +47,13 @@ module HardcodedCredentials {
     CredentialsSink() { exists(string s | s.matches("credentials-%") | sinkNode(this, s)) }
   }
 
+  /** A use of a credential. */
+  private class ExternalCredentialsSanitizer extends Sanitizer {
+    ExternalCredentialsSanitizer() {
+      exists(string s | s.matches("credentials-%") | barrierNode(this, s))
+    }
+  }
+
   /**
    * Holds if the guard `g` in its branch `branch` validates the expression `e`
    * by comparing it to a literal.

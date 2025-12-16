@@ -29,6 +29,12 @@ module XPath {
       DefaultXPathExpressionString() { sinkNode(this, "xpath-injection") }
     }
   }
+
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "xpath-injection") }
+  }
 }
 
 /**

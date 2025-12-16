@@ -88,6 +88,10 @@ module SharedXss {
     body.getAContentType().regexpMatch("(?i).*html.*")
   }
 
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
+  }
+
   /**
    * A JSON marshaler, acting to sanitize a possible XSS vulnerability because the
    * marshaled value is very unlikely to be returned as an HTML content-type.
