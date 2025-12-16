@@ -145,24 +145,24 @@ mod axum_test {
     use std::collections::HashMap;
 
     async fn my_axum_handler_1(Path(a): Path<String>) -> &'static str {
-        sink(a.as_str()); // $ MISSING: hasTaintFlow=my_axum_handler_1
-        sink(a.as_bytes()); // $ MISSING: hasTaintFlow=my_axum_handler_1
-        sink(a); // $ MISSING: hasTaintFlow=my_axum_handler_1
+        sink(a.as_str()); // $ hasTaintFlow=my_axum_handler_1
+        sink(a.as_bytes()); // $ hasTaintFlow=my_axum_handler_1
+        sink(a); // $ hasTaintFlow=my_axum_handler_1
 
         ""
     }
 
     async fn my_axum_handler_2(Path((a, b)): Path<(String, String)>) -> &'static str {
-        sink(a); // $ MISSING: hasTaintFlow=my_axum_handler_2
-        sink(b); // $ MISSING: hasTaintFlow=my_axum_handler_2
+        sink(a); // $ hasTaintFlow=my_axum_handler_2
+        sink(b); // $ hasTaintFlow=my_axum_handler_2
 
         ""
     }
 
     async fn my_axum_handler_3(Query(params): Query<HashMap<String, String>>) -> &'static str {
         for (key, value) in params {
-            sink(key); // $ MISSING: hasTaintFlow=my_axum_handler_3
-            sink(value); // $ MISSING: hasTaintFlow=my_axum_handler_3
+            sink(key); // $ hasTaintFlow=my_axum_handler_3
+            sink(value); // $ hasTaintFlow=my_axum_handler_3
         }
 
         ""
@@ -178,33 +178,33 @@ mod axum_test {
 
     async fn my_axum_handler_5(Json(payload): Json<serde_json::Value>) -> &'static str {
         sink(payload.as_str()); // $ MISSING: hasTaintFlow
-        sink(payload); // $ MISSING: hasTaintFlow=...::DELETE
+        sink(payload); // $ hasTaintFlow=...::DELETE
 
         ""
     }
 
     async fn my_axum_handler_6(body: String) -> &'static str {
-        sink(body); // $ MISSING: hasTaintFlow=my_axum_handler_6
+        sink(body); // $ hasTaintFlow=my_axum_handler_6
 
         ""
     }
 
     async fn my_axum_handler_7(body: String) -> &'static str {
-        sink(body); // $ MISSING: hasTaintFlow=my_axum_handler_7
+        sink(body); // $ hasTaintFlow=my_axum_handler_7
 
         ""
     }
 
     async fn test_axum() {
         let app = Router::<()>::new()
-            .route("/1/{a}", get(my_axum_handler_1)) // $ MISSING: Alert[rust/summary/taint-sources])
-            .route("/2/{a}/{b}", post(my_axum_handler_2)) // $ MISSING: Alert[rust/summary/taint-sources])
-            .route("/3/:a", put(my_axum_handler_3)) // $ MISSING: Alert[rust/summary/taint-sources])
+            .route("/1/{a}", get(my_axum_handler_1)) // $ Alert[rust/summary/taint-sources])
+            .route("/2/{a}/{b}", post(my_axum_handler_2)) // $ Alert[rust/summary/taint-sources])
+            .route("/3/:a", put(my_axum_handler_3)) // $ Alert[rust/summary/taint-sources])
             .route(
                 "/4/:a",
-                get(my_axum_handler_4).on(MethodFilter::DELETE, my_axum_handler_5), // $ MISSING: Alert[rust/summary/taint-sources])
+                get(my_axum_handler_4).on(MethodFilter::DELETE, my_axum_handler_5), // $ Alert[rust/summary/taint-sources])
             )
-            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7)); // $ MISSING: Alert[rust/summary/taint-sources])
+            .route("/5/:a", get(my_axum_handler_6).get(my_axum_handler_7)); // $ Alert[rust/summary/taint-sources])
 
         // ...
     }
