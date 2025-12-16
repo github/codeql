@@ -72,6 +72,6 @@ where
   isSizeOfExprOperandMacroInvocationAConstInteger(sizeofExpr, mi, _) and
   (if sizeofExpr.isInMacroExpansion() then inMacro = " (in a macro expansion) " else inMacro = " ")
 select sizeofExpr,
-  "$@: sizeof" + inMacro +
-    "of integer macro $@ will always return the size of the underlying integer type.", sizeofExpr,
-  sizeofExpr.getEnclosingFunction().getName(), mi.getMacro(), mi.getMacro().getName()
+  "sizeof" + inMacro +
+    "of integer macro $@ will always return the size of the underlying integer type.",
+  mi.getMacro(), mi.getMacro().getName()
