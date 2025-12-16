@@ -134,7 +134,8 @@ newtype TTranslatedElement =
   } or
   TTranslatedCilType(Raw::CilType type) { shouldTranslatedCilType(type) } or
   TTranslatedNewObject(Raw::CilNewobj newObj) { shouldTranslateCilInstr(newObj) } or
-  TTranslatedDup(Raw::CilDup dup) { shouldTranslateCilInstr(dup) }
+  TTranslatedDup(Raw::CilDup dup) { shouldTranslateCilInstr(dup) } or
+  TTranslatedCilStoreField(Raw::CilStfld store) { shouldTranslateCilInstr(store) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and
@@ -218,6 +219,13 @@ abstract class TranslatedElement extends TTranslatedElement {
    * holds.)
    */
   string getExternalName(InstructionTag tag) { none() }
+
+  /**
+   * Gets the name of the field referenced by an instruction with the given tag. This `tag` must refer to
+   * a `FieldAddress` instruction (that is, an instruction for which
+   * `hasInstruction(Opcode::FieldAddress, tag, _)` holds.)
+   */
+  string getFieldName(InstructionTag tag) { none() }
 
   /**
    * Gets the raw element that this translated element is a translation of.

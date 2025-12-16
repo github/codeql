@@ -32,7 +32,8 @@ newtype TTempVariableTag =
   CilLdindVarTag() or
   CilNewObjInitVarTag() or
   CilNewObjCallExternalVarTag() or
-  CilDupVarTag()
+  CilDupVarTag() or
+  CilStoreFieldAddressVarTag()
 
 class TempVariableTag extends TTempVariableTag {
   string toString() {
@@ -137,5 +138,8 @@ class TempVariableTag extends TTempVariableTag {
     or
     this = CilDupVarTag() and
     result = "dup"
+    or
+    this = CilStoreFieldAddressVarTag() and
+    result = "stfldaddr"
   }
 }

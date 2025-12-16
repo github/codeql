@@ -2549,3 +2549,70 @@ class TranslatedDup extends TranslatedCilInstruction, TTranslatedDup {
     result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
   }
 }
+
+/**
+ * Translate a CIL stfld instruction to the following sequence:
+ * x = fieldaddress[field] obj
+ * store x value
+ */
+class TranslatedCilStoreField extends TranslatedCilInstruction, TTranslatedCilStoreField {
+  override Raw::CilStfld instr;
+
+  TranslatedCilStoreField() { this = TTranslatedCilStoreField(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    opcode instanceof Opcode::FieldAddress and
+    tag = CilStoreFieldAddressTag() and
+    v.asSome() = this.getTempVariable(CilStoreFieldAddressVarTag())
+    or
+    opcode instanceof Opcode::Store and
+    tag = CilStoreFieldStoreTag() and
+    v.isNone()
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) { tag = CilStoreFieldAddressVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CilStoreFieldAddressTag() and
+    operandTag instanceof UnaryTag and
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(1)
+    or
+    tag = CilStoreFieldStoreTag() and
+    (
+      operandTag instanceof StoreAddressTag and
+      result = this.getInstruction(CilStoreFieldAddressTag()).getResultVariable()
+      or
+      operandTag instanceof StoreValueTag and
+      result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    )
+  }
+
+  final override string getFieldName(InstructionTag tag) {
+    tag = CilStoreFieldAddressTag() and
+    result = instr.getField().getName()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = CilStoreFieldAddressTag() and
+    succType instanceof DirectSuccessor and
+    result = this.getInstruction(CilStoreFieldStoreTag())
+    or
+    tag = CilStoreFieldStoreTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(CilStoreFieldAddressTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    result = getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+  }
+}
