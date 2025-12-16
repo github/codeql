@@ -56,12 +56,12 @@ module MinValueFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-    underflowBarrier(n) or
-    barrierNode(n, "java/extreme-value-arithmetic")
-
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
-  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    underflowBarrier(n) or
+    barrierNode(n, "java/extreme-value-arithmetic")
+  }
 }
 
 /** Dataflow from minimum values to an underflow. */

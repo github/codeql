@@ -43,12 +43,12 @@ module ArithmeticUncontrolledOverflowFlow =
 module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
 
-    underflowBarrier(n) or
-    barrierNode(n, "java/uncontrolled-arithmetic")
-
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    underflowBarrier(n) or
+    barrierNode(n, "java/uncontrolled-arithmetic")
+  }
 
   predicate observeDiffInformedIncrementalMode() {
     any() // merged with ArithmeticUncontrolledOverflow in ArithmeticUncontrolled.ql
