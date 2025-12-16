@@ -68,6 +68,10 @@ class CilMethod extends @method {
     result.getIndex() = i
   }
 
+  string getFullyQualifiedName() {
+    result = this.getDeclaringType().getFullName() + "." + this.getName()
+  }
+
   CilParameter getParameter(int i) {
     result.getMethod() = this and
     result.getIndex() = i
@@ -363,7 +367,7 @@ abstract class CilCall extends CilInstruction {
 
   final predicate hasReturnValue() { il_call_has_return_value(this) }
 
-  string getExternalName() { il_call_target_unresolved(this, result) }
+  CilMethod getTarget() { result.getFullyQualifiedName() = this.getExternalName() }
 }
 
 class CilIl_jmp extends @il_il_jmp, CilCall { }

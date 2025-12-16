@@ -2132,6 +2132,7 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
     then v.asSome() = this.getTempVariable(CallReturnValueTag())
     else v.isNone()
     or
+    not exists(instr.getTarget()) and
     opcode instanceof Opcode::ExternalRef and
     tag = CilCallTargetTag() and
     v.asSome() = this.getTempVariable(CilCallTargetVarTag())
@@ -2141,6 +2142,7 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
     instr.hasReturnValue() and
     tag = CallReturnValueTag()
     or
+    not exists(instr.getTarget()) and
     tag = CilCallTargetVarTag()
   }
 
@@ -2154,12 +2156,15 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
         getTranslatedCilInstruction(instr.getABackwardPredecessor()).getStackElement(index) = result
       )
       or
+      not exists(instr.getTarget()) and
       operandTag instanceof CallTargetTag and
       result = this.getInstruction(CilCallTargetTag()).getResultVariable()
     )
   }
 
   override string getExternalName(InstructionTag tag) {
+    // TODO: Only when external
+    not exists(instr.getTarget()) and
     tag = CilCallTargetTag() and
     result = instr.getExternalName()
   }
@@ -2167,6 +2172,7 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    not exists(instr.getTarget()) and
     tag = CilCallTargetTag() and
     succType instanceof DirectSuccessor and
     result = this.getInstruction(CilCallTag())
@@ -2176,11 +2182,19 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
     result = getTranslatedInstruction(instr.getASuccessor()).getEntry()
   }
 
-  override Instruction getEntry() { result = this.getInstruction(CilCallTargetTag()) }
+  override Instruction getEntry() {
+    not exists(instr.getTarget()) and
+    result = this.getInstruction(CilCallTargetTag())
+  }
 
   override Variable getResultVariable() {
     instr.hasReturnValue() and
     result = this.getTempVariable(CallReturnValueTag())
+  }
+
+  override TranslatedFunction getStaticCallTarget(InstructionTag tag) {
+    tag = CilCallTag() and
+    result = getTranslatedFunction(instr.getTarget())
   }
 
   final override Variable getStackElement(int i) {
