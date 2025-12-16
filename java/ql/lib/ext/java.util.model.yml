@@ -398,6 +398,7 @@ extensions:
       - ["java.util", "StringJoiner", False, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util", "StringTokenizer", False, "StringTokenizer", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.util", "StringTokenizer", False, "nextElement", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.util", "StringTokenizer", False, "nextElement", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "StringTokenizer", False, "nextToken", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util", "TreeMap", False, "TreeMap", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
       - ["java.util", "TreeMap", False, "TreeMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]

@@ -620,48 +620,25 @@ predicate barrierNode(Node node, string kind) { barrierNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  boolean isExact_;
+  string model_;
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model, _) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model, _) and
-      provenance.isGenerated()
-    ) and
-    not exists(Provenance provenance |
-      neutralElement(this, "summary", provenance, _) and
-      provenance.isManual()
-    )
-  }
+  SummarizedCallableAdapter() { summaryElement(this, input_, output_, kind, p_, model_, isExact_) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = isExact_ and
+    model = model_
   }
-
-  override predicate hasProvenance(Provenance provenance) {
-    summaryElement(this, _, _, _, provenance, _, _)
-  }
-
-  override predicate hasExactModel() { summaryElement(this, _, _, _, _, _, true) }
 }
 
 final class SinkCallable = SinkModelCallable;
