@@ -329,6 +329,7 @@ class TranslatedX86Call extends TranslatedX86Instruction, TTranslatedX86Call {
   override predicate producesResult() { any() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    not exists(instr.getTarget()) and
     tag = SingleTag() and
     operandTag instanceof CallTargetTag and
     result = this.getTranslatedOperand().getResultVariable()
@@ -337,6 +338,7 @@ class TranslatedX86Call extends TranslatedX86Instruction, TTranslatedX86Call {
   TranslatedOperand getTranslatedOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    not exists(instr.getTarget()) and
     child = this.getTranslatedOperand() and
     succType instanceof DirectSuccessor and
     result = this.getInstruction(SingleTag())
@@ -349,12 +351,15 @@ class TranslatedX86Call extends TranslatedX86Instruction, TTranslatedX86Call {
   }
 
   override Instruction getEntry() {
-    exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
-      result = op.asSome()
-      or
-      op.isNone() and
-      result = this.getInstruction(SingleTag())
-    )
+    if exists(instr.getTarget())
+    then result = this.getInstruction(SingleTag())
+    else
+      exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
+        result = op.asSome()
+        or
+        op.isNone() and
+        result = this.getInstruction(SingleTag())
+      )
   }
 
   override Variable getResultVariable() { none() } // TODO: We don't know where this is yet. Probably rax for x86
@@ -373,34 +378,18 @@ class TranslatedX86Jmp extends TranslatedX86Instruction, TTranslatedX86Jmp {
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    tag = X86JumpTag() and
+    tag = SingleTag() and
     opcode instanceof Opcode::Jump and
     v.isNone() // A jump has no result
-    or
-    exists(instr.getTarget()) and
-    tag = X86JumpInstrRefTag() and
-    opcode instanceof Opcode::InstrRef and
-    v.asSome() = this.getTempVariable(X86JumpInstrRefVarTag())
   }
 
   override predicate producesResult() { any() }
 
-  override predicate hasTempVariable(TempVariableTag tag) {
-    exists(instr.getTarget()) and
-    tag = X86JumpInstrRefVarTag()
-  }
-
-  override Instruction getReferencedInstruction(InstructionTag tag) {
-    tag = X86JumpInstrRefTag() and
-    result = getTranslatedInstruction(instr.getTarget()).getEntry()
-  }
-
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = X86JumpTag() and
+    tag = SingleTag() and
     operandTag instanceof JumpTargetTag and
-    if exists(instr.getTarget())
-    then result = this.getInstruction(X86JumpInstrRefTag()).getResultVariable()
-    else result = this.getTranslatedOperand().getResultVariable()
+    not exists(instr.getTarget()) and
+    result = this.getTranslatedOperand().getResultVariable()
   }
 
   TranslatedOperand getTranslatedOperand() { result = getTranslatedOperand(instr.getOperand(0)) }
@@ -409,29 +398,24 @@ class TranslatedX86Jmp extends TranslatedX86Instruction, TTranslatedX86Jmp {
     not exists(instr.getTarget()) and
     child = this.getTranslatedOperand() and
     succType instanceof DirectSuccessor and
-    result = this.getInstruction(X86JumpTag())
+    result = this.getInstruction(SingleTag())
   }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
-    exists(instr.getTarget()) and
-    tag = X86JumpInstrRefTag() and
-    succType instanceof DirectSuccessor and
-    result = this.getInstruction(X86JumpTag())
-    or
-    tag = X86JumpTag() and
+    tag = SingleTag() and
     succType instanceof DirectSuccessor and
     result = getTranslatedInstruction(instr.getTarget()).getEntry()
   }
 
   override Instruction getEntry() {
     if exists(instr.getTarget())
-    then result = this.getInstruction(X86JumpInstrRefTag())
+    then result = this.getInstruction(SingleTag())
     else
       exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
         result = op.asSome()
         or
         op.isNone() and
-        result = this.getInstruction(X86JumpTag())
+        result = this.getInstruction(SingleTag())
       )
   }
 
@@ -794,18 +778,13 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    exists(instr.getTarget()) and
-    tag = X86CJumpInstrRefTag() and
-    opcode instanceof Opcode::InstrRef and
-    v.asSome() = this.getTempVariable(X86CJumpInstrRefVarTag())
-    or
     opcode instanceof Opcode::CJump and
-    tag = X86CJumpTag() and
+    tag = SingleTag() and
     v.isNone() // A jump has no result
   }
 
   override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
-    tag = X86CJumpTag() and
+    tag = SingleTag() and
     (
       instr instanceof Raw::X86Jb and kind = Opcode::LT()
       or
@@ -833,29 +812,16 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
     )
   }
 
-  override predicate hasTempVariable(TempVariableTag tag) {
-    exists(instr.getTarget()) and
-    tag = X86CJumpInstrRefVarTag()
-  }
-
-  override Instruction getReferencedInstruction(InstructionTag tag) {
-    tag = X86CJumpInstrRefTag() and
-    result = getTranslatedInstruction(instr.getTarget()).getEntry()
-  }
-
   override predicate hasLocalVariable(LocalVariableTag tag) { tag = CmpRegisterTag() }
 
   override predicate producesResult() { any() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = X86CJumpTag() and
+    tag = SingleTag() and
     (
       operandTag instanceof CondJumpTargetTag and
-      (
-        if exists(instr.getTarget())
-        then result = this.getInstruction(X86CJumpInstrRefTag()).getResultVariable()
-        else result = this.getTranslatedOperand().getResultVariable()
-      )
+      not exists(instr.getTarget()) and
+      result = this.getTranslatedOperand().getResultVariable()
       or
       operandTag instanceof CondTag and
       result = this.getLocalVariable(CmpRegisterTag())
@@ -868,16 +834,11 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
     not exists(instr.getTarget()) and
     child = this.getTranslatedOperand() and
     succType instanceof DirectSuccessor and
-    result = this.getInstruction(X86CJumpTag())
+    result = this.getInstruction(SingleTag())
   }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
-    exists(instr.getTarget()) and
-    tag = X86CJumpInstrRefTag() and
-    succType instanceof DirectSuccessor and
-    result = this.getInstruction(X86CJumpTag())
-    or
-    tag = X86CJumpTag() and
+    tag = SingleTag() and
     (
       succType.(BooleanSuccessor).getValue() = true and
       result = getTranslatedInstruction(instr.getTarget()).getEntry()
@@ -889,13 +850,13 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
 
   override Instruction getEntry() {
     if exists(instr.getTarget())
-    then result = this.getInstruction(X86CJumpInstrRefTag())
+    then result = this.getInstruction(SingleTag())
     else
       exists(Option<Instruction>::Option op | op = this.getTranslatedOperand().getEntry() |
         result = op.asSome()
         or
         op.isNone() and
-        result = this.getInstruction(X86CJumpTag())
+        result = this.getInstruction(SingleTag())
       )
   }
 
@@ -1758,45 +1719,28 @@ class TranslatedCilUnconditionalBranch extends TranslatedCilInstruction,
   final override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Option<Variable>::Option v
   ) {
-    opcode instanceof Opcode::InstrRef and
-    tag = CilUnconditionalBranchRefTag() and
-    v.asSome() = this.getTempVariable(CilUnconditionalBranchRefVarTag())
-    or
     opcode instanceof Opcode::Jump and
-    tag = CilUnconditionalBranchTag() and
+    tag = SingleTag() and
     v.isNone()
   }
 
   override predicate producesResult() { any() }
 
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = CilUnconditionalBranchTag() and
+    tag = SingleTag() and
     operandTag instanceof JumpTargetTag and
-    result = this.getInstruction(CilUnconditionalBranchRefTag()).getResultVariable()
-  }
-
-  override predicate hasTempVariable(TempVariableTag tag) {
-    tag = CilUnconditionalBranchRefVarTag()
-  }
-
-  override Instruction getReferencedInstruction(InstructionTag tag) {
-    tag = CilUnconditionalBranchRefTag() and
-    result = getTranslatedInstruction(instr.getABranchTarget()).getEntry()
+    result = getTranslatedInstruction(instr.getABranchTarget()).getResultVariable()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
-    tag = CilUnconditionalBranchRefTag() and
-    succType instanceof DirectSuccessor and
-    result = this.getInstruction(CilUnconditionalBranchTag())
-    or
-    tag = CilUnconditionalBranchTag() and
+    tag = SingleTag() and
     succType instanceof DirectSuccessor and
     result = getTranslatedInstruction(instr.getABranchTarget()).getEntry()
   }
 
-  override Instruction getEntry() { result = this.getInstruction(CilUnconditionalBranchRefTag()) }
+  override Instruction getEntry() { result = this.getInstruction(SingleTag()) }
 
   override Variable getResultVariable() { none() }
 
@@ -1915,10 +1859,6 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
     tag = CilRelCJumpTag() and
     v.isNone()
     or
-    opcode instanceof Opcode::InstrRef and
-    tag = CilRelRefTag() and
-    v.asSome() = this.getTempVariable(CilRelRefVarTag())
-    or
     opcode instanceof Opcode::Const and
     tag = CilRelConstTag(_) and
     v.asSome() = this.getTempVariable(CilRelVarTag())
@@ -1929,19 +1869,12 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
   override predicate hasTempVariable(TempVariableTag tag) {
     tag = CilRelSubVarTag()
     or
-    tag = CilRelRefVarTag()
-    or
     tag = CilRelVarTag()
   }
 
   final override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
     tag = CilRelCJumpTag() and
     kind = this.getConditionKind()
-  }
-
-  final override Instruction getReferencedInstruction(InstructionTag tag) {
-    tag = CilRelRefTag() and
-    result = this.getInstruction(CilRelConstTag(true))
   }
 
   final override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
@@ -1960,7 +1893,7 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
       result = this.getInstruction(CilRelSubTag()).getResultVariable()
       or
       operandTag instanceof CondJumpTargetTag and
-      result = this.getInstruction(CilRelRefTag()).getResultVariable()
+      result = this.getInstruction(CilRelConstTag(true)).getResultVariable()
     )
   }
 
@@ -1978,10 +1911,6 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
 
   final override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
     tag = CilRelSubTag() and
-    succType instanceof DirectSuccessor and
-    result = this.getInstruction(CilRelRefTag())
-    or
-    tag = CilRelRefTag() and
     succType instanceof DirectSuccessor and
     result = this.getInstruction(CilRelCJumpTag())
     or
@@ -2064,10 +1993,6 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
     tag = CilBoolBranchSubTag() and
     v.asSome() = this.getTempVariable(CilBoolBranchSubVarTag())
     or
-    opcode instanceof Opcode::InstrRef and
-    tag = CilBoolBranchRefTag() and
-    v.asSome() = this.getTempVariable(CilBoolBranchRefVarTag())
-    or
     opcode instanceof Opcode::CJump and
     tag = CilBoolBranchCJumpTag() and
     v.isNone()
@@ -2075,8 +2000,6 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
 
   override predicate hasTempVariable(TempVariableTag tag) {
     tag = CilBoolBranchConstVarTag()
-    or
-    tag = CilBoolBranchRefVarTag()
     or
     tag = CilBoolBranchSubVarTag()
   }
@@ -2095,7 +2018,7 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
       result = this.getInstruction(CilBoolBranchSubTag()).getResultVariable()
       or
       operandTag instanceof CondJumpTargetTag and
-      result = this.getInstruction(CilBoolBranchRefTag()).getResultVariable()
+      result = getTranslatedCilInstruction(instr.getABranchTarget()).getResultVariable()
     )
     or
     tag = CilBoolBranchSubTag() and
@@ -2113,10 +2036,6 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
     tag = CilBoolBranchConstTag() and
     succType instanceof DirectSuccessor and
-    result = this.getInstruction(CilBoolBranchRefTag())
-    or
-    tag = CilBoolBranchRefTag() and
-    succType instanceof DirectSuccessor and
     result = this.getInstruction(CilBoolBranchSubTag())
     or
     tag = CilBoolBranchSubTag() and
@@ -2131,11 +2050,6 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
       succType.(BooleanSuccessor).getValue() = false and
       result = getTranslatedInstruction(instr.getFallThrough()).getEntry()
     )
-  }
-
-  override Instruction getReferencedInstruction(InstructionTag tag) {
-    tag = CilBoolBranchRefTag() and
-    result = getTranslatedCilInstruction(instr.getABranchTarget()).getEntry()
   }
 
   override Instruction getEntry() { result = this.getInstruction(CilBoolBranchConstTag()) }

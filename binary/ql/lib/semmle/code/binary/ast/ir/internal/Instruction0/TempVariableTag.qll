@@ -1,6 +1,4 @@
 newtype TTempVariableTag =
-  X86JumpInstrRefVarTag() or
-  X86CJumpInstrRefVarTag() or
   TestVarTag() or
   ZeroVarTag() or
   ImmediateOperandVarTag() or
@@ -23,11 +21,9 @@ newtype TTempVariableTag =
   CilLdLocVarTag() or
   CilBinaryVarTag() or
   CilRelSubVarTag() or
-  CilRelRefVarTag() or
   CilRelVarTag() or
   CilBoolBranchConstVarTag() or
   CilBoolBranchSubVarTag() or
-  CilBoolBranchRefVarTag() or
   CilUnconditionalBranchRefVarTag() or
   CallReturnValueTag() or
   CilCallTargetVarTag() or
@@ -37,12 +33,6 @@ newtype TTempVariableTag =
 
 class TempVariableTag extends TTempVariableTag {
   string toString() {
-    this = X86JumpInstrRefVarTag() and
-    result = "j_ir"
-    or
-    this = X86CJumpInstrRefVarTag() and
-    result = "cj_ir"
-    or
     this = TestVarTag() and
     result = "t"
     or
@@ -109,9 +99,6 @@ class TempVariableTag extends TTempVariableTag {
     this = CilRelSubVarTag() and
     result = "r_s"
     or
-    this = CilRelRefVarTag() and
-    result = "ref"
-    or
     this = CilRelVarTag() and
     result = "r"
     or
@@ -123,9 +110,6 @@ class TempVariableTag extends TTempVariableTag {
     or
     this = CilUnconditionalBranchRefVarTag() and
     result = "cub_ir"
-    or
-    this = CilBoolBranchRefVarTag() and
-    result = "cbb_ir"
     or
     this = CallReturnValueTag() and
     result = "call_ret"

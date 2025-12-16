@@ -24,7 +24,6 @@ private newtype TOpcode =
   TNop() or
   TNot() or
   TInit() or
-  TInstrRef() or
   // TODO: Ideally, this should either be removed when we handle unresolved CIL calls better.
   TExternalRef() or
   TFunEntry()
@@ -135,10 +134,6 @@ class Nop extends Opcode, TNop {
 
 class Not extends Opcode, TNot {
   override string toString() { result = "Not" }
-}
-
-class InstrRef extends Opcode, TInstrRef {
-  override string toString() { result = "InstrRef" }
 }
 
 class ExternalRef extends Opcode, TExternalRef {

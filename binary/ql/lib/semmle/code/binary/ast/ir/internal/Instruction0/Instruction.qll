@@ -32,7 +32,7 @@ class Instruction extends TInstruction {
   Operand getFirstOperand() {
     exists(OperandTag operandTag |
       result = this.getOperand(operandTag) and
-      not exists(operandTag.getPredecessorTag())
+      not exists(this.getOperand(operandTag.getPredecessorTag()))
     )
   }
 
@@ -169,21 +169,6 @@ class CallInstruction extends Instruction {
   CallTargetOperand getTargetOperand() { result = this.getAnOperand() }
 
   override string getImmediateValue() { result = this.getStaticTarget().getName() }
-}
-
-class InstrRefInstruction extends Instruction {
-  override Opcode::InstrRef opcode;
-
-  Instruction getReferencedInstruction() { result = te.getReferencedInstruction(tag) }
-
-  final override string getImmediateValue() {
-    exists(Instruction ref | ref = this.getReferencedInstruction() |
-      result = ref.getResultVariable().toString()
-      or
-      not exists(ref.getResultVariable()) and
-      result = "<reference to instruction without result>"
-    )
-  }
 }
 
 class ExternalRefInstruction extends Instruction {

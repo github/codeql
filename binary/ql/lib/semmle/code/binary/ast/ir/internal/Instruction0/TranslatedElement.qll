@@ -218,12 +218,6 @@ abstract class TranslatedElement extends TTranslatedElement {
   string getExternalName(InstructionTag tag) { none() }
 
   /**
-   * Gets the instruction referenced by the instruction with the given tag. This `tag` must refer to
-   * an `InstrRef` (that is, an instruction for which `hasInstruction(Opcode::InstrRef, tag, _)` holds.)
-   */
-  Instruction getReferencedInstruction(InstructionTag tag) { none() }
-
-  /**
    * Gets the raw element that this translated element is a translation of.
    *
    * This predicate is important for linking back to the original AST.

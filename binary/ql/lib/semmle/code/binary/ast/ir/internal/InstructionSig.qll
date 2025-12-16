@@ -237,10 +237,6 @@ signature module InstructionSig {
     JumpTargetOperand getJumpTargetOperand();
   }
 
-  class InstrRefInstruction extends Instruction {
-    Instruction getReferencedInstruction();
-  }
-
   class CopyInstruction extends Instruction {
     UnaryOperand getOperand();
   }

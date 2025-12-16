@@ -559,7 +559,7 @@ module Transform<InstructionSig Input> {
       Operand getFirstOperand() {
         exists(OperandTag operandTag |
           result = this.getOperand(operandTag) and
-          not exists(operandTag.getPredecessorTag())
+          not exists(this.getOperand(operandTag.getPredecessorTag()))
         )
       }
 
@@ -719,31 +719,6 @@ module Transform<InstructionSig Input> {
       }
 
       override string getImmediateValue() { result = this.getValue().toString() }
-    }
-
-    class InstrRefInstruction extends Instruction {
-      InstrRefInstruction() { this.getOpcode() instanceof Opcode::InstrRef }
-
-      Instruction getReferencedInstruction() {
-        exists(Input::InstrRefInstruction instrRef |
-          this = TOldInstruction(instrRef) and
-          result = getNewInstruction(instrRef.getReferencedInstruction())
-        )
-        or
-        exists(TranslatedElement te, InstructionTag tag |
-          this = MkInstruction(te, tag) and
-          result = te.getReferencedInstruction(tag)
-        )
-      }
-
-      final override string getImmediateValue() {
-        exists(Instruction ref | ref = this.getReferencedInstruction() |
-          result = ref.getResultVariable().toString()
-          or
-          not exists(ref.getResultVariable()) and
-          result = "<reference to instruction without result>"
-        )
-      }
     }
 
     class ExternalRefInstruction extends Instruction {
@@ -1175,7 +1150,7 @@ module Transform<InstructionSig Input> {
             result.asOperand() = i.getOperand(tag.getSuccessorTag())
             or
             this.asOperand() = i.getOperand(tag) and
-            not exists(tag.getSuccessorTag()) and
+            not exists(i.getOperand(tag.getSuccessorTag())) and
             result.asInstruction() = i
           )
           or

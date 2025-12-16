@@ -5,10 +5,6 @@ private import semmle.code.binary.ast.internal.CilInstructions
 newtype TInstructionTag =
   SingleTag() or
   FunEntryTag() or
-  X86JumpInstrRefTag() or
-  X86JumpTag() or
-  X86CJumpInstrRefTag() or
-  X86CJumpTag() or
   WriteTag() or
   InitFramePtrTag() or
   InitStackPtrTag() or
@@ -51,13 +47,9 @@ newtype TInstructionTag =
   CilRelSubTag() or
   CilRelCJumpTag() or
   CilRelConstTag(Boolean b) or
-  CilRelRefTag() or
-  CilBoolBranchRefTag() or
   CilBoolBranchSubTag() or
   CilBoolBranchConstTag() or
   CilBoolBranchCJumpTag() or
-  CilUnconditionalBranchTag() or
-  CilUnconditionalBranchRefTag() or
   CilCallTag() or
   CilCallTargetTag() or
   CilLdindLoadTag() or
@@ -70,18 +62,6 @@ class InstructionTag extends TInstructionTag {
     or
     this = FunEntryTag() and
     result = "FunEntry"
-    or
-    this = X86JumpInstrRefTag() and
-    result = "X86JumpInstrRef"
-    or
-    this = X86JumpTag() and
-    result = "X86Jump"
-    or
-    this = X86CJumpInstrRefTag() and
-    result = "X86CJumpInstrRef"
-    or
-    this = X86CJumpTag() and
-    result = "X86CJump"
     or
     this = WriteTag() and
     result = "Write"
@@ -196,12 +176,6 @@ class InstructionTag extends TInstructionTag {
       result = "CilRelConst(" + b.toString() + ")"
     )
     or
-    this = CilRelRefTag() and
-    result = "CilRelRef"
-    or
-    this = CilBoolBranchRefTag() and
-    result = "CilBoolBranchRef"
-    or
     this = CilBoolBranchSubTag() and
     result = "CilBoolBranchSub"
     or
@@ -210,12 +184,6 @@ class InstructionTag extends TInstructionTag {
     or
     this = CilBoolBranchCJumpTag() and
     result = "CilBoolBranchCJump"
-    or
-    this = CilUnconditionalBranchTag() and
-    result = "CilUnconditionalBranch"
-    or
-    this = CilUnconditionalBranchRefTag() and
-    result = "CilUnconditionalBranchRef"
     or
     this = CilCallTag() and
     result = "CilCall"

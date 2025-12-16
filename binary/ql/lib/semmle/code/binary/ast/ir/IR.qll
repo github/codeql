@@ -353,10 +353,6 @@ private module FinalInstruction {
     JumpTargetOperand getJumpTargetOperand() { result = super.getJumpTargetOperand() }
   }
 
-  class InstrRefInstruction extends Instruction instanceof Instruction::InstrRefInstruction {
-    Instruction getReferencedInstruction() { result = super.getReferencedInstruction() }
-  }
-
   class CopyInstruction extends Instruction instanceof Instruction::CopyInstruction {
     UnaryOperand getOperand() { result = super.getOperand() }
   }
