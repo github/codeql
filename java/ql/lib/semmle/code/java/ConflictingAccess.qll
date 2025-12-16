@@ -23,7 +23,7 @@ module Modification {
   /** Holds if the call `c` modifies a shared resource. */
   predicate isModifyingCall(Call c) {
     exists(SummarizedCallable sc, string output | sc.getACall() = c |
-      sc.propagatesFlow(_, output, _, _) and
+      sc.propagatesFlow(_, output, _, _, _, _) and
       output.matches("Argument[this]%")
     )
   }

@@ -98,9 +98,7 @@ edges
 | B.java:107:5:107:6 | l2 : ArrayList [<element>, <element>] : String | B.java:107:16:111:6 | ...->... [post update] : new Consumer<List<String>>(...) { ... } [List<String> out1, <element>] : String | provenance | MaD:1 |
 | B.java:107:16:107:16 | l : List [<element>] : String | B.java:107:21:107:21 | l : List [<element>] : String | provenance |  |
 | B.java:107:16:111:6 | ...->... : new Consumer<List<String>>(...) { ... } [String s] : String | B.java:107:16:111:6 | ...->... [post update] : new Consumer<List<String>>(...) { ... } [List<String> out2, <element>] : String | provenance | MaD:1 |
-| B.java:107:16:111:6 | ...->... : new Consumer<List<String>>(...) { ... } [String s] : String | B.java:107:16:111:6 | ...->... [post update] : new Consumer<List<String>>(...) { ... } [List<String> out2, <element>] : String | provenance | heuristic-callback |
 | B.java:107:16:111:6 | ...->... : new Consumer<List<String>>(...) { ... } [String s] : String | B.java:107:16:111:6 | parameter this : new Consumer<List<String>>(...) { ... } [String s] : String | provenance | MaD:1 |
-| B.java:107:16:111:6 | ...->... : new Consumer<List<String>>(...) { ... } [String s] : String | B.java:107:16:111:6 | parameter this : new Consumer<List<String>>(...) { ... } [String s] : String | provenance | heuristic-callback |
 | B.java:107:16:111:6 | ...->... [post update] : new Consumer<List<String>>(...) { ... } [List<String> out1, <element>] : String | B.java:107:16:111:6 | List<String> out1 : List [<element>] : String | provenance |  |
 | B.java:107:16:111:6 | ...->... [post update] : new Consumer<List<String>>(...) { ... } [List<String> out2, <element>] : String | B.java:107:16:111:6 | List<String> out2 : List [<element>] : String | provenance |  |
 | B.java:107:16:111:6 | List<String> out1 : List [<element>] : String | B.java:112:10:112:13 | out1 : List [<element>] : String | provenance |  |
@@ -111,9 +109,7 @@ edges
 | B.java:107:21:107:21 | l : List [<element>] : String | B.java:107:31:111:5 | ...->... [post update] : new Consumer<String>(...) { ... } [List<String> out1, <element>] : String | provenance | MaD:1 |
 | B.java:107:31:107:31 | x : String | B.java:109:16:109:16 | x : String | provenance |  |
 | B.java:107:31:111:5 | ...->... : new Consumer<String>(...) { ... } [String s] : String | B.java:107:31:111:5 | ...->... [post update] : new Consumer<String>(...) { ... } [List<String> out2, <element>] : String | provenance | MaD:1 |
-| B.java:107:31:111:5 | ...->... : new Consumer<String>(...) { ... } [String s] : String | B.java:107:31:111:5 | ...->... [post update] : new Consumer<String>(...) { ... } [List<String> out2, <element>] : String | provenance | heuristic-callback |
 | B.java:107:31:111:5 | ...->... : new Consumer<String>(...) { ... } [String s] : String | B.java:107:31:111:5 | parameter this : new Consumer<String>(...) { ... } [String s] : String | provenance | MaD:1 |
-| B.java:107:31:111:5 | ...->... : new Consumer<String>(...) { ... } [String s] : String | B.java:107:31:111:5 | parameter this : new Consumer<String>(...) { ... } [String s] : String | provenance | heuristic-callback |
 | B.java:107:31:111:5 | ...->... [post update] : new Consumer<String>(...) { ... } [List<String> out1, <element>] : String | B.java:107:31:111:5 | List<String> out1 : List [<element>] : String | provenance |  |
 | B.java:107:31:111:5 | ...->... [post update] : new Consumer<String>(...) { ... } [List<String> out2, <element>] : String | B.java:107:31:111:5 | List<String> out2 : List [<element>] : String | provenance |  |
 | B.java:107:31:111:5 | List<String> out1 : List [<element>] : String | B.java:107:31:111:5 | this : new Consumer<List<String>>(...) { ... } [List<String> out1, <element>] : String | provenance |  |
