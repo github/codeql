@@ -848,7 +848,7 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
         FlowSummaryImpl::Private::SummarizedCallableImpl sc,
         FlowSummaryImpl::Private::SummaryComponentStack input, ContentSet readSet
       |
-        sc.propagatesFlow(input, _, _, _) and
+        sc.propagatesFlow(input, _, _, _, _, _) and
         input.contains(FlowSummaryImpl::Private::SummaryComponent::content(readSet)) and
         c.getAStoreContent() = readSet.getAReadContent()
       )
