@@ -123,12 +123,15 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
     summaryModel(path, _, _, _, provenance, _)
   }
 
+  private predicate hasManualModel() { summaryModel(path, _, _, _, "manual", _) }
+
   override predicate propagatesFlow(
     string input, string output, boolean preservesValue, string model
   ) {
-    exists(string kind, QlBuiltins::ExtensionId madId |
-      summaryModel(path, input, output, kind, _, madId) and
-      model = "MaD:" + madId.toString()
+    exists(string kind, string provenance, QlBuiltins::ExtensionId madId |
+      summaryModel(path, input, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString() and
+      (provenance = "manual" or not this.hasManualModel())
     |
       kind = "value" and
       preservesValue = true

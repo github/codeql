@@ -35,7 +35,7 @@ models
 | 34 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_to_string; Argument[self].Reference; Argument[0].Reference; taint |
 | 35 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_u8; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
 | 36 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 37 | Summary: <std::path::PathBuf>::as_path; Argument[self]; ReturnValue; value |
+| 37 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
 edges
 | test.rs:12:13:12:18 | buffer | test.rs:13:14:13:19 | buffer | provenance |  |
 | test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
