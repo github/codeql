@@ -71,7 +71,7 @@ class ExposedField extends Field {
 
 /**
  * Gets the initial value for the field `f`.
- * This is either a static initializer or an assignment in a constructor.
+ * This is either a field initializer or an assignment in a constructor.
  */
 Expr initialValue(Field f) {
   result = f.getInitializer()
