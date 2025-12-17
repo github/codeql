@@ -823,14 +823,15 @@ module API {
       predicate isAdditionalDefRoot(Node node);
 
       /**
-       * Holds if `node` is considered "in scope" for this stage, meaning that we allow outgoing labelled edges
+       * Holds if `node` is in a file that is considered "active" in this stage, meaning that we allow outgoing labelled edges
        * to be materialised from here, and continue API graph construction from the successors' edges.
        *
-       * Note that the "additional roots" contributed by the stage inputs may be out of scope but can be tracked to a node in scope.
+       * Note that the "additional roots" contributed by the stage inputs may be in an inactive file but can be tracked to a node in an
+       * active file.
        * This predicate should thus not be used to block the tracking of use/def nodes, but only block the creation of new labelled edges.
        */
       bindingset[node]
-      predicate inScope(DataFlow::Node node);
+      predicate inActiveFile(DataFlow::Node node);
     }
 
     private module Stage<StageInputSig S> {
@@ -1025,11 +1026,11 @@ module API {
        * Holds if `rhs` is the right-hand side of a definition of node `nd`.
        */
       predicate rhs(TApiNode nd, DataFlow::Node rhs) {
-        (S::inScope(rhs) or S::isAdditionalDefRoot(nd)) and
+        (S::inActiveFile(rhs) or S::isAdditionalDefRoot(nd)) and
         exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
         or
         rhs(_, _, rhs) and
-        S::inScope(rhs) and
+        S::inActiveFile(rhs) and
         nd = MkDef(rhs)
         or
         S::isAdditionalDefRoot(nd) and
@@ -1084,7 +1085,7 @@ module API {
           exists(EntryPoint e |
             lbl = Label::entryPoint(e) and
             ref = e.getASource() and
-            S::inScope(ref)
+            S::inActiveFile(ref)
           )
           or
           // property reads
@@ -1286,7 +1287,7 @@ module API {
        * Holds if `ref` is a use of node `nd`.
        */
       predicate use(TApiNode nd, DataFlow::Node ref) {
-        (S::inScope(ref) or S::isAdditionalUseRoot(nd)) and
+        (S::inActiveFile(ref) or S::isAdditionalUseRoot(nd)) and
         (
           exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
             ref = DataFlow::moduleVarNode(mod)
@@ -1313,7 +1314,7 @@ module API {
         )
         or
         use(_, _, ref) and
-        S::inScope(ref) and
+        S::inActiveFile(ref) and
         nd = MkUse(ref)
         or
         S::isAdditionalUseRoot(nd) and
@@ -1590,7 +1591,7 @@ module API {
       private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
       bindingset[node]
-      predicate inScope(DataFlow::Node node) {
+      predicate inActiveFile(DataFlow::Node node) {
         // In the base database, compute everything in stage 1.
         // In an overlay database, do nothing in stage 1.
         not isOverlay() and exists(node)
@@ -1691,7 +1692,7 @@ module API {
       }
 
       bindingset[node]
-      predicate inScope(DataFlow::Node node) { isInOverlayChangedFile(node) }
+      predicate inActiveFile(DataFlow::Node node) { isInOverlayChangedFile(node) }
     }
 
     private module Stage2 = Stage<Stage2Input>;
@@ -1754,7 +1755,7 @@ module API {
         predicate isAdditionalDefRoot(Node node) { none() }
 
         bindingset[node]
-        predicate inScope(DataFlow::Node node) { any() }
+        predicate inActiveFile(DataFlow::Node node) { any() }
       }
 
       private module Full = Stage<FullInput>;
