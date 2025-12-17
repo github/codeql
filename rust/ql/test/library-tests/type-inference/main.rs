@@ -3077,6 +3077,10 @@ mod literal_overlap {
         let x: usize = 0;
         let y = &1;
         let z = x.g(y); // $ target=MyTrait::g
+
+        let x = 0; // $ SPURIOUS: type=x:i32 $ MISSING: type=x:usize
+        let y: usize = 1;
+        let z = x.max(y); // $ target=max
     }
 }
 
