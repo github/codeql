@@ -824,7 +824,7 @@ module API {
 
       /**
        * Holds if `node` is considered "in scope" for this stage, meaning that we allow outgoing labelled edges
-       * to be materialised from here, and continue API graph construction from the successors edges.
+       * to be materialised from here, and continue API graph construction from the successors' edges.
        *
        * Note that the "additional roots" contributed by the stage inputs may be out of scope but can be tracked to a node in scope.
        * This predicate should thus not be used to block the tracking of use/def nodes, but only block the creation of new labelled edges.
