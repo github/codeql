@@ -289,8 +289,8 @@ private Method getSourceMethod(Method m) {
   result = m
 }
 
-private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
-  DefaultPathInjectionSanitizer() { barrierNode(this, "path-injection") }
+private class ExternalPathInjectionSanitizer extends PathInjectionSanitizer {
+  ExternalPathInjectionSanitizer() { barrierNode(this, "path-injection") }
 }
 
 /** Holds if `g` is a guard that checks for `..` components. */

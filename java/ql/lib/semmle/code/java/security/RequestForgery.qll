@@ -118,8 +118,8 @@ private class ContainsUrlSanitizer extends RequestForgerySanitizer {
   }
 }
 
-private class DefaultRequestForgerySanitizer extends RequestForgerySanitizer {
-  DefaultRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
+private class ExternalRequestForgerySanitizer extends RequestForgerySanitizer {
+  ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
 }
 
 /**
