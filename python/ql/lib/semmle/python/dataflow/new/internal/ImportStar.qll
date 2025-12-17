@@ -1,4 +1,6 @@
 /** Provides predicates for reasoning about uses of `import *` in Python. */
+overlay[local]
+module;
 
 private import python
 private import semmle.python.dataflow.new.internal.Builtins
@@ -92,6 +94,7 @@ module ImportStar {
    *
    * this would return the data-flow nodes corresponding to `foo.bar` and `quux`.
    */
+  overlay[local]
   cached
   ControlFlowNode potentialImportStarBase(Scope s) {
     result = any(ImportStarNode n | n.getScope() = s).getModule()

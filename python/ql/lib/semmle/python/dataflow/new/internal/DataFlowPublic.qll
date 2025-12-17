@@ -1,6 +1,8 @@
 /**
  * Provides Python-specific definitions for use in the data flow library.
  */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPrivate
@@ -22,6 +24,7 @@ private import semmle.python.frameworks.data.ModelsAsData
  * - Module variable nodes: These represent global variables and act as canonical targets for reads and writes of these.
  * - Synthetic nodes: These handle flow in various special cases.
  */
+overlay[local]
 newtype TNode =
   /** A node corresponding to a control flow node. */
   TCfgNode(ControlFlowNode node) {
@@ -76,15 +79,7 @@ newtype TNode =
     node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) {
-    v.getScope() = m and
-    (
-      v.escapes()
-      or
-      isAccessedThroughImportStar(m) and
-      ImportStar::globalNameDefinedInModule(v.getId(), m)
-    )
-  } or
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
@@ -151,6 +146,7 @@ private import semmle.python.internal.CachedStages
  * An element, viewed as a node in a data flow graph. Either an SSA variable
  * (`EssaNode`) or a control flow node (`CfgNode`).
  */
+overlay[local]
 class Node extends TNode {
   /** Gets a textual representation of this element. */
   cached
@@ -318,6 +314,7 @@ class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
+overlay[local]
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
@@ -613,6 +610,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
  */
+overlay[local]
 newtype TContent =
   /** An element of a list. */
   TListElementContent() or
@@ -684,6 +682,7 @@ newtype TContent =
  * If the value is a collection, it can have elements,
  * if it is an object, it can have attribute values.
  */
+overlay[local]
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }

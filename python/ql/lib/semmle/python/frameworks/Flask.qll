@@ -2,6 +2,8 @@
  * Provides classes modeling security-relevant aspects of the `flask` PyPI package.
  * See https://flask.palletsprojects.com/en/1.1.x/.
  */
+overlay[local?]
+module;
 
 private import python
 private import semmle.python.dataflow.new.DataFlow

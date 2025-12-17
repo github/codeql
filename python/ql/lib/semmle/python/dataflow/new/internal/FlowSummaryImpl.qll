@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
+overlay[local]
+module;
 
 private import python
 private import codeql.dataflow.internal.FlowSummaryImpl

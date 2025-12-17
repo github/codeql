@@ -1,4 +1,6 @@
 /** Provides logic related to captured variables. */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPublic

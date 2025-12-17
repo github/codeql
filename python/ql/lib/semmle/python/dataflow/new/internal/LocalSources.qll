@@ -5,6 +5,8 @@
  * Note that unlike `TypeTracker.qll`, this library only performs
  * local tracking within a function.
  */
+overlay[local]
+module;
 
 private import python
 import DataFlowPublic
