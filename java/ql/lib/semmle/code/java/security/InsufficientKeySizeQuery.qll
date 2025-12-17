@@ -20,9 +20,7 @@ module KeySizeConfig implements DataFlow::StateConfigSig {
     sink.(InsufficientKeySizeSink).hasState(state)
   }
 
-  predicate isBarrier(DataFlow::Node node, KeySizeState state) {
-    barrierNode(node, "java/insufficient-key-size")
-  }
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/insufficient-key-size") }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
