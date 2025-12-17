@@ -1,0 +1,24 @@
+---
+name: Polymorphism Analysis Suite
+description: Comprehensive analysis suite for PHP polymorphism vulnerabilities and patterns
+version: 0.1.0
+---
+
+# Security Queries - Detect Vulnerabilities
+- queries/PolymorphismVulnerabilities.ql@polymorphic-vulnerabilities
+- queries/UnsafeMethodOverrides.ql@unsafe-method-overrides
+- queries/MagicMethodVulnerabilities.ql@magic-method-vulnerabilities
+- queries/TypeSafetyViolations.ql@type-safety-violations
+- queries/VisibilityBypassVulnerabilities.ql@visibility-bypass
+- queries/TraitVulnerabilities.ql@trait-vulnerabilities
+- queries/DeserializationGadgets.ql@deserialization-gadgets
+- queries/DuckTypingMissingMethods.ql@duck-typing-missing-methods
+- queries/PolymorphicDataFlowAnalysis.ql@polymorphic-taint-flow
+
+# Analysis Queries - Understand Code Patterns
+- queries/PolymorphismMetrics.ql@polymorphism-metrics
+- queries/HotPolymorphicMethods.ql@hot-polymorphic-methods
+- queries/InterfaceImplementationCoverage.ql@interface-coverage
+- queries/InheritanceDepth.ql@inheritance-depth
+- queries/MethodResolutionPaths.ql@method-resolution-complexity
+- queries/TraitUsageAnalysis.ql@trait-usage

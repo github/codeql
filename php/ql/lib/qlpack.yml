@@ -1,0 +1,51 @@
+name: codeql/php-all
+version: 1.0.0-dev
+groups: [php]
+dbscheme: php.dbscheme
+extractor: php
+library: true
+upgrades: upgrades
+dependencies:
+  "codeql/concepts": "*"
+  "codeql/dataflow": "*"
+  "codeql/controlflow": "*"
+  "codeql/ssa": "*"
+  "codeql/typetracking": "*"
+  "codeql/threat-models": "*"
+
+libraryModules:
+  # Core PHP Analysis
+  - codeql/php/ast
+  - codeql/php/dataflow
+  - codeql/php/controlflow
+  - codeql/php/typetracking
+
+  # PHP 8.0+ Features
+  - codeql/php/ast/NamedArguments
+  - codeql/php/ast/ConstructorPromotion
+  - codeql/php/ast/UnionTypes
+  - codeql/php/ast/Attributes
+
+  # PHP 8.3+ Features
+  - codeql/php/ast/PHP83ReadonlyClasses
+  - codeql/php/ast/PHP83Attributes
+
+  # PHP 8.4+ Features
+  - codeql/php/ast/PHP84PropertyHooks
+  - codeql/php/ast/PHP84AsymmetricVisibility
+  - codeql/php/ast/PHP84DomAndBCMath
+  - codeql/php/ast/PHP84PdoSubclasses
+
+  # PHP 8.5+ Features
+  - codeql/php/ast/PHP85PipeOperator
+  - codeql/php/ast/PHP85CloneWith
+  - codeql/php/ast/PHP85UriExtension
+
+  # Security Analysis Frameworks
+  - codeql/php/polymorphism
+  - codeql/php/types
+  - codeql/php/ast/ReflectionAnalysis
+  - codeql/php/controlflow/EnhancedControlFlow
+
+  # Framework Integration
+  - codeql/php/frameworks

@@ -1,0 +1,7 @@
+name: codeql/php-queries
+version: 1.0.0-dev
+groups: [php]
+
+dependencies:
+  "codeql/php-all": ${workspace}
+  "codeql/dataflow": "*"

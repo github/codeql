@@ -1,0 +1,5 @@
+name: codeql/php-downgrades
+version: 1.0.0-dev
+
+dependencies:
+  codeql/php-all: ${workspace}
