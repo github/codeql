@@ -217,23 +217,17 @@ class PathCheck extends Sanitizer {
   Guard g;
 
   PathCheck() {
-<<<<<<< HEAD
     // This expression is structurally replicated in a dominating guard
-    exists(AbstractValues::BooleanValue v | g = this.(GuardedDataFlowNode).getAGuard(_, v))
+    exists(GuardValue v |
+      g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+      exists(v.asBooleanValue())
+    )
   }
 
   override predicate isBarrier(TaintedPathConfig::FlowState state) {
     g.(WeakGuard).isBarrier(state)
     or
     not g instanceof WeakGuard
-=======
-    // This expression is structurally replicated in a dominating guard which is not a "weak" check
-    exists(Guard g, GuardValue v |
-      g = this.(GuardedDataFlowNode).getAGuard(_, v) and
-      exists(v.asBooleanValue()) and
-      not g instanceof WeakGuard
-    )
->>>>>>> codeql-cli/latest
   }
 }
 
