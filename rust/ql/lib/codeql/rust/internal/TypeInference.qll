@@ -1572,20 +1572,18 @@ private module MethodResolution {
     }
 
     /**
-     * Same as `getACandidateReceiverTypeAt`, but with traits substituted in for types
-     * with trait bounds.
+     * Same as `getACandidateReceiverTypeAt`, but excludes pseudo types `!` and `unknown`.
      */
     pragma[nomagic]
-    Type getACandidateReceiverTypeAtSubstituteLookupTraits(
-      string derefChain, boolean borrow, TypePath path
-    ) {
-      result = substituteLookupTraits(this.getACandidateReceiverTypeAt(derefChain, borrow, path))
+    Type getANonPseudoCandidateReceiverTypeAt(string derefChain, boolean borrow, TypePath path) {
+      result = this.getACandidateReceiverTypeAt(derefChain, borrow, path) and
+      result != TNeverType() and
+      result != TUnknownType()
     }
 
     pragma[nomagic]
     private Type getComplexStrippedType(string derefChain, boolean borrow, TypePath strippedTypePath) {
-      result =
-        this.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, strippedTypePath) and
+      result = this.getANonPseudoCandidateReceiverTypeAt(derefChain, borrow, strippedTypePath) and
       isComplexRootStripped(strippedTypePath, result)
     }
 
@@ -1624,12 +1622,11 @@ private module MethodResolution {
       )
     }
 
-    /**
-     * Holds if the candidate receiver type represented by `derefChain` does not
-     * have a matching method target.
-     */
+    // forex using recursion
     pragma[nomagic]
-    predicate hasNoCompatibleTargetNoBorrow(string derefChain) {
+    private predicate hasNoCompatibleTargetNoBorrowToIndex(
+      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+    ) {
       (
         this.supportsAutoDerefAndBorrow()
         or
@@ -1637,10 +1634,46 @@ private module MethodResolution {
         // `ReceiverSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
         derefChain = ""
       ) and
-      exists(TypePath strippedTypePath, Type strippedType |
-        not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
-        strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
-        this.hasNoCompatibleTargetCheck(derefChain, false, strippedTypePath, strippedType)
+      strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
+      n = -1
+      or
+      this.hasNoCompatibleTargetNoBorrowToIndex(derefChain, strippedTypePath, strippedType, n - 1) and
+      exists(Type t | t = getNthLookupType(strippedType, n) |
+        this.hasNoCompatibleTargetCheck(derefChain, false, strippedTypePath, t)
+      )
+    }
+
+    /**
+     * Holds if the candidate receiver type represented by `derefChain` does not
+     * have a matching method target.
+     */
+    pragma[nomagic]
+    predicate hasNoCompatibleTargetNoBorrow(string derefChain) {
+      exists(Type strippedType |
+        this.hasNoCompatibleTargetNoBorrowToIndex(derefChain, _, strippedType,
+          getLastLookupTypeIndex(strippedType))
+      )
+    }
+
+    // forex using recursion
+    pragma[nomagic]
+    private predicate hasNoCompatibleNonBlanketTargetNoBorrowToIndex(
+      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+    ) {
+      (
+        this.supportsAutoDerefAndBorrow()
+        or
+        // needed for the `hasNoCompatibleTarget` check in
+        // `ReceiverSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
+        derefChain = ""
+      ) and
+      strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
+      n = -1
+      or
+      this.hasNoCompatibleNonBlanketTargetNoBorrowToIndex(derefChain, strippedTypePath,
+        strippedType, n - 1) and
+      exists(Type t | t = getNthLookupType(strippedType, n) |
+        this.hasNoCompatibleNonBlanketTargetCheck(derefChain, false, strippedTypePath, t)
       )
     }
 
@@ -1650,17 +1683,24 @@ private module MethodResolution {
      */
     pragma[nomagic]
     predicate hasNoCompatibleNonBlanketTargetNoBorrow(string derefChain) {
-      (
-        this.supportsAutoDerefAndBorrow()
-        or
-        // needed for the `hasNoCompatibleTarget` check in
-        // `ReceiverSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
-        derefChain = ""
-      ) and
-      exists(TypePath strippedTypePath, Type strippedType |
-        not derefChain.matches("%.ref") and // no need to try a borrow if the last thing we did was a deref
-        strippedType = this.getComplexStrippedType(derefChain, false, strippedTypePath) and
-        this.hasNoCompatibleNonBlanketTargetCheck(derefChain, false, strippedTypePath, strippedType)
+      exists(Type strippedType |
+        this.hasNoCompatibleNonBlanketTargetNoBorrowToIndex(derefChain, _, strippedType,
+          getLastLookupTypeIndex(strippedType))
+      )
+    }
+
+    // forex using recursion
+    pragma[nomagic]
+    private predicate hasNoCompatibleTargetBorrowToIndex(
+      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+    ) {
+      this.hasNoCompatibleTargetNoBorrow(derefChain) and
+      strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
+      n = -1
+      or
+      this.hasNoCompatibleTargetBorrowToIndex(derefChain, strippedTypePath, strippedType, n - 1) and
+      exists(Type t | t = getNthLookupType(strippedType, n) |
+        this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, true, strippedTypePath, t)
       )
     }
 
@@ -1670,11 +1710,25 @@ private module MethodResolution {
      */
     pragma[nomagic]
     predicate hasNoCompatibleTargetBorrow(string derefChain) {
-      exists(TypePath strippedTypePath, Type strippedType |
-        this.hasNoCompatibleTargetNoBorrow(derefChain) and
-        strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
-        this.hasNoCompatibleNonBlanketLikeTargetCheck(derefChain, true, strippedTypePath,
-          strippedType)
+      exists(Type strippedType |
+        this.hasNoCompatibleTargetBorrowToIndex(derefChain, _, strippedType,
+          getLastLookupTypeIndex(strippedType))
+      )
+    }
+
+    // forex using recursion
+    pragma[nomagic]
+    private predicate hasNoCompatibleNonBlanketTargetBorrowToIndex(
+      string derefChain, TypePath strippedTypePath, Type strippedType, int n
+    ) {
+      this.hasNoCompatibleTargetNoBorrow(derefChain) and
+      strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
+      n = -1
+      or
+      this.hasNoCompatibleNonBlanketTargetBorrowToIndex(derefChain, strippedTypePath, strippedType,
+        n - 1) and
+      exists(Type t | t = getNthLookupType(strippedType, n) |
+        this.hasNoCompatibleNonBlanketTargetCheck(derefChain, true, strippedTypePath, t)
       )
     }
 
@@ -1684,10 +1738,9 @@ private module MethodResolution {
      */
     pragma[nomagic]
     predicate hasNoCompatibleNonBlanketTargetBorrow(string derefChain) {
-      exists(TypePath strippedTypePath, Type strippedType |
-        this.hasNoCompatibleTargetNoBorrow(derefChain) and
-        strippedType = this.getComplexStrippedType(derefChain, true, strippedTypePath) and
-        this.hasNoCompatibleNonBlanketTargetCheck(derefChain, true, strippedTypePath, strippedType)
+      exists(Type strippedType |
+        this.hasNoCompatibleNonBlanketTargetBorrowToIndex(derefChain, _, strippedType,
+          getLastLookupTypeIndex(strippedType))
       )
     }
 
@@ -1905,9 +1958,8 @@ private module MethodResolution {
     MethodCall getMethodCall() { result = mc_ }
 
     Type getTypeAt(TypePath path) {
-      result = mc_.getACandidateReceiverTypeAtSubstituteLookupTraits(derefChain, borrow, path) and
-      not result = TNeverType() and
-      not result = TUnknownType()
+      result =
+        substituteLookupTraits(mc_.getANonPseudoCandidateReceiverTypeAt(derefChain, borrow, path))
     }
 
     pragma[nomagic]
