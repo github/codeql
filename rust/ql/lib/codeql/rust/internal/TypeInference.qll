@@ -1786,8 +1786,8 @@ private module MethodResolution {
 
     override Trait getTrait() {
       if this.isInMutableContext()
-      then result.getCanonicalPath() = "core::ops::index::IndexMut"
-      else result.getCanonicalPath() = "core::ops::index::Index"
+      then result instanceof IndexMutTrait
+      else result instanceof IndexTrait
     }
   }
 
