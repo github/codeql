@@ -18,13 +18,18 @@ class LoopingExpr(LabelableExpr):
     loop_body: optional["BlockExpr"] | child
 
 
-@annotate(Adt, replace_bases={AstNode: Item})
+@annotate(TypeItem, replace_bases={AstNode: Item})
 class _:
     """
-    An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+    An item that defines a type. Either a `Struct`, `Enum`, or `Union`.
     """
 
     derive_macro_expansions: list[MacroItems] | child | rust.detach
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
 
 
 @annotate(Module)
@@ -1063,7 +1068,7 @@ class _:
     """
 
 
-@annotate(Enum, replace_bases={Item: None})  # still an Item via Adt
+@annotate(Enum, replace_bases={Item: None})
 class _:
     """
     An enum declaration.
@@ -1073,6 +1078,12 @@ class _:
     enum E {A, B(i32), C {x: i32}}
     ```
     """
+
+    attrs: drop
+    generic_param_list: drop
+    name: drop
+    visibility: drop
+    where_clause: drop
 
 
 @annotate(ExternBlock)
@@ -1893,7 +1904,7 @@ class _:
     )
 
 
-@annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
+@annotate(Struct, replace_bases={Item: None})
 class _:
     """
     A Struct. For example:
@@ -1906,6 +1917,11 @@ class _:
     """
 
     field_list: _ | ql.db_table_name("struct_field_lists_")
+    attrs: drop
+    generic_param_list: drop
+    name: drop
+    visibility: drop
+    where_clause: drop
 
 
 @annotate(TokenTree)
@@ -2075,7 +2091,7 @@ class _:
     """
 
 
-@annotate(Union, replace_bases={Item: None})  # still an Item via Adt
+@annotate(Union, replace_bases={Item: None})
 class _:
     """
     A union declaration.
@@ -2085,6 +2101,12 @@ class _:
     union U { f1: u32, f2: f32 }
     ```
     """
+
+    attrs: drop
+    generic_param_list: drop
+    name: drop
+    visibility: drop
+    where_clause: drop
 
 
 @annotate(Use)
