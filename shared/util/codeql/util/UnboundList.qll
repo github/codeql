@@ -11,7 +11,7 @@ module;
 
 private import Location
 
-/** Provide the input to `Make`. */
+/** Provides the input to `Make`. */
 signature module InputSig<LocationSig Location> {
   /** An element. */
   class Element {
