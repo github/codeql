@@ -9007,82 +9007,6 @@ impl From<trap::Label<YieldExpr>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct Adt {
-    _unused: ()
-}
-
-impl Adt {
-    pub fn emit_derive_macro_expansion(id: trap::Label<Self>, i: usize, value: trap::Label<MacroItems>, out: &mut trap::Writer) {
-        out.add_tuple("adt_derive_macro_expansions", vec![id.into(), i.into(), value.into()]);
-    }
-
-    pub fn emit_derive_macro_expansions(id: trap::Label<Self>, values: impl IntoIterator<Item=trap::Label<MacroItems>>, out: &mut trap::Writer) {
-        values
-            .into_iter()
-            .enumerate()
-            .for_each(|(i, value)| Self::emit_derive_macro_expansion(id, i, value, out));
-    }
-}
-
-impl trap::TrapClass for Adt {
-    fn class_name() -> &'static str { "Adt" }
-}
-
-impl From<trap::Label<Adt>> for trap::Label<Item> {
-    fn from(value: trap::Label<Adt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Adt is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Adt>> for trap::Label<Stmt> {
-    fn from(value: trap::Label<Adt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Adt is a subclass of Stmt
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Adt>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<Adt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Adt is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Adt>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<Adt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Adt is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Adt>> for trap::Label<Element> {
-    fn from(value: trap::Label<Adt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Adt is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Adt>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<Adt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Adt is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct AsmExpr {
     pub id: trap::TrapId<AsmExpr>,
     pub asm_pieces: Vec<trap::Label<AsmPiece>>,
@@ -10306,6 +10230,82 @@ impl From<trap::Label<TraitAlias>> for trap::Label<Addressable> {
 }
 
 #[derive(Debug)]
+pub struct TypeItem {
+    _unused: ()
+}
+
+impl TypeItem {
+    pub fn emit_derive_macro_expansion(id: trap::Label<Self>, i: usize, value: trap::Label<MacroItems>, out: &mut trap::Writer) {
+        out.add_tuple("type_item_derive_macro_expansions", vec![id.into(), i.into(), value.into()]);
+    }
+
+    pub fn emit_derive_macro_expansions(id: trap::Label<Self>, values: impl IntoIterator<Item=trap::Label<MacroItems>>, out: &mut trap::Writer) {
+        values
+            .into_iter()
+            .enumerate()
+            .for_each(|(i, value)| Self::emit_derive_macro_expansion(id, i, value, out));
+    }
+}
+
+impl trap::TrapClass for TypeItem {
+    fn class_name() -> &'static str { "TypeItem" }
+}
+
+impl From<trap::Label<TypeItem>> for trap::Label<Item> {
+    fn from(value: trap::Label<TypeItem>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeItem is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeItem>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<TypeItem>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeItem is a subclass of Stmt
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeItem>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<TypeItem>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeItem is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeItem>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<TypeItem>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeItem is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeItem>> for trap::Label<Element> {
+    fn from(value: trap::Label<TypeItem>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeItem is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeItem>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<TypeItem>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeItem is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Use {
     pub id: trap::TrapId<Use>,
     pub attrs: Vec<trap::Label<Attr>>,
@@ -10521,9 +10521,9 @@ pub struct Enum {
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
-    pub variant_list: Option<trap::Label<VariantList>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
+    pub variant_list: Option<trap::Label<VariantList>>,
 }
 
 impl trap::TrapEntry for Enum {
@@ -10534,22 +10534,22 @@ impl trap::TrapEntry for Enum {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("enums", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("enum_attrs", vec![id.into(), i.into(), v.into()]);
+            out.add_tuple("type_item_attrs", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.generic_param_list {
-            out.add_tuple("enum_generic_param_lists", vec![id.into(), v.into()]);
+            out.add_tuple("type_item_generic_param_lists", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.name {
-            out.add_tuple("enum_names", vec![id.into(), v.into()]);
+            out.add_tuple("type_item_names", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.visibility {
+            out.add_tuple("type_item_visibilities", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.where_clause {
+            out.add_tuple("type_item_where_clauses", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.variant_list {
             out.add_tuple("enum_variant_lists", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.visibility {
-            out.add_tuple("enum_visibilities", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.where_clause {
-            out.add_tuple("enum_where_clauses", vec![id.into(), v.into()]);
         }
     }
 }
@@ -10558,9 +10558,9 @@ impl trap::TrapClass for Enum {
     fn class_name() -> &'static str { "Enum" }
 }
 
-impl From<trap::Label<Enum>> for trap::Label<Adt> {
+impl From<trap::Label<Enum>> for trap::Label<TypeItem> {
     fn from(value: trap::Label<Enum>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Adt
+        // SAFETY: this is safe because in the dbscheme Enum is a subclass of TypeItem
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11190,11 +11190,11 @@ impl From<trap::Label<Static>> for trap::Label<Addressable> {
 pub struct Struct {
     pub id: trap::TrapId<Struct>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub field_list: Option<trap::Label<FieldList>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
+    pub field_list: Option<trap::Label<FieldList>>,
 }
 
 impl trap::TrapEntry for Struct {
@@ -11205,22 +11205,22 @@ impl trap::TrapEntry for Struct {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("structs", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("struct_attrs", vec![id.into(), i.into(), v.into()]);
+            out.add_tuple("type_item_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.generic_param_list {
+            out.add_tuple("type_item_generic_param_lists", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.name {
+            out.add_tuple("type_item_names", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.visibility {
+            out.add_tuple("type_item_visibilities", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.where_clause {
+            out.add_tuple("type_item_where_clauses", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.field_list {
             out.add_tuple("struct_field_lists_", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.generic_param_list {
-            out.add_tuple("struct_generic_param_lists", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.name {
-            out.add_tuple("struct_names", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.visibility {
-            out.add_tuple("struct_visibilities", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.where_clause {
-            out.add_tuple("struct_where_clauses", vec![id.into(), v.into()]);
         }
     }
 }
@@ -11229,9 +11229,9 @@ impl trap::TrapClass for Struct {
     fn class_name() -> &'static str { "Struct" }
 }
 
-impl From<trap::Label<Struct>> for trap::Label<Adt> {
+impl From<trap::Label<Struct>> for trap::Label<TypeItem> {
     fn from(value: trap::Label<Struct>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Adt
+        // SAFETY: this is safe because in the dbscheme Struct is a subclass of TypeItem
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11421,9 +11421,9 @@ pub struct Union {
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
-    pub struct_field_list: Option<trap::Label<StructFieldList>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
+    pub struct_field_list: Option<trap::Label<StructFieldList>>,
 }
 
 impl trap::TrapEntry for Union {
@@ -11434,22 +11434,22 @@ impl trap::TrapEntry for Union {
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("unions", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("union_attrs", vec![id.into(), i.into(), v.into()]);
+            out.add_tuple("type_item_attrs", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.generic_param_list {
-            out.add_tuple("union_generic_param_lists", vec![id.into(), v.into()]);
+            out.add_tuple("type_item_generic_param_lists", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.name {
-            out.add_tuple("union_names", vec![id.into(), v.into()]);
+            out.add_tuple("type_item_names", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.visibility {
+            out.add_tuple("type_item_visibilities", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.where_clause {
+            out.add_tuple("type_item_where_clauses", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.struct_field_list {
             out.add_tuple("union_struct_field_lists", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.visibility {
-            out.add_tuple("union_visibilities", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.where_clause {
-            out.add_tuple("union_where_clauses", vec![id.into(), v.into()]);
         }
     }
 }
@@ -11458,9 +11458,9 @@ impl trap::TrapClass for Union {
     fn class_name() -> &'static str { "Union" }
 }
 
-impl From<trap::Label<Union>> for trap::Label<Adt> {
+impl From<trap::Label<Union>> for trap::Label<TypeItem> {
     fn from(value: trap::Label<Union>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Union is a subclass of Adt
+        // SAFETY: this is safe because in the dbscheme Union is a subclass of TypeItem
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
