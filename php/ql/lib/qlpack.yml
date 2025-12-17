@@ -1,0 +1,10 @@
+name: codeql/php-all
+version: 0.0.1-dev
+groups: php
+extractor: php
+dbscheme: php.dbscheme
+library: true
+dependencies:
+  codeql/tutorial: ${workspace}
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

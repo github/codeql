@@ -147,6 +147,7 @@ use_repo(
     "vendor_ts__tree-sitter-0.25.9",
     "vendor_ts__tree-sitter-embedded-template-0.25.0",
     "vendor_ts__tree-sitter-json-0.24.8",
+    "vendor_ts__tree-sitter-php-0.23.11",
     "vendor_ts__tree-sitter-ql-0.23.1",
     "vendor_ts__tree-sitter-ruby-0.23.1",
     "vendor_ts__triomphe-0.1.14",

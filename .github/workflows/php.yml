@@ -1,0 +1,77 @@
+name: "PHP"
+
+on:
+  pull_request:
+    paths:
+      - "php/**"
+      - "misc/bazel/**"
+      - "misc/codegen/**"
+      - "shared/**"
+      - "*.bazel*"
+      - "MODULE.bazel"
+      - .github/workflows/php.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - main
+      - rc/*
+      - codeql-cli-*
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  extractor:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: php/extractor
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.88"
+          components: clippy,rustfmt
+      - name: Format
+        run: cargo fmt --check
+      - name: Compilation
+        run: cargo check
+      - name: Clippy
+        run: cargo clippy --no-deps -- -D warnings
+
+  qltest:
+    if: github.repository_owner == 'github'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: php
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.88"
+          components: clippy,rustfmt
+      - uses: ./.github/actions/fetch-codeql
+      - name: Build extractor pack
+        run: scripts/create-extractor-pack.sh
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with:
+          key: php-qltest
+      - name: Run QL tests
+        run: |
+          codeql test run --threads=0 --ram 50000 --search-path "${{ github.workspace }}" --check-databases --check-diff-informed --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

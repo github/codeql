@@ -1,0 +1,8 @@
+name: codeql/php-tests
+groups: [php, test]
+dependencies:
+  codeql/php-queries: ${workspace}
+  codeql/php-all: ${workspace}
+extractor: php
+tests: .
+warnOnImplicitThis: true

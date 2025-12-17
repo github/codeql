@@ -4,9 +4,11 @@
 resolver = "2"
 members = [
     "shared/tree-sitter-extractor",
+    "php/extractor",
     "ruby/extractor",
     "rust/extractor",
     "rust/extractor/macros",
     "rust/ast-generator",
     "rust/autobuild",
 ]
+

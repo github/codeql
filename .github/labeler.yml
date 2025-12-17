@@ -26,6 +26,10 @@ Python:
   - python/**/*
   - change-notes/**/*python*
 
+PHP:
+  - php/**/*
+  - change-notes/**/*php*
+
 Ruby:
   - ruby/**/*
   - change-notes/**/*ruby*

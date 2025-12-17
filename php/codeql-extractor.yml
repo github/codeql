@@ -1,0 +1,32 @@
+name: "php"
+display_name: "PHP"
+version: 0.1.0
+column_kind: "utf8"
+legacy_qltest_extraction: true
+overlay_support_version: 20250626
+build_modes:
+  - none
+default_queries:
+  - codeql/php-queries
+github_api_languages:
+  - PHP
+scc_languages:
+  - PHP
+file_types:
+  - name: php
+    display_name: PHP files
+    extensions:
+      - .php
+options:
+  trap:
+    title: Options pertaining to TRAP.
+    type: object
+    properties:
+      compression:
+        title: Controls compression for the TRAP files written by the extractor.
+        description: >
+          This option is only intended for use in debugging the extractor. Accepted
+          values are 'gzip' (the default, to write gzip-compressed TRAP) 'zstd' (to
+          write Zstandard-compressed TRAP) and 'none' (to write uncompressed TRAP).
+        type: string
+        pattern: "^(none|gzip|zstd)$"

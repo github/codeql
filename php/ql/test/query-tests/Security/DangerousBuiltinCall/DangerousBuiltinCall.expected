@@ -1,0 +1,4 @@
+| FunctionCallExpression | Use of dangerous PHP built-in: 'assert'. |
+| FunctionCallExpression | Use of dangerous PHP built-in: 'eval'. |
+| FunctionCallExpression | Use of dangerous PHP built-in: 'exec'. |
+| FunctionCallExpression | Use of dangerous PHP built-in: 'unserialize'. |

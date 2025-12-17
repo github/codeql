@@ -626,6 +626,18 @@ alias(
 )
 
 alias(
+    name = "tree-sitter-php-0.23.11",
+    actual = "@vendor_ts__tree-sitter-php-0.23.11//:tree_sitter_php",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tree-sitter-php",
+    actual = "@vendor_ts__tree-sitter-php-0.23.11//:tree_sitter_php",
+    tags = ["manual"],
+)
+
+alias(
     name = "tree-sitter-ql-0.23.1",
     actual = "@vendor_ts__tree-sitter-ql-0.23.1//:tree_sitter_ql",
     tags = ["manual"],

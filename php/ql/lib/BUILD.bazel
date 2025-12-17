@@ -1,0 +1,13 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+
+package(default_visibility = ["//php:__pkg__"])
+
+pkg_files(
+    name = "dbscheme",
+    srcs = ["php.dbscheme"],
+)
+
+pkg_files(
+    name = "dbscheme-stats",
+    srcs = ["php.dbscheme.stats"],
+)
