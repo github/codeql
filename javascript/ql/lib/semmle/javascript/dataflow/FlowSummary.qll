@@ -8,6 +8,8 @@ private import semmle.javascript.dataflow.internal.FlowSummaryPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
 
+class Provenance = Impl::Public::Provenance;
+
 /**
  * A model for a function that can propagate data flow.
  *
@@ -67,9 +69,13 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
   predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance provenance, boolean isExact,
+    string model
   ) {
-    this.propagatesFlow(input, output, preservesValue) and model = this
+    this.propagatesFlow(input, output, preservesValue) and
+    provenance = "manual" and
+    model = this and
+    isExact = true
   }
 
   /**
