@@ -7,6 +7,7 @@
 | TaintedPath.cs:38:49:38:55 | access to local variable badPath | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:38:49:38:55 | access to local variable badPath | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
 | TaintedPath.cs:51:26:51:29 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:51:26:51:29 | access to local variable path | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
 | TaintedPath.cs:66:45:66:48 | access to local variable path | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:66:45:66:48 | access to local variable path | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
+| TaintedPath.cs:71:30:71:38 | access to local variable fullPath2 | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | TaintedPath.cs:71:30:71:38 | access to local variable fullPath2 | This path depends on a $@. | TaintedPath.cs:10:23:10:45 | access to property QueryString | user-provided value |
 edges
 | TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:12:50:12:53 | access to local variable path | provenance |  |
 | TaintedPath.cs:10:16:10:19 | access to local variable path : String | TaintedPath.cs:17:51:17:54 | access to local variable path | provenance |  |
@@ -21,8 +22,13 @@ edges
 | TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | TaintedPath.cs:36:25:36:31 | access to local variable badPath | provenance |  |
 | TaintedPath.cs:35:16:35:22 | access to local variable badPath : String | TaintedPath.cs:38:49:38:55 | access to local variable badPath | provenance |  |
 | TaintedPath.cs:59:44:59:47 | access to local variable path : String | TaintedPath.cs:66:45:66:48 | access to local variable path | provenance |  |
+| TaintedPath.cs:59:44:59:47 | access to local variable path : String | TaintedPath.cs:69:55:69:58 | access to local variable path : String | provenance |  |
+| TaintedPath.cs:69:16:69:24 | access to local variable fullPath2 : String | TaintedPath.cs:71:30:71:38 | access to local variable fullPath2 | provenance |  |
+| TaintedPath.cs:69:28:69:59 | call to method Combine : String | TaintedPath.cs:69:16:69:24 | access to local variable fullPath2 : String | provenance |  |
+| TaintedPath.cs:69:55:69:58 | access to local variable path : String | TaintedPath.cs:69:28:69:59 | call to method Combine : String | provenance | MaD:2 |
 models
 | 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 2 | Summary: System.IO; Path; false; Combine; (System.String,System.String); ; Argument[1]; ReturnValue; taint; manual |
 nodes
 | TaintedPath.cs:10:16:10:19 | access to local variable path : String | semmle.label | access to local variable path : String |
 | TaintedPath.cs:10:23:10:45 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
@@ -37,4 +43,8 @@ nodes
 | TaintedPath.cs:51:26:51:29 | access to local variable path | semmle.label | access to local variable path |
 | TaintedPath.cs:59:44:59:47 | access to local variable path : String | semmle.label | access to local variable path : String |
 | TaintedPath.cs:66:45:66:48 | access to local variable path | semmle.label | access to local variable path |
+| TaintedPath.cs:69:16:69:24 | access to local variable fullPath2 : String | semmle.label | access to local variable fullPath2 : String |
+| TaintedPath.cs:69:28:69:59 | call to method Combine : String | semmle.label | call to method Combine : String |
+| TaintedPath.cs:69:55:69:58 | access to local variable path : String | semmle.label | access to local variable path : String |
+| TaintedPath.cs:71:30:71:38 | access to local variable fullPath2 | semmle.label | access to local variable fullPath2 |
 subpaths
