@@ -815,12 +815,12 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string, isDu
 			displayPath = rawPath
 		}
 		if i == len(components)-1 {
-			lbl := tw.Labeler.FileLabelFor(path)
+			lbl := tw.Labeler.FileLabelFor(file)
 			dbscheme.FilesTable.Emit(tw, lbl, displayPath)
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
-			slbl := extraction.StatWriter.Labeler.FileLabelFor(path)
+			slbl := extraction.StatWriter.Labeler.FileLabelFor(file)
 			if !isDummy {
 				dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(file), slbl)
 			}

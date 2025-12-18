@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+The <code>danger_accept_invalid_certs</code> option on TLS connectors and HTTP clients controls whether certificate verification is performed. If this option is set to <code>true</code>, the client will accept any certificate, making it susceptible to man-in-the-middle attacks.
+</p>
+<p>
+Similarly, the <code>danger_accept_invalid_hostnames</code> option controls whether hostname verification is performed. If this option is set to <code>true</code>, the client will accept any valid certificate regardless of the site that certificate is for, again making it susceptible to man-in-the-middle attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not set <code>danger_accept_invalid_certs</code> or <code>danger_accept_invalid_hostnames</code> to <code>true</code>, except in controlled environments such as tests. In production, always ensure certificate and hostname verification is enabled to prevent security risks.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet shows a function that creates an HTTP client with certificate verification disabled:
+</p>
+<sample src="DisabledCertificateCheckBad.rs"/>
+<p>
+In production code, always configure clients to verify certificates:
+</p>
+<sample src="DisabledCertificateCheckGood.rs"/>
+</example>
+<references>
+<li>
+Rust native-tls crate: <a href="https://docs.rs/native-tls/latest/native_tls/struct.TlsConnectorBuilder.html">TlsConnectorBuilder</a>.
+</li>
+<li>
+Rust reqwest crate: <a href="https://docs.rs/reqwest/latest/reqwest/struct.ClientBuilder.html">ClientBuilder</a>.
+</li>
+<li>
+SSL.com: <a href="https://www.ssl.com/article/browsers-and-certificate-validation/">Browsers and Certificate Validation</a>.
+</li>
+</references>
+</qhelp>

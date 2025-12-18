@@ -113,7 +113,7 @@ To identify these cases, we can create two CodeQL classes that represent, respec
    }
 
    /** class representing calls to java.util.Collection.toArray(T[]) */
-   class CollectionToArrayCall extends MethodAccess {
+   class CollectionToArrayCall extends MethodCall {
        CollectionToArrayCall() {
            exists(CollectionToArray m |
                this.getMethod().getSourceDeclaration().overridesOrInstantiates*(m)
@@ -210,7 +210,7 @@ Now we want to identify all calls to ``Collection.contains``, including any meth
 
 .. code-block:: ql
 
-   class JavaUtilCollectionContainsCall extends MethodAccess {
+   class JavaUtilCollectionContainsCall extends MethodCall {
        JavaUtilCollectionContainsCall() {
            exists(JavaUtilCollectionContains jucc |
                this.getMethod().getSourceDeclaration().overrides*(jucc)
@@ -297,7 +297,7 @@ Adding these three improvements, our final query becomes:
         }
     }
 
-    class JavaUtilCollectionContainsCall extends MethodAccess {
+    class JavaUtilCollectionContainsCall extends MethodCall {
         JavaUtilCollectionContainsCall() {
             exists(JavaUtilCollectionContains jucc |
                 this.getMethod().getSourceDeclaration().overrides*(jucc)

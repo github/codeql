@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ModuleValue mv, ControlFlowNode ref, string local_external
 where

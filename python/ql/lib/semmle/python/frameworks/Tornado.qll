@@ -135,6 +135,8 @@ module Tornado {
         API::Node subclassRef() {
           result = web().getMember("RequestHandler").getASubclass*()
           or
+          result = WebSocket::WebSocketHandler::subclassRef()
+          or
           result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
         }
 
@@ -428,6 +430,49 @@ module Tornado {
         }
       }
     }
+
+    // ---------------------------------------------------------------------------
+    // tornado.websocket
+    // ---------------------------------------------------------------------------
+    /** Gets a reference to the `tornado.websocket` module. */
+    API::Node websocket() { result = Tornado::tornado().getMember("websocket") }
+
+    /** Provides models for the `tornado.websocket` module */
+    module WebSocket {
+      /**
+       * Provides models for the `tornado.websocket.WebSocketHandler` class and subclasses.
+       *
+       * See https://www.tornadoweb.org/en/stable/websocket.html#tornado.websocket.WebSocketHandler.
+       */
+      module WebSocketHandler {
+        /** Gets a reference to the `tornado.websocket.WebSocketHandler` class or any subclass. */
+        API::Node subclassRef() {
+          result = websocket().getMember("WebSocketHandler").getASubclass*()
+          or
+          result =
+            ModelOutput::getATypeNode("tornado.websocket.WebSocketHandler~Subclass").getASubclass*()
+        }
+
+        /** A subclass of `tornado.websocket.WebSocketHandler`. */
+        class WebSocketHandlerClass extends Web::RequestHandler::RequestHandlerClass {
+          WebSocketHandlerClass() { this.getParent() = subclassRef().asSource().asExpr() }
+
+          override Function getARequestHandler() {
+            result = super.getARequestHandler()
+            or
+            result = this.getAMethod() and
+            result.getName() = "open"
+          }
+
+          /** Gets a function that could handle incoming WebSocket events, if any. */
+          Function getAWebSocketEventHandler() {
+            result = this.getAMethod() and
+            result.getName() =
+              ["on_message", "on_close", "on_ping", "on_pong", "select_subprotocol", "check_origin"]
+          }
+        }
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -532,6 +577,27 @@ module Tornado {
       // Since we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
+      result in [
+          this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+          this.getKwarg().(Parameter)
+        ] and
+      not result = this.getArg(0)
+    }
+
+    override string getFramework() { result = "Tornado" }
+  }
+
+  /** A request handler for WebSocket events. */
+  private class TornadoWebSocketEventHandler extends Http::Server::RequestHandler::Range {
+    TornadoWebSocketEventHandler() {
+      exists(TornadoModule::WebSocket::WebSocketHandler::WebSocketHandlerClass cls |
+        cls.getAWebSocketEventHandler() = this
+      )
+    }
+
+    override Parameter getARoutedParameter() {
+      // The `open` method is handled as a normal request handler in `TornadoRouteSetup` or `TornadoRequestHandlerWithoutKnownRoute`.
+      // For other event handlers (such as `on_message`), all parameters should be remote flow sources, as they are not affected by routing.
       result in [
           this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
           this.getKwarg().(Parameter)

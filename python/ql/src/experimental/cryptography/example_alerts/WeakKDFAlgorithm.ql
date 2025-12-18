@@ -1,5 +1,5 @@
 /**
- * @name Weak KDF algorithm.
+ * @name Weak KDF algorithm
  * @description Approved KDF algorithms must one of the following
  *  ["PBKDF2" , "PBKDF2HMAC", "KBKDF", "KBKDFHMAC", "CONCATKDF", "CONCATKDFHASH"]
  * @assumption The value being used to derive a key (either a key or a password) is correct for the algorithm (i.e., a key is used for KBKDF and a password for PBKDF).

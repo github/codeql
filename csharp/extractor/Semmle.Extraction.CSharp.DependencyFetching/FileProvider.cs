@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             smallNonBinary = new Lazy<string[]>(() => ReturnAndLogFiles("small non-binary", SelectSmallFiles(allNonBinary.Value).SelectFileNames().ToArray()));
             sources = new Lazy<string[]>(() => SelectTextFileNamesByExtension("source", ".cs"));
             projects = new Lazy<string[]>(() => SelectTextFileNamesByExtension("project", ".csproj"));
-            solutions = new Lazy<string[]>(() => SelectTextFileNamesByExtension("solution", ".sln"));
+            solutions = new Lazy<string[]>(() => SelectTextFileNamesByExtension("solution", ".sln", ".slnx"));
             dlls = new Lazy<string[]>(() => SelectBinaryFileNamesByExtension("DLL", ".dll"));
             nugetConfigs = new Lazy<string[]>(() => SelectTextFileNamesByName("nuget.config"));
             globalJsons = new Lazy<string[]>(() => SelectTextFileNamesByName("global.json"));

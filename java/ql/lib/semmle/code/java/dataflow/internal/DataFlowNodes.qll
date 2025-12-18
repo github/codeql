@@ -29,7 +29,7 @@ private predicate deadcode(Expr e) {
 module SsaFlow {
   module Impl = SsaImpl::DataFlowIntegration;
 
-  private predicate ssaDefAssigns(SsaExplicitUpdate def, Expr value) {
+  private predicate ssaDefAssigns(SsaExplicitWrite def, Expr value) {
     exists(VariableUpdate upd | upd = def.getDefiningExpr() |
       value = upd.(VariableAssign).getSource() or
       value = upd.(AssignOp) or
@@ -46,7 +46,7 @@ module SsaFlow {
     or
     exists(Parameter p |
       n = TExplicitParameterNode(p) and
-      result.(Impl::WriteDefSourceNode).getDefinition().(SsaImplicitInit).isParameterDefinition(p)
+      result.(Impl::WriteDefSourceNode).getDefinition().(SsaParameterInit).getParameter() = p
     )
     or
     ssaDefAssigns(result.(Impl::WriteDefSourceNode).getDefinition(), n.asExpr())

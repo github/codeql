@@ -19,7 +19,7 @@ public class ComprehensionExpression extends Expression {
     this.body = body;
     this.blocks = blocks;
     this.filter = filter;
-    this.generator = generator == Boolean.TRUE;
+    this.generator = Boolean.TRUE.equals(generator);
   }
 
   @Override

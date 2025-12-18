@@ -1,5 +1,5 @@
 /**
- * @name Find work with changing working directories, with security errors.
+ * @name Find work with changing working directories, with security errors
  * @description Not validating the return value or pinning the directory can be unsafe.
  * @kind problem
  * @id cpp/work-with-changing-working-directories

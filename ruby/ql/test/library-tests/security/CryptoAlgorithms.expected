@@ -34,6 +34,8 @@ strongHashingAlgorithms
 | SHA3256 |
 | SHA3384 |
 | SHA3512 |
+| SHA512224 |
+| SHA512256 |
 | SHAKE128 |
 | SHAKE256 |
 | SM3 |

@@ -1,6 +1,8 @@
 /**
  * Contains flow steps to model flow from a module into a dynamic `import()` expression.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode

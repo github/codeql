@@ -1,2 +1,0 @@
-multipleCallTargets
-| request_forgery_tests.rs:30:36:30:52 | user_url.as_str() |

@@ -1,3 +1,24 @@
+## 2.2.3
+
+No user-facing changes.
+
+## 2.2.2
+
+No user-facing changes.
+
+## 2.2.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the Next.js model that would cause the analysis to miss server-side taint sources in the `app/pages` folder.
+
+## 2.2.0
+
+### Query Metadata Changes
+
+* Increased the `security-severity` score of the `js/xss-through-dom` query from 6.1 to 7.8 to align with other XSS queries.
+* Reduced the `security-severity` score of the `js/overly-large-range` query from 5.0 to 4.0 to better reflect its impact.
+
 ## 2.1.3
 
 No user-facing changes.

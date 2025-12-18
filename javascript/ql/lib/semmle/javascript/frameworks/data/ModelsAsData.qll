@@ -48,6 +48,7 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
   }
 }
 
+overlay[local?]
 private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
   string type;
   string path;
@@ -57,6 +58,7 @@ private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
     this = type + ";" + path
   }
 
+  overlay[global]
   override DataFlow::InvokeNode getACall() { ModelOutput::resolvedSummaryBase(type, path, result) }
 
   override predicate propagatesFlow(

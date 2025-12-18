@@ -1,5 +1,5 @@
 /**
- * @name Unsafe usage of v1 version of Azure Storage client-side encryption (CVE-2022-30187).
+ * @name Unsafe usage of v1 version of Azure Storage client-side encryption (CVE-2022-30187)
  * @description Unsafe usage of v1 version of Azure Storage client-side encryption, please refer to http://aka.ms/azstorageclientencryptionblog
  * @kind problem
  * @tags security

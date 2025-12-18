@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -126,11 +128,25 @@ public class SanitizationTests extends HttpServlet {
                 HttpRequest r10 = HttpRequest.newBuilder(new URI(param10)).build();
                 client.send(r10, null);
             }
-            
+
             String param11 = request.getParameter("uri11");
             validate(param11);
             HttpRequest r11 = HttpRequest.newBuilder(new URI(param11)).build();
             client.send(r11, null);
+
+            String param12 = request.getParameter("uri12");
+            if (Pattern.matches("[a-zA-Z0-9_-]+", param12)) {
+                HttpRequest r12 = HttpRequest.newBuilder(new URI(param12)).build();
+                client.send(r12, null);
+            }
+
+            Pattern pattern = Pattern.compile("[a-zA-Z0-9_-]+");
+            String param13 = request.getParameter("uri13");
+            Matcher matcher = pattern.matcher(param13);
+            if (matcher.matches()) {
+                HttpRequest r13 = HttpRequest.newBuilder(new URI(param13)).build();
+                client.send(r13, null);
+            }
         } catch (Exception e) {
             // TODO: handle exception
         }

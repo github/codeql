@@ -187,13 +187,10 @@ class SpringServletInputAnnotation extends Annotation {
       a = this.getType() and
       a.getPackage().getName() = "org.springframework.web.bind.annotation"
     |
-      a.hasName("MatrixVariable") or
-      a.hasName("RequestParam") or
-      a.hasName("RequestHeader") or
-      a.hasName("CookieValue") or
-      a.hasName("RequestPart") or
-      a.hasName("PathVariable") or
-      a.hasName("RequestBody")
+      a.hasName([
+          "MatrixVariable", "RequestParam", "RequestHeader", "CookieValue", "RequestPart",
+          "PathVariable", "RequestBody"
+        ])
     )
   }
 }

@@ -7,6 +7,7 @@ private import codeql.rust.internal.CachedStages
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.frameworks.stdlib.Stdlib
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 /**
  * Holds if a dyn trait type should have a type parameter associated with `n`. A
@@ -31,38 +32,21 @@ private predicate dynTraitTypeParameter(Trait trait, AstNode n) {
 
 cached
 newtype TType =
-  TTuple(int arity) {
-    arity =
-      [
-        any(TupleTypeRepr t).getNumberOfFields(),
-        any(TupleExpr e).getNumberOfFields(),
-        any(TuplePat p).getNumberOfFields()
-      ] and
-    Stages::TypeInferenceStage::ref()
-  } or
-  TStruct(Struct s) or
+  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
   TEnum(Enum e) or
   TTrait(Trait t) or
   TUnion(Union u) or
-  TArrayType() or // todo: add size?
-  TRefType() or // todo: add mut?
   TImplTraitType(ImplTraitTypeRepr impl) or
   TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
-  TSliceType() or
   TNeverType() or
-  TPtrType() or
-  TTupleTypeParameter(int arity, int i) { exists(TTuple(arity)) and i in [0 .. arity - 1] } or
+  TUnknownType() or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
-  TArrayTypeParameter() or
   TDynTraitTypeParameter(AstNode n) { dynTraitTypeParameter(_, n) } or
   TImplTraitTypeParameter(ImplTraitTypeRepr implTrait, TypeParam tp) {
     implTraitTypeParam(implTrait, _, tp)
   } or
-  TRefTypeParameter() or
-  TSelfTypeParameter(Trait t) or
-  TSliceTypeParameter() or
-  TPtrTypeParameter()
+  TSelfTypeParameter(Trait t)
 
 private predicate implTraitTypeParam(ImplTraitTypeRepr implTrait, int i, TypeParam tp) {
   implTrait.isInReturnPos() and
@@ -105,26 +89,25 @@ abstract class Type extends TType {
 }
 
 /** A tuple type `(T, ...)`. */
-class TupleType extends Type, TTuple {
+class TupleType extends StructType {
   private int arity;
 
-  TupleType() { this = TTuple(arity) }
-
-  override TypeParameter getPositionalTypeParameter(int i) {
-    result = TTupleTypeParameter(arity, i)
-  }
+  TupleType() { arity = this.getStruct().(Builtins::TupleType).getArity() }
 
   /** Gets the arity of this tuple type. */
   int getArity() { result = arity }
 
   override string toString() { result = "(T_" + arity + ")" }
+}
 
-  override Location getLocation() { result instanceof EmptyLocation }
+pragma[nomagic]
+TypeParamTypeParameter getTupleTypeParameter(int arity, int i) {
+  result = any(TupleType t | t.getArity() = arity).getPositionalTypeParameter(i)
 }
 
 /** The unit type `()`. */
 class UnitType extends TupleType {
-  UnitType() { this = TTuple(0) }
+  UnitType() { this.getArity() = 0 }
 
   override string toString() { result = "()" }
 }
@@ -156,6 +139,9 @@ class EnumType extends Type, TEnum {
   private Enum enum;
 
   EnumType() { this = TEnum(enum) }
+
+  /** Gets the enum that this enum type represents. */
+  Enum getEnum() { result = enum }
 
   override TypeParameter getPositionalTypeParameter(int i) {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
@@ -225,20 +211,17 @@ class UnionType extends Type, TUnion {
 /**
  * An array type.
  *
- * Array types like `[i64; 5]` are modeled as normal generic types
- * with a single type argument.
+ * Array types like `[i64; 5]` are modeled as normal generic types.
  */
-class ArrayType extends Type, TArrayType {
-  ArrayType() { this = TArrayType() }
+class ArrayType extends StructType {
+  ArrayType() { this.getStruct() instanceof Builtins::ArrayType }
 
-  override TypeParameter getPositionalTypeParameter(int i) {
-    result = TArrayTypeParameter() and
-    i = 0
-  }
+  override string toString() { result = "[;]" }
+}
 
-  override string toString() { result = "[]" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
+pragma[nomagic]
+TypeParamTypeParameter getArrayTypeParameter() {
+  result = any(ArrayType t).getPositionalTypeParameter(0)
 }
 
 /**
@@ -247,17 +230,15 @@ class ArrayType extends Type, TArrayType {
  * Reference types like `& i64` are modeled as normal generic types
  * with a single type argument.
  */
-class RefType extends Type, TRefType {
-  RefType() { this = TRefType() }
-
-  override TypeParameter getPositionalTypeParameter(int i) {
-    result = TRefTypeParameter() and
-    i = 0
-  }
+class RefType extends StructType {
+  RefType() { this.getStruct() instanceof Builtins::RefType }
 
   override string toString() { result = "&" }
+}
 
-  override Location getLocation() { result instanceof EmptyLocation }
+pragma[nomagic]
+TypeParamTypeParameter getRefTypeParameter() {
+  result = any(RefType t).getPositionalTypeParameter(0)
 }
 
 /**
@@ -339,17 +320,15 @@ class ImplTraitReturnType extends ImplTraitType {
  * Slice types like `[i64]` are modeled as normal generic types
  * with a single type argument.
  */
-class SliceType extends Type, TSliceType {
-  SliceType() { this = TSliceType() }
-
-  override TypeParameter getPositionalTypeParameter(int i) {
-    result = TSliceTypeParameter() and
-    i = 0
-  }
+class SliceType extends StructType {
+  SliceType() { this.getStruct() instanceof Builtins::SliceType }
 
   override string toString() { result = "[]" }
+}
 
-  override Location getLocation() { result instanceof EmptyLocation }
+pragma[nomagic]
+TypeParamTypeParameter getSliceTypeParameter() {
+  result = any(SliceType t).getPositionalTypeParameter(0)
 }
 
 class NeverType extends Type, TNeverType {
@@ -360,13 +339,51 @@ class NeverType extends Type, TNeverType {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
-class PtrType extends Type, TPtrType {
-  override TypeParameter getPositionalTypeParameter(int i) {
-    i = 0 and
-    result = TPtrTypeParameter()
-  }
+abstract class PtrType extends StructType { }
 
-  override string toString() { result = "*" }
+pragma[nomagic]
+TypeParamTypeParameter getPtrTypeParameter() {
+  result = any(PtrType t).getPositionalTypeParameter(0)
+}
+
+class PtrMutType extends PtrType {
+  PtrMutType() { this.getStruct() instanceof Builtins::PtrMutType }
+
+  override string toString() { result = "*mut" }
+}
+
+class PtrConstType extends PtrType {
+  PtrConstType() { this.getStruct() instanceof Builtins::PtrConstType }
+
+  override string toString() { result = "*const" }
+}
+
+/**
+ * A special pseudo type used to indicate that the actual type may have to be
+ * inferred by propagating type information back into call arguments.
+ *
+ * For example, in
+ *
+ * ```rust
+ * let x = Default::default();
+ * foo(x);
+ * ```
+ *
+ * `Default::default()` is assigned this type, which allows us to infer the actual
+ * type from the type of `foo`'s first parameter.
+ *
+ * Unknown types are not restricted to root types, for example in a call like
+ * `Vec::new()` we assign this type at the type path corresponding to the type
+ * parameter of `Vec`.
+ *
+ * Unknown types are used to restrict when type information is allowed to flow
+ * into call arguments (including method call receivers), in order to avoid
+ * combinatorial explosions.
+ */
+class UnknownType extends Type, TUnknownType {
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override string toString() { result = "(context typed)" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
@@ -374,6 +391,8 @@ class PtrType extends Type, TPtrType {
 /** A type parameter. */
 abstract class TypeParameter extends Type {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  abstract ItemNode getDeclaringItem();
 }
 
 private class RawTypeParameter = @type_param or @trait or @type_alias or @impl_trait_type_repr;
@@ -391,6 +410,8 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   TypeParamTypeParameter() { this = TTypeParamTypeParameter(typeParam) }
 
   TypeParam getTypeParam() { result = typeParam }
+
+  override ItemNode getDeclaringItem() { result.getTypeParam(_) = typeParam }
 
   override string toString() { result = typeParam.toString() }
 
@@ -425,40 +446,11 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   /** Gets the trait that contains this associated type declaration. */
   TraitItemNode getTrait() { result.getAnAssocItem() = typeAlias }
 
+  override ItemNode getDeclaringItem() { result = this.getTrait() }
+
   override string toString() { result = typeAlias.getName().getText() }
 
   override Location getLocation() { result = typeAlias.getLocation() }
-}
-
-/**
- * A tuple type parameter. For instance the `T` in `(T, U)`.
- *
- * Since tuples are structural their type parameters can be represented as their
- * positional index. The type inference library requires that type parameters
- * belong to a single type, so we also include the arity of the tuple type.
- */
-class TupleTypeParameter extends TypeParameter, TTupleTypeParameter {
-  private int arity;
-  private int index;
-
-  TupleTypeParameter() { this = TTupleTypeParameter(arity, index) }
-
-  override string toString() { result = index.toString() + "(" + arity + ")" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-
-  /** Gets the index of this tuple type parameter. */
-  int getIndex() { result = index }
-
-  /** Gets the tuple type that corresponds to this tuple type parameter. */
-  TupleType getTupleType() { result = TTuple(arity) }
-}
-
-/** An implicit array type parameter. */
-class ArrayTypeParameter extends TypeParameter, TArrayTypeParameter {
-  override string toString() { result = "[T;...]" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
@@ -488,6 +480,8 @@ class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
     result = [this.getTypeParam().toString(), this.getTypeAlias().getName().toString()]
   }
 
+  override ItemNode getDeclaringItem() { none() }
+
   override string toString() { result = "dyn(" + this.toStringInner() + ")" }
 
   override Location getLocation() { result = n.getLocation() }
@@ -503,29 +497,11 @@ class ImplTraitTypeParameter extends TypeParameter, TImplTraitTypeParameter {
 
   ImplTraitTypeRepr getImplTraitTypeRepr() { result = implTrait }
 
+  override ItemNode getDeclaringItem() { none() }
+
   override string toString() { result = "impl(" + typeParam.toString() + ")" }
 
   override Location getLocation() { result = typeParam.getLocation() }
-}
-
-/** An implicit reference type parameter. */
-class RefTypeParameter extends TypeParameter, TRefTypeParameter {
-  override string toString() { result = "&T" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-}
-
-/** An implicit slice type parameter. */
-class SliceTypeParameter extends TypeParameter, TSliceTypeParameter {
-  override string toString() { result = "[T]" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
-}
-
-class PtrTypeParameter extends TypeParameter, TPtrTypeParameter {
-  override string toString() { result = "*T" }
-
-  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
@@ -541,6 +517,8 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
   SelfTypeParameter() { this = TSelfTypeParameter(trait) }
 
   Trait getTrait() { result = trait }
+
+  override ItemNode getDeclaringItem() { result = trait }
 
   override string toString() { result = "Self [" + trait.toString() + "]" }
 
@@ -568,6 +546,8 @@ class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
   private Function function;
 
   ImplTraitTypeTypeParameter() { impl = function.getAParam().getTypeRepr() }
+
+  override ItemNode getDeclaringItem() { none() }
 
   override Function getFunction() { result = function }
 

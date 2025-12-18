@@ -36,6 +36,6 @@ import UnverifiedDecodeFlow::PathGraph
 from UnverifiedDecodeFlow::PathNode source, UnverifiedDecodeFlow::PathNode sink
 where
   UnverifiedDecodeFlow::flowPath(source, sink) and
-  not VerifiedDecodeFlow::flow(source.getNode(), _)
+  not VerifiedDecodeFlow::flowFrom(source.getNode())
 select source.getNode(), source, sink, "Decoding JWT $@.", sink.getNode(),
   "without signature verification"

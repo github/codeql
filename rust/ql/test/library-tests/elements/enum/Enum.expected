@@ -1,0 +1,7 @@
+fieldless
+| enums.rs:1:1:5:1 | enum Foo |
+| enums.rs:7:1:11:1 | enum Fieldless |
+| enums.rs:13:1:18:1 | enum Direction |
+unitOnly
+| enums.rs:1:1:5:1 | enum Foo |
+| enums.rs:13:1:18:1 | enum Direction |

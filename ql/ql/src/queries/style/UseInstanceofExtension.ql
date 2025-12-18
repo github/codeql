@@ -1,5 +1,5 @@
 /**
- * @name Suggest using non-extending subtype relationships.
+ * @name Suggest using non-extending subtype relationships
  * @description Non-extending subtypes ("instanceof extensions") are generally preferable to instanceof expressions in characteristic predicates.
  * @kind problem
  * @problem.severity warning

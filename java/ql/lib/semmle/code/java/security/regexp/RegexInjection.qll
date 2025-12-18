@@ -21,17 +21,8 @@ private class DefaultRegexInjectionSink extends RegexInjectionSink {
   }
 }
 
-/**
- * A call to the `Pattern.quote` method, which gives metacharacters or escape sequences
- * no special meaning.
- */
-private class PatternQuoteCall extends RegexInjectionSanitizer {
-  PatternQuoteCall() {
-    exists(MethodCall ma, Method m | m = ma.getMethod() |
-      ma.getArgument(0) = this.asExpr() and
-      m instanceof PatternQuoteMethod
-    )
-  }
+private class DefaultRegexInjectionSanitizer extends RegexInjectionSanitizer {
+  DefaultRegexInjectionSanitizer() { barrierNode(this, "regex-use") }
 }
 
 /**

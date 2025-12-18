@@ -6,7 +6,7 @@ using Microsoft.Build.Construction;
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     /// <summary>
-    /// Access data in a .sln file.
+    /// Access data in a .sln or .slnx file.
     /// </summary>
     internal class SolutionFile
     {
@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Read the file.
         /// </summary>
-        /// <param name="filename">The filename of the .sln.</param>
+        /// <param name="filename">The filename of the .sln or .slnx.</param>
         public SolutionFile(string filename)
         {
             // SolutionFile.Parse() expects a rooted path.
@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Projects directly included in the .sln file.
+        /// Projects directly included in the .sln or .slnx file.
         /// </summary>
         public IEnumerable<string> MsBuildProjects
         {

@@ -674,7 +674,7 @@ impl<'a> Translator<'a> {
     pub(crate) fn emit_derive_expansion(
         &mut self,
         node: &(impl Into<ast::Adt> + Clone),
-        label: impl Into<Label<generated::Adt>> + Copy,
+        label: impl Into<Label<generated::TypeItem>> + Copy,
     ) {
         let Some(semantics) = self.semantics else {
             return;
@@ -686,7 +686,7 @@ impl<'a> Translator<'a> {
             .flatten()
             .filter_map(|expanded| self.process_item_macro_expansion(&node, expanded))
             .collect::<Vec<_>>();
-        generated::Adt::emit_derive_macro_expansions(
+        generated::TypeItem::emit_derive_macro_expansions(
             label.into(),
             expansions,
             &mut self.trap.writer,

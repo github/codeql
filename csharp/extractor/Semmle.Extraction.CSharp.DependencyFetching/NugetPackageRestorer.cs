@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using NuGet.Versioning;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -24,12 +25,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNet dotnet;
         private readonly DependabotProxy? dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
-        private readonly TemporaryDirectory legacyPackageDirectory;
-        private readonly TemporaryDirectory missingPackageDirectory;
+        private readonly DependencyDirectory legacyPackageDirectory;
+        private readonly DependencyDirectory missingPackageDirectory;
         private readonly ILogger logger;
         private readonly ICompilationInfoContainer compilationInfoContainer;
 
-        public TemporaryDirectory PackageDirectory { get; }
+        public DependencyDirectory PackageDirectory { get; }
 
         public NugetPackageRestorer(
             FileProvider fileProvider,
@@ -48,9 +49,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
 
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("packages"), "package", logger);
-            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("legacypackages"), "legacy package", logger);
-            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("missingpackages"), "missing package", logger);
+            PackageDirectory = new DependencyDirectory("packages", "package", logger);
+            legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
+            missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
         }
 
         public string? TryRestore(string package)
@@ -87,11 +88,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return selectedFrameworkFolder;
         }
 
-        public static DirectoryInfo[] GetOrderedPackageVersionSubDirectories(string packagePath)
+        public DirectoryInfo[] GetOrderedPackageVersionSubDirectories(string packagePath)
         {
+            // Only consider directories with valid NuGet version names.
             return new DirectoryInfo(packagePath)
                 .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .SelectMany(d =>
+                {
+                    if (NuGetVersion.TryParse(d.Name, out var version))
+                    {
+                        return new[] { new { Directory = d, NuGetVersion = version } };
+                    }
+                    logger.LogInfo($"Ignoring package directory '{d.FullName}' as it does not have a valid NuGet version name.");
+                    return [];
+                })
+                .OrderByDescending(dw => dw.NuGetVersion)
+                .Select(dw => dw.Directory)
                 .ToArray();
         }
 

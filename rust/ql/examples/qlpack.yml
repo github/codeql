@@ -1,0 +1,7 @@
+name: codeql/rust-examples
+groups:
+  - rust
+  - examples
+dependencies:
+  codeql/rust-all: ${workspace}
+warnOnImplicitThis: true
