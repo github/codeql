@@ -32,10 +32,8 @@ private predicate dynTraitTypeParameter(Trait trait, AstNode n) {
 
 cached
 newtype TType =
-  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
-  TEnum(Enum e) or
+  TDataType(TypeItem ti) { Stages::TypeInferenceStage::ref() } or
   TTrait(Trait t) or
-  TUnion(Union u) or
   TImplTraitType(ImplTraitTypeRepr impl) or
   TDynTraitType(Trait t) { t = any(DynTraitTypeRepr dt).getTrait() } or
   TNeverType() or
@@ -92,7 +90,7 @@ abstract class Type extends TType {
 class TupleType extends StructType {
   private int arity;
 
-  TupleType() { arity = this.getStruct().(Builtins::TupleType).getArity() }
+  TupleType() { arity = this.getTypeItem().(Builtins::TupleType).getArity() }
 
   /** Gets the arity of this tuple type. */
   int getArity() { result = arity }
@@ -112,48 +110,49 @@ class UnitType extends TupleType {
   override string toString() { result = "()" }
 }
 
-/** A struct type. */
-class StructType extends Type, TStruct {
-  private Struct struct;
+class DataType extends Type, TDataType {
+  private TypeItem typeItem;
 
-  StructType() { this = TStruct(struct) }
+  DataType() { this = TDataType(typeItem) }
 
-  /** Gets the struct that this struct type represents. */
-  Struct getStruct() { result = struct }
+  /** Gets the type item that this data type represents. */
+  TypeItem getTypeItem() { result = typeItem }
 
   override TypeParameter getPositionalTypeParameter(int i) {
-    result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
+    result = TTypeParamTypeParameter(typeItem.getGenericParamList().getTypeParam(i))
   }
 
   override TypeMention getTypeParameterDefault(int i) {
-    result = struct.getGenericParamList().getTypeParam(i).getDefaultType()
+    result = typeItem.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
-  override string toString() { result = struct.getName().getText() }
+  override string toString() { result = typeItem.getName().getText() }
 
-  override Location getLocation() { result = struct.getLocation() }
+  override Location getLocation() { result = typeItem.getLocation() }
+}
+
+/** A struct type. */
+class StructType extends DataType {
+  StructType() { super.getTypeItem() instanceof Struct }
+
+  /** Gets the struct that this struct type represents. */
+  override Struct getTypeItem() { result = super.getTypeItem() }
 }
 
 /** An enum type. */
-class EnumType extends Type, TEnum {
-  private Enum enum;
-
-  EnumType() { this = TEnum(enum) }
+class EnumType extends DataType {
+  EnumType() { super.getTypeItem() instanceof Enum }
 
   /** Gets the enum that this enum type represents. */
-  Enum getEnum() { result = enum }
+  override Enum getTypeItem() { result = super.getTypeItem() }
+}
 
-  override TypeParameter getPositionalTypeParameter(int i) {
-    result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
-  }
+/** A union type. */
+class UnionType extends DataType {
+  UnionType() { super.getTypeItem() instanceof Union }
 
-  override TypeMention getTypeParameterDefault(int i) {
-    result = enum.getGenericParamList().getTypeParam(i).getDefaultType()
-  }
-
-  override string toString() { result = enum.getName().getText() }
-
-  override Location getLocation() { result = enum.getLocation() }
+  /** Gets the union that this union type represents. */
+  override Union getTypeItem() { result = super.getTypeItem() }
 }
 
 /** A trait type. */
@@ -186,35 +185,13 @@ class TraitType extends Type, TTrait {
   override Location getLocation() { result = trait.getLocation() }
 }
 
-/** A union type. */
-class UnionType extends Type, TUnion {
-  private Union union;
-
-  UnionType() { this = TUnion(union) }
-
-  /** Gets the union that this union type represents. */
-  Union getUnion() { result = union }
-
-  override TypeParameter getPositionalTypeParameter(int i) {
-    result = TTypeParamTypeParameter(union.getGenericParamList().getTypeParam(i))
-  }
-
-  override TypeMention getTypeParameterDefault(int i) {
-    result = union.getGenericParamList().getTypeParam(i).getDefaultType()
-  }
-
-  override string toString() { result = union.getName().getText() }
-
-  override Location getLocation() { result = union.getLocation() }
-}
-
 /**
  * An array type.
  *
  * Array types like `[i64; 5]` are modeled as normal generic types.
  */
 class ArrayType extends StructType {
-  ArrayType() { this.getStruct() instanceof Builtins::ArrayType }
+  ArrayType() { this.getTypeItem() instanceof Builtins::ArrayType }
 
   override string toString() { result = "[;]" }
 }
@@ -227,13 +204,13 @@ TypeParamTypeParameter getArrayTypeParameter() {
 abstract class RefType extends StructType { }
 
 class RefMutType extends RefType {
-  RefMutType() { this.getStruct() instanceof Builtins::RefMutType }
+  RefMutType() { this.getTypeItem() instanceof Builtins::RefMutType }
 
   override string toString() { result = "&mut" }
 }
 
 class RefSharedType extends RefType {
-  RefSharedType() { this.getStruct() instanceof Builtins::RefSharedType }
+  RefSharedType() { this.getTypeItem() instanceof Builtins::RefSharedType }
 
   override string toString() { result = "&" }
 }
@@ -330,7 +307,7 @@ class ImplTraitReturnType extends ImplTraitType {
  * with a single type argument.
  */
 class SliceType extends StructType {
-  SliceType() { this.getStruct() instanceof Builtins::SliceType }
+  SliceType() { this.getTypeItem() instanceof Builtins::SliceType }
 
   override string toString() { result = "[]" }
 }
@@ -356,13 +333,13 @@ TypeParamTypeParameter getPtrTypeParameter() {
 }
 
 class PtrMutType extends PtrType {
-  PtrMutType() { this.getStruct() instanceof Builtins::PtrMutType }
+  PtrMutType() { this.getTypeItem() instanceof Builtins::PtrMutType }
 
   override string toString() { result = "*mut" }
 }
 
 class PtrConstType extends PtrType {
-  PtrConstType() { this.getStruct() instanceof Builtins::PtrConstType }
+  PtrConstType() { this.getTypeItem() instanceof Builtins::PtrConstType }
 
   override string toString() { result = "*const" }
 }
@@ -624,7 +601,7 @@ pragma[nomagic]
 predicate validSelfType(Type t) {
   t instanceof RefType
   or
-  exists(Struct s | t = TStruct(s) |
+  exists(Struct s | t = TDataType(s) |
     s instanceof BoxStruct or
     s instanceof RcStruct or
     s instanceof ArcStruct or
