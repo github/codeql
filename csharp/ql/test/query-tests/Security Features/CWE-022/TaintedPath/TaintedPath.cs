@@ -68,7 +68,12 @@ public class TaintedPathHandler : IHttpHandler
         string absolutePath = ctx.Request.MapPath("~MyTempFile");
         string fullPath2 = Path.Combine(absolutePath, path);
         if (fullPath2.StartsWith(absolutePath + Path.DirectorySeparatorChar)) {
-            File.ReadAllText(fullPath2); // GOOD
+            File.ReadAllText(fullPath2); // BAD
+        }
+
+        string normalizedFullPath2 = Path.GetFullPath(fullPath2);
+        if (normalizedFullPath2.StartsWith(absolutePath + Path.DirectorySeparatorChar)) {
+            File.ReadAllText(normalizedFullPath2); // GOOD
         }
     }
 
