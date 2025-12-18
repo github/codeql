@@ -49,7 +49,7 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
 }
 
 overlay[local?]
-private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
+private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable::Range {
   string type;
   string path;
 
@@ -62,9 +62,14 @@ private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
   override DataFlow::InvokeNode getACall() { ModelOutput::resolvedSummaryBase(type, path, result) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, DataFlow::Provenance provenance,
+    boolean isExact, string model
   ) {
-    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) and
+      provenance = "manual" and
+      isExact = true
+    |
       kind = "value" and
       preservesValue = true
       or

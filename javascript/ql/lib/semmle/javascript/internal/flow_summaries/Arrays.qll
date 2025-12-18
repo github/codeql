@@ -94,7 +94,7 @@ class DynamicArrayStoreStep extends DataFlow::AdditionalFlowStep {
   }
 }
 
-class ArrayConstructorSummary extends SummarizedCallable {
+class ArrayConstructorSummary extends SummarizedCallable::Range {
   ArrayConstructorSummary() { this = "Array constructor" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -118,7 +118,7 @@ class ArrayConstructorSummary extends SummarizedCallable {
  *
  * Calls without separators are modeled in `StringConcatenation.qll`.
  */
-class Join extends SummarizedCallable {
+class Join extends SummarizedCallable::Range {
   Join() { this = "Array#join" }
 
   override InstanceCall getACallSimple() {
@@ -133,7 +133,7 @@ class Join extends SummarizedCallable {
   }
 }
 
-class CopyWithin extends SummarizedCallable {
+class CopyWithin extends SummarizedCallable::Range {
   CopyWithin() { this = "Array#copyWithin" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "copyWithin" }
@@ -150,7 +150,7 @@ class CopyWithin extends SummarizedCallable {
   }
 }
 
-class FlowIntoCallback extends SummarizedCallable {
+class FlowIntoCallback extends SummarizedCallable::Range {
   FlowIntoCallback() { this = "Array method with flow into callback" }
 
   override InstanceCall getACallSimple() {
@@ -169,7 +169,7 @@ class FlowIntoCallback extends SummarizedCallable {
   }
 }
 
-class Filter extends SummarizedCallable {
+class Filter extends SummarizedCallable::Range {
   Filter() { this = "Array#filter" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "filter" }
@@ -196,7 +196,7 @@ class Filter extends SummarizedCallable {
   }
 }
 
-class Fill extends SummarizedCallable {
+class Fill extends SummarizedCallable::Range {
   Fill() { this = "Array#fill" } // TODO: clear contents if no interval is given
 
   override InstanceCall getACallSimple() { result.getMethodName() = "fill" }
@@ -208,7 +208,7 @@ class Fill extends SummarizedCallable {
   }
 }
 
-class FindLike extends SummarizedCallable {
+class FindLike extends SummarizedCallable::Range {
   FindLike() { this = "Array#find / Array#findLast" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["find", "findLast"] }
@@ -225,7 +225,7 @@ class FindLike extends SummarizedCallable {
   }
 }
 
-class FindLibrary extends SummarizedCallable {
+class FindLibrary extends SummarizedCallable::Range {
   FindLibrary() { this = "'array.prototype.find' / 'array-find'" }
 
   override DataFlow::CallNode getACallSimple() {
@@ -244,7 +244,7 @@ class FindLibrary extends SummarizedCallable {
   }
 }
 
-class Flat extends SummarizedCallable {
+class Flat extends SummarizedCallable::Range {
   private int depth;
 
   Flat() { this = "Array#flat(" + depth + ")" and depth in [1 .. 3] }
@@ -275,7 +275,7 @@ class Flat extends SummarizedCallable {
   }
 }
 
-class FlatMap extends SummarizedCallable {
+class FlatMap extends SummarizedCallable::Range {
   FlatMap() { this = "Array#flatMap" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "flatMap" }
@@ -305,7 +305,7 @@ private DataFlow::CallNode arrayFromCall() {
   result = DataFlow::moduleImport("array-from").getACall()
 }
 
-class From1Arg extends SummarizedCallable {
+class From1Arg extends SummarizedCallable::Range {
   From1Arg() { this = "Array.from(arg)" }
 
   override DataFlow::CallNode getACallSimple() {
@@ -338,7 +338,7 @@ class From1Arg extends SummarizedCallable {
   }
 }
 
-class FromManyArg extends SummarizedCallable {
+class FromManyArg extends SummarizedCallable::Range {
   FromManyArg() { this = "Array.from(arg, callback, [thisArg])" }
 
   override DataFlow::CallNode getACallSimple() {
@@ -370,7 +370,7 @@ class FromManyArg extends SummarizedCallable {
   }
 }
 
-class Map extends SummarizedCallable {
+class Map extends SummarizedCallable::Range {
   Map() { this = "Array#map" }
 
   override InstanceCall getACallSimple() {
@@ -398,7 +398,7 @@ class Map extends SummarizedCallable {
   }
 }
 
-class Of extends SummarizedCallable {
+class Of extends SummarizedCallable::Range {
   Of() { this = "Array.of" }
 
   override DataFlow::CallNode getACallSimple() {
@@ -412,7 +412,7 @@ class Of extends SummarizedCallable {
   }
 }
 
-class Pop extends SummarizedCallable {
+class Pop extends SummarizedCallable::Range {
   Pop() { this = "Array#pop" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "pop" }
@@ -424,7 +424,7 @@ class Pop extends SummarizedCallable {
   }
 }
 
-class PushLike extends SummarizedCallable {
+class PushLike extends SummarizedCallable::Range {
   PushLike() { this = "Array#push / Array#unshift" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["push", "unshift"] }
@@ -436,7 +436,7 @@ class PushLike extends SummarizedCallable {
   }
 }
 
-class ReduceLike extends SummarizedCallable {
+class ReduceLike extends SummarizedCallable::Range {
   ReduceLike() { this = "Array#reduce / Array#reduceRight" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["reduce", "reduceRight"] }
@@ -465,7 +465,7 @@ class ReduceLike extends SummarizedCallable {
   }
 }
 
-class Reverse extends SummarizedCallable {
+class Reverse extends SummarizedCallable::Range {
   Reverse() { this = "Array#reverse / Array#toReversed" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["reverse", "toReversed"] }
@@ -477,7 +477,7 @@ class Reverse extends SummarizedCallable {
   }
 }
 
-class Shift extends SummarizedCallable {
+class Shift extends SummarizedCallable::Range {
   Shift() { this = "Array#shift" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "shift" }
@@ -495,7 +495,7 @@ class Shift extends SummarizedCallable {
   }
 }
 
-class Sort extends SummarizedCallable {
+class Sort extends SummarizedCallable::Range {
   Sort() { this = "Array#sort / Array#toSorted" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["sort", "toSorted"] }
@@ -512,7 +512,7 @@ class Sort extends SummarizedCallable {
   }
 }
 
-class Splice extends SummarizedCallable {
+class Splice extends SummarizedCallable::Range {
   Splice() { this = "Array#splice" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "splice" }
@@ -529,7 +529,7 @@ class Splice extends SummarizedCallable {
   }
 }
 
-class ToSpliced extends SummarizedCallable {
+class ToSpliced extends SummarizedCallable::Range {
   ToSpliced() { this = "Array#toSpliced" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "toSpliced" }
@@ -546,7 +546,7 @@ class ToSpliced extends SummarizedCallable {
   }
 }
 
-class With extends SummarizedCallable {
+class With extends SummarizedCallable::Range {
   With() { this = "Array#with" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "with" }

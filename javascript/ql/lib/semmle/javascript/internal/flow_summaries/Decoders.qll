@@ -16,7 +16,7 @@ private class TextDecoderEntryPoint extends API::EntryPoint {
 pragma[nomagic]
 API::Node textDecoderConstructorRef() { result = any(TextDecoderEntryPoint e).getANode() }
 
-class Decode extends SummarizedCallable {
+class Decode extends SummarizedCallable::Range {
   Decode() { this = "TextDecoder#decode" }
 
   override InstanceCall getACall() {
