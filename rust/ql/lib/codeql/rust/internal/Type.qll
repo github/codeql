@@ -226,20 +226,10 @@ TypeParamTypeParameter getArrayTypeParameter() {
 
 abstract class RefType extends StructType { }
 
-pragma[nomagic]
-TypeParamTypeParameter getRefTypeParameter() {
-  result = any(RefType t).getPositionalTypeParameter(0)
-}
-
 class RefMutType extends RefType {
   RefMutType() { this.getStruct() instanceof Builtins::RefMutType }
 
   override string toString() { result = "&mut" }
-}
-
-pragma[nomagic]
-TypeParamTypeParameter getRefMutTypeParameter() {
-  result = any(RefMutType t).getPositionalTypeParameter(0)
 }
 
 class RefSharedType extends RefType {
@@ -249,8 +239,15 @@ class RefSharedType extends RefType {
 }
 
 pragma[nomagic]
-TypeParamTypeParameter getRefSharedTypeParameter() {
-  result = any(RefSharedType t).getPositionalTypeParameter(0)
+RefType getRefType(boolean isMutable) {
+  isMutable = true and result instanceof RefMutType
+  or
+  isMutable = false and result instanceof RefSharedType
+}
+
+pragma[nomagic]
+TypeParamTypeParameter getRefTypeParameter(boolean isMutable) {
+  result = getRefType(isMutable).getPositionalTypeParameter(0)
 }
 
 /**
