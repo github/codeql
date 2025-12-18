@@ -24,13 +24,11 @@ predicate isIgnorableBinaryOperation(BinaryOperation op) {
     zeroOperand.getExplicitlyConverted().getUnspecifiedType() = t and
     // often 'NULL' is defined as (void *)0, ignore these cases
     not t instanceof VoidPointerType and
-    (
-      // Apparently derived types, eg., functoin pointers, aren't PointerType
-      // according to codeql, so special casing them out here.
-      other.getUnspecifiedType() instanceof DerivedType
-      or
-      other.getUnspecifiedType() instanceof PointerType
-    )
+    // Note Function pointers are not considered PointerType
+    // casting a wider net here and saying the 'other' cannot be a
+    // derived type, which is probably too wide, but I think anything
+    //loosely matching this pattern should be ignored.
+    other.getUnspecifiedType() instanceof DerivedType
   )
 }
 
