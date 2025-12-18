@@ -34,6 +34,9 @@
 | app/api/routeNextRequest.ts:15:20:15:23 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/blah/page.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | app/blah/page.jsx:8:13:8:19 | req.url | user-provided value |
+| app/blah/page.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | app/blah/page.jsx:15:13:15:19 | req.url | user-provided value |
+| app/blah/route.ts:3:25:3:27 | url | Cross-site scripting vulnerability due to $@. | app/blah/route.ts:2:17:2:23 | req.url | user-provided value |
 | app/pages/Next2.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to $@. | app/pages/Next2.jsx:8:13:8:19 | req.url | user-provided value |
 | app/pages/Next2.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to $@. | app/pages/Next2.jsx:15:13:15:19 | req.url | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
