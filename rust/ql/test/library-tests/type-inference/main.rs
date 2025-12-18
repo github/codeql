@@ -2640,7 +2640,7 @@ mod loops {
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:TArray.TRef.str
         for s in &strings1 {} // $ type=s:TRef.TRef.str
-        for s in &mut strings1 {} // $ type=s:TRef.TRef.str
+        for s in &mut strings1 {} // $ type=s:TRefMut.TRef.str
         for s in strings1 {} // $ type=s:TRef.str
 
         let strings2 = // $ type=strings2:TArray.String
