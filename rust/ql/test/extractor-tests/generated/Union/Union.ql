@@ -26,14 +26,14 @@ query predicate getName(Union x, Name getName) {
   toBeTested(x) and not x.isUnknown() and getName = x.getName()
 }
 
-query predicate getStructFieldList(Union x, StructFieldList getStructFieldList) {
-  toBeTested(x) and not x.isUnknown() and getStructFieldList = x.getStructFieldList()
-}
-
 query predicate getVisibility(Union x, Visibility getVisibility) {
   toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
 }
 
 query predicate getWhereClause(Union x, WhereClause getWhereClause) {
   toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}
+
+query predicate getStructFieldList(Union x, StructFieldList getStructFieldList) {
+  toBeTested(x) and not x.isUnknown() and getStructFieldList = x.getStructFieldList()
 }

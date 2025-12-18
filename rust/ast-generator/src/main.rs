@@ -15,6 +15,7 @@ use ungrammar::Grammar;
 
 fn class_name(type_name: &str) -> String {
     match type_name {
+        "Adt" => "TypeItem".to_owned(),
         "BinExpr" => "BinaryExpr".to_owned(),
         "ElseBranch" => "Expr".to_owned(),
         "Fn" => "Function".to_owned(),

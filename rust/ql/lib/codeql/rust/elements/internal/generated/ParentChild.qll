@@ -2656,7 +2656,7 @@ private module Impl {
   private Element getImmediateChildOfEnum(Enum e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
-      int nGenericParamList, int nName, int nVariantList, int nVisibility, int nWhereClause
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nVariantList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -2664,9 +2664,9 @@ private module Impl {
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
-      nVariantList = nName + 1 and
-      nVisibility = nVariantList + 1 and
+      nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nVariantList = nWhereClause + 1 and
       (
         none()
         or
@@ -2687,15 +2687,15 @@ private module Impl {
         or
         index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
         or
-        index = nName and result = e.getVariantList() and partialPredicateCall = "VariantList()"
-        or
-        index = nVariantList and
-        result = e.getVisibility() and
-        partialPredicateCall = "Visibility()"
+        index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
         or
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+        or
+        index = nWhereClause and
+        result = e.getVariantList() and
+        partialPredicateCall = "VariantList()"
       )
     )
   }
@@ -2862,18 +2862,18 @@ private module Impl {
 
   private Element getImmediateChildOfStruct(Struct e, int index, string partialPredicateCall) {
     exists(
-      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr, int nFieldList,
-      int nGenericParamList, int nName, int nVisibility, int nWhereClause
+      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nFieldList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
-      nFieldList = nAttr + 1 and
-      nGenericParamList = nFieldList + 1 and
+      nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nFieldList = nWhereClause + 1 and
       (
         none()
         or
@@ -2888,9 +2888,7 @@ private module Impl {
         result = e.getAttr(index - nDeriveMacroExpansion) and
         partialPredicateCall = "Attr(" + (index - nDeriveMacroExpansion).toString() + ")"
         or
-        index = nAttr and result = e.getFieldList() and partialPredicateCall = "FieldList()"
-        or
-        index = nFieldList and
+        index = nAttr and
         result = e.getGenericParamList() and
         partialPredicateCall = "GenericParamList()"
         or
@@ -2901,6 +2899,8 @@ private module Impl {
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+        or
+        index = nWhereClause and result = e.getFieldList() and partialPredicateCall = "FieldList()"
       )
     )
   }
@@ -2955,7 +2955,7 @@ private module Impl {
   private Element getImmediateChildOfUnion(Union e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
-      int nGenericParamList, int nName, int nStructFieldList, int nVisibility, int nWhereClause
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nStructFieldList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -2963,9 +2963,9 @@ private module Impl {
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
-      nStructFieldList = nName + 1 and
-      nVisibility = nStructFieldList + 1 and
+      nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nStructFieldList = nWhereClause + 1 and
       (
         none()
         or
@@ -2986,17 +2986,15 @@ private module Impl {
         or
         index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
         or
-        index = nName and
-        result = e.getStructFieldList() and
-        partialPredicateCall = "StructFieldList()"
-        or
-        index = nStructFieldList and
-        result = e.getVisibility() and
-        partialPredicateCall = "Visibility()"
+        index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
         or
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+        or
+        index = nWhereClause and
+        result = e.getStructFieldList() and
+        partialPredicateCall = "StructFieldList()"
       )
     )
   }

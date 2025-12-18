@@ -6,7 +6,6 @@
 import codeql.files.FileSystem
 import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
-import codeql.rust.elements.Adt
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayListExpr
@@ -173,6 +172,7 @@ import codeql.rust.elements.TypeAlias
 import codeql.rust.elements.TypeArg
 import codeql.rust.elements.TypeBound
 import codeql.rust.elements.TypeBoundList
+import codeql.rust.elements.TypeItem
 import codeql.rust.elements.TypeParam
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.UnderscoreExpr

@@ -1796,9 +1796,9 @@ private module DollarCrateResolution {
       macroDefPath = mc.getPath()
     )
     or
-    exists(ItemNode adt |
-      expansion = adt.(Adt).getDeriveMacroExpansion(_) and
-      macroDefPath = adt.getAttr("derive").getMeta().getPath()
+    exists(ItemNode type |
+      expansion = type.(TypeItem).getDeriveMacroExpansion(_) and
+      macroDefPath = type.getAttr("derive").getMeta().getPath()
     )
   }
 
