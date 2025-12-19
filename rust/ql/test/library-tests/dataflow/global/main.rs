@@ -35,7 +35,7 @@ impl MyStruct {
 fn data_out_of_call_side_effect1() {
     let mut a = MyStruct { data: 0 };
     sink(a.get_data());
-    (&mut a).set_data(source(8));
+    a.set_data(source(8));
     sink(a.get_data()); // $ hasValueFlow=8
 }
 
