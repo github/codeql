@@ -155,3 +155,12 @@ struct someType {
 };
 
 someType<42>::b someType_x;
+
+struct A_Struct {
+  int x;
+  int y;
+};
+
+enum E {
+  E_e = sizeof(A_Struct) * 8 > 50 // GOOD [FALSE POSITIVE]
+};
