@@ -14,6 +14,8 @@ module GroovyInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof GroovyInjectionSink }
 
+  predicate isBarrier(DataFlow::Node node) { node instanceof GroovyInjectionSanitizer }
+
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(GroovyInjectionAdditionalTaintStep c).step(fromNode, toNode)
   }

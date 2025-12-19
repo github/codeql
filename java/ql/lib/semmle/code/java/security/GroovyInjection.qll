@@ -26,6 +26,13 @@ private class DefaultGroovyInjectionSink extends GroovyInjectionSink {
   DefaultGroovyInjectionSink() { sinkNode(this, "groovy-injection") }
 }
 
+/** A data flow sanitizer for Groovy expression injection vulnerabilities. */
+abstract class GroovyInjectionSanitizer extends DataFlow::ExprNode { }
+
+private class ExternalGroovyInjectionSanitizer extends GroovyInjectionSanitizer {
+  ExternalGroovyInjectionSanitizer() { barrierNode(this, "groovy-injection") }
+}
+
 /** A set of additional taint steps to consider when taint tracking Groovy related data flows. */
 private class DefaultGroovyInjectionAdditionalTaintStep extends GroovyInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
