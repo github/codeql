@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.FileSystemGlobbing, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.FileSystemGlobbing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -242,6 +242,7 @@ namespace Microsoft
                 public virtual Microsoft.Extensions.FileSystemGlobbing.Matcher AddInclude(string pattern) => throw null;
                 public Matcher() => throw null;
                 public Matcher(System.StringComparison comparisonType) => throw null;
+                public Matcher(System.StringComparison comparisonType = default(System.StringComparison), bool preserveFilterOrder = default(bool)) => throw null;
                 public virtual Microsoft.Extensions.FileSystemGlobbing.PatternMatchingResult Execute(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase directoryInfo) => throw null;
             }
             public static partial class MatcherExtensions

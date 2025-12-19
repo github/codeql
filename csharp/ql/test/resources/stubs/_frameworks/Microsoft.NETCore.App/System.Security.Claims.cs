@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Security.Claims, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Security.Claims, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Security
@@ -46,12 +46,15 @@ namespace System
                 public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType) => throw null;
                 public ClaimsIdentity(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType, string nameType, string roleType) => throw null;
                 public ClaimsIdentity(System.IO.BinaryReader reader) => throw null;
+                public ClaimsIdentity(System.IO.BinaryReader reader, System.StringComparison stringComparison) => throw null;
                 protected ClaimsIdentity(System.Runtime.Serialization.SerializationInfo info) => throw null;
                 protected ClaimsIdentity(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 protected ClaimsIdentity(System.Security.Claims.ClaimsIdentity other) => throw null;
+                protected ClaimsIdentity(System.Security.Claims.ClaimsIdentity other, System.StringComparison stringComparison) => throw null;
                 public ClaimsIdentity(System.Security.Principal.IIdentity identity) => throw null;
                 public ClaimsIdentity(System.Security.Principal.IIdentity identity, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims) => throw null;
                 public ClaimsIdentity(System.Security.Principal.IIdentity identity, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims, string authenticationType, string nameType, string roleType) => throw null;
+                public ClaimsIdentity(System.Security.Principal.IIdentity identity = default(System.Security.Principal.IIdentity), System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims = default(System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>), string authenticationType = default(string), string nameType = default(string), string roleType = default(string), System.StringComparison stringComparison = default(System.StringComparison)) => throw null;
                 public ClaimsIdentity(string authenticationType) => throw null;
                 public ClaimsIdentity(string authenticationType, string nameType, string roleType) => throw null;
                 protected virtual byte[] CustomSerializationData { get => throw null; }

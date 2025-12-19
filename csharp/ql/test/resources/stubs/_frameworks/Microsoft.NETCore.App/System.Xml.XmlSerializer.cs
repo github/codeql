@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Xml.XmlSerializer, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Xml.XmlSerializer, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Xml
@@ -490,9 +490,12 @@ namespace System
                 protected static byte[] ToByteArrayHex(string value) => throw null;
                 protected static char ToChar(string value) => throw null;
                 protected static System.DateTime ToDate(string value) => throw null;
+                protected static System.DateOnly ToDateOnly(string value) => throw null;
                 protected static System.DateTime ToDateTime(string value) => throw null;
                 protected static long ToEnum(string value, System.Collections.Hashtable h, string typeName) => throw null;
                 protected static System.DateTime ToTime(string value) => throw null;
+                protected static System.TimeOnly ToTimeOnly(string value) => throw null;
+                protected static System.TimeOnly ToTimeOnlyIgnoreOffset(string value) => throw null;
                 protected static string ToXmlName(string value) => throw null;
                 protected static string ToXmlNCName(string value) => throw null;
                 protected static string ToXmlNmToken(string value) => throw null;
@@ -525,10 +528,13 @@ namespace System
                 protected static string FromByteArrayHex(byte[] value) => throw null;
                 protected static string FromChar(char value) => throw null;
                 protected static string FromDate(System.DateTime value) => throw null;
+                protected static string FromDateOnly(System.DateOnly value) => throw null;
                 protected static string FromDateTime(System.DateTime value) => throw null;
                 protected static string FromEnum(long value, string[] values, long[] ids) => throw null;
                 protected static string FromEnum(long value, string[] values, long[] ids, string typeName) => throw null;
                 protected static string FromTime(System.DateTime value) => throw null;
+                protected static string FromTimeOnly(System.TimeOnly value) => throw null;
+                protected static string FromTimeOnlyIgnoreOffset(System.TimeOnly value) => throw null;
                 protected static string FromXmlName(string name) => throw null;
                 protected static string FromXmlNCName(string ncName) => throw null;
                 protected static string FromXmlNmToken(string nmToken) => throw null;

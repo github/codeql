@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.Serialization.Xml, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.Serialization.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Runtime
@@ -19,8 +19,10 @@ namespace System
                     public virtual System.Runtime.Serialization.DataContracts.DataContract BaseContract { get => throw null; }
                     public virtual string ContractType { get => throw null; }
                     public virtual System.Collections.ObjectModel.ReadOnlyCollection<System.Runtime.Serialization.DataContracts.DataMember> DataMembers { get => throw null; }
+                    public override sealed bool Equals(object obj) => throw null;
                     public virtual System.Xml.XmlQualifiedName GetArrayTypeName(bool isNullable) => throw null;
                     public static System.Runtime.Serialization.DataContracts.DataContract GetBuiltInDataContract(string name, string ns) => throw null;
+                    public override int GetHashCode() => throw null;
                     public static System.Xml.XmlQualifiedName GetXmlName(System.Type type) => throw null;
                     public virtual bool IsBuiltInDataContract { get => throw null; }
                     public virtual bool IsDictionaryLike(out string keyName, out string valueName, out string itemName) => throw null;
@@ -42,8 +44,8 @@ namespace System
                     public System.Runtime.Serialization.DataContracts.DataContract GetDataContract(System.Type type) => throw null;
                     public System.Runtime.Serialization.DataContracts.DataContract GetDataContract(System.Xml.XmlQualifiedName key) => throw null;
                     public System.Type GetReferencedType(System.Xml.XmlQualifiedName xmlName, System.Runtime.Serialization.DataContracts.DataContract dataContract, out System.Runtime.Serialization.DataContracts.DataContract referencedContract, out object[] genericParameters, bool? supportGenericTypes = default(bool?)) => throw null;
-                    public void ImportSchemaSet(System.Xml.Schema.XmlSchemaSet schemaSet, System.Collections.Generic.IEnumerable<System.Xml.XmlQualifiedName> typeNames, bool importXmlDataType) => throw null;
                     public System.Collections.Generic.List<System.Xml.XmlQualifiedName> ImportSchemaSet(System.Xml.Schema.XmlSchemaSet schemaSet, System.Collections.Generic.IEnumerable<System.Xml.Schema.XmlSchemaElement> elements, bool importXmlDataType) => throw null;
+                    public void ImportSchemaSet(System.Xml.Schema.XmlSchemaSet schemaSet, System.Collections.Generic.IEnumerable<System.Xml.XmlQualifiedName> typeNames, bool importXmlDataType) => throw null;
                     public System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, System.Runtime.Serialization.DataContracts.DataContract> KnownTypesForObject { get => throw null; }
                     public System.Collections.Generic.Dictionary<System.Runtime.Serialization.DataContracts.DataContract, object> ProcessedContracts { get => throw null; }
                     public System.Collections.Hashtable SurrogateData { get => throw null; }
@@ -59,11 +61,16 @@ namespace System
                 }
                 public sealed class XmlDataContract : System.Runtime.Serialization.DataContracts.DataContract
                 {
+                    public override string ContractType { get => throw null; }
                     public bool HasRoot { get => throw null; }
                     public bool IsAnonymous { get => throw null; }
+                    public override bool IsBuiltInDataContract { get => throw null; }
                     public bool IsTopLevelElementNullable { get => throw null; }
                     public bool IsTypeDefinedOnImport { get => throw null; set { } }
                     public bool IsValueType { get => throw null; set { } }
+                    public override System.Collections.Generic.Dictionary<System.Xml.XmlQualifiedName, System.Runtime.Serialization.DataContracts.DataContract> KnownDataContracts { get => throw null; }
+                    public override System.Xml.XmlDictionaryString TopLevelElementName { get => throw null; }
+                    public override System.Xml.XmlDictionaryString TopLevelElementNamespace { get => throw null; }
                     public System.Xml.Schema.XmlSchemaType XsdType { get => throw null; }
                 }
             }
@@ -419,6 +426,7 @@ namespace System
         public abstract class XmlDictionaryWriter : System.Xml.XmlWriter
         {
             public virtual bool CanCanonicalize { get => throw null; }
+            public override void Close() => throw null;
             public static System.Xml.XmlDictionaryWriter CreateBinaryWriter(System.IO.Stream stream) => throw null;
             public static System.Xml.XmlDictionaryWriter CreateBinaryWriter(System.IO.Stream stream, System.Xml.IXmlDictionary dictionary) => throw null;
             public static System.Xml.XmlDictionaryWriter CreateBinaryWriter(System.IO.Stream stream, System.Xml.IXmlDictionary dictionary, System.Xml.XmlBinaryWriterSession session) => throw null;
@@ -430,6 +438,7 @@ namespace System
             public static System.Xml.XmlDictionaryWriter CreateTextWriter(System.IO.Stream stream, System.Text.Encoding encoding) => throw null;
             public static System.Xml.XmlDictionaryWriter CreateTextWriter(System.IO.Stream stream, System.Text.Encoding encoding, bool ownsStream) => throw null;
             protected XmlDictionaryWriter() => throw null;
+            protected override void Dispose(bool disposing) => throw null;
             public virtual void EndCanonicalization() => throw null;
             public virtual void StartCanonicalization(System.IO.Stream stream, bool includeComments, string[] inclusivePrefixes) => throw null;
             public virtual void WriteArray(string prefix, string localName, string namespaceUri, bool[] array, int offset, int count) => throw null;

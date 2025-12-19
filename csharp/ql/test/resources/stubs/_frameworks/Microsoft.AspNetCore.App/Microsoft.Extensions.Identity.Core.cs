@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Identity.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Identity.Core, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -118,6 +118,7 @@ namespace Microsoft
                 public static readonly System.Version Default;
                 public static readonly System.Version Version1;
                 public static readonly System.Version Version2;
+                public static readonly System.Version Version3;
             }
             public interface ILookupNormalizer
             {
@@ -236,6 +237,14 @@ namespace Microsoft
                 System.Threading.Tasks.Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task<System.Collections.Generic.IList<Microsoft.AspNetCore.Identity.UserLoginInfo>> GetLoginsAsync(TUser user, System.Threading.CancellationToken cancellationToken);
                 System.Threading.Tasks.Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, System.Threading.CancellationToken cancellationToken);
+            }
+            public interface IUserPasskeyStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
+            {
+                System.Threading.Tasks.Task AddOrUpdatePasskeyAsync(TUser user, Microsoft.AspNetCore.Identity.UserPasskeyInfo passkey, System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task<TUser> FindByPasskeyIdAsync(byte[] credentialId, System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.UserPasskeyInfo> FindPasskeyAsync(TUser user, byte[] credentialId, System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task<System.Collections.Generic.IList<Microsoft.AspNetCore.Identity.UserPasskeyInfo>> GetPasskeysAsync(TUser user, System.Threading.CancellationToken cancellationToken);
+                System.Threading.Tasks.Task RemovePasskeyAsync(TUser user, byte[] credentialId, System.Threading.CancellationToken cancellationToken);
             }
             public interface IUserPasswordStore<TUser> : System.IDisposable, Microsoft.AspNetCore.Identity.IUserStore<TUser> where TUser : class
             {
@@ -478,7 +487,7 @@ namespace Microsoft
             }
             public class UserLoginInfo
             {
-                public UserLoginInfo(string loginProvider, string providerKey, string displayName) => throw null;
+                public UserLoginInfo(string loginProvider, string providerKey, string providerDisplayName) => throw null;
                 public string LoginProvider { get => throw null; set { } }
                 public string ProviderDisplayName { get => throw null; set { } }
                 public string ProviderKey { get => throw null; set { } }
@@ -489,6 +498,7 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddClaimAsync(TUser user, System.Security.Claims.Claim claim) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddClaimsAsync(TUser user, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim> claims) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddLoginAsync(TUser user, Microsoft.AspNetCore.Identity.UserLoginInfo login) => throw null;
+                public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddOrUpdatePasskeyAsync(TUser user, Microsoft.AspNetCore.Identity.UserPasskeyInfo passkey) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddPasswordAsync(TUser user, string password) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddToRoleAsync(TUser user, string role) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> AddToRolesAsync(TUser user, System.Collections.Generic.IEnumerable<string> roles) => throw null;
@@ -514,6 +524,7 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<TUser> FindByIdAsync(string userId) => throw null;
                 public virtual System.Threading.Tasks.Task<TUser> FindByLoginAsync(string loginProvider, string providerKey) => throw null;
                 public virtual System.Threading.Tasks.Task<TUser> FindByNameAsync(string userName) => throw null;
+                public virtual System.Threading.Tasks.Task<TUser> FindByPasskeyIdAsync(byte[] credentialId) => throw null;
                 public virtual System.Threading.Tasks.Task<string> GenerateChangeEmailTokenAsync(TUser user, string newEmail) => throw null;
                 public virtual System.Threading.Tasks.Task<string> GenerateChangePhoneNumberTokenAsync(TUser user, string phoneNumber) => throw null;
                 public virtual System.Threading.Tasks.Task<string> GenerateConcurrencyStampAsync(TUser user) => throw null;
@@ -532,6 +543,8 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<bool> GetLockoutEnabledAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<System.DateTimeOffset?> GetLockoutEndDateAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<System.Collections.Generic.IList<Microsoft.AspNetCore.Identity.UserLoginInfo>> GetLoginsAsync(TUser user) => throw null;
+                public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.UserPasskeyInfo> GetPasskeyAsync(TUser user, byte[] credentialId) => throw null;
+                public virtual System.Threading.Tasks.Task<System.Collections.Generic.IList<Microsoft.AspNetCore.Identity.UserPasskeyInfo>> GetPasskeysAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<string> GetPhoneNumberAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<System.Collections.Generic.IList<string>> GetRolesAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<string> GetSecurityStampAsync(TUser user) => throw null;
@@ -564,12 +577,14 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> RemoveFromRoleAsync(TUser user, string role) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> RemoveFromRolesAsync(TUser user, System.Collections.Generic.IEnumerable<string> roles) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> RemoveLoginAsync(TUser user, string loginProvider, string providerKey) => throw null;
+                public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> RemovePasskeyAsync(TUser user, byte[] credentialId) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> RemovePasswordAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ReplaceClaimAsync(TUser user, System.Security.Claims.Claim claim, System.Security.Claims.Claim newClaim) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ResetAccessFailedCountAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ResetAuthenticatorKeyAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> ResetPasswordAsync(TUser user, string token, string newPassword) => throw null;
                 public const string ResetPasswordTokenPurpose = default;
+                public System.IServiceProvider ServiceProvider { get => throw null; }
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> SetAuthenticationTokenAsync(TUser user, string loginProvider, string tokenName, string tokenValue) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> SetEmailAsync(TUser user, string email) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.IdentityResult> SetLockoutEnabledAsync(TUser user, bool enabled) => throw null;
@@ -585,6 +600,7 @@ namespace Microsoft
                 public virtual bool SupportsUserEmail { get => throw null; }
                 public virtual bool SupportsUserLockout { get => throw null; }
                 public virtual bool SupportsUserLogin { get => throw null; }
+                public virtual bool SupportsUserPasskey { get => throw null; }
                 public virtual bool SupportsUserPassword { get => throw null; }
                 public virtual bool SupportsUserPhoneNumber { get => throw null; }
                 public virtual bool SupportsUserRole { get => throw null; }
@@ -612,6 +628,21 @@ namespace Microsoft
                 public string AllowedUserNameCharacters { get => throw null; set { } }
                 public UserOptions() => throw null;
                 public bool RequireUniqueEmail { get => throw null; set { } }
+            }
+            public sealed class UserPasskeyInfo
+            {
+                public byte[] AttestationObject { get => throw null; }
+                public byte[] ClientDataJson { get => throw null; }
+                public System.DateTimeOffset CreatedAt { get => throw null; }
+                public byte[] CredentialId { get => throw null; }
+                public UserPasskeyInfo(byte[] credentialId, byte[] publicKey, System.DateTimeOffset createdAt, uint signCount, string[] transports, bool isUserVerified, bool isBackupEligible, bool isBackedUp, byte[] attestationObject, byte[] clientDataJson) => throw null;
+                public bool IsBackedUp { get => throw null; set { } }
+                public bool IsBackupEligible { get => throw null; }
+                public bool IsUserVerified { get => throw null; set { } }
+                public string Name { get => throw null; set { } }
+                public byte[] PublicKey { get => throw null; }
+                public uint SignCount { get => throw null; set { } }
+                public string[] Transports { get => throw null; }
             }
             public class UserValidator<TUser> : Microsoft.AspNetCore.Identity.IUserValidator<TUser> where TUser : class
             {

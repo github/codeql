@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.DiagnosticSource, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Diagnostics.DiagnosticSource, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Diagnostics
@@ -168,6 +168,7 @@ namespace System
             public ActivitySource(string name) => throw null;
             public ActivitySource(string name, string version = default(string)) => throw null;
             public ActivitySource(string name, string version = default(string), System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags = default(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>)) => throw null;
+            public ActivitySource(System.Diagnostics.ActivitySourceOptions options) => throw null;
             public void Dispose() => throw null;
             public bool HasListeners() => throw null;
             public string Name { get => throw null; }
@@ -176,7 +177,16 @@ namespace System
             public System.Diagnostics.Activity StartActivity(string name, System.Diagnostics.ActivityKind kind, string parentId, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags = default(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>), System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink> links = default(System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink>), System.DateTimeOffset startTime = default(System.DateTimeOffset)) => throw null;
             public System.Diagnostics.Activity StartActivity(System.Diagnostics.ActivityKind kind, System.Diagnostics.ActivityContext parentContext = default(System.Diagnostics.ActivityContext), System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> tags = default(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>), System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink> links = default(System.Collections.Generic.IEnumerable<System.Diagnostics.ActivityLink>), System.DateTimeOffset startTime = default(System.DateTimeOffset), string name = default(string)) => throw null;
             public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; }
+            public string TelemetrySchemaUrl { get => throw null; }
             public string Version { get => throw null; }
+        }
+        public class ActivitySourceOptions
+        {
+            public ActivitySourceOptions(string name) => throw null;
+            public string Name { get => throw null; set { } }
+            public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; set { } }
+            public string TelemetrySchemaUrl { get => throw null; set { } }
+            public string Version { get => throw null; set { } }
         }
         public struct ActivitySpanId : System.IEquatable<System.Diagnostics.ActivitySpanId>
         {
@@ -287,6 +297,8 @@ namespace System
             public static System.Diagnostics.DistributedContextPropagator CreateDefaultPropagator() => throw null;
             public static System.Diagnostics.DistributedContextPropagator CreateNoOutputPropagator() => throw null;
             public static System.Diagnostics.DistributedContextPropagator CreatePassThroughPropagator() => throw null;
+            public static System.Diagnostics.DistributedContextPropagator CreatePreW3CPropagator() => throw null;
+            public static System.Diagnostics.DistributedContextPropagator CreateW3CPropagator() => throw null;
             protected DistributedContextPropagator() => throw null;
             public static System.Diagnostics.DistributedContextPropagator Current { get => throw null; set { } }
             public abstract System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> ExtractBaggage(object carrier, System.Diagnostics.DistributedContextPropagator.PropagatorGetterCallback getter);
@@ -419,6 +431,7 @@ namespace System
                 public string Name { get => throw null; }
                 public object Scope { get => throw null; }
                 public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; }
+                public string TelemetrySchemaUrl { get => throw null; }
                 public string Version { get => throw null; }
             }
             public static partial class MeterFactoryExtensions
@@ -443,6 +456,7 @@ namespace System
                 public string Name { get => throw null; set { } }
                 public object Scope { get => throw null; set { } }
                 public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> Tags { get => throw null; set { } }
+                public string TelemetrySchemaUrl { get => throw null; set { } }
                 public string Version { get => throw null; set { } }
             }
             public sealed class ObservableCounter<T> : System.Diagnostics.Metrics.ObservableInstrument<T> where T : struct

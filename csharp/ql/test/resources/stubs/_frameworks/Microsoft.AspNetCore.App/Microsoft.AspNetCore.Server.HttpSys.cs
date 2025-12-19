@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Server.HttpSys, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Server.HttpSys, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -75,6 +75,7 @@ namespace Microsoft
                     public long RequestQueueLimit { get => throw null; set { } }
                     public Microsoft.AspNetCore.Server.HttpSys.RequestQueueMode RequestQueueMode { get => throw null; set { } }
                     public string RequestQueueName { get => throw null; set { } }
+                    public System.Security.AccessControl.GenericSecurityDescriptor RequestQueueSecurityDescriptor { get => throw null; set { } }
                     public bool ThrowWriteExceptions { get => throw null; set { } }
                     public Microsoft.AspNetCore.Server.HttpSys.TimeoutManager Timeouts { get => throw null; }
                     public bool UnsafePreferInlineScheduling { get => throw null; set { } }
@@ -122,6 +123,10 @@ namespace Microsoft
                 public interface IHttpSysRequestInfoFeature
                 {
                     System.Collections.Generic.IReadOnlyDictionary<int, System.ReadOnlyMemory<byte>> RequestInfo { get; }
+                }
+                public interface IHttpSysRequestPropertyFeature
+                {
+                    bool TryGetTlsClientHello(System.Span<byte> tlsClientHelloBytesDestination, out int bytesReturned);
                 }
                 public interface IHttpSysRequestTimingFeature
                 {

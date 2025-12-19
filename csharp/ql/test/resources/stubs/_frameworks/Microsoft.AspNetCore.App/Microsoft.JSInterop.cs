@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.JSInterop, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.JSInterop, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace JSInterop
@@ -22,21 +22,39 @@ namespace Microsoft
         }
         public interface IJSInProcessObjectReference : System.IAsyncDisposable, System.IDisposable, Microsoft.JSInterop.IJSObjectReference
         {
+            virtual TValue GetValue<TValue>(string identifier) => throw null;
             TValue Invoke<TValue>(string identifier, params object[] args);
+            virtual Microsoft.JSInterop.IJSInProcessObjectReference InvokeConstructor(string identifier, object[] args) => throw null;
+            virtual void SetValue<TValue>(string identifier, TValue value) => throw null;
         }
         public interface IJSInProcessRuntime : Microsoft.JSInterop.IJSRuntime
         {
+            virtual TValue GetValue<TValue>(string identifier) => throw null;
             TResult Invoke<TResult>(string identifier, params object[] args);
+            virtual Microsoft.JSInterop.IJSInProcessObjectReference InvokeConstructor(string identifier, params object[] args) => throw null;
+            virtual void SetValue<TValue>(string identifier, TValue value) => throw null;
         }
         public interface IJSObjectReference : System.IAsyncDisposable
         {
+            virtual System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier) => throw null;
+            virtual System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken) => throw null;
             System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args);
             System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken, object[] args);
+            virtual System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, object[] args) => throw null;
+            virtual System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+            virtual System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value) => throw null;
+            virtual System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value, System.Threading.CancellationToken cancellationToken) => throw null;
         }
         public interface IJSRuntime
         {
+            virtual System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier) => throw null;
+            virtual System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken) => throw null;
             System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args);
             System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken, object[] args);
+            virtual System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, object[] args) => throw null;
+            virtual System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+            virtual System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value) => throw null;
+            virtual System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value, System.Threading.CancellationToken cancellationToken) => throw null;
         }
         public interface IJSStreamReference : System.IAsyncDisposable
         {
@@ -49,15 +67,24 @@ namespace Microsoft
             {
                 protected JSInProcessObjectReference(Microsoft.JSInterop.JSInProcessRuntime jsRuntime, long id) : base(default(Microsoft.JSInterop.JSRuntime), default(long)) => throw null;
                 public void Dispose() => throw null;
+                public TValue GetValue<TValue>(string identifier) => throw null;
                 public TValue Invoke<TValue>(string identifier, params object[] args) => throw null;
+                public Microsoft.JSInterop.IJSInProcessObjectReference InvokeConstructor(string identifier, object[] args) => throw null;
+                public void SetValue<TValue>(string identifier, TValue value) => throw null;
             }
             public class JSObjectReference : System.IAsyncDisposable, Microsoft.JSInterop.IJSObjectReference
             {
                 protected JSObjectReference(Microsoft.JSInterop.JSRuntime jsRuntime, long id) => throw null;
                 public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
+                public System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier) => throw null;
+                public System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken) => throw null;
                 protected long Id { get => throw null; }
                 public System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args) => throw null;
                 public System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+                public System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, object[] args) => throw null;
+                public System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+                public System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value) => throw null;
+                public System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value, System.Threading.CancellationToken cancellationToken) => throw null;
                 protected void ThrowIfDisposed() => throw null;
             }
             public static class JSObjectReferenceJsonWorker
@@ -99,6 +126,22 @@ namespace Microsoft
             public interface IJSVoidResult
             {
             }
+            public enum JSCallType
+            {
+                FunctionCall = 1,
+                ConstructorCall = 2,
+                GetValue = 3,
+                SetValue = 4,
+            }
+            public struct JSInvocationInfo
+            {
+                public string ArgsJson { get => throw null; set { } }
+                public long AsyncHandle { get => throw null; set { } }
+                public Microsoft.JSInterop.Infrastructure.JSCallType CallType { get => throw null; set { } }
+                public string Identifier { get => throw null; set { } }
+                public Microsoft.JSInterop.JSCallResultType ResultType { get => throw null; set { } }
+                public long TargetInstanceId { get => throw null; set { } }
+            }
         }
         public enum JSCallResultType
         {
@@ -123,9 +166,13 @@ namespace Microsoft
         public abstract class JSInProcessRuntime : Microsoft.JSInterop.JSRuntime, Microsoft.JSInterop.IJSInProcessRuntime, Microsoft.JSInterop.IJSRuntime
         {
             protected JSInProcessRuntime() => throw null;
+            public TValue GetValue<TValue>(string identifier) => throw null;
             public TValue Invoke<TValue>(string identifier, params object[] args) => throw null;
+            public Microsoft.JSInterop.IJSInProcessObjectReference InvokeConstructor(string identifier, params object[] args) => throw null;
             protected virtual string InvokeJS(string identifier, string argsJson) => throw null;
             protected abstract string InvokeJS(string identifier, string argsJson, Microsoft.JSInterop.JSCallResultType resultType, long targetInstanceId);
+            protected virtual string InvokeJS(in Microsoft.JSInterop.Infrastructure.JSInvocationInfo invocationInfo) => throw null;
+            public void SetValue<TValue>(string identifier, TValue value) => throw null;
         }
         public static partial class JSInProcessRuntimeExtensions
         {
@@ -140,37 +187,54 @@ namespace Microsoft
         }
         public static partial class JSObjectReferenceExtensions
         {
+            public static System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.TimeSpan timeout) => throw null;
             public static System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.Threading.CancellationToken cancellationToken, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.TimeSpan timeout, params object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, params object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.TimeSpan timeout, object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.Threading.CancellationToken cancellationToken, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, System.TimeSpan timeout, params object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask SetValueAsync<TValue>(this Microsoft.JSInterop.IJSObjectReference jsObjectReference, string identifier, TValue value, System.TimeSpan timeout) => throw null;
         }
         public abstract class JSRuntime : System.IDisposable, Microsoft.JSInterop.IJSRuntime
         {
             protected virtual void BeginInvokeJS(long taskId, string identifier, string argsJson) => throw null;
             protected abstract void BeginInvokeJS(long taskId, string identifier, string argsJson, Microsoft.JSInterop.JSCallResultType resultType, long targetInstanceId);
+            protected virtual void BeginInvokeJS(in Microsoft.JSInterop.Infrastructure.JSInvocationInfo invocationInfo) => throw null;
             protected JSRuntime() => throw null;
             protected System.TimeSpan? DefaultAsyncTimeout { get => throw null; set { } }
             public void Dispose() => throw null;
             protected abstract void EndInvokeDotNet(Microsoft.JSInterop.Infrastructure.DotNetInvocationInfo invocationInfo, in Microsoft.JSInterop.Infrastructure.DotNetInvocationResult invocationResult);
+            public System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier) => throw null;
+            public System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken) => throw null;
             public System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, object[] args) => throw null;
             public System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+            public System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, object[] args) => throw null;
+            public System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
             protected System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get => throw null; }
             protected virtual System.Threading.Tasks.Task<System.IO.Stream> ReadJSDataAsStreamAsync(Microsoft.JSInterop.IJSStreamReference jsStreamReference, long totalLength, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             protected virtual void ReceiveByteArray(int id, byte[] data) => throw null;
             protected virtual void SendByteArray(int id, byte[] data) => throw null;
+            public System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value) => throw null;
+            public System.Threading.Tasks.ValueTask SetValueAsync<TValue>(string identifier, TValue value, System.Threading.CancellationToken cancellationToken) => throw null;
             protected virtual System.Threading.Tasks.Task TransmitStreamAsync(long streamId, Microsoft.JSInterop.DotNetStreamReference dotNetStreamReference) => throw null;
         }
         public static partial class JSRuntimeExtensions
         {
+            public static System.Threading.Tasks.ValueTask<TValue> GetValueAsync<TValue>(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.TimeSpan timeout) => throw null;
             public static System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.Threading.CancellationToken cancellationToken, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask<TValue> InvokeAsync<TValue>(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.TimeSpan timeout, params object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, params object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.Threading.CancellationToken cancellationToken, object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask<Microsoft.JSInterop.IJSObjectReference> InvokeConstructorAsync(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.TimeSpan timeout, object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.Threading.CancellationToken cancellationToken, params object[] args) => throw null;
             public static System.Threading.Tasks.ValueTask InvokeVoidAsync(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, System.TimeSpan timeout, params object[] args) => throw null;
+            public static System.Threading.Tasks.ValueTask SetValueAsync<TValue>(this Microsoft.JSInterop.IJSRuntime jsRuntime, string identifier, TValue value, System.TimeSpan timeout) => throw null;
         }
     }
 }

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.Core, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -143,7 +143,7 @@ namespace Microsoft
                 public bool SuppressModelStateInvalidFilter { get => throw null; set { } }
             }
             [System.AttributeUsage((System.AttributeTargets)5, AllowMultiple = false, Inherited = true)]
-            public class ApiControllerAttribute : Microsoft.AspNetCore.Mvc.ControllerAttribute, Microsoft.AspNetCore.Mvc.Infrastructure.IApiBehaviorMetadata, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+            public class ApiControllerAttribute : Microsoft.AspNetCore.Mvc.ControllerAttribute, Microsoft.AspNetCore.Mvc.Infrastructure.IApiBehaviorMetadata, Microsoft.AspNetCore.Http.Metadata.IDisableCookieRedirectMetadata, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
             {
                 public ApiControllerAttribute() => throw null;
             }
@@ -216,6 +216,7 @@ namespace Microsoft
                 }
                 public interface IApiResponseMetadataProvider : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
                 {
+                    virtual string Description { get => throw null; }
                     void SetContentTypes(Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection contentTypes);
                     int StatusCode { get; }
                     System.Type Type { get; }
@@ -2794,6 +2795,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection ContentTypes { get => throw null; set { } }
                 public ProducesAttribute(System.Type type) => throw null;
                 public ProducesAttribute(string contentType, params string[] additionalContentTypes) => throw null;
+                public string Description { get => throw null; set { } }
                 public virtual void OnResultExecuted(Microsoft.AspNetCore.Mvc.Filters.ResultExecutedContext context) => throw null;
                 public virtual void OnResultExecuting(Microsoft.AspNetCore.Mvc.Filters.ResultExecutingContext context) => throw null;
                 public int Order { get => throw null; set { } }
@@ -2810,6 +2812,7 @@ namespace Microsoft
             {
                 public ProducesDefaultResponseTypeAttribute() => throw null;
                 public ProducesDefaultResponseTypeAttribute(System.Type type) => throw null;
+                public string Description { get => throw null; set { } }
                 void Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseMetadataProvider.SetContentTypes(Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection contentTypes) => throw null;
                 public int StatusCode { get => throw null; }
                 public System.Type Type { get => throw null; }
@@ -2826,6 +2829,7 @@ namespace Microsoft
                 public ProducesResponseTypeAttribute(int statusCode) => throw null;
                 public ProducesResponseTypeAttribute(System.Type type, int statusCode) => throw null;
                 public ProducesResponseTypeAttribute(System.Type type, int statusCode, string contentType, params string[] additionalContentTypes) => throw null;
+                public string Description { get => throw null; set { } }
                 void Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseMetadataProvider.SetContentTypes(Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection contentTypes) => throw null;
                 public int StatusCode { get => throw null; set { } }
                 public System.Type Type { get => throw null; set { } }

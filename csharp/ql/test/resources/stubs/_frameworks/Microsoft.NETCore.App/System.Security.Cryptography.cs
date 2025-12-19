@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Security.Cryptography, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Security.Cryptography, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -49,6 +49,16 @@ namespace System
                 public static System.Security.Cryptography.Aes Create() => throw null;
                 public static System.Security.Cryptography.Aes Create(string algorithmName) => throw null;
                 protected Aes() => throw null;
+                public byte[] DecryptKeyWrapPadded(byte[] ciphertext) => throw null;
+                public byte[] DecryptKeyWrapPadded(System.ReadOnlySpan<byte> ciphertext) => throw null;
+                public int DecryptKeyWrapPadded(System.ReadOnlySpan<byte> ciphertext, System.Span<byte> destination) => throw null;
+                protected virtual int DecryptKeyWrapPaddedCore(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
+                public byte[] EncryptKeyWrapPadded(byte[] plaintext) => throw null;
+                public byte[] EncryptKeyWrapPadded(System.ReadOnlySpan<byte> plaintext) => throw null;
+                public void EncryptKeyWrapPadded(System.ReadOnlySpan<byte> plaintext, System.Span<byte> destination) => throw null;
+                protected virtual void EncryptKeyWrapPaddedCore(System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
+                public static int GetKeyWrapPaddedLength(int plaintextLengthInBytes) => throw null;
+                public bool TryDecryptKeyWrapPadded(System.ReadOnlySpan<byte> ciphertext, System.Span<byte> destination, out int bytesWritten) => throw null;
             }
             public sealed class AesCcm : System.IDisposable
             {
@@ -70,6 +80,7 @@ namespace System
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV) => throw null;
                 public AesCng() => throw null;
+                public AesCng(System.Security.Cryptography.CngKey key) => throw null;
                 public AesCng(string keyName) => throw null;
                 public AesCng(string keyName, System.Security.Cryptography.CngProvider provider) => throw null;
                 public AesCng(string keyName, System.Security.Cryptography.CngProvider provider, System.Security.Cryptography.CngKeyOpenOptions openOptions) => throw null;
@@ -290,6 +301,8 @@ namespace System
                 public bool Equals(System.Security.Cryptography.CngAlgorithm other) => throw null;
                 public override int GetHashCode() => throw null;
                 public static System.Security.Cryptography.CngAlgorithm MD5 { get => throw null; }
+                public static System.Security.Cryptography.CngAlgorithm MLDsa { get => throw null; }
+                public static System.Security.Cryptography.CngAlgorithm MLKem { get => throw null; }
                 public static bool operator ==(System.Security.Cryptography.CngAlgorithm left, System.Security.Cryptography.CngAlgorithm right) => throw null;
                 public static bool operator !=(System.Security.Cryptography.CngAlgorithm left, System.Security.Cryptography.CngAlgorithm right) => throw null;
                 public static System.Security.Cryptography.CngAlgorithm Rsa { get => throw null; }
@@ -297,6 +310,7 @@ namespace System
                 public static System.Security.Cryptography.CngAlgorithm Sha256 { get => throw null; }
                 public static System.Security.Cryptography.CngAlgorithm Sha384 { get => throw null; }
                 public static System.Security.Cryptography.CngAlgorithm Sha512 { get => throw null; }
+                public static System.Security.Cryptography.CngAlgorithm SlhDsa { get => throw null; }
                 public override string ToString() => throw null;
             }
             public sealed class CngAlgorithmGroup : System.IEquatable<System.Security.Cryptography.CngAlgorithmGroup>
@@ -310,9 +324,12 @@ namespace System
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Security.Cryptography.CngAlgorithmGroup other) => throw null;
                 public override int GetHashCode() => throw null;
+                public static System.Security.Cryptography.CngAlgorithmGroup MLDsa { get => throw null; }
+                public static System.Security.Cryptography.CngAlgorithmGroup MLKem { get => throw null; }
                 public static bool operator ==(System.Security.Cryptography.CngAlgorithmGroup left, System.Security.Cryptography.CngAlgorithmGroup right) => throw null;
                 public static bool operator !=(System.Security.Cryptography.CngAlgorithmGroup left, System.Security.Cryptography.CngAlgorithmGroup right) => throw null;
                 public static System.Security.Cryptography.CngAlgorithmGroup Rsa { get => throw null; }
+                public static System.Security.Cryptography.CngAlgorithmGroup SlhDsa { get => throw null; }
                 public override string ToString() => throw null;
             }
             [System.Flags]
@@ -372,10 +389,16 @@ namespace System
                 public static System.Security.Cryptography.CngKeyBlobFormat GenericPrivateBlob { get => throw null; }
                 public static System.Security.Cryptography.CngKeyBlobFormat GenericPublicBlob { get => throw null; }
                 public override int GetHashCode() => throw null;
+                public static System.Security.Cryptography.CngKeyBlobFormat MLKemPrivateBlob { get => throw null; }
+                public static System.Security.Cryptography.CngKeyBlobFormat MLKemPrivateSeedBlob { get => throw null; }
+                public static System.Security.Cryptography.CngKeyBlobFormat MLKemPublicBlob { get => throw null; }
                 public static bool operator ==(System.Security.Cryptography.CngKeyBlobFormat left, System.Security.Cryptography.CngKeyBlobFormat right) => throw null;
                 public static bool operator !=(System.Security.Cryptography.CngKeyBlobFormat left, System.Security.Cryptography.CngKeyBlobFormat right) => throw null;
                 public static System.Security.Cryptography.CngKeyBlobFormat OpaqueTransportBlob { get => throw null; }
                 public static System.Security.Cryptography.CngKeyBlobFormat Pkcs8PrivateBlob { get => throw null; }
+                public static System.Security.Cryptography.CngKeyBlobFormat PQDsaPrivateBlob { get => throw null; }
+                public static System.Security.Cryptography.CngKeyBlobFormat PQDsaPrivateSeedBlob { get => throw null; }
+                public static System.Security.Cryptography.CngKeyBlobFormat PQDsaPublicBlob { get => throw null; }
                 public override string ToString() => throw null;
             }
             [System.Flags]
@@ -478,6 +501,102 @@ namespace System
                 None = 0,
                 ProtectKey = 1,
                 ForceHighProtection = 2,
+            }
+            public abstract class CompositeMLDsa : System.IDisposable
+            {
+                public System.Security.Cryptography.CompositeMLDsaAlgorithm Algorithm { get => throw null; }
+                protected CompositeMLDsa(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm) => throw null;
+                public void Dispose() => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
+                public byte[] ExportCompositeMLDsaPrivateKey() => throw null;
+                public int ExportCompositeMLDsaPrivateKey(System.Span<byte> destination) => throw null;
+                protected abstract int ExportCompositeMLDsaPrivateKeyCore(System.Span<byte> destination);
+                public byte[] ExportCompositeMLDsaPublicKey() => throw null;
+                public int ExportCompositeMLDsaPublicKey(System.Span<byte> destination) => throw null;
+                protected abstract int ExportCompositeMLDsaPublicKeyCore(System.Span<byte> destination);
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportPkcs8PrivateKey() => throw null;
+                public string ExportPkcs8PrivateKeyPem() => throw null;
+                public byte[] ExportSubjectPublicKeyInfo() => throw null;
+                public string ExportSubjectPublicKeyInfoPem() => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa GenerateKey(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportCompositeMLDsaPrivateKey(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportCompositeMLDsaPrivateKey(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportCompositeMLDsaPublicKey(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportCompositeMLDsaPublicKey(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportEncryptedPkcs8PrivateKey(string password, byte[] source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<byte> passwordBytes) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> password) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportFromEncryptedPem(string source, byte[] passwordBytes) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportFromEncryptedPem(string source, string password) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportFromPem(System.ReadOnlySpan<char> source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportFromPem(string source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportPkcs8PrivateKey(byte[] source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportPkcs8PrivateKey(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportSubjectPublicKeyInfo(byte[] source) => throw null;
+                public static System.Security.Cryptography.CompositeMLDsa ImportSubjectPublicKeyInfo(System.ReadOnlySpan<byte> source) => throw null;
+                public static bool IsAlgorithmSupported(System.Security.Cryptography.CompositeMLDsaAlgorithm algorithm) => throw null;
+                public static bool IsSupported { get => throw null; }
+                public byte[] SignData(byte[] data, byte[] context = default(byte[])) => throw null;
+                public int SignData(System.ReadOnlySpan<byte> data, System.Span<byte> destination, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract int SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination);
+                public bool TryExportCompositeMLDsaPrivateKey(System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportCompositeMLDsaPublicKey(System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportPkcs8PrivateKey(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected abstract bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten);
+                public bool TryExportSubjectPublicKeyInfo(System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool VerifyData(byte[] data, byte[] signature, byte[] context = default(byte[])) => throw null;
+                public bool VerifyData(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> signature, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature);
+            }
+            public sealed class CompositeMLDsaAlgorithm : System.IEquatable<System.Security.Cryptography.CompositeMLDsaAlgorithm>
+            {
+                public override bool Equals(object obj) => throw null;
+                public bool Equals(System.Security.Cryptography.CompositeMLDsaAlgorithm other) => throw null;
+                public override int GetHashCode() => throw null;
+                public int MaxSignatureSizeInBytes { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa44WithECDsaP256 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa44WithEd25519 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa44WithRSA2048Pkcs15 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa44WithRSA2048Pss { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithECDsaBrainpoolP256r1 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithECDsaP256 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithECDsaP384 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithEd25519 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithRSA3072Pkcs15 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithRSA3072Pss { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithRSA4096Pkcs15 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa65WithRSA4096Pss { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa87WithECDsaBrainpoolP384r1 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa87WithECDsaP384 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa87WithECDsaP521 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa87WithEd448 { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa87WithRSA3072Pss { get => throw null; }
+                public static System.Security.Cryptography.CompositeMLDsaAlgorithm MLDsa87WithRSA4096Pss { get => throw null; }
+                public string Name { get => throw null; }
+                public static bool operator ==(System.Security.Cryptography.CompositeMLDsaAlgorithm left, System.Security.Cryptography.CompositeMLDsaAlgorithm right) => throw null;
+                public static bool operator !=(System.Security.Cryptography.CompositeMLDsaAlgorithm left, System.Security.Cryptography.CompositeMLDsaAlgorithm right) => throw null;
+                public override string ToString() => throw null;
+            }
+            public sealed class CompositeMLDsaCng : System.Security.Cryptography.CompositeMLDsa
+            {
+                public CompositeMLDsaCng(System.Security.Cryptography.CngKey key) : base(default(System.Security.Cryptography.CompositeMLDsaAlgorithm)) => throw null;
+                protected override int ExportCompositeMLDsaPrivateKeyCore(System.Span<byte> destination) => throw null;
+                protected override int ExportCompositeMLDsaPublicKeyCore(System.Span<byte> destination) => throw null;
+                public System.Security.Cryptography.CngKey GetKey() => throw null;
+                protected override int SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination) => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected override bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature) => throw null;
             }
             public class CryptoConfig
             {
@@ -1559,6 +1678,229 @@ namespace System
                 public override void Initialize() => throw null;
                 protected override bool TryHashFinal(System.Span<byte> destination, out int bytesWritten) => throw null;
             }
+            public abstract class MLDsa : System.IDisposable
+            {
+                public System.Security.Cryptography.MLDsaAlgorithm Algorithm { get => throw null; }
+                protected MLDsa(System.Security.Cryptography.MLDsaAlgorithm algorithm) => throw null;
+                public void Dispose() => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportMLDsaPrivateKey() => throw null;
+                public void ExportMLDsaPrivateKey(System.Span<byte> destination) => throw null;
+                protected abstract void ExportMLDsaPrivateKeyCore(System.Span<byte> destination);
+                public byte[] ExportMLDsaPrivateSeed() => throw null;
+                public void ExportMLDsaPrivateSeed(System.Span<byte> destination) => throw null;
+                protected abstract void ExportMLDsaPrivateSeedCore(System.Span<byte> destination);
+                public byte[] ExportMLDsaPublicKey() => throw null;
+                public void ExportMLDsaPublicKey(System.Span<byte> destination) => throw null;
+                protected abstract void ExportMLDsaPublicKeyCore(System.Span<byte> destination);
+                public byte[] ExportPkcs8PrivateKey() => throw null;
+                public string ExportPkcs8PrivateKeyPem() => throw null;
+                public byte[] ExportSubjectPublicKeyInfo() => throw null;
+                public string ExportSubjectPublicKeyInfoPem() => throw null;
+                public static System.Security.Cryptography.MLDsa GenerateKey(System.Security.Cryptography.MLDsaAlgorithm algorithm) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportEncryptedPkcs8PrivateKey(string password, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<byte> passwordBytes) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> password) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportFromEncryptedPem(string source, byte[] passwordBytes) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportFromEncryptedPem(string source, string password) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportFromPem(System.ReadOnlySpan<char> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportFromPem(string source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportMLDsaPrivateKey(System.Security.Cryptography.MLDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportMLDsaPrivateKey(System.Security.Cryptography.MLDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportMLDsaPrivateSeed(System.Security.Cryptography.MLDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportMLDsaPrivateSeed(System.Security.Cryptography.MLDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportMLDsaPublicKey(System.Security.Cryptography.MLDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportMLDsaPublicKey(System.Security.Cryptography.MLDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportPkcs8PrivateKey(byte[] source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportPkcs8PrivateKey(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportSubjectPublicKeyInfo(byte[] source) => throw null;
+                public static System.Security.Cryptography.MLDsa ImportSubjectPublicKeyInfo(System.ReadOnlySpan<byte> source) => throw null;
+                public static bool IsSupported { get => throw null; }
+                public byte[] SignData(byte[] data, byte[] context = default(byte[])) => throw null;
+                public void SignData(System.ReadOnlySpan<byte> data, System.Span<byte> destination, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract void SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination);
+                public byte[] SignMu(byte[] externalMu) => throw null;
+                public byte[] SignMu(System.ReadOnlySpan<byte> externalMu) => throw null;
+                public void SignMu(System.ReadOnlySpan<byte> externalMu, System.Span<byte> destination) => throw null;
+                protected abstract void SignMuCore(System.ReadOnlySpan<byte> externalMu, System.Span<byte> destination);
+                public byte[] SignPreHash(byte[] hash, string hashAlgorithmOid, byte[] context = default(byte[])) => throw null;
+                public void SignPreHash(System.ReadOnlySpan<byte> hash, System.Span<byte> destination, string hashAlgorithmOid, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract void SignPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.Span<byte> destination);
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportPkcs8PrivateKey(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected abstract bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten);
+                public bool TryExportSubjectPublicKeyInfo(System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool VerifyData(byte[] data, byte[] signature, byte[] context = default(byte[])) => throw null;
+                public bool VerifyData(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> signature, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature);
+                public bool VerifyMu(byte[] externalMu, byte[] signature) => throw null;
+                public bool VerifyMu(System.ReadOnlySpan<byte> externalMu, System.ReadOnlySpan<byte> signature) => throw null;
+                protected abstract bool VerifyMuCore(System.ReadOnlySpan<byte> externalMu, System.ReadOnlySpan<byte> signature);
+                public bool VerifyPreHash(byte[] hash, byte[] signature, string hashAlgorithmOid, byte[] context = default(byte[])) => throw null;
+                public bool VerifyPreHash(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> signature, string hashAlgorithmOid, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract bool VerifyPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.ReadOnlySpan<byte> signature);
+            }
+            public sealed class MLDsaAlgorithm : System.IEquatable<System.Security.Cryptography.MLDsaAlgorithm>
+            {
+                public override bool Equals(object obj) => throw null;
+                public bool Equals(System.Security.Cryptography.MLDsaAlgorithm other) => throw null;
+                public override int GetHashCode() => throw null;
+                public static System.Security.Cryptography.MLDsaAlgorithm MLDsa44 { get => throw null; }
+                public static System.Security.Cryptography.MLDsaAlgorithm MLDsa65 { get => throw null; }
+                public static System.Security.Cryptography.MLDsaAlgorithm MLDsa87 { get => throw null; }
+                public int MuSizeInBytes { get => throw null; }
+                public string Name { get => throw null; }
+                public static bool operator ==(System.Security.Cryptography.MLDsaAlgorithm left, System.Security.Cryptography.MLDsaAlgorithm right) => throw null;
+                public static bool operator !=(System.Security.Cryptography.MLDsaAlgorithm left, System.Security.Cryptography.MLDsaAlgorithm right) => throw null;
+                public int PrivateKeySizeInBytes { get => throw null; }
+                public int PrivateSeedSizeInBytes { get => throw null; }
+                public int PublicKeySizeInBytes { get => throw null; }
+                public int SignatureSizeInBytes { get => throw null; }
+                public override string ToString() => throw null;
+            }
+            public sealed class MLDsaCng : System.Security.Cryptography.MLDsa
+            {
+                public MLDsaCng(System.Security.Cryptography.CngKey key) : base(default(System.Security.Cryptography.MLDsaAlgorithm)) => throw null;
+                protected override void Dispose(bool disposing) => throw null;
+                protected override void ExportMLDsaPrivateKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportMLDsaPrivateSeedCore(System.Span<byte> destination) => throw null;
+                protected override void ExportMLDsaPublicKeyCore(System.Span<byte> destination) => throw null;
+                public System.Security.Cryptography.CngKey GetKey() => throw null;
+                protected override void SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination) => throw null;
+                protected override void SignMuCore(System.ReadOnlySpan<byte> externalMu, System.Span<byte> destination) => throw null;
+                protected override void SignPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.Span<byte> destination) => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected override bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature) => throw null;
+                protected override bool VerifyMuCore(System.ReadOnlySpan<byte> externalMu, System.ReadOnlySpan<byte> signature) => throw null;
+                protected override bool VerifyPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.ReadOnlySpan<byte> signature) => throw null;
+            }
+            public sealed class MLDsaOpenSsl : System.Security.Cryptography.MLDsa
+            {
+                public MLDsaOpenSsl(System.Security.Cryptography.SafeEvpPKeyHandle pkeyHandle) : base(default(System.Security.Cryptography.MLDsaAlgorithm)) => throw null;
+                protected override void Dispose(bool disposing) => throw null;
+                public System.Security.Cryptography.SafeEvpPKeyHandle DuplicateKeyHandle() => throw null;
+                protected override void ExportMLDsaPrivateKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportMLDsaPrivateSeedCore(System.Span<byte> destination) => throw null;
+                protected override void ExportMLDsaPublicKeyCore(System.Span<byte> destination) => throw null;
+                protected override void SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination) => throw null;
+                protected override void SignMuCore(System.ReadOnlySpan<byte> externalMu, System.Span<byte> destination) => throw null;
+                protected override void SignPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.Span<byte> destination) => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected override bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature) => throw null;
+                protected override bool VerifyMuCore(System.ReadOnlySpan<byte> externalMu, System.ReadOnlySpan<byte> signature) => throw null;
+                protected override bool VerifyPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.ReadOnlySpan<byte> signature) => throw null;
+            }
+            public abstract class MLKem : System.IDisposable
+            {
+                public System.Security.Cryptography.MLKemAlgorithm Algorithm { get => throw null; }
+                protected MLKem(System.Security.Cryptography.MLKemAlgorithm algorithm) => throw null;
+                public byte[] Decapsulate(byte[] ciphertext) => throw null;
+                public void Decapsulate(System.ReadOnlySpan<byte> ciphertext, System.Span<byte> sharedSecret) => throw null;
+                protected abstract void DecapsulateCore(System.ReadOnlySpan<byte> ciphertext, System.Span<byte> sharedSecret);
+                public void Dispose() => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
+                public void Encapsulate(out byte[] ciphertext, out byte[] sharedSecret) => throw null;
+                public void Encapsulate(System.Span<byte> ciphertext, System.Span<byte> sharedSecret) => throw null;
+                protected abstract void EncapsulateCore(System.Span<byte> ciphertext, System.Span<byte> sharedSecret);
+                public byte[] ExportDecapsulationKey() => throw null;
+                public void ExportDecapsulationKey(System.Span<byte> destination) => throw null;
+                protected abstract void ExportDecapsulationKeyCore(System.Span<byte> destination);
+                public byte[] ExportEncapsulationKey() => throw null;
+                public void ExportEncapsulationKey(System.Span<byte> destination) => throw null;
+                protected abstract void ExportEncapsulationKeyCore(System.Span<byte> destination);
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportPkcs8PrivateKey() => throw null;
+                public string ExportPkcs8PrivateKeyPem() => throw null;
+                public byte[] ExportPrivateSeed() => throw null;
+                public void ExportPrivateSeed(System.Span<byte> destination) => throw null;
+                protected abstract void ExportPrivateSeedCore(System.Span<byte> destination);
+                public byte[] ExportSubjectPublicKeyInfo() => throw null;
+                public string ExportSubjectPublicKeyInfoPem() => throw null;
+                public static System.Security.Cryptography.MLKem GenerateKey(System.Security.Cryptography.MLKemAlgorithm algorithm) => throw null;
+                public static System.Security.Cryptography.MLKem ImportDecapsulationKey(System.Security.Cryptography.MLKemAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportDecapsulationKey(System.Security.Cryptography.MLKemAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportEncapsulationKey(System.Security.Cryptography.MLKemAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportEncapsulationKey(System.Security.Cryptography.MLKemAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportEncryptedPkcs8PrivateKey(string password, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<byte> passwordBytes) => throw null;
+                public static System.Security.Cryptography.MLKem ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> password) => throw null;
+                public static System.Security.Cryptography.MLKem ImportFromEncryptedPem(string source, byte[] passwordBytes) => throw null;
+                public static System.Security.Cryptography.MLKem ImportFromEncryptedPem(string source, string password) => throw null;
+                public static System.Security.Cryptography.MLKem ImportFromPem(System.ReadOnlySpan<char> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportFromPem(string source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportPkcs8PrivateKey(byte[] source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportPkcs8PrivateKey(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportPrivateSeed(System.Security.Cryptography.MLKemAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportPrivateSeed(System.Security.Cryptography.MLKemAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportSubjectPublicKeyInfo(byte[] source) => throw null;
+                public static System.Security.Cryptography.MLKem ImportSubjectPublicKeyInfo(System.ReadOnlySpan<byte> source) => throw null;
+                public static bool IsSupported { get => throw null; }
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportPkcs8PrivateKey(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected abstract bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten);
+                public bool TryExportSubjectPublicKeyInfo(System.Span<byte> destination, out int bytesWritten) => throw null;
+            }
+            public sealed class MLKemAlgorithm : System.IEquatable<System.Security.Cryptography.MLKemAlgorithm>
+            {
+                public int CiphertextSizeInBytes { get => throw null; }
+                public int DecapsulationKeySizeInBytes { get => throw null; }
+                public int EncapsulationKeySizeInBytes { get => throw null; }
+                public override bool Equals(object obj) => throw null;
+                public bool Equals(System.Security.Cryptography.MLKemAlgorithm other) => throw null;
+                public override int GetHashCode() => throw null;
+                public static System.Security.Cryptography.MLKemAlgorithm MLKem1024 { get => throw null; }
+                public static System.Security.Cryptography.MLKemAlgorithm MLKem512 { get => throw null; }
+                public static System.Security.Cryptography.MLKemAlgorithm MLKem768 { get => throw null; }
+                public string Name { get => throw null; }
+                public static bool operator ==(System.Security.Cryptography.MLKemAlgorithm left, System.Security.Cryptography.MLKemAlgorithm right) => throw null;
+                public static bool operator !=(System.Security.Cryptography.MLKemAlgorithm left, System.Security.Cryptography.MLKemAlgorithm right) => throw null;
+                public int PrivateSeedSizeInBytes { get => throw null; }
+                public int SharedSecretSizeInBytes { get => throw null; }
+                public override string ToString() => throw null;
+            }
+            public sealed class MLKemCng : System.Security.Cryptography.MLKem
+            {
+                public MLKemCng(System.Security.Cryptography.CngKey key) : base(default(System.Security.Cryptography.MLKemAlgorithm)) => throw null;
+                protected override void DecapsulateCore(System.ReadOnlySpan<byte> ciphertext, System.Span<byte> sharedSecret) => throw null;
+                protected override void Dispose(bool disposing) => throw null;
+                protected override void EncapsulateCore(System.Span<byte> ciphertext, System.Span<byte> sharedSecret) => throw null;
+                protected override void ExportDecapsulationKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportEncapsulationKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportPrivateSeedCore(System.Span<byte> destination) => throw null;
+                public System.Security.Cryptography.CngKey GetKey() => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+            }
+            public sealed class MLKemOpenSsl : System.Security.Cryptography.MLKem
+            {
+                public MLKemOpenSsl(System.Security.Cryptography.SafeEvpPKeyHandle pkeyHandle) : base(default(System.Security.Cryptography.MLKemAlgorithm)) => throw null;
+                protected override void DecapsulateCore(System.ReadOnlySpan<byte> ciphertext, System.Span<byte> sharedSecret) => throw null;
+                protected override void Dispose(bool disposing) => throw null;
+                public System.Security.Cryptography.SafeEvpPKeyHandle DuplicateKeyHandle() => throw null;
+                protected override void EncapsulateCore(System.Span<byte> ciphertext, System.Span<byte> sharedSecret) => throw null;
+                protected override void ExportDecapsulationKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportEncapsulationKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportPrivateSeedCore(System.Span<byte> destination) => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+            }
             public sealed class Oid
             {
                 public Oid() => throw null;
@@ -1649,11 +1991,15 @@ namespace System
             public static class PemEncoding
             {
                 public static System.Security.Cryptography.PemFields Find(System.ReadOnlySpan<char> pemData) => throw null;
+                public static System.Security.Cryptography.PemFields FindUtf8(System.ReadOnlySpan<byte> pemData) => throw null;
                 public static int GetEncodedSize(int labelLength, int dataLength) => throw null;
                 public static bool TryFind(System.ReadOnlySpan<char> pemData, out System.Security.Cryptography.PemFields fields) => throw null;
+                public static bool TryFindUtf8(System.ReadOnlySpan<byte> pemData, out System.Security.Cryptography.PemFields fields) => throw null;
                 public static bool TryWrite(System.ReadOnlySpan<char> label, System.ReadOnlySpan<byte> data, System.Span<char> destination, out int charsWritten) => throw null;
+                public static bool TryWriteUtf8(System.ReadOnlySpan<byte> utf8Label, System.ReadOnlySpan<byte> data, System.Span<byte> destination, out int bytesWritten) => throw null;
                 public static char[] Write(System.ReadOnlySpan<char> label, System.ReadOnlySpan<byte> data) => throw null;
                 public static string WriteString(System.ReadOnlySpan<char> label, System.ReadOnlySpan<byte> data) => throw null;
+                public static byte[] WriteUtf8(System.ReadOnlySpan<byte> utf8Label, System.ReadOnlySpan<byte> data) => throw null;
             }
             public struct PemFields
             {
@@ -2280,6 +2626,116 @@ namespace System
                 public string FormatterAlgorithm { get => throw null; set { } }
                 public string KeyAlgorithm { get => throw null; set { } }
             }
+            public abstract class SlhDsa : System.IDisposable
+            {
+                public System.Security.Cryptography.SlhDsaAlgorithm Algorithm { get => throw null; }
+                protected SlhDsa(System.Security.Cryptography.SlhDsaAlgorithm algorithm) => throw null;
+                public void Dispose() => throw null;
+                protected virtual void Dispose(bool disposing) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public string ExportEncryptedPkcs8PrivateKeyPem(string password, System.Security.Cryptography.PbeParameters pbeParameters) => throw null;
+                public byte[] ExportPkcs8PrivateKey() => throw null;
+                public string ExportPkcs8PrivateKeyPem() => throw null;
+                public byte[] ExportSlhDsaPrivateKey() => throw null;
+                public void ExportSlhDsaPrivateKey(System.Span<byte> destination) => throw null;
+                protected abstract void ExportSlhDsaPrivateKeyCore(System.Span<byte> destination);
+                public byte[] ExportSlhDsaPublicKey() => throw null;
+                public void ExportSlhDsaPublicKey(System.Span<byte> destination) => throw null;
+                protected abstract void ExportSlhDsaPublicKeyCore(System.Span<byte> destination);
+                public byte[] ExportSubjectPublicKeyInfo() => throw null;
+                public string ExportSubjectPublicKeyInfoPem() => throw null;
+                public static System.Security.Cryptography.SlhDsa GenerateKey(System.Security.Cryptography.SlhDsaAlgorithm algorithm) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportEncryptedPkcs8PrivateKey(string password, byte[] source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<byte> passwordBytes) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportFromEncryptedPem(System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> password) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportFromEncryptedPem(string source, byte[] passwordBytes) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportFromEncryptedPem(string source, string password) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportFromPem(System.ReadOnlySpan<char> source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportFromPem(string source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportPkcs8PrivateKey(byte[] source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportPkcs8PrivateKey(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportSlhDsaPrivateKey(System.Security.Cryptography.SlhDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportSlhDsaPrivateKey(System.Security.Cryptography.SlhDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportSlhDsaPublicKey(System.Security.Cryptography.SlhDsaAlgorithm algorithm, byte[] source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportSlhDsaPublicKey(System.Security.Cryptography.SlhDsaAlgorithm algorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportSubjectPublicKeyInfo(byte[] source) => throw null;
+                public static System.Security.Cryptography.SlhDsa ImportSubjectPublicKeyInfo(System.ReadOnlySpan<byte> source) => throw null;
+                public static bool IsSupported { get => throw null; }
+                public byte[] SignData(byte[] data, byte[] context = default(byte[])) => throw null;
+                public void SignData(System.ReadOnlySpan<byte> data, System.Span<byte> destination, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract void SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination);
+                public byte[] SignPreHash(byte[] hash, string hashAlgorithmOid, byte[] context = default(byte[])) => throw null;
+                public void SignPreHash(System.ReadOnlySpan<byte> hash, System.Span<byte> destination, string hashAlgorithmOid, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract void SignPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.Span<byte> destination);
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<byte> passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan<char> password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportEncryptedPkcs8PrivateKey(string password, System.Security.Cryptography.PbeParameters pbeParameters, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportPkcs8PrivateKey(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected virtual bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool TryExportSubjectPublicKeyInfo(System.Span<byte> destination, out int bytesWritten) => throw null;
+                public bool VerifyData(byte[] data, byte[] signature, byte[] context = default(byte[])) => throw null;
+                public bool VerifyData(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> signature, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature);
+                public bool VerifyPreHash(byte[] hash, byte[] signature, string hashAlgorithmOid, byte[] context = default(byte[])) => throw null;
+                public bool VerifyPreHash(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> signature, string hashAlgorithmOid, System.ReadOnlySpan<byte> context = default(System.ReadOnlySpan<byte>)) => throw null;
+                protected abstract bool VerifyPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.ReadOnlySpan<byte> signature);
+            }
+            public sealed class SlhDsaAlgorithm : System.IEquatable<System.Security.Cryptography.SlhDsaAlgorithm>
+            {
+                public override bool Equals(object obj) => throw null;
+                public bool Equals(System.Security.Cryptography.SlhDsaAlgorithm other) => throw null;
+                public override int GetHashCode() => throw null;
+                public string Name { get => throw null; }
+                public static bool operator ==(System.Security.Cryptography.SlhDsaAlgorithm left, System.Security.Cryptography.SlhDsaAlgorithm right) => throw null;
+                public static bool operator !=(System.Security.Cryptography.SlhDsaAlgorithm left, System.Security.Cryptography.SlhDsaAlgorithm right) => throw null;
+                public int PrivateKeySizeInBytes { get => throw null; }
+                public int PublicKeySizeInBytes { get => throw null; }
+                public int SignatureSizeInBytes { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaSha2_128f { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaSha2_128s { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaSha2_192f { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaSha2_192s { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaSha2_256f { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaSha2_256s { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaShake128f { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaShake128s { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaShake192f { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaShake192s { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaShake256f { get => throw null; }
+                public static System.Security.Cryptography.SlhDsaAlgorithm SlhDsaShake256s { get => throw null; }
+                public override string ToString() => throw null;
+            }
+            public sealed class SlhDsaCng : System.Security.Cryptography.SlhDsa
+            {
+                public SlhDsaCng(System.Security.Cryptography.CngKey key) : base(default(System.Security.Cryptography.SlhDsaAlgorithm)) => throw null;
+                protected override void ExportSlhDsaPrivateKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportSlhDsaPublicKeyCore(System.Span<byte> destination) => throw null;
+                public System.Security.Cryptography.CngKey GetKey() => throw null;
+                protected override void SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination) => throw null;
+                protected override void SignPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.Span<byte> destination) => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected override bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature) => throw null;
+                protected override bool VerifyPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.ReadOnlySpan<byte> signature) => throw null;
+            }
+            public sealed class SlhDsaOpenSsl : System.Security.Cryptography.SlhDsa
+            {
+                public SlhDsaOpenSsl(System.Security.Cryptography.SafeEvpPKeyHandle pkeyHandle) : base(default(System.Security.Cryptography.SlhDsaAlgorithm)) => throw null;
+                protected override void Dispose(bool disposing) => throw null;
+                public System.Security.Cryptography.SafeEvpPKeyHandle DuplicateKeyHandle() => throw null;
+                protected override void ExportSlhDsaPrivateKeyCore(System.Span<byte> destination) => throw null;
+                protected override void ExportSlhDsaPublicKeyCore(System.Span<byte> destination) => throw null;
+                protected override void SignDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.Span<byte> destination) => throw null;
+                protected override void SignPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.Span<byte> destination) => throw null;
+                protected override bool TryExportPkcs8PrivateKeyCore(System.Span<byte> destination, out int bytesWritten) => throw null;
+                protected override bool VerifyDataCore(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<byte> context, System.ReadOnlySpan<byte> signature) => throw null;
+                protected override bool VerifyPreHashCore(System.ReadOnlySpan<byte> hash, System.ReadOnlySpan<byte> context, string hashAlgorithmOid, System.ReadOnlySpan<byte> signature) => throw null;
+            }
             public sealed class SP800108HmacCounterKdf : System.IDisposable
             {
                 public SP800108HmacCounterKdf(byte[] key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
@@ -2351,6 +2807,8 @@ namespace System
                 protected System.Security.Cryptography.CipherMode ModeValue;
                 public virtual System.Security.Cryptography.PaddingMode Padding { get => throw null; set { } }
                 protected System.Security.Cryptography.PaddingMode PaddingValue;
+                public void SetKey(System.ReadOnlySpan<byte> key) => throw null;
+                protected virtual void SetKeyCore(System.ReadOnlySpan<byte> key) => throw null;
                 public bool TryDecryptCbc(System.ReadOnlySpan<byte> ciphertext, System.ReadOnlySpan<byte> iv, System.Span<byte> destination, out int bytesWritten, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
                 protected virtual bool TryDecryptCbcCore(System.ReadOnlySpan<byte> ciphertext, System.ReadOnlySpan<byte> iv, System.Span<byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
                 public bool TryDecryptCfb(System.ReadOnlySpan<byte> ciphertext, System.ReadOnlySpan<byte> iv, System.Span<byte> destination, out int bytesWritten, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
@@ -2442,12 +2900,18 @@ namespace System
                     public byte[] CreateSigningRequest(System.Security.Cryptography.X509Certificates.X509SignatureGenerator signatureGenerator) => throw null;
                     public string CreateSigningRequestPem() => throw null;
                     public string CreateSigningRequestPem(System.Security.Cryptography.X509Certificates.X509SignatureGenerator signatureGenerator) => throw null;
+                    public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.CompositeMLDsa key) => throw null;
                     public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.ECDsa key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                    public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.MLDsa key) => throw null;
                     public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.RSA key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
+                    public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.SlhDsa key) => throw null;
                     public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.X509Certificates.PublicKey publicKey, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                     public CertificateRequest(System.Security.Cryptography.X509Certificates.X500DistinguishedName subjectName, System.Security.Cryptography.X509Certificates.PublicKey publicKey, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding rsaSignaturePadding = default(System.Security.Cryptography.RSASignaturePadding)) => throw null;
+                    public CertificateRequest(string subjectName, System.Security.Cryptography.CompositeMLDsa key) => throw null;
                     public CertificateRequest(string subjectName, System.Security.Cryptography.ECDsa key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                    public CertificateRequest(string subjectName, System.Security.Cryptography.MLDsa key) => throw null;
                     public CertificateRequest(string subjectName, System.Security.Cryptography.RSA key, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
+                    public CertificateRequest(string subjectName, System.Security.Cryptography.SlhDsa key) => throw null;
                     public System.Security.Cryptography.HashAlgorithmName HashAlgorithm { get => throw null; }
                     public static System.Security.Cryptography.X509Certificates.CertificateRequest LoadSigningRequest(byte[] pkcs10, System.Security.Cryptography.HashAlgorithmName signerHashAlgorithm, System.Security.Cryptography.X509Certificates.CertificateRequestLoadOptions options = default(System.Security.Cryptography.X509Certificates.CertificateRequestLoadOptions), System.Security.Cryptography.RSASignaturePadding signerSignaturePadding = default(System.Security.Cryptography.RSASignaturePadding)) => throw null;
                     public static System.Security.Cryptography.X509Certificates.CertificateRequest LoadSigningRequest(System.ReadOnlySpan<byte> pkcs10, System.Security.Cryptography.HashAlgorithmName signerHashAlgorithm, out int bytesConsumed, System.Security.Cryptography.X509Certificates.CertificateRequestLoadOptions options = default(System.Security.Cryptography.X509Certificates.CertificateRequestLoadOptions), System.Security.Cryptography.RSASignaturePadding signerSignaturePadding = default(System.Security.Cryptography.RSASignaturePadding)) => throw null;
@@ -2501,8 +2965,15 @@ namespace System
                     OpenExistingOnly = 4,
                     IncludeArchived = 8,
                 }
+                public enum Pkcs12ExportPbeParameters
+                {
+                    Default = 0,
+                    Pkcs12TripleDesSha1 = 1,
+                    Pbes2Aes256Sha256 = 2,
+                }
                 public sealed class Pkcs12LoaderLimits
                 {
+                    public bool AllowDuplicateAttributes { get => throw null; set { } }
                     public Pkcs12LoaderLimits() => throw null;
                     public Pkcs12LoaderLimits(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits copyFrom) => throw null;
                     public static System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits DangerousNoLimits { get => throw null; }
@@ -2529,14 +3000,22 @@ namespace System
                 {
                     public static System.Security.Cryptography.X509Certificates.PublicKey CreateFromSubjectPublicKeyInfo(System.ReadOnlySpan<byte> source, out int bytesRead) => throw null;
                     public PublicKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
+                    public PublicKey(System.Security.Cryptography.CompositeMLDsa key) => throw null;
+                    public PublicKey(System.Security.Cryptography.MLDsa key) => throw null;
+                    public PublicKey(System.Security.Cryptography.MLKem key) => throw null;
                     public PublicKey(System.Security.Cryptography.Oid oid, System.Security.Cryptography.AsnEncodedData parameters, System.Security.Cryptography.AsnEncodedData keyValue) => throw null;
+                    public PublicKey(System.Security.Cryptography.SlhDsa key) => throw null;
                     public System.Security.Cryptography.AsnEncodedData EncodedKeyValue { get => throw null; }
                     public System.Security.Cryptography.AsnEncodedData EncodedParameters { get => throw null; }
                     public byte[] ExportSubjectPublicKeyInfo() => throw null;
+                    public System.Security.Cryptography.CompositeMLDsa GetCompositeMLDsaPublicKey() => throw null;
                     public System.Security.Cryptography.DSA GetDSAPublicKey() => throw null;
                     public System.Security.Cryptography.ECDiffieHellman GetECDiffieHellmanPublicKey() => throw null;
                     public System.Security.Cryptography.ECDsa GetECDsaPublicKey() => throw null;
+                    public System.Security.Cryptography.MLDsa GetMLDsaPublicKey() => throw null;
+                    public System.Security.Cryptography.MLKem GetMLKemPublicKey() => throw null;
                     public System.Security.Cryptography.RSA GetRSAPublicKey() => throw null;
+                    public System.Security.Cryptography.SlhDsa GetSlhDsaPublicKey() => throw null;
                     public System.Security.Cryptography.AsymmetricAlgorithm Key { get => throw null; }
                     public System.Security.Cryptography.Oid Oid { get => throw null; }
                     public bool TryExportSubjectPublicKeyInfo(System.Span<byte> destination, out int bytesWritten) => throw null;
@@ -2690,6 +3169,8 @@ namespace System
                     public virtual byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType) => throw null;
                     public virtual byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, System.Security.SecureString password) => throw null;
                     public virtual byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, string password) => throw null;
+                    public byte[] ExportPkcs12(System.Security.Cryptography.PbeParameters exportParameters, string password) => throw null;
+                    public byte[] ExportPkcs12(System.Security.Cryptography.X509Certificates.Pkcs12ExportPbeParameters exportParameters, string password) => throw null;
                     protected static string FormatDate(System.DateTime date) => throw null;
                     public virtual byte[] GetCertHash() => throw null;
                     public virtual byte[] GetCertHash(System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
@@ -2730,7 +3211,11 @@ namespace System
                 public class X509Certificate2 : System.Security.Cryptography.X509Certificates.X509Certificate
                 {
                     public bool Archived { get => throw null; set { } }
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 CopyWithPrivateKey(System.Security.Cryptography.CompositeMLDsa privateKey) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2 CopyWithPrivateKey(System.Security.Cryptography.ECDiffieHellman privateKey) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 CopyWithPrivateKey(System.Security.Cryptography.MLDsa privateKey) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 CopyWithPrivateKey(System.Security.Cryptography.MLKem privateKey) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2 CopyWithPrivateKey(System.Security.Cryptography.SlhDsa privateKey) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509Certificate2 CreateFromEncryptedPem(System.ReadOnlySpan<char> certPem, System.ReadOnlySpan<char> keyPem, System.ReadOnlySpan<char> password) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509Certificate2 CreateFromEncryptedPemFile(string certPemFilePath, System.ReadOnlySpan<char> password, string keyPemFilePath = default(string)) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509Certificate2 CreateFromPem(System.ReadOnlySpan<char> certPem) => throw null;
@@ -2759,9 +3244,17 @@ namespace System
                     public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(byte[] rawData) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(System.ReadOnlySpan<byte> rawData) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509ContentType GetCertContentType(string fileName) => throw null;
+                    public System.Security.Cryptography.CompositeMLDsa GetCompositeMLDsaPrivateKey() => throw null;
+                    public System.Security.Cryptography.CompositeMLDsa GetCompositeMLDsaPublicKey() => throw null;
                     public System.Security.Cryptography.ECDiffieHellman GetECDiffieHellmanPrivateKey() => throw null;
                     public System.Security.Cryptography.ECDiffieHellman GetECDiffieHellmanPublicKey() => throw null;
+                    public System.Security.Cryptography.MLDsa GetMLDsaPrivateKey() => throw null;
+                    public System.Security.Cryptography.MLDsa GetMLDsaPublicKey() => throw null;
+                    public System.Security.Cryptography.MLKem GetMLKemPrivateKey() => throw null;
+                    public System.Security.Cryptography.MLKem GetMLKemPublicKey() => throw null;
                     public string GetNameInfo(System.Security.Cryptography.X509Certificates.X509NameType nameType, bool forIssuer) => throw null;
+                    public System.Security.Cryptography.SlhDsa GetSlhDsaPrivateKey() => throw null;
+                    public System.Security.Cryptography.SlhDsa GetSlhDsaPublicKey() => throw null;
                     public bool HasPrivateKey { get => throw null; }
                     public override void Import(byte[] rawData) => throw null;
                     public override void Import(byte[] rawData, System.Security.SecureString password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags) => throw null;
@@ -2801,8 +3294,13 @@ namespace System
                     public byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType) => throw null;
                     public byte[] Export(System.Security.Cryptography.X509Certificates.X509ContentType contentType, string password) => throw null;
                     public string ExportCertificatePems() => throw null;
+                    public byte[] ExportPkcs12(System.Security.Cryptography.PbeParameters exportParameters, string password) => throw null;
+                    public byte[] ExportPkcs12(System.Security.Cryptography.X509Certificates.Pkcs12ExportPbeParameters exportParameters, string password) => throw null;
                     public string ExportPkcs7Pem() => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2Collection Find(System.Security.Cryptography.X509Certificates.X509FindType findType, object findValue, bool validOnly) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2Collection FindByThumbprint(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> thumbprintBytes) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2Collection FindByThumbprint(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<char> thumbprintHex) => throw null;
+                    public System.Security.Cryptography.X509Certificates.X509Certificate2Collection FindByThumbprint(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, string thumbprintHex) => throw null;
                     public System.Security.Cryptography.X509Certificates.X509Certificate2Enumerator GetEnumerator() => throw null;
                     System.Collections.Generic.IEnumerator<System.Security.Cryptography.X509Certificates.X509Certificate2> System.Collections.Generic.IEnumerable<System.Security.Cryptography.X509Certificates.X509Certificate2>.GetEnumerator() => throw null;
                     public void Import(byte[] rawData) => throw null;
@@ -3124,8 +3622,11 @@ namespace System
                 public abstract class X509SignatureGenerator
                 {
                     protected abstract System.Security.Cryptography.X509Certificates.PublicKey BuildPublicKey();
+                    public static System.Security.Cryptography.X509Certificates.X509SignatureGenerator CreateForCompositeMLDsa(System.Security.Cryptography.CompositeMLDsa key) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509SignatureGenerator CreateForECDsa(System.Security.Cryptography.ECDsa key) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509SignatureGenerator CreateForMLDsa(System.Security.Cryptography.MLDsa key) => throw null;
                     public static System.Security.Cryptography.X509Certificates.X509SignatureGenerator CreateForRSA(System.Security.Cryptography.RSA key, System.Security.Cryptography.RSASignaturePadding signaturePadding) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509SignatureGenerator CreateForSlhDsa(System.Security.Cryptography.SlhDsa key) => throw null;
                     protected X509SignatureGenerator() => throw null;
                     public abstract byte[] GetSignatureAlgorithmIdentifier(System.Security.Cryptography.HashAlgorithmName hashAlgorithm);
                     public System.Security.Cryptography.X509Certificates.PublicKey PublicKey { get => throw null; }
