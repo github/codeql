@@ -129,16 +129,16 @@ class SummarizedCallable = Impl::Public::SummarizedCallable;
  */
 private class SummarizedSyntheticCallableAdapter extends SummarizedCallable, TSyntheticCallable {
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
     exists(SyntheticCallable sc |
       sc = this.asSyntheticCallable() and
       sc.propagatesFlow(input, output, preservesValue) and
+      p = "manual" and
+      isExact = true and
       model = sc
     )
   }
-
-  override predicate hasExactModel() { any() }
 }
 
 deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

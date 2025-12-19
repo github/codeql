@@ -81,7 +81,6 @@ edges
 | main.rs:32:9:32:10 | l5 | main.rs:33:31:33:32 | l5 | provenance |  |
 | main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | main.rs:32:9:32:10 | l5 | provenance |  |
 | main.rs:32:60:32:60 | v | main.rs:32:60:32:89 | ... * ... | provenance | MaD:27 |
-| main.rs:32:60:32:60 | v | main.rs:32:60:32:89 | ... * ... | provenance | MaD:45 |
 | main.rs:32:60:32:89 | ... * ... | main.rs:32:14:32:118 | ...::from_size_align_unchecked(...) | provenance | MaD:35 |
 | main.rs:33:31:33:32 | l5 | main.rs:33:13:33:29 | ...::alloc | provenance | MaD:15 Sink:MaD:15 |
 | main.rs:35:9:35:10 | s6 | main.rs:36:60:36:61 | s6 | provenance |  |
@@ -89,7 +88,6 @@ edges
 | main.rs:35:15:35:49 | ... * ... | main.rs:35:14:35:54 | ... + ... | provenance | MaD:24 |
 | main.rs:35:49:35:49 | v | main.rs:35:15:35:49 | ... * ... | provenance | MaD:26 |
 | main.rs:35:49:35:49 | v | main.rs:35:15:35:49 | ... * ... | provenance | MaD:25 |
-| main.rs:35:49:35:49 | v | main.rs:35:15:35:49 | ... * ... | provenance | MaD:44 |
 | main.rs:36:9:36:10 | l6 | main.rs:37:31:37:32 | l6 | provenance |  |
 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | main.rs:36:9:36:10 | l6 | provenance |  |
 | main.rs:36:60:36:61 | s6 | main.rs:36:14:36:65 | ...::from_size_align_unchecked(...) | provenance | MaD:35 |
@@ -200,13 +198,13 @@ edges
 | main.rs:151:15:151:69 | ...::array::<...>(...) [Ok] | main.rs:151:15:151:78 | ... .unwrap() | provenance | MaD:42 |
 | main.rs:151:15:151:78 | ... .unwrap() | main.rs:151:9:151:11 | l10 | provenance |  |
 | main.rs:151:48:151:68 | ...::min(...) | main.rs:151:15:151:69 | ...::array::<...>(...) [Ok] | provenance | MaD:29 |
-| main.rs:151:62:151:62 | v | main.rs:151:48:151:68 | ...::min(...) | provenance | MaD:47 |
+| main.rs:151:62:151:62 | v | main.rs:151:48:151:68 | ...::min(...) | provenance | MaD:45 |
 | main.rs:152:31:152:33 | l10 | main.rs:152:13:152:29 | ...::alloc | provenance | MaD:15 Sink:MaD:15 |
 | main.rs:154:9:154:11 | l11 | main.rs:155:31:155:33 | l11 | provenance |  |
 | main.rs:154:15:154:69 | ...::array::<...>(...) [Ok] | main.rs:154:15:154:78 | ... .unwrap() | provenance | MaD:42 |
 | main.rs:154:15:154:78 | ... .unwrap() | main.rs:154:9:154:11 | l11 | provenance |  |
 | main.rs:154:48:154:68 | ...::max(...) | main.rs:154:15:154:69 | ...::array::<...>(...) [Ok] | provenance | MaD:29 |
-| main.rs:154:62:154:62 | v | main.rs:154:48:154:68 | ...::max(...) | provenance | MaD:46 |
+| main.rs:154:62:154:62 | v | main.rs:154:48:154:68 | ...::max(...) | provenance | MaD:44 |
 | main.rs:155:31:155:33 | l11 | main.rs:155:13:155:29 | ...::alloc | provenance | MaD:15 Sink:MaD:15 |
 | main.rs:161:13:161:15 | l13 | main.rs:162:35:162:37 | l13 | provenance |  |
 | main.rs:161:19:161:59 | ...::from_size_align(...) [Ok] | main.rs:161:19:161:68 | ... .unwrap() | provenance | MaD:42 |
@@ -261,7 +259,6 @@ edges
 | main.rs:280:21:280:30 | user_input | main.rs:280:21:280:47 | user_input.parse() [Ok] | provenance | MaD:43 |
 | main.rs:280:21:280:47 | user_input.parse() [Ok] | main.rs:280:21:280:48 | TryExpr | provenance |  |
 | main.rs:280:21:280:48 | TryExpr | main.rs:280:21:280:77 | ... * ... | provenance | MaD:27 |
-| main.rs:280:21:280:48 | TryExpr | main.rs:280:21:280:77 | ... * ... | provenance | MaD:45 |
 | main.rs:280:21:280:77 | ... * ... | main.rs:280:9:280:17 | num_bytes | provenance |  |
 | main.rs:282:9:282:14 | layout | main.rs:284:40:284:45 | layout | provenance |  |
 | main.rs:282:18:282:66 | ...::from_size_align(...) [Ok] | main.rs:282:18:282:75 | ... .unwrap() | provenance | MaD:42 |
@@ -334,10 +331,8 @@ models
 | 41 | Summary: <core::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 42 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 43 | Summary: <core::str>::parse; Argument[self]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
-| 44 | Summary: <core::usize as core::ops::arith::Mul>::mul; Argument[0]; ReturnValue; taint |
-| 45 | Summary: <core::usize as core::ops::arith::Mul>::mul; Argument[self]; ReturnValue; taint |
-| 46 | Summary: core::cmp::max; Argument[0]; ReturnValue; value |
-| 47 | Summary: core::cmp::min; Argument[0]; ReturnValue; value |
+| 44 | Summary: core::cmp::max; Argument[0]; ReturnValue; value |
+| 45 | Summary: core::cmp::min; Argument[0]; ReturnValue; value |
 nodes
 | main.rs:12:36:12:43 | ...: usize | semmle.label | ...: usize |
 | main.rs:18:13:18:31 | ...::realloc | semmle.label | ...::realloc |

@@ -18,12 +18,14 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
 
   class SummarizedCallableBase = UnboundCallable;
 
+  predicate allowGeneratedSummary(SummarizedCallableBase c) { not c.fromSource() }
+
   class SourceBase = Void;
 
   class SinkBase = Void;
 
   predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
-    interpretNeutral(c, kind, provenance) and
+    interpretNeutral(c, kind, provenance, _) and
     // isExact is not needed for C#.
     isExact = false
   }
@@ -216,7 +218,7 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
       sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+      e = interpretElement(namespace, type, subtypes, name, signature, ext, _)
     )
   }
 
@@ -227,7 +229,7 @@ module SourceSinkInterpretationInput implements
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
       sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, model) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+      e = interpretElement(namespace, type, subtypes, name, signature, ext, _)
     )
   }
 
@@ -437,13 +439,14 @@ private class SummarizedCallableWithCallback extends Public::SummarizedCallable 
   SummarizedCallableWithCallback() { mayInvokeCallback(this, pos) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Public::Provenance provenance,
+    boolean isExact, string model
   ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[delegate-self]" and
     preservesValue = true and
+    provenance = "hq-generated" and
+    isExact = true and
     model = "heuristic-callback"
   }
-
-  override predicate hasProvenance(Public::Provenance provenance) { provenance = "hq-generated" }
 }

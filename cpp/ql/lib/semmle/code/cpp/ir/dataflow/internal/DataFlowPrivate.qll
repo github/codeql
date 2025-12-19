@@ -1144,7 +1144,7 @@ private newtype TDataFlowCall =
   }
 
 private predicate summarizedCallableIsManual(SummarizedCallable sc) {
-  sc.asSummarizedCallable().applyManualModel()
+  sc.asSummarizedCallable().hasManualModel()
 }
 
 /**

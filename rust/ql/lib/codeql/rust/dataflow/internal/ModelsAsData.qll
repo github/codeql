@@ -112,33 +112,37 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
 }
 
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
-  private string path;
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  boolean isExact_;
+  QlBuiltins::ExtensionId madId;
 
   SummarizedCallableFromModel() {
-    summaryModel(path, _, _, _, _, _) and
-    this.getCanonicalPath() = path
+    exists(string path, Function f |
+      summaryModel(path, input_, output_, kind, p_, madId) and
+      f.getCanonicalPath() = path
+    |
+      this = f and isExact_ = true
+      or
+      // only apply trait models to concrete implementations when they are not
+      // defined in source code
+      this.implements(f) and
+      isExact_ = false and
+      not this.fromSource()
+    )
   }
-
-  override predicate hasProvenance(Provenance provenance) {
-    summaryModel(path, _, _, _, provenance, _)
-  }
-
-  private predicate hasManualModel() { summaryModel(path, _, _, _, "manual", _) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind, string provenance, QlBuiltins::ExtensionId madId |
-      summaryModel(path, input, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
-      (provenance = "manual" or not this.hasManualModel())
-    |
-      kind = "value" and
-      preservesValue = true
-      or
-      kind = "taint" and
-      preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = isExact_ and
+    model = "MaD:" + madId.toString()
   }
 }
 

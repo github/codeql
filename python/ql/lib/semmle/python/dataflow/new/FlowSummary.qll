@@ -22,6 +22,8 @@ deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
+class Provenance = Impl::Public::Provenance;
+
 /** A callable with a flow summary, identified by a unique string. */
 abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
   bindingset[this]
@@ -31,13 +33,16 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
    * DEPRECATED: Use `propagatesFlow` instead.
    */
   deprecated predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    this.propagatesFlow(input, output, preservesValue, _)
+    this.propagatesFlow(input, output, preservesValue, _, _, _)
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    this.propagatesFlow(input, output, preservesValue) and model = this
+    this.propagatesFlow(input, output, preservesValue) and
+    p = "manual" and
+    isExact = true and
+    model = this
   }
 
   /**
