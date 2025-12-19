@@ -13,10 +13,9 @@ edges
 | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:31:9:31:12 | self [&ref, MyStruct] | provenance |  |
 | main.rs:31:9:31:12 | self [&ref, MyStruct] | main.rs:31:9:31:17 | self.data | provenance |  |
 | main.rs:31:9:31:17 | self.data | main.rs:30:31:32:5 | { ... } | provenance |  |
-| main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | main.rs:38:11:38:11 | [post] a [MyStruct] | provenance |  |
-| main.rs:38:11:38:11 | [post] a [MyStruct] | main.rs:39:10:39:10 | a [MyStruct] | provenance |  |
-| main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | provenance |  |
-| main.rs:38:23:38:31 | source(...) | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | provenance |  |
+| main.rs:38:5:38:5 | [post] a [MyStruct] | main.rs:39:10:39:10 | a [MyStruct] | provenance |  |
+| main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | provenance |  |
+| main.rs:38:16:38:24 | source(...) | main.rs:38:5:38:5 | [post] a [MyStruct] | provenance |  |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | provenance |  |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:39:10:39:21 | a.get_data() | provenance |  |
 | main.rs:46:9:46:14 | [post] &mut a [&ref, MyStruct] | main.rs:46:14:46:14 | [post] a [MyStruct] | provenance |  |
@@ -233,9 +232,8 @@ nodes
 | main.rs:30:31:32:5 | { ... } | semmle.label | { ... } |
 | main.rs:31:9:31:12 | self [&ref, MyStruct] | semmle.label | self [&ref, MyStruct] |
 | main.rs:31:9:31:17 | self.data | semmle.label | self.data |
-| main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | semmle.label | [post] &mut a [&ref, MyStruct] |
-| main.rs:38:11:38:11 | [post] a [MyStruct] | semmle.label | [post] a [MyStruct] |
-| main.rs:38:23:38:31 | source(...) | semmle.label | source(...) |
+| main.rs:38:5:38:5 | [post] a [MyStruct] | semmle.label | [post] a [MyStruct] |
+| main.rs:38:16:38:24 | source(...) | semmle.label | source(...) |
 | main.rs:39:10:39:10 | a [MyStruct] | semmle.label | a [MyStruct] |
 | main.rs:39:10:39:21 | a.get_data() | semmle.label | a.get_data() |
 | main.rs:46:9:46:14 | [post] &mut a [&ref, MyStruct] | semmle.label | [post] &mut a [&ref, MyStruct] |
@@ -459,7 +457,7 @@ nodes
 | main.rs:418:18:418:41 | ...::get_default(...) | semmle.label | ...::get_default(...) |
 | main.rs:419:14:419:15 | n5 | semmle.label | n5 |
 subpaths
-| main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] |
+| main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:5:38:5 | [post] a [MyStruct] |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
 | main.rs:48:15:48:23 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:46:9:46:14 | [post] &mut a [&ref, MyStruct] |
 | main.rs:49:10:49:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:49:10:49:21 | a.get_data() |
@@ -482,7 +480,7 @@ subpaths
 testFailures
 #select
 | main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) | source(...) |
-| main.rs:39:10:39:21 | a.get_data() | main.rs:38:23:38:31 | source(...) | main.rs:39:10:39:21 | a.get_data() | $@ | main.rs:38:23:38:31 | source(...) | source(...) |
+| main.rs:39:10:39:21 | a.get_data() | main.rs:38:16:38:24 | source(...) | main.rs:39:10:39:21 | a.get_data() | $@ | main.rs:38:16:38:24 | source(...) | source(...) |
 | main.rs:49:10:49:21 | a.get_data() | main.rs:48:15:48:23 | source(...) | main.rs:49:10:49:21 | a.get_data() | $@ | main.rs:48:15:48:23 | source(...) | source(...) |
 | main.rs:53:10:53:10 | n | main.rs:57:13:57:21 | source(...) | main.rs:53:10:53:10 | n | $@ | main.rs:57:13:57:21 | source(...) | source(...) |
 | main.rs:68:10:68:10 | b | main.rs:66:13:66:21 | source(...) | main.rs:68:10:68:10 | b | $@ | main.rs:66:13:66:21 | source(...) | source(...) |
