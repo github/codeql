@@ -133,26 +133,32 @@ class DataType extends Type, TDataType {
 
 /** A struct type. */
 class StructType extends DataType {
-  StructType() { super.getTypeItem() instanceof Struct }
+  private Struct struct;
+
+  StructType() { struct = super.getTypeItem() }
 
   /** Gets the struct that this struct type represents. */
-  override Struct getTypeItem() { result = super.getTypeItem() }
+  override Struct getTypeItem() { result = struct }
 }
 
 /** An enum type. */
 class EnumType extends DataType {
-  EnumType() { super.getTypeItem() instanceof Enum }
+  private Enum enum;
+
+  EnumType() { enum = super.getTypeItem() }
 
   /** Gets the enum that this enum type represents. */
-  override Enum getTypeItem() { result = super.getTypeItem() }
+  override Enum getTypeItem() { result = enum }
 }
 
 /** A union type. */
 class UnionType extends DataType {
-  UnionType() { super.getTypeItem() instanceof Union }
+  private Union union;
+
+  UnionType() { union = super.getTypeItem() }
 
   /** Gets the union that this union type represents. */
-  override Union getTypeItem() { result = super.getTypeItem() }
+  override Union getTypeItem() { result = union }
 }
 
 /** A trait type. */

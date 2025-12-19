@@ -907,7 +907,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
       result = this.getTypeParameter(_) and
       path = TypePath::singleton(result)
       or
-      // type of the struct itself
+      // type of the struct or enum itself
       dpos.isStructPos() and
       path.isEmpty() and
       result = TDataType(this.getTypeItem())
@@ -2860,7 +2860,7 @@ private class TupleLikeStruct extends TupleLikeConstructor instanceof Struct {
 
   override TypeItem getTypeItem() { result = this }
 
-  override TupleField getTupleField(int i) { result = this.(Struct).getTupleField(i) }
+  override TupleField getTupleField(int i) { result = Struct.super.getTupleField(i) }
 }
 
 private class TupleLikeVariant extends TupleLikeConstructor instanceof Variant {
@@ -2868,7 +2868,7 @@ private class TupleLikeVariant extends TupleLikeConstructor instanceof Variant {
 
   override TypeItem getTypeItem() { result = super.getEnum() }
 
-  override TupleField getTupleField(int i) { result = this.(Variant).getTupleField(i) }
+  override TupleField getTupleField(int i) { result = Variant.super.getTupleField(i) }
 }
 
 /**
