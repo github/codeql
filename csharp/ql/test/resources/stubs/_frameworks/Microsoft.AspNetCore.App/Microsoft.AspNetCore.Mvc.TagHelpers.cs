@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -301,7 +301,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.ImportMapDefinition ImportMap { get => throw null; set { } }
                     protected System.Text.Encodings.Web.JavaScriptEncoder JavaScriptEncoder { get => throw null; }
                     public override int Order { get => throw null; }
-                    public override void Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
+                    public override System.Threading.Tasks.Task ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
                     public string Src { get => throw null; set { } }
                     public string SrcExclude { get => throw null; set { } }
                     public string SrcInclude { get => throw null; set { } }

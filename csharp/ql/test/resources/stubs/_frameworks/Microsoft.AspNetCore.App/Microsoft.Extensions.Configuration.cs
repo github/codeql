@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Configuration, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Configuration, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -98,6 +98,7 @@ namespace Microsoft
                 public string Key { get => throw null; }
                 public string Path { get => throw null; }
                 public string this[string key] { get => throw null; set { } }
+                public bool TryGetValue(string key, out string value) => throw null;
                 public string Value { get => throw null; set { } }
             }
             namespace Memory

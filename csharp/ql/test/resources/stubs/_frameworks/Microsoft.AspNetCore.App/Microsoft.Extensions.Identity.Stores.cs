@@ -1,11 +1,25 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Identity.Stores, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Identity.Stores, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
         namespace Identity
         {
+            public class IdentityPasskeyData
+            {
+                public virtual byte[] AttestationObject { get => throw null; set { } }
+                public virtual byte[] ClientDataJson { get => throw null; set { } }
+                public virtual System.DateTimeOffset CreatedAt { get => throw null; set { } }
+                public IdentityPasskeyData() => throw null;
+                public virtual bool IsBackedUp { get => throw null; set { } }
+                public virtual bool IsBackupEligible { get => throw null; set { } }
+                public virtual bool IsUserVerified { get => throw null; set { } }
+                public virtual string Name { get => throw null; set { } }
+                public virtual byte[] PublicKey { get => throw null; set { } }
+                public virtual uint SignCount { get => throw null; set { } }
+                public virtual string[] Transports { get => throw null; set { } }
+            }
             public class IdentityRole : Microsoft.AspNetCore.Identity.IdentityRole<string>
             {
                 public IdentityRole() => throw null;
@@ -73,6 +87,13 @@ namespace Microsoft
                 public virtual string LoginProvider { get => throw null; set { } }
                 public virtual string ProviderDisplayName { get => throw null; set { } }
                 public virtual string ProviderKey { get => throw null; set { } }
+                public virtual TKey UserId { get => throw null; set { } }
+            }
+            public class IdentityUserPasskey<TKey> where TKey : System.IEquatable<TKey>
+            {
+                public virtual byte[] CredentialId { get => throw null; set { } }
+                public IdentityUserPasskey() => throw null;
+                public virtual Microsoft.AspNetCore.Identity.IdentityPasskeyData Data { get => throw null; set { } }
                 public virtual TKey UserId { get => throw null; set { } }
             }
             public class IdentityUserRole<TKey> where TKey : System.IEquatable<TKey>

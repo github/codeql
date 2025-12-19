@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.Compression, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+// Generated from `System.IO.Compression, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 namespace System
 {
     namespace IO
@@ -90,9 +90,10 @@ namespace System
                 public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public override void WriteByte(byte value) => throw null;
             }
-            public class ZipArchive : System.IDisposable
+            public class ZipArchive : System.IAsyncDisposable, System.IDisposable
             {
                 public string Comment { get => throw null; set { } }
+                public static System.Threading.Tasks.Task<System.IO.Compression.ZipArchive> CreateAsync(System.IO.Stream stream, System.IO.Compression.ZipArchiveMode mode, bool leaveOpen, System.Text.Encoding entryNameEncoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.IO.Compression.ZipArchiveEntry CreateEntry(string entryName) => throw null;
                 public System.IO.Compression.ZipArchiveEntry CreateEntry(string entryName, System.IO.Compression.CompressionLevel compressionLevel) => throw null;
                 public ZipArchive(System.IO.Stream stream) => throw null;
@@ -101,6 +102,8 @@ namespace System
                 public ZipArchive(System.IO.Stream stream, System.IO.Compression.ZipArchiveMode mode, bool leaveOpen, System.Text.Encoding entryNameEncoding) => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
+                public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
+                protected virtual System.Threading.Tasks.ValueTask DisposeAsyncCore() => throw null;
                 public System.Collections.ObjectModel.ReadOnlyCollection<System.IO.Compression.ZipArchiveEntry> Entries { get => throw null; }
                 public System.IO.Compression.ZipArchiveEntry GetEntry(string entryName) => throw null;
                 public System.IO.Compression.ZipArchiveMode Mode { get => throw null; }
@@ -119,6 +122,7 @@ namespace System
                 public long Length { get => throw null; }
                 public string Name { get => throw null; }
                 public System.IO.Stream Open() => throw null;
+                public System.Threading.Tasks.Task<System.IO.Stream> OpenAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public override string ToString() => throw null;
             }
             public enum ZipArchiveMode

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -308,11 +308,13 @@ namespace Microsoft
                 public static bool IsPatch(string method) => throw null;
                 public static bool IsPost(string method) => throw null;
                 public static bool IsPut(string method) => throw null;
+                public static bool IsQuery(string method) => throw null;
                 public static bool IsTrace(string method) => throw null;
                 public static readonly string Options;
                 public static readonly string Patch;
                 public static readonly string Post;
                 public static readonly string Put;
+                public static readonly string Query;
                 public static readonly string Trace;
             }
             public static class HttpProtocol
@@ -484,7 +486,16 @@ namespace Microsoft
                     bool IsOptional { get; }
                     System.Type RequestType { get; }
                 }
+                public interface IAllowCookieRedirectMetadata
+                {
+                }
+                public interface IDisableCookieRedirectMetadata
+                {
+                }
                 public interface IDisableHttpMetricsMetadata
+                {
+                }
+                public interface IDisableValidationMetadata
                 {
                 }
                 public interface IEndpointDescriptionMetadata
@@ -550,6 +561,7 @@ namespace Microsoft
                 public interface IProducesResponseTypeMetadata
                 {
                     System.Collections.Generic.IEnumerable<string> ContentTypes { get; }
+                    virtual string Description { get => throw null; }
                     int StatusCode { get; }
                     System.Type Type { get; }
                 }
@@ -612,6 +624,7 @@ namespace Microsoft
             {
                 public System.Collections.Generic.IEnumerable<string> ContentTypes { get => throw null; }
                 public ProducesResponseTypeMetadata(int statusCode, System.Type type = default(System.Type), string[] contentTypes = default(string[])) => throw null;
+                public string Description { get => throw null; set { } }
                 public int StatusCode { get => throw null; }
                 public override string ToString() => throw null;
                 public System.Type Type { get => throw null; }

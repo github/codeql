@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.DependencyInjection.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -85,8 +85,10 @@ namespace Microsoft
             [System.AttributeUsage((System.AttributeTargets)2048)]
             public class FromKeyedServicesAttribute : System.Attribute
             {
+                public FromKeyedServicesAttribute() => throw null;
                 public FromKeyedServicesAttribute(object key) => throw null;
                 public object Key { get => throw null; }
+                public Microsoft.Extensions.DependencyInjection.ServiceKeyLookupMode LookupMode { get => throw null; }
             }
             public interface IKeyedServiceProvider : System.IServiceProvider
             {
@@ -257,6 +259,12 @@ namespace Microsoft
             {
                 public ServiceKeyAttribute() => throw null;
             }
+            public enum ServiceKeyLookupMode
+            {
+                InheritKey = 0,
+                NullKey = 1,
+                ExplicitKey = 2,
+            }
             public enum ServiceLifetime
             {
                 Singleton = 0,
@@ -266,6 +274,7 @@ namespace Microsoft
             public static partial class ServiceProviderKeyedServiceExtensions
             {
                 public static T GetKeyedService<T>(this System.IServiceProvider provider, object serviceKey) => throw null;
+                public static object GetKeyedService(this System.IServiceProvider provider, System.Type serviceType, object serviceKey) => throw null;
                 public static System.Collections.Generic.IEnumerable<object> GetKeyedServices(this System.IServiceProvider provider, System.Type serviceType, object serviceKey) => throw null;
                 public static System.Collections.Generic.IEnumerable<T> GetKeyedServices<T>(this System.IServiceProvider provider, object serviceKey) => throw null;
                 public static object GetRequiredKeyedService(this System.IServiceProvider provider, System.Type serviceType, object serviceKey) => throw null;

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Server, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Server, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -34,8 +34,12 @@ namespace Microsoft
                     public bool DetailedErrors { get => throw null; set { } }
                     public int DisconnectedCircuitMaxRetained { get => throw null; set { } }
                     public System.TimeSpan DisconnectedCircuitRetentionPeriod { get => throw null; set { } }
+                    public Microsoft.Extensions.Caching.Hybrid.HybridCache HybridPersistenceCache { get => throw null; set { } }
                     public System.TimeSpan JSInteropDefaultCallTimeout { get => throw null; set { } }
                     public int MaxBufferedUnacknowledgedRenderBatches { get => throw null; set { } }
+                    public System.TimeSpan? PersistedCircuitDistributedRetentionPeriod { get => throw null; set { } }
+                    public int PersistedCircuitInMemoryMaxRetained { get => throw null; set { } }
+                    public System.TimeSpan PersistedCircuitInMemoryRetentionPeriod { get => throw null; set { } }
                     public Microsoft.AspNetCore.Components.Server.CircuitRootComponentOptions RootComponents { get => throw null; }
                 }
                 public class CircuitRootComponentOptions : Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration

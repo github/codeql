@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Diagnostics, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Diagnostics, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -33,6 +33,7 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Http.RequestDelegate ExceptionHandler { get => throw null; set { } }
                 public Microsoft.AspNetCore.Http.PathString ExceptionHandlingPath { get => throw null; set { } }
                 public System.Func<System.Exception, int> StatusCodeSelector { get => throw null; set { } }
+                public System.Func<Microsoft.AspNetCore.Diagnostics.ExceptionHandlerSuppressDiagnosticsContext, bool> SuppressDiagnosticsCallback { get => throw null; set { } }
             }
             public static partial class StatusCodePagesExtensions
             {
@@ -42,10 +43,12 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStatusCodePages(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string contentType, string bodyFormat) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStatusCodePages(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configuration) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStatusCodePagesWithRedirects(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string locationFormat) => throw null;
-                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStatusCodePagesWithReExecute(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string pathFormat, string queryFormat = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStatusCodePagesWithReExecute(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string pathFormat, string queryFormat) => throw null;
+                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseStatusCodePagesWithReExecute(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string pathFormat, string queryFormat = default(string), bool createScopeForStatusCodePages = default(bool)) => throw null;
             }
             public class StatusCodePagesOptions
             {
+                public bool CreateScopeForStatusCodePages { get => throw null; set { } }
                 public StatusCodePagesOptions() => throw null;
                 public System.Func<Microsoft.AspNetCore.Diagnostics.StatusCodeContext, System.Threading.Tasks.Task> HandleAsync { get => throw null; set { } }
             }
@@ -69,6 +72,14 @@ namespace Microsoft
                 public DeveloperExceptionPageMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.DeveloperExceptionPageOptions> options, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment, System.Diagnostics.DiagnosticSource diagnosticSource, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Diagnostics.IDeveloperPageExceptionFilter> filters) => throw null;
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
             }
+            public enum ExceptionHandledType
+            {
+                Unhandled = 0,
+                ExceptionHandlerService = 1,
+                ProblemDetailsService = 2,
+                ExceptionHandlerDelegate = 3,
+                ExceptionHandlingPath = 4,
+            }
             public class ExceptionHandlerFeature : Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature, Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature
             {
                 public ExceptionHandlerFeature() => throw null;
@@ -81,6 +92,13 @@ namespace Microsoft
             {
                 public ExceptionHandlerMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.ExceptionHandlerOptions> options, System.Diagnostics.DiagnosticListener diagnosticListener) => throw null;
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
+            }
+            public sealed class ExceptionHandlerSuppressDiagnosticsContext
+            {
+                public ExceptionHandlerSuppressDiagnosticsContext() => throw null;
+                public System.Exception Exception { get => throw null; set { } }
+                public Microsoft.AspNetCore.Diagnostics.ExceptionHandledType ExceptionHandledBy { get => throw null; set { } }
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
             }
             public interface IExceptionHandler
             {

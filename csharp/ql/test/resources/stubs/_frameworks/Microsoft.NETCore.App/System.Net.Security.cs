@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Security, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Security, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -191,6 +191,8 @@ namespace System
             public class SslClientAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set { } }
+                public bool AllowRsaPkcs1Padding { get => throw null; set { } }
+                public bool AllowRsaPssPadding { get => throw null; set { } }
                 public bool AllowTlsResume { get => throw null; set { } }
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509ChainPolicy CertificateChainPolicy { get => throw null; set { } }
@@ -214,6 +216,8 @@ namespace System
             public class SslServerAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set { } }
+                public bool AllowRsaPkcs1Padding { get => throw null; set { } }
+                public bool AllowRsaPssPadding { get => throw null; set { } }
                 public bool AllowTlsResume { get => throw null; set { } }
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509ChainPolicy CertificateChainPolicy { get => throw null; set { } }
@@ -291,6 +295,7 @@ namespace System
                 public virtual System.Net.Security.TlsCipherSuite NegotiatedCipherSuite { get => throw null; }
                 public override long Position { get => throw null; set { } }
                 public override int Read(byte[] buffer, int offset, int count) => throw null;
+                public override int Read(System.Span<byte> buffer) => throw null;
                 public override System.Threading.Tasks.Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
                 public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public override int ReadByte() => throw null;
@@ -304,8 +309,10 @@ namespace System
                 public System.Net.TransportContext TransportContext { get => throw null; }
                 public void Write(byte[] buffer) => throw null;
                 public override void Write(byte[] buffer, int offset, int count) => throw null;
+                public override void Write(System.ReadOnlySpan<byte> buffer) => throw null;
                 public override System.Threading.Tasks.Task WriteAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
                 public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override void WriteByte(byte value) => throw null;
                 public override int WriteTimeout { get => throw null; set { } }
             }
             public class SslStreamCertificateContext

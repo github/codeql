@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Collections.Immutable, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Collections.Immutable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Collections
@@ -8,6 +8,8 @@ namespace System
         {
             public static class FrozenDictionary
             {
+                public static System.Collections.Frozen.FrozenDictionary<TKey, TValue> Create<TKey, TValue>(params System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<TKey, TValue>> source) => throw null;
+                public static System.Collections.Frozen.FrozenDictionary<TKey, TValue> Create<TKey, TValue>(System.Collections.Generic.IEqualityComparer<TKey> comparer, params System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<TKey, TValue>> source) => throw null;
                 public static System.Collections.Frozen.FrozenDictionary<TKey, TValue> ToFrozenDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source, System.Collections.Generic.IEqualityComparer<TKey> comparer = default(System.Collections.Generic.IEqualityComparer<TKey>)) => throw null;
                 public static System.Collections.Frozen.FrozenDictionary<TKey, TSource> ToFrozenDictionary<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer = default(System.Collections.Generic.IEqualityComparer<TKey>)) => throw null;
                 public static System.Collections.Frozen.FrozenDictionary<TKey, TElement> ToFrozenDictionary<TSource, TKey, TElement>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TElement> elementSelector, System.Collections.Generic.IEqualityComparer<TKey> comparer = default(System.Collections.Generic.IEqualityComparer<TKey>)) => throw null;
@@ -413,6 +415,8 @@ namespace System
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> CreateRange<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> items) => throw null;
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> CreateRange<TKey, TValue>(System.Collections.Generic.IEqualityComparer<TKey> keyComparer, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> items) => throw null;
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> CreateRange<TKey, TValue>(System.Collections.Generic.IEqualityComparer<TKey> keyComparer, System.Collections.Generic.IEqualityComparer<TValue> valueComparer, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> items) => throw null;
+                public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> CreateRangeWithOverwrite<TKey, TValue>(params System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<TKey, TValue>> items) => throw null;
+                public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> CreateRangeWithOverwrite<TKey, TValue>(System.Collections.Generic.IEqualityComparer<TKey> keyComparer, params System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<TKey, TValue>> items) => throw null;
                 public static TValue GetValueOrDefault<TKey, TValue>(this System.Collections.Immutable.IImmutableDictionary<TKey, TValue> dictionary, TKey key) => throw null;
                 public static TValue GetValueOrDefault<TKey, TValue>(this System.Collections.Immutable.IImmutableDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue) => throw null;
                 public static System.Collections.Immutable.ImmutableDictionary<TKey, TValue> ToImmutableDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source) => throw null;
@@ -1221,6 +1225,7 @@ namespace System
             {
                 public static T[] AsArray<T>(System.Collections.Immutable.ImmutableArray<T> array) => throw null;
                 public static System.Collections.Immutable.ImmutableArray<T> AsImmutableArray<T>(T[] array) => throw null;
+                public static System.Memory<T> AsMemory<T>(System.Collections.Immutable.ImmutableArray<T>.Builder builder) => throw null;
             }
         }
     }
