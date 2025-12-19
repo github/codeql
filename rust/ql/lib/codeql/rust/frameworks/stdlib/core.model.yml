@@ -6,6 +6,7 @@ extensions:
       # Builtin deref
       - ["<& as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
       - ["<&mut as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
+      - ["<_ as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       # Index
       - ["<_ as core::ops::index::Index>::index", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
       - ["<_ as core::ops::index::IndexMut>::index_mut", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
@@ -114,10 +115,10 @@ extensions:
       - ["<core::pin::Pin as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "ReturnValue.Reference", "value", "manual"]
       # Str
       - ["<core::str>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
-      - ["<core::str>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
-      - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
-      - ["<core::str>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<core::str>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::parse", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::str>::trim", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       # Ord
       - ["<_ as core::cmp::Ord>::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
       - ["<_ as core::cmp::Ord>::max", "Argument[self,0]", "ReturnValue", "value", "manual"]

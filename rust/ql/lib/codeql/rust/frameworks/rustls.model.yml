@@ -9,4 +9,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["<futures_rustls::TlsConnector>::connect", "Argument[1]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<rustls::conn::ConnectionCommon>::reader", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<rustls::conn::ConnectionCommon>::reader", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
