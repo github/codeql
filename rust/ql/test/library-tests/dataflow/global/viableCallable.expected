@@ -1,4 +1,4 @@
-| main.rs:2:5:2:12 | ... + ... | {EXTERNAL LOCATION} | fn add |
+| main.rs:2:5:2:12 | ... + ... | {EXTERNAL LOCATION} | [summarized] fn add |
 | main.rs:13:5:13:13 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:17:13:17:23 | get_data(...) | main.rs:12:1:14:1 | fn get_data |
 | main.rs:18:5:18:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
@@ -60,7 +60,7 @@
 | main.rs:228:13:228:34 | ...::new(...) | main.rs:221:5:224:5 | fn new |
 | main.rs:228:24:228:33 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:230:5:230:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:252:11:252:15 | * ... | {EXTERNAL LOCATION} | fn deref |
+| main.rs:252:11:252:15 | * ... | {EXTERNAL LOCATION} | [summarized] fn deref |
 | main.rs:258:28:258:36 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:260:13:260:17 | ... + ... | main.rs:236:5:239:5 | fn add |
 | main.rs:261:5:261:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
@@ -77,7 +77,7 @@
 | main.rs:282:5:282:10 | ... *= ... | main.rs:243:5:245:5 | fn mul_assign |
 | main.rs:283:5:283:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:286:28:286:37 | source(...) | main.rs:1:1:3:1 | fn source |
-| main.rs:288:13:288:29 | * ... | {EXTERNAL LOCATION} | fn deref |
+| main.rs:288:13:288:29 | * ... | {EXTERNAL LOCATION} | [summarized] fn deref |
 | main.rs:288:14:288:29 | ...::deref(...) | main.rs:251:5:253:5 | fn deref |
 | main.rs:289:5:289:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:291:28:291:37 | source(...) | main.rs:1:1:3:1 | fn source |
@@ -101,14 +101,14 @@
 | main.rs:346:17:346:25 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:347:9:347:15 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:350:5:350:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:354:13:354:55 | ...::block_on(...) | {EXTERNAL LOCATION} | fn block_on |
+| main.rs:354:13:354:55 | ...::block_on(...) | {EXTERNAL LOCATION} | [summarized] fn block_on |
 | main.rs:354:41:354:54 | async_source(...) | main.rs:335:1:339:1 | fn async_source |
 | main.rs:355:5:355:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
-| main.rs:357:5:357:62 | ...::block_on(...) | {EXTERNAL LOCATION} | fn block_on |
+| main.rs:357:5:357:62 | ...::block_on(...) | {EXTERNAL LOCATION} | [summarized] fn block_on |
 | main.rs:357:33:357:61 | test_async_await_async_part(...) | main.rs:341:1:351:1 | fn test_async_await_async_part |
 | main.rs:367:13:367:29 | self.get_number() | main.rs:378:9:380:9 | fn get_number |
 | main.rs:367:13:367:29 | self.get_number() | main.rs:386:9:388:9 | fn get_number |
-| main.rs:367:13:367:33 | ... * ... | {EXTERNAL LOCATION} | fn mul |
+| main.rs:367:13:367:33 | ... * ... | {EXTERNAL LOCATION} | [summarized] fn mul |
 | main.rs:371:13:371:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:379:13:379:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:391:13:391:22 | source(...) | main.rs:1:1:3:1 | fn source |

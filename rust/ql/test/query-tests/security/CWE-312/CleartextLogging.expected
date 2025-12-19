@@ -271,8 +271,8 @@ models
 | 13 | Sink: std::io::stdio::_eprint; Argument[0]; log-injection |
 | 14 | Sink: std::io::stdio::_print; Argument[0]; log-injection |
 | 15 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
-| 16 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 17 | Summary: <_ as core::ops::arith::Add>::add; Argument[0]; ReturnValue; taint |
+| 16 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
+| 17 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
 | 18 | Summary: <alloc::string::String>::as_bytes; Argument[self]; ReturnValue; value |
 | 19 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
 | 20 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
