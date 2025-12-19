@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2/Microsoft.Extensions.DependencyInjection.Abstractions.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.DependencyInjection.Abstractions/10.0.0/Microsoft.Extensions.DependencyInjection.Abstractions.csproj" />
     <ProjectReference Include="../../ServiceStack.Common/10.0.4/ServiceStack.Common.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>

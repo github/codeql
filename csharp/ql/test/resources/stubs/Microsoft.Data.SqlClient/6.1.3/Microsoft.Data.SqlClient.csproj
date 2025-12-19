@@ -15,7 +15,7 @@
     <ProjectReference Include="../../Microsoft.IdentityModel.JsonWebTokens/7.7.1/Microsoft.IdentityModel.JsonWebTokens.csproj" />
     <ProjectReference Include="../../Microsoft.IdentityModel.Protocols.OpenIdConnect/7.7.1/Microsoft.IdentityModel.Protocols.OpenIdConnect.csproj" />
     <ProjectReference Include="../../Microsoft.SqlServer.Server/1.0.0/Microsoft.SqlServer.Server.csproj" />
-    <ProjectReference Include="../../System.Configuration.ConfigurationManager/9.0.4/System.Configuration.ConfigurationManager.csproj" />
+    <ProjectReference Include="../../System.Configuration.ConfigurationManager/10.0.1/System.Configuration.ConfigurationManager.csproj" />
     <ProjectReference Include="../../System.Security.Cryptography.Pkcs/9.0.4/System.Security.Cryptography.Pkcs.csproj" />
     <ProjectReference Include="../../System.Text.Json/9.0.5/System.Text.Json.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />

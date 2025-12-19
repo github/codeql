@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.Extensions.Primitives/9.0.4/Microsoft.Extensions.Primitives.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.Primitives/10.0.0/Microsoft.Extensions.Primitives.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>
 </Project>
