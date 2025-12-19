@@ -162,5 +162,5 @@ struct A_Struct {
 };
 
 enum E {
-  E_e = sizeof(A_Struct) * 8 > 50 // GOOD [FALSE POSITIVE]
+  E_e = sizeof(A_Struct) * 8 > 50 // GOOD
 };
