@@ -619,7 +619,7 @@ private Type inferLogicalOperationType(AstNode n, TypePath path) {
   exists(Builtins::Bool t, BinaryLogicalOperation be |
     n = [be, be.getLhs(), be.getRhs()] and
     path.isEmpty() and
-    result = TStruct(t)
+    result = TDataType(t)
   )
 }
 
@@ -887,13 +887,13 @@ private module StructExprMatchingInput implements MatchingInputSig {
   }
 
   abstract class Declaration extends AstNode {
-    abstract TypeParam getATypeParam();
-
     final TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      typeParamMatchPosition(this.getATypeParam(), result, ppos)
+      typeParamMatchPosition(this.getTypeItem().getGenericParamList().getATypeParam(), result, ppos)
     }
 
     abstract StructField getField(string name);
+
+    abstract TypeItem getTypeItem();
 
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       // type of a field
@@ -906,45 +906,28 @@ private module StructExprMatchingInput implements MatchingInputSig {
       dpos.isStructPos() and
       result = this.getTypeParameter(_) and
       path = TypePath::singleton(result)
+      or
+      // type of the struct or enum itself
+      dpos.isStructPos() and
+      path.isEmpty() and
+      result = TDataType(this.getTypeItem())
     }
   }
 
   private class StructDecl extends Declaration, Struct {
     StructDecl() { this.isStruct() or this.isUnit() }
 
-    override TypeParam getATypeParam() { result = this.getGenericParamList().getATypeParam() }
-
     override StructField getField(string name) { result = this.getStructField(name) }
 
-    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      result = super.getDeclaredType(dpos, path)
-      or
-      // type of the struct itself
-      dpos.isStructPos() and
-      path.isEmpty() and
-      result = TStruct(this)
-    }
+    override TypeItem getTypeItem() { result = this }
   }
 
   private class StructVariantDecl extends Declaration, Variant {
     StructVariantDecl() { this.isStruct() or this.isUnit() }
 
-    Enum getEnum() { result.getVariantList().getAVariant() = this }
-
-    override TypeParam getATypeParam() {
-      result = this.getEnum().getGenericParamList().getATypeParam()
-    }
-
     override StructField getField(string name) { result = this.getStructField(name) }
 
-    override Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
-      result = super.getDeclaredType(dpos, path)
-      or
-      // type of the enum itself
-      dpos.isStructPos() and
-      path.isEmpty() and
-      result = TEnum(this.getEnum())
-    }
+    override TypeItem getTypeItem() { result = this.getEnum() }
   }
 
   class AccessPosition = DeclarationPosition;
@@ -2841,11 +2824,21 @@ private module NonMethodResolution {
 }
 
 abstract private class TupleLikeConstructor extends Addressable {
-  abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
+  final TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+    typeParamMatchPosition(this.getTypeItem().getGenericParamList().getATypeParam(), result, ppos)
+  }
 
-  abstract Type getParameterType(FunctionPosition pos, TypePath path);
+  abstract TypeItem getTypeItem();
 
-  abstract Type getReturnType(TypePath path);
+  abstract TupleField getTupleField(int i);
+
+  Type getReturnType(TypePath path) {
+    result = TDataType(this.getTypeItem()) and
+    path.isEmpty()
+    or
+    result = TTypeParamTypeParameter(this.getTypeItem().getGenericParamList().getATypeParam()) and
+    path = TypePath::singleton(result)
+  }
 
   Type getDeclaredType(FunctionPosition pos, TypePath path) {
     result = this.getParameterType(pos, path)
@@ -2856,54 +2849,26 @@ abstract private class TupleLikeConstructor extends Addressable {
     pos.isSelf() and
     result = this.getReturnType(path)
   }
-}
 
-private class TupleStruct extends TupleLikeConstructor, Struct {
-  TupleStruct() { this.isTuple() }
-
-  override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-    typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
-  }
-
-  override Type getParameterType(FunctionPosition pos, TypePath path) {
-    exists(int i |
-      result = this.getTupleField(i).getTypeRepr().(TypeMention).resolveTypeAt(path) and
-      i = pos.asPosition()
-    )
-  }
-
-  override Type getReturnType(TypePath path) {
-    result = TStruct(this) and
-    path.isEmpty()
-    or
-    result = TTypeParamTypeParameter(this.getGenericParamList().getATypeParam()) and
-    path = TypePath::singleton(result)
+  Type getParameterType(FunctionPosition pos, TypePath path) {
+    result = this.getTupleField(pos.asPosition()).getTypeRepr().(TypeMention).resolveTypeAt(path)
   }
 }
 
-private class TupleVariant extends TupleLikeConstructor, Variant {
-  TupleVariant() { this.isTuple() }
+private class TupleLikeStruct extends TupleLikeConstructor instanceof Struct {
+  TupleLikeStruct() { this.isTuple() }
 
-  override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-    typeParamMatchPosition(this.getEnum().getGenericParamList().getATypeParam(), result, ppos)
-  }
+  override TypeItem getTypeItem() { result = this }
 
-  override Type getParameterType(FunctionPosition pos, TypePath path) {
-    exists(int i |
-      result = this.getTupleField(i).getTypeRepr().(TypeMention).resolveTypeAt(path) and
-      i = pos.asPosition()
-    )
-  }
+  override TupleField getTupleField(int i) { result = Struct.super.getTupleField(i) }
+}
 
-  override Type getReturnType(TypePath path) {
-    exists(Enum enum | enum = this.getEnum() |
-      result = TEnum(enum) and
-      path.isEmpty()
-      or
-      result = TTypeParamTypeParameter(enum.getGenericParamList().getATypeParam()) and
-      path = TypePath::singleton(result)
-    )
-  }
+private class TupleLikeVariant extends TupleLikeConstructor instanceof Variant {
+  TupleLikeVariant() { this.isTuple() }
+
+  override TypeItem getTypeItem() { result = super.getEnum() }
+
+  override TupleField getTupleField(int i) { result = Variant.super.getTupleField(i) }
 }
 
 /**
@@ -3224,7 +3189,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       dpos.isSelf() and
       // no case for variants as those can only be destructured using pattern matching
       exists(Struct s | this.getAstNode() = [s.getStructField(_).(AstNode), s.getTupleField(_)] |
-        result = TStruct(s) and
+        result = TDataType(s) and
         path.isEmpty()
         or
         result = TTypeParamTypeParameter(s.getGenericParamList().getATypeParam()) and
@@ -3374,15 +3339,15 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 }
 
 pragma[nomagic]
-private StructType getStrStruct() { result = TStruct(any(Builtins::Str s)) }
+private StructType getStrStruct() { result = TDataType(any(Builtins::Str s)) }
 
 pragma[nomagic]
-private StructType getStringStruct() { result = TStruct(any(StringStruct s)) }
+private StructType getStringStruct() { result = TDataType(any(StringStruct s)) }
 
 pragma[nomagic]
 private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
   path.isEmpty() and
-  exists(Builtins::BuiltinType t | result = TStruct(t) |
+  exists(Builtins::BuiltinType t | result = TDataType(t) |
     le instanceof CharLiteralExpr and
     t instanceof Builtins::Char and
     certain = true
@@ -3502,7 +3467,7 @@ private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result instanceof
  * Gets the root type of the range expression `re`.
  */
 pragma[nomagic]
-private Type inferRangeExprType(RangeExpr re) { result = TStruct(getRangeType(re)) }
+private Type inferRangeExprType(RangeExpr re) { result = TDataType(getRangeType(re)) }
 
 /**
  * According to [the Rust reference][1]: _"array and slice-typed expressions
@@ -3519,7 +3484,7 @@ private Type inferIndexExprType(IndexExpr ie, TypePath path) {
   // TODO: Method resolution to the `std::ops::Index` trait can handle the
   // `Index` instances for slices and arrays.
   exists(TypePath exprPath, Builtins::BuiltinType t |
-    TStruct(t) = inferType(ie.getIndex()) and
+    TDataType(t) = inferType(ie.getIndex()) and
     (
       // also allow `i32`, since that is currently the type that we infer for
       // integer literals like `0`
@@ -3879,11 +3844,11 @@ private module Cached {
    */
   cached
   StructField resolveStructFieldExpr(FieldExpr fe, boolean isDereferenced) {
-    exists(string name, Type ty |
+    exists(string name, DataType ty |
       ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), isDereferenced)
     |
-      result = ty.(StructType).getStruct().getStructField(pragma[only_bind_into](name)) or
-      result = ty.(UnionType).getUnion().getStructField(pragma[only_bind_into](name))
+      result = ty.(StructType).getTypeItem().getStructField(pragma[only_bind_into](name)) or
+      result = ty.(UnionType).getTypeItem().getStructField(pragma[only_bind_into](name))
     )
   }
 
@@ -3896,7 +3861,7 @@ private module Cached {
       result =
         getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), isDereferenced)
             .(StructType)
-            .getStruct()
+            .getTypeItem()
             .getTupleField(pragma[only_bind_into](i))
     )
   }

@@ -271,9 +271,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   pragma[nomagic]
   private Type resolveRootType() {
-    result = TStruct(resolved)
-    or
-    result = TEnum(resolved)
+    result = TDataType(resolved)
     or
     exists(TraitItemNode trait | trait = resolved |
       // If this is a `Self` path, then it resolves to the implicit `Self`
@@ -282,8 +280,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
       then result = TSelfTypeParameter(trait)
       else result = TTrait(trait)
     )
-    or
-    result = TUnion(resolved)
     or
     result = TTypeParamTypeParameter(resolved)
     or
