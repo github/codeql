@@ -1,0 +1,16 @@
+| CovariantInterface<Derived>[] | ReadOnlySpan<CovariantInterface<Base>> |
+| CovariantInterface<Derived>[] | ReadOnlySpan<CovariantInterface<Derived>> |
+| CovariantInterface<Derived>[] | Span<CovariantInterface<Derived>> |
+| Interface<Derived,String>[] | ReadOnlySpan<Interface<Derived, string>> |
+| Interface<Derived,String>[] | Span<Interface<Derived, string>> |
+| InvariantInterface<Derived>[] | ReadOnlySpan<InvariantInterface<Derived>> |
+| InvariantInterface<Derived>[] | Span<InvariantInterface<Derived>> |
+| ReadOnlySpan<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Base>> |
+| Span<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Base>> |
+| Span<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Derived>> |
+| Span<Interface<Derived, string>> | ReadOnlySpan<Interface<Derived, string>> |
+| Span<InvariantInterface<Derived>> | ReadOnlySpan<InvariantInterface<Derived>> |
+| Span<string> | ReadOnlySpan<string> |
+| String[] | ReadOnlySpan<string> |
+| String[] | Span<string> |
+| string | ReadOnlySpan<char> |
