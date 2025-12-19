@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.Extensions.Logging.Abstractions/8.0.3/Microsoft.Extensions.Logging.Abstractions.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.Logging.Abstractions/10.0.0/Microsoft.Extensions.Logging.Abstractions.csproj" />
     <ProjectReference Include="../../System.Memory.Data/8.0.1/System.Memory.Data.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>

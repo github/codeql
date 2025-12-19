@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Azure.Core/1.46.1/Azure.Core.csproj" />
+    <ProjectReference Include="../../Azure.Core/1.47.1/Azure.Core.csproj" />
     <ProjectReference Include="../../Microsoft.Identity.Client/4.73.1/Microsoft.Identity.Client.csproj" />
     <ProjectReference Include="../../Microsoft.Identity.Client.Extensions.Msal/4.73.1/Microsoft.Identity.Client.Extensions.Msal.csproj" />
     <ProjectReference Include="../../System.Memory/4.5.5/System.Memory.csproj" />

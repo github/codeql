@@ -11,7 +11,7 @@
     <ProjectReference Include="../../Iesi.Collections/4.1.1/Iesi.Collections.csproj" />
     <ProjectReference Include="../../Remotion.Linq/2.2.0/Remotion.Linq.csproj" />
     <ProjectReference Include="../../Remotion.Linq.EagerFetching/2.2.0/Remotion.Linq.EagerFetching.csproj" />
-    <ProjectReference Include="../../System.Configuration.ConfigurationManager/8.0.0/System.Configuration.ConfigurationManager.csproj" />
+    <ProjectReference Include="../../System.Configuration.ConfigurationManager/10.0.1/System.Configuration.ConfigurationManager.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>
 </Project>
