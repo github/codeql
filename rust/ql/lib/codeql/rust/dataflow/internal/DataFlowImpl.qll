@@ -15,6 +15,8 @@ private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
+private import codeql.rust.internal.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.DerefChain
 private import Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -47,7 +49,7 @@ final class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets a textual representation of this callable. */
   string toString() {
-    result = [this.asCfgScope().toString(), this.asSummarizedCallable().toString()]
+    result = [this.asCfgScope().toString(), "[summarized] " + this.asSummarizedCallable()]
   }
 
   /** Gets the location of this callable. */
@@ -60,6 +62,10 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
+  predicate isImplicitDeref(AstNode n, DerefChain derefChain, int i, Function target) {
+    this = TImplicitDerefCall(n, derefChain, i, target)
+  }
+
   predicate isSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
@@ -69,11 +75,18 @@ final class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() {
     result.asCfgScope() = this.asCall().getEnclosingCfgScope()
     or
+    result.asCfgScope() = any(AstNode n | this.isImplicitDeref(n, _, _, _)).getEnclosingCfgScope()
+    or
     this.isSummaryCall(result.asSummarizedCallable(), _)
   }
 
   string toString() {
     result = this.asCall().toString()
+    or
+    exists(AstNode n, DerefChain derefChain, int i, Function target |
+      this.isImplicitDeref(n, derefChain, i, target) and
+      result = "[implicit deref call " + i + " in " + derefChain.toString() + "] " + n
+    )
     or
     exists(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -83,7 +96,11 @@ final class DataFlowCall extends TDataFlowCall {
     )
   }
 
-  Location getLocation() { result = this.asCall().getLocation() }
+  Location getLocation() {
+    result = this.asCall().getLocation()
+    or
+    result = any(AstNode n | this.isImplicitDeref(n, _, _, _)).getLocation()
+  }
 }
 
 /**
@@ -383,7 +400,8 @@ module RustDataFlow implements InputSig<Location> {
     node.(FlowSummaryNode).getSummaryNode().isHidden() or
     node instanceof CaptureNode or
     node instanceof ClosureParameterNode or
-    node instanceof DerefBorrowNode or
+    node instanceof ImplicitDerefNode or
+    node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
     node.asExpr() instanceof ParenExpr or
@@ -443,25 +461,13 @@ module RustDataFlow implements InputSig<Location> {
     exists(Call c | c = call.asCall() |
       result.asCfgScope() = c.getARuntimeTarget()
       or
-      exists(SummarizedCallable sc, Function staticTarget |
-        staticTarget = getStaticTargetExt(c) and
-        sc = result.asSummarizedCallable() and
-        // Only use summarized callables with generated summaries in case
-        // the static call target is not in the source code.
-        // Note that if `applyGeneratedModel` holds it implies that there doesn't
-        // exist a manual model.
-        not (
-          staticTarget.fromSource() and
-          sc.applyGeneratedModel()
-        )
-      |
-        sc = staticTarget
-        or
-        // only apply trait models to concrete implementations when they are not
-        // defined in source code
-        staticTarget.implements(sc) and
-        not staticTarget.fromSource()
-      )
+      result.asSummarizedCallable() = getStaticTargetExt(c)
+    )
+    or
+    exists(Function f | call = TImplicitDerefCall(_, _, _, f) |
+      result.asCfgScope() = f
+      or
+      result.asSummarizedCallable() = f
     )
   }
 
@@ -542,16 +548,18 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   pragma[nomagic]
-  private predicate implicitDeref(Node node1, DerefBorrowNode node2, ReferenceContent c) {
-    not node2.isBorrow() and
-    node1.asExpr() = node2.getNode() and
+  private predicate implicitDeref(ImplicitDerefNode node1, Node node2, ReferenceContent c) {
+    node2 = node1.getDerefOutputNode() and
     exists(c)
   }
 
   pragma[nomagic]
-  private predicate implicitBorrow(Node node1, DerefBorrowNode node2, ReferenceContent c) {
-    node2.isBorrow() and
-    node1.asExpr() = node2.getNode() and
+  private predicate implicitBorrow(Node node1, Node node2, ReferenceContent c) {
+    (
+      node1 = node2.(ImplicitDerefNode).getBorrowInputNode()
+      or
+      node1 = node2.(ImplicitBorrowNode).getBorrowInputNode()
+    ) and
     exists(c)
   }
 
@@ -563,10 +571,12 @@ module RustDataFlow implements InputSig<Location> {
 
   private Node getFieldExprContainerNode(FieldExpr fe) {
     exists(Expr container | container = fe.getContainer() |
-      not any(DerefBorrowNode n).getNode() = container and
+      not TypeInference::implicitDerefChainBorrow(container, _, _) and
       result.asExpr() = container
       or
-      result.(DerefBorrowNode).getNode() = container
+      result.(ImplicitBorrowNode).getNode() = container
+      or
+      result.(ImplicitDerefNode).isLast(container)
     )
   }
 
@@ -1054,6 +1064,10 @@ private module Cached {
     TCall(Call call) {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
+    } or
+    TImplicitDerefCall(AstNode n, DerefChain derefChain, int i, Function target) {
+      TypeInference::implicitDerefChainBorrow(n, derefChain, _) and
+      target = derefChain.getElement(i).getDerefFunction()
     } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver

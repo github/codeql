@@ -85,8 +85,8 @@ edges
 | main.rs:190:25:190:55 | &... [&ref, MyNumber] | main.rs:190:13:190:21 | my_number [&ref, MyNumber] | provenance |  |
 | main.rs:190:26:190:55 | ...::MyNumber(...) [MyNumber] | main.rs:190:25:190:55 | &... [&ref, MyNumber] | provenance |  |
 | main.rs:190:45:190:54 | source(...) | main.rs:190:26:190:55 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:192:14:192:22 | my_number [&ref, MyNumber] | main.rs:156:18:156:21 | SelfParam [MyNumber] | provenance |  |
-| main.rs:192:14:192:22 | my_number [&ref, MyNumber] | main.rs:192:14:192:34 | my_number.to_number() | provenance |  |
+| main.rs:192:14:192:22 | my_number [&ref, MyNumber] | main.rs:156:18:156:21 | SelfParam [MyNumber] | provenance | MaD:1 |
+| main.rs:192:14:192:22 | my_number [&ref, MyNumber] | main.rs:192:14:192:34 | my_number.to_number() | provenance | MaD:1 |
 | main.rs:200:29:200:38 | ...: i64 | main.rs:201:14:201:18 | value | provenance |  |
 | main.rs:201:10:201:10 | [post] n [&ref] | main.rs:200:16:200:26 | ...: ... [Return] [&ref] | provenance |  |
 | main.rs:201:14:201:18 | value | main.rs:201:10:201:10 | [post] n [&ref] | provenance |  |

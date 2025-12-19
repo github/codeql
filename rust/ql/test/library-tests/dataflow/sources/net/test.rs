@@ -330,25 +330,25 @@ fn test_rustls() -> std::io::Result<()> {
     let server_name = rustls::pki_types::ServerName::try_from("www.example.com").unwrap();
     let config_arc = std::sync::Arc::new(config);
     let mut client = rustls::ClientConnection::new(config_arc, server_name).unwrap(); // $ Alert[rust/summary/taint-sources]
-    let mut reader = client.reader(); // We cannot resolve the `reader` call because it comes from `Deref`: https://docs.rs/rustls/latest/rustls/client/struct.ClientConnection.html#deref-methods-ConnectionCommon%3CClientConnectionData%3E
-    sink(&reader); // $ MISSING: hasTaintFlow=config_arc
+    let mut reader = client.reader();
+    sink(&reader); // $ hasTaintFlow=config_arc
 
     {
         let mut buffer = [0u8; 100];
         let _bytes = reader.read(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = reader.read_to_end(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = String::new();
         let _bytes = reader.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     Ok(())
