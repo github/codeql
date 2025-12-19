@@ -61,6 +61,7 @@ where
   // flow from a pointer or reference to the dereference
   AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
   // check that the dereference is outside the lifetime of the target
-  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target)
+  AccessAfterLifetime::DereferenceAfterLifetime<AccessAfterLifetimeFlow::flow/2>::dereferenceAfterLifetime(sourceNode
+        .getNode(), sinkNode.getNode(), target)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "Access of a pointer to $@ after its lifetime has ended.", target, target.toString()
