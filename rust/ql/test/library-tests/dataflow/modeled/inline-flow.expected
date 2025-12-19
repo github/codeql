@@ -48,9 +48,8 @@ edges
 | main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:2 |
 | main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:11 |
 | main.rs:28:13:28:21 | a.clone() | main.rs:28:9:28:9 | b | provenance |  |
-| main.rs:43:18:43:22 | SelfParam [&ref, Wrapper] | main.rs:44:26:44:29 | self [&ref, Wrapper] | provenance |  |
+| main.rs:43:18:43:22 | SelfParam [&ref, Wrapper] | main.rs:44:26:44:31 | self.n | provenance |  |
 | main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | main.rs:43:33:45:9 | { ... } [Wrapper] | provenance |  |
-| main.rs:44:26:44:29 | self [&ref, Wrapper] | main.rs:44:26:44:31 | self.n | provenance |  |
 | main.rs:44:26:44:31 | self.n | main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | provenance |  |
 | main.rs:49:13:49:13 | w [Wrapper] | main.rs:50:15:50:15 | w [Wrapper] | provenance |  |
 | main.rs:49:17:49:41 | Wrapper {...} [Wrapper] | main.rs:49:13:49:13 | w [Wrapper] | provenance |  |
@@ -191,7 +190,6 @@ nodes
 | main.rs:43:18:43:22 | SelfParam [&ref, Wrapper] | semmle.label | SelfParam [&ref, Wrapper] |
 | main.rs:43:33:45:9 | { ... } [Wrapper] | semmle.label | { ... } [Wrapper] |
 | main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
-| main.rs:44:26:44:29 | self [&ref, Wrapper] | semmle.label | self [&ref, Wrapper] |
 | main.rs:44:26:44:31 | self.n | semmle.label | self.n |
 | main.rs:49:13:49:13 | w [Wrapper] | semmle.label | w [Wrapper] |
 | main.rs:49:17:49:41 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |

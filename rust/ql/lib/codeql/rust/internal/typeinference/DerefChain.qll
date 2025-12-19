@@ -47,6 +47,17 @@ class DerefImplItemNode extends ImplItemNode {
   TypeParamTypeParameter getFirstSelfTypeParameter() {
     result.getTypeParam() = this.resolveSelfTy().getTypeParam(0)
   }
+
+  /**
+   * Holds if this `Deref` implementation is either
+   *
+   * [`impl<T> Deref for &T`](https://doc.rust-lang.org/std/ops/trait.Deref.html#impl-Deref-for-%26T)
+   *
+   * or
+   *
+   * [`impl<T> Deref for &mut T`](https://doc.rust-lang.org/std/ops/trait.Deref.html#impl-Deref-for-%26mut+T).
+   */
+  predicate isBuiltinDeref() { this.resolveSelfTyBuiltin() instanceof Builtins::RefType }
 }
 
 private module UnboundListInput implements UnboundListImpl::InputSig<Location> {
@@ -76,7 +87,13 @@ private import UnboundListImpl::Make<Location, UnboundListInput>
  * A sequence of `Deref` impl blocks representing a chain of implicit dereferences,
  * encoded as a string.
  */
-class DerefChain = UnboundList;
+class DerefChain extends UnboundList {
+  bindingset[this]
+  DerefChain() { exists(this) }
+
+  bindingset[this]
+  predicate isBuiltinDeref(int i) { this.getElement(i).isBuiltinDeref() }
+}
 
 /** Provides predicates for constructing `DerefChain`s. */
 module DerefChain = UnboundList;

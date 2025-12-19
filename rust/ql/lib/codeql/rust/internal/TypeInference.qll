@@ -3909,30 +3909,22 @@ private Type inferCastExprType(CastExpr ce, TypePath path) {
 
 cached
 private module Cached {
-  /** Holds if `n` is implicitly dereferenced. */
+  /** Holds if `n` is implicitly dereferenced and/or borrowed. */
   cached
-  predicate implicitDeref(AstNode n) {
-    exists(DerefChain derefChain, DerefImplItemNode impl |
-      impl.resolveSelfTyBuiltin() instanceof Builtins::RefType and
-      derefChain = DerefChain::singleton(impl)
-    |
-      any(MethodResolution::MethodCall mc)
-          .argumentHasImplicitDerefChainBorrow(n, derefChain, TNoBorrowKind())
-      or
-      n =
-        any(FieldExpr fe |
-          exists(resolveStructFieldExpr(fe, derefChain))
-          or
-          exists(resolveTupleFieldExpr(fe, derefChain))
-        ).getContainer()
+  predicate implicitDerefChainBorrow(AstNode n, DerefChain derefChain, boolean borrow) {
+    exists(BorrowKind bk |
+      any(MethodResolution::MethodCall mc).argumentHasImplicitDerefChainBorrow(n, derefChain, bk) and
+      if bk.isNoBorrow() then borrow = false else borrow = true
     )
-  }
-
-  /** Holds if `n` is implicitly borrowed. */
-  cached
-  predicate implicitBorrow(AstNode n, boolean isMutable) {
-    any(MethodResolution::MethodCall mc)
-        .argumentHasImplicitDerefChainBorrow(n, DerefChain::nil(), TSomeBorrowKind(isMutable))
+    or
+    n =
+      any(FieldExpr fe |
+        exists(resolveStructFieldExpr(fe, derefChain))
+        or
+        exists(resolveTupleFieldExpr(fe, derefChain))
+      ).getContainer() and
+    not derefChain.isEmpty() and
+    borrow = false
   }
 
   /**
