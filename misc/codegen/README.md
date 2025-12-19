@@ -1,14 +1,17 @@
 # Code generation suite
 
-This directory contains the code generation suite used by the Swift extractor and the QL library. This suite will use
-the abstract class specification of `schema.py` to generate:
+This directory contains the code generation suite used by the Swift and Rust extractors and QL library. This suite will use
+the abstract class specification of a `schema` python module to generate:
 
 * the `dbscheme` file (see [`dbschemegen.py`](generators/dbschemegen.py))
 * the QL generated code and when appropriate the corresponding stubs (see [`qlgen.py`](generators/qlgen.py))
-* C++ tags and trap entries (see [`trapgen.py`](generators/trapgen.py))
-* C++ structured classes (see [`cppgen.py`](generators/cppgen.py))
+* QL language tests for testing the extractors (see [`qlgen.py`](generators/qlgen.py))
+* [Swift] C++ tags and trap entries (see [`trapgen.py`](generators/trapgen.py))
+* [Swift] C++ structured classes (see [`cppgen.py`](generators/cppgen.py))
+* [Rust] Rust structured classes (see [`rustgen.py`](generators/rustgen.py))
+* [Rust] Rust sources for extractor language tests extracted from the documentation snippets (see [`rusttestgen.py`](generators/rusttestgen.py))
 
-An example `schema.py` [can be found in the Swift package](../../swift/schema.py).
+Schemas [can be found in the Swift package](../../swift/schema.py) or [in the Rust one](../../rust/schema).
 
 ## Usage
 
