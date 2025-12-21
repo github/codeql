@@ -59,4 +59,14 @@ module Xss {
       )
     }
   }
+
+  // TODO: Convert this to MaD once MaD supports sink for tuple struct expressions.
+  private class AxumHtmlSink extends Sink {
+    AxumHtmlSink() {
+      exists(TupleStructExpr call |
+        call.getResolvedTarget().getCanonicalPath() = "axum::response::Html" and
+        this.asExpr() = call.getSyntacticPositionalArgument(0)
+      )
+    }
+  }
 }

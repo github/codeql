@@ -699,6 +699,7 @@ macro_expansion.rs:
 #   76|             getSegment(): [PathSegment] i32
 #   76|               getIdentifier(): [NameRef] i32
 #   78|   getItem(16): [Struct] struct MyStruct
+#   78|     getName(): [Name] MyStruct
 #   78|     getFieldList(): [StructFieldList] StructFieldList
 #   79|       getField(0): [StructField] field: ...
 #   79|         getName(): [Name] field
@@ -712,7 +713,6 @@ macro_expansion.rs:
 #   79|               getPath(): [Path] i32
 #   79|                 getSegment(): [PathSegment] i32
 #   79|                   getIdentifier(): [NameRef] i32
-#   78|     getName(): [Name] MyStruct
 #   83|   getItem(17): [Struct] struct MyDerive
 #   84|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
 #   84|       getItem(0): [Impl] impl ...::Debug for MyDerive::<...> { ... }
@@ -808,6 +808,7 @@ macro_expansion.rs:
 #   83|           getSegment(): [PathSegment] derive
 #   83|             getIdentifier(): [NameRef] derive
 #   83|         getTokenTree(): [TokenTree] TokenTree
+#   84|     getName(): [Name] MyDerive
 #   84|     getFieldList(): [StructFieldList] StructFieldList
 #   85|       getField(0): [StructField] field: usize
 #   85|         getName(): [Name] field
@@ -815,7 +816,6 @@ macro_expansion.rs:
 #   85|           getPath(): [Path] usize
 #   85|             getSegment(): [PathSegment] usize
 #   85|               getIdentifier(): [NameRef] usize
-#   84|     getName(): [Name] MyDerive
 #   88|   getItem(18): [Enum] enum MyDeriveEnum
 #   89|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
 #   89|       getItem(0): [Impl] impl ...::PartialEq for MyDeriveEnum::<...> { ... }

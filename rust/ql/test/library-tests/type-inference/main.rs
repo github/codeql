@@ -827,6 +827,21 @@ mod function_trait_bounds {
         }
     }
 
+    trait MyTrait2 {
+        // MyTrait2::m2
+        fn m2(self);
+    }
+
+    trait MyTrait3 {
+        // MyTrait3::m2
+        fn m2(&self);
+    }
+
+    fn bound_overlap<T: MyTrait2 + MyTrait3>(x: T, y: &T) {
+        x.m2(); // $ target=MyTrait2::m2
+        y.m2(); // $ target=MyTrait3::m2
+    }
+
     pub fn f() {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -2625,7 +2640,7 @@ mod loops {
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:TArray.TRef.str
         for s in &strings1 {} // $ type=s:TRef.TRef.str
-        for s in &mut strings1 {} // $ type=s:TRef.TRef.str
+        for s in &mut strings1 {} // $ type=s:TRefMut.TRef.str
         for s in strings1 {} // $ type=s:TRef.str
 
         let strings2 = // $ type=strings2:TArray.String

@@ -251,6 +251,19 @@ class IndexTrait extends Trait {
 }
 
 /**
+ * The [`IndexMut` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.IndexMut.html
+ */
+class IndexMutTrait extends Trait {
+  pragma[nomagic]
+  IndexMutTrait() { this.getCanonicalPath() = "core::ops::index::IndexMut" }
+
+  /** Gets the `index_mut` function. */
+  Function getIndexMutFunction() { result = this.(TraitItemNode).getAssocItem("index_mut") }
+}
+
+/**
  * The [`Box` struct][1].
  *
  * [1]: https://doc.rust-lang.org/std/boxed/struct.Box.html

@@ -54,13 +54,16 @@ class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
 }
 
 class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
+  private RefType resolveRootType() {
+    if super.isMut() then result instanceof RefMutType else result instanceof RefSharedType
+  }
+
   override Type resolveTypeAt(TypePath path) {
-    path.isEmpty() and
-    result instanceof RefType
+    path.isEmpty() and result = this.resolveRootType()
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(getRefTypeParameter(), suffix)
+      path = TypePath::cons(this.resolveRootType().getPositionalTypeParameter(0), suffix)
     )
   }
 }
@@ -268,9 +271,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   pragma[nomagic]
   private Type resolveRootType() {
-    result = TStruct(resolved)
-    or
-    result = TEnum(resolved)
+    result = TDataType(resolved)
     or
     exists(TraitItemNode trait | trait = resolved |
       // If this is a `Self` path, then it resolves to the implicit `Self`
@@ -279,8 +280,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
       then result = TSelfTypeParameter(trait)
       else result = TTrait(trait)
     )
-    or
-    result = TUnion(resolved)
     or
     result = TTypeParamTypeParameter(resolved)
     or
@@ -438,20 +437,24 @@ class ShorthandSelfParameterMention extends TypeMention instanceof SelfParam {
 
   private Type resolveSelfType(TypePath path) { result = resolveImplOrTraitType(encl, path) }
 
+  private RefType resolveSelfRefRootType() {
+    super.isRef() and
+    if super.isMut() then result instanceof RefMutType else result instanceof RefSharedType
+  }
+
   override Type resolveTypeAt(TypePath typePath) {
-    if super.isRef()
-    then
-      // `fn f(&self, ...)`
-      typePath.isEmpty() and
-      result instanceof RefType
-      or
-      exists(TypePath suffix |
-        result = this.resolveSelfType(suffix) and
-        typePath = TypePath::cons(getRefTypeParameter(), suffix)
-      )
-    else
-      // `fn f(self, ...)`
-      result = this.resolveSelfType(typePath)
+    // `fn f(&self, ...)`
+    typePath.isEmpty() and
+    result = this.resolveSelfRefRootType()
+    or
+    exists(TypePath suffix |
+      result = this.resolveSelfType(suffix) and
+      typePath = TypePath::cons(this.resolveSelfRefRootType().getPositionalTypeParameter(0), suffix)
+    )
+    or
+    // `fn f(self, ...)`
+    not super.isRef() and
+    result = this.resolveSelfType(typePath)
   }
 }
 
