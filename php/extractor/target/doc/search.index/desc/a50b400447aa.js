@@ -1,1 +1,0 @@
-rd_("BaThe symbol tagging query for PHP.C`The tree-sitter <code>LanguageFn</code> for PHP.DfThe content of the <code>node-types.json</code> file for this grammar.CdThis crate provides PHP language support for the \xe2\x80\xa6BfThe syntax highlighting query for PHP.AlThe injection query for PHP.CeThe tree-sitter <code>LanguageFn</code> for PHP-Only.")
