@@ -1,0 +1,13 @@
+extractor/target
+.vscode/launch.json
+.cache
+ql/test/**/*.testproj
+ql/test/**/*.actual
+.codeql
+demo-db/
+
+# Local-only extractor binaries (used for ad-hoc validation).
+tools/**/extractor
+
+# Generated extractor pack output.
+extractor-pack/

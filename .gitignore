@@ -30,6 +30,9 @@
 # Avoid committing cached package components
 .codeql
 
+# Local CodeQL CLI distributions (VS Code / local dev)
+.codeql-cli/
+
 # Compiled class file
 *.class
 
