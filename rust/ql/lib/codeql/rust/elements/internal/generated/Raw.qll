@@ -5960,26 +5960,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
-   */
-  class Adt extends @adt, Item {
-    /**
-     * Gets the `index`th derive macro expansion of this adt (0-based).
-     */
-    MacroItems getDeriveMacroExpansion(int index) {
-      adt_derive_macro_expansions(this, index, result)
-    }
-
-    /**
-     * Gets the number of derive macro expansions of this adt.
-     */
-    int getNumberOfDeriveMacroExpansions() {
-      result = count(int i | adt_derive_macro_expansions(this, i, _))
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * An inline assembly expression. For example:
    * ```rust
    * unsafe {
@@ -6826,6 +6806,56 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An item that defines a type. Either a `Struct`, `Enum`, or `Union`.
+   */
+  class TypeItem extends @type_item, Item {
+    /**
+     * Gets the `index`th derive macro expansion of this type item (0-based).
+     */
+    MacroItems getDeriveMacroExpansion(int index) {
+      type_item_derive_macro_expansions(this, index, result)
+    }
+
+    /**
+     * Gets the number of derive macro expansions of this type item.
+     */
+    int getNumberOfDeriveMacroExpansions() {
+      result = count(int i | type_item_derive_macro_expansions(this, i, _))
+    }
+
+    /**
+     * Gets the `index`th attr of this type item (0-based).
+     */
+    Attr getAttr(int index) { type_item_attrs(this, index, result) }
+
+    /**
+     * Gets the number of attrs of this type item.
+     */
+    int getNumberOfAttrs() { result = count(int i | type_item_attrs(this, i, _)) }
+
+    /**
+     * Gets the generic parameter list of this type item, if it exists.
+     */
+    GenericParamList getGenericParamList() { type_item_generic_param_lists(this, result) }
+
+    /**
+     * Gets the name of this type item, if it exists.
+     */
+    Name getName() { type_item_names(this, result) }
+
+    /**
+     * Gets the visibility of this type item, if it exists.
+     */
+    Visibility getVisibility() { type_item_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this type item, if it exists.
+     */
+    WhereClause getWhereClause() { type_item_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A `use` statement. For example:
    * ```rust
    * use std::collections::HashMap;
@@ -6992,49 +7022,19 @@ module Raw {
    * enum E {A, B(i32), C {x: i32}}
    * ```
    */
-  class Enum extends @enum, Adt {
+  class Enum extends @enum, TypeItem {
     override string toString() { result = "Enum" }
-
-    /**
-     * Gets the `index`th attr of this enum (0-based).
-     */
-    Attr getAttr(int index) { enum_attrs(this, index, result) }
-
-    /**
-     * Gets the number of attrs of this enum.
-     */
-    int getNumberOfAttrs() { result = count(int i | enum_attrs(this, i, _)) }
-
-    /**
-     * Gets the generic parameter list of this enum, if it exists.
-     */
-    GenericParamList getGenericParamList() { enum_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this enum, if it exists.
-     */
-    Name getName() { enum_names(this, result) }
 
     /**
      * Gets the variant list of this enum, if it exists.
      */
     VariantList getVariantList() { enum_variant_lists(this, result) }
-
-    /**
-     * Gets the visibility of this enum, if it exists.
-     */
-    Visibility getVisibility() { enum_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this enum, if it exists.
-     */
-    WhereClause getWhereClause() { enum_where_clauses(this, result) }
   }
 
   private Element getImmediateChildOfEnum(Enum e, int index) {
     exists(
       int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
-      int nGenericParamList, int nName, int nVariantList, int nVisibility, int nWhereClause
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nVariantList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -7042,9 +7042,9 @@ module Raw {
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
-      nVariantList = nName + 1 and
-      nVisibility = nVariantList + 1 and
+      nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nVariantList = nWhereClause + 1 and
       (
         none()
         or
@@ -7058,11 +7058,11 @@ module Raw {
         or
         index = nGenericParamList and result = e.getName()
         or
-        index = nName and result = e.getVariantList()
-        or
-        index = nVariantList and result = e.getVisibility()
+        index = nName and result = e.getVisibility()
         or
         index = nVisibility and result = e.getWhereClause()
+        or
+        index = nWhereClause and result = e.getVariantList()
       )
     )
   }
@@ -7473,59 +7473,29 @@ module Raw {
    * }
    * ```
    */
-  class Struct extends @struct, Adt {
+  class Struct extends @struct, TypeItem {
     override string toString() { result = "Struct" }
-
-    /**
-     * Gets the `index`th attr of this struct (0-based).
-     */
-    Attr getAttr(int index) { struct_attrs(this, index, result) }
-
-    /**
-     * Gets the number of attrs of this struct.
-     */
-    int getNumberOfAttrs() { result = count(int i | struct_attrs(this, i, _)) }
 
     /**
      * Gets the field list of this struct, if it exists.
      */
     FieldList getFieldList() { struct_field_lists_(this, result) }
-
-    /**
-     * Gets the generic parameter list of this struct, if it exists.
-     */
-    GenericParamList getGenericParamList() { struct_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this struct, if it exists.
-     */
-    Name getName() { struct_names(this, result) }
-
-    /**
-     * Gets the visibility of this struct, if it exists.
-     */
-    Visibility getVisibility() { struct_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this struct, if it exists.
-     */
-    WhereClause getWhereClause() { struct_where_clauses(this, result) }
   }
 
   private Element getImmediateChildOfStruct(Struct e, int index) {
     exists(
-      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr, int nFieldList,
-      int nGenericParamList, int nName, int nVisibility, int nWhereClause
+      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nFieldList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
-      nFieldList = nAttr + 1 and
-      nGenericParamList = nFieldList + 1 and
+      nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nFieldList = nWhereClause + 1 and
       (
         none()
         or
@@ -7535,15 +7505,15 @@ module Raw {
         or
         result = e.getAttr(index - nDeriveMacroExpansion)
         or
-        index = nAttr and result = e.getFieldList()
-        or
-        index = nFieldList and result = e.getGenericParamList()
+        index = nAttr and result = e.getGenericParamList()
         or
         index = nGenericParamList and result = e.getName()
         or
         index = nName and result = e.getVisibility()
         or
         index = nVisibility and result = e.getWhereClause()
+        or
+        index = nWhereClause and result = e.getFieldList()
       )
     )
   }
@@ -7654,49 +7624,19 @@ module Raw {
    * union U { f1: u32, f2: f32 }
    * ```
    */
-  class Union extends @union, Adt {
+  class Union extends @union, TypeItem {
     override string toString() { result = "Union" }
-
-    /**
-     * Gets the `index`th attr of this union (0-based).
-     */
-    Attr getAttr(int index) { union_attrs(this, index, result) }
-
-    /**
-     * Gets the number of attrs of this union.
-     */
-    int getNumberOfAttrs() { result = count(int i | union_attrs(this, i, _)) }
-
-    /**
-     * Gets the generic parameter list of this union, if it exists.
-     */
-    GenericParamList getGenericParamList() { union_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this union, if it exists.
-     */
-    Name getName() { union_names(this, result) }
 
     /**
      * Gets the struct field list of this union, if it exists.
      */
     StructFieldList getStructFieldList() { union_struct_field_lists(this, result) }
-
-    /**
-     * Gets the visibility of this union, if it exists.
-     */
-    Visibility getVisibility() { union_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this union, if it exists.
-     */
-    WhereClause getWhereClause() { union_where_clauses(this, result) }
   }
 
   private Element getImmediateChildOfUnion(Union e, int index) {
     exists(
       int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
-      int nGenericParamList, int nName, int nStructFieldList, int nVisibility, int nWhereClause
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nStructFieldList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -7704,9 +7644,9 @@ module Raw {
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
-      nStructFieldList = nName + 1 and
-      nVisibility = nStructFieldList + 1 and
+      nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nStructFieldList = nWhereClause + 1 and
       (
         none()
         or
@@ -7720,11 +7660,11 @@ module Raw {
         or
         index = nGenericParamList and result = e.getName()
         or
-        index = nName and result = e.getStructFieldList()
-        or
-        index = nStructFieldList and result = e.getVisibility()
+        index = nName and result = e.getVisibility()
         or
         index = nVisibility and result = e.getWhereClause()
+        or
+        index = nWhereClause and result = e.getStructFieldList()
       )
     )
   }
