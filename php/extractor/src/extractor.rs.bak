@@ -1,0 +1,559 @@
+/// Main extraction logic for PHP source files
+///
+/// This module handles:
+/// - File discovery and traversal
+/// - Source code parsing with tree-sitter
+/// - AST traversal and TRAP fact generation
+/// - Parallel file processing
+/// - Result serialization
+
+use anyhow::{anyhow, Result};
+use clap::Parser;
+use rayon::prelude::*;
+use std::fs;
+use std::path::{Path, PathBuf};
+use std::sync::{Arc, Mutex};
+use tree_sitter::Parser as TreeSitterParser;
+use walkdir::WalkDir;
+
+/// Options for the extract command
+#[derive(Parser, Debug)]
+pub struct ExtractOptions {
+    /// Output directory for TRAP files
+    #[arg(long)]
+    pub output: Option<PathBuf>,
+
+    /// Source root directory to extract
+    #[arg(long)]
+    pub source_root: Option<PathBuf>,
+
+    /// File list input (text file with one file path per line) - used by CodeQL
+    #[arg(long)]
+    pub file_list: Option<PathBuf>,
+
+    /// Output directory for TRAP files (alternative to `output`)
+    #[arg(long)]
+    pub output_dir: Option<PathBuf>,
+
+    /// Compression format (none, gzip, zstd)
+    #[arg(long, default_value = "gzip")]
+    pub compression: String,
+
+    /// Number of threads to use (0 = number of CPUs)
+    #[arg(long, default_value = "0")]
+    pub threads: usize,
+
+    /// Maximum file size to process (bytes)
+    #[arg(long, default_value = "20971520")] // 20 MB
+    pub max_file_size: u64,
+
+    /// Excluded directory patterns (glob)
+    #[arg(long, default_values = ["**/vendor", "**/.git", "**/node_modules"])]
+    pub exclude: Vec<String>,
+
+    /// Print statistics at the end
+    #[arg(long)]
+    pub statistics: bool,
+}
+
+pub fn extract(opts: ExtractOptions) -> Result<()> {
+    tracing::info!("Starting PHP extraction");
+
+    // Determine output directory (prefer output_dir, fall back to output)
+    let output_dir = opts.output_dir.as_ref()
+        .or(opts.output.as_ref())
+        .ok_or_else(|| anyhow!("Either --output or --output-dir must be specified"))?;
+
+    // Get the list of files to extract
+    let php_files = if let Some(file_list) = &opts.file_list {
+        // Extract from file list (used by CodeQL)
+        tracing::info!("Reading file list from: {}", file_list.display());
+        let content = fs::read_to_string(file_list)
+            .map_err(|e| anyhow!("Failed to read file list: {}", e))?;
+
+        let files: Vec<PathBuf> = content
+            .lines()
+            .map(|line| line.trim().into())
+            .filter(|line: &String| !line.is_empty())
+            .map(PathBuf::from)
+            .collect();
+
+        tracing::info!("Read {} files from file list", files.len());
+        files
+    } else if let Some(source_root) = &opts.source_root {
+        // Discover from source root
+        tracing::info!("Discovering files in: {}", source_root.display());
+
+        if !source_root.exists() {
+            return Err(anyhow!("Source root does not exist: {}", source_root.display()));
+        }
+
+        discover_php_files(source_root, &opts.exclude, opts.max_file_size)?
+    } else {
+        return Err(anyhow!("Either --file-list or --source-root must be specified"));
+    };
+
+    tracing::info!("Found {} PHP files to process", php_files.len());
+    tracing::info!("Output directory: {}", output_dir.display());
+    tracing::info!("Compression: {}", opts.compression);
+
+    // Create output directory if it doesn't exist
+    if !output_dir.exists() {
+        fs::create_dir_all(&output_dir)?;
+    }
+
+    if php_files.is_empty() {
+        tracing::warn!("No PHP files found to extract");
+        return Ok(());
+    }
+
+    // Use sequential extraction to ensure file IDs are properly incremented
+    let stats = Arc::new(Mutex::new(ExtractionStats::default()));
+    let errors = Arc::new(Mutex::new(Vec::new()));
+    let next_file_id = Arc::new(Mutex::new(1u64));
+
+    // Process files sequentially to maintain consistent file IDs
+    for (_idx, file_path) in php_files.iter().enumerate() {
+        let file_id = {
+            let mut fid = next_file_id.lock().unwrap();
+            let current_id = *fid;
+            *fid += 1;
+            current_id
+        };
+
+        match extract_file(file_path, output_dir, &opts.compression, file_id) {
+            Ok(file_stats) => {
+                let mut s = stats.lock().unwrap();
+                s.files_processed += 1;
+                s.lines_processed += file_stats.lines;
+                s.facts_generated += file_stats.facts;
+            }
+            Err(e) => {
+                tracing::warn!("Error extracting {}: {}", file_path.display(), e);
+                errors.lock().unwrap().push((file_path.clone(), e.to_string()));
+            }
+        }
+    }
+
+    let final_stats = stats.lock().unwrap();
+    let final_errors = errors.lock().unwrap();
+
+    tracing::info!("Extraction complete");
+    tracing::info!("  Files processed: {}", final_stats.files_processed);
+    tracing::info!("  Lines processed: {}", final_stats.lines_processed);
+    tracing::info!("  Facts generated: {}", final_stats.facts_generated);
+
+    if !final_errors.is_empty() {
+        tracing::warn!("Extraction completed with {} errors", final_errors.len());
+        for (file, error) in final_errors.iter() {
+            tracing::debug!("  {}: {}", file.display(), error);
+        }
+    }
+
+    if opts.statistics {
+        println!("Extraction Statistics");
+        println!("====================");
+        println!("Files processed: {}", final_stats.files_processed);
+        println!("Lines processed: {}", final_stats.lines_processed);
+        println!("Facts generated: {}", final_stats.facts_generated);
+        println!("Errors: {}", final_errors.len());
+    }
+
+    Ok(())
+}
+
+/// Statistics about extraction
+#[derive(Debug, Default)]
+struct ExtractionStats {
+    files_processed: usize,
+    lines_processed: usize,
+    facts_generated: usize,
+}
+
+/// Statistics from extracting a single file
+struct FileStats {
+    lines: usize,
+    facts: usize,
+}
+
+/// Discover all PHP files in a directory tree
+fn discover_php_files(root: &Path, exclude_patterns: &[String], max_size: u64) -> Result<Vec<PathBuf>> {
+    let mut files = Vec::new();
+    let php_extensions = [".php", ".php5", ".php7", ".php8", ".phtml", ".inc"];
+
+    for entry in WalkDir::new(root)
+        .into_iter()
+        .filter_map(|e| e.ok())
+    {
+        let path = entry.path();
+
+        // Skip directories
+        if path.is_dir() {
+            continue;
+        }
+
+        // Check extension
+        let has_php_ext = php_extensions
+            .iter()
+            .any(|ext| path.extension().and_then(|s| s.to_str()).map(|s| s == ext.trim_start_matches('.')).unwrap_or(false)
+                || path.to_string_lossy().ends_with(ext));
+
+        if !has_php_ext {
+            continue;
+        }
+
+        // Check exclude patterns
+        if exclude_patterns.iter().any(|pattern| {
+            let path_str = path.to_string_lossy();
+            pattern_matches(&path_str, pattern)
+        }) {
+            tracing::trace!("Excluding file: {}", path.display());
+            continue;
+        }
+
+        // Check file size
+        if let Ok(metadata) = path.metadata() {
+            if metadata.len() > max_size {
+                tracing::warn!("Skipping file (too large {}): {}", metadata.len(), path.display());
+                continue;
+            }
+        }
+
+        files.push(path.to_path_buf());
+    }
+
+    files.sort();
+    Ok(files)
+}
+
+/// Check if a path matches a glob pattern
+fn pattern_matches(path: &str, pattern: &str) -> bool {
+    // Simple glob matching for ** and *
+    if pattern.contains("**") {
+        let parts: Vec<&str> = pattern.split("**").collect();
+        if parts.is_empty() {
+            return true;
+        }
+
+        // Check if pattern parts exist in sequence
+        let mut path_pos = 0;
+        for (i, part) in parts.iter().enumerate() {
+            if i == 0 {
+                if !part.is_empty() && !path.starts_with(part) {
+                    return false;
+                }
+                path_pos = part.len();
+            } else if !part.is_empty() {
+                if let Some(pos) = path[path_pos..].find(part) {
+                    path_pos += pos + part.len();
+                } else {
+                    return false;
+                }
+            }
+        }
+        true
+    } else if pattern.contains('*') {
+        // Simple wildcard matching
+        let regex_pattern = pattern.replace(".", r"\.").replace("*", ".*");
+        if let Ok(re) = regex::Regex::new(&format!("^{}$", regex_pattern)) {
+            re.is_match(path)
+        } else {
+            false
+        }
+    } else {
+        path.contains(pattern)
+    }
+}
+
+/// Extract a single PHP file to TRAP format using tree-sitter-php
+fn extract_file(path: &Path, output_dir: &Path, compression: &str, file_id: u64) -> Result<FileStats> {
+    tracing::trace!("Extracting: {} (file_id={})", path.display(), file_id);
+
+    // Read source file
+    let source = fs::read(path)?;
+
+    // Detect encoding (PHP can have encoding declaration)
+    let source_str = detect_and_decode(&source)?;
+
+    // Count lines
+    let line_count = source_str.lines().count();
+
+    // Parse with tree-sitter-php
+    let mut facts = Vec::new();
+
+    // Initialize tree-sitter parser
+    let mut parser = TreeSitterParser::new();
+    let language = tree_sitter_php::LANGUAGE_PHP;
+    parser.set_language(&language.into())
+        .map_err(|_| anyhow!("Failed to set PHP language"))?;
+
+    // Parse the source code
+    if let Some(tree) = parser.parse(&source_str, None) {
+        let root = tree.root_node();
+
+        // Check for parse errors
+        if root.has_error() {
+            tracing::warn!("Parse errors detected in {}", path.display());
+        }
+
+        // Generate TRAP facts from AST
+        facts.extend(generate_facts_from_ast(root, &source_str, path, file_id, line_count as u64)?);
+        tracing::trace!("Generated {} facts from AST for {}", facts.len(), path.display());
+    } else {
+        tracing::warn!("Failed to parse PHP file: {}", path.display());
+        // Fallback: generate minimal facts
+        let file_name = path.to_string_lossy();
+        let escaped_name = escape_trap_string(&file_name);
+        facts.push(format!("files({}, \"{}\")", file_id, escaped_name));
+    }
+
+    // Phase 3: Add PHP 8.x feature detection (named arguments, constructor promotion)
+    tracing::debug!("Detecting PHP 8.x features in: {}", path.display());
+    match crate::php8_features::generate_php8_facts(&source_str) {
+        Ok(php8_facts) => {
+            tracing::debug!("Found {} PHP 8.x facts in {}", php8_facts.len(), path.display());
+            facts.extend(php8_facts);
+        }
+        Err(e) => {
+            // Log warning but continue - PHP 8.x feature detection is optional
+            tracing::warn!("Error detecting PHP 8.x features in {}: {}", path.display(), e);
+        }
+    }
+
+    let fact_count = facts.len();
+
+    // Write TRAP file
+    let output_path = generate_output_path(path, output_dir)?;
+    write_trap_file(&output_path, &facts, compression)?;
+
+    tracing::trace!("Generated {} facts total for {}", fact_count, path.display());
+
+    Ok(FileStats {
+        lines: line_count,
+        facts: fact_count,
+    })
+}
+
+/// Escape a string for TRAP format
+fn escape_trap_string(s: &str) -> String {
+    // In TRAP format, strings in double quotes need backslash escaping
+    s.replace('\\', "\\\\")
+        .replace('"', "\\\"")
+        .replace('\n', "\\n")
+        .replace('\r', "\\r")
+        .replace('\t', "\\t")
+}
+
+/// Detect encoding and decode source file
+fn detect_and_decode(bytes: &[u8]) -> Result<String> {
+    // Try UTF-8 first
+    if let Ok(s) = std::str::from_utf8(bytes) {
+        return Ok(s.to_string());
+    }
+
+    // Try detecting encoding from PHP declaration
+    if let Ok(s) = String::from_utf8(bytes.to_vec()) {
+        return Ok(s);
+    }
+
+    // Fall back to lossy UTF-8
+    Ok(String::from_utf8_lossy(bytes).to_string())
+}
+
+/// Generate TRAP facts from tree-sitter AST
+fn generate_facts_from_ast(root: tree_sitter::Node, source: &str, file_path: &Path, file_id: u64, line_count: u64) -> Result<Vec<String>> {
+    let mut facts = Vec::new();
+
+    // Add file facts
+    let file_name = file_path.to_string_lossy();
+    let escaped_name = escape_trap_string(&file_name);
+    facts.push(format!("files({}, \"{}\")", file_id, escaped_name));
+
+    // Add file line count fact - required by CodeQL for database finalization
+    facts.push(format!("file_line_counts({}, {})", file_id, line_count));
+
+    // Generate facts by traversing the AST
+    let mut node_id = 2;
+    generate_ast_facts(root, source, &mut facts, &mut node_id, file_id);
+
+    Ok(facts)
+}
+
+/// Recursively generate facts from AST nodes
+/// TRAP format: php_ast_node(id, node_type, file, startLine, startColumn, endLine)
+fn generate_ast_facts(node: tree_sitter::Node, source: &str, facts: &mut Vec<String>, next_id: &mut u64, file_id: u64) {
+    // Get node location information
+    let start_row = node.start_position().row + 1; // CodeQL uses 1-based line numbers
+    let start_col = node.start_position().column;
+    let end_row = node.end_position().row + 1;
+
+    // Generate facts for significant node types
+    match node.kind() {
+        // Top-level declarations
+        "program" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"program\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Class declarations
+        "class_declaration" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"class_declaration\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Function declarations
+        "function_declaration" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"function_declaration\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Method declarations (inside classes)
+        "method_declaration" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"method_declaration\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Variable assignment and usage
+        "assignment_expression" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"assignment_expression\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Function/method calls
+        "function_call_expression" | "method_call_expression" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            let call_type = if node.kind() == "function_call_expression" {
+                "function_call"
+            } else {
+                "method_call"
+            };
+            facts.push(format!(
+                "php_ast_node({}, \"{}\", {}, {}, {}, {})",
+                node_id, call_type, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Control structures
+        "if_statement" | "while_statement" | "for_statement" | "foreach_statement" | "switch_statement" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"{}\", {}, {}, {}, {})",
+                node_id, node.kind(), file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Try/catch blocks
+        "try_statement" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"try_statement\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Interface declarations
+        "interface_declaration" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"interface_declaration\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Trait declarations
+        "trait_declaration" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"trait_declaration\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        // Namespace declarations
+        "namespace_declaration" => {
+            let node_id = *next_id;
+            *next_id += 1;
+            facts.push(format!(
+                "php_ast_node({}, \"namespace_declaration\", {}, {}, {}, {})",
+                node_id, file_id, start_row, start_col, end_row
+            ));
+        }
+
+        _ => {}
+    }
+
+    // Recursively process child nodes
+    let mut cursor = node.walk();
+    for child in node.children(&mut cursor) {
+        generate_ast_facts(child, source, facts, next_id, file_id);
+    }
+}
+
+/// Generate output file path for TRAP file
+fn generate_output_path(source_path: &Path, output_dir: &Path) -> Result<PathBuf> {
+    let relative_path = source_path
+        .file_name()
+        .ok_or_else(|| anyhow!("Invalid file path"))?;
+
+    let mut trap_path = output_dir.to_path_buf();
+    trap_path.push(relative_path);
+    trap_path.set_extension("trap");
+
+    Ok(trap_path)
+}
+
+/// Write TRAP facts to file
+fn write_trap_file(path: &Path, facts: &[String], compression: &str) -> Result<()> {
+    let content = facts.join("\n");
+
+    match compression {
+        "gzip" => {
+            use flate2::write::GzEncoder;
+            use flate2::Compression;
+            use std::io::Write;
+
+            let file = fs::File::create(path)?;
+            let mut encoder = GzEncoder::new(file, Compression::default());
+            encoder.write_all(content.as_bytes())?;
+            encoder.finish()?;
+        }
+        "zstd" => {
+            use std::io::Write;
+            let file = fs::File::create(path)?;
+            let mut encoder = zstd::Encoder::new(file, 3)?;
+            encoder.write_all(content.as_bytes())?;
+            encoder.finish()?;
+        }
+        _ => {
+            // No compression
+            fs::write(path, &content)?;
+        }
+    }
+
+    Ok(())
+}

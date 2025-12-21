@@ -1,0 +1,66 @@
+[workspace]
+
+[package]
+name = "codeql-extractor-php"
+version = "1.0.0-dev"
+edition = "2021"
+authors = ["GitHub"]
+license = "MIT"
+description = "CodeQL extractor for PHP"
+
+[[bin]]
+name = "codeql-extractor-php"
+path = "src/main.rs"
+
+[dependencies]
+codeql-extractor = { git = "https://github.com/github/codeql" }
+
+# Tree-sitter
+tree-sitter = "0.23"
+tree-sitter-php = "0.23"
+
+# CLI and config
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+yaml-rust = "0.4"
+
+# Logging and diagnostics
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "ansi"] }
+
+# Concurrency
+rayon = "1.11"
+parking_lot = "0.12"
+num_cpus = "1.16"
+
+# File handling
+walkdir = "2.5"
+globset = "0.4"
+regex = "1.11"
+encoding = "0.2"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Standard library
+hex = "0.4"
+sha2 = "0.10"
+flate2 = "1.0"
+zstd = "0.13"
+
+# Platform detection
+cfg-if = "1.0"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["winbase", "fileapi", "processthreadsapi"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

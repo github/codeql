@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dbstats>
+  <typesizes>
+    <e><k>@file</k><v>100</v></e>
+    <e><k>@php_ast_node</k><v>100</v></e>
+    <e><k>@location</k><v>100</v></e>
+  </typesizes>
+  <stats>
+    <relation>
+      <name>varchar</name>
+      <cardinality>1000</cardinality>
+    </relation>
+  </stats>
+</dbstats>

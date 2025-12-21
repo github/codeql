@@ -1,0 +1,27 @@
+name: php
+display_name: PHP
+version: 1.0.0-dev
+column_kind: utf8
+legacy_qltest_extraction: true
+build_modes:
+  - none
+  - autobuild
+default_queries:
+  - codeql/php-queries
+github_api_languages:
+  - PHP
+scc_languages:
+  - PHP
+
+file_types:
+  - name: php
+    display_name: PHP Source Files
+    extensions:
+      - .php
+      - .php3
+      - .php4
+      - .php5
+      - .php7
+      - .php8
+      - .phtml
+      - .inc

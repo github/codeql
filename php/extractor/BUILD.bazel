@@ -1,0 +1,64 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library")
+
+package(
+    default_visibility = ["//php:__subpackages__"],
+)
+
+# PHP Extractor Binary
+rust_binary(
+    name = "extractor",
+    srcs = glob(["src/*.rs"]),
+    edition = "2021",
+    deps = [
+        # Tree-sitter
+        "@crate__tree_sitter__//:tree_sitter",
+        "@crate__tree_sitter_php__//:tree_sitter_php",
+
+        # CLI
+        "@crate__clap__//:clap",
+
+        # Serialization
+        "@crate__serde__//:serde",
+        "@crate__serde_json__//:serde_json",
+        "@crate__yaml_rust__//:yaml_rust",
+
+        # Logging
+        "@crate__tracing__//:tracing",
+        "@crate__tracing_subscriber__//:tracing_subscriber",
+
+        # Concurrency
+        "@crate__rayon__//:rayon",
+        "@crate__parking_lot__//:parking_lot",
+        "@crate__num_cpus__//:num_cpus",
+
+        # File handling
+        "@crate__walkdir__//:walkdir",
+        "@crate__globset__//:globset",
+        "@crate__regex__//:regex",
+        "@crate__encoding__//:encoding",
+
+        # Error handling
+        "@crate__anyhow__//:anyhow",
+        "@crate__thiserror__//:thiserror",
+
+        # Compression
+        "@crate__flate2__//:flate2",
+        "@crate__zstd__//:zstd",
+
+        # Utilities
+        "@crate__hex__//:hex",
+        "@crate__sha2__//:sha2",
+        "@crate__cfg_if__//:cfg_if",
+    ] + select({
+        "@platforms//os:linux": ["@crate__libc__//:libc"],
+        "@platforms//os:macos": ["@crate__libc__//:libc"],
+        "@platforms//os:windows": ["@crate__winapi__//:winapi"],
+        "//conditions:default": [],
+    }),
+)
+
+# Tests
+filegroup(
+    name = "test_data",
+    srcs = glob(["tests/fixtures/*.php"]),
+)
