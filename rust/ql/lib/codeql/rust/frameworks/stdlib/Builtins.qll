@@ -162,15 +162,20 @@ class ArrayType extends BuiltinType {
   override string getDisplayName() { result = "[;]" }
 }
 
-/** The builtin reference type `&T`. */
-class RefType extends BuiltinType {
-  RefType() { this.getName() = "Ref" }
+/** A builtin reference type `&T` or `&mut T`. */
+abstract private class RefTypeImpl extends BuiltinType { }
+
+final class RefType = RefTypeImpl;
+
+/** The builtin shared reference type `&T`. */
+class RefSharedType extends RefTypeImpl {
+  RefSharedType() { this.getName() = "Ref" }
 
   override string getDisplayName() { result = "&" }
 }
 
-/** The builtin reference type `&mut T`. */
-class RefMutType extends BuiltinType {
+/** The builtin mutable reference type `&mut T`. */
+class RefMutType extends RefTypeImpl {
   RefMutType() { this.getName() = "RefMut" }
 
   override string getDisplayName() { result = "&mut" }

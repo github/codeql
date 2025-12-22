@@ -4,7 +4,10 @@ memberAccess
 | csharp6.cs:32:38:32:70 | access to indexer | csharp6.cs:32:38:32:66 | object creation of type Dictionary<Int32,String> | Conditional |
 | csharp6.cs:32:38:32:73 | access to indexer | csharp6.cs:32:38:32:70 | access to indexer | Unconditional |
 methodCall
+| csharp6.cs:10:7:10:17 | call to method <object initializer> | csharp6.cs:10:7:10:17 | this access | Unconditional |
 | csharp6.cs:30:31:30:44 | call to method ToUpper | csharp6.cs:30:31:30:33 | access to local variable foo | Conditional |
+| csharp6.cs:53:7:53:23 | call to method <object initializer> | csharp6.cs:53:7:53:23 | this access | Unconditional |
+| csharp6.cs:55:11:55:18 | call to method <object initializer> | csharp6.cs:55:11:55:18 | this access | Unconditional |
 extensionMethodCall
 | csharp6.cs:29:35:29:44 | call to method Any<Char> | csharp6.cs:29:35:29:37 | access to local variable bar | Conditional |
 | csharp6.cs:30:31:30:66 | call to method Select<Char,Boolean> | csharp6.cs:30:31:30:44 | call to method ToUpper | Unconditional |

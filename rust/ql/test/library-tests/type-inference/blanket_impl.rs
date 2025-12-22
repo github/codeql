@@ -236,7 +236,7 @@ mod blanket_like_impl {
     impl MyTrait2 for &&S1 {
         // MyTrait2RefRefS1::m2
         fn m2(self) {
-            self.m1() // $ MISSING: target=S1::m1
+            self.m1() // $ target=S1::m1
         }
     }
 

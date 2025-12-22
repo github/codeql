@@ -33,7 +33,7 @@ private import semmle.javascript.internal.CachedStages
  * Note: For performance reasons, all subclasses of this class should be part
  * of the standard library. Use `isAdditionalFlowStep` for query-specific flow steps.
  */
-overlay[local]
+overlay[local?]
 class AdditionalFlowStep extends Unit {
   /**
    * Holds if `pred` &rarr; `succ` should be considered a value-preserving data flow edge.f

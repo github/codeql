@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with the AST-based representation of JavaScript programs.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript
@@ -477,7 +477,7 @@ module AST {
     DataFlow::AnalyzedNode analyze() { result = DataFlow::valueNode(this).analyze() }
 
     /** Gets the data flow node associated with this program element. */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     DataFlow::ValueNode flow() { result = DataFlow::valueNode(this) }
 

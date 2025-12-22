@@ -5,7 +5,7 @@
  * Note that unlike `TypeTracking.qll`, this library only performs
  * local tracking within a function.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

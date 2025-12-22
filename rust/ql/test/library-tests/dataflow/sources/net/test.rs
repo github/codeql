@@ -204,7 +204,7 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> {
                 for line in reader.lines() { // $ MISSING: Alert[rust/summary/taint-sources]
                     if let Ok(string) = line {
                         println!("line = {}", string);
-                        sink(string); // $ MISSING: hasTaintFlow
+                        sink(string); // $ MISSING: hasTaintFlow=&sock_addr
                     }
                 }
             }

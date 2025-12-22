@@ -1,6 +1,6 @@
 fixed.cs:
 #    3| [Class] Fixed
-#    5|   5: [Method] fixed1
+#    5|   6: [Method] fixed1
 #    5|     -1: [TypeMention] Void
 #    6|     4: [BlockStmt] {...}
 #    7|       0: [LocalVariableDeclStmt] ... ...;
@@ -52,7 +52,7 @@ fixed.cs:
 statements.cs:
 #    6| [NamespaceDeclaration] namespace ... { ... }
 #    8|   1: [Class] Class
-#   11|     5: [Method] Main
+#   11|     6: [Method] Main
 #   11|       -1: [TypeMention] Void
 #   12|       4: [BlockStmt] {...}
 #   13|         0: [LabelStmt] block:
@@ -60,7 +60,7 @@ statements.cs:
 #   15|           0: [BlockStmt] {...}
 #   17|           1: [BlockStmt] {...}
 #   18|             0: [BlockStmt] {...}
-#   24|     6: [Method] MainEmpty
+#   24|     7: [Method] MainEmpty
 #   24|       -1: [TypeMention] Void
 #   25|       4: [BlockStmt] {...}
 #   26|         0: [LocalVariableDeclStmt] ... ...;
@@ -75,7 +75,7 @@ statements.cs:
 #   28|         4: [IfStmt] if (...) ...
 #   28|           0: [BoolLiteral] true
 #   28|           1: [EmptyStmt] ;
-#   31|     7: [Method] MainLocalVarDecl
+#   31|     8: [Method] MainLocalVarDecl
 #   31|       -1: [TypeMention] Void
 #   32|       4: [BlockStmt] {...}
 #   33|         0: [LocalVariableDeclStmt] ... ...;
@@ -113,7 +113,7 @@ statements.cs:
 #   38|             -1: [TypeMention] string
 #   38|             0: [LocalVariableAccess] access to local variable y
 #   38|             1: [StringLiteralUtf16] "test"
-#   41|     8: [Method] MainLocalConstDecl
+#   41|     9: [Method] MainLocalConstDecl
 #   41|       -1: [TypeMention] Void
 #   42|       4: [BlockStmt] {...}
 #   43|         0: [LocalConstantDeclStmt] const ... ...;
@@ -139,7 +139,7 @@ statements.cs:
 #   45|                   1: [LocalVariableAccess] access to local variable r
 #   45|               1: [CastExpr] (...) ...
 #   45|                 1: [LocalVariableAccess] access to local variable r
-#   48|     9: [Method] MainExpr
+#   48|     10: [Method] MainExpr
 #   48|       -1: [TypeMention] Void
 #   49|       4: [BlockStmt] {...}
 #   50|         0: [LocalVariableDeclStmt] ... ...;
@@ -162,7 +162,7 @@ statements.cs:
 #   54|             -1: [TypeAccess] access to type Console
 #   54|               0: [TypeMention] Console
 #   54|             0: [LocalVariableAccess] access to local variable i
-#   57|     10: [Method] MainIf
+#   57|     11: [Method] MainIf
 #   57|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   57|         0: [Parameter] args
@@ -186,7 +186,7 @@ statements.cs:
 #   65|                 -1: [TypeAccess] access to type Console
 #   65|                   0: [TypeMention] Console
 #   65|                 0: [StringLiteralUtf16] "One or more arguments"
-#   69|     11: [Method] MainSwitch
+#   69|     12: [Method] MainSwitch
 #   69|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   69|         0: [Parameter] args
@@ -226,7 +226,7 @@ statements.cs:
 #   81|               1: [CastExpr] (...) ...
 #   81|                 1: [LocalVariableAccess] access to local variable n
 #   82|           8: [BreakStmt] break;
-#   86|     12: [Method] StringSwitch
+#   86|     13: [Method] StringSwitch
 #   86|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #   86|         0: [Parameter] foo
@@ -270,7 +270,7 @@ statements.cs:
 #  106|             0: [IntLiteral] 7
 #  108|         1: [ReturnStmt] return ...;
 #  108|           0: [IntLiteral] 7
-#  111|     13: [Method] MainWhile
+#  111|     14: [Method] MainWhile
 #  111|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  111|         0: [Parameter] args
@@ -298,7 +298,7 @@ statements.cs:
 #  117|             1: [ExprStmt] ...;
 #  117|               0: [PostIncrExpr] ...++
 #  117|                 0: [LocalVariableAccess] access to local variable i
-#  121|     14: [Method] MainDo
+#  121|     15: [Method] MainDo
 #  121|       -1: [TypeMention] Void
 #  122|       4: [BlockStmt] {...}
 #  123|         0: [LocalVariableDeclStmt] ... ...;
@@ -324,7 +324,7 @@ statements.cs:
 #  127|                   -1: [TypeAccess] access to type Console
 #  127|                     0: [TypeMention] Console
 #  127|                   0: [LocalVariableAccess] access to local variable s
-#  131|     15: [Method] MainFor
+#  131|     16: [Method] MainFor
 #  131|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  131|         0: [Parameter] args
@@ -350,7 +350,7 @@ statements.cs:
 #  135|                 0: [ArrayAccess] access to array element
 #  135|                   -1: [ParameterAccess] access to parameter args
 #  135|                   0: [LocalVariableAccess] access to local variable i
-#  139|     16: [Method] MainForeach
+#  139|     17: [Method] MainForeach
 #  139|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  139|         0: [Parameter] args
@@ -367,7 +367,7 @@ statements.cs:
 #  143|                 -1: [TypeAccess] access to type Console
 #  143|                   0: [TypeMention] Console
 #  143|                 0: [LocalVariableAccess] access to local variable s
-#  147|     17: [Method] MainBreak
+#  147|     18: [Method] MainBreak
 #  147|       -1: [TypeMention] Void
 #  148|       4: [BlockStmt] {...}
 #  149|         0: [WhileStmt] while (...) ...
@@ -390,7 +390,7 @@ statements.cs:
 #  153|                 -1: [TypeAccess] access to type Console
 #  153|                   0: [TypeMention] Console
 #  153|                 0: [LocalVariableAccess] access to local variable s
-#  157|     18: [Method] MainContinue
+#  157|     19: [Method] MainContinue
 #  157|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  157|         0: [Parameter] args
@@ -423,7 +423,7 @@ statements.cs:
 #  162|                 0: [ArrayAccess] access to array element
 #  162|                   -1: [ParameterAccess] access to parameter args
 #  162|                   0: [LocalVariableAccess] access to local variable i
-#  166|     19: [Method] MainGoto
+#  166|     20: [Method] MainGoto
 #  166|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  166|         0: [Parameter] args
@@ -452,7 +452,7 @@ statements.cs:
 #  171|             1: [PropertyCall] access to property Length
 #  171|               -1: [ParameterAccess] access to parameter args
 #  171|           1: [GotoLabelStmt] goto ...;
-#  174|     20: [Method] Add
+#  174|     21: [Method] Add
 #  174|       -1: [TypeMention] int
 #-----|       2: (Parameters)
 #  174|         0: [Parameter] a
@@ -464,7 +464,7 @@ statements.cs:
 #  176|           0: [AddExpr] ... + ...
 #  176|             0: [ParameterAccess] access to parameter a
 #  176|             1: [ParameterAccess] access to parameter b
-#  178|     21: [Method] MainReturn
+#  178|     22: [Method] MainReturn
 #  178|       -1: [TypeMention] Void
 #  179|       4: [BlockStmt] {...}
 #  180|         0: [ExprStmt] ...;
@@ -475,7 +475,7 @@ statements.cs:
 #  180|               0: [IntLiteral] 1
 #  180|               1: [IntLiteral] 2
 #  181|         1: [ReturnStmt] return ...;
-#  184|     22: [Method] Range
+#  184|     23: [Method] Range
 #  184|       -1: [TypeMention] IEnumerable<int>
 #  184|         1: [TypeMention] int
 #-----|       2: (Parameters)
@@ -498,7 +498,7 @@ statements.cs:
 #  188|             0: [YieldReturnStmt] yield return ...;
 #  188|               0: [LocalVariableAccess] access to local variable i
 #  190|         1: [YieldBreakStmt] yield break;
-#  192|     23: [Method] MainYield
+#  192|     24: [Method] MainYield
 #  192|       -1: [TypeMention] Void
 #  193|       4: [BlockStmt] {...}
 #  194|         0: [ForeachStmt] foreach (... ... in ...) ...
@@ -514,7 +514,7 @@ statements.cs:
 #  196|                 -1: [TypeAccess] access to type Console
 #  196|                   0: [TypeMention] Console
 #  196|                 0: [LocalVariableAccess] access to local variable x
-#  200|     24: [Method] Divide
+#  200|     25: [Method] Divide
 #  200|       -1: [TypeMention] double
 #-----|       2: (Parameters)
 #  200|         0: [Parameter] x
@@ -534,7 +534,7 @@ statements.cs:
 #  203|           0: [DivExpr] ... / ...
 #  203|             0: [ParameterAccess] access to parameter x
 #  203|             1: [ParameterAccess] access to parameter y
-#  205|     25: [Method] MainTryThrow
+#  205|     26: [Method] MainTryThrow
 #  205|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #  205|         0: [Parameter] args
@@ -603,7 +603,7 @@ statements.cs:
 #  223|                   -1: [TypeAccess] access to type Console
 #  223|                     0: [TypeMention] Console
 #  223|                   0: [StringLiteralUtf16] "Exception"
-#  231|     26: [Method] MainCheckedUnchecked
+#  231|     27: [Method] MainCheckedUnchecked
 #  231|       -1: [TypeMention] Void
 #  232|       4: [BlockStmt] {...}
 #  233|         0: [LocalVariableDeclStmt] ... ...;
@@ -631,10 +631,10 @@ statements.cs:
 #  240|                 0: [AddExpr] ... + ...
 #  240|                   0: [LocalVariableAccess] access to local variable i
 #  240|                   1: [IntLiteral] 1
-#  244|     27: [Class] AccountLock
-#  246|       5: [Field] balance
+#  244|     28: [Class] AccountLock
+#  246|       6: [Field] balance
 #  246|         -1: [TypeMention] decimal
-#  247|       6: [Method] Withdraw
+#  247|       7: [Method] Withdraw
 #  247|         -1: [TypeMention] Void
 #-----|         2: (Parameters)
 #  247|           0: [Parameter] amount
@@ -656,7 +656,7 @@ statements.cs:
 #  255|                 0: [AssignSubExpr] ... -= ...
 #  255|                   0: [FieldAccess] access to field balance
 #  255|                   1: [ParameterAccess] access to parameter amount
-#  260|     28: [Method] MainUsing
+#  260|     29: [Method] MainUsing
 #  260|       -1: [TypeMention] Void
 #  261|       4: [BlockStmt] {...}
 #  262|         0: [UsingBlockStmt] using (...) {...}
@@ -686,7 +686,7 @@ statements.cs:
 #  268|               0: [TypeMention] File
 #  268|             0: [StringLiteralUtf16] "test.txt"
 #  269|           1: [BlockStmt] {...}
-#  273|     29: [Method] MainLabeled
+#  273|     30: [Method] MainLabeled
 #  273|       -1: [TypeMention] Void
 #  274|       4: [BlockStmt] {...}
 #  275|         0: [GotoLabelStmt] goto ...;
@@ -700,11 +700,11 @@ statements.cs:
 #  278|           0: [AssignExpr] ... = ...
 #  278|             0: [LocalVariableAccess] access to local variable x
 #  278|             1: [IntLiteral] 9
-#  281|     30: [Field] lockObject
+#  281|     31: [Field] lockObject
 #  281|       -1: [TypeMention] Lock
 #  281|       1: [ObjectCreation] object creation of type Lock
 #  281|         0: [TypeMention] Lock
-#  283|     31: [Method] LockMethod
+#  283|     32: [Method] LockMethod
 #  283|       -1: [TypeMention] Void
 #  284|       4: [BlockStmt] {...}
 #  285|         0: [LockStmt] lock (...) {...}

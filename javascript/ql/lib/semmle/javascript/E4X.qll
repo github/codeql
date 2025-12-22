@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with E4X.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

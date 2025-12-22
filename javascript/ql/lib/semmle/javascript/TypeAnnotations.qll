@@ -1,7 +1,7 @@
 /**
  * Provides classes for reasoning about type annotations independently of dialect.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

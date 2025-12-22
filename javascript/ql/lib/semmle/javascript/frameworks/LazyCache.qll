@@ -1,7 +1,7 @@
 /**
  * Models imports through the NPM `lazy-cache` package.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

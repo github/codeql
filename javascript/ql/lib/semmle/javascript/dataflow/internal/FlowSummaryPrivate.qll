@@ -1,7 +1,7 @@
 /**
  * Provides JS specific classes and predicates for defining flow summaries.
  */
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript

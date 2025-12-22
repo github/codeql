@@ -1,11 +1,11 @@
 dynamic.cs:
 #    4| [Class] DynamicTest
-#    6|   4: [InstanceConstructor] DynamicTest
+#    6|   5: [InstanceConstructor] DynamicTest
 #-----|     2: (Parameters)
 #    6|       0: [Parameter] x
 #    6|         -1: [TypeMention] int
 #    6|     4: [BlockStmt] {...}
-#    8|   5: [Method] Main
+#    8|   6: [Method] Main
 #    8|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #    8|       0: [Parameter] args
@@ -235,25 +235,25 @@ dynamic.cs:
 #   75|         0: [DelegateCall] delegate call
 #   75|           -1: [LocalVariableAccess] access to local variable d
 #   75|           0: [IntLiteral] 42
-#   78|   6: [Method] Foo
+#   78|   7: [Method] Foo
 #   78|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   78|       0: [Parameter] x
 #   78|         -1: [TypeMention] int
 #   78|     4: [BlockStmt] {...}
-#   79|   7: [Method] Foo
+#   79|   8: [Method] Foo
 #   79|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   79|       0: [Parameter] x
 #   79|         -1: [TypeMention] string
 #   79|     4: [BlockStmt] {...}
-#   81|   8: [Method] Bar
+#   81|   9: [Method] Bar
 #   81|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   81|       0: [Parameter] x
 #   81|         -1: [TypeMention] string
 #   81|     4: [BlockStmt] {...}
-#   83|   9: [IncrementOperator] ++
+#   83|   10: [IncrementOperator] ++
 #   83|     -1: [TypeMention] DynamicTest
 #-----|     2: (Parameters)
 #   83|       0: [Parameter] dt
@@ -261,15 +261,15 @@ dynamic.cs:
 #   84|     4: [BlockStmt] {...}
 #   85|       0: [ReturnStmt] return ...;
 #   85|         0: [ParameterAccess] access to parameter dt
-#   88|   10: [Field] Field
+#   88|   11: [Field] Field
 #   88|     -1: [TypeMention] int
-#   90|   11: [Property] Prop
+#   90|   12: [Property] Prop
 #   90|     -1: [TypeMention] int
 #   90|     3: [Getter] get_Prop
 #   90|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   90|         0: [Parameter] value
-#   92|   12: [Indexer] Item
+#   92|   13: [Indexer] Item
 #   92|     -1: [TypeMention] int
 #-----|     1: (Parameters)
 #   92|       0: [Parameter] x

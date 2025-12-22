@@ -231,7 +231,7 @@ Accesses
 +--------------------------------+---------------------+
 | ``a[i]``                       | ArrayAccess_        |
 +--------------------------------+---------------------+
-| ``f(...)``                     | MethodAccess_       |
+| ``f(...)``                     | MethodCall_         |
 +--------------------------------+                     |
 | ``e.m(...)``                   |                     |
 +--------------------------------+---------------------+
@@ -374,7 +374,7 @@ Further reading
 .. _ThisAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$ThisAccess.html
 .. _SuperAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$SuperAccess.html
 .. _ArrayAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$ArrayAccess.html
-.. _MethodAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$MethodAccess.html
+.. _MethodCall: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$MethodCall.html
 .. _WildcardTypeAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$WildcardTypeAccess.html
 .. _FieldAccess: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$FieldAccess.html
 .. _CastExpr: https://codeql.github.com/codeql-standard-libraries/java/semmle/code/java/Expr.qll/type.Expr$CastExpr.html

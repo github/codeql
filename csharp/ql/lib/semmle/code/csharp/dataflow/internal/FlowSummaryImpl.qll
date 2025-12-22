@@ -213,11 +213,9 @@ module SourceSinkInterpretationInput implements
     Element e, string output, string kind, Public::Provenance provenance, string model
   ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      QlBuiltins::ExtensionId madId
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
@@ -226,13 +224,24 @@ module SourceSinkInterpretationInput implements
     Element e, string input, string kind, Public::Provenance provenance, string model
   ) {
     exists(
-      string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      QlBuiltins::ExtensionId madId
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
+      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, model) and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
+  }
+
+  predicate barrierElement(
+    Element n, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
+  predicate barrierGuardElement(
+    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    none()
   }
 
   class SourceOrSinkElement = Element;
