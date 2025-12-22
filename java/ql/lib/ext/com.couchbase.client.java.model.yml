@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.couchbase.client.java","ClusterOptions",true,"clusterOptions","(String,String)","","Argument[0]","credentials-username","manual"]
+      - ["com.couchbase.client.java","ClusterOptions",true,"clusterOptions","(String,String)","","Argument[1]","credentials-password","manual"]
+      - ["com.couchbase.client.java","Cluster",true,"connect","(String,String,String)","","Argument[1]","credentials-username","manual"]
+      - ["com.couchbase.client.java","Cluster",true,"connect","(String,String,String)","","Argument[2]","credentials-password","manual"]
