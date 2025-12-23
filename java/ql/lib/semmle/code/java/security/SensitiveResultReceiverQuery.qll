@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
 
 private class ResultReceiverSendCall extends MethodCall {
@@ -48,6 +49,10 @@ private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   predicate isSink(DataFlow::Node node) { node instanceof SensitiveResultReceiverSink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/android/sensitive-result-receiver")
+  }
 
   predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet c) { isSink(n) and exists(c) }
 }

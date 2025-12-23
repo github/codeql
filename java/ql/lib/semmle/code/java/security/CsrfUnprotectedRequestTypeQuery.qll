@@ -153,6 +153,10 @@ private module SqlExecuteConfig implements DataFlow::ConfigSig {
       m.hasName("execute")
     )
   }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/csrf-unprotected-request-type")
+  }
 }
 
 /**

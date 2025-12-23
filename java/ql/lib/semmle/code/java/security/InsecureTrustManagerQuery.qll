@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.InsecureTrustManager
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A configuration to model the flow of an insecure `TrustManager`
@@ -12,6 +13,8 @@ module InsecureTrustManagerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof InsecureTrustManagerSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureTrustManagerSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/insecure-trustmanager") }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     (isSink(node) or isAdditionalFlowStep(node, _)) and

@@ -126,7 +126,10 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "log-injection") }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof SensitiveLoggerBarrier }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof SensitiveLoggerBarrier or
+    barrierNode(sanitizer, "java/sensitive-log")
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 

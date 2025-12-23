@@ -5,6 +5,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import HardcodedCredentials
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A data-flow configuration that tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.
@@ -47,7 +48,8 @@ module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node n) {
-    n.asExpr().(MethodCall).getMethod() instanceof MethodSystemGetenv
+    n.asExpr().(MethodCall).getMethod() instanceof MethodSystemGetenv or
+    barrierNode(n, "java/hardcoded-credential-api-call")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

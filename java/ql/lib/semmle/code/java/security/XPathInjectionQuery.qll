@@ -1,6 +1,7 @@
 /** Provides taint-tracking flow to reason about XPath injection queries. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.XPath
@@ -12,6 +13,8 @@ module XPathInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/xml/xpath-injection") }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

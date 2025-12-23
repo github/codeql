@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.GroovyInjection
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for unsafe user input
@@ -13,6 +14,8 @@ module GroovyInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof GroovyInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/groovy-injection") }
 
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(GroovyInjectionAdditionalTaintStep c).step(fromNode, toNode)

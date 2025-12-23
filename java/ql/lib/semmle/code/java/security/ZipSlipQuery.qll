@@ -41,7 +41,8 @@ module ZipSlipConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof SimpleTypeSanitizer or
-    node instanceof PathInjectionSanitizer
+    node instanceof PathInjectionSanitizer or
+    barrierNode(node, "java/zipslip")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

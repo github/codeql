@@ -64,6 +64,8 @@ module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
         .regexpMatch("^(?i)(_)*((no|ignore|disable)(strictssl|ssl|verify|verification|hostname)" +
             "|(set)?(accept|trust|ignore|allow)(all|every|any)" +
             "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
+    or
+    barrierNode(barrier, "java/unsafe-hostname-verification")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

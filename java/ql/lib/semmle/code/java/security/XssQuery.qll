@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XSS
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for cross site scripting vulnerabilities.
@@ -13,7 +14,9 @@ module XssConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof XssSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof XssSanitizer or barrierNode(node, "java/xss")
+  }
 
   predicate isBarrierOut(DataFlow::Node node) { node instanceof XssSinkBarrier }
 

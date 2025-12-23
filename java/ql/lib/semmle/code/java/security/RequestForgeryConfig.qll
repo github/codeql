@@ -6,6 +6,7 @@
 
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.RequestForgery
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration characterising request-forgery risks.
@@ -25,7 +26,10 @@ module RequestForgeryConfig implements DataFlow::ConfigSig {
     any(RequestForgeryAdditionalTaintStep r).propagatesTaint(pred, succ)
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof RequestForgerySanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof RequestForgerySanitizer or
+    barrierNode(node, "java/ssrf")
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 

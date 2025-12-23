@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.TemplateInjection
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A taint tracking configuration to reason about server-side template injection (SST) vulnerabilities */
 module TemplateInjectionFlowConfig implements DataFlow::ConfigSig {
@@ -11,7 +12,10 @@ module TemplateInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TemplateInjectionSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof TemplateInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof TemplateInjectionSanitizer or
+    barrierNode(sanitizer, "java/server-side-template-injection")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(TemplateInjectionAdditionalTaintStep a).isAdditionalTaintStep(node1, node2)

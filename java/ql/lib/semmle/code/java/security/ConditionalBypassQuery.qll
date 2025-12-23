@@ -7,6 +7,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Holds if `ma` is controlled by the condition expression `e`.
@@ -43,6 +44,8 @@ module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/user-controlled-bypass") }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     endsWithStep(node1, node2)

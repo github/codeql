@@ -1,6 +1,7 @@
 /** Provides classes to reason about tainted permissions check vulnerabilities. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 
@@ -59,6 +60,8 @@ module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PermissionsConstruction p).getInput()
   }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/tainted-permissions-check") }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 

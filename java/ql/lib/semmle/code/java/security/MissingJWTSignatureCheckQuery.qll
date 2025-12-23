@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.JWT
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * Models flow from signing keys assignments to qualifiers of JWT insecure parsers.
@@ -12,6 +13,8 @@ module MissingJwtSignatureCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof JwtParserWithInsecureParseSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JwtParserWithInsecureParseSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/missing-jwt-signature-check") }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JwtParserWithInsecureParseAdditionalFlowStep c).step(node1, node2)

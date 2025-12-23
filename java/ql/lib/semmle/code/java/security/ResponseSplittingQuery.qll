@@ -1,6 +1,7 @@
 /** Provides a taint tracking configuration to reason about response splitting vulnerabilities. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.ResponseSplitting
@@ -30,6 +31,8 @@ module ResponseSplittingConfig implements DataFlow::ConfigSig {
         target.getStringValue().regexpMatch(".*([\n\r]|\\[\\^[^\\]\r\n]*\\]).*")
       )
     )
+    or
+    barrierNode(node, "java/http-response-splitting")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

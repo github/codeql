@@ -4,6 +4,7 @@ import java
 import semmle.code.java.security.HttpsUrls
 import semmle.code.java.security.InsecureBasicAuth
 import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint tracking configuration for the Basic authentication scheme
@@ -13,6 +14,8 @@ module BasicAuthFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof InsecureBasicAuthSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureBasicAuthSink }
+
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/insecure-basic-auth") }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(HttpUrlsAdditionalTaintStep c).step(node1, node2)

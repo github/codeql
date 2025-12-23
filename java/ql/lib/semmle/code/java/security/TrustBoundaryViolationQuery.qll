@@ -27,8 +27,8 @@ class TrustBoundaryViolationSink extends DataFlow::Node {
  */
 abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
 
-private class DefaultTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer {
-  DefaultTrustBoundaryValidationSanitizer() { barrierNode(this, "trust-boundary-violation") }
+private class ExternalTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer {
+  ExternalTrustBoundaryValidationSanitizer() { barrierNode(this, "trust-boundary-violation") }
 }
 
 /**
@@ -40,7 +40,8 @@ module TrustBoundaryConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof TrustBoundaryValidationSanitizer or
     node.getType() instanceof HttpServletSession or
-    node instanceof SimpleTypeSanitizer
+    node instanceof SimpleTypeSanitizer or
+    barrierNode(node, "java/trust-boundary-violation")
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }

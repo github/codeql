@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.security.internal.ArraySizing
 private import semmle.code.java.security.internal.BoundingChecks
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A dataflow configuration to reason about improper validation of code-specified array index.
@@ -13,6 +14,10 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(CheckableArrayAccess arrayAccess | arrayAccess.canThrowOutOfBounds(sink.asExpr()))
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/improper-validation-of-array-index-code-specified")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

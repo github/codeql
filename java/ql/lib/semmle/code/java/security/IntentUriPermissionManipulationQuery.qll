@@ -4,6 +4,7 @@
  */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.DataFlow
 private import IntentUriPermissionManipulation
@@ -17,7 +18,8 @@ module IntentUriPermissionManipulationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentUriPermissionManipulationSink }
 
   predicate isBarrier(DataFlow::Node barrier) {
-    barrier instanceof IntentUriPermissionManipulationSanitizer
+    barrier instanceof IntentUriPermissionManipulationSanitizer or
+    barrierNode(barrier, "java/android/intent-uri-permission-manipulation")
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {

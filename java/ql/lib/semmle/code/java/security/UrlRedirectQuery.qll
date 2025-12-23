@@ -1,6 +1,7 @@
 /** Provides a taint-tracking configuration for reasoning about URL redirections. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.UrlRedirect
 
@@ -12,7 +13,10 @@ module UrlRedirectConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof UrlRedirectSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof UrlRedirectSanitizer or
+    barrierNode(node, "java/unvalidated-url-redirection")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

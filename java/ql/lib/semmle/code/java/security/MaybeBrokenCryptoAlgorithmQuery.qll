@@ -5,6 +5,7 @@
 import java
 private import semmle.code.configfiles.ConfigFiles
 private import semmle.code.java.security.Encryption
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.RangeUtils
 private import semmle.code.java.dispatch.VirtualDispatch
@@ -75,7 +76,8 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node n) {
     objectToString(n.asExpr()) or
-    n.getType().getErasure() instanceof TypeObject
+    n.getType().getErasure() instanceof TypeObject or
+    barrierNode(n, "java/potentially-weak-cryptographic-algorithm")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

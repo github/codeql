@@ -308,7 +308,10 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
     isUnsafeDeserializationTaintStep(pred, succ)
   }
 
-  predicate isBarrier(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
+  predicate isBarrier(DataFlow::Node node) {
+    isUnsafeDeserializationSanitizer(node) or
+    barrierNode(node, "java/unsafe-deserialization")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 

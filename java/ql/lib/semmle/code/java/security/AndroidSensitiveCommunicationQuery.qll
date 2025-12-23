@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
 
 /**
@@ -144,7 +145,10 @@ module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   /**
    * Holds if broadcast doesn't specify receiving package name of the 3rd party app
    */
-  predicate isBarrier(DataFlow::Node node) { node instanceof ExplicitIntentSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof ExplicitIntentSanitizer or
+    barrierNode(node, "java/android/sensitive-communication")
+  }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node) and exists(c)

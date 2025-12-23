@@ -8,6 +8,7 @@ module;
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A `Method` that is considered a "safe" external API from a security perspective.
@@ -101,6 +102,10 @@ module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate isBarrier(DataFlow::Node node) {
+    barrierNode(node, "java/untrusted-data-to-external-api")
+  }
 
   predicate observeDiffInformedIncrementalMode() {
     any() // Simple use in UntrustedDataToExternalAPI.ql; also used through ExternalApiUsedWithUntrustedData in ExternalAPIsUsedWithUntrustedData.ql

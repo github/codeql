@@ -50,6 +50,8 @@ module BeanValidationConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "java/insecure-bean-validation") }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 

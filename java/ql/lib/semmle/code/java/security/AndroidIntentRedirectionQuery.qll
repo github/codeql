@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.AndroidIntentRedirection
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A taint tracking configuration for tainted Intents being used to start Android components. */
 module IntentRedirectionConfig implements DataFlow::ConfigSig {
@@ -11,7 +12,10 @@ module IntentRedirectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof IntentRedirectionSanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof IntentRedirectionSanitizer or
+    barrierNode(sanitizer, "java/android/intent-redirection")
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(IntentRedirectionAdditionalTaintStep c).step(node1, node2)

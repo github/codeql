@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.regexp.RegexInjection
+import semmle.code.java.dataflow.ExternalFlow
 
 /**
  * A taint-tracking configuration for untrusted user input used to construct regular expressions.
@@ -13,7 +14,10 @@ module RegexInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof RegexInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof RegexInjectionSanitizer or
+    barrierNode(node, "java/regex-injection")
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

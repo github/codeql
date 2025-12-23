@@ -1,6 +1,7 @@
 /** Provides taint-tracking configurations to reason about arithmetic with unvalidated input. */
 
 import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.ArithmeticCommon
 
@@ -10,7 +11,10 @@ module ArithmeticOverflowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    overflowBarrier(n) or
+    barrierNode(n, "java/tainted-arithmetic")
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
@@ -36,7 +40,10 @@ module ArithmeticUnderflowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) {
+    underflowBarrier(n) or
+    barrierNode(n, "java/tainted-arithmetic")
+  }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 

@@ -21,8 +21,8 @@ private class DefaultRegexInjectionSink extends RegexInjectionSink {
   }
 }
 
-private class DefaultRegexInjectionSanitizer extends RegexInjectionSanitizer {
-  DefaultRegexInjectionSanitizer() { barrierNode(this, "regex-use") }
+private class ExternalRegexInjectionSanitizer extends RegexInjectionSanitizer {
+  ExternalRegexInjectionSanitizer() { barrierNode(this, "regex-use") }
 }
 
 /**

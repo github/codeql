@@ -24,6 +24,7 @@ import java
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.ExternalFlow
 
 /** Gets a regular expression for matching common names of sensitive cookies. */
 string getSensitiveCookieNameRegex() { result = "(?i).*(auth|session|token|key|credential).*" }
@@ -174,7 +175,8 @@ module MissingHttpOnlyConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     // JAX-RS's `new NewCookie("session-access-key", accessKey, "/", null, null, 0, true, true)` and similar
     // Cookie constructors that set the `HttpOnly` flag are considered barriers to the flow of sensitive names.
-    setsHttpOnlyInNewCookie(node.asExpr())
+    setsHttpOnlyInNewCookie(node.asExpr()) or
+    barrierNode(node, "java/sensitive-cookie-not-httponly")
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
