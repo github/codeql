@@ -23,6 +23,14 @@ public class PasswordAuthenticator implements Authenticator {
     return null;
   }
 
+  public static PasswordAuthenticator.Builder builder(String username, String password) {
+    return null;
+  }
+
+  public static PasswordAuthenticator.Builder builder(Supplier<UsernameAndPassword> supplier) {
+    return null;
+  }
+
   public static PasswordAuthenticator create(final String username, final String password) {
     return null;
   }
@@ -46,7 +54,6 @@ public class PasswordAuthenticator implements Authenticator {
     }
 
     public Builder password(final String password) {
-
       return null;
     }
 
@@ -54,11 +61,11 @@ public class PasswordAuthenticator implements Authenticator {
       return null;
     }
 
-    public Builder onlyEnablePlainSaslMechanism() {
+    public static PasswordAuthenticator builder(String username, String password) {
       return null;
     }
 
-    public PasswordAuthenticator build() {
+    public static PasswordAuthenticator builder(Supplier<UsernameAndPassword> supplier) {
       return null;
     }
   }

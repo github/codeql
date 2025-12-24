@@ -16,4 +16,6 @@
 
 package com.couchbase.client.core.env;
 
-public class UsernameAndPassword {}
+public class UsernameAndPassword {
+  public UsernameAndPassword(String username, String password) {}
+}
