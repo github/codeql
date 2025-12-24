@@ -11,6 +11,7 @@ private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
  * Module for working with uses of the [Trusted Types API](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API).
  */
 module TrustedTypes {
+  overlay[local?]
   private class TrustedTypesEntry extends API::EntryPoint {
     TrustedTypesEntry() { this = "TrustedTypesEntry" }
 

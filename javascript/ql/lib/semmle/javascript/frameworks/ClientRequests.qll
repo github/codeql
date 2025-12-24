@@ -198,6 +198,7 @@ module ClientRequest {
   private string urlPropertyName() { result = "url" or result = "uri" }
 
   /** An API entry-point for the global variable `axios`. */
+  overlay[local?]
   private class AxiosGlobalEntryPoint extends API::EntryPoint {
     AxiosGlobalEntryPoint() { this = "axiosGlobal" }
 

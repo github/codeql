@@ -7,6 +7,7 @@ import semmle.javascript.ViewComponentInput
 
 module Vue {
   /** The global variable `Vue`, as an API graph entry point. */
+  overlay[local?]
   private class GlobalVueEntryPoint extends API::EntryPoint {
     GlobalVueEntryPoint() { this = "VueEntryPoint" }
 
@@ -18,6 +19,7 @@ module Vue {
    *
    * This `EntryPoint` is used by `SingleFileComponent::getOwnOptions()`.
    */
+  overlay[local?]
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
 
@@ -437,6 +439,7 @@ module Vue {
    *
    * This entry point is used in `SingleFileComponent::getComponentRef()`.
    */
+  overlay[local?]
   private class VueFileImportEntryPoint extends API::EntryPoint {
     VueFileImportEntryPoint() { this = "VueFileImportEntryPoint" }
 

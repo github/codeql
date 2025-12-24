@@ -13,6 +13,7 @@ private module Immutable {
   /**
    * An API entrypoint for the global `Immutable` variable.
    */
+  overlay[local?]
   private class ImmutableGlobalEntry extends API::EntryPoint {
     ImmutableGlobalEntry() { this = "ImmutableGlobalEntry" }
 

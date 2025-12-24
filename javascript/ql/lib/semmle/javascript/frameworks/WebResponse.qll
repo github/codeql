@@ -5,6 +5,7 @@
 private import javascript
 
 /** Treats `Response` as an entry point for API graphs. */
+overlay[local?]
 private class ResponseEntryPoint extends API::EntryPoint {
   ResponseEntryPoint() { this = "global.Response" }
 
@@ -12,6 +13,7 @@ private class ResponseEntryPoint extends API::EntryPoint {
 }
 
 /** Treats `Headers` as an entry point for API graphs. */
+overlay[local?]
 private class HeadersEntryPoint extends API::EntryPoint {
   HeadersEntryPoint() { this = "global.Headers" }
 
