@@ -129,6 +129,8 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/unhandled-writable-file-close") }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {

@@ -24,7 +24,10 @@ module InsecureRandomness {
 
     predicate isSink(DataFlow::Node sink) { isSinkWithKind(sink, _) }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      barrierNode(node, "go/insecure-randomness")
+    }
 
     predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 

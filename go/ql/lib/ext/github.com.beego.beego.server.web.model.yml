@@ -50,3 +50,8 @@ extensions:
       - ["group:beego", "Controller", True, "GetString", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["group:beego", "Controller", True, "GetStrings", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["group:beego", "Controller", True, "Input", "", "", "ReturnValue[0]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: barrierModel
+    data:
+      - ["group:beego", "", True, "Htmlquote", "", "", "ReturnValue", "html-injection", "manual"]

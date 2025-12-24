@@ -45,7 +45,10 @@ module AllocationSizeOverflow {
 
     predicate isSink(DataFlow::Node sink) { isSinkWithAllocationSize(sink, _) }
 
-    predicate isBarrier(DataFlow::Node nd) { nd instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      barrierNode(node, "go/allocation-size-overflow")
+    }
 
     predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       additionalStep(pred, succ)

@@ -23,7 +23,9 @@ module CommandInjection {
       exists(Sink s | sink = s | not s.doubleDashIsSanitizing())
     }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or barrierNode(node, "go/command-injection")
+    }
 
     predicate observeDiffInformedIncrementalMode() { any() }
   }
@@ -80,6 +82,7 @@ module CommandInjection {
 
     predicate isBarrier(DataFlow::Node node) {
       node instanceof Sanitizer or
+      barrierNode(node, "go/command-injection") or
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
     }
 

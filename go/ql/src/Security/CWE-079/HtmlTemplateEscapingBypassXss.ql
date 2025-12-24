@@ -83,6 +83,8 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
   predicate isBarrier(DataFlow::Node node) {
     node instanceof SharedXss::Sanitizer and not node instanceof SharedXss::HtmlTemplateSanitizer
     or
+    barrierNode(node, "go/html-template-escaping-bypass-xss")
+    or
     node.getType() instanceof NumericType
   }
 

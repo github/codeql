@@ -22,7 +22,9 @@ module SqlInjection {
       NoSql::isAdditionalMongoTaintStep(pred, succ)
     }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or barrierNode(node, "go/sql-injection")
+    }
 
     predicate observeDiffInformedIncrementalMode() { any() }
   }

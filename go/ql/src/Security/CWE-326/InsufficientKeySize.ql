@@ -23,7 +23,8 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    node = DataFlow::BarrierGuard<comparisonBarrierGuard/3>::getABarrierNode()
+    node = DataFlow::BarrierGuard<comparisonBarrierGuard/3>::getABarrierNode() or
+    barrierNode(node, "go/weak-crypto-key")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

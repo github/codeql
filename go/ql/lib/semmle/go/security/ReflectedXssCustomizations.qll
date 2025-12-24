@@ -23,18 +23,6 @@ module ReflectedXss {
   private class SharedXssSanitizer extends Sanitizer instanceof SharedXss::Sanitizer { }
 
   /**
-   * A request.Cookie method returns the request cookie, which is not user controlled in reflected XSS context.
-   */
-  class CookieSanitizer extends Sanitizer {
-    CookieSanitizer() {
-      exists(Method m, DataFlow::CallNode call | call = m.getACall() |
-        m.hasQualifiedName("net/http", "Request", "Cookie") and
-        this = call.getResult(0)
-      )
-    }
-  }
-
-  /**
    * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
   deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;

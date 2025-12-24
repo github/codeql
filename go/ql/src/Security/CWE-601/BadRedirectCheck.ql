@@ -110,6 +110,8 @@ module Config implements DataFlow::ConfigSig {
     exists(Write w | w.writesField(node2, _, node1))
   }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/bad-redirect-check") }
+
   predicate isBarrierOut(DataFlow::Node node) {
     // assume this value is safe if something is prepended to it.
     exists(StringOps::Concatenation conc, int i, int j | i < j |

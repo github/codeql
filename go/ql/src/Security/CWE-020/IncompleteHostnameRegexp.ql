@@ -100,6 +100,8 @@ module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
     not regexpGuardsError(sink)
   }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/incomplete-hostname-regexp") }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     StringOps::Concatenation::taintStep(node1, node2)
   }

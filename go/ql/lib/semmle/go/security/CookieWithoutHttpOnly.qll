@@ -23,6 +23,8 @@ private module SensitiveCookieNameConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/cookie-httponly-not-set") }
+
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(Http::CookieOptionWrite co | co.getName() = pred and co.getCookieOutput() = succ)
   }

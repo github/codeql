@@ -1,3 +1,6 @@
+#select
+| test.go:253:13:253:34 | call to GetString | test.go:253:13:253:34 | call to GetString | test.go:253:13:253:34 | call to GetString | This path to an untrusted URL redirection depends on a $@. | test.go:253:13:253:34 | call to GetString | user-provided value |
+| test.go:254:20:254:41 | call to GetString | test.go:254:20:254:41 | call to GetString | test.go:254:20:254:41 | call to GetString | This path to an untrusted URL redirection depends on a $@. | test.go:254:20:254:41 | call to GetString | user-provided value |
 edges
 nodes
 | test.go:253:13:253:34 | call to GetString | semmle.label | call to GetString |
@@ -5,6 +8,3 @@ nodes
 | test.go:317:13:317:27 | call to URI | semmle.label | call to URI |
 | test.go:318:20:318:34 | call to URL | semmle.label | call to URL |
 subpaths
-#select
-| test.go:253:13:253:34 | call to GetString | test.go:253:13:253:34 | call to GetString | test.go:253:13:253:34 | call to GetString | This path to an untrusted URL redirection depends on a $@. | test.go:253:13:253:34 | call to GetString | user-provided value |
-| test.go:254:20:254:41 | call to GetString | test.go:254:20:254:41 | call to GetString | test.go:254:20:254:41 | call to GetString | This path to an untrusted URL redirection depends on a $@. | test.go:254:20:254:41 | call to GetString | user-provided value |

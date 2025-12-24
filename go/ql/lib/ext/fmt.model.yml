@@ -8,6 +8,11 @@ extensions:
       - ["fmt", "", False, "Println", "", "", "Argument[0]", "log-injection", "manual"]
   - addsTo:
       pack: codeql/go-all
+      extensible: barrierModel
+    data:
+      - ["fmt", "Stringer", False, "String", "", "", "ReturnValue", "go/clear-text-logging", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["fmt", "GoStringer", True, "GoString", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

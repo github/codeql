@@ -41,6 +41,8 @@ module ConstantStateFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/constant-oauth2-state") }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 

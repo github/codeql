@@ -21,7 +21,10 @@ module RequestForgery {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      barrierNode(node, "go/request-forgery")
+    }
 
     predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
 

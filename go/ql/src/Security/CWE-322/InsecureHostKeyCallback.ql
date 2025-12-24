@@ -69,6 +69,8 @@ module Config implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { writeIsSink(sink, _) }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "go/insecure-hostkeycallback") }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 

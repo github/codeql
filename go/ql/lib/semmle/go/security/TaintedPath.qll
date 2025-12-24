@@ -16,7 +16,10 @@ module TaintedPath {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      barrierNode(node, "go/path-injection")
+    }
 
     predicate observeDiffInformedIncrementalMode() { any() }
   }
