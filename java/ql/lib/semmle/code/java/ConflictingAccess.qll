@@ -63,10 +63,21 @@ class ExposedField extends Field {
     not this.getType() instanceof LockType and
     // field is not thread-safe
     not isThreadSafeType(this.getType()) and
-    not isThreadSafeType(this.getInitializer().getType()) and
+    not isThreadSafeType(initialValue(this).getType()) and
     // the initializer guarantees thread safety
-    not isThreadSafeInitializer(this.getInitializer())
+    not isThreadSafeInitializer(initialValue(this))
   }
+}
+
+/**
+ * Gets the initial value for the field `f`.
+ * This is either a field initializer or an assignment in a constructor.
+ */
+Expr initialValue(Field f) {
+  result = f.getInitializer()
+  or
+  result = f.getAnAssignedValue() and
+  result.getEnclosingCallable() = f.getDeclaringType().getAConstructor()
 }
 
 /**
