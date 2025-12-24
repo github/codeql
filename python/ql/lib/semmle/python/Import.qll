@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
