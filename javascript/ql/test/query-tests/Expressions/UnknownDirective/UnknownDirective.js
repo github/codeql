@@ -34,6 +34,9 @@ function good() {
     "deps bar";
     "use server";
     "use client";
+    "use cache";
+    "use cache: remote";
+    "use cache: private";
 }
 
 function data() {
