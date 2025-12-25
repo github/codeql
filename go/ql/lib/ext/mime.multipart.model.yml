@@ -1,6 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["mime/multipart", "FileHeader", True, "Open", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["mime/multipart", "FileHeader", True, "Filename", "", "", "", "remote", "manual"]
+      - ["mime/multipart", "FileHeader", True, "Header", "", "", "", "remote", "manual"]
+      - ["mime/multipart", "Form", True, "Value", "", "", "", "remote", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["mime/multipart", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
