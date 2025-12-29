@@ -2,7 +2,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemStream;
-
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class FileUpload {
 
@@ -12,6 +12,7 @@ public class FileUpload {
     private FileItem fileItem;
     private FileItemStream fileItemStream;
     private jakarta.servlet.http.Part jakartaPart;
+    private ServletFileUpload servletFileUpload;
 
     private static void sink(Object o) {}
 
@@ -45,5 +46,7 @@ public class FileUpload {
         sink(jakartaPart.getName()); // $ hasRemoteValueFlow
         sink(jakartaPart.getSubmittedFileName()); // $ hasRemoteValueFlow
 
+        FileItem item = servletFileUpload.parseRequest(request).get(0);
+        sink(item.getName()); // $ hasRemoteValueFlow
     }
 }
