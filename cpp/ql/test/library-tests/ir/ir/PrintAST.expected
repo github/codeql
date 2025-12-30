@@ -4343,7 +4343,7 @@ generic.c:
 #    3|                 ValueCategory = prvalue
 #    3|             getAssociationExpr(0): [ReuseExpr] reuse of x
 #    3|                 Type = [IntType] unsigned int
-#    3|                 ValueCategory = lvalue
+#    3|                 ValueCategory = prvalue
 #    3|             getAssociationType(1): [TypeName] int
 #    3|                 Type = [IntType] int
 #    3|                 ValueCategory = prvalue
