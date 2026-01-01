@@ -74,3 +74,8 @@ options:
       [EXPERIMENTAL] The value is a path to the MsBuild binary log file that should be extracted.
       This option only works when `--build-mode none` is also specified.
     type: array
+  buildless_dependency_dir:
+    title: The path where buildless (standalone) extraction should keep dependencies.
+    description: >
+      If set, the buildless (standalone) extractor will store dependencies in this directory.
+    type: string

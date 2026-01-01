@@ -42,11 +42,11 @@ Running a quick query
 
    .. code-block:: ql
 
-        from MethodAccess ma
+        from MethodCall mc
         where
-            ma.getMethod().hasName("equals") and
-            ma.getArgument(0).(StringLiteral).getValue() = ""
-        select ma, "This comparison to empty string is inefficient, use isEmpty() instead."
+            mc.getMethod().hasName("equals") and
+            mc.getArgument(0).(StringLiteral).getValue() = ""
+        select mc, "This comparison to empty string is inefficient, use isEmpty() instead."
 
    Note that CodeQL treats Java and Kotlin as part of the same language, so even though this query starts with ``import java``, it will work for both Java and Kotlin code.
 
@@ -55,7 +55,7 @@ Running a quick query
 .. image:: ../images/codeql-for-visual-studio-code/basic-java-query-results-1.png
    :align: center
 
-If any matching code is found, click a link in the ``ma`` column to view the ``.equals`` expression in the code viewer.
+If any matching code is found, click a link in the ``mc`` column to view the ``.equals`` expression in the code viewer.
 
 .. image:: ../images/codeql-for-visual-studio-code/basic-java-query-results-2.png
    :align: center
@@ -72,15 +72,15 @@ After the initial ``import`` statement, this simple query comprises three parts 
 +==================================================================================================+===================================================================================================================+===================================================================================================+
 | ``import java``                                                                                  | Imports the standard CodeQL libraries for Java and Kotlin.                                                        | Every query begins with one or more ``import`` statements.                                        |
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
-| ``from MethodAccess ma``                                                                         | Defines the variables for the query.                                                                              | We use:                                                                                           |
+| ``from MethodCall mc``                                                                           | Defines the variables for the query.                                                                              | We use:                                                                                           |
 |                                                                                                  | Declarations are of the form:                                                                                     |                                                                                                   |
-|                                                                                                  | ``<type> <variable name>``                                                                                        | - a ``MethodAccess`` variable for call expressions                                                |
+|                                                                                                  | ``<type> <variable name>``                                                                                        | - a ``MethodCall`` variable for call expressions                                                  |
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
-| ``where ma.getMethod().hasName("equals") and ma.getArgument(0).(StringLiteral).getValue() = ""`` | Defines a condition on the variables.                                                                             | ``ma.getMethod().hasName("equals")`` restricts ``ma`` to only calls to methods call ``equals``.   |
+| ``where mc.getMethod().hasName("equals") and mc.getArgument(0).(StringLiteral).getValue() = ""`` | Defines a condition on the variables.                                                                             | ``mc.getMethod().hasName("equals")`` restricts ``mc`` to only calls to methods call ``equals``.   |
 |                                                                                                  |                                                                                                                   |                                                                                                   |
-|                                                                                                  |                                                                                                                   | ``ma.getArgument(0).(StringLiteral).getValue() = ""`` says the argument must be literal ``""``.   |
+|                                                                                                  |                                                                                                                   | ``mc.getArgument(0).(StringLiteral).getValue() = ""`` says the argument must be literal ``""``.   |
 +--------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+
-| ``select ma, "This comparison to empty string is inefficient, use isEmpty() instead."``          | Defines what to report for each match.                                                                            | Reports the resulting ``.equals`` expression with a string that explains the problem.             |
+| ``select mc, "This comparison to empty string is inefficient, use isEmpty() instead."``          | Defines what to report for each match.                                                                            | Reports the resulting ``.equals`` expression with a string that explains the problem.             |
 |                                                                                                  |                                                                                                                   |                                                                                                   |
 |                                                                                                  | ``select`` statements for queries that are used to find instances of poor coding practice are always in the form: |                                                                                                   |
 |                                                                                                  | ``select <program element>, "<alert message>"``                                                                   |                                                                                                   |
@@ -110,16 +110,16 @@ In this case, it is not possible to simply use ``o.isEmpty()`` instead, as ``o``
 
    .. code-block:: ql
 
-    ma.getQualifier().getType() instanceof TypeString
+    mc.getQualifier().getType() instanceof TypeString
 
    The ``where`` clause is now:
 
    .. code-block:: ql
 
       where
-        ma.getQualifier().getType() instanceof TypeString and
-        ma.getMethod().hasName("equals") and
-        ma.getArgument(0).(StringLiteral).getValue() = ""
+        mc.getQualifier().getType() instanceof TypeString and
+        mc.getMethod().hasName("equals") and
+        mc.getArgument(0).(StringLiteral).getValue() = ""
 
 #. Re-run the query.
 
@@ -141,4 +141,4 @@ Further reading
 
 .. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-java.png
 
-.. |result-col-1|  replace:: The first column corresponds to the expression ``ma`` and is linked to the location in the source code of the project where ``ma`` occurs.
+.. |result-col-1|  replace:: The first column corresponds to the expression ``mc`` and is linked to the location in the source code of the project where ``mc`` occurs.

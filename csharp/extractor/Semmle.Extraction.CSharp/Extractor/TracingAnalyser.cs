@@ -136,11 +136,7 @@ namespace Semmle.Extraction.CSharp
 
         private int LogDiagnostics()
         {
-            var filteredDiagnostics = compilation!
-                .GetDiagnostics()
-                .Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id))
-                .ToList();
-
+            var filteredDiagnostics = GetFilteredDiagnostics();
             foreach (var error in filteredDiagnostics)
             {
                 Logger.LogError($"  Compilation error: {error}");
@@ -148,7 +144,7 @@ namespace Semmle.Extraction.CSharp
 
             if (filteredDiagnostics.Count != 0)
             {
-                foreach (var reference in compilation.References)
+                foreach (var reference in compilation!.References)
                 {
                     Logger.LogInfo($"  Resolved reference {reference.Display}");
                 }
@@ -156,12 +152,5 @@ namespace Semmle.Extraction.CSharp
 
             return filteredDiagnostics.Count;
         }
-
-        private static readonly HashSet<string> errorsToIgnore = new HashSet<string>
-        {
-            "CS7027",   // Code signing failure
-            "CS1589",   // XML referencing not supported
-            "CS1569"    // Error writing XML documentation
-        };
     }
 }

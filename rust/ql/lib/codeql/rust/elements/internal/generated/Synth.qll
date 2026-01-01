@@ -691,11 +691,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TAdt = TEnum or TStruct or TUnion;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TArrayExpr = TArrayListExpr or TArrayRepeatExpr;
 
   /**
@@ -732,11 +727,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TCallExprBase = TCallExpr or TMethodCallExpr;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TCallable = TClosureExpr or TFunction;
 
   /**
@@ -744,11 +734,11 @@ module Synth {
    */
   class TExpr =
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
-        TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
+        TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
-        TMacroBlockExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or
-        TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or
-        TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TMacroBlockExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or
+        TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or
+        TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -774,8 +764,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TItem =
-    TAdt or TAsmExpr or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or
-        TMacroDef or TMacroRules or TModule or TTrait or TTraitAlias or TUse;
+    TAsmExpr or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or TMacroDef or
+        TMacroRules or TModule or TTrait or TTraitAlias or TTypeItem or TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -824,6 +814,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TToken = TComment;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TTypeItem = TEnum or TStruct or TUnion;
 
   /**
    * INTERNAL: Do not use.
@@ -2039,18 +2034,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TAdt`, if possible.
-   */
-  TAdt convertAdtFromRaw(Raw::Element e) {
-    result = convertEnumFromRaw(e)
-    or
-    result = convertStructFromRaw(e)
-    or
-    result = convertUnionFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TArrayExpr`, if possible.
    */
   TArrayExpr convertArrayExprFromRaw(Raw::Element e) {
@@ -2231,16 +2214,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TCallExprBase`, if possible.
-   */
-  TCallExprBase convertCallExprBaseFromRaw(Raw::Element e) {
-    result = convertCallExprFromRaw(e)
-    or
-    result = convertMethodCallExprFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TCallable`, if possible.
    */
   TCallable convertCallableFromRaw(Raw::Element e) {
@@ -2282,7 +2255,7 @@ module Synth {
     or
     result = convertBreakExprFromRaw(e)
     or
-    result = convertCallExprBaseFromRaw(e)
+    result = convertCallExprFromRaw(e)
     or
     result = convertCastExprFromRaw(e)
     or
@@ -2309,6 +2282,8 @@ module Synth {
     result = convertMacroExprFromRaw(e)
     or
     result = convertMatchExprFromRaw(e)
+    or
+    result = convertMethodCallExprFromRaw(e)
     or
     result = convertOffsetOfExprFromRaw(e)
     or
@@ -2392,8 +2367,6 @@ module Synth {
    * Converts a raw DB element to a synthesized `TItem`, if possible.
    */
   TItem convertItemFromRaw(Raw::Element e) {
-    result = convertAdtFromRaw(e)
-    or
     result = convertAsmExprFromRaw(e)
     or
     result = convertAssocItemFromRaw(e)
@@ -2415,6 +2388,8 @@ module Synth {
     result = convertTraitFromRaw(e)
     or
     result = convertTraitAliasFromRaw(e)
+    or
+    result = convertTypeItemFromRaw(e)
     or
     result = convertUseFromRaw(e)
   }
@@ -2546,6 +2521,18 @@ module Synth {
    * Converts a raw DB element to a synthesized `TToken`, if possible.
    */
   TToken convertTokenFromRaw(Raw::Element e) { result = convertCommentFromRaw(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TTypeItem`, if possible.
+   */
+  TTypeItem convertTypeItemFromRaw(Raw::Element e) {
+    result = convertEnumFromRaw(e)
+    or
+    result = convertStructFromRaw(e)
+    or
+    result = convertUnionFromRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3615,18 +3602,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TAdt` to a raw DB element, if possible.
-   */
-  Raw::Element convertAdtToRaw(TAdt e) {
-    result = convertEnumToRaw(e)
-    or
-    result = convertStructToRaw(e)
-    or
-    result = convertUnionToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TArrayExpr` to a raw DB element, if possible.
    */
   Raw::Element convertArrayExprToRaw(TArrayExpr e) {
@@ -3807,16 +3782,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TCallExprBase` to a raw DB element, if possible.
-   */
-  Raw::Element convertCallExprBaseToRaw(TCallExprBase e) {
-    result = convertCallExprToRaw(e)
-    or
-    result = convertMethodCallExprToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TCallable` to a raw DB element, if possible.
    */
   Raw::Element convertCallableToRaw(TCallable e) {
@@ -3858,7 +3823,7 @@ module Synth {
     or
     result = convertBreakExprToRaw(e)
     or
-    result = convertCallExprBaseToRaw(e)
+    result = convertCallExprToRaw(e)
     or
     result = convertCastExprToRaw(e)
     or
@@ -3885,6 +3850,8 @@ module Synth {
     result = convertMacroExprToRaw(e)
     or
     result = convertMatchExprToRaw(e)
+    or
+    result = convertMethodCallExprToRaw(e)
     or
     result = convertOffsetOfExprToRaw(e)
     or
@@ -3968,8 +3935,6 @@ module Synth {
    * Converts a synthesized `TItem` to a raw DB element, if possible.
    */
   Raw::Element convertItemToRaw(TItem e) {
-    result = convertAdtToRaw(e)
-    or
     result = convertAsmExprToRaw(e)
     or
     result = convertAssocItemToRaw(e)
@@ -3991,6 +3956,8 @@ module Synth {
     result = convertTraitToRaw(e)
     or
     result = convertTraitAliasToRaw(e)
+    or
+    result = convertTypeItemToRaw(e)
     or
     result = convertUseToRaw(e)
   }
@@ -4122,6 +4089,18 @@ module Synth {
    * Converts a synthesized `TToken` to a raw DB element, if possible.
    */
   Raw::Element convertTokenToRaw(TToken e) { result = convertCommentToRaw(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeItem` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeItemToRaw(TTypeItem e) {
+    result = convertEnumToRaw(e)
+    or
+    result = convertStructToRaw(e)
+    or
+    result = convertUnionToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.

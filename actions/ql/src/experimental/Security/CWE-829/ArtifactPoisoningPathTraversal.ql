@@ -1,5 +1,5 @@
 /**
- * @name Artifact Poisoning (Path Traversal).
+ * @name Artifact Poisoning (Path Traversal)
  * @description An attacker may be able to poison the workflow's artifacts and influence on consequent steps.
  * @kind problem
  * @problem.severity error

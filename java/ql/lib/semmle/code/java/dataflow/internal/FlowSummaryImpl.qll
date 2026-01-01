@@ -158,7 +158,9 @@ private predicate relatedArgSpec(Callable c, string spec) {
     summaryModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _, _) or
     summaryModel(namespace, type, subtypes, name, signature, ext, _, spec, _, _, _) or
     sourceModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
-    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _)
+    sinkModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
+    barrierModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _) or
+    barrierGuardModel(namespace, type, subtypes, name, signature, ext, spec, _, _, _, _)
   |
     c = interpretElement(namespace, type, subtypes, name, signature, ext, _)
   )
@@ -226,11 +228,10 @@ module SourceSinkInterpretationInput implements
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSource, string originalOutput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseSource, string originalOutput
     |
       sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance,
-        madId) and
-      model = "MaD:" + madId.toString() and
+        model) and
       baseSource = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSource and output = originalOutput
@@ -245,16 +246,52 @@ module SourceSinkInterpretationInput implements
   ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      SourceOrSinkElement baseSink, string originalInput, QlBuiltins::ExtensionId madId
+      SourceOrSinkElement baseSink, string originalInput
     |
       sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance,
-        madId) and
-      model = "MaD:" + madId.toString() and
+        model) and
       baseSink = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseSink and originalInput = input
         or
         correspondingKotlinParameterDefaultsArgSpec(baseSink, e, originalInput, input)
+      )
+    )
+  }
+
+  predicate barrierElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      SourceOrSinkElement baseBarrier, string originalOutput
+    |
+      barrierModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind,
+        provenance, model) and
+      baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
+      (
+        e = baseBarrier and output = originalOutput
+        or
+        correspondingKotlinParameterDefaultsArgSpec(baseBarrier, e, originalOutput, output)
+      )
+    )
+  }
+
+  predicate barrierGuardElement(
+    Element e, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext,
+      SourceOrSinkElement baseBarrier, string originalInput
+    |
+      barrierGuardModel(namespace, type, subtypes, name, signature, ext, originalInput,
+        acceptingvalue, kind, provenance, model) and
+      baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
+      (
+        e = baseBarrier and input = originalInput
+        or
+        correspondingKotlinParameterDefaultsArgSpec(baseBarrier, e, originalInput, input)
       )
     )
   }
@@ -343,12 +380,10 @@ module Private {
     ) {
       exists(
         string namespace, string type, boolean subtypes, string name, string signature, string ext,
-        string originalInput, string originalOutput, Callable baseCallable,
-        QlBuiltins::ExtensionId madId
+        string originalInput, string originalOutput, Callable baseCallable
       |
         summaryModel(namespace, type, subtypes, name, signature, ext, originalInput, originalOutput,
-          kind, provenance, madId) and
-        model = "MaD:" + madId.toString() and
+          kind, provenance, model) and
         baseCallable = interpretElement(namespace, type, subtypes, name, signature, ext, isExact) and
         (
           c.asCallable() = baseCallable and input = originalInput and output = originalOutput

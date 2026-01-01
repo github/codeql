@@ -11,7 +11,14 @@ import TypeInference::Consistency
 
 query predicate illFormedTypeMention(TypeMention tm) {
   Consistency::illFormedTypeMention(tm) and
-  not tm instanceof PathTypeReprMention and // avoid overlap with `PathTypeMention`
+  // avoid overlap with `PathTypeMention`
+  not tm instanceof PathTypeReprMention and
+  // known limitation for type mentions that would mention an escaping type parameter
+  not tm =
+    any(PathTypeMention ptm |
+      exists(ptm.resolvePathTypeAt(TypePath::nil())) and
+      not exists(ptm.resolveType())
+    ) and
   // Only include inconsistencies in the source, as we otherwise get
   // inconsistencies from library code in every project.
   tm.fromSource()

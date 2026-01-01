@@ -186,11 +186,13 @@ module Promises {
   /**
    * Gets the pseudo-field used to describe resolved values in a promise.
    */
+  overlay[local?]
   string valueProp() { result = "$PromiseResolveField$" }
 
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
+  overlay[local?]
   string errorProp() { result = "$PromiseRejectField$" }
 
   /** A property set containing the pseudo-properites of a promise object. */
@@ -236,6 +238,7 @@ module PromiseTypeTracking {
    *
    * These type-tracking steps are already included in the default type-tracking steps (through `PreCallGraphStep`).
    */
+  overlay[caller?]
   pragma[inline]
   DataFlow::Node promiseStep(DataFlow::Node pred, StepSummary summary) {
     exists(string field | field = Promises::valueProp() |
@@ -254,6 +257,7 @@ module PromiseTypeTracking {
    * Gets the result from a single step through a promise, from `pred` with tracker `t2` to `result` with tracker `t`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
    */
+  overlay[caller?]
   pragma[inline]
   DataFlow::SourceNode promiseStep(
     DataFlow::SourceNode pred, DataFlow::TypeTracker t, DataFlow::TypeTracker t2

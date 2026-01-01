@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ControlFlowNode r, ControlFlowNode s
 where

@@ -4,20 +4,16 @@
 
 private import rust
 private import codeql.rust.Concepts
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.internal.PathResolution
 
 /**
  * A call to the `starts_with` method on a `Path`.
  */
-private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::MethodCallExprCfgNode {
-  StartswithCall() {
-    this.getMethodCallExpr().getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with"
-  }
+private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCall {
+  StartswithCall() { this.getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with" }
 
-  override predicate checks(Cfg::CfgNode e, boolean branch) {
+  override predicate checks(Expr e, boolean branch) {
     e = this.getReceiver() and
     branch = true
   }
@@ -252,6 +248,19 @@ class IndexTrait extends Trait {
     result = this.getAssocItemList().getAnAssocItem() and
     result.getName().getText() = "Output"
   }
+}
+
+/**
+ * The [`IndexMut` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.IndexMut.html
+ */
+class IndexMutTrait extends Trait {
+  pragma[nomagic]
+  IndexMutTrait() { this.getCanonicalPath() = "core::ops::index::IndexMut" }
+
+  /** Gets the `index_mut` function. */
+  Function getIndexMutFunction() { result = this.(TraitItemNode).getAssocItem("index_mut") }
 }
 
 /**

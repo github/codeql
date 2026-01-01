@@ -1,6 +1,5 @@
 import python
 private import LegacyPointsTo
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
 

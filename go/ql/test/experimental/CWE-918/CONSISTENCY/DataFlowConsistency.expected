@@ -1,0 +1,8 @@
+reverseRead
+| builtin.go:115:31:115:31 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| builtin.go:124:32:124:32 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| builtin.go:133:54:133:54 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| builtin.go:142:55:142:55 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| new-tests.go:62:31:62:33 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| new-tests.go:78:18:78:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| new-tests.go:81:37:81:39 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

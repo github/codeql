@@ -281,7 +281,6 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   /** Holds if this method has a `params` parameter. */
   predicate hasParams() { exists(this.getParamsType()) }
 
-  // Remove when `Callable.isOverridden()` is removed
   override predicate fromSource() {
     Callable.super.fromSource() and
     not this.isCompilerGenerated()
@@ -318,6 +317,19 @@ class ExtensionMethod extends Method {
 }
 
 /**
+ * An object initializer method.
+ *
+ * This is an extractor-synthesized method that executes the field
+ * initializers. Note that the AST nodes for the field initializers are nested
+ * directly under the class, and therefore this method has no body in the AST.
+ * On the other hand, this provides the unique enclosing callable for the field
+ * initializers and their control flow graph.
+ */
+class ObjectInitMethod extends Method {
+  ObjectInitMethod() { this.getName() = "<object initializer>" }
+}
+
+/**
  * A constructor, for example `public C() { }` on line 2 in
  *
  * ```csharp
@@ -349,6 +361,9 @@ class Constructor extends Callable, Member, Attributable, @constructor {
    * ```
    */
   ConstructorInitializer getInitializer() { result = this.getChildExpr(-1) }
+
+  /** Gets the object initializer call of this constructor, if any. */
+  MethodCall getObjectInitializerCall() { result = this.getChildExpr(-2) }
 
   /** Holds if this constructor has an initializer. */
   predicate hasInitializer() { exists(this.getInitializer()) }

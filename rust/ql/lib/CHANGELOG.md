@@ -1,3 +1,27 @@
+## 0.2.2
+
+No user-facing changes.
+
+## 0.2.1
+
+No user-facing changes.
+
+## 0.2.0
+
+### Breaking Changes
+
+* The type `DataFlow::Node` is now based directly on the AST instead of the CFG, which means that predicates like `asExpr()` return AST nodes instead of CFG nodes.
+
+### Minor Analysis Improvements
+
+* Added more detailed models for `std::fs` and `std::path`.
+
+## 0.1.20
+
+### Minor Analysis Improvements
+
+* Added models for cookie methods in the `poem` crate.
+
 ## 0.1.19
 
 ### Major Analysis Improvements

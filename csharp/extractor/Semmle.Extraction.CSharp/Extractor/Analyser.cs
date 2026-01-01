@@ -360,5 +360,22 @@ namespace Semmle.Extraction.CSharp
                 return versionString.InformationalVersion;
             }
         }
+
+        private static readonly HashSet<string> errorsToIgnore = new HashSet<string>
+        {
+            "CS7027",   // Code signing failure
+            "CS1589",   // XML referencing not supported
+            "CS1569"    // Error writing XML documentation
+        };
+
+        /// <summary>
+        /// Retrieves the diagnostics from the compilation, filtering out those that should be ignored.
+        /// </summary>
+        protected List<Diagnostic> GetFilteredDiagnostics() =>
+            compilation is not null
+                ? compilation.GetDiagnostics()
+                    .Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id))
+                    .ToList()
+                : [];
     }
 }

@@ -99,11 +99,12 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
  * updates.
  */
 predicate hasNonlocalValue(FieldRead fr) {
-  not exists(SsaVariable v | v.getAUse() = fr)
+  not exists(SsaDefinition v | v.getARead() = fr)
   or
-  exists(SsaVariable v, SsaVariable def | v.getAUse() = fr and def = v.getAnUltimateDefinition() |
-    def instanceof SsaImplicitInit or
-    def instanceof SsaImplicitUpdate
+  exists(SsaDefinition v, SsaDefinition def |
+    v.getARead() = fr and
+    def = v.getAnUltimateDefinition() and
+    def instanceof SsaImplicitWrite
   )
 }
 
@@ -374,6 +375,29 @@ class ContentSet instanceof Content {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `gv`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate valueGuardChecksSig(Guard g, Expr e, GuardValue gv);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuardValue<valueGuardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+  }
+}
+
+/**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
  * The expression `e` is expected to be a syntactic part of the guard `g`.
@@ -389,9 +413,38 @@ signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private predicate guardChecks0(Guard g, Expr e, GuardValue gv) {
+    guardChecks(g, e, gv.asBooleanValue())
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
+  Node getABarrierNode() { result = BarrierGuardValue<guardChecks0/3>::getABarrierNode() }
+}
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `gv`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) {
     SsaFlow::asNode(result) =
-      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+      SsaImpl::DataFlowIntegration::ParameterizedBarrierGuard<P, guardChecks/4>::getABarrierNode(param)
   }
 }

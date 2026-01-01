@@ -21,7 +21,7 @@ where
   not write.isFromMacroExpansion() and
   not isAllowableUnused(v) and
   // SSA definitions are only created for live writes
-  not write = any(Ssa::WriteDefinition def).getWriteAccess().getAstNode() and
+  not write = any(Ssa::WriteDefinition def).getWriteAccess() and
   // avoid overlap with the unused variable query
   not isUnused(v)
 select write, "Variable $@ is assigned a value that is never used.", v, v.getText()

@@ -35,6 +35,9 @@ def patch_json(file, **kwargs):
     def update(data):
         data = json.loads(data) if data else {}
         data.update(kwargs)
+        for k, v in kwargs.items():
+            if v is None:
+                data.pop(k)
         return json.dumps(data, indent=4) + "\n"
 
     patch_file(file, update)
@@ -48,8 +51,21 @@ for entry in this_dir.joinpath("modules").iterdir():
     patch_json(entry / "metadata.json", versions=[v.name for v in versions])
 
     for version in versions:
-        patch_json(version / "source.json", patches={
-            p.name: sha256(p) for p in version.joinpath("patches").iterdir()
-        })
-        patch_file(version / "MODULE.bazel",
-                   lambda s: re.sub(r'''version\s*=\s*['"].*['"]''', f'version = "{version.name}"', s, 1))
+        patches = version.joinpath("patches")
+        overlay = version.joinpath("overlay")
+        modules = [version / "MODULE.bazel", overlay / "MODULE.bazel"]
+        for module in modules:
+            if module.is_file():
+                patch_file(
+                    module,
+                    lambda s: re.sub(r'''version\s*=\s*['"].*['"]''', f'version = "{version.name}"', s, 1))
+        patch_json(
+            version / "source.json",
+            patches={
+                p.name: sha256(p) for p in patches.iterdir()
+            } if patches.is_dir() else None,
+            patch_strip=1 if patches.is_dir() else None,
+            overlay={
+                o.name: sha256(o) for o in overlay.iterdir()
+            } if overlay.is_dir() else None,
+        )

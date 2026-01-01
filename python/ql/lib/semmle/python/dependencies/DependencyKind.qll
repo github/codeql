@@ -1,4 +1,5 @@
 import semmle.python.dependencies.Dependencies
+private import LegacyPointsTo
 
 /**
  * A library describing an abstract mechanism for representing dependency categories.

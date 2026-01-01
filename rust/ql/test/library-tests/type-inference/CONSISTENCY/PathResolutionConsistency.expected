@@ -1,17 +1,2 @@
-multipleCallTargets
-| dereference.rs:69:15:69:24 | e1.deref() |
-| dereference.rs:182:17:182:26 | ... .foo() |
-| dereference.rs:183:17:183:23 | S.foo() |
-| dereference.rs:184:17:184:30 | ... .foo() |
-| dereference.rs:186:17:186:25 | S.bar(...) |
-| dereference.rs:187:17:187:29 | S.bar(...) |
-| main.rs:589:9:589:14 | S4.m() |
-| main.rs:590:9:590:18 | ...::m(...) |
-| main.rs:591:9:591:20 | ... .m() |
-| main.rs:592:9:592:24 | ...::m(...) |
-| main.rs:2524:13:2524:31 | ...::from(...) |
-| main.rs:2525:13:2525:31 | ...::from(...) |
-| main.rs:2526:13:2526:31 | ...::from(...) |
-| main.rs:2532:13:2532:31 | ...::from(...) |
-| main.rs:2533:13:2533:31 | ...::from(...) |
-| main.rs:2534:13:2534:31 | ...::from(...) |
+multipleResolvedTargets
+| main.rs:3087:13:3087:17 | x.f() |

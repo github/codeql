@@ -1,3 +1,21 @@
+## 7.8.2
+
+No user-facing changes.
+
+## 7.8.1
+
+No user-facing changes.
+
+## 7.8.0
+
+### Deprecated APIs
+
+* The SSA interface has been updated and all classes and several predicates have been renamed. See the qldoc for more specific migration information.
+
+## 7.7.4
+
+No user-facing changes.
+
 ## 7.7.3
 
 No user-facing changes.

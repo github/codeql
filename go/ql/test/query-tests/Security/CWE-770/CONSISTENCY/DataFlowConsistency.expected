@@ -1,0 +1,6 @@
+reverseRead
+| UncontrolledAllocationSizeBad.go:11:12:11:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| UncontrolledAllocationSizeGood.go:11:12:11:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| UncontrolledAllocationSizeGood.go:32:12:32:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| UncontrolledAllocationSizeGood.go:52:12:52:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| UncontrolledAllocationSizeGood.go:73:12:73:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from CallNode call, FunctionObject func, string kind
 where

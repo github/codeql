@@ -1,4 +1,6 @@
 /** Provides classes and predicates for defining flow summaries. */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as Impl

@@ -827,3 +827,33 @@ pub fn test_lifetimes_example_good() {
 
 	println!("	val = {dereferenced_ptr}");
 }
+
+// --- generic calls ---
+
+trait Processor {
+	fn process(ptr: *const i64) -> i64;
+}
+
+struct MyProcessor {
+}
+
+impl Processor for MyProcessor {
+	fn process(ptr: *const i64) -> i64 {
+		unsafe {
+			return *ptr; // good
+		}
+	}
+}
+
+fn generic_caller<T: Processor>() -> i64
+{
+	let local_value: i64 = 10;
+	let ptr = &local_value as *const i64;
+
+	return T::process(ptr);
+}
+
+pub fn test_generic() {
+	let result = generic_caller::<MyProcessor>();
+	println!("	result = {result}");
+}

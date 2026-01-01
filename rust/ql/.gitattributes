@@ -3,7 +3,6 @@
 /lib/codeql/rust/controlflow/internal/generated/CfgNodes.qll linguist-generated
 /lib/codeql/rust/elements/Abi.qll linguist-generated
 /lib/codeql/rust/elements/Addressable.qll linguist-generated
-/lib/codeql/rust/elements/Adt.qll linguist-generated
 /lib/codeql/rust/elements/ArgList.qll linguist-generated
 /lib/codeql/rust/elements/ArrayExpr.qll linguist-generated
 /lib/codeql/rust/elements/ArrayListExpr.qll linguist-generated
@@ -35,7 +34,6 @@
 /lib/codeql/rust/elements/BoxPat.qll linguist-generated
 /lib/codeql/rust/elements/BreakExpr.qll linguist-generated
 /lib/codeql/rust/elements/CallExpr.qll linguist-generated
-/lib/codeql/rust/elements/CallExprBase.qll linguist-generated
 /lib/codeql/rust/elements/Callable.qll linguist-generated
 /lib/codeql/rust/elements/CastExpr.qll linguist-generated
 /lib/codeql/rust/elements/ClosureExpr.qll linguist-generated
@@ -171,6 +169,7 @@
 /lib/codeql/rust/elements/TypeArg.qll linguist-generated
 /lib/codeql/rust/elements/TypeBound.qll linguist-generated
 /lib/codeql/rust/elements/TypeBoundList.qll linguist-generated
+/lib/codeql/rust/elements/TypeItem.qll linguist-generated
 /lib/codeql/rust/elements/TypeParam.qll linguist-generated
 /lib/codeql/rust/elements/TypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/UnderscoreExpr.qll linguist-generated
@@ -193,7 +192,6 @@
 /lib/codeql/rust/elements/YieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/AdtImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternal.qll linguist-generated
@@ -237,7 +235,6 @@
 /lib/codeql/rust/elements/internal/BecomeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BlockExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/BlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
@@ -419,6 +416,7 @@
 /lib/codeql/rust/elements/internal/TypeArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeBoundListConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/TypeItemImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnderscoreExprConstructor.qll linguist-generated
@@ -437,7 +435,6 @@
 /lib/codeql/rust/elements/internal/VariantListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VisibilityConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/VisibilityImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/WhereClauseConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/WhereClauseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/WherePredConstructor.qll linguist-generated
@@ -450,7 +447,6 @@
 /lib/codeql/rust/elements/internal/YieldExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Abi.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Addressable.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/Adt.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArgList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArrayExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ArrayExprInternal.qll linguist-generated
@@ -483,7 +479,6 @@
 /lib/codeql/rust/elements/internal/generated/BoxPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/BreakExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/CallExpr.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/CallExprBase.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Callable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/CastExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureExpr.qll linguist-generated
@@ -626,6 +621,7 @@
 /lib/codeql/rust/elements/internal/generated/TypeArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeBound.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeBoundList.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/TypeItem.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeParam.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/UnderscoreExpr.qll linguist-generated

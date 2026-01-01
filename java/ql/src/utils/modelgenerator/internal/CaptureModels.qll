@@ -218,6 +218,8 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
     )
   }
 
+  int contentAccessPathLimitInternal() { result = 2 }
+
   predicate isField(DataFlow::ContentSet c) {
     c instanceof DataFlowUtil::FieldContent or
     c instanceof DataFlowUtil::SyntheticFieldContent
@@ -277,10 +279,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
 
   predicate sinkModelSanitizer(DataFlow::Node node) {
     // exclude variable capture jump steps
-    exists(Ssa::SsaImplicitInit closure |
-      closure.captures(_) and
-      node.asExpr() = closure.getAFirstUse()
-    )
+    exists(Ssa::SsaCapturedDefinition closure | node.asExpr() = Ssa::ssaGetAFirstUse(closure))
   }
 
   predicate apiSource(DataFlow::Node source) {

@@ -62,10 +62,10 @@ private predicate fieldStep(Node node1, Node node2) {
 private predicate closureFlowStep(Expr e1, Expr e2) {
   simpleAstFlowStep(e1, e2)
   or
-  exists(SsaVariable v |
-    v.getAUse() = e2 and
-    v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
-      e1
+  exists(SsaDefinition v, SsaExplicitWrite def | v.getARead() = e2 and def.getValue() = e1 |
+    v.getAnUltimateDefinition() = def
+    or
+    v.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
   )
 }
 
@@ -395,13 +395,13 @@ class CastNode extends ExprNode {
   CastNode() {
     this.getExpr() instanceof CastingExpr
     or
-    exists(SsaExplicitUpdate upd |
+    exists(SsaExplicitWrite upd |
       upd.getDefiningExpr().(VariableAssign).getSource() =
         [
           any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
           any(InstanceOfExpr ioe).getExpr()
         ] and
-      this.asExpr() = upd.getAFirstUse()
+      this.asExpr() = ssaGetAFirstUse(upd)
     )
   }
 }
@@ -531,9 +531,9 @@ class NodeRegion instanceof BasicBlock {
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantBooleanExpr(src, val)
   )
 }
@@ -551,15 +551,15 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
-    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
+    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaParameterInit param,
     Guard guard
   |
     // get constant bool argument and parameter for this call
     viableParamArg(call, pragma[only_bind_into](paramNode), arg) and
     // get the ssa variable definition for this parameter
-    param.isParameterDefinition(paramNode.getParameter()) and
+    param.getParameter() = paramNode.getParameter() and
     // which is used in a guard
-    param.getAUse() = guard and
+    param.getARead() = guard and
     // which controls `n` with the opposite value of `arg`
     guard
         .controls(nr,

@@ -14,12 +14,26 @@
 
 import Clones
 
+bindingset[init]
+pragma[inline_late]
+private Property getPropertyFromInitializerStrict(Expr init) { result.getInit() = init }
+
+pragma[nomagic]
+private predicate duplicateProperties(
+  DuplicatePropertyInitDetector dup, Property prop1, Property prop2
+) {
+  exists(Expr init2 |
+    dup.same(init2) and
+    prop1 = getPropertyFromInitializerStrict(dup) and
+    prop2 = getPropertyFromInitializerStrict(init2)
+  )
+}
+
 from ObjectExpr oe, int i, int j, Property p, Property q, DuplicatePropertyInitDetector dpid
 where
+  duplicateProperties(dpid, p, q) and
   p = oe.getProperty(i) and
   q = oe.getProperty(j) and
-  dpid = p.getInit() and
-  dpid.same(q.getInit()) and
   i < j and
   // only report the next duplicate
   not exists(int mid | mid in [i + 1 .. j - 1] | dpid.same(oe.getProperty(mid).getInit()))

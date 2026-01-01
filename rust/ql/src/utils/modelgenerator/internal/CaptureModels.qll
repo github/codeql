@@ -67,8 +67,9 @@ module ModelGeneratorCommonInput implements
 
   string parameterExactAccess(R::ParamBase p) {
     result =
-      "Argument[" + any(DataFlowImpl::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
-        "]"
+      "Argument[" +
+        any(DataFlowImpl::RustDataFlow::ParameterPosition pos | p = pos.getParameterIn(_))
+            .toString() + "]"
   }
 
   string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
@@ -78,12 +79,16 @@ module ModelGeneratorCommonInput implements
   }
 
   bindingset[c]
-  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsApproximateOutput(
+    QualifiedCallable c, DataFlowImpl::RustDataFlow::ParameterPosition pos
+  ) {
     result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsExactOutput(
+    QualifiedCallable c, DataFlowImpl::RustDataFlow::ParameterPosition pos
+  ) {
     result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
@@ -120,7 +125,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   }
 
   QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
-    result.getFunction() = node.asExpr().getScope()
+    result.getFunction() = node.asExpr().getEnclosingCfgScope()
   }
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }

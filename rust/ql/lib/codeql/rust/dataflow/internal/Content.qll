@@ -3,8 +3,9 @@
  */
 
 private import rust
-private import codeql.rust.controlflow.CfgNodes
+private import codeql.rust.frameworks.stdlib.Builtins
 private import DataFlowImpl
+private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
 /**
  * A path to a value contained in an object. For example a field name of a struct.
@@ -21,14 +22,18 @@ abstract class Content extends TContent {
 abstract class FieldContent extends Content {
   /** Gets an access to this field. */
   pragma[nomagic]
-  abstract FieldExprCfgNode getAnAccess();
+  abstract FieldExpr getAnAccess();
 }
 
 /** A tuple field belonging to either a variant or a struct. */
 class TupleFieldContent extends FieldContent, TTupleFieldContent {
   private TupleField field;
 
-  TupleFieldContent() { this = TTupleFieldContent(field) }
+  TupleFieldContent() {
+    this = TTupleFieldContent(field) and
+    // tuples are handled using the special `TupleContent` type
+    not field = any(TupleType tt).getATupleField()
+  }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, int pos) { field.isVariantField(v, pos) }
@@ -36,7 +41,7 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, int pos) { field.isStructField(s, pos) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getTupleField() }
+  override FieldExpr getAnAccess() { field = result.getTupleField() }
 
   final override string toString() {
     exists(Variant v, int pos, string vname |
@@ -69,7 +74,7 @@ class StructFieldContent extends FieldContent, TStructFieldContent {
   /** Holds if this field belongs to a struct. */
   predicate isStructField(Struct s, string name) { field.isStructField(s, name) }
 
-  override FieldExprCfgNode getAnAccess() { field = result.getFieldExpr().getStructField() }
+  override FieldExpr getAnAccess() { field = result.getStructField() }
 
   final override string toString() {
     exists(Variant v, string name, string vname |
@@ -148,7 +153,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
   /** Gets the index of this tuple position. */
   int getPosition() { result = pos }
 
-  override FieldExprCfgNode getAnAccess() {
+  override FieldExpr getAnAccess() {
     // TODO: limit to tuple types
     result.getIdentifier().getText().toInt() = pos
   }
@@ -159,7 +164,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 }
 
 /**
- * A content for the index of an argument to at function call.
+ * A content for the index of an argument to at closure call.
  *
  * Used by the model generator to create flow summaries for higher-order
  * functions.
@@ -266,7 +271,7 @@ newtype TContent =
   } or
   TFunctionCallReturnContent() or
   TFunctionCallArgumentContent(int pos) {
-    pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
+    pos in [0 .. any(CallExprImpl::DynamicCallExpr c).getNumberOfPositionalArguments()]
   } or
   TCapturedVariableContent(VariableCapture::CapturedVariable v) or
   TReferenceContent()

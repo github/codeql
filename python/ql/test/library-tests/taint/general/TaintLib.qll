@@ -1,5 +1,6 @@
 import python
 import semmle.python.dataflow.TaintTracking
+private import LegacyPointsTo
 
 class SimpleTest extends TaintKind {
   SimpleTest() { this = "simple.test" }
