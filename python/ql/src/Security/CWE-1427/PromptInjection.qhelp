@@ -5,12 +5,11 @@
 
 <overview>
 <p>Prompts can be constructed to bypass the original purposes of an agent and lead to sensitive data leak or 
-operations that were not intended.
-</p>
+operations that were not intended.</p>
 </overview>
 
 <recommendation>
-Sanitize user input and also avoid using user input in developer or system level prompts.
+<p>Sanitize user input and also avoid using user input in developer or system level prompts.</p>
 </recommendation>
 
 <example>

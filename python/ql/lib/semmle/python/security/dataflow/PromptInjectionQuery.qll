@@ -1,3 +1,11 @@
+/**
+ * Provides taint-tracking configurations for detecting "prompt injection" vulnerabilities.
+ *
+ * Note, for performance reasons: only import this file if
+ * `PromptInjection::Configuration` is needed, otherwise
+ * `PromptInjectionCustomizations` should be imported instead.
+ */
+
 private import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
