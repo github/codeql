@@ -25,12 +25,6 @@ module Agent {
  * See https://github.com/openai/openai-python.
  */
 module OpenAI {
-  /** Gets a reference to `openai.OpenAI`, `openai.AsyncOpenAI` and `openai.AzureOpenAI`classes. */
-  API::Node classRef() {
-    result = API::moduleImport("openai").getMember(["OpenAI", "AsyncOpenAI", "AzureOpenAI"])
-  }
-
-  /** Gets a reference to a potential property of `openai.OpenAI called instructions which refers to the system prompt. */
   API::Node sink() {
     result =
       classRef()
