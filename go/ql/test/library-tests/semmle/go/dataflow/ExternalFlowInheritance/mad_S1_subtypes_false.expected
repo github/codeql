@@ -1,2 +1,16 @@
-testFailures
 invalidModelRow
+testFailures
+| test_fields.go:39:16:39:16 | a | Unexpected result: S1[f] |
+| test_fields.go:49:16:49:16 | a | Unexpected result: S1[f] |
+| test_fields.go:64:16:64:16 | a | Unexpected result: S1[f] |
+| test_fields.go:69:16:69:16 | a | Unexpected result: S1[f] |
+| test_fields.go:74:16:74:16 | a | Unexpected result: S1[f] |
+| test_fields.go:79:16:79:16 | a | Unexpected result: S1[f] |
+| test_fields.go:84:16:84:16 | a | Unexpected result: S1[f] |
+| test_methods.go:94:9:94:9 | y | Unexpected result: S1[f] |
+| test_methods.go:106:9:106:9 | y | Unexpected result: S1[f] |
+| test_methods.go:148:9:148:9 | y | Unexpected result: S1[f] |
+| test_methods.go:154:9:154:9 | y | Unexpected result: S1[f] |
+| test_methods.go:160:9:160:9 | y | Unexpected result: S1[f] |
+| test_methods.go:166:9:166:9 | y | Unexpected result: S1[f] |
+| test_methods.go:172:9:172:9 | y | Unexpected result: S1[f] |
