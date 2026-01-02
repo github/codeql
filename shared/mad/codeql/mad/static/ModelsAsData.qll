@@ -194,15 +194,16 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance, string model
   ) {
+    subtypes = true and
     exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
       exists(QlBuiltins::ExtensionId madId |
-        Extensions::sourceModel(namespaceOrGroup, type, subtypes, name, signature, ext, output,
-          kind, provenance, madId) and
+        Extensions::sourceModel(namespaceOrGroup, type, _, name, signature, ext, output, kind,
+          provenance, madId) and
         model = "MaD:" + madId.toString()
       )
       or
-      Input::additionalSourceModel(namespaceOrGroup, type, subtypes, name, signature, ext, output,
-        kind, provenance, model)
+      Input::additionalSourceModel(namespaceOrGroup, type, _, name, signature, ext, output, kind,
+        provenance, model)
     )
   }
 
@@ -213,15 +214,16 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance, string model
   ) {
+    subtypes = true and
     exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
       exists(QlBuiltins::ExtensionId madId |
-        Extensions::sinkModel(namespaceOrGroup, type, subtypes, name, signature, ext, input, kind,
+        Extensions::sinkModel(namespaceOrGroup, type, _, name, signature, ext, input, kind,
           provenance, madId) and
         model = "MaD:" + madId.toString()
       )
       or
-      Input::additionalSinkModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
-        kind, provenance, model)
+      Input::additionalSinkModel(namespaceOrGroup, type, _, name, signature, ext, input, kind,
+        provenance, model)
     )
   }
 
@@ -230,9 +232,10 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance, string model
   ) {
+    subtypes = true and
     exists(string namespaceOrGroup, QlBuiltins::ExtensionId madId |
       namespace = getNamespace(namespaceOrGroup) and
-      Extensions::barrierModel(namespaceOrGroup, type, subtypes, name, signature, ext, output, kind,
+      Extensions::barrierModel(namespaceOrGroup, type, _, name, signature, ext, output, kind,
         provenance, madId) and
       model = "MaD:" + madId.toString()
     )
@@ -243,9 +246,10 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string input, string acceptingvalue, string kind, string provenance, string model
   ) {
+    subtypes = true and
     exists(string namespaceOrGroup, QlBuiltins::ExtensionId madId |
       namespace = getNamespace(namespaceOrGroup) and
-      Extensions::barrierGuardModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
+      Extensions::barrierGuardModel(namespaceOrGroup, type, _, name, signature, ext, input,
         acceptingvalue, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
     )
@@ -258,15 +262,16 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
     string input, string output, string kind, string provenance, string model
   ) {
+    subtypes = true and
     exists(string namespaceOrGroup | namespace = getNamespace(namespaceOrGroup) |
       exists(QlBuiltins::ExtensionId madId |
-        Extensions::summaryModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
-          output, kind, provenance, madId) and
+        Extensions::summaryModel(namespaceOrGroup, type, _, name, signature, ext, input, output,
+          kind, provenance, madId) and
         model = "MaD:" + madId.toString()
       )
       or
-      Input::additionalSummaryModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
-        output, kind, provenance, model)
+      Input::additionalSummaryModel(namespaceOrGroup, type, _, name, signature, ext, input, output,
+        kind, provenance, model)
     )
   }
 
