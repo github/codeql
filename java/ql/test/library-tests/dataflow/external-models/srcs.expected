@@ -7,6 +7,7 @@ invalidModelRow
 | A.java:7:9:7:16 | src1(...) | qltest-alt |
 | A.java:10:9:10:18 | src2(...) | qltest |
 | A.java:10:9:10:18 | src2(...) | qltest-w-subtypes |
+| A.java:11:9:11:18 | src3(...) | qltest |
 | A.java:11:9:11:18 | src3(...) | qltest-w-subtypes |
 | A.java:13:5:13:13 | this <.method> [post update] | qltest-argany |
 | A.java:13:12:13:12 | x [post update] | qltest-argany |

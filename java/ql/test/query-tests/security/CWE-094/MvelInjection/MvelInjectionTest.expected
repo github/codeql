@@ -25,6 +25,7 @@ edges
 | MvelInjectionTest.java:41:37:41:44 | compiler : ExpressionCompiler | MvelInjectionTest.java:41:37:41:54 | compile(...) : CompiledExpression | provenance | Config |
 | MvelInjectionTest.java:41:37:41:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:42:5:42:14 | expression | provenance | Sink:MaD:4 |
 | MvelInjectionTest.java:47:9:47:96 | new CompiledAccExpression(...) : CompiledAccExpression | MvelInjectionTest.java:48:5:48:14 | expression | provenance | Sink:MaD:3 |
+| MvelInjectionTest.java:47:9:47:96 | new CompiledAccExpression(...) : CompiledAccExpression | MvelInjectionTest.java:48:5:48:14 | expression | provenance | Sink:MaD:5 |
 | MvelInjectionTest.java:47:35:47:46 | read(...) : String | MvelInjectionTest.java:47:35:47:60 | toCharArray(...) : char[] | provenance | MaD:16 |
 | MvelInjectionTest.java:47:35:47:60 | toCharArray(...) : char[] | MvelInjectionTest.java:47:9:47:96 | new CompiledAccExpression(...) : CompiledAccExpression | provenance | Config |
 | MvelInjectionTest.java:52:20:52:31 | read(...) : String | MvelInjectionTest.java:55:52:55:56 | input : String | provenance |  |
@@ -37,6 +38,7 @@ edges
 | MvelInjectionTest.java:64:58:64:69 | read(...) : String | MvelInjectionTest.java:64:35:64:70 | new ExpressionCompiler(...) : ExpressionCompiler | provenance | Config |
 | MvelInjectionTest.java:65:37:65:44 | compiler : ExpressionCompiler | MvelInjectionTest.java:65:37:65:54 | compile(...) : CompiledExpression | provenance | Config |
 | MvelInjectionTest.java:65:37:65:54 | compile(...) : CompiledExpression | MvelInjectionTest.java:66:64:66:72 | statement : CompiledExpression | provenance |  |
+| MvelInjectionTest.java:66:33:66:73 | new MvelCompiledScript(...) : MvelCompiledScript | MvelInjectionTest.java:67:5:67:10 | script | provenance | Sink:MaD:1 |
 | MvelInjectionTest.java:66:33:66:73 | new MvelCompiledScript(...) : MvelCompiledScript | MvelInjectionTest.java:67:5:67:10 | script | provenance | Sink:MaD:6 |
 | MvelInjectionTest.java:66:64:66:72 | statement : CompiledExpression | MvelInjectionTest.java:66:33:66:73 | new MvelCompiledScript(...) : MvelCompiledScript | provenance | Config |
 | MvelInjectionTest.java:75:62:75:73 | read(...) : String | MvelInjectionTest.java:75:29:75:74 | compileTemplate(...) | provenance | Config Sink:MaD:9 |
