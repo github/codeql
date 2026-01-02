@@ -617,9 +617,9 @@ case @builtintype.kind of
 | 37 = @signed_int128         // signed __int128
 | 38 = @float128              // __float128
 | 39 = @complex_float128      // _Complex __float128
-// ... 40 _Decimal32
-// ... 41 _Decimal64
-// ... 42 _Decimal128
+| 40 = @decimal32             // _Decimal32
+| 41 = @decimal64             // _Decimal64
+| 42 = @decimal128            // _Decimal128
 | 43 = @char16_t
 | 44 = @char32_t
 | 45 = @std_float32           // _Float32
