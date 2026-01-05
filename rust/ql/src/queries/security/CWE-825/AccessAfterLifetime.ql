@@ -54,68 +54,33 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
 
 module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig>;
 
-private newtype TTcNode =
-  TSource(Source s, Variable target) {
-    AccessAfterLifetimeFlow::flow(s, _) and sourceValueScope(s, target, _)
-  } or
-  TBlockExpr(BlockExpr be) or
-  TSink(Sink s) { AccessAfterLifetimeFlow::flow(_, s) }
-
-private class TcNode extends TTcNode {
-  Source asSource(Variable target) { this = TSource(result, target) }
-
-  BlockExpr asBlockExpr() { this = TBlockExpr(result) }
-
-  Sink asSink() { this = TSink(result) }
-
-  string toString() {
-    result = this.asSource(_).toString()
-    or
-    result = this.asBlockExpr().toString()
-    or
-    result = this.asSink().toString()
-  }
-
-  Location getLocation() {
-    result = this.asSource(_).getLocation()
-    or
-    result = this.asBlockExpr().getLocation()
-    or
-    result = this.asSink().getLocation()
-  }
+predicate sourceBlock(Source s, Variable target, BlockExpr be) {
+  AccessAfterLifetimeFlow::flow(s, _) and
+  sourceValueScope(s, target, be.getEnclosingBlock*())
 }
 
-pragma[nomagic]
-private predicate tcStep(TcNode a, TcNode b) {
-  // `b` is a child of `a`
-  exists(Source source, Variable target, BlockExpr be |
-    source = a.asSource(target) and
-    be = b.asBlockExpr().getEnclosingBlock*() and
-    sourceValueScope(source, target, be) and
-    AccessAfterLifetimeFlow::flow(source, _)
-  )
-  or
+predicate sinkBlock(Sink s, BlockExpr be) { be = s.asExpr().getEnclosingBlock() }
+
+private predicate tcStep(BlockExpr a, BlockExpr b) {
   // propagate through function calls
   exists(Call call |
-    a.asBlockExpr() = call.getEnclosingBlock() and
-    call.getARuntimeTarget() = b.asBlockExpr().getEnclosingCallable()
+    a = call.getEnclosingBlock() and
+    call.getARuntimeTarget() = b.getEnclosingCallable()
   )
-  or
-  a.asBlockExpr() = b.asSink().asExpr().getEnclosingBlock()
 }
 
-private predicate isTcSource(TcNode n) { n instanceof TSource }
+private predicate isTcSource(BlockExpr be) { sourceBlock(_, _, be) }
 
-private predicate isTcSink(TcNode n) { n instanceof TSink }
+private predicate isTcSink(BlockExpr be) { sinkBlock(_, be) }
 
 /**
  * Holds if block `a` contains block `b`, in the sense that a stack allocated variable in
  * `a` may still be on the stack during execution of `b`. This is interprocedural,
  * but is an overapproximation that doesn't accurately track call contexts
- * (for example if `f` and `g` both call `b`, then then depending on the
+ * (for example if `f` and `g` both call `b`, then depending on the
  * caller a variable in `f` or `g` may or may-not be on the stack during `b`).
  */
-private predicate mayEncloseOnStack(TcNode a, TcNode b) =
+private predicate mayEncloseOnStack(BlockExpr a, BlockExpr b) =
   doublyBoundedFastTC(tcStep/2, isTcSource/1, isTcSink/1)(a, b)
 
 /**
@@ -126,7 +91,14 @@ private predicate mayEncloseOnStack(TcNode a, TcNode b) =
 predicate dereferenceAfterLifetime(Source source, Sink sink, Variable target) {
   AccessAfterLifetimeFlow::flow(source, sink) and
   sourceValueScope(source, target, _) and
-  not mayEncloseOnStack(TSource(source, target), TSink(sink))
+  not exists(BlockExpr beSource, BlockExpr beSink |
+    sourceBlock(source, target, beSource) and
+    sinkBlock(sink, beSink)
+  |
+    beSource = beSink
+    or
+    mayEncloseOnStack(beSource, beSink)
+  )
 }
 
 from
