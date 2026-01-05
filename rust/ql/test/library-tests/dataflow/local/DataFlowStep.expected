@@ -859,9 +859,7 @@ readStep
 | main.rs:210:9:213:9 | Point3D {...} | main.rs:187:5:187:10 | Point3D.z | main.rs:212:13:212:13 | z |
 | main.rs:211:20:211:33 | Point {...} | main.rs:158:5:158:10 | Point.x | main.rs:211:28:211:28 | x |
 | main.rs:211:20:211:33 | Point {...} | main.rs:159:5:159:10 | Point.y | main.rs:211:31:211:31 | y |
-| main.rs:225:10:225:10 | s | file://:0:0:0:0 | tuple.0 | main.rs:225:10:225:12 | s.0 |
 | main.rs:225:10:225:10 | s | main.rs:221:22:221:24 | MyTupleStruct(0) | main.rs:225:10:225:12 | s.0 |
-| main.rs:226:10:226:10 | s | file://:0:0:0:0 | tuple.1 | main.rs:226:10:226:12 | s.1 |
 | main.rs:226:10:226:10 | s | main.rs:221:27:221:29 | MyTupleStruct(1) | main.rs:226:10:226:12 | s.1 |
 | main.rs:229:9:229:27 | MyTupleStruct(...) | main.rs:221:22:221:24 | MyTupleStruct(0) | main.rs:229:23:229:23 | x |
 | main.rs:229:9:229:27 | MyTupleStruct(...) | main.rs:221:27:221:29 | MyTupleStruct(1) | main.rs:229:26:229:26 | y |
