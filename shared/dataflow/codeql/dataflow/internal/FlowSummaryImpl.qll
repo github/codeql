@@ -2506,10 +2506,7 @@ module Make<
       }
 
       private string renderProvenance(SummarizedCallable c) {
-        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
-        or
-        not c.applyManualModel() and
-        c.hasProvenance(result)
+        if c.hasManualModel() then result = "manual" else result = "generated"
       }
 
       /**
@@ -2549,10 +2546,7 @@ module Make<
       class RelevantNeutralCallable = RelevantNeutralCallableInput::RelevantNeutralCallable;
 
       private string renderProvenance(NeutralCallableInput c) {
-        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
-        or
-        not c.hasManualModel() and
-        c.hasProvenance(result)
+        if c.hasManualModel() then result = "manual" else result = "generated"
       }
 
       /**
