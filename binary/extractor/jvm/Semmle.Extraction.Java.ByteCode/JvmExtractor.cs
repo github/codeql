@@ -88,7 +88,7 @@ public class JvmExtractor
 
         // Get class name from constant pool - ClassConstant now has Name directly resolved
         var thisClassConstant = classFile.Constants.Get(classFile.This);
-        var className = thisClassConstant.Name;
+        var className = thisClassConstant.Name ?? "UnknownClass";
 
         // Extract type (class/interface/enum)
         var typeId = trap.GetId();
@@ -307,7 +307,7 @@ public class JvmExtractor
             if (!handler.CatchType.IsNil)
             {
                 var catchClassConst = classFile.Constants.Get(handler.CatchType);
-                catchType = catchClassConst.Name.Replace('/', '.');
+                catchType = catchClassConst.Name?.Replace('/', '.') ?? "";
             }
 
             trap.WriteTuple("jvm_exception_handler", handlerId, methodId, 
@@ -584,9 +584,9 @@ public class JvmExtractor
             var fieldRef = classFile.Constants.Get(new FieldrefConstantHandle(handle.Slot));
 
             trap.WriteTuple("jvm_field_operand", instrId, 
-                fieldRef.ClassName.Replace('/', '.'),
-                fieldRef.Name,
-                fieldRef.Descriptor);
+                fieldRef.ClassName?.Replace('/', '.') ?? "",
+                fieldRef.Name ?? "",
+                fieldRef.Descriptor ?? "");
         }
         catch
         {
@@ -607,33 +607,33 @@ public class JvmExtractor
                 case OpCode.InvokeVirtual:
                     var virtHandle = instr.AsInvokeVirtual().Method;
                     var virtRef = classFile.Constants.Get(new MethodrefConstantHandle(virtHandle.Slot));
-                    className = virtRef.ClassName.Replace('/', '.');
-                    methodName = virtRef.Name;
-                    descriptor = virtRef.Descriptor;
+                    className = virtRef.ClassName?.Replace('/', '.') ?? "";
+                    methodName = virtRef.Name ?? "";
+                    descriptor = virtRef.Descriptor ?? "";
                     break;
 
                 case OpCode.InvokeSpecial:
                     var specHandle = instr.AsInvokeSpecial().Method;
                     var specRef = classFile.Constants.Get(new MethodrefConstantHandle(specHandle.Slot));
-                    className = specRef.ClassName.Replace('/', '.');
-                    methodName = specRef.Name;
-                    descriptor = specRef.Descriptor;
+                    className = specRef.ClassName?.Replace('/', '.') ?? "";
+                    methodName = specRef.Name ?? "";
+                    descriptor = specRef.Descriptor ?? "";
                     break;
 
                 case OpCode.InvokeStatic:
                     var statHandle = instr.AsInvokeStatic().Method;
                     var statRef = classFile.Constants.Get(new MethodrefConstantHandle(statHandle.Slot));
-                    className = statRef.ClassName.Replace('/', '.');
-                    methodName = statRef.Name;
-                    descriptor = statRef.Descriptor;
+                    className = statRef.ClassName?.Replace('/', '.') ?? "";
+                    methodName = statRef.Name ?? "";
+                    descriptor = statRef.Descriptor ?? "";
                     break;
 
                 case OpCode.InvokeInterface:
                     var intfHandle = instr.AsInvokeInterface().Method;
                     var intfRef = classFile.Constants.Get(new InterfaceMethodrefConstantHandle(intfHandle.Slot));
-                    className = intfRef.ClassName.Replace('/', '.');
-                    methodName = intfRef.Name;
-                    descriptor = intfRef.Descriptor;
+                    className = intfRef.ClassName?.Replace('/', '.') ?? "";
+                    methodName = intfRef.Name ?? "";
+                    descriptor = intfRef.Descriptor ?? "";
                     break;
             }
 
@@ -662,7 +662,7 @@ public class JvmExtractor
                 return;
                 
             var classConst = classFile.Constants.Get(new ClassConstantHandle(constHandle.Slot));
-            trap.WriteTuple("jvm_type_operand", instrId, classConst.Name.Replace('/', '.'));
+            trap.WriteTuple("jvm_type_operand", instrId, classConst.Name?.Replace('/', '.') ?? "");
         }
         catch
         {
