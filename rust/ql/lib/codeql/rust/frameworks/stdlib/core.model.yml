@@ -96,6 +96,8 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Pin
       - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
+      # This model is not precise, but helps in cases where a `Pin` is implicitly dereferenced.
+      - ["<core::pin::Pin>::new", "Argument[0].Reference", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::new_unchecked", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
       - ["<core::pin::Pin>::into_inner", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::into_inner_unchecked", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
@@ -116,6 +118,10 @@ extensions:
       - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Ord
+      - ["<_ as core::cmp::Ord>::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::max", "Argument[self,0]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::clamp", "Argument[self,0,1]", "ReturnValue", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
@@ -141,3 +147,9 @@ extensions:
       - ["core::ptr::write_bytes", "Argument[0]", "pointer-access", "manual"]
       - ["core::ptr::write_unaligned", "Argument[0]", "pointer-access", "manual"]
       - ["core::ptr::write_volatile", "Argument[0]", "pointer-access", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: excludeFieldTaintStep
+    data:
+      - ["core::ops::range::RangeInclusive::start"]
+      - ["core::ops::range::RangeInclusive::end"]

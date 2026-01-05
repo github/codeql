@@ -1,8 +1,5 @@
 | test.rs:12:31:12:43 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:12:31:12:43 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:17:31:17:38 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:17:31:17:38 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:22:22:22:39 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:22:22:22:39 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:26:18:26:29 | ...::read_dir | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:29:22:29:25 | path | Flow source 'FileSource' of type file (DEFAULT). |
@@ -15,8 +12,6 @@
 | test.rs:79:31:79:45 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:84:22:84:46 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:90:26:90:29 | path | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:90:26:90:29 | path | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:91:31:91:39 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:91:31:91:39 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:97:22:97:41 | ...::read_link | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:107:20:107:38 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |

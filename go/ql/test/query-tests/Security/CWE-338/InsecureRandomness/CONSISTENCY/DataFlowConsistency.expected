@@ -1,3 +1,0 @@
-identityLocalStep
-| InsecureRandomness.go:12:3:12:3 | s | Node steps to itself |
-| InsecureRandomnessGood.go:15:3:15:3 | s | Node steps to itself |

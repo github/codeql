@@ -524,7 +524,7 @@ private module CachedSteps {
   /**
    * Holds if there is a step from `pred` to `succ` through a call to an identity function.
    */
-  overlay[local]
+  overlay[local?]
   cached
   predicate identityFunctionStep(DataFlow::Node pred, DataFlow::CallNode succ) {
     exists(DataFlow::GlobalVarRefNode global |

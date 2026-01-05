@@ -1,4 +1,4 @@
-overlay[local]
+overlay[local?]
 module;
 
 private import javascript
@@ -337,14 +337,14 @@ module Public {
     /**
      * A content set containing only the given content.
      */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     ContentSet singleton(Content content) { result.asSingleton() = content }
 
     /**
      * A content set corresponding to the given property name.
      */
-    overlay[caller]
+    overlay[caller?]
     pragma[inline]
     ContentSet property(PropertyName name) { result.asSingleton().asPropertyName() = name }
 
@@ -405,7 +405,7 @@ module Public {
      * If `bound` is too large, it is truncated to the greatest lower bound we can represent.
      */
     bindingset[bound]
-    overlay[caller]
+    overlay[caller?]
     ContentSet arrayElementLowerBoundFromInt(int bound) {
       result = arrayElementLowerBound(bound.minimum(getMaxPreciseArrayIndex() + 1))
     }
@@ -416,7 +416,7 @@ module Public {
      * If `n` is too large, it is truncated to the greatest lower bound we can represent.
      */
     bindingset[n]
-    overlay[caller]
+    overlay[caller?]
     ContentSet arrayElementFromInt(int n) {
       result = arrayElementKnown(n)
       or
@@ -456,7 +456,7 @@ module Public {
      * If `key` is not one of the keys we track precisely, this is mapped to the unknown key instead.
      */
     bindingset[key]
-    overlay[caller]
+    overlay[caller?]
     ContentSet mapValueFromKey(string key) {
       result = mapValueWithKnownKey(key)
       or
@@ -519,7 +519,7 @@ module Public {
      * are mapped to their corresponding content sets (which are no longer seen as property names).
      */
     bindingset[propertyName]
-    overlay[caller]
+    overlay[caller?]
     ContentSet fromLegacyProperty(string propertyName) {
       result = fromLegacyPseudoProperty(propertyName)
       or

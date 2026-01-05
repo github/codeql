@@ -230,7 +230,7 @@ final class ExprArgumentNode extends ArgumentNode, ExprNode {
   ExprArgumentNode() {
     isArgumentForCall(n, call_, pos_) and
     not TypeInference::implicitDeref(n) and
-    not TypeInference::implicitBorrow(n)
+    not TypeInference::implicitBorrow(n, _)
   }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
@@ -579,7 +579,7 @@ newtype TNode =
     TypeInference::implicitDeref(n) and
     borrow = false
     or
-    TypeInference::implicitBorrow(n) and
+    TypeInference::implicitBorrow(n, _) and
     borrow = true
   } or
   TDerefOutNode(DerefExpr de, Boolean isPost) or

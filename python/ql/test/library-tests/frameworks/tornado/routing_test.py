@@ -1,5 +1,6 @@
 import tornado.web
 import tornado.routing
+import tornado.websocket
 
 
 class FooHandler(tornado.web.RequestHandler):
@@ -54,6 +55,26 @@ class PossiblyNotRouted(tornado.web.RequestHandler):
     def get(self):  # $ requestHandler
         self.write("NotRouted") # $ HttpResponse
 
+class WebSocket(tornado.websocket.WebSocketHandler):
+    def open(self, x): # $ requestHandler routedParameter=x
+        self.write_message("WebSocket open {}".format(x)) # $ MISSING: HttpResponse
+
+    def on_message(self, data): # $ requestHandler routedParameter=data
+        self.write_message("WebSocket on_message {}".format(data)) # $ MISSING: HttpResponse
+
+    def on_ping(self, data): # $ requestHandler routedParameter=data
+        print("ping", data)
+
+    def on_pong(self, data): # $ requestHandler routedParameter=data
+        print("pong", data)
+
+    def select_subprotocol(self, subs): # $ requestHandler routedParameter=subs
+        print("select_subprotocol", subs)
+
+    def check_origin(self, origin): # $ requestHandler routedParameter=origin
+        print("check_origin", origin)
+        return True
+
 
 def make_app():
     # see https://www.tornadoweb.org/en/stable/routing.html for even more examples
@@ -74,6 +95,7 @@ def make_app():
             (tornado.routing.HostMatches(r"(localhost|127\.0\.0\.1)"), [
                 ("/only-localhost", OnlyLocalhost)  # $ routeSetup="/only-localhost"
             ]),
+            (r"/websocket/([0-9]+)", WebSocket),  # $ routeSetup="/websocket/([0-9]+)"
 
         ],
         debug=True,

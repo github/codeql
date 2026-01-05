@@ -827,6 +827,21 @@ mod function_trait_bounds {
         }
     }
 
+    trait MyTrait2 {
+        // MyTrait2::m2
+        fn m2(self);
+    }
+
+    trait MyTrait3 {
+        // MyTrait3::m2
+        fn m2(&self);
+    }
+
+    fn bound_overlap<T: MyTrait2 + MyTrait3>(x: T, y: &T) {
+        x.m2(); // $ target=MyTrait2::m2
+        y.m2(); // $ target=MyTrait3::m2
+    }
+
     pub fn f() {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -1424,7 +1439,6 @@ mod option_methods {
         x2.set(S); // $ target=MyOption::set
         println!("{:?}", x2);
 
-        // missing type `S` from `MyOption<S>` (but can resolve `MyTrait<S>`)
         let mut x3 = MyOption::new(); // $ target=new
         x3.call_set(S); // $ target=call_set
         println!("{:?}", x3);
@@ -2626,7 +2640,7 @@ mod loops {
 
         let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:TArray.TRef.str
         for s in &strings1 {} // $ type=s:TRef.TRef.str
-        for s in &mut strings1 {} // $ type=s:TRef.TRef.str
+        for s in &mut strings1 {} // $ type=s:TRefMut.TRef.str
         for s in strings1 {} // $ type=s:TRef.str
 
         let strings2 = // $ type=strings2:TArray.String
@@ -3033,6 +3047,55 @@ mod context_typed {
 
         let y = Default::default(); // $ type=y:i32 target=default
         x.push(y); // $ target=push
+    }
+}
+
+mod literal_overlap {
+    trait MyTrait {
+        // MyTrait::f
+        fn f(self) -> Self;
+
+        // MyTrait::g
+        fn g(&self, other: &Self) -> &Self {
+            self.f() // $ target=Reff
+        }
+    }
+
+    impl MyTrait for i32 {
+        // i32f
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    impl MyTrait for usize {
+        // usizef
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    impl<T> MyTrait for &T {
+        // Reff
+        fn f(self) -> Self {
+            self
+        }
+    }
+
+    pub fn f() -> usize {
+        let mut x = 0;
+        x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f
+        x
+    }
+
+    fn g() {
+        let x: usize = 0;
+        let y = &1;
+        let z = x.g(y); // $ target=MyTrait::g
+
+        let x = 0; // $ SPURIOUS: type=x:i32 $ MISSING: type=x:usize
+        let y: usize = 1;
+        let z = x.max(y); // $ target=max
     }
 }
 

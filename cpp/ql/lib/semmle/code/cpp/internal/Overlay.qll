@@ -2,6 +2,8 @@
  * Defines entity discard predicates for C++ overlay analysis.
  */
 
+private import OverlayXml
+
 /**
  * Holds always for the overlay variant and never for the base variant.
  * This local predicate is used to define local predicates that behave
@@ -20,9 +22,21 @@ private string getLocationFilePath(@location_default loc) {
  */
 overlay[local]
 private string getSingleLocationFilePath(@element e) {
-  // @var_decl has a direct location in the var_decls relation
-  exists(@location_default loc | var_decls(e, _, _, _, loc) | result = getLocationFilePath(loc))
-  //TODO: add other kinds of elements with single locations
+  exists(@location_default loc |
+    var_decls(e, _, _, _, loc)
+    or
+    fun_decls(e, _, _, _, loc)
+    or
+    type_decls(e, _, loc)
+    or
+    namespace_decls(e, _, loc, _)
+    or
+    macroinvocations(e, _, loc, _)
+    or
+    preprocdirects(e, _, loc)
+  |
+    result = getLocationFilePath(loc)
+  )
 }
 
 /**
@@ -30,11 +44,17 @@ private string getSingleLocationFilePath(@element e) {
  */
 overlay[local]
 private string getMultiLocationFilePath(@element e) {
-  // @variable gets its location(s) from its @var_decl(s)
-  exists(@var_decl vd, @location_default loc | var_decls(vd, e, _, _, loc) |
+  exists(@location_default loc |
+    exists(@var_decl vd | var_decls(vd, e, _, _, loc))
+    or
+    exists(@fun_decl fd | fun_decls(fd, e, _, _, loc))
+    or
+    exists(@type_decl td | type_decls(td, e, loc))
+    or
+    exists(@namespace_decl nd | namespace_decls(nd, e, loc, _))
+  |
     result = getLocationFilePath(loc)
   )
-  //TODO: add other kinds of elements with multiple locations
 }
 
 /**

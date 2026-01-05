@@ -2,7 +2,7 @@
  * Provides classes for working with
  * [Asynchronous Module Definitions](https://github.com/amdjs/amdjs-api/wiki/AMD).
  */
-overlay[local]
+overlay[local?]
 module;
 
 import javascript

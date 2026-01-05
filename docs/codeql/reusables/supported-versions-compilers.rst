@@ -15,7 +15,7 @@
 
    .NET Core up to 3.1
 
-   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.slnx``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
    Go (aka Golang), "Go up to 1.25", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 25 [6]_","javac (OpenJDK and Oracle JDK),
