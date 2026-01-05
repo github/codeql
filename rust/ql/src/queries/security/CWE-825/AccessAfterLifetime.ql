@@ -59,7 +59,10 @@ predicate sourceBlock(Source s, Variable target, BlockExpr be) {
   sourceValueScope(s, target, be.getEnclosingBlock*())
 }
 
-predicate sinkBlock(Sink s, BlockExpr be) { be = s.asExpr().getEnclosingBlock() }
+predicate sinkBlock(Sink s, BlockExpr be) {
+  AccessAfterLifetimeFlow::flow(_, s) and
+  be = s.asExpr().getEnclosingBlock()
+}
 
 private predicate tcStep(BlockExpr a, BlockExpr b) {
   // propagate through function calls
