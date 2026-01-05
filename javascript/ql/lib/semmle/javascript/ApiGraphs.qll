@@ -132,7 +132,7 @@ module API {
      */
     pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
-      Impl::trackUseNode(this.asSource()).flowsTo(result)
+      Impl::trackUseNode(this.asSource(), result.getALocalSource())
     }
 
     /**
@@ -171,7 +171,7 @@ module API {
     CallNode getMaybePromisifiedCall() {
       result = this.getACall()
       or
-      result = Impl::getAPromisifiedInvocation(this, _, _)
+      Impl::getAPromisifiedInvocation(this, _, _, result)
     }
 
     /**
@@ -210,7 +210,7 @@ module API {
      * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
      * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
+    DataFlow::Node getAValueReachingSink() { Impl::trackDefNode(this.asSink(), result) }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -855,7 +855,7 @@ module API {
           )
           or
           exists(DataFlow::Node def, DataFlow::SourceNode pred |
-            rhs(base, def) and pred = trackDefNode(def)
+            rhs(base, def) and trackDefNode(def, pred)
           |
             // from `x` to a definition of `x.prop`
             exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
@@ -956,8 +956,11 @@ module API {
             lbl = Label::spreadArgument(i)
           )
           or
-          exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
-            use(base, src) and pw = trackUseNode(src).getAPropertyWrite() and rhs = pw.getRhs()
+          exists(DataFlow::SourceNode src, DataFlow::SourceNode mid, DataFlow::PropWrite pw |
+            use(base, src) and
+            trackUseNode(src, mid) and
+            pw = mid.getAPropertyWrite() and
+            rhs = pw.getRhs()
           |
             lbl = Label::memberFromRef(pw)
           )
@@ -1099,7 +1102,7 @@ module API {
           )
           or
           exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
-            use(base, src) and pred = trackUseNode(src)
+            use(base, src) and trackUseNode(src, pred)
           |
             lbl = Label::instance() and
             ref = pred.getAnInstantiation()
@@ -1133,7 +1136,7 @@ module API {
           )
           or
           exists(DataFlow::Node def, DataFlow::FunctionNode fn |
-            rhs(base, def) and fn = trackDefNode(def)
+            rhs(base, def) and trackDefNode(def, fn)
           |
             exists(int i |
               lbl = Label::parameter(i) and
@@ -1145,7 +1148,7 @@ module API {
           )
           or
           exists(DataFlow::Node def, DataFlow::ClassNode cls, int i |
-            rhs(base, def) and cls = trackDefNode(def)
+            rhs(base, def) and trackDefNode(def, cls)
           |
             lbl = Label::parameter(i) and
             ref = cls.getConstructor().getParameter(i)
@@ -1188,7 +1191,7 @@ module API {
       private predicate useNodeFlowsToDecorator(TApiNode base, Decorator decorator) {
         exists(DataFlow::SourceNode decoratorSrc |
           use(base, decoratorSrc) and
-          trackUseNode(decoratorSrc).flowsToExpr(decorator.getExpression())
+          trackUseNode(decoratorSrc, decorator.getExpression().flow().getALocalSource())
         )
       }
 
@@ -1271,9 +1274,9 @@ module API {
       private predicate needsDefNode(DataFlow::ClassNode cls) {
         hasSemantics(cls) and
         (
-          cls = trackDefNode(_)
+          trackDefNode(_, cls)
           or
-          cls.getAnInstanceReference() = trackDefNode(_)
+          trackDefNode(_, cls.getAnInstanceReference())
           or
           needsDefNode(cls.getADirectSubClass())
           or
@@ -1296,8 +1299,8 @@ module API {
           exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
             ref = DataFlow::exportsVarNode(mod)
             or
-            exists(DataFlow::Node base | use(MkModuleDef(m), base) |
-              ref = trackUseNode(base).getAPropertyRead("exports")
+            exists(DataFlow::Node base, DataFlow::SourceNode mid | use(MkModuleDef(m), base) |
+              trackUseNode(base, mid) and ref = mid.getAPropertyRead("exports")
             )
           )
           or
@@ -1415,34 +1418,36 @@ module API {
       }
 
       /**
-       * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some node.
+       * Holds if `target` is inter-procedurally reachable from `nd`, which is a use of some node.
        */
-      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-        result = trackUseNode(nd, false, 0, "")
+      predicate trackUseNode(DataFlow::SourceNode nd, DataFlow::SourceNode target) {
+        target = trackUseNode(nd, false, 0, "")
       }
 
       /**
        * Gets a node whose forward tracking reaches `nd` in some state (e.g. possibly inside a content at this point).
        */
-      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) {
-        result = trackUseNode(nd, _, _, _, _)
+      predicate trackUseNodeAnyState(DataFlow::SourceNode nd, DataFlow::SourceNode target) {
+        target = trackUseNode(nd, _, _, _, _)
       }
 
-      private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
+      private predicate trackDefNode(
+        DataFlow::Node nd, DataFlow::TypeBackTracker t, DataFlow::SourceNode target
+      ) {
         t.start() and
         rhs(_, nd) and
-        result = nd.getALocalSource()
+        target = nd.getALocalSource()
         or
         // additional backwards step from `require('m')` to `exports` or `module.exports` in m
-        exists(Import imp | imp.getImportedModuleNodeStrict() = trackDefNode(nd, t.continue()) |
-          result = DataFlow::exportsVarNode(imp.getImportedModule())
+        exists(Import imp | trackDefNode(nd, t.continue(), imp.getImportedModuleNodeStrict()) |
+          target = DataFlow::exportsVarNode(imp.getImportedModule())
           or
-          result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
+          target = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
         )
         or
         exists(ObjectExpr obj |
-          obj = trackDefNode(nd, t.continue()).asExpr() and
-          result =
+          trackDefNode(nd, t.continue(), obj.flow()) and
+          target =
             obj.getAProperty()
                 .(SpreadProperty)
                 .getInit()
@@ -1452,7 +1457,7 @@ module API {
                 .getALocalSource()
         )
         or
-        t = defStep(nd, result)
+        t = defStep(nd, target)
       }
 
       /**
@@ -1465,7 +1470,7 @@ module API {
       pragma[noopt]
       private DataFlow::TypeBackTracker defStep(DataFlow::Node nd, DataFlow::SourceNode prev) {
         exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
-          next = trackDefNode(nd, t) and
+          trackDefNode(nd, t, next) and
           StepSummary::step(prev, next, summary) and
           result = t.prepend(summary) and
           // Block argument-passing into 'this' when it determines the call target
@@ -1474,16 +1479,18 @@ module API {
       }
 
       /**
-       * Gets a node that inter-procedurally flows into `nd`, which is a definition of some node.
+       * Holds if `target` inter-procedurally flows into `nd`, which is a definition of some node.
        */
-      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
-        result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
+      predicate trackDefNode(DataFlow::Node nd, DataFlow::SourceNode target) {
+        trackDefNode(nd, DataFlow::TypeBackTracker::end(), target)
       }
 
       /**
        * Gets a node reached by the backwards tracking of `nd` in some state (e.g. possibly inside a content at this point).
        */
-      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) { result = trackDefNode(nd, _) }
+      predicate trackDefNodeAnyState(DataFlow::Node nd, DataFlow::SourceNode target) {
+        trackDefNode(nd, _, target)
+      }
 
       private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
         t.startInPromise() and
@@ -1539,10 +1546,11 @@ module API {
           )
         )
         or
-        exists(DataFlow::Node def |
+        exists(DataFlow::Node def, DataFlow::Node mid |
           rhs(pred, def) and
           lbl = Label::instance() and
-          succ = MkClassInstance(trackDefNode(def))
+          trackDefNode(def, mid) and
+          succ = MkClassInstance(mid)
         )
         or
         exists(string moduleName, string exportName |
@@ -1554,14 +1562,14 @@ module API {
         exists(DataFlow::Node nd, DataFlow::FunctionNode f |
           f.getFunction().isAsync() and
           pred = MkDef(nd) and
-          f = trackDefNode(nd) and
+          trackDefNode(nd, f) and
           lbl = Label::return() and
           succ = MkDef(f.getReturnNode())
         )
         or
         exists(int bound, DataFlow::InvokeNode call |
           lbl = Label::parameter(bound + call.getNumArgument()) and
-          call = getAPromisifiedInvocation(pred, bound, succ)
+          getAPromisifiedInvocation(pred, bound, succ, call)
         )
       }
 
@@ -1569,11 +1577,13 @@ module API {
        * Gets a call to a promisified function represented by `callee` where
        * `bound` arguments have been bound.
        */
-      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
+      predicate getAPromisifiedInvocation(
+        TApiNode callee, int bound, TApiNode succ, DataFlow::InvokeNode invoke
+      ) {
         exists(DataFlow::SourceNode src |
           use(callee, src) and
-          trackUseNode(src, true, bound, "").flowsTo(result.getCalleeNode()) and
-          succ = Impl::MkSyntheticCallbackArg(result)
+          trackUseNode(src, true, bound, "").flowsTo(invoke.getCalleeNode()) and
+          succ = Impl::MkSyntheticCallbackArg(invoke)
         )
       }
     }
@@ -1606,23 +1616,24 @@ module API {
 
       predicate rhs(TApiNode node, DataFlow::Node def) = forceLocal(Stage1::rhs/2)(node, def)
 
-      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) =
-        forceLocal(Stage1::trackUseNode/1)(nd, result)
+      predicate trackUseNode(DataFlow::SourceNode nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackUseNode/2)(nd, target)
 
-      DataFlow::SourceNode trackUseNodeAnyState(DataFlow::SourceNode nd) =
-        forceLocal(Stage1::trackUseNodeAnyState/1)(nd, result)
+      predicate trackUseNodeAnyState(DataFlow::SourceNode nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackUseNodeAnyState/2)(nd, target)
 
-      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) =
-        forceLocal(Stage1::trackDefNode/1)(nd, result)
+      predicate trackDefNode(DataFlow::Node nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackDefNode/2)(nd, target)
 
-      DataFlow::SourceNode trackDefNodeAnyState(DataFlow::Node nd) =
-        forceLocal(Stage1::trackDefNodeAnyState/1)(nd, result)
+      predicate trackDefNodeAnyState(DataFlow::Node nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackDefNodeAnyState/2)(nd, target)
 
       predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
         forceLocal(Stage1::edge/3)(pred, lbl, succ)
 
-      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) =
-        forceLocal(Stage1::getAPromisifiedInvocation/3)(callee, bound, succ, result)
+      predicate getAPromisifiedInvocation(
+        TApiNode callee, int bound, TApiNode succ, DataFlow::InvokeNode invoke
+      ) = forceLocal(Stage1::getAPromisifiedInvocation/4)(callee, bound, succ, invoke)
     }
 
     private module Stage2Input implements StageInputSig {
@@ -1651,8 +1662,9 @@ module API {
       /** Holds if use-node tracking starting at `nd` can reach a node in the overlay. */
       pragma[nomagic]
       private predicate shouldTrackIntoOverlay(DataFlow::SourceNode nd) {
-        exists(DataFlow::Node overlayNode |
-          stepIntoOverlay(Stage1Local::trackUseNodeAnyState(nd), overlayNode)
+        exists(DataFlow::Node mid |
+          Stage1Local::trackUseNodeAnyState(nd, mid) and
+          stepIntoOverlay(mid, _)
         )
       }
 
@@ -1677,8 +1689,9 @@ module API {
       /** Holds if def-node tracking starting at `nd` can reach a node in the overlay. */
       pragma[nomagic]
       private predicate shouldBacktrackIntoOverlay(DataFlow::Node nd) {
-        exists(DataFlow::Node overlayNode |
-          stepOutOfOverlay(overlayNode, Stage1Local::trackDefNodeAnyState(nd))
+        exists(DataFlow::Node mid |
+          Stage1Local::trackDefNodeAnyState(nd, mid) and
+          stepOutOfOverlay(_, mid)
         )
       }
 
@@ -1714,17 +1727,17 @@ module API {
       }
 
       cached
-      DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-        result = Stage1Local::trackUseNode(nd)
+      predicate trackUseNode(DataFlow::SourceNode nd, DataFlow::SourceNode target) {
+        Stage1Local::trackUseNode(nd, target)
         or
-        result = Stage2::trackUseNode(nd)
+        Stage2::trackUseNode(nd, target)
       }
 
       cached
-      DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
-        result = Stage1Local::trackDefNode(nd)
+      predicate trackDefNode(DataFlow::Node nd, DataFlow::SourceNode target) {
+        Stage1Local::trackDefNode(nd, target)
         or
-        result = Stage2::trackDefNode(nd)
+        Stage2::trackDefNode(nd, target)
       }
 
       cached
@@ -1735,10 +1748,12 @@ module API {
       }
 
       cached
-      DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
-        result = Stage1Local::getAPromisifiedInvocation(callee, bound, succ)
+      predicate getAPromisifiedInvocation(
+        TApiNode callee, int bound, TApiNode succ, DataFlow::InvokeNode invoke
+      ) {
+        Stage1Local::getAPromisifiedInvocation(callee, bound, succ, invoke)
         or
-        result = Stage2::getAPromisifiedInvocation(callee, bound, succ)
+        Stage2::getAPromisifiedInvocation(callee, bound, succ, invoke)
       }
     }
 
@@ -1808,7 +1823,7 @@ module API {
     InvokeNode() {
       this = callee.getReturn().asSource() or
       this = callee.getInstance().asSource() or
-      this = Impl::getAPromisifiedInvocation(callee, _, _)
+      Impl::getAPromisifiedInvocation(callee, _, _, this)
     }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
