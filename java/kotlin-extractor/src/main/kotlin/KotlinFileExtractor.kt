@@ -1343,7 +1343,7 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames =
-                isUnderscoreParameter(vp) ||
+                vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER ||
                     ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             val javaParameter =
                 when (val callable = (vp.parent as? IrFunction)?.let { getJavaCallable(it) }) {
@@ -2836,7 +2836,7 @@ open class KotlinFileExtractor(
             when {
                 kind == IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
                 kind == IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
-                kind == kind_ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
+                kind == IrSyntheticBodyKind.ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
                 else -> {
                     logger.errorElement("Unhandled synthetic body kind " + kind, b)
                 }
@@ -3344,7 +3344,7 @@ open class KotlinFileExtractor(
         // that specified the default values, which will in turn dynamically dispatch back to the
         // relevant override.
         val overriddenCallTarget =
-            (callTarget as? IrSimpleFunction)?.allOverriddenIncludingSelf()?.firstOrNull {
+            (callTarget as? IrSimpleFunction)?.allOverridden(includeSelf = true)?.firstOrNull {
                 it.overriddenSymbols.isEmpty() &&
                     it.valueParameters.any { p -> p.defaultValue != null }
             } ?: callTarget

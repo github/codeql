@@ -936,7 +936,7 @@ open class KotlinUsesExtractor(
                 return arrayInfo.componentTypeResults
             }
             owner is IrClass -> {
-                val args = if (s.codeQlIsRawType()) null else s.arguments
+                val args = if (s.isRawType()) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullableCodeQL())
             }

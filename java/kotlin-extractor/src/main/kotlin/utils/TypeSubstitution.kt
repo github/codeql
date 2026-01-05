@@ -3,7 +3,6 @@ package com.github.codeql.utils
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.Logger
 import com.github.codeql.getJavaEquivalentClassId
-import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
 import com.github.codeql.utils.versions.*
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -21,6 +20,8 @@ import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.symbols.impl.DescriptorlessExternalPackageFragmentSymbol
 import org.jetbrains.kotlin.ir.types.addAnnotations
 import org.jetbrains.kotlin.ir.types.classifierOrNull
+import org.jetbrains.kotlin.ir.types.makeNotNull
+import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrStarProjection
@@ -35,6 +36,14 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
+
+fun IrType.codeQlWithHasQuestionMark(b: Boolean): IrType {
+    if (b) {
+        return this.makeNullable()
+    } else {
+        return this.makeNotNull()
+    }
+}
 
 fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: List<IrTypeArgument>) =
     when (this) {
