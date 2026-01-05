@@ -45,4 +45,4 @@
     .. [12] Support for the analysis of Swift requires macOS.
     .. [13] Embedded Swift is not supported.
     .. [14] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
-    .. [15] Support for Kotlin versions 1.6 and 1.7 is deprecated and will be removed in release 2.24.1
+    .. [15] Support for Kotlin versions 1.6 and 1.7 is deprecated and will be removed in release 2.24.1.
