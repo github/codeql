@@ -1945,7 +1945,7 @@ case @x86_instruction.mnemonic of
 | 1885 = @x86_xtest
 ;
 
-@instruction = @x86_instruction | @il_instruction;
+@instruction = @x86_instruction | @il_instruction | @jvm_instruction;
 
 #keyset[a, b]
 instruction(
@@ -2546,4 +2546,378 @@ il_exception_handler(
   int try_end: int ref,
   int handler_start: int ref,
   int handler_end: int ref
+);
+
+// =====================================================
+// JVM (Java Virtual Machine) bytecode instructions
+// =====================================================
+
+case @jvm_instruction.mnemonic of
+  0x00 = @jvm_nop
+| 0x01 = @jvm_aconst_null
+| 0x02 = @jvm_iconst_m1
+| 0x03 = @jvm_iconst_0
+| 0x04 = @jvm_iconst_1
+| 0x05 = @jvm_iconst_2
+| 0x06 = @jvm_iconst_3
+| 0x07 = @jvm_iconst_4
+| 0x08 = @jvm_iconst_5
+| 0x09 = @jvm_lconst_0
+| 0x0A = @jvm_lconst_1
+| 0x0B = @jvm_fconst_0
+| 0x0C = @jvm_fconst_1
+| 0x0D = @jvm_fconst_2
+| 0x0E = @jvm_dconst_0
+| 0x0F = @jvm_dconst_1
+| 0x10 = @jvm_bipush
+| 0x11 = @jvm_sipush
+| 0x12 = @jvm_ldc
+| 0x13 = @jvm_ldc_w
+| 0x14 = @jvm_ldc2_w
+| 0x15 = @jvm_iload
+| 0x16 = @jvm_lload
+| 0x17 = @jvm_fload
+| 0x18 = @jvm_dload
+| 0x19 = @jvm_aload
+| 0x1A = @jvm_iload_0
+| 0x1B = @jvm_iload_1
+| 0x1C = @jvm_iload_2
+| 0x1D = @jvm_iload_3
+| 0x1E = @jvm_lload_0
+| 0x1F = @jvm_lload_1
+| 0x20 = @jvm_lload_2
+| 0x21 = @jvm_lload_3
+| 0x22 = @jvm_fload_0
+| 0x23 = @jvm_fload_1
+| 0x24 = @jvm_fload_2
+| 0x25 = @jvm_fload_3
+| 0x26 = @jvm_dload_0
+| 0x27 = @jvm_dload_1
+| 0x28 = @jvm_dload_2
+| 0x29 = @jvm_dload_3
+| 0x2A = @jvm_aload_0
+| 0x2B = @jvm_aload_1
+| 0x2C = @jvm_aload_2
+| 0x2D = @jvm_aload_3
+| 0x2E = @jvm_iaload
+| 0x2F = @jvm_laload
+| 0x30 = @jvm_faload
+| 0x31 = @jvm_daload
+| 0x32 = @jvm_aaload
+| 0x33 = @jvm_baload
+| 0x34 = @jvm_caload
+| 0x35 = @jvm_saload
+| 0x36 = @jvm_istore
+| 0x37 = @jvm_lstore
+| 0x38 = @jvm_fstore
+| 0x39 = @jvm_dstore
+| 0x3A = @jvm_astore
+| 0x3B = @jvm_istore_0
+| 0x3C = @jvm_istore_1
+| 0x3D = @jvm_istore_2
+| 0x3E = @jvm_istore_3
+| 0x3F = @jvm_lstore_0
+| 0x40 = @jvm_lstore_1
+| 0x41 = @jvm_lstore_2
+| 0x42 = @jvm_lstore_3
+| 0x43 = @jvm_fstore_0
+| 0x44 = @jvm_fstore_1
+| 0x45 = @jvm_fstore_2
+| 0x46 = @jvm_fstore_3
+| 0x47 = @jvm_dstore_0
+| 0x48 = @jvm_dstore_1
+| 0x49 = @jvm_dstore_2
+| 0x4A = @jvm_dstore_3
+| 0x4B = @jvm_astore_0
+| 0x4C = @jvm_astore_1
+| 0x4D = @jvm_astore_2
+| 0x4E = @jvm_astore_3
+| 0x4F = @jvm_iastore
+| 0x50 = @jvm_lastore
+| 0x51 = @jvm_fastore
+| 0x52 = @jvm_dastore
+| 0x53 = @jvm_aastore
+| 0x54 = @jvm_bastore
+| 0x55 = @jvm_castore
+| 0x56 = @jvm_sastore
+| 0x57 = @jvm_pop
+| 0x58 = @jvm_pop2
+| 0x59 = @jvm_dup
+| 0x5A = @jvm_dup_x1
+| 0x5B = @jvm_dup_x2
+| 0x5C = @jvm_dup2
+| 0x5D = @jvm_dup2_x1
+| 0x5E = @jvm_dup2_x2
+| 0x5F = @jvm_swap
+| 0x60 = @jvm_iadd
+| 0x61 = @jvm_ladd
+| 0x62 = @jvm_fadd
+| 0x63 = @jvm_dadd
+| 0x64 = @jvm_isub
+| 0x65 = @jvm_lsub
+| 0x66 = @jvm_fsub
+| 0x67 = @jvm_dsub
+| 0x68 = @jvm_imul
+| 0x69 = @jvm_lmul
+| 0x6A = @jvm_fmul
+| 0x6B = @jvm_dmul
+| 0x6C = @jvm_idiv
+| 0x6D = @jvm_ldiv
+| 0x6E = @jvm_fdiv
+| 0x6F = @jvm_ddiv
+| 0x70 = @jvm_irem
+| 0x71 = @jvm_lrem
+| 0x72 = @jvm_frem
+| 0x73 = @jvm_drem
+| 0x74 = @jvm_ineg
+| 0x75 = @jvm_lneg
+| 0x76 = @jvm_fneg
+| 0x77 = @jvm_dneg
+| 0x78 = @jvm_ishl
+| 0x79 = @jvm_lshl
+| 0x7A = @jvm_ishr
+| 0x7B = @jvm_lshr
+| 0x7C = @jvm_iushr
+| 0x7D = @jvm_lushr
+| 0x7E = @jvm_iand
+| 0x7F = @jvm_land
+| 0x80 = @jvm_ior
+| 0x81 = @jvm_lor
+| 0x82 = @jvm_ixor
+| 0x83 = @jvm_lxor
+| 0x84 = @jvm_iinc
+| 0x85 = @jvm_i2l
+| 0x86 = @jvm_i2f
+| 0x87 = @jvm_i2d
+| 0x88 = @jvm_l2i
+| 0x89 = @jvm_l2f
+| 0x8A = @jvm_l2d
+| 0x8B = @jvm_f2i
+| 0x8C = @jvm_f2l
+| 0x8D = @jvm_f2d
+| 0x8E = @jvm_d2i
+| 0x8F = @jvm_d2l
+| 0x90 = @jvm_d2f
+| 0x91 = @jvm_i2b
+| 0x92 = @jvm_i2c
+| 0x93 = @jvm_i2s
+| 0x94 = @jvm_lcmp
+| 0x95 = @jvm_fcmpl
+| 0x96 = @jvm_fcmpg
+| 0x97 = @jvm_dcmpl
+| 0x98 = @jvm_dcmpg
+| 0x99 = @jvm_ifeq
+| 0x9A = @jvm_ifne
+| 0x9B = @jvm_iflt
+| 0x9C = @jvm_ifge
+| 0x9D = @jvm_ifgt
+| 0x9E = @jvm_ifle
+| 0x9F = @jvm_if_icmpeq
+| 0xA0 = @jvm_if_icmpne
+| 0xA1 = @jvm_if_icmplt
+| 0xA2 = @jvm_if_icmpge
+| 0xA3 = @jvm_if_icmpgt
+| 0xA4 = @jvm_if_icmple
+| 0xA5 = @jvm_if_acmpeq
+| 0xA6 = @jvm_if_acmpne
+| 0xA7 = @jvm_goto
+| 0xA8 = @jvm_jsr
+| 0xA9 = @jvm_ret
+| 0xAA = @jvm_tableswitch
+| 0xAB = @jvm_lookupswitch
+| 0xAC = @jvm_ireturn
+| 0xAD = @jvm_lreturn
+| 0xAE = @jvm_freturn
+| 0xAF = @jvm_dreturn
+| 0xB0 = @jvm_areturn
+| 0xB1 = @jvm_return
+| 0xB2 = @jvm_getstatic
+| 0xB3 = @jvm_putstatic
+| 0xB4 = @jvm_getfield
+| 0xB5 = @jvm_putfield
+| 0xB6 = @jvm_invokevirtual
+| 0xB7 = @jvm_invokespecial
+| 0xB8 = @jvm_invokestatic
+| 0xB9 = @jvm_invokeinterface
+| 0xBA = @jvm_invokedynamic
+| 0xBB = @jvm_new
+| 0xBC = @jvm_newarray
+| 0xBD = @jvm_anewarray
+| 0xBE = @jvm_arraylength
+| 0xBF = @jvm_athrow
+| 0xC0 = @jvm_checkcast
+| 0xC1 = @jvm_instanceof
+| 0xC2 = @jvm_monitorenter
+| 0xC3 = @jvm_monitorexit
+| 0xC4 = @jvm_wide
+| 0xC5 = @jvm_multianewarray
+| 0xC6 = @jvm_ifnull
+| 0xC7 = @jvm_ifnonnull
+| 0xC8 = @jvm_goto_w
+| 0xC9 = @jvm_jsr_w
+;
+
+/**
+ * JVM bytecode instructions within method bodies.
+ * Each instruction represents a single JVM opcode.
+ * 
+ * The mnemonic is the numeric opcode value (0x00-0xC9).
+ * The offset is the byte offset of the instruction within the method body.
+ */
+jvm_instruction(
+  unique int id: @jvm_instruction,
+  int offset: int ref,
+  int mnemonic: int ref
+);
+
+/**
+ * Links JVM instructions to their containing method.
+ */
+jvm_instruction_method(
+  unique int instr: @jvm_instruction ref,
+  int method: @method ref
+);
+
+/**
+ * Parent relationship between JVM instructions and methods.
+ * The index represents the sequential position of the instruction (0-based).
+ */
+#keyset[instruction, index]
+jvm_instruction_parent(
+  int instruction: @jvm_instruction ref,
+  int index: int ref,
+  int method: @method ref
+);
+
+/**
+ * Branch target for JVM branch instructions.
+ * target_offset is the absolute byte offset in the method body.
+ */
+jvm_branch_target(
+  unique int instr: @jvm_instruction ref,
+  int target_offset: int ref
+);
+
+/**
+ * Unresolved call target for invoke instructions.
+ * target_name is the fully qualified method name (e.g., "java.lang.String.length").
+ */
+jvm_call_target_unresolved(
+  unique int instr: @jvm_instruction ref,
+  string target_name: string ref
+);
+
+/**
+ * Number of arguments for invoke instructions.
+ */
+jvm_number_of_arguments(
+  unique int instr: @jvm_instruction ref,
+  int count: int ref
+);
+
+/**
+ * Indicates that an invoke instruction returns a value (non-void).
+ */
+jvm_call_has_return_value(
+  unique int instr: @jvm_instruction ref
+);
+
+/**
+ * Local variable index operand for load/store instructions.
+ */
+jvm_operand_local_index(
+  unique int instr: @jvm_instruction ref,
+  int local_index: int ref
+);
+
+/**
+ * Constant pool index operand.
+ */
+jvm_operand_cp_index(
+  unique int instr: @jvm_instruction ref,
+  int cp_index: int ref
+);
+
+/**
+ * Byte operand (bipush, newarray).
+ */
+jvm_operand_byte(
+  unique int instr: @jvm_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Short operand (sipush).
+ */
+jvm_operand_short(
+  unique int instr: @jvm_instruction ref,
+  int value: int ref
+);
+
+/**
+ * iinc instruction operands: local variable index and increment value.
+ */
+jvm_operand_iinc(
+  unique int instr: @jvm_instruction ref,
+  int local_index: int ref,
+  int increment: int ref
+);
+
+/**
+ * Field reference operand for get/put field instructions.
+ */
+jvm_field_operand(
+  unique int instr: @jvm_instruction ref,
+  string class_name: string ref,
+  string field_name: string ref,
+  string descriptor: string ref
+);
+
+/**
+ * Type operand for new, checkcast, instanceof, anewarray instructions.
+ */
+jvm_type_operand(
+  unique int instr: @jvm_instruction ref,
+  string type_name: string ref
+);
+
+/**
+ * Switch case entry for tableswitch and lookupswitch instructions.
+ */
+jvm_switch_case(
+  int instr: @jvm_instruction ref,
+  int case_index: int ref,
+  int match_value: int ref,
+  int target_offset: int ref
+);
+
+/**
+ * Default target for switch instructions.
+ */
+jvm_switch_default(
+  unique int instr: @jvm_instruction ref,
+  int default_offset: int ref
+);
+
+/**
+ * JVM exception handler entry.
+ */
+jvm_exception_handler(
+  unique int id: @jvm_exception_handler,
+  int method: @method ref,
+  int start_pc: int ref,
+  int end_pc: int ref,
+  int handler_pc: int ref,
+  string catch_type: string ref
+);
+
+/**
+ * JVM method parameter.
+ */
+jvm_parameter(
+  unique int id: @jvm_parameter,
+  int method: @method ref,
+  int slot_index: int ref,
+  string name: string ref,
+  string descriptor: string ref
 );

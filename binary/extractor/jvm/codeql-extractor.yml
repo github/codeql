@@ -1,0 +1,16 @@
+name: "jvm"
+aliases:
+  - "jvm"
+  - "java-bytecode"
+display_name: "Java Bytecode"
+version: 0.0.1
+column_kind: "utf16"
+build_modes:
+  - none
+file_types:
+  - name: jvm
+    display_name: Java Bytecode
+    extensions:
+      - .class
+      - .jar
+dbscheme: semmlecode.binary.dbscheme
