@@ -91,12 +91,18 @@ Function getAVulnerableMethod(string id) {
   // Direct call to vulnerable method
   result = getADirectlyVulnerableMethod(id)
   or
-  // Transitive: method calls another method that is vulnerable
+  // Transitive: method calls another method that is vulnerable (via ExternalRef for external calls)
   exists(CallInstruction call, Function callee |
     call.getEnclosingFunction() = result and
     callee = getAVulnerableMethod(id) and
     call.getTargetOperand().getAnyDef().(ExternalRefInstruction).getFullyQualifiedName() =
       callee.getFullyQualifiedName()
+  )
+  or
+  // Transitive: method calls another method that is vulnerable (via static target for direct calls)
+  exists(CallInstruction call |
+    call.getEnclosingFunction() = result and
+    call.getStaticTarget() = getAVulnerableMethod(id)
   )
   or
   // Iterator/async: if a state machine's MoveNext is vulnerable, 
