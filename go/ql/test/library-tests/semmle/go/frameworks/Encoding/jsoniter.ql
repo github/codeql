@@ -9,7 +9,7 @@ class UntrustedFunction extends Function {
   UntrustedFunction() { this.getName() = ["getUntrustedString", "getUntrustedBytes"] }
 }
 
-class RemoteSource extends DataFlow::Node, RemoteFlowSource::Range {
+class RemoteSource extends RemoteFlowSource::Range {
   RemoteSource() { this = any(UntrustedFunction f).getACall().getResult() }
 }
 

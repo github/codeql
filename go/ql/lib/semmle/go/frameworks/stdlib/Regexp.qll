@@ -61,7 +61,7 @@ module Regexp {
     }
   }
 
-  private class ExternalRegexpMatchFunction extends RegexpMatchFunction::Range, Function {
+  private class ExternalRegexpMatchFunction extends RegexpMatchFunction::Range {
     int patArg;
     int strArg;
 

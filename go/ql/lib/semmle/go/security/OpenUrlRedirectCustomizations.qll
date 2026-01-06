@@ -61,7 +61,7 @@ module OpenUrlRedirect {
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
-  class RedirectSink extends Sink, DataFlow::Node {
+  class RedirectSink extends Sink {
     RedirectSink() { this = any(Http::Redirect redir).getUrl() }
   }
 
@@ -69,7 +69,7 @@ module OpenUrlRedirect {
    * A definition of the HTTP "Location" header, considered as a sink for
    * `Configuration`.
    */
-  class LocationHeaderSink extends Sink, DataFlow::Node {
+  class LocationHeaderSink extends Sink {
     LocationHeaderSink() {
       exists(Http::HeaderWrite hw | hw.getHeaderName() = "location" | this = hw.getValue())
     }
