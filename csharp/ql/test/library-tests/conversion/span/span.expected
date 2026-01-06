@@ -1,15 +1,24 @@
+| ContravariantInterface<Base>[] | ReadOnlySpan<ContravariantInterface<Base>> |
+| ContravariantInterface<Base>[] | ReadOnlySpan<ContravariantInterface<Derived>> |
+| ContravariantInterface<Base>[] | Span<ContravariantInterface<Base>> |
 | CovariantInterface<Derived>[] | ReadOnlySpan<CovariantInterface<Base>> |
 | CovariantInterface<Derived>[] | ReadOnlySpan<CovariantInterface<Derived>> |
 | CovariantInterface<Derived>[] | Span<CovariantInterface<Derived>> |
-| Interface<Derived,String>[] | ReadOnlySpan<Interface<Derived, string>> |
-| Interface<Derived,String>[] | Span<Interface<Derived, string>> |
 | InvariantInterface<Derived>[] | ReadOnlySpan<InvariantInterface<Derived>> |
 | InvariantInterface<Derived>[] | Span<InvariantInterface<Derived>> |
+| MixedInterface<Derived,Base>[] | ReadOnlySpan<MixedInterface<Base, Derived>> |
+| MixedInterface<Derived,Base>[] | ReadOnlySpan<MixedInterface<Derived, Base>> |
+| MixedInterface<Derived,Base>[] | Span<MixedInterface<Derived, Base>> |
+| ReadOnlySpan<ContravariantInterface<Base>> | ReadOnlySpan<ContravariantInterface<Derived>> |
 | ReadOnlySpan<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Base>> |
+| ReadOnlySpan<MixedInterface<Derived, Base>> | ReadOnlySpan<MixedInterface<Base, Derived>> |
+| Span<ContravariantInterface<Base>> | ReadOnlySpan<ContravariantInterface<Base>> |
+| Span<ContravariantInterface<Base>> | ReadOnlySpan<ContravariantInterface<Derived>> |
 | Span<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Base>> |
 | Span<CovariantInterface<Derived>> | ReadOnlySpan<CovariantInterface<Derived>> |
-| Span<Interface<Derived, string>> | ReadOnlySpan<Interface<Derived, string>> |
 | Span<InvariantInterface<Derived>> | ReadOnlySpan<InvariantInterface<Derived>> |
+| Span<MixedInterface<Derived, Base>> | ReadOnlySpan<MixedInterface<Base, Derived>> |
+| Span<MixedInterface<Derived, Base>> | ReadOnlySpan<MixedInterface<Derived, Base>> |
 | Span<string> | ReadOnlySpan<string> |
 | String[] | ReadOnlySpan<string> |
 | String[] | Span<string> |

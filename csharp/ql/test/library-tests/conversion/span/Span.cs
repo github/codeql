@@ -3,9 +3,11 @@ using System.Collections.Generic;
 
 public interface CovariantInterface<out T> { }
 
+public interface ContravariantInterface<in T> { }
+
 public interface InvariantInterface<T> { }
 
-public interface Interface<out T1, T2> { }
+public interface MixedInterface<out T1, in T2> { }
 
 public class Base { }
 
@@ -16,14 +18,14 @@ public class C
     public void M()
     {
         string[] stringArray = [];
-        string[][] stringArrayArray;
-        string[,] stringArray2D;
+        string[][] stringArrayArray = [];
+        string[,] stringArray2D = new string[0, 0];
 
         Span<string> stringSpan = stringArray; // string[] -> Span<string>;
 
-        // Covariant conversions to ReadOnlySpan
-        // Assignments are included to illustrate that this compiles.
+        // Assignments are included to illustrate that it compiles.
         // Only the use of the types matter in terms of test output.
+        // Covariant conversions to ReadOnlySpan
         ReadOnlySpan<CovariantInterface<Base>> covariantInterfaceBaseReadOnlySpan;
         ReadOnlySpan<CovariantInterface<Derived>> covariantInterfaceDerivedReadOnlySpan = default;
         Span<CovariantInterface<Derived>> covariantInterfaceDerivedSpan = default;
@@ -37,18 +39,32 @@ public class C
         stringReadOnlySpan = stringSpan; // Span<string> -> ReadOnlySpan<string>;
         stringReadOnlySpan = stringArray; // string[] -> ReadOnlySpan<string>;
 
+        // Contravariant conversions to ReadOnlySpan
+        ReadOnlySpan<ContravariantInterface<Derived>> contravariantInterfaceDerivedReadOnlySpan;
+        ReadOnlySpan<ContravariantInterface<Base>> contravariantInterfaceBaseReadOnlySpan = default;
+        Span<ContravariantInterface<Base>> contravariantInterfaceBaseSpan = default;
+        ContravariantInterface<Base>[] contravariantInterfaceBaseArray = [];
+        contravariantInterfaceDerivedReadOnlySpan = contravariantInterfaceBaseReadOnlySpan; // ReadOnlySpan<ContravariantInterface<Base>> -> ReadOnlySpan<ContravariantInterface<Derived>>
+        contravariantInterfaceDerivedReadOnlySpan = contravariantInterfaceBaseSpan; // Span<ContravariantInterface<Base>> -> ReadOnlySpan<ContravariantInterface<Derived>>
+        contravariantInterfaceDerivedReadOnlySpan = contravariantInterfaceBaseArray; // ContravariantInterface<Base>[] -> ReadOnlySpan<ContravariantInterface<Derived>>
+
+        // Mixed variance conversions to ReadOnlySpan
+        ReadOnlySpan<MixedInterface<Base, Derived>> mixedInterfaceBaseReadOnlySpan;
+        ReadOnlySpan<MixedInterface<Derived, Base>> mixedInterfaceDerivedReadOnlySpan = default;
+        Span<MixedInterface<Derived, Base>> mixedInterfaceDerivedSpan = default;
+        MixedInterface<Derived, Base>[] mixedInterfaceDerivedArray = [];
+        mixedInterfaceBaseReadOnlySpan = mixedInterfaceDerivedReadOnlySpan; // ReadOnlySpan<MixedInterface<Derived, Base>> -> ReadOnlySpan<MixedInterface<Base, Derived>>
+        mixedInterfaceBaseReadOnlySpan = mixedInterfaceDerivedSpan; // Span<MixedInterface<Derived, Base>> -> ReadOnlySpan<MixedInterface<Base, Derived>>
+        mixedInterfaceBaseReadOnlySpan = mixedInterfaceDerivedArray; // MixedInterface<Derived, Base>[] -> ReadOnlySpan<MixedInterface<Base, Derived>>
+
         // Convert string to ReadOnlySpan<char>
         string s = "";
         ReadOnlySpan<char> charReadOnlySpan = s; // string -> ReadOnlySpan<char>
 
-        // Use the non-covariant interfaces to show that no conversion is possible.
+        // No conversion possible except for identity.
         ReadOnlySpan<InvariantInterface<Base>> invariantInterfaceBaseReadOnlySpan;
         ReadOnlySpan<InvariantInterface<Derived>> invariantInterfaceDerivedReadOnlySpan;
         Span<InvariantInterface<Derived>> invariantInterfaceDerivedSpan;
         InvariantInterface<Derived>[] invariantInterfaceDerivedArray;
-        ReadOnlySpan<Interface<Base, string>> interfaceBaseReadOnlySpan;
-        ReadOnlySpan<Interface<Derived, string>> interfaceDerivedReadOnlySpan;
-        Span<Interface<Derived, string>> interfaceDerivedSpan;
-        Interface<Derived, string>[] interfaceDerivedArray;
     }
 }

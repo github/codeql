@@ -535,7 +535,7 @@ predicate convSpan(Type fromType, Type toType) {
   |
     convIdentity(fromElementType, toElementType)
     or
-    convCovariance(fromElementType, toElementType)
+    convVariance(fromElementType, toElementType)
   )
   or
   fromType instanceof SystemStringClass and
@@ -835,8 +835,8 @@ predicate convConversionOperator(Type fromType, Type toType) {
   )
 }
 
-pragma[nomagic]
-private predicate convVarianceAux(UnboundGenericType ugt, GenericType fromType, GenericType toType) {
+/** 13.1.3.2: Variance conversion. */
+private predicate convVariance(GenericType fromType, GenericType toType) {
   // Semantically equivalent with
   // ```ql
   // ugt = fromType.getUnboundGeneric()
@@ -856,23 +856,10 @@ private predicate convVarianceAux(UnboundGenericType ugt, GenericType fromType, 
   // ```
   // but performance is improved by explicitly evaluating the `i`th argument
   // only when all preceding arguments are convertible.
-  Variance::convVarianceSingle(ugt, fromType, toType)
+  Variance::convVarianceSingle(_, fromType, toType)
   or
-  Variance::convVarianceMultiple(ugt, fromType, toType, ugt.getNumberOfTypeParameters() - 1)
-}
-
-/** 13.1.3.2: Variance conversion. */
-private predicate convVariance(GenericType fromType, GenericType toType) {
-  convVarianceAux(_, fromType, toType)
-}
-
-/**
- * Holds, if `fromType` is covariance convertible to `toType`.
- */
-private predicate convCovariance(GenericType fromType, GenericType toType) {
   exists(UnboundGenericType ugt |
-    convVarianceAux(ugt, fromType, toType) and
-    forall(TypeParameter tp | tp = ugt.getATypeParameter() | tp.isOut())
+    Variance::convVarianceMultiple(ugt, fromType, toType, ugt.getNumberOfTypeParameters() - 1)
   )
 }
 
