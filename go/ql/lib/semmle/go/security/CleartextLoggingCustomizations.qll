@@ -162,7 +162,7 @@ module CleartextLogging {
   }
 
   /** A call that might return a password. */
-  private class CallPasswordSource extends DataFlow::CallNode, Source {
+  private class CallPasswordSource extends Source, DataFlow::CallNode {
     string name;
 
     CallPasswordSource() {
