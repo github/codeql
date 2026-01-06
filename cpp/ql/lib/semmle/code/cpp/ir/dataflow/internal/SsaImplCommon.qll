@@ -688,14 +688,9 @@ private module Cached {
       conversionFlow(mid, instr, false, _)
     )
     or
-    exists(int ind0 |
-      exists(Operand address |
-        isDereference(operand.getDef(), address, _) and
-        isUseImpl(address, base, ind0)
-      )
-      or
-      isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
-    |
+    exists(int ind0, Operand address |
+      isDereference(operand.getDef(), address, _) and
+      isUseImpl(address, base, ind0) and
       ind0 = ind - 1
     )
   }
