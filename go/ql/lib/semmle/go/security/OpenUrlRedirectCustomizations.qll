@@ -99,20 +99,20 @@ module OpenUrlRedirect {
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard for sanitizing untrusted URLs.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Barrier { }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends Barrier instanceof RedirectCheckBarrier { }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Barrier { }
+  class RegexpCheckAsBarrierGuard extends Barrier instanceof RegexpCheckBarrier { }
 
   /**
    * A check against a constant value or the `Hostname` function,
    * considered a barrier guard for url flow.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Barrier { }
+  class UrlCheckAsBarrierGuard extends Barrier instanceof UrlCheckBarrier { }
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */
