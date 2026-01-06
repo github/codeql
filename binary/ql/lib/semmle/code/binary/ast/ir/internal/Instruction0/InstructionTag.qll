@@ -60,7 +60,24 @@ newtype TInstructionTag =
   CilStoreFieldAddressTag() or
   CilStoreFieldStoreTag() or
   CilLoadFieldAddressTag() or
-  CilLoadFieldLoadTag()
+  CilLoadFieldLoadTag() or
+  // JVM instruction tags
+  JvmCallTag() or
+  JvmCallTargetTag() or
+  JvmReturnTag() or
+  JvmLoadLocalTag() or
+  JvmStoreLocalTag() or
+  JvmBranchCJumpTag() or
+  JvmGotoJumpTag() or
+  JvmArithOpTag() or
+  JvmFieldAddressTag() or
+  JvmFieldLoadTag() or
+  JvmFieldStoreTag() or
+  JvmNewInitTag() or
+  JvmConstTag() or
+  JvmDupCopyTag() or
+  JvmPopTag() or
+  JvmNopTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -224,6 +241,55 @@ class InstructionTag extends TInstructionTag {
     or
     this = CilLoadFieldLoadTag() and
     result = "CilLoadFieldLoad"
+    or
+    // JVM instruction tags
+    this = JvmCallTag() and
+    result = "JvmCall"
+    or
+    this = JvmCallTargetTag() and
+    result = "JvmCallTarget"
+    or
+    this = JvmReturnTag() and
+    result = "JvmReturn"
+    or
+    this = JvmLoadLocalTag() and
+    result = "JvmLoadLocal"
+    or
+    this = JvmStoreLocalTag() and
+    result = "JvmStoreLocal"
+    or
+    this = JvmBranchCJumpTag() and
+    result = "JvmBranchCJump"
+    or
+    this = JvmGotoJumpTag() and
+    result = "JvmGotoJump"
+    or
+    this = JvmArithOpTag() and
+    result = "JvmArithOp"
+    or
+    this = JvmFieldAddressTag() and
+    result = "JvmFieldAddress"
+    or
+    this = JvmFieldLoadTag() and
+    result = "JvmFieldLoad"
+    or
+    this = JvmFieldStoreTag() and
+    result = "JvmFieldStore"
+    or
+    this = JvmNewInitTag() and
+    result = "JvmNewInit"
+    or
+    this = JvmConstTag() and
+    result = "JvmConst"
+    or
+    this = JvmDupCopyTag() and
+    result = "JvmDupCopy"
+    or
+    this = JvmPopTag() and
+    result = "JvmPop"
+    or
+    this = JvmNopTag() and
+    result = "JvmNop"
   }
 }
 

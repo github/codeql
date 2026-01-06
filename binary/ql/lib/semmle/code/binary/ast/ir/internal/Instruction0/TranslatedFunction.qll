@@ -230,3 +230,108 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
     none() // I don't think we need to do anything here?
   }
 }
+
+// ============================================================================
+// JVM Translated Elements
+// ============================================================================
+
+class TranslatedJvmParameter extends TranslatedElement, TTranslatedJvmParameter {
+  Raw::JvmParameter p;
+
+  TranslatedJvmParameter() { this = TTranslatedJvmParameter(p) }
+
+  override Raw::Element getRawElement() { result = p }
+
+  final override Location getLocation() { result = p.getLocation() }
+
+  override Variable getResultVariable() { none() }
+
+  override TranslatedFunction getEnclosingFunction() {
+    result = getTranslatedFunction(p.getMethod())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Option<Variable>::Option v) {
+    opcode instanceof Opcode::Init and
+    tag = SingleTag() and
+    v.asSome() = this.getLocalVariable(JvmParameterVarTag(p.getSlotIndex()))
+  }
+
+  override predicate hasLocalVariable(LocalVariableTag tag) {
+    tag = JvmParameterVarTag(p.getSlotIndex())
+  }
+
+  override string getDumpId() { result = p.getName() }
+
+  override string toString() { result = "Translation of " + p.getName() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override predicate producesResult() { any() }
+
+  final override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = SingleTag() and
+    result = this.getEnclosingFunction().getChildSuccessor(this, succType)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    none()
+  }
+
+  Instruction getEntry() { result = this.getInstruction(SingleTag()) }
+}
+
+private TranslatedJvmParameter getTranslatedJvmParameter(Raw::JvmParameter p) {
+  result.getRawElement() = p and
+  result.producesResult()
+}
+
+class TranslatedJvmMethod extends TranslatedFunction, TTranslatedJvmMethod {
+  Raw::JvmMethod method;
+
+  TranslatedJvmMethod() { this = TTranslatedJvmMethod(method) }
+
+  override Raw::Element getRawElement() { result = method }
+
+  final override Location getLocation() { result = method.getLocation() }
+
+  override predicate hasBodyInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    none()
+  }
+
+  override Instruction getBodySuccessor(InstructionTag tag, SuccessorType succType) { none() }
+
+  private TranslatedJvmParameter getParameter(int index) {
+    result = getTranslatedJvmParameter(method.getParameter(index))
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) {
+    exists(int index |
+      child = this.getParameter(index) and
+      succType instanceof DirectSuccessor
+    |
+      result = this.getParameter(index + 1).getEntry()
+      or
+      not exists(this.getParameter(index + 1)) and
+      result = getTranslatedJvmInstruction(method.getInstruction(0)).getEntry()
+    )
+  }
+
+  override string getName() { result = method.getName() }
+
+  override predicate isProgramEntryPoint() { none() }
+
+  override predicate isPublic() { any() } // TODO: Extract access modifiers
+
+  override Instruction getBodyEntry() {
+    result = this.getParameter(0).getEntry()
+    or
+    not exists(this.getParameter(0)) and
+    result = getTranslatedJvmInstruction(method.getInstruction(0)).getEntry()
+  }
+
+  final override predicate hasOrdering(LocalVariableTag tag, int ordering) {
+    tag = JvmParameterVarTag(ordering)
+  }
+}

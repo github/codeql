@@ -63,4 +63,22 @@ class TranslatedCiLType extends TranslatedType, TTranslatedCilType {
   final override Location getLocation() { result = type.getLocation() }
 }
 
+class TranslatedJvmType extends TranslatedType, TTranslatedJvmType {
+  Raw::JvmType type;
+
+  TranslatedJvmType() { this = TTranslatedJvmType(type) }
+
+  final override Raw::Element getRawElement() { result = type }
+
+  final override string getName() { result = type.getName() }
+
+  final override string getNamespace() { result = type.getPackage() }
+
+  final override TranslatedJvmMethod getAFunction() {
+    result = getTranslatedFunction(type.getAMethod())
+  }
+
+  final override Location getLocation() { result = type.getLocation() }
+}
+
 TranslatedType getTranslatedType(Raw::Element raw) { result.getRawElement() = raw }

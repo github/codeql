@@ -35,7 +35,17 @@ newtype TTempVariableTag =
   CilDupVarTag() or
   CilStoreFieldAddressVarTag() or
   CilLoadFieldAddressVarTag() or
-  CilLoadFieldLoadVarTag()
+  CilLoadFieldLoadVarTag() or
+  // JVM temp variable tags
+  JvmCallTargetVarTag() or
+  JvmCallResultVarTag() or
+  JvmLoadLocalResultVarTag() or
+  JvmConstVarTag() or
+  JvmDupVarTag() or
+  JvmArithResultVarTag() or
+  JvmNewObjVarTag() or
+  JvmFieldAddressVarTag() or
+  JvmFieldLoadVarTag()
 
 class TempVariableTag extends TTempVariableTag {
   string toString() {
@@ -149,5 +159,33 @@ class TempVariableTag extends TTempVariableTag {
     or
     this = CilLoadFieldLoadVarTag() and
     result = "ldfld"
+    or
+    // JVM temp variable tags
+    this = JvmCallTargetVarTag() and
+    result = "jvm_call_target"
+    or
+    this = JvmCallResultVarTag() and
+    result = "jvm_call_ret"
+    or
+    this = JvmLoadLocalResultVarTag() and
+    result = "jvm_ldloc"
+    or
+    this = JvmConstVarTag() and
+    result = "jvm_const"
+    or
+    this = JvmDupVarTag() and
+    result = "jvm_dup"
+    or
+    this = JvmArithResultVarTag() and
+    result = "jvm_arith"
+    or
+    this = JvmNewObjVarTag() and
+    result = "jvm_new"
+    or
+    this = JvmFieldAddressVarTag() and
+    result = "jvm_fldaddr"
+    or
+    this = JvmFieldLoadVarTag() and
+    result = "jvm_ldfld"
   }
 }

@@ -4,7 +4,7 @@ private import Headers
 private import Sections
 private import codeql.util.Unit
 
-private class TElement = @x86_instruction or @operand or @il_instruction or @method or @il_parameter or @type;
+private class TElement = @x86_instruction or @operand or @il_instruction or @method or @il_parameter or @type or @jvm_instruction or @jvm_parameter;
 
 class Element extends TElement {
   final string toString() { none() }
@@ -266,3 +266,4 @@ class ExportedEntryInstruction extends X86Instruction {
 }
 
 import internal.CilInstructions
+import internal.JvmInstructions

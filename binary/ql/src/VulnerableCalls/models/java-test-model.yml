@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: binary/vulnerable-calls
+      extensible: vulnerableCallModel
+    data:
+      - ["java.io", "PrintStream", "println", "TEST-JAVA-001"]

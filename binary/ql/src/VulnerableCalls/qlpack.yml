@@ -1,7 +1,9 @@
 name: binary/vulnerable-calls
 version: 0.0.1
 dependencies:
-  microsoft/binary-all: "*"
+  microsoft/binary-all: ${workspace}
 extractor: cil
+dataExtensions:
+  - models/**/*.yml
 dataExtensions:
   - models/**/*.yml
