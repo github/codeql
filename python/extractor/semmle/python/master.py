@@ -186,11 +186,19 @@ FormattedStringLiteral.set_name("Fstring")
 
 FormattedValue = ClassNode("FormattedValue", expr, descriptive_name='formatted value')
 
+
 AnnAssign = ClassNode("AnnAssign", stmt, descriptive_name='annotated assignment')
 
 AssignExpr = ClassNode('AssignExpr', expr, "assignment expression")
 
 SpecialOperation = ClassNode('SpecialOperation', expr, "special operation")
+
+TemplateString = ClassNode('TemplateString', expr, 'template string literal')
+
+template_string_list = ListNode(TemplateString)
+
+JoinedTemplateString = ClassNode("JoinedTemplateString", expr, descriptive_name='joined template string')
+TemplateStringPart = ClassNode('TemplateStringPart', expr, "string part of a template string")
 
 type_parameter = ClassNode('type_parameter', descriptive_name='type parameter')
 type_parameter.field('location', location)
@@ -435,6 +443,9 @@ Subscript.field('value', expr)
 Subscript.field('index', expr)
 Subscript.field('ctx', expr_context, 'context')
 
+TemplateString.field('prefix', string, 'prefix')
+TemplateString.field('values', expr_list, 'values')
+
 Try.field('body', stmt_list)
 Try.field('orelse', stmt_list, 'else block')
 Try.field('handlers', stmt_list, 'exception handlers')
@@ -484,9 +495,14 @@ PlaceHolder.field('ctx', expr_context, 'context')
 StringPart.field('text', string)
 StringPart.field('location', location)
 
+TemplateStringPart.field('text', string)
+
+
 Await.field('value', expr, 'expression waited upon')
 
 FormattedStringLiteral.field('values', expr_list)
+
+JoinedTemplateString.field('strings', template_string_list)
 
 FormattedValue.field('value', expr, "expression to be formatted")
 FormattedValue.field('conversion', string, 'type conversion')

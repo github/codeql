@@ -140,15 +140,22 @@ pub mod extra_functions {
         }
 
         fn safe(&self) -> Prefix {
+            // Remove format (f/F) and template (t/T) flags when generating a safe prefix.
             Prefix {
-                flags: self.flags.clone().replace("f", "").replace("F", ""),
+                flags: self
+                    .flags
+                    .clone()
+                    .replace("f", "")
+                    .replace("F", "")
+                    .replace("t", "")
+                    .replace("T", ""),
                 quotes: self.quotes.clone(),
             }
         }
     }
 
     fn get_prefix(s: &str) -> Prefix {
-        let flags_matcher = regex::Regex::new("^[bfurBFUR]{0,2}").unwrap();
+        let flags_matcher = regex::Regex::new("^[bfurtBFURT]{0,2}").unwrap();
         let mut end = 0;
         let flags = match flags_matcher.find(s) {
             Some(m) => {
@@ -170,7 +177,7 @@ pub mod extra_functions {
             quotes = "}";
         }
         Prefix {
-            flags: flags.to_lowercase().to_owned(),
+            flags: flags.to_owned(),
             quotes: quotes.to_owned(),
         }
     }
@@ -198,6 +205,12 @@ pub mod extra_functions {
         let p = get_prefix("\"\"\"\"\"\"");
         assert_eq!(p.flags, "");
         assert_eq!(p.quotes, "\"\"\"");
+        let p = get_prefix("t\"hello\"");
+        assert_eq!(p.flags, "t");
+        assert_eq!(p.quotes, "\"");
+        let p = get_prefix("Tr'world'");
+        assert_eq!(p.flags, "Tr");
+        assert_eq!(p.quotes, "'");
     }
 
     fn get_string_contents(s: String) -> String {
@@ -227,6 +240,10 @@ pub mod extra_functions {
         assert_eq!(get_string_contents(s.to_owned()), "");
         let s = "''''''";
         assert_eq!(get_string_contents(s.to_owned()), "");
+        let s = "t\"tmpl\"";
+        assert_eq!(get_string_contents(s.to_owned()), "tmpl");
+        let s = "Tr'world'";
+        assert_eq!(get_string_contents(s.to_owned()), "world");
     }
 
     pub struct StringPrefix;
@@ -291,7 +308,11 @@ pub mod extra_functions {
             let node = graph[parameters.param()?.into_syntax_node_ref()?];
             parameters.finish()?;
             let prefix = get_prefix(&source[node.byte_range()]).full();
-            let prefix = prefix.replace("f", "").replace("F", "");
+            let prefix = prefix
+                .replace("f", "")
+                .replace("F", "")
+                .replace("t", "")
+                .replace("T", "");
             Ok(Value::String(prefix))
         }
     }
