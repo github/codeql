@@ -2979,19 +2979,19 @@ open class KotlinFileExtractor(
                     // as a workaround to silence warnings for kotlin < 2.3 about the elvis
                     // operator being redundant.
                     // For Kotlin >= 2.3, the cast is redundant, so we need to silence that warning
-
                     @Suppress("USELESS_CAST")
-                    val delegate = (s.delegate as IrVariable?) ?: run {
-                        logger.errorElement("Local delegated property is missing delegate", s)
-                        return
-                    }
-                    extractVariable(delegate, callable, blockId, 0)
-
+                    val delegate = s.delegate as IrVariable?
                     val propId = tw.getFreshIdLabel<DbKt_property>()
-                    tw.writeKtProperties(propId, s.name.asString())
-                    tw.writeHasLocation(propId, locId)
-                    tw.writeKtPropertyDelegates(propId, useVariable(delegate))
 
+                    if (delegate == null) {
+                        // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
+                        logger.errorElement("Local delegated property is missing delegate", s)
+                    } else {
+                        extractVariable(delegate, callable, blockId, 0)
+                        tw.writeKtProperties(propId, s.name.asString())
+                        tw.writeHasLocation(propId, locId)
+                        tw.writeKtPropertyDelegates(propId, useVariable(delegate))
+                    }
                     // Getter:
                     extractStatement(s.getter, callable, blockId, 1)
                     val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
