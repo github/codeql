@@ -6,6 +6,6 @@ groups:
   - queries
 extractor: binary
 dependencies:
-  microsoft/binary-all: ${workspace}
-  codeql/suite-helpers: ${workspace}
+  microsoft/binary-all: "*"
+  codeql/suite-helpers: "*"
 warnOnImplicitThis: true
