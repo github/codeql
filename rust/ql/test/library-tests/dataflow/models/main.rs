@@ -405,6 +405,9 @@ fn test_trait_model<T: Ord>(x: T) {
 
     let x6 = source(27) < 1;
     sink(x6); // $ hasTaintFlow=27
+
+    let x7 = (source(28) as i32) < 1;
+    sink(x7);
 }
 
 #[tokio::main]

@@ -47,7 +47,7 @@ final class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets a textual representation of this callable. */
   string toString() {
-    result = [this.asCfgScope().toString(), this.asSummarizedCallable().toString()]
+    result = [this.asCfgScope().toString(), "[summarized] " + this.asSummarizedCallable()]
   }
 
   /** Gets the location of this callable. */
@@ -443,25 +443,7 @@ module RustDataFlow implements InputSig<Location> {
     exists(Call c | c = call.asCall() |
       result.asCfgScope() = c.getARuntimeTarget()
       or
-      exists(SummarizedCallable sc, Function staticTarget |
-        staticTarget = getStaticTargetExt(c) and
-        sc = result.asSummarizedCallable() and
-        // Only use summarized callables with generated summaries in case
-        // the static call target is not in the source code.
-        // Note that if `applyGeneratedModel` holds it implies that there doesn't
-        // exist a manual model.
-        not (
-          staticTarget.fromSource() and
-          sc.applyGeneratedModel()
-        )
-      |
-        sc = staticTarget
-        or
-        // only apply trait models to concrete implementations when they are not
-        // defined in source code
-        staticTarget.implements(sc) and
-        not staticTarget.fromSource()
-      )
+      result.asSummarizedCallable() = getStaticTargetExt(c)
     )
   }
 
