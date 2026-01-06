@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../NETStandard.Library/1.6.1/NETStandard.Library.csproj" />
+    <ProjectReference Include="../../NETStandard.Library/1.6.0/NETStandard.Library.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>
 </Project>

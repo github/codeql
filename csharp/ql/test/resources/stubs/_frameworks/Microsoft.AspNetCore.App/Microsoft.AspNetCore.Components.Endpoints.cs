@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Endpoints, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Endpoints, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -95,6 +95,12 @@ namespace Microsoft
                 Server = 2,
                 WebAssembly = 3,
             }
+            public sealed class ResourcePreloader : Microsoft.AspNetCore.Components.IComponent
+            {
+                void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
+                public ResourcePreloader() => throw null;
+                System.Threading.Tasks.Task Microsoft.AspNetCore.Components.IComponent.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
+            }
             namespace Routing
             {
                 public static partial class RazorComponentsEndpointHttpContextExtensions
@@ -144,6 +150,10 @@ namespace Microsoft
             public interface IRazorComponentsBuilder
             {
                 Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
+            }
+            public static partial class RazorComponentsRazorComponentBuilderExtensions
+            {
+                public static Microsoft.Extensions.DependencyInjection.IRazorComponentsBuilder RegisterPersistentService<TPersistentService>(this Microsoft.Extensions.DependencyInjection.IRazorComponentsBuilder builder, Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
             }
             public static partial class RazorComponentsServiceCollectionExtensions
             {
