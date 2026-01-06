@@ -30,6 +30,7 @@ module XPath {
     }
   }
 
+  /** A sanitizer for XPath injection. */
   abstract class Sanitizer extends DataFlow::Node { }
 
   private class ExternalSanitizer extends Sanitizer {
