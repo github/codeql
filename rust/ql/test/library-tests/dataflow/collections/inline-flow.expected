@@ -38,9 +38,7 @@ edges
 | main.rs:63:18:63:22 | SelfParam [&ref, S] | main.rs:63:56:65:9 | { ... } [&ref, S] | provenance |  |
 | main.rs:76:34:76:44 | ...: Self [S] | main.rs:77:23:77:27 | other [S] | provenance |  |
 | main.rs:77:13:77:16 | [post] self [&ref, S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | provenance |  |
-| main.rs:77:13:77:16 | [post] self [&ref, tuple.0] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, tuple.0] | provenance |  |
 | main.rs:77:13:77:18 | [post] self.0 | main.rs:77:13:77:16 | [post] self [&ref, S] | provenance |  |
-| main.rs:77:13:77:18 | [post] self.0 | main.rs:77:13:77:16 | [post] self [&ref, tuple.0] | provenance |  |
 | main.rs:77:23:77:27 | other [S] | main.rs:77:23:77:29 | other.0 | provenance |  |
 | main.rs:77:23:77:29 | other.0 | main.rs:77:13:77:18 | [post] self.0 | provenance | MaD:2 |
 | main.rs:77:23:77:29 | other.0 | main.rs:77:13:77:18 | [post] self.0 | provenance | MaD:3 |
@@ -67,55 +65,34 @@ edges
 | main.rs:94:29:94:37 | source(...) | main.rs:94:27:94:38 | S(...) [S] | provenance |  |
 | main.rs:95:14:95:14 | s [S] | main.rs:95:14:95:16 | s.0 | provenance |  |
 | main.rs:99:9:99:9 | [post] s [S] | main.rs:100:14:100:14 | s [S] | provenance |  |
-| main.rs:99:9:99:9 | [post] s [tuple.0] | main.rs:100:14:100:14 | s [tuple.0] | provenance |  |
 | main.rs:99:9:99:12 | [post] s[0] [S] | main.rs:99:9:99:9 | [post] s [S] | provenance |  |
-| main.rs:99:9:99:12 | [post] s[0] [tuple.0] | main.rs:99:9:99:9 | [post] s [tuple.0] | provenance |  |
 | main.rs:99:17:99:28 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | provenance |  |
 | main.rs:99:17:99:28 | S(...) [S] | main.rs:99:9:99:12 | [post] s[0] [S] | provenance | MaD:2 |
 | main.rs:99:17:99:28 | S(...) [S] | main.rs:99:9:99:12 | [post] s[0] [S] | provenance | MaD:3 |
-| main.rs:99:17:99:28 | S(...) [S] | main.rs:99:9:99:12 | [post] s[0] [tuple.0] | provenance | MaD:2 |
-| main.rs:99:17:99:28 | S(...) [S] | main.rs:99:9:99:12 | [post] s[0] [tuple.0] | provenance | MaD:3 |
 | main.rs:99:19:99:27 | source(...) | main.rs:99:17:99:28 | S(...) [S] | provenance |  |
 | main.rs:100:14:100:14 | s [S] | main.rs:100:14:100:16 | s.0 | provenance |  |
-| main.rs:100:14:100:14 | s [tuple.0] | main.rs:100:14:100:16 | s.0 | provenance |  |
 | main.rs:104:9:104:23 | [post] * ... [S] | main.rs:104:10:104:23 | [post] s.index_mut(...) [&ref, S] | provenance |  |
-| main.rs:104:9:104:23 | [post] * ... [tuple.0] | main.rs:104:10:104:23 | [post] s.index_mut(...) [&ref, tuple.0] | provenance |  |
 | main.rs:104:10:104:10 | [post] s [S] | main.rs:106:14:106:14 | s [S] | provenance |  |
-| main.rs:104:10:104:10 | [post] s [tuple.0] | main.rs:106:14:106:14 | s [tuple.0] | provenance |  |
 | main.rs:104:10:104:23 | [post] s.index_mut(...) [&ref, S] | main.rs:104:10:104:10 | [post] s [S] | provenance |  |
-| main.rs:104:10:104:23 | [post] s.index_mut(...) [&ref, tuple.0] | main.rs:104:10:104:10 | [post] s [tuple.0] | provenance |  |
 | main.rs:104:28:104:39 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | provenance |  |
 | main.rs:104:28:104:39 | S(...) [S] | main.rs:104:9:104:23 | [post] * ... [S] | provenance | MaD:2 |
 | main.rs:104:28:104:39 | S(...) [S] | main.rs:104:9:104:23 | [post] * ... [S] | provenance | MaD:3 |
-| main.rs:104:28:104:39 | S(...) [S] | main.rs:104:9:104:23 | [post] * ... [tuple.0] | provenance | MaD:2 |
-| main.rs:104:28:104:39 | S(...) [S] | main.rs:104:9:104:23 | [post] * ... [tuple.0] | provenance | MaD:3 |
 | main.rs:104:30:104:38 | source(...) | main.rs:104:28:104:39 | S(...) [S] | provenance |  |
 | main.rs:105:9:105:9 | [post] s [S] | main.rs:106:14:106:14 | s [S] | provenance |  |
-| main.rs:105:9:105:9 | [post] s [tuple.0] | main.rs:106:14:106:14 | s [tuple.0] | provenance |  |
 | main.rs:105:9:105:12 | [post] s[0] [S] | main.rs:105:9:105:9 | [post] s [S] | provenance |  |
-| main.rs:105:9:105:12 | [post] s[0] [tuple.0] | main.rs:105:9:105:9 | [post] s [tuple.0] | provenance |  |
 | main.rs:105:17:105:28 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | provenance |  |
 | main.rs:105:17:105:28 | S(...) [S] | main.rs:105:9:105:12 | [post] s[0] [S] | provenance | MaD:2 |
 | main.rs:105:17:105:28 | S(...) [S] | main.rs:105:9:105:12 | [post] s[0] [S] | provenance | MaD:3 |
-| main.rs:105:17:105:28 | S(...) [S] | main.rs:105:9:105:12 | [post] s[0] [tuple.0] | provenance | MaD:2 |
-| main.rs:105:17:105:28 | S(...) [S] | main.rs:105:9:105:12 | [post] s[0] [tuple.0] | provenance | MaD:3 |
 | main.rs:105:19:105:27 | source(...) | main.rs:105:17:105:28 | S(...) [S] | provenance |  |
 | main.rs:106:14:106:14 | s [S] | main.rs:106:14:106:16 | s.0 | provenance |  |
-| main.rs:106:14:106:14 | s [tuple.0] | main.rs:106:14:106:16 | s.0 | provenance |  |
 | main.rs:110:10:110:24 | [post] * ... [S] | main.rs:110:11:110:24 | [post] s.index_mut(...) [&ref, S] | provenance |  |
-| main.rs:110:10:110:24 | [post] * ... [tuple.0] | main.rs:110:11:110:24 | [post] s.index_mut(...) [&ref, tuple.0] | provenance |  |
 | main.rs:110:11:110:11 | [post] s [S] | main.rs:111:14:111:14 | s [S] | provenance |  |
-| main.rs:110:11:110:11 | [post] s [tuple.0] | main.rs:111:14:111:14 | s [tuple.0] | provenance |  |
 | main.rs:110:11:110:24 | [post] s.index_mut(...) [&ref, S] | main.rs:110:11:110:11 | [post] s [S] | provenance |  |
-| main.rs:110:11:110:24 | [post] s.index_mut(...) [&ref, tuple.0] | main.rs:110:11:110:11 | [post] s [tuple.0] | provenance |  |
 | main.rs:110:38:110:49 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | provenance |  |
 | main.rs:110:38:110:49 | S(...) [S] | main.rs:110:10:110:24 | [post] * ... [S] | provenance | MaD:2 |
 | main.rs:110:38:110:49 | S(...) [S] | main.rs:110:10:110:24 | [post] * ... [S] | provenance | MaD:3 |
-| main.rs:110:38:110:49 | S(...) [S] | main.rs:110:10:110:24 | [post] * ... [tuple.0] | provenance | MaD:2 |
-| main.rs:110:38:110:49 | S(...) [S] | main.rs:110:10:110:24 | [post] * ... [tuple.0] | provenance | MaD:3 |
 | main.rs:110:40:110:48 | source(...) | main.rs:110:38:110:49 | S(...) [S] | provenance |  |
 | main.rs:111:14:111:14 | s [S] | main.rs:111:14:111:16 | s.0 | provenance |  |
-| main.rs:111:14:111:14 | s [tuple.0] | main.rs:111:14:111:16 | s.0 | provenance |  |
 nodes
 | main.rs:15:13:15:13 | s | semmle.label | s |
 | main.rs:15:17:15:25 | source(...) | semmle.label | source(...) |
@@ -156,10 +133,8 @@ nodes
 | main.rs:63:18:63:22 | SelfParam [&ref, S] | semmle.label | SelfParam [&ref, S] |
 | main.rs:63:56:65:9 | { ... } [&ref, S] | semmle.label | { ... } [&ref, S] |
 | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | semmle.label | SelfParam [Return] [&ref, S] |
-| main.rs:76:23:76:31 | SelfParam [Return] [&ref, tuple.0] | semmle.label | SelfParam [Return] [&ref, tuple.0] |
 | main.rs:76:34:76:44 | ...: Self [S] | semmle.label | ...: Self [S] |
 | main.rs:77:13:77:16 | [post] self [&ref, S] | semmle.label | [post] self [&ref, S] |
-| main.rs:77:13:77:16 | [post] self [&ref, tuple.0] | semmle.label | [post] self [&ref, tuple.0] |
 | main.rs:77:13:77:18 | [post] self.0 | semmle.label | [post] self.0 |
 | main.rs:77:23:77:27 | other [S] | semmle.label | other [S] |
 | main.rs:77:23:77:29 | other.0 | semmle.label | other.0 |
@@ -187,53 +162,36 @@ nodes
 | main.rs:95:14:95:14 | s [S] | semmle.label | s [S] |
 | main.rs:95:14:95:16 | s.0 | semmle.label | s.0 |
 | main.rs:99:9:99:9 | [post] s [S] | semmle.label | [post] s [S] |
-| main.rs:99:9:99:9 | [post] s [tuple.0] | semmle.label | [post] s [tuple.0] |
 | main.rs:99:9:99:12 | [post] s[0] [S] | semmle.label | [post] s[0] [S] |
-| main.rs:99:9:99:12 | [post] s[0] [tuple.0] | semmle.label | [post] s[0] [tuple.0] |
 | main.rs:99:17:99:28 | S(...) [S] | semmle.label | S(...) [S] |
 | main.rs:99:19:99:27 | source(...) | semmle.label | source(...) |
 | main.rs:100:14:100:14 | s [S] | semmle.label | s [S] |
-| main.rs:100:14:100:14 | s [tuple.0] | semmle.label | s [tuple.0] |
 | main.rs:100:14:100:16 | s.0 | semmle.label | s.0 |
 | main.rs:104:9:104:23 | [post] * ... [S] | semmle.label | [post] * ... [S] |
-| main.rs:104:9:104:23 | [post] * ... [tuple.0] | semmle.label | [post] * ... [tuple.0] |
 | main.rs:104:10:104:10 | [post] s [S] | semmle.label | [post] s [S] |
-| main.rs:104:10:104:10 | [post] s [tuple.0] | semmle.label | [post] s [tuple.0] |
 | main.rs:104:10:104:23 | [post] s.index_mut(...) [&ref, S] | semmle.label | [post] s.index_mut(...) [&ref, S] |
-| main.rs:104:10:104:23 | [post] s.index_mut(...) [&ref, tuple.0] | semmle.label | [post] s.index_mut(...) [&ref, tuple.0] |
 | main.rs:104:28:104:39 | S(...) [S] | semmle.label | S(...) [S] |
 | main.rs:104:30:104:38 | source(...) | semmle.label | source(...) |
 | main.rs:105:9:105:9 | [post] s [S] | semmle.label | [post] s [S] |
-| main.rs:105:9:105:9 | [post] s [tuple.0] | semmle.label | [post] s [tuple.0] |
 | main.rs:105:9:105:12 | [post] s[0] [S] | semmle.label | [post] s[0] [S] |
-| main.rs:105:9:105:12 | [post] s[0] [tuple.0] | semmle.label | [post] s[0] [tuple.0] |
 | main.rs:105:17:105:28 | S(...) [S] | semmle.label | S(...) [S] |
 | main.rs:105:19:105:27 | source(...) | semmle.label | source(...) |
 | main.rs:106:14:106:14 | s [S] | semmle.label | s [S] |
-| main.rs:106:14:106:14 | s [tuple.0] | semmle.label | s [tuple.0] |
 | main.rs:106:14:106:16 | s.0 | semmle.label | s.0 |
 | main.rs:110:10:110:24 | [post] * ... [S] | semmle.label | [post] * ... [S] |
-| main.rs:110:10:110:24 | [post] * ... [tuple.0] | semmle.label | [post] * ... [tuple.0] |
 | main.rs:110:11:110:11 | [post] s [S] | semmle.label | [post] s [S] |
-| main.rs:110:11:110:11 | [post] s [tuple.0] | semmle.label | [post] s [tuple.0] |
 | main.rs:110:11:110:24 | [post] s.index_mut(...) [&ref, S] | semmle.label | [post] s.index_mut(...) [&ref, S] |
-| main.rs:110:11:110:24 | [post] s.index_mut(...) [&ref, tuple.0] | semmle.label | [post] s.index_mut(...) [&ref, tuple.0] |
 | main.rs:110:38:110:49 | S(...) [S] | semmle.label | S(...) [S] |
 | main.rs:110:40:110:48 | source(...) | semmle.label | source(...) |
 | main.rs:111:14:111:14 | s [S] | semmle.label | s [S] |
-| main.rs:111:14:111:14 | s [tuple.0] | semmle.label | s [tuple.0] |
 | main.rs:111:14:111:16 | s.0 | semmle.label | s.0 |
 subpaths
 | main.rs:84:14:84:14 | s [S] | main.rs:63:18:63:22 | SelfParam [&ref, S] | main.rs:63:56:65:9 | { ... } [&ref, S] | main.rs:84:14:84:17 | s[0] [S] |
 | main.rs:85:16:85:16 | s [S] | main.rs:63:18:63:22 | SelfParam [&ref, S] | main.rs:63:56:65:9 | { ... } [&ref, S] | main.rs:85:16:85:25 | s.index(...) [&ref, S] |
 | main.rs:99:17:99:28 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | main.rs:99:9:99:12 | [post] s[0] [S] |
-| main.rs:99:17:99:28 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, tuple.0] | main.rs:99:9:99:12 | [post] s[0] [tuple.0] |
 | main.rs:104:28:104:39 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | main.rs:104:9:104:23 | [post] * ... [S] |
-| main.rs:104:28:104:39 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, tuple.0] | main.rs:104:9:104:23 | [post] * ... [tuple.0] |
 | main.rs:105:17:105:28 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | main.rs:105:9:105:12 | [post] s[0] [S] |
-| main.rs:105:17:105:28 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, tuple.0] | main.rs:105:9:105:12 | [post] s[0] [tuple.0] |
 | main.rs:110:38:110:49 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | main.rs:110:10:110:24 | [post] * ... [S] |
-| main.rs:110:38:110:49 | S(...) [S] | main.rs:76:34:76:44 | ...: Self [S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, tuple.0] | main.rs:110:10:110:24 | [post] * ... [tuple.0] |
 testFailures
 #select
 | main.rs:17:14:17:19 | arr[2] | main.rs:15:17:15:25 | source(...) | main.rs:17:14:17:19 | arr[2] | $@ | main.rs:15:17:15:25 | source(...) | source(...) |

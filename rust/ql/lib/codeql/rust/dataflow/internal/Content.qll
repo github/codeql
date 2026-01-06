@@ -31,7 +31,7 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
 
   TupleFieldContent() {
     this = TTupleFieldContent(field) and
-    // tuples are handled using the special `TupleContent` type
+    // tuples are handled using the special `TuplePositionContent` type
     not field = any(TupleType tt).getATupleField()
   }
 
@@ -153,10 +153,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
   /** Gets the index of this tuple position. */
   int getPosition() { result = pos }
 
-  override FieldExpr getAnAccess() {
-    // TODO: limit to tuple types
-    result.getIdentifier().getText().toInt() = pos
-  }
+  override FieldExpr getAnAccess() { result.getTupleField() = any(TupleType tt).getTupleField(pos) }
 
   override string toString() { result = "tuple." + pos.toString() }
 
