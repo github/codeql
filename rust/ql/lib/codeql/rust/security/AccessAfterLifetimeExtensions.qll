@@ -48,20 +48,6 @@ module AccessAfterLifetime {
   }
 
   /**
-   * Holds if the pair `(source, sink)`, that represents a flow from a
-   * pointer or reference to a dereference, has its dereference outside the
-   * lifetime of the target variable `target`.
-   */
-  bindingset[source, sink]
-  predicate dereferenceAfterLifetime(Source source, Sink sink, Variable target) {
-    exists(BlockExpr valueScope, BlockExpr accessScope |
-      sourceValueScope(source, target, valueScope) and
-      accessScope = sink.asExpr().getEnclosingBlock() and
-      not mayEncloseOnStack(valueScope, accessScope)
-    )
-  }
-
-  /**
    * Holds if `var` has scope `scope`.
    */
   private predicate variableScope(Variable var, BlockExpr scope) {
@@ -86,24 +72,6 @@ module AccessAfterLifetime {
     or
     // field access
     valueScope(value.(FieldExpr).getContainer(), target, scope)
-  }
-
-  /**
-   * Holds if block `a` contains block `b`, in the sense that a stack allocated variable in
-   * `a` may still be on the stack during execution of `b`. This is interprocedural,
-   * but is an overapproximation that doesn't accurately track call contexts
-   * (for example if `f` and `g` both call `b`, then then depending on the
-   * caller a variable in `f` or `g` may or may-not be on the stack during `b`).
-   */
-  private predicate mayEncloseOnStack(BlockExpr a, BlockExpr b) {
-    // `b` is a child of `a`
-    a = b.getEnclosingBlock*()
-    or
-    // propagate through function calls
-    exists(Call call |
-      mayEncloseOnStack(a, call.getEnclosingBlock()) and
-      call.getARuntimeTarget() = b.getEnclosingCallable()
-    )
   }
 
   /**
