@@ -10,6 +10,7 @@ if [ "${CODEQL_EXTRACTOR_GO_EXTRACT_HTML:-yes}" != "no" ]; then
                         --include-extension=.xhtm \
                         --include-extension=.xhtml \
                         --include-extension=.vue \
+                        --also-match-lgtm-index-filters \
                         --size-limit 10m \
                         --language html \
                         -- \
