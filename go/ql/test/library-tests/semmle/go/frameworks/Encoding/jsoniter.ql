@@ -1,5 +1,4 @@
 import go
-import semmle.go.dataflow.ExternalFlow
 import ModelValidation
 import semmle.go.security.CommandInjection
 import codeql.dataflow.test.ProvenancePathGraph
