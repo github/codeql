@@ -688,10 +688,9 @@ private module Cached {
       conversionFlow(mid, instr, false, _)
     )
     or
-    exists(int ind0, Operand address |
+    exists(Operand address |
       isDereference(operand.getDef(), address, _) and
-      isUseImpl(address, base, ind0) and
-      ind0 = ind - 1
+      isUseImpl(address, base, ind - 1)
     )
   }
 
