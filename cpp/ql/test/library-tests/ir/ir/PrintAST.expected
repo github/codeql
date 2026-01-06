@@ -6,6 +6,14 @@
 #-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
+#-----| [CopyAssignmentOperator] std::__va_list& std::__va_list::operator=(std::__va_list const&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const __va_list &
+#-----| [MoveAssignmentOperator] std::__va_list& std::__va_list::operator=(std::__va_list&&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] __va_list &&
 #-----| [Operator,TopLevelFunction] void operator delete(void*)
 #-----|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -4335,7 +4343,7 @@ generic.c:
 #    3|                 ValueCategory = prvalue
 #    3|             getAssociationExpr(0): [ReuseExpr] reuse of x
 #    3|                 Type = [IntType] unsigned int
-#    3|                 ValueCategory = lvalue
+#    3|                 ValueCategory = prvalue
 #    3|             getAssociationType(1): [TypeName] int
 #    3|                 Type = [IntType] int
 #    3|                 ValueCategory = prvalue
