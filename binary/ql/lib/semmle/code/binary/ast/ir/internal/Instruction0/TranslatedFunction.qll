@@ -322,7 +322,7 @@ class TranslatedJvmMethod extends TranslatedFunction, TTranslatedJvmMethod {
 
   override predicate isProgramEntryPoint() { none() }
 
-  override predicate isPublic() { any() } // TODO: Extract access modifiers
+  override predicate isPublic() { method.isPublic() }
 
   override Instruction getBodyEntry() {
     result = this.getParameter(0).getEntry()

@@ -82,6 +82,45 @@ class JvmMethod extends @method {
   JvmType getDeclaringType() { methods(this, _, _, result) }
 
   Location getLocation() { none() }
+
+  /** Gets the raw JVM access flags bitmask for this method. */
+  int getAccessFlags() { jvm_method_access_flags(this, result) }
+
+  /** Holds if this method is public. */
+  predicate isPublic() { this.getAccessFlags().bitAnd(1) != 0 }
+
+  /** Holds if this method is private. */
+  predicate isPrivate() { this.getAccessFlags().bitAnd(2) != 0 }
+
+  /** Holds if this method is protected. */
+  predicate isProtected() { this.getAccessFlags().bitAnd(4) != 0 }
+
+  /** Holds if this method is static. */
+  predicate isStatic() { this.getAccessFlags().bitAnd(8) != 0 }
+
+  /** Holds if this method is final. */
+  predicate isFinal() { this.getAccessFlags().bitAnd(16) != 0 }
+
+  /** Holds if this method is synchronized. */
+  predicate isSynchronized() { this.getAccessFlags().bitAnd(32) != 0 }
+
+  /** Holds if this method is a bridge method. */
+  predicate isBridge() { this.getAccessFlags().bitAnd(64) != 0 }
+
+  /** Holds if this method accepts variable arguments. */
+  predicate isVarArgs() { this.getAccessFlags().bitAnd(128) != 0 }
+
+  /** Holds if this method is native. */
+  predicate isNative() { this.getAccessFlags().bitAnd(256) != 0 }
+
+  /** Holds if this method is abstract. */
+  predicate isAbstract() { this.getAccessFlags().bitAnd(1024) != 0 }
+
+  /** Holds if this method uses strict floating-point. */
+  predicate isStrict() { this.getAccessFlags().bitAnd(2048) != 0 }
+
+  /** Holds if this method is synthetic (compiler-generated). */
+  predicate isSynthetic() { this.getAccessFlags().bitAnd(4096) != 0 }
 }
 
 pragma[nomagic]

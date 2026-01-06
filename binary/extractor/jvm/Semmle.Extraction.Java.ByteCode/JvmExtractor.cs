@@ -139,6 +139,9 @@ public class JvmExtractor
 
         trap.WriteTuple("methods", methodId, methodName, signature, typeId);
 
+        // Extract access flags as raw bitmask
+        trap.WriteTuple("jvm_method_access_flags", methodId, (int)method.AccessFlags);
+
         // Check if this is a static method (for parameter indexing)
         bool isStatic = (method.AccessFlags & AccessFlag.Static) != 0;
 
@@ -588,9 +591,10 @@ public class JvmExtractor
                 fieldRef.Name ?? "",
                 fieldRef.Descriptor ?? "");
         }
-        catch
+        catch (Exception ex)
         {
-            // Ignore constant pool resolution errors
+            // Log but continue - malformed constant pool entries shouldn't stop extraction
+            Console.Error.WriteLine($"    Warning: Failed to extract field reference: {ex.Message}");
         }
     }
 
@@ -648,9 +652,10 @@ public class JvmExtractor
                 trap.WriteTuple("jvm_call_has_return_value", instrId);
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Ignore constant pool resolution errors
+            // Log but continue - malformed constant pool entries shouldn't stop extraction
+            Console.Error.WriteLine($"    Warning: Failed to extract method reference: {ex.Message}");
         }
     }
 
@@ -664,9 +669,10 @@ public class JvmExtractor
             var classConst = classFile.Constants.Get(new ClassConstantHandle(constHandle.Slot));
             trap.WriteTuple("jvm_type_operand", instrId, classConst.Name?.Replace('/', '.') ?? "");
         }
-        catch
+        catch (Exception ex)
         {
-            // Ignore constant pool resolution errors
+            // Log but continue - malformed constant pool entries shouldn't stop extraction
+            Console.Error.WriteLine($"    Warning: Failed to extract type reference: {ex.Message}");
         }
     }
 
