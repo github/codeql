@@ -165,41 +165,15 @@ newtype TTranslatedElement =
   TTranslatedJvmReturn(Raw::JvmReturn ret) { shouldTranslateJvmInstr(ret) } or
   TTranslatedJvmLoadLocal(Raw::JvmLoadLocal load) { shouldTranslateJvmInstr(load) } or
   TTranslatedJvmStoreLocal(Raw::JvmStoreLocal store) { shouldTranslateJvmInstr(store) } or
-  TTranslatedJvmBranch(Raw::JvmBranch branch) { shouldTranslateJvmInstr(branch) } or
-  TTranslatedJvmGoto(Raw::JvmGoto goto) { shouldTranslateJvmInstr(goto) } or
-  TTranslatedJvmArithmetic(Raw::JvmInstruction arith) {
-    shouldTranslateJvmInstr(arith) and
-    (
-      arith instanceof Raw::JvmIadd or arith instanceof Raw::JvmIsub or
-      arith instanceof Raw::JvmImul or arith instanceof Raw::JvmIdiv or
-      arith instanceof Raw::JvmLadd or arith instanceof Raw::JvmLsub or
-      arith instanceof Raw::JvmLmul or arith instanceof Raw::JvmLdiv or
-      arith instanceof Raw::JvmFadd or arith instanceof Raw::JvmFsub or
-      arith instanceof Raw::JvmFmul or arith instanceof Raw::JvmFdiv or
-      arith instanceof Raw::JvmDadd or arith instanceof Raw::JvmDsub or
-      arith instanceof Raw::JvmDmul or arith instanceof Raw::JvmDdiv
-    )
-  } or
+  TTranslatedJvmBranch(Raw::JvmConditionalBranch branch) { shouldTranslateJvmInstr(branch) } or
+  TTranslatedJvmGoto(Raw::JvmUnconditionalBranch goto) { shouldTranslateJvmInstr(goto) } or
+  TTranslatedJvmArithmetic(Raw::JvmArithmeticInstruction arith) { shouldTranslateJvmInstr(arith) } or
   TTranslatedJvmFieldAccess(Raw::JvmFieldAccess field) { shouldTranslateJvmInstr(field) } or
   TTranslatedJvmNew(Raw::JvmNew newObj) { shouldTranslateJvmInstr(newObj) } or
-  TTranslatedJvmDup(Raw::JvmDup dup) { shouldTranslateJvmInstr(dup) } or
-  TTranslatedJvmPop(Raw::JvmPop pop) { shouldTranslateJvmInstr(pop) } or
+  TTranslatedJvmDup(Raw::JvmDupInstruction dup) { shouldTranslateJvmInstr(dup) } or
+  TTranslatedJvmPop(Raw::JvmPopInstruction pop) { shouldTranslateJvmInstr(pop) } or
   TTranslatedJvmNop(Raw::JvmNop nop) { shouldTranslateJvmInstr(nop) } or
-  TTranslatedJvmLoadConstant(Raw::JvmInstruction ldc) {
-    shouldTranslateJvmInstr(ldc) and
-    (
-      ldc instanceof Raw::JvmLdc or ldc instanceof Raw::JvmLdcW or
-      ldc instanceof Raw::JvmLdc2W or ldc instanceof Raw::JvmBipush or
-      ldc instanceof Raw::JvmSipush or ldc instanceof Raw::JvmIconstM1 or
-      ldc instanceof Raw::JvmIconst0 or ldc instanceof Raw::JvmIconst1 or
-      ldc instanceof Raw::JvmIconst2 or ldc instanceof Raw::JvmIconst3 or
-      ldc instanceof Raw::JvmIconst4 or ldc instanceof Raw::JvmIconst5 or
-      ldc instanceof Raw::JvmLconst0 or ldc instanceof Raw::JvmLconst1 or
-      ldc instanceof Raw::JvmFconst0 or ldc instanceof Raw::JvmFconst1 or
-      ldc instanceof Raw::JvmFconst2 or ldc instanceof Raw::JvmDconst0 or
-      ldc instanceof Raw::JvmDconst1 or ldc instanceof Raw::JvmAconstNull
-    )
-  }
+  TTranslatedJvmLoadConstant(Raw::JvmLoadConstant ldc) { shouldTranslateJvmInstr(ldc) }
 
 TranslatedElement getTranslatedElement(Raw::Element raw) {
   result.getRawElement() = raw and

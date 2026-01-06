@@ -2969,3 +2969,480 @@ class TranslatedJvmNop extends TranslatedJvmInstruction, TTranslatedJvmNop {
     result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
   }
 }
+
+/**
+ * Translation of JVM conditional branch instructions (ifeq, ifne, if_icmpeq, etc.).
+ */
+class TranslatedJvmBranch extends TranslatedJvmInstruction, TTranslatedJvmBranch {
+  override Raw::JvmConditionalBranch instr;
+
+  TranslatedJvmBranch() { this = TTranslatedJvmBranch(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmBranchCJumpTag() and
+    opcode instanceof Opcode::CJump and
+    v.isNone()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    // For unary branches (ifeq, ifne, etc.), the condition value is on the stack
+    tag = JvmBranchCJumpTag() and
+    operandTag instanceof CondTag and
+    instr instanceof Raw::JvmUnaryConditionalBranch and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    or
+    // For binary branches (if_icmpeq, etc.), we'd need to compute comparison
+    // For now, use the top stack element as condition
+    tag = JvmBranchCJumpTag() and
+    operandTag instanceof CondTag and
+    instr instanceof Raw::JvmBinaryConditionalBranch and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmBranchCJumpTag() and
+    (
+      // True branch - goes to branch target
+      succType.(BooleanSuccessor).getValue() = true and
+      result = getTranslatedJvmInstruction(instr.getBranchTargetInstruction()).getEntry()
+      or
+      // False branch - falls through to next instruction
+      succType.(BooleanSuccessor).getValue() = false and
+      result = getTranslatedJvmInstruction(instr.getFallThroughSuccessor()).getEntry()
+    )
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmBranchCJumpTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    // After a unary branch, one element is consumed
+    instr instanceof Raw::JvmUnaryConditionalBranch and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    or
+    // After a binary branch, two elements are consumed
+    instr instanceof Raw::JvmBinaryConditionalBranch and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+  }
+}
+
+/**
+ * Translation of JVM unconditional branch instructions (goto, goto_w).
+ */
+class TranslatedJvmGoto extends TranslatedJvmInstruction, TTranslatedJvmGoto {
+  override Raw::JvmUnconditionalBranch instr;
+
+  TranslatedJvmGoto() { this = TTranslatedJvmGoto(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmGotoJumpTag() and
+    opcode instanceof Opcode::Goto and
+    v.isNone()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmGotoJumpTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedJvmInstruction(instr.getBranchTargetInstruction()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmGotoJumpTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+  }
+}
+
+/**
+ * Translation of JVM arithmetic instructions (iadd, isub, imul, idiv, etc.).
+ */
+class TranslatedJvmArithmetic extends TranslatedJvmInstruction, TTranslatedJvmArithmetic {
+  TranslatedJvmArithmetic() { this = TTranslatedJvmArithmetic(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmArithOpTag() and
+    v.asSome() = this.getTempVariable(JvmArithResultVarTag()) and
+    (
+      instr instanceof Raw::JvmAddInstruction and opcode instanceof Opcode::Add
+      or
+      instr instanceof Raw::JvmSubInstruction and opcode instanceof Opcode::Sub
+      or
+      instr instanceof Raw::JvmMulInstruction and opcode instanceof Opcode::Mul
+      or
+      instr instanceof Raw::JvmDivInstruction and opcode instanceof Opcode::Div
+      or
+      // Remainder uses Div opcode as there's no dedicated Rem opcode
+      instr instanceof Raw::JvmRemInstruction and opcode instanceof Opcode::Div
+    )
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) { tag = JvmArithResultVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = JvmArithOpTag() and
+    (
+      operandTag instanceof LeftTag and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(1)
+      or
+      operandTag instanceof RightTag and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmArithOpTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedJvmInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmArithOpTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(JvmArithResultVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    // Result replaces two operands with one result
+    i = 0 and
+    result = this.getInstruction(JvmArithOpTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+  }
+}
+
+/**
+ * Translation of JVM field access instructions (getfield, putfield, getstatic, putstatic).
+ */
+class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmFieldAccess {
+  override Raw::JvmFieldAccess instr;
+
+  TranslatedJvmFieldAccess() { this = TTranslatedJvmFieldAccess(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    // For field loads (getfield, getstatic)
+    instr instanceof Raw::JvmFieldLoad and
+    (
+      tag = JvmFieldAddressTag() and
+      opcode instanceof Opcode::FieldAddress and
+      v.asSome() = this.getTempVariable(JvmFieldAddressVarTag())
+      or
+      tag = JvmFieldLoadTag() and
+      opcode instanceof Opcode::Load and
+      v.asSome() = this.getTempVariable(JvmFieldLoadResultVarTag())
+    )
+    or
+    // For field stores (putfield, putstatic)
+    instr instanceof Raw::JvmFieldStore and
+    (
+      tag = JvmFieldAddressTag() and
+      opcode instanceof Opcode::FieldAddress and
+      v.asSome() = this.getTempVariable(JvmFieldAddressVarTag())
+      or
+      tag = JvmFieldStoreTag() and
+      opcode instanceof Opcode::Store and
+      v.isNone()
+    )
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) {
+    tag = JvmFieldAddressVarTag()
+    or
+    instr instanceof Raw::JvmFieldLoad and tag = JvmFieldLoadResultVarTag()
+  }
+
+  override predicate producesResult() { any() }
+
+  override string getFieldName(InstructionTag tag) {
+    tag = JvmFieldAddressTag() and
+    result = instr.getFieldClassName() + "." + instr.getFieldName()
+  }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    // For field load, read from the address
+    tag = JvmFieldLoadTag() and
+    operandTag instanceof LoadAddressTag and
+    result = this.getTempVariable(JvmFieldAddressVarTag())
+    or
+    // For field store, write to the address
+    tag = JvmFieldStoreTag() and
+    (
+      operandTag instanceof StoreAddressTag and
+      result = this.getTempVariable(JvmFieldAddressVarTag())
+      or
+      operandTag instanceof StoreValueTag and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    )
+    or
+    // For non-static field access, use object reference as base
+    tag = JvmFieldAddressTag() and
+    operandTag instanceof UnaryTag and
+    not instr.isStatic() and
+    (
+      instr instanceof Raw::JvmFieldLoad and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+      or
+      instr instanceof Raw::JvmFieldStore and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(1)
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    succType instanceof DirectSuccessor and
+    (
+      tag = JvmFieldAddressTag() and
+      (
+        instr instanceof Raw::JvmFieldLoad and
+        result = this.getInstruction(JvmFieldLoadTag())
+        or
+        instr instanceof Raw::JvmFieldStore and
+        result = this.getInstruction(JvmFieldStoreTag())
+      )
+      or
+      (tag = JvmFieldLoadTag() or tag = JvmFieldStoreTag()) and
+      result = getTranslatedJvmInstruction(instr.getASuccessor()).getEntry()
+    )
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmFieldAddressTag()) }
+
+  override Variable getResultVariable() {
+    instr instanceof Raw::JvmFieldLoad and
+    result = this.getTempVariable(JvmFieldLoadResultVarTag())
+  }
+
+  final override Variable getStackElement(int i) {
+    // For getfield: consumes object ref, pushes field value
+    instr instanceof Raw::JvmGetfield and
+    (
+      i = 0 and result = this.getInstruction(JvmFieldLoadTag()).getResultVariable()
+      or
+      i > 0 and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+    )
+    or
+    // For getstatic: pushes field value (no object ref consumed)
+    instr instanceof Raw::JvmGetstatic and
+    (
+      i = 0 and result = this.getInstruction(JvmFieldLoadTag()).getResultVariable()
+      or
+      i > 0 and
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+    )
+    or
+    // For putfield: consumes object ref and value
+    instr instanceof Raw::JvmPutfield and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+    or
+    // For putstatic: consumes value only
+    instr instanceof Raw::JvmPutstatic and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+  }
+}
+
+/**
+ * Translation of JVM new instruction (object allocation).
+ */
+class TranslatedJvmNew extends TranslatedJvmInstruction, TTranslatedJvmNew {
+  override Raw::JvmNew instr;
+
+  TranslatedJvmNew() { this = TTranslatedJvmNew(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmNewInitTag() and
+    opcode instanceof Opcode::Init and
+    v.asSome() = this.getTempVariable(JvmNewResultVarTag())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) { tag = JvmNewResultVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmNewInitTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedJvmInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmNewInitTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(JvmNewResultVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    // new pushes the uninitialized object reference onto the stack
+    i = 0 and
+    result = this.getInstruction(JvmNewInitTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+/**
+ * Translation of JVM dup instruction (stack duplication).
+ */
+class TranslatedJvmDup extends TranslatedJvmInstruction, TTranslatedJvmDup {
+  override Raw::JvmDupInstruction instr;
+
+  TranslatedJvmDup() { this = TTranslatedJvmDup(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmDupCopyTag() and
+    opcode instanceof Opcode::Copy and
+    v.asSome() = this.getTempVariable(JvmDupResultVarTag())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) { tag = JvmDupResultVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = JvmDupCopyTag() and
+    operandTag instanceof UnaryTag and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmDupCopyTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedJvmInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmDupCopyTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(JvmDupResultVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    // dup duplicates the top element
+    i = 0 and
+    result = this.getInstruction(JvmDupCopyTag()).getResultVariable()
+    or
+    // The original element is still there at position 1
+    i = 1 and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    or
+    i > 1 and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}
+
+/**
+ * Translation of JVM pop instruction (stack pop).
+ */
+class TranslatedJvmPop extends TranslatedJvmInstruction, TTranslatedJvmPop {
+  override Raw::JvmPopInstruction instr;
+
+  TranslatedJvmPop() { this = TTranslatedJvmPop(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmPopTag() and
+    opcode instanceof Opcode::Nop and
+    v.isNone()
+  }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmPopTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedJvmInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmPopTag()) }
+
+  override Variable getResultVariable() { none() }
+
+  final override Variable getStackElement(int i) {
+    // pop removes the top element (pop removes 1, pop2 removes 2)
+    instr instanceof Raw::JvmPop and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    or
+    instr instanceof Raw::JvmPop2 and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+  }
+}
+
+/**
+ * Translation of JVM load constant instructions (ldc, bipush, iconst_*, etc.).
+ */
+class TranslatedJvmLoadConstant extends TranslatedJvmInstruction, TTranslatedJvmLoadConstant {
+  override Raw::JvmLoadConstant instr;
+
+  TranslatedJvmLoadConstant() { this = TTranslatedJvmLoadConstant(instr) }
+
+  final override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Option<Variable>::Option v
+  ) {
+    tag = JvmConstTag() and
+    opcode instanceof Opcode::Const and
+    v.asSome() = this.getTempVariable(JvmConstResultVarTag())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag) { tag = JvmConstResultVarTag() }
+
+  override predicate producesResult() { any() }
+
+  override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
+
+  override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
+    tag = JvmConstTag() and
+    succType instanceof DirectSuccessor and
+    result = getTranslatedJvmInstruction(instr.getASuccessor()).getEntry()
+  }
+
+  override Instruction getEntry() { result = this.getInstruction(JvmConstTag()) }
+
+  override Variable getResultVariable() { result = this.getTempVariable(JvmConstResultVarTag()) }
+
+  final override Variable getStackElement(int i) {
+    // Constant pushes a value onto the stack
+    i = 0 and
+    result = this.getInstruction(JvmConstTag()).getResultVariable()
+    or
+    i > 0 and
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+  }
+}

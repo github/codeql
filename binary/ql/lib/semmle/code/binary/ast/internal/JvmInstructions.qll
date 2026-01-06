@@ -354,7 +354,7 @@ private string opcodeToMnemonic(int opcode) {
 class JvmNop extends @jvm_nop, JvmInstruction { }
 
 /** Pushes null onto the stack. */
-class JvmAconstNull extends @jvm_aconst_null, JvmInstruction { }
+class JvmAconstNull extends @jvm_aconst_null, JvmLoadConstant { }
 
 // Load local variable instructions (abstract base classes)
 
@@ -578,133 +578,177 @@ class JvmAstore3 extends @jvm_astore_3, JvmStoreLocal {
   override int getLocalVariableIndex() { result = 3 }
 }
 
-// Array load instructions
-class JvmIaload extends @jvm_iaload, JvmInstruction { }
+// Array load instructions (abstract base)
+/** An instruction that loads an element from an array onto the stack. */
+abstract class JvmArrayLoad extends JvmInstruction { }
 
-class JvmLaload extends @jvm_laload, JvmInstruction { }
+class JvmIaload extends @jvm_iaload, JvmArrayLoad { }
 
-class JvmFaload extends @jvm_faload, JvmInstruction { }
+class JvmLaload extends @jvm_laload, JvmArrayLoad { }
 
-class JvmDaload extends @jvm_daload, JvmInstruction { }
+class JvmFaload extends @jvm_faload, JvmArrayLoad { }
 
-class JvmAaload extends @jvm_aaload, JvmInstruction { }
+class JvmDaload extends @jvm_daload, JvmArrayLoad { }
 
-class JvmBaload extends @jvm_baload, JvmInstruction { }
+class JvmAaload extends @jvm_aaload, JvmArrayLoad { }
 
-class JvmCaload extends @jvm_caload, JvmInstruction { }
+class JvmBaload extends @jvm_baload, JvmArrayLoad { }
 
-class JvmSaload extends @jvm_saload, JvmInstruction { }
+class JvmCaload extends @jvm_caload, JvmArrayLoad { }
 
-// Array store instructions
-class JvmIastore extends @jvm_iastore, JvmInstruction { }
+class JvmSaload extends @jvm_saload, JvmArrayLoad { }
 
-class JvmLastore extends @jvm_lastore, JvmInstruction { }
+// Array store instructions (abstract base)
+/** An instruction that stores a value into an array element. */
+abstract class JvmArrayStore extends JvmInstruction { }
 
-class JvmFastore extends @jvm_fastore, JvmInstruction { }
+class JvmIastore extends @jvm_iastore, JvmArrayStore { }
 
-class JvmDastore extends @jvm_dastore, JvmInstruction { }
+class JvmLastore extends @jvm_lastore, JvmArrayStore { }
 
-class JvmAastore extends @jvm_aastore, JvmInstruction { }
+class JvmFastore extends @jvm_fastore, JvmArrayStore { }
 
-class JvmBastore extends @jvm_bastore, JvmInstruction { }
+class JvmDastore extends @jvm_dastore, JvmArrayStore { }
 
-class JvmCastore extends @jvm_castore, JvmInstruction { }
+class JvmAastore extends @jvm_aastore, JvmArrayStore { }
 
-class JvmSastore extends @jvm_sastore, JvmInstruction { }
+class JvmBastore extends @jvm_bastore, JvmArrayStore { }
 
-// Stack manipulation
-class JvmPop extends @jvm_pop, JvmInstruction { }
+class JvmCastore extends @jvm_castore, JvmArrayStore { }
 
-class JvmPop2 extends @jvm_pop2, JvmInstruction { }
+class JvmSastore extends @jvm_sastore, JvmArrayStore { }
 
-class JvmDup extends @jvm_dup, JvmInstruction { }
+// Stack manipulation (abstract bases)
+/** An instruction that pops values from the stack without using them. */
+abstract class JvmPopInstruction extends JvmInstruction { }
 
-class JvmDupX1 extends @jvm_dup_x1, JvmInstruction { }
+/** An instruction that duplicates values on the stack. */
+abstract class JvmDupInstruction extends JvmInstruction { }
 
-class JvmDupX2 extends @jvm_dup_x2, JvmInstruction { }
+class JvmPop extends @jvm_pop, JvmPopInstruction { }
 
-class JvmDup2 extends @jvm_dup2, JvmInstruction { }
+class JvmPop2 extends @jvm_pop2, JvmPopInstruction { }
 
-class JvmDup2X1 extends @jvm_dup2_x1, JvmInstruction { }
+class JvmDup extends @jvm_dup, JvmDupInstruction { }
 
-class JvmDup2X2 extends @jvm_dup2_x2, JvmInstruction { }
+class JvmDupX1 extends @jvm_dup_x1, JvmDupInstruction { }
+
+class JvmDupX2 extends @jvm_dup_x2, JvmDupInstruction { }
+
+class JvmDup2 extends @jvm_dup2, JvmDupInstruction { }
+
+class JvmDup2X1 extends @jvm_dup2_x1, JvmDupInstruction { }
+
+class JvmDup2X2 extends @jvm_dup2_x2, JvmDupInstruction { }
 
 class JvmSwap extends @jvm_swap, JvmInstruction { }
 
-// Arithmetic
-class JvmIadd extends @jvm_iadd, JvmInstruction { }
+// Arithmetic (abstract hierarchy)
+/** An instruction that performs a binary operation on two stack operands. */
+abstract class JvmBinaryInstruction extends JvmInstruction { }
 
-class JvmLadd extends @jvm_ladd, JvmInstruction { }
+/** An instruction that performs a unary operation on one stack operand. */
+abstract class JvmUnaryInstruction extends JvmInstruction { }
 
-class JvmFadd extends @jvm_fadd, JvmInstruction { }
+/** An arithmetic instruction (add, sub, mul, div, rem). */
+abstract class JvmArithmeticInstruction extends JvmBinaryInstruction { }
 
-class JvmDadd extends @jvm_dadd, JvmInstruction { }
+/** An addition instruction. */
+abstract class JvmAddInstruction extends JvmArithmeticInstruction { }
 
-class JvmIsub extends @jvm_isub, JvmInstruction { }
+/** A subtraction instruction. */
+abstract class JvmSubInstruction extends JvmArithmeticInstruction { }
 
-class JvmLsub extends @jvm_lsub, JvmInstruction { }
+/** A multiplication instruction. */
+abstract class JvmMulInstruction extends JvmArithmeticInstruction { }
 
-class JvmFsub extends @jvm_fsub, JvmInstruction { }
+/** A division instruction. */
+abstract class JvmDivInstruction extends JvmArithmeticInstruction { }
 
-class JvmDsub extends @jvm_dsub, JvmInstruction { }
+/** A remainder instruction. */
+abstract class JvmRemInstruction extends JvmArithmeticInstruction { }
 
-class JvmImul extends @jvm_imul, JvmInstruction { }
+/** A negation instruction. */
+abstract class JvmNegInstruction extends JvmUnaryInstruction { }
 
-class JvmLmul extends @jvm_lmul, JvmInstruction { }
+class JvmIadd extends @jvm_iadd, JvmAddInstruction { }
 
-class JvmFmul extends @jvm_fmul, JvmInstruction { }
+class JvmLadd extends @jvm_ladd, JvmAddInstruction { }
 
-class JvmDmul extends @jvm_dmul, JvmInstruction { }
+class JvmFadd extends @jvm_fadd, JvmAddInstruction { }
 
-class JvmIdiv extends @jvm_idiv, JvmInstruction { }
+class JvmDadd extends @jvm_dadd, JvmAddInstruction { }
 
-class JvmLdiv extends @jvm_ldiv, JvmInstruction { }
+class JvmIsub extends @jvm_isub, JvmSubInstruction { }
 
-class JvmFdiv extends @jvm_fdiv, JvmInstruction { }
+class JvmLsub extends @jvm_lsub, JvmSubInstruction { }
 
-class JvmDdiv extends @jvm_ddiv, JvmInstruction { }
+class JvmFsub extends @jvm_fsub, JvmSubInstruction { }
 
-class JvmIrem extends @jvm_irem, JvmInstruction { }
+class JvmDsub extends @jvm_dsub, JvmSubInstruction { }
 
-class JvmLrem extends @jvm_lrem, JvmInstruction { }
+class JvmImul extends @jvm_imul, JvmMulInstruction { }
 
-class JvmFrem extends @jvm_frem, JvmInstruction { }
+class JvmLmul extends @jvm_lmul, JvmMulInstruction { }
 
-class JvmDrem extends @jvm_drem, JvmInstruction { }
+class JvmFmul extends @jvm_fmul, JvmMulInstruction { }
 
-class JvmIneg extends @jvm_ineg, JvmInstruction { }
+class JvmDmul extends @jvm_dmul, JvmMulInstruction { }
 
-class JvmLneg extends @jvm_lneg, JvmInstruction { }
+class JvmIdiv extends @jvm_idiv, JvmDivInstruction { }
 
-class JvmFneg extends @jvm_fneg, JvmInstruction { }
+class JvmLdiv extends @jvm_ldiv, JvmDivInstruction { }
 
-class JvmDneg extends @jvm_dneg, JvmInstruction { }
+class JvmFdiv extends @jvm_fdiv, JvmDivInstruction { }
 
-// Shifts
-class JvmIshl extends @jvm_ishl, JvmInstruction { }
+class JvmDdiv extends @jvm_ddiv, JvmDivInstruction { }
 
-class JvmLshl extends @jvm_lshl, JvmInstruction { }
+class JvmIrem extends @jvm_irem, JvmRemInstruction { }
 
-class JvmIshr extends @jvm_ishr, JvmInstruction { }
+class JvmLrem extends @jvm_lrem, JvmRemInstruction { }
 
-class JvmLshr extends @jvm_lshr, JvmInstruction { }
+class JvmFrem extends @jvm_frem, JvmRemInstruction { }
 
-class JvmIushr extends @jvm_iushr, JvmInstruction { }
+class JvmDrem extends @jvm_drem, JvmRemInstruction { }
 
-class JvmLushr extends @jvm_lushr, JvmInstruction { }
+class JvmIneg extends @jvm_ineg, JvmNegInstruction { }
 
-// Bitwise
-class JvmIand extends @jvm_iand, JvmInstruction { }
+class JvmLneg extends @jvm_lneg, JvmNegInstruction { }
 
-class JvmLand extends @jvm_land, JvmInstruction { }
+class JvmFneg extends @jvm_fneg, JvmNegInstruction { }
 
-class JvmIor extends @jvm_ior, JvmInstruction { }
+class JvmDneg extends @jvm_dneg, JvmNegInstruction { }
 
-class JvmLor extends @jvm_lor, JvmInstruction { }
+// Shifts and bitwise (abstract hierarchy)
+/** A bitwise instruction (and, or, xor). */
+abstract class JvmBitwiseInstruction extends JvmBinaryInstruction { }
 
-class JvmIxor extends @jvm_ixor, JvmInstruction { }
+/** A shift instruction (shl, shr, ushr). */
+abstract class JvmShiftInstruction extends JvmBinaryInstruction { }
 
-class JvmLxor extends @jvm_lxor, JvmInstruction { }
+class JvmIshl extends @jvm_ishl, JvmShiftInstruction { }
+
+class JvmLshl extends @jvm_lshl, JvmShiftInstruction { }
+
+class JvmIshr extends @jvm_ishr, JvmShiftInstruction { }
+
+class JvmLshr extends @jvm_lshr, JvmShiftInstruction { }
+
+class JvmIushr extends @jvm_iushr, JvmShiftInstruction { }
+
+class JvmLushr extends @jvm_lushr, JvmShiftInstruction { }
+
+class JvmIand extends @jvm_iand, JvmBitwiseInstruction { }
+
+class JvmLand extends @jvm_land, JvmBitwiseInstruction { }
+
+class JvmIor extends @jvm_ior, JvmBitwiseInstruction { }
+
+class JvmLor extends @jvm_lor, JvmBitwiseInstruction { }
+
+class JvmIxor extends @jvm_ixor, JvmBitwiseInstruction { }
+
+class JvmLxor extends @jvm_lxor, JvmBitwiseInstruction { }
 
 // iinc
 class JvmIinc extends @jvm_iinc, JvmInstruction {
@@ -715,116 +759,136 @@ class JvmIinc extends @jvm_iinc, JvmInstruction {
   int getIncrement() { exists(int inc | jvm_operand_iinc(this, _, inc) | result = inc) }
 }
 
-// Type conversions
-class JvmI2l extends @jvm_i2l, JvmInstruction { }
+// Type conversions (abstract hierarchy)
+/** An instruction that converts a value from one type to another. */
+abstract class JvmConversionInstruction extends JvmUnaryInstruction { }
 
-class JvmI2f extends @jvm_i2f, JvmInstruction { }
+class JvmI2l extends @jvm_i2l, JvmConversionInstruction { }
 
-class JvmI2d extends @jvm_i2d, JvmInstruction { }
+class JvmI2f extends @jvm_i2f, JvmConversionInstruction { }
 
-class JvmL2i extends @jvm_l2i, JvmInstruction { }
+class JvmI2d extends @jvm_i2d, JvmConversionInstruction { }
 
-class JvmL2f extends @jvm_l2f, JvmInstruction { }
+class JvmL2i extends @jvm_l2i, JvmConversionInstruction { }
 
-class JvmL2d extends @jvm_l2d, JvmInstruction { }
+class JvmL2f extends @jvm_l2f, JvmConversionInstruction { }
 
-class JvmF2i extends @jvm_f2i, JvmInstruction { }
+class JvmL2d extends @jvm_l2d, JvmConversionInstruction { }
 
-class JvmF2l extends @jvm_f2l, JvmInstruction { }
+class JvmF2i extends @jvm_f2i, JvmConversionInstruction { }
 
-class JvmF2d extends @jvm_f2d, JvmInstruction { }
+class JvmF2l extends @jvm_f2l, JvmConversionInstruction { }
 
-class JvmD2i extends @jvm_d2i, JvmInstruction { }
+class JvmF2d extends @jvm_f2d, JvmConversionInstruction { }
 
-class JvmD2l extends @jvm_d2l, JvmInstruction { }
+class JvmD2i extends @jvm_d2i, JvmConversionInstruction { }
 
-class JvmD2f extends @jvm_d2f, JvmInstruction { }
+class JvmD2l extends @jvm_d2l, JvmConversionInstruction { }
 
-class JvmI2b extends @jvm_i2b, JvmInstruction { }
+class JvmD2f extends @jvm_d2f, JvmConversionInstruction { }
 
-class JvmI2c extends @jvm_i2c, JvmInstruction { }
+class JvmI2b extends @jvm_i2b, JvmConversionInstruction { }
 
-class JvmI2s extends @jvm_i2s, JvmInstruction { }
+class JvmI2c extends @jvm_i2c, JvmConversionInstruction { }
 
-// Comparisons
-class JvmLcmp extends @jvm_lcmp, JvmInstruction { }
+class JvmI2s extends @jvm_i2s, JvmConversionInstruction { }
 
-class JvmFcmpl extends @jvm_fcmpl, JvmInstruction { }
+// Comparisons (abstract hierarchy)
+/** An instruction that compares two values and pushes a result onto the stack. */
+abstract class JvmComparisonInstruction extends JvmBinaryInstruction { }
 
-class JvmFcmpg extends @jvm_fcmpg, JvmInstruction { }
+class JvmLcmp extends @jvm_lcmp, JvmComparisonInstruction { }
 
-class JvmDcmpl extends @jvm_dcmpl, JvmInstruction { }
+class JvmFcmpl extends @jvm_fcmpl, JvmComparisonInstruction { }
 
-class JvmDcmpg extends @jvm_dcmpg, JvmInstruction { }
+class JvmFcmpg extends @jvm_fcmpg, JvmComparisonInstruction { }
 
-// Branch instructions (abstract base)
+class JvmDcmpl extends @jvm_dcmpl, JvmComparisonInstruction { }
+
+class JvmDcmpg extends @jvm_dcmpg, JvmComparisonInstruction { }
+
+// Branch instructions (abstract hierarchy)
+/** A branch instruction that may transfer control to another location. */
 abstract class JvmBranch extends JvmInstruction {
   int getBranchTarget() { jvm_branch_target(this, result) }
+
+  /** Gets the instruction at the branch target. */
+  JvmInstruction getBranchTargetInstruction() {
+    exists(JvmMethod m, int target |
+      this.getEnclosingMethod() = m and
+      target = this.getBranchTarget() and
+      hasMethodAndOffset(m, target, result)
+    )
+  }
 
   override JvmInstruction getASuccessor() {
     result = JvmInstruction.super.getASuccessor()
     or
-    exists(JvmMethod m, int target |
-      this.getEnclosingMethod() = m and
-      target = this.getBranchTarget() and
-      hasMethodAndOffset(m, target, result)
+    result = this.getBranchTargetInstruction()
+  }
+}
+
+/** A conditional branch instruction that branches based on a condition. */
+abstract class JvmConditionalBranch extends JvmBranch {
+  /** Gets the fall-through successor (when condition is false). */
+  JvmInstruction getFallThroughSuccessor() {
+    // Fall-through is the next sequential instruction
+    exists(int offset, JvmMethod m |
+      hasMethodAndIndex(m, offset, this) and
+      hasMethodAndIndex(m, offset + 1, result)
     )
   }
 }
 
-// Conditional branches
-class JvmIfeq extends @jvm_ifeq, JvmBranch { }
+/** A conditional branch that compares a single value against zero or null. */
+abstract class JvmUnaryConditionalBranch extends JvmConditionalBranch { }
 
-class JvmIfne extends @jvm_ifne, JvmBranch { }
+/** A conditional branch that compares two values. */
+abstract class JvmBinaryConditionalBranch extends JvmConditionalBranch { }
 
-class JvmIflt extends @jvm_iflt, JvmBranch { }
+/** An unconditional branch instruction (goto). */
+abstract class JvmUnconditionalBranch extends JvmBranch {
+  override JvmInstruction getASuccessor() { result = this.getBranchTargetInstruction() }
+}
 
-class JvmIfge extends @jvm_ifge, JvmBranch { }
+// Unary conditional branches (compare against zero/null)
+class JvmIfeq extends @jvm_ifeq, JvmUnaryConditionalBranch { }
 
-class JvmIfgt extends @jvm_ifgt, JvmBranch { }
+class JvmIfne extends @jvm_ifne, JvmUnaryConditionalBranch { }
 
-class JvmIfle extends @jvm_ifle, JvmBranch { }
+class JvmIflt extends @jvm_iflt, JvmUnaryConditionalBranch { }
 
-class JvmIfIcmpeq extends @jvm_if_icmpeq, JvmBranch { }
+class JvmIfge extends @jvm_ifge, JvmUnaryConditionalBranch { }
 
-class JvmIfIcmpne extends @jvm_if_icmpne, JvmBranch { }
+class JvmIfgt extends @jvm_ifgt, JvmUnaryConditionalBranch { }
 
-class JvmIfIcmplt extends @jvm_if_icmplt, JvmBranch { }
+class JvmIfle extends @jvm_ifle, JvmUnaryConditionalBranch { }
 
-class JvmIfIcmpge extends @jvm_if_icmpge, JvmBranch { }
+class JvmIfnull extends @jvm_ifnull, JvmUnaryConditionalBranch { }
 
-class JvmIfIcmpgt extends @jvm_if_icmpgt, JvmBranch { }
+class JvmIfnonnull extends @jvm_ifnonnull, JvmUnaryConditionalBranch { }
 
-class JvmIfIcmple extends @jvm_if_icmple, JvmBranch { }
+// Binary conditional branches (compare two values)
+class JvmIfIcmpeq extends @jvm_if_icmpeq, JvmBinaryConditionalBranch { }
 
-class JvmIfAcmpeq extends @jvm_if_acmpeq, JvmBranch { }
+class JvmIfIcmpne extends @jvm_if_icmpne, JvmBinaryConditionalBranch { }
 
-class JvmIfAcmpne extends @jvm_if_acmpne, JvmBranch { }
+class JvmIfIcmplt extends @jvm_if_icmplt, JvmBinaryConditionalBranch { }
 
-class JvmIfnull extends @jvm_ifnull, JvmBranch { }
+class JvmIfIcmpge extends @jvm_if_icmpge, JvmBinaryConditionalBranch { }
 
-class JvmIfnonnull extends @jvm_ifnonnull, JvmBranch { }
+class JvmIfIcmpgt extends @jvm_if_icmpgt, JvmBinaryConditionalBranch { }
+
+class JvmIfIcmple extends @jvm_if_icmple, JvmBinaryConditionalBranch { }
+
+class JvmIfAcmpeq extends @jvm_if_acmpeq, JvmBinaryConditionalBranch { }
+
+class JvmIfAcmpne extends @jvm_if_acmpne, JvmBinaryConditionalBranch { }
 
 // Unconditional branches
-class JvmGoto extends @jvm_goto, JvmBranch {
-  override JvmInstruction getASuccessor() {
-    exists(JvmMethod m, int target |
-      this.getEnclosingMethod() = m and
-      target = this.getBranchTarget() and
-      hasMethodAndOffset(m, target, result)
-    )
-  }
-}
+class JvmGoto extends @jvm_goto, JvmUnconditionalBranch { }
 
-class JvmGotoW extends @jvm_goto_w, JvmBranch {
-  override JvmInstruction getASuccessor() {
-    exists(JvmMethod m, int target |
-      this.getEnclosingMethod() = m and
-      target = this.getBranchTarget() and
-      hasMethodAndOffset(m, target, result)
-    )
-  }
-}
+class JvmGotoW extends @jvm_goto_w, JvmUnconditionalBranch { }
 
 class JvmJsr extends @jvm_jsr, JvmBranch { }
 
@@ -872,7 +936,8 @@ class JvmAreturn extends @jvm_areturn, JvmReturn { }
 
 class JvmReturnVoid extends @jvm_return, JvmReturn { }
 
-// Field access
+// Field access (abstract hierarchy)
+/** An instruction that accesses a field. */
 abstract class JvmFieldAccess extends JvmInstruction {
   string getFieldClassName() {
     exists(string cn | jvm_field_operand(this, cn, _, _) | result = cn)
@@ -883,15 +948,24 @@ abstract class JvmFieldAccess extends JvmInstruction {
   string getFieldDescriptor() {
     exists(string fd | jvm_field_operand(this, _, _, fd) | result = fd)
   }
+
+  /** Holds if this is a static field access. */
+  predicate isStatic() { this instanceof JvmGetstatic or this instanceof JvmPutstatic }
 }
 
-class JvmGetstatic extends @jvm_getstatic, JvmFieldAccess { }
+/** An instruction that loads a field value onto the stack. */
+abstract class JvmFieldLoad extends JvmFieldAccess { }
 
-class JvmPutstatic extends @jvm_putstatic, JvmFieldAccess { }
+/** An instruction that stores a value into a field. */
+abstract class JvmFieldStore extends JvmFieldAccess { }
 
-class JvmGetfield extends @jvm_getfield, JvmFieldAccess { }
+class JvmGetstatic extends @jvm_getstatic, JvmFieldLoad { }
 
-class JvmPutfield extends @jvm_putfield, JvmFieldAccess { }
+class JvmPutstatic extends @jvm_putstatic, JvmFieldStore { }
+
+class JvmGetfield extends @jvm_getfield, JvmFieldLoad { }
+
+class JvmPutfield extends @jvm_putfield, JvmFieldStore { }
 
 // Method invocations
 abstract class JvmInvoke extends JvmInstruction {
@@ -953,50 +1027,105 @@ class JvmMonitorexit extends @jvm_monitorexit, JvmInstruction { }
 // Wide prefix
 class JvmWide extends @jvm_wide, JvmInstruction { }
 
-// Constants
-class JvmIconstM1 extends @jvm_iconst_m1, JvmInstruction { }
+// Constants (abstract hierarchy)
+/** An instruction that loads a constant value onto the stack. */
+abstract class JvmLoadConstant extends JvmInstruction { }
 
-class JvmIconst0 extends @jvm_iconst_0, JvmInstruction { }
-
-class JvmIconst1 extends @jvm_iconst_1, JvmInstruction { }
-
-class JvmIconst2 extends @jvm_iconst_2, JvmInstruction { }
-
-class JvmIconst3 extends @jvm_iconst_3, JvmInstruction { }
-
-class JvmIconst4 extends @jvm_iconst_4, JvmInstruction { }
-
-class JvmIconst5 extends @jvm_iconst_5, JvmInstruction { }
-
-class JvmLconst0 extends @jvm_lconst_0, JvmInstruction { }
-
-class JvmLconst1 extends @jvm_lconst_1, JvmInstruction { }
-
-class JvmFconst0 extends @jvm_fconst_0, JvmInstruction { }
-
-class JvmFconst1 extends @jvm_fconst_1, JvmInstruction { }
-
-class JvmFconst2 extends @jvm_fconst_2, JvmInstruction { }
-
-class JvmDconst0 extends @jvm_dconst_0, JvmInstruction { }
-
-class JvmDconst1 extends @jvm_dconst_1, JvmInstruction { }
-
-// Push constants
-class JvmBipush extends @jvm_bipush, JvmInstruction {
-  int getValue() { jvm_operand_byte(this, result) }
+/** An instruction that loads an integer constant onto the stack. */
+abstract class JvmLoadIntConstant extends JvmLoadConstant {
+  /** Gets the integer value loaded by this instruction. */
+  abstract int getIntValue();
 }
 
-class JvmSipush extends @jvm_sipush, JvmInstruction {
-  int getValue() { jvm_operand_short(this, result) }
+/** An instruction that loads a long constant onto the stack. */
+abstract class JvmLoadLongConstant extends JvmLoadConstant {
+  /** Gets the long value loaded by this instruction. */
+  abstract int getLongValue();
+}
+
+/** An instruction that loads a float constant onto the stack. */
+abstract class JvmLoadFloatConstant extends JvmLoadConstant {
+  /** Gets the float value loaded by this instruction. */
+  abstract float getFloatValue();
+}
+
+/** An instruction that loads a double constant onto the stack. */
+abstract class JvmLoadDoubleConstant extends JvmLoadConstant {
+  /** Gets the double value loaded by this instruction. */
+  abstract float getDoubleValue();
+}
+
+class JvmIconstM1 extends @jvm_iconst_m1, JvmLoadIntConstant {
+  override int getIntValue() { result = -1 }
+}
+
+class JvmIconst0 extends @jvm_iconst_0, JvmLoadIntConstant {
+  override int getIntValue() { result = 0 }
+}
+
+class JvmIconst1 extends @jvm_iconst_1, JvmLoadIntConstant {
+  override int getIntValue() { result = 1 }
+}
+
+class JvmIconst2 extends @jvm_iconst_2, JvmLoadIntConstant {
+  override int getIntValue() { result = 2 }
+}
+
+class JvmIconst3 extends @jvm_iconst_3, JvmLoadIntConstant {
+  override int getIntValue() { result = 3 }
+}
+
+class JvmIconst4 extends @jvm_iconst_4, JvmLoadIntConstant {
+  override int getIntValue() { result = 4 }
+}
+
+class JvmIconst5 extends @jvm_iconst_5, JvmLoadIntConstant {
+  override int getIntValue() { result = 5 }
+}
+
+class JvmLconst0 extends @jvm_lconst_0, JvmLoadLongConstant {
+  override int getLongValue() { result = 0 }
+}
+
+class JvmLconst1 extends @jvm_lconst_1, JvmLoadLongConstant {
+  override int getLongValue() { result = 1 }
+}
+
+class JvmFconst0 extends @jvm_fconst_0, JvmLoadFloatConstant {
+  override float getFloatValue() { result = 0.0 }
+}
+
+class JvmFconst1 extends @jvm_fconst_1, JvmLoadFloatConstant {
+  override float getFloatValue() { result = 1.0 }
+}
+
+class JvmFconst2 extends @jvm_fconst_2, JvmLoadFloatConstant {
+  override float getFloatValue() { result = 2.0 }
+}
+
+class JvmDconst0 extends @jvm_dconst_0, JvmLoadDoubleConstant {
+  override float getDoubleValue() { result = 0.0 }
+}
+
+class JvmDconst1 extends @jvm_dconst_1, JvmLoadDoubleConstant {
+  override float getDoubleValue() { result = 1.0 }
+}
+
+// Push constants (integer values from immediate operand)
+class JvmBipush extends @jvm_bipush, JvmLoadIntConstant {
+  override int getIntValue() { jvm_operand_byte(this, result) }
+}
+
+class JvmSipush extends @jvm_sipush, JvmLoadIntConstant {
+  override int getIntValue() { jvm_operand_short(this, result) }
 }
 
 // Load constants from constant pool
-class JvmLdc extends @jvm_ldc, JvmInstruction { }
+class JvmLdc extends @jvm_ldc, JvmLoadConstant { }
 
-class JvmLdcW extends @jvm_ldc_w, JvmInstruction { }
+class JvmLdcW extends @jvm_ldc_w, JvmLoadConstant { }
 
-class JvmLdc2W extends @jvm_ldc2_w, JvmInstruction { }
+class JvmLdc2W extends @jvm_ldc2_w, JvmLoadConstant { }
 
 /**
  * A JVM exception handler entry.
