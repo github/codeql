@@ -43,8 +43,8 @@ module HardcodedCredentials {
   }
 
   /** A use of a credential. */
-  private class CredentialsSink extends Sink {
-    CredentialsSink() { exists(string s | s.matches("credentials-%") | sinkNode(this, s)) }
+  private class ExternalCredentialsSink extends Sink {
+    ExternalCredentialsSink() { exists(string s | s.matches("credentials-%") | sinkNode(this, s)) }
   }
 
   /** A use of a credential. */
