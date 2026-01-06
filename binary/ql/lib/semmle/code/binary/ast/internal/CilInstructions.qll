@@ -71,6 +71,57 @@ class CilMethod extends @method {
     this.getSignature().matches("Void%") // TODO: Don't use string parsing here
   }
 
+  /** Gets the raw ECMA-335 MethodAttributes flags for this method. */
+  int getAccessFlags() { cil_method_access_flags(this, result) }
+
+  /** Holds if this method is public. */
+  predicate isPublic() {
+    // MemberAccessMask is 0x0007, Public is 0x0006
+    this.getAccessFlags().bitAnd(7) = 6
+  }
+
+  /** Holds if this method is private. */
+  predicate isPrivate() {
+    // Private is 0x0001
+    this.getAccessFlags().bitAnd(7) = 1
+  }
+
+  /** Holds if this method is protected (family). */
+  predicate isProtected() {
+    // Family is 0x0004
+    this.getAccessFlags().bitAnd(7) = 4
+  }
+
+  /** Holds if this method is internal (assembly). */
+  predicate isInternal() {
+    // Assembly is 0x0003
+    this.getAccessFlags().bitAnd(7) = 3
+  }
+
+  /** Holds if this method is static. */
+  predicate isStatic() {
+    // Static is 0x0010
+    this.getAccessFlags().bitAnd(16) != 0
+  }
+
+  /** Holds if this method is final (sealed). */
+  predicate isFinal() {
+    // Final is 0x0020
+    this.getAccessFlags().bitAnd(32) != 0
+  }
+
+  /** Holds if this method is virtual. */
+  predicate isVirtual() {
+    // Virtual is 0x0040
+    this.getAccessFlags().bitAnd(64) != 0
+  }
+
+  /** Holds if this method is abstract. */
+  predicate isAbstract() {
+    // Abstract is 0x0400
+    this.getAccessFlags().bitAnd(1024) != 0
+  }
+
   CilInstruction getAnInstruction() { il_instruction_method(result, this) }
 
   CilInstruction getInstruction(int i) { il_instruction_parent(result, i, this) }

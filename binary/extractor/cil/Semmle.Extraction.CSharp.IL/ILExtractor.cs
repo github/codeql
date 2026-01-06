@@ -108,6 +108,9 @@ public class ILExtractor {
     var signature = GetMethodSignature(method);
     trap.WriteTuple("methods", methodId, method.Name, signature, typeId);
 
+    // Write access flags
+    trap.WriteTuple("cil_method_access_flags", methodId, (int)method.Attributes);
+
     if (method.HasBody) {
       ExtractMethodBody(method, methodId);
     }

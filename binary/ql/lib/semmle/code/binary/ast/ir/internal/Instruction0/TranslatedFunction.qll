@@ -217,7 +217,7 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
 
   override predicate isProgramEntryPoint() { none() }
 
-  override predicate isPublic() { any() } // TODO: We need to extract this
+  override predicate isPublic() { method.isPublic() }
 
   override Instruction getBodyEntry() {
     result = this.getParameter(0).getEntry()

@@ -2141,6 +2141,29 @@ methods(
   int type_id: @type ref
 );
 
+/**
+ * CIL method access flags.
+ * Stores the method attributes as a bitmask.
+ * See ECMA-335 §II.23.1.10 for flag definitions:
+ *   0x0001 = MemberAccessMask (use with mask)
+ *   0x0006 = Public
+ *   0x0001 = Private
+ *   0x0003 = Family (protected)
+ *   0x0005 = FamORAssem (protected internal)
+ *   0x0010 = Static
+ *   0x0020 = Final (sealed)
+ *   0x0040 = Virtual
+ *   0x0080 = HideBySig
+ *   0x0100 = VtableLayoutMask (use with mask)
+ *   0x0400 = Abstract
+ *   0x0800 = SpecialName
+ *   0x2000 = PInvokeImpl
+ */
+cil_method_access_flags(
+  unique int method: @method ref,
+  int flags: int ref
+);
+
 fields(
   unique int id: @field,
   string name: string ref,
