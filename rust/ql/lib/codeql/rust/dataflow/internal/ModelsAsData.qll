@@ -112,7 +112,7 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
 }
 
 private predicate summaryModel(
-  Function f, string input, string output, string kind, Provenance provenance, boolean isExact,
+  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
   QlBuiltins::ExtensionId madId
 ) {
   exists(string path, Function f0 |
@@ -120,10 +120,10 @@ private predicate summaryModel(
     f0.getCanonicalPath() = path
   |
     f = f0 and
-    isExact = true
+    isInherited = false
     or
     f.implements(f0) and
-    isExact = false
+    isInherited = true
   )
 }
 
@@ -131,25 +131,20 @@ private predicate summaryModelRelevant(
   Function f, string input, string output, string kind, Provenance provenance,
   QlBuiltins::ExtensionId madId
 ) {
-  exists(boolean isExact | summaryModel(f, input, output, kind, provenance, isExact, madId) |
-    (
-      provenance.isManual()
-      or
-      // only apply generated models to functions not defined in source code, and
-      // when there are no exact manual models for the functions
-      provenance.isGenerated() and
-      not any(Provenance manual | summaryModel(f, _, _, _, manual, true, _)).isManual() and
-      not f.fromSource()
-    ) and
-    (
-      isExact = true
-      or
-      // only apply trait models to concrete implementations when they are not
-      // defined in source code, and when there are no exact model for the functions
-      isExact = false and
-      not summaryModel(f, _, _, _, provenance, true, _) and
-      not f.fromSource()
-    )
+  exists(boolean isInherited |
+    summaryModel(f, input, output, kind, provenance, isInherited, madId)
+  |
+    // Only apply generated or inherited models to functions in library code and
+    // when no strictly better model exists
+    if provenance.isGenerated() or isInherited = true
+    then
+      not f.fromSource() and
+      not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
+        provenance.isGenerated() and other.isManual()
+        or
+        provenance = other and isInherited = true
+      )
+    else any()
   )
 }
 
