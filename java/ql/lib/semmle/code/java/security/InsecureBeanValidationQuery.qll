@@ -50,6 +50,8 @@ module BeanValidationConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
 
+  predicate isBarrier(DataFlow::Node node) { node instanceof BeanValidationSanitizer }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
@@ -64,4 +66,11 @@ abstract class BeanValidationSink extends DataFlow::Node { }
 
 private class ExternalBeanValidationSink extends BeanValidationSink {
   ExternalBeanValidationSink() { sinkNode(this, "bean-validation") }
+}
+
+/** A bean validation sanitizer. */
+abstract class BeanValidationSanitizer extends DataFlow::Node { }
+
+private class ExternalBeanValidationSanitizer extends BeanValidationSanitizer {
+  ExternalBeanValidationSanitizer() { barrierNode(this, "bean-validation") }
 }
