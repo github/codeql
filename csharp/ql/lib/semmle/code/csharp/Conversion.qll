@@ -533,9 +533,7 @@ predicate convSpan(Type fromType, Type toType) {
     ) and
     toElementType = toType.(ReadOnlySpanType).getElementType()
   |
-    convIdentity(fromElementType, toElementType)
-    or
-    convVariance(fromElementType, toElementType)
+    convRefTypeNonNull(fromElementType, toElementType)
   )
   or
   fromType instanceof SystemStringClass and
