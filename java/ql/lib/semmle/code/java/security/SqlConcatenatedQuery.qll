@@ -4,7 +4,6 @@ import java
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SqlConcatenatedLib
 private import semmle.code.java.security.SqlInjectionQuery
-private import semmle.code.java.security.Sanitizers
 
 private class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
   UncontrolledStringBuilderSource() {
@@ -23,7 +22,7 @@ module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig 
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof QueryInjectionSanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 

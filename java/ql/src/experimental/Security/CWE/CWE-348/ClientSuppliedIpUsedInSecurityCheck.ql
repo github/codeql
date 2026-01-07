@@ -14,7 +14,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.Sanitizers
 deprecated import ClientSuppliedIpUsedInSecurityCheckLib
 deprecated import ClientSuppliedIpUsedInSecurityCheckFlow::PathGraph
 
@@ -28,18 +27,8 @@ deprecated module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow:
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ClientSuppliedIpUsedInSecurityCheckSink }
 
-  /**
-   * Splitting a header value by `,` and taking an entry other than the first is sanitizing, because
-   * later entries may originate from more-trustworthy intermediate proxies, not the original client.
-   */
   predicate isBarrier(DataFlow::Node node) {
-    exists(ArrayAccess aa, MethodCall ma | aa.getArray() = ma |
-      ma.getQualifier() = node.asExpr() and
-      ma.getMethod() instanceof SplitMethod and
-      not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
-    )
-    or
-    node instanceof SimpleTypeSanitizer
+    node instanceof ClientSuppliedIpUsedInSecurityCheckSanitizer
   }
 }
 

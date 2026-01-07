@@ -4,6 +4,7 @@ import java
 import DataFlow
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.QueryInjection
+import semmle.code.java.security.Sanitizers
 
 /**
  * A data flow source of the client ip obtained according to the remote endpoint identifier specified
@@ -27,6 +28,9 @@ class ClientSuppliedIpUsedInSecurityCheck extends DataFlow::Node {
 
 /** A data flow sink for ip address forgery vulnerabilities. */
 abstract class ClientSuppliedIpUsedInSecurityCheckSink extends DataFlow::Node { }
+
+/** A data flow sanitizer for ip address forgery vulnerabilities. */
+abstract class ClientSuppliedIpUsedInSecurityCheckSanitizer extends DataFlow::Node { }
 
 /**
  * A data flow sink for remote client ip comparison.
@@ -98,3 +102,23 @@ string getIpAddressRegex() {
   result =
     "^((10\\.((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?)|(192\\.168\\.)|172\\.(1[6789]|2[0-9]|3[01])\\.)((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)(\\.)?((1\\d{2})?|(2[0-4]\\d)?|(25[0-5])?|([1-9]\\d|[0-9])?)$"
 }
+
+/**
+ * Splitting a header value by `,` and taking an entry other than the first is sanitizing, because
+ * later entries may originate from more-trustworthy intermediate proxies, not the original client.
+ */
+private class EntryAfterFirstSanitizer extends ClientSuppliedIpUsedInSecurityCheckSanitizer {
+  EntryAfterFirstSanitizer() {
+    exists(ArrayAccess aa, MethodCall ma | aa.getArray() = ma |
+      ma.getQualifier() = this.asExpr() and
+      ma.getMethod() instanceof SplitMethod and
+      not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
+    )
+  }
+}
+
+private class SimpleTypeAddressSpoofingSanitizer extends ClientSuppliedIpUsedInSecurityCheckSanitizer instanceof SimpleTypeSanitizer
+{ }
+
+private class SqlOperationSanitizer extends ClientSuppliedIpUsedInSecurityCheckSanitizer instanceof QueryInjectionSanitizer
+{ }

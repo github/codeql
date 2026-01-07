@@ -8,9 +8,13 @@ import semmle.code.java.frameworks.javaee.Persistence
 private import semmle.code.java.frameworks.MyBatis
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
+private import semmle.code.java.security.Sanitizers
 
 /** A sink for database query language injection vulnerabilities. */
 abstract class QueryInjectionSink extends ApiSinkNode { }
+
+/** A sanitizer for query injection vulnerabilities. */
+abstract class QueryInjectionSanitizer extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -58,6 +62,13 @@ private class MongoDbInjectionSink extends QueryInjectionSink {
       c.getTypeExpr().getType().(RefType).hasQualifiedName("com.mongodb", "DBObject")
     )
   }
+}
+
+private class SimpleTypeQueryInjectionSanitizer extends QueryInjectionSanitizer instanceof SimpleTypeSanitizer
+{ }
+
+private class ExternalQueryInjectionSanitizer extends QueryInjectionSanitizer {
+  ExternalQueryInjectionSanitizer() { barrierNode(this, "sql-injection") }
 }
 
 private class MongoJsonStep extends AdditionalQueryInjectionTaintStep {
