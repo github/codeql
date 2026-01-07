@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.ApacheHttp
 private import semmle.code.java.frameworks.Networking
+private import semmle.code.java.security.Sanitizers
 
 /**
  * String of HTTP URLs not in private domains.
@@ -34,6 +35,17 @@ abstract class UrlOpenSink extends DataFlow::Node { }
 private class DefaultUrlOpenSink extends UrlOpenSink {
   // request-forgery sinks control the URL of a request
   DefaultUrlOpenSink() { sinkNode(this, "request-forgery") }
+}
+
+/**
+ * A sanitizer to URL opening.
+ */
+abstract class UrlOpenSanitizer extends DataFlow::Node { }
+
+private class SimpleTypeUrlOpenSanitizer extends UrlOpenSanitizer instanceof SimpleTypeSanitizer { }
+
+private class ExternalUrlOpenSanitizer extends UrlOpenSanitizer {
+  ExternalUrlOpenSanitizer() { barrierNode(this, "request-forgery") }
 }
 
 /**
