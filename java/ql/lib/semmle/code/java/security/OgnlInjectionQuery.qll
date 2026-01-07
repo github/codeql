@@ -3,7 +3,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.OgnlInjection
-private import semmle.code.java.security.Sanitizers
 
 /**
  * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
@@ -13,7 +12,7 @@ module OgnlInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OgnlInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof OgnlInjectionSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(OgnlInjectionAdditionalTaintStep c).step(node1, node2)

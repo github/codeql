@@ -7,6 +7,7 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.MyBatis
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A data flow sink for unvalidated user input that is used in OGNL EL evaluation.
@@ -14,6 +15,8 @@ private import semmle.code.java.frameworks.MyBatis
  * Extend this class to add your own OGNL injection sinks.
  */
 abstract class OgnlInjectionSink extends ApiSinkNode { }
+
+abstract class OgnlInjectionSanitizer extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -30,6 +33,13 @@ class OgnlInjectionAdditionalTaintStep extends Unit {
 
 private class DefaultOgnlInjectionSink extends OgnlInjectionSink {
   DefaultOgnlInjectionSink() { sinkNode(this, "ognl-injection") }
+}
+
+private class SimpleTypeOgnlInjectionSanitizer extends OgnlInjectionSanitizer instanceof SimpleTypeSanitizer
+{ }
+
+private class ExternalOgnlInjectionSanitizer extends OgnlInjectionSanitizer {
+  ExternalOgnlInjectionSanitizer() { barrierNode(this, "ognl-injection") }
 }
 
 /** The class `org.apache.commons.ognl.Ognl` or `ognl.Ognl`. */
