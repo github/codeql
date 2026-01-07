@@ -7,6 +7,7 @@ private import codeql.rust.dataflow.internal.Content
 private import codeql.rust.dataflow.FlowSource as FlowSource
 private import codeql.rust.dataflow.FlowSink as FlowSink
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
+private import codeql.rust.dataflow.internal.TaintTrackingImpl as TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 
@@ -42,9 +43,15 @@ class QualifiedCallable extends TCallable {
   string getCanonicalPath() { result = path }
 }
 
-module ModelGeneratorCommonInput implements
-  ModelGeneratorCommonInputSig<R::Location, DataFlowImpl::RustDataFlow>
-{
+private module RustDataFlowInput implements DataFlowImpl::RustDataFlowInputSig {
+  predicate includeDynamicTargets() { none() }
+}
+
+module RustDataFlow = DataFlowImpl::RustDataFlowGen<RustDataFlowInput>;
+
+module RustTaintTracking = TaintTrackingImpl::RustTaintTrackingGen<RustDataFlowInput>;
+
+module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<R::Location, RustDataFlow> {
   // NOTE: We are not using type information for now.
   class Type = Unit;
 
@@ -71,9 +78,8 @@ module ModelGeneratorCommonInput implements
 
   string parameterExactAccess(R::ParamBase p) {
     result =
-      "Argument[" +
-        any(DataFlowImpl::RustDataFlow::ParameterPosition pos | p = pos.getParameterIn(_))
-            .toString() + "]"
+      "Argument[" + any(RustDataFlow::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
+        "]"
   }
 
   string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
@@ -83,16 +89,12 @@ module ModelGeneratorCommonInput implements
   }
 
   bindingset[c]
-  string paramReturnNodeAsApproximateOutput(
-    QualifiedCallable c, DataFlowImpl::RustDataFlow::ParameterPosition pos
-  ) {
+  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, RustDataFlow::ParameterPosition pos) {
     result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsExactOutput(
-    QualifiedCallable c, DataFlowImpl::RustDataFlow::ParameterPosition pos
-  ) {
+  string paramReturnNodeAsExactOutput(QualifiedCallable c, RustDataFlow::ParameterPosition pos) {
     result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
@@ -102,7 +104,7 @@ module ModelGeneratorCommonInput implements
     result.getFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
-  predicate isOwnInstanceAccessNode(DataFlowImpl::RustDataFlow::ReturnNode node) {
+  predicate isOwnInstanceAccessNode(RustDataFlow::ReturnNode node) {
     // This is probably not relevant to implement for Rust, as we only use
     // `captureMixedFlow` which doesn't explicitly distinguish between
     // functions that return `self` and those that don't.
@@ -121,7 +123,7 @@ module ModelGeneratorCommonInput implements
 }
 
 private import ModelGeneratorCommonInput
-private import MakeModelGeneratorFactory<R::Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
+private import MakeModelGeneratorFactory<R::Location, RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
 
 private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   class SummaryTargetApi extends QualifiedCallable {
