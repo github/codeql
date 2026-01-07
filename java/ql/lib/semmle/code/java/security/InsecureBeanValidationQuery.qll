@@ -60,6 +60,8 @@ module BeanValidationFlow = TaintTracking::Global<BeanValidationConfig>;
  * A bean validation sink, such as method `buildConstraintViolationWithTemplate`
  * declared on a subtype of `javax.validation.ConstraintValidatorContext`.
  */
-private class BeanValidationSink extends DataFlow::Node {
-  BeanValidationSink() { sinkNode(this, "bean-validation") }
+abstract class BeanValidationSink extends DataFlow::Node { }
+
+private class ExternalBeanValidationSink extends BeanValidationSink {
+  ExternalBeanValidationSink() { sinkNode(this, "bean-validation") }
 }
