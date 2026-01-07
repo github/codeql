@@ -2679,7 +2679,7 @@ class TranslatedDestructorFieldDestruction extends TranslatedNonConstantExpr, St
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getTranslatedFunction(getEnclosingFunction(expr)).getInitializeThisInstruction()
+    result = getTranslatedFunction(getEnclosingFunction(expr)).getLoadThisInstruction()
   }
 
   final override Field getInstructionField(InstructionTag tag) {
