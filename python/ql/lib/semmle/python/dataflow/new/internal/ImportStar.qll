@@ -13,6 +13,7 @@ module ImportStar {
    * Holds if `n` is an access of a variable called `name` (which is _not_ the name of a
    * built-in, and which is _not_ a global defined in the enclosing module) inside the scope `s`.
    */
+  overlay[local]
   cached
   predicate namePossiblyDefinedInImportStar(NameNode n, string name, Scope s) {
     n.isLoad() and
@@ -63,6 +64,7 @@ module ImportStar {
    * Holds if `n` may refer to a global variable of the same name in the module `m`, accessible
    *  from the scope of `n` by a chain of `import *` imports.
    */
+  overlay[global]
   cached
   predicate importStarResolvesTo(NameNode n, Module m) {
     m = getStarImported+(n.getEnclosingModule()) and
@@ -73,6 +75,7 @@ module ImportStar {
   /**
    * Gets a module that is imported from `m` via `import *`.
    */
+  overlay[global]
   cached
   Module getStarImported(Module m) {
     exists(ImportStar i, DataFlow::CfgNode imported_module |
