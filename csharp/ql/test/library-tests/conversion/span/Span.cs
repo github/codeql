@@ -61,6 +61,17 @@ public class C
         string s = "";
         ReadOnlySpan<char> charReadOnlySpan = s; // string -> ReadOnlySpan<char>
 
+        // Various ref type conversions
+        Derived[] derivedArray = [];
+        ReadOnlySpan<Base> baseReadOnlySpan;
+        baseReadOnlySpan = derivedArray; // Derived[] -> ReadOnlySpan<Base>
+
+        ReadOnlySpan<object> objectReadOnlySpan;
+        objectReadOnlySpan = stringArray; // string[] -> ReadOnlySpan<object>
+
+        byte[][] byteByteArray = [];
+        objectReadOnlySpan = byteByteArray; // byte[][] -> ReadOnlySpan<object>
+
         // No conversion possible except for identity.
         ReadOnlySpan<InvariantInterface<Base>> invariantInterfaceBaseReadOnlySpan;
         ReadOnlySpan<InvariantInterface<Derived>> invariantInterfaceDerivedReadOnlySpan;
