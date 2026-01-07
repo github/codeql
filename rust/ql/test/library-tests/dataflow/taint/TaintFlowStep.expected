@@ -17,3 +17,27 @@
 | main.rs:72:24:72:27 | s[1] [pre-dereferenced] | main.rs:72:24:72:27 | s[1] |
 | main.rs:77:9:77:12 | [post] arr2 [borrowed] | main.rs:77:9:77:12 | [post] arr2 |
 | main.rs:77:9:77:15 | arr2[1] [pre-dereferenced] | main.rs:77:9:77:15 | arr2[1] |
+| main.rs:98:14:98:47 | TupleExpr | main.rs:98:14:98:49 | ... .0 |
+| main.rs:99:14:99:47 | TupleExpr | main.rs:99:14:99:49 | ... .1 |
+| main.rs:102:14:102:28 | source_tuple(...) | main.rs:102:14:102:30 | ... .0 |
+| main.rs:103:14:103:28 | source_tuple(...) | main.rs:103:14:103:30 | ... .1 |
+| main.rs:106:14:106:83 | TupleExpr | main.rs:106:14:106:85 | ... .0 |
+| main.rs:107:14:107:83 | TupleExpr | main.rs:107:14:107:85 | ... .0 |
+| main.rs:107:14:107:85 | ... .0 | main.rs:107:14:107:87 | ... .0 |
+| main.rs:108:14:108:83 | TupleExpr | main.rs:108:14:108:85 | ... .0 |
+| main.rs:108:14:108:85 | ... .0 | main.rs:108:14:108:87 | ... .1 |
+| main.rs:109:14:109:83 | TupleExpr | main.rs:109:14:109:85 | ... .1 |
+| main.rs:110:14:110:83 | TupleExpr | main.rs:110:14:110:85 | ... .1 |
+| main.rs:110:14:110:85 | ... .1 | main.rs:110:14:110:87 | ... .0 |
+| main.rs:111:14:111:83 | TupleExpr | main.rs:111:14:111:85 | ... .1 |
+| main.rs:111:14:111:85 | ... .1 | main.rs:111:14:111:87 | ... .1 |
+| main.rs:114:14:114:64 | TupleExpr | main.rs:114:14:114:66 | ... .0 |
+| main.rs:115:14:115:64 | TupleExpr | main.rs:115:14:115:66 | ... .0 |
+| main.rs:115:14:115:66 | ... .0 | main.rs:115:14:115:68 | ... .0 |
+| main.rs:116:14:116:64 | TupleExpr | main.rs:116:14:116:66 | ... .0 |
+| main.rs:116:14:116:66 | ... .0 | main.rs:116:14:116:68 | ... .1 |
+| main.rs:117:14:117:64 | TupleExpr | main.rs:117:14:117:66 | ... .1 |
+| main.rs:118:14:118:64 | TupleExpr | main.rs:118:14:118:66 | ... .1 |
+| main.rs:118:14:118:66 | ... .1 | main.rs:118:14:118:68 | ... .0 |
+| main.rs:119:14:119:64 | TupleExpr | main.rs:119:14:119:66 | ... .1 |
+| main.rs:119:14:119:66 | ... .1 | main.rs:119:14:119:68 | ... .1 |
