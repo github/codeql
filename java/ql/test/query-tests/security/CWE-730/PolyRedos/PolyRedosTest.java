@@ -2,6 +2,7 @@ import java.util.regex.Pattern;
 import java.util.function.Predicate;
 import javax.servlet.http.HttpServletRequest;
 import com.google.common.base.Splitter;
+import org.apache.commons.lang3.RegExUtils;
 
 class PolyRedosTest {
     void test(HttpServletRequest request) {
@@ -80,5 +81,17 @@ class PolyRedosTest {
         p.matcher(request.getHeader("If-None-Match")).matches();
         p.matcher(request.getRequestURI()).matches();
         p.matcher(request.getCookies()[0].getName()).matches();
+    }
+
+    void test7(HttpServletRequest request) {
+        String tainted = request.getParameter("inp"); // $ Source
+        String reg = "0\\.\\d+E?\\d+!";
+
+        RegExUtils.removeAll(tainted, reg); // $ Alert
+        RegExUtils.removeFirst(tainted, reg); // $ Alert
+        RegExUtils.removePattern(tainted, reg); // $ Alert
+        RegExUtils.replaceAll(tainted, reg, "replacement"); // $ Alert
+        RegExUtils.replaceFirst(tainted, reg, "replacement"); // $ Alert
+        RegExUtils.replacePattern(tainted, reg, "replacement"); // $ Alert
     }
 }

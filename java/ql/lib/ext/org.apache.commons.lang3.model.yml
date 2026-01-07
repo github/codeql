@@ -4,9 +4,9 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.commons.lang3", "SerializationUtils", False, "deserialize", "", "", "Argument[0]", "unsafe-deserialization", "manual"]
-      # Note these sinks do not use the sink kind `regex-use[0]` because the regex injection query needs to select them separately from
-      # other `regex-use[0]` sinks in order to avoid FPs. As a result, these sinks are currently not used in the polynomial ReDoS query.
-      # TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query can also use these sinks.
+      # Note these sinks use the sink kind `regex-use` (without brackets) because the regex injection query needs to select them
+      # separately from other `regex-use[0]` sinks in order to avoid FPs. The polynomial ReDoS query handles the plain `regex-use`
+      # sink kind by treating it as `regex-use[0]` (non-full-string matching with the string argument at index 0).
       - ["org.apache.commons.lang3", "RegExUtils", False, "removeAll", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "removeFirst", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
       - ["org.apache.commons.lang3", "RegExUtils", False, "removePattern", "(String,String)", "", "Argument[1]", "regex-use", "manual"]
