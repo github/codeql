@@ -20,29 +20,32 @@ private class ExploitableStringLiteral extends StringLiteral {
  * `strArg` is the index of the argument to methods with this sink kind that
  * contain the string to be matched against, where -1 is the qualifier; or -2
  * if no such argument exists.
- *
- * Note that `regex-use` is deliberately not a possible value for `kind` here,
- * as it is used for regular expression injection sinks that need to be selected
- * separately from existing `regex-use[0]` sinks.
- * TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query
- * can also use the `regex-use` sinks.
  */
 private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
   sinkModel(_, _, _, _, _, _, _, kind, _, _) and
-  exists(string fullStr, string strArgStr |
-    (
-      full = true and fullStr = "f"
-      or
-      full = false and fullStr = ""
-    ) and
-    (
-      strArgStr.toInt() = strArg
-      or
-      strArg = -2 and
-      strArgStr = ""
+  (
+    exists(string fullStr, string strArgStr |
+      (
+        full = true and fullStr = "f"
+        or
+        full = false and fullStr = ""
+      ) and
+      (
+        strArgStr.toInt() = strArg
+        or
+        strArg = -2 and
+        strArgStr = ""
+      )
+    |
+      kind = "regex-use[" + fullStr + strArgStr + "]"
     )
-  |
-    kind = "regex-use[" + fullStr + strArgStr + "]"
+    or
+    // Plain `regex-use` sinks default to non-full-string matching with the string argument at index 0.
+    // This is primarily used for methods like `RegExUtils.removeAll(text, regex)` where both the
+    // pattern and the input are provided in the same call.
+    kind = "regex-use" and
+    full = false and
+    strArg = 0
   )
 }
 
