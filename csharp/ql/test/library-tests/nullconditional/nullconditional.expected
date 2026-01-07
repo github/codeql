@@ -1,0 +1,12 @@
+| NullConditional.cs:12:26:12:33 | access to field Field |
+| NullConditional.cs:13:29:13:39 | access to property Property |
+| NullConditional.cs:14:17:14:27 | access to array element |
+| NullConditional.cs:17:9:17:16 | access to field Field |
+| NullConditional.cs:18:9:18:19 | access to property Property |
+| NullConditional.cs:19:9:19:19 | access to array element |
+| NullConditional.cs:22:9:22:16 | access to field Field |
+| NullConditional.cs:22:9:22:16 | access to field Field |
+| NullConditional.cs:23:9:23:19 | access to property Property |
+| NullConditional.cs:23:9:23:19 | access to property Property |
+| NullConditional.cs:26:17:26:24 | access to field Field |
+| NullConditional.cs:30:21:30:41 | access to field Field |
