@@ -4,6 +4,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.PongMessage;
 import org.springframework.web.socket.CloseStatus;
 
 
@@ -33,6 +34,12 @@ public class Test  {
 
         @Override 
         protected void handleBinaryMessage(WebSocketSession s, BinaryMessage m) {
+            sink(s); // $hasTaintFlow
+            sink(m); // $hasTaintFlow
+        }
+
+        @Override
+        protected void handlePongMessage(WebSocketSession s, PongMessage m) {
             sink(s); // $hasTaintFlow
             sink(m); // $hasTaintFlow
         }

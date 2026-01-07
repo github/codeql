@@ -8,10 +8,9 @@ extensions:
      - ["org.springframework.web.socket", "WebSocketHandler", True, "handleMessage", "", "", "Parameter[0]", "remote", "manual"]
      - ["org.springframework.web.socket", "WebSocketHandler", True, "handleMessage", "", "", "Parameter[1]", "remote", "manual"]
      - ["org.springframework.web.socket", "WebSocketHandler", True, "handleTransportError", "", "", "Parameter[0]", "remote", "manual"]
-     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleBinaryMessage", "", "", "Parameter[0]", "remote", "manual"]
-     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleBinaryMessage", "", "", "Parameter[1]", "remote", "manual"]
-     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleTextMessage", "", "", "Parameter[0]", "remote", "manual"]
-     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleTextMessage", "", "", "Parameter[1]", "remote", "manual"]
+     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleBinaryMessage", "", "", "Parameter[0..1]", "remote", "manual"]
+     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handlePongMessage", "", "", "Parameter[0..1]", "remote", "manual"]
+     - ["org.springframework.web.socket.handler", "AbstractWebSocketHandler", True, "handleTextMessage", "", "", "Parameter[0..1]", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
