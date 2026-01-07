@@ -23,7 +23,9 @@ module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
     sink instanceof ImplicitPendingIntentSink and state instanceof MutablePendingIntent
   }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof ExplicitIntentSanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof ImplicitPendingIntentSanitizer
+  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, node2)

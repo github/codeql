@@ -33,6 +33,9 @@ abstract class ImplicitPendingIntentSource extends ApiSourceNode { }
 /** A sink that sends an implicit and mutable `PendingIntent` to a third party. */
 abstract class ImplicitPendingIntentSink extends DataFlow::Node { }
 
+/** A sanitizer for sending an implicit and mutable `PendingIntent` to a third party. */
+abstract class ImplicitPendingIntentSanitizer extends DataFlow::Node { }
+
 /**
  * A unit class for adding additional taint steps.
  *
@@ -73,6 +76,15 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
     )
     or
     sinkNode(this, "pending-intents")
+  }
+}
+
+private class ExplicitPendingIntentSanitizer extends ImplicitPendingIntentSanitizer instanceof ExplicitIntentSanitizer
+{ }
+
+private class ExternalIntentRedirectionSanitizer extends ExplicitIntentSanitizer {
+  ExternalIntentRedirectionSanitizer() {
+    barrierNode(this, ["intent-redirection", "pending-intents"])
   }
 }
 
