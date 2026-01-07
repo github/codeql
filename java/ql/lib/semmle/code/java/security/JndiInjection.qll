@@ -34,6 +34,10 @@ private class DefaultJndiInjectionSink extends JndiInjectionSink {
   DefaultJndiInjectionSink() { sinkNode(this, "jndi-injection") }
 }
 
+private class ExternalJndiInjectionSanitizer extends JndiInjectionSanitizer {
+  ExternalJndiInjectionSanitizer() { barrierNode(this, "jndi-injection") }
+}
+
 /**
  * A method that does a JNDI lookup when it receives a specific argument set to `true`.
  */
