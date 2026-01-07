@@ -17,3 +17,10 @@ private class DefaultInformationLeakSink extends InformationLeakSink {
     this instanceof XssSink
   }
 }
+
+/** A sanitizer for information leak. */
+abstract class InformationLeakSanitizer extends DataFlow::Node { }
+
+private class ExternalInformationLeakSanitizer extends InformationLeakSanitizer {
+  ExternalInformationLeakSanitizer() { barrierNode(this, "information-leak") }
+}

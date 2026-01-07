@@ -70,6 +70,8 @@ private module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow:
   predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof InformationLeakSanitizer }
 }
 
 private module StackTraceStringToHttpResponseSinkFlow =

@@ -21,6 +21,8 @@ private module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataF
   predicate isSource(DataFlow::Node src) { src instanceof GetMessageFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof InformationLeakSanitizer }
 }
 
 private module GetMessageFlowSourceToHttpResponseSinkFlow =
