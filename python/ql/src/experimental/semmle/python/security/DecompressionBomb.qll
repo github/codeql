@@ -381,7 +381,7 @@ module Zstd {
   class DecompressionSink extends DecompressionBomb::Sink {
     DecompressionSink() {
       exists(API::CallNode zstdCall | zstdCall = zstdInstance().getACall() |
-        this = zstdCall.getParameter(0, "filename").asSink() and
+        this = zstdCall.getParameter(0, "file").asSink() and
         (
           not exists(
             zstdCall
