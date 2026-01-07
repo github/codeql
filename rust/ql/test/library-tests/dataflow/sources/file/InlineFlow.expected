@@ -40,9 +40,10 @@ models
 | 39 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 40 | Summary: <std::ffi::os_str::OsString>::into_string; Argument[self].Field[std::ffi::os_str::OsString::inner].Field[std::sys::os_str::bytes::Buf::inner]; ReturnValue.Field[core::result::Result::Ok(0)].Field[alloc::string::String::vec]; value |
 | 41 | Summary: <std::path::PathBuf as core::convert::From>::from; Argument[0]; ReturnValue.Field[std::path::PathBuf::inner]; value |
-| 42 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
-| 43 | Summary: <std::path::PathBuf>::into_boxed_path; Argument[self]; ReturnValue.Field[alloc::boxed::Box(0)]; taint |
-| 44 | Summary: <std::path::PathBuf>::into_os_string; Argument[self].Field[std::path::PathBuf::inner]; ReturnValue; value |
+| 42 | Summary: <std::path::PathBuf as core::ops::deref::Deref>::deref; Argument[self].Reference.Field[std::path::PathBuf::inner]; ReturnValue.Reference; value |
+| 43 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
+| 44 | Summary: <std::path::PathBuf>::into_boxed_path; Argument[self]; ReturnValue.Field[alloc::boxed::Box(0)]; taint |
+| 45 | Summary: <std::path::PathBuf>::into_os_string; Argument[self].Field[std::path::PathBuf::inner]; ReturnValue; value |
 edges
 | test.rs:12:13:12:18 | buffer | test.rs:13:14:13:19 | buffer | provenance |  |
 | test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
@@ -72,23 +73,30 @@ edges
 | test.rs:30:22:30:25 | path | test.rs:30:20:30:27 | e.path() | provenance | Src:MaD:4 MaD:4 |
 | test.rs:31:14:31:17 | path | test.rs:31:14:31:25 | path.clone() | provenance | MaD:18 |
 | test.rs:32:14:32:17 | path | test.rs:32:14:32:25 | path.clone() | provenance | MaD:18 |
-| test.rs:32:14:32:25 | path.clone() | test.rs:32:14:32:35 | ... .as_path() | provenance | MaD:42 |
+| test.rs:32:14:32:25 | path.clone() | test.rs:32:14:32:35 | ... .as_path() | provenance | MaD:43 |
 | test.rs:33:14:33:17 | path | test.rs:33:14:33:25 | path.clone() | provenance | MaD:18 |
-| test.rs:33:14:33:25 | path.clone() | test.rs:33:14:33:42 | ... .into_os_string() | provenance | MaD:44 |
+| test.rs:33:14:33:25 | path.clone() | test.rs:33:14:33:42 | ... .into_os_string() | provenance | MaD:45 |
 | test.rs:34:39:34:42 | path | test.rs:34:39:34:50 | path.clone() | provenance | MaD:18 |
-| test.rs:34:39:34:50 | path.clone() | test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | provenance | MaD:43 |
+| test.rs:34:39:34:50 | path.clone() | test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | provenance | MaD:44 |
 | test.rs:34:39:34:68 | ... .into_boxed_path() [Box(0)] | test.rs:34:14:34:69 | ...::from(...) | provenance | MaD:41 |
 | test.rs:35:14:35:17 | path | test.rs:35:14:35:25 | path.clone() | provenance | MaD:18 |
 | test.rs:35:14:35:25 | path.clone() | test.rs:35:14:35:37 | ... .as_os_str() | provenance | MaD:19 |
+| test.rs:35:14:35:25 | path.clone() | test.rs:35:14:35:37 | ... .as_os_str() | provenance | MaD:42 |
 | test.rs:36:14:36:17 | path | test.rs:36:14:36:25 | path.clone() | provenance | MaD:18 |
 | test.rs:36:14:36:25 | path.clone() | test.rs:36:14:36:41 | ... .as_mut_os_str() | provenance | MaD:19 |
+| test.rs:36:14:36:25 | path.clone() | test.rs:36:14:36:41 | ... .as_mut_os_str() | provenance | MaD:42 |
 | test.rs:37:14:37:17 | path | test.rs:37:14:37:26 | path.to_str() | provenance | MaD:19 |
+| test.rs:37:14:37:17 | path | test.rs:37:14:37:26 | path.to_str() | provenance | MaD:42 |
 | test.rs:38:14:38:17 | path | test.rs:38:14:38:31 | path.to_path_buf() | provenance | MaD:19 |
+| test.rs:38:14:38:17 | path | test.rs:38:14:38:31 | path.to_path_buf() | provenance | MaD:42 |
 | test.rs:39:14:39:17 | path | test.rs:39:14:39:29 | path.file_name() [Some, &ref] | provenance | MaD:19 |
+| test.rs:39:14:39:17 | path | test.rs:39:14:39:29 | path.file_name() [Some, &ref] | provenance | MaD:42 |
 | test.rs:39:14:39:29 | path.file_name() [Some, &ref] | test.rs:39:14:39:38 | ... .unwrap() | provenance | MaD:38 |
 | test.rs:40:14:40:17 | path | test.rs:40:14:40:29 | path.extension() [Some, &ref] | provenance | MaD:19 |
+| test.rs:40:14:40:17 | path | test.rs:40:14:40:29 | path.extension() [Some, &ref] | provenance | MaD:42 |
 | test.rs:40:14:40:29 | path.extension() [Some, &ref] | test.rs:40:14:40:38 | ... .unwrap() | provenance | MaD:38 |
 | test.rs:41:14:41:17 | path | test.rs:41:14:41:32 | path.canonicalize() [Ok] | provenance | MaD:19 |
+| test.rs:41:14:41:17 | path | test.rs:41:14:41:32 | path.canonicalize() [Ok] | provenance | MaD:42 |
 | test.rs:41:14:41:32 | path.canonicalize() [Ok] | test.rs:41:14:41:41 | ... .unwrap() | provenance | MaD:39 |
 | test.rs:44:13:44:21 | file_name | test.rs:45:14:45:22 | file_name | provenance |  |
 | test.rs:44:13:44:21 | file_name | test.rs:46:14:46:22 | file_name | provenance |  |

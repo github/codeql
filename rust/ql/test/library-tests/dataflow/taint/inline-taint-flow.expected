@@ -5,7 +5,6 @@ models
 | 4 | Summary: <_ as core::ops::arith::AddAssign>::add_assign; Argument[self].Reference; Argument[self].Reference; taint |
 | 5 | Summary: <_ as core::ops::arith::Neg>::neg; Argument[self]; ReturnValue; taint |
 | 6 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
-| 7 | Summary: <core::i64 as core::ops::arith::Neg>::neg; Argument[self]; ReturnValue; taint |
 edges
 | main.rs:12:9:12:9 | a | main.rs:13:10:13:10 | a | provenance |  |
 | main.rs:12:13:12:22 | source(...) | main.rs:12:9:12:9 | a | provenance |  |
@@ -18,7 +17,6 @@ edges
 | main.rs:25:9:25:9 | a | main.rs:26:11:26:11 | a | provenance |  |
 | main.rs:25:13:25:22 | source(...) | main.rs:25:9:25:9 | a | provenance |  |
 | main.rs:26:11:26:11 | a | main.rs:26:10:26:11 | - ... | provenance | MaD:5 |
-| main.rs:26:11:26:11 | a | main.rs:26:10:26:11 | - ... | provenance | MaD:7 |
 | main.rs:30:9:30:9 | a | main.rs:31:9:31:9 | b | provenance |  |
 | main.rs:30:13:30:22 | source(...) | main.rs:30:9:30:9 | a | provenance |  |
 | main.rs:31:9:31:9 | b | main.rs:32:10:32:17 | b as i64 | provenance |  |
