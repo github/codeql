@@ -153,3 +153,4 @@ extensions:
     data:
       - ["core::ops::range::RangeInclusive::start"]
       - ["core::ops::range::RangeInclusive::end"]
+      - ["core::result::Result::Err(0)"]
