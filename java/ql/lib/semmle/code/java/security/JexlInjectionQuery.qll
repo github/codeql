@@ -17,6 +17,16 @@ private class DefaultJexlEvaluationSink extends JexlEvaluationSink {
 }
 
 /**
+ * A sink for Expresssion Language injection vulnerabilities via Jexl,
+ * that is, method calls that run evaluation of a JEXL expression.
+ */
+abstract class JexlEvaluationSanitizer extends DataFlow::ExprNode { }
+
+private class ExternalJexlEvaluationSanitizer extends JexlEvaluationSanitizer {
+  ExternalJexlEvaluationSanitizer() { barrierNode(this, "jexl-injection") }
+}
+
+/**
  * A unit class for adding additional taint steps.
  *
  * Extend this class to add additional taint steps that should apply to the `JexlInjectionFlowConfig`.
@@ -47,6 +57,8 @@ module JexlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof JexlEvaluationSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
