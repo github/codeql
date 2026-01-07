@@ -38,6 +38,10 @@ private class DefaultLdapInjectionSink extends LdapInjectionSink {
 /** A sanitizer that clears the taint on (boxed) primitive types. */
 private class DefaultLdapSanitizer extends LdapInjectionSanitizer instanceof SimpleTypeSanitizer { }
 
+private class ExternalLdapInjectionSanitizer extends LdapInjectionSanitizer {
+  ExternalLdapInjectionSanitizer() { barrierNode(this, "ldap-injection") }
+}
+
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `String` and `LdapName`,
  * i.e. `new LdapName(tainted)`.
