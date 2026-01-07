@@ -37,6 +37,10 @@ private class DefaultMvelInjectionSanitizer extends MvelInjectionSanitizer {
   }
 }
 
+private class ExternalMvelInjectionSanitizer extends MvelInjectionSanitizer {
+  ExternalMvelInjectionSanitizer() { barrierNode(this, "mvel-injection") }
+}
+
 /** A set of additional taint steps to consider when taint tracking MVEL related data flows. */
 private class DefaultMvelInjectionAdditionalTaintStep extends MvelInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
