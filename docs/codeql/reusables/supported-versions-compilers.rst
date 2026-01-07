@@ -21,7 +21,7 @@
    Java,"Java 7 to 25 [6]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [7]_",``.java``
-   Kotlin,"Kotlin 1.6.0 [15]_ to 2.2.2\ *x*","kotlinc",``.kt``
+   Kotlin,"Kotlin 1.8.0 to 2.3.0\ *x*","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
@@ -45,4 +45,3 @@
     .. [12] Support for the analysis of Swift requires macOS.
     .. [13] Embedded Swift is not supported.
     .. [14] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
-    .. [15] Support for Kotlin versions 1.6 and 1.7 is deprecated and will be removed in release 2.24.1.
