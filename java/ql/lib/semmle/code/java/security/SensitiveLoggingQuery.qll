@@ -120,6 +120,10 @@ private class DefaultSensitiveLoggerBarrier extends SensitiveLoggerBarrier {
   }
 }
 
+private class ExternalSensitiveLoggerBarrier extends SensitiveLoggerBarrier {
+  ExternalSensitiveLoggerBarrier() { barrierNode(this, "log-injection") }
+}
+
 /** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
 module SensitiveLoggerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SensitiveLoggerSource }
