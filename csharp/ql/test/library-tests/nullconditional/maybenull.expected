@@ -1,2 +1,4 @@
+| NullConditional.cs:30:9:30:41 | ... = ... |
+| NullConditional.cs:30:21:30:41 | access to field Field |
 | NullConditional.cs:30:22:30:33 | ... ? ... : ... |
 | NullConditional.cs:30:30:30:33 | null |
