@@ -158,22 +158,6 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   }
 }
 
-/**
- * Gets the floor of `v`, with additional logic to work around issues with
- * large numbers.
- */
-bindingset[v]
-float safeFloor(float v) {
-  // return the floor of v
-  v.abs() < 2.pow(31) and
-  result = v.floor()
-  or
-  // `floor()` doesn't work correctly on large numbers (since it returns an integer),
-  // so fall back to unrounded numbers at this scale.
-  not v.abs() < 2.pow(31) and
-  result = v
-}
-
 /** A `MulExpr` where exactly one operand is constant. */
 private class MulByConstantExpr extends MulExpr {
   float constant;
@@ -1266,7 +1250,7 @@ private float getLowerBoundsImpl(Expr expr) {
       rsExpr = expr and
       left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
       right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-      result = safeFloor(left / 2.pow(right))
+      result = (left / 2.pow(right)).floorFloat()
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
   ) and
@@ -1475,7 +1459,7 @@ private float getUpperBoundsImpl(Expr expr) {
       rsExpr = expr and
       left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
       right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-      result = safeFloor(left / 2.pow(right))
+      result = (left / 2.pow(right)).floorFloat()
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
   ) and
