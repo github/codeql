@@ -387,8 +387,10 @@ class OverloadedArrayExpr extends FunctionCall {
 
   /**
    * Gets the expression giving the index.
+   *
+   * DEPRECATED: Use getArrayOffset/1 instead.
    */
-  Expr getArrayOffset() { result = this.getArrayOffset(0) }
+  deprecated Expr getArrayOffset() { result = this.getArrayOffset(0) }
 
   /**
    * Gets the expression giving the nth index.
