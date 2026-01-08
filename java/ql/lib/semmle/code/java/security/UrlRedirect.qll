@@ -50,5 +50,9 @@ private class ApacheUrlRedirectSink extends UrlRedirectSink {
   }
 }
 
-private class DefaultUrlRedirectSanitizer extends UrlRedirectSanitizer instanceof RequestForgerySanitizer
+private class RequestForgeryUrlRedirectSanitizer extends UrlRedirectSanitizer instanceof RequestForgerySanitizer
 { }
+
+private class ExternalUrlRedirectSanitizer extends UrlRedirectSanitizer {
+  ExternalUrlRedirectSanitizer() { barrierNode(this, "url-redirection") }
+}
