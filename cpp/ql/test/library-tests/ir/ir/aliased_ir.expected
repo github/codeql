@@ -10486,10 +10486,6 @@ ir.cpp:
 # 1216|     r1216_5(__attribute((vector_size(16UL))) int)        = Add                              : r1216_2, r1216_4
 # 1216|     r1216_6(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1216|     m1216_7(__attribute((vector_size(16UL))) int)        = Store[vi4]                       : &:r1216_6, r1216_5
-# 1219|     v1219_1(void)                                        = NoOp                             : 
-# 1211|     v1211_7(void)                                        = ReturnVoid                       : 
-# 1211|     v1211_8(void)                                        = AliasedUse                       : m1211_3
-# 1211|     v1211_9(void)                                        = ExitFunction                     : 
 
 # 1223| int ModeledCallTarget(int)
 # 1223|   Block 0

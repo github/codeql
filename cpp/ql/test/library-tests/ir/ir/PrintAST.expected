@@ -13331,7 +13331,21 @@ ir.cpp:
 # 1216|           getRightOperand(): [VariableAccess] vi4_shuffle
 # 1216|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1216|               ValueCategory = prvalue(load)
-# 1219|     getStmt(5): [ReturnStmt] return ...
+# 1217|     getStmt(5): [ExprStmt] ExprStmt
+# 1217|       getExpr(): [AssignExpr] ... = ...
+# 1217|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1217|           ValueCategory = lvalue
+# 1217|         getLValue(): [VariableAccess] vi4
+# 1217|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1217|             ValueCategory = lvalue
+# 1218|     getStmt(6): [ExprStmt] ExprStmt
+# 1218|       getExpr(): [AssignExpr] ... = ...
+# 1218|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1218|           ValueCategory = lvalue
+# 1218|         getLValue(): [VariableAccess] vi4
+# 1218|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1218|             ValueCategory = lvalue
+# 1219|     getStmt(7): [ReturnStmt] return ...
 # 1221| [TopLevelFunction] void* memcpy(void*, void*, int)
 # 1221|   <params>: 
 # 1221|     getParameter(0): [Parameter] dst
