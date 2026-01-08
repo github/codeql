@@ -1,11 +1,11 @@
-fn sink<T>(_: T) { }
+fn sink<T>(_: T) {}
 
 // --- tests ---
 
+use async_std::io::ReadExt;
 use std::fs;
 use std::io::Read;
 use tokio::io::AsyncReadExt;
-use async_std::io::ReadExt;
 
 fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
     {
@@ -23,43 +23,46 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
         sink(buffer); // $ hasTaintFlow="file.txt"
     }
 
-    for entry in fs::read_dir("directory")? { // $ Alert[rust/summary/taint-sources]
+    #[rustfmt::skip]
+    let _ = for entry in fs::read_dir("directory")? { // $ Alert[rust/summary/taint-sources]
         let e = entry?;
 
         let path = e.path(); // $ Alert[rust/summary/taint-sources]
         sink(path.clone()); // $ hasTaintFlow
         sink(path.clone().as_path()); // $ hasTaintFlow
-        sink(path.clone().into_os_string()); // $ MISSING: hasTaintFlow
-        sink(std::path::PathBuf::from(path.clone().into_boxed_path())); // $ MISSING: hasTaintFlow
-        sink(path.clone().as_os_str()); // $ MISSING: hasTaintFlow
-        sink(path.clone().as_mut_os_str()); // $ MISSING: hasTaintFlow
-        sink(path.to_str()); // $ MISSING: hasTaintFlow
-        sink(path.to_path_buf()); // $ MISSING: hasTaintFlow
-        sink(path.file_name().unwrap()); // $ MISSING: hasTaintFlow
-        sink(path.extension().unwrap()); // $ MISSING: hasTaintFlow
+        sink(path.clone().into_os_string()); // $ hasTaintFlow
+        sink(std::path::PathBuf::from(path.clone().into_boxed_path())); // $ hasTaintFlow
+        sink(path.clone().as_os_str()); // $ hasTaintFlow
+        sink(path.clone().as_mut_os_str()); // $ hasTaintFlow
+        sink(path.to_str()); // $ hasTaintFlow
+        sink(path.to_path_buf()); // $ hasTaintFlow
+        sink(path.file_name().unwrap()); // $ hasTaintFlow
+        sink(path.extension().unwrap()); // $ hasTaintFlow
         sink(path.canonicalize().unwrap()); // $ hasTaintFlow
         sink(path); // $ hasTaintFlow
 
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
         sink(file_name.clone()); // $ hasTaintFlow
         sink(file_name.clone().into_string().unwrap()); // $ hasTaintFlow
-        sink(file_name.to_str().unwrap()); // $ MISSING: hasTaintFlow
-        sink(file_name.to_string_lossy().to_mut()); // $ MISSING: hasTaintFlow
-        sink(file_name.clone().as_encoded_bytes()); // $ MISSING: hasTaintFlow
+        sink(file_name.to_str().unwrap()); // $ hasTaintFlow
+        sink(file_name.to_string_lossy().to_mut()); // $ hasTaintFlow
+        sink(file_name.clone().as_encoded_bytes()); // $ hasTaintFlow
         sink(file_name); // $ hasTaintFlow
-    }
-    for entry in std::path::Path::new("directory").read_dir()? { // $ Alert[rust/summary/taint-sources]
+    };
+    #[rustfmt::skip]
+    let _ = for entry in std::path::Path::new("directory").read_dir()? { // $ Alert[rust/summary/taint-sources]
         let e = entry?;
 
         let path = e.path(); // $ Alert[rust/summary/taint-sources]
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
-    }
-    for entry in std::path::PathBuf::from("directory").read_dir()? { // $ Alert[rust/summary/taint-sources]
+    };
+    #[rustfmt::skip]
+    let _ = for entry in std::path::PathBuf::from("directory").read_dir()? { // $ Alert[rust/summary/taint-sources]
         let e = entry?;
 
         let path = e.path(); // $ Alert[rust/summary/taint-sources]
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
-    }
+    };
 
     {
         let target = fs::read_link("symlink.txt")?; // $ Alert[rust/summary/taint-sources]
@@ -144,14 +147,23 @@ fn test_io_file() -> std::io::Result<()> {
     }
 
     {
-        let mut f2 = std::fs::OpenOptions::new().create_new(true).open("f2.txt").unwrap(); // $ Alert[rust/summary/taint-sources]
+        let mut f2 = std::fs::OpenOptions::new()
+            .create_new(true)
+            .open("f2.txt") // $ Alert[rust/summary/taint-sources]
+            .unwrap();
         let mut buffer = [0u8; 1024];
         let _bytes = f2.read(&mut buffer)?;
         sink(&buffer); // $ hasTaintFlow="f2.txt"
     }
 
     {
-        let mut f3 = std::fs::OpenOptions::new().read(true).write(true).truncate(true).create(true).open("f3.txt").unwrap(); // $ Alert[rust/summary/taint-sources]
+        let mut f3 = std::fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .truncate(true)
+            .create(true)
+            .open("f3.txt") // $ Alert[rust/summary/taint-sources]
+            .unwrap();
         let mut buffer = [0u8; 1024];
         let _bytes = f3.read(&mut buffer)?;
         sink(&buffer); // $ hasTaintFlow="f3.txt"
