@@ -5,6 +5,7 @@ module;
 import java
 import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A data flow sink for unvalidated user input that is used in XSLT transformation.
@@ -15,6 +16,16 @@ abstract class XsltInjectionSink extends DataFlow::Node { }
 /** A default sink representing methods susceptible to XSLT Injection attacks. */
 private class DefaultXsltInjectionSink extends XsltInjectionSink {
   DefaultXsltInjectionSink() { sinkNode(this, "xslt-injection") }
+}
+
+/** A default sink representing methods susceptible to XSLT Injection attacks. */
+abstract class XsltInjectionSanitizer extends DataFlow::Node { }
+
+private class SimpleTypeXsltInjectionSanitizer extends XsltInjectionSanitizer instanceof SimpleTypeSanitizer
+{ }
+
+private class ExternalXsltInjectionSanitizer extends XsltInjectionSanitizer {
+  ExternalXsltInjectionSanitizer() { barrierNode(this, "xslt-injection") }
 }
 
 /**
