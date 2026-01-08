@@ -46,3 +46,7 @@ private class DefaultTemplateInjectionSink extends TemplateInjectionSink {
 
 private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer instanceof SimpleTypeSanitizer
 { }
+
+private class ExternalTemplateInjectionSanitizer extends TemplateInjectionSanitizer {
+  ExternalTemplateInjectionSanitizer() { barrierNode(this, "template-injection") }
+}
