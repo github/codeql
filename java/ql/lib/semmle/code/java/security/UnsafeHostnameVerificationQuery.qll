@@ -41,10 +41,11 @@ module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof HostnameVerifierSink }
 
-  predicate isBarrier(DataFlow::Node barrier) {
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof ExternalHostnameVerifierSanitizer
+    or
     // ignore nodes that are in functions that intentionally disable hostname verification
-    barrier
-        .getEnclosingCallable()
+    node.getEnclosingCallable()
         .getName()
         /*
          * Regex: (_)* :
@@ -86,6 +87,10 @@ module TrustAllHostnameVerifierFlow = DataFlow::Global<TrustAllHostnameVerifierC
  */
 private class HostnameVerifierSink extends DataFlow::Node {
   HostnameVerifierSink() { sinkNode(this, "hostname-verification") }
+}
+
+private class ExternalHostnameVerifierSanitizer extends DataFlow::Node {
+  ExternalHostnameVerifierSanitizer() { barrierNode(this, "hostname-verification") }
 }
 
 /**
