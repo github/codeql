@@ -27,3 +27,10 @@ private class DefaultXPathInjectionSink extends XPathInjectionSink {
     )
   }
 }
+
+/** A sanitizer for XPath injection. */
+abstract class XPathInjectionSanitizer extends DataFlow::Node { }
+
+private class ExternalXPathInjectionSanitizer extends XPathInjectionSanitizer {
+  ExternalXPathInjectionSanitizer() { barrierNode(this, "xpath-injection") }
+}

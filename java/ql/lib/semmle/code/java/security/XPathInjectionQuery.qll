@@ -13,6 +13,8 @@ module XPathInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
 
+  predicate isBarrier(DataFlow::Node node) { node instanceof XPathInjectionSanitizer }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
