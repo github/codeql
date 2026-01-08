@@ -3,7 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["jakarta.servlet.http", "HttpServletRequest", True, "getServletPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "HttpServletRequest", True, "getServletPath", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getContentType", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getHeader", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getHeaderNames", "()", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getHeaders", "(String)", "", "ReturnValue", "remote", "manual"]
+      - ["jakarta.servlet.http", "Part", True, "getSubmittedFileName", "()", "", "ReturnValue", "remote", "manual"]
       - ["jakarta.servlet.http", "HttpServletRequest", False, "getHeader", "(String)", "", "ReturnValue", "remote", "manual"]
       - ["jakarta.servlet.http", "HttpServletRequest", False, "getHeaderNames", "()", "", "ReturnValue", "remote", "manual"]
       - ["jakarta.servlet.http", "HttpServletRequest", False, "getHeaders", "(String)", "", "ReturnValue", "remote", "manual"]
