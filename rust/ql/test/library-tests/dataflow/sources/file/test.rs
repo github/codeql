@@ -42,7 +42,7 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
 
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
         sink(file_name.clone()); // $ hasTaintFlow
-        sink(file_name.clone().into_string().unwrap()); // $ MISSING: hasTaintFlow
+        sink(file_name.clone().into_string().unwrap()); // $ hasTaintFlow
         sink(file_name.to_str().unwrap()); // $ MISSING: hasTaintFlow
         sink(file_name.to_string_lossy().to_mut()); // $ MISSING: hasTaintFlow
         sink(file_name.clone().as_encoded_bytes()); // $ MISSING: hasTaintFlow

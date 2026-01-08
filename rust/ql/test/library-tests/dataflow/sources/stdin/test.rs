@@ -89,7 +89,7 @@ fn test_io_stdin() -> std::io::Result<()> {
     {
         let reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let line = reader.lines().nth(1).unwrap();
-        sink(line.unwrap().clone()); // $ MISSING: hasTaintFlow
+        sink(line.unwrap().clone()); // $ hasTaintFlow
     }
 
     {

@@ -52,18 +52,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       // Read steps give rise to taint steps. This has the effect that if `foo`
       // is tainted and an operation reads from `foo` (e.g., `foo.bar`) then
       // taint is propagated.
-      exists(Content c |
-        RustDataFlow::readContentStep(pred, c, succ) and
-        not excludedTaintStepContent(c)
-      )
-      or
-      // In addition to the above, for element and reference content we let
-      // _all_ read steps (including those from flow summaries and those that
-      // result in small primitive types) give rise to taint steps.
-      exists(SingletonContentSet cs | RustDataFlow::readStep(pred, cs, succ) |
-        cs.getContent() instanceof ElementContent
-        or
-        cs.getContent() instanceof ReferenceContent
+      exists(ContentSet cs |
+        RustDataFlow::readStep(pred, cs, succ) and
+        not excludedTaintStepContent(cs.getAReadContent())
       )
       or
       exists(FormatArgsExpr format | succ.asExpr() = format |
