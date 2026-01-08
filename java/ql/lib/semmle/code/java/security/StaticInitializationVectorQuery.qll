@@ -128,6 +128,8 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "encryption-iv") }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
