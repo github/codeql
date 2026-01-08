@@ -24,4 +24,5 @@ extensions:
       - ["<_ as std::io::Read>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<_ as std::io::Read>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<std::io::stdio::Stdin>::lock", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      - ["<std::io::stdio::Stdin>::read_line", "Argument[self].Reference", "Argument[0].Reference", "taint", "manual"]
       - ["<std::io::Split as core::iter::traits::iterator::Iterator>::next", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]", "value", "manual"]
