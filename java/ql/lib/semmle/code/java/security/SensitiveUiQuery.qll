@@ -14,6 +14,8 @@ private module NotificationTrackingConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "notification") }
 
+  predicate isBarrier(DataFlow::Node node) { barrierNode(node, "notification") }
+
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node) and exists(c)
   }
