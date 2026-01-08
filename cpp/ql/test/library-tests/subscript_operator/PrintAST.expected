@@ -59,11 +59,11 @@ test.cpp:
 #   11|         getArrayBase(): [VariableAccess] s
 #   11|             Type = [Struct] S
 #   11|             ValueCategory = lvalue
-#   11|         getArrayOffset(): [Literal] 1
+#   11|         getArrayOffset(0): [Literal] 1
 #   11|             Type = [IntType] int
 #   11|             Value = [Literal] 1
 #   11|             ValueCategory = prvalue
-#   11|         getArgument(1): [Literal] 2
+#   11|         getArrayOffset(1): [Literal] 2
 #   11|             Type = [IntType] int
 #   11|             Value = [Literal] 2
 #   11|             ValueCategory = prvalue
