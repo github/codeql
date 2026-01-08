@@ -46,6 +46,10 @@ abstract class UrlForwardBarrier extends DataFlow::Node { }
 
 private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
+private class ExternalUrlForwardBarrier extends UrlForwardBarrier {
+  ExternalUrlForwardBarrier() { barrierNode(this, "url-forward") }
+}
+
 /**
  * A barrier for values appended to a "redirect:" prefix.
  * These results are excluded because they should be handled
