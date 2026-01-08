@@ -145,6 +145,10 @@ private class DefaultUnsafeDeserializationSink extends DataFlow::Node {
   DefaultUnsafeDeserializationSink() { sinkNode(this, "unsafe-deserialization") }
 }
 
+private class ExternalUnsafeDeserializationSanitizer extends DataFlow::Node {
+  ExternalUnsafeDeserializationSanitizer() { barrierNode(this, "unsafe-deserialization") }
+}
+
 /**
  * Holds if `ma` is a call that deserializes data from `sink`.
  *
@@ -308,7 +312,9 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
     isUnsafeDeserializationTaintStep(pred, succ)
   }
 
-  predicate isBarrier(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
+  predicate isBarrier(DataFlow::Node node) {
+    isUnsafeDeserializationSanitizer(node) or node instanceof ExternalUnsafeDeserializationSanitizer
+  }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
