@@ -22,6 +22,10 @@ private module ProcessBuilderEnvironmentFlow = DataFlow::Global<ProcessBuilderEn
  */
 abstract class ExecTaintedEnvironmentSanitizer extends DataFlow::Node { }
 
+private class ExternalExecTaintedEnvironmentSanitizer extends ExecTaintedEnvironmentSanitizer {
+  ExternalExecTaintedEnvironmentSanitizer() { barrierNode(this, "environment-injection") }
+}
+
 /**
  * A taint-tracking configuration that tracks flow from unvalidated data to an environment variable for a subprocess.
  */
