@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:1216:3:1216:25 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | ir.cpp:1211:6:1211:16 | void VectorTypes(int) | void VectorTypes(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

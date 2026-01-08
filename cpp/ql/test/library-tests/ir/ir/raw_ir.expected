@@ -9692,18 +9692,78 @@ ir.cpp:
 # 1216|     r1216_5(__attribute((vector_size(16UL))) int)        = Add                              : r1216_2, r1216_4
 # 1216|     r1216_6(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1216|     mu1216_7(__attribute((vector_size(16UL))) int)       = Store[vi4]                       : &:r1216_6, r1216_5
+# 1217|     r1217_1(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
+# 1217|     r1217_2(__attribute((vector_size(16UL))) int)        = Load[vi4]                        : &:r1217_1, ~m?
+# 1217|     r1217_3(__attribute((vector_size(16UL))) int)        = Constant[0]                      : 
+# 1217|     r1217_4(bool)                                        = CompareNE                        : r1217_2, r1217_3
+# 1217|     v1217_5(void)                                        = ConditionalBranch                : r1217_4
+#-----|   False -> Block 1
+#-----|   True -> Block 4
 
 # 1217|   Block 1
-# 1217|     r1217_1(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4] : 
-# 1217|     mu1217_2(__attribute((vector_size(16UL))) int)       = Store[vi4]           : &:r1217_1
+# 1217|     r1217_6(glval<__attribute((vector_size(16))) int>) = VariableAddress[#temp1217:9] : 
+# 1217|     r1217_7(__attribute((vector_size(16))) int)        = Constant[0]                  : 
+# 1217|     mu1217_8(__attribute((vector_size(16))) int)       = Store[#temp1217:9]           : &:r1217_6, r1217_7
+#-----|   Goto -> Block 2
 
-# 1218|   Block 2
-# 1218|     r1218_1(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4] : 
-# 1218|     mu1218_2(__attribute((vector_size(16UL))) int)       = Store[vi4]           : &:r1218_1
-# 1219|     v1219_1(void)                                        = NoOp                 : 
-# 1211|     v1211_6(void)                                        = ReturnVoid           : 
-# 1211|     v1211_7(void)                                        = AliasedUse           : ~m?
-# 1211|     v1211_8(void)                                        = ExitFunction         : 
+# 1217|   Block 2
+# 1217|     r1217_9(glval<__attribute((vector_size(16))) int>)    = VariableAddress[#temp1217:9] : 
+# 1217|     r1217_10(__attribute((vector_size(16))) int)          = Load[#temp1217:9]            : &:r1217_9, ~m?
+# 1217|     r1217_11(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]         : 
+# 1217|     mu1217_12(__attribute((vector_size(16UL))) int)       = Store[vi4]                   : &:r1217_11, r1217_10
+# 1218|     r1218_1(glval<__attribute((vector_size(16UL))) int>)  = VariableAddress[vi4]         : 
+# 1218|     r1218_2(__attribute((vector_size(16UL))) int)         = Load[vi4]                    : &:r1218_1, ~m?
+# 1218|     r1218_3(__attribute((vector_size(16UL))) int)         = Constant[0]                  : 
+# 1218|     r1218_4(bool)                                         = CompareNE                    : r1218_2, r1218_3
+# 1218|     v1218_5(void)                                         = ConditionalBranch            : r1218_4
+#-----|   False -> Block 8
+#-----|   True -> Block 7
+
+# 1217|   Block 3
+# 1217|     r1217_13(glval<__attribute((vector_size(16))) int>) = VariableAddress[#temp1217:9] : 
+# 1217|     r1217_14(__attribute((vector_size(16))) int)        = Constant[1]                  : 
+# 1217|     mu1217_15(__attribute((vector_size(16))) int)       = Store[#temp1217:9]           : &:r1217_13, r1217_14
+#-----|   Goto -> Block 2
+
+# 1217|   Block 4
+# 1217|     r1217_16(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4_shuffle] : 
+# 1217|     r1217_17(__attribute((vector_size(16UL))) int)        = Load[vi4_shuffle]            : &:r1217_16, ~m?
+# 1217|     r1217_18(__attribute((vector_size(16UL))) int)        = Constant[0]                  : 
+# 1217|     r1217_19(bool)                                        = CompareNE                    : r1217_17, r1217_18
+# 1217|     v1217_20(void)                                        = ConditionalBranch            : r1217_19
+#-----|   False -> Block 1
+#-----|   True -> Block 3
+
+# 1218|   Block 5
+# 1218|     r1218_6(glval<__attribute((vector_size(16))) int>) = VariableAddress[#temp1218:9] : 
+# 1218|     r1218_7(__attribute((vector_size(16))) int)        = Constant[0]                  : 
+# 1218|     mu1218_8(__attribute((vector_size(16))) int)       = Store[#temp1218:9]           : &:r1218_6, r1218_7
+#-----|   Goto -> Block 6
+
+# 1218|   Block 6
+# 1218|     r1218_9(glval<__attribute((vector_size(16))) int>)    = VariableAddress[#temp1218:9] : 
+# 1218|     r1218_10(__attribute((vector_size(16))) int)          = Load[#temp1218:9]            : &:r1218_9, ~m?
+# 1218|     r1218_11(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]         : 
+# 1218|     mu1218_12(__attribute((vector_size(16UL))) int)       = Store[vi4]                   : &:r1218_11, r1218_10
+# 1219|     v1219_1(void)                                         = NoOp                         : 
+# 1211|     v1211_6(void)                                         = ReturnVoid                   : 
+# 1211|     v1211_7(void)                                         = AliasedUse                   : ~m?
+# 1211|     v1211_8(void)                                         = ExitFunction                 : 
+
+# 1218|   Block 7
+# 1218|     r1218_13(glval<__attribute((vector_size(16))) int>) = VariableAddress[#temp1218:9] : 
+# 1218|     r1218_14(__attribute((vector_size(16))) int)        = Constant[1]                  : 
+# 1218|     mu1218_15(__attribute((vector_size(16))) int)       = Store[#temp1218:9]           : &:r1218_13, r1218_14
+#-----|   Goto -> Block 6
+
+# 1218|   Block 8
+# 1218|     r1218_16(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4_shuffle] : 
+# 1218|     r1218_17(__attribute((vector_size(16UL))) int)        = Load[vi4_shuffle]            : &:r1218_16, ~m?
+# 1218|     r1218_18(__attribute((vector_size(16UL))) int)        = Constant[0]                  : 
+# 1218|     r1218_19(bool)                                        = CompareNE                    : r1218_17, r1218_18
+# 1218|     v1218_20(void)                                        = ConditionalBranch            : r1218_19
+#-----|   False -> Block 5
+#-----|   True -> Block 7
 
 # 1223| int ModeledCallTarget(int)
 # 1223|   Block 0

@@ -13338,6 +13338,15 @@ ir.cpp:
 # 1217|         getLValue(): [VariableAccess] vi4
 # 1217|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1217|             ValueCategory = lvalue
+# 1217|         getRValue(): [LogicalAndExpr] ... && ...
+# 1217|             Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1217|             ValueCategory = prvalue
+# 1217|           getLeftOperand(): [VariableAccess] vi4
+# 1217|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1217|               ValueCategory = prvalue(load)
+# 1217|           getRightOperand(): [VariableAccess] vi4_shuffle
+# 1217|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1217|               ValueCategory = prvalue(load)
 # 1218|     getStmt(6): [ExprStmt] ExprStmt
 # 1218|       getExpr(): [AssignExpr] ... = ...
 # 1218|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
@@ -13345,6 +13354,15 @@ ir.cpp:
 # 1218|         getLValue(): [VariableAccess] vi4
 # 1218|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1218|             ValueCategory = lvalue
+# 1218|         getRValue(): [LogicalOrExpr] ... || ...
+# 1218|             Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1218|             ValueCategory = prvalue
+# 1218|           getLeftOperand(): [VariableAccess] vi4
+# 1218|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1218|               ValueCategory = prvalue(load)
+# 1218|           getRightOperand(): [VariableAccess] vi4_shuffle
+# 1218|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1218|               ValueCategory = prvalue(load)
 # 1219|     getStmt(7): [ReturnStmt] return ...
 # 1221| [TopLevelFunction] void* memcpy(void*, void*, int)
 # 1221|   <params>: 
