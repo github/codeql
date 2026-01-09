@@ -173,6 +173,19 @@ class JvmInstruction extends @jvm_instruction {
   final JvmInstruction getAForwardSuccessor() {
     result = this.getASuccessor() and not isBackEdge(this, result)
   }
+
+  /**
+   * Gets the stack height at the entry to this instruction.
+   * This is computed during extraction using abstract interpretation.
+   */
+  int getStackHeight() { jvm_stack_height(this, result) }
+
+  /**
+   * Gets the instruction that produced the value at the given stack slot.
+   * Slot 0 is the top of the stack.
+   * This provides efficient O(1) lookup instead of recursive CFG traversal.
+   */
+  JvmInstruction getStackProducer(int slot) { jvm_stack_slot(this, slot, result) }
 }
 
 /**

@@ -2702,6 +2702,18 @@ abstract class TranslatedJvmInstruction extends TranslatedInstruction {
    */
   abstract Variable getStackElement(int i);
 
+  /**
+   * Gets the variable holding the value at stack slot `i` (0 = top) at entry to this instruction.
+   * This uses materialized stack data from the extractor for O(1) lookup instead of
+   * recursive CFG traversal.
+   */
+  final Variable getInputStackVariable(int slot) {
+    exists(Raw::JvmInstruction producer |
+      producer = instr.getStackProducer(slot) and
+      result = getTranslatedJvmInstruction(producer).getResultVariable()
+    )
+  }
+
   final override TranslatedFunction getEnclosingFunction() {
     result = getTranslatedFunction(instr.getEnclosingMethod())
   }
@@ -2823,7 +2835,7 @@ class TranslatedJvmReturn extends TranslatedJvmInstruction, TTranslatedJvmReturn
     tag = JvmReturnTag() and
     operandTag instanceof UnaryTag and
     not instr.getEnclosingMethod().isVoid() and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    result = this.getInputStackVariable(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -2909,7 +2921,7 @@ class TranslatedJvmStoreLocal extends TranslatedJvmInstruction, TTranslatedJvmSt
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = JvmStoreLocalTag() and
     operandTag instanceof UnaryTag and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    result = this.getInputStackVariable(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -2993,14 +3005,14 @@ class TranslatedJvmBranch extends TranslatedJvmInstruction, TTranslatedJvmBranch
     tag = JvmBranchCJumpTag() and
     operandTag instanceof CondTag and
     instr instanceof Raw::JvmUnaryConditionalBranch and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    result = this.getInputStackVariable(0)
     or
     // For binary branches (if_icmpeq, etc.), we'd need to compute comparison
     // For now, use the top stack element as condition
     tag = JvmBranchCJumpTag() and
     operandTag instanceof CondTag and
     instr instanceof Raw::JvmBinaryConditionalBranch and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    result = this.getInputStackVariable(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -3103,10 +3115,10 @@ class TranslatedJvmArithmetic extends TranslatedJvmInstruction, TTranslatedJvmAr
     tag = JvmArithOpTag() and
     (
       operandTag instanceof LeftTag and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(1)
+      result = this.getInputStackVariable(1)
       or
       operandTag instanceof RightTag and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+      result = this.getInputStackVariable(0)
     )
   }
 
@@ -3194,7 +3206,7 @@ class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmF
       result = this.getTempVariable(JvmFieldAddressVarTag())
       or
       operandTag instanceof StoreValueTag and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+      result = this.getInputStackVariable(0)
     )
     or
     // For non-static field access, use object reference as base
@@ -3203,10 +3215,10 @@ class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmF
     not instr.isStatic() and
     (
       instr instanceof Raw::JvmFieldLoad and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+      result = this.getInputStackVariable(0)
       or
       instr instanceof Raw::JvmFieldStore and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(1)
+      result = this.getInputStackVariable(1)
     )
   }
 
@@ -3332,7 +3344,7 @@ class TranslatedJvmDup extends TranslatedJvmInstruction, TTranslatedJvmDup {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = JvmDupCopyTag() and
     operandTag instanceof UnaryTag and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    result = this.getInputStackVariable(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }

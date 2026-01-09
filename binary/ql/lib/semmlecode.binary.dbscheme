@@ -2966,3 +2966,27 @@ jvm_method_access_flags(
   unique int method: @method ref,
   int flags: int ref
 );
+
+/**
+ * Stack height at entry to a JVM instruction.
+ * This is computed by abstract interpretation during extraction.
+ */
+jvm_stack_height(
+  unique int instr: @jvm_instruction ref,
+  int height: int ref
+);
+
+/**
+ * Maps a stack slot at a specific instruction to the instruction that produced the value.
+ * slot 0 is the top of the stack, slot 1 is below that, etc.
+ * producer_id is the instruction ID that pushed this value onto the stack.
+ * 
+ * This allows QL to determine data flow through the operand stack without
+ * expensive recursive CFG traversal.
+ */
+#keyset[instr, slot]
+jvm_stack_slot(
+  int instr: @jvm_instruction ref,
+  int slot: int ref,
+  int producer_id: @jvm_instruction ref
+);
