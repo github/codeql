@@ -129,7 +129,9 @@ module ModelValidation {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
     sinkModel(_, _, _, _, _, _, path, _, _, _) or
-    sourceModel(_, _, _, _, _, _, path, _, _, _)
+    sourceModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierGuardModel(_, _, _, _, _, _, path, _, _, _, _)
   }
 
   private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
@@ -141,6 +143,8 @@ module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
+      or
+      barrierGuardModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "barrier guard"
       or
       summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
@@ -164,6 +168,8 @@ module ModelValidation {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
+      barrierModel(_, _, _, _, _, _, output, _, _, _) and pred = "barrier"
+      or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       (
@@ -181,7 +187,13 @@ module ModelValidation {
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
     predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
+    predicate sinkKind(string kind) {
+      sinkModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierGuardModel(_, _, _, _, _, _, _, _, kind, _, _)
+    }
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
@@ -198,6 +210,11 @@ module ModelValidation {
       sourceModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
       sinkModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
+      or
+      barrierModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "barrier"
+      or
+      barrierGuardModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "barrier guard"
       or
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
@@ -224,6 +241,14 @@ module ModelValidation {
       invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
+    or
+    exists(string acceptingvalue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingvalue, _, _, _) and
+      invalidAcceptingValue(acceptingvalue) and
+      result =
+        "Unrecognized accepting value description \"" + acceptingvalue +
+          "\" in barrier guard model."
+    )
   }
 
   private string getInvalidPackageGroup() {
@@ -231,6 +256,11 @@ module ModelValidation {
       FlowExtensions::sourceModel(package, _, _, _, _, _, _, _, _, _) and pred = "source"
       or
       FlowExtensions::sinkModel(package, _, _, _, _, _, _, _, _, _) and pred = "sink"
+      or
+      FlowExtensions::barrierModel(package, _, _, _, _, _, _, _, _, _) and pred = "barrier"
+      or
+      FlowExtensions::barrierGuardModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "barrier guard"
       or
       FlowExtensions::summaryModel(package, _, _, _, _, _, _, _, _, _, _) and
       pred = "summary"
