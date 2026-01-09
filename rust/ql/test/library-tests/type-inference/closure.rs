@@ -37,7 +37,7 @@ mod fn_once_trait {
     }
 
     fn return_type_omitted<F: FnOnce(bool)>(f: F) {
-        let _return = f(true); // $ MISSING: type=_return:()
+        let _return = f(true); // $ type=_return:()
     }
 
     fn argument_type<F: FnOnce(bool) -> i64>(f: F) {

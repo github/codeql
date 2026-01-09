@@ -4982,7 +4982,9 @@ inferType
 | closure.rs:36:25:36:28 | true |  | {EXTERNAL LOCATION} | bool |
 | closure.rs:39:45:39:45 | f |  | closure.rs:39:28:39:42 | F |
 | closure.rs:39:51:41:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:40:13:40:19 | _return |  | {EXTERNAL LOCATION} | () |
 | closure.rs:40:23:40:23 | f |  | closure.rs:39:28:39:42 | F |
+| closure.rs:40:23:40:29 | f(...) |  | {EXTERNAL LOCATION} | () |
 | closure.rs:40:25:40:28 | true |  | {EXTERNAL LOCATION} | bool |
 | closure.rs:43:46:43:46 | f |  | closure.rs:43:22:43:43 | F |
 | closure.rs:43:52:46:5 | { ... } |  | {EXTERNAL LOCATION} | () |
