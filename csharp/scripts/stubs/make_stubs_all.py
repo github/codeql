@@ -29,8 +29,8 @@ packages = [
 # Note that these version numbers most likely needs to be increased
 # when new stubs are generated for a new .NET.
 packages_with_versions = [
-    ("ServiceStack", "8.5.2"),
-    ("ServiceStack.OrmLite.SqlServer", "8.5.2")
+    ("ServiceStack", "10.0.4"),
+    ("ServiceStack.OrmLite.SqlServer", "10.0.4")
     ]
 
 thisScript = sys.argv[0]

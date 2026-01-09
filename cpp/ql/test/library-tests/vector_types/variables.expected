@@ -34,4 +34,7 @@
 | vector_types.cpp:47:23:47:25 | dst | dst | file://:0:0:0:0 | v16i * | 8 |
 | vector_types.cpp:47:34:47:36 | src | src | file://:0:0:0:0 | v16i * | 8 |
 | vector_types.cpp:47:43:47:43 | n | n | file://:0:0:0:0 | int | 4 |
-| vector_types.cpp:57:43:57:44 | vf | vf | vector_types.cpp:55:16:55:27 | vector4float | 16 |
+| vector_types.cpp:54:20:54:22 | dst | dst | file://:0:0:0:0 | v16i * | 8 |
+| vector_types.cpp:54:31:54:34 | src1 | src1 | file://:0:0:0:0 | v16i * | 8 |
+| vector_types.cpp:54:43:54:46 | src2 | src2 | file://:0:0:0:0 | v16i * | 8 |
+| vector_types.cpp:62:43:62:44 | vf | vf | vector_types.cpp:60:16:60:27 | vector4float | 16 |

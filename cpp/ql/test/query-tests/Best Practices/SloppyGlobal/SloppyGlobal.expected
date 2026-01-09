@@ -2,6 +2,6 @@
 | main.cpp:4:5:4:6 | ys | Poor global variable name 'ys'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
 | main.cpp:9:5:9:6 | v1 | Poor global variable name 'v1'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
 | main.cpp:10:5:10:6 | v2 | Poor global variable name 'v2'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
-| main.cpp:12:5:12:5 | v3 | Poor global variable name 'v3'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
-| main.cpp:14:5:14:5 | v4 | Poor global variable name 'v4'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
-| main.cpp:16:5:16:5 | v5 | Poor global variable name 'v5'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
+| main.cpp:12:3:12:4 | v3 | Poor global variable name 'v3'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
+| main.cpp:14:3:14:4 | v4 | Poor global variable name 'v4'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |
+| main.cpp:16:3:16:4 | v5 | Poor global variable name 'v5'. Prefer longer, descriptive names for globals (eg. kMyGlobalConstant, not foo). |

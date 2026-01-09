@@ -81,6 +81,45 @@ mod array_sink {
 
 use string::*;
 
+mod tuples {
+    fn source_string(i: i64) -> String {
+        "".to_string()
+    }
+
+    fn source_tuple(i: i64) -> (String, String) {
+        ("".to_string(), "".to_string())
+    }
+
+    fn sink<T>(t: T) {
+    }
+
+    pub fn tuples() {
+        sink((source_string(1), "".to_string()));
+        sink((source_string(1), "".to_string()).0); // $ hasValueFlow=1
+        sink((source_string(1), "".to_string()).1);
+
+        sink(source_tuple(2)); // $ hasValueFlow=2
+        sink(source_tuple(2).0); // $ hasTaintFlow=2
+        sink(source_tuple(2).1); // $ hasTaintFlow=2
+
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())));
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).0);
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).0.0);
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).0.1); // $ hasValueFlow=3
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).1);
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).1.0);
+        sink((("".to_string(), source_string(3)), ("".to_string(), "".to_string())).1.1);
+
+        sink((source_tuple(4), ("".to_string(), "".to_string())));
+        sink((source_tuple(4), ("".to_string(), "".to_string())).0); // $ hasValueFlow=4
+        sink((source_tuple(4), ("".to_string(), "".to_string())).0.0); // $ hasTaintFlow=4
+        sink((source_tuple(4), ("".to_string(), "".to_string())).0.1); // $ hasTaintFlow=4
+        sink((source_tuple(4), ("".to_string(), "".to_string())).1);
+        sink((source_tuple(4), ("".to_string(), "".to_string())).1.0);
+        sink((source_tuple(4), ("".to_string(), "".to_string())).1.1);
+    }
+}
+
 fn main() {
     addition();
     negation();
@@ -88,4 +127,5 @@ fn main() {
     string_slice();
     array_source::array_tainted();
     array_sink::array_with_taint();
+    tuples::tuples();
 }

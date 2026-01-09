@@ -24,7 +24,7 @@ void myFunction()
 void test_template_parameter()
 {
 	constexpr int v1 = 0; // BAD: unused
-	constexpr int v2 = 0; // GOOD: used as a template parameter below [FALSE POSITIVE]
+	constexpr int v2 = 0; // GOOD: used as a template parameter below
 
 	myFunction<v2>();
 }

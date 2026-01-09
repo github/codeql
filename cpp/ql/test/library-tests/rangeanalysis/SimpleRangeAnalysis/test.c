@@ -333,6 +333,16 @@ int test_mult05(int a, int b) {
   return total;
 }
 
+// Tests for shift operators.
+unsigned long long test_shift(unsigned long long a) {
+  // `odd` is the largest odd integer that can be precisely represented by a double.
+  unsigned long long odd = 9007199254740992 - 1; // 2^53 - 1
+  // Shifting right by by 1 give an upper bound that is half of `odd` rounded down.
+  unsigned long long shifted = odd >> 1;
+
+  return shifted;
+}
+
 int test16(int x) {
   int d, i = 0;
   if (x < 0) {

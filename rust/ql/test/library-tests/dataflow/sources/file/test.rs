@@ -37,12 +37,12 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
         sink(path.to_path_buf()); // $ MISSING: hasTaintFlow
         sink(path.file_name().unwrap()); // $ MISSING: hasTaintFlow
         sink(path.extension().unwrap()); // $ MISSING: hasTaintFlow
-        sink(path.canonicalize().unwrap()); // $ MISSING: hasTaintFlow
+        sink(path.canonicalize().unwrap()); // $ hasTaintFlow
         sink(path); // $ hasTaintFlow
 
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
         sink(file_name.clone()); // $ hasTaintFlow
-        sink(file_name.clone().into_string().unwrap()); // $ MISSING: hasTaintFlow
+        sink(file_name.clone().into_string().unwrap()); // $ hasTaintFlow
         sink(file_name.to_str().unwrap()); // $ MISSING: hasTaintFlow
         sink(file_name.to_string_lossy().to_mut()); // $ MISSING: hasTaintFlow
         sink(file_name.clone().as_encoded_bytes()); // $ MISSING: hasTaintFlow
@@ -54,11 +54,11 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
         let path = e.path(); // $ Alert[rust/summary/taint-sources]
         let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
     }
-    for entry in std::path::PathBuf::from("directory").read_dir()? {
+    for entry in std::path::PathBuf::from("directory").read_dir()? { // $ Alert[rust/summary/taint-sources]
         let e = entry?;
 
-        let path = e.path(); // $ MISSING: Alert[rust/summary/taint-sources]
-        let file_name = e.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let path = e.path(); // $ Alert[rust/summary/taint-sources]
+        let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
     }
 
     {

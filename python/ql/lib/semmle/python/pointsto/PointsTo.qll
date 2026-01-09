@@ -715,7 +715,7 @@ private module InterModulePointsTo {
       i.getImportedModuleName() = name and
       PointsToInternal::module_imported_as(value, name) and
       origin = f and
-      context.appliesTo(f)
+      context.appliesTo(pragma[only_bind_into](f))
     )
   }
 

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.Loader, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.Loader, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -31,6 +31,11 @@ namespace System
             public sealed class CreateNewOnMetadataUpdateAttribute : System.Attribute
             {
                 public CreateNewOnMetadataUpdateAttribute() => throw null;
+            }
+            [System.AttributeUsage((System.AttributeTargets)32767, AllowMultiple = false, Inherited = false)]
+            public sealed class MetadataUpdateDeletedAttribute : System.Attribute
+            {
+                public MetadataUpdateDeletedAttribute() => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)12, AllowMultiple = false, Inherited = false)]
             public class MetadataUpdateOriginalTypeAttribute : System.Attribute

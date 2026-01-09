@@ -8,15 +8,12 @@ edges
 | main.rs:17:9:17:9 | a | main.rs:18:10:18:10 | a | provenance |  |
 | main.rs:17:13:17:23 | get_data(...) | main.rs:17:9:17:9 | a | provenance |  |
 | main.rs:26:28:26:33 | ...: i64 | main.rs:27:21:27:21 | n | provenance |  |
-| main.rs:27:9:27:12 | [post] self [&ref, MyStruct] | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | provenance |  |
-| main.rs:27:21:27:21 | n | main.rs:27:9:27:12 | [post] self [&ref, MyStruct] | provenance |  |
-| main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:31:9:31:12 | self [&ref, MyStruct] | provenance |  |
-| main.rs:31:9:31:12 | self [&ref, MyStruct] | main.rs:31:9:31:17 | self.data | provenance |  |
+| main.rs:27:21:27:21 | n | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | provenance |  |
+| main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:31:9:31:17 | self.data | provenance |  |
 | main.rs:31:9:31:17 | self.data | main.rs:30:31:32:5 | { ... } | provenance |  |
-| main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | main.rs:38:11:38:11 | [post] a [MyStruct] | provenance |  |
-| main.rs:38:11:38:11 | [post] a [MyStruct] | main.rs:39:10:39:10 | a [MyStruct] | provenance |  |
-| main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | provenance |  |
-| main.rs:38:23:38:31 | source(...) | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | provenance |  |
+| main.rs:38:5:38:5 | [post] a [MyStruct] | main.rs:39:10:39:10 | a [MyStruct] | provenance |  |
+| main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | provenance |  |
+| main.rs:38:16:38:24 | source(...) | main.rs:38:5:38:5 | [post] a [MyStruct] | provenance |  |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | provenance |  |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:39:10:39:21 | a.get_data() | provenance |  |
 | main.rs:46:9:46:14 | [post] &mut a [&ref, MyStruct] | main.rs:46:14:46:14 | [post] a [MyStruct] | provenance |  |
@@ -113,9 +110,8 @@ edges
 | main.rs:238:24:238:27 | self [MyInt] | main.rs:238:24:238:33 | self.value | provenance |  |
 | main.rs:238:24:238:33 | self.value | main.rs:238:9:238:35 | MyInt {...} [MyInt] | provenance |  |
 | main.rs:243:30:243:39 | ...: MyInt [MyInt] | main.rs:244:22:244:24 | rhs [MyInt] | provenance |  |
-| main.rs:244:9:244:12 | [post] self [&ref, MyInt] | main.rs:243:19:243:27 | SelfParam [Return] [&ref, MyInt] | provenance |  |
 | main.rs:244:22:244:24 | rhs [MyInt] | main.rs:244:22:244:30 | rhs.value | provenance |  |
-| main.rs:244:22:244:30 | rhs.value | main.rs:244:9:244:12 | [post] self [&ref, MyInt] | provenance |  |
+| main.rs:244:22:244:30 | rhs.value | main.rs:243:19:243:27 | SelfParam [Return] [&ref, MyInt] | provenance |  |
 | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | main.rs:252:12:252:15 | self [&ref, MyInt] | provenance |  |
 | main.rs:252:9:252:22 | &... [&ref] | main.rs:251:38:253:5 | { ... } [&ref] | provenance |  |
 | main.rs:252:10:252:22 | ... .value | main.rs:252:9:252:22 | &... [&ref] | provenance |  |
@@ -167,6 +163,13 @@ edges
 | main.rs:292:13:292:14 | * ... | main.rs:292:9:292:9 | c | provenance |  |
 | main.rs:292:14:292:14 | a [MyInt] | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | provenance |  |
 | main.rs:292:14:292:14 | a [MyInt] | main.rs:292:13:292:14 | * ... | provenance | MaD:1 |
+| main.rs:295:9:295:9 | a [MyInt] | main.rs:296:13:296:13 | a [MyInt] | provenance |  |
+| main.rs:295:13:295:39 | MyInt {...} [MyInt] | main.rs:295:9:295:9 | a [MyInt] | provenance |  |
+| main.rs:295:28:295:37 | source(...) | main.rs:295:13:295:39 | MyInt {...} [MyInt] | provenance |  |
+| main.rs:296:9:296:9 | c | main.rs:297:10:297:10 | c | provenance |  |
+| main.rs:296:13:296:13 | a [MyInt] | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | provenance |  |
+| main.rs:296:13:296:13 | a [MyInt] | main.rs:296:13:296:23 | a.min(...) | provenance | MaD:1 |
+| main.rs:296:13:296:23 | a.min(...) | main.rs:296:9:296:9 | c | provenance |  |
 | main.rs:309:18:309:21 | SelfParam [MyInt] | main.rs:309:48:311:5 | { ... } [MyInt] | provenance |  |
 | main.rs:313:26:313:37 | ...: MyInt [MyInt] | main.rs:313:49:315:5 | { ... } [MyInt] | provenance |  |
 | main.rs:319:9:319:9 | a [MyInt] | main.rs:321:50:321:50 | a [MyInt] | provenance |  |
@@ -227,15 +230,12 @@ nodes
 | main.rs:18:10:18:10 | a | semmle.label | a |
 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | semmle.label | SelfParam [Return] [&ref, MyStruct] |
 | main.rs:26:28:26:33 | ...: i64 | semmle.label | ...: i64 |
-| main.rs:27:9:27:12 | [post] self [&ref, MyStruct] | semmle.label | [post] self [&ref, MyStruct] |
 | main.rs:27:21:27:21 | n | semmle.label | n |
 | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | semmle.label | SelfParam [&ref, MyStruct] |
 | main.rs:30:31:32:5 | { ... } | semmle.label | { ... } |
-| main.rs:31:9:31:12 | self [&ref, MyStruct] | semmle.label | self [&ref, MyStruct] |
 | main.rs:31:9:31:17 | self.data | semmle.label | self.data |
-| main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] | semmle.label | [post] &mut a [&ref, MyStruct] |
-| main.rs:38:11:38:11 | [post] a [MyStruct] | semmle.label | [post] a [MyStruct] |
-| main.rs:38:23:38:31 | source(...) | semmle.label | source(...) |
+| main.rs:38:5:38:5 | [post] a [MyStruct] | semmle.label | [post] a [MyStruct] |
+| main.rs:38:16:38:24 | source(...) | semmle.label | source(...) |
 | main.rs:39:10:39:10 | a [MyStruct] | semmle.label | a [MyStruct] |
 | main.rs:39:10:39:21 | a.get_data() | semmle.label | a.get_data() |
 | main.rs:46:9:46:14 | [post] &mut a [&ref, MyStruct] | semmle.label | [post] &mut a [&ref, MyStruct] |
@@ -343,7 +343,6 @@ nodes
 | main.rs:238:24:238:33 | self.value | semmle.label | self.value |
 | main.rs:243:19:243:27 | SelfParam [Return] [&ref, MyInt] | semmle.label | SelfParam [Return] [&ref, MyInt] |
 | main.rs:243:30:243:39 | ...: MyInt [MyInt] | semmle.label | ...: MyInt [MyInt] |
-| main.rs:244:9:244:12 | [post] self [&ref, MyInt] | semmle.label | [post] self [&ref, MyInt] |
 | main.rs:244:22:244:24 | rhs [MyInt] | semmle.label | rhs [MyInt] |
 | main.rs:244:22:244:30 | rhs.value | semmle.label | rhs.value |
 | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | semmle.label | SelfParam [&ref, MyInt] |
@@ -398,6 +397,13 @@ nodes
 | main.rs:292:13:292:14 | * ... | semmle.label | * ... |
 | main.rs:292:14:292:14 | a [MyInt] | semmle.label | a [MyInt] |
 | main.rs:293:10:293:10 | c | semmle.label | c |
+| main.rs:295:9:295:9 | a [MyInt] | semmle.label | a [MyInt] |
+| main.rs:295:13:295:39 | MyInt {...} [MyInt] | semmle.label | MyInt {...} [MyInt] |
+| main.rs:295:28:295:37 | source(...) | semmle.label | source(...) |
+| main.rs:296:9:296:9 | c | semmle.label | c |
+| main.rs:296:13:296:13 | a [MyInt] | semmle.label | a [MyInt] |
+| main.rs:296:13:296:23 | a.min(...) | semmle.label | a.min(...) |
+| main.rs:297:10:297:10 | c | semmle.label | c |
 | main.rs:309:18:309:21 | SelfParam [MyInt] | semmle.label | SelfParam [MyInt] |
 | main.rs:309:48:311:5 | { ... } [MyInt] | semmle.label | { ... } [MyInt] |
 | main.rs:313:26:313:37 | ...: MyInt [MyInt] | semmle.label | ...: MyInt [MyInt] |
@@ -459,7 +465,7 @@ nodes
 | main.rs:418:18:418:41 | ...::get_default(...) | semmle.label | ...::get_default(...) |
 | main.rs:419:14:419:15 | n5 | semmle.label | n5 |
 subpaths
-| main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] |
+| main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:5:38:5 | [post] a [MyStruct] |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
 | main.rs:48:15:48:23 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:46:9:46:14 | [post] &mut a [&ref, MyStruct] |
 | main.rs:49:10:49:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:49:10:49:21 | a.get_data() |
@@ -477,12 +483,13 @@ subpaths
 | main.rs:282:10:282:10 | b [MyInt] | main.rs:243:30:243:39 | ...: MyInt [MyInt] | main.rs:243:19:243:27 | SelfParam [Return] [&ref, MyInt] | main.rs:283:10:283:10 | a [MyInt] |
 | main.rs:288:27:288:28 | &a [&ref, MyInt] | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | main.rs:251:38:253:5 | { ... } [&ref] | main.rs:288:14:288:29 | ...::deref(...) [&ref] |
 | main.rs:292:14:292:14 | a [MyInt] | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | main.rs:251:38:253:5 | { ... } [&ref] | main.rs:292:13:292:14 | * ... |
+| main.rs:296:13:296:13 | a [MyInt] | main.rs:251:14:251:18 | SelfParam [&ref, MyInt] | main.rs:251:38:253:5 | { ... } [&ref] | main.rs:296:13:296:23 | a.min(...) |
 | main.rs:321:50:321:50 | a [MyInt] | main.rs:309:18:309:21 | SelfParam [MyInt] | main.rs:309:48:311:5 | { ... } [MyInt] | main.rs:321:30:321:54 | ...::take_self(...) [MyInt] |
 | main.rs:326:55:326:55 | b [MyInt] | main.rs:313:26:313:37 | ...: MyInt [MyInt] | main.rs:313:49:315:5 | { ... } [MyInt] | main.rs:326:30:326:56 | ...::take_second(...) [MyInt] |
 testFailures
 #select
 | main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) | source(...) |
-| main.rs:39:10:39:21 | a.get_data() | main.rs:38:23:38:31 | source(...) | main.rs:39:10:39:21 | a.get_data() | $@ | main.rs:38:23:38:31 | source(...) | source(...) |
+| main.rs:39:10:39:21 | a.get_data() | main.rs:38:16:38:24 | source(...) | main.rs:39:10:39:21 | a.get_data() | $@ | main.rs:38:16:38:24 | source(...) | source(...) |
 | main.rs:49:10:49:21 | a.get_data() | main.rs:48:15:48:23 | source(...) | main.rs:49:10:49:21 | a.get_data() | $@ | main.rs:48:15:48:23 | source(...) | source(...) |
 | main.rs:53:10:53:10 | n | main.rs:57:13:57:21 | source(...) | main.rs:53:10:53:10 | n | $@ | main.rs:57:13:57:21 | source(...) | source(...) |
 | main.rs:68:10:68:10 | b | main.rs:66:13:66:21 | source(...) | main.rs:68:10:68:10 | b | $@ | main.rs:66:13:66:21 | source(...) | source(...) |
@@ -506,6 +513,7 @@ testFailures
 | main.rs:283:10:283:16 | a.value | main.rs:281:28:281:37 | source(...) | main.rs:283:10:283:16 | a.value | $@ | main.rs:281:28:281:37 | source(...) | source(...) |
 | main.rs:289:10:289:10 | c | main.rs:286:28:286:37 | source(...) | main.rs:289:10:289:10 | c | $@ | main.rs:286:28:286:37 | source(...) | source(...) |
 | main.rs:293:10:293:10 | c | main.rs:291:28:291:37 | source(...) | main.rs:293:10:293:10 | c | $@ | main.rs:291:28:291:37 | source(...) | source(...) |
+| main.rs:297:10:297:10 | c | main.rs:295:28:295:37 | source(...) | main.rs:297:10:297:10 | c | $@ | main.rs:295:28:295:37 | source(...) | source(...) |
 | main.rs:322:10:322:10 | c | main.rs:319:28:319:36 | source(...) | main.rs:322:10:322:10 | c | $@ | main.rs:319:28:319:36 | source(...) | source(...) |
 | main.rs:327:10:327:10 | c | main.rs:325:28:325:37 | source(...) | main.rs:327:10:327:10 | c | $@ | main.rs:325:28:325:37 | source(...) | source(...) |
 | main.rs:337:10:337:10 | a | main.rs:336:13:336:21 | source(...) | main.rs:337:10:337:10 | a | $@ | main.rs:336:13:336:21 | source(...) | source(...) |

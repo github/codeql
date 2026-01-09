@@ -35,7 +35,7 @@ impl MyStruct {
 fn data_out_of_call_side_effect1() {
     let mut a = MyStruct { data: 0 };
     sink(a.get_data());
-    (&mut a).set_data(source(8));
+    a.set_data(source(8));
     sink(a.get_data()); // $ hasValueFlow=8
 }
 
@@ -294,7 +294,7 @@ fn test_operator_overloading() {
 
     let a = MyInt { value: source(29) };
     let c = a.min(1042);
-    sink(c); // $ MISSING: hasValueFlow=29
+    sink(c); // $ hasValueFlow=29
 }
 
 trait MyTrait2 {

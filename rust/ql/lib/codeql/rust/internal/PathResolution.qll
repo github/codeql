@@ -629,14 +629,14 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override TypeParam getTypeParam(int i) { none() }
 }
 
-private class EnumItemNode extends TypeItemNode instanceof Enum {
-  override string getName() { result = Enum.super.getName().getText() }
+private class TypeItemTypeItemNode extends TypeItemNode instanceof TypeItem {
+  override string getName() { result = TypeItem.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
 
-  override Visibility getVisibility() { result = Enum.super.getVisibility() }
+  override Visibility getVisibility() { result = TypeItem.super.getVisibility() }
 
-  override Attr getAnAttr() { result = Enum.super.getAnAttr() }
+  override Attr getAnAttr() { result = TypeItem.super.getAnAttr() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
@@ -982,9 +982,8 @@ private class ImplItemNodeImpl extends ImplItemNode {
   TraitItemNodeImpl resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
-private class StructItemNode extends TypeItemNode, ParameterizableItemNode instanceof Struct {
-  override string getName() { result = Struct.super.getName().getText() }
-
+private class StructItemNode extends TypeItemTypeItemNode, ParameterizableItemNode instanceof Struct
+{
   override Namespace getNamespace() {
     result.isType() // the struct itself
     or
@@ -992,40 +991,17 @@ private class StructItemNode extends TypeItemNode, ParameterizableItemNode insta
     result.isValue() // the constructor
   }
 
-  override Visibility getVisibility() { result = Struct.super.getVisibility() }
-
-  override Attr getAnAttr() { result = Struct.super.getAnAttr() }
-
   override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
-
-  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
-
-  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
-
-  bindingset[c]
-  private string getCanonicalPathPart(Crate c, int i) {
-    i = 0 and
-    result = this.getCanonicalPathPrefix(c)
-    or
-    i = 1 and
-    result = "::"
-    or
-    i = 2 and
-    result = this.getName()
-  }
 
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
     (
-      this =
-        any(Builtins::BuiltinType t |
-          not t.hasVisibility() and
-          result = t.getDisplayName()
-        )
+      not super.hasVisibility() and
+      result = this.(Builtins::BuiltinType).getDisplayName()
       or
-      not this = any(Builtins::BuiltinType t | not t.hasVisibility()) and
-      result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+      (super.hasVisibility() or not this instanceof Builtins::BuiltinType) and
+      result = TypeItemTypeItemNode.super.getCanonicalPath(c)
     )
   }
 }
@@ -1119,38 +1095,6 @@ private class TypeAliasItemNodeImpl extends TypeAliasItemNode instanceof TypeAli
   pragma[nomagic]
   ItemNode resolveAliasCand() {
     result = resolvePathCand(super.getTypeRepr().(PathTypeRepr).getPath())
-  }
-}
-
-private class UnionItemNode extends TypeItemNode instanceof Union {
-  override string getName() { result = Union.super.getName().getText() }
-
-  override Namespace getNamespace() { result.isType() }
-
-  override Visibility getVisibility() { result = Union.super.getVisibility() }
-
-  override Attr getAnAttr() { result = Union.super.getAnAttr() }
-
-  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
-
-  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
-
-  bindingset[c]
-  private string getCanonicalPathPart(Crate c, int i) {
-    i = 0 and
-    result = this.getCanonicalPathPrefix(c)
-    or
-    i = 1 and
-    result = "::"
-    or
-    i = 2 and
-    result = this.getName()
-  }
-
-  language[monotonicAggregates]
-  override string getCanonicalPath(Crate c) {
-    this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
   }
 }
 

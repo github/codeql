@@ -111,27 +111,56 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
-private class SummarizedCallableFromModel extends SummarizedCallable::Range {
-  private string path;
+private predicate summaryModel(
+  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
+  QlBuiltins::ExtensionId madId
+) {
+  exists(string path, Function f0 |
+    summaryModel(path, input, output, kind, provenance, madId) and
+    f0.getCanonicalPath() = path
+  |
+    f = f0 and
+    isInherited = false
+    or
+    f.implements(f0) and
+    isInherited = true
+  )
+}
 
-  SummarizedCallableFromModel() {
-    summaryModel(path, _, _, _, _, _) and
-    this.getCanonicalPath() = path
-  }
+private predicate summaryModelRelevant(
+  Function f, string input, string output, string kind, Provenance provenance,
+  QlBuiltins::ExtensionId madId
+) {
+  exists(boolean isInherited |
+    summaryModel(f, input, output, kind, provenance, isInherited, madId)
+  |
+    // Only apply generated or inherited models to functions in library code and
+    // when no strictly better model exists
+    if provenance.isGenerated() or isInherited = true
+    then
+      not f.fromSource() and
+      not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
+        provenance.isGenerated() and other.isManual()
+        or
+        provenance = other and isInherited = true
+      )
+    else any()
+  )
+}
+
+private class SummarizedCallableFromModel extends SummarizedCallable::Range {
+  SummarizedCallableFromModel() { summaryModelRelevant(this, _, _, _, _, _) }
 
   override predicate hasProvenance(Provenance provenance) {
-    summaryModel(path, _, _, _, provenance, _)
+    summaryModelRelevant(this, _, _, _, provenance, _)
   }
-
-  private predicate hasManualModel() { summaryModel(path, _, _, _, "manual", _) }
 
   override predicate propagatesFlow(
     string input, string output, boolean preservesValue, string model
   ) {
-    exists(string kind, string provenance, QlBuiltins::ExtensionId madId |
-      summaryModel(path, input, output, kind, provenance, madId) and
-      model = "MaD:" + madId.toString() and
-      (provenance = "manual" or not this.hasManualModel())
+    exists(string kind, QlBuiltins::ExtensionId madId |
+      summaryModelRelevant(this, input, output, kind, _, madId) and
+      model = "MaD:" + madId.toString()
     |
       kind = "value" and
       preservesValue = true

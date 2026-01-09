@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading.RateLimiting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Threading.RateLimiting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Threading
@@ -92,6 +92,7 @@ namespace System
                 protected abstract System.Threading.Tasks.ValueTask<System.Threading.RateLimiting.RateLimitLease> AcquireAsyncCore(int permitCount, System.Threading.CancellationToken cancellationToken);
                 public System.Threading.RateLimiting.RateLimitLease AttemptAcquire(int permitCount = default(int)) => throw null;
                 protected abstract System.Threading.RateLimiting.RateLimitLease AttemptAcquireCore(int permitCount);
+                public static System.Threading.RateLimiting.RateLimiter CreateChained(params System.Threading.RateLimiting.RateLimiter[] limiters) => throw null;
                 protected RateLimiter() => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;

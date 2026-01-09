@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -36,7 +36,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Logging.LogLevel LogLevel { get => throw null; }
                     public TState State { get => throw null; }
                 }
-                public class NullLogger : Microsoft.Extensions.Logging.ILogger
+                public sealed class NullLogger : Microsoft.Extensions.Logging.ILogger
                 {
                     public System.IDisposable BeginScope<TState>(TState state) => throw null;
                     public static Microsoft.Extensions.Logging.Abstractions.NullLogger Instance { get => throw null; }
@@ -59,7 +59,7 @@ namespace Microsoft
                     public void Dispose() => throw null;
                     public static readonly Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory Instance;
                 }
-                public class NullLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
+                public sealed class NullLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => throw null;
                     public void Dispose() => throw null;
@@ -212,6 +212,12 @@ namespace Microsoft
                 Error = 4,
                 Critical = 5,
                 None = 6,
+            }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
+            public class ProviderAliasAttribute : System.Attribute
+            {
+                public string Alias { get => throw null; }
+                public ProviderAliasAttribute(string alias) => throw null;
             }
         }
     }

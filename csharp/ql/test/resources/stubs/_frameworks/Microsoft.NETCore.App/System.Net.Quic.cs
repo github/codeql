@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Quic, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Quic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -29,9 +29,11 @@ namespace System
                 public static bool IsSupported { get => throw null; }
                 public System.Net.IPEndPoint LocalEndPoint { get => throw null; }
                 public System.Net.Security.SslApplicationProtocol NegotiatedApplicationProtocol { get => throw null; }
+                public System.Net.Security.TlsCipherSuite NegotiatedCipherSuite { get => throw null; }
                 public System.Threading.Tasks.ValueTask<System.Net.Quic.QuicStream> OpenOutboundStreamAsync(System.Net.Quic.QuicStreamType type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Security.Cryptography.X509Certificates.X509Certificate RemoteCertificate { get => throw null; }
                 public System.Net.IPEndPoint RemoteEndPoint { get => throw null; }
+                public System.Security.Authentication.SslProtocols SslProtocol { get => throw null; }
                 public string TargetHostName { get => throw null; }
                 public override string ToString() => throw null;
             }

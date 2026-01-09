@@ -1,11 +1,16 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Extensions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Extensions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
         namespace Builder
         {
+            public static partial class CookieRedirectEndpointConventionBuilderExtensions
+            {
+                public static TBuilder AllowCookieRedirect<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+                public static TBuilder DisableCookieRedirect<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+            }
             public static partial class HttpMetricsEndpointConventionBuilderExtensions
             {
                 public static TBuilder DisableHttpMetrics<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
@@ -13,6 +18,11 @@ namespace Microsoft
         }
         namespace Http
         {
+            [System.AttributeUsage((System.AttributeTargets)68)]
+            public sealed class AllowCookieRedirectAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IAllowCookieRedirectMetadata
+            {
+                public AllowCookieRedirectAttribute() => throw null;
+            }
             [System.AttributeUsage((System.AttributeTargets)68)]
             public sealed class DisableHttpMetricsAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IDisableHttpMetricsMetadata
             {
