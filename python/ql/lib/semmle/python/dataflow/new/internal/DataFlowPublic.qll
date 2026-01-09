@@ -462,8 +462,6 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Location getLocation() { result = mod.getLocation() }
 }
 
-private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
-
 private ModuleVariableNode import_star_read(Node n) {
   resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
 }
