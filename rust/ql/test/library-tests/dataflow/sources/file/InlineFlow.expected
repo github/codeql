@@ -36,7 +36,8 @@ models
 | 35 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_to_string; Argument[self].Reference; Argument[0].Reference; taint |
 | 36 | Summary: <_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_u8; Argument[self].Reference; ReturnValue.Future.Field[core::result::Result::Ok(0)]; taint |
 | 37 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 38 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
+| 38 | Summary: <std::ffi::os_str::OsString>::into_string; Argument[self].Field[std::ffi::os_str::OsString::inner].Field[std::sys::os_str::bytes::Buf::inner]; ReturnValue.Field[core::result::Result::Ok(0)].Field[alloc::string::String::vec]; value |
+| 39 | Summary: <std::path::PathBuf>::as_path; Argument[self].Reference; ReturnValue.Reference; value |
 edges
 | test.rs:12:13:12:18 | buffer | test.rs:13:14:13:19 | buffer | provenance |  |
 | test.rs:12:31:12:43 | ...::read | test.rs:12:31:12:55 | ...::read(...) [Ok] | provenance | Src:MaD:11  |
@@ -58,14 +59,18 @@ edges
 | test.rs:29:22:29:25 | path | test.rs:29:20:29:27 | e.path() | provenance | Src:MaD:4 MaD:4 |
 | test.rs:30:14:30:17 | path | test.rs:30:14:30:25 | path.clone() | provenance | MaD:18 |
 | test.rs:31:14:31:17 | path | test.rs:31:14:31:25 | path.clone() | provenance | MaD:18 |
-| test.rs:31:14:31:25 | path.clone() | test.rs:31:14:31:35 | ... .as_path() | provenance | MaD:38 |
+| test.rs:31:14:31:25 | path.clone() | test.rs:31:14:31:35 | ... .as_path() | provenance | MaD:39 |
 | test.rs:40:14:40:17 | path | test.rs:40:14:40:32 | path.canonicalize() [Ok] | provenance | MaD:19 |
 | test.rs:40:14:40:32 | path.canonicalize() [Ok] | test.rs:40:14:40:41 | ... .unwrap() | provenance | MaD:37 |
 | test.rs:43:13:43:21 | file_name | test.rs:44:14:44:22 | file_name | provenance |  |
+| test.rs:43:13:43:21 | file_name | test.rs:45:14:45:22 | file_name | provenance |  |
 | test.rs:43:13:43:21 | file_name | test.rs:49:14:49:22 | file_name | provenance |  |
 | test.rs:43:25:43:37 | e.file_name() | test.rs:43:13:43:21 | file_name | provenance |  |
 | test.rs:43:27:43:35 | file_name | test.rs:43:25:43:37 | e.file_name() | provenance | Src:MaD:3 MaD:3 |
 | test.rs:44:14:44:22 | file_name | test.rs:44:14:44:30 | file_name.clone() | provenance | MaD:18 |
+| test.rs:45:14:45:22 | file_name | test.rs:45:14:45:30 | file_name.clone() | provenance | MaD:18 |
+| test.rs:45:14:45:30 | file_name.clone() | test.rs:45:14:45:44 | ... .into_string() [Ok, String] | provenance | MaD:38 |
+| test.rs:45:14:45:44 | ... .into_string() [Ok, String] | test.rs:45:14:45:53 | ... .unwrap() | provenance | MaD:37 |
 | test.rs:65:13:65:18 | target | test.rs:66:14:66:19 | target | provenance |  |
 | test.rs:65:22:65:34 | ...::read_link | test.rs:65:22:65:49 | ...::read_link(...) [Ok] | provenance | Src:MaD:12  |
 | test.rs:65:22:65:49 | ...::read_link(...) [Ok] | test.rs:65:22:65:50 | TryExpr | provenance |  |
@@ -286,6 +291,10 @@ nodes
 | test.rs:43:27:43:35 | file_name | semmle.label | file_name |
 | test.rs:44:14:44:22 | file_name | semmle.label | file_name |
 | test.rs:44:14:44:30 | file_name.clone() | semmle.label | file_name.clone() |
+| test.rs:45:14:45:22 | file_name | semmle.label | file_name |
+| test.rs:45:14:45:30 | file_name.clone() | semmle.label | file_name.clone() |
+| test.rs:45:14:45:44 | ... .into_string() [Ok, String] | semmle.label | ... .into_string() [Ok, String] |
+| test.rs:45:14:45:53 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:49:14:49:22 | file_name | semmle.label | file_name |
 | test.rs:65:13:65:18 | target | semmle.label | target |
 | test.rs:65:22:65:34 | ...::read_link | semmle.label | ...::read_link |
@@ -502,6 +511,7 @@ testFailures
 | test.rs:40:14:40:41 | ... .unwrap() | test.rs:29:22:29:25 | path | test.rs:40:14:40:41 | ... .unwrap() | $@ | test.rs:29:22:29:25 | path | path |
 | test.rs:41:14:41:17 | path | test.rs:29:22:29:25 | path | test.rs:41:14:41:17 | path | $@ | test.rs:29:22:29:25 | path | path |
 | test.rs:44:14:44:30 | file_name.clone() | test.rs:43:27:43:35 | file_name | test.rs:44:14:44:30 | file_name.clone() | $@ | test.rs:43:27:43:35 | file_name | file_name |
+| test.rs:45:14:45:53 | ... .unwrap() | test.rs:43:27:43:35 | file_name | test.rs:45:14:45:53 | ... .unwrap() | $@ | test.rs:43:27:43:35 | file_name | file_name |
 | test.rs:49:14:49:22 | file_name | test.rs:43:27:43:35 | file_name | test.rs:49:14:49:22 | file_name | $@ | test.rs:43:27:43:35 | file_name | file_name |
 | test.rs:66:14:66:19 | target | test.rs:65:22:65:34 | ...::read_link | test.rs:66:14:66:19 | target | $@ | test.rs:65:22:65:34 | ...::read_link | ...::read_link |
 | test.rs:75:14:75:19 | buffer | test.rs:74:31:74:45 | ...::read | test.rs:75:14:75:19 | buffer | $@ | test.rs:74:31:74:45 | ...::read | ...::read |
