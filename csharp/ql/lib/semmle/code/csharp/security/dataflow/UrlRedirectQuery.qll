@@ -56,9 +56,14 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
-/** URL Redirection sinks defined through Models as Data. */
+/** A URL Redirection sink defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {
   ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirection") }
+}
+
+/** A sanitizer for URL redirection defined through Models as Data. */
+private class ExternalUrlRedirectSanitizer extends Sanitizer {
+  ExternalUrlRedirectSanitizer() { barrierNode(this, "url-redirection") }
 }
 
 /**
