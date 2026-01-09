@@ -309,7 +309,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
 }
 
 pragma[nomagic]
-private Type resolveImplSelfTypeAt(Impl i, TypePath path) {
+Type resolveImplSelfTypeAt(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
 }
 

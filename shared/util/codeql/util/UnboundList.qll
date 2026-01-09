@@ -66,7 +66,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets the `i`th element in this list. */
     bindingset[this]
-    private Element getElement(int i) { result = decode(this.splitAt(".", i)) }
+    Element getElement(int i) { result = decode(this.splitAt(".", i)) }
 
     /** Gets a textual representation of this list. */
     bindingset[this]
