@@ -73,7 +73,7 @@ private Function getEnclosingFunctionForMacroInvocation(MacroInvocation mi) {
 
 /**
  * Holds if `arg` has two components and the `i`'th component of the string
- * `arg` is `s`, and the components are seperated by an operation with
+ * `arg` is `s`, and the components are separated by an operation with
  * opcode `opcode`.
  */
 bindingset[arg]
