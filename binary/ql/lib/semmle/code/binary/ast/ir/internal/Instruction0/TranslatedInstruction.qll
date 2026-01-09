@@ -2798,14 +2798,13 @@ class TranslatedJvmInvoke extends TranslatedJvmInstruction, TTranslatedJvmInvoke
     or
     // Rest of the stack has the arguments removed
     i > 0 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor())
-        .getStackElement(i - 1 + instr.getNumberOfArguments())
+    instr.hasReturnValue() and
+    result = this.getInputStackVariable(i - 1 + instr.getNumberOfArguments())
     or
-    // If no return value, shift the indices
+    // If no return value, shift the indices (only arguments removed)
     i >= 0 and
     not instr.hasReturnValue() and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor())
-        .getStackElement(i + instr.getNumberOfArguments())
+    result = this.getInputStackVariable(i + instr.getNumberOfArguments())
   }
 }
 
@@ -2888,11 +2887,13 @@ class TranslatedJvmLoadLocal extends TranslatedJvmInstruction, TTranslatedJvmLoa
   override Variable getResultVariable() { result = this.getTempVariable(JvmLoadLocalResultVarTag()) }
 
   final override Variable getStackElement(int i) {
+    // Load pushes a value onto the stack
     i = 0 and
     result = this.getInstruction(JvmLoadLocalTag()).getResultVariable()
     or
+    // Rest of stack is unchanged (shifted by 1)
     i > 0 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+    result = this.getInputStackVariable(i - 1)
   }
 
   override predicate hasLocalVariable(LocalVariableTag tag) {
@@ -2937,7 +2938,8 @@ class TranslatedJvmStoreLocal extends TranslatedJvmInstruction, TTranslatedJvmSt
   override Variable getResultVariable() { none() }
 
   final override Variable getStackElement(int i) {
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    // Store pops the top value, so stack shifts down by 1
+    result = this.getInputStackVariable(i + 1)
   }
 
   override predicate hasLocalVariable(LocalVariableTag tag) {
@@ -2978,7 +2980,8 @@ class TranslatedJvmNop extends TranslatedJvmInstruction, TTranslatedJvmNop {
   override Variable getResultVariable() { none() }
 
   final override Variable getStackElement(int i) {
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+    // Nop doesn't change the stack
+    result = this.getInputStackVariable(i)
   }
 }
 
@@ -3037,11 +3040,11 @@ class TranslatedJvmBranch extends TranslatedJvmInstruction, TTranslatedJvmBranch
   final override Variable getStackElement(int i) {
     // After a unary branch, one element is consumed
     instr instanceof Raw::JvmUnaryConditionalBranch and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    result = this.getInputStackVariable(i + 1)
     or
     // After a binary branch, two elements are consumed
     instr instanceof Raw::JvmBinaryConditionalBranch and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+    result = this.getInputStackVariable(i + 2)
   }
 }
 
@@ -3078,7 +3081,8 @@ class TranslatedJvmGoto extends TranslatedJvmInstruction, TTranslatedJvmGoto {
   override Variable getResultVariable() { none() }
 
   final override Variable getStackElement(int i) {
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+    // Goto doesn't change the stack
+    result = this.getInputStackVariable(i)
   }
 }
 
@@ -3139,8 +3143,9 @@ class TranslatedJvmArithmetic extends TranslatedJvmInstruction, TTranslatedJvmAr
     i = 0 and
     result = this.getInstruction(JvmArithOpTag()).getResultVariable()
     or
+    // Rest of the stack shifts down by 1 (2 consumed, 1 produced)
     i > 0 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    result = this.getInputStackVariable(i + 1)
   }
 }
 
@@ -3249,31 +3254,32 @@ class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmF
   }
 
   final override Variable getStackElement(int i) {
-    // For getfield: consumes object ref, pushes field value
+    // For getfield: consumes object ref, pushes field value (net: no change in stack depth)
     instr instanceof Raw::JvmGetfield and
     (
       i = 0 and result = this.getInstruction(JvmFieldLoadTag()).getResultVariable()
       or
+      // Stack unchanged below the result (1 consumed, 1 produced)
       i > 0 and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
+      result = this.getInputStackVariable(i)
     )
     or
-    // For getstatic: pushes field value (no object ref consumed)
+    // For getstatic: pushes field value (no object ref consumed, stack grows by 1)
     instr instanceof Raw::JvmGetstatic and
     (
       i = 0 and result = this.getInstruction(JvmFieldLoadTag()).getResultVariable()
       or
       i > 0 and
-      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+      result = this.getInputStackVariable(i - 1)
     )
     or
-    // For putfield: consumes object ref and value
+    // For putfield: consumes object ref and value (stack shrinks by 2)
     instr instanceof Raw::JvmPutfield and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+    result = this.getInputStackVariable(i + 2)
     or
-    // For putstatic: consumes value only
+    // For putstatic: consumes value only (stack shrinks by 1)
     instr instanceof Raw::JvmPutstatic and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    result = this.getInputStackVariable(i + 1)
   }
 }
 
@@ -3316,8 +3322,9 @@ class TranslatedJvmNew extends TranslatedJvmInstruction, TTranslatedJvmNew {
     i = 0 and
     result = this.getInstruction(JvmNewInitTag()).getResultVariable()
     or
+    // Rest of the stack is unchanged (shifted by 1)
     i > 0 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+    result = this.getInputStackVariable(i - 1)
   }
 }
 
@@ -3366,10 +3373,11 @@ class TranslatedJvmDup extends TranslatedJvmInstruction, TTranslatedJvmDup {
     or
     // The original element is still there at position 1
     i = 1 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
+    result = this.getInputStackVariable(0)
     or
+    // Rest of the stack is shifted by 1
     i > 1 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+    result = this.getInputStackVariable(i - 1)
   }
 }
 
@@ -3408,10 +3416,10 @@ class TranslatedJvmPop extends TranslatedJvmInstruction, TTranslatedJvmPop {
   final override Variable getStackElement(int i) {
     // pop removes the top element (pop removes 1, pop2 removes 2)
     instr instanceof Raw::JvmPop and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
+    result = this.getInputStackVariable(i + 1)
     or
     instr instanceof Raw::JvmPop2 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
+    result = this.getInputStackVariable(i + 2)
   }
 }
 
@@ -3454,7 +3462,8 @@ class TranslatedJvmLoadConstant extends TranslatedJvmInstruction, TTranslatedJvm
     i = 0 and
     result = this.getInstruction(JvmConstTag()).getResultVariable()
     or
+    // Rest of the stack is unchanged (shifted by 1)
     i > 0 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
+    result = this.getInputStackVariable(i - 1)
   }
 }
