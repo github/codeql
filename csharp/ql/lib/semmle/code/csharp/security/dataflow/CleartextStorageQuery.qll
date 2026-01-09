@@ -4,6 +4,7 @@
 
 import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.security.SensitiveActions
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
@@ -62,3 +63,5 @@ class ProtectSanitizer extends Sanitizer {
  * An external location sink.
  */
 class ExternalSink extends Sink instanceof ExternalLocationSink { }
+
+private class ExternalSanitizer extends Sanitizer instanceof ExternalLocationSanitizer { }
