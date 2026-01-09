@@ -35,7 +35,7 @@ private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
   DefaultIntentRedirectionSink() { sinkNode(this, "intent-redirection") }
 }
 
-/** External sanitizers for Intent redirection vulnerabilities. */
+/** An external sanitizer for Intent redirection vulnerabilities. */
 private class ExternalIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
   ExternalIntentRedirectionSanitizer() { barrierNode(this, "intent-redirection") }
 }

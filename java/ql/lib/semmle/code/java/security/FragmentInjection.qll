@@ -50,7 +50,7 @@ private class DefaultFragmentInjectionSink extends FragmentInjectionSink {
 }
 
 /**
- * A barrier for Fragment injection vulnerabilities.
+ * A sanitizer for Fragment injection vulnerabilities.
  */
 abstract class FragmentInjectionSanitizer extends DataFlow::Node { }
 
