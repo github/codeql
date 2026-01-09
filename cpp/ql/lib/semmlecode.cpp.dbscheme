@@ -2040,6 +2040,10 @@ new_array_allocated_type(
     int type_id: @type ref
 );
 
+param_ref_to_this(
+    int expr: @param_ref ref
+)
+
 /**
  * The field being initialized by an initializer expression within an aggregate
  * initializer for a class/struct/union. Position is used to sort repeated initializers.
