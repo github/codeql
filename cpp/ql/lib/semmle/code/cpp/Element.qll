@@ -192,6 +192,11 @@ class Element extends ElementBase {
    */
   predicate isAffectedByMacro() { affectedByMacro(this) }
 
+  /** Holds if this element is affected by the expansion of `mi`. */
+  predicate isAffectedByMacro(MacroInvocation mi) {
+    affectedbymacroexpansion(underlyingElement(this), unresolveElement(mi))
+  }
+
   private Element getEnclosingElementPref() {
     enclosingfunction(underlyingElement(this), unresolveElement(result)) or
     result.(Function) = stmtEnclosingElement(this) or
