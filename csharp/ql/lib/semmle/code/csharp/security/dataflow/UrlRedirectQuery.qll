@@ -190,16 +190,6 @@ class HostComparisonSanitizer extends Sanitizer {
 }
 
 /**
- * A call to the getter of the RawUrl property, whose value is considered to be safe for URL
- * redirects.
- */
-class RawUrlSanitizer extends Sanitizer {
-  RawUrlSanitizer() {
-    this.getExpr() = any(SystemWebHttpRequestClass r).getRawUrlProperty().getGetter().getACall()
-  }
-}
-
-/**
  * A string concatenation expression, where the left hand side contains the character "?".
  *
  * This is considered as sanitizing the overall expression, because the attacker can then
