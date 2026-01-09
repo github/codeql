@@ -30,6 +30,7 @@ query predicate publicVulnerableCallModel(
 
 /**
  * Lists the direct vulnerable call sites with their enclosing method context.
+ * Handles both external reference calls and static target calls.
  */
 query predicate vulnerableCallLocations(
   VulnerableMethodCall call,
@@ -40,6 +41,14 @@ query predicate vulnerableCallLocations(
   string id
 ) {
   call.getVulnerabilityId() = id and
-  call.getEnclosingFunction().hasFullyQualifiedName(callerNamespace, callerClassName, callerMethodName) and
-  targetFqn = call.getTargetOperand().getAnyDef().(ExternalRefInstruction).getFullyQualifiedName()
+  call.getEnclosingFunction()
+      .hasFullyQualifiedName(callerNamespace, callerClassName, callerMethodName) and
+  (
+    // External call via ExternalRefInstruction
+    targetFqn = call.getTargetOperand().getAnyDef().(ExternalRefInstruction).getFullyQualifiedName()
+    or
+    // Internal call via static target
+    not exists(call.getTargetOperand().getAnyDef().(ExternalRefInstruction)) and
+    targetFqn = call.getStaticTarget().getFullyQualifiedName()
+  )
 }
