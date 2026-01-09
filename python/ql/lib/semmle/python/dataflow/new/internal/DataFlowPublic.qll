@@ -76,15 +76,7 @@ newtype TNode =
     node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) {
-    v.getScope() = m and
-    (
-      v.escapes()
-      or
-      isAccessedThroughImportStar(m) and
-      ImportStar::globalNameDefinedInModule(v.getId(), m)
-    )
-  } or
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
