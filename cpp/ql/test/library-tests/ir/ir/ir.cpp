@@ -2823,4 +2823,48 @@ void vla_sizeof_test5(int len1, size_t len2) {
   size_t z = sizeof((*&tmp1)[1]);
 }
 
+// Common definitions for assertions in release builds
+#define assert(x) ((void)0)
+#define __analysis_assume(x)
+
+void test_assert_simple(int x, int y, unsigned u, int shadowed) {
+    assert(x > 0);
+    assert(0 < x);
+    assert(x < y);
+    
+    __analysis_assume(x != 2);
+
+    assert(u < x);
+
+    {
+        int shadowed = x;
+        assert(shadowed > 0);
+    }
+}
+
+template<typename T>
+void test_assert_in_template(T x, int y, unsigned u) {
+    assert(x > 0);
+    assert(0 < x);
+    assert(x < y);
+    
+    __analysis_assume(x != 2);
+
+    assert(u < x);
+
+    {
+        int shadowed = x;
+        assert(shadowed > 0);
+    }
+    assert(x> 0);
+}
+
+template void test_assert_in_template<int>(int, int, unsigned);
+template void test_assert_in_template<short>(short, int, unsigned);
+
+void complex_assertions(int x, bool b, int max) {
+    int y = (assert(x > 0), x);
+    int z = b ? (assert(x != 0), 0) : 1;
+}
+
 // semmle-extractor-options: -std=c++20 --clang

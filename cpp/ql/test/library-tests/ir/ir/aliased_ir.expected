@@ -20741,6 +20741,157 @@ ir.cpp:
 # 2821|     v2821_10(void)                = AliasedUse                : m2821_3
 # 2821|     v2821_11(void)                = ExitFunction              : 
 
+# 2830| void test_assert_simple(int, int, unsigned int, int)
+# 2830|   Block 0
+# 2830|     v2830_1(void)                = EnterFunction                 : 
+# 2830|     m2830_2(unknown)             = AliasedDefinition             : 
+# 2830|     m2830_3(unknown)             = InitializeNonLocal            : 
+# 2830|     m2830_4(unknown)             = Chi                           : total:m2830_2, partial:m2830_3
+# 2830|     r2830_5(glval<int>)          = VariableAddress[x]            : 
+# 2830|     m2830_6(int)                 = InitializeParameter[x]        : &:r2830_5
+# 2830|     r2830_7(glval<int>)          = VariableAddress[y]            : 
+# 2830|     m2830_8(int)                 = InitializeParameter[y]        : &:r2830_7
+# 2830|     r2830_9(glval<unsigned int>) = VariableAddress[u]            : 
+# 2830|     m2830_10(unsigned int)       = InitializeParameter[u]        : &:r2830_9
+# 2830|     r2830_11(glval<int>)         = VariableAddress[shadowed]     : 
+# 2830|     m2830_12(int)                = InitializeParameter[shadowed] : &:r2830_11
+# 2831|     r2831_1(int)                 = Constant[0]                   : 
+# 2831|     v2831_2(void)                = Convert                       : r2831_1
+# 2832|     r2832_1(int)                 = Constant[0]                   : 
+# 2832|     v2832_2(void)                = Convert                       : r2832_1
+# 2833|     r2833_1(int)                 = Constant[0]                   : 
+# 2833|     v2833_2(void)                = Convert                       : r2833_1
+# 2835|     v2835_1(void)                = NoOp                          : 
+# 2837|     r2837_1(int)                 = Constant[0]                   : 
+# 2837|     v2837_2(void)                = Convert                       : r2837_1
+# 2840|     r2840_1(glval<int>)          = VariableAddress[shadowed]     : 
+# 2840|     r2840_2(glval<int>)          = VariableAddress[x]            : 
+# 2840|     r2840_3(int)                 = Load[x]                       : &:r2840_2, m2830_6
+# 2840|     m2840_4(int)                 = Store[shadowed]               : &:r2840_1, r2840_3
+# 2841|     r2841_1(int)                 = Constant[0]                   : 
+# 2841|     v2841_2(void)                = Convert                       : r2841_1
+# 2843|     v2843_1(void)                = NoOp                          : 
+# 2830|     v2830_13(void)               = ReturnVoid                    : 
+# 2830|     v2830_14(void)               = AliasedUse                    : m2830_3
+# 2830|     v2830_15(void)               = ExitFunction                  : 
+
+# 2846| void test_assert_in_template<int>(int, int, unsigned int)
+# 2846|   Block 0
+# 2846|     v2846_1(void)                = EnterFunction             : 
+# 2846|     m2846_2(unknown)             = AliasedDefinition         : 
+# 2846|     m2846_3(unknown)             = InitializeNonLocal        : 
+# 2846|     m2846_4(unknown)             = Chi                       : total:m2846_2, partial:m2846_3
+# 2846|     r2846_5(glval<int>)          = VariableAddress[x]        : 
+# 2846|     m2846_6(int)                 = InitializeParameter[x]    : &:r2846_5
+# 2846|     r2846_7(glval<int>)          = VariableAddress[y]        : 
+# 2846|     m2846_8(int)                 = InitializeParameter[y]    : &:r2846_7
+# 2846|     r2846_9(glval<unsigned int>) = VariableAddress[u]        : 
+# 2846|     m2846_10(unsigned int)       = InitializeParameter[u]    : &:r2846_9
+# 2847|     r2847_1(int)                 = Constant[0]               : 
+# 2847|     v2847_2(void)                = Convert                   : r2847_1
+# 2848|     r2848_1(int)                 = Constant[0]               : 
+# 2848|     v2848_2(void)                = Convert                   : r2848_1
+# 2849|     r2849_1(int)                 = Constant[0]               : 
+# 2849|     v2849_2(void)                = Convert                   : r2849_1
+# 2851|     v2851_1(void)                = NoOp                      : 
+# 2853|     r2853_1(int)                 = Constant[0]               : 
+# 2853|     v2853_2(void)                = Convert                   : r2853_1
+# 2856|     r2856_1(glval<int>)          = VariableAddress[shadowed] : 
+# 2856|     r2856_2(glval<int>)          = VariableAddress[x]        : 
+# 2856|     r2856_3(int)                 = Load[x]                   : &:r2856_2, m2846_6
+# 2856|     m2856_4(int)                 = Store[shadowed]           : &:r2856_1, r2856_3
+# 2857|     r2857_1(int)                 = Constant[0]               : 
+# 2857|     v2857_2(void)                = Convert                   : r2857_1
+# 2859|     r2859_1(int)                 = Constant[0]               : 
+# 2859|     v2859_2(void)                = Convert                   : r2859_1
+# 2860|     v2860_1(void)                = NoOp                      : 
+# 2846|     v2846_11(void)               = ReturnVoid                : 
+# 2846|     v2846_12(void)               = AliasedUse                : m2846_3
+# 2846|     v2846_13(void)               = ExitFunction              : 
+
+# 2846| void test_assert_in_template<short>(short, int, unsigned int)
+# 2846|   Block 0
+# 2846|     v2846_1(void)                = EnterFunction             : 
+# 2846|     m2846_2(unknown)             = AliasedDefinition         : 
+# 2846|     m2846_3(unknown)             = InitializeNonLocal        : 
+# 2846|     m2846_4(unknown)             = Chi                       : total:m2846_2, partial:m2846_3
+# 2846|     r2846_5(glval<short>)        = VariableAddress[x]        : 
+# 2846|     m2846_6(short)               = InitializeParameter[x]    : &:r2846_5
+# 2846|     r2846_7(glval<int>)          = VariableAddress[y]        : 
+# 2846|     m2846_8(int)                 = InitializeParameter[y]    : &:r2846_7
+# 2846|     r2846_9(glval<unsigned int>) = VariableAddress[u]        : 
+# 2846|     m2846_10(unsigned int)       = InitializeParameter[u]    : &:r2846_9
+# 2847|     r2847_1(int)                 = Constant[0]               : 
+# 2847|     v2847_2(void)                = Convert                   : r2847_1
+# 2848|     r2848_1(int)                 = Constant[0]               : 
+# 2848|     v2848_2(void)                = Convert                   : r2848_1
+# 2849|     r2849_1(int)                 = Constant[0]               : 
+# 2849|     v2849_2(void)                = Convert                   : r2849_1
+# 2851|     v2851_1(void)                = NoOp                      : 
+# 2853|     r2853_1(int)                 = Constant[0]               : 
+# 2853|     v2853_2(void)                = Convert                   : r2853_1
+# 2856|     r2856_1(glval<int>)          = VariableAddress[shadowed] : 
+# 2856|     r2856_2(glval<short>)        = VariableAddress[x]        : 
+# 2856|     r2856_3(short)               = Load[x]                   : &:r2856_2, m2846_6
+# 2856|     r2856_4(int)                 = Convert                   : r2856_3
+# 2856|     m2856_5(int)                 = Store[shadowed]           : &:r2856_1, r2856_4
+# 2857|     r2857_1(int)                 = Constant[0]               : 
+# 2857|     v2857_2(void)                = Convert                   : r2857_1
+# 2859|     r2859_1(int)                 = Constant[0]               : 
+# 2859|     v2859_2(void)                = Convert                   : r2859_1
+# 2860|     v2860_1(void)                = NoOp                      : 
+# 2846|     v2846_11(void)               = ReturnVoid                : 
+# 2846|     v2846_12(void)               = AliasedUse                : m2846_3
+# 2846|     v2846_13(void)               = ExitFunction              : 
+
+# 2865| void complex_assertions(int, bool, int)
+# 2865|   Block 0
+# 2865|     v2865_1(void)        = EnterFunction            : 
+# 2865|     m2865_2(unknown)     = AliasedDefinition        : 
+# 2865|     m2865_3(unknown)     = InitializeNonLocal       : 
+# 2865|     m2865_4(unknown)     = Chi                      : total:m2865_2, partial:m2865_3
+# 2865|     r2865_5(glval<int>)  = VariableAddress[x]       : 
+# 2865|     m2865_6(int)         = InitializeParameter[x]   : &:r2865_5
+# 2865|     r2865_7(glval<bool>) = VariableAddress[b]       : 
+# 2865|     m2865_8(bool)        = InitializeParameter[b]   : &:r2865_7
+# 2865|     r2865_9(glval<int>)  = VariableAddress[max]     : 
+# 2865|     m2865_10(int)        = InitializeParameter[max] : &:r2865_9
+# 2866|     r2866_1(glval<int>)  = VariableAddress[y]       : 
+# 2866|     r2866_2(int)         = Constant[0]              : 
+# 2866|     v2866_3(void)        = Convert                  : r2866_2
+# 2866|     r2866_4(glval<int>)  = VariableAddress[x]       : 
+# 2866|     r2866_5(int)         = Load[x]                  : &:r2866_4, m2865_6
+# 2866|     r2866_6(int)         = CopyValue                : r2866_5
+# 2866|     m2866_7(int)         = Store[y]                 : &:r2866_1, r2866_6
+# 2867|     r2867_1(glval<int>)  = VariableAddress[z]       : 
+# 2867|     r2867_2(glval<bool>) = VariableAddress[b]       : 
+# 2867|     r2867_3(bool)        = Load[b]                  : &:r2867_2, m2865_8
+# 2867|     v2867_4(void)        = ConditionalBranch        : r2867_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 2867|   Block 1
+# 2867|     m2867_5(int)        = Phi                           : from 2:m2867_11, from 3:m2867_14
+# 2867|     r2867_6(glval<int>) = VariableAddress[#temp2867:13] : 
+# 2867|     r2867_7(int)        = Load[#temp2867:13]            : &:r2867_6, m2867_5
+# 2867|     m2867_8(int)        = Store[z]                      : &:r2867_1, r2867_7
+# 2868|     v2868_1(void)       = NoOp                          : 
+# 2865|     v2865_11(void)      = ReturnVoid                    : 
+# 2865|     v2865_12(void)      = AliasedUse                    : m2865_3
+# 2865|     v2865_13(void)      = ExitFunction                  : 
+
+# 2867|   Block 2
+# 2867|     r2867_9(int)         = Constant[0]                   : 
+# 2867|     r2867_10(glval<int>) = VariableAddress[#temp2867:13] : 
+# 2867|     m2867_11(int)        = Store[#temp2867:13]           : &:r2867_10, r2867_9
+#-----|   Goto -> Block 1
+
+# 2867|   Block 3
+# 2867|     r2867_12(int)        = Constant[1]                   : 
+# 2867|     r2867_13(glval<int>) = VariableAddress[#temp2867:13] : 
+# 2867|     m2867_14(int)        = Store[#temp2867:13]           : &:r2867_13, r2867_12
+#-----|   Goto -> Block 1
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0
