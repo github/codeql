@@ -230,51 +230,55 @@ inferCertainType
 | closure.rs:35:50:37:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:36:23:36:23 | f |  | closure.rs:35:20:35:41 | F |
 | closure.rs:36:25:36:28 | true |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:39:46:39:46 | f |  | closure.rs:39:22:39:43 | F |
-| closure.rs:39:52:42:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| closure.rs:41:9:41:9 | f |  | closure.rs:39:22:39:43 | F |
-| closure.rs:44:39:44:39 | f |  | closure.rs:44:20:44:36 | F |
-| closure.rs:44:45:44:45 | a |  | closure.rs:44:14:44:14 | A |
-| closure.rs:44:56:46:5 | { ... } |  | closure.rs:44:17:44:17 | B |
-| closure.rs:45:9:45:9 | f |  | closure.rs:44:20:44:36 | F |
-| closure.rs:45:11:45:11 | a |  | closure.rs:44:14:44:14 | A |
-| closure.rs:48:18:48:18 | f |  | closure.rs:48:21:48:43 | impl ... |
-| closure.rs:48:53:50:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:49:9:49:9 | f |  | closure.rs:48:21:48:43 | impl ... |
-| closure.rs:52:15:64:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| closure.rs:53:18:53:18 | x |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:54:16:54:16 | x |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:60:27:60:30 | true |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:63:13:63:15 | _r2 |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:63:19:63:30 | apply_two(...) |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:68:54:68:54 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:68:54:68:54 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:68:54:68:54 | f | T | closure.rs:68:26:68:51 | F |
-| closure.rs:68:65:68:67 | arg |  | closure.rs:68:20:68:20 | A |
-| closure.rs:68:78:70:5 | { ... } |  | closure.rs:68:23:68:23 | B |
-| closure.rs:69:9:69:9 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:69:9:69:9 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:69:9:69:9 | f | T | closure.rs:68:26:68:51 | F |
-| closure.rs:69:11:69:13 | arg |  | closure.rs:68:20:68:20 | A |
-| closure.rs:72:30:72:30 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:72:30:72:30 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:72:30:72:30 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:72:30:72:30 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:72:30:72:30 | f | T.dyn(Args).T0 | closure.rs:72:24:72:24 | A |
-| closure.rs:72:30:72:30 | f | T.dyn(Output) | closure.rs:72:27:72:27 | B |
-| closure.rs:72:58:72:60 | arg |  | closure.rs:72:24:72:24 | A |
-| closure.rs:72:66:75:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| closure.rs:73:31:73:31 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:73:31:73:31 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:73:31:73:31 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:73:31:73:31 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:73:31:73:31 | f | T.dyn(Args).T0 | closure.rs:72:24:72:24 | A |
-| closure.rs:73:31:73:31 | f | T.dyn(Output) | closure.rs:72:27:72:27 | B |
-| closure.rs:73:34:73:36 | arg |  | closure.rs:72:24:72:24 | A |
-| closure.rs:74:31:74:53 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:74:31:74:53 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:74:41:74:41 | _ |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:74:49:74:52 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:39:45:39:45 | f |  | closure.rs:39:28:39:42 | F |
+| closure.rs:39:51:41:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:40:23:40:23 | f |  | closure.rs:39:28:39:42 | F |
+| closure.rs:40:25:40:28 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:43:46:43:46 | f |  | closure.rs:43:22:43:43 | F |
+| closure.rs:43:52:46:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:45:9:45:9 | f |  | closure.rs:43:22:43:43 | F |
+| closure.rs:48:39:48:39 | f |  | closure.rs:48:20:48:36 | F |
+| closure.rs:48:45:48:45 | a |  | closure.rs:48:14:48:14 | A |
+| closure.rs:48:56:50:5 | { ... } |  | closure.rs:48:17:48:17 | B |
+| closure.rs:49:9:49:9 | f |  | closure.rs:48:20:48:36 | F |
+| closure.rs:49:11:49:11 | a |  | closure.rs:48:14:48:14 | A |
+| closure.rs:52:18:52:18 | f |  | closure.rs:52:21:52:43 | impl ... |
+| closure.rs:52:53:54:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:53:9:53:9 | f |  | closure.rs:52:21:52:43 | impl ... |
+| closure.rs:56:15:68:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:57:18:57:18 | x |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:58:16:58:16 | x |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:64:27:64:30 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:67:13:67:15 | _r2 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:67:19:67:30 | apply_two(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:72:54:72:54 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:72:54:72:54 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:72:54:72:54 | f | T | closure.rs:72:26:72:51 | F |
+| closure.rs:72:65:72:67 | arg |  | closure.rs:72:20:72:20 | A |
+| closure.rs:72:78:74:5 | { ... } |  | closure.rs:72:23:72:23 | B |
+| closure.rs:73:9:73:9 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:73:9:73:9 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:73:9:73:9 | f | T | closure.rs:72:26:72:51 | F |
+| closure.rs:73:11:73:13 | arg |  | closure.rs:72:20:72:20 | A |
+| closure.rs:76:30:76:30 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:76:30:76:30 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:76:30:76:30 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:76:30:76:30 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:76:30:76:30 | f | T.dyn(Args).T0 | closure.rs:76:24:76:24 | A |
+| closure.rs:76:30:76:30 | f | T.dyn(Output) | closure.rs:76:27:76:27 | B |
+| closure.rs:76:58:76:60 | arg |  | closure.rs:76:24:76:24 | A |
+| closure.rs:76:66:79:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:77:31:77:31 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:77:31:77:31 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:77:31:77:31 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:77:31:77:31 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:77:31:77:31 | f | T.dyn(Args).T0 | closure.rs:76:24:76:24 | A |
+| closure.rs:77:31:77:31 | f | T.dyn(Output) | closure.rs:76:27:76:27 | B |
+| closure.rs:77:34:77:36 | arg |  | closure.rs:76:24:76:24 | A |
+| closure.rs:78:31:78:53 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:78:31:78:53 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:78:41:78:41 | _ |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:78:49:78:52 | true |  | {EXTERNAL LOCATION} | bool |
 | dereference.rs:13:14:13:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:13:14:13:18 | SelfParam | TRef | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:13:29:15:5 | { ... } |  | {EXTERNAL LOCATION} | & |
@@ -4976,111 +4980,115 @@ inferType
 | closure.rs:36:23:36:23 | f |  | closure.rs:35:20:35:41 | F |
 | closure.rs:36:23:36:29 | f(...) |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:36:25:36:28 | true |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:39:46:39:46 | f |  | closure.rs:39:22:39:43 | F |
-| closure.rs:39:52:42:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| closure.rs:40:13:40:15 | arg |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:40:19:40:36 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:41:9:41:9 | f |  | closure.rs:39:22:39:43 | F |
-| closure.rs:41:9:41:14 | f(...) |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:41:11:41:13 | arg |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:44:39:44:39 | f |  | closure.rs:44:20:44:36 | F |
-| closure.rs:44:45:44:45 | a |  | closure.rs:44:14:44:14 | A |
-| closure.rs:44:56:46:5 | { ... } |  | closure.rs:44:17:44:17 | B |
-| closure.rs:45:9:45:9 | f |  | closure.rs:44:20:44:36 | F |
-| closure.rs:45:9:45:12 | f(...) |  | closure.rs:44:17:44:17 | B |
-| closure.rs:45:11:45:11 | a |  | closure.rs:44:14:44:14 | A |
-| closure.rs:48:18:48:18 | f |  | closure.rs:48:21:48:43 | impl ... |
-| closure.rs:48:53:50:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:49:9:49:9 | f |  | closure.rs:48:21:48:43 | impl ... |
-| closure.rs:49:9:49:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:49:11:49:11 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:49:11:49:11 | 2 |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:52:15:64:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| closure.rs:53:13:53:13 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:53:13:53:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:53:13:53:13 | f | dyn(Args).T0 | {EXTERNAL LOCATION} | bool |
-| closure.rs:53:13:53:13 | f | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:53:13:53:13 | f | dyn(Output) | {EXTERNAL LOCATION} | i64 |
-| closure.rs:53:17:59:9 | \|...\| ... |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:53:17:59:9 | \|...\| ... | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:53:17:59:9 | \|...\| ... | dyn(Args).T0 | {EXTERNAL LOCATION} | bool |
-| closure.rs:53:17:59:9 | \|...\| ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:53:17:59:9 | \|...\| ... | dyn(Output) | {EXTERNAL LOCATION} | i64 |
-| closure.rs:53:18:53:18 | x |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:53:34:59:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:53:34:59:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:54:13:58:13 | if x {...} else {...} |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:54:13:58:13 | if x {...} else {...} |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:54:16:54:16 | x |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:54:18:56:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:54:18:56:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:55:17:55:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:55:17:55:17 | 1 |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:56:20:58:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:56:20:58:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:57:17:57:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:57:17:57:17 | 0 |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:60:13:60:14 | _r |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:60:13:60:14 | _r |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:60:18:60:31 | apply(...) |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:60:18:60:31 | apply(...) |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:60:24:60:24 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:60:24:60:24 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:60:24:60:24 | f | dyn(Args).T0 | {EXTERNAL LOCATION} | bool |
-| closure.rs:60:24:60:24 | f | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:60:24:60:24 | f | dyn(Output) | {EXTERNAL LOCATION} | i64 |
-| closure.rs:60:27:60:30 | true |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:62:13:62:13 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:62:13:62:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:62:17:62:25 | \|...\| ... |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:62:17:62:25 | \|...\| ... | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:62:25:62:25 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:63:13:63:15 | _r2 |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:63:19:63:30 | apply_two(...) |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:63:29:63:29 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:63:29:63:29 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:68:54:68:54 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:68:54:68:54 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:68:54:68:54 | f | T | closure.rs:68:26:68:51 | F |
-| closure.rs:68:65:68:67 | arg |  | closure.rs:68:20:68:20 | A |
-| closure.rs:68:78:70:5 | { ... } |  | closure.rs:68:23:68:23 | B |
-| closure.rs:69:9:69:9 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:69:9:69:9 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:69:9:69:9 | f | T | closure.rs:68:26:68:51 | F |
-| closure.rs:69:9:69:14 | f(...) |  | closure.rs:68:23:68:23 | B |
-| closure.rs:69:11:69:13 | arg |  | closure.rs:68:20:68:20 | A |
-| closure.rs:72:30:72:30 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:72:30:72:30 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:72:30:72:30 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:72:30:72:30 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:72:30:72:30 | f | T.dyn(Args).T0 | closure.rs:72:24:72:24 | A |
-| closure.rs:72:30:72:30 | f | T.dyn(Output) | closure.rs:72:27:72:27 | B |
-| closure.rs:72:58:72:60 | arg |  | closure.rs:72:24:72:24 | A |
-| closure.rs:72:66:75:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| closure.rs:73:13:73:15 | _r1 |  | closure.rs:72:27:72:27 | B |
-| closure.rs:73:19:73:37 | apply_boxed(...) |  | closure.rs:72:27:72:27 | B |
-| closure.rs:73:31:73:31 | f |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:73:31:73:31 | f | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:73:31:73:31 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:73:31:73:31 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:73:31:73:31 | f | T.dyn(Args).T0 | closure.rs:72:24:72:24 | A |
-| closure.rs:73:31:73:31 | f | T.dyn(Output) | closure.rs:72:27:72:27 | B |
-| closure.rs:73:34:73:36 | arg |  | closure.rs:72:24:72:24 | A |
-| closure.rs:74:13:74:15 | _r2 |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:74:19:74:57 | apply_boxed(...) |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:74:31:74:53 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
-| closure.rs:74:31:74:53 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
-| closure.rs:74:31:74:53 | ...::new(...) | T | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:74:31:74:53 | ...::new(...) | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:74:31:74:53 | ...::new(...) | T.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
-| closure.rs:74:31:74:53 | ...::new(...) | T.dyn(Output) | {EXTERNAL LOCATION} | bool |
-| closure.rs:74:40:74:52 | \|...\| true |  | {EXTERNAL LOCATION} | dyn FnOnce |
-| closure.rs:74:40:74:52 | \|...\| true | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:74:40:74:52 | \|...\| true | dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
-| closure.rs:74:40:74:52 | \|...\| true | dyn(Output) | {EXTERNAL LOCATION} | bool |
-| closure.rs:74:41:74:41 | _ |  | {EXTERNAL LOCATION} | i64 |
-| closure.rs:74:49:74:52 | true |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:74:56:74:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:39:45:39:45 | f |  | closure.rs:39:28:39:42 | F |
+| closure.rs:39:51:41:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:40:23:40:23 | f |  | closure.rs:39:28:39:42 | F |
+| closure.rs:40:25:40:28 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:43:46:43:46 | f |  | closure.rs:43:22:43:43 | F |
+| closure.rs:43:52:46:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:44:13:44:15 | arg |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:44:19:44:36 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:45:9:45:9 | f |  | closure.rs:43:22:43:43 | F |
+| closure.rs:45:9:45:14 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:45:11:45:13 | arg |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:48:39:48:39 | f |  | closure.rs:48:20:48:36 | F |
+| closure.rs:48:45:48:45 | a |  | closure.rs:48:14:48:14 | A |
+| closure.rs:48:56:50:5 | { ... } |  | closure.rs:48:17:48:17 | B |
+| closure.rs:49:9:49:9 | f |  | closure.rs:48:20:48:36 | F |
+| closure.rs:49:9:49:12 | f(...) |  | closure.rs:48:17:48:17 | B |
+| closure.rs:49:11:49:11 | a |  | closure.rs:48:14:48:14 | A |
+| closure.rs:52:18:52:18 | f |  | closure.rs:52:21:52:43 | impl ... |
+| closure.rs:52:53:54:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:53:9:53:9 | f |  | closure.rs:52:21:52:43 | impl ... |
+| closure.rs:53:9:53:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:53:11:53:11 | 2 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:53:11:53:11 | 2 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:56:15:68:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:57:13:57:13 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:57:13:57:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:57:13:57:13 | f | dyn(Args).T0 | {EXTERNAL LOCATION} | bool |
+| closure.rs:57:13:57:13 | f | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:57:13:57:13 | f | dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:57:17:63:9 | \|...\| ... |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:57:17:63:9 | \|...\| ... | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:57:17:63:9 | \|...\| ... | dyn(Args).T0 | {EXTERNAL LOCATION} | bool |
+| closure.rs:57:17:63:9 | \|...\| ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:57:17:63:9 | \|...\| ... | dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:57:18:57:18 | x |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:57:34:63:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:57:34:63:9 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:58:13:62:13 | if x {...} else {...} |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:58:13:62:13 | if x {...} else {...} |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:58:16:58:16 | x |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:58:18:60:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:58:18:60:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:59:17:59:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:59:17:59:17 | 1 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:60:20:62:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:60:20:62:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:61:17:61:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:61:17:61:17 | 0 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:64:13:64:14 | _r |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:64:13:64:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:64:18:64:31 | apply(...) |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:64:18:64:31 | apply(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:64:24:64:24 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:64:24:64:24 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:64:24:64:24 | f | dyn(Args).T0 | {EXTERNAL LOCATION} | bool |
+| closure.rs:64:24:64:24 | f | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:64:24:64:24 | f | dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:64:27:64:30 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:66:13:66:13 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:66:13:66:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:66:17:66:25 | \|...\| ... |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:66:17:66:25 | \|...\| ... | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:66:25:66:25 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:67:13:67:15 | _r2 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:67:19:67:30 | apply_two(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:67:29:67:29 | f |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:67:29:67:29 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:72:54:72:54 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:72:54:72:54 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:72:54:72:54 | f | T | closure.rs:72:26:72:51 | F |
+| closure.rs:72:65:72:67 | arg |  | closure.rs:72:20:72:20 | A |
+| closure.rs:72:78:74:5 | { ... } |  | closure.rs:72:23:72:23 | B |
+| closure.rs:73:9:73:9 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:73:9:73:9 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:73:9:73:9 | f | T | closure.rs:72:26:72:51 | F |
+| closure.rs:73:9:73:14 | f(...) |  | closure.rs:72:23:72:23 | B |
+| closure.rs:73:11:73:13 | arg |  | closure.rs:72:20:72:20 | A |
+| closure.rs:76:30:76:30 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:76:30:76:30 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:76:30:76:30 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:76:30:76:30 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:76:30:76:30 | f | T.dyn(Args).T0 | closure.rs:76:24:76:24 | A |
+| closure.rs:76:30:76:30 | f | T.dyn(Output) | closure.rs:76:27:76:27 | B |
+| closure.rs:76:58:76:60 | arg |  | closure.rs:76:24:76:24 | A |
+| closure.rs:76:66:79:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:77:13:77:15 | _r1 |  | closure.rs:76:27:76:27 | B |
+| closure.rs:77:19:77:37 | apply_boxed(...) |  | closure.rs:76:27:76:27 | B |
+| closure.rs:77:31:77:31 | f |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:77:31:77:31 | f | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:77:31:77:31 | f | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:77:31:77:31 | f | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:77:31:77:31 | f | T.dyn(Args).T0 | closure.rs:76:24:76:24 | A |
+| closure.rs:77:31:77:31 | f | T.dyn(Output) | closure.rs:76:27:76:27 | B |
+| closure.rs:77:34:77:36 | arg |  | closure.rs:76:24:76:24 | A |
+| closure.rs:78:13:78:15 | _r2 |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:78:19:78:57 | apply_boxed(...) |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:78:31:78:53 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
+| closure.rs:78:31:78:53 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| closure.rs:78:31:78:53 | ...::new(...) | T | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:78:31:78:53 | ...::new(...) | T.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:78:31:78:53 | ...::new(...) | T.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:78:31:78:53 | ...::new(...) | T.dyn(Output) | {EXTERNAL LOCATION} | bool |
+| closure.rs:78:40:78:52 | \|...\| true |  | {EXTERNAL LOCATION} | dyn FnOnce |
+| closure.rs:78:40:78:52 | \|...\| true | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:78:40:78:52 | \|...\| true | dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:78:40:78:52 | \|...\| true | dyn(Output) | {EXTERNAL LOCATION} | bool |
+| closure.rs:78:41:78:41 | _ |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:78:49:78:52 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:78:56:78:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:13:14:13:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:13:14:13:18 | SelfParam | TRef | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:13:29:15:5 | { ... } |  | {EXTERNAL LOCATION} | & |
