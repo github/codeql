@@ -974,7 +974,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[inline]
-      private predicate satisfiesConstraintTypeMention1Inline(
+      private predicate satisfiesConstraintTypeMentionInline(
         HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
         TypePath pathToTypeParamInSub
       ) {
@@ -986,18 +986,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
-      private predicate satisfiesConstraintTypeMention1(
+      private predicate satisfiesConstraintTypeMention(
         HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
       ) {
-        satisfiesConstraintTypeMention1Inline(tt, _, constraint, path, pathToTypeParamInSub)
+        satisfiesConstraintTypeMentionInline(tt, _, constraint, path, pathToTypeParamInSub)
       }
 
       pragma[nomagic]
-      private predicate satisfiesConstraintTypeMention1Through(
+      private predicate satisfiesConstraintTypeMentionThrough(
         HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
         TypePath pathToTypeParamInSub
       ) {
-        satisfiesConstraintTypeMention1Inline(tt, abs, constraint, path, pathToTypeParamInSub)
+        satisfiesConstraintTypeMentionInline(tt, abs, constraint, path, pathToTypeParamInSub)
       }
 
       pragma[inline]
@@ -1017,7 +1017,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         satisfiesConstraintTypeNonTypeParamInline(tt, _, constraint, path, t)
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMention1(tt, constraint, prefix0, pathToTypeParamInSub) and
+          satisfiesConstraintTypeMention(tt, constraint, prefix0, pathToTypeParamInSub) and
           getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
@@ -1037,7 +1037,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         satisfiesConstraintTypeNonTypeParamInline(tt, abs, constraint, path, t)
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMention1Through(tt, abs, constraint, prefix0, pathToTypeParamInSub) and
+          satisfiesConstraintTypeMentionThrough(tt, abs, constraint, prefix0, pathToTypeParamInSub) and
           getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )

@@ -16,30 +16,16 @@ class DerefImplItemNode extends ImplItemNode {
   /** Gets the `deref` function in this `Deref` impl block. */
   Function getDerefFunction() { result = this.getAssocItem("deref") }
 
-  private SelfParam getSelfParam() { result = this.getDerefFunction().getSelfParam() }
+  /** Gets the type of the implementing type at `path`. */
+  Type resolveSelfTypeAt(TypePath path) { result = resolveImplSelfTypeAt(this, path) }
 
   /**
-   * Resolves the type at `path` of the `self` parameter inside the `deref` function,
-   * stripped of the leading `&`.
+   * Holds if the target type of the dereference implemention mentions type
+   * parameter `tp` at `path`.
    */
   pragma[nomagic]
-  Type resolveSelfParamTypeStrippedAt(TypePath path) {
-    exists(TypePath path0 |
-      result = getSelfParamTypeMention(this.getSelfParam()).resolveTypeAt(path0) and
-      path0.isCons(getRefTypeParameter(false), path)
-    )
-  }
-
-  /**
-   * Holds if the return type at `path` of the `deref` function, stripped of the
-   * leading `&`, mentions type parameter `tp` at `path`.
-   */
-  pragma[nomagic]
-  predicate returnTypeStrippedMentionsTypeParameterAt(TypeParameter tp, TypePath path) {
-    exists(TypePath path0 |
-      tp = getReturnTypeMention(this.getDerefFunction()).resolveTypeAt(path0) and
-      path0.isCons(getRefTypeParameter(false), path)
-    )
+  predicate targetTypeParameterAt(TypeParameter tp, TypePath path) {
+    tp = this.getAssocItem("Target").(TypeAlias).getTypeRepr().(TypeMention).resolveTypeAt(path)
   }
 
   /** Gets the first type parameter of the type being implemented, if any. */
