@@ -166,27 +166,6 @@ class ContainsUrlSanitizer extends Sanitizer {
 }
 
 /**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private predicate isRelativeUrlSanitizer(Guard guard, Expr e, GuardValue v) {
-  guard =
-    any(PropertyAccess access |
-      access.getProperty().hasFullyQualifiedName("System", "Uri", "IsAbsoluteUri") and
-      e = access.getQualifier() and
-      v.asBooleanValue() = false
-    )
-}
-
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-class RelativeUrlSanitizer extends Sanitizer {
-  RelativeUrlSanitizer() {
-    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
-  }
-}
-
-/**
  * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
  * E.g. `url.Host == "example.org"`
  */
