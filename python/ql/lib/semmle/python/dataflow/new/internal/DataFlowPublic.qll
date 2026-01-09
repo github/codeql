@@ -440,11 +440,15 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets a node that reads this variable. */
   Node getARead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
-    // Ignore reads that happen when the module is imported. These are only executed once.
-    not result.getScope() = mod
+    result = this.getALocalRead()
     or
     this = import_star_read(result)
+  }
+
+  /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
+  Node getALocalRead() {
+    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    not result.getScope() = mod
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */

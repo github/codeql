@@ -67,7 +67,7 @@ class LocalSourceNode extends Node {
     or
     // We explicitly include any read of a global variable, as some of these may have local flow going
     // into them.
-    this = any(ModuleVariableNode mvn).getARead()
+    this = any(ModuleVariableNode v).getALocalRead()
     or
     // We include all scope entry definitions, as these act as the local source within the scope they
     // enter.
@@ -248,7 +248,7 @@ private module Cached {
   pragma[nomagic]
   private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
     simpleLocalFlowStep(nodeFrom, nodeTo, _) and
-    not nodeTo = any(ModuleVariableNode v).getARead()
+    not nodeTo = any(ModuleVariableNode v).getALocalRead()
   }
 
   /**
