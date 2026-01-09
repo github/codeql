@@ -230,3 +230,78 @@
 | A.java:35:24:35:24 | z | SSA param(z) | 0 | upper | NoReason |
 | A.java:39:12:39:12 | 0 | 0 | 0 | lower | NoReason |
 | A.java:39:12:39:12 | 0 | 0 | 0 | upper | NoReason |
+| A.java:44:9:44:13 | i | 0 | 0 | lower | NoReason |
+| A.java:44:9:44:13 | i | 0 | 0 | upper | NoReason |
+| A.java:44:13:44:13 | 0 | 0 | 0 | lower | NoReason |
+| A.java:44:13:44:13 | 0 | 0 | 0 | upper | NoReason |
+| A.java:45:12:45:12 | i | 0 | 0 | lower | NoReason |
+| A.java:45:12:45:12 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:45:12:45:12 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:45:12:45:12 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:45:16:45:19 | size | SSA param(size) | 0 | lower | NoReason |
+| A.java:45:16:45:19 | size | SSA param(size) | 0 | upper | NoReason |
+| A.java:46:7:46:7 | i | 0 | 0 | lower | NoReason |
+| A.java:46:7:46:7 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:46:7:46:7 | i | SSA param(size) | -1 | upper | ... < ... |
+| A.java:46:7:46:7 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:46:7:46:7 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:46:7:46:9 | ...++ | 0 | 0 | lower | NoReason |
+| A.java:46:7:46:9 | ...++ | SSA def(i) | 0 | lower | NoReason |
+| A.java:46:7:46:9 | ...++ | SSA param(size) | -1 | upper | ... < ... |
+| A.java:46:7:46:9 | ...++ | SSA phi(i) | 0 | lower | NoReason |
+| A.java:46:7:46:9 | ...++ | SSA phi(i) | 0 | upper | NoReason |
+| A.java:48:12:48:12 | i | 0 | 0 | lower | NoReason |
+| A.java:48:12:48:12 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:48:12:48:12 | i | SSA param(size) | 0 | lower | ... < ... |
+| A.java:48:12:48:12 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:48:12:48:12 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:52:9:52:13 | i | 0 | 0 | lower | NoReason |
+| A.java:52:9:52:13 | i | 0 | 0 | upper | NoReason |
+| A.java:52:13:52:13 | 0 | 0 | 0 | lower | NoReason |
+| A.java:52:13:52:13 | 0 | 0 | 0 | upper | NoReason |
+| A.java:53:12:53:12 | i | 0 | 0 | lower | NoReason |
+| A.java:53:12:53:12 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:53:12:53:12 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:53:12:53:12 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:53:16:53:19 | size | SSA param(size) | 0 | lower | NoReason |
+| A.java:53:16:53:19 | size | SSA param(size) | 0 | upper | NoReason |
+| A.java:54:7:54:7 | i | 0 | 0 | lower | NoReason |
+| A.java:54:7:54:7 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:54:7:54:7 | i | SSA param(size) | -1 | upper | ... < ... |
+| A.java:54:7:54:7 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:54:7:54:7 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:54:7:54:9 | ...++ | 0 | 0 | lower | NoReason |
+| A.java:54:7:54:9 | ...++ | SSA def(i) | 0 | lower | NoReason |
+| A.java:54:7:54:9 | ...++ | SSA param(size) | -1 | upper | ... < ... |
+| A.java:54:7:54:9 | ...++ | SSA phi(i) | 0 | lower | NoReason |
+| A.java:54:7:54:9 | ...++ | SSA phi(i) | 0 | upper | NoReason |
+| A.java:56:12:56:12 | i | 0 | 0 | lower | NoReason |
+| A.java:56:12:56:12 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:56:12:56:12 | i | SSA param(size) | 0 | lower | ... < ... |
+| A.java:56:12:56:12 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:56:12:56:12 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:60:9:60:14 | i | 0 | 10 | lower | NoReason |
+| A.java:60:9:60:14 | i | 0 | 10 | upper | NoReason |
+| A.java:60:13:60:14 | 10 | 0 | 10 | lower | NoReason |
+| A.java:60:13:60:14 | 10 | 0 | 10 | upper | NoReason |
+| A.java:61:12:61:12 | i | 0 | 10 | lower | NoReason |
+| A.java:61:12:61:12 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:61:12:61:12 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:61:12:61:12 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:61:16:61:19 | size | SSA param(size) | 0 | lower | NoReason |
+| A.java:61:16:61:19 | size | SSA param(size) | 0 | upper | NoReason |
+| A.java:62:7:62:7 | i | 0 | 10 | lower | NoReason |
+| A.java:62:7:62:7 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:62:7:62:7 | i | SSA param(size) | -1 | upper | ... < ... |
+| A.java:62:7:62:7 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:62:7:62:7 | i | SSA phi(i) | 0 | upper | NoReason |
+| A.java:62:7:62:9 | ...++ | 0 | 10 | lower | NoReason |
+| A.java:62:7:62:9 | ...++ | SSA def(i) | 0 | lower | NoReason |
+| A.java:62:7:62:9 | ...++ | SSA param(size) | -1 | upper | ... < ... |
+| A.java:62:7:62:9 | ...++ | SSA phi(i) | 0 | lower | NoReason |
+| A.java:62:7:62:9 | ...++ | SSA phi(i) | 0 | upper | NoReason |
+| A.java:64:12:64:12 | i | 0 | 10 | lower | NoReason |
+| A.java:64:12:64:12 | i | SSA def(i) | 0 | lower | NoReason |
+| A.java:64:12:64:12 | i | SSA param(size) | 0 | lower | ... < ... |
+| A.java:64:12:64:12 | i | SSA phi(i) | 0 | lower | NoReason |
+| A.java:64:12:64:12 | i | SSA phi(i) | 0 | upper | NoReason |
