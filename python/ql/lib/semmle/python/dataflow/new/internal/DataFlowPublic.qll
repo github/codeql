@@ -76,15 +76,7 @@ newtype TNode =
     node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) {
-    v.getScope() = m and
-    (
-      v.escapes()
-      or
-      isAccessedThroughImportStar(m) and
-      ImportStar::globalNameDefinedInModule(v.getId(), m)
-    )
-  } or
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
@@ -469,8 +461,6 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   override Location getLocation() { result = mod.getLocation() }
 }
-
-private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
 
 private ModuleVariableNode import_star_read(Node n) {
   resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
