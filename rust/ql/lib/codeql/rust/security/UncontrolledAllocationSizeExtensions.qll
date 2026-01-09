@@ -63,4 +63,17 @@ module UncontrolledAllocationSize {
         branch = false
       )
   }
+
+  /**
+   * A barrier for uncontrolled allocation size flow into particular functions.
+   */
+  private class ModelledBarrier extends Barrier {
+    ModelledBarrier() {
+      exists(MethodCall c |
+        c.getStaticTarget().getCanonicalPath() =
+          ["<alloc::string::String>::split_off", "<alloc::vec::Vec>::split_off"] and
+        this.asExpr() = c.getAnArgument()
+      )
+    }
+  }
 }

@@ -239,7 +239,7 @@ unsafe fn test_vectors(v: usize) {
     v1.set_len(v); // $ MISSING: Alert[rust/uncontrolled-allocation-size]
 
     let mut v2 = vec![1, 2, 3, 4, 5, 6];
-    let _ = v2.split_off(v); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ = v2.split_off(v); // GOOD (any allocation is bounded by the initial size of the vector)
 
     let l2 = std::alloc::Layout::new::<[u64; 200]>();
     let m2 = std::ptr::NonNull::<u64>::new(std::alloc::alloc(l2).cast::<u64>()).unwrap();
