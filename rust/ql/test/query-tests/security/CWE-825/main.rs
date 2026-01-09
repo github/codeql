@@ -215,4 +215,7 @@ fn main() {
 
     println!("test_generic:");
     test_generic();
+
+    println!("test_struct_methods:");
+    test_struct_methods();
 }
