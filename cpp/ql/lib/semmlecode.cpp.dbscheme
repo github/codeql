@@ -1902,6 +1902,9 @@ case @expr.kind of
 | 391 = @nested_requirement
 | 392 = @compound_requirement
 | 393 = @concept_id
+| 394 = @isinvocable
+| 395 = @isnothrowinvocable
+| 396 = @isbitwisecloneable
 ;
 
 @var_args_expr = @vastartexpr
@@ -2018,6 +2021,9 @@ case @expr.kind of
             | @istriviallyequalitycomparable
             | @isscopedenum
             | @istriviallyrelocatable
+            | @isinvocable
+            | @isnothrowinvocable
+            | @isbitwisecloneable
             ;
 
 compound_requirement_is_noexcept(
