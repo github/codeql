@@ -2615,8 +2615,8 @@ private Type inferMethodCallTypeSelf(
     path = selfPath and
     not result instanceof TypeParameter
     or
-    exists(TypeParameter tp, TypePath pathToTypeParam, TypePath suffix |
-      impl.targetTypeParameterAt(tp, pathToTypeParam) and
+    exists(TypePath pathToTypeParam, TypePath suffix |
+      impl.targetHasTypeParameterAt(pathToTypeParam) and
       path0 = pathToTypeParam.appendInverse(suffix) and
       result = t0 and
       path = selfPath.append(suffix)
