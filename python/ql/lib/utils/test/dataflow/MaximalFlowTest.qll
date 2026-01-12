@@ -8,7 +8,9 @@ module MaximalFlowTest implements FlowTestSig {
 
   predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
     source != sink and
-    MaximalFlows::flow(source, sink)
+    MaximalFlows::flow(source, sink) and
+    // exclude ModuleVariableNodes (which have location 0:0:0:0)
+    not sink instanceof DataFlow::ModuleVariableNode
   }
 }
 
