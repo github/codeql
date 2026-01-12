@@ -29,3 +29,8 @@ extensions:
       - ["<reqwest::async_impl::response::Response>::text", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<reqwest::async_impl::response::Response>::bytes", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<reqwest::async_impl::response::Response>::chunk", "Argument[self].Reference", "ReturnValue.Future.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: excludeFieldTaintStep
+    data:
+    - ["reqwest::blocking::response::Response::timeout"]
