@@ -58,47 +58,51 @@ class Program
         int successCount = 0;
         int errorCount = 0;
 
-        foreach (var filePath in files)
+        // Use a single TRAP file for all extractions to ensure globally unique IDs
+        // This prevents ID collisions when CodeQL imports multiple TRAP files
+        var outputPath = Path.Combine(trapDir, "jvm-extraction.trap");
+        
+        using (var trapWriter = new TrapWriter(outputPath))
         {
-            if (!File.Exists(filePath))
+            var extractor = new JvmExtractor(trapWriter);
+            
+            foreach (var filePath in files)
             {
-                Console.WriteLine($"Warning: File does not exist: {filePath}");
-                errorCount++;
-                continue;
-            }
+                if (!File.Exists(filePath))
+                {
+                    Console.WriteLine($"Warning: File does not exist: {filePath}");
+                    errorCount++;
+                    continue;
+                }
 
-            var extension = Path.GetExtension(filePath);
-            if (!AllowedExtensions.Contains(extension))
-            {
-                Console.WriteLine($"Skipping unsupported file type: {filePath}");
-                continue;
-            }
+                var extension = Path.GetExtension(filePath);
+                if (!AllowedExtensions.Contains(extension))
+                {
+                    Console.WriteLine($"Skipping unsupported file type: {filePath}");
+                    continue;
+                }
 
-            var baseName = Path.GetFileNameWithoutExtension(filePath);
-            var outputPath = Path.Combine(trapDir, baseName + ".trap");
+                Console.WriteLine($"Extracting: {filePath}");
 
-            Console.WriteLine($"Extracting: {filePath}");
+                try
+                {
+                    extractor.Extract(filePath);
 
-            try
-            {
-                using var trapWriter = new TrapWriter(outputPath);
-                var extractor = new JvmExtractor(trapWriter);
-                extractor.Extract(filePath);
+                    // Copy to source archive
+                    ArchiveFile(filePath, sourceArchiveDir);
 
-                // Copy to source archive
-                ArchiveFile(filePath, sourceArchiveDir);
-
-                successCount++;
-                Console.WriteLine($"  -> {outputPath}");
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Error extracting {filePath}: {ex.Message}");
-                Console.Error.WriteLine(ex.StackTrace);
-                errorCount++;
+                    successCount++;
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"Error extracting {filePath}: {ex.Message}");
+                    Console.Error.WriteLine(ex.StackTrace);
+                    errorCount++;
+                }
             }
         }
-
+        
+        Console.WriteLine($"  -> {outputPath}");
         Console.WriteLine($"\nExtraction complete: {successCount} succeeded, {errorCount} failed");
         return errorCount > 0 ? 1 : 0;
     }
