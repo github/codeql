@@ -2193,8 +2193,6 @@ private module MethodResolution {
         exists(mc) and
         constraint.(TraitType).getTrait() instanceof DerefTrait
       }
-
-      predicate useUniversalConditions() { none() }
     }
 
     private module MethodCallSatisfiesDerefConstraint =
@@ -3566,8 +3564,6 @@ private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInput
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FutureTrait
   }
-
-  predicate useUniversalConditions() { none() }
 }
 
 pragma[nomagic]
@@ -3764,8 +3760,6 @@ private module ForIterableSatisfiesConstraintInput implements
       t instanceof IntoIteratorTrait
     )
   }
-
-  predicate useUniversalConditions() { none() }
 }
 
 pragma[nomagic]
@@ -3817,8 +3811,6 @@ private module InvokedClosureSatisfiesConstraintInput implements
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FnOnceTrait
   }
-
-  predicate useUniversalConditions() { none() }
 }
 
 /** Gets the type of `ce` when viewed as an implementation of `FnOnce`. */

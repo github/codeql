@@ -438,7 +438,7 @@ mod method_non_parametric_trait_impl {
 
         let thing = MyThing { a: S1 };
         let i = thing.convert_to(); // $ type=i:S1 target=T::convert_to
-        let j = convert_to(thing); // $ type=j:S1 target=convert_to
+        let j = convert_to(thing); // $ target=convert_to $ MISSING: type=j:S1 -- the blanket implementation `impl<T: MyTrait<S1>> ConvertTo<S1> for T` is currently not included in the constraint analysis
     }
 }
 

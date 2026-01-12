@@ -7151,8 +7151,6 @@ inferType
 | main.rs:440:17:440:21 | thing |  | main.rs:224:5:227:5 | MyThing |
 | main.rs:440:17:440:21 | thing | A | main.rs:235:5:236:14 | S1 |
 | main.rs:440:17:440:34 | thing.convert_to() |  | main.rs:235:5:236:14 | S1 |
-| main.rs:441:13:441:13 | j |  | main.rs:235:5:236:14 | S1 |
-| main.rs:441:17:441:33 | convert_to(...) |  | main.rs:235:5:236:14 | S1 |
 | main.rs:441:28:441:32 | thing |  | main.rs:224:5:227:5 | MyThing |
 | main.rs:441:28:441:32 | thing | A | main.rs:235:5:236:14 | S1 |
 | main.rs:450:26:450:29 | SelfParam |  | main.rs:449:5:453:5 | Self [trait OverlappingTrait] |
