@@ -857,10 +857,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     {
       private import Input
 
+      pragma[nomagic]
+      private Type getTypeAt(HasTypeTree term, TypePath path) {
+        relevantConstraint(term, _) and
+        result = term.getTypeAt(path)
+      }
+
       /** Holds if the type tree has the type `type` and should satisfy `constraint`. */
       pragma[nomagic]
       private predicate hasTypeConstraint(HasTypeTree term, Type type, Type constraint) {
-        type = term.getTypeAt(TypePath::nil()) and
+        type = getTypeAt(term, TypePath::nil()) and
         relevantConstraint(term, constraint)
       }
 
@@ -967,15 +973,39 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      pragma[nomagic]
-      private predicate satisfiesConstraintTypeMention1(
-        HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
+      pragma[inline]
+      private predicate satisfiesConstraintTypeMentionInline(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
+        TypePath pathToTypeParamInSub
       ) {
-        exists(TypeAbstraction abs, TypeMention sub, TypeParameter tp |
+        exists(TypeMention sub, TypeParameter tp |
           satisfiesConstraintTypeMention0(tt, constraint, abs, sub, path, tp) and
           tp = abs.getATypeParameter() and
           sub.resolveTypeAt(pathToTypeParamInSub) = tp
         )
+      }
+
+      pragma[nomagic]
+      private predicate satisfiesConstraintTypeMention(
+        HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
+      ) {
+        satisfiesConstraintTypeMentionInline(tt, _, constraint, path, pathToTypeParamInSub)
+      }
+
+      pragma[nomagic]
+      private predicate satisfiesConstraintTypeMentionThrough(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
+        TypePath pathToTypeParamInSub
+      ) {
+        satisfiesConstraintTypeMentionInline(tt, abs, constraint, path, pathToTypeParamInSub)
+      }
+
+      pragma[inline]
+      private predicate satisfiesConstraintTypeNonTypeParamInline(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path, Type t
+      ) {
+        satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
+        not t = abs.getATypeParameter()
       }
 
       /**
@@ -984,19 +1014,33 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       predicate satisfiesConstraintType(HasTypeTree tt, Type constraint, TypePath path, Type t) {
-        exists(TypeAbstraction abs |
-          satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
-          not t = abs.getATypeParameter()
-        )
+        satisfiesConstraintTypeNonTypeParamInline(tt, _, constraint, path, t)
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMention1(tt, constraint, prefix0, pathToTypeParamInSub) and
-          tt.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
+          satisfiesConstraintTypeMention(tt, constraint, prefix0, pathToTypeParamInSub) and
+          getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
         or
         hasTypeConstraint(tt, constraint, constraint) and
-        t = tt.getTypeAt(path)
+        t = getTypeAt(tt, path)
+      }
+
+      /**
+       * Holds if the type tree at `tt` satisfies the constraint `constraint`
+       * through `abs` with the type `t` at `path`.
+       */
+      pragma[nomagic]
+      predicate satisfiesConstraintTypeThrough(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path, Type t
+      ) {
+        satisfiesConstraintTypeNonTypeParamInline(tt, abs, constraint, path, t)
+        or
+        exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
+          satisfiesConstraintTypeMentionThrough(tt, abs, constraint, prefix0, pathToTypeParamInSub) and
+          getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
+          path = prefix0.append(suffix)
+        )
       }
 
       /**

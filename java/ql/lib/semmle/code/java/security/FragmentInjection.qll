@@ -49,6 +49,15 @@ private class DefaultFragmentInjectionSink extends FragmentInjectionSink {
   DefaultFragmentInjectionSink() { sinkNode(this, "fragment-injection") }
 }
 
+/**
+ * A sanitizer for Fragment injection vulnerabilities.
+ */
+abstract class FragmentInjectionSanitizer extends DataFlow::Node { }
+
+private class ExternalFragmentInjectionSanitizer extends FragmentInjectionSanitizer {
+  ExternalFragmentInjectionSanitizer() { barrierNode(this, "fragment-injection") }
+}
+
 private class DefaultFragmentInjectionAdditionalTaintStep extends FragmentInjectionAdditionalTaintStep
 {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {

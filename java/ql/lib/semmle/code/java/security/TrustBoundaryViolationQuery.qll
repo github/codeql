@@ -27,8 +27,8 @@ class TrustBoundaryViolationSink extends DataFlow::Node {
  */
 abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
 
-private class DefaultTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer {
-  DefaultTrustBoundaryValidationSanitizer() { barrierNode(this, "trust-boundary-violation") }
+private class ExternalTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer {
+  ExternalTrustBoundaryValidationSanitizer() { barrierNode(this, "trust-boundary-violation") }
 }
 
 /**

@@ -37,8 +37,7 @@ edges
 | main.rs:47:14:47:16 | arr | main.rs:47:14:47:19 | arr[0] | provenance | MaD:4 |
 | main.rs:63:18:63:22 | SelfParam [&ref, S] | main.rs:63:56:65:9 | { ... } [&ref, S] | provenance |  |
 | main.rs:76:34:76:44 | ...: Self [S] | main.rs:77:23:77:27 | other [S] | provenance |  |
-| main.rs:77:13:77:16 | [post] self [&ref, S] | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | provenance |  |
-| main.rs:77:13:77:18 | [post] self.0 | main.rs:77:13:77:16 | [post] self [&ref, S] | provenance |  |
+| main.rs:77:13:77:18 | [post] self.0 | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | provenance |  |
 | main.rs:77:23:77:27 | other [S] | main.rs:77:23:77:29 | other.0 | provenance |  |
 | main.rs:77:23:77:29 | other.0 | main.rs:77:13:77:18 | [post] self.0 | provenance | MaD:2 |
 | main.rs:77:23:77:29 | other.0 | main.rs:77:13:77:18 | [post] self.0 | provenance | MaD:3 |
@@ -134,7 +133,6 @@ nodes
 | main.rs:63:56:65:9 | { ... } [&ref, S] | semmle.label | { ... } [&ref, S] |
 | main.rs:76:23:76:31 | SelfParam [Return] [&ref, S] | semmle.label | SelfParam [Return] [&ref, S] |
 | main.rs:76:34:76:44 | ...: Self [S] | semmle.label | ...: Self [S] |
-| main.rs:77:13:77:16 | [post] self [&ref, S] | semmle.label | [post] self [&ref, S] |
 | main.rs:77:13:77:18 | [post] self.0 | semmle.label | [post] self.0 |
 | main.rs:77:23:77:27 | other [S] | semmle.label | other [S] |
 | main.rs:77:23:77:29 | other.0 | semmle.label | other.0 |

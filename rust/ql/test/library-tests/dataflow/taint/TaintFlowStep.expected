@@ -1,21 +1,21 @@
 | main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |
-| main.rs:16:5:16:5 | [post] b [borrowed] | main.rs:16:5:16:5 | [SSA] b |
-| main.rs:20:5:20:5 | [post] c [borrowed] | main.rs:20:5:20:5 | [SSA] c |
+| main.rs:16:5:16:5 | [post] b [implicit borrow] | main.rs:16:5:16:5 | [SSA] b |
+| main.rs:20:5:20:5 | [post] c [implicit borrow] | main.rs:20:5:20:5 | [SSA] c |
 | main.rs:31:13:31:13 | a | main.rs:31:13:31:19 | a as u8 |
 | main.rs:32:10:32:10 | b | main.rs:32:10:32:17 | b as i64 |
 | main.rs:32:10:32:17 | [post] b as i64 | main.rs:32:10:32:10 | [post] b |
 | main.rs:37:23:37:23 | i | main.rs:37:17:37:23 | FormatArgsExpr |
 | main.rs:41:24:41:24 | s | main.rs:41:18:41:24 | FormatArgsExpr |
-| main.rs:46:23:46:23 | [post] s [borrowed] | main.rs:46:23:46:23 | [post] s |
+| main.rs:46:23:46:23 | [post] s [implicit borrow] | main.rs:46:23:46:23 | [post] s |
 | main.rs:46:23:46:23 | s | main.rs:46:23:46:29 | s[...] |
 | main.rs:46:23:46:29 | s[...] [pre-dereferenced] | main.rs:46:23:46:29 | s[...] |
 | main.rs:57:24:57:24 | i | main.rs:57:18:57:24 | FormatArgsExpr |
-| main.rs:62:14:62:16 | [post] arr [borrowed] | main.rs:62:14:62:16 | [post] arr |
+| main.rs:62:14:62:16 | [post] arr [implicit borrow] | main.rs:62:14:62:16 | [post] arr |
 | main.rs:62:14:62:19 | arr[1] [pre-dereferenced] | main.rs:62:14:62:19 | arr[1] |
-| main.rs:72:24:72:24 | [post] s [borrowed] | main.rs:72:24:72:24 | [post] s |
+| main.rs:72:24:72:24 | [post] s [implicit borrow] | main.rs:72:24:72:24 | [post] s |
 | main.rs:72:24:72:27 | s[1] | main.rs:72:18:72:27 | FormatArgsExpr |
 | main.rs:72:24:72:27 | s[1] [pre-dereferenced] | main.rs:72:24:72:27 | s[1] |
-| main.rs:77:9:77:12 | [post] arr2 [borrowed] | main.rs:77:9:77:12 | [post] arr2 |
+| main.rs:77:9:77:12 | [post] arr2 [implicit borrow] | main.rs:77:9:77:12 | [post] arr2 |
 | main.rs:77:9:77:15 | arr2[1] [pre-dereferenced] | main.rs:77:9:77:15 | arr2[1] |
 | main.rs:98:14:98:47 | TupleExpr | main.rs:98:14:98:49 | ... .0 |
 | main.rs:99:14:99:47 | TupleExpr | main.rs:99:14:99:49 | ... .1 |

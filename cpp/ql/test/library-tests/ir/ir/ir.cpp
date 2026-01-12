@@ -1214,6 +1214,8 @@ void VectorTypes(int i) {
   vi4[i] = x;
   vector(4, int) vi4_shuffle = __builtin_shufflevector(vi4, vi4, 3+0, 2, 1, 0);
   vi4 = vi4 + vi4_shuffle;
+  vi4 = vi4 && vi4_shuffle;
+  vi4 = vi4 || vi4_shuffle;
 }
 
 void *memcpy(void *dst, void *src, int size);

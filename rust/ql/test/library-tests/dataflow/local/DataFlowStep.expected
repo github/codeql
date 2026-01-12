@@ -826,7 +826,7 @@ localStep
 readStep
 | main.rs:50:9:50:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:50:14:50:14 | _ |
 | main.rs:116:10:116:11 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:116:10:116:11 | * ... |
-| main.rs:116:11:116:11 | [post] i [borrowed] | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | [post] i |
+| main.rs:116:11:116:11 | [post] i [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | [post] i |
 | main.rs:124:10:124:10 | a | file://:0:0:0:0 | tuple.0 | main.rs:124:10:124:12 | a.0 |
 | main.rs:125:10:125:10 | a | file://:0:0:0:0 | tuple.1 | main.rs:125:10:125:12 | a.1 |
 | main.rs:130:9:130:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:130:10:130:11 | a0 |
@@ -902,62 +902,71 @@ readStep
 | main.rs:418:28:418:43 | D {...} | main.rs:385:9:385:20 | D | main.rs:418:41:418:41 | n |
 | main.rs:421:9:421:24 | C {...} | main.rs:384:9:384:20 | C | main.rs:421:22:421:22 | n |
 | main.rs:422:9:422:24 | D {...} | main.rs:385:9:385:20 | D | main.rs:422:22:422:22 | n |
-| main.rs:431:14:431:17 | [post] arr1 [borrowed] | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | [post] arr1 |
+| main.rs:431:14:431:17 | [post] arr1 [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | [post] arr1 |
 | main.rs:431:14:431:20 | arr1[2] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:431:14:431:20 | arr1[2] |
-| main.rs:435:14:435:17 | [post] arr2 [borrowed] | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | [post] arr2 |
+| main.rs:435:14:435:17 | [post] arr2 [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | [post] arr2 |
 | main.rs:435:14:435:20 | arr2[4] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:435:14:435:20 | arr2[4] |
-| main.rs:439:14:439:17 | [post] arr3 [borrowed] | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | [post] arr3 |
+| main.rs:439:14:439:17 | [post] arr3 [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | [post] arr3 |
 | main.rs:439:14:439:20 | arr3[2] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:439:14:439:20 | arr3[2] |
 | main.rs:445:15:445:18 | arr1 | file://:0:0:0:0 | element | main.rs:445:9:445:10 | n1 |
 | main.rs:450:15:450:18 | arr2 | file://:0:0:0:0 | element | main.rs:450:9:450:10 | n2 |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:10:458:10 | a |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:13:458:13 | b |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:16:458:16 | c |
-| main.rs:468:10:468:16 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | [post] mut_arr |
+| main.rs:468:10:468:16 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | [post] mut_arr |
 | main.rs:468:10:468:19 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:468:10:468:19 | mut_arr[1] |
-| main.rs:470:5:470:11 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | [post] mut_arr |
+| main.rs:470:5:470:11 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | [post] mut_arr |
 | main.rs:470:5:470:14 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:470:5:470:14 | mut_arr[1] |
-| main.rs:471:13:471:19 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | [post] mut_arr |
+| main.rs:471:13:471:19 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | [post] mut_arr |
 | main.rs:471:13:471:22 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:471:13:471:22 | mut_arr[1] |
-| main.rs:473:10:473:16 | [post] mut_arr [borrowed] | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | [post] mut_arr |
+| main.rs:473:10:473:16 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | [post] mut_arr |
 | main.rs:473:10:473:19 | mut_arr[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:473:10:473:19 | mut_arr[0] |
-| main.rs:479:24:479:33 | [post] source(...) [borrowed] | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | [post] source(...) |
+| main.rs:479:24:479:33 | [post] source(...) [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | [post] source(...) |
 | main.rs:480:9:480:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:480:10:480:13 | cond |
 | main.rs:480:9:480:20 | TuplePat | file://:0:0:0:0 | tuple.1 | main.rs:480:16:480:19 | name |
 | main.rs:480:25:480:29 | names | file://:0:0:0:0 | element | main.rs:480:9:480:20 | TuplePat |
 | main.rs:482:41:482:67 | [post] \|...\| ... | main.rs:479:9:479:20 | captured default_name | main.rs:482:41:482:67 | [post] default_name |
-| main.rs:482:44:482:55 | [post] default_name [borrowed] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name |
+| main.rs:482:44:482:55 | [post] default_name [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name |
+| main.rs:482:44:482:55 | [post] default_name [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name [implicit deref 0 in state after deref] |
+| main.rs:482:44:482:55 | [post] default_name [implicit deref 0 in state after borrow] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name |
+| main.rs:482:44:482:55 | default_name [implicit deref 0 in state before deref] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit deref 0 in state after deref] |
 | main.rs:482:44:482:55 | this | main.rs:479:9:479:20 | captured default_name | main.rs:482:44:482:55 | default_name |
-| main.rs:483:18:483:18 | [post] n [borrowed] | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | [post] n |
-| main.rs:506:13:506:13 | [post] a [borrowed] | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | [post] a |
-| main.rs:519:10:519:11 | [post] vs [borrowed] | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | [post] vs |
+| main.rs:483:18:483:18 | [post] n [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | [post] n |
+| main.rs:506:13:506:13 | [post] a [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | [post] a |
+| main.rs:507:13:507:13 | [post] b [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | [post] b [implicit deref 0 in state after deref] |
+| main.rs:507:13:507:13 | [post] b [implicit deref 0 in state after borrow] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | [post] b |
+| main.rs:507:13:507:13 | b [implicit deref 0 in state before deref] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | b [implicit deref 0 in state after deref] |
+| main.rs:508:18:508:18 | [post] b [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | [post] b [implicit deref 0 in state after deref] |
+| main.rs:508:18:508:18 | [post] b [implicit deref 0 in state after borrow] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | [post] b |
+| main.rs:508:18:508:18 | b [implicit deref 0 in state before deref] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | b [implicit deref 0 in state after deref] |
+| main.rs:519:10:519:11 | [post] vs [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | [post] vs |
 | main.rs:519:10:519:14 | vs[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:519:10:519:14 | vs[0] |
 | main.rs:520:10:520:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:520:10:520:35 | * ... |
-| main.rs:520:11:520:35 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | [post] ... .unwrap() |
+| main.rs:520:11:520:35 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | [post] ... .unwrap() |
 | main.rs:521:10:521:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:521:10:521:35 | * ... |
-| main.rs:521:11:521:35 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | [post] ... .unwrap() |
+| main.rs:521:11:521:35 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | [post] ... .unwrap() |
 | main.rs:523:14:523:15 | vs | file://:0:0:0:0 | element | main.rs:523:9:523:9 | v |
 | main.rs:526:9:526:10 | &... | file://:0:0:0:0 | &ref | main.rs:526:10:526:10 | v |
 | main.rs:526:15:526:23 | vs.iter() | file://:0:0:0:0 | element | main.rs:526:9:526:10 | &... |
 | main.rs:531:9:531:10 | &... | file://:0:0:0:0 | &ref | main.rs:531:10:531:10 | v |
 | main.rs:531:15:531:17 | vs2 | file://:0:0:0:0 | element | main.rs:531:9:531:10 | &... |
 | main.rs:535:28:535:29 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:535:28:535:29 | * ... |
-| main.rs:535:29:535:29 | [post] x [borrowed] | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | [post] x |
+| main.rs:535:29:535:29 | [post] x [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | [post] x |
 | main.rs:536:33:536:34 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:536:33:536:34 | * ... |
-| main.rs:536:34:536:34 | [post] x [borrowed] | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | [post] x |
+| main.rs:536:34:536:34 | [post] x [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | [post] x |
 | main.rs:538:14:538:27 | vs.into_iter() | file://:0:0:0:0 | element | main.rs:538:9:538:9 | v |
-| main.rs:544:10:544:15 | [post] vs_mut [borrowed] | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | [post] vs_mut |
+| main.rs:544:10:544:15 | [post] vs_mut [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | [post] vs_mut |
 | main.rs:544:10:544:18 | vs_mut[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:544:10:544:18 | vs_mut[0] |
 | main.rs:545:10:545:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:545:10:545:39 | * ... |
-| main.rs:545:11:545:39 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | [post] ... .unwrap() |
+| main.rs:545:11:545:39 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | [post] ... .unwrap() |
 | main.rs:546:10:546:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:546:10:546:39 | * ... |
-| main.rs:546:11:546:39 | [post] ... .unwrap() [borrowed] | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | [post] ... .unwrap() |
+| main.rs:546:11:546:39 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | [post] ... .unwrap() |
 | main.rs:548:9:548:14 | &mut ... | file://:0:0:0:0 | &ref | main.rs:548:14:548:14 | v |
 | main.rs:548:19:548:35 | vs_mut.iter_mut() | file://:0:0:0:0 | element | main.rs:548:9:548:14 | &mut ... |
 | main.rs:562:10:562:15 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:562:10:562:15 | * ... |
-| main.rs:562:11:562:15 | [post] c_ref [borrowed] | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | [post] c_ref |
+| main.rs:562:11:562:15 | [post] c_ref [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | [post] c_ref |
 storeStep
-| main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | i [borrowed] |
+| main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | i [implicit borrow] |
 | main.rs:123:14:123:22 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:123:13:123:26 | TupleExpr |
 | main.rs:123:25:123:25 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:123:13:123:26 | TupleExpr |
 | main.rs:129:14:129:14 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:129:13:129:30 | TupleExpr |
@@ -1019,13 +1028,13 @@ storeStep
 | main.rs:430:17:430:17 | 1 | file://:0:0:0:0 | element | main.rs:430:16:430:33 | [...] |
 | main.rs:430:20:430:20 | 2 | file://:0:0:0:0 | element | main.rs:430:16:430:33 | [...] |
 | main.rs:430:23:430:32 | source(...) | file://:0:0:0:0 | element | main.rs:430:16:430:33 | [...] |
-| main.rs:431:14:431:17 | arr1 | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | arr1 [borrowed] |
+| main.rs:431:14:431:17 | arr1 | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | arr1 [implicit borrow] |
 | main.rs:434:17:434:26 | source(...) | file://:0:0:0:0 | element | main.rs:434:16:434:31 | [...; 10] |
-| main.rs:435:14:435:17 | arr2 | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | arr2 [borrowed] |
+| main.rs:435:14:435:17 | arr2 | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | arr2 [implicit borrow] |
 | main.rs:438:17:438:17 | 1 | file://:0:0:0:0 | element | main.rs:438:16:438:24 | [...] |
 | main.rs:438:20:438:20 | 2 | file://:0:0:0:0 | element | main.rs:438:16:438:24 | [...] |
 | main.rs:438:23:438:23 | 3 | file://:0:0:0:0 | element | main.rs:438:16:438:24 | [...] |
-| main.rs:439:14:439:17 | arr3 | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | arr3 [borrowed] |
+| main.rs:439:14:439:17 | arr3 | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | arr3 [implicit borrow] |
 | main.rs:444:17:444:17 | 1 | file://:0:0:0:0 | element | main.rs:444:16:444:33 | [...] |
 | main.rs:444:20:444:20 | 2 | file://:0:0:0:0 | element | main.rs:444:16:444:33 | [...] |
 | main.rs:444:23:444:32 | source(...) | file://:0:0:0:0 | element | main.rs:444:16:444:33 | [...] |
@@ -1038,34 +1047,40 @@ storeStep
 | main.rs:467:24:467:24 | 1 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
 | main.rs:467:27:467:27 | 2 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
 | main.rs:467:30:467:30 | 3 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
-| main.rs:468:10:468:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | mut_arr [borrowed] |
-| main.rs:470:5:470:11 | mut_arr | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | mut_arr [borrowed] |
+| main.rs:468:10:468:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | mut_arr [implicit borrow] |
+| main.rs:470:5:470:11 | mut_arr | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | mut_arr [implicit borrow] |
 | main.rs:470:18:470:27 | source(...) | file://:0:0:0:0 | &ref | main.rs:470:5:470:14 | [post] mut_arr[1] [pre-dereferenced] |
 | main.rs:470:18:470:27 | source(...) | file://:0:0:0:0 | element | main.rs:470:5:470:11 | [post] mut_arr |
-| main.rs:471:13:471:19 | mut_arr | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | mut_arr [borrowed] |
-| main.rs:473:10:473:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | mut_arr [borrowed] |
-| main.rs:479:24:479:33 | source(...) | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | source(...) [borrowed] |
+| main.rs:471:13:471:19 | mut_arr | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | mut_arr [implicit borrow] |
+| main.rs:473:10:473:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | mut_arr [implicit borrow] |
+| main.rs:479:24:479:33 | source(...) | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | source(...) [implicit borrow] |
 | main.rs:482:41:482:67 | default_name | main.rs:479:9:479:20 | captured default_name | main.rs:482:41:482:67 | \|...\| ... |
-| main.rs:482:44:482:55 | default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [borrowed] |
-| main.rs:483:18:483:18 | n | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | n [borrowed] |
-| main.rs:506:13:506:13 | a | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | a [borrowed] |
+| main.rs:482:44:482:55 | default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit borrow] |
+| main.rs:482:44:482:55 | default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit deref 0 in state after borrow] |
+| main.rs:482:44:482:55 | default_name [implicit deref 0 in state after deref] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit borrow] |
+| main.rs:483:18:483:18 | n | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | n [implicit borrow] |
+| main.rs:506:13:506:13 | a | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | a [implicit borrow] |
+| main.rs:507:13:507:13 | b | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | b [implicit deref 0 in state after borrow] |
+| main.rs:507:13:507:13 | b [implicit deref 0 in state after deref] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | b [implicit borrow] |
+| main.rs:508:18:508:18 | b | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | b [implicit deref 0 in state after borrow] |
+| main.rs:508:18:508:18 | b [implicit deref 0 in state after deref] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | b [implicit borrow] |
 | main.rs:517:15:517:24 | source(...) | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
 | main.rs:517:27:517:27 | 2 | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
 | main.rs:517:30:517:30 | 3 | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
 | main.rs:517:33:517:33 | 4 | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
-| main.rs:519:10:519:11 | vs | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | vs [borrowed] |
-| main.rs:520:11:520:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | ... .unwrap() [borrowed] |
-| main.rs:521:11:521:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | ... .unwrap() [borrowed] |
-| main.rs:535:29:535:29 | x | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | x [borrowed] |
-| main.rs:536:34:536:34 | x | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | x [borrowed] |
+| main.rs:519:10:519:11 | vs | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | vs [implicit borrow] |
+| main.rs:520:11:520:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | ... .unwrap() [implicit borrow] |
+| main.rs:521:11:521:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | ... .unwrap() [implicit borrow] |
+| main.rs:535:29:535:29 | x | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | x [implicit borrow] |
+| main.rs:536:34:536:34 | x | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | x [implicit borrow] |
 | main.rs:542:23:542:32 | source(...) | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
 | main.rs:542:35:542:35 | 2 | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
 | main.rs:542:38:542:38 | 3 | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
 | main.rs:542:41:542:41 | 4 | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
-| main.rs:544:10:544:15 | vs_mut | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | vs_mut [borrowed] |
-| main.rs:545:11:545:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | ... .unwrap() [borrowed] |
-| main.rs:546:11:546:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | ... .unwrap() [borrowed] |
+| main.rs:544:10:544:15 | vs_mut | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | vs_mut [implicit borrow] |
+| main.rs:545:11:545:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | ... .unwrap() [implicit borrow] |
+| main.rs:546:11:546:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | ... .unwrap() [implicit borrow] |
 | main.rs:557:18:557:18 | c | file://:0:0:0:0 | &ref | main.rs:557:17:557:18 | &c |
 | main.rs:560:15:560:15 | b | file://:0:0:0:0 | &ref | main.rs:560:14:560:15 | &b |
-| main.rs:562:11:562:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | c_ref [borrowed] |
+| main.rs:562:11:562:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | c_ref [implicit borrow] |
 | main.rs:583:27:583:27 | 0 | {EXTERNAL LOCATION} | Some | main.rs:583:22:583:28 | Some(...) |
