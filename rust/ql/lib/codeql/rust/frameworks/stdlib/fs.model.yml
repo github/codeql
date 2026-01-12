@@ -61,7 +61,7 @@ extensions:
       - ["<std::path::PathBuf>::as_path", "Argument[self].Reference", "ReturnValue.Reference", "value", "manual"]
       - ["<std::path::PathBuf>::into_boxed_path", "Argument[self]", "ReturnValue.Field[alloc::boxed::Box(0)]", "taint", "manual"]
       - ["<std::path::Path>::new", "Argument[0].Reference", "ReturnValue.Reference", "value", "manual"]
-      - ["<std::path::Path>::join", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<std::path::Path>::join", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       - ["<std::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<std::path::Path>::as_os_str", "Argument[self].Reference.Field[std::path::Path::inner]", "ReturnValue.Reference", "value", "manual"]
       - ["<std::path::Path>::as_mut_os_str", "Argument[self].Reference.Field[std::path::Path::inner]", "ReturnValue.Reference", "value", "manual"]
