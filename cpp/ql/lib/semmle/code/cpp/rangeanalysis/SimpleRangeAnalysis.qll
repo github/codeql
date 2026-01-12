@@ -1710,6 +1710,22 @@ predicate nonNanGuardedVariable(Expr guard, VariableAccess v, boolean branch) {
 }
 
 /**
+ * Adjusts a lower bound to its meaning for integral types.
+ *
+ * Examples:
+ * `>= 3.0` becomes `3.0`
+ * ` > 3.0` becomes `4.0`
+ * `>= 3.5` becomes `4.0`
+ * ` > 3.5` becomes `4.0`
+ */
+bindingset[strictness, lb]
+private float adjustLowerBoundIntegral(RelationStrictness strictness, float lb) {
+  if strictness = Nonstrict() and lb.floorFloat() = lb
+  then result = lb
+  else result = lb.floorFloat() + 1
+}
+
+/**
  * If the guard is a comparison of the form `p*v + q <CMP> r`, then this
  * predicate uses the bounds information for `r` to compute a lower bound
  * for `v`.
@@ -1720,13 +1736,27 @@ private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, bo
   |
     if nonNanGuardedVariable(guard, v, branch)
     then
-      if
-        strictness = Nonstrict() or
-        not getVariableRangeType(v.getTarget()) instanceof IntegralType
-      then lb = childLB
-      else lb = childLB + 1
+      if getVariableRangeType(v.getTarget()) instanceof IntegralType
+      then lb = adjustLowerBoundIntegral(strictness, childLB)
+      else lb = childLB
     else lb = varMinVal(v.getTarget())
   )
+}
+
+/**
+ * Adjusts an upper bound to its meaning for integral types.
+ *
+ * Examples:
+ * `<= 3.0` becomes `3.0`
+ * ` < 3.0` becomes `2.0`
+ * `<= 3.5` becomes `3.0`
+ * ` < 3.5` becomes `3.0`
+ */
+bindingset[strictness, ub]
+private float adjustUpperBoundIntegral(RelationStrictness strictness, float ub) {
+  if strictness = Nonstrict() and ub.ceilFloat() = ub
+  then result = ub
+  else result = ub.ceilFloat() - 1
 }
 
 /**
@@ -1740,11 +1770,9 @@ private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, bo
   |
     if nonNanGuardedVariable(guard, v, branch)
     then
-      if
-        strictness = Nonstrict() or
-        not getVariableRangeType(v.getTarget()) instanceof IntegralType
-      then ub = childUB
-      else ub = childUB - 1
+      if getVariableRangeType(v.getTarget()) instanceof IntegralType
+      then ub = adjustUpperBoundIntegral(strictness, childUB)
+      else ub = childUB
     else ub = varMaxVal(v.getTarget())
   )
 }
