@@ -1041,7 +1041,7 @@ module API {
         )
         or
         // property reads
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
+        exists(RawSourceNode src, RawSourceNode pred, string propDesc |
           use(base, src) and
           pred = trackUseNode(src, false, 0, propDesc) and
           propertyRead(pred, propDesc, lbl, ref) and
@@ -1050,9 +1050,7 @@ module API {
           (base instanceof TNonModuleDef or base instanceof TUse)
         )
         or
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
-          use(base, src) and pred = trackUseNode(src)
-        |
+        exists(RawSourceNode src, RawSourceNode pred | use(base, src) and pred = trackUseNode(src) |
           lbl = Label::instance() and
           ref = pred.getAnInstantiation()
           or
@@ -1254,6 +1252,35 @@ module API {
     private import semmle.javascript.dataflow.TypeTracking
 
     /**
+     * A version of `DataFlow::SourceNode` without a charpred, to avoid redundant type checks that the
+     * optimizer is not yet able to remove. Should only be used in cases where we know only `SourceNode` values
+     * will appear.
+     */
+    private class RawSourceNode extends DataFlow::Node {
+      predicate flowsTo(DataFlow::Node node) { this.(DataFlow::SourceNode).flowsTo(node) }
+
+      predicate flowsToExpr(Expr expr) { this.(DataFlow::SourceNode).flowsToExpr(expr) }
+
+      DataFlow::Node getALocalUse() { result = this.(DataFlow::SourceNode).getALocalUse() }
+
+      DataFlow::PropRead getAPropertyRead(string prop) {
+        result = this.(DataFlow::SourceNode).getAPropertyRead(prop)
+      }
+
+      DataFlow::PropWrite getAPropertyWrite() {
+        result = this.(DataFlow::SourceNode).getAPropertyWrite()
+      }
+
+      DataFlow::InvokeNode getAnInvocation() {
+        result = this.(DataFlow::SourceNode).getAnInvocation()
+      }
+
+      DataFlow::NewNode getAnInstantiation() {
+        result = this.(DataFlow::SourceNode).getAnInstantiation()
+      }
+    }
+
+    /**
      * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
      *
      * The flow from `nd` to that node may be inter-procedural, and is further described by three
@@ -1266,72 +1293,112 @@ module API {
      *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
      *     and not necessarily the entire object.
      */
-    private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
-      DataFlow::TypeTracker t
+    pragma[noopt]
+    private RawSourceNode trackUseNode(
+      RawSourceNode nd, boolean promisified, int boundArgs, string prop, DataFlow::TypeTracker t
     ) {
-      t.start() and
       use(_, nd) and
+      t.start() and
       result = nd and
       promisified = false and
       boundArgs = 0 and
       prop = ""
       or
-      exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
-        promisified = true and
-        prop = "" and
-        result = promisify
-      )
-      or
-      exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
-        trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
-        prop = "" and
-        result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
-        boundArgs in [0 .. 10]
-      )
-      or
-      exists(DataFlow::SourceNode mid |
-        mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
-        AdditionalUseStep::step(pragma[only_bind_out](mid), result)
-      )
-      or
-      exists(DataFlow::Node pred, string preprop |
-        trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
-        promisified = false and
-        boundArgs = 0 and
-        SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
+      exists(RawSourceNode prev, boolean prevPromisified, int prevBoundArgs, string prevProp |
+        prev = trackUseNode(nd, prevPromisified, prevBoundArgs, prevProp, t)
       |
-        prop = preprop
+        promisificationBigStep(prev, result) and
+        validPromisificationState(prevPromisified, prevProp) and
+        promisified = true and
+        boundArgs = prevBoundArgs and
+        prop = prevProp
         or
-        preprop = ""
+        exists(int b |
+          partialInvocationBigStep(prev, result, b) and
+          boundArgs = prevBoundArgs + b and
+          promisified = prevPromisified and
+          prop = prevProp
+        )
+        or
+        loadStoreBigStep(prev, result, prop) and
+        validLoadStoreBigState(prevPromisified, prevBoundArgs) and
+        promisified = prevPromisified and
+        boundArgs = prevBoundArgs and
+        prevProp = [prop, ""]
+      ) and
+      t.end() // 't' must be a valid ending point for the above cases (i.e. not inside a content)
+      or
+      exists(RawSourceNode mid |
+        mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
+        AdditionalUseStep::step(mid, result)
       )
       or
-      t = useStep(nd, promisified, boundArgs, prop, result)
-    }
-
-    /**
-     * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
-     * inter-procedural steps to some intermediate node, and then from that intermediate node to
-     * `res` in one step. The entire flow is described by the resulting `TypeTracker`.
-     *
-     * This predicate exists solely to enforce a better join order in `trackUseNode` above.
-     */
-    pragma[noopt]
-    private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
-    ) {
-      exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
-        prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
-        StepSummary::step(prev, res, summary) and
-        result = t.append(summary) and
-        // Block argument-passing into 'this' when it determines the call target
-        not summary = CallReceiverStep()
+      exists(RawSourceNode prev, DataFlow::TypeTracker prevT |
+        prev = trackUseNode(nd, promisified, boundArgs, prop, prevT)
+      |
+        exists(StepSummary summary |
+          restrictedBigStep(prev, result, summary) and
+          t = prevT.append(summary)
+        )
+        or
+        t.hasCall() = false and
+        returnBigStep(prev, result) and
+        t = prevT
       )
     }
 
-    private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
+    pragma[nomagic]
+    private predicate validPromisificationState(boolean promisified, string prop) {
+      promisified = false and
+      prop = ""
+    }
+
+    pragma[nomagic]
+    private predicate validLoadStoreBigState(boolean promisified, int boundArgs) {
+      promisified = false and boundArgs = 0
+    }
+
+    pragma[nomagic]
+    private predicate promisificationBigStep(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+      exists(Promisify::PromisifyCall promisify |
+        node1 = promisify.getArgument(0).getALocalSource() and
+        node2 = promisify
+      )
+    }
+
+    pragma[nomagic]
+    private predicate partialInvocationBigStep(
+      DataFlow::SourceNode node1, DataFlow::SourceNode node2, int boundArgs
+    ) {
+      node2 = any(DataFlow::PartialInvokeNode pin).getBoundFunction(node1.getALocalUse(), boundArgs)
+    }
+
+    pragma[nomagic]
+    private predicate loadStoreBigStep(
+      DataFlow::SourceNode node1, DataFlow::SourceNode node2, string prop
+    ) {
+      SharedTypeTrackingStep::loadStoreStep(node1.getALocalUse(), node2, prop)
+    }
+
+    pragma[nomagic]
+    private predicate restrictedBigStep(DataFlow::Node node1, DataFlow::Node node2, StepSummary step) {
+      StepSummary::step(node1, node2, step) and
+      not (
+        // Block argument-passing into 'this' when it determines the call target
+        step = CallReceiverStep()
+        or
+        // Special-case return to avoid large fan-out
+        step = ReturnStep()
+      )
+    }
+
+    pragma[nomagic]
+    private predicate returnBigStep(DataFlow::SourceNode node1, DataFlow::Node node2) {
+      StepSummary::step(node1, node2, ReturnStep())
+    }
+
+    private RawSourceNode trackUseNode(
+      RawSourceNode nd, boolean promisified, int boundArgs, string prop
     ) {
       result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
     }
@@ -1340,9 +1407,7 @@ module API {
      * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some node.
      */
     cached
-    DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, false, 0, "")
-    }
+    RawSourceNode trackUseNode(RawSourceNode nd) { result = trackUseNode(nd, false, 0, "") }
 
     private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
       t.start() and

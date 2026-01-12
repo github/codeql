@@ -67,7 +67,13 @@ private module Cached {
    */
   cached
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists(DataFlow::Node mid | pred.flowsTo(mid) | StepSummary::smallstep(mid, succ, summary))
+    exists(DataFlow::Node mid |
+      pred.flowsTo(mid) and
+      StepSummary::smallstep(mid, succ, summary) and
+      (pred = mid or not mid instanceof DataFlow::SourceNode)
+    )
+    or
+    pred.flowsTo(succ) and summary = LevelStep() and pred != succ
   }
 
   pragma[nomagic]
