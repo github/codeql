@@ -858,7 +858,7 @@ pub fn test_generic() {
 	println!("	result = {result}");
 }
 
-// --- struct methods ---
+// --- self ---
 
 struct MyObjectWithGetters {
 	value: i64
@@ -882,7 +882,7 @@ impl MyObjectWithGetters {
     }
 }
 
-pub fn test_struct_methods() {
+pub fn test_get_self() {
 	let ptr1: *const i64;
 	let ptr2: *const i64;
 

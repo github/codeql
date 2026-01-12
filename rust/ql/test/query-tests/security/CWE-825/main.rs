@@ -216,6 +216,6 @@ fn main() {
     println!("test_generic:");
     test_generic();
 
-    println!("test_struct_methods:");
-    test_struct_methods();
+    println!("test_get_self:");
+    test_get_self();
 }
