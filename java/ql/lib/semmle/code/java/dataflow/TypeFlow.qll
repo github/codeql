@@ -202,6 +202,13 @@ private module Input implements TypeFlowInput<Location> {
       t1e = t2e and
       unbound(t2) and
       not unbound(t1)
+      or
+      t1e = t2e and
+      exists(int pos |
+        partiallyUnbound(t2, pos) and
+        not partiallyUnbound(t1, pos) and
+        not unbound(t1)
+      )
     )
   }
 
@@ -368,6 +375,11 @@ private module Input implements TypeFlowInput<Location> {
     exists(ParameterizedType pt | pt = t |
       forex(RefType arg | arg = pt.getATypeArgument() | unconstrained(arg))
     )
+  }
+
+  /** Holds if `t` is a parameterised type with unrestricted type argument at position `pos`. */
+  private predicate partiallyUnbound(ParameterizedType t, int pos) {
+    unconstrained(t.getTypeArgument(pos))
   }
 
   Type getErasure(Type t) { result = t.getErasure() }
