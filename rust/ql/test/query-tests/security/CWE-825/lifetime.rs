@@ -877,7 +877,7 @@ impl MyObjectWithGetters {
     }
 
 	pub unsafe fn get_ptr2(self) -> *const i64 {
-		&raw const self.value // $ Source[rust/access-after-lifetime-ended]=self_value
+		&raw const self.value // $ MISSING: Source[rust/access-after-lifetime-ended]=self_value
 		// (the returned pointer is valid as long as the containing object is)
     }
 }
@@ -891,8 +891,8 @@ pub fn test_struct_methods() {
 		ptr1 = obj.get_ptr1();
 		ptr2 = obj.get_ptr2();
 
-		let v1 = *ptr1;
-		let v2 = *ptr2; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=self_value
+		let v1 = *ptr1; // GOOD
+		let v2 = *ptr2; // GOOD
 		println!("	v1 = {}", v1);
 		println!("	v2 = {}", v2);
 	}
@@ -900,7 +900,7 @@ pub fn test_struct_methods() {
 	use_the_stack();
 
 	let v3 = unsafe { *ptr1 }; // $ MISSING: Alert[rust/access-after-lifetime-ended]=self_value
-	let v4 = unsafe { *ptr2 }; // $ Alert[rust/access-after-lifetime-ended]=self_value
+	let v4 = unsafe { *ptr2 }; // $ MISSING: Alert[rust/access-after-lifetime-ended]=self_value
 	println!("	v3 = {} (!)", v3);
 	println!("	v4 = {} (!)", v4); // corrupt in practice
 }

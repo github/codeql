@@ -22,8 +22,6 @@
 | lifetime.rs:667:14:667:17 | ref1 | lifetime.rs:655:11:655:25 | &raw const str2 | lifetime.rs:667:14:667:17 | ref1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:651:7:651:10 | str2 | str2 |
 | lifetime.rs:789:12:789:13 | p1 | lifetime.rs:781:9:781:19 | &my_local10 | lifetime.rs:789:12:789:13 | p1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:779:6:779:15 | my_local10 | my_local10 |
 | lifetime.rs:808:23:808:25 | ptr | lifetime.rs:798:9:798:12 | &val | lifetime.rs:808:23:808:25 | ptr | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:796:6:796:8 | val | val |
-| lifetime.rs:895:13:895:16 | ptr2 | lifetime.rs:880:3:880:23 | &raw const ... | lifetime.rs:895:13:895:16 | ptr2 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:879:25:879:28 | self | self |
-| lifetime.rs:903:21:903:24 | ptr2 | lifetime.rs:880:3:880:23 | &raw const ... | lifetime.rs:903:21:903:24 | ptr2 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:879:25:879:28 | self | self |
 | main.rs:64:23:64:24 | p2 | main.rs:44:26:44:28 | &b2 | main.rs:64:23:64:24 | p2 | Access of a pointer to $@ after its lifetime has ended. | main.rs:43:13:43:14 | b2 | b2 |
 edges
 | deallocation.rs:242:6:242:7 | p1 | deallocation.rs:245:14:245:15 | p1 | provenance |  |
@@ -157,11 +155,6 @@ edges
 | lifetime.rs:798:9:798:12 | &val | lifetime.rs:798:2:798:12 | return ... | provenance |  |
 | lifetime.rs:802:6:802:8 | ptr | lifetime.rs:808:23:808:25 | ptr | provenance |  |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | lifetime.rs:802:6:802:8 | ptr | provenance |  |
-| lifetime.rs:879:45:882:5 | { ... } | lifetime.rs:892:10:892:23 | obj.get_ptr2() | provenance |  |
-| lifetime.rs:880:3:880:23 | &raw const ... | lifetime.rs:879:45:882:5 | { ... } | provenance |  |
-| lifetime.rs:892:3:892:6 | ptr2 | lifetime.rs:895:13:895:16 | ptr2 | provenance |  |
-| lifetime.rs:892:3:892:6 | ptr2 | lifetime.rs:903:21:903:24 | ptr2 | provenance |  |
-| lifetime.rs:892:10:892:23 | obj.get_ptr2() | lifetime.rs:892:3:892:6 | ptr2 | provenance |  |
 | main.rs:18:9:18:10 | p1 [&ref] | main.rs:21:19:21:20 | p1 | provenance |  |
 | main.rs:18:9:18:10 | p1 [&ref] | main.rs:29:19:29:20 | p1 | provenance |  |
 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | main.rs:18:9:18:10 | p1 [&ref] | provenance |  |
@@ -332,12 +325,6 @@ nodes
 | lifetime.rs:802:6:802:8 | ptr | semmle.label | ptr |
 | lifetime.rs:802:12:802:24 | get_pointer(...) | semmle.label | get_pointer(...) |
 | lifetime.rs:808:23:808:25 | ptr | semmle.label | ptr |
-| lifetime.rs:879:45:882:5 | { ... } | semmle.label | { ... } |
-| lifetime.rs:880:3:880:23 | &raw const ... | semmle.label | &raw const ... |
-| lifetime.rs:892:3:892:6 | ptr2 | semmle.label | ptr2 |
-| lifetime.rs:892:10:892:23 | obj.get_ptr2() | semmle.label | obj.get_ptr2() |
-| lifetime.rs:895:13:895:16 | ptr2 | semmle.label | ptr2 |
-| lifetime.rs:903:21:903:24 | ptr2 | semmle.label | ptr2 |
 | main.rs:18:9:18:10 | p1 [&ref] | semmle.label | p1 [&ref] |
 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | semmle.label | ...::as_ptr(...) [&ref] |
 | main.rs:18:26:18:28 | &b1 | semmle.label | &b1 |
