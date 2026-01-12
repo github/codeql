@@ -123,6 +123,8 @@ extensions:
       - ["<_ as core::cmp::Ord>::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
       - ["<_ as core::cmp::Ord>::max", "Argument[self,0]", "ReturnValue", "value", "manual"]
       - ["<_ as core::cmp::Ord>::clamp", "Argument[self,0,1]", "ReturnValue", "value", "manual"]
+      # Slice
+      - ["<[]>::get", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel

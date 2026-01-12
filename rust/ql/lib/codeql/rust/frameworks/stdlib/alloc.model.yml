@@ -55,3 +55,4 @@ extensions:
       - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
       # Vec
       - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
+      - ["<alloc::vec::Vec as core::ops::deref::Deref>::deref", "Argument[self].Reference.Element", "ReturnValue.Reference.Element", "value", "manual"]
