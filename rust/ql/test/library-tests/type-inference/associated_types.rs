@@ -1,14 +1,58 @@
-mod associated_type_in_trait {
-    #[derive(Debug)]
-    struct Wrapper<A> {
-        field: A,
-    }
+#[derive(Debug, Default, Copy, Clone)]
+struct Wrapper<A>(A);
 
-    impl<A> Wrapper<A> {
-        fn unwrap(self) -> A {
-            self.field // $ fieldof=Wrapper
-        }
+impl<A> Wrapper<A> {
+    fn unwrap(self) -> A {
+        self.0 // $ fieldof=Wrapper
     }
+}
+
+#[derive(Debug, Default)]
+struct S;
+
+#[derive(Debug, Default)]
+struct S2;
+
+#[derive(Debug, Default)]
+struct S3;
+
+trait GetSet {
+    type Output;
+
+    // GetSet::get
+    fn get(&self) -> Self::Output;
+
+    // GetSet::set
+    fn set(&self, _a: Self::Output) {}
+}
+
+trait AnotherGet: GetSet {
+    type AnotherOutput;
+
+    // AnotherGet::get_another
+    fn get_another(&self) -> Self::AnotherOutput;
+}
+
+impl GetSet for S {
+    type Output = S3;
+
+    // S::get
+    fn get(&self) -> Self::Output {
+        S3
+    }
+}
+
+impl<T: Copy> GetSet for Wrapper<T> {
+    type Output = T;
+
+    // Wrapper::get
+    fn get(&self) -> Self::Output {
+        self.0 // $ fieldof=Wrapper
+    }
+}
+
+mod default_method_using_associated_type {
+    use super::*;
 
     trait MyTrait {
         type AssociatedType;
@@ -22,21 +66,102 @@ mod associated_type_in_trait {
             Self: Sized,
         {
             self.m1(); // $ target=MyTrait::m1 type=self.m1():AssociatedType
-            Self::AssociatedType::default()
+            let _default = Self::AssociatedType::default(); // $ MISSING: target=default _default:AssociatedType
+            Self::AssociatedType::default() // $ MISSING: target=default
         }
     }
+
+    impl MyTrait for S {
+        type AssociatedType = S3;
+
+        // S::m1
+        fn m1(self) -> Self::AssociatedType {
+            S3
+        }
+    }
+
+    impl MyTrait for S2 {
+        // Associated type definition with a type argument
+        type AssociatedType = Wrapper<S2>;
+
+        fn m1(self) -> Self::AssociatedType {
+            Wrapper(self)
+        }
+    }
+
+    pub fn test() {
+        let x1 = S;
+        // Call to method in `impl` block
+        println!("{:?}", x1.m1()); // $ target=S::m1 type=x1.m1():S3
+
+        let x2 = S;
+        // Call to default method in `trait` block
+        let y = x2.m2(); // $ target=m2 type=y:S3
+        println!("{:?}", y);
+
+        let x5 = S2;
+        println!("{:?}", x5.m1()); // $ target=m1 type=x5.m1():A.S2
+        let x6 = S2;
+        println!("{:?}", x6.m2()); // $ target=m2 type=x6.m2():A.S2
+    }
+}
+
+// Tests for signatures that access associated types from type parameters
+mod type_param_access_associated_type {
+    use super::*;
+
+    fn tp_with_as<T: GetSet>(thing: T) -> <T as GetSet>::Output {
+        thing.get() // $ target=GetSet::get
+    }
+
+    fn tp_without_as<T: GetSet>(thing: T) -> T::Output {
+        thing.get() // $ target=GetSet::get
+    }
+
+    pub fn test() {
+        let _o1 = tp_with_as(S); // $ target=tp_with_as MISSING: type=_o1:S3
+        let _o2 = tp_without_as(S); // $ target=tp_without_as MISSING: type=_o2:S3
+    }
+}
+
+mod generic_associated_type {
+    use super::*;
 
     trait MyTraitAssoc2 {
         type GenericAssociatedType<AssociatedParam>;
 
-        // MyTrait::put
+        // MyTraitAssoc2::put
         fn put<A>(&self, a: A) -> Self::GenericAssociatedType<A>;
 
-        fn putTwo<A>(&self, a: A, b: A) -> Self::GenericAssociatedType<A> {
-            self.put(a); // $ target=MyTrait::put
-            self.put(b) // $ target=MyTrait::put
+        // MyTraitAssoc2::put_two
+        fn put_two<A>(&self, a: A, b: A) -> Self::GenericAssociatedType<A> {
+            self.put(a); // $ target=MyTraitAssoc2::put
+            self.put(b) // $ target=MyTraitAssoc2::put
         }
     }
+
+    impl MyTraitAssoc2 for S {
+        // Associated type with a type parameter
+        type GenericAssociatedType<AssociatedParam> = Wrapper<AssociatedParam>;
+
+        // S::put
+        fn put<A>(&self, a: A) -> Wrapper<A> {
+            Wrapper(a)
+        }
+    }
+
+    pub fn test() {
+        let s = S;
+        // Call to the method in `impl` block
+        let _g1 = s.put(1i32); // $ target=S::put type=_g1:A.i32
+
+        // Call to default implementation in `trait` block
+        let _g2 = s.put_two(true, false); // $ target=MyTraitAssoc2::put_two MISSING: type=_g2:A.bool
+    }
+}
+
+mod multiple_associated_types {
+    use super::*;
 
     // A generic trait with multiple associated types.
     trait TraitMultipleAssoc<TrG> {
@@ -50,62 +175,12 @@ mod associated_type_in_trait {
         fn get_two(&self) -> Self::Assoc2;
     }
 
-    #[derive(Debug, Default)]
-    struct S;
-
-    #[derive(Debug, Default)]
-    struct S2;
-
-    #[derive(Debug, Default)]
-    struct AT;
-
-    impl MyTrait for S {
-        type AssociatedType = AT;
-
-        // S::m1
-        fn m1(self) -> Self::AssociatedType {
-            AT
-        }
-    }
-
-    impl MyTraitAssoc2 for S {
-        // Associated type with a type parameter
-        type GenericAssociatedType<AssociatedParam> = Wrapper<AssociatedParam>;
-
-        // S::put
-        fn put<A>(&self, a: A) -> Wrapper<A> {
-            Wrapper { field: a }
-        }
-    }
-
-    impl MyTrait for S2 {
-        // Associated type definition with a type argument
-        type AssociatedType = Wrapper<S2>;
-
-        fn m1(self) -> Self::AssociatedType {
-            Wrapper { field: self }
-        }
-    }
-
-    // NOTE: This implementation is just to make it possible to call `m2` on `S2.`
-    impl Default for Wrapper<S2> {
-        fn default() -> Self {
-            Wrapper { field: S2 }
-        }
-    }
-
-    // Function that returns an associated type from a trait bound
-
-    fn g<T: MyTrait>(thing: T) -> <T as MyTrait>::AssociatedType {
-        thing.m1() // $ target=MyTrait::m1
-    }
-
-    impl TraitMultipleAssoc<AT> for AT {
+    impl TraitMultipleAssoc<S3> for S3 {
         type Assoc1 = S;
         type Assoc2 = S2;
 
-        fn get_zero(&self) -> AT {
-            AT
+        fn get_zero(&self) -> S3 {
+            S3
         }
 
         fn get_one(&self) -> Self::Assoc1 {
@@ -118,82 +193,59 @@ mod associated_type_in_trait {
     }
 
     pub fn test() {
-        let x1 = S;
-        // Call to method in `impl` block
-        println!("{:?}", x1.m1()); // $ target=S::m1 type=x1.m1():AT
-
-        let x2 = S;
-        // Call to default method in `trait` block
-        let y = x2.m2(); // $ target=m2 type=y:AT
-        println!("{:?}", y);
-
-        let x3 = S;
-        // Call to the method in `impl` block
-        println!("{:?}", x3.put(1).unwrap()); // $ target=S::put target=unwrap
-
-        // Call to default implementation in `trait` block
-        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ target=putTwo target=unwrap
-
-        let x4 = g(S); // $ target=g $ MISSING: type=x4:AT
-        println!("{:?}", x4);
-
-        let x5 = S2;
-        println!("{:?}", x5.m1()); // $ target=m1 type=x5.m1():A.S2
-        let x6 = S2;
-        println!("{:?}", x6.m2()); // $ target=m2 type=x6.m2():A.S2
-
-        let assoc_zero = AT.get_zero(); // $ target=get_zero type=assoc_zero:AT
-        let assoc_one = AT.get_one(); // $ target=get_one type=assoc_one:S
-        let assoc_two = AT.get_two(); // $ target=get_two type=assoc_two:S2
+        let _assoc_zero = S3.get_zero(); // $ target=get_zero type=_assoc_zero:S3
+        let _assoc_one = S3.get_one(); // $ target=get_one type=_assoc_one:S
+        let _assoc_two = S3.get_two(); // $ target=get_two type=_assoc_two:S2
     }
 }
 
 mod associated_type_in_supertrait {
-    trait Supertrait {
-        type Content;
-        // Supertrait::insert
-        fn insert(&self, content: Self::Content);
-    }
+    use super::*;
 
-    trait Subtrait: Supertrait {
+    trait Subtrait: GetSet {
         // Subtrait::get_content
-        fn get_content(&self) -> Self::Content;
+        fn get_content(&self) -> Self::Output;
     }
 
     // A subtrait declared using a `where` clause.
     trait Subtrait2
     where
-        Self: Supertrait,
+        Self: GetSet,
     {
         // Subtrait2::insert_two
-        fn insert_two(&self, c1: Self::Content, c2: Self::Content) {
-            self.insert(c1); // $ target=Supertrait::insert
-            self.insert(c2); // $ target=Supertrait::insert
+        fn insert_two(&self, c1: Self::Output, c2: Self::Output) {
+            self.set(c1); // $ target=GetSet::set
+            self.set(c2); // $ target=GetSet::set
         }
     }
 
     struct MyType<T>(T);
 
-    impl<T> Supertrait for MyType<T> {
-        type Content = T;
-        fn insert(&self, _content: Self::Content) {
+    impl<T: Copy> GetSet for MyType<T> {
+        type Output = T;
+
+        fn get(&self) -> Self::Output {
+            self.0 // $ fieldof=MyType
+        }
+
+        fn set(&self, _content: Self::Output) {
             println!("Inserting content: ");
         }
     }
 
-    impl<T: Clone> Subtrait for MyType<T> {
+    impl<T: Copy> Subtrait for MyType<T> {
         // MyType::get_content
-        fn get_content(&self) -> Self::Content {
-            (*self).0.clone() // $ fieldof=MyType target=clone target=deref
+        fn get_content(&self) -> Self::Output {
+            (*self).0 // $ fieldof=MyType target=deref
         }
     }
 
-    fn get_content<T: Subtrait>(item: &T) -> T::Content {
+    fn get_content<T: Subtrait>(item: &T) -> T::Output {
         item.get_content() // $ target=Subtrait::get_content
     }
 
-    fn insert_three<T: Subtrait2>(item: &T, c1: T::Content, c2: T::Content, c3: T::Content) {
-        item.insert(c1); // $ target=Supertrait::insert
+    fn insert_three<T: Subtrait2>(item: &T, c1: T::Output, c2: T::Output, c3: T::Output) {
+        item.set(c1); // $ target=GetSet::set
         item.insert_two(c2, c3); // $ target=Subtrait2::insert_two
     }
 
@@ -207,30 +259,30 @@ mod associated_type_in_supertrait {
 }
 
 mod generic_associated_type_name_clash {
-    struct GenS<GenT>(GenT);
+    use super::*;
 
-    trait TraitWithAssocType {
-        type Output;
-        fn get_input(self) -> Self::Output;
-    }
+    struct ST<T>(T);
 
-    impl<Output> TraitWithAssocType for GenS<Output> {
+    impl<Output: Copy> GetSet for ST<Output> {
         // This is not a recursive type, the `Output` on the right-hand side
         // refers to the type parameter of the impl block just above.
         type Output = Result<Output, Output>;
 
-        fn get_input(self) -> Self::Output {
-            Ok(self.0) // $ fieldof=GenS type=Ok(...):Result type=Ok(...):T.Output type=Ok(...):E.Output
+        fn get(&self) -> Self::Output {
+            Ok(self.0) // $ fieldof=ST type=Ok(...):Result type=Ok(...):T.Output type=Ok(...):E.Output
         }
     }
 
     pub fn test() {
-        let _y = GenS(true).get_input(); // $ type=_y:Result type=_y:T.bool type=_y:E.bool target=get_input
+        let _y = ST(true).get(); // $ type=_y:Result type=_y:T.bool type=_y:E.bool target=get
     }
 }
 
 pub fn test() {
-    associated_type_in_trait::test(); // $ target=test
+    default_method_using_associated_type::test(); // $ target=test
+    type_param_access_associated_type::test(); // $ target=test
+    generic_associated_type::test(); // $ target=test
+    multiple_associated_types::test(); // $ target=test
     associated_type_in_supertrait::test(); // $ target=test
     generic_associated_type_name_clash::test(); // $ target=test
 }
