@@ -1,7 +1,7 @@
 private import rust
 
 module Impl {
-  private import codeql.rust.internal.TypeInference as TypeInference
+  private import codeql.rust.internal.typeinference.TypeInference as TypeInference
   private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
   private newtype TArgumentPosition =

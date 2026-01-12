@@ -7,8 +7,8 @@ private import Node as Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.rust.internal.CachedStages
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.internal.Type as Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type as Type
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 /**

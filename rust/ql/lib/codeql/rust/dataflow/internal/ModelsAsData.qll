@@ -205,8 +205,8 @@ private module Debug {
   private import Private
   private import Content
   private import codeql.rust.dataflow.internal.DataFlowImpl
-  private import codeql.rust.internal.TypeMention
-  private import codeql.rust.internal.Type
+  private import codeql.rust.internal.typeinference.TypeMention
+  private import codeql.rust.internal.typeinference.Type
 
   private predicate relevantManualModel(SummarizedCallableImpl sc, string can) {
     exists(Provenance manual |
