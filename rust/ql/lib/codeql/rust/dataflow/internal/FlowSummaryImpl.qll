@@ -30,6 +30,8 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   class SummarizedCallableBase = Function;
 
+  predicate callableFromSource(SummarizedCallableBase c) { c.fromSource() }
+
   abstract private class SourceSinkBase extends AstNode {
     /** Gets the associated call. */
     abstract Call getCall();

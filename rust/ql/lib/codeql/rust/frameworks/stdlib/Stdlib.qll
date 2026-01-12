@@ -41,11 +41,13 @@ private class ReflexiveFrom extends SummarizedCallable::Range {
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
     input = "Argument[0]" and
     output = "ReturnValue" and
     preservesValue = true and
+    p = "manual" and
+    isExact = true and
     model = "ReflexiveFrom"
   }
 }
