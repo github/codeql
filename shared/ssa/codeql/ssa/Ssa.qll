@@ -2095,38 +2095,25 @@ module Make<
       )
     }
 
-    /**
-     * Holds if `prev` is the block containing the unique predecessor of `phi`
-     * that reaches `phi` through the input block `input`, and that `mid` is a
-     * block in the dominator tree between `prev` and `input` that is
-     * guard-equivalent with `input` in the sense that the set of guards
-     * controlling `mid` is the same as the set of guards controlling `input`.
-     *
-     * This is restricted to phi inputs that are actually read.
-     */
-    private predicate phiInputGuardEquivalenceReaches(
-      BasicBlock prev, BasicBlock mid, SsaPhiExt phi, BasicBlock input
-    ) {
-      phiInputHasRead(phi, input) and
-      AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(), phi.getSourceVariable()) and
-      mid = input
-      or
-      exists(BasicBlock mid0 |
-        phiInputGuardEquivalenceReaches(prev, mid0, phi, input) and
-        not guardControlledBranchTarget(mid0) and
-        mid0 != prev and
-        mid = mid0.getImmediateDominator()
-      )
+    private BasicBlock getGuardEquivalentImmediateDominator(BasicBlock bb) {
+      result = bb.getImmediateDominator() and
+      not guardControlledBranchTarget(bb)
     }
 
     /**
      * Holds if the immediately preceding reference to the input to `phi` from
-     * the block `input` is guard-equivalent with `input`.
+     * the block `input` is guard-equivalent with `input` in the sense that the
+     * set of guards controlling the preceding reference is the same as the set
+     * of guards controlling `input`.
      *
      * This is restricted to phi inputs that are actually read.
      */
     private predicate phiInputIsGuardEquivalentWithPreviousRef(SsaPhiExt phi, BasicBlock input) {
-      exists(BasicBlock prev | phiInputGuardEquivalenceReaches(prev, prev, phi, input))
+      exists(BasicBlock prev |
+        phiInputHasRead(phi, input) and
+        AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(), phi.getSourceVariable()) and
+        prev = getGuardEquivalentImmediateDominator*(input)
+      )
     }
 
     /**
