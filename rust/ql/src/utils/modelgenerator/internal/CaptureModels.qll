@@ -113,6 +113,8 @@ module ModelGeneratorCommonInput implements
     c.(SingletonContentSet).getContent() instanceof ElementContent
   }
 
+  predicate applyReadStepsAsTaintSteps() { none() }
+
   string partialModelRow(Callable api, int i) { i = 0 and result = api.getCanonicalPath() }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
