@@ -62,8 +62,8 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
-  predicate isImplicitDerefCall(AstNode n, DerefChain derefChain, int i, Function target) {
-    this = TImplicitDerefCall(n, derefChain, i, target)
+  predicate isImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
+    this = TImplicitDerefCall(e, derefChain, i, target)
   }
 
   predicate isSummaryCall(
@@ -75,8 +75,7 @@ final class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() {
     result.asCfgScope() = this.asCall().getEnclosingCfgScope()
     or
-    result.asCfgScope() =
-      any(AstNode n | this.isImplicitDerefCall(n, _, _, _)).getEnclosingCfgScope()
+    result.asCfgScope() = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getEnclosingCfgScope()
     or
     this.isSummaryCall(result.asSummarizedCallable(), _)
   }
@@ -84,9 +83,9 @@ final class DataFlowCall extends TDataFlowCall {
   string toString() {
     result = this.asCall().toString()
     or
-    exists(AstNode n, DerefChain derefChain, int i |
-      this.isImplicitDerefCall(n, derefChain, i, _) and
-      result = "[implicit deref call " + i + " in " + derefChain.toString() + "] " + n
+    exists(Expr e, DerefChain derefChain, int i |
+      this.isImplicitDerefCall(e, derefChain, i, _) and
+      result = "[implicit deref call " + i + " in " + derefChain.toString() + "] " + e
     )
     or
     exists(
@@ -100,7 +99,7 @@ final class DataFlowCall extends TDataFlowCall {
   Location getLocation() {
     result = this.asCall().getLocation()
     or
-    result = any(AstNode n | this.isImplicitDerefCall(n, _, _, _)).getLocation()
+    result = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getLocation()
   }
 }
 
@@ -1082,9 +1081,10 @@ private module Cached {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or
-    TImplicitDerefCall(AstNode n, DerefChain derefChain, int i, Function target) {
-      TypeInference::implicitDerefChainBorrow(n, derefChain, _) and
-      target = derefChain.getElement(i).getDerefFunction()
+    TImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
+      TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
+      target = derefChain.getElement(i).getDerefFunction() and
+      e.hasEnclosingCfgScope()
     } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
