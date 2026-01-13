@@ -146,10 +146,10 @@ lib.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Module] mod call
 #    1|     getName(): [Name] call
-#    1|     getVisibility(): [Visibility] Visibility
+#    1|     getVisibility(): [Visibility] pub
 #    2|   getItem(1): [Module] mod macro_expansion
 #    2|     getName(): [Name] macro_expansion
-#    2|     getVisibility(): [Visibility] Visibility
+#    2|     getVisibility(): [Visibility] pub
 macro_expansion.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Use] use proc_macro::{...}
@@ -223,7 +223,7 @@ macro_expansion.rs:
 #   11|                     getSegment(): [PathSegment] inner_1
 #   11|                       getIdentifier(): [NameRef] inner_1
 #    4|         getName(): [Name] foo
-#    4|         getVisibility(): [Visibility] Visibility
+#    4|         getVisibility(): [Visibility] pub
 #    4|       getItem(1): [Function] fn foo_new
 #    4|         getParamList(): [ParamList] ParamList
 #    4|         getFunctionBody(): [BlockExpr] { ... }
@@ -271,7 +271,7 @@ macro_expansion.rs:
 #   11|                     getSegment(): [PathSegment] inner_1
 #   11|                       getIdentifier(): [NameRef] inner_1
 #    4|         getName(): [Name] foo_new
-#    4|         getVisibility(): [Visibility] Visibility
+#    4|         getVisibility(): [Visibility] pub
 #    3|     getAttr(0): [Attr] Attr
 #    3|       getMeta(): [Meta] Meta
 #    3|         getPath(): [Path] add_one
@@ -286,13 +286,13 @@ macro_expansion.rs:
 #   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_0
-#   16|             getVisibility(): [Visibility] Visibility
+#   16|             getVisibility(): [Visibility] pub
 #   16|           getItem(1): [Function] fn bar_0_new
 #   16|             getParamList(): [ParamList] ParamList
 #   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_0_new
-#   16|             getVisibility(): [Visibility] Visibility
+#   16|             getVisibility(): [Visibility] pub
 #   15|         getAttr(0): [Attr] Attr
 #   15|           getMeta(): [Meta] Meta
 #   15|             getPath(): [Path] add_one
@@ -305,13 +305,13 @@ macro_expansion.rs:
 #   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_1
-#   16|             getVisibility(): [Visibility] Visibility
+#   16|             getVisibility(): [Visibility] pub
 #   16|           getItem(1): [Function] fn bar_1_new
 #   16|             getParamList(): [ParamList] ParamList
 #   16|             getFunctionBody(): [BlockExpr] { ... }
 #   16|               getStmtList(): [StmtList] StmtList
 #   16|             getName(): [Name] bar_1_new
-#   16|             getVisibility(): [Visibility] Visibility
+#   16|             getVisibility(): [Visibility] pub
 #   15|         getAttr(0): [Attr] Attr
 #   15|           getMeta(): [Meta] Meta
 #   15|             getPath(): [Path] add_one
@@ -340,7 +340,7 @@ macro_expansion.rs:
 #   22|     getTokenTree(): [TokenTree] TokenTree
 #   28|   getItem(5): [Struct] struct S
 #   28|     getName(): [Name] S
-#   28|     getVisibility(): [Visibility] Visibility
+#   28|     getVisibility(): [Visibility] pub
 #   30|   getItem(6): [Impl] impl S { ... }
 #   30|     getAssocItemList(): [AssocItemList] AssocItemList
 #   31|       getAssocItem(0): [Function] (item with attribute macro expansion)
@@ -392,7 +392,7 @@ macro_expansion.rs:
 #   31|                                             getSegment(): [PathSegment] _print
 #   31|                                               getIdentifier(): [NameRef] _print
 #   32|             getName(): [Name] bzz_0
-#   32|             getVisibility(): [Visibility] Visibility
+#   32|             getVisibility(): [Visibility] pub
 #   32|           getItem(1): [Function] fn bzz_1
 #   32|             getParamList(): [ParamList] ParamList
 #   32|             getFunctionBody(): [BlockExpr] { ... }
@@ -440,7 +440,7 @@ macro_expansion.rs:
 #   31|                                             getSegment(): [PathSegment] _print
 #   31|                                               getIdentifier(): [NameRef] _print
 #   32|             getName(): [Name] bzz_1
-#   32|             getVisibility(): [Visibility] Visibility
+#   32|             getVisibility(): [Visibility] pub
 #   32|           getItem(2): [Function] fn bzz_2
 #   32|             getParamList(): [ParamList] ParamList
 #   32|             getFunctionBody(): [BlockExpr] { ... }
@@ -488,7 +488,7 @@ macro_expansion.rs:
 #   31|                                             getSegment(): [PathSegment] _print
 #   31|                                               getIdentifier(): [NameRef] _print
 #   32|             getName(): [Name] bzz_2
-#   32|             getVisibility(): [Visibility] Visibility
+#   32|             getVisibility(): [Visibility] pub
 #   31|         getAttr(0): [Attr] Attr
 #   31|           getMeta(): [Meta] Meta
 #   31|             getPath(): [Path] repeat
@@ -515,7 +515,7 @@ macro_expansion.rs:
 #   44|             getFunctionBody(): [BlockExpr] { ... }
 #   44|               getStmtList(): [StmtList] StmtList
 #   44|             getName(): [Name] x
-#   44|             getVisibility(): [Visibility] Visibility
+#   44|             getVisibility(): [Visibility] pub
 #   43|     getSelfTy(): [PathTypeRepr] S
 #   43|       getPath(): [Path] S
 #   43|         getSegment(): [PathSegment] S
@@ -699,8 +699,9 @@ macro_expansion.rs:
 #   76|             getSegment(): [PathSegment] i32
 #   76|               getIdentifier(): [NameRef] i32
 #   78|   getItem(16): [Struct] struct MyStruct
+#   78|     getName(): [Name] MyStruct
 #   78|     getFieldList(): [StructFieldList] StructFieldList
-#   79|       getField(0): [StructField] StructField
+#   79|       getField(0): [StructField] field: ...
 #   79|         getName(): [Name] field
 #   79|         getTypeRepr(): [MacroTypeRepr] MacroTypeRepr
 #   79|           getMacroCall(): [MacroCall] my_int!...
@@ -712,7 +713,6 @@ macro_expansion.rs:
 #   79|               getPath(): [Path] i32
 #   79|                 getSegment(): [PathSegment] i32
 #   79|                   getIdentifier(): [NameRef] i32
-#   78|     getName(): [Name] MyStruct
 #   83|   getItem(17): [Struct] struct MyDerive
 #   84|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
 #   84|       getItem(0): [Impl] impl ...::Debug for MyDerive::<...> { ... }
@@ -808,14 +808,14 @@ macro_expansion.rs:
 #   83|           getSegment(): [PathSegment] derive
 #   83|             getIdentifier(): [NameRef] derive
 #   83|         getTokenTree(): [TokenTree] TokenTree
+#   84|     getName(): [Name] MyDerive
 #   84|     getFieldList(): [StructFieldList] StructFieldList
-#   85|       getField(0): [StructField] StructField
+#   85|       getField(0): [StructField] field: usize
 #   85|         getName(): [Name] field
 #   85|         getTypeRepr(): [PathTypeRepr] usize
 #   85|           getPath(): [Path] usize
 #   85|             getSegment(): [PathSegment] usize
 #   85|               getIdentifier(): [NameRef] usize
-#   84|     getName(): [Name] MyDerive
 #   88|   getItem(18): [Enum] enum MyDeriveEnum
 #   89|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
 #   89|       getItem(0): [Impl] impl ...::PartialEq for MyDeriveEnum::<...> { ... }
@@ -990,13 +990,13 @@ macro_expansion.rs:
 #   98|         getTokenTree(): [TokenTree] TokenTree
 #   99|     getName(): [Name] MyDeriveUnion
 #   99|     getStructFieldList(): [StructFieldList] StructFieldList
-#  100|       getField(0): [StructField] StructField
+#  100|       getField(0): [StructField] field1: usize
 #  100|         getName(): [Name] field1
 #  100|         getTypeRepr(): [PathTypeRepr] usize
 #  100|           getPath(): [Path] usize
 #  100|             getSegment(): [PathSegment] usize
 #  100|               getIdentifier(): [NameRef] usize
-#  101|       getField(1): [StructField] StructField
+#  101|       getField(1): [StructField] field2: f64
 #  101|         getName(): [Name] field2
 #  101|         getTypeRepr(): [PathTypeRepr] f64
 #  101|           getPath(): [Path] f64
@@ -1770,7 +1770,7 @@ proc_macro.rs:
 #   16|                                                                                             getIdentifier(): [NameRef] items
 #   15|                                                                                     getMatchArmList(): [MatchArmList] MatchArmList
 #   15|                                                                                       getArm(0): [MatchArm] ... => ...
-#   15|                                                                                         getExpr(): [CallExpr] ...::RepInterp(...)
+#   15|                                                                                         getExpr(): [TupleStructExpr] ...::RepInterp(...)
 #   15|                                                                                           getArgList(): [ArgList] ArgList
 #   15|                                                                                             getArg(0): [VariableAccess] _x
 #   15|                                                                                               getPath(): [Path] _x
@@ -2003,7 +2003,7 @@ proc_macro.rs:
 #    5|         getPath(): [Path] TokenStream
 #    5|           getSegment(): [PathSegment] TokenStream
 #    5|             getIdentifier(): [NameRef] TokenStream
-#    5|     getVisibility(): [Visibility] Visibility
+#    5|     getVisibility(): [Visibility] pub
 #   20|   getItem(3): [Function] fn add_one
 #   21|     getParamList(): [ParamList] ParamList
 #   21|       getParam(0): [Param] ...: TokenStream
@@ -2434,7 +2434,7 @@ proc_macro.rs:
 #   21|         getPath(): [Path] TokenStream
 #   21|           getSegment(): [PathSegment] TokenStream
 #   21|             getIdentifier(): [NameRef] TokenStream
-#   21|     getVisibility(): [Visibility] Visibility
+#   21|     getVisibility(): [Visibility] pub
 #   31|   getItem(4): [Function] fn erase
 #   32|     getParamList(): [ParamList] ParamList
 #   32|       getParam(0): [Param] ...: TokenStream
@@ -2473,7 +2473,7 @@ proc_macro.rs:
 #   32|         getPath(): [Path] TokenStream
 #   32|           getSegment(): [PathSegment] TokenStream
 #   32|             getIdentifier(): [NameRef] TokenStream
-#   32|     getVisibility(): [Visibility] Visibility
+#   32|     getVisibility(): [Visibility] pub
 #   36|   getItem(5): [Function] fn my_trait_derive
 #   37|     getParamList(): [ParamList] ParamList
 #   37|       getParam(0): [Param] ...: TokenStream
@@ -3808,4 +3808,4 @@ proc_macro.rs:
 #   37|         getPath(): [Path] TokenStream
 #   37|           getSegment(): [PathSegment] TokenStream
 #   37|             getIdentifier(): [NameRef] TokenStream
-#   37|     getVisibility(): [Visibility] Visibility
+#   37|     getVisibility(): [Visibility] pub

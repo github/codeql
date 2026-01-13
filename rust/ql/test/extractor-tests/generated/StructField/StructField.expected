@@ -1,9 +1,9 @@
 instances
-| gen_struct_field.rs:7:16:7:21 | StructField | isUnsafe: | no |
+| gen_struct_field.rs:7:16:7:21 | x: i32 | isUnsafe: | no |
 getAttr
 getDefault
 getName
-| gen_struct_field.rs:7:16:7:21 | StructField | gen_struct_field.rs:7:16:7:16 | x |
+| gen_struct_field.rs:7:16:7:21 | x: i32 | gen_struct_field.rs:7:16:7:16 | x |
 getTypeRepr
-| gen_struct_field.rs:7:16:7:21 | StructField | gen_struct_field.rs:7:19:7:21 | i32 |
+| gen_struct_field.rs:7:16:7:21 | x: i32 | gen_struct_field.rs:7:19:7:21 | i32 |
 getVisibility

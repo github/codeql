@@ -118,25 +118,8 @@ private class ContainsUrlSanitizer extends RequestForgerySanitizer {
   }
 }
 
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private predicate isRelativeUrlSanitizer(Guard guard, Expr e, boolean branch) {
-  guard =
-    any(MethodCall call |
-      call.getMethod().hasQualifiedName("java.net", "URI", "isAbsolute") and
-      e = call.getQualifier() and
-      branch = false
-    )
-}
-
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private class RelativeUrlSanitizer extends RequestForgerySanitizer {
-  RelativeUrlSanitizer() {
-    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
-  }
+private class ExternalRequestForgerySanitizer extends RequestForgerySanitizer {
+  ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
 }
 
 /**
@@ -166,22 +149,7 @@ private class HostComparisonSanitizer extends RequestForgerySanitizer {
 }
 
 /**
- * A qualifier in a call to a `.matches()` method that is a sanitizer for URL redirects.
- *
- * Matches any method call where the method is named `matches`.
+ * A comparison with a regular expression that is a sanitizer for URL redirects.
  */
-private predicate isMatchesSanitizer(Guard guard, Expr e, boolean branch) {
-  guard =
-    any(MethodCall method |
-      method.getMethod().getName() = "matches" and
-      e = method.getQualifier() and
-      branch = true
-    )
-}
-
-/**
- * A qualifier in a call to `.matches()` that is a sanitizer for URL redirects.
- */
-private class MatchesSanitizer extends RequestForgerySanitizer {
-  MatchesSanitizer() { this = DataFlow::BarrierGuard<isMatchesSanitizer/3>::getABarrierNode() }
-}
+private class RegexpCheckRequestForgerySanitizer extends RequestForgerySanitizer instanceof RegexpCheckBarrier
+{ }

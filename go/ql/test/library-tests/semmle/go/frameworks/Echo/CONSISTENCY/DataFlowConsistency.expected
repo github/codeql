@@ -1,0 +1,4 @@
+reverseRead
+| test.go:89:16:89:22 | cookies | Origin of readStep is missing a PostUpdateNode. |
+| test.go:193:10:193:22 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| test.go:216:20:216:26 | cookies | Origin of readStep is missing a PostUpdateNode. |

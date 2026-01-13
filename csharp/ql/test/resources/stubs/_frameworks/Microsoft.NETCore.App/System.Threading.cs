@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Threading, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Threading
@@ -104,11 +104,15 @@ namespace System
         {
             public EventWaitHandle(bool initialState, System.Threading.EventResetMode mode) => throw null;
             public EventWaitHandle(bool initialState, System.Threading.EventResetMode mode, string name) => throw null;
+            public EventWaitHandle(bool initialState, System.Threading.EventResetMode mode, string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public EventWaitHandle(bool initialState, System.Threading.EventResetMode mode, string name, out bool createdNew) => throw null;
+            public EventWaitHandle(bool initialState, System.Threading.EventResetMode mode, string name, System.Threading.NamedWaitHandleOptions options, out bool createdNew) => throw null;
             public static System.Threading.EventWaitHandle OpenExisting(string name) => throw null;
+            public static System.Threading.EventWaitHandle OpenExisting(string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public bool Reset() => throw null;
             public bool Set() => throw null;
             public static bool TryOpenExisting(string name, out System.Threading.EventWaitHandle result) => throw null;
+            public static bool TryOpenExisting(string name, System.Threading.NamedWaitHandleOptions options, out System.Threading.EventWaitHandle result) => throw null;
         }
         public sealed class ExecutionContext : System.IDisposable, System.Runtime.Serialization.ISerializable
         {
@@ -269,11 +273,21 @@ namespace System
         {
             public Mutex() => throw null;
             public Mutex(bool initiallyOwned) => throw null;
+            public Mutex(string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public Mutex(bool initiallyOwned, string name) => throw null;
+            public Mutex(bool initiallyOwned, string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public Mutex(bool initiallyOwned, string name, out bool createdNew) => throw null;
+            public Mutex(bool initiallyOwned, string name, System.Threading.NamedWaitHandleOptions options, out bool createdNew) => throw null;
             public static System.Threading.Mutex OpenExisting(string name) => throw null;
+            public static System.Threading.Mutex OpenExisting(string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public void ReleaseMutex() => throw null;
             public static bool TryOpenExisting(string name, out System.Threading.Mutex result) => throw null;
+            public static bool TryOpenExisting(string name, System.Threading.NamedWaitHandleOptions options, out System.Threading.Mutex result) => throw null;
+        }
+        public struct NamedWaitHandleOptions
+        {
+            public bool CurrentSessionOnly { get => throw null; set { } }
+            public bool CurrentUserOnly { get => throw null; set { } }
         }
         public sealed class ReaderWriterLock : System.Runtime.ConstrainedExecution.CriticalFinalizerObject
         {
@@ -327,11 +341,15 @@ namespace System
         {
             public Semaphore(int initialCount, int maximumCount) => throw null;
             public Semaphore(int initialCount, int maximumCount, string name) => throw null;
+            public Semaphore(int initialCount, int maximumCount, string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public Semaphore(int initialCount, int maximumCount, string name, out bool createdNew) => throw null;
+            public Semaphore(int initialCount, int maximumCount, string name, System.Threading.NamedWaitHandleOptions options, out bool createdNew) => throw null;
             public static System.Threading.Semaphore OpenExisting(string name) => throw null;
+            public static System.Threading.Semaphore OpenExisting(string name, System.Threading.NamedWaitHandleOptions options) => throw null;
             public int Release() => throw null;
             public int Release(int releaseCount) => throw null;
             public static bool TryOpenExisting(string name, out System.Threading.Semaphore result) => throw null;
+            public static bool TryOpenExisting(string name, System.Threading.NamedWaitHandleOptions options, out System.Threading.Semaphore result) => throw null;
         }
         public class SemaphoreFullException : System.SystemException
         {
@@ -439,6 +457,7 @@ namespace System
             public static ulong Read(ref readonly ulong location) => throw null;
             public static nuint Read(ref readonly nuint location) => throw null;
             public static T Read<T>(ref readonly T location) where T : class => throw null;
+            public static void ReadBarrier() => throw null;
             public static void Write(ref bool location, bool value) => throw null;
             public static void Write(ref byte location, byte value) => throw null;
             public static void Write(ref double location, double value) => throw null;
@@ -453,6 +472,7 @@ namespace System
             public static void Write(ref ulong location, ulong value) => throw null;
             public static void Write(ref nuint location, nuint value) => throw null;
             public static void Write<T>(ref T location, T value) where T : class => throw null;
+            public static void WriteBarrier() => throw null;
         }
         public class WaitHandleCannotBeOpenedException : System.ApplicationException
         {

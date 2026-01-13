@@ -46,7 +46,7 @@ module Impl {
     private predicate isMacroExpansion(AstNode macro, AstNode expansion) {
       expansion = macro.(MacroCall).getMacroCallExpansion()
       or
-      expansion = macro.(Adt).getDeriveMacroExpansion(_)
+      expansion = macro.(TypeItem).getDeriveMacroExpansion(_)
       or
       expansion = macro.(Item).getAttributeMacroExpansion()
     }

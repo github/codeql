@@ -5,6 +5,7 @@
 
 import python
 private import semmle.python.pointsto.Filters
+private import LegacyPointsTo
 
 /**
  * An attribute access where the left hand side of the attribute expression

@@ -264,6 +264,9 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   ItemNode getImmediateParent() { this = result.getADescendant() }
 
+  /** Gets a child item of this item, if any. */
+  ItemNode getAChild() { this = result.getImmediateParent() }
+
   /** Gets the immediately enclosing module (or source file) of this item. */
   pragma[nomagic]
   ModuleLikeNode getImmediateParentModule() {
@@ -339,10 +342,13 @@ abstract class ItemNode extends Locatable {
     typeImplEdge(this, _, name, kind, result, useOpt)
     or
     // trait items with default implementations made available in an implementation
-    exists(ImplItemNodeImpl impl, ItemNode trait |
+    exists(ImplItemNodeImpl impl, TraitItemNode trait |
       this = impl and
       trait = impl.resolveTraitTyCand() and
       result = trait.getASuccessor(name, kind, useOpt) and
+      // do not inherit default implementations from super traits; those are inherited by
+      // their `impl` blocks
+      result = trait.getAssocItem(name) and
       result.(AssocItemNode).hasImplementation() and
       kind.isExternalOrBoth() and
       not impl.hasAssocItem(name)
@@ -402,8 +408,14 @@ abstract class ItemNode extends Locatable {
       this instanceof SourceFile and
       builtin(name, result)
       or
-      name = "Self" and
-      this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
+      exists(ImplOrTraitItemNode i |
+        name = "Self" and
+        this = i.getAnItemInSelfScope()
+      |
+        result = i.(Trait)
+        or
+        result = i.(ImplItemNodeImpl).resolveSelfTyCand()
+      )
       or
       name = "crate" and
       this = result.(CrateItemNode).getASourceFile()
@@ -617,14 +629,14 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override TypeParam getTypeParam(int i) { none() }
 }
 
-private class EnumItemNode extends TypeItemNode instanceof Enum {
-  override string getName() { result = Enum.super.getName().getText() }
+private class TypeItemTypeItemNode extends TypeItemNode instanceof TypeItem {
+  override string getName() { result = TypeItem.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
 
-  override Visibility getVisibility() { result = Enum.super.getVisibility() }
+  override Visibility getVisibility() { result = TypeItem.super.getVisibility() }
 
-  override Attr getAnAttr() { result = Enum.super.getAnAttr() }
+  override Attr getAnAttr() { result = TypeItem.super.getAnAttr() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
@@ -734,7 +746,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   Path getASelfPath() {
     Stages::PathResolutionStage::ref() and
     isUnqualifiedSelfPath(result) and
-    this = unqualifiedPathLookup(result, _, _)
+    result = this.getAnItemInSelfScope().getADescendant()
   }
 
   /** Gets an associated item belonging to this trait or `impl` block. */
@@ -759,11 +771,18 @@ private TypeItemNode resolveBuiltin(TypeRepr tr) {
   tr instanceof ArrayTypeRepr and
   result instanceof Builtins::ArrayType
   or
-  tr instanceof RefTypeRepr and
-  result instanceof Builtins::RefType
+  tr =
+    any(RefTypeRepr rtr |
+      if rtr.isMut()
+      then result instanceof Builtins::RefMutType
+      else result instanceof Builtins::RefSharedType
+    )
   or
-  tr instanceof PtrTypeRepr and
-  result instanceof Builtins::PtrType
+  tr.(PtrTypeRepr).isConst() and
+  result instanceof Builtins::PtrConstType
+  or
+  tr.(PtrTypeRepr).isMut() and
+  result instanceof Builtins::PtrMutType
   or
   result.(Builtins::TupleType).getArity() = tr.(TupleTypeRepr).getNumberOfFields()
 }
@@ -960,12 +979,11 @@ private class ImplItemNodeImpl extends ImplItemNode {
     result = this.resolveSelfTyBuiltin()
   }
 
-  TraitItemNode resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
+  TraitItemNodeImpl resolveTraitTyCand() { result = resolvePathCand(this.getTraitPath()) }
 }
 
-private class StructItemNode extends TypeItemNode, ParameterizableItemNode instanceof Struct {
-  override string getName() { result = Struct.super.getName().getText() }
-
+private class StructItemNode extends TypeItemTypeItemNode, ParameterizableItemNode instanceof Struct
+{
   override Namespace getNamespace() {
     result.isType() // the struct itself
     or
@@ -973,32 +991,18 @@ private class StructItemNode extends TypeItemNode, ParameterizableItemNode insta
     result.isValue() // the constructor
   }
 
-  override Visibility getVisibility() { result = Struct.super.getVisibility() }
-
-  override Attr getAnAttr() { result = Struct.super.getAnAttr() }
-
   override int getArity() { result = super.getFieldList().(TupleFieldList).getNumberOfFields() }
-
-  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
-
-  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
-
-  bindingset[c]
-  private string getCanonicalPathPart(Crate c, int i) {
-    i = 0 and
-    result = this.getCanonicalPathPrefix(c)
-    or
-    i = 1 and
-    result = "::"
-    or
-    i = 2 and
-    result = this.getName()
-  }
 
   language[monotonicAggregates]
   override string getCanonicalPath(Crate c) {
     this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+    (
+      not super.hasVisibility() and
+      result = this.(Builtins::BuiltinType).getDisplayName()
+      or
+      (super.hasVisibility() or not this instanceof Builtins::BuiltinType) and
+      result = TypeItemTypeItemNode.super.getCanonicalPath(c)
+    )
   }
 }
 
@@ -1091,38 +1095,6 @@ private class TypeAliasItemNodeImpl extends TypeAliasItemNode instanceof TypeAli
   pragma[nomagic]
   ItemNode resolveAliasCand() {
     result = resolvePathCand(super.getTypeRepr().(PathTypeRepr).getPath())
-  }
-}
-
-private class UnionItemNode extends TypeItemNode instanceof Union {
-  override string getName() { result = Union.super.getName().getText() }
-
-  override Namespace getNamespace() { result.isType() }
-
-  override Visibility getVisibility() { result = Union.super.getVisibility() }
-
-  override Attr getAnAttr() { result = Union.super.getAnAttr() }
-
-  override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
-
-  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
-
-  bindingset[c]
-  private string getCanonicalPathPart(Crate c, int i) {
-    i = 0 and
-    result = this.getCanonicalPathPrefix(c)
-    or
-    i = 1 and
-    result = "::"
-    or
-    i = 2 and
-    result = this.getName()
-  }
-
-  language[monotonicAggregates]
-  override string getCanonicalPath(Crate c) {
-    this.hasCanonicalPath(c) and
-    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
   }
 }
 
@@ -1772,9 +1744,9 @@ private module DollarCrateResolution {
       macroDefPath = mc.getPath()
     )
     or
-    exists(ItemNode adt |
-      expansion = adt.(Adt).getDeriveMacroExpansion(_) and
-      macroDefPath = adt.getAttr("derive").getMeta().getPath()
+    exists(ItemNode type |
+      expansion = type.(TypeItem).getDeriveMacroExpansion(_) and
+      macroDefPath = type.getAttr("derive").getMeta().getPath()
     )
   }
 
@@ -1813,15 +1785,7 @@ private module DollarCrateResolution {
 
 pragma[nomagic]
 private ItemNode resolvePathCand0(PathExt path, Namespace ns) {
-  exists(ItemNode res |
-    res = unqualifiedPathLookup(path, ns, _) and
-    if
-      not any(PathExt parent).getQualifier() = path and
-      isUnqualifiedSelfPath(path) and
-      res instanceof ImplItemNode
-    then result = res.(ImplItemNodeImpl).resolveSelfTyCand()
-    else result = res
-  )
+  result = unqualifiedPathLookup(path, ns, _)
   or
   DollarCrateResolution::resolveDollarCrate(path, result) and
   ns = result.getNamespace()
@@ -1883,12 +1847,35 @@ private predicate checkQualifiedVisibility(
   not i instanceof TypeParam
 }
 
+pragma[nomagic]
+private predicate isImplSelfQualifiedPath(
+  ImplItemNode impl, PathExt qualifier, PathExt path, string name
+) {
+  qualifier = impl.getASelfPath() and
+  qualifier = path.getQualifier() and
+  name = path.getText()
+}
+
+private ItemNode resolveImplSelfQualified(PathExt qualifier, PathExt path, Namespace ns) {
+  exists(ImplItemNode impl, string name |
+    isImplSelfQualifiedPath(impl, qualifier, path, name) and
+    result = impl.getAssocItem(name) and
+    ns = result.getNamespace()
+  )
+}
+
 /**
  * Gets the item that `path` resolves to in `ns` when `qualifier` is the
  * qualifier of `path` and `qualifier` resolves to `q`, if any.
  */
 pragma[nomagic]
 private ItemNode resolvePathCandQualified(PathExt qualifier, ItemNode q, PathExt path, Namespace ns) {
+  // Special case for `Self::Assoc`; this always refers to the associated
+  // item in the enclosing `impl` block, if available.
+  q = resolvePathCandQualifier(qualifier, path, _) and
+  result = resolveImplSelfQualified(qualifier, path, ns)
+  or
+  not exists(resolveImplSelfQualified(qualifier, path, ns)) and
   exists(string name, SuccessorKind kind, UseOption useOpt |
     q = resolvePathCandQualifier(qualifier, path, name) and
     result = getASuccessor(q, name, ns, kind, useOpt) and
@@ -2010,7 +1997,7 @@ private ItemNode resolvePathCand(PathExt path) {
     or
     exists(CallExpr ce |
       path = CallExprImpl::getFunctionPath(ce) and
-      result.(ParameterizableItemNode).getArity() = ce.getNumberOfArgs()
+      result.(ParameterizableItemNode).getArity() = ce.getArgList().getNumberOfArgs()
     )
   )
 }

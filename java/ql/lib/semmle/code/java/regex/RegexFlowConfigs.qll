@@ -164,7 +164,7 @@ private module RegexFlowConfig implements DataFlow::ConfigSig {
 private module RegexFlow = DataFlow::Global<RegexFlowConfig>;
 
 private predicate usedAsRegexImpl(StringLiteral regex, string mode, boolean match_full_string) {
-  RegexFlow::flow(DataFlow::exprNode(regex), _) and
+  RegexFlow::flowFromExpr(regex) and
   mode = "None" and // TODO: proper mode detection
   (if matchesFullString(regex) then match_full_string = true else match_full_string = false)
 }

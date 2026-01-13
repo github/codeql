@@ -1802,6 +1802,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "template_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "concatenated_template_string"
+        },
+        {
+          "type": "SYMBOL",
           "name": "none"
         },
         {
@@ -3890,6 +3898,14 @@
         {
           "type": "SYMBOL",
           "name": "concatenated_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "template_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "concatenated_template_string"
         },
         {
           "type": "SYMBOL",
@@ -5982,6 +5998,77 @@
         }
       ]
     },
+    "concatenated_template_string": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "template_string"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "template_string"
+          }
+        }
+      ]
+    },
+    "template_string": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "prefix",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_template_string_start"
+            },
+            "named": false,
+            "value": "\""
+          }
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "interpolation",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "interpolation"
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "string_content",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "string_content"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "suffix",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_string_end"
+            },
+            "named": false,
+            "value": "\""
+          }
+        }
+      ]
+    },
     "string_content": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -6710,6 +6797,10 @@
     {
       "type": "SYMBOL",
       "name": "_string_end"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_template_string_start"
     }
   ],
   "inline": [

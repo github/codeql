@@ -51,6 +51,11 @@ void shift_left(v16i *dst, v16i *src, int n) {
   *dst = *src << n;
 }
 
+void logical(v16i *dst, v16i *src1, v16i *src2) {
+  *dst = *src1 && *src2;
+  *dst = *src1 || *src2;
+}
+
 typedef double vector4double __attribute__((__vector_size__(32)));
 typedef float  vector4float  __attribute__((__vector_size__(16)));
 

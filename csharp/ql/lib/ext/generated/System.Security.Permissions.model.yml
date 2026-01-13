@@ -2,6 +2,14 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Security.Permissions", "PrincipalPermission", False, "PrincipalPermission", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Permissions", "PrincipalPermission", False, "PrincipalPermission", "(System.String,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Permissions", "PrincipalPermission", False, "PrincipalPermission", "(System.String,System.String,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Security.Permissions", "PrincipalPermission", False, "PrincipalPermission", "(System.String,System.String,System.Boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Security.Permissions", "CodeAccessSecurityAttribute", "CodeAccessSecurityAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
@@ -121,8 +129,6 @@ extensions:
       - ["System.Security.Permissions", "PrincipalPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Security.Permissions", "PrincipalPermission", "IsUnrestricted", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "PrincipalPermission", "PrincipalPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
-      - ["System.Security.Permissions", "PrincipalPermission", "PrincipalPermission", "(System.String,System.String)", "summary", "df-generated"]
-      - ["System.Security.Permissions", "PrincipalPermission", "PrincipalPermission", "(System.String,System.String,System.Boolean)", "summary", "df-generated"]
       - ["System.Security.Permissions", "PrincipalPermission", "ToString", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "PrincipalPermission", "ToXml", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "PrincipalPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]

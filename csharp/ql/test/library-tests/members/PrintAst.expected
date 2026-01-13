@@ -7,8 +7,8 @@ Members.cs:
 #    3|       1: [Parameter] e
 #    3|         -1: [TypeMention] object
 #    6|   2: [Class] Class
-#    9|     5: [Class] NestedClass
-#   12|       5: [Method] Method`1
+#    9|     6: [Class] NestedClass
+#   12|       6: [Method] Method`1
 #   12|         -1: [TypeMention] string
 #-----|         1: (Type parameters)
 #   12|           0: [TypeParameter] T
@@ -17,7 +17,7 @@ Members.cs:
 #   12|             -1: [TypeMention] T
 #   12|         4: [MethodCall] call to method ToString
 #   12|           -1: [ParameterAccess] access to parameter t
-#   14|       6: [Indexer] Item
+#   14|       7: [Indexer] Item
 #   14|         -1: [TypeMention] string
 #-----|         1: (Parameters)
 #   14|           0: [Parameter] i
@@ -32,15 +32,15 @@ Members.cs:
 #   14|             0: [Parameter] i
 #   14|             1: [Parameter] value
 #   14|           4: [BlockStmt] {...}
-#   16|       7: [Field] Field
+#   16|       8: [Field] Field
 #   16|         -1: [TypeMention] string
-#   18|       8: [Property] Prop
+#   18|       9: [Property] Prop
 #   18|         -1: [TypeMention] string
 #   18|         3: [Getter] get_Prop
 #   18|         4: [Setter] set_Prop
 #-----|           2: (Parameters)
 #   18|             0: [Parameter] value
-#   20|       9: [Event] Event
+#   20|       10: [Event] Event
 #   20|         -1: [TypeMention] EventHandler
 #   20|         3: [AddEventAccessor] add_Event
 #-----|           2: (Parameters)
@@ -48,10 +48,10 @@ Members.cs:
 #   20|         4: [RemoveEventAccessor] remove_Event
 #-----|           2: (Parameters)
 #   20|             0: [Parameter] value
-#   24|     6: [Method] Method
+#   24|     7: [Method] Method
 #   24|       -1: [TypeMention] Void
 #   24|       4: [BlockStmt] {...}
-#   26|     7: [Indexer] Item
+#   26|     8: [Indexer] Item
 #   26|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #   26|         0: [Parameter] i
@@ -66,15 +66,15 @@ Members.cs:
 #   26|           0: [Parameter] i
 #   26|           1: [Parameter] value
 #   26|         4: [BlockStmt] {...}
-#   28|     8: [Field] Field
+#   28|     9: [Field] Field
 #   28|       -1: [TypeMention] string
-#   30|     9: [Property] Prop
+#   30|     10: [Property] Prop
 #   30|       -1: [TypeMention] string
 #   30|       3: [Getter] get_Prop
 #   30|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
 #   30|           0: [Parameter] value
-#   32|     10: [Event] Event
+#   32|     11: [Event] Event
 #   32|       -1: [TypeMention] EventHandler
 #   32|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)
@@ -83,8 +83,8 @@ Members.cs:
 #-----|         2: (Parameters)
 #   32|           0: [Parameter] value
 #   35|   3: [Class] Class2
-#   37|     5: [Class] NestedClass2
-#   39|       5: [Method] Method`1
+#   37|     6: [Class] NestedClass2
+#   39|       6: [Method] Method`1
 #   39|         -1: [TypeMention] string
 #-----|         1: (Type parameters)
 #   39|           0: [TypeParameter] T
@@ -93,7 +93,7 @@ Members.cs:
 #   39|             -1: [TypeMention] T
 #   39|         4: [MethodCall] call to method ToString
 #   39|           -1: [ParameterAccess] access to parameter t
-#   40|       6: [Indexer] Item
+#   40|       7: [Indexer] Item
 #   40|         -1: [TypeMention] string
 #-----|         1: (Parameters)
 #   40|           0: [Parameter] i
@@ -108,15 +108,15 @@ Members.cs:
 #   40|             0: [Parameter] i
 #   40|             1: [Parameter] value
 #   40|           4: [BlockStmt] {...}
-#   41|       7: [Field] Field
+#   41|       8: [Field] Field
 #   41|         -1: [TypeMention] string
-#   42|       8: [Property] Prop
+#   42|       9: [Property] Prop
 #   42|         -1: [TypeMention] string
 #   42|         3: [Getter] get_Prop
 #   42|         4: [Setter] set_Prop
 #-----|           2: (Parameters)
 #   42|             0: [Parameter] value
-#   43|       9: [Event] Event
+#   43|       10: [Event] Event
 #   43|         -1: [TypeMention] EventHandler
 #   43|         3: [AddEventAccessor] add_Event
 #-----|           2: (Parameters)
@@ -124,10 +124,10 @@ Members.cs:
 #   43|         4: [RemoveEventAccessor] remove_Event
 #-----|           2: (Parameters)
 #   43|             0: [Parameter] value
-#   46|     6: [Method] Method
+#   46|     7: [Method] Method
 #   46|       -1: [TypeMention] Void
 #   46|       4: [BlockStmt] {...}
-#   47|     7: [Indexer] Item
+#   47|     8: [Indexer] Item
 #   47|       -1: [TypeMention] string
 #-----|       1: (Parameters)
 #   47|         0: [Parameter] i
@@ -142,15 +142,15 @@ Members.cs:
 #   47|           0: [Parameter] i
 #   47|           1: [Parameter] value
 #   47|         4: [BlockStmt] {...}
-#   48|     8: [Field] Field
+#   48|     9: [Field] Field
 #   48|       -1: [TypeMention] string
-#   49|     9: [Property] Prop
+#   49|     10: [Property] Prop
 #   49|       -1: [TypeMention] string
 #   49|       3: [Getter] get_Prop
 #   49|       4: [Setter] set_Prop
 #-----|         2: (Parameters)
 #   49|           0: [Parameter] value
-#   50|     10: [Event] Event
+#   50|     11: [Event] Event
 #   50|       -1: [TypeMention] EventHandler
 #   50|       3: [AddEventAccessor] add_Event
 #-----|         2: (Parameters)

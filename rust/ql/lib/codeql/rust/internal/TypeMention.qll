@@ -54,13 +54,16 @@ class ArrayTypeReprMention extends TypeMention instanceof ArrayTypeRepr {
 }
 
 class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
+  private RefType resolveRootType() {
+    if super.isMut() then result instanceof RefMutType else result instanceof RefSharedType
+  }
+
   override Type resolveTypeAt(TypePath path) {
-    path.isEmpty() and
-    result instanceof RefType
+    path.isEmpty() and result = this.resolveRootType()
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(getRefTypeParameter(), suffix)
+      path = TypePath::cons(this.resolveRootType().getPositionalTypeParameter(0), suffix)
     )
   }
 }
@@ -77,7 +80,19 @@ class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
   }
 }
 
-abstract class PathTypeMention extends TypeMention, Path { }
+abstract class PathTypeMention extends TypeMention, Path {
+  abstract Type resolvePathTypeAt(TypePath typePath);
+
+  final override Type resolveTypeAt(TypePath typePath) {
+    result = this.resolvePathTypeAt(typePath) and
+    (
+      not result instanceof TypeParameter
+      or
+      // Prevent type parameters from escaping their scope
+      this = result.(TypeParameter).getDeclaringItem().getAChild*().getADescendant()
+    )
+  }
+}
 
 class AliasPathTypeMention extends PathTypeMention {
   TypeAlias resolved;
@@ -94,7 +109,7 @@ class AliasPathTypeMention extends PathTypeMention {
    * Holds if this path resolved to a type alias with a rhs. that has the
    * resulting type at `typePath`.
    */
-  override Type resolveTypeAt(TypePath typePath) {
+  override Type resolvePathTypeAt(TypePath typePath) {
     result = rhs.resolveTypeAt(typePath) and
     not result = pathGetTypeParameter(resolved, _)
     or
@@ -207,6 +222,33 @@ class NonAliasPathTypeMention extends PathTypeMention {
       result = this.getPositionalTypeArgument(pragma[only_bind_into](i), path) and
       tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
     )
+    or
+    // Handle the special syntactic sugar for function traits. The syntactic
+    // form is detected by the presence of a parenthesized argument list which
+    // is a mandatory part of the syntax [1].
+    //
+    // For now we only support `FnOnce` as we can't support the "inherited"
+    // associated types of `Fn` and `FnMut` yet.
+    //
+    // [1]: https://doc.rust-lang.org/reference/paths.html#grammar-TypePathFn
+    exists(FnOnceTrait t, PathSegment s |
+      t = resolved and
+      s = this.getSegment() and
+      s.hasParenthesizedArgList()
+    |
+      tp = TTypeParamTypeParameter(t.getTypeParam()) and
+      result = s.getParenthesizedArgList().(TypeMention).resolveTypeAt(path)
+      or
+      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
+      (
+        result = s.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+        or
+        // When the `-> ...` return type is omitted, it defaults to `()`.
+        not s.hasRetType() and
+        result instanceof UnitType and
+        path.isEmpty()
+      )
+    )
   }
 
   pragma[nomagic]
@@ -241,24 +283,11 @@ class NonAliasPathTypeMention extends PathTypeMention {
       result = alias.getTypeRepr() and
       tp = TAssociatedTypeTypeParameter(this.getResolvedAlias(pragma[only_bind_into](name)))
     )
-    or
-    // Handle the special syntactic sugar for function traits. For now we only
-    // support `FnOnce` as we can't support the "inherited" associated types of
-    // `Fn` and `FnMut` yet.
-    exists(FnOnceTrait t | t = resolved |
-      tp = TTypeParamTypeParameter(t.getTypeParam()) and
-      result = this.getSegment().getParenthesizedArgList()
-      or
-      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
-      result = this.getSegment().getRetType().getTypeRepr()
-    )
   }
 
   pragma[nomagic]
   private Type resolveRootType() {
-    result = TStruct(resolved)
-    or
-    result = TEnum(resolved)
+    result = TDataType(resolved)
     or
     exists(TraitItemNode trait | trait = resolved |
       // If this is a `Self` path, then it resolves to the implicit `Self`
@@ -268,14 +297,12 @@ class NonAliasPathTypeMention extends PathTypeMention {
       else result = TTrait(trait)
     )
     or
-    result = TUnion(resolved)
-    or
     result = TTypeParamTypeParameter(resolved)
     or
     result = TAssociatedTypeTypeParameter(resolved)
   }
 
-  override Type resolveTypeAt(TypePath typePath) {
+  override Type resolvePathTypeAt(TypePath typePath) {
     typePath.isEmpty() and
     result = this.resolveRootType()
     or
@@ -298,7 +325,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
 }
 
 pragma[nomagic]
-private Type resolveImplSelfTypeAt(Impl i, TypePath path) {
+Type resolveImplSelfTypeAt(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
 }
 
@@ -307,7 +334,9 @@ class ImplSelfMention extends PathTypeMention {
 
   ImplSelfMention() { this = impl.getASelfPath() }
 
-  override Type resolveTypeAt(TypePath typePath) { result = resolveImplSelfTypeAt(impl, typePath) }
+  override Type resolvePathTypeAt(TypePath typePath) {
+    result = resolveImplSelfTypeAt(impl, typePath)
+  }
 }
 
 class PathTypeReprMention extends TypeMention, PathTypeRepr {
@@ -424,20 +453,24 @@ class ShorthandSelfParameterMention extends TypeMention instanceof SelfParam {
 
   private Type resolveSelfType(TypePath path) { result = resolveImplOrTraitType(encl, path) }
 
+  private RefType resolveSelfRefRootType() {
+    super.isRef() and
+    if super.isMut() then result instanceof RefMutType else result instanceof RefSharedType
+  }
+
   override Type resolveTypeAt(TypePath typePath) {
-    if super.isRef()
-    then
-      // `fn f(&self, ...)`
-      typePath.isEmpty() and
-      result instanceof RefType
-      or
-      exists(TypePath suffix |
-        result = this.resolveSelfType(suffix) and
-        typePath = TypePath::cons(getRefTypeParameter(), suffix)
-      )
-    else
-      // `fn f(self, ...)`
-      result = this.resolveSelfType(typePath)
+    // `fn f(&self, ...)`
+    typePath.isEmpty() and
+    result = this.resolveSelfRefRootType()
+    or
+    exists(TypePath suffix |
+      result = this.resolveSelfType(suffix) and
+      typePath = TypePath::cons(this.resolveSelfRefRootType().getPositionalTypeParameter(0), suffix)
+    )
+    or
+    // `fn f(self, ...)`
+    not super.isRef() and
+    result = this.resolveSelfType(typePath)
   }
 }
 
@@ -542,13 +575,18 @@ class NeverTypeReprMention extends TypeMention, NeverTypeRepr {
 }
 
 class PtrTypeReprMention extends TypeMention instanceof PtrTypeRepr {
+  private PtrType resolveRootType() {
+    super.isConst() and result instanceof PtrConstType
+    or
+    super.isMut() and result instanceof PtrMutType
+  }
+
   override Type resolveTypeAt(TypePath path) {
-    path.isEmpty() and
-    result instanceof PtrType
+    path.isEmpty() and result = this.resolveRootType()
     or
     exists(TypePath suffix |
       result = super.getTypeRepr().(TypeMention).resolveTypeAt(suffix) and
-      path = TypePath::cons(getPtrTypeParameter(), suffix)
+      path = TypePath::cons(this.resolveRootType().getPositionalTypeParameter(0), suffix)
     )
   }
 }

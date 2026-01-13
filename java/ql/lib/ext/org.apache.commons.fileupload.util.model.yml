@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.commons.fileupload.util", "Streams", True, "asString", "(InputStream)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.fileupload.util", "Streams", True, "asString", "(InputStream,String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.commons.fileupload.util", "Streams", True, "copy", "(InputStream,OutputStream,boolean)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["org.apache.commons.fileupload.util", "Streams", True, "copy", "(InputStream,OutputStream,boolean,byte[])", "", "Argument[0]", "Argument[1]", "taint", "manual"]

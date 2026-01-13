@@ -7,6 +7,27 @@ private import Node as Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.rust.internal.CachedStages
+private import codeql.rust.internal.TypeInference as TypeInference
+private import codeql.rust.internal.Type as Type
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
+
+/**
+ * Holds if the field `field` should, by default, be excluded from taint steps
+ * from the containing type to reads of the field. The models-as-data syntax
+ * used to denote the field is the same as for `Field[]` access path elements.
+ */
+extensible predicate excludeFieldTaintStep(string field);
+
+/**
+ * Holds if the content `c` corresponds to a field that has explicitly been
+ * excluded as a taint step.
+ */
+private predicate excludedTaintStepContent(Content c) {
+  exists(string arg | excludeFieldTaintStep(arg) |
+    FlowSummaryImpl::encodeContentStructField(c, arg) or
+    FlowSummaryImpl::encodeContentTupleField(c, arg)
+  )
+}
 
 module RustTaintTracking implements InputSig<Location, RustDataFlow> {
   predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
@@ -20,18 +41,6 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
     Stages::DataFlowStage::ref() and
     model = "" and
     (
-      exists(BinaryExpr binary |
-        binary.getOperatorName() = ["+", "-", "*", "/", "%", "&", "|", "^", "<<", ">>"] and
-        pred.asExpr() = [binary.getLhs(), binary.getRhs()] and
-        succ.asExpr() = binary
-      )
-      or
-      exists(PrefixExpr prefix |
-        prefix.getOperatorName() = ["-", "!"] and
-        pred.asExpr() = prefix.getExpr() and
-        succ.asExpr() = prefix
-      )
-      or
       pred.asExpr() = succ.asExpr().(CastExpr).getExpr()
       or
       exists(IndexExpr index |
@@ -40,15 +49,12 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
         succ.asExpr() = index
       )
       or
-      // Although data flow through collections and references is modeled using
-      // stores/reads, we also allow taint to flow out of a tainted collection
-      // or reference.
-      // This is needed in order to support taint-tracking configurations where
-      // the source is a collection or reference.
-      exists(SingletonContentSet cs | RustDataFlow::readStep(pred, cs, succ) |
-        cs.getContent() instanceof ElementContent
-        or
-        cs.getContent() instanceof ReferenceContent
+      // Read steps give rise to taint steps. This has the effect that if `foo`
+      // is tainted and an operation reads from `foo` (e.g., `foo.bar`) then
+      // taint is propagated.
+      exists(ContentSet cs |
+        RustDataFlow::readStep(pred, cs, succ) and
+        not excludedTaintStepContent(cs.getAReadContent())
       )
       or
       exists(FormatArgsExpr format | succ.asExpr() = format |
@@ -65,6 +71,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       or
       succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =
         getPostUpdateReverseStep(pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), false)
+      or
+      indexAssignment(any(CompoundAssignmentExpr cae),
+        pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), _, succ, _)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),
