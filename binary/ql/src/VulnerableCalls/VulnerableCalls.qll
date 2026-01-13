@@ -81,35 +81,6 @@ Function getStateMachineImplementation(Function stub) {
 }
 
 /**
- * Materialized: holds if function `caller` contains a call to function `callee`
- * via a static target (direct call).
- */
-pragma[nomagic]
-private predicate callsViaStaticTarget(Function caller, Function callee) {
-  callee = any(CallInstruction call | call.getEnclosingFunction() = caller).getStaticTarget()
-}
-
-/**
- * Materialized: holds if function `caller` contains a call to a function
- * with fully qualified name `calleeFqn` via an external reference.
- */
-pragma[nomagic]
-private predicate callsViaExternalRef(Function caller, string calleeFqn) {
-  exists(CallInstruction call |
-    call.getEnclosingFunction() = caller and
-    calleeFqn = call.getTargetOperand().getAnyDef().(ExternalRefInstruction).getFullyQualifiedName()
-  )
-}
-
-/**
- * Materialized: maps functions to their fully qualified names.
- */
-pragma[nomagic]
-private predicate functionFqn(Function f, string fqn) {
-  fqn = f.getFullyQualifiedName()
-}
-
-/**
  * Gets a method that transitively calls a vulnerable method.
  * This computes the transitive closure of the call graph.
  * 
@@ -120,19 +91,26 @@ Function getAVulnerableMethod(string id) {
   // Direct call to vulnerable method
   result = getADirectlyVulnerableMethod(id)
   or
-  // Transitive: method calls a vulnerable method via static target
-  callsViaStaticTarget(result, getAVulnerableMethod(id))
-  or
-  // Transitive: method calls a vulnerable method via external reference
-  exists(Function callee, string calleeFqn |
+  // Transitive: method calls another method that is vulnerable (via ExternalRef for external calls)
+  exists(CallInstruction call, Function callee |
+    call.getEnclosingFunction() = result and
     callee = getAVulnerableMethod(id) and
-    functionFqn(callee, calleeFqn) and
-    callsViaExternalRef(result, calleeFqn)
+    call.getTargetOperand().getAnyDef().(ExternalRefInstruction).getFullyQualifiedName() =
+      callee.getFullyQualifiedName()
+  )
+  or
+  // Transitive: method calls another method that is vulnerable (via static target for direct calls)
+  exists(CallInstruction call |
+    call.getEnclosingFunction() = result and
+    call.getStaticTarget() = getAVulnerableMethod(id)
   )
   or
   // Iterator/async: if a state machine's MoveNext is vulnerable, 
   // the stub method that creates it is also vulnerable
-  isStateMachineImplementation(result, getAVulnerableMethod(id))
+  exists(Function stateMachine |
+    stateMachine = getAVulnerableMethod(id) and
+    isStateMachineImplementation(result, stateMachine)
+  )
 }
 
 /**
