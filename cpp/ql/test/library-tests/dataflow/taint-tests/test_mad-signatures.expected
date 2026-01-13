@@ -135,6 +135,7 @@ signatureMatches
 | stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 0 |
 | stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:678:33:678:38 | format | std | (format_string,Args &&) |  | format<Args> | 1 |
+| taint.cpp:735:7:735:12 | malloc |  | (size_t) |  | malloc | 0 |
 | taint.cpp:847:5:847:11 | toupper |  | (int) |  | toupper | 0 |
 | taint.cpp:848:5:848:11 | tolower |  | (int) |  | tolower | 0 |
 getSignatureParameterName
