@@ -57,7 +57,7 @@ public class HardcodedCouchBaseCredentials {
     Cluster.connect(
         "127.0.0.1",
         clusterOptions(
-            "Administrator", // $ HardcodedCredentialsApiCall
-            "password")); // $ HardcodedCredentialsApiCall
+            "Administrator", // $ HardcodedCredentialsSourceCall $ HardcodedCredentialsApiCall
+            "password")); // $ HardcodedCredentialsSourceCall $ HardcodedCredentialsApiCall
   }
 }
