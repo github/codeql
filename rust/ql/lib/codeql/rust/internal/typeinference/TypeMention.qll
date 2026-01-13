@@ -1,9 +1,9 @@
 /** Provides classes for representing type mentions, used in type inference. */
 
 private import rust
+private import codeql.rust.internal.PathResolution
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
-private import PathResolution
 private import TypeInference
 
 /** An AST node that may mention a type. */

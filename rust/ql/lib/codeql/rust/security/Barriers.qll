@@ -5,8 +5,8 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.internal.Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins

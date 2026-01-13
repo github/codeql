@@ -3,14 +3,14 @@
 private import codeql.util.Boolean
 private import codeql.util.Option
 private import rust
-private import PathResolution
+private import codeql.rust.internal.PathResolution
 private import Type
 private import Type as T
 private import TypeMention
-private import typeinference.DerefChain
-private import typeinference.FunctionType
-private import typeinference.FunctionOverloading as FunctionOverloading
-private import typeinference.BlanketImplementation as BlanketImplementation
+private import codeql.rust.internal.typeinference.DerefChain
+private import FunctionType
+private import FunctionOverloading as FunctionOverloading
+private import BlanketImplementation as BlanketImplementation
 private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.typeinference.internal.TypeInference

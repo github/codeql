@@ -7,9 +7,9 @@
 
 private import rust
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeMention
-private import codeql.rust.internal.TypeInference
+private import Type
+private import TypeMention
+private import TypeInference
 private import FunctionType
 
 pragma[nomagic]

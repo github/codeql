@@ -6,8 +6,8 @@
 import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.security.AccessInvalidPointerExtensions
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 
 /**
  * Provides default sources, sinks and barriers for detecting accesses to a

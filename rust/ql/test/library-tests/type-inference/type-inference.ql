@@ -1,7 +1,7 @@
 import rust
 import utils.test.InlineExpectationsTest
-import codeql.rust.internal.Type
-import codeql.rust.internal.TypeInference as TypeInference
+import codeql.rust.internal.typeinference.Type
+import codeql.rust.internal.typeinference.TypeInference as TypeInference
 import TypeInference
 
 private predicate relevantNode(AstNode n) {
