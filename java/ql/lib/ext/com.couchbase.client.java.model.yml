@@ -10,19 +10,9 @@ extensions:
       - ["com.couchbase.client.java", "Cluster", true, "connect", "(String,String,String)", "", "Argument[2]", "credentials-password", "manual"]
       - ["com.couchbase.client.java", "ClusterOptions", true, "clusterOptions", "(String,String)", "", "Argument[1]", "credentials-password", "manual"]
       # 'sql-injection' sinks
-      - ["com.couchbase.client.java", "Cluster", true, "analysticsQuery", "(String)", "", "Argument[0]", "sql-injection", "manual"]
-      - ["com.couchbase.client.java", "Cluster", true, "analysticsQuery", "(String,AnalyticsOptions)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "analyticsQuery", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "analyticsQuery", "(String,AnalyticsOptions)", "", "Argument[0]", "sql-injection", "manual"]
       - ["com.couchbase.client.java", "Cluster", true, "query", "(String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["com.couchbase.client.java", "Cluster", true, "query", "(String,QueryOptions)", "", "Argument[0]", "sql-injection", "manual"]
       - ["com.couchbase.client.java", "Cluster", true, "queryStreaming", "(String,Consumer)", "", "Argument[0]", "sql-injection", "manual"]
       - ["com.couchbase.client.java", "Cluster", true, "queryStreaming", "(String,QueryOptions,Consumer)", "", "Argument[0]", "sql-injection", "manual"]
-      - ["com.couchbase.client.java", "Cluster", true, "searchQuery", "(String,SearchQuery)", "", "Argument[1]", "sql-injection", "manual"]
-      - ["com.couchbase.client.java", "Cluster", true, "searchQuery", "(String,SearchQuery,SearchOptions)", "", "Argument[1]", "sql-injection", "manual"]
-
-  - addsTo:
-      pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["com.couchbase.client.java.json", "JsonObject", true, "put", "", "", "Argument[0]", "ReturnValue.MapKey", "taint", "manual"]
-      - ["com.couchbase.client.java.json", "JsonObject", true, "put", "", "", "Argument[1]", "ReturnValue.MapValue", "taint", "manual"]
-      - ["com.couchbase.client.java.json", "JsonObject", true, "putNull", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

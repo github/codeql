@@ -1,3 +1,3 @@
 package com.couchbase.client.java.query;
 
-public class QueryResult {}
+public class QueryRow {}

@@ -30,12 +30,22 @@ public class HardcodedCouchBaseCredentials {
     PasswordAuthenticator.builder()
         .username("Administrator") // $ HardcodedCredentialsSourceCall $ HardcodedCredentialsApiCall
         .password("password"); // $ HardcodedCredentialsSourceCall $ HardcodedCredentialsApiCall
-    PasswordAuthenticator.builder((Supplier<UsernameAndPassword>) new UsernameAndPassword(
-                "Administrator", // $ HardcodedCredentialsSourceCall$ MISSING: HardcodedCredentialsApiCall 
-                "password")); // $ HardcodedCredentialsSourceCall$ MISSING: HardcodedCredentialsApiCall 
+    PasswordAuthenticator.builder(
+        (Supplier<UsernameAndPassword>)
+            new UsernameAndPassword(
+                "Administrator", // $ HardcodedCredentialsSourceCall $ MISSING: HardcodedCredentialsApiCall
+                "password")); // $ HardcodedCredentialsSourceCall $ MISSING: HardcodedCredentialsApiCall
     PasswordAuthenticator.builder()
-        .username((Supplier<String>) () -> {return "Administrator";}) // $ MISSING: HardcodedCredentialsApiCall
-        .password((Supplier<String>) () -> {return "password";}); // $ MISSING: HardcodedCredentialsApiCall
+        .username(
+            (Supplier<String>)
+                () -> {
+                  return "Administrator"; // $ MISSING: HardcodedCredentialsApiCall
+                }) 
+        .password(
+            (Supplier<String>)
+                () -> {
+                  return "password"; // $ MISSING: HardcodedCredentialsApiCall
+                }); 
 
     // com.couchbase.client.java.Cluster sinks
     Cluster.connect(
