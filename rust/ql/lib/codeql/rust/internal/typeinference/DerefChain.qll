@@ -4,7 +4,7 @@ private import rust
 private import codeql.rust.internal.PathResolution
 private import Type
 private import TypeInference
-private import codeql.rust.internal.typeinference.TypeMention
+private import TypeMention
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.UnboundList as UnboundListImpl
