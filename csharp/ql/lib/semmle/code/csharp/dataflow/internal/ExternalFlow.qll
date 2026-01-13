@@ -474,7 +474,7 @@ private module Cached {
       kmp = TMkPair(kind, model) and
       gv = convertAcceptingValue(acceptingvalue)
     |
-      g.(Call).getAnArgument() = e or g.(MethodCall).getQualifier() = e
+      g.(Call).getAnArgument() = e or g.(QualifiableExpr).getQualifier() = e
     )
   }
 
