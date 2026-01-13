@@ -16,8 +16,17 @@ export const router = new Router({
                         from.query.x;
                     }
                 }
-            ]
-        }
+            ],
+            props: route => ({
+                x: route.query.x
+            }),
+        },
+        {
+            props: {
+                x: route => route.query.x,
+                y: route => route.query.y
+            },
+        },
     ],
     scrollBehavior(to, from, savedPosition) {
         to.query.x;
@@ -34,4 +43,3 @@ router.afterEach((to, from) => {
     to.query.x;
     from.query.x;
 });
-
