@@ -1650,10 +1650,17 @@ module API {
         isInOverlayChangedFile(node)
       }
 
+      pragma[nomagic]
+      private predicate step(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+        StepSummary::step(node1, node2, _)
+        or
+        AdditionalUseStep::step(node1, node2)
+      }
+
       /** Holds if there is a step `node1 -> node2` from an unchanged file into a changed file. */
       pragma[nomagic]
       private predicate stepIntoOverlay(DataFlow::Node node1, DataFlow::Node node2) {
-        StepSummary::step(node1, node2, _) and
+        step(node1, node2) and
         isInOverlayChangedFile(node2) and
         not isInOverlayChangedFileLate(node1) and
         hasSemanticsLate(node1)
@@ -1680,7 +1687,7 @@ module API {
       /** Holds if there is a step `node1 -> node2` from a changed file into an unchanged file. */
       pragma[nomagic]
       private predicate stepOutOfOverlay(DataFlow::Node node1, DataFlow::Node node2) {
-        StepSummary::step(node1, node2, _) and
+        step(node1, node2) and
         isInOverlayChangedFile(node1) and
         not isInOverlayChangedFileLate(node2) and
         hasSemanticsLate(node2)
