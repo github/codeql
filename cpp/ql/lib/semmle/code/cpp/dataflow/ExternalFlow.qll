@@ -742,7 +742,7 @@ private Function getFunction(string namespace, string type, boolean subtypes, st
   elementSpec(namespace, type, subtypes, name, _, _) and
   (
     funcHasQualifiedName(result, namespace, name) and
-    subtypes = false and
+    subtypes = [true, false] and
     type = ""
     or
     exists(Class namedClass, Class classWithMethod |
@@ -990,7 +990,7 @@ private Element interpretElement0(
   elementSpec(namespace, type, subtypes, name, signature, _) and
   signature = "" and
   type = "" and
-  subtypes = false and
+  subtypes = [true, false] and
   result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
 }
 
