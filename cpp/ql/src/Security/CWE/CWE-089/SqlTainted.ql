@@ -45,6 +45,9 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
+    or
+    // barrier defined using models-as-data
+    barrierNode(node, "sql-injection")
   }
 
   predicate isBarrierIn(DataFlow::Node node) {
