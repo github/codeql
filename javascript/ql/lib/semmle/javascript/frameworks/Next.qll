@@ -42,7 +42,7 @@ module NextJS {
   deprecated predicate getAPagesFolder = pagesFolder/0;
 
   /**
-   * Gets a module corrosponding to a `Next.js` page.
+   * Gets a module corresponding to a `Next.js` page.
    */
   Module getAPagesModule() {
     result.getFile() = [pagesFolder().getAFile(), appFolder().getJavaScriptFile("page")]
