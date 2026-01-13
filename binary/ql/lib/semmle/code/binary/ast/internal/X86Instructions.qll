@@ -4031,17 +4031,17 @@ private module InstructionInput0 implements InstructionInputSig {
     string toString() { result = this.getTarget().toString() }
   }
 
-  class BaseX86UnusedOperand extends X86Operand {
+  class BaseX86UnusedOperand extends BaseX86Operand {
     BaseX86UnusedOperand() { operand_unused(this) }
   }
 
-  class BaseX86RegisterOperand extends X86Operand {
+  class BaseX86RegisterOperand extends BaseX86Operand {
     BaseX86RegisterOperand() { operand_reg(this, _) }
 
     BaseX86RegisterAccess getAccess() { operand_reg(this, result) }
   }
 
-  class BaseX86MemoryOperand extends X86Operand {
+  class BaseX86MemoryOperand extends BaseX86Operand {
     BaseX86MemoryOperand() { operand_mem(this) }
 
     predicate hasDisplacement() { operand_mem_displacement(this, _) }
@@ -4057,11 +4057,11 @@ private module InstructionInput0 implements InstructionInputSig {
     int getDisplacementValue() { operand_mem_displacement(this, result) }
   }
 
-  class BaseX86PointerOperand extends X86Operand {
+  class BaseX86PointerOperand extends BaseX86Operand {
     BaseX86PointerOperand() { operand_ptr(this, _, _) }
   }
 
-  class BaseX86ImmediateOperand extends X86Operand {
+  class BaseX86ImmediateOperand extends BaseX86Operand {
     BaseX86ImmediateOperand() { operand_imm(this, _, _, _) }
 
     int getValue() { operand_imm(this, result, _, _) }
@@ -4074,4 +4074,238 @@ private module InstructionInput0 implements InstructionInputSig {
   }
 }
 
-import MakeInstructions<InstructionInput0>
+module Internal = MakeInstructions<InstructionInput0>;
+
+private module Pre {
+  module PreInput implements InstructionInputSig {
+    class BaseX86Instruction extends Internal::X86Instruction {
+      private string toString0() { instruction_string(this, result) }
+
+      override string toString() {
+        if exists(this.getAnOperand())
+        then
+          result =
+            this.toString0() + " " +
+              strictconcat(int i, string s | s = this.getOperand(i).toString() | s, ", " order by i)
+        else result = this.toString0()
+      }
+    }
+
+    class BaseX86Register extends Internal::X86Register {
+      BaseX86Register getASubRegister() { result = super.getASubRegister() }
+    }
+
+    class BaseRipRegister extends BaseX86Register instanceof Internal::RipRegister { }
+
+    class BaseRspRegister extends BaseX86Register instanceof Internal::RspRegister { }
+
+    class BaseRbpRegister extends BaseX86Register instanceof Internal::RbpRegister { }
+
+    class BaseRcxRegister extends BaseX86Register instanceof Internal::RcxRegister { }
+
+    class BaseRdxRegister extends BaseX86Register instanceof Internal::RdxRegister { }
+
+    class BaseR8Register extends BaseX86Register instanceof Internal::R8Register { }
+
+    class BaseR9Register extends BaseX86Register instanceof Internal::R9Register { }
+
+    class BaseX86Operand extends Internal::X86Operand { }
+
+    class BaseX86RegisterAccess extends Internal::X86RegisterAccess {
+      BaseX86Register getTarget() { result = super.getTarget() }
+    }
+
+    class BaseX86UnusedOperand extends BaseX86Operand, Internal::X86UnusedOperand { }
+
+    class BaseX86RegisterOperand extends BaseX86Operand, Internal::X86RegisterOperand {
+      BaseX86RegisterAccess getAccess() { result = super.getAccess() }
+    }
+
+    class BaseX86PointerOperand extends BaseX86Operand, Internal::X86PointerOperand { }
+
+    class BaseX86ImmediateOperand extends BaseX86Operand, Internal::X86ImmediateOperand { }
+
+    abstract private class MyCall extends BaseX86Instruction instanceof Internal::X86Call {
+      Internal::X86Operand op;
+
+      MyCall() { op = this.getOperand(0) }
+
+      abstract Internal::X86Instruction getTarget();
+    }
+
+    private class CallImmediate extends MyCall {
+      override Internal::X86ImmediateOperand op;
+      BaseX86Instruction target;
+
+      CallImmediate() {
+        op.isRelative() and
+        op.getValue().toBigInt() + this.getIndex() + this.getLength().toBigInt() = target.getIndex()
+      }
+
+      override Internal::X86Instruction getTarget() { result = target }
+    }
+
+    class BaseX86MemoryOperand extends BaseX86Operand instanceof Internal::X86MemoryOperand {
+      predicate hasDisplacement() { super.hasDisplacement() }
+
+      BaseX86RegisterAccess getSegmentRegister() { result = super.getSegmentRegister() }
+
+      BaseX86RegisterAccess getBaseRegister() { result = super.getBaseRegister() }
+
+      BaseX86RegisterAccess getIndexRegister() { result = super.getIndexRegister() }
+
+      int getScaleFactor() { result = super.getScaleFactor() }
+
+      int getDisplacementValue() { result = super.getDisplacementValue() }
+    }
+
+    private class CallConstantMemoryOperand extends MyCall {
+      override Internal::X86MemoryOperand op;
+      int displacement;
+
+      CallConstantMemoryOperand() {
+        op.getBaseRegister().getTarget() instanceof Internal::RipRegister and
+        not exists(op.getIndexRegister()) and
+        displacement = op.getDisplacementValue()
+      }
+
+      final override BaseX86Instruction getTarget() {
+        exists(
+          QlBuiltins::BigInt rip, QlBuiltins::BigInt effectiveVA,
+          QlBuiltins::BigInt offsetWithinSection, Sections::RDataSection rdata,
+          QlBuiltins::BigInt address
+        |
+          rip = this.getVirtualAddress() + this.getLength().toBigInt() and
+          effectiveVA = rip + displacement.toBigInt() and
+          offsetWithinSection = effectiveVA - rdata.getVirtualAddress().toBigInt() and
+          address =
+            rdata.read8Bytes(offsetWithinSection) - any(Headers::OptionalHeader h).getImageBase() and
+          result.getVirtualAddress() = address
+        )
+      }
+    }
+
+    BaseX86Instruction getCallTarget(BaseX86Instruction b) { result = b.(MyCall).getTarget() }
+
+    abstract private class MyJumping extends BaseX86Instruction instanceof Internal::X86JumpingInstruction
+    {
+      abstract BaseX86Instruction getTarget();
+    }
+
+    private class ImmediateRelativeJumping extends MyJumping {
+      X86ImmediateOperand op;
+
+      ImmediateRelativeJumping() { op = this.getOperand(0) and op.isRelative() }
+
+      final override BaseX86Instruction getTarget() {
+        op.getValue().toBigInt() + this.getIndex() + this.getLength().toBigInt() = result.getIndex()
+      }
+    }
+
+    BaseX86Instruction getJumpTarget(BaseX86Instruction b) { result = b.(MyJumping).getTarget() }
+  }
+
+  import MakeInstructions<PreInput> as Instructions
+}
+
+private int getOffsetOfEntryPoint() {
+  result =
+    any(Headers::OptionalHeader x).getEntryPoint() -
+      any(Sections::TextSection s).getVirtualAddress()
+}
+
+private int getOffsetOfAnExportedFunction() {
+  result =
+    any(Sections::ExportTableEntry e).getAddress() -
+      any(Sections::TextSection s).getVirtualAddress()
+}
+
+private module Input implements InstructionInputSig {
+  private class ProgramEntryInstruction0 extends Pre::Instructions::X86Instruction {
+    ProgramEntryInstruction0() { this.getIndex() = getOffsetOfEntryPoint().toBigInt() }
+  }
+
+  private class ExportedInstruction0 extends Pre::Instructions::X86Instruction {
+    ExportedInstruction0() { this.getIndex() = getOffsetOfAnExportedFunction().toBigInt() }
+  }
+
+  private predicate fwd(Pre::Instructions::X86Instruction i) {
+    i instanceof ProgramEntryInstruction0
+    or
+    i instanceof ExportedInstruction0
+    or
+    exists(Pre::Instructions::X86Instruction i0 | fwd(i0) |
+      i0.getASuccessor() = i
+      or
+      Pre::PreInput::getCallTarget(i0) = i
+    )
+  }
+
+  class BaseX86Instruction extends Pre::Instructions::X86Instruction {
+    BaseX86Instruction() { fwd(this) }
+  }
+
+  BaseX86Instruction getCallTarget(BaseX86Instruction b) {
+    result = Pre::PreInput::getCallTarget(b)
+  }
+
+  BaseX86Instruction getJumpTarget(BaseX86Instruction b) {
+    result = Pre::PreInput::getJumpTarget(b)
+  }
+
+  class BaseX86Register extends Pre::Instructions::X86Register {
+    BaseX86Register getASubRegister() { result = super.getASubRegister() }
+  }
+
+  class BaseRipRegister extends BaseX86Register instanceof Pre::Instructions::RipRegister { }
+
+  class BaseRspRegister extends BaseX86Register instanceof Pre::Instructions::RspRegister { }
+
+  class BaseRbpRegister extends BaseX86Register instanceof Pre::Instructions::RbpRegister { }
+
+  class BaseRcxRegister extends BaseX86Register instanceof Pre::Instructions::RcxRegister { }
+
+  class BaseRdxRegister extends BaseX86Register instanceof Pre::Instructions::RdxRegister { }
+
+  class BaseR8Register extends BaseX86Register instanceof Pre::Instructions::R8Register { }
+
+  class BaseR9Register extends BaseX86Register instanceof Pre::Instructions::R9Register { }
+
+  class BaseX86Operand extends Pre::Instructions::X86Operand {
+    BaseX86Operand() { this.getUse() instanceof BaseX86Instruction }
+  }
+
+  class BaseX86RegisterAccess extends Pre::Instructions::X86RegisterAccess {
+    BaseX86Register getTarget() { result = super.getTarget() }
+  }
+
+  class BaseX86UnusedOperand extends BaseX86Operand, Pre::Instructions::X86UnusedOperand { }
+
+  class BaseX86RegisterOperand extends BaseX86Operand, Pre::Instructions::X86RegisterOperand {
+    BaseX86RegisterAccess getAccess() { result = super.getAccess() }
+  }
+
+  final private class FinalBaseX86Operand = BaseX86Operand;
+
+  class BaseX86MemoryOperand extends FinalBaseX86Operand, Pre::Instructions::X86MemoryOperand {
+    BaseX86RegisterAccess getSegmentRegister() { result = super.getSegmentRegister() }
+
+    BaseX86RegisterAccess getBaseRegister() { result = super.getBaseRegister() }
+
+    BaseX86RegisterAccess getIndexRegister() { result = super.getIndexRegister() }
+  }
+
+  class BaseX86PointerOperand extends BaseX86Operand, Pre::Instructions::X86PointerOperand { }
+
+  class BaseX86ImmediateOperand extends BaseX86Operand, Pre::Instructions::X86ImmediateOperand { }
+}
+
+class X86ProgramEntryInstruction extends X86Instruction {
+  X86ProgramEntryInstruction() { this.getIndex() = getOffsetOfEntryPoint().toBigInt() }
+}
+
+class X86ExportedEntryInstruction extends X86Instruction {
+  X86ExportedEntryInstruction() { this.getIndex() = getOffsetOfAnExportedFunction().toBigInt() }
+}
+
+import MakeInstructions<Input>

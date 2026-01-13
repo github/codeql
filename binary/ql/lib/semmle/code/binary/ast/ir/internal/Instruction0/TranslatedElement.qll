@@ -84,9 +84,9 @@ newtype TTranslatedElement =
     (
       entry = any(Raw::X86Call call).getTarget()
       or
-      entry instanceof Raw::ProgramEntryInstruction
+      entry instanceof Raw::X86ProgramEntryInstruction
       or
-      entry instanceof Raw::ExportedEntryInstruction
+      entry instanceof Raw::X86ExportedEntryInstruction
     )
   } or
   TTranslatedCilMethod(Raw::CilMethod m) { shouldTranslateMethod(m) } or

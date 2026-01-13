@@ -110,9 +110,9 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
       else result = "Function_" + entry.getIndex()
   }
 
-  final override predicate isProgramEntryPoint() { entry instanceof Raw::ProgramEntryInstruction }
+  final override predicate isProgramEntryPoint() { entry instanceof Raw::X86ProgramEntryInstruction }
 
-  final override predicate isPublic() { entry instanceof Raw::ExportedEntryInstruction }
+  final override predicate isPublic() { entry instanceof Raw::X86ExportedEntryInstruction }
 
   final override predicate hasOrdering(LocalVariableTag tag, int ordering) {
     exists(Raw::X86Register r | tag = X86RegisterTag(r) |
