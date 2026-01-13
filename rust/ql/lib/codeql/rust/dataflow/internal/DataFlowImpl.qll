@@ -149,7 +149,6 @@ private Expr getALastEvalNode(Expr e) {
       not be.isAsync() and
       result = be.getTailExpr()
     ) or
-  result = e.(MacroBlockExpr).getTailExpr() or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
   result.(BreakExpr).getTarget() = e or
