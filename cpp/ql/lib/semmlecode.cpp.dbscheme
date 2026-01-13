@@ -2389,6 +2389,8 @@ link_parent(
     int link_target : @link_target ref
 );
 
+/*- Database metadata -*/
+
 /**
  * The CLI will automatically emit applicable tuples for this table,
  * such as `databaseMetadata("isOverlay", "true")` when building an
@@ -2398,6 +2400,8 @@ databaseMetadata(
   string metadataKey: string ref,
   string value: string ref
 );
+
+/*- Overlay support -*/
 
 /**
  * The CLI will automatically emit tuples for each new/modified/deleted file
