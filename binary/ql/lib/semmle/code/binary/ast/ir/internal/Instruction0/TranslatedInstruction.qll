@@ -2702,18 +2702,6 @@ abstract class TranslatedJvmInstruction extends TranslatedInstruction {
    */
   abstract Variable getStackElement(int i);
 
-  /**
-   * Gets the variable holding the value at stack slot `i` (0 = top) at entry to this instruction.
-   * This uses materialized stack data from the extractor for O(1) lookup instead of
-   * recursive CFG traversal.
-   */
-  final Variable getInputStackVariable(int slot) {
-    exists(Raw::JvmInstruction producer |
-      producer = instr.getStackProducer(slot) and
-      result = getTranslatedJvmInstruction(producer).getResultVariable()
-    )
-  }
-
   final override TranslatedFunction getEnclosingFunction() {
     result = getTranslatedFunction(instr.getEnclosingMethod())
   }
@@ -2798,13 +2786,14 @@ class TranslatedJvmInvoke extends TranslatedJvmInstruction, TTranslatedJvmInvoke
     or
     // Rest of the stack has the arguments removed
     i > 0 and
-    instr.hasReturnValue() and
-    result = this.getInputStackVariable(i - 1 + instr.getNumberOfArguments())
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor())
+        .getStackElement(i - 1 + instr.getNumberOfArguments())
     or
-    // If no return value, shift the indices (only arguments removed)
+    // If no return value, shift the indices
     i >= 0 and
     not instr.hasReturnValue() and
-    result = this.getInputStackVariable(i + instr.getNumberOfArguments())
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor())
+        .getStackElement(i + instr.getNumberOfArguments())
   }
 }
 
@@ -2834,7 +2823,7 @@ class TranslatedJvmReturn extends TranslatedJvmInstruction, TTranslatedJvmReturn
     tag = JvmReturnTag() and
     operandTag instanceof UnaryTag and
     not instr.getEnclosingMethod().isVoid() and
-    result = this.getInputStackVariable(0)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -2887,13 +2876,11 @@ class TranslatedJvmLoadLocal extends TranslatedJvmInstruction, TTranslatedJvmLoa
   override Variable getResultVariable() { result = this.getTempVariable(JvmLoadLocalResultVarTag()) }
 
   final override Variable getStackElement(int i) {
-    // Load pushes a value onto the stack
     i = 0 and
     result = this.getInstruction(JvmLoadLocalTag()).getResultVariable()
     or
-    // Rest of stack is unchanged (shifted by 1)
     i > 0 and
-    result = this.getInputStackVariable(i - 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
   }
 
   override predicate hasLocalVariable(LocalVariableTag tag) {
@@ -2922,7 +2909,7 @@ class TranslatedJvmStoreLocal extends TranslatedJvmInstruction, TTranslatedJvmSt
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = JvmStoreLocalTag() and
     operandTag instanceof UnaryTag and
-    result = this.getInputStackVariable(0)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -2938,8 +2925,7 @@ class TranslatedJvmStoreLocal extends TranslatedJvmInstruction, TTranslatedJvmSt
   override Variable getResultVariable() { none() }
 
   final override Variable getStackElement(int i) {
-    // Store pops the top value, so stack shifts down by 1
-    result = this.getInputStackVariable(i + 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
   }
 
   override predicate hasLocalVariable(LocalVariableTag tag) {
@@ -2980,8 +2966,7 @@ class TranslatedJvmNop extends TranslatedJvmInstruction, TTranslatedJvmNop {
   override Variable getResultVariable() { none() }
 
   final override Variable getStackElement(int i) {
-    // Nop doesn't change the stack
-    result = this.getInputStackVariable(i)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
   }
 }
 
@@ -3008,14 +2993,14 @@ class TranslatedJvmBranch extends TranslatedJvmInstruction, TTranslatedJvmBranch
     tag = JvmBranchCJumpTag() and
     operandTag instanceof CondTag and
     instr instanceof Raw::JvmUnaryConditionalBranch and
-    result = this.getInputStackVariable(0)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
     or
     // For binary branches (if_icmpeq, etc.), we'd need to compute comparison
     // For now, use the top stack element as condition
     tag = JvmBranchCJumpTag() and
     operandTag instanceof CondTag and
     instr instanceof Raw::JvmBinaryConditionalBranch and
-    result = this.getInputStackVariable(0)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -3040,11 +3025,11 @@ class TranslatedJvmBranch extends TranslatedJvmInstruction, TTranslatedJvmBranch
   final override Variable getStackElement(int i) {
     // After a unary branch, one element is consumed
     instr instanceof Raw::JvmUnaryConditionalBranch and
-    result = this.getInputStackVariable(i + 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
     or
     // After a binary branch, two elements are consumed
     instr instanceof Raw::JvmBinaryConditionalBranch and
-    result = this.getInputStackVariable(i + 2)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
   }
 }
 
@@ -3081,8 +3066,7 @@ class TranslatedJvmGoto extends TranslatedJvmInstruction, TTranslatedJvmGoto {
   override Variable getResultVariable() { none() }
 
   final override Variable getStackElement(int i) {
-    // Goto doesn't change the stack
-    result = this.getInputStackVariable(i)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
   }
 }
 
@@ -3119,10 +3103,10 @@ class TranslatedJvmArithmetic extends TranslatedJvmInstruction, TTranslatedJvmAr
     tag = JvmArithOpTag() and
     (
       operandTag instanceof LeftTag and
-      result = this.getInputStackVariable(1)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(1)
       or
       operandTag instanceof RightTag and
-      result = this.getInputStackVariable(0)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
     )
   }
 
@@ -3143,9 +3127,8 @@ class TranslatedJvmArithmetic extends TranslatedJvmInstruction, TTranslatedJvmAr
     i = 0 and
     result = this.getInstruction(JvmArithOpTag()).getResultVariable()
     or
-    // Rest of the stack shifts down by 1 (2 consumed, 1 produced)
     i > 0 and
-    result = this.getInputStackVariable(i + 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
   }
 }
 
@@ -3211,7 +3194,7 @@ class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmF
       result = this.getTempVariable(JvmFieldAddressVarTag())
       or
       operandTag instanceof StoreValueTag and
-      result = this.getInputStackVariable(0)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
     )
     or
     // For non-static field access, use object reference as base
@@ -3220,10 +3203,10 @@ class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmF
     not instr.isStatic() and
     (
       instr instanceof Raw::JvmFieldLoad and
-      result = this.getInputStackVariable(0)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
       or
       instr instanceof Raw::JvmFieldStore and
-      result = this.getInputStackVariable(1)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(1)
     )
   }
 
@@ -3254,32 +3237,31 @@ class TranslatedJvmFieldAccess extends TranslatedJvmInstruction, TTranslatedJvmF
   }
 
   final override Variable getStackElement(int i) {
-    // For getfield: consumes object ref, pushes field value (net: no change in stack depth)
+    // For getfield: consumes object ref, pushes field value
     instr instanceof Raw::JvmGetfield and
     (
       i = 0 and result = this.getInstruction(JvmFieldLoadTag()).getResultVariable()
       or
-      // Stack unchanged below the result (1 consumed, 1 produced)
       i > 0 and
-      result = this.getInputStackVariable(i)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i)
     )
     or
-    // For getstatic: pushes field value (no object ref consumed, stack grows by 1)
+    // For getstatic: pushes field value (no object ref consumed)
     instr instanceof Raw::JvmGetstatic and
     (
       i = 0 and result = this.getInstruction(JvmFieldLoadTag()).getResultVariable()
       or
       i > 0 and
-      result = this.getInputStackVariable(i - 1)
+      result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
     )
     or
-    // For putfield: consumes object ref and value (stack shrinks by 2)
+    // For putfield: consumes object ref and value
     instr instanceof Raw::JvmPutfield and
-    result = this.getInputStackVariable(i + 2)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
     or
-    // For putstatic: consumes value only (stack shrinks by 1)
+    // For putstatic: consumes value only
     instr instanceof Raw::JvmPutstatic and
-    result = this.getInputStackVariable(i + 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
   }
 }
 
@@ -3322,9 +3304,8 @@ class TranslatedJvmNew extends TranslatedJvmInstruction, TTranslatedJvmNew {
     i = 0 and
     result = this.getInstruction(JvmNewInitTag()).getResultVariable()
     or
-    // Rest of the stack is unchanged (shifted by 1)
     i > 0 and
-    result = this.getInputStackVariable(i - 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
   }
 }
 
@@ -3351,7 +3332,7 @@ class TranslatedJvmDup extends TranslatedJvmInstruction, TTranslatedJvmDup {
   override Variable getVariableOperand(InstructionTag tag, OperandTag operandTag) {
     tag = JvmDupCopyTag() and
     operandTag instanceof UnaryTag and
-    result = this.getInputStackVariable(0)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
@@ -3373,11 +3354,10 @@ class TranslatedJvmDup extends TranslatedJvmInstruction, TTranslatedJvmDup {
     or
     // The original element is still there at position 1
     i = 1 and
-    result = this.getInputStackVariable(0)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(0)
     or
-    // Rest of the stack is shifted by 1
     i > 1 and
-    result = this.getInputStackVariable(i - 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
   }
 }
 
@@ -3416,10 +3396,10 @@ class TranslatedJvmPop extends TranslatedJvmInstruction, TTranslatedJvmPop {
   final override Variable getStackElement(int i) {
     // pop removes the top element (pop removes 1, pop2 removes 2)
     instr instanceof Raw::JvmPop and
-    result = this.getInputStackVariable(i + 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 1)
     or
     instr instanceof Raw::JvmPop2 and
-    result = this.getInputStackVariable(i + 2)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i + 2)
   }
 }
 
@@ -3462,8 +3442,7 @@ class TranslatedJvmLoadConstant extends TranslatedJvmInstruction, TTranslatedJvm
     i = 0 and
     result = this.getInstruction(JvmConstTag()).getResultVariable()
     or
-    // Rest of the stack is unchanged (shifted by 1)
     i > 0 and
-    result = this.getInputStackVariable(i - 1)
+    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor()).getStackElement(i - 1)
   }
 }

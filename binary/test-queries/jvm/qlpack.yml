@@ -1,4 +1,4 @@
 name: test/jvm-queries
 version: 0.0.1
-dependencies:
-  microsoft/binary-all: "*"
+libraryPathDependencies:
+  - microsoft/binary-all
