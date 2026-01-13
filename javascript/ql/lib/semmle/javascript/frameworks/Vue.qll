@@ -664,6 +664,10 @@ module Vue {
       or
       result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).asSource()
       or
+      result = routeConfig().getMember("props").getParameter(0).asSource()
+      or
+      result = routeConfig().getMember("props").getAMember().getParameter(0).asSource()
+      or
       exists(Component c |
         result = c.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
         or
