@@ -429,7 +429,7 @@ module Expressions {
       not this instanceof ObjectCreation and
       not this instanceof ArrayCreation and
       not this instanceof QualifiedWriteAccess and
-      not this instanceof AccessorWrite and
+      not this instanceof QualifiedAccessorWrite and
       not this instanceof NoNodeExpr and
       not this instanceof SwitchExpr and
       not this instanceof SwitchCaseExpr and
@@ -448,6 +448,10 @@ module Expressions {
   /**
    * A qualified write access. In a qualified write access, the access itself is
    * not evaluated, only the qualifier and the indexer arguments (if any).
+   *
+   * Note that the successor declaration in `QualifiedAccessorWrite` ensures that the access itself
+   * is evaluated after the qualifier and the indexer arguments (if any)
+   * and the right hand side of the assignment.
    */
   private class QualifiedWriteAccess extends ControlFlowTree instanceof WriteAccess, QualifiableExpr
   {
@@ -470,25 +474,25 @@ module Expressions {
     final override predicate last(AstNode last, Completion c) {
       // Skip the access in a qualified write access
       last(getLastExprChild(this), last, c)
+      or
+      // Qualifier exits with a null completion
+      super.isConditional() and
+      last(super.getQualifier(), last, c) and
+      c.(NullnessCompletion).isNull()
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       exists(int i |
         last(getExprChild(this, i), pred, c) and
         c instanceof NormalCompletion and
+        (i != 0 or not c.(NullnessCompletion).isNull()) and
         first(getExprChild(this, i + 1), succ)
       )
     }
   }
 
-  private class StatOrDynAccessorCall_ =
-    @dynamic_member_access_expr or @dynamic_element_access_expr or @call_access_expr;
-
-  /** A normal or a (potential) dynamic call to an accessor. */
-  private class StatOrDynAccessorCall extends Expr, StatOrDynAccessorCall_ { }
-
   /**
-   * An expression that writes via an accessor call, for example `x.Prop = 0`,
+   * An expression that writes via an accessor, for example `x.Prop = 0`,
    * where `Prop` is a property.
    *
    * Accessor writes need special attention, because we need to model the fact
@@ -498,13 +502,20 @@ module Expressions {
    * ```csharp
    * x -> 0 -> set_Prop -> x.Prop = 0
    * ```
+   *
+   * For consistency, control flow is implemented this way for all accessor writes.
+   * For example, `x.Field = 0`, where `Field` is a field, we want a CFG that looks like
+   *
+   * ```csharp
+   * x -> 0 -> x.Field -> x.Field = 0
+   * ```
    */
-  class AccessorWrite extends PostOrderTree instanceof Expr {
+  private class QualifiedAccessorWrite extends PostOrderTree instanceof Expr {
     AssignableDefinition def;
 
-    AccessorWrite() {
+    QualifiedAccessorWrite() {
       def.getExpr() = this and
-      def.getTargetAccess().(WriteAccess) instanceof StatOrDynAccessorCall and
+      def.getTargetAccess().(WriteAccess) instanceof QualifiableExpr and
       not this instanceof AssignOperationWithExpandedAssignment
     }
 
@@ -512,10 +523,11 @@ module Expressions {
      * Gets the `i`th accessor being called in this write. More than one call
      * can happen in tuple assignments.
      */
-    StatOrDynAccessorCall getCall(int i) {
+    QualifiableExpr getAccess(int i) {
       result =
         rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
-          tdef.getExpr() = this and tdef.getTargetAccess() instanceof StatOrDynAccessorCall
+          tdef.getExpr() = this and
+          tdef.getTargetAccess() instanceof QualifiableExpr
         |
           tdef order by tdef.getEvaluationOrder()
         ).getTargetAccess()
@@ -528,7 +540,13 @@ module Expressions {
     final override predicate propagatesAbnormal(AstNode child) {
       child = getExprChild(this, _)
       or
-      child = this.getCall(_)
+      child = this.getAccess(_)
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      PostOrderTree.super.last(last, c)
+      or
+      last(getExprChild(this, 0), last, c) and c.(NullnessCompletion).isNull()
     }
 
     final override predicate first(AstNode first) { first(getExprChild(this, 0), first) }
@@ -538,24 +556,25 @@ module Expressions {
       exists(int i |
         last(getExprChild(this, i), pred, c) and
         c instanceof NormalCompletion and
+        (i != 0 or not c.(NullnessCompletion).isNull()) and
         first(getExprChild(this, i + 1), succ)
       )
       or
       // Flow from last element of last child to first accessor call
       last(getLastExprChild(this), pred, c) and
-      succ = this.getCall(0) and
+      succ = this.getAccess(0) and
       c instanceof NormalCompletion
       or
       // Flow from one call to the next
-      exists(int i | pred = this.getCall(i) |
-        succ = this.getCall(i + 1) and
+      exists(int i | pred = this.getAccess(i) |
+        succ = this.getAccess(i + 1) and
         c.isValidFor(pred) and
         c instanceof NormalCompletion
       )
       or
       // Post-order: flow from last call to element itself
-      exists(int last | last = max(int i | exists(this.getCall(i))) |
-        pred = this.getCall(last) and
+      exists(int last | last = max(int i | exists(this.getAccess(i))) |
+        pred = this.getAccess(last) and
         succ = this and
         c.isValidFor(pred) and
         c instanceof NormalCompletion
@@ -704,7 +723,9 @@ module Expressions {
   private class ConditionallyQualifiedExpr extends PostOrderTree instanceof QualifiableExpr {
     private Expr qualifier;
 
-    ConditionallyQualifiedExpr() { this.isConditional() and qualifier = getExprChild(this, 0) }
+    ConditionallyQualifiedExpr() {
+      this.isConditional() and qualifier = getExprChild(this, 0) and not this instanceof WriteAccess
+    }
 
     final override predicate propagatesAbnormal(AstNode child) { child = qualifier }
 
