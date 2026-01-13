@@ -1310,6 +1310,10 @@
         "required": false,
         "types": [
           {
+            "type": "exception_list",
+            "named": true
+          },
+          {
             "type": "expression",
             "named": true
           }
@@ -1343,6 +1347,26 @@
       },
       "type": {
         "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exception_list",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "exception_list",
+    "named": true,
+    "fields": {
+      "element": {
+        "multiple": true,
         "required": true,
         "types": [
           {

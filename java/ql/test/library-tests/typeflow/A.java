@@ -118,4 +118,12 @@ public class A extends ArrayList<Long> {
       default -> { }
     }
   }
+
+  private static <T> T lookupFoo(Map<String, T> m) {
+    return m.get("foo");
+  }
+
+  public void m11(Map<String, String> m) {
+    lookupFoo(m);
+  }
 }

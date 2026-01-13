@@ -1,7 +1,7 @@
 /** Provides classes representing types without type arguments. */
 
 private import rust
-private import PathResolution
+private import codeql.rust.internal.PathResolution
 private import TypeMention
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.elements.internal.generated.Raw

@@ -232,16 +232,27 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierElement(
-    Element n, string output, string kind, Public::Provenance provenance, string model
+    Element e, string output, string kind, Public::Provenance provenance, string model
   ) {
-    none()
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
+      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+    )
   }
 
   predicate barrierGuardElement(
-    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Element e, string input, Public::AcceptingValue acceptingvalue, string kind,
     Public::Provenance provenance, string model
   ) {
-    none()
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingvalue,
+        kind, provenance, model) and
+      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+    )
   }
 
   class SourceOrSinkElement = Element;

@@ -1,9 +1,9 @@
 /** Provides classes for representing type mentions, used in type inference. */
 
 private import rust
+private import codeql.rust.internal.PathResolution
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
-private import PathResolution
 private import TypeInference
 
 /** An AST node that may mention a type. */
@@ -222,6 +222,33 @@ class NonAliasPathTypeMention extends PathTypeMention {
       result = this.getPositionalTypeArgument(pragma[only_bind_into](i), path) and
       tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
     )
+    or
+    // Handle the special syntactic sugar for function traits. The syntactic
+    // form is detected by the presence of a parenthesized argument list which
+    // is a mandatory part of the syntax [1].
+    //
+    // For now we only support `FnOnce` as we can't support the "inherited"
+    // associated types of `Fn` and `FnMut` yet.
+    //
+    // [1]: https://doc.rust-lang.org/reference/paths.html#grammar-TypePathFn
+    exists(FnOnceTrait t, PathSegment s |
+      t = resolved and
+      s = this.getSegment() and
+      s.hasParenthesizedArgList()
+    |
+      tp = TTypeParamTypeParameter(t.getTypeParam()) and
+      result = s.getParenthesizedArgList().(TypeMention).resolveTypeAt(path)
+      or
+      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
+      (
+        result = s.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+        or
+        // When the `-> ...` return type is omitted, it defaults to `()`.
+        not s.hasRetType() and
+        result instanceof UnitType and
+        path.isEmpty()
+      )
+    )
   }
 
   pragma[nomagic]
@@ -255,17 +282,6 @@ class NonAliasPathTypeMention extends PathTypeMention {
       alias = impl.getASuccessor(pragma[only_bind_into](name)) and
       result = alias.getTypeRepr() and
       tp = TAssociatedTypeTypeParameter(this.getResolvedAlias(pragma[only_bind_into](name)))
-    )
-    or
-    // Handle the special syntactic sugar for function traits. For now we only
-    // support `FnOnce` as we can't support the "inherited" associated types of
-    // `Fn` and `FnMut` yet.
-    exists(FnOnceTrait t | t = resolved |
-      tp = TTypeParamTypeParameter(t.getTypeParam()) and
-      result = this.getSegment().getParenthesizedArgList()
-      or
-      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
-      result = this.getSegment().getRetType().getTypeRepr()
     )
   }
 

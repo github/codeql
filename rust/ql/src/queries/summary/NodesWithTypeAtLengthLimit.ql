@@ -7,7 +7,7 @@
  */
 
 import rust
-import codeql.rust.internal.TypeInference
+import codeql.rust.internal.typeinference.TypeInference
 
 from int atLimit
 where

@@ -7,8 +7,8 @@
 import rust
 import codeql.util.ReportStats
 import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
-import codeql.rust.internal.TypeInference as TypeInference
-import codeql.rust.internal.Type
+import codeql.rust.internal.typeinference.TypeInference as TypeInference
+import codeql.rust.internal.typeinference.Type
 
 /**
  * A file that is included in the quality statistics.

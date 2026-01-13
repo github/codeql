@@ -10,8 +10,8 @@ models
 | 9 | Source: axum::routing::method_routing::post; Argument[0].Parameter[0..7]; remote |
 | 10 | Source: axum::routing::method_routing::put; Argument[0].Parameter[0..7]; remote |
 | 11 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue; taint |
-| 12 | Summary: <alloc::string::String>::as_bytes; Argument[self]; ReturnValue; value |
-| 13 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+| 12 | Summary: <alloc::string::String>::as_bytes; Argument[self].Reference; ReturnValue.Reference.Element; taint |
+| 13 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
 edges
 | test.rs:11:31:11:31 | a | test.rs:13:14:13:14 | a | provenance |  |
 | test.rs:11:31:11:31 | a | test.rs:14:14:14:14 | a | provenance |  |

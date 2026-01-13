@@ -343,6 +343,17 @@ unsigned long long test_shift(unsigned long long a) {
   return shifted;
 }
 
+// Tests for bounds on integers derived from inequalities.
+unsigned int test_inequality_integer(unsigned int e) {
+  unsigned int bi1 = (2 * e + 1) > 0 ? e : 2;
+  signed int bi2 = (2 * e + 1) >= 0 ? e : 2;
+  unsigned int bi3 = (3 * e + 2) > 0 ? e : 2;
+  unsigned int bi4 = (2 * e + 1) > 0 ? e : 2;
+  unsigned int bi5 = (2 * e + 1) > 16 ? e : 2;
+
+  return bi1 + bi2 + bi3 + bi4 + bi5;
+}
+
 int test16(int x) {
   int d, i = 0;
   if (x < 0) {

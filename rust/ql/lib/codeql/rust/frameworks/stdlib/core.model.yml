@@ -114,7 +114,7 @@ extensions:
       - ["<core::pin::Pin as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[core::pin::Pin::pointer].Reference", "ReturnValue.Reference", "value", "manual"]
       - ["<core::pin::Pin as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "ReturnValue.Reference", "value", "manual"]
       # Str
-      - ["<core::str>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<core::str>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::parse", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
@@ -123,6 +123,8 @@ extensions:
       - ["<_ as core::cmp::Ord>::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
       - ["<_ as core::cmp::Ord>::max", "Argument[self,0]", "ReturnValue", "value", "manual"]
       - ["<_ as core::cmp::Ord>::clamp", "Argument[self,0,1]", "ReturnValue", "value", "manual"]
+      # Slice
+      - ["<[]>::get", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "value", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel

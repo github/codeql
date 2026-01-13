@@ -13,6 +13,11 @@ extensions:
       - ["System", "Environment", False, "GetEnvironmentVariables", "", "", "ReturnValue", "environment", "manual"]
   - addsTo:
       pack: codeql/csharp-all
+      extensible: barrierGuardModel
+    data:
+      - ["System", "Uri", False, "get_IsAbsoluteUri", "()", "", "Argument[this]", "false", "url-redirection", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: summaryModel
     data:
       - ["System", "Array", False, "AsReadOnly<T>", "(T[])", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]

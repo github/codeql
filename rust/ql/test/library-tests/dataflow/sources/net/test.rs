@@ -73,11 +73,11 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
 
     match case {
         1 => {
-            sink(response.body()); // $ MISSING: hasTaintFlow
-            sink(response.body_mut()); // $ MISSING: hasTaintFlow
+            sink(response.body()); // $ hasTaintFlow=request
+            sink(response.body_mut()); // $ hasTaintFlow=request
 
             let body = response.into_body();
-            sink(&body); // $ MISSING: hasTaintFlow
+            sink(&body); // $ hasTaintFlow=request
 
             println!("awaiting response...");
             let data = body.collect().await?;
@@ -204,7 +204,7 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> {
                 for line in reader.lines() { // $ MISSING: Alert[rust/summary/taint-sources]
                     if let Ok(string) = line {
                         println!("line = {}", string);
-                        sink(string); // $ MISSING: hasTaintFlow=&sock_addr
+                        sink(string); // $ hasTaintFlow=&sock_addr
                     }
                 }
             }

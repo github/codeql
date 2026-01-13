@@ -116,10 +116,10 @@ module FileSystemAccess {
   }
 }
 
-private class DefaultFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+private class ExternalFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
   DataFlow::ArgumentNode pathArgument;
 
-  DefaultFileSystemAccess() {
+  ExternalFileSystemAccess() {
     sinkNode(pathArgument, "path-injection") and
     this = pathArgument.getCall()
   }
@@ -394,10 +394,10 @@ module LoggerCall {
   }
 }
 
-private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+private class ExternalLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
   DataFlow::ArgumentNode messageComponent;
 
-  DefaultLoggerCall() {
+  ExternalLoggerCall() {
     sinkNode(messageComponent, "log-injection") and
     this = messageComponent.getCall()
   }

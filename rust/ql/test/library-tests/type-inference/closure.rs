@@ -36,6 +36,10 @@ mod fn_once_trait {
         let _return = f(true); // $ type=_return:i64
     }
 
+    fn return_type_omitted<F: FnOnce(bool)>(f: F) {
+        let _return = f(true); // $ type=_return:()
+    }
+
     fn argument_type<F: FnOnce(bool) -> i64>(f: F) {
         let arg = Default::default(); // $ target=default type=arg:bool
         f(arg);

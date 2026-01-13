@@ -14,7 +14,7 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
-private import codeql.rust.internal.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 private import codeql.rust.internal.typeinference.DerefChain
 private import Node as Node
 private import DataFlowImpl

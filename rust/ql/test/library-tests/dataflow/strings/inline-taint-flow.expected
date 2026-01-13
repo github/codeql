@@ -5,8 +5,8 @@ models
 | 4 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Field[alloc::borrow::Cow::Owned(0)]; ReturnValue; value |
 | 5 | Summary: <alloc::string::String as core::convert::From>::from; Argument[0].Reference; ReturnValue; value |
 | 6 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 7 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
-| 8 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+| 7 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
+| 8 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
 | 9 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
 | 10 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 edges
