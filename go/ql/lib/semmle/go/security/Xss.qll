@@ -49,8 +49,8 @@ module SharedXss {
     override Locatable getAssociatedLoc() { result = this.getRead().getEnclosingTextNode() }
   }
 
-  private class DefaultSink extends Sink {
-    DefaultSink() { sinkNode(this, ["html-injection", "js-injection"]) }
+  private class ExternalSink extends Sink {
+    ExternalSink() { sinkNode(this, ["html-injection", "js-injection"]) }
   }
 
   /**
@@ -86,6 +86,10 @@ module SharedXss {
    */
   private predicate htmlTypeSpecified(Http::ResponseBody body) {
     body.getAContentType().regexpMatch("(?i).*html.*")
+  }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
   }
 
   /**

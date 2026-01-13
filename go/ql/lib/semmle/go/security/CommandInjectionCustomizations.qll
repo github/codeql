@@ -47,6 +47,10 @@ module CommandInjection {
     override predicate doubleDashIsSanitizing() { exec.doubleDashIsSanitizing() }
   }
 
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "command-injection") }
+  }
+
   /**
    * A call to a regexp match function, considered as a barrier guard for command injection.
    */

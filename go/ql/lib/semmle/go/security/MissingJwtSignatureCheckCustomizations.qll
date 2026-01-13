@@ -51,7 +51,11 @@ module MissingJwtSignatureCheck {
 
   private class DefaultSource extends Source instanceof ActiveThreatModelSource { }
 
-  private class DefaultSink extends Sink {
-    DefaultSink() { sinkNode(this, "jwt") }
+  private class ExternalSink extends Sink {
+    ExternalSink() { sinkNode(this, "jwt") }
+  }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "jwt") }
   }
 }

@@ -44,10 +44,10 @@ module RequestForgery {
    */
   private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
-  private class DefaultRequestForgerySink extends Sink {
+  private class ExternalRequestForgerySink extends Sink {
     string kind;
 
-    DefaultRequestForgerySink() {
+    ExternalRequestForgerySink() {
       exists(string modelKind | sinkNode(this, modelKind) |
         modelKind = "request-forgery" and kind = "URL"
         or
@@ -92,6 +92,10 @@ module RequestForgery {
    */
   private class HostnameSanitizer extends SanitizerEdge {
     HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
+  }
+
+  private class ExternalRequestForgerySanitizer extends Sanitizer {
+    ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
   }
 
   /**

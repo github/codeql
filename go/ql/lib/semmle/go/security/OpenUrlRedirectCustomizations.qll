@@ -75,6 +75,10 @@ module OpenUrlRedirect {
     }
   }
 
+  private class ExternalBarrier extends Barrier {
+    ExternalBarrier() { barrierNode(this, "url-redirection") }
+  }
+
   /**
    * An assignment of a safe value to the field `Path`, considered as a barrier for sanitizing
    * untrusted URLs.
