@@ -140,6 +140,7 @@ module NestJS {
   }
 
   /** API node entry point for custom implementations of `ValidationPipe` (a common pattern). */
+  overlay[local?]
   private class ValidationNodeEntry extends API::EntryPoint {
     ValidationNodeEntry() { this = "ValidationNodeEntry" }
 
