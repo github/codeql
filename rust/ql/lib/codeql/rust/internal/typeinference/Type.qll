@@ -9,10 +9,17 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
+/** Gets a type alias of `trait` or of a supertrait of `trait`. */
+private TypeAlias getTraitTypeAlias(Trait trait) {
+  result = trait.getSupertrait*().getAssocItemList().getAnAssocItem()
+}
+
 /**
- * Holds if a dyn trait type should have a type parameter associated with `n`. A
- * dyn trait type inherits the type parameters of the trait it implements. That
- * includes the type parameters corresponding to associated types.
+ * Holds if a dyn trait type for the trait `trait` should have a type parameter
+ * associated with `n`.
+ *
+ * A dyn trait type inherits the type parameters of the trait it implements.
+ * That includes the type parameters corresponding to associated types.
  *
  * For instance in
  * ```rust
@@ -24,10 +31,7 @@ private import codeql.rust.frameworks.stdlib.Builtins as Builtins
  */
 private predicate dynTraitTypeParameter(Trait trait, AstNode n) {
   trait = any(DynTraitTypeRepr dt).getTrait() and
-  (
-    n = trait.getGenericParamList().getATypeParam() or
-    n = trait.(TraitItemNode).getAnAssocItem().(TypeAlias)
-  )
+  n = [trait.getGenericParamList().getATypeParam().(AstNode), getTraitTypeAlias(trait)]
 }
 
 cached
@@ -39,8 +43,10 @@ newtype TType =
   TNeverType() or
   TUnknownType() or
   TTypeParamTypeParameter(TypeParam t) or
-  TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
-  TDynTraitTypeParameter(AstNode n) { dynTraitTypeParameter(_, n) } or
+  TAssociatedTypeTypeParameter(Trait trait, TypeAlias typeAlias) {
+    getTraitTypeAlias(trait) = typeAlias
+  } or
+  TDynTraitTypeParameter(Trait trait, AstNode n) { dynTraitTypeParameter(trait, n) } or
   TImplTraitTypeParameter(ImplTraitTypeRepr implTrait, TypeParam tp) {
     implTraitTypeParam(implTrait, _, tp)
   } or
@@ -270,17 +276,10 @@ class DynTraitType extends Type, TDynTraitType {
   DynTraitType() { this = TDynTraitType(trait) }
 
   override DynTraitTypeParameter getPositionalTypeParameter(int i) {
-    result = TDynTraitTypeParameter(trait.getGenericParamList().getTypeParam(i))
+    result.getTypeParam() = trait.getGenericParamList().getTypeParam(i)
   }
 
-  override TypeParameter getATypeParameter() {
-    result = super.getATypeParameter()
-    or
-    exists(AstNode n |
-      dynTraitTypeParameter(trait, n) and
-      result = TDynTraitTypeParameter(n)
-    )
-  }
+  override DynTraitTypeParameter getATypeParameter() { result.getTrait() = trait }
 
   Trait getTrait() { result = trait }
 
@@ -427,30 +426,54 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
  *   // ...
  * }
  * ```
+ * Furthermore, associated types of a supertrait induce a corresponding type
+ * parameter in any subtraits. E.g., if we have a trait `SubTrait: ATrait` then
+ * `SubTrait` also has a type parameter for the associated type
+ * `AssociatedType`.
  */
 class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypeParameter {
+  private Trait trait;
   private TypeAlias typeAlias;
 
-  AssociatedTypeTypeParameter() { this = TAssociatedTypeTypeParameter(typeAlias) }
+  AssociatedTypeTypeParameter() { this = TAssociatedTypeTypeParameter(trait, typeAlias) }
 
   TypeAlias getTypeAlias() { result = typeAlias }
 
   /** Gets the trait that contains this associated type declaration. */
-  TraitItemNode getTrait() { result.getAnAssocItem() = typeAlias }
+  TraitItemNode getTrait() { result = trait }
 
-  override ItemNode getDeclaringItem() { result = this.getTrait() }
+  /**
+   * Holds if this associated type type parameter corresponds directly its
+   * trait, that is, it is not inherited from a supertrait.
+   */
+  predicate isDirect() { trait.(TraitItemNode).getAnAssocItem() = typeAlias }
 
-  override string toString() { result = typeAlias.getName().getText() }
+  override ItemNode getDeclaringItem() { result = trait }
+
+  override string toString() {
+    result = typeAlias.getName().getText() + "[" + trait.getName().toString() + "]"
+  }
 
   override Location getLocation() { result = typeAlias.getLocation() }
 }
 
+/** Gets the associated type type parameter corresponding directly to `typeAlias`. */
+AssociatedTypeTypeParameter getAssociatedTypeTypeParameter(TypeAlias typeAlias) {
+  result.isDirect() and result.getTypeAlias() = typeAlias
+}
+
+/** Gets the dyn type type parameter corresponding directly to `typeAlias`. */
+DynTraitTypeParameter getDynTraitTypeParameter(TypeAlias typeAlias) {
+  result.getTraitTypeParameter() = getAssociatedTypeTypeParameter(typeAlias)
+}
+
 class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
+  private Trait trait;
   private AstNode n;
 
-  DynTraitTypeParameter() { this = TDynTraitTypeParameter(n) }
+  DynTraitTypeParameter() { this = TDynTraitTypeParameter(trait, n) }
 
-  Trait getTrait() { dynTraitTypeParameter(result, n) }
+  Trait getTrait() { result = trait }
 
   /** Gets the dyn trait type that this type parameter belongs to. */
   DynTraitType getDynTraitType() { result.getTrait() = this.getTrait() }
@@ -465,7 +488,7 @@ class DynTraitTypeParameter extends TypeParameter, TDynTraitTypeParameter {
   TypeParameter getTraitTypeParameter() {
     result.(TypeParamTypeParameter).getTypeParam() = n
     or
-    result.(AssociatedTypeTypeParameter).getTypeAlias() = n
+    result = TAssociatedTypeTypeParameter(trait, n)
   }
 
   private string toStringInner() {

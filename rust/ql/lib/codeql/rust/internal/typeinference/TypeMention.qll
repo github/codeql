@@ -148,28 +148,9 @@ class NonAliasPathTypeMention extends PathTypeMention {
 
   TypeItemNode getResolved() { result = resolved }
 
-  /**
-   * Gets a type alias with the name `name` of the trait that this path resolves
-   * to, if any.
-   */
-  pragma[nomagic]
-  private TypeAlias getResolvedTraitAlias(string name) {
-    result = resolved.(TraitItemNode).getAnAssocItem() and
-    name = result.getName().getText()
-  }
-
   pragma[nomagic]
   private TypeRepr getAssocTypeArg(string name) {
     result = this.getSegment().getGenericArgList().getAssocTypeArg(name)
-  }
-
-  /** Gets the type argument for the associated type `alias`, if any. */
-  pragma[nomagic]
-  private TypeRepr getAnAssocTypeArgument(TypeAlias alias) {
-    exists(string name |
-      alias = this.getResolvedTraitAlias(name) and
-      result = this.getAssocTypeArg(name)
-    )
   }
 
   /**
@@ -239,7 +220,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
       tp = TTypeParamTypeParameter(t.getTypeParam()) and
       result = s.getParenthesizedArgList().(TypeMention).resolveTypeAt(path)
       or
-      tp = TAssociatedTypeTypeParameter(t.getOutputType()) and
+      tp = TAssociatedTypeTypeParameter(t, t.getOutputType()) and
       (
         result = s.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
         or
@@ -248,6 +229,28 @@ class NonAliasPathTypeMention extends PathTypeMention {
         result instanceof UnitType and
         path.isEmpty()
       )
+    )
+    or
+    // If `path` is the supertrait of a trait block then any associated types
+    // of the supertrait should be instantiated with the subtrait's
+    // corresponding copies.
+    //
+    // As an example, for
+    // ```rust
+    // trait Sub: Super {
+    // //         ^^^^^ this
+    // ```
+    // we do something to the effect of:
+    // ```rust
+    // trait Sub: Super<Assoc=Assoc[Sub]>
+    // ```
+    // Where `Assoc` is an associated type of `Super` and `Assoc[Sub]` denotes
+    // the copy of the type parameter inherited into `Sub`.
+    exists(Trait subtrait, TypeAlias alias |
+      subtrait.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() = this and
+      result = TAssociatedTypeTypeParameter(subtrait, alias) and
+      tp = TAssociatedTypeTypeParameter(resolved, alias) and
+      path.isEmpty()
     )
   }
 
@@ -259,9 +262,10 @@ class NonAliasPathTypeMention extends PathTypeMention {
   /** Gets the type mention in this path for the type parameter `tp`, if any. */
   pragma[nomagic]
   private TypeMention getTypeMentionForTypeParameter(TypeParameter tp) {
-    exists(TypeAlias alias |
-      result = this.getAnAssocTypeArgument(alias) and
-      tp = TAssociatedTypeTypeParameter(alias)
+    exists(TypeAlias alias, string name |
+      result = this.getAssocTypeArg(name) and
+      tp = TAssociatedTypeTypeParameter(resolved, alias) and
+      alias = resolved.(TraitItemNode).getASuccessor(name)
     )
     or
     // If `path` is the trait of an `impl` block then any associated types
@@ -281,7 +285,8 @@ class NonAliasPathTypeMention extends PathTypeMention {
       this = impl.getTraitPath() and
       alias = impl.getASuccessor(pragma[only_bind_into](name)) and
       result = alias.getTypeRepr() and
-      tp = TAssociatedTypeTypeParameter(this.getResolvedAlias(pragma[only_bind_into](name)))
+      tp =
+        TAssociatedTypeTypeParameter(resolved, this.getResolvedAlias(pragma[only_bind_into](name)))
     )
   }
 
@@ -299,7 +304,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     or
     result = TTypeParamTypeParameter(resolved)
     or
-    result = TAssociatedTypeTypeParameter(resolved)
+    result = TAssociatedTypeTypeParameter(resolvePath(this.getQualifier()), resolved)
   }
 
   override Type resolvePathTypeAt(TypePath typePath) {
@@ -384,9 +389,8 @@ class TraitMention extends TypeMention instanceof TraitItemNode {
     result = TSelfTypeParameter(this)
     or
     exists(TypeAlias alias |
-      alias = super.getAnAssocItem() and
       typePath = TypePath::singleton(result) and
-      result = TAssociatedTypeTypeParameter(alias)
+      result = TAssociatedTypeTypeParameter(this, alias)
     )
     or
     exists(TypeParam tp |
@@ -540,7 +544,7 @@ class DynTraitTypeReprMention extends TypeMention instanceof DynTraitTypeRepr {
 // impl<A, B, ..> Trait<A, B, ..> for (dyn Trait)<A, B, ..>
 // ```
 // To achieve this:
-// - `DynTypeAbstraction` is an abstraction over type parameters of the trait.
+// - `DynTypeAbstraction` is an abstraction over the type parameters of the trait.
 // - `DynTypeBoundListMention` (this class) is a type mention which has `dyn
 //   Trait` at the root and which for every type parameter of `dyn Trait` has the
 //   corresponding type parameter of the trait.

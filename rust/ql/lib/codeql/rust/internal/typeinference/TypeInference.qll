@@ -90,7 +90,7 @@ private module Input1 implements InputSig1<Location> {
     tp =
       rank[result](TypeParameter tp0, int kind, int id1, int id2 |
         kind = 1 and
-        id1 = 0 and
+        id1 = idOfTypeParameterAstNode(tp0.(DynTraitTypeParameter).getTrait()) and
         id2 =
           idOfTypeParameterAstNode([
               tp0.(DynTraitTypeParameter).getTypeParam().(AstNode),
@@ -102,10 +102,13 @@ private module Input1 implements InputSig1<Location> {
         id2 = idOfTypeParameterAstNode(tp0.(ImplTraitTypeParameter).getTypeParam())
         or
         kind = 3 and
+        id1 = idOfTypeParameterAstNode(tp0.(AssociatedTypeTypeParameter).getTrait()) and
+        id2 = idOfTypeParameterAstNode(tp0.(AssociatedTypeTypeParameter).getTypeAlias())
+        or
+        kind = 4 and
         id1 = 0 and
         exists(AstNode node | id2 = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
-          node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
           node = tp0.(SelfTypeParameter).getTrait() or
           node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
@@ -3507,12 +3510,12 @@ private DynTraitType getFutureTraitType() { result.getTrait() instanceof FutureT
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
-  result.getTypeAlias() = any(FutureTrait ft).getOutputType()
+  result = getAssociatedTypeTypeParameter(any(FutureTrait ft).getOutputType())
 }
 
 pragma[nomagic]
 private DynTraitTypeParameter getDynFutureOutputTypeParameter() {
-  result = TDynTraitTypeParameter(any(FutureTrait ft).getOutputType())
+  result.getTraitTypeParameter() = getFutureOutputTypeParameter()
 }
 
 pragma[nomagic]
@@ -3824,20 +3827,20 @@ private Type invokedClosureFnTypeAt(InvokedClosureExpr ce, TypePath path) {
 
 /** Gets the path to a closure's return type. */
 private TypePath closureReturnPath() {
-  result = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getOutputType()))
+  result = TypePath::singleton(getDynTraitTypeParameter(any(FnOnceTrait t).getOutputType()))
 }
 
 /** Gets the path to a closure with arity `arity`s `index`th parameter type. */
 pragma[nomagic]
 private TypePath closureParameterPath(int arity, int index) {
   result =
-    TypePath::cons(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam()),
+    TypePath::cons(TDynTraitTypeParameter(_, any(FnOnceTrait t).getTypeParam()),
       TypePath::singleton(getTupleTypeParameter(arity, index)))
 }
 
 /** Gets the path to the return type of the `FnOnce` trait. */
 private TypePath fnReturnPath() {
-  result = TypePath::singleton(TAssociatedTypeTypeParameter(any(FnOnceTrait t).getOutputType()))
+  result = TypePath::singleton(getAssociatedTypeTypeParameter(any(FnOnceTrait t).getOutputType()))
 }
 
 /**
@@ -3898,7 +3901,7 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
     result = TDynTraitType(any(FnOnceTrait t)) // always exists because of the mention in `builtins/mentions.rs`
     or
     n = ce and
-    path = TypePath::singleton(TDynTraitTypeParameter(any(FnOnceTrait t).getTypeParam())) and
+    path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnOnceTrait t).getTypeParam())) and
     result.(TupleType).getArity() = ce.getNumberOfParams()
     or
     // Propagate return type annotation to body

@@ -69,7 +69,7 @@ mod default_method_using_associated_type {
             Self::AssociatedType: Default,
             Self: Sized,
         {
-            self.m1(); // $ target=MyTrait::m1 type=self.m1():AssociatedType
+            self.m1(); // $ target=MyTrait::m1 type=self.m1():AssociatedType[MyTrait]
             let _default = Self::AssociatedType::default(); // $ MISSING: target=default _default:AssociatedType
             Self::AssociatedType::default() // $ MISSING: target=default
         }
@@ -144,8 +144,8 @@ mod equality_on_associated_type {
     where
         T: AnotherGet<Output = i32, AnotherOutput = bool>,
     {
-        let _a1 = x.get(); // $ target=GetSet::get MISSING: type=_a1:i32
-        let _a2 = get(&x); // $ target=get MISSING: type=_a2:i32
+        let _a1 = x.get(); // $ target=GetSet::get type=_a1:i32
+        let _a2 = get(&x); // $ target=get type=_a2:i32
         let _b = x.get_another(); // $ type=_b:bool target=AnotherGet::get_another
     }
 
@@ -346,9 +346,9 @@ mod dyn_trait {
     }
 
     fn _assoc_type_from_supertrait(t: &dyn AnotherGet<Output = i32, AnotherOutput = bool>) {
-        let _a1 = (*t).get(); // $ target=deref target=GetSet::get MISSING: type=_a1:i32
-        let _a2 = t.get(); // $ target=GetSet::get MISSING: type=_a2:i32
-        let _a3 = get(t); // $ target=get MISSING: type=_a3:i32
+        let _a1 = (*t).get(); // $ target=deref target=GetSet::get type=_a1:i32
+        let _a2 = t.get(); // $ target=GetSet::get type=_a2:i32
+        let _a3 = get(t); // $ target=get type=_a3:i32
         let _b1 = (*t).get_another(); // $ target=deref target=AnotherGet::get_another type=_b1:bool
         let _b2 = t.get_another(); // $ target=AnotherGet::get_another type=_b2:bool
     }
