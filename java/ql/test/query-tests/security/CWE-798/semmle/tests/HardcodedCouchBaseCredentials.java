@@ -32,7 +32,7 @@ public class HardcodedCouchBaseCredentials {
         .password("password"); // $ HardcodedCredentialsSourceCall $ HardcodedCredentialsApiCall
     PasswordAuthenticator.builder(
         (Supplier<UsernameAndPassword>)
-            new UsernameAndPassword(
+            () -> new UsernameAndPassword(
                 "Administrator", // $ HardcodedCredentialsSourceCall $ MISSING: HardcodedCredentialsApiCall
                 "password")); // $ HardcodedCredentialsSourceCall $ MISSING: HardcodedCredentialsApiCall
     PasswordAuthenticator.builder()
