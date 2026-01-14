@@ -32,9 +32,6 @@
 | file://:0:0:0:0 | _Complex float | 8 |
 | file://:0:0:0:0 | _Complex long double | 32 |
 | file://:0:0:0:0 | _Complex std::float16_t | 4 |
-| file://:0:0:0:0 | _Decimal32 | 4 |
-| file://:0:0:0:0 | _Decimal64 | 8 |
-| file://:0:0:0:0 | _Decimal128 | 16 |
 | file://:0:0:0:0 | _Float16 | 2 |
 | file://:0:0:0:0 | _Float32 | 4 |
 | file://:0:0:0:0 | _Float32x | 8 |

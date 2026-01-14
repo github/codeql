@@ -1,6 +1,4 @@
 
-double dd = 1.0d;
-double dD = 1.0D;
 double df = 1.0f;
 double dF = 1.0F;
 double di = 1.0i;
