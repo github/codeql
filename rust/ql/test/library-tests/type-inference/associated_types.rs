@@ -26,6 +26,10 @@ trait GetSet {
     fn set(&self, _a: Self::Output) {}
 }
 
+fn get<O, T: GetSet<Output = O> + ?Sized>(item: &T) -> O {
+    item.get() // $ target=GetSet::get
+}
+
 trait AnotherGet: GetSet {
     type AnotherOutput;
 
@@ -121,6 +125,55 @@ mod type_param_access_associated_type {
     pub fn test() {
         let _o1 = tp_with_as(S); // $ target=tp_with_as MISSING: type=_o1:S3
         let _o2 = tp_without_as(S); // $ target=tp_without_as MISSING: type=_o2:S3
+    }
+}
+
+// Tests for specifying associated types using equalities, e.g., `Trait<AssocType = Type>`
+mod equality_on_associated_type {
+    use super::*;
+
+    fn _in_same_trait<T>(x: T)
+    where
+        T: GetSet<Output = char>,
+    {
+        let _a = x.get(); // $ target=GetSet::get type=_a:char
+    }
+
+    // Here we specify `Output` from `GetSet` through the subtrait `AnotherGet`.
+    fn _in_subtrait<T>(x: T)
+    where
+        T: AnotherGet<Output = i32, AnotherOutput = bool>,
+    {
+        let _a1 = x.get(); // $ target=GetSet::get MISSING: type=_a1:i32
+        let _a2 = get(&x); // $ target=get MISSING: type=_a2:i32
+        let _b = x.get_another(); // $ type=_b:bool target=AnotherGet::get_another
+    }
+
+    // Here we specify the associated types as two separate trait bounds
+    fn _two_bounds<T>(x: T)
+    where
+        T: AnotherGet<AnotherOutput = bool>,
+        T: GetSet<Output = i32>,
+    {
+        let _a1 = x.get(); // $ target=GetSet::get type=_a1:i32
+        let _a2 = get(&x); // $ target=get type=_a2:i32
+        let _b = x.get_another(); // $ type=_b:bool target=AnotherGet::get_another
+    }
+
+    trait AssocNameClash: GetSet {
+        type Output; // This name clashes with GetSet::Output
+
+        // AssocNameClash::get2
+        fn get2(&self) -> <Self as AssocNameClash>::Output;
+    }
+
+    fn _two_bounds_name_clash<T>(x: T)
+    where
+        T: AssocNameClash<Output = char>,
+        T: GetSet<Output = i32>,
+    {
+        let _a = x.get(); // $ type=_a:i32 target=GetSet::get
+        let _b = x.get2(); // $ target=AssocNameClash::get2 MISSING: type=_b:char
     }
 }
 
@@ -275,6 +328,29 @@ mod generic_associated_type_name_clash {
 
     pub fn test() {
         let _y = ST(true).get(); // $ type=_y:Result type=_y:T.bool type=_y:E.bool target=get
+    }
+}
+
+// Tests for associated types in `dyn` trait objects
+mod dyn_trait {
+    use super::*;
+
+    fn _assoc_type_from_trait(t: &dyn GetSet<Output = i32>) {
+        // Explicit deref
+        let _a1 = (*t).get(); // $ target=deref target=GetSet::get type=_a1:i32
+
+        // Auto-deref
+        let _a2 = t.get(); // $ target=GetSet::get type=_a2:i32
+
+        let _a3 = get(t); // $ target=get type=_a3:i32
+    }
+
+    fn _assoc_type_from_supertrait(t: &dyn AnotherGet<Output = i32, AnotherOutput = bool>) {
+        let _a1 = (*t).get(); // $ target=deref target=GetSet::get MISSING: type=_a1:i32
+        let _a2 = t.get(); // $ target=GetSet::get MISSING: type=_a2:i32
+        let _a3 = get(t); // $ target=get MISSING: type=_a3:i32
+        let _b1 = (*t).get_another(); // $ target=deref target=AnotherGet::get_another type=_b1:bool
+        let _b2 = t.get_another(); // $ target=AnotherGet::get_another type=_b2:bool
     }
 }
 
