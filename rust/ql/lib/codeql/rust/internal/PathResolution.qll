@@ -110,20 +110,18 @@ pragma[nomagic]
 private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind kind) {
   item = result.getImmediateParent() and
   name = result.getName() and
-  (
-    // type parameters are only available inside the declaring item
-    if result instanceof TypeParam
-    then kind.isInternal()
+  // type parameters are only available inside the declaring item
+  if result instanceof TypeParam
+  then kind.isInternal()
+  else
+    // associated items must always be qualified, also within the declaring
+    // item (using `Self`)
+    if item instanceof ImplOrTraitItemNode and result instanceof AssocItem
+    then kind.isExternal()
     else
-      // associated items must always be qualified, also within the declaring
-      // item (using `Self`)
-      if item instanceof ImplOrTraitItemNode and result instanceof AssocItem
-      then kind.isExternal()
-      else
-        if result.isPublic()
-        then kind.isBoth()
-        else kind.isInternal()
-  )
+      if result.isPublic()
+      then kind.isBoth()
+      else kind.isInternal()
 }
 
 private module UseOption = Option<Use>;
@@ -371,6 +369,13 @@ abstract class ItemNode extends Locatable {
     or
     result = this.(TypeAliasItemNodeImpl).resolveAliasCand().getASuccessor(name, kind, useOpt) and
     kind.isExternalOrBoth()
+    or
+    // items declared at top-level inside macros are also available at the macro invocation sites
+    exists(BlockExprItemNode be |
+      this = be.getImmediateParent() and
+      be = any(MacroCall mc).getMacroCallExpansion() and
+      result = be.getASuccessor(name, kind, useOpt)
+    )
     or
     name = "super" and
     useOpt.isNone() and

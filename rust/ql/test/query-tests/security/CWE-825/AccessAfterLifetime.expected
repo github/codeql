@@ -137,7 +137,7 @@ edges
 | lifetime.rs:443:6:443:7 | p1 | lifetime.rs:446:13:446:14 | p1 | provenance |  |
 | lifetime.rs:443:6:443:7 | p1 | lifetime.rs:450:2:450:10 | return p1 | provenance |  |
 | lifetime.rs:443:23:443:44 | ...::from_ref(...) | lifetime.rs:443:6:443:7 | p1 | provenance |  |
-| lifetime.rs:443:42:443:43 | r1 | lifetime.rs:443:23:443:44 | ...::from_ref(...) | provenance | MaD:3 |
+| lifetime.rs:443:42:443:43 | r1 | lifetime.rs:443:23:443:44 | ...::from_ref(...) | provenance | MaD:5 |
 | lifetime.rs:450:2:450:10 | return p1 | lifetime.rs:454:11:454:29 | get_ptr_from_ref(...) | provenance |  |
 | lifetime.rs:450:2:450:10 | return p1 | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | provenance |  |
 | lifetime.rs:454:6:454:7 | p1 | lifetime.rs:459:13:459:14 | p1 | provenance |  |
@@ -158,18 +158,23 @@ edges
 | main.rs:18:9:18:10 | p1 [&ref] | main.rs:21:19:21:20 | p1 | provenance |  |
 | main.rs:18:9:18:10 | p1 [&ref] | main.rs:29:19:29:20 | p1 | provenance |  |
 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | main.rs:18:9:18:10 | p1 [&ref] | provenance |  |
-| main.rs:18:26:18:28 | &b1 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | provenance | MaD:2 |
+| main.rs:18:26:18:28 | &b1 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | provenance | MaD:3 |
+| main.rs:18:26:18:28 | &b1 | main.rs:18:14:18:29 | ...::as_ptr(...) [&ref] | provenance | MaD:4 |
 | main.rs:44:9:44:10 | p2 [&ref] | main.rs:51:23:51:24 | p2 | provenance |  |
 | main.rs:44:9:44:10 | p2 [&ref] | main.rs:64:23:64:24 | p2 | provenance |  |
 | main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | main.rs:44:9:44:10 | p2 [&ref] | provenance |  |
-| main.rs:44:26:44:28 | &b2 | main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | provenance | MaD:2 |
+| main.rs:44:26:44:28 | &b2 | main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | provenance | MaD:3 |
+| main.rs:44:26:44:28 | &b2 | main.rs:44:14:44:29 | ...::as_ptr(...) [&ref] | provenance | MaD:4 |
 | main.rs:47:9:47:10 | p3 [&ref] | main.rs:52:23:52:24 | p3 | provenance |  |
 | main.rs:47:14:47:37 | ...::as_mut_ptr(...) [&ref] | main.rs:47:9:47:10 | p3 [&ref] | provenance |  |
 | main.rs:47:30:47:36 | &mut b3 | main.rs:47:14:47:37 | ...::as_mut_ptr(...) [&ref] | provenance | MaD:1 |
+| main.rs:47:30:47:36 | &mut b3 | main.rs:47:14:47:37 | ...::as_mut_ptr(...) [&ref] | provenance | MaD:2 |
 models
-| 1 | Summary: <alloc::boxed::Box>::as_mut_ptr; Argument[0].Reference.Reference; ReturnValue.Reference; value |
-| 2 | Summary: <alloc::boxed::Box>::as_ptr; Argument[0].Reference.Reference; ReturnValue.Reference; value |
-| 3 | Summary: core::ptr::from_ref; Argument[0]; ReturnValue; value |
+| 1 | Summary: <alloc::boxed::Box>::as_mut_ptr; Argument[0].Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
+| 2 | Summary: <alloc::boxed::Box>::as_mut_ptr; Argument[0].Reference.Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
+| 3 | Summary: <alloc::boxed::Box>::as_ptr; Argument[0].Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
+| 4 | Summary: <alloc::boxed::Box>::as_ptr; Argument[0].Reference.Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
+| 5 | Summary: core::ptr::from_ref; Argument[0]; ReturnValue; value |
 nodes
 | deallocation.rs:242:6:242:7 | p1 | semmle.label | p1 |
 | deallocation.rs:242:30:242:38 | &raw const my_buffer | semmle.label | &raw const my_buffer |

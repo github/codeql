@@ -63,8 +63,6 @@ extensions:
       - ["<std::path::Path>::new", "Argument[0].Reference", "ReturnValue.Reference", "value", "manual"]
       - ["<std::path::Path>::join", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       - ["<std::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["<std::path::Path>::as_os_str", "Argument[self].Reference.Field[std::path::Path::inner]", "ReturnValue.Reference", "value", "manual"]
-      - ["<std::path::Path>::as_mut_os_str", "Argument[self].Reference.Field[std::path::Path::inner]", "ReturnValue.Reference", "value", "manual"]
       - ["<std::path::Path>::canonicalize", "Argument[self].Reference.OptionalStep[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<std::path::Path>::canonicalize", "Argument[self].Reference.OptionalBarrier[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<std::path::Path>::extension", "Argument[self].Reference", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "taint", "manual"]

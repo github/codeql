@@ -90,7 +90,6 @@
 /lib/codeql/rust/elements/Locatable.qll linguist-generated
 /lib/codeql/rust/elements/LoopExpr.qll linguist-generated
 /lib/codeql/rust/elements/LoopingExpr.qll linguist-generated
-/lib/codeql/rust/elements/MacroBlockExpr.qll linguist-generated
 /lib/codeql/rust/elements/MacroCall.qll linguist-generated
 /lib/codeql/rust/elements/MacroDef.qll linguist-generated
 /lib/codeql/rust/elements/MacroExpr.qll linguist-generated
@@ -301,8 +300,6 @@
 /lib/codeql/rust/elements/internal/LiteralPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LoopExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LoopingExprImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/MacroBlockExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/MacroBlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroCallConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroDefConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroDefImpl.qll linguist-generated
@@ -536,7 +533,6 @@
 /lib/codeql/rust/elements/internal/generated/Locatable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LoopExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LoopingExpr.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/MacroBlockExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroCall.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroDef.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroExpr.qll linguist-generated
@@ -714,7 +710,6 @@
 /test/extractor-tests/generated/LiteralExpr/LiteralExpr.ql linguist-generated
 /test/extractor-tests/generated/LiteralPat/LiteralPat.ql linguist-generated
 /test/extractor-tests/generated/LoopExpr/LoopExpr.ql linguist-generated
-/test/extractor-tests/generated/MacroBlockExpr/MacroBlockExpr.ql linguist-generated
 /test/extractor-tests/generated/MacroCall/MacroCall.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef.ql linguist-generated
 /test/extractor-tests/generated/MacroExpr/MacroExpr.ql linguist-generated
