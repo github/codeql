@@ -3,4 +3,5 @@
 | MaybeNullExpr.cs:13:30:13:38 | ... ?? ... |
 | MaybeNullExpr.cs:13:35:13:38 | null |
 | MaybeNullExpr.cs:16:17:16:22 | ... as ... |
+| MaybeNullExpr.cs:19:18:19:31 | access to property Prop |
 | MaybeNullExpr.cs:19:19:19:24 | ... as ... |
