@@ -409,6 +409,7 @@ callable_attrs(
 | @labelable_expr
 | @let_expr
 | @literal_expr
+| @macro_block_expr
 | @macro_expr
 | @match_expr
 | @method_call_expr
@@ -2033,6 +2034,23 @@ literal_pats(
 literal_pat_literals(
   int id: @literal_pat ref,
   int literal: @literal_expr ref
+);
+
+macro_block_exprs(
+  unique int id: @macro_block_expr
+);
+
+#keyset[id, index]
+macro_block_expr_statements(
+  int id: @macro_block_expr ref,
+  int index: int ref,
+  int statement: @stmt ref
+);
+
+#keyset[id]
+macro_block_expr_tail_exprs(
+  int id: @macro_block_expr ref,
+  int tail_expr: @expr ref
 );
 
 macro_exprs(
