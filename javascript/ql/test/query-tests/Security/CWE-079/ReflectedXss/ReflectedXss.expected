@@ -35,6 +35,9 @@
 | app/api/routeNextRequest.ts:15:20:15:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:15:20:15:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:27:20:27:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:31:27:31:30 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/blah/page.jsx:8:13:8:19 | req.url | app/blah/page.jsx:8:13:8:19 | req.url | app/blah/page.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/blah/page.jsx:8:13:8:19 | req.url | user-provided value |
+| app/blah/page.jsx:15:13:15:19 | req.url | app/blah/page.jsx:15:13:15:19 | req.url | app/blah/page.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/blah/page.jsx:15:13:15:19 | req.url | user-provided value |
+| app/blah/route.ts:3:25:3:27 | url | app/blah/route.ts:2:17:2:23 | req.url | app/blah/route.ts:3:25:3:27 | url | Cross-site scripting vulnerability due to a $@. | app/blah/route.ts:2:17:2:23 | req.url | user-provided value |
 | app/pages/Next2.jsx:8:13:8:19 | req.url | app/pages/Next2.jsx:8:13:8:19 | req.url | app/pages/Next2.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/pages/Next2.jsx:8:13:8:19 | req.url | user-provided value |
 | app/pages/Next2.jsx:15:13:15:19 | req.url | app/pages/Next2.jsx:15:13:15:19 | req.url | app/pages/Next2.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/pages/Next2.jsx:15:13:15:19 | req.url | user-provided value |
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to a $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
@@ -149,6 +152,8 @@ edges
 | app/api/routeNextRequest.ts:4:9:4:12 | body | app/api/routeNextRequest.ts:31:27:31:30 | body | provenance |  |
 | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | app/api/routeNextRequest.ts:4:9:4:12 | body | provenance |  |
 | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | provenance |  |
+| app/blah/route.ts:2:11:2:13 | url | app/blah/route.ts:3:25:3:27 | url | provenance |  |
+| app/blah/route.ts:2:17:2:23 | req.url | app/blah/route.ts:2:11:2:13 | url | provenance |  |
 | etherpad.js:9:5:9:12 | response | etherpad.js:11:12:11:19 | response | provenance |  |
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:5:9:12 | response | provenance |  |
 | formatting.js:4:9:4:12 | evil | formatting.js:6:43:6:46 | evil | provenance |  |
@@ -357,6 +362,11 @@ nodes
 | app/api/routeNextRequest.ts:15:20:15:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | semmle.label | body |
+| app/blah/page.jsx:8:13:8:19 | req.url | semmle.label | req.url |
+| app/blah/page.jsx:15:13:15:19 | req.url | semmle.label | req.url |
+| app/blah/route.ts:2:11:2:13 | url | semmle.label | url |
+| app/blah/route.ts:2:17:2:23 | req.url | semmle.label | req.url |
+| app/blah/route.ts:3:25:3:27 | url | semmle.label | url |
 | app/pages/Next2.jsx:8:13:8:19 | req.url | semmle.label | req.url |
 | app/pages/Next2.jsx:15:13:15:19 | req.url | semmle.label | req.url |
 | etherpad.js:9:5:9:12 | response | semmle.label | response |
