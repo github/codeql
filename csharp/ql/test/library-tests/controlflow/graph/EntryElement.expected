@@ -896,11 +896,62 @@
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | this access |
 | ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:12 | this access |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:25 | ...; |
-| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
-| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
-| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
-| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:75:41:78 | ", " |
-| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 |
+| ConditionalAccess.cs:42:13:42:28 | {...} | ConditionalAccess.cs:42:13:42:28 | {...} |
+| ConditionalAccess.cs:42:15:42:26 | return ...; | ConditionalAccess.cs:42:22:42:25 | null |
+| ConditionalAccess.cs:42:22:42:25 | null | ConditionalAccess.cs:42:22:42:25 | null |
+| ConditionalAccess.cs:43:13:43:15 | {...} | ConditionalAccess.cs:43:13:43:15 | {...} |
+| ConditionalAccess.cs:47:5:55:5 | {...} | ConditionalAccess.cs:47:5:55:5 | {...} |
+| ConditionalAccess.cs:48:9:48:10 | access to parameter ca | ConditionalAccess.cs:48:9:48:10 | access to parameter ca |
+| ConditionalAccess.cs:48:9:48:20 | access to field IntField | ConditionalAccess.cs:48:9:48:10 | access to parameter ca |
+| ConditionalAccess.cs:48:9:48:26 | ...; | ConditionalAccess.cs:48:9:48:26 | ...; |
+| ConditionalAccess.cs:48:12:48:25 | ... = ... | ConditionalAccess.cs:48:9:48:10 | access to parameter ca |
+| ConditionalAccess.cs:48:24:48:25 | 42 | ConditionalAccess.cs:48:24:48:25 | 42 |
+| ConditionalAccess.cs:49:9:49:10 | access to parameter ca | ConditionalAccess.cs:49:9:49:10 | access to parameter ca |
+| ConditionalAccess.cs:49:9:49:22 | access to property StringProp | ConditionalAccess.cs:49:9:49:10 | access to parameter ca |
+| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:49:9:49:33 | ...; |
+| ConditionalAccess.cs:49:12:49:32 | ... = ... | ConditionalAccess.cs:49:9:49:10 | access to parameter ca |
+| ConditionalAccess.cs:49:26:49:32 | "Hello" | ConditionalAccess.cs:49:26:49:32 | "Hello" |
+| ConditionalAccess.cs:50:9:50:10 | access to parameter ca | ConditionalAccess.cs:50:9:50:10 | access to parameter ca |
+| ConditionalAccess.cs:50:9:50:14 | access to indexer | ConditionalAccess.cs:50:9:50:10 | access to parameter ca |
+| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:50:9:50:24 | ...; |
+| ConditionalAccess.cs:50:12:50:23 | ... = ... | ConditionalAccess.cs:50:9:50:10 | access to parameter ca |
+| ConditionalAccess.cs:50:13:50:13 | 0 | ConditionalAccess.cs:50:13:50:13 | 0 |
+| ConditionalAccess.cs:50:18:50:23 | "Set0" | ConditionalAccess.cs:50:18:50:23 | "Set0" |
+| ConditionalAccess.cs:51:9:51:10 | access to parameter ca | ConditionalAccess.cs:51:9:51:10 | access to parameter ca |
+| ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:51:9:51:10 | access to parameter ca |
+| ConditionalAccess.cs:51:9:51:26 | access to field IntField | ConditionalAccess.cs:51:9:51:10 | access to parameter ca |
+| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:9:51:32 | ...; |
+| ConditionalAccess.cs:51:18:51:31 | ... = ... | ConditionalAccess.cs:51:9:51:10 | access to parameter ca |
+| ConditionalAccess.cs:51:30:51:31 | 84 | ConditionalAccess.cs:51:30:51:31 | 84 |
+| ConditionalAccess.cs:52:9:52:10 | access to parameter ca | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |
+| ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |
+| ConditionalAccess.cs:52:9:52:28 | access to property StringProp | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |
+| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
+| ConditionalAccess.cs:52:18:52:38 | ... = ... | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |
+| ConditionalAccess.cs:52:32:52:38 | "World" | ConditionalAccess.cs:52:32:52:38 | "World" |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
+| ConditionalAccess.cs:53:12:53:25 | ... - ... | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:12:53:25 | ... -= ... | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:12:53:25 | ... = ... | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:25:53:25 | 1 |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
+| ConditionalAccess.cs:54:12:54:29 | ... + ... | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:12:54:29 | ... += ... | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:12:54:29 | ... = ... | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:27:54:29 | "!" |
+| ConditionalAccess.cs:60:70:60:71 | access to parameter s1 | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 |
+| ConditionalAccess.cs:60:70:60:78 | ... + ... | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 |
+| ConditionalAccess.cs:60:70:60:83 | ... + ... | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 |
+| ConditionalAccess.cs:60:75:60:78 | ", " | ConditionalAccess.cs:60:75:60:78 | ", " |
+| ConditionalAccess.cs:60:82:60:83 | access to parameter s2 | ConditionalAccess.cs:60:82:60:83 | access to parameter s2 |
 | Conditions.cs:1:7:1:16 | call to constructor Object | Conditions.cs:1:7:1:16 | call to constructor Object |
 | Conditions.cs:1:7:1:16 | call to method <object initializer> | Conditions.cs:1:7:1:16 | this access |
 | Conditions.cs:1:7:1:16 | this access | Conditions.cs:1:7:1:16 | this access |
