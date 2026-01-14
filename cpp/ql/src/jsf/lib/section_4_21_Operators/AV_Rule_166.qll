@@ -13,7 +13,7 @@ class SizeofImpureExprOperator extends SizeofExprOperator {
       not e.(OverloadedPointerDereferenceExpr).getExpr().isPure() and
       not exists(OverloadedArrayExpr op | op = e |
         op.getArrayBase().isPure() and
-        op.getArrayOffset().isPure()
+        forall(Expr offset | offset = op.getAnArrayOffset() | offset.isPure())
       )
     )
   }
