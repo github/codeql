@@ -1124,6 +1124,7 @@
 | Splitting.cs:51:30:51:36 | { ..., ... } | Splitting.cs:51:17:51:36 | array creation of type String[] |
 | Splitting.cs:51:32:51:34 | "a" | Splitting.cs:51:30:51:36 | { ..., ... } |
 | Splitting.cs:52:9:52:9 | [post] access to local variable y | Splitting.cs:53:17:53:17 | access to local variable y |
+| Splitting.cs:52:9:52:9 | access to local variable y | Splitting.cs:52:9:52:12 | access to array element |
 | Splitting.cs:52:9:52:9 | access to local variable y | Splitting.cs:53:17:53:17 | access to local variable y |
 | Splitting.cs:52:16:52:18 | "b" | Splitting.cs:52:9:52:9 | [post] access to local variable y |
 | Splitting.cs:52:16:52:18 | "b" | Splitting.cs:52:9:52:12 | access to array element |
