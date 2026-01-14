@@ -102,14 +102,15 @@ module RequestForgery {
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Sanitizer { }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends Sanitizer instanceof RedirectCheckBarrier {
+  }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
+  class RegexpCheckAsBarrierGuard extends Sanitizer instanceof RegexpCheckBarrier { }
 
   /**
    * An equality check comparing a data-flow node against a constant string, considered as
@@ -118,7 +119,7 @@ module RequestForgery {
    * Additionally, a check comparing `url.Hostname()` against a constant string is also
    * considered a barrier guard for `url`.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Sanitizer { }
+  class UrlCheckAsBarrierGuard extends Sanitizer instanceof UrlCheckBarrier { }
 
   /**
    * A simple-typed node, considered a sanitizer for request forgery.

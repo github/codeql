@@ -30,7 +30,7 @@ module ZipSlip {
   /**
    * A tar file header, as a source for zip slip.
    */
-  class TarHeaderSource extends Source, DataFlow::Node {
+  class TarHeaderSource extends Source {
     TarHeaderSource() {
       this =
         any(DataFlow::MethodCallNode mcn |
