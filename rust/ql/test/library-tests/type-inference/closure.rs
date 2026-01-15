@@ -70,15 +70,15 @@ mod fn_once_trait {
 
 mod fn_mut_trait {
     fn return_type<F: FnMut(bool) -> i64>(mut f: F) {
-        let _return = f(true); // $ MISSING: type=_return:i64
+        let _return = f(true); // $ type=_return:i64
     }
 
     fn return_type_omitted<F: FnMut(bool)>(mut f: F) {
-        let _return = f(true); // $ MISSING: type=_return:()
+        let _return = f(true); // $ type=_return:()
     }
 
     fn argument_type<F: FnMut(bool) -> i64>(mut f: F) {
-        let arg = Default::default(); // $ MISSING: target=default type=arg:bool
+        let arg = Default::default(); // $ target=default type=arg:bool
         f(arg);
     }
 
@@ -98,7 +98,7 @@ mod fn_mut_trait {
                 0
             }
         };
-        let _r = apply(f, true); // $ target=apply MISSING: type=_r:i64
+        let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ MISSING: type=x:i64 target=add
         let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
@@ -107,15 +107,15 @@ mod fn_mut_trait {
 
 mod fn_trait {
     fn return_type<F: Fn(bool) -> i64>(f: F) {
-        let _return = f(true); // $ MISSING: type=_return:i64
+        let _return = f(true); // $ type=_return:i64
     }
 
     fn return_type_omitted<F: Fn(bool)>(f: F) {
-        let _return = f(true); // $ MISSING: type=_return:()
+        let _return = f(true); // $ type=_return:()
     }
 
     fn argument_type<F: Fn(bool) -> i64>(f: F) {
-        let arg = Default::default(); // $ MISSING: target=default type=arg:bool
+        let arg = Default::default(); // $ target=default type=arg:bool
         f(arg);
     }
 
@@ -135,7 +135,7 @@ mod fn_trait {
                 0
             }
         };
-        let _r = apply(f, true); // $ target=apply MISSING: type=_r:i64
+        let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ MISSING: type=x:i64 target=add
         let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64

@@ -212,7 +212,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // associated types of `Fn` and `FnMut` yet.
     //
     // [1]: https://doc.rust-lang.org/reference/paths.html#grammar-TypePathFn
-    exists(FnOnceTrait t, PathSegment s |
+    exists(AnyFnTrait t, PathSegment s |
       t = resolved and
       s = this.getSegment() and
       s.hasParenthesizedArgList()
@@ -220,7 +220,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
       tp = TTypeParamTypeParameter(t.getTypeParam()) and
       result = s.getParenthesizedArgList().(TypeMention).resolveTypeAt(path)
       or
-      tp = TAssociatedTypeTypeParameter(t, t.getOutputType()) and
+      tp = TAssociatedTypeTypeParameter(t, any(FnOnceTrait tr).getOutputType()) and
       (
         result = s.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
         or

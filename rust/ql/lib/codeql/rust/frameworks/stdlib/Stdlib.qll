@@ -143,21 +143,44 @@ class FutureTrait extends Trait {
   TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
 }
 
+/** A function trait `FnOnce`, `FnMut`, or `Fn`. */
+class AnyFnTrait extends Trait {
+  /** Gets the `Args` type parameter of this trait. */
+  TypeParam getTypeParam() { result = this.getGenericParamList().getGenericParam(0) }
+}
+
 /**
  * The [`FnOnce` trait][1].
  *
  * [1]: https://doc.rust-lang.org/std/ops/trait.FnOnce.html
  */
-class FnOnceTrait extends Trait {
+class FnOnceTrait extends AnyFnTrait {
   pragma[nomagic]
   FnOnceTrait() { this.getCanonicalPath() = "core::ops::function::FnOnce" }
-
-  /** Gets the type parameter of this trait. */
-  TypeParam getTypeParam() { result = this.getGenericParamList().getGenericParam(0) }
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]
   TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
+}
+
+/**
+ * The [`FnMut` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.FnMut.html
+ */
+class FnMutTrait extends AnyFnTrait {
+  pragma[nomagic]
+  FnMutTrait() { this.getCanonicalPath() = "core::ops::function::FnMut" }
+}
+
+/**
+ * The [`Fn` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.Fn.html
+ */
+class FnTrait extends AnyFnTrait {
+  pragma[nomagic]
+  FnTrait() { this.getCanonicalPath() = "core::ops::function::Fn" }
 }
 
 /**
