@@ -18,6 +18,8 @@ query predicate illFormedTypeMention(TypeMention tm) {
     any(PathTypeMention ptm |
       exists(ptm.resolvePathTypeAt(TypePath::nil())) and
       not exists(ptm.resolveType())
+      or
+      ptm.(NonAliasPathTypeMention).getResolved() instanceof TypeAlias
     ) and
   // Only include inconsistencies in the source, as we otherwise get
   // inconsistencies from library code in every project.

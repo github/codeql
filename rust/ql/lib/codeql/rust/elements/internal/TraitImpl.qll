@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.Trait
+private import codeql.rust.internal.PathResolution as PathResolution
 
 /**
  * INTERNAL: This module contains the customizable definition of `Trait` and should not
@@ -67,5 +68,11 @@ module Impl {
      * `where` clauses for `Self`.
      */
     TypeBound getATypeBound() { result = this.getTypeBound(_) }
+
+    /** Gets a direct supertrait of this trait, if any. */
+    Trait getSupertrait() {
+      result =
+        PathResolution::resolvePath(this.getATypeBound().getTypeRepr().(PathTypeRepr).getPath())
+    }
   }
 }
