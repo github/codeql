@@ -2417,6 +2417,19 @@ class ContentSet instanceof Content {
   }
 }
 
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch, P param);
+}
+
 /**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
@@ -2438,7 +2451,7 @@ private predicate controls(IRGuardCondition g, Node n, boolean edge) {
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
-module BarrierGuard<guardChecksSig/3 guardChecks> {
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
   bindingset[value, n]
   pragma[inline_late]
   private predicate convertedExprHasValueNumber(ValueNumber value, Node n) {
@@ -2448,12 +2461,13 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
   }
 
-  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch) {
-    guardChecks(g, n.asOperand().getDef().getConvertedResultExpression(), branch)
+  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch, P p) {
+    guardChecks(g, n.asOperand().getDef().getConvertedResultExpression(), branch, p)
   }
 
   /**
-   * Gets an expression node that is safely guarded by the given guard check.
+   * Gets an expression node that is safely guarded by the given guard check
+   * when the parameter is `p`.
    *
    * For example, given the following code:
    * ```cpp
@@ -2484,19 +2498,27 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
    */
-  Node getABarrierNode() {
+  Node getABarrierNode(P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
       convertedExprHasValueNumber(value, result) and
       guardChecks(g,
-        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
+        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge, p) and
       controls(g, result, edge)
     )
     or
-    result = SsaImpl::BarrierGuard<guardChecksNode/3>::getABarrierNode()
+    result = SsaImpl::BarrierGuard<P, guardChecksNode/4>::getABarrierNode(p)
   }
 
   /**
-   * Gets an indirect expression node that is safely guarded by the given guard check.
+   * Gets an expression node that is safely guarded by the given guard check.
+   *
+   * See `getABarrierNode/1` for examples.
+   */
+  Node getABarrierNode() { result = getABarrierNode(_) }
+
+  /**
+   * Gets an indirect expression node that is safely guarded by the given
+   * guard check with parameter `p`.
    *
    * For example, given the following code:
    * ```cpp
@@ -2528,6 +2550,13 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
+  Node getAnIndirectBarrierNode(P p) { result = getAnIndirectBarrierNode(_, p) }
+
+  /**
+   * Gets an indirect expression node that is safely guarded by the given guard check.
+   *
+   * See `getAnIndirectBarrierNode/1` for examples.
+   */
   Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
 
   bindingset[value, n]
@@ -2542,10 +2571,10 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 
   private predicate guardChecksIndirectNode(
-    IRGuardCondition g, Node n, boolean branch, int indirectionIndex
+    IRGuardCondition g, Node n, boolean branch, int indirectionIndex, P p
   ) {
     guardChecks(g, n.asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
-      branch)
+      branch, p)
   }
 
   /**
@@ -2582,17 +2611,42 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
-  Node getAnIndirectBarrierNode(int indirectionIndex) {
+  Node getAnIndirectBarrierNode(int indirectionIndex, P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
       indirectConvertedExprHasValueNumber(indirectionIndex, value, result) and
       guardChecks(g,
-        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
+        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge, p) and
       controls(g, result, edge)
     )
     or
     result =
-      SsaImpl::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
+      SsaImpl::BarrierGuardWithIntParam<P, guardChecksIndirectNode/5>::getABarrierNode(indirectionIndex,
+        p)
   }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private predicate guardChecks(IRGuardCondition g, Expr e, boolean branch, Unit unit) {
+    guardChecks(g, e, branch) and
+    exists(unit)
+  }
+
+  import ParameterizedBarrierGuard<Unit, guardChecks/4>
+}
+
+private module InstrWithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the instruction `instr` upon evaluating to `branch`.
+   */
+  signature predicate instructionGuardChecksSig(
+    IRGuardCondition g, Instruction instr, boolean branch, P p
+  );
 }
 
 /**
@@ -2606,7 +2660,9 @@ signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction in
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
-module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+module ParameterizedInstructionBarrierGuard<
+  ParamSig P, InstrWithParam<P>::instructionGuardChecksSig/4 instructionGuardChecks>
+{
   bindingset[value, n]
   pragma[inline_late]
   private predicate operandHasValueNumber(ValueNumber value, Node n) {
@@ -2616,20 +2672,26 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
     )
   }
 
-  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch) {
-    instructionGuardChecks(g, n.asOperand().getDef(), branch)
+  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch, P p) {
+    instructionGuardChecks(g, n.asOperand().getDef(), branch, p)
   }
 
-  /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
+  /**
+   * Gets a node that is safely guarded by the given guard check with
+   * parameter `p`.
+   */
+  Node getABarrierNode(P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
-      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
+      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge, p) and
       operandHasValueNumber(value, result) and
       controls(g, result, edge)
     )
     or
-    result = SsaImpl::BarrierGuard<guardChecksNode/3>::getABarrierNode()
+    result = SsaImpl::BarrierGuard<P, guardChecksNode/4>::getABarrierNode(p)
   }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() { result = getABarrierNode(_) }
 
   bindingset[value, n]
   pragma[inline_late]
@@ -2641,25 +2703,52 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
   }
 
   private predicate guardChecksIndirectNode(
-    IRGuardCondition g, Node n, boolean branch, int indirectionIndex
+    IRGuardCondition g, Node n, boolean branch, int indirectionIndex, P p
   ) {
-    instructionGuardChecks(g, n.asIndirectOperand(indirectionIndex).getDef(), branch)
+    instructionGuardChecks(g, n.asIndirectOperand(indirectionIndex).getDef(), branch, p)
   }
 
   /**
    * Gets an indirect node with indirection index `indirectionIndex` that is
-   * safely guarded by the given guard check.
+   * safely guarded by the given guard check with parameter `p`.
    */
-  Node getAnIndirectBarrierNode(int indirectionIndex) {
+  Node getAnIndirectBarrierNode(int indirectionIndex, P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
-      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
+      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge, p) and
       indirectOperandHasValueNumber(value, indirectionIndex, result) and
       controls(g, result, edge)
     )
     or
     result =
-      SsaImpl::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
+      SsaImpl::BarrierGuardWithIntParam<P, guardChecksIndirectNode/5>::getABarrierNode(indirectionIndex,
+        p)
   }
+
+  /**
+   * Gets an indirect node that is safely guarded by the given guard check
+   * with parameter `p`.
+   */
+  Node getAnIndirectBarrierNode(P p) { result = getAnIndirectBarrierNode(_, p) }
+
+  /** Gets an indirect node that is safely guarded by the given guard check. */
+  Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an instruction.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+  private predicate instructionGuardChecks(
+    IRGuardCondition g, Instruction i, boolean branch, Unit unit
+  ) {
+    instructionGuardChecks(g, i, branch) and
+    exists(unit)
+  }
+
+  import ParameterizedInstructionBarrierGuard<Unit, instructionGuardChecks/4>
 }
 
 /**
