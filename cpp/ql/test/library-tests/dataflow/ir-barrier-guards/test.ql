@@ -2,6 +2,7 @@ import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.controlflow.IRGuards
 import utils.test.InlineExpectationsTest
+import semmle.code.cpp.dataflow.ExternalFlow
 
 predicate instructionGuardChecks(IRGuardCondition gc, Instruction checked, boolean branch) {
   exists(CallInstruction call |
@@ -31,13 +32,11 @@ module Test implements TestSig {
   string getARelevantTag() { result = ["barrier", "indirect_barrier"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node node, string s |
-      indirectBarrierGuard(node, s) and
-      value = s and
+    exists(DataFlow::Node node |
+      indirectBarrierGuard(node, value) and
       tag = "indirect_barrier"
       or
-      barrierGuard(node, s) and
-      value = s and
+      barrierGuard(node, value) and
       tag = "barrier"
     |
       element = node.toString() and

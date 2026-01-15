@@ -13,3 +13,38 @@ void testCheckArgument(int p) {
     sink(p); // $ barrier=glval<int> indirect_barrier=int
   }
 }
+
+int* get_clean_value(int* x) { return x; }
+bool is_clean_value(int*);
+
+int* get_clean_pointer(int* x) { return x; }
+bool is_clean_pointer(int*);
+
+void sink(int);
+void sink(int*);
+
+void test_mad(int x, int* p) {
+	{
+		if(is_clean_value(&x)) {
+			sink(x); // $ MISSING: external=int
+		}
+	}
+
+	{
+		if(is_clean_value(p)) {
+			sink(*p); // $ MISSING: external=int
+		}
+	}
+
+	{
+		if(is_clean_pointer(p)) {
+			sink(p); // $ MISSING: external=int*
+		}
+	}
+
+	{
+		if(is_clean_pointer(&x)) {
+			sink(x); // $ MISSING: external=glval<int>
+		}
+	}
+}
