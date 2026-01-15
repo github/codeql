@@ -42,31 +42,7 @@ private class SpringRestTemplateMethodWithUriVariablesParameter extends Method {
 
   SpringRestTemplateMethodWithUriVariablesParameter() {
     this.getDeclaringType() instanceof SpringRestTemplate and
-    (
-      this.hasName("delete") and pos = 1
-      or
-      this.hasName("exchange") and pos = 4
-      or
-      this.hasName("execute") and pos = 4
-      or
-      this.hasName("getForEntity") and pos = 2
-      or
-      this.hasName("getForObject") and pos = 2
-      or
-      this.hasName("headForHeaders") and pos = 1
-      or
-      this.hasName("optionsForAllow") and pos = 1
-      or
-      this.hasName("patchForObject") and pos = 3
-      or
-      this.hasName("postForEntity") and pos = 3
-      or
-      this.hasName("postForLocation") and pos = 2
-      or
-      this.hasName("postForObject") and pos = 3
-      or
-      this.hasName("put") and pos = 2
-    )
+    this.getParameter(pos).getName() = "uriVariables"
   }
 
   int getUriVariablesPosition() { result = pos }
