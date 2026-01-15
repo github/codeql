@@ -5,7 +5,10 @@
 private import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.internal.PathResolution
+private import codeql.rust.internal.typeinference.Type
+private import codeql.rust.internal.typeinference.TypeMention
 
 /**
  * A call to the `starts_with` method on a `Path`.
@@ -296,4 +299,31 @@ class Vec extends Struct {
 
   /** Gets the type parameter representing the element type. */
   TypeParam getElementTypeParam() { result = this.getGenericParamList().getTypeParam(0) }
+}
+
+// Blanket implementations currently don't have a canonical path, so we cannot
+// use models-as-data for this model.
+private class ReflexiveFrom extends SummarizedCallable::Range {
+  ReflexiveFrom() {
+    exists(ImplItemNode impl |
+      impl.resolveTraitTy().(Trait).getCanonicalPath() = "core::convert::From" and
+      this = impl.getAnAssocItem() and
+      impl.isBlanketImplementation() and
+      this.getParam(0)
+          .getTypeRepr()
+          .(TypeMention)
+          .resolveType()
+          .(TypeParamTypeParameter)
+          .getTypeParam() = impl.getTypeParam(0)
+    )
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = true and
+    model = "ReflexiveFrom"
+  }
 }

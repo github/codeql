@@ -58,12 +58,26 @@ private predicate implSiblings(TraitItemNode trait, Impl impl1, Impl impl2) {
   )
 }
 
+pragma[nomagic]
+private predicate isBlanketImpl(ImplItemNode impl, Trait trait) {
+  impl.isBlanketImplementation() and
+  trait = impl.resolveTraitTy()
+}
+
 /**
  * Holds if `impl` is an implementation of `trait` and if another implementation
  * exists for the same type.
  */
 pragma[nomagic]
-private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, impl, _) }
+private predicate implHasSibling(ImplItemNode impl, Trait trait) {
+  implSiblings(trait, impl, _)
+  or
+  exists(ImplItemNode other |
+    isBlanketImpl(impl, trait) and
+    isBlanketImpl(other, trait) and
+    impl != other
+  )
+}
 
 /**
  * Holds if type parameter `tp` of `trait` occurs in the function `f` with the name
