@@ -23,7 +23,6 @@
 | dataClass.kt:0:0:0:0 | "DataClass(" | StringLiteral |
 | dataClass.kt:0:0:0:0 | "x=" | StringLiteral |
 | dataClass.kt:0:0:0:0 | "y=" | StringLiteral |
-| dataClass.kt:0:0:0:0 | (...)... | CastExpr |
 | dataClass.kt:0:0:0:0 | ... !is ... | NotInstanceOfExpr |
 | dataClass.kt:0:0:0:0 | ... & ... | AndBitwiseExpr |
 | dataClass.kt:0:0:0:0 | ... & ... | AndBitwiseExpr |
@@ -37,6 +36,7 @@
 | dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
 | dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
 | dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
+| dataClass.kt:0:0:0:0 | <implicit cast> | ImplicitCastExpr |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
