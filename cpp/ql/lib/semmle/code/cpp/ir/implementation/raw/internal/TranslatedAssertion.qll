@@ -55,7 +55,7 @@ private predicate assertion0(MacroInvocation mi, Stmt s) {
     unique(StmtParent p, int startline, Function f |
       macroInvocationLocation(startline, f, mi) and
       stmtParentLocation(startline, f, p) and
-      // Also do not count the elements from the expanded macro. i.e., when checking
+      // Also do not count the elements from the expanded macro, i.e., when checking
       // if `assert(x)` is the only thing on the line we do not count the
       // generated `((void)0)` expression.
       not p = mi.getAnExpandedElement()
