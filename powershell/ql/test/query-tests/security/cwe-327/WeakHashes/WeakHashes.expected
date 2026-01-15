@@ -1,0 +1,6 @@
+| test.ps1:4:8:4:51 | Call to create | Use of weak cryptographic hash algorithm. |
+| test.ps1:8:16:8:79 | Call to new-object | Use of weak cryptographic hash algorithm. |
+| test.ps1:16:17:16:81 | Call to new-object | Use of weak cryptographic hash algorithm. |
+| test.ps1:17:47:17:93 | Call to getbytes | Use of weak cryptographic hash algorithm. |
+| test.ps1:20:16:20:66 | Call to new-object | Use of weak cryptographic hash algorithm. |
+| test.ps1:21:45:21:89 | Call to getbytes | Use of weak cryptographic hash algorithm. |
