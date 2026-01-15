@@ -245,7 +245,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // trait Sub: Super<Assoc=Assoc[Sub]>
     // ```
     // Where `Assoc` is an associated type of `Super` and `Assoc[Sub]` denotes
-    // the copy of the type parameter inherited into `Sub`.
+    // the copy of the type parameter inherited by `Sub`.
     exists(Trait subtrait, TypeAlias alias |
       subtrait.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() = this and
       result = TAssociatedTypeTypeParameter(subtrait, alias) and

@@ -457,12 +457,12 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   override Location getLocation() { result = typeAlias.getLocation() }
 }
 
-/** Gets the associated type type parameter corresponding directly to `typeAlias`. */
+/** Gets the associated type type-parameter corresponding directly to `typeAlias`. */
 AssociatedTypeTypeParameter getAssociatedTypeTypeParameter(TypeAlias typeAlias) {
   result.isDirect() and result.getTypeAlias() = typeAlias
 }
 
-/** Gets the dyn type type parameter corresponding directly to `typeAlias`. */
+/** Gets the dyn type type-parameter corresponding directly to `typeAlias`. */
 DynTraitTypeParameter getDynTraitTypeParameter(TypeAlias typeAlias) {
   result.getTraitTypeParameter() = getAssociatedTypeTypeParameter(typeAlias)
 }
