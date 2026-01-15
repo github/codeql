@@ -430,6 +430,7 @@ module Expressions {
       not this instanceof ArrayCreation and
       not this instanceof QualifiedWriteAccess and
       not this instanceof QualifiedAccessorWrite and
+      not this instanceof QualifiedAccessorWriteOutParam and
       not this instanceof NoNodeExpr and
       not this instanceof SwitchExpr and
       not this instanceof SwitchCaseExpr and
@@ -492,6 +493,93 @@ module Expressions {
   }
 
   /**
+   * An expression that writes via an accessor in an `out` parameter, for example `s = M(out x.Field)`,
+   * where `Field` is a field.
+   *
+   * Note that `ref` parameters are not included here as they are considered reads before the call.
+   * Ideally, we would model `ref` parameters as both reads and writes, but that is not currently supported.
+   *
+   * Accessor writes need special attention, because we need to model that the
+   * access is written after the method call.
+   *
+   * In the example above, this means we want a CFG that looks like
+   *
+   * ```csharp
+   * x -> call M -> x.Field -> s = M(out x.Field)
+   * ```
+   */
+  private class QualifiedAccessorWriteOutParam extends PostOrderTree instanceof Expr {
+    QualifiedAccessorWriteOutParam() {
+      exists(AssignableDefinitions::OutRefDefinition def |
+        def.getExpr() = this and
+        def.getTargetAccess() instanceof QualifiableExpr and
+        def.getTargetAccess().isOutArgument()
+      )
+    }
+
+    private QualifiableExpr getOutAccess(int i) {
+      result =
+        rank[i + 1](AssignableDefinitions::OutRefDefinition def |
+          def.getExpr() = this and
+          def.getTargetAccess() instanceof QualifiableExpr and
+          def.getTargetAccess().isOutArgument()
+        |
+          def order by def.getIndex()
+        ).getTargetAccess()
+    }
+
+    private QualifiableExpr getLastOutAccess() {
+      exists(int last |
+        result = this.getOutAccess(last) and
+        not exists(this.getOutAccess(last + 1))
+      )
+    }
+
+    final override predicate propagatesAbnormal(AstNode child) { child = getExprChild(this, _) }
+
+    final override predicate first(AstNode first) {
+      first(getExprChild(this, 0), first)
+      or
+      not exists(getExprChild(this, 0)) and
+      first = this
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      // The last ast node is the last out writeaccess.
+      // Completion from the call itself is propagated (required for eg. conditions).
+      last = this.getLastOutAccess() and
+      c.isValidFor(this)
+    }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      exists(int i |
+        last(getExprChild(this, i), pred, c) and
+        c instanceof NormalCompletion
+      |
+        // Post-order: flow from last element of last child to element itself
+        i = max(int j | exists(getExprChild(this, j))) and
+        succ = this
+        or
+        // Standard left-to-right evaluation
+        first(getExprChild(this, i + 1), succ)
+      )
+      or
+      // Flow from this element to the first write access.
+      pred = this and
+      succ = this.getOutAccess(0) and
+      c.isValidFor(pred) and
+      c instanceof NormalCompletion
+      or
+      // Flow from one access to the next
+      exists(int i | pred = this.getOutAccess(i) |
+        succ = this.getOutAccess(i + 1) and
+        c.isValidFor(pred) and
+        c instanceof NormalCompletion
+      )
+    }
+  }
+
+  /**
    * An expression that writes via an accessor, for example `x.Prop = 0`,
    * where `Prop` is a property.
    *
@@ -516,6 +604,7 @@ module Expressions {
     QualifiedAccessorWrite() {
       def.getExpr() = this and
       def.getTargetAccess().(WriteAccess) instanceof QualifiableExpr and
+      not def instanceof AssignableDefinitions::OutRefDefinition and
       not this instanceof AssignOperationWithExpandedAssignment
     }
 
