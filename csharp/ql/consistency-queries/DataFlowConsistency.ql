@@ -60,6 +60,12 @@ private module Input implements InputSig<Location, CsharpDataFlow> {
       qe.isConditional() and
       qe.getQualifier() = arg.asExpr()
     )
+    or
+    // TODO: Remove once underlying issue is fixed
+    exists(AssignableDefinitions::OutRefDefinition def |
+      def.getTargetAccess().(QualifiableExpr) = arg.asExpr() and
+      def.getTargetAccess().isOutArgument()
+    )
   }
 
   predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
