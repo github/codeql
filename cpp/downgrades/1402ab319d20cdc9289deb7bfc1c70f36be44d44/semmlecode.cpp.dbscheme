@@ -1902,9 +1902,6 @@ case @expr.kind of
 | 391 = @nested_requirement
 | 392 = @compound_requirement
 | 393 = @concept_id
-| 394 = @isinvocable
-| 395 = @isnothrowinvocable
-| 396 = @isbitwisecloneable
 ;
 
 @var_args_expr = @vastartexpr
@@ -2021,9 +2018,6 @@ case @expr.kind of
             | @istriviallyequalitycomparable
             | @isscopedenum
             | @istriviallyrelocatable
-            | @isinvocable
-            | @isnothrowinvocable
-            | @isbitwisecloneable
             ;
 
 compound_requirement_is_noexcept(
@@ -2039,10 +2033,6 @@ new_array_allocated_type(
     unique int expr: @new_array_expr ref,
     int type_id: @type ref
 );
-
-param_ref_to_this(
-    int expr: @param_ref ref
-)
 
 /**
  * The field being initialized by an initializer expression within an aggregate

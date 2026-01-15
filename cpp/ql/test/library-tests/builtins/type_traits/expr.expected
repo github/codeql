@@ -165,6 +165,10 @@
 | clang.cpp:122:36:122:66 | int |  | <none> |
 | clang.cpp:123:36:123:67 | __is_trivially_relocatable | void | 0 |
 | clang.cpp:123:36:123:67 | void |  | <none> |
+| clang.cpp:130:34:130:60 | __is_bitwise_cloneable | int | 1 |
+| clang.cpp:130:34:130:60 | int |  | <none> |
+| clang.cpp:131:34:131:59 | S3 |  | <none> |
+| clang.cpp:131:34:131:59 | __is_bitwise_cloneable | S3 | 0 |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 1 |  | 1 |
@@ -211,6 +215,16 @@
 | gcc.cpp:29:45:29:93 | __reference_converts_from_temporary | int &&,int && | 0 |
 | gcc.cpp:29:45:29:93 | int && |  | <none> |
 | gcc.cpp:29:45:29:93 | int && |  | <none> |
+| gcc.cpp:33:24:33:45 | __is_invocable | f_type | 1 |
+| gcc.cpp:33:24:33:45 | f_type |  | <none> |
+| gcc.cpp:34:24:34:51 | __is_invocable | f_type,bool | 0 |
+| gcc.cpp:34:24:34:51 | bool |  | <none> |
+| gcc.cpp:34:24:34:51 | f_type |  | <none> |
+| gcc.cpp:36:32:36:61 | __is_nothrow_invocable | f_type | 1 |
+| gcc.cpp:36:32:36:61 | f_type |  | <none> |
+| gcc.cpp:37:32:37:67 | __is_nothrow_invocable | f_type,bool | 0 |
+| gcc.cpp:37:32:37:67 | bool |  | <none> |
+| gcc.cpp:37:32:37:67 | f_type |  | <none> |
 | ms.cpp:38:41:38:45 | 0 |  | 0 |
 | ms.cpp:88:27:88:45 | __has_assign | empty | 0 |
 | ms.cpp:88:27:88:45 | empty |  | <none> |
