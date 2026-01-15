@@ -149,7 +149,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
   TypeItemNode getResolved() { result = resolved }
 
   pragma[nomagic]
-  private TypeRepr getAssocTypeArg(string name) {
+  private TypeMention getAssocTypeArg(string name) {
     result = this.getSegment().getGenericArgList().getAssocTypeArg(name)
   }
 
@@ -254,9 +254,14 @@ class NonAliasPathTypeMention extends PathTypeMention {
     )
   }
 
-  pragma[nomagic]
+  bindingset[name]
   private TypeAlias getResolvedAlias(string name) {
     result = resolved.(TraitItemNode).getAssocItem(name)
+  }
+
+  bindingset[name]
+  private TypeAlias getResolvedTraitAssocType(string name) {
+    result = resolved.(TraitItemNode).getASuccessor(name)
   }
 
   /** Gets the type mention in this path for the type parameter `tp`, if any. */
@@ -265,7 +270,7 @@ class NonAliasPathTypeMention extends PathTypeMention {
     exists(TypeAlias alias, string name |
       result = this.getAssocTypeArg(name) and
       tp = TAssociatedTypeTypeParameter(resolved, alias) and
-      alias = resolved.(TraitItemNode).getASuccessor(name)
+      alias = this.getResolvedTraitAssocType(name)
     )
     or
     // If `path` is the trait of an `impl` block then any associated types
@@ -283,10 +288,9 @@ class NonAliasPathTypeMention extends PathTypeMention {
     // the rhs. of the type alias is a type argument to the trait.
     exists(ImplItemNode impl, TypeAlias alias, string name |
       this = impl.getTraitPath() and
-      alias = impl.getASuccessor(pragma[only_bind_into](name)) and
+      alias = impl.getASuccessor(name) and
       result = alias.getTypeRepr() and
-      tp =
-        TAssociatedTypeTypeParameter(resolved, this.getResolvedAlias(pragma[only_bind_into](name)))
+      tp = TAssociatedTypeTypeParameter(resolved, this.getResolvedAlias(name))
     )
   }
 
