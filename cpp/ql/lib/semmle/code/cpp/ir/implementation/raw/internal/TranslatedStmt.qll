@@ -327,7 +327,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
   TranslatedEmptyStmt() {
     // An assertion macro invocation can expand to
     // an empty statement in release builds. In that case
-    // we synthedsize the check that would have occurred.
+    // we synthesize the check that would have occurred.
     // This is handled by `TranslatedAssertion.qll` and so
     // we exclude these statements here.
     not assertion(_, stmt) and
