@@ -28,8 +28,15 @@ predicate barrierGuard(DataFlow::Node node, string s) {
   else s = node.getType().toString().replaceAll(" ", "")
 }
 
+predicate externalBarrierGuard(DataFlow::Node node, string s) {
+  barrierNode(node, "test-barrier") and
+  if node.isGLValue()
+  then s = "glval<" + node.getType().toString().replaceAll(" ", "") + ">"
+  else s = node.getType().toString().replaceAll(" ", "")
+}
+
 module Test implements TestSig {
-  string getARelevantTag() { result = ["barrier", "indirect_barrier"] }
+  string getARelevantTag() { result = ["barrier", "indirect_barrier", "external"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node node |
@@ -38,6 +45,9 @@ module Test implements TestSig {
       or
       barrierGuard(node, value) and
       tag = "barrier"
+      or
+      externalBarrierGuard(node, value) and
+      tag = "external"
     |
       element = node.toString() and
       location = node.getLocation()

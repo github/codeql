@@ -1040,6 +1040,11 @@ private module Cached {
     or
     av.isFalse() and result.asBooleanValue() = false
     or
+    // NOTE: The below cases don't contribute anything currently since the
+    // callers immediate uses `.asBooleanValue()` to convert the `GuardValue`
+    // to a boolean. Once we're willing to accept the breaking change of
+    // converting the barrier guard API to use `GuardValue`s instead `Boolean`s
+    // we can remove this restriction.
     av.isNoException() and result.getDualValue().isThrowsException()
     or
     av.isZero() and result.asIntValue() = 0
@@ -1051,7 +1056,9 @@ private module Cached {
     av.isNotNull() and result.isNonNullValue()
   }
 
-  private predicate barrierGuardChecks(IRGuardCondition g, Expr e, GuardValue gv, TKindModelPair kmp) {
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
+
+  private predicate barrierGuardChecks(IRGuardCondition g, Expr e, boolean gv, TKindModelPair kmp) {
     exists(
       SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
       string kind, string model
@@ -1059,8 +1066,32 @@ private module Cached {
       isBarrierGuardNode(n, acceptingvalue, kind, model) and
       n.asNode().asExpr() = e and
       kmp = TMkPair(kind, model) and
-      gv = convertAcceptingValue(acceptingvalue) and
-      n.asNode().(ArgumentNode).getCallInstruction() = g
+      gv = convertAcceptingValue(acceptingvalue).asBooleanValue() and
+      n.asNode().(Private::ArgumentNode).getCall().asCallInstruction() = g
+    )
+  }
+
+  private newtype TKindModelPairIntPair =
+    MkKindModelPairIntPair(TKindModelPair pair, int indirectionIndex) {
+      indirectionIndex > 0 and
+      Private::nodeHasInstruction(_, _, indirectionIndex) and
+      exists(pair)
+    }
+
+  private predicate indirectBarrierGuardChecks(
+    IRGuardCondition g, Expr e, boolean gv, TKindModelPairIntPair kmp
+  ) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode interpretNode,
+      Public::AcceptingValue acceptingvalue, string kind, string model, int indirectionIndex,
+      Private::ArgumentNode arg
+    |
+      isBarrierGuardNode(interpretNode, acceptingvalue, kind, model) and
+      arg = interpretNode.asNode() and
+      arg.asIndirectExpr(indirectionIndex) = e and
+      kmp = MkKindModelPairIntPair(TMkPair(kind, model), indirectionIndex) and
+      gv = convertAcceptingValue(acceptingvalue).asBooleanValue() and
+      arg.getCall().asCallInstruction() = g
     )
   }
 
@@ -1076,6 +1107,9 @@ private module Cached {
     or
     DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
         model)) = node
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPairIntPair, indirectBarrierGuardChecks/4>::getAnIndirectBarrierNode(MkKindModelPairIntPair(TMkPair(kind,
+          model), _)) = node
   }
 }
 
