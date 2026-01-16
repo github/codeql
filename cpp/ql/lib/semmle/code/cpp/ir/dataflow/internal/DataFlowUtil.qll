@@ -1164,7 +1164,7 @@ private module RawIndirectNodes {
     override predicate isGLValue() { this.getInstruction().isGLValue() }
 
     override Type getType() {
-      exists(int sub, DataFlowType type, boolean isGLValue |
+      exists(int sub, Type type, boolean isGLValue |
         type = getInstructionType(this.getInstruction(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
