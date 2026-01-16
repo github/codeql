@@ -23,7 +23,28 @@ final class ImplTypeAbstraction extends TypeAbstraction, Impl {
   }
 }
 
+private predicate idDynTraitTypeRepr(Raw::DynTraitTypeRepr x, Raw::DynTraitTypeRepr y) { x = y }
+
+private predicate idOfDynTraitTypeRepr(Raw::DynTraitTypeRepr x, int y) =
+  equivalenceRelation(idDynTraitTypeRepr/2)(x, y)
+
+private int idOfDynTraitTypeRepr(DynTraitTypeRepr node) {
+  idOfDynTraitTypeRepr(Synth::convertAstNodeToRaw(node), result)
+}
+
+/** Holds if `dt` is the (arbitrarily chosen) canonical dyn trait type abstraction for `trait`. */
+private predicate canonicalDynTraitTypeAbstraction(DynTraitTypeRepr dt, Trait trait) {
+  dt = min(DynTraitTypeRepr d | d.getTrait() = trait | d order by idOfDynTraitTypeRepr(d))
+}
+
 final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
+  DynTypeAbstraction() {
+    // We pick a "canonical" `dyn Trait` in order to avoid including multiple
+    // entries in `conditionSatisfiesConstraint` with the exact same effect when
+    // `dyn Trait` occurs multiple times for the same trait.
+    canonicalDynTraitTypeAbstraction(this, this.getTrait())
+  }
+
   override TypeParameter getATypeParameter() {
     result = any(DynTraitTypeParameter tp | tp.getTrait() = this.getTrait()).getTraitTypeParameter()
   }

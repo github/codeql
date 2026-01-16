@@ -4,6 +4,7 @@ private import rust
 private import codeql.rust.internal.PathResolution
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
+private import TypeAbstraction
 private import TypeInference
 
 /** An AST node that may mention a type. */
@@ -563,7 +564,14 @@ class DynTypeBoundListMention extends TypeMention instanceof TypeBoundList {
   private Trait trait;
 
   DynTypeBoundListMention() {
-    exists(DynTraitTypeRepr dyn | this = dyn.getTypeBoundList() and trait = dyn.getTrait())
+    exists(DynTraitTypeRepr dyn |
+      // We only need this type mention when the `dyn Trait` is a type
+      // abstraction, that is, when it's "canonical" and used in
+      // `conditionSatisfiesConstraint`.
+      dyn instanceof DynTypeAbstraction and
+      this = dyn.getTypeBoundList() and
+      trait = dyn.getTrait()
+    )
   }
 
   override Type resolveTypeAt(TypePath path) {
