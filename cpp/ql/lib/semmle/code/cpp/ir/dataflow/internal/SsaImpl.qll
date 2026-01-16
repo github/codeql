@@ -53,7 +53,7 @@ private module SourceVariables {
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    DataFlowType getType() {
+    Type getType() {
       if this.isGLValue()
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
