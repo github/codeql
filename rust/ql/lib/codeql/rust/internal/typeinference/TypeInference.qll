@@ -3843,7 +3843,7 @@ private TypePath closureReturnPath() {
     TypePath::singleton(TDynTraitTypeParameter(any(FnTrait t), any(FnOnceTrait t).getOutputType()))
 }
 
-/** Gets the path to a closure with arity `arity`s `index`th parameter type. */
+/** Gets the path to a closure with arity `arity`'s `index`th parameter type. */
 pragma[nomagic]
 private TypePath closureParameterPath(int arity, int index) {
   result =
