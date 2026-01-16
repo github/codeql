@@ -722,6 +722,42 @@
 | Assignments.cs:18:5:20:5 | {...} | Assignments.cs:18:5:20:5 | {...} |
 | Assignments.cs:19:9:19:17 | return ...; | Assignments.cs:19:16:19:16 | access to parameter x |
 | Assignments.cs:19:16:19:16 | access to parameter x | Assignments.cs:19:16:19:16 | access to parameter x |
+| Assignments.cs:28:5:30:5 | {...} | Assignments.cs:28:5:30:5 | {...} |
+| Assignments.cs:29:9:29:14 | ... = ... | Assignments.cs:29:13:29:14 | 42 |
+| Assignments.cs:29:9:29:15 | ...; | Assignments.cs:29:9:29:15 | ...; |
+| Assignments.cs:29:13:29:14 | 42 | Assignments.cs:29:13:29:14 | 42 |
+| Assignments.cs:33:5:36:5 | {...} | Assignments.cs:33:5:36:5 | {...} |
+| Assignments.cs:34:9:34:14 | ... = ... | Assignments.cs:34:13:34:14 | 42 |
+| Assignments.cs:34:9:34:15 | ...; | Assignments.cs:34:9:34:15 | ...; |
+| Assignments.cs:34:13:34:14 | 42 | Assignments.cs:34:13:34:14 | 42 |
+| Assignments.cs:35:9:35:19 | ... = ... | Assignments.cs:35:13:35:19 | "Hello" |
+| Assignments.cs:35:9:35:20 | ...; | Assignments.cs:35:9:35:20 | ...; |
+| Assignments.cs:35:13:35:19 | "Hello" | Assignments.cs:35:13:35:19 | "Hello" |
+| Assignments.cs:39:5:45:5 | {...} | Assignments.cs:39:5:45:5 | {...} |
+| Assignments.cs:40:9:40:15 | ... ...; | Assignments.cs:40:9:40:15 | ... ...; |
+| Assignments.cs:40:13:40:14 | Int32 x1 | Assignments.cs:40:13:40:14 | Int32 x1 |
+| Assignments.cs:41:9:41:30 | call to method SetParamSingle | Assignments.cs:41:9:41:30 | this access |
+| Assignments.cs:41:9:41:30 | this access | Assignments.cs:41:9:41:30 | this access |
+| Assignments.cs:41:9:41:31 | ...; | Assignments.cs:41:9:41:31 | ...; |
+| Assignments.cs:42:9:42:36 | call to method SetParamSingle | Assignments.cs:42:9:42:36 | this access |
+| Assignments.cs:42:9:42:36 | this access | Assignments.cs:42:9:42:36 | this access |
+| Assignments.cs:42:9:42:37 | ...; | Assignments.cs:42:9:42:37 | ...; |
+| Assignments.cs:42:28:42:35 | access to field IntField | Assignments.cs:42:28:42:35 | this access |
+| Assignments.cs:42:28:42:35 | this access | Assignments.cs:42:28:42:35 | this access |
+| Assignments.cs:43:9:43:55 | call to method SetParamMulti | Assignments.cs:43:9:43:55 | this access |
+| Assignments.cs:43:9:43:55 | this access | Assignments.cs:43:9:43:55 | this access |
+| Assignments.cs:43:9:43:56 | ...; | Assignments.cs:43:9:43:56 | ...; |
+| Assignments.cs:43:34:43:37 | null | Assignments.cs:43:34:43:37 | null |
+| Assignments.cs:43:44:43:54 | access to field StringField | Assignments.cs:43:44:43:54 | this access |
+| Assignments.cs:43:44:43:54 | this access | Assignments.cs:43:44:43:54 | this access |
+| Assignments.cs:44:9:44:58 | call to method SetParamMulti | Assignments.cs:44:9:44:58 | this access |
+| Assignments.cs:44:9:44:58 | this access | Assignments.cs:44:9:44:58 | this access |
+| Assignments.cs:44:9:44:59 | ...; | Assignments.cs:44:9:44:59 | ...; |
+| Assignments.cs:44:27:44:34 | access to field IntField | Assignments.cs:44:27:44:34 | this access |
+| Assignments.cs:44:27:44:34 | this access | Assignments.cs:44:27:44:34 | this access |
+| Assignments.cs:44:37:44:40 | null | Assignments.cs:44:37:44:40 | null |
+| Assignments.cs:44:47:44:57 | access to field StringField | Assignments.cs:44:47:44:57 | this access |
+| Assignments.cs:44:47:44:57 | this access | Assignments.cs:44:47:44:57 | this access |
 | BreakInTry.cs:1:7:1:16 | call to constructor Object | BreakInTry.cs:1:7:1:16 | call to constructor Object |
 | BreakInTry.cs:1:7:1:16 | call to method <object initializer> | BreakInTry.cs:1:7:1:16 | this access |
 | BreakInTry.cs:1:7:1:16 | this access | BreakInTry.cs:1:7:1:16 | this access |

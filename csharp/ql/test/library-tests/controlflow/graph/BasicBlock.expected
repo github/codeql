@@ -167,6 +167,9 @@
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 34 |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... | 4 |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | exit + | 6 |
+| Assignments.cs:27:10:27:23 | enter SetParamSingle | Assignments.cs:27:10:27:23 | exit SetParamSingle | 7 |
+| Assignments.cs:32:10:32:22 | enter SetParamMulti | Assignments.cs:32:10:32:22 | exit SetParamMulti | 10 |
+| Assignments.cs:38:10:38:11 | enter M2 | Assignments.cs:38:10:38:11 | exit M2 | 28 |
 | BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | exit BreakInTry | 7 |
 | BreakInTry.cs:3:10:3:11 | enter M1 | BreakInTry.cs:7:33:7:36 | access to parameter args | 5 |
 | BreakInTry.cs:3:10:3:11 | exit M1 (normal) | BreakInTry.cs:3:10:3:11 | exit M1 | 2 |
