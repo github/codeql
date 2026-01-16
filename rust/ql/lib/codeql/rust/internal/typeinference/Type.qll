@@ -96,6 +96,7 @@ abstract class Type extends TType {
 class TupleType extends StructType {
   private int arity;
 
+  pragma[nomagic]
   TupleType() { arity = this.getTypeItem().(Builtins::TupleType).getArity() }
 
   /** Gets the arity of this tuple type. */
@@ -203,6 +204,7 @@ class TraitType extends Type, TTrait {
  * Array types like `[i64; 5]` are modeled as normal generic types.
  */
 class ArrayType extends StructType {
+  pragma[nomagic]
   ArrayType() { this.getTypeItem() instanceof Builtins::ArrayType }
 
   override string toString() { result = "[;]" }
@@ -216,12 +218,14 @@ TypeParamTypeParameter getArrayTypeParameter() {
 abstract class RefType extends StructType { }
 
 class RefMutType extends RefType {
+  pragma[nomagic]
   RefMutType() { this.getTypeItem() instanceof Builtins::RefMutType }
 
   override string toString() { result = "&mut" }
 }
 
 class RefSharedType extends RefType {
+  pragma[nomagic]
   RefSharedType() { this.getTypeItem() instanceof Builtins::RefSharedType }
 
   override string toString() { result = "&" }
@@ -312,6 +316,7 @@ class ImplTraitReturnType extends ImplTraitType {
  * with a single type argument.
  */
 class SliceType extends StructType {
+  pragma[nomagic]
   SliceType() { this.getTypeItem() instanceof Builtins::SliceType }
 
   override string toString() { result = "[]" }
@@ -338,12 +343,14 @@ TypeParamTypeParameter getPtrTypeParameter() {
 }
 
 class PtrMutType extends PtrType {
+  pragma[nomagic]
   PtrMutType() { this.getTypeItem() instanceof Builtins::PtrMutType }
 
   override string toString() { result = "*mut" }
 }
 
 class PtrConstType extends PtrType {
+  pragma[nomagic]
   PtrConstType() { this.getTypeItem() instanceof Builtins::PtrConstType }
 
   override string toString() { result = "*const" }
