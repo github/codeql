@@ -1,8 +1,9 @@
 private import rust
 private import codeql.rust.internal.PathResolution
-private import TypeInference
 private import Type
+private import TypeAbstraction
 private import TypeMention
+private import TypeInference
 
 private newtype TFunctionPosition =
   TArgumentFunctionPosition(ArgumentPosition pos) or
