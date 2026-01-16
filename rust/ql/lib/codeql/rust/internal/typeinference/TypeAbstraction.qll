@@ -33,8 +33,10 @@ private int idOfDynTraitTypeRepr(DynTraitTypeRepr node) {
 }
 
 /** Holds if `dt` is the (arbitrarily chosen) canonical dyn trait type abstraction for `trait`. */
-private predicate canonicalDynTraitTypeAbstraction(DynTraitTypeRepr dt, Trait trait) {
-  dt = min(DynTraitTypeRepr d | d.getTrait() = trait | d order by idOfDynTraitTypeRepr(d))
+private predicate canonicalDynTraitTypeAbstraction(DynTraitTypeRepr dt) {
+  exists(Trait trait |
+    dt = min(DynTraitTypeRepr d | d.getTrait() = trait | d order by idOfDynTraitTypeRepr(d))
+  )
 }
 
 final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
@@ -42,7 +44,7 @@ final class DynTypeAbstraction extends TypeAbstraction, DynTraitTypeRepr {
     // We pick a "canonical" `dyn Trait` in order to avoid including multiple
     // entries in `conditionSatisfiesConstraint` with the exact same effect when
     // `dyn Trait` occurs multiple times for the same trait.
-    canonicalDynTraitTypeAbstraction(this, this.getTrait())
+    canonicalDynTraitTypeAbstraction(this)
   }
 
   override TypeParameter getATypeParameter() {
