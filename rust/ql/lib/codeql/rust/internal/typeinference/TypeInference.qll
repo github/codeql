@@ -5,6 +5,8 @@ private import codeql.util.Option
 private import rust
 private import codeql.rust.internal.PathResolution
 private import Type
+private import TypeAbstraction
+private import TypeAbstraction as TA
 private import Type as T
 private import TypeMention
 private import codeql.rust.internal.typeinference.DerefChain
@@ -37,7 +39,7 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeParameter = T::TypeParameter;
 
-  class TypeAbstraction = T::TypeAbstraction;
+  class TypeAbstraction = TA::TypeAbstraction;
 
   class TypeArgumentPosition extends TTypeArgumentPosition {
     int asMethodTypeArgumentPosition() { this = TMethodTypeArgumentPosition(result) }

@@ -8,6 +8,7 @@
 private import rust
 private import codeql.rust.internal.PathResolution
 private import Type
+private import TypeAbstraction
 private import TypeMention
 private import TypeInference
 private import FunctionType
