@@ -139,7 +139,7 @@ use std::ops::{Add, Sub, Mul, Shl, Shr, BitOr, AddAssign, SubAssign, MulAssign, 
 
 fn std_ops() {
     sink(source(1).add(2i64)); // $ hasTaintFlow=1
-    sink(source(1).add(2)); // $ MISSING: hasTaintFlow=1
+    sink(source(1).add(2)); // $ MISSING: hasTaintFlow=1 --- the missing results here are due to failing to resolve targets for `add` etc where there's no explicit type
     sink(1i64.add(source(2))); // $ hasTaintFlow=2
     sink(1.add(source(2))); // $ MISSING: hasTaintFlow=2
 
@@ -197,7 +197,7 @@ mod wrapping {
         a.add_assign(Wrapping(crate::source(3)));
         a += source(4);
         a += std::num::Wrapping(crate::source(5));
-        sink(a); // $ hasTaintFlow=2 hasTaintFlow=4 MISSING: hasTaintFlow=3 hasTaintFlow=5
+        sink(a); // $ hasTaintFlow=2 hasTaintFlow=4 MISSING: hasTaintFlow=3 hasTaintFlow=5 --- we don't currently find any `Call`s for `Wrapping` above
     }
 }
 
