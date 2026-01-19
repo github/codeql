@@ -6,11 +6,13 @@ call
 | obinit.cs:9:16:9:16 | call to method <object initializer> | obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:9:16:9:16 | A |
 | obinit.cs:15:16:15:16 | call to method <object initializer> | obinit.cs:14:18:14:18 | <object initializer> | obinit.cs:15:16:15:16 | B |
 cfg
+| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:3:13:3:13 | access to field x | obinit.cs:3:13:3:17 | ... = ... | normal | 2 |
 | obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:3:13:3:13 | this access | obinit.cs:3:17:3:17 | 1 | normal | 0 |
-| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:3:13:3:17 | ... = ... | obinit.cs:5:23:5:23 | this access | normal | 2 |
-| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:3:17:3:17 | 1 | obinit.cs:3:13:3:17 | ... = ... | normal | 1 |
-| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:5:23:5:23 | this access | obinit.cs:5:27:5:34 | "source" | normal | 3 |
-| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:5:27:5:34 | "source" | obinit.cs:5:23:5:34 | ... = ... | normal | 4 |
+| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:3:13:3:17 | ... = ... | obinit.cs:5:23:5:23 | this access | normal | 3 |
+| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:3:17:3:17 | 1 | obinit.cs:3:13:3:13 | access to field x | normal | 1 |
+| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:5:23:5:23 | access to field s | obinit.cs:5:23:5:34 | ... = ... | normal | 6 |
+| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:5:23:5:23 | this access | obinit.cs:5:27:5:34 | "source" | normal | 4 |
+| obinit.cs:2:18:2:18 | <object initializer> | obinit.cs:5:27:5:34 | "source" | obinit.cs:5:23:5:23 | access to field s | normal | 5 |
 | obinit.cs:7:16:7:16 | A | obinit.cs:7:16:7:16 | call to constructor Object | obinit.cs:7:20:7:22 | {...} | normal | 2 |
 | obinit.cs:7:16:7:16 | A | obinit.cs:7:16:7:16 | call to method <object initializer> | obinit.cs:7:16:7:16 | call to constructor Object | normal | 1 |
 | obinit.cs:7:16:7:16 | A | obinit.cs:7:16:7:16 | this access | obinit.cs:7:16:7:16 | call to method <object initializer> | normal | 0 |
