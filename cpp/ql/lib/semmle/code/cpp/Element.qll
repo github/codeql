@@ -192,7 +192,11 @@ class Element extends ElementBase {
    */
   predicate isAffectedByMacro() { affectedByMacro(this) }
 
-  /** Holds if this element is affected by the expansion of `mi`. */
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if this element is affected by the expansion of `mi`.
+   */
   predicate isAffectedByMacro(MacroInvocation mi) {
     affectedbymacroexpansion(underlyingElement(this), unresolveElement(mi))
   }
