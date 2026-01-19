@@ -1364,7 +1364,7 @@ module Make<
       /**
        * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
        */
-      private predicate guardChecks(Guard g, Expr e, GuardValue val, P par) {
+      predicate guardChecks(Guard g, Expr e, GuardValue val, P par) {
         guardChecks0(g, e, val, par)
         or
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |

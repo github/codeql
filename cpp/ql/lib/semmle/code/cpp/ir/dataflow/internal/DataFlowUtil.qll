@@ -156,7 +156,7 @@ class Node extends TIRDataFlowNode {
    * If `isGLValue()` holds, then the type of this node
    * should be thought of as "pointer to `getType()`".
    */
-  DataFlowType getType() { none() } // overridden in subclasses
+  Type getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
@@ -541,7 +541,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  DataFlowType getTypeBound() { result = this.getType() }
+  Type getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   cached
@@ -585,7 +585,7 @@ private class Node0 extends Node, TNode0 {
 
   override string toStringImpl() { result = node.toString() }
 
-  override DataFlowType getType() { result = node.getType() }
+  override Type getType() { result = node.getType() }
 
   override predicate isGLValue() { node.isGLValue() }
 }
@@ -704,7 +704,7 @@ class SsaSynthNode extends Node, TSsaSynthNode {
 
   override Declaration getFunction() { result = node.getBasicBlock().getEnclosingFunction() }
 
-  override DataFlowType getType() { result = node.getSourceVariable().getType() }
+  override Type getType() { result = node.getSourceVariable().getType() }
 
   override predicate isGLValue() { node.getSourceVariable().isGLValue() }
 
@@ -732,7 +732,7 @@ class SsaIteratorNode extends Node, TSsaIteratorNode {
 
   override Declaration getFunction() { result = node.getFunction() }
 
-  override DataFlowType getType() { result = node.getType() }
+  override Type getType() { result = node.getType() }
 
   final override Location getLocationImpl() { result = node.getLocation() }
 
@@ -792,7 +792,7 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
 
   override Declaration getFunction() { result = globalUse.getIRFunction().getFunction() }
 
-  override DataFlowType getType() {
+  override Type getType() {
     exists(int indirectionIndex |
       indirectionIndex = globalUse.getIndirectionIndex() and
       result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex)
@@ -826,7 +826,7 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 
   final override predicate isGLValue() { globalDef.getIndirectionIndex() = 0 }
 
-  override DataFlowType getType() { result = globalDef.getUnderlyingType() }
+  override Type getType() { result = globalDef.getUnderlyingType() }
 
   final override Location getLocationImpl() { result = globalDef.getLocation() }
 
@@ -853,7 +853,7 @@ class BodyLessParameterNodeImpl extends Node, TBodyLessParameterNodeImpl {
   /** Gets the indirection index of this node. */
   int getIndirectionIndex() { result = indirectionIndex }
 
-  override DataFlowType getType() {
+  override Type getType() {
     result = getTypeImpl(p.getUnderlyingType(), this.getIndirectionIndex())
   }
 
@@ -1117,8 +1117,8 @@ private module RawIndirectNodes {
 
     override predicate isGLValue() { this.getOperand().isGLValue() }
 
-    override DataFlowType getType() {
-      exists(int sub, DataFlowType type, boolean isGLValue |
+    override Type getType() {
+      exists(int sub, Type type, boolean isGLValue |
         type = getOperandType(this.getOperand(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
@@ -1163,8 +1163,8 @@ private module RawIndirectNodes {
 
     override predicate isGLValue() { this.getInstruction().isGLValue() }
 
-    override DataFlowType getType() {
-      exists(int sub, DataFlowType type, boolean isGLValue |
+    override Type getType() {
+      exists(int sub, Type type, boolean isGLValue |
         type = getInstructionType(this.getInstruction(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
@@ -1263,7 +1263,7 @@ class FinalParameterNode extends Node, TFinalParameterNode {
     result.asSourceCallable() = this.getFunction()
   }
 
-  override DataFlowType getType() { result = getTypeImpl(p.getUnderlyingType(), indirectionIndex) }
+  override Type getType() { result = getTypeImpl(p.getUnderlyingType(), indirectionIndex) }
 
   final override Location getLocationImpl() {
     // Parameters can have multiple locations. When there's a unique location we use
@@ -1539,7 +1539,7 @@ abstract class PostUpdateNode extends Node {
    */
   abstract Node getPreUpdateNode();
 
-  final override DataFlowType getType() { result = this.getPreUpdateNode().getType() }
+  final override Type getType() { result = this.getPreUpdateNode().getType() }
 }
 
 /**
@@ -1632,9 +1632,7 @@ class VariableNode extends Node, TGlobalLikeVariableNode {
     result.asSourceCallable() = v
   }
 
-  override DataFlowType getType() {
-    result = getTypeImpl(v.getUnderlyingType(), indirectionIndex - 1)
-  }
+  override Type getType() { result = getTypeImpl(v.getUnderlyingType(), indirectionIndex - 1) }
 
   final override Location getLocationImpl() {
     // Certain variables (such as parameters) can have multiple locations.

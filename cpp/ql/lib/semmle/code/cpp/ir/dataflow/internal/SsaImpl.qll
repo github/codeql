@@ -53,7 +53,7 @@ private module SourceVariables {
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    DataFlowType getType() {
+    Type getType() {
       if this.isGLValue()
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
@@ -1064,8 +1064,15 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
     int indirectionIndex
   ) {
-    IRGuards::Guards_v1::ParameterizedValidationWrapper<int, guardChecksInstr/4>::guardChecksDef(g,
-      def, val, indirectionIndex)
+    exists(Instruction e |
+      IRGuards::Guards_v1::ParameterizedValidationWrapper<int, guardChecksInstr/4>::guardChecks(g,
+        e, val, indirectionIndex)
+    |
+      indirectionIndex = 0 and
+      def.(Definition).getAUse().getDef() = e
+      or
+      def.(Definition).getAnIndirectUse(indirectionIndex).getDef() = e
+    )
   }
 
   Node getABarrierNode(int indirectionIndex) {
