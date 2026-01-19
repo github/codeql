@@ -315,14 +315,14 @@ mod associated_type_in_supertrait {
         // Odd<i32>::get_content
         fn get_content(&self) -> Self::Output {
             // let _x = Self::get(self);
-            Default::default() // $ target=default
+            Default::default() // $ MISSING: target=default
         }
     }
 
     impl Subtrait for Odd<bool> {
         // Odd<bool>::get_content
         fn get_content(&self) -> Self::Output {
-            Default::default() // $ target=default
+            Default::default() // $ MISSING: target=default
         }
     }
 
@@ -342,8 +342,8 @@ mod associated_type_in_supertrait {
         let item2 = MyType(true);
         let _content2 = get_content(&item2); // $ target=get_content MISSING: type=_content2:bool
 
-        let _content3 = Odd(42i32).get_content(); // $ target=Odd<i32>::get_content type=_content3:bool SPURIOUS: type=_content3:char
-        let _content4 = Odd(true).get_content(); // $ target=Odd<bool>::get_content type=_content4:char SPURIOUS: type=_content4:bool
+        let _content3 = Odd(42i32).get_content(); // $ target=Odd<i32>::get_content MISSING: type=_content3:bool
+        let _content4 = Odd(true).get_content(); // $ target=Odd<bool>::get_content MISSING: type=_content4:char
     }
 }
 

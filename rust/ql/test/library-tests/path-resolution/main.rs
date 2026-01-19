@@ -716,13 +716,13 @@ mod m23 {
 
     #[rustfmt::skip]
     impl Trait1<
-      Self // $ SPURIOUS: item=I4 MISSING: item=implTrait1forS
+      Self // $ item=implTrait1forS
     > // $ item=I2
       for S { // $ item=I4
         fn f(&self) {
             println!("m23::<S as Trait1<S>>::f"); // $ item=println
         } // I5
-    }
+    } // implTrait1forS
 
     #[rustfmt::skip]
     pub fn f() {
@@ -899,14 +899,14 @@ mod associated_types_subtrait {
 
     #[rustfmt::skip]
     impl Sub for S<i32> { // $ item=Sub item=S item=i32
-        fn f() -> Self::Out { // $ MISSING: item=SuperAssoc SPURIOUS: item=S<i32>::Out item=S<bool>::Out item=S<A>::Out
+        fn f() -> Self::Out { // $ item=SuperAssoc
             'a'
         }
     }
 
     #[rustfmt::skip]
     impl Sub for S<bool> { // $ item=Sub item=S item=bool
-        fn f() -> Self::Out { // $ MISSING: item=SuperAssoc SPURIOUS: item=S<i32>::Out item=S<bool>::Out item=S<A>::Out
+        fn f() -> Self::Out { // $ item=SuperAssoc
             1
         }
     }
@@ -929,7 +929,7 @@ mod associated_types_subtrait {
 
     #[rustfmt::skip]
     impl<A> SubAlt for S<A> { // $ item=SubAlt item=S item=A
-        fn f(self) -> Self::Out { // $ MISSING: item=SuperAltAssoc SPURIOUS: item=S<i32>::Out item=S<bool>::Out item=S<A>::Out
+        fn f(self) -> Self::Out { // $ item=SuperAltAssoc
             self.0
         }
     }

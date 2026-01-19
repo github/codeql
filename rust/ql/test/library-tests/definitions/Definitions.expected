@@ -1,12 +1,12 @@
 | main.rs:3:5:3:7 | lib | lib.rs:1:1:1:1 | SourceFile | file |
 | main.rs:9:14:9:14 | S | main.rs:7:9:7:21 | struct S | path |
-| main.rs:10:36:10:39 | Self | main.rs:7:9:7:21 | struct S | path |
+| main.rs:10:36:10:39 | Self | main.rs:9:9:13:9 | impl S { ... } | path |
 | main.rs:11:17:11:17 | S | main.rs:7:9:7:21 | struct S | path |
 | main.rs:16:22:16:22 | T | main.rs:16:19:16:19 | T | path |
 | main.rs:18:13:18:14 | S2 | main.rs:16:5:16:24 | struct S2 | path |
 | main.rs:18:16:18:16 | T | main.rs:18:10:18:10 | T | path |
 | main.rs:19:23:19:23 | T | main.rs:18:10:18:10 | T | path |
-| main.rs:19:29:19:32 | Self | main.rs:16:5:16:24 | struct S2 | path |
+| main.rs:19:29:19:32 | Self | main.rs:18:5:22:5 | impl S2::<...> { ... } | path |
 | main.rs:20:13:20:14 | S2 | main.rs:16:5:16:24 | struct S2 | path |
 | main.rs:20:16:20:16 | x | main.rs:19:20:19:20 | x | local variable |
 | main.rs:29:5:29:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
