@@ -100,14 +100,4 @@ module IncompleteHtmlAttributeSanitization {
       result = this.getQuote()
     }
   }
-
-  /**
-   * An encoder for potentially malicious characters, as a sanitizer
-   * for incomplete HTML sanitization vulnerabilities.
-   */
-  class EncodingSanitizer extends Sanitizer {
-    EncodingSanitizer() {
-      this = DataFlow::globalVarRef(["encodeURIComponent", "encodeURI"]).getACall()
-    }
-  }
 }
