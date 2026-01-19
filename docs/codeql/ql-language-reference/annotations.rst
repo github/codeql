@@ -530,10 +530,11 @@ support is enabled for a language.
 
 .. note::
 
-   Overlay annotations only affect evaluation when overlay compilation is enabled for a
-   QL pack (via ``compileForOverlayEval: true`` in ``qlpack.yml``) and the evaluator is
-   running in overlay mode. Otherwise, these annotations are validated but have no effect
-   on evaluation.
+   Overlay annotations only affect evaluation when overlay compilation is enabled
+   (via ``compileForOverlayEval: true`` in ``qlpack.yml``) and the evaluator is running
+   in overlay mode. This setting is typically only needed in the language's library pack;
+   custom query packs do not need it. Outside of overlay mode, these annotations are
+   validated but have no effect on evaluation.
 
 ``overlay[local]``
 ------------------
