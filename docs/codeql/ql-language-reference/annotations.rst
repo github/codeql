@@ -508,11 +508,20 @@ Overlay annotations
 ===================
 
 Overlay annotations control how predicates behave during **overlay evaluation**, a feature
-that enables efficient incremental analysis by dividing QL code into *local* and *global*
-parts. During overlay evaluation, local predicates are evaluated separately on "base" (cached 
-from previous analysis) and "overlay" (newly changed files) data. When a global predicate 
-calls a local predicate, results from both the base and overlay evaluations are combined,
-with stale base results filtered out through a process called "discarding."
+that enables efficient incremental analysis of codebases.
+
+In overlay evaluation, a *base database* is created from one version of a codebase, and an
+*overlay database* is created by combining the base database with changes from a newer
+version (such as a pull request). The goal is to analyze the overlay database as if it
+were a fully extracted database at the newer commit, while reusing as much cached data
+from the base database as possible. Ideally, analysis time is proportional to the size
+of the diff rather than the full codebase.
+
+To achieve this, predicates are divided into *local* and *global* categories. Local
+predicates are evaluated separately on base and overlay data, with results combined at
+the frontier between local and global code. Global predicates operate on the combined
+data. Local predicates typically take time proportional to the diff size, while global
+predicates take time proportional to the full codebase.
 
 Overlay evaluation is primarily used internally by GitHub Code Scanning to speed up
 pull request analysis. Most QL developers do not need to use these annotations directly,
