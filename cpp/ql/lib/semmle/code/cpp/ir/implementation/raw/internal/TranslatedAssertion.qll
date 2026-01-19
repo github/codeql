@@ -135,8 +135,7 @@ private predicate hasVarAccessMacroArgument(MacroInvocation mi, Variable var, in
 
 /**
  * Holds if the `i`'th component of the macro invocation `mi` with opcode
- * `opcode` is a
- * constant with the value `k`.
+ * `opcode` is a constant with the value `k`.
  */
 private predicate hasConstMacroArgument(MacroInvocation mi, int k, int i, Opcode opcode) {
   exists(string arg, string s |
