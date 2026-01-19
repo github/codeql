@@ -47,7 +47,8 @@ private Expr maybeNullExpr(Expr reason) {
   result =
     any(QualifiableExpr qe |
       qe.isConditional() and
-      qe.getQualifier() = maybeNullExpr(reason)
+      reason = qe.getQualifier() and
+      not qe instanceof AssignableWrite
     )
 }
 
