@@ -55,6 +55,24 @@ impl<T: Copy> GetSet for Wrapper<T> {
     }
 }
 
+struct Odd<OddT>(OddT);
+
+impl GetSet for Odd<i32> {
+    type Output = bool;
+
+    fn get(&self) -> Self::Output {
+        true
+    }
+}
+
+impl GetSet for Odd<bool> {
+    type Output = char;
+
+    fn get(&self) -> Self::Output {
+        'a'
+    }
+}
+
 mod default_method_using_associated_type {
     use super::*;
 
@@ -293,6 +311,21 @@ mod associated_type_in_supertrait {
         }
     }
 
+    impl Subtrait for Odd<i32> {
+        // Odd<i32>::get_content
+        fn get_content(&self) -> Self::Output {
+            // let _x = Self::get(self);
+            Default::default() // $ target=default
+        }
+    }
+
+    impl Subtrait for Odd<bool> {
+        // Odd<bool>::get_content
+        fn get_content(&self) -> Self::Output {
+            Default::default() // $ target=default
+        }
+    }
+
     fn get_content<T: Subtrait>(item: &T) -> T::Output {
         item.get_content() // $ target=Subtrait::get_content
     }
@@ -308,6 +341,9 @@ mod associated_type_in_supertrait {
 
         let item2 = MyType(true);
         let _content2 = get_content(&item2); // $ target=get_content MISSING: type=_content2:bool
+
+        let _content3 = Odd(42i32).get_content(); // $ target=Odd<i32>::get_content type=_content3:bool SPURIOUS: type=_content3:char
+        let _content4 = Odd(true).get_content(); // $ target=Odd<bool>::get_content type=_content4:char SPURIOUS: type=_content4:bool
     }
 }
 
