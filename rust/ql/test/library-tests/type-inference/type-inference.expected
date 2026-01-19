@@ -192,13 +192,9 @@ inferCertainType
 | associated_types.rs:391:24:391:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:399:24:399:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:404:33:404:36 | item |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:404:33:404:36 | item | TRef | associated_types.rs:404:20:404:30 | T |
 | associated_types.rs:405:9:405:12 | item |  | {EXTERNAL LOCATION} | & |
@@ -5020,17 +5016,9 @@ inferType
 | associated_types.rs:391:24:391:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:393:13:393:30 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:393:13:393:30 | ...::default(...) |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:399:24:399:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:400:13:400:30 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:400:13:400:30 | ...::default(...) |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:404:33:404:36 | item |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:404:33:404:36 | item | TRef | associated_types.rs:404:20:404:30 | T |
 | associated_types.rs:405:9:405:12 | item |  | {EXTERNAL LOCATION} | & |
@@ -5062,19 +5050,11 @@ inferType
 | associated_types.rs:418:37:418:42 | &item2 | TRef.T | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:418:38:418:42 | item2 |  | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:418:38:418:42 | item2 | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:420:13:420:21 | _content3 |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:420:13:420:21 | _content3 |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:420:25:420:34 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:420:25:420:34 | Odd(...) | OddT | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:420:25:420:48 | ... .get_content() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:420:25:420:48 | ... .get_content() |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:420:29:420:33 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:421:13:421:21 | _content4 |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:421:13:421:21 | _content4 |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:421:25:421:33 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:421:25:421:33 | Odd(...) | OddT | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:421:25:421:47 | ... .get_content() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:421:25:421:47 | ... .get_content() |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:421:29:421:32 | true |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:435:16:435:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:435:16:435:20 | SelfParam | TRef | associated_types.rs:428:5:428:20 | ST |

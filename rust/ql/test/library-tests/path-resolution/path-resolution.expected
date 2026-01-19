@@ -135,7 +135,7 @@ resolvePath
 | main.rs:169:22:169:29 | MyStruct | main.rs:162:5:162:22 | struct MyStruct |
 | main.rs:171:13:171:19 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:172:13:172:13 | f | main.rs:164:5:166:5 | fn f |
-| main.rs:173:13:173:16 | Self | main.rs:162:5:162:22 | struct MyStruct |
+| main.rs:173:13:173:16 | Self | main.rs:168:5:179:5 | impl MyTrait for MyStruct { ... } |
 | main.rs:173:13:173:19 | ...::g | main.rs:176:9:178:9 | fn g |
 | main.rs:177:13:177:19 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:182:10:182:17 | MyStruct | main.rs:162:5:162:22 | struct MyStruct |
@@ -199,7 +199,7 @@ resolvePath
 | main.rs:341:10:341:15 | Trait1 | main.rs:307:5:311:5 | trait Trait1 |
 | main.rs:342:11:342:11 | S | main.rs:338:5:338:13 | struct S |
 | main.rs:344:13:344:19 | println | {EXTERNAL LOCATION} | MacroRules |
-| main.rs:345:13:345:16 | Self | main.rs:338:5:338:13 | struct S |
+| main.rs:345:13:345:16 | Self | main.rs:340:5:352:5 | impl Trait1 for S { ... } |
 | main.rs:345:13:345:19 | ...::g | main.rs:349:9:351:9 | fn g |
 | main.rs:350:13:350:19 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:355:10:355:15 | Trait2 | main.rs:313:5:321:5 | trait Trait2 |
@@ -232,11 +232,11 @@ resolvePath
 | main.rs:418:11:418:11 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:419:24:419:24 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:420:13:420:19 | println | {EXTERNAL LOCATION} | MacroRules |
-| main.rs:421:13:421:16 | Self | main.rs:412:5:412:13 | struct S |
+| main.rs:421:13:421:16 | Self | main.rs:414:5:432:5 | impl Trait1::<...> for S { ... } |
 | main.rs:421:13:421:19 | ...::g | main.rs:425:9:428:9 | fn g |
 | main.rs:425:24:425:24 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:426:13:426:19 | println | {EXTERNAL LOCATION} | MacroRules |
-| main.rs:427:13:427:16 | Self | main.rs:412:5:412:13 | struct S |
+| main.rs:427:13:427:16 | Self | main.rs:414:5:432:5 | impl Trait1::<...> for S { ... } |
 | main.rs:427:13:427:19 | ...::c | main.rs:430:9:431:9 | Const |
 | main.rs:430:18:430:18 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:430:22:430:22 | S | main.rs:412:5:412:13 | struct S |
@@ -244,10 +244,10 @@ resolvePath
 | main.rs:436:7:436:7 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:438:11:438:11 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:439:24:439:24 | S | main.rs:412:5:412:13 | struct S |
-| main.rs:440:13:440:16 | Self | main.rs:412:5:412:13 | struct S |
+| main.rs:440:13:440:16 | Self | main.rs:434:5:444:5 | impl Trait2::<...> for S { ... } |
 | main.rs:440:13:440:19 | ...::g | main.rs:425:9:428:9 | fn g |
 | main.rs:441:13:441:19 | println | {EXTERNAL LOCATION} | MacroRules |
-| main.rs:442:13:442:16 | Self | main.rs:412:5:412:13 | struct S |
+| main.rs:442:13:442:16 | Self | main.rs:434:5:444:5 | impl Trait2::<...> for S { ... } |
 | main.rs:442:13:442:19 | ...::c | main.rs:430:9:431:9 | Const |
 | main.rs:448:9:448:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:449:17:449:17 | S | main.rs:412:5:412:13 | struct S |
@@ -269,42 +269,42 @@ resolvePath
 | main.rs:487:10:487:15 | Trait3 | main.rs:472:5:476:5 | trait Trait3 |
 | main.rs:487:21:487:22 | S2 | main.rs:484:5:484:14 | struct S2 |
 | main.rs:488:26:488:28 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:492:20:492:23 | Self | main.rs:484:5:484:14 | struct S2 |
+| main.rs:492:20:492:23 | Self | main.rs:486:5:494:5 | impl Trait3 for S2 { ... } |
 | main.rs:492:20:492:34 | ...::AssocType | main.rs:487:26:489:9 | type AssocType |
 | main.rs:497:10:497:15 | Trait4 | main.rs:478:5:482:5 | trait Trait4 |
 | main.rs:497:21:497:22 | S2 | main.rs:484:5:484:14 | struct S2 |
 | main.rs:498:26:498:29 | bool | {EXTERNAL LOCATION} | struct bool |
-| main.rs:502:13:502:16 | Self | main.rs:484:5:484:14 | struct S2 |
+| main.rs:502:13:502:16 | Self | main.rs:496:5:506:5 | impl Trait4 for S2 { ... } |
 | main.rs:502:13:502:19 | ...::f | main.rs:489:11:493:9 | fn f |
 | main.rs:503:13:503:14 | S2 | main.rs:484:5:484:14 | struct S2 |
 | main.rs:503:13:503:17 | ...::f | main.rs:489:11:493:9 | fn f |
-| main.rs:504:20:504:23 | Self | main.rs:484:5:484:14 | struct S2 |
+| main.rs:504:20:504:23 | Self | main.rs:496:5:506:5 | impl Trait4 for S2 { ... } |
 | main.rs:504:20:504:34 | ...::AssocType | main.rs:497:26:499:9 | type AssocType |
 | main.rs:511:23:511:26 | Self | main.rs:508:5:512:5 | trait Trait5 |
 | main.rs:511:23:511:33 | ...::Assoc | main.rs:509:9:509:19 | type Assoc |
 | main.rs:515:10:515:15 | Trait5 | main.rs:508:5:512:5 | trait Trait5 |
 | main.rs:515:21:515:21 | S | main.rs:412:5:412:13 | struct S |
 | main.rs:516:22:516:24 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:520:16:520:19 | Self | main.rs:412:5:412:13 | struct S |
+| main.rs:520:16:520:19 | Self | main.rs:514:5:523:5 | impl Trait5 for S { ... } |
 | main.rs:520:16:520:26 | ...::Assoc | main.rs:515:25:517:9 | type Assoc |
-| main.rs:521:13:521:16 | Self | main.rs:412:5:412:13 | struct S |
+| main.rs:521:13:521:16 | Self | main.rs:514:5:523:5 | impl Trait5 for S { ... } |
 | main.rs:521:13:521:23 | ...::Assoc | main.rs:519:9:522:9 | fn Assoc |
 | main.rs:525:19:525:20 | T3 | main.rs:525:15:525:16 | T3 |
 | main.rs:528:10:528:15 | Trait5 | main.rs:508:5:512:5 | trait Trait5 |
 | main.rs:528:21:528:27 | S3::<...> | main.rs:525:5:525:22 | struct S3 |
 | main.rs:528:24:528:26 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:529:22:529:24 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:533:16:533:19 | Self | main.rs:525:5:525:22 | struct S3 |
+| main.rs:533:16:533:19 | Self | main.rs:527:5:536:5 | impl Trait5 for S3::<...> { ... } |
 | main.rs:533:16:533:26 | ...::Assoc | main.rs:528:31:530:9 | type Assoc |
-| main.rs:534:13:534:16 | Self | main.rs:525:5:525:22 | struct S3 |
+| main.rs:534:13:534:16 | Self | main.rs:527:5:536:5 | impl Trait5 for S3::<...> { ... } |
 | main.rs:534:13:534:23 | ...::Assoc | main.rs:532:9:535:9 | fn Assoc |
 | main.rs:539:10:539:15 | Trait5 | main.rs:508:5:512:5 | trait Trait5 |
 | main.rs:539:21:539:28 | S3::<...> | main.rs:525:5:525:22 | struct S3 |
 | main.rs:539:24:539:27 | bool | {EXTERNAL LOCATION} | struct bool |
 | main.rs:540:22:540:25 | bool | {EXTERNAL LOCATION} | struct bool |
-| main.rs:544:16:544:19 | Self | main.rs:525:5:525:22 | struct S3 |
+| main.rs:544:16:544:19 | Self | main.rs:538:5:547:5 | impl Trait5 for S3::<...> { ... } |
 | main.rs:544:16:544:26 | ...::Assoc | main.rs:539:32:541:9 | type Assoc |
-| main.rs:545:14:545:17 | Self | main.rs:525:5:525:22 | struct S3 |
+| main.rs:545:14:545:17 | Self | main.rs:538:5:547:5 | impl Trait5 for S3::<...> { ... } |
 | main.rs:545:14:545:24 | ...::Assoc | main.rs:543:9:546:9 | fn Assoc |
 | main.rs:550:10:550:16 | S3::<...> | main.rs:525:5:525:22 | struct S3 |
 | main.rs:550:13:550:15 | i32 | {EXTERNAL LOCATION} | struct i32 |
@@ -338,7 +338,7 @@ resolvePath
 | main.rs:608:13:608:13 | X | main.rs:586:9:586:21 | struct X |
 | main.rs:608:13:608:23 | ...::a_method | main.rs:588:26:591:13 | fn a_method |
 | main.rs:611:18:611:18 | X | main.rs:586:9:586:21 | struct X |
-| main.rs:613:21:613:24 | Self | main.rs:586:9:586:21 | struct X |
+| main.rs:613:21:613:24 | Self | main.rs:610:13:615:13 | impl X { ... } |
 | main.rs:613:21:613:34 | ...::a_method | main.rs:588:26:591:13 | fn a_method |
 | main.rs:619:17:619:17 | m | main.rs:577:5:599:5 | mod m |
 | main.rs:619:17:619:22 | ...::Bar | main.rs:582:9:584:9 | trait Bar |
@@ -441,17 +441,17 @@ resolvePath
 | main.rs:852:13:852:17 | Error | main.rs:848:13:848:17 | Error |
 | main.rs:855:22:858:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
 | main.rs:856:13:856:17 | Input | main.rs:847:13:847:17 | Input |
-| main.rs:857:13:857:16 | Self | main.rs:840:5:843:5 | struct MyImpl |
+| main.rs:857:13:857:16 | Self | main.rs:845:5:877:5 | impl Reduce for MyImpl::<...> { ... } |
 | main.rs:857:13:857:23 | ...::Error | main.rs:859:11:863:9 | type Error |
 | main.rs:860:22:862:9 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
 | main.rs:861:11:861:15 | Error | main.rs:848:13:848:17 | Error |
 | main.rs:865:13:865:17 | Input | main.rs:847:13:847:17 | Input |
-| main.rs:870:19:870:22 | Self | main.rs:840:5:843:5 | struct MyImpl |
+| main.rs:870:19:870:22 | Self | main.rs:845:5:877:5 | impl Reduce for MyImpl::<...> { ... } |
 | main.rs:870:19:870:29 | ...::Input | main.rs:855:9:859:9 | type Input |
 | main.rs:871:14:874:9 | Result::<...> | {EXTERNAL LOCATION} | enum Result |
-| main.rs:872:13:872:16 | Self | main.rs:840:5:843:5 | struct MyImpl |
+| main.rs:872:13:872:16 | Self | main.rs:845:5:877:5 | impl Reduce for MyImpl::<...> { ... } |
 | main.rs:872:13:872:24 | ...::Output | main.rs:863:11:866:9 | type Output |
-| main.rs:873:13:873:16 | Self | main.rs:840:5:843:5 | struct MyImpl |
+| main.rs:873:13:873:16 | Self | main.rs:845:5:877:5 | impl Reduce for MyImpl::<...> { ... } |
 | main.rs:873:13:873:23 | ...::Error | main.rs:859:11:863:9 | type Error |
 | main.rs:885:16:885:20 | Super | main.rs:881:5:883:5 | trait Super |
 | main.rs:887:19:887:22 | Self | main.rs:885:5:889:5 | trait Sub |
@@ -468,17 +468,13 @@ resolvePath
 | main.rs:908:10:908:12 | Sub | main.rs:885:5:889:5 | trait Sub |
 | main.rs:908:18:908:23 | S::<...> | main.rs:891:5:893:6 | struct S |
 | main.rs:908:20:908:22 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:909:19:909:22 | Self | main.rs:891:5:893:6 | struct S |
-| main.rs:909:19:909:27 | ...::Out | main.rs:896:29:898:9 | type Out |
-| main.rs:909:19:909:27 | ...::Out | main.rs:902:30:904:9 | type Out |
-| main.rs:909:19:909:27 | ...::Out | main.rs:932:33:934:9 | type Out |
+| main.rs:909:19:909:22 | Self | main.rs:907:5:912:5 | impl Sub for S::<...> { ... } |
+| main.rs:909:19:909:27 | ...::Out | main.rs:882:9:882:17 | type Out |
 | main.rs:915:10:915:12 | Sub | main.rs:885:5:889:5 | trait Sub |
 | main.rs:915:18:915:24 | S::<...> | main.rs:891:5:893:6 | struct S |
 | main.rs:915:20:915:23 | bool | {EXTERNAL LOCATION} | struct bool |
-| main.rs:916:19:916:22 | Self | main.rs:891:5:893:6 | struct S |
-| main.rs:916:19:916:27 | ...::Out | main.rs:896:29:898:9 | type Out |
-| main.rs:916:19:916:27 | ...::Out | main.rs:902:30:904:9 | type Out |
-| main.rs:916:19:916:27 | ...::Out | main.rs:932:33:934:9 | type Out |
+| main.rs:916:19:916:22 | Self | main.rs:914:5:919:5 | impl Sub for S::<...> { ... } |
+| main.rs:916:19:916:27 | ...::Out | main.rs:882:9:882:17 | type Out |
 | main.rs:925:19:925:26 | SuperAlt | main.rs:921:5:923:5 | trait SuperAlt |
 | main.rs:927:23:927:26 | Self | main.rs:925:5:929:5 | trait SubAlt |
 | main.rs:927:23:927:31 | ...::Out | main.rs:922:9:922:17 | type Out |
@@ -489,10 +485,8 @@ resolvePath
 | main.rs:938:13:938:18 | SubAlt | main.rs:925:5:929:5 | trait SubAlt |
 | main.rs:938:24:938:27 | S::<...> | main.rs:891:5:893:6 | struct S |
 | main.rs:938:26:938:26 | A | main.rs:938:10:938:10 | A |
-| main.rs:939:23:939:26 | Self | main.rs:891:5:893:6 | struct S |
-| main.rs:939:23:939:31 | ...::Out | main.rs:896:29:898:9 | type Out |
-| main.rs:939:23:939:31 | ...::Out | main.rs:902:30:904:9 | type Out |
-| main.rs:939:23:939:31 | ...::Out | main.rs:932:33:934:9 | type Out |
+| main.rs:939:23:939:26 | Self | main.rs:937:5:942:5 | impl SubAlt for S::<...> { ... } |
+| main.rs:939:23:939:31 | ...::Out | main.rs:922:9:922:17 | type Out |
 | main.rs:945:5:945:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
 | main.rs:945:11:945:14 | self | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
 | main.rs:947:15:947:17 | ztd | {EXTERNAL LOCATION} | Crate(std@0.0.0) |
@@ -536,7 +530,7 @@ resolvePath
 | main.rs:1041:13:1041:15 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:1046:10:1046:15 | MyEnum | main.rs:1039:5:1043:5 | enum MyEnum |
 | main.rs:1047:25:1047:27 | i32 | {EXTERNAL LOCATION} | struct i32 |
-| main.rs:1049:17:1049:20 | Self | main.rs:1039:5:1043:5 | enum MyEnum |
+| main.rs:1049:17:1049:20 | Self | main.rs:1045:5:1056:5 | impl MyEnum { ... } |
 | main.rs:1049:17:1049:23 | ...::A | main.rs:1040:9:1042:9 | A |
 | main.rs:1060:5:1060:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:1060:5:1060:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
