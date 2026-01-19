@@ -166,7 +166,8 @@ module SourceSinkInterpretationInput implements
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext
     |
-      barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingvalue, kind, provenance, model) and
+      barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingvalue, kind,
+        provenance, model) and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
