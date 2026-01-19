@@ -1041,7 +1041,7 @@ private module Cached {
     av.isFalse() and result.asBooleanValue() = false
     or
     // NOTE: The below cases don't contribute anything currently since the
-    // callers immediate uses `.asBooleanValue()` to convert the `GuardValue`
+    // callers immediately use `.asBooleanValue()` to convert the `GuardValue`
     // to a boolean. Once we're willing to accept the breaking change of
     // converting the barrier guard API to use `GuardValue`s instead `Boolean`s
     // we can remove this restriction.

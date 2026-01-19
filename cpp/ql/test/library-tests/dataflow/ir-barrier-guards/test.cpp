@@ -20,7 +20,6 @@ bool is_clean_value(int*);
 int* get_clean_pointer(int* x) { return x; }
 bool is_clean_pointer(int*);
 
-void sink(int);
 void sink(int*);
 
 void test_mad(int x, int* p) {
