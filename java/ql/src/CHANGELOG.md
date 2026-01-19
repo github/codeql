@@ -2,7 +2,7 @@
 
 ### Minor Analysis Improvements
 
-* Added sink models for `com.couchbase` supporting SQL Injection and Hardcoded Cretentials queries.
+* Added sink models for `com.couchbase` supporting SQL Injection and Hardcoded Credentials queries.
 * Java thread safety analysis now understands initialization to thread safe classes inside constructors.
 
 ## 1.10.4
