@@ -968,9 +968,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       pragma[inline]
       private predicate satisfiesConstraintTypeMentionInline(
         HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
-        TypePath pathToTypeParamInSub
+        TypePath pathToTypeParamInSub, TypeParameter tp
       ) {
-        exists(TypeMention sub, TypeParameter tp |
+        exists(TypeMention sub |
           satisfiesConstraintTypeMention0(tt, constraint, abs, sub, path, tp) and
           tp = abs.getATypeParameter() and
           sub.resolveTypeAt(pathToTypeParamInSub) = tp
@@ -981,7 +981,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate satisfiesConstraintTypeMention(
         HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
       ) {
-        satisfiesConstraintTypeMentionInline(tt, _, constraint, path, pathToTypeParamInSub)
+        satisfiesConstraintTypeMentionInline(tt, _, constraint, path, pathToTypeParamInSub, _)
       }
 
       pragma[nomagic]
@@ -989,7 +989,15 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
         TypePath pathToTypeParamInSub
       ) {
-        satisfiesConstraintTypeMentionInline(tt, abs, constraint, path, pathToTypeParamInSub)
+        satisfiesConstraintTypeMentionInline(tt, abs, constraint, path, pathToTypeParamInSub, _)
+      }
+
+      pragma[nomagic]
+      private predicate satisfiesConstraintTypeMentionThrough2(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
+        TypePath pathToTypeParamInSub, TypeParameter tp
+      ) {
+        satisfiesConstraintTypeMentionInline(tt, abs, constraint, path, pathToTypeParamInSub, tp)
       }
 
       pragma[inline]
@@ -1033,6 +1041,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
+      }
+
+      pragma[nomagic]
+      predicate test(
+        HasTypeTree tt, TypePath pathToTypeParamInSub, TypeAbstraction abs, Type constraint,
+        TypeParameter tp, TypePath path
+      ) {
+        // satisfiesConstraintTypeNonTypeParamInline(tt, abs, constraint, path, t)
+        // or
+        satisfiesConstraintTypeMentionThrough2(tt, abs, constraint, path, pathToTypeParamInSub, tp) //and
+        // getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
+        // path = prefix0.append(suffix)
       }
 
       /**
@@ -1283,8 +1303,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath path,
           Type constraint
         ) {
+          // fn apply6<T>(f: impl Fn(T) -> i64, a: T) -> i64 {
+          //
+          // apos = 0
+          // constraint = trait Fn
+          // pathToTp   = Args.T0
+          // tp         = T
+          // exists(TypePath pathToTp, TypeParameter tp |
+          //   target = a.getTarget(e) and
+          //   typeParameterConstraintHasTypeParameter(target, apos, path, constraint, pathToTp, tp)
+          // )
+          // or
           target = a.getTarget(e) and
-          typeParameterConstraintHasTypeParameter(target, apos, path, constraint, _, _)
+          typeParameterConstraintHasAny(target, apos, _, path, constraint)
         }
 
         private newtype TRelevantAccess =
@@ -1336,6 +1367,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             ra = MkRelevantAccess(a, apos, e, prefix) and
             SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::satisfiesConstraintType(ra,
               constraint, path, t) and
+            constraint = ra.getConstraint(target)
+          )
+        }
+
+        predicate test(
+          Access a, TypePath pathToTypeParamInSub, AccessEnvironment e, Declaration target,
+          AccessPosition apos, TypePath prefix, Type constraint, TypeParameter tp, TypePath path
+        ) {
+          exists(RelevantAccess ra |
+            ra = MkRelevantAccess(a, apos, e, prefix) and
+            SatisfiesConstraint<RelevantAccess, SatisfiesConstraintInput>::test(ra,
+              pathToTypeParamInSub, _, constraint, tp, path) and
             constraint = ra.getConstraint(target)
           )
         }
@@ -1462,6 +1505,22 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
+      private predicate typeParameterConstraintHasAny(
+        Declaration target, AccessPosition apos, TypeParameter constrainedTp,
+        TypePath pathToConstrained, Type constraint
+      ) {
+        exists(DeclarationPosition dpos |
+          accessDeclarationPositionMatch(apos, dpos) and
+          constrainedTp = target.getTypeParameter(_) and
+          constrainedTp = target.getDeclaredType(dpos, pathToConstrained) and
+          exists(TypeMention tm |
+            tm = getATypeParameterConstraint(constrainedTp) and
+            constraint = resolveTypeMentionRoot(tm)
+          )
+        )
+      }
+
+      pragma[nomagic]
       private predicate typeConstraintBaseTypeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
@@ -1470,6 +1529,66 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           typeParameterConstraintHasTypeParameter(target, apos, pathToTp2, constraint, pathToTp, tp) and
           AccessConstraint::satisfiesConstraintType(a, e, target, apos, pathToTp2, constraint,
             pathToTp.appendInverse(path), t)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate test3(
+        Access a, AccessPosition apos, AccessEnvironment e, Declaration target, TypePath path,
+        Type t, TypeParameter tp
+      ) {
+        // not exists(getTypeArgument(a, target, tp, _)) and
+        exists(
+          Type constraint, TypePath pathToTypeParamInSub, TypePath pathToTp, TypePath pathToTp2,
+          TypePath suffix, TypeParameter tp2, TypePath path3, TypePath path4, TypePath prefix
+        |
+          // a.getLocation().getStartLine() = 343 and
+          // tp = T
+          // pathToTp = Args.T0
+          // pathToTp2 = ""
+          // constraint = trait Fn
+          typeMatch(a, e, target, suffix, t, tp) and
+          typeParameterConstraintHasTypeParameter(target, apos, pathToTp2, constraint, pathToTp, tp) and
+          AccessConstraint::test(a, pathToTypeParamInSub, e, target, apos, prefix,
+            /*TODO*/ constraint, tp2, path4) and
+          pathToTp = path4.appendInverse(path3) and
+          path = prefix.append(pathToTypeParamInSub.append(path3).append(suffix))
+          // AccessConstraint::test(a, pathToTypeParamInSub, e, target, apos, _, /*TODO*/ constraint,
+          //   tp) and
+          // path = pathToTypeParamInSub.append(suffix)
+          //  satisfiesConstraintType(a, e, target, apos, pathToTp2, constraint, pathToTp.appendInverse(path), t)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate test5(
+        Access a, AccessPosition apos, AccessEnvironment e, Declaration target, TypePath path,
+        Type t
+      ) {
+        // not exists(getTypeArgument(a, target, tp, _)) and
+        exists(
+          Type constraint, TypePath pathToTypeParamInSub, TypePath pathToT, TypeParameter tp2,
+          TypePath path4, TypePath prefix, TypeMention tm, TypeParameter constrainedTp,
+          TypePath suffix
+        |
+          // tp2 = Args[Fn]
+          // pathToTypeParamInSub = dyn(Args)
+          // path4 = Args
+          // prefix = ""
+          // constraint = trait FnMut
+          AccessConstraint::test(a, pathToTypeParamInSub, e, target, apos, prefix,
+            /*TODO*/ constraint, tp2, path4) and
+          typeParameterConstraintHasAny(target, apos, constrainedTp, _, constraint) and
+          tm = getATypeParameterConstraint(constrainedTp) and
+          tm.resolveTypeAt(pathToT) = t and
+          constraint = resolveTypeMentionRoot(tm) and
+          not t instanceof TypeParameter and
+          pathToT = path4.appendInverse(suffix) and
+          path = prefix.append(pathToTypeParamInSub.append(suffix))
+          // AccessConstraint::test(a, pathToTypeParamInSub, e, target, apos, _, /*TODO*/ constraint,
+          //   tp) and
+          // path = pathToTypeParamInSub.append(suffix)
+          //  satisfiesConstraintType(a, e, target, apos, pathToTp2, constraint, pathToTp.appendInverse(path), t)
         )
       }
 
@@ -1546,6 +1665,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             not result instanceof TypeParameter
           )
         )
+        or
+        test3(a, apos, e, _, path, result, _)
+        or
+        test5(a, apos, e, _, path, result)
       }
     }
 
