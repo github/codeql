@@ -637,9 +637,10 @@ Entity discard predicates must be:
 Annotation inheritance
 ----------------------
 
-Overlay annotations can be applied to modules and types, in which case they are
-inherited by enclosed declarations. Declarations without explicit overlay annotations
-inherit from their innermost enclosing declaration that has an overlay annotation.
+Overlay annotations can be applied to modules and types. When applied to these
+declarations, the annotation is inherited by all nested declarations within them.
+Declarations without explicit overlay annotations inherit from their innermost
+enclosing declaration that has an overlay annotation.
 
 .. code-block:: ql
 
