@@ -556,6 +556,104 @@ inferCertainType
 | closure.rs:152:31:152:53 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
 | closure.rs:152:41:152:41 | _ |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:152:49:152:52 | true |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:157:34:157:34 | f |  | closure.rs:157:15:157:31 | F |
+| closure.rs:157:40:157:40 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:157:55:159:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:158:9:158:9 | f |  | closure.rs:157:15:157:31 | F |
+| closure.rs:158:11:158:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:161:15:161:15 | f |  | closure.rs:161:18:161:36 | impl ... |
+| closure.rs:161:39:161:39 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:161:54:163:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:162:9:162:9 | f |  | closure.rs:161:18:161:36 | impl ... |
+| closure.rs:162:11:162:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:15:165:15 | f |  | {EXTERNAL LOCATION} | & |
+| closure.rs:165:15:165:15 | f | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:165:15:165:15 | f | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:165:15:165:15 | f | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:15:165:15 | f | TRef.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:39:165:39 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:54:167:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:9:166:9 | f |  | {EXTERNAL LOCATION} | & |
+| closure.rs:166:9:166:9 | f | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:166:9:166:9 | f | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:166:9:166:9 | f | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:9:166:9 | f | TRef.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:11:166:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:169:41:169:41 | f |  | closure.rs:169:15:169:34 | F |
+| closure.rs:169:47:169:47 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:169:62:171:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:170:9:170:9 | f |  | closure.rs:169:15:169:34 | F |
+| closure.rs:170:11:170:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:15:173:15 | f |  | {EXTERNAL LOCATION} | &mut |
+| closure.rs:173:15:173:15 | f | TRefMut | {EXTERNAL LOCATION} | dyn FnMut |
+| closure.rs:173:15:173:15 | f | TRefMut.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:173:15:173:15 | f | TRefMut.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:15:173:15 | f | TRefMut.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:46:173:46 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:61:175:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:9:174:9 | f |  | {EXTERNAL LOCATION} | &mut |
+| closure.rs:174:9:174:9 | f | TRefMut | {EXTERNAL LOCATION} | dyn FnMut |
+| closure.rs:174:9:174:9 | f | TRefMut.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:174:9:174:9 | f | TRefMut.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:9:174:9 | f | TRefMut.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:11:174:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:177:18:177:18 | f |  | closure.rs:177:21:177:37 | impl ... |
+| closure.rs:177:40:177:40 | a |  | closure.rs:177:15:177:15 | T |
+| closure.rs:177:53:179:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:178:9:178:9 | f |  | closure.rs:177:21:177:37 | impl ... |
+| closure.rs:178:11:178:11 | a |  | closure.rs:177:15:177:15 | T |
+| closure.rs:181:42:181:42 | f |  | closure.rs:181:18:181:35 | F |
+| closure.rs:181:48:181:48 | a |  | closure.rs:181:15:181:15 | T |
+| closure.rs:181:61:183:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:182:9:182:9 | f |  | closure.rs:181:18:181:35 | F |
+| closure.rs:182:11:182:11 | a |  | closure.rs:181:15:181:15 | T |
+| closure.rs:185:15:206:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:187:13:187:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:187:18:187:32 | apply1(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:187:28:187:31 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:190:13:190:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:190:18:190:32 | apply2(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:190:28:190:31 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:193:13:193:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:193:18:193:33 | apply3(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:193:25:193:26 | &f |  | {EXTERNAL LOCATION} | & |
+| closure.rs:193:29:193:32 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:196:13:196:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:196:18:196:32 | apply4(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:196:28:196:31 | 4i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:199:13:199:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:199:18:199:37 | apply5(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:199:25:199:30 | &mut f |  | {EXTERNAL LOCATION} | &mut |
+| closure.rs:199:33:199:36 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:202:13:202:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:202:18:202:32 | apply6(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:202:28:202:31 | 6i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:205:13:205:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:205:18:205:32 | apply7(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:205:28:205:31 | 7i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:217:18:217:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| closure.rs:217:18:217:22 | SelfParam | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:217:18:217:22 | SelfParam | TRef.T | closure.rs:214:10:214:10 | T |
+| closure.rs:217:42:219:9 | { ... } |  | {EXTERNAL LOCATION} | & |
+| closure.rs:217:42:219:9 | { ... } | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:217:42:219:9 | { ... } | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:217:42:219:9 | { ... } | TRef.dyn(Args).T0 | closure.rs:214:10:214:10 | T |
+| closure.rs:217:42:219:9 | { ... } | TRef.dyn(Output) | {EXTERNAL LOCATION} | bool |
+| closure.rs:218:13:218:22 | &... |  | {EXTERNAL LOCATION} | & |
+| closure.rs:218:18:218:22 | false |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:222:19:240:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:223:13:223:13 | x |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:223:17:223:20 | 0i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:226:22:226:22 | x |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:228:13:228:13 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:228:17:228:20 | 0i32 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:231:13:231:17 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:231:21:231:22 | &s |  | {EXTERNAL LOCATION} | & |
+| closure.rs:232:20:232:24 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:232:26:232:26 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:239:9:239:12 | (...) |  | {EXTERNAL LOCATION} | & |
+| closure.rs:239:10:239:11 | &c |  | {EXTERNAL LOCATION} | & |
+| closure.rs:239:14:239:14 | x |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:13:14:13:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:13:14:13:18 | SelfParam | TRef | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:13:29:15:5 | { ... } |  | {EXTERNAL LOCATION} | & |
@@ -5788,6 +5886,185 @@ inferType
 | closure.rs:152:41:152:41 | _ |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:152:49:152:52 | true |  | {EXTERNAL LOCATION} | bool |
 | closure.rs:152:56:152:56 | 3 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:157:34:157:34 | f |  | closure.rs:157:15:157:31 | F |
+| closure.rs:157:40:157:40 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:157:55:159:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:158:9:158:9 | f |  | closure.rs:157:15:157:31 | F |
+| closure.rs:158:9:158:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:158:11:158:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:161:15:161:15 | f |  | closure.rs:161:18:161:36 | impl ... |
+| closure.rs:161:39:161:39 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:161:54:163:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:162:9:162:9 | f |  | closure.rs:161:18:161:36 | impl ... |
+| closure.rs:162:9:162:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:162:11:162:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:15:165:15 | f |  | {EXTERNAL LOCATION} | & |
+| closure.rs:165:15:165:15 | f | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:165:15:165:15 | f | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:165:15:165:15 | f | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:15:165:15 | f | TRef.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:39:165:39 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:165:54:167:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:9:166:9 | f |  | {EXTERNAL LOCATION} | & |
+| closure.rs:166:9:166:9 | f | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:166:9:166:9 | f | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:166:9:166:9 | f | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:9:166:9 | f | TRef.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:9:166:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:166:11:166:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:169:41:169:41 | f |  | closure.rs:169:15:169:34 | F |
+| closure.rs:169:47:169:47 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:169:62:171:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:170:9:170:9 | f |  | closure.rs:169:15:169:34 | F |
+| closure.rs:170:9:170:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:170:11:170:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:15:173:15 | f |  | {EXTERNAL LOCATION} | &mut |
+| closure.rs:173:15:173:15 | f | TRefMut | {EXTERNAL LOCATION} | dyn FnMut |
+| closure.rs:173:15:173:15 | f | TRefMut.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:173:15:173:15 | f | TRefMut.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:15:173:15 | f | TRefMut.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:46:173:46 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:173:61:175:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:9:174:9 | f |  | {EXTERNAL LOCATION} | &mut |
+| closure.rs:174:9:174:9 | f | TRefMut | {EXTERNAL LOCATION} | dyn FnMut |
+| closure.rs:174:9:174:9 | f | TRefMut.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:174:9:174:9 | f | TRefMut.dyn(Args).T0 | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:9:174:9 | f | TRefMut.dyn(Output) | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:9:174:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:174:11:174:11 | a |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:177:18:177:18 | f |  | closure.rs:177:21:177:37 | impl ... |
+| closure.rs:177:40:177:40 | a |  | closure.rs:177:15:177:15 | T |
+| closure.rs:177:53:179:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:178:9:178:9 | f |  | closure.rs:177:21:177:37 | impl ... |
+| closure.rs:178:9:178:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:178:11:178:11 | a |  | closure.rs:177:15:177:15 | T |
+| closure.rs:181:42:181:42 | f |  | closure.rs:181:18:181:35 | F |
+| closure.rs:181:48:181:48 | a |  | closure.rs:181:15:181:15 | T |
+| closure.rs:181:61:183:5 | { ... } |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:182:9:182:9 | f |  | closure.rs:181:18:181:35 | F |
+| closure.rs:182:9:182:12 | f(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:182:11:182:11 | a |  | closure.rs:181:15:181:15 | T |
+| closure.rs:185:15:206:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:186:13:186:13 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:186:13:186:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:186:17:186:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:186:17:186:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:187:13:187:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:187:18:187:32 | apply1(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:187:25:187:25 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:187:25:187:25 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:187:28:187:31 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:189:13:189:13 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:189:13:189:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:189:17:189:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:189:17:189:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:190:13:190:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:190:18:190:32 | apply2(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:190:25:190:25 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:190:25:190:25 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:190:28:190:31 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:192:13:192:13 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:192:13:192:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:192:17:192:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:192:17:192:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:193:13:193:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:193:18:193:33 | apply3(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:193:25:193:26 | &f |  | {EXTERNAL LOCATION} | & |
+| closure.rs:193:25:193:26 | &f | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:193:25:193:26 | &f | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:193:26:193:26 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:193:26:193:26 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:193:29:193:32 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:195:13:195:13 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:195:13:195:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:195:17:195:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:195:17:195:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:196:13:196:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:196:18:196:32 | apply4(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:196:25:196:25 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:196:25:196:25 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:196:28:196:31 | 4i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:198:17:198:17 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:198:17:198:17 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:198:21:198:25 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:198:21:198:25 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:199:13:199:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:199:18:199:37 | apply5(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:199:25:199:30 | &mut f |  | {EXTERNAL LOCATION} | &mut |
+| closure.rs:199:25:199:30 | &mut f | TRefMut | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:199:25:199:30 | &mut f | TRefMut.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:199:30:199:30 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:199:30:199:30 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:199:33:199:36 | 5i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:201:13:201:13 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:201:13:201:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:201:17:201:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:201:17:201:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:202:13:202:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:202:18:202:32 | apply6(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:202:25:202:25 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:202:25:202:25 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:202:28:202:31 | 6i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:204:13:204:13 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:204:13:204:13 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:204:17:204:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:204:17:204:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:205:13:205:14 | _r |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:205:18:205:32 | apply7(...) |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:205:25:205:25 | f |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:205:25:205:25 | f | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:205:28:205:31 | 7i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:217:18:217:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| closure.rs:217:18:217:22 | SelfParam | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:217:18:217:22 | SelfParam | TRef.T | closure.rs:214:10:214:10 | T |
+| closure.rs:217:42:219:9 | { ... } |  | {EXTERNAL LOCATION} | & |
+| closure.rs:217:42:219:9 | { ... } | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:217:42:219:9 | { ... } | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:217:42:219:9 | { ... } | TRef.dyn(Args).T0 | closure.rs:214:10:214:10 | T |
+| closure.rs:217:42:219:9 | { ... } | TRef.dyn(Output) | {EXTERNAL LOCATION} | bool |
+| closure.rs:218:13:218:22 | &... |  | {EXTERNAL LOCATION} | & |
+| closure.rs:218:13:218:22 | &... | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:218:13:218:22 | &... | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:218:13:218:22 | &... | TRef.dyn(Args).T0 | closure.rs:214:10:214:10 | T |
+| closure.rs:218:13:218:22 | &... | TRef.dyn(Output) | {EXTERNAL LOCATION} | bool |
+| closure.rs:218:14:218:22 | \|...\| false |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:218:14:218:22 | \|...\| false | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:218:14:218:22 | \|...\| false | dyn(Args).T0 | closure.rs:214:10:214:10 | T |
+| closure.rs:218:14:218:22 | \|...\| false | dyn(Output) | {EXTERNAL LOCATION} | bool |
+| closure.rs:218:15:218:15 | _ |  | closure.rs:214:10:214:10 | T |
+| closure.rs:218:18:218:22 | false |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:222:19:240:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:223:13:223:13 | x |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:223:17:223:20 | 0i64 |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:225:13:225:13 | s |  | closure.rs:212:5:212:19 | S |
+| closure.rs:225:17:225:20 | S(...) |  | closure.rs:212:5:212:19 | S |
+| closure.rs:226:20:226:20 | s |  | closure.rs:212:5:212:19 | S |
+| closure.rs:226:22:226:22 | x |  | {EXTERNAL LOCATION} | i64 |
+| closure.rs:228:13:228:13 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:228:17:228:20 | 0i32 |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:230:13:230:13 | s |  | closure.rs:212:5:212:19 | S |
+| closure.rs:230:17:230:20 | S(...) |  | closure.rs:212:5:212:19 | S |
+| closure.rs:231:13:231:17 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:231:13:231:17 | s_ref | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:231:21:231:22 | &s |  | {EXTERNAL LOCATION} | & |
+| closure.rs:231:21:231:22 | &s | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:231:22:231:22 | s |  | closure.rs:212:5:212:19 | S |
+| closure.rs:232:20:232:24 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:232:20:232:24 | s_ref | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:232:26:232:26 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:238:13:238:13 | c |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:238:13:238:13 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:238:17:238:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:238:17:238:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:239:9:239:12 | (...) |  | {EXTERNAL LOCATION} | & |
+| closure.rs:239:9:239:12 | (...) | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:239:9:239:12 | (...) | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:239:10:239:11 | &c |  | {EXTERNAL LOCATION} | & |
+| closure.rs:239:10:239:11 | &c | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:239:10:239:11 | &c | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:239:11:239:11 | c |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:239:11:239:11 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:239:14:239:14 | x |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:13:14:13:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:13:14:13:18 | SelfParam | TRef | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:13:29:15:5 | { ... } |  | {EXTERNAL LOCATION} | & |
