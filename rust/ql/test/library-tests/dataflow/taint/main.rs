@@ -12,6 +12,7 @@ fn addition() {
     let a = source(42);
     sink(a + 1); // $ hasTaintFlow=42
 
+
     let mut b = source(58);
     b += 2;
     sink(b); // $ hasTaintFlow=58
@@ -25,6 +26,20 @@ fn negation() {
     let a = source(17);
     sink(-a); // $ hasTaintFlow=17
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 fn cast() {
     let a = source(77);
