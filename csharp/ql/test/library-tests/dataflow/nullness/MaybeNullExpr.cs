@@ -17,5 +17,8 @@ public class C
 
         // Conditional access might be null as the qualifier might be null.
         var s1 = (o as C)?.Prop;
+
+        // Conditional access might be null as the qualifier might be null.
+        var i = o?.GetHashCode();
     }
 }

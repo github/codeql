@@ -6,6 +6,7 @@
 | C.cs:203:13:203:13 | access to local variable s | Variable $@ may be null at this access because of $@ assignment. | C.cs:185:13:185:13 | s | s | C.cs:204:13:204:20 | ... = ... | this |
 | C.cs:223:9:223:9 | access to local variable s | Variable $@ may be null at this access because of $@ assignment. | C.cs:210:13:210:13 | s | s | C.cs:222:13:222:20 | ... = ... | this |
 | C.cs:242:13:242:13 | access to local variable s | Variable $@ may be null at this access because of $@ assignment. | C.cs:228:16:228:16 | s | s | C.cs:240:24:240:31 | ... = ... | this |
+| ConditionalAccess.cs:9:27:9:27 | access to local variable t | Variable $@ may be null at this access because of $@ assignment. | ConditionalAccess.cs:8:13:8:13 | t | t | ConditionalAccess.cs:8:13:8:28 | Type t = ... | this |
 | D.cs:23:9:23:13 | access to parameter param | Variable $@ may be null at this access because of $@ null argument. | D.cs:21:32:21:36 | param | param | D.cs:17:17:17:20 | null | this |
 | D.cs:32:9:32:13 | access to parameter param | Variable $@ may be null at this access as suggested by $@ null check. | D.cs:26:32:26:36 | param | param | D.cs:28:13:28:25 | ... != ... | this |
 | D.cs:73:13:73:14 | access to local variable o7 | Variable $@ may be null at this access because of $@ assignment. | D.cs:68:13:68:14 | o7 | o7 | D.cs:68:13:68:34 | String o7 = ... | this |
