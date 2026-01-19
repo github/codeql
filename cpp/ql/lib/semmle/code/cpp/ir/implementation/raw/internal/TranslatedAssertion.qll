@@ -89,13 +89,11 @@ private predicate parseArgument(string arg, string s, int i, Opcode opcode) {
       i + 1) and
   opcode instanceof Opcode::CompareGE
   or
-  not arg.regexpMatch("([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)\\s?<=\\s?([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)") and
   s =
     arg.regexpCapture("([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)\\s?<\\s?([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)",
       i + 1) and
   opcode instanceof Opcode::CompareLT
   or
-  not arg.regexpMatch("([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)\\s?>=\\s?([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)") and
   s =
     arg.regexpCapture("([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)\\s?>\\s?([a-zA-Z_][a-zA-Z_0-9]*|[0-9]+)",
       i + 1) and
@@ -127,7 +125,6 @@ private predicate hasVarAccessMacroArgument(MacroInvocation mi, Variable var, in
   exists(string arg, string s, Function f |
     arg = mi.getUnexpandedArgument(0) and
     f = getEnclosingFunctionForMacroInvocation(mi) and
-    not exists(s.toInt()) and
     parseArgument(arg, s, i, opcode) and
     var = unique( | | getAVariableWithNameInFunction(f, s))
   )
