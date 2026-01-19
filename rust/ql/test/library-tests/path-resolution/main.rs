@@ -877,6 +877,71 @@ mod associated_types {
     }
 }
 
+mod associated_types_subtrait {
+    trait Super {
+        type Out; // SuperAssoc
+    } // Super
+
+    trait Sub: Super // $ item=Super
+    {
+        fn f() -> Self::Out // $ item=SuperAssoc
+        ; // Sub_f
+    } // Sub
+
+    struct S<ST>(
+        ST, // $ item=ST
+    );
+
+    #[rustfmt::skip]
+    impl Super for S<i32> { // $ item=Super item=S item=i32
+        type Out = char // $ item=char
+        ; // S<i32>::Out
+    }
+
+    #[rustfmt::skip]
+    impl Super for S<bool> { // $ item=Super item=S item=bool
+        type Out = i64 // $ item=i64
+        ; // S<bool>::Out
+    }
+
+    #[rustfmt::skip]
+    impl Sub for S<i32> { // $ item=Sub item=S item=i32
+        fn f() -> Self::Out { // $ MISSING: item=SuperAssoc SPURIOUS: item=S<i32>::Out item=S<bool>::Out item=S<A>::Out
+            'a'
+        }
+    }
+
+    #[rustfmt::skip]
+    impl Sub for S<bool> { // $ item=Sub item=S item=bool
+        fn f() -> Self::Out { // $ MISSING: item=SuperAssoc SPURIOUS: item=S<i32>::Out item=S<bool>::Out item=S<A>::Out
+            1
+        }
+    }
+
+    trait SuperAlt {
+        type Out; // SuperAltAssoc
+    } // SuperAlt
+
+    trait SubAlt: SuperAlt // $ item=SuperAlt
+    {
+        fn f(self) -> Self::Out // $ item=SuperAltAssoc
+        ; // SubAlt_f
+    } // SubAlt
+
+    #[rustfmt::skip]
+    impl<A> SuperAlt for S<A> { // $ item=SuperAlt item=S item=A
+        type Out = A // $ item=A
+        ; // S<A>::Out
+    }
+
+    #[rustfmt::skip]
+    impl<A> SubAlt for S<A> { // $ item=SubAlt item=S item=A
+        fn f(self) -> Self::Out { // $ MISSING: item=SuperAltAssoc SPURIOUS: item=S<i32>::Out item=S<bool>::Out item=S<A>::Out
+            self.0
+        }
+    }
+}
+
 use std::{self as ztd}; // $ item=std
 
 fn use_ztd(x: ztd::string::String) {} // $ item=String

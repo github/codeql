@@ -1,2 +1,7 @@
 multipleResolvedTargets
+| associated_types.rs:393:13:393:30 | ...::default(...) |
+| associated_types.rs:400:13:400:30 | ...::default(...) |
 | main.rs:2871:13:2871:17 | x.f() |
+multiplePathResolutions
+| associated_types.rs:391:34:391:45 | ...::Output |
+| associated_types.rs:399:34:399:45 | ...::Output |

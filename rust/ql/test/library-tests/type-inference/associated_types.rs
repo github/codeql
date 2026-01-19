@@ -46,12 +46,39 @@ impl GetSet for S {
     }
 }
 
+impl AnotherGet for S {
+    type AnotherOutput = bool;
+
+    // S::get_another
+    fn get_another(&self) -> Self::AnotherOutput {
+        true
+    }
+}
+
 impl<T: Copy> GetSet for Wrapper<T> {
     type Output = T;
 
     // Wrapper::get
     fn get(&self) -> Self::Output {
         self.0 // $ fieldof=Wrapper
+    }
+}
+
+struct Odd<OddT>(OddT);
+
+impl GetSet for Odd<i32> {
+    type Output = bool;
+
+    fn get(&self) -> Self::Output {
+        true
+    }
+}
+
+impl GetSet for Odd<bool> {
+    type Output = char;
+
+    fn get(&self) -> Self::Output {
+        'a'
     }
 }
 
@@ -110,7 +137,62 @@ mod default_method_using_associated_type {
     }
 }
 
-// Tests for signatures that access associated types from type parameters
+mod concrete_type_access_associated_type {
+    use super::*;
+
+    fn using_as(
+        a: <S as GetSet>::Output,
+        b: <Wrapper<i32> as GetSet>::Output,
+        c: <Odd<i32> as GetSet>::Output,
+        d: <Odd<bool> as GetSet>::Output,
+    ) {
+        let _a = a; // $ MISSING: type=_a:S3
+        let _b = b; // $ MISSING: type=_b:i32
+        let _c = c; // $ MISSING: type=_c:bool
+        let _d = d; // $ MISSING: type=_d:char
+    }
+
+    // NOTE: The below seems like it should work, but is currently rejected by
+    // the Rust compiler. This behavior does not seem to be documented and
+    // there's an open issue about it:
+    // https://github.com/rust-lang/rust/issues/104119
+    // fn without_as(
+    //     a: S::Output,
+    //     b: Wrapper<i32>::Output,
+    //     c: Odd<i32>::Output,
+    //     d: Odd<bool>::Output,
+    // ) {
+    //     let _a = a; // $ type=_a:S3
+    //     let _b = b; // $ type=_b:i32
+    //     let _c = c; // $ type=_c:bool
+    //     let _d = d; // $ type=_d:char
+    // }
+
+    impl Odd<i32> {
+        // Odd<i32>::proj
+        fn proj(&self) -> <Self as GetSet>::Output {
+            let x = Default::default(); // $ MISSING: target=default
+            x // $ MISSING: type=x:bool
+        }
+    }
+
+    impl Odd<bool> {
+        // Odd<bool>::proj
+        fn proj(&self) -> <Self as GetSet>::Output {
+            let x = Default::default(); // $ MISSING: target=default
+            x // $ MISSING: type=x:char
+        }
+    }
+
+    pub fn test() {
+        using_as(S3, 1, true, 'a'); // $ target=using_as
+
+        let _a = Odd(42i32).proj(); // $ target=Odd<i32>::proj MISSING: type=_a:bool
+        let _b = Odd(true).proj(); // $ target=Odd<bool>::proj MISSING: type=_b:char
+    }
+}
+
+// Tests for signatures that access associated types on type parameters
 mod type_param_access_associated_type {
     use super::*;
 
@@ -122,9 +204,20 @@ mod type_param_access_associated_type {
         thing.get() // $ target=GetSet::get
     }
 
+    fn tp_assoc_from_supertrait<T: AnotherGet>(thing: T) -> (T::Output, T::AnotherOutput) {
+        (
+            thing.get(),         // $ target=GetSet::get
+            thing.get_another(), // $ target=AnotherGet::get_another
+        )
+    }
+
     pub fn test() {
         let _o1 = tp_with_as(S); // $ target=tp_with_as MISSING: type=_o1:S3
         let _o2 = tp_without_as(S); // $ target=tp_without_as MISSING: type=_o2:S3
+        let (
+            _o3, // $ MISSING: type=_o3:S3
+            _o4, // $ MISSING: type=_o4:bool
+        ) = tp_assoc_from_supertrait(S); // $ target=tp_assoc_from_supertrait
     }
 }
 
@@ -293,6 +386,21 @@ mod associated_type_in_supertrait {
         }
     }
 
+    impl Subtrait for Odd<i32> {
+        // Odd<i32>::get_content
+        fn get_content(&self) -> Self::Output {
+            // let _x = Self::get(self);
+            Default::default() // $ target=default
+        }
+    }
+
+    impl Subtrait for Odd<bool> {
+        // Odd<bool>::get_content
+        fn get_content(&self) -> Self::Output {
+            Default::default() // $ target=default
+        }
+    }
+
     fn get_content<T: Subtrait>(item: &T) -> T::Output {
         item.get_content() // $ target=Subtrait::get_content
     }
@@ -308,6 +416,9 @@ mod associated_type_in_supertrait {
 
         let item2 = MyType(true);
         let _content2 = get_content(&item2); // $ target=get_content MISSING: type=_content2:bool
+
+        let _content3 = Odd(42i32).get_content(); // $ target=Odd<i32>::get_content type=_content3:bool SPURIOUS: type=_content3:char
+        let _content4 = Odd(true).get_content(); // $ target=Odd<bool>::get_content type=_content4:char SPURIOUS: type=_content4:bool
     }
 }
 
@@ -356,6 +467,7 @@ mod dyn_trait {
 
 pub fn test() {
     default_method_using_associated_type::test(); // $ target=test
+    concrete_type_access_associated_type::test(); // $ target=test
     type_param_access_associated_type::test(); // $ target=test
     generic_associated_type::test(); // $ target=test
     multiple_associated_types::test(); // $ target=test
