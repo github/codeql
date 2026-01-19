@@ -1056,8 +1056,6 @@ private module Cached {
     av.isNotNull() and result.isNonNullValue()
   }
 
-  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
-
   private predicate barrierGuardChecks(IRGuardCondition g, Expr e, boolean gv, TKindModelPair kmp) {
     exists(
       SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
