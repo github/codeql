@@ -2353,6 +2353,7 @@ case @preprocdirect.kind of
 | 14 = @ppd_ms_import
 | 15 = @ppd_elifdef
 | 16 = @ppd_elifndef
+| 17 = @ppd_embed
 | 18 = @ppd_warning
 ;
 
@@ -2376,6 +2377,11 @@ preproctext(
 
 includes(
     unique int id: @ppd_include ref,
+    int included: @file ref
+);
+
+embeds(
+    unique int id: @ppd_embed ref,
     int included: @file ref
 );
 
