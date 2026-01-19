@@ -100,4 +100,8 @@ module IncompleteHtmlAttributeSanitization {
       result = this.getQuote()
     }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "request-forgery") }
+  }
 }

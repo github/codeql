@@ -6,7 +6,6 @@
 | tst.js:253:21:253:45 | s().rep ... /g, '') | tst.js:253:21:253:45 | s().rep ... /g, '') | tst.js:253:21:253:45 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain ampersands or double quotes when it reaches this attribute definition. | tst.js:253:21:253:45 | s().rep ... /g, '') | this final HTML sanitizer step |
 | tst.js:254:32:254:56 | s().rep ... /g, '') | tst.js:254:32:254:56 | s().rep ... /g, '') | tst.js:254:32:254:56 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain ampersands or double quotes when it reaches this attribute definition. | tst.js:254:32:254:56 | s().rep ... /g, '') | this final HTML sanitizer step |
 | tst.js:270:61:270:85 | s().rep ... /g, '') | tst.js:270:61:270:85 | s().rep ... /g, '') | tst.js:270:61:270:85 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain ampersands or double quotes when it reaches this attribute definition. | tst.js:270:61:270:85 | s().rep ... /g, '') | this final HTML sanitizer step |
-| tst.js:272:9:272:51 | encodeU ... /g,'')) | tst.js:272:28:272:50 | s().rep ... ]/g,'') | tst.js:272:9:272:51 | encodeU ... /g,'')) | Cross-site scripting vulnerability as the output of $@ may contain double quotes when it reaches this attribute definition. | tst.js:272:28:272:50 | s().rep ... ]/g,'') | this final HTML sanitizer step |
 | tst.js:275:9:275:21 | arr.join(" ") | tst.js:274:12:274:94 | s().val ... g , '') | tst.js:275:9:275:21 | arr.join(" ") | Cross-site scripting vulnerability as the output of $@ may contain double quotes when it reaches this attribute definition. | tst.js:274:12:274:94 | s().val ... g , '') | this final HTML sanitizer step |
 | tst.js:300:10:300:33 | s().rep ... ]/g,'') | tst.js:300:10:300:33 | s().rep ... ]/g,'') | tst.js:300:10:300:33 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:300:10:300:33 | s().rep ... ]/g,'') | this final HTML sanitizer step |
 | tst.js:301:10:301:32 | s().rep ... ]/g,'') | tst.js:301:10:301:32 | s().rep ... ]/g,'') | tst.js:301:10:301:32 | s().rep ... ]/g,'') | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:301:10:301:32 | s().rep ... ]/g,'') | this final HTML sanitizer step |
@@ -14,7 +13,6 @@
 | tst.js:303:10:303:34 | s().rep ... /g, '') | tst.js:303:10:303:34 | s().rep ... /g, '') | tst.js:303:10:303:34 | s().rep ... /g, '') | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:303:10:303:34 | s().rep ... /g, '') | this final HTML sanitizer step |
 | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | Cross-site scripting vulnerability as the output of $@ may contain single quotes when it reaches this attribute definition. | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | this final HTML sanitizer step |
 edges
-| tst.js:272:28:272:50 | s().rep ... ]/g,'') | tst.js:272:9:272:51 | encodeU ... /g,'')) | provenance |  |
 | tst.js:274:6:274:8 | arr | tst.js:275:9:275:11 | arr | provenance |  |
 | tst.js:274:12:274:94 | s().val ... g , '') | tst.js:274:6:274:8 | arr | provenance |  |
 | tst.js:275:9:275:11 | arr | tst.js:275:9:275:21 | arr.join(" ") | provenance |  |
@@ -26,8 +24,6 @@ nodes
 | tst.js:253:21:253:45 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
 | tst.js:254:32:254:56 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
 | tst.js:270:61:270:85 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
-| tst.js:272:9:272:51 | encodeU ... /g,'')) | semmle.label | encodeU ... /g,'')) |
-| tst.js:272:28:272:50 | s().rep ... ]/g,'') | semmle.label | s().rep ... ]/g,'') |
 | tst.js:274:6:274:8 | arr | semmle.label | arr |
 | tst.js:274:12:274:94 | s().val ... g , '') | semmle.label | s().val ... g , '') |
 | tst.js:275:9:275:11 | arr | semmle.label | arr |
@@ -38,6 +34,3 @@ nodes
 | tst.js:303:10:303:34 | s().rep ... /g, '') | semmle.label | s().rep ... /g, '') |
 | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | semmle.label | s().rep ... ;";\\n\\t}) |
 subpaths
-testFailures
-| tst.js:272:9:272:51 | encodeU ... /g,'')) | Unexpected result: Alert |
-| tst.js:272:28:272:50 | s().rep ... ]/g,'') | Unexpected result: Alert |
