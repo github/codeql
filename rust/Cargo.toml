@@ -1,0 +1,9 @@
+# Workspace for the Rust extractor and related tools
+[workspace]
+resolver = "2"
+members = [
+    "extractor",
+    "extractor/macros",
+    "ast-generator",
+    "autobuild",
+]

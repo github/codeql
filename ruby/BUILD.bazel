@@ -3,6 +3,11 @@ load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
 
 package(default_visibility = ["//visibility:public"])
 
+exports_files([
+    "Cargo.toml",
+    "Cargo.lock",
+])
+
 alias(
     name = "dbscheme",
     actual = "//ruby/ql/lib:dbscheme",

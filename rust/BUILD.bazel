@@ -7,6 +7,11 @@ load(
 
 package(default_visibility = ["//rust:__subpackages__"])
 
+exports_files([
+    "Cargo.toml",
+    "Cargo.lock",
+])
+
 filegroup(
     name = "schema",
     srcs = glob(["schema/*.py"]),

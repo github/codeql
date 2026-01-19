@@ -1,15 +1,31 @@
 load("@rules_rust//crate_universe:defs.bzl", "crates_vendor")
 
 # The targets in this file re-do the vendoring of the rust cargo dependencies. Use the update_cargo_deps.sh script to run the targets, and do all the necessary work around vendoring.
+
 crates_vendor(
-    name = "vendor_tree_sitter_extractors",
-    cargo_lockfile = "//:Cargo.lock",
+    name = "vendor_ruby_deps",
+    cargo_lockfile = "//ruby:Cargo.lock",
     generate_build_scripts = True,
-    manifests = ["//:Cargo.toml"],
+    manifests = [
+        "//ruby:Cargo.toml",
+    ],
     mode = "remote",
-    repository_name = "vendor_ts",
+    repository_name = "vendor_ruby",
     tags = ["manual"],
-    vendor_path = "tree_sitter_extractors_deps",
+    vendor_path = "ruby_deps",
+)
+
+crates_vendor(
+    name = "vendor_rust_deps",
+    cargo_lockfile = "//rust:Cargo.lock",
+    generate_build_scripts = True,
+    manifests = [
+        "//rust:Cargo.toml",
+    ],
+    mode = "remote",
+    repository_name = "vendor_rust",
+    tags = ["manual"],
+    vendor_path = "rust_deps",
 )
 
 crates_vendor(

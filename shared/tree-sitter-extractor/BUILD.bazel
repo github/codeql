@@ -1,23 +1,79 @@
 load("@rules_rust//rust:defs.bzl", "rust_library")
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
 
 exports_files(["Cargo.toml"])
 
+# Build for ruby extractor using ruby_deps
 rust_library(
-    name = "codeql-extractor",
+    name = "codeql-extractor-ruby",
     srcs = glob([
         "src/**/*.rs",
     ]),
-    aliases = aliases(),
+    crate_name = "codeql_extractor",
     compile_data = [
         "src/generator/prefix.dbscheme",
     ],
-    deps = all_crate_deps(),
+    deps = [
+        "//misc/bazel/3rdparty/ruby_deps:chrono",
+        "//misc/bazel/3rdparty/ruby_deps:encoding",
+        "//misc/bazel/3rdparty/ruby_deps:flate2",
+        "//misc/bazel/3rdparty/ruby_deps:globset",
+        "//misc/bazel/3rdparty/ruby_deps:lazy_static",
+        "//misc/bazel/3rdparty/ruby_deps:num_cpus",
+        "//misc/bazel/3rdparty/ruby_deps:rayon",
+        "//misc/bazel/3rdparty/ruby_deps:regex",
+        "//misc/bazel/3rdparty/ruby_deps:serde",
+        "//misc/bazel/3rdparty/ruby_deps:serde_json",
+        "//misc/bazel/3rdparty/ruby_deps:tracing",
+        "//misc/bazel/3rdparty/ruby_deps:tracing-subscriber",
+        "//misc/bazel/3rdparty/ruby_deps:tree-sitter",
+        "//misc/bazel/3rdparty/ruby_deps:zstd",
+    ],
+)
+
+# Build for rust extractor using rust_deps
+rust_library(
+    name = "codeql-extractor-rust",
+    srcs = glob([
+        "src/**/*.rs",
+    ]),
+    crate_name = "codeql_extractor",
+    compile_data = [
+        "src/generator/prefix.dbscheme",
+    ],
+    deps = [
+        "//misc/bazel/3rdparty/rust_deps:chrono",
+        "//misc/bazel/3rdparty/rust_deps:encoding",
+        "//misc/bazel/3rdparty/rust_deps:flate2",
+        "//misc/bazel/3rdparty/rust_deps:globset",
+        "//misc/bazel/3rdparty/rust_deps:lazy_static",
+        "//misc/bazel/3rdparty/rust_deps:num_cpus",
+        "//misc/bazel/3rdparty/rust_deps:rayon",
+        "//misc/bazel/3rdparty/rust_deps:regex",
+        "//misc/bazel/3rdparty/rust_deps:serde",
+        "//misc/bazel/3rdparty/rust_deps:serde_json",
+        "//misc/bazel/3rdparty/rust_deps:tracing",
+        "//misc/bazel/3rdparty/rust_deps:tracing-subscriber",
+        "//misc/bazel/3rdparty/rust_deps:tree-sitter",
+        "//misc/bazel/3rdparty/rust_deps:zstd",
+    ],
+)
+
+# Default alias for backwards compatibility - uses ruby deps
+alias(
+    name = "codeql-extractor",
+    actual = ":codeql-extractor-ruby",
 )
 
 alias(
     name = "tree-sitter-extractor",
-    actual = ":codeql-extractor",
+    actual = ":codeql-extractor-ruby",
+    visibility = ["//visibility:public"],
+)
+
+# Alias for rust extractor to use
+alias(
+    name = "tree-sitter-extractor-rust",
+    actual = ":codeql-extractor-rust",
     visibility = ["//visibility:public"],
 )
 

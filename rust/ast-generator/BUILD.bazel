@@ -1,18 +1,12 @@
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps", "crate_deps")
 
-(ra_ap_syntax_label,) = crate_deps(
-    ["ra_ap_syntax"],
-    "rust/extractor",
-)
-
-ra_ap_syntax_workspace, _, _ = str(ra_ap_syntax_label).partition("//")
-
+# Get the ra_ap_syntax repo for rust.ungram
+# This is provided by the vendor_rust__ra_ap_syntax repo
 alias(
     name = "rust.ungram",
-    actual = "%s//:rust.ungram" % ra_ap_syntax_workspace,
+    actual = "@vendor_rust__ra_ap_syntax-0.0.301//:rust.ungram",
     visibility = ["//rust/codegen:__pkg__"],
 )
 
@@ -44,16 +38,23 @@ codeql_rust_binary(
         ["src/**/*.rs"],
         exclude = ["src/codegen/**"],
     ) + [":codegen"],
-    aliases = aliases(),
+    aliases = {
+        "//misc/bazel/3rdparty/rust_deps:stdx": "stdx",
+    },
     args = ["$(rlocationpath :rust.ungram)"],
     data = [":rust.ungram"] + glob(["templates/*.mustache"]),
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-    ),
     visibility = ["//rust:__subpackages__"],
-    deps = all_crate_deps(
-        normal = True,
-    ),
+    deps = [
+        "//misc/bazel/3rdparty/rust_deps:anyhow",
+        "//misc/bazel/3rdparty/rust_deps:either",
+        "//misc/bazel/3rdparty/rust_deps:itertools",
+        "//misc/bazel/3rdparty/rust_deps:mustache",
+        "//misc/bazel/3rdparty/rust_deps:proc-macro2",
+        "//misc/bazel/3rdparty/rust_deps:quote",
+        "//misc/bazel/3rdparty/rust_deps:serde",
+        "//misc/bazel/3rdparty/rust_deps:stdx",
+        "//misc/bazel/3rdparty/rust_deps:ungrammar",
+    ],
 )
 
 write_file(

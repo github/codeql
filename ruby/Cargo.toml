@@ -1,0 +1,6 @@
+# Workspace for the Ruby extractor
+[workspace]
+resolver = "2"
+members = [
+    "extractor",
+]

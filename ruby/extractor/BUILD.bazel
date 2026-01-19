@@ -1,19 +1,24 @@
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
 
 exports_files(["Cargo.toml"])
 
 codeql_rust_binary(
     name = "extractor",
     srcs = glob(["src/*.rs"]),
-    aliases = aliases(),
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-    ),
+    proc_macro_deps = [],
     visibility = ["//visibility:public"],
-    deps = all_crate_deps(
-        normal = True,
-    ) + [
+    deps = [
+        "//misc/bazel/3rdparty/ruby_deps:clap",
+        "//misc/bazel/3rdparty/ruby_deps:encoding",
+        "//misc/bazel/3rdparty/ruby_deps:lazy_static",
+        "//misc/bazel/3rdparty/ruby_deps:rayon",
+        "//misc/bazel/3rdparty/ruby_deps:regex",
+        "//misc/bazel/3rdparty/ruby_deps:serde_json",
+        "//misc/bazel/3rdparty/ruby_deps:tracing",
+        "//misc/bazel/3rdparty/ruby_deps:tracing-subscriber",
+        "//misc/bazel/3rdparty/ruby_deps:tree-sitter",
+        "//misc/bazel/3rdparty/ruby_deps:tree-sitter-embedded-template",
+        "//misc/bazel/3rdparty/ruby_deps:tree-sitter-ruby",
         "//shared/tree-sitter-extractor",
     ],
 )

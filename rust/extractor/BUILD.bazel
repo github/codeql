@@ -1,25 +1,53 @@
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
-load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
 
 exports_files(["Cargo.toml"])
 
 codeql_rust_binary(
     name = "extractor",
     srcs = glob(["src/**/*.rs"]),
-    aliases = aliases(),
     compile_data = [
         "src/qltest_cargo.mustache",
         "src/nightly-toolchain/rust-toolchain.toml",
     ],
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-    ) + [
+    proc_macro_deps = [
         "//rust/extractor/macros",
     ],
     visibility = ["//rust:__subpackages__"],
-    deps = all_crate_deps(
-        normal = True,
-    ) + [
-        "//shared/tree-sitter-extractor",
+    deps = [
+        "//misc/bazel/3rdparty/rust_deps:anyhow",
+        "//misc/bazel/3rdparty/rust_deps:argfile",
+        "//misc/bazel/3rdparty/rust_deps:chalk-ir",
+        "//misc/bazel/3rdparty/rust_deps:chrono",
+        "//misc/bazel/3rdparty/rust_deps:clap",
+        "//misc/bazel/3rdparty/rust_deps:dunce",
+        "//misc/bazel/3rdparty/rust_deps:figment",
+        "//misc/bazel/3rdparty/rust_deps:glob",
+        "//misc/bazel/3rdparty/rust_deps:itertools",
+        "//misc/bazel/3rdparty/rust_deps:mustache",
+        "//misc/bazel/3rdparty/rust_deps:num-traits",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_base_db",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_cfg",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_hir",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_hir_def",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_hir_expand",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_hir_ty",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_ide_db",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_intern",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_load-cargo",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_parser",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_paths",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_project_model",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_span",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_syntax",
+        "//misc/bazel/3rdparty/rust_deps:ra_ap_vfs",
+        "//misc/bazel/3rdparty/rust_deps:serde",
+        "//misc/bazel/3rdparty/rust_deps:serde_json",
+        "//misc/bazel/3rdparty/rust_deps:serde_with",
+        "//misc/bazel/3rdparty/rust_deps:toml",
+        "//misc/bazel/3rdparty/rust_deps:tracing",
+        "//misc/bazel/3rdparty/rust_deps:tracing-flame",
+        "//misc/bazel/3rdparty/rust_deps:tracing-subscriber",
+        "//misc/bazel/3rdparty/rust_deps:triomphe",
+        "//shared/tree-sitter-extractor:tree-sitter-extractor-rust",
     ],
 )
