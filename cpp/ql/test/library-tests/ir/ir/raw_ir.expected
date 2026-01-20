@@ -19125,28 +19125,51 @@ ir.cpp:
 # 2867|     r2867_2(glval<bool>) = VariableAddress[b]       : 
 # 2867|     r2867_3(bool)        = Load[b]                  : &:r2867_2, ~m?
 # 2867|     v2867_4(void)        = ConditionalBranch        : r2867_3
-#-----|   False -> Block 3
-#-----|   True -> Block 2
+#-----|   False -> Block 5
+#-----|   True -> Block 4
 
-# 2867|   Block 1
-# 2867|     r2867_5(glval<int>) = VariableAddress[#temp2867:13] : 
-# 2867|     r2867_6(int)        = Load[#temp2867:13]            : &:r2867_5, ~m?
-# 2867|     mu2867_7(int)       = Store[z]                      : &:r2867_1, r2867_6
-# 2868|     v2868_1(void)       = NoOp                          : 
-# 2865|     v2865_10(void)      = ReturnVoid                    : 
-# 2865|     v2865_11(void)      = AliasedUse                    : ~m?
-# 2865|     v2865_12(void)      = ExitFunction                  : 
+# 2865|   Block 1
+# 2865|     v2865_10(void) = AliasedUse   : ~m?
+# 2865|     v2865_11(void) = ExitFunction : 
 
-# 2867|   Block 2
-# 2867|     r2867_8(int)        = Constant[0]                   : 
-# 2867|     r2867_9(glval<int>) = VariableAddress[#temp2867:13] : 
-# 2867|     mu2867_10(int)      = Store[#temp2867:13]           : &:r2867_9, r2867_8
+# 2865|   Block 2
+# 2865|     v2865_12(void) = Unwind : 
 #-----|   Goto -> Block 1
 
 # 2867|   Block 3
+# 2867|     r2867_5(glval<int>) = VariableAddress[#temp2867:13] : 
+# 2867|     r2867_6(int)        = Load[#temp2867:13]            : &:r2867_5, ~m?
+# 2867|     mu2867_7(int)       = Store[z]                      : &:r2867_1, r2867_6
+# 2870|     r2870_1(glval<int>) = VariableAddress[#throw2870:9] : 
+# 2870|     r2870_2(int)        = Constant[41]                  : 
+# 2870|     mu2870_3(int)       = Store[#throw2870:9]           : &:r2870_1, r2870_2
+# 2870|     v2870_4(void)       = ThrowValue                    : &:r2870_1, ~m?
+#-----|   C++ Exception -> Block 6
+
+# 2867|   Block 4
+# 2867|     r2867_8(int)        = Constant[0]                   : 
+# 2867|     r2867_9(glval<int>) = VariableAddress[#temp2867:13] : 
+# 2867|     mu2867_10(int)      = Store[#temp2867:13]           : &:r2867_9, r2867_8
+#-----|   Goto -> Block 3
+
+# 2867|   Block 5
 # 2867|     r2867_11(int)        = Constant[1]                   : 
 # 2867|     r2867_12(glval<int>) = VariableAddress[#temp2867:13] : 
 # 2867|     mu2867_13(int)       = Store[#temp2867:13]           : &:r2867_12, r2867_11
+#-----|   Goto -> Block 3
+
+# 2871|   Block 6
+# 2871|     v2871_1(void) = CatchByType[int] : 
+#-----|   C++ Exception -> Block 2
+#-----|   Goto -> Block 7
+
+# 2871|   Block 7
+# 2871|     r2871_2(glval<int>) = VariableAddress[c]     : 
+# 2871|     mu2871_3(int)       = InitializeParameter[c] : &:r2871_2
+# 2872|     r2872_1(int)        = Constant[0]            : 
+# 2872|     v2872_2(void)       = Convert                : r2872_1
+# 2874|     v2874_1(void)       = NoOp                   : 
+# 2865|     v2865_13(void)      = ReturnVoid             : 
 #-----|   Goto -> Block 1
 
 ir23.cpp:

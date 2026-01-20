@@ -25562,7 +25562,33 @@ ir.cpp:
 # 2867|                 Type = [IntType] int
 # 2867|                 Value = [ParenthesisExpr] 0
 # 2867|                 ValueCategory = prvalue
-# 2868|     getStmt(2): [ReturnStmt] return ...
+# 2869|     getStmt(2): [TryStmt] try { ... }
+# 2869|       getStmt(): [BlockStmt] { ... }
+# 2870|         getStmt(0): [ExprStmt] ExprStmt
+# 2870|           getExpr(): [ThrowExpr] throw ...
+# 2870|               Type = [IntType] int
+# 2870|               ValueCategory = prvalue
+# 2870|             getExpr(): [Literal] 41
+# 2870|                 Type = [IntType] int
+# 2870|                 Value = [Literal] 41
+# 2870|                 ValueCategory = prvalue
+# 2871|       getChild(1): [Handler] <handler>
+# 2871|         getParameter(): [Parameter] c
+# 2871|             Type = [IntType] int
+# 2871|         getBlock(): [CatchBlock] { ... }
+# 2872|           getStmt(0): [ExprStmt] ExprStmt
+# 2872|             getExpr(): [Literal] 0
+# 2872|                 Type = [IntType] int
+# 2872|                 Value = [Literal] 0
+# 2872|                 ValueCategory = prvalue
+# 2872|             getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2872|                 Type = [VoidType] void
+# 2872|                 ValueCategory = prvalue
+# 2872|               getExpr(): [CStyleCast] (void)...
+# 2872|                   Conversion = [VoidConversion] conversion to void
+# 2872|                   Type = [VoidType] void
+# 2872|                   ValueCategory = prvalue
+# 2874|     getStmt(3): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 

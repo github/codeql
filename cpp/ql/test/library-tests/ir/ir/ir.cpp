@@ -2865,6 +2865,12 @@ template void test_assert_in_template<short>(short, int, unsigned);
 void complex_assertions(int x, bool b, int max) {
     int y = (assert(x > 0), x);
     int z = b ? (assert(x != 0), 0) : 1;
+
+    try {
+        throw 41;
+    } catch (int c) {
+        assert(c < 42);
+    }
 }
 
 // semmle-extractor-options: -std=c++20 --clang
