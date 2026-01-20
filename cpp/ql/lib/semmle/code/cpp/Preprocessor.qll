@@ -330,7 +330,7 @@ class PreprocessorLine extends PreprocessorDirective, @ppd_line {
 }
 
 /**
- * A C23 or C++26`#embed` preprocessor directive. For example, the following code
+ * A C23 or C++26 `#embed` preprocessor directive. For example, the following code
  * contains one `Embed` directive:
  * ```cpp
  * char arr[] = {
