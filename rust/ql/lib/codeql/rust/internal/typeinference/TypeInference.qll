@@ -3830,8 +3830,8 @@ private Type invokedClosureFnTypeAt(InvokedClosureExpr ce, TypePath path) {
  *
  * We model closures as `dyn Fn` trait object types. A closure might implement
  * only `Fn`, `FnMut`, or `FnOnce`. But since `Fn` is a subtrait of the others,
- * giving closures the type `dyn Fn` works well in practice—even if not entirely
- * accurate.
+ * giving closures the type `dyn Fn` works well in practice -- even if not
+ * entirely accurate.
  */
 private DynTraitType closureRootType() {
   result = TDynTraitType(any(FnTrait t)) // always exists because of the mention in `builtins/mentions.rs`
