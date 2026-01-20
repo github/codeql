@@ -17,6 +17,7 @@ pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,
     ql_library_path: PathBuf,
+    regenerate_instructions: &str,
 ) -> std::io::Result<()> {
     let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
         tracing::error!("Failed to create dbscheme file: {}", e);
@@ -26,8 +27,9 @@ pub fn generate(
     writeln!(
         dbscheme_writer,
         "// CodeQL database schema for {}\n\
-         // Automatically generated from the tree-sitter grammar; do not edit\n",
-        languages[0].name
+         // Automatically generated from the tree-sitter grammar; do not edit\n\
+         // To regenerate, {}\n",
+        languages[0].name, regenerate_instructions
     )?;
 
     writeln!(dbscheme_writer, include_str!("prefix.dbscheme"))?;
