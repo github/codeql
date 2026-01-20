@@ -144,17 +144,19 @@ class FutureTrait extends Trait {
 }
 
 /** A function trait `FnOnce`, `FnMut`, or `Fn`. */
-class AnyFnTrait extends Trait {
+abstract private class AnyFnTraitImpl extends Trait {
   /** Gets the `Args` type parameter of this trait. */
   TypeParam getTypeParam() { result = this.getGenericParamList().getGenericParam(0) }
 }
+
+final class AnyFnTrait = AnyFnTraitImpl;
 
 /**
  * The [`FnOnce` trait][1].
  *
  * [1]: https://doc.rust-lang.org/std/ops/trait.FnOnce.html
  */
-class FnOnceTrait extends AnyFnTrait {
+class FnOnceTrait extends AnyFnTraitImpl {
   pragma[nomagic]
   FnOnceTrait() { this.getCanonicalPath() = "core::ops::function::FnOnce" }
 
@@ -168,7 +170,7 @@ class FnOnceTrait extends AnyFnTrait {
  *
  * [1]: https://doc.rust-lang.org/std/ops/trait.FnMut.html
  */
-class FnMutTrait extends AnyFnTrait {
+class FnMutTrait extends AnyFnTraitImpl {
   pragma[nomagic]
   FnMutTrait() { this.getCanonicalPath() = "core::ops::function::FnMut" }
 }
@@ -178,7 +180,7 @@ class FnMutTrait extends AnyFnTrait {
  *
  * [1]: https://doc.rust-lang.org/std/ops/trait.Fn.html
  */
-class FnTrait extends AnyFnTrait {
+class FnTrait extends AnyFnTraitImpl {
   pragma[nomagic]
   FnTrait() { this.getCanonicalPath() = "core::ops::function::Fn" }
 }
