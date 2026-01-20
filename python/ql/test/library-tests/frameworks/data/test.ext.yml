@@ -27,7 +27,7 @@ extensions:
       - ["testlib", "Member[source_dict].DictionaryElement[key].Member[func].ReturnValue", "test-source"]
       - ["testlib", "Member[source_dict_any].DictionaryElementAny.Member[func].ReturnValue", "test-source"]
       # TODO: Add support for list/tuples
-      # - ["testlib", "Member[source_list].ListElement.Member[func].ReturnValue", "test-source"]
+      - ["testlib", "Member[source_list].ListElement.Member[func].ReturnValue", "test-source"]
       # - ["testlib", "Member[source_tuple].TupleElement[0].Member[func].ReturnValue", "test-source"]
 
   - addsTo:
