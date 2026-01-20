@@ -7,6 +7,7 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/concepts: ${workspace}
+  codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/threat-models: ${workspace}
