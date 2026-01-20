@@ -93,8 +93,7 @@ private module BaseSsaImpl {
   /** Holds if `n` updates the local variable `v`. */
   predicate variableUpdate(BaseSsaSourceVariable v, ControlFlowNode n, BasicBlock b, int i) {
     exists(VariableUpdate a | a.getControlFlowNode() = n | getDestVar(a) = v) and
-    b.getNode(i) = n and
-    hasDominanceInformation(b)
+    b.getNode(i) = n
   }
 
   /** Gets the definition point of a nested class in the parent scope. */
@@ -178,15 +177,12 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
    * Holds if the `i`th of basic block `bb` reads source variable `v`.
    */
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    hasDominanceInformation(bb) and
-    (
-      exists(VarRead use |
-        v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
-      )
-      or
-      variableCapture(v, _, bb, i) and
-      certain = false
+    exists(VarRead use |
+      v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
     )
+    or
+    variableCapture(v, _, bb, i) and
+    certain = false
   }
 }
 

@@ -1,5 +1,5 @@
 import default
 
 from ControlFlowNode n
-where n.getEnclosingStmt().getCompilationUnit().fromSource()
+where n.getEnclosingCallable().getCompilationUnit().fromSource()
 select n, n.getASuccessor()
