@@ -23,6 +23,34 @@ private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCall {
 }
 
 /**
+ * A flow summary for the [reflexive implementation of the `From` trait][1].
+ *
+ * Blanket implementations currently don't have a canonical path, so we cannot
+ * use models-as-data for this model.
+ *
+ * [1]: https://doc.rust-lang.org/std/convert/trait.From.html#impl-From%3CT%3E-for-T
+ */
+private class ReflexiveFrom extends SummarizedCallable::Range {
+  ReflexiveFrom() {
+    exists(ImplItemNode impl |
+      impl.resolveTraitTy().(Trait).getCanonicalPath() = "core::convert::From" and
+      this = impl.getAssocItem("from") and
+      resolvePath(this.getParam(0).getTypeRepr().(PathTypeRepr).getPath()) =
+        impl.getBlanketImplementationTypeParam()
+    )
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = true and
+    model = "ReflexiveFrom"
+  }
+}
+
+/**
  * The [`Option` enum][1].
  *
  * [1]: https://doc.rust-lang.org/std/option/enum.Option.html
@@ -299,31 +327,4 @@ class Vec extends Struct {
 
   /** Gets the type parameter representing the element type. */
   TypeParam getElementTypeParam() { result = this.getGenericParamList().getTypeParam(0) }
-}
-
-// Blanket implementations currently don't have a canonical path, so we cannot
-// use models-as-data for this model.
-private class ReflexiveFrom extends SummarizedCallable::Range {
-  ReflexiveFrom() {
-    exists(ImplItemNode impl |
-      impl.resolveTraitTy().(Trait).getCanonicalPath() = "core::convert::From" and
-      this = impl.getAnAssocItem() and
-      impl.isBlanketImplementation() and
-      this.getParam(0)
-          .getTypeRepr()
-          .(TypeMention)
-          .resolveType()
-          .(TypeParamTypeParameter)
-          .getTypeParam() = impl.getTypeParam(0)
-    )
-  }
-
-  override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
-  ) {
-    input = "Argument[0]" and
-    output = "ReturnValue" and
-    preservesValue = true and
-    model = "ReflexiveFrom"
-  }
 }

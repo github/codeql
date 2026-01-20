@@ -1293,7 +1293,7 @@ private class BorrowKind extends TBorrowKind {
 // a constrained type parameter; we should be checking the constraints in this case
 private predicate typeCanBeUsedForDisambiguation(Type t) {
   not t instanceof TypeParameter or
-  t.(TypeParamTypeParameter).getTypeParam() = any(TypeParam tp | not exists(tp.getATypeBound()))
+  t.(TypeParamTypeParameter).getTypeParam() = any(TypeParam tp | not tp.hasTypeBound())
 }
 
 /**
@@ -2241,7 +2241,8 @@ private module MethodResolution {
         methodCallBlanketLikeCandidate(mc, _, impl, _, blanketPath, blanketTypeParam) and
         // Only apply blanket implementations when no other implementations are possible;
         // this is to account for codebases that use the (unstable) specialization feature
-        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html)
+        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html), as well as
+        // cases where our blanket implementation filtering is not precise enough.
         (mcc.hasNoCompatibleNonBlanketTarget() or not impl.isBlanketImplementation())
       |
         borrow.isNoBorrow()
@@ -2878,7 +2879,8 @@ private module NonMethodResolution {
         fc.resolveCallTargetBlanketLikeCandidate(impl, pos, blanketPath, blanketTypeParam) and
         // Only apply blanket implementations when no other implementations are possible;
         // this is to account for codebases that use the (unstable) specialization feature
-        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html)
+        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html), as well as
+        // cases where our blanket implementation filtering is not precise enough.
         (fc.hasNoCompatibleNonBlanketTarget() or not impl.isBlanketImplementation())
       )
     }
