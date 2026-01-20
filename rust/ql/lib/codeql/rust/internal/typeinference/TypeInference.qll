@@ -3827,16 +3827,29 @@ private Type invokedClosureFnTypeAt(InvokedClosureExpr ce, TypePath path) {
     _, path, result)
 }
 
-/** Gets the path to a closure's return type. */
-private TypePath closureReturnPath() {
-  result = TypePath::singleton(getDynTraitTypeParameter(any(FnOnceTrait t).getOutputType()))
+/**
+ * Gets the root type of a closure.
+ *
+ * We model closures as `dyn Fn` trait object types. A closure might implement
+ * only `Fn`, `FnMut`, or `FnOnce`. But since `Fn` is a subtrait of the others,
+ * giving closures the type `dyn Fn` works well in practice -- even if not
+ * entirely accurate.
+ */
+private DynTraitType closureRootType() {
+  result = TDynTraitType(any(FnTrait t)) // always exists because of the mention in `builtins/mentions.rs`
 }
 
-/** Gets the path to a closure with arity `arity`s `index`th parameter type. */
+/** Gets the path to a closure's return type. */
+private TypePath closureReturnPath() {
+  result =
+    TypePath::singleton(TDynTraitTypeParameter(any(FnTrait t), any(FnOnceTrait t).getOutputType()))
+}
+
+/** Gets the path to a closure with arity `arity`'s `index`th parameter type. */
 pragma[nomagic]
 private TypePath closureParameterPath(int arity, int index) {
   result =
-    TypePath::cons(TDynTraitTypeParameter(_, any(FnOnceTrait t).getTypeParam()),
+    TypePath::cons(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam()),
       TypePath::singleton(getTupleTypeParameter(arity, index)))
 }
 
@@ -3874,9 +3887,7 @@ private Type inferDynamicCallExprType(Expr n, TypePath path) {
     or
     // _If_ the invoked expression has the type of a closure, then we propagate
     // the surrounding types into the closure.
-    exists(int arity, TypePath path0 |
-      ce.getTypeAt(TypePath::nil()).(DynTraitType).getTrait() instanceof FnOnceTrait
-    |
+    exists(int arity, TypePath path0 | ce.getTypeAt(TypePath::nil()) = closureRootType() |
       // Propagate the type of arguments to the parameter types of closure
       exists(int index, ArgList args |
         n = ce and
@@ -3900,10 +3911,10 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
   exists(ClosureExpr ce |
     n = ce and
     path.isEmpty() and
-    result = TDynTraitType(any(FnOnceTrait t)) // always exists because of the mention in `builtins/mentions.rs`
+    result = closureRootType()
     or
     n = ce and
-    path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnOnceTrait t).getTypeParam())) and
+    path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam())) and
     result.(TupleType).getArity() = ce.getNumberOfParams()
     or
     // Propagate return type annotation to body
