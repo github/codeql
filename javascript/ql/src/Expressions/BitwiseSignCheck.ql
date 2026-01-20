@@ -17,6 +17,7 @@ import javascript
  *
  * For example, projecting out constant bit patterns less than 2<sup>31</sup>
  * is safe, as are shifts by small constant integers.
+ * Dummy change
  */
 predicate acceptableSignCheck(BitwiseExpr b) {
   // projecting out constant bit patterns not containing the sign bit is fine
