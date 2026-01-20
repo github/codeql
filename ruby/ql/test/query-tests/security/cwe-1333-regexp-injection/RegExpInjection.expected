@@ -13,14 +13,6 @@ edges
 | RegExpInjection.rb:22:12:22:17 | call to params | RegExpInjection.rb:22:12:22:24 | ...[...] | provenance |  |
 | RegExpInjection.rb:22:12:22:24 | ...[...] | RegExpInjection.rb:22:5:22:8 | name | provenance |  |
 | RegExpInjection.rb:23:30:23:33 | name | RegExpInjection.rb:23:24:23:33 | ... + ... | provenance |  |
-| RegExpInjection.rb:42:5:42:8 | name | RegExpInjection.rb:43:38:43:41 | name | provenance |  |
-| RegExpInjection.rb:42:12:42:17 | call to params | RegExpInjection.rb:42:12:42:24 | ...[...] | provenance |  |
-| RegExpInjection.rb:42:12:42:24 | ...[...] | RegExpInjection.rb:42:5:42:8 | name | provenance |  |
-| RegExpInjection.rb:43:38:43:41 | name | RegExpInjection.rb:43:24:43:42 | call to escape | provenance | MaD:21 |
-| RegExpInjection.rb:48:5:48:8 | name | RegExpInjection.rb:49:37:49:40 | name | provenance |  |
-| RegExpInjection.rb:48:12:48:17 | call to params | RegExpInjection.rb:48:12:48:24 | ...[...] | provenance |  |
-| RegExpInjection.rb:48:12:48:24 | ...[...] | RegExpInjection.rb:48:5:48:8 | name | provenance |  |
-| RegExpInjection.rb:49:37:49:40 | name | RegExpInjection.rb:49:24:49:41 | call to quote | provenance | MaD:21 |
 | RegExpInjection.rb:54:5:54:8 | name | RegExpInjection.rb:55:28:55:37 | ... + ... | provenance |  |
 | RegExpInjection.rb:54:5:54:8 | name | RegExpInjection.rb:55:34:55:37 | name | provenance |  |
 | RegExpInjection.rb:54:12:54:17 | call to params | RegExpInjection.rb:54:12:54:24 | ...[...] | provenance |  |
@@ -44,16 +36,6 @@ nodes
 | RegExpInjection.rb:22:12:22:24 | ...[...] | semmle.label | ...[...] |
 | RegExpInjection.rb:23:24:23:33 | ... + ... | semmle.label | ... + ... |
 | RegExpInjection.rb:23:30:23:33 | name | semmle.label | name |
-| RegExpInjection.rb:42:5:42:8 | name | semmle.label | name |
-| RegExpInjection.rb:42:12:42:17 | call to params | semmle.label | call to params |
-| RegExpInjection.rb:42:12:42:24 | ...[...] | semmle.label | ...[...] |
-| RegExpInjection.rb:43:24:43:42 | call to escape | semmle.label | call to escape |
-| RegExpInjection.rb:43:38:43:41 | name | semmle.label | name |
-| RegExpInjection.rb:48:5:48:8 | name | semmle.label | name |
-| RegExpInjection.rb:48:12:48:17 | call to params | semmle.label | call to params |
-| RegExpInjection.rb:48:12:48:24 | ...[...] | semmle.label | ...[...] |
-| RegExpInjection.rb:49:24:49:41 | call to quote | semmle.label | call to quote |
-| RegExpInjection.rb:49:37:49:40 | name | semmle.label | name |
 | RegExpInjection.rb:54:5:54:8 | name | semmle.label | name |
 | RegExpInjection.rb:54:12:54:17 | call to params | semmle.label | call to params |
 | RegExpInjection.rb:54:12:54:24 | ...[...] | semmle.label | ...[...] |
@@ -65,6 +47,4 @@ subpaths
 | RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | RegExpInjection.rb:10:12:10:17 | call to params | RegExpInjection.rb:11:13:11:27 | /foo#{...}bar/ | This regular expression depends on a $@. | RegExpInjection.rb:10:12:10:17 | call to params | user-provided value |
 | RegExpInjection.rb:17:24:17:27 | name | RegExpInjection.rb:16:12:16:17 | call to params | RegExpInjection.rb:17:24:17:27 | name | This regular expression depends on a $@. | RegExpInjection.rb:16:12:16:17 | call to params | user-provided value |
 | RegExpInjection.rb:23:24:23:33 | ... + ... | RegExpInjection.rb:22:12:22:17 | call to params | RegExpInjection.rb:23:24:23:33 | ... + ... | This regular expression depends on a $@. | RegExpInjection.rb:22:12:22:17 | call to params | user-provided value |
-| RegExpInjection.rb:43:24:43:42 | call to escape | RegExpInjection.rb:42:12:42:17 | call to params | RegExpInjection.rb:43:24:43:42 | call to escape | This regular expression depends on a $@. | RegExpInjection.rb:42:12:42:17 | call to params | user-provided value |
-| RegExpInjection.rb:49:24:49:41 | call to quote | RegExpInjection.rb:48:12:48:17 | call to params | RegExpInjection.rb:49:24:49:41 | call to quote | This regular expression depends on a $@. | RegExpInjection.rb:48:12:48:17 | call to params | user-provided value |
 | RegExpInjection.rb:55:28:55:37 | ... + ... | RegExpInjection.rb:54:12:54:17 | call to params | RegExpInjection.rb:55:28:55:37 | ... + ... | This regular expression depends on a $@. | RegExpInjection.rb:54:12:54:17 | call to params | user-provided value |

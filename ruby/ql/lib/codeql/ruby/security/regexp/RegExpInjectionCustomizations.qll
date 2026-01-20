@@ -10,6 +10,7 @@ private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -68,4 +69,8 @@ module RegExpInjection {
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
     StringConstArrayInclusionCallBarrier
   { }
+
+  private class ExternalRegexpInjectionSanitizer extends Sanitizer {
+    ExternalRegexpInjectionSanitizer() { ModelOutput::barrierNode(this, "regexp-injection") }
+  }
 }
