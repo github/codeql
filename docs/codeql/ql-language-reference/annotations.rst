@@ -517,11 +517,13 @@ were a fully extracted database at the newer commit, while reusing as much cache
 from the base database as possible. Ideally, analysis time is proportional to the size
 of the diff rather than the full codebase.
 
-To achieve this, predicates are divided into *local* and *global* categories. Local
-predicates are evaluated separately on base and overlay data, with results combined at
-the frontier between local and global code. Global predicates operate on the combined
-data. Local predicates typically take time proportional to the diff size, while global
-predicates take time proportional to the full codebase.
+To achieve this, predicates are divided into *local* and *global* categories, with global
+being the default. Local predicates are evaluated independently on base and overlay data,
+and thus typically take time proportional to the diff size; global predicates operate on
+the combined data, and thus take time proportional to the full codebase. When a global
+predicate calls a local predicate, results from both the base and overlay evaluations of
+the local predicate are combined, with stale base results filtered out through a process
+called "discarding".
 
 Overlay evaluation is primarily used internally by GitHub Code Scanning to speed up
 pull request analysis. Most QL developers do not need to use these annotations directly,
