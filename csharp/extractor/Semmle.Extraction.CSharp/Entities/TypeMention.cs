@@ -59,6 +59,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             switch (syntax.Kind())
             {
                 case SyntaxKind.ArrayType:

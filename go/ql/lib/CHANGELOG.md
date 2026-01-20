@@ -1,3 +1,28 @@
+## 5.0.6
+
+No user-facing changes.
+
+## 5.0.5
+
+No user-facing changes.
+
+## 5.0.4
+
+No user-facing changes.
+
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+### Bug Fixes
+
+* Some fixes relating to use of path transformers when extracting a database:
+  * Fixed a problem where the path transformer would be ignored when extracting older codebases that predate the use of Go modules.
+  * The environment variable `CODEQL_PATH_TRANSFORMER` is now recognized, in addition to `SEMMLE_PATH_TRANSFORMER`.
+  * Fixed some cases where the extractor emitted paths without applying the path transformer.
+
 ## 5.0.1
 
 No user-facing changes.

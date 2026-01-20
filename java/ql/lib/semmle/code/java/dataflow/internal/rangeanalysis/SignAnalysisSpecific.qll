@@ -17,9 +17,9 @@ module Private {
 
   class Guard = G::Guards_v2::Guard;
 
-  class SsaVariable = Ssa::SsaVariable;
+  class SsaVariable = Ssa::SsaDefinition;
 
-  class SsaPhiNode = Ssa::SsaPhiNode;
+  class SsaPhiNode = Ssa::SsaPhiDefinition;
 
   class VarAccess = J::VarAccess;
 
@@ -240,8 +240,8 @@ private module Impl {
   }
 
   /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  VariableUpdate getExplicitSsaAssignment(SsaVariable v) {
-    result = v.(SsaExplicitUpdate).getDefiningExpr()
+  VariableUpdate getExplicitSsaAssignment(SsaDefinition v) {
+    result = v.(SsaExplicitWrite).getDefiningExpr()
   }
 
   /** Returns the assignment of the variable update `def`. */
@@ -267,13 +267,12 @@ private module Impl {
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
-  Variable getImplicitSsaDeclaration(SsaVariable v) {
-    result = v.(SsaImplicitUpdate).getSourceVariable().getVariable() or
-    result = v.(SsaImplicitInit).getSourceVariable().getVariable()
+  Variable getImplicitSsaDeclaration(SsaDefinition v) {
+    result = v.(SsaImplicitWrite).getSourceVariable().getVariable()
   }
 
   /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) { v.isParameterDefinition(_) }
+  predicate nonFieldImplicitSsaDefinition(SsaParameterInit v) { any() }
 
   /** Returned an expression that is assigned to `f`. */
   Expr getAssignedValueToField(Field f) {
@@ -324,7 +323,7 @@ private module Impl {
     result = e.(CastingExpr).getExpr()
   }
 
-  Expr getARead(SsaVariable v) { result = v.getAUse() }
+  Expr getARead(SsaDefinition v) { result = v.getARead() }
 
   Field getField(FieldAccess fa) { result = fa.getField() }
 

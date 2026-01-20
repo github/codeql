@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -36,10 +37,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 startInfo.WorkingDirectory = workingDirectory;
             }
-            // Set the .NET CLI language to English to avoid localized output.
-            startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
-            startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
-            startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
+
+            // Set minimal environment variables.
+            foreach (var kvp in IDotNetCliInvoker.MinimalEnvironment)
+            {
+                startInfo.EnvironmentVariables[kvp.Key] = kvp.Value;
+            }
 
             // Configure the proxy settings, if applicable.
             if (this.proxy != null)

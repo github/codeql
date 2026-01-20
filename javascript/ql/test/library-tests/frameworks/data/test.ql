@@ -2,6 +2,7 @@ import javascript
 deprecated import utils.test.ConsistencyChecking
 import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
+overlay[local]
 class TypeModelFromCodeQL extends ModelInput::TypeModel {
   override predicate isTypeUsed(string type) { type = "danger-constant" }
 

@@ -286,6 +286,7 @@ public class Parser {
     raise(pos, msg, false);
   }
 
+  @SuppressWarnings("ReturnValueIgnored")
   protected void raise(Position loc, String msg, boolean recoverable) {
     msg += " (" + loc.getLine() + ":" + loc.getColumn() + ")";
     SyntaxError err = new SyntaxError(msg, loc, this.pos);
@@ -3114,7 +3115,7 @@ public class Parser {
       }
       first = false;
     }
-    if (oldStrict == Boolean.FALSE) this.setStrict(false);
+    if (Boolean.FALSE.equals(oldStrict)) this.setStrict(false);
     return this.finishNode(new BlockStatement(new SourceLocation(startLoc), body));
   }
 

@@ -1,5 +1,5 @@
 /**
- * @name Don't use getAQlClass.
+ * @name Don't use getAQlClass
  * @description Any use of getAQlClass causes both compile-time and runtime to be significantly slower.
  * @kind problem
  * @problem.severity warning

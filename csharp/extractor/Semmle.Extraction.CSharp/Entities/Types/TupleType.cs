@@ -51,6 +51,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.tuple_element(this, index++, element);
             }
 
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
             // Note: symbol.Locations seems to be very inconsistent
             // about what locations are available for a tuple type.
             // Sometimes it's the source code, and sometimes it's empty.

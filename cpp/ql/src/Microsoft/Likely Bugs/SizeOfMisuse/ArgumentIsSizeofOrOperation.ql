@@ -11,52 +11,46 @@
 import cpp
 import SizeOfTypeUtils
 
-/**
- * Windows SDK corecrt_math.h defines a macro _CLASS_ARG that
- * intentionally misuses sizeof to determine the size of a floating point type.
- * Explicitly ignoring any hit in this macro.
- */
-predicate isPartOfCrtFloatingPointMacroExpansion(Expr e) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = "_CLASS_ARG" and
-    mi.getMacro().getFile().getBaseName() = "corecrt_math.h" and
-    mi.getAnExpandedElement() = e
+predicate isIgnorableBinaryOperation(BinaryOperation op) {
+  // FP case: precompilation type checking idiom of the form:
+  //    sizeof((type *)0 == (ptr))
+  op instanceof EqualityOperation and
+  exists(Literal zeroOperand, Expr other, Type t |
+    other = op.getAnOperand() and
+    other != zeroOperand and
+    zeroOperand = op.getAnOperand() and
+    zeroOperand.getValue().toInt() = 0 and
+    zeroOperand.getImplicitlyConverted().hasExplicitConversion() and
+    zeroOperand.getExplicitlyConverted().getUnspecifiedType() = t and
+    // often 'NULL' is defined as (void *)0, ignore these cases
+    not t instanceof VoidPointerType and
+    // Note Function pointers are not considered PointerType
+    // casting a wider net here and saying the 'other' cannot be a
+    // derived type, which is probably too wide, but I think anything
+    //loosely matching this pattern should be ignored.
+    other.getUnspecifiedType() instanceof DerivedType
   )
 }
 
-/**
- * Determines if the sizeOfExpr is ignorable.
- */
-predicate ignorableSizeof(SizeofExprOperator sizeofExpr) {
-  // a common pattern found is to sizeof a binary operation to check a type
-  // to then perfomr an onperaiton for a 32 or 64 bit type.
-  // these cases often look like sizeof(x) >=4
-  // more generally we see binary operations frequently used in different type
-  // checks, where the sizeof is part of some comparison operation of a switch statement guard.
-  // sizeof as an argument is also similarly used, but seemingly less frequently.
-  exists(ComparisonOperation comp | comp.getAnOperand() = sizeofExpr)
-  or
-  exists(ConditionalStmt s | s.getControllingExpr() = sizeofExpr)
-  or
-  // another common practice is to use bit-wise operations in sizeof to allow the compiler to
-  // 'pack' the size appropriate but get the size of the result out of a sizeof operation.
-  sizeofExpr.getExprOperand() instanceof BinaryBitwiseOperation
+class CandidateOperation extends Operation {
+  CandidateOperation() {
+    // For now only considering binary operations
+    // TODO: Unary operations may be of interest but need special care
+    // as pointer deref, and address-of are unary operations.
+    // It is therefore more likely to get false positives if unary operations are included.
+    // To be considered in the future.
+    this instanceof BinaryOperation and
+    not isIgnorableBinaryOperation(this)
+  }
 }
 
-from SizeofExprOperator sizeofExpr, string message, Expr op
+from CandidateSizeofCall sizeofExpr, string inMacro, string argType, Expr op
 where
-  exists(string tmpMsg |
-    (
-      op instanceof BinaryOperation and tmpMsg = "binary operator"
-      or
-      op instanceof SizeofOperator and tmpMsg = "sizeof"
-    ) and
-    if sizeofExpr.isInMacroExpansion()
-    then message = tmpMsg + "(in a macro expansion)"
-    else message = tmpMsg
+  (
+    op instanceof CandidateOperation and argType = "binary operator"
+    or
+    op instanceof SizeofOperator and argType = "sizeof operation"
   ) and
-  op = sizeofExpr.getExprOperand() and
-  not isPartOfCrtFloatingPointMacroExpansion(op) and
-  not ignorableSizeof(sizeofExpr)
-select sizeofExpr, "$@: $@ of $@ inside sizeof.", sizeofExpr, message,
-  sizeofExpr.getEnclosingFunction(), "Usage", op, message
+  (if sizeofExpr.isInMacroExpansion() then inMacro = " (in a macro expansion) " else inMacro = " ") and
+  op = sizeofExpr.getExprOperand()
+select sizeofExpr, "sizeof" + inMacro + "has a " + argType + " argument: $@.", op, op.toString()

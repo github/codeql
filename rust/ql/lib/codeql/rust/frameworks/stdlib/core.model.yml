@@ -3,10 +3,13 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
+      # Arithmetic
+      - ["<_ as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Add>::add", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
       # Clone
       - ["<_ as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "manual"]
       # Conversions
-      - ["<core::alloc::layout::Layout>::align_to", "Argument[self].Element", "ReturnValue.Field[0,1,2].Reference.Element", "taint", "manual"]
       - ["<_ as core::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
       - ["<_ as core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
       # From
@@ -23,21 +26,9 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
-      # Layout
-      - ["<core::alloc::layout::Layout>::from_size_align", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::from_size_align_unchecked", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::array", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::repeat", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::repeat", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::repeat_packed", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::repeat_packed", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::extend", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::extend", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::extend_packed", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::extend_packed", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::align_to", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::pad_to_align", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["<core::alloc::layout::Layout>::size", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Pin
       - ["core::pin::Pin", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue", "value", "manual"]
@@ -53,13 +44,11 @@ extensions:
       - ["core::ptr::write_unaligned", "Argument[1]", "Argument[0].Reference", "value", "manual"]
       - ["core::ptr::write_volatile", "Argument[1]", "Argument[0].Reference", "value", "manual"]
       # Str
-      - ["<core::str>::as_str", "Argument[self]", "ReturnValue", "taint", "value"]
-      - ["<alloc::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "value"]
-      - ["<core::str>::as_bytes", "Argument[self]", "ReturnValue", "taint", "value"]
-      - ["<alloc::string::String>::as_bytes", "Argument[self]", "ReturnValue", "taint", "value"]
-      - ["<core::str>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<core::str>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<core::str>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
       - ["<core::str>::parse", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
@@ -71,6 +60,7 @@ extensions:
       - ["core::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
       - ["core::ptr::dangling_mut", "ReturnValue", "pointer-invalidate", "manual"]
       - ["core::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["core::ptr::null_mut", "ReturnValue", "pointer-invalidate", "manual"]
       - ["v8::primitives::null", "ReturnValue", "pointer-invalidate", "manual"]
   - addsTo:
       pack: codeql/rust-all

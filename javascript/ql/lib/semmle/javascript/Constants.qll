@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with expressions that evaluate to constant values.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages

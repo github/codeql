@@ -1,3 +1,31 @@
+## 6.1.4
+
+No user-facing changes.
+
+## 6.1.3
+
+No user-facing changes.
+
+## 6.1.2
+
+No user-facing changes.
+
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* The class `DataFlow::FieldContent` now covers both `union` and `struct`/`class` types. A new predicate `FieldContent.getAField` has been added to access the union members associated with the `FieldContent`. The old `FieldContent` has been renamed to `NonUnionFieldContent`.
+
+## 6.1.0
+
+### New Features
+
+* New predicates `getAnExpandedArgument` and `getExpandedArgument` were added to the `Compilation` class, yielding compilation arguments after expansion of response files.
+
+### Bug Fixes
+
+* Improve performance of the range analysis in cases where it would otherwise take an exorbitant amount of time.
+
 ## 6.0.1
 
 No user-facing changes.
@@ -259,8 +287,8 @@ No user-facing changes.
 
 ### Breaking Changes
 
-* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`.
-* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
 * Deleted the deprecated `hasQualifiedName` and `isDefined` predicates from the `Declaration` class, use `hasGlobalName` and `hasDefinition` respectively instead.
 * Deleted the `getFullSignature` predicate from the `Function` class, use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
 * Deleted the deprecated `freeCall` predicate from `Alloc.qll`. Use `DeallocationExpr` instead.
@@ -294,7 +322,7 @@ No user-facing changes.
 * A `getTemplateClass` predicate was added to the `DeductionGuide` class to get the class template for which the deduction guide is a guide.
 * An `isExplicit` predicate was added to the `Function` class that determines whether the function was declared as explicit.
 * A `getExplicitExpr` predicate was added to the `Function` class that yields the constant boolean expression (if any) that conditionally determines whether the function is explicit.
-* A `isDestroyingDeleteDeallocation` predicate was added to the `NewOrNewArrayExpr` and `DeleteOrDeleteArrayExpr` classes to indicate whether the deallocation function is a destroying delete.
+* A `isDestroyingDeleteDeallocation` predicate was added to the `NewOrNewArrayExpr` and `DeleteOrDeleteArrayExpr` classes to indicate whether the deallocation function is a destroying delete. 
 
 ### Minor Analysis Improvements
 
@@ -372,9 +400,9 @@ No user-facing changes.
 ### New Features
 
 * Added a `TaintInheritingContent` class that can be extended to model taint flowing from a qualifier to a field.
-* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant.
+* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant. 
 * Added a predicate `GuardCondition.ensuresEq/4` to query whether a basic block is guarded by an expression being equal to a constant.
-* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant.
+* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant. 
 * Added a predicate `GuardCondition.ensuresLt/4` to query whether a basic block is guarded by an expression being less than a constant.
 * Added a predicate `GuardCondition.valueControls` to query whether a basic block is guarded by a particular `case` of a `switch` statement.
 
@@ -490,7 +518,7 @@ No user-facing changes.
 * Functions that do not return due to calling functions that don't return (e.g. `exit`) are now detected as
  non-returning in the IR and dataflow.
 * Treat functions that reach the end of the function as returning in the IR.
-  They used to be treated as unreachable but it is allowed in C.
+  They used to be treated as unreachable but it is allowed in C. 
 * The `DataFlow::asDefiningArgument` predicate now takes its argument from the range starting at `1` instead of `2`. Queries that depend on the single-parameter version of `DataFlow::asDefiningArgument` should have their arguments updated accordingly.
 
 ## 0.9.3
@@ -539,7 +567,7 @@ No user-facing changes.
 
 ### New Features
 
-* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`.
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
   Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
 
 ### Minor Analysis Improvements
@@ -733,7 +761,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features
@@ -750,7 +778,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features
@@ -849,7 +877,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features

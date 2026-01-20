@@ -85,13 +85,13 @@ module InsecureCookie {
       cookieOptionalBarrier(summaryNode, attrib, arg) and
       // find a call and arg referenced by this optional barrier
       ce.getStaticTarget() = summaryNode.getSummarizedCallable() and
-      ce.getArg(arg) = argNode.asExpr().getExpr() and
+      ce.getArg(arg) = argNode.asExpr() and
       // check if the argument is always `true`
       (
         if
           forex(DataFlow::Node argSourceNode, BooleanLiteralExpr argSourceValue |
             DataFlow::localFlow(argSourceNode, argNode) and
-            argSourceValue = argSourceNode.asExpr().getExpr()
+            argSourceValue = argSourceNode.asExpr()
           |
             argSourceValue.getTextValue() = "true"
           )
@@ -101,7 +101,7 @@ module InsecureCookie {
       // and find the node where this happens (we can't just use the flow summary node, since its
       // shared across all calls to the modeled function, we need a node specific to this call)
       (
-        node.asExpr().getExpr() = ce.(MethodCallExpr).getReceiver() // e.g. `a` in `a.set_secure(true)`
+        node.asExpr() = ce.(MethodCallExpr).getReceiver() // e.g. `a` in `a.set_secure(true)`
         or
         exists(BasicBlock bb, int i |
           // associated SSA node

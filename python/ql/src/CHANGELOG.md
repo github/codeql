@@ -1,3 +1,25 @@
+## 1.7.4
+
+No user-facing changes.
+
+## 1.7.3
+
+No user-facing changes.
+
+## 1.7.2
+
+No user-facing changes.
+
+## 1.7.1
+
+No user-facing changes.
+
+## 1.7.0
+
+### Query Metadata Changes
+
+* Reduced the `security-severity` score of the `py/overly-large-range` query from 5.0 to 4.0 to better reflect its impact.
+
 ## 1.6.8
 
 ### Minor Analysis Improvements

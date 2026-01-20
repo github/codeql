@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for the 'js/useless-expression' query.
  */
+overlay[local?]
+module;
 
 import javascript
 import DOMProperties
@@ -60,6 +62,7 @@ predicate isDeclaration(Expr e) {
 /**
  * Holds if there exists a getter for a property called `name` anywhere in the program.
  */
+overlay[global]
 predicate isGetterProperty(string name) {
   // there is a call of the form `Object.defineProperty(..., name, descriptor)` ...
   exists(CallToObjectDefineProperty defProp | name = defProp.getPropertyName() |
@@ -85,6 +88,7 @@ predicate isGetterProperty(string name) {
 /**
  * A property access that may invoke a getter.
  */
+overlay[global]
 class GetterPropertyAccess extends PropAccess {
   override predicate isImpure() { isGetterProperty(this.getPropertyName()) }
 }
@@ -123,6 +127,7 @@ predicate isReceiverSuppressingCall(CallExpr c, Expr dummy, PropAccess callee) {
  * even if they do, the call itself is useless and should be flagged by this
  * query.
  */
+overlay[global]
 predicate noSideEffects(Expr e) {
   e.isPure()
   or
@@ -148,6 +153,7 @@ predicate isCompoundExpression(Expr e) {
 /**
  * Holds if the expression `e` should be reported as having no effect.
  */
+overlay[global]
 predicate hasNoEffect(Expr e) {
   noSideEffects(e) and
   inVoidContext(e) and

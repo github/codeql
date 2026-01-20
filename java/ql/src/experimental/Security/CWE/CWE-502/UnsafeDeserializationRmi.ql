@@ -1,5 +1,5 @@
 /**
- * @name Unsafe deserialization in a remotely callable method.
+ * @name Unsafe deserialization in a remotely callable method
  * @description If a registered remote object has a method that accepts a complex object,
  *              an attacker can take advantage of the unsafe deserialization mechanism
  *              which is used to pass parameters in RMI.

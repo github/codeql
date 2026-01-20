@@ -52,40 +52,6 @@ private class GetFullPathStep extends PathNormalizationStep {
   }
 }
 
-/** Holds if `e` may evaluate to an absolute path. */
-bindingset[e]
-pragma[inline_late]
-private predicate isAbsolute(Expr e) {
-  exists(Expr absolute | DataFlow::localExprFlow(absolute, e) |
-    exists(Call call | absolute = call |
-      call.getARuntimeTarget()
-          .hasFullyQualifiedName(["System.Web.HttpServerUtilityBase", "System.Web.HttpRequest"],
-            "MapPath")
-      or
-      call.getARuntimeTarget().hasFullyQualifiedName("System.IO.Path", "GetFullPath")
-      or
-      call.getARuntimeTarget().hasFullyQualifiedName("System.IO.Directory", "GetCurrentDirectory")
-    )
-    or
-    exists(PropertyRead read | absolute = read |
-      read.getTarget().hasFullyQualifiedName("System", "Environment", "CurrentDirectory")
-    )
-  )
-}
-
-private class PathCombineStep extends PathNormalizationStep {
-  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(Call call |
-      // The result of `Path.Combine(x, y)` is an absolute path when `x` is an
-      // absolute path.
-      call.getARuntimeTarget().hasFullyQualifiedName("System.IO.Path", "Combine") and
-      isAbsolute(call.getArgument(0)) and
-      n1.asExpr() = call.getArgument(1) and
-      n2.asExpr() = call
-    )
-  }
-}
-
 /**
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
  */
@@ -108,11 +74,11 @@ private module TaintedPathConfig implements DataFlow::StateConfigSig {
     s2 = Normalized()
   }
 
+  predicate isBarrier(DataFlow::Node node, FlowState state) { node.(Sanitizer).isBarrier(state) }
+
   predicate isBarrierOut(DataFlow::Node node, FlowState state) {
     isAdditionalFlowStep(_, state, node, _)
   }
-
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }
@@ -217,23 +183,17 @@ class PathCheck extends Sanitizer {
   Guard g;
 
   PathCheck() {
-<<<<<<< HEAD
     // This expression is structurally replicated in a dominating guard
-    exists(AbstractValues::BooleanValue v | g = this.(GuardedDataFlowNode).getAGuard(_, v))
+    exists(GuardValue v |
+      g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+      exists(v.asBooleanValue())
+    )
   }
 
   override predicate isBarrier(TaintedPathConfig::FlowState state) {
     g.(WeakGuard).isBarrier(state)
     or
     not g instanceof WeakGuard
-=======
-    // This expression is structurally replicated in a dominating guard which is not a "weak" check
-    exists(Guard g, GuardValue v |
-      g = this.(GuardedDataFlowNode).getAGuard(_, v) and
-      exists(v.asBooleanValue()) and
-      not g instanceof WeakGuard
-    )
->>>>>>> codeql-cli/latest
   }
 }
 

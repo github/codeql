@@ -1,5 +1,5 @@
 /**
- * @name Capture source models.
+ * @name Capture source models
  * @description Finds APIs that act as sources as they expose already known sources.
  * @kind diagnostic
  * @id java/utils/modelgenerator/source-models

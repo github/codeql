@@ -1,7 +1,8 @@
 import python
+private import LegacyPointsTo
 import interesting
 
-from int line, ControlFlowNode f, Object o, ImportTimeScope n
+from int line, ControlFlowNodeWithPointsTo f, Object o, ImportTimeScope n
 where
   of_interest(f, line) and
   f.refersTo(o) and

@@ -46,6 +46,3 @@ extensions:
       - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>:::read_f32_le", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_f64", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<_ as tokio::io::util::async_read_ext::AsyncReadExt>::read_f64_le", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
-      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]

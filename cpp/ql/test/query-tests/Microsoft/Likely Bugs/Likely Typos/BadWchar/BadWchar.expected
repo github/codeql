@@ -1,0 +1,2 @@
+| test.cpp:8:9:8:13 | 19456 | $@:  Varible of type wchar_t maybe have been initialized with a typo. 'L\\0' should be L'\\0' | test.cpp:8:9:8:13 | 19456 | 'L\\0' |
+| test.cpp:12:9:12:12 | 19546 | $@:  Varible of type wchar_t maybe have been initialized with a typo. 'LZ' should be L'Z' | test.cpp:12:9:12:12 | 19546 | 'LZ' |

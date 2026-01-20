@@ -1,6 +1,7 @@
 import python
+private import LegacyPointsTo
 
-from int line, ControlFlowNode f, Object o, ClassObject cls, ControlFlowNode orig
+from int line, ControlFlowNodeWithPointsTo f, Object o, ClassObject cls, ControlFlowNode orig
 where
   not f.getLocation().getFile().inStdlib() and
   f.refersTo(o, cls, orig) and

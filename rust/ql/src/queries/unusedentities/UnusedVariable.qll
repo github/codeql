@@ -36,7 +36,7 @@ class IncompleteCallable extends Callable {
  */
 predicate isAllowableUnused(Variable v) {
   // in a macro expansion
-  v.getPat().isInMacroExpansion()
+  v.getPat().isInMacroExpansion() // TODO: replace with `isFromMacroExpansion()` when false positives have been removed
   or
   // declared in an incomplete callable
   v.getEnclosingCfgScope() instanceof IncompleteCallable

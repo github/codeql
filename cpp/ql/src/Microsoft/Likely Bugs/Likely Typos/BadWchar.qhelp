@@ -1,0 +1,15 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>This rule finds wide character that is initialized wrong due to a typo.
+        </p>
+    </overview>
+    <recommendation>
+        <p>The wide character should be initialized with the L prefix. If L is accidentally included
+            inside the character literal, it should be moved outside to be a prefix.
+        </p>
+    </recommendation>
+    <example>
+        <sample src="BadWchar.cpp" />
+    </example>
+</qhelp>

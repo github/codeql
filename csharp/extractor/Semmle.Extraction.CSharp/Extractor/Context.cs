@@ -29,6 +29,12 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
+        /// <summary>
+        /// Holds if trap only should be created for types and member signatures (and not for expressions and statements).
+        /// This is the case for all unchanged files, when running in overlay mode.
+        /// </summary>
+        public bool OnlyScaffold { get; }
+
         public IList<object> TrapStackSuffix { get; } = new List<object>();
 
         private int GetNewId() => TrapWriter.IdCounter++;
@@ -523,13 +529,16 @@ namespace Semmle.Extraction.CSharp
 
         internal CommentProcessor CommentGenerator { get; } = new CommentProcessor();
 
-        public Context(ExtractionContext extractionContext, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool shouldAddAssemblyTrapPrefix = false)
+        public Context(ExtractionContext extractionContext, Compilation c, TrapWriter trapWriter, IExtractionScope scope, IOverlayInfo overlayInfo, bool shouldAddAssemblyTrapPrefix = false)
         {
             ExtractionContext = extractionContext;
             TrapWriter = trapWriter;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
             Compilation = c;
             this.scope = scope;
+            OnlyScaffold = overlayInfo.IsOverlayMode && (
+                IsAssemblyScope
+                || (scope is SourceScope ss && overlayInfo.OnlyMakeScaffold(ss.SourceTree.FilePath)));
         }
 
         public bool FromSource => scope is SourceScope;
@@ -552,7 +561,8 @@ namespace Semmle.Extraction.CSharp
 
         public bool ExtractLocation(ISymbol symbol) =>
             SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
-            scope.InScope(symbol);
+            scope.InScope(symbol) &&
+            !OnlyScaffold;
 
         /// <summary>
         /// Gets the locations of the symbol that are either
@@ -621,6 +631,10 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l">Location of the entity.</param>
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)
         {
+            if (OnlyScaffold)
+            {
+                return;
+            }
             var duplicationGuardKey = GetCurrentTagStackKey();
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }

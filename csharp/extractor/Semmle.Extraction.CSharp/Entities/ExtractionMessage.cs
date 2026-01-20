@@ -28,6 +28,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             // For the time being we're counting the number of messages per severity, we could introduce other groupings in the future
             var key = msg.Severity.ToString();
             groupedMessageCounts.AddOrUpdate(key, 1, (_, c) => c + 1);

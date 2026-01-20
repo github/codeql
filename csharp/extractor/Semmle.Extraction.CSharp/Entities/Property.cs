@@ -40,7 +40,6 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             PopulateAttributes();
             PopulateModifiers(trapFile);
-            BindComments();
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, Symbol.RefKind);
 
@@ -68,6 +67,13 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var syntax in declSyntaxReferences)
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            BindComments();
 
             if (Context.ExtractLocation(Symbol))
             {

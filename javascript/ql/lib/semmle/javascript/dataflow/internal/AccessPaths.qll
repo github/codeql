@@ -14,6 +14,8 @@
  * to the same value have the same access paths, so access paths are neither sound nor
  * complete as an approximation of expression semantics.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages

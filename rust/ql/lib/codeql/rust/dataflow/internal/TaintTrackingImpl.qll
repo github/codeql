@@ -1,6 +1,5 @@
 private import rust
 private import codeql.dataflow.TaintTracking
-private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSummary
 private import DataFlowImpl
@@ -21,22 +20,22 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
     Stages::DataFlowStage::ref() and
     model = "" and
     (
-      exists(BinaryExprCfgNode binary |
+      exists(BinaryExpr binary |
         binary.getOperatorName() = ["+", "-", "*", "/", "%", "&", "|", "^", "<<", ">>"] and
         pred.asExpr() = [binary.getLhs(), binary.getRhs()] and
         succ.asExpr() = binary
       )
       or
-      exists(PrefixExprCfgNode prefix |
+      exists(PrefixExpr prefix |
         prefix.getOperatorName() = ["-", "!"] and
         pred.asExpr() = prefix.getExpr() and
         succ.asExpr() = prefix
       )
       or
-      pred.asExpr() = succ.asExpr().(CastExprCfgNode).getExpr()
+      pred.asExpr() = succ.asExpr().(CastExpr).getExpr()
       or
-      exists(IndexExprCfgNode index |
-        index.getIndex() instanceof RangeExprCfgNode and
+      exists(IndexExpr index |
+        index.getIndex() instanceof RangeExpr and
         pred.asExpr() = index.getBase() and
         succ.asExpr() = index
       )
@@ -52,8 +51,16 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
         cs.getContent() instanceof ReferenceContent
       )
       or
-      exists(FormatArgsExprCfgNode format | succ.asExpr() = format |
-        pred.asExpr() = [format.getArgumentExpr(_), format.getFormatTemplateVariableAccess(_)]
+      exists(FormatArgsExpr format | succ.asExpr() = format |
+        pred.asExpr() = format.getAnArg().getExpr()
+        or
+        pred.asExpr() =
+          any(FormatTemplateVariableAccess v |
+            exists(Format f |
+              f = format.getAFormat() and
+              v.getArgument() = [f.getArgumentRef(), f.getWidthArgument(), f.getPrecisionArgument()]
+            )
+          )
       )
       or
       succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =

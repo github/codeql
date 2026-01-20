@@ -9,6 +9,7 @@
  */
 
 private import python
+private import LegacyPointsTo
 
 /** A control flow node which might correspond to a special method call. */
 class PotentialSpecialMethodCallNode extends ControlFlowNode instanceof SpecialMethod::Potential { }
@@ -106,7 +107,11 @@ class SpecialMethodCallNode extends PotentialSpecialMethodCallNode {
   SpecialMethodCallNode() {
     exists(SpecialMethod::Potential pot |
       this = pot and
-      pot.getSelf().pointsTo().getClass().lookup(pot.getSpecialMethodName()) = resolvedSpecialMethod
+      pot.getSelf()
+          .(ControlFlowNodeWithPointsTo)
+          .pointsTo()
+          .getClass()
+          .lookup(pot.getSpecialMethodName()) = resolvedSpecialMethod
     )
   }
 
