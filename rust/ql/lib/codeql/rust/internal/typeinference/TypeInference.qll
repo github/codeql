@@ -134,7 +134,7 @@ class TypePath = M1::TypePath;
 
 module TypePath = M1::TypePath;
 
-private module Input2 implements InputSig2 {
+private module Input2 implements InputSig2<PreTypeMention> {
   private import TypeMention as TM
 
   class TypeMention = TM::TypeMention;
@@ -162,7 +162,7 @@ private module Input2 implements InputSig2 {
    * inference module for more information.
    */
   predicate conditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
+    TypeAbstraction abs, PreTypeMention condition, PreTypeMention constraint, boolean transitive
   ) {
     // `impl` blocks implementing traits
     transitive = false and
@@ -212,7 +212,7 @@ private module Input2 implements InputSig2 {
   }
 }
 
-private module M2 = Make2<Input2>;
+private module M2 = Make2<PreTypeMention, Input2>;
 
 import M2
 
@@ -233,6 +233,27 @@ module Consistency {
       n = impl.getAnAssocItem().(Function).getSelfParam() and
       strictcount(impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(selfTypePath)) > 1
     )
+  }
+}
+
+signature predicate relevantTraitSig(AstNode n, Trait t);
+
+module TermSatisfiesTrait<relevantTraitSig/2 relevantTrait> {
+  private class RelevantTerm extends AstNode {
+    RelevantTerm() { relevantTrait(this, _) }
+
+    Type getTypeAt(TypePath path) { result = inferType(this, path) }
+  }
+
+  private module MethodCallSatisfiesDerefConstraintInput implements
+    SatisfiesConstraintInputSig<RelevantTerm>
+  {
+    pragma[nomagic]
+    predicate relevantConstraint(RelevantTerm term, Type constraint) {
+      relevantTrait(term, constraint.(TraitType).getTrait())
+    }
+
+    predicate useUniversalConditions() { none() }
   }
 }
 
@@ -382,7 +403,7 @@ pragma[nomagic]
 private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
   or
-  result = n.(ShorthandSelfParameterMention).resolveTypeAt(path)
+  result = n.(SelfParam).(TypeMention).resolveTypeAt(path)
 }
 
 pragma[nomagic]
@@ -3770,12 +3791,12 @@ private module ForIterableSatisfiesConstraintInput implements
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
-  result.getTypeAlias() = any(IteratorTrait t).getItemType()
+  result = getAssociatedTypeTypeParameter(any(IteratorTrait t).getItemType())
 }
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
-  result.getTypeAlias() = any(IntoIteratorTrait t).getItemType()
+  result = getAssociatedTypeTypeParameter(any(IntoIteratorTrait t).getItemType())
 }
 
 pragma[nomagic]
@@ -4084,12 +4105,14 @@ import Cached
 Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
 
 /** Provides predicates for debugging the type inference implementation. */
-private module Debug {
+module Debug {
   Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/sqlx.rs") and
-      startline = [56 .. 60]
+      filepath.matches("%/associated_types.rs") //and
+      // startline = [340]
+      // startline = 20
+      // startline = [120 .. 125]
     )
   }
 
@@ -4110,9 +4133,9 @@ private module Debug {
     Input2::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
   }
 
-  predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
+  predicate debugInferShorthandSelfType(SelfParam self, TypePath path, Type t) {
     self = getRelevantLocatable() and
-    t = self.resolveTypeAt(path)
+    t = self.(TypeMention).resolveTypeAt(path)
   }
 
   predicate debugInferMethodCallType(AstNode n, TypePath path, Type t) {

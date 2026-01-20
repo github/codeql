@@ -128,6 +128,59 @@ mod default_method_using_associated_type {
     }
 }
 
+mod concrete_type_access_associated_type {
+    use super::*;
+
+    fn using_as(
+        a: <S as GetSet>::Output,
+        b: <Wrapper<i32> as GetSet>::Output,
+        c: <Odd<i32> as GetSet>::Output,
+        d: <Odd<bool> as GetSet>::Output,
+    ) {
+        let _a = a; // $ MISSING: type=_a:S3
+        let _b = b; // $ MISSING: type=_b:i32
+        let _c = c; // $ MISSING: type=_c:bool
+        let _d = d; // $ MISSING: type=_d:char
+    }
+
+    // NOTE: The below seems like it should work, but is currently rejected by
+    // the Rust compiler. This behavior does not seem to be documented and
+    // there's an open issue about it:
+    // https://github.com/rust-lang/rust/issues/104119
+    // fn without_as(
+    //     a: S::Output,
+    //     b: Wrapper<i32>::Output,
+    //     c: Odd<i32>::Output,
+    //     d: Odd<bool>::Output,
+    // ) {
+    //     let _a = a; // $ type=_a:S3
+    //     let _b = b; // $ type=_b:i32
+    //     let _c = c; // $ type=_c:bool
+    //     let _d = d; // $ type=_d:char
+    // }
+
+    impl Odd<i32> {
+        // Odd<i32>::proj
+        fn proj(&self) -> <Self as GetSet>::Output {
+            Default::default()
+        }
+    }
+
+    impl Odd<bool> {
+        // Odd<bool>::proj
+        fn proj(&self) -> <Self as GetSet>::Output {
+            Default::default()
+        }
+    }
+
+    pub fn test() {
+        using_as(S3, 1, true, 'a'); // $ target=using_as
+
+        let _a = Odd(42i32).proj(); // $ target=Odd<i32>::proj MISSING: type=_a:bool
+        let _b = Odd(true).proj(); // $ target=Odd<bool>::proj MISSING: type=_b:char
+    }
+}
+
 // Tests for signatures that access associated types from type parameters
 mod type_param_access_associated_type {
     use super::*;
@@ -392,6 +445,7 @@ mod dyn_trait {
 
 pub fn test() {
     default_method_using_associated_type::test(); // $ target=test
+    concrete_type_access_associated_type::test(); // $ target=test
     type_param_access_associated_type::test(); // $ target=test
     generic_associated_type::test(); // $ target=test
     multiple_associated_types::test(); // $ target=test

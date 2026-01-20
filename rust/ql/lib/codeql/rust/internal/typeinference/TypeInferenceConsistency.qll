@@ -15,11 +15,11 @@ query predicate illFormedTypeMention(TypeMention tm) {
   not tm instanceof PathTypeReprMention and
   // known limitation for type mentions that would mention an escaping type parameter
   not tm =
-    any(PathTypeMention ptm |
+    any(PathPreTypeMentionImpl ptm |
       exists(ptm.resolvePathTypeAt(TypePath::nil())) and
       not exists(ptm.resolveType())
       or
-      ptm.(NonAliasPathTypeMention).getResolved() instanceof TypeAlias
+      ptm.(NonAliasPathPreTypeMentionImpl).getResolved() instanceof TypeAlias
     ) and
   // Only include inconsistencies in the source, as we otherwise get
   // inconsistencies from library code in every project.

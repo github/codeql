@@ -1801,6 +1801,10 @@ private ItemNode resolvePathCand0(PathExt path, Namespace ns) {
   )
 }
 
+/**
+ * Gets an item that `qualifier` may resolve to when `qualifier` is the
+ * qualifier of `path` and `name` is the text of `path` following the qualifier.
+ */
 pragma[nomagic]
 private ItemNode resolvePathCandQualifier(PathExt qualifier, PathExt path, string name) {
   qualifier = path.getQualifier() and
@@ -2242,8 +2246,11 @@ private module Debug {
   Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      // filepath.matches("%/associated_types.rs") and
+      // startline = [368, 374]
+      // startline = 345
       filepath.matches("%/main.rs") and
-      startline = 52
+      startline = [716 .. 726]
     )
   }
 
