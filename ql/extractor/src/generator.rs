@@ -36,6 +36,10 @@ pub fn run(options: Options) -> std::io::Result<()> {
         },
     ];
 
-    generate(languages, options.dbscheme, options.library,
-        "run 'scripts/create-extractor-pack.sh' in ql/")
+    generate(
+        languages,
+        options.dbscheme,
+        options.library,
+        "run 'scripts/create-extractor-pack.sh' in ql/",
+    )
 }
