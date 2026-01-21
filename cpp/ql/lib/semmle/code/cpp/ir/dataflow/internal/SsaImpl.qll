@@ -1035,13 +1035,23 @@ class SynthNode extends DataFlowIntegrationImpl::SsaNode {
   SynthNode() { not this.asDefinition() instanceof SsaImpl::WriteDefinition }
 }
 
-signature predicate guardChecksNodeSig(IRGuards::IRGuardCondition g, Node e, boolean branch);
+private signature class ParamSig;
 
-signature predicate guardChecksNodeSig(
-  IRGuards::IRGuardCondition g, Node e, boolean branch, int indirectionIndex
-);
+private module ParamIntPair<ParamSig P> {
+  newtype TPair = MkPair(P p, int indirectionIndex) { nodeHasInstruction(_, _, indirectionIndex) }
+}
 
-module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
+private module WithParam<ParamSig P> {
+  signature predicate guardChecksNodeSig(IRGuards::IRGuardCondition g, Node e, boolean gv, P param);
+}
+
+private module IntWithParam<ParamSig P> {
+  signature predicate guardChecksNodeSig(
+    IRGuards::IRGuardCondition g, Node e, boolean gv, int indirectionIndex, P param
+  );
+}
+
+module BarrierGuardWithIntParam<ParamSig P, IntWithParam<P>::guardChecksNodeSig/5 guardChecksNode> {
   private predicate ssaDefReachesCertainUse(Definition def, UseImpl use) {
     exists(SourceVariable v, IRBlock bb, int i |
       use.hasIndexInBlock(bb, i, v) and
@@ -1052,21 +1062,23 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
 
   private predicate guardChecksInstr(
     IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, IRGuards::GuardValue gv,
-    int indirectionIndex
+    ParamIntPair<P>::TPair pair
   ) {
-    exists(Node node |
+    exists(Node node, int indirectionIndex, P p |
+      pair = ParamIntPair<P>::MkPair(p, indirectionIndex) and
       nodeHasInstruction(node, instr, indirectionIndex) and
-      guardChecksNode(g, node, gv.asBooleanValue(), indirectionIndex)
+      guardChecksNode(g, node, gv.asBooleanValue(), indirectionIndex, p)
     )
   }
 
   private predicate guardChecksWithWrappers(
     DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
-    int indirectionIndex
+    ParamIntPair<P>::MkPair pair
   ) {
-    exists(Instruction e |
-      IRGuards::Guards_v1::ParameterizedValidationWrapper<int, guardChecksInstr/4>::guardChecks(g,
-        e, val, indirectionIndex)
+    exists(Instruction e, int indirectionIndex |
+      IRGuards::Guards_v1::ParameterizedValidationWrapper<ParamIntPair<P>::TPair, guardChecksInstr/4>::guardChecks(g,
+        e, val, pair) and
+      pair = ParamIntPair<P>::MkPair(_, indirectionIndex)
     |
       indirectionIndex = 0 and
       def.(Definition).getAUse().getDef() = e
@@ -1075,18 +1087,19 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     )
   }
 
-  Node getABarrierNode(int indirectionIndex) {
+  Node getABarrierNode(int indirectionIndex, P p) {
     // Only get the SynthNodes from the shared implementation, as the ExprNodes cannot
     // be matched on SourceVariable.
     result.(SsaSynthNode).getSynthNode() =
-      DataFlowIntegrationImpl::BarrierGuardDefWithState<int, guardChecksWithWrappers/4>::getABarrierNode(indirectionIndex)
+      DataFlowIntegrationImpl::BarrierGuardDefWithState<ParamIntPair<P>::MkPair, guardChecksWithWrappers/4>::getABarrierNode(ParamIntPair<P>::MkPair(p,
+          indirectionIndex))
     or
     // Calculate the guarded UseImpls corresponding to ExprNodes directly.
     exists(
       DataFlowIntegrationInput::Guard g, IRGuards::GuardValue branch, Definition def, IRBlock bb
     |
-      guardChecksWithWrappers(g, def, branch, indirectionIndex) and
       exists(UseImpl use |
+        guardChecksWithWrappers(g, def, branch, ParamIntPair<P>::MkPair(p, indirectionIndex)) and
         ssaDefReachesCertainUse(def, use) and
         use.getBlock() = bb and
         DataFlowIntegrationInput::guardControlsBlock(g, bb, branch) and
@@ -1096,15 +1109,16 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
   }
 }
 
-module BarrierGuard<guardChecksNodeSig/3 guardChecksNode> {
+module BarrierGuard<ParamSig P, WithParam<P>::guardChecksNodeSig/4 guardChecksNode> {
   private predicate guardChecksNode(
-    IRGuards::IRGuardCondition g, Node e, boolean branch, int indirectionIndex
+    IRGuards::IRGuardCondition g, Node e, boolean gv, int indirectionIndex, P p
   ) {
-    guardChecksNode(g, e, branch) and indirectionIndex = 0
+    indirectionIndex = 0 and
+    guardChecksNode(g, e, gv, p)
   }
 
-  Node getABarrierNode() {
-    result = BarrierGuardWithIntParam<guardChecksNode/4>::getABarrierNode(0)
+  Node getABarrierNode(P p) {
+    result = BarrierGuardWithIntParam<P, guardChecksNode/5>::getABarrierNode(0, p)
   }
 }
 

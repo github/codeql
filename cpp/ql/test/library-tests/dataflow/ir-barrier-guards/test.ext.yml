@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: barrierModel
+    data:
+      - ["", "", False, "get_clean_pointer", "", "", "ReturnValue", "test-barrier", "manual"]
+      - ["", "", False, "get_clean_data", "", "", "ReturnValue[*]", "test-barrier", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: barrierGuardModel
+    data:
+      - ["", "", False, "is_clean_value", "", "", "Argument[*0]", "true", "test-barrier", "manual"]
+      - ["", "", False, "is_clean_pointer", "", "", "Argument[0]", "true", "test-barrier", "manual"]
