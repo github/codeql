@@ -349,6 +349,12 @@ func TaintStepTest_CutSuffix(sourceCQL interface{}) interface{} {
 	return result
 }
 
+func TaintStepTest_BytesBufferPeek(sourceCQL interface{}) interface{} {
+	fromBuffer := sourceCQL.(bytes.Buffer)
+	intoByte, _ := fromBuffer.Peek(128)
+	return intoByte
+}
+
 func RunAllTaints_Bytes() {
 	{
 		source := newSource(0)
@@ -624,5 +630,10 @@ func RunAllTaints_Bytes() {
 		source := newSource(54)
 		out := TaintStepTest_Clone(source)
 		sink(54, out)
+	}
+	{
+		source := newSource(55)
+		out := TaintStepTest_BytesBufferPeek(source)
+		sink(55, out)
 	}
 }

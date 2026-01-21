@@ -60,6 +60,13 @@ func TaintStepTest_Min(sourceCQL interface{}) interface{} {
 	return intoInterface
 }
 
+func TaintStepTest_New(sourceCQL interface{}) interface{} {
+	from := sourceCQL.(int)
+	var intoInterface *int
+	intoInterface = new(from)
+	return *intoInterface
+}
+
 func RunAllTaints_Builtin() {
 	{
 		source := newSource(0)
@@ -100,5 +107,10 @@ func RunAllTaints_Builtin() {
 		source := newSource(4)
 		out := TaintStepTest_Min(source)
 		sink(4, out)
+	}
+	{
+		source := newSource(5)
+		out := TaintStepTest_New(source)
+		sink(5, out)
 	}
 }
