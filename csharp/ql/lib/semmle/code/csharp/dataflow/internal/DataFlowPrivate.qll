@@ -527,6 +527,16 @@ module SsaFlow {
 
 /** Provides predicates related to local data flow. */
 module LocalFlow {
+  /**
+   * Holds if the pattern `e` is a top level variable pattern expression or
+   * if the pattern doesn't contain any variable pattern expressions.
+   */
+  private predicate basicPattern(PatternExpr e) {
+    e instanceof VariablePatternExpr
+    or
+    not exists(VariablePatternExpr vpe | e.getAChild*() = vpe)
+  }
+
   class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
     LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
@@ -612,11 +622,31 @@ module LocalFlow {
         isSuccessor = false
         or
         isSuccessor = true and
-        exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+        exists(ControlFlowElement cfe | cfe = e2.(TuplePatternExpr).getPatternMatch() |
           cfe.(IsExpr).getExpr() = e1 and scope = cfe
           or
           exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
         )
+        or
+        isSuccessor = true and
+        scope =
+          any(IsExpr ie |
+            e1 = ie.getExpr() and
+            e2 = ie.getPattern() and
+            not basicPattern(e2)
+          )
+        or
+        isSuccessor = true and
+        scope =
+          any(Switch e |
+            e1 = e.getExpr() and
+            e2 = e.getACase().getPattern() and
+            not basicPattern(e2)
+          )
+        or
+        isSuccessor = false and
+        e2 = e1.(RecursivePatternExpr).getPropertyPatterns() and
+        scope = e1
       )
     }
 
@@ -629,13 +659,17 @@ module LocalFlow {
       def.getSource() = e and
       (
         scope = def.getExpr() and
-        isSuccessor = true
+        isSuccessor = true and
+        (
+          not def instanceof AssignableDefinitions::PatternDefinition or
+          def instanceof AssignableDefinitions::TopLevelPatternDefinition
+        )
         or
-        scope = def.(AssignableDefinitions::PatternDefinition).getMatch().(IsExpr) and
+        scope = def.(AssignableDefinitions::TopLevelPatternDefinition).getMatch().(IsExpr) and
         isSuccessor = false
         or
         exists(Switch s |
-          s.getACase() = def.(AssignableDefinitions::PatternDefinition).getMatch() and
+          s.getACase() = def.(AssignableDefinitions::TopLevelPatternDefinition).getMatch() and
           isSuccessor = true
         |
           scope = s.getExpr()
@@ -643,6 +677,12 @@ module LocalFlow {
           scope = s.getACase()
         )
       )
+      or
+      // Needed for read steps for pattern matching involving properties.
+      scope = def.getExpr() and
+      exactScope = false and
+      isSuccessor = false and
+      e = def.(AssignableDefinitions::PropertyPatternDefinition).getDeclaration()
     }
   }
 
@@ -912,6 +952,31 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
 }
 
 /**
+ * TODO: Should we consider to override getType on pattern expressions?
+ */
+private Type getPatternType(PatternExpr pe) {
+  result = pe.(RecursivePatternExpr).getTypeAccess().getType()
+  or
+  not pe instanceof LabeledPatternExpr and
+  result = getPatternType(pe.getParent())
+  or
+  exists(Property p |
+    result = p.getType() and
+    p.getDeclaringType() = getPatternType(pe.getParent()) and
+    p.getName() = pe.(LabeledPatternExpr).getLabel()
+  )
+}
+
+private predicate patternPropertyRead(PropertyPatternExpr pe, ContentSet c, LabeledPatternExpr e) {
+  exists(Property prop |
+    e = pe.getPattern(_) and
+    prop.getDeclaringType() = getPatternType(pe) and
+    prop.getName() = e.getLabel() and
+    c.isProperty(prop)
+  )
+}
+
+/**
  * Holds if `e2` is an expression that reads field or property `c` from
  * expression `e1`.
  */
@@ -1160,6 +1225,8 @@ private module Cached {
           fieldOrPropertyRead(e, _, read)
           or
           dynamicPropertyRead(e, _, read)
+          or
+          patternPropertyRead(e, _, read)
           or
           arrayRead(e, read)
         )
@@ -2407,6 +2474,11 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     e2 = e1.(TupleExpr).getAnArgument() and
     scope = e1 and
     isSuccessor = false
+    or
+    exactScope = false and
+    isSuccessor = false and
+    patternPropertyRead(e1, _, e2) and
+    scope = e1
   }
 
   override predicate candidateDef(
@@ -2438,8 +2510,8 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
       )
     or
     scope =
-      any(TupleExpr te |
-        te.getAnArgument() = defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() and
+      any(TuplePatternExpr te |
+        te.getAnArgument() = defTo.(AssignableDefinitions::TuplePatternDefinition).getDeclaration() and
         e = te and
         exactScope = false and
         isSuccessor = false
@@ -2488,8 +2560,8 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
       )
       or
       // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-      te = any(PatternExpr pe).getAChildExpr*() and
-      exists(AssignableDefinitions::LocalVariableDefinition lvd |
+      te = any(TuplePatternExpr pe).getAChildExpr*() and
+      exists(AssignableDefinitions::TuplePatternDefinition lvd |
         node2.(AssignableDefinitionNode).getDefinition() = lvd and
         lvd.getDeclaration() = item and
         hasNodePath(x, node1, node2)
@@ -2531,6 +2603,15 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     or
     node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
     c = getResultContent()
+  )
+  or
+  exists(ReadStepConfiguration x, ControlFlow::Node cfn1, ControlFlow::Node cfn2 |
+    cfn1 = node1.getControlFlowNode() and
+    cfn2 = node2.getControlFlowNode() and
+    cfn1.getAMatchPredecessor() = cfn2 and
+    x.hasExprPath(_, cfn1, _, cfn2)
+  |
+    patternPropertyRead(node1.asExpr(), c, node2.asExpr())
   )
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -2913,7 +2994,7 @@ class CastNode extends Node {
     this.asExpr() instanceof Cast
     or
     this.(AssignableDefinitionNode).getDefinition() instanceof
-      AssignableDefinitions::PatternDefinition
+      AssignableDefinitions::TopLevelPatternDefinition
   }
 }
 
