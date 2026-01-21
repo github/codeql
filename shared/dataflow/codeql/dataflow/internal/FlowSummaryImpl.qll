@@ -332,6 +332,14 @@ module Make<
      */
     final class RelevantSummarizedCallable extends SummarizedCallableFinal {
       RelevantSummarizedCallable() { this instanceof SummarizedCallableImpl }
+
+      /**
+       * Holds if there exists a manual summary that applies to this callable.
+       */
+      final predicate hasManualModel() {
+        any(Provenance p | this.(SummarizedCallableImpl).propagatesFlow(_, _, _, p, _, _))
+            .isManual()
+      }
     }
 
     /** A source element. */
