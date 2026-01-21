@@ -1,0 +1,13 @@
+name: "binary"
+display_name: "binary"
+version: 0.0.1
+column_kind: "utf16"
+legacy_qltest_extraction: true
+build_modes:
+  - none
+file_types:
+  - name: binary
+    display_name: binaries
+    extensions:
+      - .exe
+      - .dll

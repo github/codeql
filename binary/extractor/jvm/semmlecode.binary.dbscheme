@@ -1,0 +1,2968 @@
+/* Mandatory */
+sourceLocationPrefix(
+  varchar(900) prefix: string ref
+);
+
+/**
+ * External data, loaded from CSV files during snapshot creation.
+ * This allows importing additional data into CodeQL databases.
+ */
+externalData(
+  int id: @externalDataElement,
+  string path: string ref,
+  int column: int ref,
+  string value: string ref
+);
+
+/* Entity Locations */
+@location = @location_default;
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
+
+/* File Metadata */
+
+numlines(
+  unique int element_id: @file ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+files(
+  unique int id: @file,
+  varchar(900) name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  varchar(900) name: string ref
+);
+
+@container = @folder | @file;
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+empty_location(
+  int location: @location_default ref
+);
+
+case @x86_instruction.mnemonic of
+  0 = @x86_invalid
+| 1 = @x86_aaa
+| 2 = @x86_aad
+| 3 = @x86_aadd
+| 4 = @x86_aam
+| 5 = @x86_aand
+| 6 = @x86_aas
+| 7 = @x86_adc
+| 8 = @x86_adcx
+| 9 = @x86_add
+| 10 = @x86_addpd
+| 11 = @x86_addps
+| 12 = @x86_addsd
+| 13 = @x86_addss
+| 14 = @x86_addsubpd
+| 15 = @x86_addsubps
+| 16 = @x86_adox
+| 17 = @x86_aesdec
+| 18 = @x86_aesdec128kl
+| 19 = @x86_aesdec256kl
+| 20 = @x86_aesdeclast
+| 21 = @x86_aesdecwide128kl
+| 22 = @x86_aesdecwide256kl
+| 23 = @x86_aesenc
+| 24 = @x86_aesenc128kl
+| 25 = @x86_aesenc256kl
+| 26 = @x86_aesenclast
+| 27 = @x86_aesencwide128kl
+| 28 = @x86_aesencwide256kl
+| 29 = @x86_aesimc
+| 30 = @x86_aeskeygenassist
+| 31 = @x86_and
+| 32 = @x86_andn
+| 33 = @x86_andnpd
+| 34 = @x86_andnps
+| 35 = @x86_andpd
+| 36 = @x86_andps
+| 37 = @x86_aor
+| 38 = @x86_arpl
+| 39 = @x86_axor
+| 40 = @x86_bextr
+| 41 = @x86_blcfill
+| 42 = @x86_blci
+| 43 = @x86_blcic
+| 44 = @x86_blcmsk
+| 45 = @x86_blcs
+| 46 = @x86_blendpd
+| 47 = @x86_blendps
+| 48 = @x86_blendvpd
+| 49 = @x86_blendvps
+| 50 = @x86_blsfill
+| 51 = @x86_blsi
+| 52 = @x86_blsic
+| 53 = @x86_blsmsk
+| 54 = @x86_blsr
+| 55 = @x86_bndcl
+| 56 = @x86_bndcn
+| 57 = @x86_bndcu
+| 58 = @x86_bndldx
+| 59 = @x86_bndmk
+| 60 = @x86_bndmov
+| 61 = @x86_bndstx
+| 62 = @x86_bound
+| 63 = @x86_bsf
+| 64 = @x86_bsr
+| 65 = @x86_bswap
+| 66 = @x86_bt
+| 67 = @x86_btc
+| 68 = @x86_btr
+| 69 = @x86_bts
+| 70 = @x86_bzhi
+| 71 = @x86_call
+| 72 = @x86_cbw
+| 73 = @x86_ccmpb
+| 74 = @x86_ccmpbe
+| 75 = @x86_ccmpf
+| 76 = @x86_ccmpl
+| 77 = @x86_ccmple
+| 78 = @x86_ccmpnb
+| 79 = @x86_ccmpnbe
+| 80 = @x86_ccmpnl
+| 81 = @x86_ccmpnle
+| 82 = @x86_ccmpno
+| 83 = @x86_ccmpns
+| 84 = @x86_ccmpnz
+| 85 = @x86_ccmpo
+| 86 = @x86_ccmps
+| 87 = @x86_ccmpt
+| 88 = @x86_ccmpz
+| 89 = @x86_cdq
+| 90 = @x86_cdqe
+| 91 = @x86_cfcmovb
+| 92 = @x86_cfcmovbe
+| 93 = @x86_cfcmovl
+| 94 = @x86_cfcmovle
+| 95 = @x86_cfcmovnb
+| 96 = @x86_cfcmovnbe
+| 97 = @x86_cfcmovnl
+| 98 = @x86_cfcmovnle
+| 99 = @x86_cfcmovno
+| 100 = @x86_cfcmovnp
+| 101 = @x86_cfcmovns
+| 102 = @x86_cfcmovnz
+| 103 = @x86_cfcmovo
+| 104 = @x86_cfcmovp
+| 105 = @x86_cfcmovs
+| 106 = @x86_cfcmovz
+| 107 = @x86_clac
+| 108 = @x86_clc
+| 109 = @x86_cld
+| 110 = @x86_cldemote
+| 111 = @x86_clevict0
+| 112 = @x86_clevict1
+| 113 = @x86_clflush
+| 114 = @x86_clflushopt
+| 115 = @x86_clgi
+| 116 = @x86_cli
+| 117 = @x86_clrssbsy
+| 118 = @x86_clts
+| 119 = @x86_clui
+| 120 = @x86_clwb
+| 121 = @x86_clzero
+| 122 = @x86_cmc
+| 123 = @x86_cmovb
+| 124 = @x86_cmovbe
+| 125 = @x86_cmovl
+| 126 = @x86_cmovle
+| 127 = @x86_cmovnb
+| 128 = @x86_cmovnbe
+| 129 = @x86_cmovnl
+| 130 = @x86_cmovnle
+| 131 = @x86_cmovno
+| 132 = @x86_cmovnp
+| 133 = @x86_cmovns
+| 134 = @x86_cmovnz
+| 135 = @x86_cmovo
+| 136 = @x86_cmovp
+| 137 = @x86_cmovs
+| 138 = @x86_cmovz
+| 139 = @x86_cmp
+| 140 = @x86_cmpbexadd
+| 141 = @x86_cmpbxadd
+| 142 = @x86_cmplexadd
+| 143 = @x86_cmplxadd
+| 144 = @x86_cmpnbexadd
+| 145 = @x86_cmpnbxadd
+| 146 = @x86_cmpnlexadd
+| 147 = @x86_cmpnlxadd
+| 148 = @x86_cmpnoxadd
+| 149 = @x86_cmpnpxadd
+| 150 = @x86_cmpnsxadd
+| 151 = @x86_cmpnzxadd
+| 152 = @x86_cmpoxadd
+| 153 = @x86_cmppd
+| 154 = @x86_cmpps
+| 155 = @x86_cmppxadd
+| 156 = @x86_cmpsb
+| 157 = @x86_cmpsd
+| 158 = @x86_cmpsq
+| 159 = @x86_cmpss
+| 160 = @x86_cmpsw
+| 161 = @x86_cmpsxadd
+| 162 = @x86_cmpxchg
+| 163 = @x86_cmpxchg16b
+| 164 = @x86_cmpxchg8b
+| 165 = @x86_cmpzxadd
+| 166 = @x86_comisd
+| 167 = @x86_comiss
+| 168 = @x86_cpuid
+| 169 = @x86_cqo
+| 170 = @x86_crc32
+| 171 = @x86_ctestb
+| 172 = @x86_ctestbe
+| 173 = @x86_ctestf
+| 174 = @x86_ctestl
+| 175 = @x86_ctestle
+| 176 = @x86_ctestnb
+| 177 = @x86_ctestnbe
+| 178 = @x86_ctestnl
+| 179 = @x86_ctestnle
+| 180 = @x86_ctestno
+| 181 = @x86_ctestns
+| 182 = @x86_ctestnz
+| 183 = @x86_ctesto
+| 184 = @x86_ctests
+| 185 = @x86_ctestt
+| 186 = @x86_ctestz
+| 187 = @x86_cvtdq2pd
+| 188 = @x86_cvtdq2ps
+| 189 = @x86_cvtpd2dq
+| 190 = @x86_cvtpd2pi
+| 191 = @x86_cvtpd2ps
+| 192 = @x86_cvtpi2pd
+| 193 = @x86_cvtpi2ps
+| 194 = @x86_cvtps2dq
+| 195 = @x86_cvtps2pd
+| 196 = @x86_cvtps2pi
+| 197 = @x86_cvtsd2si
+| 198 = @x86_cvtsd2ss
+| 199 = @x86_cvtsi2sd
+| 200 = @x86_cvtsi2ss
+| 201 = @x86_cvtss2sd
+| 202 = @x86_cvtss2si
+| 203 = @x86_cvttpd2dq
+| 204 = @x86_cvttpd2pi
+| 205 = @x86_cvttps2dq
+| 206 = @x86_cvttps2pi
+| 207 = @x86_cvttsd2si
+| 208 = @x86_cvttss2si
+| 209 = @x86_cwd
+| 210 = @x86_cwde
+| 211 = @x86_daa
+| 212 = @x86_das
+| 213 = @x86_dec
+| 214 = @x86_delay
+| 215 = @x86_div
+| 216 = @x86_divpd
+| 217 = @x86_divps
+| 218 = @x86_divsd
+| 219 = @x86_divss
+| 220 = @x86_dppd
+| 221 = @x86_dpps
+| 222 = @x86_emms
+| 223 = @x86_encls
+| 224 = @x86_enclu
+| 225 = @x86_enclv
+| 226 = @x86_encodekey128
+| 227 = @x86_encodekey256
+| 228 = @x86_endbr32
+| 229 = @x86_endbr64
+| 230 = @x86_enqcmd
+| 231 = @x86_enqcmds
+| 232 = @x86_enter
+| 233 = @x86_erets
+| 234 = @x86_eretu
+| 235 = @x86_extractps
+| 236 = @x86_extrq
+| 237 = @x86_f2xm1
+| 238 = @x86_fabs
+| 239 = @x86_fadd
+| 240 = @x86_faddp
+| 241 = @x86_fbld
+| 242 = @x86_fbstp
+| 243 = @x86_fchs
+| 244 = @x86_fcmovb
+| 245 = @x86_fcmovbe
+| 246 = @x86_fcmove
+| 247 = @x86_fcmovnb
+| 248 = @x86_fcmovnbe
+| 249 = @x86_fcmovne
+| 250 = @x86_fcmovnu
+| 251 = @x86_fcmovu
+| 252 = @x86_fcom
+| 253 = @x86_fcomi
+| 254 = @x86_fcomip
+| 255 = @x86_fcomp
+| 256 = @x86_fcompp
+| 257 = @x86_fcos
+| 258 = @x86_fdecstp
+| 259 = @x86_fdisi8087nop
+| 260 = @x86_fdiv
+| 261 = @x86_fdivp
+| 262 = @x86_fdivr
+| 263 = @x86_fdivrp
+| 264 = @x86_femms
+| 265 = @x86_feni8087nop
+| 266 = @x86_ffree
+| 267 = @x86_ffreep
+| 268 = @x86_fiadd
+| 269 = @x86_ficom
+| 270 = @x86_ficomp
+| 271 = @x86_fidiv
+| 272 = @x86_fidivr
+| 273 = @x86_fild
+| 274 = @x86_fimul
+| 275 = @x86_fincstp
+| 276 = @x86_fist
+| 277 = @x86_fistp
+| 278 = @x86_fisttp
+| 279 = @x86_fisub
+| 280 = @x86_fisubr
+| 281 = @x86_fld
+| 282 = @x86_fld1
+| 283 = @x86_fldcw
+| 284 = @x86_fldenv
+| 285 = @x86_fldl2e
+| 286 = @x86_fldl2t
+| 287 = @x86_fldlg2
+| 288 = @x86_fldln2
+| 289 = @x86_fldpi
+| 290 = @x86_fldz
+| 291 = @x86_fmul
+| 292 = @x86_fmulp
+| 293 = @x86_fnclex
+| 294 = @x86_fninit
+| 295 = @x86_fnop
+| 296 = @x86_fnsave
+| 297 = @x86_fnstcw
+| 298 = @x86_fnstenv
+| 299 = @x86_fnstsw
+| 300 = @x86_fpatan
+| 301 = @x86_fprem
+| 302 = @x86_fprem1
+| 303 = @x86_fptan
+| 304 = @x86_frndint
+| 305 = @x86_frstor
+| 306 = @x86_fscale
+| 307 = @x86_fsetpm287nop
+| 308 = @x86_fsin
+| 309 = @x86_fsincos
+| 310 = @x86_fsqrt
+| 311 = @x86_fst
+| 312 = @x86_fstp
+| 313 = @x86_fstpnce
+| 314 = @x86_fsub
+| 315 = @x86_fsubp
+| 316 = @x86_fsubr
+| 317 = @x86_fsubrp
+| 318 = @x86_ftst
+| 319 = @x86_fucom
+| 320 = @x86_fucomi
+| 321 = @x86_fucomip
+| 322 = @x86_fucomp
+| 323 = @x86_fucompp
+| 324 = @x86_fwait
+| 325 = @x86_fxam
+| 326 = @x86_fxch
+| 327 = @x86_fxrstor
+| 328 = @x86_fxrstor64
+| 329 = @x86_fxsave
+| 330 = @x86_fxsave64
+| 331 = @x86_fxtract
+| 332 = @x86_fyl2x
+| 333 = @x86_fyl2xp1
+| 334 = @x86_getsec
+| 335 = @x86_gf2p8affineinvqb
+| 336 = @x86_gf2p8affineqb
+| 337 = @x86_gf2p8mulb
+| 338 = @x86_haddpd
+| 339 = @x86_haddps
+| 340 = @x86_hlt
+| 341 = @x86_hreset
+| 342 = @x86_hsubpd
+| 343 = @x86_hsubps
+| 344 = @x86_idiv
+| 345 = @x86_imul
+| 346 = @x86_imulzu
+| 347 = @x86_in
+| 348 = @x86_inc
+| 349 = @x86_incsspd
+| 350 = @x86_incsspq
+| 351 = @x86_insb
+| 352 = @x86_insd
+| 353 = @x86_insertps
+| 354 = @x86_insertq
+| 355 = @x86_insw
+| 356 = @x86_int
+| 357 = @x86_int1
+| 358 = @x86_int3
+| 359 = @x86_into
+| 360 = @x86_invd
+| 361 = @x86_invept
+| 362 = @x86_invlpg
+| 363 = @x86_invlpga
+| 364 = @x86_invlpgb
+| 365 = @x86_invpcid
+| 366 = @x86_invvpid
+| 367 = @x86_iret
+| 368 = @x86_iretd
+| 369 = @x86_iretq
+| 370 = @x86_jb
+| 371 = @x86_jbe
+| 372 = @x86_jcxz
+| 373 = @x86_jecxz
+| 374 = @x86_jknzd
+| 375 = @x86_jkzd
+| 376 = @x86_jl
+| 377 = @x86_jle
+| 378 = @x86_jmp
+| 379 = @x86_jmpabs
+| 380 = @x86_jnb
+| 381 = @x86_jnbe
+| 382 = @x86_jnl
+| 383 = @x86_jnle
+| 384 = @x86_jno
+| 385 = @x86_jnp
+| 386 = @x86_jns
+| 387 = @x86_jnz
+| 388 = @x86_jo
+| 389 = @x86_jp
+| 390 = @x86_jrcxz
+| 391 = @x86_js
+| 392 = @x86_jz
+| 393 = @x86_kaddb
+| 394 = @x86_kaddd
+| 395 = @x86_kaddq
+| 396 = @x86_kaddw
+| 397 = @x86_kand
+| 398 = @x86_kandb
+| 399 = @x86_kandd
+| 400 = @x86_kandn
+| 401 = @x86_kandnb
+| 402 = @x86_kandnd
+| 403 = @x86_kandnq
+| 404 = @x86_kandnr
+| 405 = @x86_kandnw
+| 406 = @x86_kandq
+| 407 = @x86_kandw
+| 408 = @x86_kconcath
+| 409 = @x86_kconcatl
+| 410 = @x86_kextract
+| 411 = @x86_kmerge2l1h
+| 412 = @x86_kmerge2l1l
+| 413 = @x86_kmov
+| 414 = @x86_kmovb
+| 415 = @x86_kmovd
+| 416 = @x86_kmovq
+| 417 = @x86_kmovw
+| 418 = @x86_knot
+| 419 = @x86_knotb
+| 420 = @x86_knotd
+| 421 = @x86_knotq
+| 422 = @x86_knotw
+| 423 = @x86_kor
+| 424 = @x86_korb
+| 425 = @x86_kord
+| 426 = @x86_korq
+| 427 = @x86_kortest
+| 428 = @x86_kortestb
+| 429 = @x86_kortestd
+| 430 = @x86_kortestq
+| 431 = @x86_kortestw
+| 432 = @x86_korw
+| 433 = @x86_kshiftlb
+| 434 = @x86_kshiftld
+| 435 = @x86_kshiftlq
+| 436 = @x86_kshiftlw
+| 437 = @x86_kshiftrb
+| 438 = @x86_kshiftrd
+| 439 = @x86_kshiftrq
+| 440 = @x86_kshiftrw
+| 441 = @x86_ktestb
+| 442 = @x86_ktestd
+| 443 = @x86_ktestq
+| 444 = @x86_ktestw
+| 445 = @x86_kunpckbw
+| 446 = @x86_kunpckdq
+| 447 = @x86_kunpckwd
+| 448 = @x86_kxnor
+| 449 = @x86_kxnorb
+| 450 = @x86_kxnord
+| 451 = @x86_kxnorq
+| 452 = @x86_kxnorw
+| 453 = @x86_kxor
+| 454 = @x86_kxorb
+| 455 = @x86_kxord
+| 456 = @x86_kxorq
+| 457 = @x86_kxorw
+| 458 = @x86_lahf
+| 459 = @x86_lar
+| 460 = @x86_lddqu
+| 461 = @x86_ldmxcsr
+| 462 = @x86_lds
+| 463 = @x86_ldtilecfg
+| 464 = @x86_lea
+| 465 = @x86_leave
+| 466 = @x86_les
+| 467 = @x86_lfence
+| 468 = @x86_lfs
+| 469 = @x86_lgdt
+| 470 = @x86_lgs
+| 471 = @x86_lidt
+| 472 = @x86_lkgs
+| 473 = @x86_lldt
+| 474 = @x86_llwpcb
+| 475 = @x86_lmsw
+| 476 = @x86_loadiwkey
+| 477 = @x86_lodsb
+| 478 = @x86_lodsd
+| 479 = @x86_lodsq
+| 480 = @x86_lodsw
+| 481 = @x86_loop
+| 482 = @x86_loope
+| 483 = @x86_loopne
+| 484 = @x86_lsl
+| 485 = @x86_lss
+| 486 = @x86_ltr
+| 487 = @x86_lwpins
+| 488 = @x86_lwpval
+| 489 = @x86_lzcnt
+| 490 = @x86_maskmovdqu
+| 491 = @x86_maskmovq
+| 492 = @x86_maxpd
+| 493 = @x86_maxps
+| 494 = @x86_maxsd
+| 495 = @x86_maxss
+| 496 = @x86_mcommit
+| 497 = @x86_mfence
+| 498 = @x86_minpd
+| 499 = @x86_minps
+| 500 = @x86_minsd
+| 501 = @x86_minss
+| 502 = @x86_monitor
+| 503 = @x86_monitorx
+| 504 = @x86_montmul
+| 505 = @x86_mov
+| 506 = @x86_movapd
+| 507 = @x86_movaps
+| 508 = @x86_movbe
+| 509 = @x86_movd
+| 510 = @x86_movddup
+| 511 = @x86_movdir64b
+| 512 = @x86_movdiri
+| 513 = @x86_movdq2q
+| 514 = @x86_movdqa
+| 515 = @x86_movdqu
+| 516 = @x86_movhlps
+| 517 = @x86_movhpd
+| 518 = @x86_movhps
+| 519 = @x86_movlhps
+| 520 = @x86_movlpd
+| 521 = @x86_movlps
+| 522 = @x86_movmskpd
+| 523 = @x86_movmskps
+| 524 = @x86_movntdq
+| 525 = @x86_movntdqa
+| 526 = @x86_movnti
+| 527 = @x86_movntpd
+| 528 = @x86_movntps
+| 529 = @x86_movntq
+| 530 = @x86_movntsd
+| 531 = @x86_movntss
+| 532 = @x86_movq
+| 533 = @x86_movq2dq
+| 534 = @x86_movsb
+| 535 = @x86_movsd
+| 536 = @x86_movshdup
+| 537 = @x86_movsldup
+| 538 = @x86_movsq
+| 539 = @x86_movss
+| 540 = @x86_movsw
+| 541 = @x86_movsx
+| 542 = @x86_movsxd
+| 543 = @x86_movupd
+| 544 = @x86_movups
+| 545 = @x86_movzx
+| 546 = @x86_mpsadbw
+| 547 = @x86_mul
+| 548 = @x86_mulpd
+| 549 = @x86_mulps
+| 550 = @x86_mulsd
+| 551 = @x86_mulss
+| 552 = @x86_mulx
+| 553 = @x86_mwait
+| 554 = @x86_mwaitx
+| 555 = @x86_neg
+| 556 = @x86_nop
+| 557 = @x86_not
+| 558 = @x86_or
+| 559 = @x86_orpd
+| 560 = @x86_orps
+| 561 = @x86_out
+| 562 = @x86_outsb
+| 563 = @x86_outsd
+| 564 = @x86_outsw
+| 565 = @x86_pabsb
+| 566 = @x86_pabsd
+| 567 = @x86_pabsw
+| 568 = @x86_packssdw
+| 569 = @x86_packsswb
+| 570 = @x86_packusdw
+| 571 = @x86_packuswb
+| 572 = @x86_paddb
+| 573 = @x86_paddd
+| 574 = @x86_paddq
+| 575 = @x86_paddsb
+| 576 = @x86_paddsw
+| 577 = @x86_paddusb
+| 578 = @x86_paddusw
+| 579 = @x86_paddw
+| 580 = @x86_palignr
+| 581 = @x86_pand
+| 582 = @x86_pandn
+| 583 = @x86_pause
+| 584 = @x86_pavgb
+| 585 = @x86_pavgusb
+| 586 = @x86_pavgw
+| 587 = @x86_pblendvb
+| 588 = @x86_pblendw
+| 589 = @x86_pbndkb
+| 590 = @x86_pclmulqdq
+| 591 = @x86_pcmpeqb
+| 592 = @x86_pcmpeqd
+| 593 = @x86_pcmpeqq
+| 594 = @x86_pcmpeqw
+| 595 = @x86_pcmpestri
+| 596 = @x86_pcmpestrm
+| 597 = @x86_pcmpgtb
+| 598 = @x86_pcmpgtd
+| 599 = @x86_pcmpgtq
+| 600 = @x86_pcmpgtw
+| 601 = @x86_pcmpistri
+| 602 = @x86_pcmpistrm
+| 603 = @x86_pcommit
+| 604 = @x86_pconfig
+| 605 = @x86_pdep
+| 606 = @x86_pext
+| 607 = @x86_pextrb
+| 608 = @x86_pextrd
+| 609 = @x86_pextrq
+| 610 = @x86_pextrw
+| 611 = @x86_pf2id
+| 612 = @x86_pf2iw
+| 613 = @x86_pfacc
+| 614 = @x86_pfadd
+| 615 = @x86_pfcmpeq
+| 616 = @x86_pfcmpge
+| 617 = @x86_pfcmpgt
+| 618 = @x86_pfcpit1
+| 619 = @x86_pfmax
+| 620 = @x86_pfmin
+| 621 = @x86_pfmul
+| 622 = @x86_pfnacc
+| 623 = @x86_pfpnacc
+| 624 = @x86_pfrcp
+| 625 = @x86_pfrcpit2
+| 626 = @x86_pfrsqit1
+| 627 = @x86_pfsqrt
+| 628 = @x86_pfsub
+| 629 = @x86_pfsubr
+| 630 = @x86_phaddd
+| 631 = @x86_phaddsw
+| 632 = @x86_phaddw
+| 633 = @x86_phminposuw
+| 634 = @x86_phsubd
+| 635 = @x86_phsubsw
+| 636 = @x86_phsubw
+| 637 = @x86_pi2fd
+| 638 = @x86_pi2fw
+| 639 = @x86_pinsrb
+| 640 = @x86_pinsrd
+| 641 = @x86_pinsrq
+| 642 = @x86_pinsrw
+| 643 = @x86_pmaddubsw
+| 644 = @x86_pmaddwd
+| 645 = @x86_pmaxsb
+| 646 = @x86_pmaxsd
+| 647 = @x86_pmaxsw
+| 648 = @x86_pmaxub
+| 649 = @x86_pmaxud
+| 650 = @x86_pmaxuw
+| 651 = @x86_pminsb
+| 652 = @x86_pminsd
+| 653 = @x86_pminsw
+| 654 = @x86_pminub
+| 655 = @x86_pminud
+| 656 = @x86_pminuw
+| 657 = @x86_pmovmskb
+| 658 = @x86_pmovsxbd
+| 659 = @x86_pmovsxbq
+| 660 = @x86_pmovsxbw
+| 661 = @x86_pmovsxdq
+| 662 = @x86_pmovsxwd
+| 663 = @x86_pmovsxwq
+| 664 = @x86_pmovzxbd
+| 665 = @x86_pmovzxbq
+| 666 = @x86_pmovzxbw
+| 667 = @x86_pmovzxdq
+| 668 = @x86_pmovzxwd
+| 669 = @x86_pmovzxwq
+| 670 = @x86_pmuldq
+| 671 = @x86_pmulhrsw
+| 672 = @x86_pmulhrw
+| 673 = @x86_pmulhuw
+| 674 = @x86_pmulhw
+| 675 = @x86_pmulld
+| 676 = @x86_pmullw
+| 677 = @x86_pmuludq
+| 678 = @x86_pop
+| 679 = @x86_pop2
+| 680 = @x86_pop2p
+| 681 = @x86_popa
+| 682 = @x86_popad
+| 683 = @x86_popcnt
+| 684 = @x86_popf
+| 685 = @x86_popfd
+| 686 = @x86_popfq
+| 687 = @x86_popp
+| 688 = @x86_por
+| 689 = @x86_prefetch
+| 690 = @x86_prefetchit0
+| 691 = @x86_prefetchit1
+| 692 = @x86_prefetchnta
+| 693 = @x86_prefetcht0
+| 694 = @x86_prefetcht1
+| 695 = @x86_prefetcht2
+| 696 = @x86_prefetchw
+| 697 = @x86_prefetchwt1
+| 698 = @x86_psadbw
+| 699 = @x86_pshufb
+| 700 = @x86_pshufd
+| 701 = @x86_pshufhw
+| 702 = @x86_pshuflw
+| 703 = @x86_pshufw
+| 704 = @x86_psignb
+| 705 = @x86_psignd
+| 706 = @x86_psignw
+| 707 = @x86_pslld
+| 708 = @x86_pslldq
+| 709 = @x86_psllq
+| 710 = @x86_psllw
+| 711 = @x86_psmash
+| 712 = @x86_psrad
+| 713 = @x86_psraw
+| 714 = @x86_psrld
+| 715 = @x86_psrldq
+| 716 = @x86_psrlq
+| 717 = @x86_psrlw
+| 718 = @x86_psubb
+| 719 = @x86_psubd
+| 720 = @x86_psubq
+| 721 = @x86_psubsb
+| 722 = @x86_psubsw
+| 723 = @x86_psubusb
+| 724 = @x86_psubusw
+| 725 = @x86_psubw
+| 726 = @x86_pswapd
+| 727 = @x86_ptest
+| 728 = @x86_ptwrite
+| 729 = @x86_punpckhbw
+| 730 = @x86_punpckhdq
+| 731 = @x86_punpckhqdq
+| 732 = @x86_punpckhwd
+| 733 = @x86_punpcklbw
+| 734 = @x86_punpckldq
+| 735 = @x86_punpcklqdq
+| 736 = @x86_punpcklwd
+| 737 = @x86_push
+| 738 = @x86_push2
+| 739 = @x86_push2p
+| 740 = @x86_pusha
+| 741 = @x86_pushad
+| 742 = @x86_pushf
+| 743 = @x86_pushfd
+| 744 = @x86_pushfq
+| 745 = @x86_pushp
+| 746 = @x86_pvalidate
+| 747 = @x86_pxor
+| 748 = @x86_rcl
+| 749 = @x86_rcpps
+| 750 = @x86_rcpss
+| 751 = @x86_rcr
+| 752 = @x86_rdfsbase
+| 753 = @x86_rdgsbase
+| 754 = @x86_rdmsr
+| 755 = @x86_rdmsrlist
+| 756 = @x86_rdpid
+| 757 = @x86_rdpkru
+| 758 = @x86_rdpmc
+| 759 = @x86_rdpru
+| 760 = @x86_rdrand
+| 761 = @x86_rdseed
+| 762 = @x86_rdsspd
+| 763 = @x86_rdsspq
+| 764 = @x86_rdtsc
+| 765 = @x86_rdtscp
+| 766 = @x86_ret
+| 767 = @x86_rmpadjust
+| 768 = @x86_rmpupdate
+| 769 = @x86_rol
+| 770 = @x86_ror
+| 771 = @x86_rorx
+| 772 = @x86_roundpd
+| 773 = @x86_roundps
+| 774 = @x86_roundsd
+| 775 = @x86_roundss
+| 776 = @x86_rsm
+| 777 = @x86_rsqrtps
+| 778 = @x86_rsqrtss
+| 779 = @x86_rstorssp
+| 780 = @x86_sahf
+| 781 = @x86_salc
+| 782 = @x86_sar
+| 783 = @x86_sarx
+| 784 = @x86_saveprevssp
+| 785 = @x86_sbb
+| 786 = @x86_scasb
+| 787 = @x86_scasd
+| 788 = @x86_scasq
+| 789 = @x86_scasw
+| 790 = @x86_seamcall
+| 791 = @x86_seamops
+| 792 = @x86_seamret
+| 793 = @x86_senduipi
+| 794 = @x86_serialize
+| 795 = @x86_setb
+| 796 = @x86_setbe
+| 797 = @x86_setl
+| 798 = @x86_setle
+| 799 = @x86_setnb
+| 800 = @x86_setnbe
+| 801 = @x86_setnl
+| 802 = @x86_setnle
+| 803 = @x86_setno
+| 804 = @x86_setnp
+| 805 = @x86_setns
+| 806 = @x86_setnz
+| 807 = @x86_seto
+| 808 = @x86_setp
+| 809 = @x86_sets
+| 810 = @x86_setssbsy
+| 811 = @x86_setz
+| 812 = @x86_setzub
+| 813 = @x86_setzube
+| 814 = @x86_setzul
+| 815 = @x86_setzule
+| 816 = @x86_setzunb
+| 817 = @x86_setzunbe
+| 818 = @x86_setzunl
+| 819 = @x86_setzunle
+| 820 = @x86_setzuno
+| 821 = @x86_setzunp
+| 822 = @x86_setzuns
+| 823 = @x86_setzunz
+| 824 = @x86_setzuo
+| 825 = @x86_setzup
+| 826 = @x86_setzus
+| 827 = @x86_setzuz
+| 828 = @x86_sfence
+| 829 = @x86_sgdt
+| 830 = @x86_sha1msg1
+| 831 = @x86_sha1msg2
+| 832 = @x86_sha1nexte
+| 833 = @x86_sha1rnds4
+| 834 = @x86_sha256msg1
+| 835 = @x86_sha256msg2
+| 836 = @x86_sha256rnds2
+| 837 = @x86_shl
+| 838 = @x86_shld
+| 839 = @x86_shlx
+| 840 = @x86_shr
+| 841 = @x86_shrd
+| 842 = @x86_shrx
+| 843 = @x86_shufpd
+| 844 = @x86_shufps
+| 845 = @x86_sidt
+| 846 = @x86_skinit
+| 847 = @x86_sldt
+| 848 = @x86_slwpcb
+| 849 = @x86_smsw
+| 850 = @x86_spflt
+| 851 = @x86_sqrtpd
+| 852 = @x86_sqrtps
+| 853 = @x86_sqrtsd
+| 854 = @x86_sqrtss
+| 855 = @x86_stac
+| 856 = @x86_stc
+| 857 = @x86_std
+| 858 = @x86_stgi
+| 859 = @x86_sti
+| 860 = @x86_stmxcsr
+| 861 = @x86_stosb
+| 862 = @x86_stosd
+| 863 = @x86_stosq
+| 864 = @x86_stosw
+| 865 = @x86_str
+| 866 = @x86_sttilecfg
+| 867 = @x86_stui
+| 868 = @x86_sub
+| 869 = @x86_subpd
+| 870 = @x86_subps
+| 871 = @x86_subsd
+| 872 = @x86_subss
+| 873 = @x86_swapgs
+| 874 = @x86_syscall
+| 875 = @x86_sysenter
+| 876 = @x86_sysexit
+| 877 = @x86_sysret
+| 878 = @x86_t1mskc
+| 879 = @x86_tdcall
+| 880 = @x86_tdpbf16ps
+| 881 = @x86_tdpbssd
+| 882 = @x86_tdpbsud
+| 883 = @x86_tdpbusd
+| 884 = @x86_tdpbuud
+| 885 = @x86_tdpfp16ps
+| 886 = @x86_test
+| 887 = @x86_testui
+| 888 = @x86_tileloadd
+| 889 = @x86_tileloaddt1
+| 890 = @x86_tilerelease
+| 891 = @x86_tilestored
+| 892 = @x86_tilezero
+| 893 = @x86_tlbsync
+| 894 = @x86_tpause
+| 895 = @x86_tzcnt
+| 896 = @x86_tzcnti
+| 897 = @x86_tzmsk
+| 898 = @x86_ucomisd
+| 899 = @x86_ucomiss
+| 900 = @x86_ud0
+| 901 = @x86_ud1
+| 902 = @x86_ud2
+| 903 = @x86_uiret
+| 904 = @x86_umonitor
+| 905 = @x86_umwait
+| 906 = @x86_unpckhpd
+| 907 = @x86_unpckhps
+| 908 = @x86_unpcklpd
+| 909 = @x86_unpcklps
+| 910 = @x86_urdmsr
+| 911 = @x86_uwrmsr
+| 912 = @x86_v4fmaddps
+| 913 = @x86_v4fmaddss
+| 914 = @x86_v4fnmaddps
+| 915 = @x86_v4fnmaddss
+| 916 = @x86_vaddnpd
+| 917 = @x86_vaddnps
+| 918 = @x86_vaddpd
+| 919 = @x86_vaddph
+| 920 = @x86_vaddps
+| 921 = @x86_vaddsd
+| 922 = @x86_vaddsetsps
+| 923 = @x86_vaddsh
+| 924 = @x86_vaddss
+| 925 = @x86_vaddsubpd
+| 926 = @x86_vaddsubps
+| 927 = @x86_vaesdec
+| 928 = @x86_vaesdeclast
+| 929 = @x86_vaesenc
+| 930 = @x86_vaesenclast
+| 931 = @x86_vaesimc
+| 932 = @x86_vaeskeygenassist
+| 933 = @x86_valignd
+| 934 = @x86_valignq
+| 935 = @x86_vandnpd
+| 936 = @x86_vandnps
+| 937 = @x86_vandpd
+| 938 = @x86_vandps
+| 939 = @x86_vbcstnebf162ps
+| 940 = @x86_vbcstnesh2ps
+| 941 = @x86_vblendmpd
+| 942 = @x86_vblendmps
+| 943 = @x86_vblendpd
+| 944 = @x86_vblendps
+| 945 = @x86_vblendvpd
+| 946 = @x86_vblendvps
+| 947 = @x86_vbroadcastf128
+| 948 = @x86_vbroadcastf32x2
+| 949 = @x86_vbroadcastf32x4
+| 950 = @x86_vbroadcastf32x8
+| 951 = @x86_vbroadcastf64x2
+| 952 = @x86_vbroadcastf64x4
+| 953 = @x86_vbroadcasti128
+| 954 = @x86_vbroadcasti32x2
+| 955 = @x86_vbroadcasti32x4
+| 956 = @x86_vbroadcasti32x8
+| 957 = @x86_vbroadcasti64x2
+| 958 = @x86_vbroadcasti64x4
+| 959 = @x86_vbroadcastsd
+| 960 = @x86_vbroadcastss
+| 961 = @x86_vcmppd
+| 962 = @x86_vcmpph
+| 963 = @x86_vcmpps
+| 964 = @x86_vcmpsd
+| 965 = @x86_vcmpsh
+| 966 = @x86_vcmpss
+| 967 = @x86_vcomisd
+| 968 = @x86_vcomish
+| 969 = @x86_vcomiss
+| 970 = @x86_vcompresspd
+| 971 = @x86_vcompressps
+| 972 = @x86_vcvtdq2pd
+| 973 = @x86_vcvtdq2ph
+| 974 = @x86_vcvtdq2ps
+| 975 = @x86_vcvtfxpntdq2ps
+| 976 = @x86_vcvtfxpntpd2dq
+| 977 = @x86_vcvtfxpntpd2udq
+| 978 = @x86_vcvtfxpntps2dq
+| 979 = @x86_vcvtfxpntps2udq
+| 980 = @x86_vcvtfxpntudq2ps
+| 981 = @x86_vcvtne2ps2bf16
+| 982 = @x86_vcvtneebf162ps
+| 983 = @x86_vcvtneeph2ps
+| 984 = @x86_vcvtneobf162ps
+| 985 = @x86_vcvtneoph2ps
+| 986 = @x86_vcvtneps2bf16
+| 987 = @x86_vcvtpd2dq
+| 988 = @x86_vcvtpd2ph
+| 989 = @x86_vcvtpd2ps
+| 990 = @x86_vcvtpd2qq
+| 991 = @x86_vcvtpd2udq
+| 992 = @x86_vcvtpd2uqq
+| 993 = @x86_vcvtph2dq
+| 994 = @x86_vcvtph2pd
+| 995 = @x86_vcvtph2ps
+| 996 = @x86_vcvtph2psx
+| 997 = @x86_vcvtph2qq
+| 998 = @x86_vcvtph2udq
+| 999 = @x86_vcvtph2uqq
+| 1000 = @x86_vcvtph2uw
+| 1001 = @x86_vcvtph2w
+| 1002 = @x86_vcvtps2dq
+| 1003 = @x86_vcvtps2pd
+| 1004 = @x86_vcvtps2ph
+| 1005 = @x86_vcvtps2phx
+| 1006 = @x86_vcvtps2qq
+| 1007 = @x86_vcvtps2udq
+| 1008 = @x86_vcvtps2uqq
+| 1009 = @x86_vcvtqq2pd
+| 1010 = @x86_vcvtqq2ph
+| 1011 = @x86_vcvtqq2ps
+| 1012 = @x86_vcvtsd2sh
+| 1013 = @x86_vcvtsd2si
+| 1014 = @x86_vcvtsd2ss
+| 1015 = @x86_vcvtsd2usi
+| 1016 = @x86_vcvtsh2sd
+| 1017 = @x86_vcvtsh2si
+| 1018 = @x86_vcvtsh2ss
+| 1019 = @x86_vcvtsh2usi
+| 1020 = @x86_vcvtsi2sd
+| 1021 = @x86_vcvtsi2sh
+| 1022 = @x86_vcvtsi2ss
+| 1023 = @x86_vcvtss2sd
+| 1024 = @x86_vcvtss2sh
+| 1025 = @x86_vcvtss2si
+| 1026 = @x86_vcvtss2usi
+| 1027 = @x86_vcvttpd2dq
+| 1028 = @x86_vcvttpd2qq
+| 1029 = @x86_vcvttpd2udq
+| 1030 = @x86_vcvttpd2uqq
+| 1031 = @x86_vcvttph2dq
+| 1032 = @x86_vcvttph2qq
+| 1033 = @x86_vcvttph2udq
+| 1034 = @x86_vcvttph2uqq
+| 1035 = @x86_vcvttph2uw
+| 1036 = @x86_vcvttph2w
+| 1037 = @x86_vcvttps2dq
+| 1038 = @x86_vcvttps2qq
+| 1039 = @x86_vcvttps2udq
+| 1040 = @x86_vcvttps2uqq
+| 1041 = @x86_vcvttsd2si
+| 1042 = @x86_vcvttsd2usi
+| 1043 = @x86_vcvttsh2si
+| 1044 = @x86_vcvttsh2usi
+| 1045 = @x86_vcvttss2si
+| 1046 = @x86_vcvttss2usi
+| 1047 = @x86_vcvtudq2pd
+| 1048 = @x86_vcvtudq2ph
+| 1049 = @x86_vcvtudq2ps
+| 1050 = @x86_vcvtuqq2pd
+| 1051 = @x86_vcvtuqq2ph
+| 1052 = @x86_vcvtuqq2ps
+| 1053 = @x86_vcvtusi2sd
+| 1054 = @x86_vcvtusi2sh
+| 1055 = @x86_vcvtusi2ss
+| 1056 = @x86_vcvtuw2ph
+| 1057 = @x86_vcvtw2ph
+| 1058 = @x86_vdbpsadbw
+| 1059 = @x86_vdivpd
+| 1060 = @x86_vdivph
+| 1061 = @x86_vdivps
+| 1062 = @x86_vdivsd
+| 1063 = @x86_vdivsh
+| 1064 = @x86_vdivss
+| 1065 = @x86_vdpbf16ps
+| 1066 = @x86_vdppd
+| 1067 = @x86_vdpps
+| 1068 = @x86_verr
+| 1069 = @x86_verw
+| 1070 = @x86_vexp223ps
+| 1071 = @x86_vexp2pd
+| 1072 = @x86_vexp2ps
+| 1073 = @x86_vexpandpd
+| 1074 = @x86_vexpandps
+| 1075 = @x86_vextractf128
+| 1076 = @x86_vextractf32x4
+| 1077 = @x86_vextractf32x8
+| 1078 = @x86_vextractf64x2
+| 1079 = @x86_vextractf64x4
+| 1080 = @x86_vextracti128
+| 1081 = @x86_vextracti32x4
+| 1082 = @x86_vextracti32x8
+| 1083 = @x86_vextracti64x2
+| 1084 = @x86_vextracti64x4
+| 1085 = @x86_vextractps
+| 1086 = @x86_vfcmaddcph
+| 1087 = @x86_vfcmaddcsh
+| 1088 = @x86_vfcmulcph
+| 1089 = @x86_vfcmulcsh
+| 1090 = @x86_vfixupimmpd
+| 1091 = @x86_vfixupimmps
+| 1092 = @x86_vfixupimmsd
+| 1093 = @x86_vfixupimmss
+| 1094 = @x86_vfixupnanpd
+| 1095 = @x86_vfixupnanps
+| 1096 = @x86_vfmadd132pd
+| 1097 = @x86_vfmadd132ph
+| 1098 = @x86_vfmadd132ps
+| 1099 = @x86_vfmadd132sd
+| 1100 = @x86_vfmadd132sh
+| 1101 = @x86_vfmadd132ss
+| 1102 = @x86_vfmadd213pd
+| 1103 = @x86_vfmadd213ph
+| 1104 = @x86_vfmadd213ps
+| 1105 = @x86_vfmadd213sd
+| 1106 = @x86_vfmadd213sh
+| 1107 = @x86_vfmadd213ss
+| 1108 = @x86_vfmadd231pd
+| 1109 = @x86_vfmadd231ph
+| 1110 = @x86_vfmadd231ps
+| 1111 = @x86_vfmadd231sd
+| 1112 = @x86_vfmadd231sh
+| 1113 = @x86_vfmadd231ss
+| 1114 = @x86_vfmadd233ps
+| 1115 = @x86_vfmaddcph
+| 1116 = @x86_vfmaddcsh
+| 1117 = @x86_vfmaddpd
+| 1118 = @x86_vfmaddps
+| 1119 = @x86_vfmaddsd
+| 1120 = @x86_vfmaddss
+| 1121 = @x86_vfmaddsub132pd
+| 1122 = @x86_vfmaddsub132ph
+| 1123 = @x86_vfmaddsub132ps
+| 1124 = @x86_vfmaddsub213pd
+| 1125 = @x86_vfmaddsub213ph
+| 1126 = @x86_vfmaddsub213ps
+| 1127 = @x86_vfmaddsub231pd
+| 1128 = @x86_vfmaddsub231ph
+| 1129 = @x86_vfmaddsub231ps
+| 1130 = @x86_vfmaddsubpd
+| 1131 = @x86_vfmaddsubps
+| 1132 = @x86_vfmsub132pd
+| 1133 = @x86_vfmsub132ph
+| 1134 = @x86_vfmsub132ps
+| 1135 = @x86_vfmsub132sd
+| 1136 = @x86_vfmsub132sh
+| 1137 = @x86_vfmsub132ss
+| 1138 = @x86_vfmsub213pd
+| 1139 = @x86_vfmsub213ph
+| 1140 = @x86_vfmsub213ps
+| 1141 = @x86_vfmsub213sd
+| 1142 = @x86_vfmsub213sh
+| 1143 = @x86_vfmsub213ss
+| 1144 = @x86_vfmsub231pd
+| 1145 = @x86_vfmsub231ph
+| 1146 = @x86_vfmsub231ps
+| 1147 = @x86_vfmsub231sd
+| 1148 = @x86_vfmsub231sh
+| 1149 = @x86_vfmsub231ss
+| 1150 = @x86_vfmsubadd132pd
+| 1151 = @x86_vfmsubadd132ph
+| 1152 = @x86_vfmsubadd132ps
+| 1153 = @x86_vfmsubadd213pd
+| 1154 = @x86_vfmsubadd213ph
+| 1155 = @x86_vfmsubadd213ps
+| 1156 = @x86_vfmsubadd231pd
+| 1157 = @x86_vfmsubadd231ph
+| 1158 = @x86_vfmsubadd231ps
+| 1159 = @x86_vfmsubaddpd
+| 1160 = @x86_vfmsubaddps
+| 1161 = @x86_vfmsubpd
+| 1162 = @x86_vfmsubps
+| 1163 = @x86_vfmsubsd
+| 1164 = @x86_vfmsubss
+| 1165 = @x86_vfmulcph
+| 1166 = @x86_vfmulcsh
+| 1167 = @x86_vfnmadd132pd
+| 1168 = @x86_vfnmadd132ph
+| 1169 = @x86_vfnmadd132ps
+| 1170 = @x86_vfnmadd132sd
+| 1171 = @x86_vfnmadd132sh
+| 1172 = @x86_vfnmadd132ss
+| 1173 = @x86_vfnmadd213pd
+| 1174 = @x86_vfnmadd213ph
+| 1175 = @x86_vfnmadd213ps
+| 1176 = @x86_vfnmadd213sd
+| 1177 = @x86_vfnmadd213sh
+| 1178 = @x86_vfnmadd213ss
+| 1179 = @x86_vfnmadd231pd
+| 1180 = @x86_vfnmadd231ph
+| 1181 = @x86_vfnmadd231ps
+| 1182 = @x86_vfnmadd231sd
+| 1183 = @x86_vfnmadd231sh
+| 1184 = @x86_vfnmadd231ss
+| 1185 = @x86_vfnmaddpd
+| 1186 = @x86_vfnmaddps
+| 1187 = @x86_vfnmaddsd
+| 1188 = @x86_vfnmaddss
+| 1189 = @x86_vfnmsub132pd
+| 1190 = @x86_vfnmsub132ph
+| 1191 = @x86_vfnmsub132ps
+| 1192 = @x86_vfnmsub132sd
+| 1193 = @x86_vfnmsub132sh
+| 1194 = @x86_vfnmsub132ss
+| 1195 = @x86_vfnmsub213pd
+| 1196 = @x86_vfnmsub213ph
+| 1197 = @x86_vfnmsub213ps
+| 1198 = @x86_vfnmsub213sd
+| 1199 = @x86_vfnmsub213sh
+| 1200 = @x86_vfnmsub213ss
+| 1201 = @x86_vfnmsub231pd
+| 1202 = @x86_vfnmsub231ph
+| 1203 = @x86_vfnmsub231ps
+| 1204 = @x86_vfnmsub231sd
+| 1205 = @x86_vfnmsub231sh
+| 1206 = @x86_vfnmsub231ss
+| 1207 = @x86_vfnmsubpd
+| 1208 = @x86_vfnmsubps
+| 1209 = @x86_vfnmsubsd
+| 1210 = @x86_vfnmsubss
+| 1211 = @x86_vfpclasspd
+| 1212 = @x86_vfpclassph
+| 1213 = @x86_vfpclassps
+| 1214 = @x86_vfpclasssd
+| 1215 = @x86_vfpclasssh
+| 1216 = @x86_vfpclassss
+| 1217 = @x86_vfrczpd
+| 1218 = @x86_vfrczps
+| 1219 = @x86_vfrczsd
+| 1220 = @x86_vfrczss
+| 1221 = @x86_vgatherdpd
+| 1222 = @x86_vgatherdps
+| 1223 = @x86_vgatherpf0dpd
+| 1224 = @x86_vgatherpf0dps
+| 1225 = @x86_vgatherpf0hintdpd
+| 1226 = @x86_vgatherpf0hintdps
+| 1227 = @x86_vgatherpf0qpd
+| 1228 = @x86_vgatherpf0qps
+| 1229 = @x86_vgatherpf1dpd
+| 1230 = @x86_vgatherpf1dps
+| 1231 = @x86_vgatherpf1qpd
+| 1232 = @x86_vgatherpf1qps
+| 1233 = @x86_vgatherqpd
+| 1234 = @x86_vgatherqps
+| 1235 = @x86_vgetexppd
+| 1236 = @x86_vgetexpph
+| 1237 = @x86_vgetexpps
+| 1238 = @x86_vgetexpsd
+| 1239 = @x86_vgetexpsh
+| 1240 = @x86_vgetexpss
+| 1241 = @x86_vgetmantpd
+| 1242 = @x86_vgetmantph
+| 1243 = @x86_vgetmantps
+| 1244 = @x86_vgetmantsd
+| 1245 = @x86_vgetmantsh
+| 1246 = @x86_vgetmantss
+| 1247 = @x86_vgf2p8affineinvqb
+| 1248 = @x86_vgf2p8affineqb
+| 1249 = @x86_vgf2p8mulb
+| 1250 = @x86_vgmaxabsps
+| 1251 = @x86_vgmaxpd
+| 1252 = @x86_vgmaxps
+| 1253 = @x86_vgminpd
+| 1254 = @x86_vgminps
+| 1255 = @x86_vhaddpd
+| 1256 = @x86_vhaddps
+| 1257 = @x86_vhsubpd
+| 1258 = @x86_vhsubps
+| 1259 = @x86_vinsertf128
+| 1260 = @x86_vinsertf32x4
+| 1261 = @x86_vinsertf32x8
+| 1262 = @x86_vinsertf64x2
+| 1263 = @x86_vinsertf64x4
+| 1264 = @x86_vinserti128
+| 1265 = @x86_vinserti32x4
+| 1266 = @x86_vinserti32x8
+| 1267 = @x86_vinserti64x2
+| 1268 = @x86_vinserti64x4
+| 1269 = @x86_vinsertps
+| 1270 = @x86_vlddqu
+| 1271 = @x86_vldmxcsr
+| 1272 = @x86_vloadunpackhd
+| 1273 = @x86_vloadunpackhpd
+| 1274 = @x86_vloadunpackhps
+| 1275 = @x86_vloadunpackhq
+| 1276 = @x86_vloadunpackld
+| 1277 = @x86_vloadunpacklpd
+| 1278 = @x86_vloadunpacklps
+| 1279 = @x86_vloadunpacklq
+| 1280 = @x86_vlog2ps
+| 1281 = @x86_vmaskmovdqu
+| 1282 = @x86_vmaskmovpd
+| 1283 = @x86_vmaskmovps
+| 1284 = @x86_vmaxpd
+| 1285 = @x86_vmaxph
+| 1286 = @x86_vmaxps
+| 1287 = @x86_vmaxsd
+| 1288 = @x86_vmaxsh
+| 1289 = @x86_vmaxss
+| 1290 = @x86_vmcall
+| 1291 = @x86_vmclear
+| 1292 = @x86_vmfunc
+| 1293 = @x86_vminpd
+| 1294 = @x86_vminph
+| 1295 = @x86_vminps
+| 1296 = @x86_vminsd
+| 1297 = @x86_vminsh
+| 1298 = @x86_vminss
+| 1299 = @x86_vmlaunch
+| 1300 = @x86_vmload
+| 1301 = @x86_vmmcall
+| 1302 = @x86_vmovapd
+| 1303 = @x86_vmovaps
+| 1304 = @x86_vmovd
+| 1305 = @x86_vmovddup
+| 1306 = @x86_vmovdqa
+| 1307 = @x86_vmovdqa32
+| 1308 = @x86_vmovdqa64
+| 1309 = @x86_vmovdqu
+| 1310 = @x86_vmovdqu16
+| 1311 = @x86_vmovdqu32
+| 1312 = @x86_vmovdqu64
+| 1313 = @x86_vmovdqu8
+| 1314 = @x86_vmovhlps
+| 1315 = @x86_vmovhpd
+| 1316 = @x86_vmovhps
+| 1317 = @x86_vmovlhps
+| 1318 = @x86_vmovlpd
+| 1319 = @x86_vmovlps
+| 1320 = @x86_vmovmskpd
+| 1321 = @x86_vmovmskps
+| 1322 = @x86_vmovnrapd
+| 1323 = @x86_vmovnraps
+| 1324 = @x86_vmovnrngoapd
+| 1325 = @x86_vmovnrngoaps
+| 1326 = @x86_vmovntdq
+| 1327 = @x86_vmovntdqa
+| 1328 = @x86_vmovntpd
+| 1329 = @x86_vmovntps
+| 1330 = @x86_vmovq
+| 1331 = @x86_vmovsd
+| 1332 = @x86_vmovsh
+| 1333 = @x86_vmovshdup
+| 1334 = @x86_vmovsldup
+| 1335 = @x86_vmovss
+| 1336 = @x86_vmovupd
+| 1337 = @x86_vmovups
+| 1338 = @x86_vmovw
+| 1339 = @x86_vmpsadbw
+| 1340 = @x86_vmptrld
+| 1341 = @x86_vmptrst
+| 1342 = @x86_vmread
+| 1343 = @x86_vmresume
+| 1344 = @x86_vmrun
+| 1345 = @x86_vmsave
+| 1346 = @x86_vmulpd
+| 1347 = @x86_vmulph
+| 1348 = @x86_vmulps
+| 1349 = @x86_vmulsd
+| 1350 = @x86_vmulsh
+| 1351 = @x86_vmulss
+| 1352 = @x86_vmwrite
+| 1353 = @x86_vmxoff
+| 1354 = @x86_vmxon
+| 1355 = @x86_vorpd
+| 1356 = @x86_vorps
+| 1357 = @x86_vp2intersectd
+| 1358 = @x86_vp2intersectq
+| 1359 = @x86_vp4dpwssd
+| 1360 = @x86_vp4dpwssds
+| 1361 = @x86_vpabsb
+| 1362 = @x86_vpabsd
+| 1363 = @x86_vpabsq
+| 1364 = @x86_vpabsw
+| 1365 = @x86_vpackssdw
+| 1366 = @x86_vpacksswb
+| 1367 = @x86_vpackstorehd
+| 1368 = @x86_vpackstorehpd
+| 1369 = @x86_vpackstorehps
+| 1370 = @x86_vpackstorehq
+| 1371 = @x86_vpackstoreld
+| 1372 = @x86_vpackstorelpd
+| 1373 = @x86_vpackstorelps
+| 1374 = @x86_vpackstorelq
+| 1375 = @x86_vpackusdw
+| 1376 = @x86_vpackuswb
+| 1377 = @x86_vpadcd
+| 1378 = @x86_vpaddb
+| 1379 = @x86_vpaddd
+| 1380 = @x86_vpaddq
+| 1381 = @x86_vpaddsb
+| 1382 = @x86_vpaddsetcd
+| 1383 = @x86_vpaddsetsd
+| 1384 = @x86_vpaddsw
+| 1385 = @x86_vpaddusb
+| 1386 = @x86_vpaddusw
+| 1387 = @x86_vpaddw
+| 1388 = @x86_vpalignr
+| 1389 = @x86_vpand
+| 1390 = @x86_vpandd
+| 1391 = @x86_vpandn
+| 1392 = @x86_vpandnd
+| 1393 = @x86_vpandnq
+| 1394 = @x86_vpandq
+| 1395 = @x86_vpavgb
+| 1396 = @x86_vpavgw
+| 1397 = @x86_vpblendd
+| 1398 = @x86_vpblendmb
+| 1399 = @x86_vpblendmd
+| 1400 = @x86_vpblendmq
+| 1401 = @x86_vpblendmw
+| 1402 = @x86_vpblendvb
+| 1403 = @x86_vpblendw
+| 1404 = @x86_vpbroadcastb
+| 1405 = @x86_vpbroadcastd
+| 1406 = @x86_vpbroadcastmb2q
+| 1407 = @x86_vpbroadcastmw2d
+| 1408 = @x86_vpbroadcastq
+| 1409 = @x86_vpbroadcastw
+| 1410 = @x86_vpclmulqdq
+| 1411 = @x86_vpcmov
+| 1412 = @x86_vpcmpb
+| 1413 = @x86_vpcmpd
+| 1414 = @x86_vpcmpeqb
+| 1415 = @x86_vpcmpeqd
+| 1416 = @x86_vpcmpeqq
+| 1417 = @x86_vpcmpeqw
+| 1418 = @x86_vpcmpestri
+| 1419 = @x86_vpcmpestrm
+| 1420 = @x86_vpcmpgtb
+| 1421 = @x86_vpcmpgtd
+| 1422 = @x86_vpcmpgtq
+| 1423 = @x86_vpcmpgtw
+| 1424 = @x86_vpcmpistri
+| 1425 = @x86_vpcmpistrm
+| 1426 = @x86_vpcmpltd
+| 1427 = @x86_vpcmpq
+| 1428 = @x86_vpcmpub
+| 1429 = @x86_vpcmpud
+| 1430 = @x86_vpcmpuq
+| 1431 = @x86_vpcmpuw
+| 1432 = @x86_vpcmpw
+| 1433 = @x86_vpcomb
+| 1434 = @x86_vpcomd
+| 1435 = @x86_vpcompressb
+| 1436 = @x86_vpcompressd
+| 1437 = @x86_vpcompressq
+| 1438 = @x86_vpcompressw
+| 1439 = @x86_vpcomq
+| 1440 = @x86_vpcomub
+| 1441 = @x86_vpcomud
+| 1442 = @x86_vpcomuq
+| 1443 = @x86_vpcomuw
+| 1444 = @x86_vpcomw
+| 1445 = @x86_vpconflictd
+| 1446 = @x86_vpconflictq
+| 1447 = @x86_vpdpbssd
+| 1448 = @x86_vpdpbssds
+| 1449 = @x86_vpdpbsud
+| 1450 = @x86_vpdpbsuds
+| 1451 = @x86_vpdpbusd
+| 1452 = @x86_vpdpbusds
+| 1453 = @x86_vpdpbuud
+| 1454 = @x86_vpdpbuuds
+| 1455 = @x86_vpdpwssd
+| 1456 = @x86_vpdpwssds
+| 1457 = @x86_vpdpwsud
+| 1458 = @x86_vpdpwsuds
+| 1459 = @x86_vpdpwusd
+| 1460 = @x86_vpdpwusds
+| 1461 = @x86_vpdpwuud
+| 1462 = @x86_vpdpwuuds
+| 1463 = @x86_vperm2f128
+| 1464 = @x86_vperm2i128
+| 1465 = @x86_vpermb
+| 1466 = @x86_vpermd
+| 1467 = @x86_vpermf32x4
+| 1468 = @x86_vpermi2b
+| 1469 = @x86_vpermi2d
+| 1470 = @x86_vpermi2pd
+| 1471 = @x86_vpermi2ps
+| 1472 = @x86_vpermi2q
+| 1473 = @x86_vpermi2w
+| 1474 = @x86_vpermil2pd
+| 1475 = @x86_vpermil2ps
+| 1476 = @x86_vpermilpd
+| 1477 = @x86_vpermilps
+| 1478 = @x86_vpermpd
+| 1479 = @x86_vpermps
+| 1480 = @x86_vpermq
+| 1481 = @x86_vpermt2b
+| 1482 = @x86_vpermt2d
+| 1483 = @x86_vpermt2pd
+| 1484 = @x86_vpermt2ps
+| 1485 = @x86_vpermt2q
+| 1486 = @x86_vpermt2w
+| 1487 = @x86_vpermw
+| 1488 = @x86_vpexpandb
+| 1489 = @x86_vpexpandd
+| 1490 = @x86_vpexpandq
+| 1491 = @x86_vpexpandw
+| 1492 = @x86_vpextrb
+| 1493 = @x86_vpextrd
+| 1494 = @x86_vpextrq
+| 1495 = @x86_vpextrw
+| 1496 = @x86_vpgatherdd
+| 1497 = @x86_vpgatherdq
+| 1498 = @x86_vpgatherqd
+| 1499 = @x86_vpgatherqq
+| 1500 = @x86_vphaddbd
+| 1501 = @x86_vphaddbq
+| 1502 = @x86_vphaddbw
+| 1503 = @x86_vphaddd
+| 1504 = @x86_vphadddq
+| 1505 = @x86_vphaddsw
+| 1506 = @x86_vphaddubd
+| 1507 = @x86_vphaddubq
+| 1508 = @x86_vphaddubw
+| 1509 = @x86_vphaddudq
+| 1510 = @x86_vphadduwd
+| 1511 = @x86_vphadduwq
+| 1512 = @x86_vphaddw
+| 1513 = @x86_vphaddwd
+| 1514 = @x86_vphaddwq
+| 1515 = @x86_vphminposuw
+| 1516 = @x86_vphsubbw
+| 1517 = @x86_vphsubd
+| 1518 = @x86_vphsubdq
+| 1519 = @x86_vphsubsw
+| 1520 = @x86_vphsubw
+| 1521 = @x86_vphsubwd
+| 1522 = @x86_vpinsrb
+| 1523 = @x86_vpinsrd
+| 1524 = @x86_vpinsrq
+| 1525 = @x86_vpinsrw
+| 1526 = @x86_vplzcntd
+| 1527 = @x86_vplzcntq
+| 1528 = @x86_vpmacsdd
+| 1529 = @x86_vpmacsdqh
+| 1530 = @x86_vpmacsdql
+| 1531 = @x86_vpmacssdd
+| 1532 = @x86_vpmacssdqh
+| 1533 = @x86_vpmacssdql
+| 1534 = @x86_vpmacsswd
+| 1535 = @x86_vpmacssww
+| 1536 = @x86_vpmacswd
+| 1537 = @x86_vpmacsww
+| 1538 = @x86_vpmadcsswd
+| 1539 = @x86_vpmadcswd
+| 1540 = @x86_vpmadd231d
+| 1541 = @x86_vpmadd233d
+| 1542 = @x86_vpmadd52huq
+| 1543 = @x86_vpmadd52luq
+| 1544 = @x86_vpmaddubsw
+| 1545 = @x86_vpmaddwd
+| 1546 = @x86_vpmaskmovd
+| 1547 = @x86_vpmaskmovq
+| 1548 = @x86_vpmaxsb
+| 1549 = @x86_vpmaxsd
+| 1550 = @x86_vpmaxsq
+| 1551 = @x86_vpmaxsw
+| 1552 = @x86_vpmaxub
+| 1553 = @x86_vpmaxud
+| 1554 = @x86_vpmaxuq
+| 1555 = @x86_vpmaxuw
+| 1556 = @x86_vpminsb
+| 1557 = @x86_vpminsd
+| 1558 = @x86_vpminsq
+| 1559 = @x86_vpminsw
+| 1560 = @x86_vpminub
+| 1561 = @x86_vpminud
+| 1562 = @x86_vpminuq
+| 1563 = @x86_vpminuw
+| 1564 = @x86_vpmovb2m
+| 1565 = @x86_vpmovd2m
+| 1566 = @x86_vpmovdb
+| 1567 = @x86_vpmovdw
+| 1568 = @x86_vpmovm2b
+| 1569 = @x86_vpmovm2d
+| 1570 = @x86_vpmovm2q
+| 1571 = @x86_vpmovm2w
+| 1572 = @x86_vpmovmskb
+| 1573 = @x86_vpmovq2m
+| 1574 = @x86_vpmovqb
+| 1575 = @x86_vpmovqd
+| 1576 = @x86_vpmovqw
+| 1577 = @x86_vpmovsdb
+| 1578 = @x86_vpmovsdw
+| 1579 = @x86_vpmovsqb
+| 1580 = @x86_vpmovsqd
+| 1581 = @x86_vpmovsqw
+| 1582 = @x86_vpmovswb
+| 1583 = @x86_vpmovsxbd
+| 1584 = @x86_vpmovsxbq
+| 1585 = @x86_vpmovsxbw
+| 1586 = @x86_vpmovsxdq
+| 1587 = @x86_vpmovsxwd
+| 1588 = @x86_vpmovsxwq
+| 1589 = @x86_vpmovusdb
+| 1590 = @x86_vpmovusdw
+| 1591 = @x86_vpmovusqb
+| 1592 = @x86_vpmovusqd
+| 1593 = @x86_vpmovusqw
+| 1594 = @x86_vpmovuswb
+| 1595 = @x86_vpmovw2m
+| 1596 = @x86_vpmovwb
+| 1597 = @x86_vpmovzxbd
+| 1598 = @x86_vpmovzxbq
+| 1599 = @x86_vpmovzxbw
+| 1600 = @x86_vpmovzxdq
+| 1601 = @x86_vpmovzxwd
+| 1602 = @x86_vpmovzxwq
+| 1603 = @x86_vpmuldq
+| 1604 = @x86_vpmulhd
+| 1605 = @x86_vpmulhrsw
+| 1606 = @x86_vpmulhud
+| 1607 = @x86_vpmulhuw
+| 1608 = @x86_vpmulhw
+| 1609 = @x86_vpmulld
+| 1610 = @x86_vpmullq
+| 1611 = @x86_vpmullw
+| 1612 = @x86_vpmultishiftqb
+| 1613 = @x86_vpmuludq
+| 1614 = @x86_vpopcntb
+| 1615 = @x86_vpopcntd
+| 1616 = @x86_vpopcntq
+| 1617 = @x86_vpopcntw
+| 1618 = @x86_vpor
+| 1619 = @x86_vpord
+| 1620 = @x86_vporq
+| 1621 = @x86_vpperm
+| 1622 = @x86_vprefetch0
+| 1623 = @x86_vprefetch1
+| 1624 = @x86_vprefetch2
+| 1625 = @x86_vprefetche0
+| 1626 = @x86_vprefetche1
+| 1627 = @x86_vprefetche2
+| 1628 = @x86_vprefetchenta
+| 1629 = @x86_vprefetchnta
+| 1630 = @x86_vprold
+| 1631 = @x86_vprolq
+| 1632 = @x86_vprolvd
+| 1633 = @x86_vprolvq
+| 1634 = @x86_vprord
+| 1635 = @x86_vprorq
+| 1636 = @x86_vprorvd
+| 1637 = @x86_vprorvq
+| 1638 = @x86_vprotb
+| 1639 = @x86_vprotd
+| 1640 = @x86_vprotq
+| 1641 = @x86_vprotw
+| 1642 = @x86_vpsadbw
+| 1643 = @x86_vpsbbd
+| 1644 = @x86_vpsbbrd
+| 1645 = @x86_vpscatterdd
+| 1646 = @x86_vpscatterdq
+| 1647 = @x86_vpscatterqd
+| 1648 = @x86_vpscatterqq
+| 1649 = @x86_vpshab
+| 1650 = @x86_vpshad
+| 1651 = @x86_vpshaq
+| 1652 = @x86_vpshaw
+| 1653 = @x86_vpshlb
+| 1654 = @x86_vpshld
+| 1655 = @x86_vpshldd
+| 1656 = @x86_vpshldq
+| 1657 = @x86_vpshldvd
+| 1658 = @x86_vpshldvq
+| 1659 = @x86_vpshldvw
+| 1660 = @x86_vpshldw
+| 1661 = @x86_vpshlq
+| 1662 = @x86_vpshlw
+| 1663 = @x86_vpshrdd
+| 1664 = @x86_vpshrdq
+| 1665 = @x86_vpshrdvd
+| 1666 = @x86_vpshrdvq
+| 1667 = @x86_vpshrdvw
+| 1668 = @x86_vpshrdw
+| 1669 = @x86_vpshufb
+| 1670 = @x86_vpshufbitqmb
+| 1671 = @x86_vpshufd
+| 1672 = @x86_vpshufhw
+| 1673 = @x86_vpshuflw
+| 1674 = @x86_vpsignb
+| 1675 = @x86_vpsignd
+| 1676 = @x86_vpsignw
+| 1677 = @x86_vpslld
+| 1678 = @x86_vpslldq
+| 1679 = @x86_vpsllq
+| 1680 = @x86_vpsllvd
+| 1681 = @x86_vpsllvq
+| 1682 = @x86_vpsllvw
+| 1683 = @x86_vpsllw
+| 1684 = @x86_vpsrad
+| 1685 = @x86_vpsraq
+| 1686 = @x86_vpsravd
+| 1687 = @x86_vpsravq
+| 1688 = @x86_vpsravw
+| 1689 = @x86_vpsraw
+| 1690 = @x86_vpsrld
+| 1691 = @x86_vpsrldq
+| 1692 = @x86_vpsrlq
+| 1693 = @x86_vpsrlvd
+| 1694 = @x86_vpsrlvq
+| 1695 = @x86_vpsrlvw
+| 1696 = @x86_vpsrlw
+| 1697 = @x86_vpsubb
+| 1698 = @x86_vpsubd
+| 1699 = @x86_vpsubq
+| 1700 = @x86_vpsubrd
+| 1701 = @x86_vpsubrsetbd
+| 1702 = @x86_vpsubsb
+| 1703 = @x86_vpsubsetbd
+| 1704 = @x86_vpsubsw
+| 1705 = @x86_vpsubusb
+| 1706 = @x86_vpsubusw
+| 1707 = @x86_vpsubw
+| 1708 = @x86_vpternlogd
+| 1709 = @x86_vpternlogq
+| 1710 = @x86_vptest
+| 1711 = @x86_vptestmb
+| 1712 = @x86_vptestmd
+| 1713 = @x86_vptestmq
+| 1714 = @x86_vptestmw
+| 1715 = @x86_vptestnmb
+| 1716 = @x86_vptestnmd
+| 1717 = @x86_vptestnmq
+| 1718 = @x86_vptestnmw
+| 1719 = @x86_vpunpckhbw
+| 1720 = @x86_vpunpckhdq
+| 1721 = @x86_vpunpckhqdq
+| 1722 = @x86_vpunpckhwd
+| 1723 = @x86_vpunpcklbw
+| 1724 = @x86_vpunpckldq
+| 1725 = @x86_vpunpcklqdq
+| 1726 = @x86_vpunpcklwd
+| 1727 = @x86_vpxor
+| 1728 = @x86_vpxord
+| 1729 = @x86_vpxorq
+| 1730 = @x86_vrangepd
+| 1731 = @x86_vrangeps
+| 1732 = @x86_vrangesd
+| 1733 = @x86_vrangess
+| 1734 = @x86_vrcp14pd
+| 1735 = @x86_vrcp14ps
+| 1736 = @x86_vrcp14sd
+| 1737 = @x86_vrcp14ss
+| 1738 = @x86_vrcp23ps
+| 1739 = @x86_vrcp28pd
+| 1740 = @x86_vrcp28ps
+| 1741 = @x86_vrcp28sd
+| 1742 = @x86_vrcp28ss
+| 1743 = @x86_vrcpph
+| 1744 = @x86_vrcpps
+| 1745 = @x86_vrcpsh
+| 1746 = @x86_vrcpss
+| 1747 = @x86_vreducepd
+| 1748 = @x86_vreduceph
+| 1749 = @x86_vreduceps
+| 1750 = @x86_vreducesd
+| 1751 = @x86_vreducesh
+| 1752 = @x86_vreducess
+| 1753 = @x86_vrndfxpntpd
+| 1754 = @x86_vrndfxpntps
+| 1755 = @x86_vrndscalepd
+| 1756 = @x86_vrndscaleph
+| 1757 = @x86_vrndscaleps
+| 1758 = @x86_vrndscalesd
+| 1759 = @x86_vrndscalesh
+| 1760 = @x86_vrndscaless
+| 1761 = @x86_vroundpd
+| 1762 = @x86_vroundps
+| 1763 = @x86_vroundsd
+| 1764 = @x86_vroundss
+| 1765 = @x86_vrsqrt14pd
+| 1766 = @x86_vrsqrt14ps
+| 1767 = @x86_vrsqrt14sd
+| 1768 = @x86_vrsqrt14ss
+| 1769 = @x86_vrsqrt23ps
+| 1770 = @x86_vrsqrt28pd
+| 1771 = @x86_vrsqrt28ps
+| 1772 = @x86_vrsqrt28sd
+| 1773 = @x86_vrsqrt28ss
+| 1774 = @x86_vrsqrtph
+| 1775 = @x86_vrsqrtps
+| 1776 = @x86_vrsqrtsh
+| 1777 = @x86_vrsqrtss
+| 1778 = @x86_vscalefpd
+| 1779 = @x86_vscalefph
+| 1780 = @x86_vscalefps
+| 1781 = @x86_vscalefsd
+| 1782 = @x86_vscalefsh
+| 1783 = @x86_vscalefss
+| 1784 = @x86_vscaleps
+| 1785 = @x86_vscatterdpd
+| 1786 = @x86_vscatterdps
+| 1787 = @x86_vscatterpf0dpd
+| 1788 = @x86_vscatterpf0dps
+| 1789 = @x86_vscatterpf0hintdpd
+| 1790 = @x86_vscatterpf0hintdps
+| 1791 = @x86_vscatterpf0qpd
+| 1792 = @x86_vscatterpf0qps
+| 1793 = @x86_vscatterpf1dpd
+| 1794 = @x86_vscatterpf1dps
+| 1795 = @x86_vscatterpf1qpd
+| 1796 = @x86_vscatterpf1qps
+| 1797 = @x86_vscatterqpd
+| 1798 = @x86_vscatterqps
+| 1799 = @x86_vsha512msg1
+| 1800 = @x86_vsha512msg2
+| 1801 = @x86_vsha512rnds2
+| 1802 = @x86_vshuff32x4
+| 1803 = @x86_vshuff64x2
+| 1804 = @x86_vshufi32x4
+| 1805 = @x86_vshufi64x2
+| 1806 = @x86_vshufpd
+| 1807 = @x86_vshufps
+| 1808 = @x86_vsm3msg1
+| 1809 = @x86_vsm3msg2
+| 1810 = @x86_vsm3rnds2
+| 1811 = @x86_vsm4key4
+| 1812 = @x86_vsm4rnds4
+| 1813 = @x86_vsqrtpd
+| 1814 = @x86_vsqrtph
+| 1815 = @x86_vsqrtps
+| 1816 = @x86_vsqrtsd
+| 1817 = @x86_vsqrtsh
+| 1818 = @x86_vsqrtss
+| 1819 = @x86_vstmxcsr
+| 1820 = @x86_vsubpd
+| 1821 = @x86_vsubph
+| 1822 = @x86_vsubps
+| 1823 = @x86_vsubrpd
+| 1824 = @x86_vsubrps
+| 1825 = @x86_vsubsd
+| 1826 = @x86_vsubsh
+| 1827 = @x86_vsubss
+| 1828 = @x86_vtestpd
+| 1829 = @x86_vtestps
+| 1830 = @x86_vucomisd
+| 1831 = @x86_vucomish
+| 1832 = @x86_vucomiss
+| 1833 = @x86_vunpckhpd
+| 1834 = @x86_vunpckhps
+| 1835 = @x86_vunpcklpd
+| 1836 = @x86_vunpcklps
+| 1837 = @x86_vxorpd
+| 1838 = @x86_vxorps
+| 1839 = @x86_vzeroall
+| 1840 = @x86_vzeroupper
+| 1841 = @x86_wbinvd
+| 1842 = @x86_wrfsbase
+| 1843 = @x86_wrgsbase
+| 1844 = @x86_wrmsr
+| 1845 = @x86_wrmsrlist
+| 1846 = @x86_wrmsrns
+| 1847 = @x86_wrpkru
+| 1848 = @x86_wrssd
+| 1849 = @x86_wrssq
+| 1850 = @x86_wrussd
+| 1851 = @x86_wrussq
+| 1852 = @x86_xabort
+| 1853 = @x86_xadd
+| 1854 = @x86_xbegin
+| 1855 = @x86_xchg
+| 1856 = @x86_xcryptcbc
+| 1857 = @x86_xcryptcfb
+| 1858 = @x86_xcryptctr
+| 1859 = @x86_xcryptecb
+| 1860 = @x86_xcryptofb
+| 1861 = @x86_xend
+| 1862 = @x86_xgetbv
+| 1863 = @x86_xlat
+| 1864 = @x86_xor
+| 1865 = @x86_xorpd
+| 1866 = @x86_xorps
+| 1867 = @x86_xresldtrk
+| 1868 = @x86_xrstor
+| 1869 = @x86_xrstor64
+| 1870 = @x86_xrstors
+| 1871 = @x86_xrstors64
+| 1872 = @x86_xsave
+| 1873 = @x86_xsave64
+| 1874 = @x86_xsavec
+| 1875 = @x86_xsavec64
+| 1876 = @x86_xsaveopt
+| 1877 = @x86_xsaveopt64
+| 1878 = @x86_xsaves
+| 1879 = @x86_xsaves64
+| 1880 = @x86_xsetbv
+| 1881 = @x86_xsha1
+| 1882 = @x86_xsha256
+| 1883 = @x86_xstore
+| 1884 = @x86_xsusldtrk
+| 1885 = @x86_xtest
+;
+
+@instruction = @x86_instruction | @il_instruction | @jvm_instruction;
+
+#keyset[a, b]
+instruction(
+  unique int id: @x86_instruction,
+  int a : int ref,
+  int b : int ref,
+  int mnemonic : int ref
+);
+
+instruction_length(
+  unique int instr: @x86_instruction ref,
+  int length : int ref
+);
+
+instruction_string(
+  unique int instr: @instruction ref,
+  string repr : string ref
+);
+
+instruction_location(
+  unique int instr: @instruction ref,
+  int loc: @location_default ref
+);
+
+register(
+  unique int id : @register,
+  string repr : string ref
+);
+
+register_access(
+  unique int id: @register_access,
+  int reg: @register ref
+);
+
+operand(
+  unique int id: @operand,
+  int instr: @x86_instruction ref,
+  int index : int ref,
+  int size : int ref
+);
+
+operand_string(
+  unique int operand: @operand ref,
+  string repr : string ref
+);
+
+operand_location(
+  unique int operand: @operand ref,
+  int loc: @location_default ref
+);
+
+operand_unused(
+  unique int operand: @operand ref
+);
+
+operand_reg(
+  unique int operand: @operand ref,
+  int access : @register_access ref
+);
+
+operand_mem(
+  unique int operand: @operand ref
+);
+
+operand_mem_scale_factor(
+  unique int operand: @operand ref,
+  int scale_factor : int ref
+)
+
+operand_mem_segment_register(
+  unique int operand : @operand ref,
+  int segment_register : @register_access ref
+);
+
+operand_mem_base_register(
+  unique int operand : @operand ref,
+  int base_register : @register_access ref
+);
+
+operand_mem_index_register(
+  unique int operand : @operand ref,
+  int index_register : @register_access ref
+);
+
+operand_mem_displacement(
+  unique int operand: @operand ref,
+  int value : int ref
+);
+
+operand_ptr(
+  unique int operand: @operand ref,
+  int segment : int ref,
+  int offset : int ref
+);
+
+operand_imm(
+  unique int operand: @operand ref,
+  int value : int ref, /* signedness depends on operand_imm_is_signed */
+  int offset : int ref,
+  int size : int ref
+);
+
+operand_imm_is_signed(
+  unique int operand: @operand ref
+);
+
+operand_imm_is_address(
+  unique int operand: @operand ref
+);
+
+operand_imm_is_relative(
+  unique int operand: @operand ref
+);
+
+optional_header( // TODO: File
+  unique int id: @optional_header,
+  unique int image_base_a: int ref,
+  unique int image_base_b: int ref,
+  unique int entry_point: int ref
+)
+
+@section = @text_section | @rdata_section;
+
+section( // TODO: File
+  unique int section: @section ref,
+  string name: string ref,
+  int virtual_address: int ref,
+  int offset: int ref
+);
+
+#keyset[section, a, b]
+section_byte(
+  int section: @section ref,
+  int a : int ref,
+  int b : int ref,
+  int byte : int ref
+);
+
+text_section(
+  unique int id: @text_section
+);
+
+rdata_section(
+  unique int id: @rdata_section
+);
+
+export_table(
+  unique int id: @export_table,
+  string name: string ref,
+  int ordinal_base: int ref
+);
+
+#keyset[export_table, ordinal]
+export_table_entry(
+  unique int id: @export_table_entry,
+  int export_table: @export_table ref,
+  int ordinal: int ref,
+  string name: string ref,
+  int address: int ref
+);
+
+/**
+ * Compiled .NET assemblies.
+ * Each assembly represents a DLL file that has been extracted.
+ * The file field references the DLL/EXE file in the files table.
+ */
+assemblies(
+  unique int id: @assembly,
+  int file: @file ref,
+  string name: string ref,
+  string version: string ref
+);
+
+/**
+ * Types defined in assemblies.
+ * Includes classes, structs, interfaces, enums, and delegates.
+ */
+types(
+  unique int id: @type,
+  string full_name: string ref,
+  string namespace: string ref,
+  string name: string ref
+);
+
+/**
+ * Methods defined in types.
+ * Includes instance methods, static methods, constructors, and property accessors.
+ */
+methods(
+  unique int id: @method,
+  string name: string ref,
+  string signature: string ref,
+  int type_id: @type ref
+);
+
+/**
+ * CIL method access flags.
+ * Stores the method attributes as a bitmask.
+ * See ECMA-335 §II.23.1.10 for flag definitions:
+ *   0x0001 = MemberAccessMask (use with mask)
+ *   0x0006 = Public
+ *   0x0001 = Private
+ *   0x0003 = Family (protected)
+ *   0x0005 = FamORAssem (protected internal)
+ *   0x0010 = Static
+ *   0x0020 = Final (sealed)
+ *   0x0040 = Virtual
+ *   0x0080 = HideBySig
+ *   0x0100 = VtableLayoutMask (use with mask)
+ *   0x0400 = Abstract
+ *   0x0800 = SpecialName
+ *   0x2000 = PInvokeImpl
+ */
+cil_method_access_flags(
+  unique int method: @method ref,
+  int flags: int ref
+);
+
+fields(
+  unique int id: @field,
+  string name: string ref,
+  int type_id: @type ref
+);
+
+case @il_instruction.mnemonic of
+  0 = @il_nop
+| 1 = @il_break
+| 2 = @il_ldarg_0
+| 3 = @il_ldarg_1
+| 4 = @il_ldarg_2
+| 5 = @il_ldarg_3
+| 6 = @il_ldloc_0
+| 7 = @il_ldloc_1
+| 8 = @il_ldloc_2
+| 9 = @il_ldloc_3
+| 10 = @il_stloc_0
+| 11 = @il_stloc_1
+| 12 = @il_stloc_2
+| 13 = @il_stloc_3
+| 14 = @il_ldarg_S
+| 15 = @il_ldarga_S
+| 16 = @il_starg_S
+| 17 = @il_ldloc_S
+| 18 = @il_ldloca_S
+| 19 = @il_stloc_S
+| 20 = @il_ldnull
+| 21 = @il_ldc_I4_M1
+| 22 = @il_ldc_I4_0
+| 23 = @il_ldc_I4_1
+| 24 = @il_ldc_I4_2
+| 25 = @il_ldc_I4_3
+| 26 = @il_ldc_I4_4
+| 27 = @il_ldc_I4_5
+| 28 = @il_ldc_I4_6
+| 29 = @il_ldc_I4_7
+| 30 = @il_ldc_I4_8
+| 31 = @il_ldc_I4_S
+| 32 = @il_ldc_I4
+| 33 = @il_ldc_I8
+| 34 = @il_ldc_R4
+| 35 = @il_ldc_R8
+| 37 = @il_dup
+| 38 = @il_il_pop
+| 39 = @il_il_jmp
+| 40 = @il_il_call
+| 41 = @il_calli
+| 42 = @il_il_ret
+| 43 = @il_br_S
+| 44 = @il_brfalse_S
+| 45 = @il_brtrue_S
+| 46 = @il_beq_S
+| 47 = @il_bge_S
+| 48 = @il_bgt_S
+| 49 = @il_ble_S
+| 50 = @il_blt_S
+| 51 = @il_bne_un_S
+| 52 = @il_bge_un_S
+| 53 = @il_bgt_un_S
+| 54 = @il_ble_un_S
+| 55 = @il_blt_un_S
+| 56 = @il_br
+| 57 = @il_brfalse
+| 58 = @il_brtrue
+| 59 = @il_beq
+| 60 = @il_bge
+| 61 = @il_bgt
+| 62 = @il_ble
+| 63 = @il_blt
+| 64 = @il_bne_un
+| 65 = @il_bge_un
+| 66 = @il_bgt_un
+| 67 = @il_ble_un
+| 68 = @il_blt_un
+| 69 = @il_switch
+| 70 = @il_ldind_I1
+| 71 = @il_ldind_U1
+| 72 = @il_ldind_I2
+| 73 = @il_ldind_U2
+| 74 = @il_ldind_I4
+| 75 = @il_ldind_U4
+| 76 = @il_ldind_I8
+| 77 = @il_ldind_I
+| 78 = @il_ldind_R4
+| 79 = @il_ldind_R8
+| 80 = @il_ldind_Ref
+| 81 = @il_stind_Ref
+| 82 = @il_stind_I1
+| 83 = @il_stind_I2
+| 84 = @il_stind_I4
+| 85 = @il_stind_I8
+| 86 = @il_stind_R4
+| 87 = @il_stind_R8
+| 88 = @il_add
+| 89 = @il_sub
+| 90 = @il_mul
+| 91 = @il_div
+| 92 = @il_div_un
+| 93 = @il_rem
+| 94 = @il_rem_un
+| 95 = @il_and
+| 96 = @il_or
+| 97 = @il_xor
+| 98 = @il_shl
+| 99 = @il_shr
+| 100 = @il_shr_un
+| 101 = @il_neg
+| 102 = @il_not
+| 103 = @il_conv_I1
+| 104 = @il_conv_I2
+| 105 = @il_conv_I4
+| 106 = @il_conv_I8
+| 107 = @il_conv_R4
+| 108 = @il_conv_R8
+| 109 = @il_conv_U4
+| 110 = @il_conv_U8
+| 111 = @il_callvirt
+| 112 = @il_cpobj
+| 113 = @il_ldobj
+| 114 = @il_ldstr
+| 115 = @il_newobj
+| 116 = @il_castclass
+| 117 = @il_isinst
+| 118 = @il_conv_R_Un
+| 121 = @il_unbox
+| 122 = @il_throw
+| 123 = @il_ldfld
+| 124 = @il_ldflda
+| 125 = @il_stfld
+| 126 = @il_ldsfld
+| 127 = @il_ldsflda
+| 128 = @il_stsfld
+| 129 = @il_stobj
+| 130 = @il_conv_ovf_I1_Un
+| 131 = @il_conv_ovf_I2_Un
+| 132 = @il_conv_ovf_I4_Un
+| 133 = @il_conv_ovf_I8_Un
+| 134 = @il_conv_ovf_U1_Un
+| 135 = @il_conv_ovf_U2_Un
+| 136 = @il_conv_ovf_U4_Un
+| 137 = @il_conv_ovf_U8_Un
+| 138 = @il_conv_ovf_I_Un
+| 139 = @il_conv_ovf_U_Un
+| 140 = @il_box
+| 141 = @il_newarr
+| 142 = @il_ldlen
+| 143 = @il_ldelema
+| 144 = @il_ldelem_I1
+| 145 = @il_ldelem_U1
+| 146 = @il_ldelem_I2
+| 147 = @il_ldelem_U2
+| 148 = @il_ldelem_I4
+| 149 = @il_ldelem_U4
+| 150 = @il_ldelem_I8
+| 151 = @il_ldelem_I
+| 152 = @il_ldelem_R4
+| 153 = @il_ldelem_R8
+| 154 = @il_ldelem_Ref
+| 155 = @il_stelem_I
+| 156 = @il_stelem_I1
+| 157 = @il_stelem_I2
+| 158 = @il_stelem_I4
+| 159 = @il_stelem_I8
+| 160 = @il_stelem_R4
+| 161 = @il_stelem_R8
+| 162 = @il_stelem_Ref
+| 163 = @il_ldelem
+| 164 = @il_stelem
+| 165 = @il_unbox_any
+| 179 = @il_conv_ovf_I1
+| 180 = @il_conv_ovf_U1
+| 181 = @il_conv_ovf_I2
+| 182 = @il_conv_ovf_U2
+| 183 = @il_conv_ovf_I4
+| 184 = @il_conv_ovf_U4
+| 185 = @il_conv_ovf_I8
+| 186 = @il_conv_ovf_U8
+| 194 = @il_refanyval
+| 195 = @il_ckfinite
+| 198 = @il_mkrefany
+| 208 = @il_ldtoken
+| 209 = @il_conv_U2
+| 210 = @il_conv_U1
+| 211 = @il_conv_I
+| 212 = @il_conv_ovf_I
+| 213 = @il_conv_ovf_U
+| 214 = @il_add_ovf
+| 215 = @il_add_ovf_un
+| 216 = @il_mul_ovf
+| 217 = @il_mul_ovf_un
+| 218 = @il_sub_ovf
+| 219 = @il_sub_ovf_un
+| 220 = @il_endfinally
+| 221 = @il_leave
+| 222 = @il_leave_s
+| 223 = @il_stind_i
+| 224 = @il_conv_U
+| 248 = @il_prefix7
+| 249 = @il_prefix6
+| 250 = @il_prefix5
+| 251 = @il_prefix4
+| 252 = @il_prefix3
+| 253 = @il_prefix2
+| 254 = @il_prefix1
+| 255 = @il_prefixref
+| 65024 = @il_arglist
+| 65025 = @il_ceq
+| 65026 = @il_cgt
+| 65027 = @il_cgt_un
+| 65028 = @il_clt
+| 65029 = @il_clt_un
+| 65030 = @il_ldftn
+| 65031 = @il_ldvirtftn
+| 65033 = @il_ldarg
+| 65034 = @il_ldarga
+| 65035 = @il_starg
+| 65036 = @il_ldloc
+| 65037 = @il_ldloca
+| 65038 = @il_stloc
+| 65039 = @il_localloc
+| 65041 = @il_endfilter
+| 65042 = @il_unaligned
+| 65043 = @il_volatile
+| 65044 = @il_tail
+| 65045 = @il_initobj
+| 65046 = @il_constrained
+| 65047 = @il_cpblk
+| 65048 = @il_initblk
+| 65050 = @il_rethrow
+| 65052 = @il_sizeof
+| 65053 = @il_refanytype
+| 65054 = @il_readonly
+;
+
+/**
+ * IL (Intermediate Language) instructions within method bodies.
+ * Each instruction represents a single IL opcode with its operand.
+ * 
+ * The opcode_num is the numeric value from System.Reflection.Emit.OpCodes.
+ * The opcode_name is the mnemonic (e.g., "ldloc", "call", "br.s").
+ * The offset is the byte offset of the instruction within the method body.
+ */
+il_instruction(
+  unique int id: @il_instruction,
+  int offset: int ref,
+  int mnemonic: int ref
+);
+
+il_instruction_method(
+  unique int instr: @il_instruction ref,
+  int method: @method ref
+);
+
+/**
+ * Parent relationship between instructions and methods.
+ * The index represents the sequential position of the instruction (0-based).
+ * This allows instructions to be ordered even when offsets are non-sequential.
+ */
+#keyset[instruction, index]
+il_instruction_parent(
+  int instruction: @il_instruction ref,
+  int index: int ref,
+  int parent: @method ref
+);
+
+/**
+ * Branch target for branch instructions.
+ * The target_offset is the byte offset of the instruction that is the target of the branch.
+ * Used for control flow analysis.
+ */
+il_branch_target(
+  int instruction: @il_instruction ref,
+  int target_offset: int ref
+);
+
+il_number_of_arguments(
+  int instruction: @il_instruction ref,
+  int number_of_arguments: int ref
+);
+
+il_call_has_return_value(
+  int instruction: @il_instruction ref
+);
+
+il_parameter(
+  unique int p: @il_parameter,
+  int method: @method ref,
+  int index: int ref,
+  string name: string ref
+);
+
+/**
+ * Unresolved method call targets.
+ * The target_method_name is the fully qualified name of the called method.
+ * These are stored as strings because they may reference methods in other assemblies
+ * that haven't been extracted yet.
+ */
+il_call_target_unresolved(
+  int instruction: @il_instruction ref,
+  string target_method_name: string ref
+);
+
+il_field_operand(
+  int instruction: @il_instruction ref,
+  string declaring_type_name: string ref,
+  string field_name: string ref
+);
+
+/**
+ * String operands for IL instructions.
+ * Used for ldstr (load string) instructions.
+ */
+il_operand_string(
+  int instruction: @il_instruction ref,
+  string value: string ref
+);
+
+il_operand_sbyte(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+il_operand_byte(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Integer operands for IL instructions.
+ * Used for ldc.i4 (load constant int32) and similar instructions.
+ */
+il_operand_int(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Long integer operands for IL instructions.
+ * Used for ldc.i8 (load constant int64) and similar instructions.
+ */
+il_operand_long(
+  int instruction: @il_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Float operands for IL instructions.
+ * Used for ldc.r4 (load constant float32) instructions.
+ */
+il_operand_float(
+  int instruction: @il_instruction ref,
+  float value: float ref
+);
+
+/**
+ * Double operands for IL instructions.
+ * Used for ldc.r8 (load constant float64) instructions.
+ */
+il_operand_double(
+  int instruction: @il_instruction ref,
+  float value: float ref
+);
+
+/**
+ * Local variable index operands for IL instructions.
+ * Used for ldloc, stloc, ldloca instructions that reference local variables.
+ */
+il_operand_local_index(
+  int instruction: @il_instruction ref,
+  int index: int ref
+);
+
+/**
+ * Local variables defined in method bodies.
+ * Each local variable has an index and a type.
+ */
+il_local_variable(
+  unique int id: @il_local_variable,
+  int method: @method ref,
+  int index: int ref,
+  string type_name: string ref
+);
+
+/**
+ * Exception handlers (try/catch/finally blocks) in methods.
+ * Each handler represents a try block with its associated catch/finally/fault handler.
+ * 
+ * The handler_type indicates the type of handler:
+ * - "Catch": catch block for specific exception types
+ * - "Finally": finally block
+ * - "Fault": fault block (like finally but only runs on exception)
+ * - "Filter": exception filter block
+ * 
+ * Offsets indicate the start and end positions of the try and handler blocks.
+ * An offset of -1 indicates the position is not applicable or not set.
+ */
+il_exception_handler(
+  unique int id: @il_exception_handler,
+  int method: @method ref,
+  string handler_type: string ref,
+  int try_start: int ref,
+  int try_end: int ref,
+  int handler_start: int ref,
+  int handler_end: int ref
+);
+
+// =====================================================
+// JVM (Java Virtual Machine) bytecode instructions
+// =====================================================
+
+case @jvm_instruction.mnemonic of
+  0 = @jvm_nop
+| 1 = @jvm_aconst_null
+| 2 = @jvm_iconst_m1
+| 3 = @jvm_iconst_0
+| 4 = @jvm_iconst_1
+| 5 = @jvm_iconst_2
+| 6 = @jvm_iconst_3
+| 7 = @jvm_iconst_4
+| 8 = @jvm_iconst_5
+| 9 = @jvm_lconst_0
+| 10 = @jvm_lconst_1
+| 11 = @jvm_fconst_0
+| 12 = @jvm_fconst_1
+| 13 = @jvm_fconst_2
+| 14 = @jvm_dconst_0
+| 15 = @jvm_dconst_1
+| 16 = @jvm_bipush
+| 17 = @jvm_sipush
+| 18 = @jvm_ldc
+| 19 = @jvm_ldc_w
+| 20 = @jvm_ldc2_w
+| 21 = @jvm_iload
+| 22 = @jvm_lload
+| 23 = @jvm_fload
+| 24 = @jvm_dload
+| 25 = @jvm_aload
+| 26 = @jvm_iload_0
+| 27 = @jvm_iload_1
+| 28 = @jvm_iload_2
+| 29 = @jvm_iload_3
+| 30 = @jvm_lload_0
+| 31 = @jvm_lload_1
+| 32 = @jvm_lload_2
+| 33 = @jvm_lload_3
+| 34 = @jvm_fload_0
+| 35 = @jvm_fload_1
+| 36 = @jvm_fload_2
+| 37 = @jvm_fload_3
+| 38 = @jvm_dload_0
+| 39 = @jvm_dload_1
+| 40 = @jvm_dload_2
+| 41 = @jvm_dload_3
+| 42 = @jvm_aload_0
+| 43 = @jvm_aload_1
+| 44 = @jvm_aload_2
+| 45 = @jvm_aload_3
+| 46 = @jvm_iaload
+| 47 = @jvm_laload
+| 48 = @jvm_faload
+| 49 = @jvm_daload
+| 50 = @jvm_aaload
+| 51 = @jvm_baload
+| 52 = @jvm_caload
+| 53 = @jvm_saload
+| 54 = @jvm_istore
+| 55 = @jvm_lstore
+| 56 = @jvm_fstore
+| 57 = @jvm_dstore
+| 58 = @jvm_astore
+| 59 = @jvm_istore_0
+| 60 = @jvm_istore_1
+| 61 = @jvm_istore_2
+| 62 = @jvm_istore_3
+| 63 = @jvm_lstore_0
+| 64 = @jvm_lstore_1
+| 65 = @jvm_lstore_2
+| 66 = @jvm_lstore_3
+| 67 = @jvm_fstore_0
+| 68 = @jvm_fstore_1
+| 69 = @jvm_fstore_2
+| 70 = @jvm_fstore_3
+| 71 = @jvm_dstore_0
+| 72 = @jvm_dstore_1
+| 73 = @jvm_dstore_2
+| 74 = @jvm_dstore_3
+| 75 = @jvm_astore_0
+| 76 = @jvm_astore_1
+| 77 = @jvm_astore_2
+| 78 = @jvm_astore_3
+| 79 = @jvm_iastore
+| 80 = @jvm_lastore
+| 81 = @jvm_fastore
+| 82 = @jvm_dastore
+| 83 = @jvm_aastore
+| 84 = @jvm_bastore
+| 85 = @jvm_castore
+| 86 = @jvm_sastore
+| 87 = @jvm_pop
+| 88 = @jvm_pop2
+| 89 = @jvm_dup
+| 90 = @jvm_dup_x1
+| 91 = @jvm_dup_x2
+| 92 = @jvm_dup2
+| 93 = @jvm_dup2_x1
+| 94 = @jvm_dup2_x2
+| 95 = @jvm_swap
+| 96 = @jvm_iadd
+| 97 = @jvm_ladd
+| 98 = @jvm_fadd
+| 99 = @jvm_dadd
+| 100 = @jvm_isub
+| 101 = @jvm_lsub
+| 102 = @jvm_fsub
+| 103 = @jvm_dsub
+| 104 = @jvm_imul
+| 105 = @jvm_lmul
+| 106 = @jvm_fmul
+| 107 = @jvm_dmul
+| 108 = @jvm_idiv
+| 109 = @jvm_ldiv
+| 110 = @jvm_fdiv
+| 111 = @jvm_ddiv
+| 112 = @jvm_irem
+| 113 = @jvm_lrem
+| 114 = @jvm_frem
+| 115 = @jvm_drem
+| 116 = @jvm_ineg
+| 117 = @jvm_lneg
+| 118 = @jvm_fneg
+| 119 = @jvm_dneg
+| 120 = @jvm_ishl
+| 121 = @jvm_lshl
+| 122 = @jvm_ishr
+| 123 = @jvm_lshr
+| 124 = @jvm_iushr
+| 125 = @jvm_lushr
+| 126 = @jvm_iand
+| 127 = @jvm_land
+| 128 = @jvm_ior
+| 129 = @jvm_lor
+| 130 = @jvm_ixor
+| 131 = @jvm_lxor
+| 132 = @jvm_iinc
+| 133 = @jvm_i2l
+| 134 = @jvm_i2f
+| 135 = @jvm_i2d
+| 136 = @jvm_l2i
+| 137 = @jvm_l2f
+| 138 = @jvm_l2d
+| 139 = @jvm_f2i
+| 140 = @jvm_f2l
+| 141 = @jvm_f2d
+| 142 = @jvm_d2i
+| 143 = @jvm_d2l
+| 144 = @jvm_d2f
+| 145 = @jvm_i2b
+| 146 = @jvm_i2c
+| 147 = @jvm_i2s
+| 148 = @jvm_lcmp
+| 149 = @jvm_fcmpl
+| 150 = @jvm_fcmpg
+| 151 = @jvm_dcmpl
+| 152 = @jvm_dcmpg
+| 153 = @jvm_ifeq
+| 154 = @jvm_ifne
+| 155 = @jvm_iflt
+| 156 = @jvm_ifge
+| 157 = @jvm_ifgt
+| 158 = @jvm_ifle
+| 159 = @jvm_if_icmpeq
+| 160 = @jvm_if_icmpne
+| 161 = @jvm_if_icmplt
+| 162 = @jvm_if_icmpge
+| 163 = @jvm_if_icmpgt
+| 164 = @jvm_if_icmple
+| 165 = @jvm_if_acmpeq
+| 166 = @jvm_if_acmpne
+| 167 = @jvm_goto
+| 168 = @jvm_jsr
+| 169 = @jvm_ret
+| 170 = @jvm_tableswitch
+| 171 = @jvm_lookupswitch
+| 172 = @jvm_ireturn
+| 173 = @jvm_lreturn
+| 174 = @jvm_freturn
+| 175 = @jvm_dreturn
+| 176 = @jvm_areturn
+| 177 = @jvm_return
+| 178 = @jvm_getstatic
+| 179 = @jvm_putstatic
+| 180 = @jvm_getfield
+| 181 = @jvm_putfield
+| 182 = @jvm_invokevirtual
+| 183 = @jvm_invokespecial
+| 184 = @jvm_invokestatic
+| 185 = @jvm_invokeinterface
+| 186 = @jvm_invokedynamic
+| 187 = @jvm_new
+| 188 = @jvm_newarray
+| 189 = @jvm_anewarray
+| 190 = @jvm_arraylength
+| 191 = @jvm_athrow
+| 192 = @jvm_checkcast
+| 193 = @jvm_instanceof
+| 194 = @jvm_monitorenter
+| 195 = @jvm_monitorexit
+| 196 = @jvm_wide
+| 197 = @jvm_multianewarray
+| 198 = @jvm_ifnull
+| 199 = @jvm_ifnonnull
+| 200 = @jvm_goto_w
+| 201 = @jvm_jsr_w
+;
+
+/**
+ * JVM bytecode instructions within method bodies.
+ * Each instruction represents a single JVM opcode.
+ * 
+ * The mnemonic is the numeric opcode value (0x00-0xC9).
+ * The offset is the byte offset of the instruction within the method body.
+ */
+jvm_instruction(
+  unique int id: @jvm_instruction,
+  int offset: int ref,
+  int mnemonic: int ref
+);
+
+/**
+ * Links JVM instructions to their containing method.
+ */
+jvm_instruction_method(
+  unique int instr: @jvm_instruction ref,
+  int method: @method ref
+);
+
+/**
+ * Parent relationship between JVM instructions and methods.
+ * The index represents the sequential position of the instruction (0-based).
+ */
+#keyset[instruction, index]
+jvm_instruction_parent(
+  int instruction: @jvm_instruction ref,
+  int index: int ref,
+  int method: @method ref
+);
+
+/**
+ * Branch target for JVM branch instructions.
+ * target_offset is the absolute byte offset in the method body.
+ */
+jvm_branch_target(
+  unique int instr: @jvm_instruction ref,
+  int target_offset: int ref
+);
+
+/**
+ * Unresolved call target for invoke instructions.
+ * target_name is the fully qualified method name (e.g., "java.lang.String.length").
+ */
+jvm_call_target_unresolved(
+  unique int instr: @jvm_instruction ref,
+  string target_name: string ref
+);
+
+/**
+ * Number of arguments for invoke instructions.
+ */
+jvm_number_of_arguments(
+  unique int instr: @jvm_instruction ref,
+  int count: int ref
+);
+
+/**
+ * Indicates that an invoke instruction returns a value (non-void).
+ */
+jvm_call_has_return_value(
+  unique int instr: @jvm_instruction ref
+);
+
+/**
+ * Local variable index operand for load/store instructions.
+ */
+jvm_operand_local_index(
+  unique int instr: @jvm_instruction ref,
+  int local_index: int ref
+);
+
+/**
+ * Constant pool index operand.
+ */
+jvm_operand_cp_index(
+  unique int instr: @jvm_instruction ref,
+  int cp_index: int ref
+);
+
+/**
+ * Byte operand (bipush, newarray).
+ */
+jvm_operand_byte(
+  unique int instr: @jvm_instruction ref,
+  int value: int ref
+);
+
+/**
+ * Short operand (sipush).
+ */
+jvm_operand_short(
+  unique int instr: @jvm_instruction ref,
+  int value: int ref
+);
+
+/**
+ * iinc instruction operands: local variable index and increment value.
+ */
+jvm_operand_iinc(
+  unique int instr: @jvm_instruction ref,
+  int local_index: int ref,
+  int increment: int ref
+);
+
+/**
+ * Field reference operand for get/put field instructions.
+ */
+jvm_field_operand(
+  unique int instr: @jvm_instruction ref,
+  string class_name: string ref,
+  string field_name: string ref,
+  string descriptor: string ref
+);
+
+/**
+ * Type operand for new, checkcast, instanceof, anewarray instructions.
+ */
+jvm_type_operand(
+  unique int instr: @jvm_instruction ref,
+  string type_name: string ref
+);
+
+/**
+ * Switch case entry for tableswitch and lookupswitch instructions.
+ */
+jvm_switch_case(
+  int instr: @jvm_instruction ref,
+  int case_index: int ref,
+  int match_value: int ref,
+  int target_offset: int ref
+);
+
+/**
+ * Default target for switch instructions.
+ */
+jvm_switch_default(
+  unique int instr: @jvm_instruction ref,
+  int default_offset: int ref
+);
+
+/**
+ * JVM exception handler entry.
+ */
+jvm_exception_handler(
+  unique int id: @jvm_exception_handler,
+  int method: @method ref,
+  int start_pc: int ref,
+  int end_pc: int ref,
+  int handler_pc: int ref,
+  string catch_type: string ref
+);
+
+/**
+ * JVM method parameter.
+ */
+jvm_parameter(
+  unique int id: @jvm_parameter,
+  int method: @method ref,
+  int slot_index: int ref,
+  string name: string ref,
+  string descriptor: string ref
+);
+
+/**
+ * JVM method access flags.
+ * Stores the raw JVM access_flags bitmask for a method.
+ * See JVM spec §4.6 for flag definitions:
+ *   0x0001 = ACC_PUBLIC
+ *   0x0002 = ACC_PRIVATE
+ *   0x0004 = ACC_PROTECTED
+ *   0x0008 = ACC_STATIC
+ *   0x0010 = ACC_FINAL
+ *   0x0020 = ACC_SYNCHRONIZED
+ *   0x0040 = ACC_BRIDGE
+ *   0x0080 = ACC_VARARGS
+ *   0x0100 = ACC_NATIVE
+ *   0x0400 = ACC_ABSTRACT
+ *   0x0800 = ACC_STRICT
+ *   0x1000 = ACC_SYNTHETIC
+ */
+jvm_method_access_flags(
+  unique int method: @method ref,
+  int flags: int ref
+);

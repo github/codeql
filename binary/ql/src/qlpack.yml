@@ -1,0 +1,11 @@
+name: microsoft-sdl/binary-queries
+version: 0.0.1
+groups:
+  - binary
+  - microsoft-all
+  - queries
+extractor: binary
+dependencies:
+  microsoft/binary-all: "*"
+  codeql/suite-helpers: "*"
+warnOnImplicitThis: true
