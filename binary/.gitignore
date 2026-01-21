@@ -1,0 +1,9 @@
+**/bin/*
+**/obj/*
+**/*.dll
+**/myDB/*
+**/oatDB/*
+**/test-db-jvm/*
+**/test-db-jvm-create/*
+**/test-db-jvm*
+**/tools/*

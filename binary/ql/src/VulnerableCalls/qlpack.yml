@@ -1,0 +1,8 @@
+name: binary/vulnerable-calls
+version: 0.0.1
+dependencies:
+  microsoft/binary-all: "*"
+extractor: cil
+dataExtensions:
+  - models/**/*.yml
+warnOnImplicitThis: true
