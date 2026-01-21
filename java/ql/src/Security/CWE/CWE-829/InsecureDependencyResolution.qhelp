@@ -21,6 +21,11 @@ against your project's users.
 
 <p>Always use HTTPS or SFTP to download artifacts from artifact servers.</p>
 
+<p>This vulnerability can be automatically remediated with this
+<a href="https://docs.openrewrite.org/reference/recipes/maven/security/usehttpsforrepositories">OpenRewrite Recipe</a>
+or via
+<a href="https://app.moderne.io/recipes/org.openrewrite.maven.security.UseHttpsForRepositories">Moderne</a>.
+
 </recommendation>
 
 <example>
