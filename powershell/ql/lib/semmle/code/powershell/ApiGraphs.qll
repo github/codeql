@@ -701,12 +701,25 @@ module API {
       positionalParameterEdge(pred, n, succ)
     }
 
+    pragma[nomagic]
+    private DataFlow::CallNode getStaticConstructorLikeCall() {
+      exists(string type |
+        typeModel(type, type + "!", "Method[" + result.getLowerCaseName() + "].ReturnValue")
+      )
+    }
+
     cached
     predicate instanceEdge(Node pred, Node succ) {
       // TODO: Also model parameters with a given type here
       exists(DataFlow::ObjectCreationNode objCreation |
         pred = getForwardEndNode(objCreation.getConstructedTypeNode()) and
         succ = getForwardStartNode(objCreation)
+      )
+      or
+      exists(DataFlow::CallNode call |
+        call = getStaticConstructorLikeCall() and
+        pred = getForwardEndNode(call.getQualifier()) and
+        succ = getForwardStartNode(call)
       )
       or
       pred.(TypeNameNode).instanceEdge() = succ
