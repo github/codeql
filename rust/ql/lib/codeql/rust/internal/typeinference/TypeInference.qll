@@ -1289,6 +1289,13 @@ private class BorrowKind extends TBorrowKind {
   }
 }
 
+// for now, we do not handle ambiguous targets when one of the types is itself
+// a constrained type parameter; we should be checking the constraints in this case
+private predicate typeCanBeUsedForDisambiguation(Type t) {
+  not t instanceof TypeParameter or
+  t.(TypeParamTypeParameter).getTypeParam() = any(TypeParam tp | not tp.hasTypeBound())
+}
+
 /**
  * Provides logic for resolving calls to methods.
  *
@@ -2234,7 +2241,8 @@ private module MethodResolution {
         methodCallBlanketLikeCandidate(mc, _, impl, _, blanketPath, blanketTypeParam) and
         // Only apply blanket implementations when no other implementations are possible;
         // this is to account for codebases that use the (unstable) specialization feature
-        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html)
+        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html), as well as
+        // cases where our blanket implementation filtering is not precise enough.
         (mcc.hasNoCompatibleNonBlanketTarget() or not impl.isBlanketImplementation())
       |
         borrow.isNoBorrow()
@@ -2384,10 +2392,7 @@ private module MethodResolution {
       exists(TypePath path, Type t0 |
         FunctionOverloading::functionResolutionDependsOnArgument(i, f, pos, path, t0) and
         t.appliesTo(f, i, pos) and
-        // for now, we do not handle ambiguous targets when one of the types it iself
-        // a type parameter; we should be checking the constraints on that type parameter
-        // in this case
-        not t0 instanceof TypeParameter
+        typeCanBeUsedForDisambiguation(t0)
       )
     }
 
@@ -2746,7 +2751,7 @@ private module NonMethodResolution {
      * Gets the blanket function that this call may resolve to, if any.
      */
     pragma[nomagic]
-    private NonMethodFunction resolveCallTargetBlanketCand(ImplItemNode impl) {
+    NonMethodFunction resolveCallTargetBlanketCand(ImplItemNode impl) {
       exists(string name |
         this.hasNameAndArity(pragma[only_bind_into](name), _) and
         ArgIsInstantiationOfBlanketParam::argIsInstantiationOf(MkCallAndBlanketPos(this, _), impl, _) and
@@ -2761,12 +2766,11 @@ private module NonMethodResolution {
     predicate hasTrait() { exists(this.getTrait()) }
 
     pragma[nomagic]
-    NonMethodFunction resolveAssocCallTargetCand(ImplItemNode i) {
+    NonMethodFunction resolveCallTargetNonBlanketCand(ImplItemNode i) {
       not this.hasTrait() and
       result = this.getPathResolutionResolved() and
-      result = i.getASuccessor(_)
-      or
-      result = this.resolveCallTargetBlanketCand(i)
+      result = i.getASuccessor(_) and
+      FunctionOverloading::functionResolutionDependsOnArgument(_, result, _, _, _)
     }
 
     AstNode getNodeAt(FunctionPosition pos) {
@@ -2799,6 +2803,21 @@ private module NonMethodResolution {
     }
 
     /**
+     * Holds if this call has no compatible non-blanket target, and it has some
+     * candidate blanket target.
+     */
+    pragma[nomagic]
+    predicate hasNoCompatibleNonBlanketTarget() {
+      this.resolveCallTargetBlanketLikeCandidate(_, _, _, _) and
+      not exists(this.resolveCallTargetViaPathResolution()) and
+      forall(ImplOrTraitItemNode i, Function f |
+        this.(NonMethodArgsAreInstantiationsOfNonBlanketInput::Call).hasTargetCand(i, f)
+      |
+        NonMethodArgsAreInstantiationsOfNonBlanket::argsAreNotInstantiationsOf(this, i, f)
+      )
+    }
+
+    /**
      * Gets the target of this call, which can be resolved using only path resolution.
      */
     pragma[nomagic]
@@ -2816,7 +2835,9 @@ private module NonMethodResolution {
       result = this.resolveCallTargetBlanketCand(i) and
       not FunctionOverloading::functionResolutionDependsOnArgument(_, result, _, _, _)
       or
-      NonMethodArgsAreInstantiationsOf::argsAreInstantiationsOf(this, i, result)
+      NonMethodArgsAreInstantiationsOfBlanket::argsAreInstantiationsOf(this, i, result)
+      or
+      NonMethodArgsAreInstantiationsOfNonBlanket::argsAreInstantiationsOf(this, i, result)
     }
 
     pragma[nomagic]
@@ -2855,7 +2876,12 @@ private module NonMethodResolution {
     ) {
       exists(NonMethodCall fc, FunctionPosition pos |
         fcp = MkCallAndBlanketPos(fc, pos) and
-        fc.resolveCallTargetBlanketLikeCandidate(impl, pos, blanketPath, blanketTypeParam)
+        fc.resolveCallTargetBlanketLikeCandidate(impl, pos, blanketPath, blanketTypeParam) and
+        // Only apply blanket implementations when no other implementations are possible;
+        // this is to account for codebases that use the (unstable) specialization feature
+        // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html), as well as
+        // cases where our blanket implementation filtering is not precise enough.
+        (fc.hasNoCompatibleNonBlanketTarget() or not impl.isBlanketImplementation())
       )
     }
   }
@@ -2890,37 +2916,24 @@ private module NonMethodResolution {
   private module ArgIsInstantiationOfBlanketParam =
     ArgIsInstantiationOf<CallAndBlanketPos, ArgIsInstantiationOfBlanketParamInput>;
 
-  private module NonMethodArgsAreInstantiationsOfInput implements ArgsAreInstantiationsOfInputSig {
+  private module NonMethodArgsAreInstantiationsOfBlanketInput implements
+    ArgsAreInstantiationsOfInputSig
+  {
     predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t) {
       t.appliesTo(f, i, pos) and
-      (
-        exists(Type t0 |
-          // for now, we do not handle ambiguous targets when one of the types it iself
-          // a type parameter; we should be checking the constraints on that type parameter
-          // in this case
-          not t0 instanceof TypeParameter
-        |
-          FunctionOverloading::functionResolutionDependsOnArgument(i, f, pos, _, t0)
-          or
-          traitFunctionDependsOnPos(_, _, pos, t0, i, f)
-        )
+      exists(Type t0 | typeCanBeUsedForDisambiguation(t0) |
+        FunctionOverloading::functionResolutionDependsOnArgument(i, f, pos, _, t0)
         or
-        // match against the trait function itself
-        exists(Trait trait |
-          FunctionOverloading::traitTypeParameterOccurrence(trait, f, _, pos, _,
-            TSelfTypeParameter(trait))
-        )
+        traitFunctionDependsOnPos(_, _, pos, t0, i, f)
       )
     }
 
-    class Call extends NonMethodCall {
+    final class Call extends NonMethodCall {
       Type getArgType(FunctionPosition pos, TypePath path) {
         result = inferType(this.getNodeAt(pos), path)
       }
 
-      predicate hasTargetCand(ImplOrTraitItemNode i, Function f) {
-        f = this.resolveAssocCallTargetCand(i)
-        or
+      predicate hasTraitResolvedCand(ImplOrTraitItemNode i, Function f) {
         exists(TraitItemNode trait, NonMethodFunction resolved, ImplItemNode i1, Function f1 |
           this.hasTraitResolved(trait, resolved) and
           traitFunctionDependsOnPos(trait, resolved, _, _, i1, f1)
@@ -2932,11 +2945,45 @@ private module NonMethodResolution {
           i = trait
         )
       }
+
+      predicate hasTargetCand(ImplOrTraitItemNode i, Function f) {
+        f = this.resolveCallTargetBlanketCand(i)
+        or
+        this.hasTraitResolvedCand(i, f) and
+        BlanketImplementation::isBlanketLike(i, _, _)
+      }
     }
   }
 
-  private module NonMethodArgsAreInstantiationsOf =
-    ArgsAreInstantiationsOf<NonMethodArgsAreInstantiationsOfInput>;
+  private module NonMethodArgsAreInstantiationsOfBlanket =
+    ArgsAreInstantiationsOf<NonMethodArgsAreInstantiationsOfBlanketInput>;
+
+  private module NonMethodArgsAreInstantiationsOfNonBlanketInput implements
+    ArgsAreInstantiationsOfInputSig
+  {
+    predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t) {
+      NonMethodArgsAreInstantiationsOfBlanketInput::toCheck(i, f, pos, t)
+      or
+      // match against the trait function itself
+      t.appliesTo(f, i, pos) and
+      exists(Trait trait |
+        FunctionOverloading::traitTypeParameterOccurrence(trait, f, _, pos, _,
+          TSelfTypeParameter(trait))
+      )
+    }
+
+    class Call extends NonMethodArgsAreInstantiationsOfBlanketInput::Call {
+      predicate hasTargetCand(ImplOrTraitItemNode i, Function f) {
+        f = this.resolveCallTargetNonBlanketCand(i)
+        or
+        this.hasTraitResolvedCand(i, f) and
+        not BlanketImplementation::isBlanketLike(i, _, _)
+      }
+    }
+  }
+
+  private module NonMethodArgsAreInstantiationsOfNonBlanket =
+    ArgsAreInstantiationsOf<NonMethodArgsAreInstantiationsOfNonBlanketInput>;
 }
 
 abstract private class TupleLikeConstructor extends Addressable {

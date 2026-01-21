@@ -2595,7 +2595,7 @@ mod tuples {
         let i: i64 = pair.0; // $ fieldof=Tuple2
         let j: bool = pair.1; // $ fieldof=Tuple2
 
-        let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:T0.i32 type=pair:T1.i32 MISSING: target=into
+        let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:T0.i32 type=pair:T1.i32 target=into
         match pair {
             (0, 0) => print!("unexpected"),
             _ => print!("expected"),
