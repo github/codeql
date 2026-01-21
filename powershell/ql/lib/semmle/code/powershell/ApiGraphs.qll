@@ -367,6 +367,8 @@ module API {
 
     Node methodEdge(string name) { none() }
 
+    Node instanceEdge() { none() }
+
     final predicate isImplicit() { not this.isExplicit(_) }
 
     predicate isExplicit(DataFlow::Node node) { none() }
@@ -429,6 +431,14 @@ module API {
 
     final override Node getSuccessor(string name) {
       result = Impl::MkNewObjectTypeNameNode(prefix + "." + name)
+    }
+
+    final override Node instanceEdge() {
+      exists(DataFlow::ObjectCreationNode creation |
+        prefix = creation.getLowerCaseConstructedTypeName() and
+        Specific::needsNewObjectTypeNameNode(creation, prefix) and
+        result = getForwardStartNode(creation)
+      )
     }
 
     final override predicate isExplicit(DataFlow::Node node) {
@@ -698,6 +708,8 @@ module API {
         pred = getForwardEndNode(objCreation.getConstructedTypeNode()) and
         succ = getForwardStartNode(objCreation)
       )
+      or
+      pred.(TypeNameNode).instanceEdge() = succ
     }
 
     cached
