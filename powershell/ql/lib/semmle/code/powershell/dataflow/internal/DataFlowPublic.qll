@@ -500,6 +500,10 @@ class ObjectCreationNode extends CallNode {
   string getAConstructedTypeName() {
     result = this.getObjectCreationNode().getAConstructedTypeName()
   }
+
+  string getLowerCaseConstructedTypeName() {
+    result = this.getObjectCreationNode().getLowerCaseConstructedTypeName()
+  }
 }
 
 /** A call, viewed as a node in a data flow graph. */
