@@ -941,6 +941,11 @@ module SsaCached {
   }
 
   cached
+  predicate uncertainWriteDefinitionInput(Definition uncertain, Definition inp) {
+    SsaImpl::uncertainWriteDefinitionInput(uncertain, inp)
+  }
+
+  cached
   predicate ssaDefReachesEndOfBlock(IRBlock bb, Definition def) {
     SsaImpl::ssaDefReachesEndOfBlock(bb, def, _)
   }
@@ -1178,7 +1183,7 @@ class Definition extends SsaImpl::Definition {
   private Definition getAPhiInputOrPriorDefinition() {
     result = this.(PhiNode).getAnInput()
     or
-    SsaImpl::uncertainWriteDefinitionInput(this, result)
+    uncertainWriteDefinitionInput(this, result)
   }
 
   /**
