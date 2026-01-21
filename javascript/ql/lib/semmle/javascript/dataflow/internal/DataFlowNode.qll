@@ -111,8 +111,13 @@ private module Cached {
       none() and
       // We want to prune irrelevant models before materialising data flow nodes, so types contributed
       // directly from CodeQL must expose their pruning info without depending on data flow nodes.
-      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+      (isTypeUsedLocal() implies any())
     }
+
+  overlay[global]
+  private predicate isTypeUsedGlobal() { any(ModelInput::TypeModel tm).isTypeUsed("") }
+
+  private predicate isTypeUsedLocal() = forceLocal(isTypeUsedGlobal/0)()
 
   cached
   private module Backref {
