@@ -8,6 +8,5 @@
 import semmle.code.binary.ast.internal.JvmInstructions
 
 from JvmMethod m
-select m.getDeclaringType().getFullName() as className, 
-       m.getName() as methodName,
-       m.getFullyQualifiedName() as fullyQualified
+select m.getDeclaringType().getFullName() as className, m.getName() as methodName,
+  m.getFullyQualifiedName() as fullyQualified

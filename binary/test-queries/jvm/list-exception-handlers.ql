@@ -8,8 +8,6 @@
 import semmle.code.binary.ast.internal.JvmInstructions
 
 from JvmExceptionHandler handler
-select handler.getMethod().getFullyQualifiedName() as method,
-       handler.getStartPC() as tryStart,
-       handler.getEndPC() as tryEnd,
-       handler.getHandlerPC() as handlerStart,
-       handler.getCatchType() as catchType
+select handler.getMethod().getFullyQualifiedName() as method, handler.getStartPC() as tryStart,
+  handler.getEndPC() as tryEnd, handler.getHandlerPC() as handlerStart,
+  handler.getCatchType() as catchType

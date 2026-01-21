@@ -110,7 +110,9 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
       else result = "Function_" + entry.getIndex()
   }
 
-  final override predicate isProgramEntryPoint() { entry instanceof Raw::X86ProgramEntryInstruction }
+  final override predicate isProgramEntryPoint() {
+    entry instanceof Raw::X86ProgramEntryInstruction
+  }
 
   final override predicate isPublic() { entry instanceof Raw::X86ExportedEntryInstruction }
 
@@ -234,7 +236,6 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
 // ============================================================================
 // JVM Translated Elements
 // ============================================================================
-
 class TranslatedJvmParameter extends TranslatedElement, TTranslatedJvmParameter {
   Raw::JvmParameter p;
 

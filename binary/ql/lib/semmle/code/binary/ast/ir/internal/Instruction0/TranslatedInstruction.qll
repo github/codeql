@@ -2683,7 +2683,6 @@ class TranslatedCilLoadField extends TranslatedCilInstruction, TTranslatedCilLoa
 // ============================================================================
 // JVM Translated Instructions
 // ============================================================================
-
 /**
  * Base class for all translated JVM instructions.
  */
@@ -2773,9 +2772,7 @@ class TranslatedJvmInvoke extends TranslatedJvmInstruction, TTranslatedJvmInvoke
   override Instruction getEntry() { result = this.getInstruction(JvmCallTargetTag()) }
 
   override Variable getResultVariable() {
-    if instr.hasReturnValue()
-    then result = this.getTempVariable(JvmCallResultVarTag())
-    else none()
+    if instr.hasReturnValue() then result = this.getTempVariable(JvmCallResultVarTag()) else none()
   }
 
   final override Variable getStackElement(int i) {
@@ -2786,14 +2783,16 @@ class TranslatedJvmInvoke extends TranslatedJvmInstruction, TTranslatedJvmInvoke
     or
     // Rest of the stack has the arguments removed
     i > 0 and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor())
-        .getStackElement(i - 1 + instr.getNumberOfArguments())
+    result =
+      getTranslatedJvmInstruction(instr.getABackwardPredecessor())
+          .getStackElement(i - 1 + instr.getNumberOfArguments())
     or
     // If no return value, shift the indices
     i >= 0 and
     not instr.hasReturnValue() and
-    result = getTranslatedJvmInstruction(instr.getABackwardPredecessor())
-        .getStackElement(i + instr.getNumberOfArguments())
+    result =
+      getTranslatedJvmInstruction(instr.getABackwardPredecessor())
+          .getStackElement(i + instr.getNumberOfArguments())
   }
 }
 
@@ -2873,7 +2872,9 @@ class TranslatedJvmLoadLocal extends TranslatedJvmInstruction, TTranslatedJvmLoa
 
   override Instruction getEntry() { result = this.getInstruction(JvmLoadLocalTag()) }
 
-  override Variable getResultVariable() { result = this.getTempVariable(JvmLoadLocalResultVarTag()) }
+  override Variable getResultVariable() {
+    result = this.getTempVariable(JvmLoadLocalResultVarTag())
+  }
 
   final override Variable getStackElement(int i) {
     i = 0 and

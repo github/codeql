@@ -595,7 +595,6 @@ private string opcodeToMnemonic(int opcode) {
 // ============================================================================
 // Instruction Categories
 // ============================================================================
-
 /** A no-operation instruction. */
 class JvmNop extends @jvm_nop, JvmInstruction { }
 
@@ -603,7 +602,6 @@ class JvmNop extends @jvm_nop, JvmInstruction { }
 class JvmAconstNull extends @jvm_aconst_null, JvmLoadConstant { }
 
 // Load local variable instructions (abstract base classes)
-
 /** An instruction that loads a local variable onto the stack. */
 abstract class JvmLoadLocal extends JvmInstruction {
   abstract int getLocalVariableIndex();
@@ -998,11 +996,9 @@ class JvmLxor extends @jvm_lxor, JvmBitwiseInstruction { }
 
 // iinc
 class JvmIinc extends @jvm_iinc, JvmInstruction {
-  int getLocalVariableIndex() {
-    exists(int idx | jvm_operand_iinc(this, idx, _) | result = idx)
-  }
+  int getLocalVariableIndex() { jvm_operand_iinc(this, result, _) }
 
-  int getIncrement() { exists(int inc | jvm_operand_iinc(this, _, inc) | result = inc) }
+  int getIncrement() { jvm_operand_iinc(this, _, result) }
 }
 
 // Type conversions (abstract hierarchy)
@@ -1185,15 +1181,11 @@ class JvmReturnVoid extends @jvm_return, JvmReturn { }
 // Field access (abstract hierarchy)
 /** An instruction that accesses a field. */
 abstract class JvmFieldAccess extends JvmInstruction {
-  string getFieldClassName() {
-    exists(string cn | jvm_field_operand(this, cn, _, _) | result = cn)
-  }
+  string getFieldClassName() { jvm_field_operand(this, result, _, _) }
 
-  string getFieldName() { exists(string fn | jvm_field_operand(this, _, fn, _) | result = fn) }
+  string getFieldName() { jvm_field_operand(this, _, result, _) }
 
-  string getFieldDescriptor() {
-    exists(string fd | jvm_field_operand(this, _, _, fd) | result = fd)
-  }
+  string getFieldDescriptor() { jvm_field_operand(this, _, _, result) }
 
   /** Holds if this is a static field access. */
   predicate isStatic() { this instanceof JvmGetstatic or this instanceof JvmPutstatic }

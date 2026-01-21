@@ -5,8 +5,9 @@
  * @id csharp-il/test-calls
  */
 
-from @il_instruction call_insn, string opcode, @method caller, string target_method, string caller_name
-where 
+from
+  @il_instruction call_insn, string opcode, @method caller, string target_method, string caller_name
+where
   il_instructions(call_insn, _, opcode, _, caller) and
   opcode = "call" and
   il_call_target_unresolved(call_insn, target_method) and

@@ -51,12 +51,12 @@ Function getADirectlyVulnerableMethod(string id) {
 /**
  * Holds if `stub` is an iterator/async stub method and `stateMachine` is its
  * corresponding state machine implementation (the MoveNext method).
- * 
+ *
  * Iterator/async methods in C# are compiled to:
  * 1. A stub method that creates a state machine object
  * 2. A nested class with a MoveNext method containing the actual implementation
- * 
- * The pattern is: method `Foo` in class `Bar` creates `Bar.<Foo>d__N` 
+ *
+ * The pattern is: method `Foo` in class `Bar` creates `Bar.<Foo>d__N`
  * and the impl is in `Bar.<Foo>d__N.MoveNext`
  */
 private predicate isStateMachineImplementation(Function stub, Function stateMachine) {
@@ -67,7 +67,7 @@ private predicate isStateMachineImplementation(Function stub, Function stateMach
     // The state machine type is nested in the same type as the stub
     // and named <MethodName>d__N
     stateMachineTypeName = stateMachine.getDeclaringType().getName() and
-    stateMachineTypeName.matches("<" + stubName + ">d__%" ) and
+    stateMachineTypeName.matches("<" + stubName + ">d__%") and
     // The state machine's declaring type's namespace should be the stub's type full name
     stateMachine.getDeclaringType().getNamespace() = stubType.getFullName()
   )
@@ -76,14 +76,12 @@ private predicate isStateMachineImplementation(Function stub, Function stateMach
 /**
  * Gets the state machine implementation for an iterator/async stub method.
  */
-Function getStateMachineImplementation(Function stub) {
-  isStateMachineImplementation(stub, result)
-}
+Function getStateMachineImplementation(Function stub) { isStateMachineImplementation(stub, result) }
 
 /**
  * Gets a method that transitively calls a vulnerable method.
  * This computes the transitive closure of the call graph.
- * 
+ *
  * Also handles iterator/async methods by linking stub methods to their
  * state machine implementations.
  */
@@ -105,7 +103,7 @@ Function getAVulnerableMethod(string id) {
     call.getStaticTarget() = getAVulnerableMethod(id)
   )
   or
-  // Iterator/async: if a state machine's MoveNext is vulnerable, 
+  // Iterator/async: if a state machine's MoveNext is vulnerable,
   // the stub method that creates it is also vulnerable
   exists(Function stateMachine |
     stateMachine = getAVulnerableMethod(id) and

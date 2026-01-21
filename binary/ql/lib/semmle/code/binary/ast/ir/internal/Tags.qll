@@ -9,7 +9,10 @@ newtype LocalVariableTag =
   X86RegisterTag(X86Register r) or
   StlocVarTag(int index) { any(CilStoreLocal stloc).getLocalVariableIndex() = index } or
   CilParameterVarTag(int index) { any(CilParameter p).getIndex() = index } or
-  JvmLocalVarTag(int index) { any(JvmLoadLocal load).getLocalVariableIndex() = index or any(JvmStoreLocal store).getLocalVariableIndex() = index } or
+  JvmLocalVarTag(int index) {
+    any(JvmLoadLocal load).getLocalVariableIndex() = index or
+    any(JvmStoreLocal store).getLocalVariableIndex() = index
+  } or
   JvmParameterVarTag(int index) { any(JvmParameter p).getSlotIndex() = index }
 
 string stringOfLocalVariableTag(LocalVariableTag tag) {
