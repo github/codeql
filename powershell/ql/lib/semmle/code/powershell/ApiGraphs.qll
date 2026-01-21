@@ -369,7 +369,7 @@ module API {
 
     final predicate isImplicit() { not this.isExplicit(_) }
 
-    predicate isExplicit(DataFlow::TypeNameNode typeName) { none() }
+    predicate isExplicit(DataFlow::Node node) { none() }
   }
 
   final class TypeNameNode = AbstractTypeNameNode;
@@ -392,8 +392,8 @@ module API {
       )
     }
 
-    final override predicate isExplicit(DataFlow::TypeNameNode typeName) {
-      Specific::needsExplicitTypeNameNode(typeName, prefix)
+    final override predicate isExplicit(DataFlow::Node node) {
+      Specific::needsExplicitTypeNameNode(node, prefix)
     }
   }
 
@@ -421,6 +421,18 @@ module API {
         name = call.getLowerCaseName() and
         implicitCmdlet(prefix, name)
       )
+    }
+  }
+
+  class NewObjectTypeNameNode extends AbstractTypeNameNode, Impl::MkNewObjectTypeNameNode {
+    NewObjectTypeNameNode() { this = Impl::MkNewObjectTypeNameNode(prefix) }
+
+    final override Node getSuccessor(string name) {
+      result = Impl::MkNewObjectTypeNameNode(prefix + "." + name)
+    }
+
+    final override predicate isExplicit(DataFlow::Node node) {
+      Specific::needsNewObjectTypeNameNode(node, prefix)
     }
   }
 
@@ -517,6 +529,7 @@ module API {
       MkMethodAccessNode(DataFlow::CallNode call) or
       MkExplicitTypeNameNode(string prefix) { Specific::needsExplicitTypeNameNode(_, prefix) } or
       MkImplicitTypeNameNode(string prefix) { Specific::needsImplicitTypeNameNode(prefix) } or
+      MkNewObjectTypeNameNode(string prefix) { Specific::needsNewObjectTypeNameNode(_, prefix) } or
       MkForwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
       /** Intermediate node for following backward data flow. */
       MkBackwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
