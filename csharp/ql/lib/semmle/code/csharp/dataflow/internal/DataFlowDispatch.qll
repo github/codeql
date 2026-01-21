@@ -372,8 +372,20 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   DispatchCall getDispatchCall() { result = dc }
 
   pragma[nomagic]
+  private predicate hasSourceTarget() { dc.getAStaticTarget().fromSource() }
+
+  pragma[nomagic]
   private FlowSummary::SummarizedCallable getASummarizedCallableTarget() {
-    result = this.getATarget(_)
+    // Only use summarized callables with generated summaries in case
+    // we are not able to dispatch to a source declaration.
+    exists(boolean static |
+      result = this.getATarget(static) and
+      if this.hasSourceTarget() then result.hasManualModel() else any()
+    |
+      static = false
+      or
+      static = true and not result instanceof RuntimeCallable
+    )
   }
 
   pragma[nomagic]
