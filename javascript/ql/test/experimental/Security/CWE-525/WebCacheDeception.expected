@@ -1,0 +1,1 @@
+| WebCacheDeceptionBad.js:5:9:5:16 | '/test*' | '/test*' is used as wildcard endpoint. |
