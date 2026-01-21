@@ -111,7 +111,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
-  class Content extends DataFlowPublic::Content {
+  class Content extends DataFlowPublic::ContentSet {
     Content() {
       // TODO: for now, it's not 100% clear if should support non-precise content in
       // type-tracking, or if it will lead to bad results. We start with only allowing
@@ -119,11 +119,11 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
       // the process of examining new results from non-precise content steps in the
       // future, since you will _only_ have to look over the results from the new
       // non-precise steps.
-      this instanceof DataFlowPublic::AttributeContent
+      this.asSingleton() instanceof DataFlowPublic::AttributeContent
       or
-      this instanceof DataFlowPublic::DictionaryElementContent
+      this.asSingleton() instanceof DataFlowPublic::DictionaryElementContent
       or
-      this instanceof DataFlowPublic::TupleElementContent
+      this.asSingleton() instanceof DataFlowPublic::TupleElementContent
     }
   }
 
@@ -212,7 +212,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    */
   predicate storeStep(Node nodeFrom, Node nodeTo, Content content) {
     exists(DataFlowPublic::AttrWrite a, string attrName |
-      content.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      content.asSingleton().(DataFlowPublic::AttributeContent).getAttribute() = attrName and
       a.mayHaveAttributeName(attrName) and
       nodeFrom = a.getValue() and
       nodeTo = a.getObject()
@@ -242,7 +242,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    */
   predicate loadStep(Node nodeFrom, LocalSourceNode nodeTo, Content content) {
     exists(DataFlowPublic::AttrRead a, string attrName |
-      content.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      content.asSingleton().(DataFlowPublic::AttributeContent).getAttribute() = attrName and
       a.mayHaveAttributeName(attrName) and
       nodeFrom = a.getObject() and
       nodeTo = a
