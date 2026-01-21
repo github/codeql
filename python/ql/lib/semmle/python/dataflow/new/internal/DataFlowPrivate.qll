@@ -329,7 +329,8 @@ module LocalFlow {
     //   nodeTo is `x`
     exists(AssignmentDefinition def |
       nodeFrom.(CfgNode).getNode() = def.getValue() and
-      nodeTo.(CfgNode).getNode() = def.getDefiningNode()
+      nodeTo.(CfgNode).getNode() = def.getDefiningNode() and
+      not exists(VariableCapture::CapturedVariable v | v.getAStore() = nodeTo.asExpr())
     )
     or
     // With definition
