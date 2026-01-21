@@ -1,3 +1,2 @@
 invalidModelRow
 testFailures
-| test.go:213:21:213:55 | comment | Missing result: hasValueFlow="star expression" |

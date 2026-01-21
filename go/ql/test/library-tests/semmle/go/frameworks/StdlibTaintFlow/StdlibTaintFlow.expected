@@ -1,3 +1,0 @@
-| Builtin.go:112:13:112:24 | call to newSource | No flow to its sink |
-| Bytes.go:635:13:635:25 | call to newSource | No flow to its sink |
-| Errors.go:72:13:72:24 | call to newSource | No flow to its sink |

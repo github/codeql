@@ -1,4 +1,2 @@
 invalidModelRow
 testFailures
-| test.go:204:21:204:51 | comment | Missing result: hasTaintFlow="call to new" |
-| test.go:205:21:205:55 | comment | Missing result: hasTaintFlow="star expression" |
