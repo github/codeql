@@ -2871,17 +2871,17 @@ namespace {
         try {
             throw 41;
         } catch (int c) {
-            assert(c < 42); // $ MISSING: var=2873
-            assert(shadowed < 42); // $ SPURIOUS: var=2879
+            assert(c < 42); // $ var=2873
+            assert(shadowed < 42); // no assertion generated
         }
 
-        assert(shadowed > 0); // $ SPURIOUS: var=2879
+        assert(shadowed > 0); // no assertion generated
         int shadowed;
 
         try {
             throw 41;
         } catch (int shadowed) {
-            assert(shadowed < 42); // $ SPURIOUS: var=2879
+            assert(shadowed < 42); // no assertion generated
         }
     }
 }

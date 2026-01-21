@@ -21030,52 +21030,40 @@ ir.cpp:
 #-----|   Goto -> Block 7
 
 # 2873|   Block 7
-# 2873|     r2873_2(glval<int>) = VariableAddress[c]        : 
-# 2873|     m2873_3(int)        = InitializeParameter[c]    : &:r2873_2
-# 2874|     r2874_1(int)        = Constant[0]               : 
-# 2874|     v2874_2(void)       = Convert                   : r2874_1
-# 2875|     r2875_1(glval<int>) = VariableAddress[shadowed] : 
-# 2875|     r2875_2(int)        = Load[shadowed]            : &:r2875_1, ~m2867_4
-# 2875|     r2875_3(int)        = Constant[42]              : 
-# 2875|     r2875_4(bool)       = CompareLT                 : r2875_2, r2875_3
-# 2875|     v2875_5(void)       = ConditionalBranch         : r2875_4
+# 2873|     r2873_2(glval<int>) = VariableAddress[c]     : 
+# 2873|     m2873_3(int)        = InitializeParameter[c] : &:r2873_2
+# 2874|     r2874_1(glval<int>) = VariableAddress[c]     : 
+# 2874|     r2874_2(int)        = Load[c]                : &:r2874_1, m2873_3
+# 2874|     r2874_3(int)        = Constant[42]           : 
+# 2874|     r2874_4(bool)       = CompareLT              : r2874_2, r2874_3
+# 2874|     v2874_5(void)       = ConditionalBranch      : r2874_4
 #-----|   True -> Block 8
 
-# 2878|   Block 8
-# 2878|     r2878_1(glval<int>) = VariableAddress[shadowed] : 
-# 2878|     r2878_2(int)        = Load[shadowed]            : &:r2878_1, ~m2867_4
-# 2878|     r2878_3(int)        = Constant[0]               : 
-# 2878|     r2878_4(bool)       = CompareGT                 : r2878_2, r2878_3
-# 2878|     v2878_5(void)       = ConditionalBranch         : r2878_4
-#-----|   True -> Block 9
-
-# 2879|   Block 9
+# 2875|   Block 8
+# 2875|     r2875_1(int)        = Constant[0]                    : 
+# 2875|     v2875_2(void)       = Convert                        : r2875_1
+# 2878|     r2878_1(int)        = Constant[0]                    : 
+# 2878|     v2878_2(void)       = Convert                        : r2878_1
 # 2879|     r2879_1(glval<int>) = VariableAddress[shadowed]      : 
 # 2879|     m2879_2(int)        = Uninitialized[shadowed]        : &:r2879_1
 # 2882|     r2882_1(glval<int>) = VariableAddress[#throw2882:13] : 
 # 2882|     r2882_2(int)        = Constant[41]                   : 
 # 2882|     m2882_3(int)        = Store[#throw2882:13]           : &:r2882_1, r2882_2
 # 2882|     v2882_4(void)       = ThrowValue                     : &:r2882_1, m2882_3
-#-----|   C++ Exception -> Block 10
+#-----|   C++ Exception -> Block 9
 
-# 2883|   Block 10
+# 2883|   Block 9
 # 2883|     v2883_1(void) = CatchByType[int] : 
 #-----|   C++ Exception -> Block 2
-#-----|   Goto -> Block 11
+#-----|   Goto -> Block 10
 
-# 2883|   Block 11
+# 2883|   Block 10
 # 2883|     r2883_2(glval<int>) = VariableAddress[shadowed]     : 
 # 2883|     m2883_3(int)        = InitializeParameter[shadowed] : &:r2883_2
-# 2884|     r2884_1(glval<int>) = VariableAddress[shadowed]     : 
-# 2884|     r2884_2(int)        = Load[shadowed]                : &:r2884_1, m2879_2
-# 2884|     r2884_3(int)        = Constant[42]                  : 
-# 2884|     r2884_4(bool)       = CompareLT                     : r2884_2, r2884_3
-# 2884|     v2884_5(void)       = ConditionalBranch             : r2884_4
-#-----|   True -> Block 12
-
-# 2886|   Block 12
-# 2886|     v2886_1(void)  = NoOp       : 
-# 2867|     v2867_14(void) = ReturnVoid : 
+# 2884|     r2884_1(int)        = Constant[0]                   : 
+# 2884|     v2884_2(void)       = Convert                       : r2884_1
+# 2886|     v2886_1(void)       = NoOp                          : 
+# 2867|     v2867_14(void)      = ReturnVoid                    : 
 #-----|   Goto -> Block 1
 
 ir23.cpp:
