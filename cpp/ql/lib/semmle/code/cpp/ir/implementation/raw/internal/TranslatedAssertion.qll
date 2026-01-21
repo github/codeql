@@ -198,7 +198,7 @@ abstract private class TranslatedAssertionOperand extends TranslatedElement,
 }
 
 /** An operand of an assertion that is a variable access. */
-private class TranslatedAssertionVarAccess extends TranslatedAssertionOperand {
+class TranslatedAssertionVarAccess extends TranslatedAssertionOperand {
   TranslatedAssertionVarAccess() { hasVarAccessMacroArgument(mi, _, index, _) }
 
   Variable getVariable() { hasVarAccessMacroArgument(mi, result, index, _) }

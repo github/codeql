@@ -25492,103 +25492,156 @@ ir.cpp:
 # 2859|             Type = [VoidType] void
 # 2859|             ValueCategory = prvalue
 # 2860|     getStmt(7): [ReturnStmt] return ...
-# 2865| [TopLevelFunction] void complex_assertions(int, bool, int)
-# 2865|   <params>: 
-# 2865|     getParameter(0): [Parameter] x
-# 2865|         Type = [IntType] int
-# 2865|     getParameter(1): [Parameter] b
-# 2865|         Type = [BoolType] bool
-# 2865|     getParameter(2): [Parameter] max
-# 2865|         Type = [IntType] int
-# 2865|   getEntryPoint(): [BlockStmt] { ... }
-# 2866|     getStmt(0): [DeclStmt] declaration
-# 2866|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
-# 2866|           Type = [IntType] int
-# 2866|         getVariable().getInitializer(): [Initializer] initializer for y
-# 2866|           getExpr(): [CommaExpr] ... , ...
-# 2866|               Type = [IntType] int
-# 2866|               ValueCategory = prvalue(load)
-# 2866|             getLeftOperand(): [Literal] 0
-# 2866|                 Type = [IntType] int
-# 2866|                 Value = [Literal] 0
-# 2866|                 ValueCategory = prvalue
-# 2866|             getRightOperand(): [VariableAccess] x
-# 2866|                 Type = [IntType] int
-# 2866|                 ValueCategory = prvalue(load)
-# 2866|             getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
-# 2866|                 Type = [VoidType] void
-# 2866|                 ValueCategory = prvalue
-# 2866|               getExpr(): [CStyleCast] (void)...
-# 2866|                   Conversion = [VoidConversion] conversion to void
-# 2866|                   Type = [VoidType] void
-# 2866|                   ValueCategory = prvalue
-# 2866|           getExpr().getFullyConverted(): [ParenthesisExpr] (...)
-# 2866|               Type = [IntType] int
-# 2866|               ValueCategory = prvalue(load)
-# 2867|     getStmt(1): [DeclStmt] declaration
-# 2867|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
-# 2867|           Type = [IntType] int
-# 2867|         getVariable().getInitializer(): [Initializer] initializer for z
-# 2867|           getExpr(): [ConditionalExpr] ... ? ... : ...
-# 2867|               Type = [IntType] int
-# 2867|               ValueCategory = prvalue
-# 2867|             getCondition(): [VariableAccess] b
-# 2867|                 Type = [BoolType] bool
-# 2867|                 ValueCategory = prvalue(load)
-# 2867|             getThen(): [CommaExpr] ... , ...
-# 2867|                 Type = [IntType] int
-# 2867|                 Value = [CommaExpr] 0
-# 2867|                 ValueCategory = prvalue
-# 2867|               getLeftOperand(): [Literal] 0
-# 2867|                   Type = [IntType] int
-# 2867|                   Value = [Literal] 0
-# 2867|                   ValueCategory = prvalue
-# 2867|               getRightOperand(): [Literal] 0
-# 2867|                   Type = [IntType] int
-# 2867|                   Value = [Literal] 0
-# 2867|                   ValueCategory = prvalue
-# 2867|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
-# 2867|                   Type = [VoidType] void
-# 2867|                   ValueCategory = prvalue
-# 2867|                 getExpr(): [CStyleCast] (void)...
-# 2867|                     Conversion = [VoidConversion] conversion to void
-# 2867|                     Type = [VoidType] void
-# 2867|                     ValueCategory = prvalue
-# 2867|             getElse(): [Literal] 1
-# 2867|                 Type = [IntType] int
-# 2867|                 Value = [Literal] 1
-# 2867|                 ValueCategory = prvalue
-# 2867|             getThen().getFullyConverted(): [ParenthesisExpr] (...)
-# 2867|                 Type = [IntType] int
-# 2867|                 Value = [ParenthesisExpr] 0
-# 2867|                 ValueCategory = prvalue
-# 2869|     getStmt(2): [TryStmt] try { ... }
-# 2869|       getStmt(): [BlockStmt] { ... }
-# 2870|         getStmt(0): [ExprStmt] ExprStmt
-# 2870|           getExpr(): [ThrowExpr] throw ...
-# 2870|               Type = [IntType] int
-# 2870|               ValueCategory = prvalue
-# 2870|             getExpr(): [Literal] 41
-# 2870|                 Type = [IntType] int
-# 2870|                 Value = [Literal] 41
-# 2870|                 ValueCategory = prvalue
-# 2871|       getChild(1): [Handler] <handler>
-# 2871|         getParameter(): [Parameter] c
-# 2871|             Type = [IntType] int
-# 2871|         getBlock(): [CatchBlock] { ... }
-# 2872|           getStmt(0): [ExprStmt] ExprStmt
-# 2872|             getExpr(): [Literal] 0
+# 2867| [TopLevelFunction] void (unnamed namespace)::complex_assertions(int, bool, int)
+# 2867|   <params>: 
+# 2867|     getParameter(0): [Parameter] x
+# 2867|         Type = [IntType] int
+# 2867|     getParameter(1): [Parameter] b
+# 2867|         Type = [BoolType] bool
+# 2867|     getParameter(2): [Parameter] max
+# 2867|         Type = [IntType] int
+# 2867|   getEntryPoint(): [BlockStmt] { ... }
+# 2868|     getStmt(0): [DeclStmt] declaration
+# 2868|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2868|           Type = [IntType] int
+# 2868|         getVariable().getInitializer(): [Initializer] initializer for y
+# 2868|           getExpr(): [CommaExpr] ... , ...
+# 2868|               Type = [IntType] int
+# 2868|               ValueCategory = prvalue(load)
+# 2868|             getLeftOperand(): [Literal] 0
+# 2868|                 Type = [IntType] int
+# 2868|                 Value = [Literal] 0
+# 2868|                 ValueCategory = prvalue
+# 2868|             getRightOperand(): [VariableAccess] x
+# 2868|                 Type = [IntType] int
+# 2868|                 ValueCategory = prvalue(load)
+# 2868|             getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2868|                 Type = [VoidType] void
+# 2868|                 ValueCategory = prvalue
+# 2868|               getExpr(): [CStyleCast] (void)...
+# 2868|                   Conversion = [VoidConversion] conversion to void
+# 2868|                   Type = [VoidType] void
+# 2868|                   ValueCategory = prvalue
+# 2868|           getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2868|               Type = [IntType] int
+# 2868|               ValueCategory = prvalue(load)
+# 2869|     getStmt(1): [DeclStmt] declaration
+# 2869|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of z
+# 2869|           Type = [IntType] int
+# 2869|         getVariable().getInitializer(): [Initializer] initializer for z
+# 2869|           getExpr(): [ConditionalExpr] ... ? ... : ...
+# 2869|               Type = [IntType] int
+# 2869|               ValueCategory = prvalue
+# 2869|             getCondition(): [VariableAccess] b
+# 2869|                 Type = [BoolType] bool
+# 2869|                 ValueCategory = prvalue(load)
+# 2869|             getThen(): [CommaExpr] ... , ...
+# 2869|                 Type = [IntType] int
+# 2869|                 Value = [CommaExpr] 0
+# 2869|                 ValueCategory = prvalue
+# 2869|               getLeftOperand(): [Literal] 0
+# 2869|                   Type = [IntType] int
+# 2869|                   Value = [Literal] 0
+# 2869|                   ValueCategory = prvalue
+# 2869|               getRightOperand(): [Literal] 0
+# 2869|                   Type = [IntType] int
+# 2869|                   Value = [Literal] 0
+# 2869|                   ValueCategory = prvalue
+# 2869|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
+# 2869|                   Type = [VoidType] void
+# 2869|                   ValueCategory = prvalue
+# 2869|                 getExpr(): [CStyleCast] (void)...
+# 2869|                     Conversion = [VoidConversion] conversion to void
+# 2869|                     Type = [VoidType] void
+# 2869|                     ValueCategory = prvalue
+# 2869|             getElse(): [Literal] 1
+# 2869|                 Type = [IntType] int
+# 2869|                 Value = [Literal] 1
+# 2869|                 ValueCategory = prvalue
+# 2869|             getThen().getFullyConverted(): [ParenthesisExpr] (...)
+# 2869|                 Type = [IntType] int
+# 2869|                 Value = [ParenthesisExpr] 0
+# 2869|                 ValueCategory = prvalue
+# 2871|     getStmt(2): [TryStmt] try { ... }
+# 2871|       getStmt(): [BlockStmt] { ... }
+# 2872|         getStmt(0): [ExprStmt] ExprStmt
+# 2872|           getExpr(): [ThrowExpr] throw ...
+# 2872|               Type = [IntType] int
+# 2872|               ValueCategory = prvalue
+# 2872|             getExpr(): [Literal] 41
 # 2872|                 Type = [IntType] int
-# 2872|                 Value = [Literal] 0
+# 2872|                 Value = [Literal] 41
 # 2872|                 ValueCategory = prvalue
-# 2872|             getExpr().getFullyConverted(): [ParenthesisExpr] (...)
-# 2872|                 Type = [VoidType] void
-# 2872|                 ValueCategory = prvalue
-# 2872|               getExpr(): [CStyleCast] (void)...
-# 2872|                   Conversion = [VoidConversion] conversion to void
-# 2872|                   Type = [VoidType] void
-# 2872|                   ValueCategory = prvalue
-# 2874|     getStmt(3): [ReturnStmt] return ...
+# 2873|       getChild(1): [Handler] <handler>
+# 2873|         getParameter(): [Parameter] c
+# 2873|             Type = [IntType] int
+# 2873|         getBlock(): [CatchBlock] { ... }
+# 2874|           getStmt(0): [ExprStmt] ExprStmt
+# 2874|             getExpr(): [Literal] 0
+# 2874|                 Type = [IntType] int
+# 2874|                 Value = [Literal] 0
+# 2874|                 ValueCategory = prvalue
+# 2874|             getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2874|                 Type = [VoidType] void
+# 2874|                 ValueCategory = prvalue
+# 2874|               getExpr(): [CStyleCast] (void)...
+# 2874|                   Conversion = [VoidConversion] conversion to void
+# 2874|                   Type = [VoidType] void
+# 2874|                   ValueCategory = prvalue
+# 2875|           getStmt(1): [ExprStmt] ExprStmt
+# 2875|             getExpr(): [Literal] 0
+# 2875|                 Type = [IntType] int
+# 2875|                 Value = [Literal] 0
+# 2875|                 ValueCategory = prvalue
+# 2875|             getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2875|                 Type = [VoidType] void
+# 2875|                 ValueCategory = prvalue
+# 2875|               getExpr(): [CStyleCast] (void)...
+# 2875|                   Conversion = [VoidConversion] conversion to void
+# 2875|                   Type = [VoidType] void
+# 2875|                   ValueCategory = prvalue
+# 2878|     getStmt(3): [ExprStmt] ExprStmt
+# 2878|       getExpr(): [Literal] 0
+# 2878|           Type = [IntType] int
+# 2878|           Value = [Literal] 0
+# 2878|           ValueCategory = prvalue
+# 2878|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2878|           Type = [VoidType] void
+# 2878|           ValueCategory = prvalue
+# 2878|         getExpr(): [CStyleCast] (void)...
+# 2878|             Conversion = [VoidConversion] conversion to void
+# 2878|             Type = [VoidType] void
+# 2878|             ValueCategory = prvalue
+# 2879|     getStmt(4): [DeclStmt] declaration
+# 2879|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of shadowed
+# 2879|           Type = [IntType] int
+# 2881|     getStmt(5): [TryStmt] try { ... }
+# 2881|       getStmt(): [BlockStmt] { ... }
+# 2882|         getStmt(0): [ExprStmt] ExprStmt
+# 2882|           getExpr(): [ThrowExpr] throw ...
+# 2882|               Type = [IntType] int
+# 2882|               ValueCategory = prvalue
+# 2882|             getExpr(): [Literal] 41
+# 2882|                 Type = [IntType] int
+# 2882|                 Value = [Literal] 41
+# 2882|                 ValueCategory = prvalue
+# 2883|       getChild(1): [Handler] <handler>
+# 2883|         getParameter(): [Parameter] shadowed
+# 2883|             Type = [IntType] int
+# 2883|         getBlock(): [CatchBlock] { ... }
+# 2884|           getStmt(0): [ExprStmt] ExprStmt
+# 2884|             getExpr(): [Literal] 0
+# 2884|                 Type = [IntType] int
+# 2884|                 Value = [Literal] 0
+# 2884|                 ValueCategory = prvalue
+# 2884|             getExpr().getFullyConverted(): [ParenthesisExpr] (...)
+# 2884|                 Type = [VoidType] void
+# 2884|                 ValueCategory = prvalue
+# 2884|               getExpr(): [CStyleCast] (void)...
+# 2884|                   Conversion = [VoidConversion] conversion to void
+# 2884|                   Type = [VoidType] void
+# 2884|                   ValueCategory = prvalue
+# 2886|     getStmt(6): [ReturnStmt] return ...
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 

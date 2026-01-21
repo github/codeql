@@ -2828,48 +2828,61 @@ void vla_sizeof_test5(int len1, size_t len2) {
 #define __analysis_assume(x)
 
 void test_assert_simple(int x, int y, unsigned u, int shadowed) {
-    assert(x > 0);
-    assert(0 < x);
-    assert(x < y);
+    assert(x > 0); // $ var=2830
+    assert(0 < x); // $ var=2830
+    assert(x < y); // $ var=2830
     
-    __analysis_assume(x != 2);
+    __analysis_assume(x != 2); // $ var=2830
 
-    assert(u < x);
+    assert(u < x); // $ var=2830
 
     {
         int shadowed = x;
-        assert(shadowed > 0);
+        assert(shadowed > 0); // no assertion generated since the variable is shadowed
     }
 }
 
 template<typename T>
 void test_assert_in_template(T x, int y, unsigned u) {
-    assert(x > 0);
-    assert(0 < x);
-    assert(x < y);
+    assert(x > 0); // $ var=2846
+    assert(0 < x); // $ var=2846
+    assert(x < y); // $ var=2846
     
-    __analysis_assume(x != 2);
+    __analysis_assume(x != 2); // $ var=2846
 
-    assert(u < x);
+    assert(u < x); // $ var=2846
 
     {
         int shadowed = x;
-        assert(shadowed > 0);
+        assert(shadowed > 0); // $ var=2856
     }
-    assert(x> 0);
+    assert(x> 0); // $ var=2846
 }
 
 template void test_assert_in_template<int>(int, int, unsigned);
 template void test_assert_in_template<short>(short, int, unsigned);
+namespace {
+    int shadowed;
 
-void complex_assertions(int x, bool b, int max) {
-    int y = (assert(x > 0), x);
-    int z = b ? (assert(x != 0), 0) : 1;
+    void complex_assertions(int x, bool b, int max) {
+        int y = (assert(x > 0), x); // no assertion generated
+        int z = b ? (assert(x != 0), 0) : 1; // no assertion generated
 
-    try {
-        throw 41;
-    } catch (int c) {
-        assert(c < 42);
+        try {
+            throw 41;
+        } catch (int c) {
+            assert(c < 42); // $ MISSING: var=2873
+            assert(shadowed < 42); // $ SPURIOUS: var=2879
+        }
+
+        assert(shadowed > 0); // $ SPURIOUS: var=2879
+        int shadowed;
+
+        try {
+            throw 41;
+        } catch (int shadowed) {
+            assert(shadowed < 42); // $ SPURIOUS: var=2879
+        }
     }
 }
 
