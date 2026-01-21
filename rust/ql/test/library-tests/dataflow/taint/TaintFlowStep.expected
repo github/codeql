@@ -47,9 +47,25 @@
 | main.rs:173:5:173:5 | [post] a [implicit borrow] | main.rs:173:5:173:5 | [post] a |
 | main.rs:174:5:174:5 | [post] a [implicit borrow] | main.rs:174:5:174:5 | [post] a |
 | main.rs:175:5:175:5 | [post] a [implicit borrow] | main.rs:175:5:175:5 | [post] a |
-| main.rs:191:24:191:24 | s | main.rs:191:18:191:24 | FormatArgsExpr |
-| main.rs:196:9:196:9 | [post] a [implicit borrow] | main.rs:196:9:196:9 | [post] a |
-| main.rs:197:9:197:9 | [post] a [implicit borrow] | main.rs:197:9:197:9 | [post] a |
-| main.rs:198:9:198:9 | [post] a [implicit borrow] | main.rs:198:9:198:9 | [SSA] a |
-| main.rs:199:9:199:9 | [post] a [implicit borrow] | main.rs:199:9:199:9 | [SSA] a |
+| main.rs:191:9:191:9 | i | main.rs:191:9:191:18 | i as usize |
+| main.rs:195:24:195:24 | s | main.rs:195:18:195:24 | FormatArgsExpr |
 | main.rs:201:21:201:21 | a | main.rs:201:21:201:23 | a.0 |
+| main.rs:203:9:203:9 | [post] a [implicit borrow] | main.rs:203:9:203:9 | [post] a |
+| main.rs:204:9:204:9 | [post] a [implicit borrow] | main.rs:204:9:204:9 | [post] a |
+| main.rs:206:21:206:21 | a | main.rs:206:21:206:23 | a.0 |
+| main.rs:209:9:209:9 | [post] a [implicit borrow] | main.rs:209:9:209:9 | [SSA] a |
+| main.rs:210:9:210:9 | [post] a [implicit borrow] | main.rs:210:9:210:9 | [SSA] a |
+| main.rs:212:21:212:21 | a | main.rs:212:21:212:23 | a.0 |
+| main.rs:215:9:215:9 | [post] a [implicit borrow] | main.rs:215:9:215:9 | [SSA] a |
+| main.rs:216:9:216:9 | [post] a [implicit borrow] | main.rs:216:9:216:9 | [SSA] a |
+| main.rs:218:21:218:21 | a | main.rs:218:21:218:23 | a.0 |
+| main.rs:221:9:221:9 | [post] a [implicit borrow] | main.rs:221:9:221:9 | [SSA] a |
+| main.rs:223:21:223:21 | a | main.rs:223:21:223:23 | a.0 |
+| main.rs:228:21:228:22 | v1 | main.rs:228:21:228:24 | v1.0 |
+| main.rs:230:21:230:22 | v2 | main.rs:230:21:230:24 | v2.0 |
+| main.rs:232:21:232:22 | v3 | main.rs:232:21:232:24 | v3.0 |
+| main.rs:234:21:234:22 | v4 | main.rs:234:21:234:24 | v4.0 |
+| main.rs:236:21:236:22 | v5 | main.rs:236:21:236:24 | v5.0 |
+| main.rs:238:21:238:22 | v6 | main.rs:238:21:238:24 | v6.0 |
+| main.rs:240:21:240:22 | v7 | main.rs:240:21:240:24 | v7.0 |
+| main.rs:242:21:242:22 | v8 | main.rs:242:21:242:24 | v8.0 |

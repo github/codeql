@@ -181,10 +181,14 @@ fn std_ops() {
 
 mod wrapping {
     use std::num::Wrapping;
-    use std::ops::AddAssign;
+    use std::ops::{Add, AddAssign, Neg, Not};
 
     fn source(i: i64) -> Wrapping<i64> {
         Wrapping(i)
+    }
+
+    fn source_usize(i: i64) -> usize {
+        i as usize
     }
 
     fn sink(s: Wrapping<i64>) {
@@ -193,12 +197,49 @@ mod wrapping {
 
     pub fn wrapping() {
         let mut a: Wrapping<i64> = Wrapping(crate::source(1));
+        sink(a); // $ MISSING: hasTaintFlow=1
+        crate::sink(a.0); // $ MISSING: hasTaintFlow=1
+
         a.add_assign(source(2));
         a.add_assign(Wrapping(crate::source(3)));
-        a += source(4);
-        a += std::num::Wrapping(crate::source(5));
-        sink(a); // $ hasTaintFlow=2 hasTaintFlow=4 MISSING: hasTaintFlow=1 hasTaintFlow=3 hasTaintFlow=5
-        crate::sink(a.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2 hasTaintFlow=3 hasTaintFlow=4 hasTaintFlow=5
+        sink(a); // $ hasTaintFlow=2 MISSING: hasTaintFlow=1 hasTaintFlow=3
+        crate::sink(a.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2 hasTaintFlow=3
+
+        a = source(4);
+        a += source(5);
+        a += std::num::Wrapping(crate::source(6));
+        sink(a); // $ hasTaintFlow=4 hasTaintFlow=5 MISSING: hasTaintFlow=6
+        crate::sink(a.0); // $ MISSING: hasTaintFlow=4 hasTaintFlow=5 hasTaintFlow=6
+
+        a = source(7);
+        a &= source(8);
+        a &= Wrapping(crate::source(9));
+        sink(a); // $ MISSING: hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
+        crate::sink(a.0); // $ MISSING: hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
+
+        a = source(10);
+        a <<= source_usize(11);
+        sink(a); // $ hasTaintFlow=11 MISSING: hasTaintFlow=10
+        crate::sink(a.0); // $ MISSING: hasTaintFlow=10 hasTaintFlow=11
+
+        let b: Wrapping<i64> = Wrapping(crate::source(1));
+        let c: Wrapping<i64> = Wrapping(crate::source(2));
+        let v1 = b + c;
+        crate::sink(v1.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2
+        let v2 = b.add(c);
+        crate::sink(v2.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2
+        let v3 = -b;
+        crate::sink(v3.0); // $ MISSING: hasTaintFlow=1
+        let v4 = b.neg();
+        crate::sink(v4.0); // $ MISSING: hasTaintFlow=1
+        let v5 = !b;
+        crate::sink(v5.0); // $ MISSING: hasTaintFlow=1
+        let v6 = b.not();
+        crate::sink(v6.0); // $ MISSING: hasTaintFlow=1
+        let v7 = b & c;
+        crate::sink(v7.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2
+        let v8 = b << source_usize(3);
+        crate::sink(v8.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=3
     }
 }
 
