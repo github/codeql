@@ -52,3 +52,4 @@
 | main.rs:197:9:197:9 | [post] a [implicit borrow] | main.rs:197:9:197:9 | [post] a |
 | main.rs:198:9:198:9 | [post] a [implicit borrow] | main.rs:198:9:198:9 | [SSA] a |
 | main.rs:199:9:199:9 | [post] a [implicit borrow] | main.rs:199:9:199:9 | [SSA] a |
+| main.rs:201:21:201:21 | a | main.rs:201:21:201:23 | a.0 |

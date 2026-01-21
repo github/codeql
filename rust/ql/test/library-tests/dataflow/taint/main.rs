@@ -192,12 +192,13 @@ mod wrapping {
     }
 
     pub fn wrapping() {
-        let mut a: Wrapping<i64> = Wrapping(1);
+        let mut a: Wrapping<i64> = Wrapping(crate::source(1));
         a.add_assign(source(2));
         a.add_assign(Wrapping(crate::source(3)));
         a += source(4);
         a += std::num::Wrapping(crate::source(5));
-        sink(a); // $ hasTaintFlow=2 hasTaintFlow=4 MISSING: hasTaintFlow=3 hasTaintFlow=5 --- we don't currently find any `Call`s for `Wrapping` above
+        sink(a); // $ hasTaintFlow=2 hasTaintFlow=4 MISSING: hasTaintFlow=1 hasTaintFlow=3 hasTaintFlow=5
+        crate::sink(a.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2 hasTaintFlow=3 hasTaintFlow=4 hasTaintFlow=5
     }
 }
 
