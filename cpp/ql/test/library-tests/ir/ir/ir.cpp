@@ -2828,13 +2828,13 @@ void vla_sizeof_test5(int len1, size_t len2) {
 #define __analysis_assume(x)
 
 void test_assert_simple(int x, int y, unsigned u, int shadowed) {
-    assert(x > 0); // $ var=2830
-    assert(0 < x); // $ var=2830
-    assert(x < y); // $ var=2830
+    assert(x > 0); // $ var=2830:x
+    assert(0 < x); // $ var=2830:x
+    assert(x < y); // $ var=2830:x var=2830:y
     
-    __analysis_assume(x != 2); // $ var=2830
+    __analysis_assume(x != 2); // $ var=2830:x
 
-    assert(u < x); // $ var=2830
+    assert(u < x); // $ var=2830:u var=2830:x
 
     {
         int shadowed = x;
@@ -2844,19 +2844,19 @@ void test_assert_simple(int x, int y, unsigned u, int shadowed) {
 
 template<typename T>
 void test_assert_in_template(T x, int y, unsigned u) {
-    assert(x > 0); // $ var=2846
-    assert(0 < x); // $ var=2846
-    assert(x < y); // $ var=2846
+    assert(x > 0); // $ var=2846:x
+    assert(0 < x); // $ var=2846:x
+    assert(x < y); // $ var=2846:x var=2846:y
     
-    __analysis_assume(x != 2); // $ var=2846
+    __analysis_assume(x != 2); // $ var=2846:x
 
-    assert(u < x); // $ var=2846
+    assert(u < x); // $ var=2846:u var=2846:x
 
     {
         int shadowed = x;
-        assert(shadowed > 0); // $ var=2856
+        assert(shadowed > 0); // $ var=2856:shadowed
     }
-    assert(x> 0); // $ var=2846
+    assert(x> 0); // $ var=2846:x
 }
 
 template void test_assert_in_template<int>(int, int, unsigned);
@@ -2871,7 +2871,7 @@ namespace {
         try {
             throw 41;
         } catch (int c) {
-            assert(c < 42); // $ var=2873
+            assert(c < 42); // $ var=2873:c
             assert(shadowed < 42); // no assertion generated
         }
 

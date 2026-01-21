@@ -12,7 +12,7 @@ module Test implements TestSig {
       location = tava.getLocation() and
       tava.toString() = element and
       tag = "var" and
-      value = v.getLocation().getStartLine().toString()
+      value = v.getLocation().getStartLine().toString() + ":" + v.getName()
     )
   }
 }
