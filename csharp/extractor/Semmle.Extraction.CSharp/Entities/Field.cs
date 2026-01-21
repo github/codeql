@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
         // Do not populate backing fields.
         // Populate Tuple fields.
         public override bool NeedsPopulation =>
-            (base.NeedsPopulation && !Symbol.IsImplicitlyDeclared) || Symbol.ContainingType.IsTupleType;
+            ((Context.Defines(Symbol) || Context.IsOverlayMode) && !Symbol.IsImplicitlyDeclared) || Symbol.ContainingType.IsTupleType;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

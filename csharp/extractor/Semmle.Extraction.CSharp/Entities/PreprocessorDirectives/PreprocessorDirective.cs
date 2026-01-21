@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var compilation = Compilation.Create(Context);
             trapFile.preprocessor_directive_compilation(this, compilation);
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

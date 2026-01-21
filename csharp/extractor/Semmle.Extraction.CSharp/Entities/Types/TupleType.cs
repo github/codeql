@@ -51,7 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.tuple_element(this, index++, element);
             }
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

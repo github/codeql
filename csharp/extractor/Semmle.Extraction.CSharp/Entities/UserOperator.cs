@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType.PopulateGenerics();
             Overrides(trapFile);
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override bool NeedsPopulation => Context.Defines(Symbol) || IsImplicitOperator(out _);
+        public override bool NeedsPopulation => base.NeedsPopulation || IsImplicitOperator(out _);
 
         public override Type ContainingType
         {

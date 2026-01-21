@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }

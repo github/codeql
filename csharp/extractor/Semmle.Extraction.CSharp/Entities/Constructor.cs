@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
             ExtractCompilerGenerated(trapFile);
 
-            if (Context.OnlyScaffold)
+            if (OnlyScaffold)
             {
                 return;
             }
@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Do not extract initializers for constructed types.
             // Extract initializers for constructors with a body, primary constructors
             // and default constructors for classes and structs declared in source code.
-            if (Block is null && ExpressionBody is null && !MakeSynthetic || Context.OnlyScaffold)
+            if (Block is null && ExpressionBody is null && !MakeSynthetic || OnlyScaffold)
             {
                 return;
             }
@@ -211,7 +211,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
 
-        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
+        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !OnlyScaffold;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
