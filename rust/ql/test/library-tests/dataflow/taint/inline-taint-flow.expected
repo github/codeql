@@ -132,20 +132,35 @@ edges
 | main.rs:175:21:175:29 | source(...) | main.rs:175:5:175:5 | [post] a | provenance | MaD:19 |
 | main.rs:178:10:178:18 | source(...) | main.rs:178:10:178:24 | ... .neg() | provenance | MaD:9 |
 | main.rs:179:10:179:18 | source(...) | main.rs:179:10:179:24 | ... .not() | provenance | MaD:20 |
+| main.rs:199:13:199:17 | mut a [Wrapping] | main.rs:201:21:201:21 | a [Wrapping] | provenance |  |
+| main.rs:199:13:199:17 | mut a [Wrapping] | main.rs:206:21:206:21 | a [Wrapping] | provenance |  |
+| main.rs:199:36:199:61 | Wrapping(...) [Wrapping] | main.rs:199:13:199:17 | mut a [Wrapping] | provenance |  |
+| main.rs:199:45:199:60 | ...::source(...) | main.rs:199:36:199:61 | Wrapping(...) [Wrapping] | provenance |  |
+| main.rs:201:21:201:21 | a [Wrapping] | main.rs:201:21:201:23 | a.0 | provenance |  |
 | main.rs:203:9:203:9 | [post] a | main.rs:204:9:204:9 | a | provenance |  |
 | main.rs:203:9:203:9 | [post] a | main.rs:205:14:205:14 | a | provenance |  |
+| main.rs:203:9:203:9 | [post] a | main.rs:206:21:206:23 | a.0 | provenance |  |
 | main.rs:203:22:203:30 | source(...) | main.rs:203:9:203:9 | [post] a | provenance | MaD:3 |
 | main.rs:203:22:203:30 | source(...) | main.rs:203:9:203:9 | [post] a | provenance | MaD:4 |
 | main.rs:204:9:204:9 | [post] a | main.rs:205:14:205:14 | a | provenance |  |
+| main.rs:204:9:204:9 | [post] a | main.rs:206:21:206:23 | a.0 | provenance |  |
 | main.rs:204:9:204:9 | a | main.rs:204:9:204:9 | [post] a | provenance | MaD:4 |
+| main.rs:206:21:206:21 | a [Wrapping] | main.rs:206:21:206:23 | a.0 | provenance |  |
 | main.rs:208:9:208:9 | a | main.rs:209:9:209:9 | a | provenance |  |
 | main.rs:208:13:208:21 | source(...) | main.rs:208:9:208:9 | a | provenance |  |
 | main.rs:209:9:209:9 | a | main.rs:210:9:210:9 | a | provenance | MaD:4 |
 | main.rs:209:14:209:22 | source(...) | main.rs:210:9:210:9 | a | provenance | MaD:3 |
 | main.rs:209:14:209:22 | source(...) | main.rs:210:9:210:9 | a | provenance | MaD:4 |
 | main.rs:210:9:210:9 | a | main.rs:211:14:211:14 | a | provenance | MaD:4 |
+| main.rs:210:9:210:9 | a | main.rs:212:21:212:23 | a.0 | provenance | MaD:4 |
 | main.rs:221:15:221:30 | source_usize(...) | main.rs:222:14:222:14 | a | provenance | MaD:23 |
 | main.rs:221:15:221:30 | source_usize(...) | main.rs:222:14:222:14 | a | provenance | MaD:24 |
+| main.rs:221:15:221:30 | source_usize(...) | main.rs:223:21:223:23 | a.0 | provenance | MaD:23 |
+| main.rs:221:15:221:30 | source_usize(...) | main.rs:223:21:223:23 | a.0 | provenance | MaD:24 |
+| main.rs:241:13:241:14 | v8 | main.rs:242:21:242:24 | v8.0 | provenance |  |
+| main.rs:241:18:241:37 | ... << ... | main.rs:241:13:241:14 | v8 | provenance |  |
+| main.rs:241:23:241:37 | source_usize(...) | main.rs:241:18:241:37 | ... << ... | provenance | MaD:21 |
+| main.rs:241:23:241:37 | source_usize(...) | main.rs:241:18:241:37 | ... << ... | provenance | MaD:22 |
 nodes
 | main.rs:12:9:12:9 | a | semmle.label | a |
 | main.rs:12:13:12:22 | source(...) | semmle.label | source(...) |
@@ -270,19 +285,32 @@ nodes
 | main.rs:178:10:178:24 | ... .neg() | semmle.label | ... .neg() |
 | main.rs:179:10:179:18 | source(...) | semmle.label | source(...) |
 | main.rs:179:10:179:24 | ... .not() | semmle.label | ... .not() |
+| main.rs:199:13:199:17 | mut a [Wrapping] | semmle.label | mut a [Wrapping] |
+| main.rs:199:36:199:61 | Wrapping(...) [Wrapping] | semmle.label | Wrapping(...) [Wrapping] |
+| main.rs:199:45:199:60 | ...::source(...) | semmle.label | ...::source(...) |
+| main.rs:201:21:201:21 | a [Wrapping] | semmle.label | a [Wrapping] |
+| main.rs:201:21:201:23 | a.0 | semmle.label | a.0 |
 | main.rs:203:9:203:9 | [post] a | semmle.label | [post] a |
 | main.rs:203:22:203:30 | source(...) | semmle.label | source(...) |
 | main.rs:204:9:204:9 | [post] a | semmle.label | [post] a |
 | main.rs:204:9:204:9 | a | semmle.label | a |
 | main.rs:205:14:205:14 | a | semmle.label | a |
+| main.rs:206:21:206:21 | a [Wrapping] | semmle.label | a [Wrapping] |
+| main.rs:206:21:206:23 | a.0 | semmle.label | a.0 |
 | main.rs:208:9:208:9 | a | semmle.label | a |
 | main.rs:208:13:208:21 | source(...) | semmle.label | source(...) |
 | main.rs:209:9:209:9 | a | semmle.label | a |
 | main.rs:209:14:209:22 | source(...) | semmle.label | source(...) |
 | main.rs:210:9:210:9 | a | semmle.label | a |
 | main.rs:211:14:211:14 | a | semmle.label | a |
+| main.rs:212:21:212:23 | a.0 | semmle.label | a.0 |
 | main.rs:221:15:221:30 | source_usize(...) | semmle.label | source_usize(...) |
 | main.rs:222:14:222:14 | a | semmle.label | a |
+| main.rs:223:21:223:23 | a.0 | semmle.label | a.0 |
+| main.rs:241:13:241:14 | v8 | semmle.label | v8 |
+| main.rs:241:18:241:37 | ... << ... | semmle.label | ... << ... |
+| main.rs:241:23:241:37 | source_usize(...) | semmle.label | source_usize(...) |
+| main.rs:242:21:242:24 | v8.0 | semmle.label | v8.0 |
 subpaths
 testFailures
 #select
@@ -334,7 +362,14 @@ testFailures
 | main.rs:176:10:176:10 | a | main.rs:175:21:175:29 | source(...) | main.rs:176:10:176:10 | a | $@ | main.rs:175:21:175:29 | source(...) | source(...) |
 | main.rs:178:10:178:24 | ... .neg() | main.rs:178:10:178:18 | source(...) | main.rs:178:10:178:24 | ... .neg() | $@ | main.rs:178:10:178:18 | source(...) | source(...) |
 | main.rs:179:10:179:24 | ... .not() | main.rs:179:10:179:18 | source(...) | main.rs:179:10:179:24 | ... .not() | $@ | main.rs:179:10:179:18 | source(...) | source(...) |
+| main.rs:201:21:201:23 | a.0 | main.rs:199:45:199:60 | ...::source(...) | main.rs:201:21:201:23 | a.0 | $@ | main.rs:199:45:199:60 | ...::source(...) | ...::source(...) |
 | main.rs:205:14:205:14 | a | main.rs:203:22:203:30 | source(...) | main.rs:205:14:205:14 | a | $@ | main.rs:203:22:203:30 | source(...) | source(...) |
+| main.rs:206:21:206:23 | a.0 | main.rs:199:45:199:60 | ...::source(...) | main.rs:206:21:206:23 | a.0 | $@ | main.rs:199:45:199:60 | ...::source(...) | ...::source(...) |
+| main.rs:206:21:206:23 | a.0 | main.rs:203:22:203:30 | source(...) | main.rs:206:21:206:23 | a.0 | $@ | main.rs:203:22:203:30 | source(...) | source(...) |
 | main.rs:211:14:211:14 | a | main.rs:208:13:208:21 | source(...) | main.rs:211:14:211:14 | a | $@ | main.rs:208:13:208:21 | source(...) | source(...) |
 | main.rs:211:14:211:14 | a | main.rs:209:14:209:22 | source(...) | main.rs:211:14:211:14 | a | $@ | main.rs:209:14:209:22 | source(...) | source(...) |
+| main.rs:212:21:212:23 | a.0 | main.rs:208:13:208:21 | source(...) | main.rs:212:21:212:23 | a.0 | $@ | main.rs:208:13:208:21 | source(...) | source(...) |
+| main.rs:212:21:212:23 | a.0 | main.rs:209:14:209:22 | source(...) | main.rs:212:21:212:23 | a.0 | $@ | main.rs:209:14:209:22 | source(...) | source(...) |
 | main.rs:222:14:222:14 | a | main.rs:221:15:221:30 | source_usize(...) | main.rs:222:14:222:14 | a | $@ | main.rs:221:15:221:30 | source_usize(...) | source_usize(...) |
+| main.rs:223:21:223:23 | a.0 | main.rs:221:15:221:30 | source_usize(...) | main.rs:223:21:223:23 | a.0 | $@ | main.rs:221:15:221:30 | source_usize(...) | source_usize(...) |
+| main.rs:242:21:242:24 | v8.0 | main.rs:241:23:241:37 | source_usize(...) | main.rs:242:21:242:24 | v8.0 | $@ | main.rs:241:23:241:37 | source_usize(...) | source_usize(...) |
