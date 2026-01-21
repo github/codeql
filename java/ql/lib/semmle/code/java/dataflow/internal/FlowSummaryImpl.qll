@@ -48,7 +48,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
 
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
-  ReturnKind getStandardReturnValueKind() { any() }
+  ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }
 
   string encodeParameterPosition(ParameterPosition pos) { result = positionToString(pos) }
 
@@ -117,8 +117,12 @@ private module TypesInput implements Impl::Private::TypesInputSig {
   }
 
   DataFlowType getReturnType(Impl::Public::SummarizedCallable c, ReturnKind rk) {
-    result = getErasedRepr(c.getReturnType()) and
-    exists(rk)
+    rk instanceof NormalReturnKind and
+    result = getErasedRepr(c.getReturnType())
+    or
+    rk instanceof ExceptionReturnKind and
+    exists(c) and
+    result instanceof TypeThrowable
   }
 
   DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
@@ -128,8 +132,12 @@ private module TypesInput implements Impl::Private::TypesInputSig {
   }
 
   DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-    result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType()) and
-    exists(rk)
+    rk instanceof NormalReturnKind and
+    result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType())
+    or
+    rk instanceof ExceptionReturnKind and
+    exists(t) and
+    result instanceof TypeThrowable
   }
 
   DataFlowType getSourceType(Input::SourceBase source, Impl::Private::SummaryComponentStack s) {
@@ -419,7 +427,7 @@ module Private {
     SummaryComponent mapValue() { result = content(any(MapValueContent c)) }
 
     /** Gets a summary component that represents the return value of a call. */
-    SummaryComponent return() { result = return(_) }
+    SummaryComponent return() { result = return(any(NormalReturnKind n)) }
 
     class SyntheticGlobal = Impl::Private::SyntheticGlobal;
   }
