@@ -178,211 +178,418 @@ class JvmInstruction extends @jvm_instruction {
 /**
  * Converts a JVM opcode number to its mnemonic name.
  */
+private string opcodeToMnemonic0(int opcode) {
+  opcode = 0 and result = "nop"
+  or
+  opcode = 1 and result = "aconst_null"
+  or
+  opcode = 2 and result = "iconst_m1"
+  or
+  opcode = 3 and result = "iconst_0"
+  or
+  opcode = 4 and result = "iconst_1"
+  or
+  opcode = 5 and result = "iconst_2"
+  or
+  opcode = 6 and result = "iconst_3"
+  or
+  opcode = 7 and result = "iconst_4"
+  or
+  opcode = 8 and result = "iconst_5"
+  or
+  opcode = 9 and result = "lconst_0"
+  or
+  opcode = 10 and result = "lconst_1"
+  or
+  opcode = 11 and result = "fconst_0"
+  or
+  opcode = 12 and result = "fconst_1"
+  or
+  opcode = 13 and result = "fconst_2"
+  or
+  opcode = 14 and result = "dconst_0"
+  or
+  opcode = 15 and result = "dconst_1"
+  or
+  opcode = 16 and result = "bipush"
+  or
+  opcode = 17 and result = "sipush"
+  or
+  opcode = 18 and result = "ldc"
+  or
+  opcode = 19 and result = "ldc_w"
+  or
+  opcode = 20 and result = "ldc2_w"
+  or
+  opcode = 21 and result = "iload"
+  or
+  opcode = 22 and result = "lload"
+  or
+  opcode = 23 and result = "fload"
+  or
+  opcode = 24 and result = "dload"
+  or
+  opcode = 25 and result = "aload"
+  or
+  opcode = 26 and result = "iload_0"
+  or
+  opcode = 27 and result = "iload_1"
+  or
+  opcode = 28 and result = "iload_2"
+  or
+  opcode = 29 and result = "iload_3"
+  or
+  opcode = 30 and result = "lload_0"
+  or
+  opcode = 31 and result = "lload_1"
+  or
+  opcode = 32 and result = "lload_2"
+  or
+  opcode = 33 and result = "lload_3"
+  or
+  opcode = 34 and result = "fload_0"
+  or
+  opcode = 35 and result = "fload_1"
+  or
+  opcode = 36 and result = "fload_2"
+  or
+  opcode = 37 and result = "fload_3"
+  or
+  opcode = 38 and result = "dload_0"
+  or
+  opcode = 39 and result = "dload_1"
+  or
+  opcode = 40 and result = "dload_2"
+  or
+  opcode = 41 and result = "dload_3"
+  or
+  opcode = 42 and result = "aload_0"
+  or
+  opcode = 43 and result = "aload_1"
+  or
+  opcode = 44 and result = "aload_2"
+  or
+  opcode = 45 and result = "aload_3"
+  or
+  opcode = 46 and result = "iaload"
+  or
+  opcode = 47 and result = "laload"
+  or
+  opcode = 48 and result = "faload"
+  or
+  opcode = 49 and result = "daload"
+  or
+  opcode = 50 and result = "aaload"
+  or
+  opcode = 51 and result = "baload"
+  or
+  opcode = 52 and result = "caload"
+  or
+  opcode = 53 and result = "saload"
+  or
+  opcode = 54 and result = "istore"
+  or
+  opcode = 55 and result = "lstore"
+  or
+  opcode = 56 and result = "fstore"
+  or
+  opcode = 57 and result = "dstore"
+  or
+  opcode = 58 and result = "astore"
+  or
+  opcode = 59 and result = "istore_0"
+  or
+  opcode = 60 and result = "istore_1"
+  or
+  opcode = 61 and result = "istore_2"
+  or
+  opcode = 62 and result = "istore_3"
+  or
+  opcode = 63 and result = "lstore_0"
+  or
+  opcode = 64 and result = "lstore_1"
+  or
+  opcode = 65 and result = "lstore_2"
+  or
+  opcode = 66 and result = "lstore_3"
+  or
+  opcode = 67 and result = "fstore_0"
+  or
+  opcode = 68 and result = "fstore_1"
+  or
+  opcode = 69 and result = "fstore_2"
+  or
+  opcode = 70 and result = "fstore_3"
+  or
+  opcode = 71 and result = "dstore_0"
+  or
+  opcode = 72 and result = "dstore_1"
+  or
+  opcode = 73 and result = "dstore_2"
+  or
+  opcode = 74 and result = "dstore_3"
+  or
+  opcode = 75 and result = "astore_0"
+  or
+  opcode = 76 and result = "astore_1"
+  or
+  opcode = 77 and result = "astore_2"
+  or
+  opcode = 78 and result = "astore_3"
+  or
+  opcode = 79 and result = "iastore"
+  or
+  opcode = 80 and result = "lastore"
+  or
+  opcode = 81 and result = "fastore"
+  or
+  opcode = 82 and result = "dastore"
+  or
+  opcode = 83 and result = "aastore"
+  or
+  opcode = 84 and result = "bastore"
+  or
+  opcode = 85 and result = "castore"
+  or
+  opcode = 86 and result = "sastore"
+  or
+  opcode = 87 and result = "pop"
+  or
+  opcode = 88 and result = "pop2"
+  or
+  opcode = 89 and result = "dup"
+  or
+  opcode = 90 and result = "dup_x1"
+  or
+  opcode = 91 and result = "dup_x2"
+  or
+  opcode = 92 and result = "dup2"
+  or
+  opcode = 93 and result = "dup2_x1"
+  or
+  opcode = 94 and result = "dup2_x2"
+  or
+  opcode = 95 and result = "swap"
+  or
+  opcode = 96 and result = "iadd"
+  or
+  opcode = 97 and result = "ladd"
+  or
+  opcode = 98 and result = "fadd"
+  or
+  opcode = 99 and result = "dadd"
+  or
+  opcode = 100 and result = "isub"
+  or
+  opcode = 101 and result = "lsub"
+  or
+  opcode = 102 and result = "fsub"
+  or
+  opcode = 103 and result = "dsub"
+  or
+  opcode = 104 and result = "imul"
+  or
+  opcode = 105 and result = "lmul"
+  or
+  opcode = 106 and result = "fmul"
+  or
+  opcode = 107 and result = "dmul"
+  or
+  opcode = 108 and result = "idiv"
+  or
+  opcode = 109 and result = "ldiv"
+  or
+  opcode = 110 and result = "fdiv"
+  or
+  opcode = 111 and result = "ddiv"
+  or
+  opcode = 112 and result = "irem"
+  or
+  opcode = 113 and result = "lrem"
+  or
+  opcode = 114 and result = "frem"
+  or
+  opcode = 115 and result = "drem"
+  or
+  opcode = 116 and result = "ineg"
+  or
+  opcode = 117 and result = "lneg"
+  or
+  opcode = 118 and result = "fneg"
+  or
+  opcode = 119 and result = "dneg"
+  or
+  opcode = 120 and result = "ishl"
+  or
+  opcode = 121 and result = "lshl"
+  or
+  opcode = 122 and result = "ishr"
+  or
+  opcode = 123 and result = "lshr"
+  or
+  opcode = 124 and result = "iushr"
+  or
+  opcode = 125 and result = "lushr"
+  or
+  opcode = 126 and result = "iand"
+  or
+  opcode = 127 and result = "land"
+  or
+  opcode = 128 and result = "ior"
+  or
+  opcode = 129 and result = "lor"
+  or
+  opcode = 130 and result = "ixor"
+  or
+  opcode = 131 and result = "lxor"
+  or
+  opcode = 132 and result = "iinc"
+  or
+  opcode = 133 and result = "i2l"
+  or
+  opcode = 134 and result = "i2f"
+  or
+  opcode = 135 and result = "i2d"
+  or
+  opcode = 136 and result = "l2i"
+  or
+  opcode = 137 and result = "l2f"
+  or
+  opcode = 138 and result = "l2d"
+  or
+  opcode = 139 and result = "f2i"
+  or
+  opcode = 140 and result = "f2l"
+  or
+  opcode = 141 and result = "f2d"
+  or
+  opcode = 142 and result = "d2i"
+  or
+  opcode = 143 and result = "d2l"
+  or
+  opcode = 144 and result = "d2f"
+  or
+  opcode = 145 and result = "i2b"
+  or
+  opcode = 146 and result = "i2c"
+  or
+  opcode = 147 and result = "i2s"
+  or
+  opcode = 148 and result = "lcmp"
+  or
+  opcode = 149 and result = "fcmpl"
+  or
+  opcode = 150 and result = "fcmpg"
+  or
+  opcode = 151 and result = "dcmpl"
+  or
+  opcode = 152 and result = "dcmpg"
+  or
+  opcode = 153 and result = "ifeq"
+  or
+  opcode = 154 and result = "ifne"
+  or
+  opcode = 155 and result = "iflt"
+  or
+  opcode = 156 and result = "ifge"
+  or
+  opcode = 157 and result = "ifgt"
+  or
+  opcode = 158 and result = "ifle"
+  or
+  opcode = 159 and result = "if_icmpeq"
+  or
+  opcode = 160 and result = "if_icmpne"
+  or
+  opcode = 161 and result = "if_icmplt"
+  or
+  opcode = 162 and result = "if_icmpge"
+  or
+  opcode = 163 and result = "if_icmpgt"
+  or
+  opcode = 164 and result = "if_icmple"
+  or
+  opcode = 165 and result = "if_acmpeq"
+  or
+  opcode = 166 and result = "if_acmpne"
+  or
+  opcode = 167 and result = "goto"
+  or
+  opcode = 168 and result = "jsr"
+  or
+  opcode = 169 and result = "ret"
+  or
+  opcode = 170 and result = "tableswitch"
+  or
+  opcode = 171 and result = "lookupswitch"
+  or
+  opcode = 172 and result = "ireturn"
+  or
+  opcode = 173 and result = "lreturn"
+  or
+  opcode = 174 and result = "freturn"
+  or
+  opcode = 175 and result = "dreturn"
+  or
+  opcode = 176 and result = "areturn"
+  or
+  opcode = 177 and result = "return"
+  or
+  opcode = 178 and result = "getstatic"
+  or
+  opcode = 179 and result = "putstatic"
+  or
+  opcode = 180 and result = "getfield"
+  or
+  opcode = 181 and result = "putfield"
+  or
+  opcode = 182 and result = "invokevirtual"
+  or
+  opcode = 183 and result = "invokespecial"
+  or
+  opcode = 184 and result = "invokestatic"
+  or
+  opcode = 185 and result = "invokeinterface"
+  or
+  opcode = 186 and result = "invokedynamic"
+  or
+  opcode = 187 and result = "new"
+  or
+  opcode = 188 and result = "newarray"
+  or
+  opcode = 189 and result = "anewarray"
+  or
+  opcode = 190 and result = "arraylength"
+  or
+  opcode = 191 and result = "athrow"
+  or
+  opcode = 192 and result = "checkcast"
+  or
+  opcode = 193 and result = "instanceof"
+  or
+  opcode = 194 and result = "monitorenter"
+  or
+  opcode = 195 and result = "monitorexit"
+  or
+  opcode = 196 and result = "wide"
+  or
+  opcode = 197 and result = "multianewarray"
+  or
+  opcode = 198 and result = "ifnull"
+  or
+  opcode = 199 and result = "ifnonnull"
+  or
+  opcode = 200 and result = "goto_w"
+  or
+  opcode = 201 and result = "jsr_w"
+}
+
 bindingset[opcode]
 private string opcodeToMnemonic(int opcode) {
-  if opcode = 0 then result = "nop"
-  else if opcode = 1 then result = "aconst_null"
-  else if opcode = 2 then result = "iconst_m1"
-  else if opcode = 3 then result = "iconst_0"
-  else if opcode = 4 then result = "iconst_1"
-  else if opcode = 5 then result = "iconst_2"
-  else if opcode = 6 then result = "iconst_3"
-  else if opcode = 7 then result = "iconst_4"
-  else if opcode = 8 then result = "iconst_5"
-  else if opcode = 9 then result = "lconst_0"
-  else if opcode = 10 then result = "lconst_1"
-  else if opcode = 11 then result = "fconst_0"
-  else if opcode = 12 then result = "fconst_1"
-  else if opcode = 13 then result = "fconst_2"
-  else if opcode = 14 then result = "dconst_0"
-  else if opcode = 15 then result = "dconst_1"
-  else if opcode = 16 then result = "bipush"
-  else if opcode = 17 then result = "sipush"
-  else if opcode = 18 then result = "ldc"
-  else if opcode = 19 then result = "ldc_w"
-  else if opcode = 20 then result = "ldc2_w"
-  else if opcode = 21 then result = "iload"
-  else if opcode = 22 then result = "lload"
-  else if opcode = 23 then result = "fload"
-  else if opcode = 24 then result = "dload"
-  else if opcode = 25 then result = "aload"
-  else if opcode = 26 then result = "iload_0"
-  else if opcode = 27 then result = "iload_1"
-  else if opcode = 28 then result = "iload_2"
-  else if opcode = 29 then result = "iload_3"
-  else if opcode = 30 then result = "lload_0"
-  else if opcode = 31 then result = "lload_1"
-  else if opcode = 32 then result = "lload_2"
-  else if opcode = 33 then result = "lload_3"
-  else if opcode = 34 then result = "fload_0"
-  else if opcode = 35 then result = "fload_1"
-  else if opcode = 36 then result = "fload_2"
-  else if opcode = 37 then result = "fload_3"
-  else if opcode = 38 then result = "dload_0"
-  else if opcode = 39 then result = "dload_1"
-  else if opcode = 40 then result = "dload_2"
-  else if opcode = 41 then result = "dload_3"
-  else if opcode = 42 then result = "aload_0"
-  else if opcode = 43 then result = "aload_1"
-  else if opcode = 44 then result = "aload_2"
-  else if opcode = 45 then result = "aload_3"
-  else if opcode = 46 then result = "iaload"
-  else if opcode = 47 then result = "laload"
-  else if opcode = 48 then result = "faload"
-  else if opcode = 49 then result = "daload"
-  else if opcode = 50 then result = "aaload"
-  else if opcode = 51 then result = "baload"
-  else if opcode = 52 then result = "caload"
-  else if opcode = 53 then result = "saload"
-  else if opcode = 54 then result = "istore"
-  else if opcode = 55 then result = "lstore"
-  else if opcode = 56 then result = "fstore"
-  else if opcode = 57 then result = "dstore"
-  else if opcode = 58 then result = "astore"
-  else if opcode = 59 then result = "istore_0"
-  else if opcode = 60 then result = "istore_1"
-  else if opcode = 61 then result = "istore_2"
-  else if opcode = 62 then result = "istore_3"
-  else if opcode = 63 then result = "lstore_0"
-  else if opcode = 64 then result = "lstore_1"
-  else if opcode = 65 then result = "lstore_2"
-  else if opcode = 66 then result = "lstore_3"
-  else if opcode = 67 then result = "fstore_0"
-  else if opcode = 68 then result = "fstore_1"
-  else if opcode = 69 then result = "fstore_2"
-  else if opcode = 70 then result = "fstore_3"
-  else if opcode = 71 then result = "dstore_0"
-  else if opcode = 72 then result = "dstore_1"
-  else if opcode = 73 then result = "dstore_2"
-  else if opcode = 74 then result = "dstore_3"
-  else if opcode = 75 then result = "astore_0"
-  else if opcode = 76 then result = "astore_1"
-  else if opcode = 77 then result = "astore_2"
-  else if opcode = 78 then result = "astore_3"
-  else if opcode = 79 then result = "iastore"
-  else if opcode = 80 then result = "lastore"
-  else if opcode = 81 then result = "fastore"
-  else if opcode = 82 then result = "dastore"
-  else if opcode = 83 then result = "aastore"
-  else if opcode = 84 then result = "bastore"
-  else if opcode = 85 then result = "castore"
-  else if opcode = 86 then result = "sastore"
-  else if opcode = 87 then result = "pop"
-  else if opcode = 88 then result = "pop2"
-  else if opcode = 89 then result = "dup"
-  else if opcode = 90 then result = "dup_x1"
-  else if opcode = 91 then result = "dup_x2"
-  else if opcode = 92 then result = "dup2"
-  else if opcode = 93 then result = "dup2_x1"
-  else if opcode = 94 then result = "dup2_x2"
-  else if opcode = 95 then result = "swap"
-  else if opcode = 96 then result = "iadd"
-  else if opcode = 97 then result = "ladd"
-  else if opcode = 98 then result = "fadd"
-  else if opcode = 99 then result = "dadd"
-  else if opcode = 100 then result = "isub"
-  else if opcode = 101 then result = "lsub"
-  else if opcode = 102 then result = "fsub"
-  else if opcode = 103 then result = "dsub"
-  else if opcode = 104 then result = "imul"
-  else if opcode = 105 then result = "lmul"
-  else if opcode = 106 then result = "fmul"
-  else if opcode = 107 then result = "dmul"
-  else if opcode = 108 then result = "idiv"
-  else if opcode = 109 then result = "ldiv"
-  else if opcode = 110 then result = "fdiv"
-  else if opcode = 111 then result = "ddiv"
-  else if opcode = 112 then result = "irem"
-  else if opcode = 113 then result = "lrem"
-  else if opcode = 114 then result = "frem"
-  else if opcode = 115 then result = "drem"
-  else if opcode = 116 then result = "ineg"
-  else if opcode = 117 then result = "lneg"
-  else if opcode = 118 then result = "fneg"
-  else if opcode = 119 then result = "dneg"
-  else if opcode = 120 then result = "ishl"
-  else if opcode = 121 then result = "lshl"
-  else if opcode = 122 then result = "ishr"
-  else if opcode = 123 then result = "lshr"
-  else if opcode = 124 then result = "iushr"
-  else if opcode = 125 then result = "lushr"
-  else if opcode = 126 then result = "iand"
-  else if opcode = 127 then result = "land"
-  else if opcode = 128 then result = "ior"
-  else if opcode = 129 then result = "lor"
-  else if opcode = 130 then result = "ixor"
-  else if opcode = 131 then result = "lxor"
-  else if opcode = 132 then result = "iinc"
-  else if opcode = 133 then result = "i2l"
-  else if opcode = 134 then result = "i2f"
-  else if opcode = 135 then result = "i2d"
-  else if opcode = 136 then result = "l2i"
-  else if opcode = 137 then result = "l2f"
-  else if opcode = 138 then result = "l2d"
-  else if opcode = 139 then result = "f2i"
-  else if opcode = 140 then result = "f2l"
-  else if opcode = 141 then result = "f2d"
-  else if opcode = 142 then result = "d2i"
-  else if opcode = 143 then result = "d2l"
-  else if opcode = 144 then result = "d2f"
-  else if opcode = 145 then result = "i2b"
-  else if opcode = 146 then result = "i2c"
-  else if opcode = 147 then result = "i2s"
-  else if opcode = 148 then result = "lcmp"
-  else if opcode = 149 then result = "fcmpl"
-  else if opcode = 150 then result = "fcmpg"
-  else if opcode = 151 then result = "dcmpl"
-  else if opcode = 152 then result = "dcmpg"
-  else if opcode = 153 then result = "ifeq"
-  else if opcode = 154 then result = "ifne"
-  else if opcode = 155 then result = "iflt"
-  else if opcode = 156 then result = "ifge"
-  else if opcode = 157 then result = "ifgt"
-  else if opcode = 158 then result = "ifle"
-  else if opcode = 159 then result = "if_icmpeq"
-  else if opcode = 160 then result = "if_icmpne"
-  else if opcode = 161 then result = "if_icmplt"
-  else if opcode = 162 then result = "if_icmpge"
-  else if opcode = 163 then result = "if_icmpgt"
-  else if opcode = 164 then result = "if_icmple"
-  else if opcode = 165 then result = "if_acmpeq"
-  else if opcode = 166 then result = "if_acmpne"
-  else if opcode = 167 then result = "goto"
-  else if opcode = 168 then result = "jsr"
-  else if opcode = 169 then result = "ret"
-  else if opcode = 170 then result = "tableswitch"
-  else if opcode = 171 then result = "lookupswitch"
-  else if opcode = 172 then result = "ireturn"
-  else if opcode = 173 then result = "lreturn"
-  else if opcode = 174 then result = "freturn"
-  else if opcode = 175 then result = "dreturn"
-  else if opcode = 176 then result = "areturn"
-  else if opcode = 177 then result = "return"
-  else if opcode = 178 then result = "getstatic"
-  else if opcode = 179 then result = "putstatic"
-  else if opcode = 180 then result = "getfield"
-  else if opcode = 181 then result = "putfield"
-  else if opcode = 182 then result = "invokevirtual"
-  else if opcode = 183 then result = "invokespecial"
-  else if opcode = 184 then result = "invokestatic"
-  else if opcode = 185 then result = "invokeinterface"
-  else if opcode = 186 then result = "invokedynamic"
-  else if opcode = 187 then result = "new"
-  else if opcode = 188 then result = "newarray"
-  else if opcode = 189 then result = "anewarray"
-  else if opcode = 190 then result = "arraylength"
-  else if opcode = 191 then result = "athrow"
-  else if opcode = 192 then result = "checkcast"
-  else if opcode = 193 then result = "instanceof"
-  else if opcode = 194 then result = "monitorenter"
-  else if opcode = 195 then result = "monitorexit"
-  else if opcode = 196 then result = "wide"
-  else if opcode = 197 then result = "multianewarray"
-  else if opcode = 198 then result = "ifnull"
-  else if opcode = 199 then result = "ifnonnull"
-  else if opcode = 200 then result = "goto_w"
-  else if opcode = 201 then result = "jsr_w"
-  else result = "unknown_" + opcode.toString()
+  result = opcodeToMnemonic0(opcode)
+  or
+  not exists(opcodeToMnemonic0(opcode)) and
+  result = "unknown_" + opcode.toString()
 }
 
 // ============================================================================
