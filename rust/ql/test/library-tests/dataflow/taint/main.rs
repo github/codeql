@@ -203,13 +203,13 @@ mod wrapping {
         a.add_assign(source(2));
         a.add_assign(Wrapping(crate::source(3)));
         sink(a); // $ hasTaintFlow=2 MISSING: hasTaintFlow=1 hasTaintFlow=3
-        crate::sink(a.0); // $ hasValueFlow=1 hasTaintFlow=2 MISSING: hasTaintFlow=3
+        crate::sink(a.0); // $ hasValueFlow=1 hasTaintFlow=2 hasTaintFlow=3
 
         a = source(4);
         a += source(5);
         a += std::num::Wrapping(crate::source(6));
         sink(a); // $ hasTaintFlow=4 hasTaintFlow=5 MISSING: hasTaintFlow=6
-        crate::sink(a.0); // $ hasTaintFlow=4 hasTaintFlow=5 MISSING: hasTaintFlow=6
+        crate::sink(a.0); // $ hasTaintFlow=4 hasTaintFlow=5 hasTaintFlow=6
 
         a = source(7);
         a &= source(8);
@@ -225,13 +225,13 @@ mod wrapping {
         let b: Wrapping<i64> = Wrapping(crate::source(1));
         let c: Wrapping<i64> = Wrapping(crate::source(2));
         let v1 = b + c;
-        crate::sink(v1.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2
+        crate::sink(v1.0); // $ hasTaintFlow=1 hasTaintFlow=2
         let v2 = b.add(c);
-        crate::sink(v2.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2
+        crate::sink(v2.0); // $ hasTaintFlow=1 hasTaintFlow=2
         let v3 = -b;
-        crate::sink(v3.0); // $ MISSING: hasTaintFlow=1
+        crate::sink(v3.0); // $ hasTaintFlow=1
         let v4 = b.neg();
-        crate::sink(v4.0); // $ MISSING: hasTaintFlow=1
+        crate::sink(v4.0); // $ hasTaintFlow=1
         let v5 = !b;
         crate::sink(v5.0); // $ MISSING: hasTaintFlow=1
         let v6 = b.not();
