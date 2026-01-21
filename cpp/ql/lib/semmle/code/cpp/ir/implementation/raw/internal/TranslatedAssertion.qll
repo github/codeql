@@ -33,6 +33,7 @@ private predicate stmtCandidate(Stmt s) {
 pragma[nomagic]
 private predicate macroInvocationLocation(int startline, Function f, MacroInvocation mi) {
   mi.getMacroName() = ["assert", "__analysis_assume"] and
+  mi.getNumberOfArguments() = 1 and
   mi.getLocation().hasLocationInfo(_, startline, _, _, _) and
   f.getEntryPoint().isAffectedByMacro(mi)
 }
@@ -49,7 +50,7 @@ private predicate stmtParentLocation(int startline, Function f, StmtParent p) {
  * is the only thing on the line.
  */
 pragma[nomagic]
-private predicate assertion0(MacroInvocation mi, Stmt s) {
+private predicate assertion0(MacroInvocation mi, Stmt s, string arg) {
   stmtCandidate(s) and
   s =
     unique(StmtParent p, int startline, Function f |
@@ -61,12 +62,13 @@ private predicate assertion0(MacroInvocation mi, Stmt s) {
       not p = mi.getAnExpandedElement()
     |
       p
-    )
+    ) and
+  arg = mi.getUnexpandedArgument(0)
 }
 
 private Function getEnclosingFunctionForMacroInvocation(MacroInvocation mi) {
   exists(Stmt s |
-    assertion0(mi, s) and
+    assertion0(mi, s, _) and
     result = s.getEnclosingFunction()
   )
 }
@@ -110,11 +112,28 @@ private predicate parseArgument(string arg, string s, int i, Opcode opcode) {
   opcode instanceof Opcode::CompareEQ
 }
 
-/** Gets a local variable named `s` in `f`. */
-pragma[nomagic]
-private LocalScopeVariable getAVariableWithNameInFunction(Function f, string s) {
-  result.getName() = s and
-  result.getFunction() = f
+private Element getAChildScope(Element scope) { result.getParentScope() = scope }
+
+private predicate hasAVariable(MacroInvocation mi, Stmt s, Element scope) {
+  assertion0(mi, s, _) and
+  s.getParent() = scope
+  or
+  hasAVariable(mi, s, getAChildScope(scope))
+}
+
+private LocalScopeVariable getVariable(MacroInvocation mi, int i) {
+  exists(string operand, string arg, Stmt s |
+    assertion0(mi, s, arg) and
+    parseArgument(arg, operand, i, _) and
+    result =
+      unique(Variable v |
+        v.getLocation().getStartLine() < s.getLocation().getStartLine() and
+        hasAVariable(mi, s, v.getParentScope()) and
+        v.hasName(operand)
+      |
+        v
+      )
+  )
 }
 
 /**
@@ -126,7 +145,7 @@ private predicate hasVarAccessMacroArgument(MacroInvocation mi, Variable var, in
     arg = mi.getUnexpandedArgument(0) and
     f = getEnclosingFunctionForMacroInvocation(mi) and
     parseArgument(arg, s, i, opcode) and
-    var = unique( | | getAVariableWithNameInFunction(f, s))
+    var = getVariable(mi, i)
   )
 }
 
@@ -136,8 +155,7 @@ private predicate hasVarAccessMacroArgument(MacroInvocation mi, Variable var, in
  */
 private predicate hasConstMacroArgument(MacroInvocation mi, int k, int i, Opcode opcode) {
   exists(string arg, string s |
-    assertion0(mi, _) and
-    arg = mi.getUnexpandedArgument(0) and
+    assertion0(mi, _, arg) and
     s.toInt() = k and
     parseArgument(arg, s, i, opcode)
   )
@@ -160,7 +178,7 @@ private predicate hasAssertionOpcode(MacroInvocation mi, Opcode opcode) {
  * in the control-flow graph at `s`.
  */
 predicate assertion(MacroInvocation mi, Stmt s) {
-  assertion0(mi, s) and
+  assertion0(mi, s, _) and
   hasAssertionOperand(mi, 0) and
   hasAssertionOperand(mi, 1)
 }
