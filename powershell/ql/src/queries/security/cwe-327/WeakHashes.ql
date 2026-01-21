@@ -27,14 +27,9 @@ class WeakHashAlgorithmObjectCreation extends DataFlow::ObjectCreationNode {
 
 class WeakHashAlgorithmObjectCreate extends DataFlow::CallNode {
     WeakHashAlgorithmObjectCreate() {
-        // System.Security.Cryptography.MD5
-        this = API::getTopLevelMember("system")
-        .getMember("security")
-        .getMember("cryptography")
-        .getMember("md5")
-        .getMember("create")
-        .asCall() 
-    }
+        this = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("md5").getMember("create").asCall() or
+        this = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("sha1").getMember("create").asCall() 
+  }
 }
 
 class ComputeHashSink extends DataFlow::Node {
@@ -47,12 +42,22 @@ class ComputeHashSink extends DataFlow::Node {
         cn.getQualifier().getALocalSource() = ocn and 
         cn.getLowerCaseName() = "computehash" and
         cn.getAnArgument() = this
-    )
+      )
     }
+}
+
+class CreateFromNameSink extends DataFlow::CallNode {
+  CreateFromNameSink(){
+      this = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("cryptoconfig").getMember("createfromname").asCall() and 
+      this.getAnArgument().asExpr().getValue().asString() = "System.Security.Cryptography.MD5" or
+      this.getAnArgument().asExpr().getValue().asString() = "MD5" 
+        
+  }
 }
 
 from DataFlow::Node sink 
 where sink instanceof ComputeHashSink or 
 sink instanceof WeakHashAlgorithmObjectCreation or 
-sink instanceof WeakHashAlgorithmObjectCreate
+sink instanceof WeakHashAlgorithmObjectCreate or 
+sink instanceof CreateFromNameSink
 select sink, "Use of weak cryptographic hash algorithm."

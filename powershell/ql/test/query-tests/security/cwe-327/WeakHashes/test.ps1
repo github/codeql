@@ -20,6 +20,16 @@ $sha1ProviderHash = $sha1Provider.ComputeHash([System.Text.Encoding]::UTF8.GetBy
 $sha1Managed = New-Object System.Security.Cryptography.SHA1Managed
 $sha1ManagedHash = $sha1Managed.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("data"))
 
+# BAD: HMACMD5 uses weak MD5
+$md5hmac = New-Object System.Security.Cryptography.HMACMD5
+
+# BAD: Creating weak hash algorithms from name
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("MD5")
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("System.Security.Cryptography.MD5")
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("SHA1")
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("System.Security.Cryptography.SHA1")
+
+
 # ---------------------------------------------------------
 # GOOD: Safe usage of cryptographically secure algorithms
 # ---------------------------------------------------------
