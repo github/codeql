@@ -2,7 +2,8 @@
  * @name Known hashing algorithms (slice)
  * @description Outputs known hashing algorithms.
  * @id java/quantum/slices/known-hashing-algorithm
- * @kind table
+ * @kind problem
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */
