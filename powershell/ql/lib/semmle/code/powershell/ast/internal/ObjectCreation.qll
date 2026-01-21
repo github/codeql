@@ -46,12 +46,11 @@ class DotNetObjectCreation extends AbstractObjectCreation, CmdCall {
 
   final override Expr getConstructedTypeExpr() {
     // Either it's the named argument `TypeName`
-    result = CmdCall.super.getNamedArgument("TypeName")
+    result = CmdCall.super.getNamedArgument("typename")
     or
     // Or it's the first positional argument if that's the named argument
-    not CmdCall.super.hasNamedArgument("TypeName") and
-    result = CmdCall.super.getPositionalArgument(0) and
-    result = CmdCall.super.getNamedArgument(["ArgumentList", "Property"])
+    not CmdCall.super.hasNamedArgument("typename") and
+    result = CmdCall.super.getPositionalArgument(0)
   }
 }
 

@@ -12,8 +12,8 @@ Sink $myClass # $ type=myclass
 
 $withNamedArg = New-Object -TypeName PSObject
 
-Sink $withNamedArg # $ type=PSObject
+Sink $withNamedArg # $ type=psobject
 
 $withPositionalArg = New-Object PSObject
 
-Sink $withPositionalArg # $ type=PSObject
+Sink $withPositionalArg # $ type=psobject

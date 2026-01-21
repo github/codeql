@@ -1,0 +1,16 @@
+name: "cil"
+aliases:
+  - "cil"
+  - "csharp-il"
+display_name: "C# IL"
+version: 0.0.1
+column_kind: "utf16"
+build_modes:
+  - none
+file_types:
+  - name: cil
+    display_name: C# IL
+    extensions:
+      - .exe
+      - .dll
+dbscheme: semmlecode.binary.dbscheme

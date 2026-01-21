@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: binary/vulnerable-calls
+      extensible: vulnerableCallModel
+    data:
+      - ["System", "Console", "WriteLine", "TEST-VULN-001"]

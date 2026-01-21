@@ -1,0 +1,5 @@
+name: test/jvm-queries
+version: 0.0.1
+libraryPathDependencies:
+  - microsoft/binary-all
+warnOnImplicitThis: true
