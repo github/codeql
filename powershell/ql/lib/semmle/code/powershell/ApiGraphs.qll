@@ -588,7 +588,7 @@ module API {
       )
       or
       exists(DataFlow::Node qualifier | pred = getForwardEndNode(getALocalSourceStrict(qualifier)) |
-        exists(CfgNodes::ExprNodes::MemberExprReadAccessCfgNode read |
+        exists(CfgNodes::ExprNodes::MemberExprCfgNode read |
           read.getQualifier() = qualifier.asExpr() and
           read.getLowerCaseMemberName() = name and
           succ = getForwardStartNode(DataFlow::exprNode(read))
