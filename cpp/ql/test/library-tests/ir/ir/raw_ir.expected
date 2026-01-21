@@ -18880,6 +18880,326 @@ ir.cpp:
 # 2821|     v2821_9(void)                 = AliasedUse                : ~m?
 # 2821|     v2821_10(void)                = ExitFunction              : 
 
+# 2830| void test_assert_simple(int, int, unsigned int, int)
+# 2830|   Block 0
+# 2830|     v2830_1(void)                = EnterFunction                 : 
+# 2830|     mu2830_2(unknown)            = AliasedDefinition             : 
+# 2830|     mu2830_3(unknown)            = InitializeNonLocal            : 
+# 2830|     r2830_4(glval<int>)          = VariableAddress[x]            : 
+# 2830|     mu2830_5(int)                = InitializeParameter[x]        : &:r2830_4
+# 2830|     r2830_6(glval<int>)          = VariableAddress[y]            : 
+# 2830|     mu2830_7(int)                = InitializeParameter[y]        : &:r2830_6
+# 2830|     r2830_8(glval<unsigned int>) = VariableAddress[u]            : 
+# 2830|     mu2830_9(unsigned int)       = InitializeParameter[u]        : &:r2830_8
+# 2830|     r2830_10(glval<int>)         = VariableAddress[shadowed]     : 
+# 2830|     mu2830_11(int)               = InitializeParameter[shadowed] : &:r2830_10
+# 2831|     r2831_1(glval<int>)          = VariableAddress[x]            : 
+# 2831|     r2831_2(int)                 = Load[x]                       : &:r2831_1, ~m?
+# 2831|     r2831_3(int)                 = Constant[0]                   : 
+# 2831|     r2831_4(bool)                = CompareGT                     : r2831_2, r2831_3
+# 2831|     v2831_5(void)                = ConditionalBranch             : r2831_4
+#-----|   True -> Block 1
+
+# 2832|   Block 1
+# 2832|     r2832_1(int)        = Constant[0]        : 
+# 2832|     r2832_2(glval<int>) = VariableAddress[x] : 
+# 2832|     r2832_3(int)        = Load[x]            : &:r2832_2, ~m?
+# 2832|     r2832_4(bool)       = CompareLT          : r2832_1, r2832_3
+# 2832|     v2832_5(void)       = ConditionalBranch  : r2832_4
+#-----|   True -> Block 2
+
+# 2833|   Block 2
+# 2833|     r2833_1(glval<int>) = VariableAddress[x] : 
+# 2833|     r2833_2(int)        = Load[x]            : &:r2833_1, ~m?
+# 2833|     r2833_3(glval<int>) = VariableAddress[y] : 
+# 2833|     r2833_4(int)        = Load[y]            : &:r2833_3, ~m?
+# 2833|     r2833_5(bool)       = CompareLT          : r2833_2, r2833_4
+# 2833|     v2833_6(void)       = ConditionalBranch  : r2833_5
+#-----|   True -> Block 3
+
+# 2835|   Block 3
+# 2835|     r2835_1(glval<int>) = VariableAddress[x] : 
+# 2835|     r2835_2(int)        = Load[x]            : &:r2835_1, ~m?
+# 2835|     r2835_3(int)        = Constant[2]        : 
+# 2835|     r2835_4(bool)       = CompareNE          : r2835_2, r2835_3
+# 2835|     v2835_5(void)       = ConditionalBranch  : r2835_4
+#-----|   True -> Block 4
+
+# 2837|   Block 4
+# 2837|     r2837_1(glval<unsigned int>) = VariableAddress[u] : 
+# 2837|     r2837_2(unsigned int)        = Load[u]            : &:r2837_1, ~m?
+# 2837|     r2837_3(glval<int>)          = VariableAddress[x] : 
+# 2837|     r2837_4(int)                 = Load[x]            : &:r2837_3, ~m?
+# 2837|     r2837_5(bool)                = CompareLT          : r2837_2, r2837_4
+# 2837|     v2837_6(void)                = ConditionalBranch  : r2837_5
+#-----|   True -> Block 5
+
+# 2840|   Block 5
+# 2840|     r2840_1(glval<int>) = VariableAddress[shadowed] : 
+# 2840|     r2840_2(glval<int>) = VariableAddress[x]        : 
+# 2840|     r2840_3(int)        = Load[x]                   : &:r2840_2, ~m?
+# 2840|     mu2840_4(int)       = Store[shadowed]           : &:r2840_1, r2840_3
+# 2841|     r2841_1(int)        = Constant[0]               : 
+# 2841|     v2841_2(void)       = Convert                   : r2841_1
+# 2843|     v2843_1(void)       = NoOp                      : 
+# 2830|     v2830_12(void)      = ReturnVoid                : 
+# 2830|     v2830_13(void)      = AliasedUse                : ~m?
+# 2830|     v2830_14(void)      = ExitFunction              : 
+
+# 2846| void test_assert_in_template<int>(int, int, unsigned int)
+# 2846|   Block 0
+# 2846|     v2846_1(void)                = EnterFunction          : 
+# 2846|     mu2846_2(unknown)            = AliasedDefinition      : 
+# 2846|     mu2846_3(unknown)            = InitializeNonLocal     : 
+# 2846|     r2846_4(glval<int>)          = VariableAddress[x]     : 
+# 2846|     mu2846_5(int)                = InitializeParameter[x] : &:r2846_4
+# 2846|     r2846_6(glval<int>)          = VariableAddress[y]     : 
+# 2846|     mu2846_7(int)                = InitializeParameter[y] : &:r2846_6
+# 2846|     r2846_8(glval<unsigned int>) = VariableAddress[u]     : 
+# 2846|     mu2846_9(unsigned int)       = InitializeParameter[u] : &:r2846_8
+# 2847|     r2847_1(glval<int>)          = VariableAddress[x]     : 
+# 2847|     r2847_2(int)                 = Load[x]                : &:r2847_1, ~m?
+# 2847|     r2847_3(int)                 = Constant[0]            : 
+# 2847|     r2847_4(bool)                = CompareGT              : r2847_2, r2847_3
+# 2847|     v2847_5(void)                = ConditionalBranch      : r2847_4
+#-----|   True -> Block 1
+
+# 2848|   Block 1
+# 2848|     r2848_1(int)        = Constant[0]        : 
+# 2848|     r2848_2(glval<int>) = VariableAddress[x] : 
+# 2848|     r2848_3(int)        = Load[x]            : &:r2848_2, ~m?
+# 2848|     r2848_4(bool)       = CompareLT          : r2848_1, r2848_3
+# 2848|     v2848_5(void)       = ConditionalBranch  : r2848_4
+#-----|   True -> Block 2
+
+# 2849|   Block 2
+# 2849|     r2849_1(glval<int>) = VariableAddress[x] : 
+# 2849|     r2849_2(int)        = Load[x]            : &:r2849_1, ~m?
+# 2849|     r2849_3(glval<int>) = VariableAddress[y] : 
+# 2849|     r2849_4(int)        = Load[y]            : &:r2849_3, ~m?
+# 2849|     r2849_5(bool)       = CompareLT          : r2849_2, r2849_4
+# 2849|     v2849_6(void)       = ConditionalBranch  : r2849_5
+#-----|   True -> Block 3
+
+# 2851|   Block 3
+# 2851|     r2851_1(glval<int>) = VariableAddress[x] : 
+# 2851|     r2851_2(int)        = Load[x]            : &:r2851_1, ~m?
+# 2851|     r2851_3(int)        = Constant[2]        : 
+# 2851|     r2851_4(bool)       = CompareNE          : r2851_2, r2851_3
+# 2851|     v2851_5(void)       = ConditionalBranch  : r2851_4
+#-----|   True -> Block 4
+
+# 2853|   Block 4
+# 2853|     r2853_1(glval<unsigned int>) = VariableAddress[u] : 
+# 2853|     r2853_2(unsigned int)        = Load[u]            : &:r2853_1, ~m?
+# 2853|     r2853_3(glval<int>)          = VariableAddress[x] : 
+# 2853|     r2853_4(int)                 = Load[x]            : &:r2853_3, ~m?
+# 2853|     r2853_5(bool)                = CompareLT          : r2853_2, r2853_4
+# 2853|     v2853_6(void)                = ConditionalBranch  : r2853_5
+#-----|   True -> Block 5
+
+# 2856|   Block 5
+# 2856|     r2856_1(glval<int>) = VariableAddress[shadowed] : 
+# 2856|     r2856_2(glval<int>) = VariableAddress[x]        : 
+# 2856|     r2856_3(int)        = Load[x]                   : &:r2856_2, ~m?
+# 2856|     mu2856_4(int)       = Store[shadowed]           : &:r2856_1, r2856_3
+# 2857|     r2857_1(glval<int>) = VariableAddress[shadowed] : 
+# 2857|     r2857_2(int)        = Load[shadowed]            : &:r2857_1, ~m?
+# 2857|     r2857_3(int)        = Constant[0]               : 
+# 2857|     r2857_4(bool)       = CompareGT                 : r2857_2, r2857_3
+# 2857|     v2857_5(void)       = ConditionalBranch         : r2857_4
+#-----|   True -> Block 6
+
+# 2859|   Block 6
+# 2859|     r2859_1(glval<int>) = VariableAddress[x] : 
+# 2859|     r2859_2(int)        = Load[x]            : &:r2859_1, ~m?
+# 2859|     r2859_3(int)        = Constant[0]        : 
+# 2859|     r2859_4(bool)       = CompareGT          : r2859_2, r2859_3
+# 2859|     v2859_5(void)       = ConditionalBranch  : r2859_4
+#-----|   True -> Block 7
+
+# 2860|   Block 7
+# 2860|     v2860_1(void)  = NoOp         : 
+# 2846|     v2846_10(void) = ReturnVoid   : 
+# 2846|     v2846_11(void) = AliasedUse   : ~m?
+# 2846|     v2846_12(void) = ExitFunction : 
+
+# 2846| void test_assert_in_template<short>(short, int, unsigned int)
+# 2846|   Block 0
+# 2846|     v2846_1(void)                = EnterFunction          : 
+# 2846|     mu2846_2(unknown)            = AliasedDefinition      : 
+# 2846|     mu2846_3(unknown)            = InitializeNonLocal     : 
+# 2846|     r2846_4(glval<short>)        = VariableAddress[x]     : 
+# 2846|     mu2846_5(short)              = InitializeParameter[x] : &:r2846_4
+# 2846|     r2846_6(glval<int>)          = VariableAddress[y]     : 
+# 2846|     mu2846_7(int)                = InitializeParameter[y] : &:r2846_6
+# 2846|     r2846_8(glval<unsigned int>) = VariableAddress[u]     : 
+# 2846|     mu2846_9(unsigned int)       = InitializeParameter[u] : &:r2846_8
+# 2847|     r2847_1(glval<short>)        = VariableAddress[x]     : 
+# 2847|     r2847_2(short)               = Load[x]                : &:r2847_1, ~m?
+# 2847|     r2847_3(int)                 = Constant[0]            : 
+# 2847|     r2847_4(bool)                = CompareGT              : r2847_2, r2847_3
+# 2847|     v2847_5(void)                = ConditionalBranch      : r2847_4
+#-----|   True -> Block 1
+
+# 2848|   Block 1
+# 2848|     r2848_1(int)          = Constant[0]        : 
+# 2848|     r2848_2(glval<short>) = VariableAddress[x] : 
+# 2848|     r2848_3(short)        = Load[x]            : &:r2848_2, ~m?
+# 2848|     r2848_4(bool)         = CompareLT          : r2848_1, r2848_3
+# 2848|     v2848_5(void)         = ConditionalBranch  : r2848_4
+#-----|   True -> Block 2
+
+# 2849|   Block 2
+# 2849|     r2849_1(glval<short>) = VariableAddress[x] : 
+# 2849|     r2849_2(short)        = Load[x]            : &:r2849_1, ~m?
+# 2849|     r2849_3(glval<int>)   = VariableAddress[y] : 
+# 2849|     r2849_4(int)          = Load[y]            : &:r2849_3, ~m?
+# 2849|     r2849_5(bool)         = CompareLT          : r2849_2, r2849_4
+# 2849|     v2849_6(void)         = ConditionalBranch  : r2849_5
+#-----|   True -> Block 3
+
+# 2851|   Block 3
+# 2851|     r2851_1(glval<short>) = VariableAddress[x] : 
+# 2851|     r2851_2(short)        = Load[x]            : &:r2851_1, ~m?
+# 2851|     r2851_3(int)          = Constant[2]        : 
+# 2851|     r2851_4(bool)         = CompareNE          : r2851_2, r2851_3
+# 2851|     v2851_5(void)         = ConditionalBranch  : r2851_4
+#-----|   True -> Block 4
+
+# 2853|   Block 4
+# 2853|     r2853_1(glval<unsigned int>) = VariableAddress[u] : 
+# 2853|     r2853_2(unsigned int)        = Load[u]            : &:r2853_1, ~m?
+# 2853|     r2853_3(glval<short>)        = VariableAddress[x] : 
+# 2853|     r2853_4(short)               = Load[x]            : &:r2853_3, ~m?
+# 2853|     r2853_5(bool)                = CompareLT          : r2853_2, r2853_4
+# 2853|     v2853_6(void)                = ConditionalBranch  : r2853_5
+#-----|   True -> Block 5
+
+# 2856|   Block 5
+# 2856|     r2856_1(glval<int>)   = VariableAddress[shadowed] : 
+# 2856|     r2856_2(glval<short>) = VariableAddress[x]        : 
+# 2856|     r2856_3(short)        = Load[x]                   : &:r2856_2, ~m?
+# 2856|     r2856_4(int)          = Convert                   : r2856_3
+# 2856|     mu2856_5(int)         = Store[shadowed]           : &:r2856_1, r2856_4
+# 2857|     r2857_1(glval<int>)   = VariableAddress[shadowed] : 
+# 2857|     r2857_2(int)          = Load[shadowed]            : &:r2857_1, ~m?
+# 2857|     r2857_3(int)          = Constant[0]               : 
+# 2857|     r2857_4(bool)         = CompareGT                 : r2857_2, r2857_3
+# 2857|     v2857_5(void)         = ConditionalBranch         : r2857_4
+#-----|   True -> Block 6
+
+# 2859|   Block 6
+# 2859|     r2859_1(glval<short>) = VariableAddress[x] : 
+# 2859|     r2859_2(short)        = Load[x]            : &:r2859_1, ~m?
+# 2859|     r2859_3(int)          = Constant[0]        : 
+# 2859|     r2859_4(bool)         = CompareGT          : r2859_2, r2859_3
+# 2859|     v2859_5(void)         = ConditionalBranch  : r2859_4
+#-----|   True -> Block 7
+
+# 2860|   Block 7
+# 2860|     v2860_1(void)  = NoOp         : 
+# 2846|     v2846_10(void) = ReturnVoid   : 
+# 2846|     v2846_11(void) = AliasedUse   : ~m?
+# 2846|     v2846_12(void) = ExitFunction : 
+
+# 2867| void (unnamed namespace)::complex_assertions(int, bool, int)
+# 2867|   Block 0
+# 2867|     v2867_1(void)        = EnterFunction            : 
+# 2867|     mu2867_2(unknown)    = AliasedDefinition        : 
+# 2867|     mu2867_3(unknown)    = InitializeNonLocal       : 
+# 2867|     r2867_4(glval<int>)  = VariableAddress[x]       : 
+# 2867|     mu2867_5(int)        = InitializeParameter[x]   : &:r2867_4
+# 2867|     r2867_6(glval<bool>) = VariableAddress[b]       : 
+# 2867|     mu2867_7(bool)       = InitializeParameter[b]   : &:r2867_6
+# 2867|     r2867_8(glval<int>)  = VariableAddress[max]     : 
+# 2867|     mu2867_9(int)        = InitializeParameter[max] : &:r2867_8
+# 2868|     r2868_1(glval<int>)  = VariableAddress[y]       : 
+# 2868|     r2868_2(int)         = Constant[0]              : 
+# 2868|     v2868_3(void)        = Convert                  : r2868_2
+# 2868|     r2868_4(glval<int>)  = VariableAddress[x]       : 
+# 2868|     r2868_5(int)         = Load[x]                  : &:r2868_4, ~m?
+# 2868|     r2868_6(int)         = CopyValue                : r2868_5
+# 2868|     mu2868_7(int)        = Store[y]                 : &:r2868_1, r2868_6
+# 2869|     r2869_1(glval<int>)  = VariableAddress[z]       : 
+# 2869|     r2869_2(glval<bool>) = VariableAddress[b]       : 
+# 2869|     r2869_3(bool)        = Load[b]                  : &:r2869_2, ~m?
+# 2869|     v2869_4(void)        = ConditionalBranch        : r2869_3
+#-----|   False -> Block 5
+#-----|   True -> Block 4
+
+# 2867|   Block 1
+# 2867|     v2867_10(void) = AliasedUse   : ~m?
+# 2867|     v2867_11(void) = ExitFunction : 
+
+# 2867|   Block 2
+# 2867|     v2867_12(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+# 2869|   Block 3
+# 2869|     r2869_5(glval<int>) = VariableAddress[#temp2869:17]  : 
+# 2869|     r2869_6(int)        = Load[#temp2869:17]             : &:r2869_5, ~m?
+# 2869|     mu2869_7(int)       = Store[z]                       : &:r2869_1, r2869_6
+# 2872|     r2872_1(glval<int>) = VariableAddress[#throw2872:13] : 
+# 2872|     r2872_2(int)        = Constant[41]                   : 
+# 2872|     mu2872_3(int)       = Store[#throw2872:13]           : &:r2872_1, r2872_2
+# 2872|     v2872_4(void)       = ThrowValue                     : &:r2872_1, ~m?
+#-----|   C++ Exception -> Block 6
+
+# 2869|   Block 4
+# 2869|     r2869_8(int)        = Constant[0]                   : 
+# 2869|     r2869_9(glval<int>) = VariableAddress[#temp2869:17] : 
+# 2869|     mu2869_10(int)      = Store[#temp2869:17]           : &:r2869_9, r2869_8
+#-----|   Goto -> Block 3
+
+# 2869|   Block 5
+# 2869|     r2869_11(int)        = Constant[1]                   : 
+# 2869|     r2869_12(glval<int>) = VariableAddress[#temp2869:17] : 
+# 2869|     mu2869_13(int)       = Store[#temp2869:17]           : &:r2869_12, r2869_11
+#-----|   Goto -> Block 3
+
+# 2873|   Block 6
+# 2873|     v2873_1(void) = CatchByType[int] : 
+#-----|   C++ Exception -> Block 2
+#-----|   Goto -> Block 7
+
+# 2873|   Block 7
+# 2873|     r2873_2(glval<int>) = VariableAddress[c]     : 
+# 2873|     mu2873_3(int)       = InitializeParameter[c] : &:r2873_2
+# 2874|     r2874_1(glval<int>) = VariableAddress[c]     : 
+# 2874|     r2874_2(int)        = Load[c]                : &:r2874_1, ~m?
+# 2874|     r2874_3(int)        = Constant[42]           : 
+# 2874|     r2874_4(bool)       = CompareLT              : r2874_2, r2874_3
+# 2874|     v2874_5(void)       = ConditionalBranch      : r2874_4
+#-----|   True -> Block 8
+
+# 2875|   Block 8
+# 2875|     r2875_1(int)        = Constant[0]                    : 
+# 2875|     v2875_2(void)       = Convert                        : r2875_1
+# 2878|     r2878_1(int)        = Constant[0]                    : 
+# 2878|     v2878_2(void)       = Convert                        : r2878_1
+# 2879|     r2879_1(glval<int>) = VariableAddress[shadowed]      : 
+# 2879|     mu2879_2(int)       = Uninitialized[shadowed]        : &:r2879_1
+# 2882|     r2882_1(glval<int>) = VariableAddress[#throw2882:13] : 
+# 2882|     r2882_2(int)        = Constant[41]                   : 
+# 2882|     mu2882_3(int)       = Store[#throw2882:13]           : &:r2882_1, r2882_2
+# 2882|     v2882_4(void)       = ThrowValue                     : &:r2882_1, ~m?
+#-----|   C++ Exception -> Block 9
+
+# 2883|   Block 9
+# 2883|     v2883_1(void) = CatchByType[int] : 
+#-----|   C++ Exception -> Block 2
+#-----|   Goto -> Block 10
+
+# 2883|   Block 10
+# 2883|     r2883_2(glval<int>) = VariableAddress[shadowed]     : 
+# 2883|     mu2883_3(int)       = InitializeParameter[shadowed] : &:r2883_2
+# 2884|     r2884_1(int)        = Constant[0]                   : 
+# 2884|     v2884_2(void)       = Convert                       : r2884_1
+# 2886|     v2886_1(void)       = NoOp                          : 
+# 2867|     v2867_13(void)      = ReturnVoid                    : 
+#-----|   Goto -> Block 1
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0
