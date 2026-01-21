@@ -61,7 +61,7 @@ module OpenUrlRedirect {
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
-  class RedirectSink extends Sink, DataFlow::Node {
+  class RedirectSink extends Sink {
     RedirectSink() { this = any(Http::Redirect redir).getUrl() }
   }
 
@@ -69,10 +69,14 @@ module OpenUrlRedirect {
    * A definition of the HTTP "Location" header, considered as a sink for
    * `Configuration`.
    */
-  class LocationHeaderSink extends Sink, DataFlow::Node {
+  class LocationHeaderSink extends Sink {
     LocationHeaderSink() {
       exists(Http::HeaderWrite hw | hw.getHeaderName() = "location" | this = hw.getValue())
     }
+  }
+
+  private class ExternalBarrier extends Barrier {
+    ExternalBarrier() { barrierNode(this, "url-redirection") }
   }
 
   /**
@@ -95,20 +99,20 @@ module OpenUrlRedirect {
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard for sanitizing untrusted URLs.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Barrier { }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends Barrier instanceof RedirectCheckBarrier { }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Barrier { }
+  class RegexpCheckAsBarrierGuard extends Barrier instanceof RegexpCheckBarrier { }
 
   /**
    * A check against a constant value or the `Hostname` function,
    * considered a barrier guard for url flow.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Barrier { }
+  class UrlCheckAsBarrierGuard extends Barrier instanceof UrlCheckBarrier { }
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */

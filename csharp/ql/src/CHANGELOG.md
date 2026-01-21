@@ -1,3 +1,18 @@
+## 1.6.0
+
+### Query Metadata Changes
+
+* Updated the `name`, `description`, and alert message of `cs/path-combine` to have more details about why it's a problem.
+
+### Minor Analysis Improvements
+
+* Added `NHibernate.ISession.CreateSQLQuery`, `NHibernate.IStatelessSession.CreateSQLQuery` and `NHibernate.Impl.AbstractSessionImpl.CreateSQLQuery` as SQL injection sinks.
+* The `Missing cross-site request forgery token validation` query was extended to support ASP.NET Core.
+
+## 1.5.4
+
+No user-facing changes.
+
 ## 1.5.3
 
 No user-facing changes.

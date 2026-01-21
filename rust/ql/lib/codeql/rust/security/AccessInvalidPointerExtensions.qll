@@ -10,8 +10,8 @@ private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.Node
 private import codeql.rust.security.Barriers as Barriers
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.internal.Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type
 
 /**
  * Provides default sources, sinks and barriers for detecting accesses to

@@ -14,7 +14,7 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
-private import codeql.rust.internal.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 private import codeql.rust.internal.typeinference.DerefChain
 private import Node as Node
 private import DataFlowImpl
@@ -277,11 +277,11 @@ abstract class ImplicitDerefBorrowNode extends Node {
    */
   abstract Node getBorrowInputNode();
 
-  abstract AstNode getUnderlyingAstNode();
+  abstract Expr getExpr();
 
-  override CfgScope getCfgScope() { result = this.getUnderlyingAstNode().getEnclosingCfgScope() }
+  override CfgScope getCfgScope() { result = this.getExpr().getEnclosingCfgScope() }
 
-  override Location getLocation() { result = this.getUnderlyingAstNode().getLocation() }
+  override Location getLocation() { result = this.getExpr().getLocation() }
 }
 
 /**
@@ -292,24 +292,24 @@ abstract class ImplicitDerefBorrowNode extends Node {
  * is in.
  */
 class ImplicitDerefNode extends ImplicitDerefBorrowNode, TImplicitDerefNode {
-  AstNode n;
+  Expr e;
   DerefChain derefChain;
   ImplicitDerefNodeState state;
   int i;
 
-  ImplicitDerefNode() { this = TImplicitDerefNode(n, derefChain, state, i, false) }
+  ImplicitDerefNode() { this = TImplicitDerefNode(e, derefChain, state, i, false) }
 
-  override AstNode getUnderlyingAstNode() { result = n }
+  override Expr getExpr() { result = e }
 
   private predicate isBuiltinDeref() { derefChain.isBuiltinDeref(i) }
 
   private Node getInputNode() {
     // The first implicit deref has the underlying AST node as input
     i = 0 and
-    result.(AstNodeNode).getAstNode() = n
+    result.asExpr() = e
     or
     // Subsequent implicit derefs have the previous implicit deref as input
-    result = TImplicitDerefNode(n, derefChain, TImplicitDerefNodeAfterDerefState(), i - 1, false)
+    result = TImplicitDerefNode(e, derefChain, TImplicitDerefNodeAfterDerefState(), i - 1, false)
   }
 
   /**
@@ -334,19 +334,19 @@ class ImplicitDerefNode extends ImplicitDerefBorrowNode, TImplicitDerefNode {
    */
   Node getDerefOutputNode() {
     state = TImplicitDerefNodeBeforeDerefState() and
-    result = TImplicitDerefNode(n, derefChain, TImplicitDerefNodeAfterDerefState(), i, false)
+    result = TImplicitDerefNode(e, derefChain, TImplicitDerefNodeAfterDerefState(), i, false)
   }
 
   /**
    * Holds if this node represents the last implicit deref in the underlying chain.
    */
-  predicate isLast(AstNode node) {
-    node = n and
+  predicate isLast(Expr expr) {
+    expr = e and
     state = TImplicitDerefNodeAfterDerefState() and
     i = derefChain.length() - 1
   }
 
-  override string toString() { result = n + " [implicit deref " + i + " in state " + state + "]" }
+  override string toString() { result = e + " [implicit deref " + i + " in state " + state + "]" }
 }
 
 final class ImplicitDerefArgNode extends ImplicitDerefNode, ArgumentNode {
@@ -356,12 +356,12 @@ final class ImplicitDerefArgNode extends ImplicitDerefNode, ArgumentNode {
   ImplicitDerefArgNode() {
     not derefChain.isBuiltinDeref(i) and
     state = TImplicitDerefNodeAfterBorrowState() and
-    call_.isImplicitDerefCall(n, derefChain, i, _) and
+    call_.isImplicitDerefCall(e, derefChain, i, _) and
     pos_.isSelf()
     or
     this.isLast(_) and
-    TypeInference::implicitDerefChainBorrow(n, derefChain, false) and
-    isArgumentForCall(n, call_.asCall(), pos_)
+    TypeInference::implicitDerefChainBorrow(e, derefChain, false) and
+    isArgumentForCall(e, call_.asCall(), pos_)
   }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
@@ -378,7 +378,7 @@ private class ImplicitDerefOutNode extends ImplicitDerefNode, OutNode {
   }
 
   override DataFlowCall getCall(ReturnKind kind) {
-    result.isImplicitDerefCall(n, derefChain, i, _) and
+    result.isImplicitDerefCall(e, derefChain, i, _) and
     kind = TNormalReturnKind()
   }
 }
@@ -387,30 +387,30 @@ private class ImplicitDerefOutNode extends ImplicitDerefNode, OutNode {
  * A node that represents the value of an expression _after_ implicit borrowing.
  */
 class ImplicitBorrowNode extends ImplicitDerefBorrowNode, TImplicitBorrowNode {
-  AstNode n;
+  Expr e;
   DerefChain derefChain;
 
-  ImplicitBorrowNode() { this = TImplicitBorrowNode(n, derefChain, false) }
+  ImplicitBorrowNode() { this = TImplicitBorrowNode(e, derefChain, false) }
 
-  override AstNode getUnderlyingAstNode() { result = n }
+  override Expr getExpr() { result = e }
 
   override Node getBorrowInputNode() {
     result =
-      TImplicitDerefNode(n, derefChain, TImplicitDerefNodeAfterDerefState(),
+      TImplicitDerefNode(e, derefChain, TImplicitDerefNodeAfterDerefState(),
         derefChain.length() - 1, false)
     or
     derefChain.isEmpty() and
-    result.(AstNodeNode).getAstNode() = n
+    result.(AstNodeNode).getAstNode() = e
   }
 
-  override string toString() { result = n + " [implicit borrow]" }
+  override string toString() { result = e + " [implicit borrow]" }
 }
 
 final class ImplicitBorrowArgNode extends ImplicitBorrowNode, ArgumentNode {
   private DataFlowCall call_;
   private RustDataFlow::ArgumentPosition pos_;
 
-  ImplicitBorrowArgNode() { isArgumentForCall(n, call_.asCall(), pos_) }
+  ImplicitBorrowArgNode() { isArgumentForCall(e, call_.asCall(), pos_) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
     call = call_ and pos = pos_
@@ -736,13 +736,15 @@ newtype TNode =
     )
   } or
   TImplicitDerefNode(
-    AstNode n, DerefChain derefChain, ImplicitDerefNodeState state, int i, Boolean isPost
+    Expr e, DerefChain derefChain, ImplicitDerefNodeState state, int i, Boolean isPost
   ) {
-    TypeInference::implicitDerefChainBorrow(n, derefChain, _) and
+    e.hasEnclosingCfgScope() and
+    TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
     i in [0 .. derefChain.length() - 1]
   } or
-  TImplicitBorrowNode(AstNode n, DerefChain derefChain, Boolean isPost) {
-    TypeInference::implicitDerefChainBorrow(n, derefChain, true)
+  TImplicitBorrowNode(Expr e, DerefChain derefChain, Boolean isPost) {
+    e.hasEnclosingCfgScope() and
+    TypeInference::implicitDerefChainBorrow(e, derefChain, true)
   } or
   TDerefOutNode(DerefExpr de, Boolean isPost) or
   TIndexOutNode(IndexExpr ie, Boolean isPost) or

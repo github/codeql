@@ -136,7 +136,6 @@ edges
 | test_logging.rs:94:11:94:28 | MacroExpr | test_logging.rs:94:5:94:9 | ...::log | provenance | MaD:11 Sink:MaD:11 |
 | test_logging.rs:96:9:96:10 | m2 | test_logging.rs:97:11:97:18 | MacroExpr | provenance |  |
 | test_logging.rs:96:14:96:49 | ... + ... | test_logging.rs:96:9:96:10 | m2 | provenance |  |
-| test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:14:96:49 | ... + ... | provenance | MaD:17 |
 | test_logging.rs:96:41:96:49 | &password | test_logging.rs:96:14:96:49 | ... + ... | provenance | MaD:16 |
 | test_logging.rs:96:41:96:49 | &password [&ref] | test_logging.rs:96:14:96:49 | ... + ... | provenance | MaD:16 |
 | test_logging.rs:96:42:96:49 | password | test_logging.rs:96:41:96:49 | &password | provenance | Config |
@@ -145,8 +144,8 @@ edges
 | test_logging.rs:99:9:99:10 | m3 | test_logging.rs:100:11:100:18 | MacroExpr | provenance |  |
 | test_logging.rs:99:22:99:45 | ...::format(...) | test_logging.rs:99:22:99:45 | { ... } | provenance |  |
 | test_logging.rs:99:22:99:45 | ...::must_use(...) | test_logging.rs:99:9:99:10 | m3 | provenance |  |
-| test_logging.rs:99:22:99:45 | MacroExpr | test_logging.rs:99:22:99:45 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:99:22:99:45 | { ... } | test_logging.rs:99:22:99:45 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:99:22:99:45 | MacroExpr | test_logging.rs:99:22:99:45 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:99:22:99:45 | { ... } | test_logging.rs:99:22:99:45 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:99:38:99:45 | password | test_logging.rs:99:22:99:45 | MacroExpr | provenance |  |
 | test_logging.rs:100:11:100:18 | MacroExpr | test_logging.rs:100:5:100:9 | ...::log | provenance | MaD:11 Sink:MaD:11 |
 | test_logging.rs:118:12:118:41 | MacroExpr | test_logging.rs:118:5:118:10 | ...::log | provenance | MaD:11 Sink:MaD:11 |
@@ -167,8 +166,8 @@ edges
 | test_logging.rs:176:34:176:79 | MacroExpr | test_logging.rs:176:33:176:79 | &... [&ref] | provenance |  |
 | test_logging.rs:176:42:176:78 | ...::format(...) | test_logging.rs:176:42:176:78 | { ... } | provenance |  |
 | test_logging.rs:176:42:176:78 | ...::must_use(...) | test_logging.rs:176:34:176:79 | MacroExpr | provenance |  |
-| test_logging.rs:176:42:176:78 | MacroExpr | test_logging.rs:176:42:176:78 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:176:42:176:78 | { ... } | test_logging.rs:176:42:176:78 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:176:42:176:78 | MacroExpr | test_logging.rs:176:42:176:78 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:176:42:176:78 | { ... } | test_logging.rs:176:42:176:78 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:176:70:176:78 | password2 | test_logging.rs:176:42:176:78 | MacroExpr | provenance |  |
 | test_logging.rs:180:35:180:81 | &... | test_logging.rs:180:24:180:33 | log_expect | provenance | MaD:3 Sink:MaD:3 |
 | test_logging.rs:180:35:180:81 | &... [&ref] | test_logging.rs:180:24:180:33 | log_expect | provenance | MaD:3 Sink:MaD:3 |
@@ -176,8 +175,8 @@ edges
 | test_logging.rs:180:36:180:81 | MacroExpr | test_logging.rs:180:35:180:81 | &... [&ref] | provenance |  |
 | test_logging.rs:180:44:180:80 | ...::format(...) | test_logging.rs:180:44:180:80 | { ... } | provenance |  |
 | test_logging.rs:180:44:180:80 | ...::must_use(...) | test_logging.rs:180:36:180:81 | MacroExpr | provenance |  |
-| test_logging.rs:180:44:180:80 | MacroExpr | test_logging.rs:180:44:180:80 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:180:44:180:80 | { ... } | test_logging.rs:180:44:180:80 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:180:44:180:80 | MacroExpr | test_logging.rs:180:44:180:80 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:180:44:180:80 | { ... } | test_logging.rs:180:44:180:80 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:180:72:180:80 | password2 | test_logging.rs:180:44:180:80 | MacroExpr | provenance |  |
 | test_logging.rs:183:9:183:19 | err_result2 [Err] | test_logging.rs:184:13:184:23 | err_result2 [Err] | provenance |  |
 | test_logging.rs:183:47:183:68 | Err(...) [Err] | test_logging.rs:183:9:183:19 | err_result2 [Err] | provenance |  |
@@ -220,40 +219,40 @@ edges
 | test_logging.rs:226:36:226:59 | ...::Some(...) [Some] | test_logging.rs:226:13:226:28 | ...::assert_failed | provenance | MaD:9 Sink:MaD:9 |
 | test_logging.rs:226:36:226:59 | MacroExpr | test_logging.rs:226:36:226:59 | ...::Some(...) [Some] | provenance |  |
 | test_logging.rs:226:52:226:59 | password | test_logging.rs:226:36:226:59 | MacroExpr | provenance |  |
-| test_logging.rs:229:30:229:62 | MacroExpr | test_logging.rs:229:30:229:71 | ... .as_str() [&ref] | provenance | MaD:19 |
+| test_logging.rs:229:30:229:62 | MacroExpr | test_logging.rs:229:30:229:71 | ... .as_str() [&ref] | provenance | MaD:18 |
 | test_logging.rs:229:30:229:71 | ... .as_str() [&ref] | test_logging.rs:229:23:229:28 | expect | provenance | MaD:2 Sink:MaD:2 |
 | test_logging.rs:229:38:229:61 | ...::format(...) | test_logging.rs:229:38:229:61 | { ... } | provenance |  |
 | test_logging.rs:229:38:229:61 | ...::must_use(...) | test_logging.rs:229:30:229:62 | MacroExpr | provenance |  |
-| test_logging.rs:229:38:229:61 | MacroExpr | test_logging.rs:229:38:229:61 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:229:38:229:61 | { ... } | test_logging.rs:229:38:229:61 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:229:38:229:61 | MacroExpr | test_logging.rs:229:38:229:61 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:229:38:229:61 | { ... } | test_logging.rs:229:38:229:61 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:229:54:229:61 | password | test_logging.rs:229:38:229:61 | MacroExpr | provenance |  |
-| test_logging.rs:242:16:242:50 | MacroExpr | test_logging.rs:242:16:242:61 | ... .as_bytes() [&ref] | provenance | MaD:18 |
-| test_logging.rs:242:16:242:61 | ... .as_bytes() [&ref] | test_logging.rs:242:10:242:14 | write | provenance | MaD:7 Sink:MaD:7 |
+| test_logging.rs:242:16:242:50 | MacroExpr | test_logging.rs:242:16:242:61 | ... .as_bytes() [&ref, element] | provenance | MaD:17 |
+| test_logging.rs:242:16:242:61 | ... .as_bytes() [&ref, element] | test_logging.rs:242:10:242:14 | write | provenance | MaD:7 Sink:MaD:7 Sink:MaD:7 |
 | test_logging.rs:242:24:242:49 | ...::format(...) | test_logging.rs:242:24:242:49 | { ... } | provenance |  |
 | test_logging.rs:242:24:242:49 | ...::must_use(...) | test_logging.rs:242:16:242:50 | MacroExpr | provenance |  |
-| test_logging.rs:242:24:242:49 | MacroExpr | test_logging.rs:242:24:242:49 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:242:24:242:49 | { ... } | test_logging.rs:242:24:242:49 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:242:24:242:49 | MacroExpr | test_logging.rs:242:24:242:49 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:242:24:242:49 | { ... } | test_logging.rs:242:24:242:49 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:242:42:242:49 | password | test_logging.rs:242:24:242:49 | MacroExpr | provenance |  |
-| test_logging.rs:245:20:245:54 | MacroExpr | test_logging.rs:245:20:245:65 | ... .as_bytes() [&ref] | provenance | MaD:18 |
-| test_logging.rs:245:20:245:65 | ... .as_bytes() [&ref] | test_logging.rs:245:10:245:18 | write_all | provenance | MaD:8 Sink:MaD:8 |
+| test_logging.rs:245:20:245:54 | MacroExpr | test_logging.rs:245:20:245:65 | ... .as_bytes() [&ref, element] | provenance | MaD:17 |
+| test_logging.rs:245:20:245:65 | ... .as_bytes() [&ref, element] | test_logging.rs:245:10:245:18 | write_all | provenance | MaD:8 Sink:MaD:8 Sink:MaD:8 |
 | test_logging.rs:245:28:245:53 | ...::format(...) | test_logging.rs:245:28:245:53 | { ... } | provenance |  |
 | test_logging.rs:245:28:245:53 | ...::must_use(...) | test_logging.rs:245:20:245:54 | MacroExpr | provenance |  |
-| test_logging.rs:245:28:245:53 | MacroExpr | test_logging.rs:245:28:245:53 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:245:28:245:53 | { ... } | test_logging.rs:245:28:245:53 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:245:28:245:53 | MacroExpr | test_logging.rs:245:28:245:53 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:245:28:245:53 | { ... } | test_logging.rs:245:28:245:53 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:245:46:245:53 | password | test_logging.rs:245:28:245:53 | MacroExpr | provenance |  |
-| test_logging.rs:248:15:248:49 | MacroExpr | test_logging.rs:248:15:248:60 | ... .as_bytes() [&ref] | provenance | MaD:18 |
-| test_logging.rs:248:15:248:60 | ... .as_bytes() [&ref] | test_logging.rs:248:9:248:13 | write | provenance | MaD:7 Sink:MaD:7 |
+| test_logging.rs:248:15:248:49 | MacroExpr | test_logging.rs:248:15:248:60 | ... .as_bytes() [&ref, element] | provenance | MaD:17 |
+| test_logging.rs:248:15:248:60 | ... .as_bytes() [&ref, element] | test_logging.rs:248:9:248:13 | write | provenance | MaD:7 Sink:MaD:7 Sink:MaD:7 |
 | test_logging.rs:248:23:248:48 | ...::format(...) | test_logging.rs:248:23:248:48 | { ... } | provenance |  |
 | test_logging.rs:248:23:248:48 | ...::must_use(...) | test_logging.rs:248:15:248:49 | MacroExpr | provenance |  |
-| test_logging.rs:248:23:248:48 | MacroExpr | test_logging.rs:248:23:248:48 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:248:23:248:48 | { ... } | test_logging.rs:248:23:248:48 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:248:23:248:48 | MacroExpr | test_logging.rs:248:23:248:48 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:248:23:248:48 | { ... } | test_logging.rs:248:23:248:48 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:248:41:248:48 | password | test_logging.rs:248:23:248:48 | MacroExpr | provenance |  |
-| test_logging.rs:251:15:251:49 | MacroExpr | test_logging.rs:251:15:251:60 | ... .as_bytes() [&ref] | provenance | MaD:18 |
-| test_logging.rs:251:15:251:60 | ... .as_bytes() [&ref] | test_logging.rs:251:9:251:13 | write | provenance | MaD:6 Sink:MaD:6 |
+| test_logging.rs:251:15:251:49 | MacroExpr | test_logging.rs:251:15:251:60 | ... .as_bytes() [&ref, element] | provenance | MaD:17 |
+| test_logging.rs:251:15:251:60 | ... .as_bytes() [&ref, element] | test_logging.rs:251:9:251:13 | write | provenance | MaD:6 Sink:MaD:6 Sink:MaD:6 |
 | test_logging.rs:251:23:251:48 | ...::format(...) | test_logging.rs:251:23:251:48 | { ... } | provenance |  |
 | test_logging.rs:251:23:251:48 | ...::must_use(...) | test_logging.rs:251:15:251:49 | MacroExpr | provenance |  |
-| test_logging.rs:251:23:251:48 | MacroExpr | test_logging.rs:251:23:251:48 | ...::format(...) | provenance | MaD:20 |
-| test_logging.rs:251:23:251:48 | { ... } | test_logging.rs:251:23:251:48 | ...::must_use(...) | provenance | MaD:21 |
+| test_logging.rs:251:23:251:48 | MacroExpr | test_logging.rs:251:23:251:48 | ...::format(...) | provenance | MaD:19 |
+| test_logging.rs:251:23:251:48 | { ... } | test_logging.rs:251:23:251:48 | ...::must_use(...) | provenance | MaD:20 |
 | test_logging.rs:251:41:251:48 | password | test_logging.rs:251:23:251:48 | MacroExpr | provenance |  |
 models
 | 1 | Sink: <core::option::Option as log_err::LogErrOption>::log_expect; Argument[0]; log-injection |
@@ -272,11 +271,10 @@ models
 | 14 | Sink: std::io::stdio::_print; Argument[0]; log-injection |
 | 15 | Summary: <_ as core::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
 | 16 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 17 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
-| 18 | Summary: <alloc::string::String>::as_bytes; Argument[self]; ReturnValue; value |
-| 19 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
-| 20 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
-| 21 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+| 17 | Summary: <alloc::string::String>::as_bytes; Argument[self].Reference; ReturnValue.Reference.Element; taint |
+| 18 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
+| 19 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 20 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes
 | test_logging.rs:42:5:42:10 | ...::log | semmle.label | ...::log |
 | test_logging.rs:42:12:42:35 | MacroExpr | semmle.label | MacroExpr |
@@ -491,7 +489,7 @@ nodes
 | test_logging.rs:229:54:229:61 | password | semmle.label | password |
 | test_logging.rs:242:10:242:14 | write | semmle.label | write |
 | test_logging.rs:242:16:242:50 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:242:16:242:61 | ... .as_bytes() [&ref] | semmle.label | ... .as_bytes() [&ref] |
+| test_logging.rs:242:16:242:61 | ... .as_bytes() [&ref, element] | semmle.label | ... .as_bytes() [&ref, element] |
 | test_logging.rs:242:24:242:49 | ...::format(...) | semmle.label | ...::format(...) |
 | test_logging.rs:242:24:242:49 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | test_logging.rs:242:24:242:49 | MacroExpr | semmle.label | MacroExpr |
@@ -499,7 +497,7 @@ nodes
 | test_logging.rs:242:42:242:49 | password | semmle.label | password |
 | test_logging.rs:245:10:245:18 | write_all | semmle.label | write_all |
 | test_logging.rs:245:20:245:54 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:245:20:245:65 | ... .as_bytes() [&ref] | semmle.label | ... .as_bytes() [&ref] |
+| test_logging.rs:245:20:245:65 | ... .as_bytes() [&ref, element] | semmle.label | ... .as_bytes() [&ref, element] |
 | test_logging.rs:245:28:245:53 | ...::format(...) | semmle.label | ...::format(...) |
 | test_logging.rs:245:28:245:53 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | test_logging.rs:245:28:245:53 | MacroExpr | semmle.label | MacroExpr |
@@ -507,7 +505,7 @@ nodes
 | test_logging.rs:245:46:245:53 | password | semmle.label | password |
 | test_logging.rs:248:9:248:13 | write | semmle.label | write |
 | test_logging.rs:248:15:248:49 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:248:15:248:60 | ... .as_bytes() [&ref] | semmle.label | ... .as_bytes() [&ref] |
+| test_logging.rs:248:15:248:60 | ... .as_bytes() [&ref, element] | semmle.label | ... .as_bytes() [&ref, element] |
 | test_logging.rs:248:23:248:48 | ...::format(...) | semmle.label | ...::format(...) |
 | test_logging.rs:248:23:248:48 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | test_logging.rs:248:23:248:48 | MacroExpr | semmle.label | MacroExpr |
@@ -515,7 +513,7 @@ nodes
 | test_logging.rs:248:41:248:48 | password | semmle.label | password |
 | test_logging.rs:251:9:251:13 | write | semmle.label | write |
 | test_logging.rs:251:15:251:49 | MacroExpr | semmle.label | MacroExpr |
-| test_logging.rs:251:15:251:60 | ... .as_bytes() [&ref] | semmle.label | ... .as_bytes() [&ref] |
+| test_logging.rs:251:15:251:60 | ... .as_bytes() [&ref, element] | semmle.label | ... .as_bytes() [&ref, element] |
 | test_logging.rs:251:23:251:48 | ...::format(...) | semmle.label | ...::format(...) |
 | test_logging.rs:251:23:251:48 | ...::must_use(...) | semmle.label | ...::must_use(...) |
 | test_logging.rs:251:23:251:48 | MacroExpr | semmle.label | MacroExpr |

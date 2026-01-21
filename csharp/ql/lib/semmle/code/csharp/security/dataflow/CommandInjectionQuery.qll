@@ -61,9 +61,14 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
-/** Command Injection sinks defined through Models as Data. */
+/** A Command Injection sink defined through Models as Data. */
 private class ExternalCommandInjectionExprSink extends Sink {
   ExternalCommandInjectionExprSink() { sinkNode(this, "command-injection") }
+}
+
+/** A sanitizer for command injection defined through Models as Data. */
+private class ExternalCommandInjectionSanitizer extends Sanitizer {
+  ExternalCommandInjectionSanitizer() { barrierNode(this, "command-injection") }
 }
 
 /**

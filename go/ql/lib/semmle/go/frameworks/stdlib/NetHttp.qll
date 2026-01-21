@@ -46,7 +46,7 @@ module NetHttp {
     }
   }
 
-  private class MapWrite extends Http::HeaderWrite::Range, DataFlow::Node {
+  private class MapWrite extends Http::HeaderWrite::Range {
     DataFlow::Node index;
     DataFlow::Node rhs;
 

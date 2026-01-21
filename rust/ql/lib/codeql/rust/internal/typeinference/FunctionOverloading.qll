@@ -7,9 +7,10 @@
 
 private import rust
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeMention
-private import codeql.rust.internal.TypeInference
+private import Type
+private import TypeAbstraction
+private import TypeMention
+private import TypeInference
 private import FunctionType
 
 pragma[nomagic]
@@ -34,6 +35,12 @@ private predicate implSiblingCandidate(
   rootType = selfTy.resolveType()
 }
 
+pragma[nomagic]
+private predicate blanketImplSiblingCandidate(ImplItemNode impl, Trait trait) {
+  impl.isBlanketImplementation() and
+  trait = impl.resolveTraitTy()
+}
+
 /**
  * Holds if `impl1` and `impl2` are a sibling implementations of `trait`. We
  * consider implementations to be siblings if they implement the same trait for
@@ -43,17 +50,22 @@ private predicate implSiblingCandidate(
  */
 pragma[inline]
 private predicate implSiblings(TraitItemNode trait, Impl impl1, Impl impl2) {
-  exists(Type rootType, TypeMention selfTy1, TypeMention selfTy2 |
-    impl1 != impl2 and
-    implSiblingCandidate(impl1, trait, rootType, selfTy1) and
-    implSiblingCandidate(impl2, trait, rootType, selfTy2) and
-    // In principle the second conjunct below should be superflous, but we still
-    // have ill-formed type mentions for types that we don't understand. For
-    // those checking both directions restricts further. Note also that we check
-    // syntactic equality, whereas equality up to renaming would be more
-    // correct.
-    typeMentionEqual(selfTy1, selfTy2) and
-    typeMentionEqual(selfTy2, selfTy1)
+  impl1 != impl2 and
+  (
+    exists(Type rootType, TypeMention selfTy1, TypeMention selfTy2 |
+      implSiblingCandidate(impl1, trait, rootType, selfTy1) and
+      implSiblingCandidate(impl2, trait, rootType, selfTy2) and
+      // In principle the second conjunct below should be superflous, but we still
+      // have ill-formed type mentions for types that we don't understand. For
+      // those checking both directions restricts further. Note also that we check
+      // syntactic equality, whereas equality up to renaming would be more
+      // correct.
+      typeMentionEqual(selfTy1, selfTy2) and
+      typeMentionEqual(selfTy2, selfTy1)
+    )
+    or
+    blanketImplSiblingCandidate(impl1, trait) and
+    blanketImplSiblingCandidate(impl2, trait)
   )
 }
 
@@ -62,7 +74,7 @@ private predicate implSiblings(TraitItemNode trait, Impl impl1, Impl impl2) {
  * exists for the same type.
  */
 pragma[nomagic]
-private predicate implHasSibling(Impl impl, Trait trait) { implSiblings(trait, impl, _) }
+private predicate implHasSibling(ImplItemNode impl, Trait trait) { implSiblings(trait, impl, _) }
 
 /**
  * Holds if type parameter `tp` of `trait` occurs in the function `f` with the name

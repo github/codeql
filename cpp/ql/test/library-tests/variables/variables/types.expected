@@ -13,9 +13,6 @@
 | _Complex float | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
 | _Complex long double | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
 | _Complex std::float16_t | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
-| _Decimal32 | Decimal32Type, GuardConditionImpl |  |  |  |  |
-| _Decimal64 | Decimal64Type, GuardConditionImpl |  |  |  |  |
-| _Decimal128 | Decimal128Type, GuardConditionImpl |  |  |  |  |
 | _Float16 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
 | _Float32 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
 | _Float32x | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |

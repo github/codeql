@@ -15,7 +15,7 @@ private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
-private import codeql.rust.internal.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 private import codeql.rust.internal.typeinference.DerefChain
 private import Node
 private import Content
@@ -62,8 +62,8 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
-  predicate isImplicitDerefCall(AstNode n, DerefChain derefChain, int i, Function target) {
-    this = TImplicitDerefCall(n, derefChain, i, target)
+  predicate isImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
+    this = TImplicitDerefCall(e, derefChain, i, target)
   }
 
   predicate isSummaryCall(
@@ -75,8 +75,7 @@ final class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() {
     result.asCfgScope() = this.asCall().getEnclosingCfgScope()
     or
-    result.asCfgScope() =
-      any(AstNode n | this.isImplicitDerefCall(n, _, _, _)).getEnclosingCfgScope()
+    result.asCfgScope() = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getEnclosingCfgScope()
     or
     this.isSummaryCall(result.asSummarizedCallable(), _)
   }
@@ -84,9 +83,9 @@ final class DataFlowCall extends TDataFlowCall {
   string toString() {
     result = this.asCall().toString()
     or
-    exists(AstNode n, DerefChain derefChain, int i |
-      this.isImplicitDerefCall(n, derefChain, i, _) and
-      result = "[implicit deref call " + i + " in " + derefChain.toString() + "] " + n
+    exists(Expr e, DerefChain derefChain, int i |
+      this.isImplicitDerefCall(e, derefChain, i, _) and
+      result = "[implicit deref call " + i + " in " + derefChain.toString() + "] " + e
     )
     or
     exists(
@@ -100,7 +99,7 @@ final class DataFlowCall extends TDataFlowCall {
   Location getLocation() {
     result = this.asCall().getLocation()
     or
-    result = any(AstNode n | this.isImplicitDerefCall(n, _, _, _)).getLocation()
+    result = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getLocation()
   }
 }
 
@@ -149,7 +148,6 @@ private Expr getALastEvalNode(Expr e) {
       not be.isAsync() and
       result = be.getTailExpr()
     ) or
-  result = e.(MacroBlockExpr).getTailExpr() or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
   result.(BreakExpr).getTarget() = e or
@@ -306,7 +304,11 @@ predicate indexAssignment(
   not index.getResolvedTarget().fromSource()
 }
 
-module RustDataFlow implements InputSig<Location> {
+signature module RustDataFlowInputSig {
+  predicate includeDynamicTargets();
+}
+
+module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location> {
   private import Aliases
   private import codeql.rust.dataflow.DataFlow
   private import Node as Node
@@ -462,7 +464,11 @@ module RustDataFlow implements InputSig<Location> {
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
     exists(Call c | c = call.asCall() |
-      result.asCfgScope() = c.getARuntimeTarget()
+      (
+        if Input::includeDynamicTargets()
+        then result.asCfgScope() = c.getARuntimeTarget()
+        else result.asCfgScope() = c.getStaticTarget()
+      )
       or
       result.asSummarizedCallable() = getStaticTargetExt(c)
     )
@@ -935,6 +941,12 @@ module RustDataFlow implements InputSig<Location> {
   class DataFlowSecondLevelScope = Void;
 }
 
+module RustDataFlowInput implements RustDataFlowInputSig {
+  predicate includeDynamicTargets() { any() }
+}
+
+module RustDataFlow = RustDataFlowGen<RustDataFlowInput>;
+
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.rust.internal.CachedStages
@@ -1082,9 +1094,10 @@ private module Cached {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or
-    TImplicitDerefCall(AstNode n, DerefChain derefChain, int i, Function target) {
-      TypeInference::implicitDerefChainBorrow(n, derefChain, _) and
-      target = derefChain.getElement(i).getDerefFunction()
+    TImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
+      TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
+      target = derefChain.getElement(i).getDerefFunction() and
+      e.hasEnclosingCfgScope()
     } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -1110,7 +1123,7 @@ private module Cached {
   }
 
   cached
-  newtype TParameterPosition =
+  newtype TParameterPositionImpl =
     TPositionalParameterPosition(int i) {
       i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
       or
@@ -1120,6 +1133,8 @@ private module Cached {
     } or
     TClosureSelfParameterPosition() or
     TSelfParameterPosition()
+
+  final class TParameterPosition = TParameterPositionImpl;
 
   cached
   newtype TReturnKind = TNormalReturnKind()

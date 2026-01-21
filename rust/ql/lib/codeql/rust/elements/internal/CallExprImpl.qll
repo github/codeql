@@ -15,7 +15,7 @@ module Impl {
   private import codeql.rust.elements.internal.InvocationExprImpl::Impl as InvocationExprImpl
   private import codeql.rust.elements.internal.CallImpl::Impl as CallImpl
   private import codeql.rust.internal.PathResolution as PathResolution
-  private import codeql.rust.internal.TypeInference as TypeInference
+  private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 
   pragma[nomagic]
   Path getFunctionPath(CallExpr ce) { result = ce.getFunction().(PathExpr).getPath() }

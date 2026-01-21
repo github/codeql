@@ -7,9 +7,9 @@
 
 private import rust
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeMention
-private import codeql.rust.internal.TypeInference
+private import Type
+private import TypeMention
+private import TypeInference
 
 /**
  * Holds if `traitBound` is the first non-trivial trait bound of `tp`.
@@ -126,7 +126,7 @@ module SatisfiesBlanketConstraint<
 
   /**
    * Holds if the argument type `at` satisfies the first non-trivial blanket
-   * constraint of `impl`.
+   * constraint of `impl`, or if there are no non-trivial constraints of `impl`.
    */
   pragma[nomagic]
   predicate satisfiesBlanketConstraint(ArgumentType at, ImplItemNode impl) {
@@ -134,6 +134,11 @@ module SatisfiesBlanketConstraint<
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
       SatisfiesBlanketConstraint::satisfiesConstraintType(ato, TTrait(traitBound), _, _)
+    )
+    or
+    exists(TypeParam blanketTypeParam |
+      hasBlanketCandidate(at, impl, _, blanketTypeParam) and
+      not hasFirstNonTrivialTraitBound(blanketTypeParam, _)
     )
   }
 

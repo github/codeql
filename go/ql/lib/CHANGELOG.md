@@ -1,3 +1,17 @@
+## 6.0.0
+
+### Breaking Changes
+
+* The query `go/unexpected-frontend-error` has been moved from the `codeql/go-queries` query to the `codeql-go-consistency-queries` query pack.
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Go extractor's search for `.vue` and HTML files.
+
+## 5.0.6
+
+No user-facing changes.
+
 ## 5.0.5
 
 No user-facing changes.

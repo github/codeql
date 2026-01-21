@@ -1,14 +1,15 @@
 private import rust
+private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking
-private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.DataFlow as RustDataFlow
 private import codeql.rust.dataflow.FlowSummary
-private import DataFlowImpl
+private import DataFlowImpl as DataFlowImpl
 private import Node as Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.rust.internal.CachedStages
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.internal.Type as Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type as Type
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 
 /**
@@ -29,7 +30,11 @@ private predicate excludedTaintStepContent(Content c) {
   )
 }
 
-module RustTaintTracking implements InputSig<Location, RustDataFlow> {
+module RustTaintTrackingGen<DataFlowImpl::RustDataFlowInputSig I> implements
+  InputSig<Location, DataFlowImpl::RustDataFlowGen<I>>
+{
+  private module DataFlow = DataFlowImpl::RustDataFlowGen<I>;
+
   predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
   /**
@@ -53,7 +58,7 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       // is tainted and an operation reads from `foo` (e.g., `foo.bar`) then
       // taint is propagated.
       exists(ContentSet cs |
-        RustDataFlow::readStep(pred, cs, succ) and
+        DataFlow::readStep(pred, cs, succ) and
         not excludedTaintStepContent(cs.getAReadContent())
       )
       or
@@ -70,9 +75,11 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       )
       or
       succ.(Node::PostUpdateNode).getPreUpdateNode().asExpr() =
-        getPostUpdateReverseStep(pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), false)
+        DataFlowImpl::getPostUpdateReverseStep(pred.(Node::PostUpdateNode)
+              .getPreUpdateNode()
+              .asExpr(), false)
       or
-      indexAssignment(any(CompoundAssignmentExpr cae),
+      DataFlowImpl::indexAssignment(any(CompoundAssignmentExpr cae),
         pred.(Node::PostUpdateNode).getPreUpdateNode().asExpr(), _, succ, _)
     )
     or
@@ -92,7 +99,7 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       c instanceof ReferenceContent
     ) and
     // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
-    not optionalStep(node, _, _)
+    not DataFlowImpl::optionalStep(node, _, _)
   }
 
   /**
@@ -101,3 +108,5 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
    */
   predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
 }
+
+module RustTaintTracking = RustTaintTrackingGen<DataFlowImpl::RustDataFlowInput>;

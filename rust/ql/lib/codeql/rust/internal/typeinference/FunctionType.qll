@@ -1,8 +1,9 @@
 private import rust
-private import codeql.rust.internal.TypeInference
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeMention
+private import Type
+private import TypeAbstraction
+private import TypeMention
+private import TypeInference
 
 private newtype TFunctionPosition =
   TArgumentFunctionPosition(ArgumentPosition pos) or
@@ -355,7 +356,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     string toString() { result = call.toString() + " [arg " + pos + "]" }
   }
 
-  private module ArgIsInstantiationOfInput implements
+  private module ArgIsInstantiationOfToIndexInput implements
     IsInstantiationOfInputSig<CallAndPos, AssocFunctionType>
   {
     pragma[nomagic]
@@ -388,7 +389,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   }
 
   private module ArgIsInstantiationOfToIndex =
-    ArgIsInstantiationOf<CallAndPos, ArgIsInstantiationOfInput>;
+    ArgIsInstantiationOf<CallAndPos, ArgIsInstantiationOfToIndexInput>;
 
   pragma[nomagic]
   private predicate argsAreInstantiationsOfToIndex(
@@ -410,6 +411,26 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     exists(int rnk |
       argsAreInstantiationsOfToIndex(call, i, f, rnk) and
       rnk = max(int r | toCheckRanked(i, f, _, r))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate argsAreNotInstantiationsOf0(
+    Input::Call call, FunctionPosition pos, ImplOrTraitItemNode i
+  ) {
+    ArgIsInstantiationOfToIndex::argIsNotInstantiationOf(MkCallAndPos(call, pos), i, _, _)
+  }
+
+  /**
+   * Holds if _some_ argument of `call` has a type that is not an instantiation of the
+   * type of the corresponding parameter of `f` inside `i`.
+   */
+  pragma[nomagic]
+  predicate argsAreNotInstantiationsOf(Input::Call call, ImplOrTraitItemNode i, Function f) {
+    exists(FunctionPosition pos |
+      argsAreNotInstantiationsOf0(call, pos, i) and
+      call.hasTargetCand(i, f) and
+      Input::toCheck(i, f, pos, _)
     )
   }
 }

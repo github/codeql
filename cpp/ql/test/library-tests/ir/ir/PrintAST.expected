@@ -24309,7 +24309,7 @@ ir.cpp:
 # 2727|         getArrayBase(): [VariableAccess] x
 # 2727|             Type = [SpecifiedType] const WithBracketOperator
 # 2727|             ValueCategory = lvalue
-# 2727|         getArrayOffset(): [VariableAccess] i
+# 2727|         getArrayOffset(0): [VariableAccess] i
 # 2727|             Type = [IntType] int
 # 2727|             ValueCategory = prvalue(load)
 # 2727|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)

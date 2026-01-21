@@ -47,11 +47,12 @@ extensions:
       - ["<core::alloc::layout::Layout>::pad_to_align", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       - ["<core::alloc::layout::Layout>::size", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       # String
-      - ["<alloc::string::String>::as_str", "Argument[self]", "ReturnValue", "value", "manual"]
-      - ["<alloc::string::String>::as_bytes", "Argument[self]", "ReturnValue", "value", "manual"]
+      - ["<alloc::string::String>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<alloc::string::String>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference.Element", "taint", "manual"]
       - ["<_ as alloc::string::ToString>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
         # Overwrite generated model
-      - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
       # Vec
       - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
+      - ["<alloc::vec::Vec as core::ops::deref::Deref>::deref", "Argument[self].Reference.Element", "ReturnValue.Reference.Element", "value", "manual"]

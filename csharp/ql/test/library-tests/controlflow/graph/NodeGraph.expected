@@ -20,10 +20,11 @@
 | AccessorCalls.cs:10:10:10:11 | exit M1 (normal) | AccessorCalls.cs:10:10:10:11 | exit M1 |  |
 | AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:12:9:12:32 | ...; |  |
 | AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:22:12:25 | this access |  |
+| AccessorCalls.cs:12:9:12:18 | access to field Field | AccessorCalls.cs:12:9:12:31 | ... = ... |  |
 | AccessorCalls.cs:12:9:12:31 | ... = ... | AccessorCalls.cs:13:9:13:30 | ...; |  |
 | AccessorCalls.cs:12:9:12:32 | ...; | AccessorCalls.cs:12:9:12:12 | this access |  |
 | AccessorCalls.cs:12:22:12:25 | this access | AccessorCalls.cs:12:22:12:31 | access to field Field |  |
-| AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:9:12:31 | ... = ... |  |
+| AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:9:12:18 | access to field Field |  |
 | AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:21:13:24 | this access |  |
 | AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:9:13:29 | ... = ... |  |
 | AccessorCalls.cs:13:9:13:29 | ... = ... | AccessorCalls.cs:14:9:14:26 | ...; |  |
@@ -53,11 +54,12 @@
 | AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:21:9:21:36 | ...; |  |
 | AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:21:9:21:14 | access to field x |  |
 | AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:24:21:27 | this access |  |
+| AccessorCalls.cs:21:9:21:20 | access to field Field | AccessorCalls.cs:21:9:21:35 | ... = ... |  |
 | AccessorCalls.cs:21:9:21:35 | ... = ... | AccessorCalls.cs:22:9:22:34 | ...; |  |
 | AccessorCalls.cs:21:9:21:36 | ...; | AccessorCalls.cs:21:9:21:12 | this access |  |
 | AccessorCalls.cs:21:24:21:27 | this access | AccessorCalls.cs:21:24:21:29 | access to field x |  |
 | AccessorCalls.cs:21:24:21:29 | access to field x | AccessorCalls.cs:21:24:21:35 | access to field Field |  |
-| AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:9:21:35 | ... = ... |  |
+| AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:9:21:20 | access to field Field |  |
 | AccessorCalls.cs:22:9:22:12 | this access | AccessorCalls.cs:22:9:22:14 | access to field x |  |
 | AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:23:22:26 | this access |  |
 | AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:9:22:33 | ... = ... |  |
@@ -128,8 +130,9 @@
 | AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:44:9:44:33 | ...; |  |
 | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access |  |
 | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |  |
+| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... = ... |  |
 | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access |  |
-| AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:32 | ... = ... |  |
+| AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:18 | access to field Field |  |
 | AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:45:9:45:31 | ...; |  |
 | AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:44:9:44:12 | this access |  |
 | AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:23:44:32 | access to field Field |  |
@@ -162,8 +165,9 @@
 | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x |  |
 | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |  |
 | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:20 | access to field Field |  |
+| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... = ... |  |
 | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:25:51:28 | this access |  |
-| AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:36 | ... = ... |  |
+| AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:20 | access to field Field |  |
 | AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:52:9:52:35 | ...; |  |
 | AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:51:9:51:12 | this access |  |
 | AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:25:51:30 | access to field x |  |
@@ -203,13 +207,14 @@
 | AccessorCalls.cs:58:9:58:85 | ... = ... | AccessorCalls.cs:56:10:56:11 | exit M7 (normal) |  |
 | AccessorCalls.cs:58:9:58:86 | ...; | AccessorCalls.cs:58:10:58:13 | this access |  |
 | AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:22:58:25 | this access |  |
+| AccessorCalls.cs:58:10:58:19 | access to field Field | AccessorCalls.cs:58:22:58:30 | access to property Prop |  |
 | AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:37:58:40 | this access |  |
 | AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:37:58:43 | access to indexer |  |
 | AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:9:58:45 | (..., ...) |  |
 | AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:42:58:42 | 0 |  |
 | AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:9:58:85 | ... = ... |  |
 | AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:33:58:44 | (..., ...) |  |
-| AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:22:58:30 | access to property Prop |  |
+| AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:10:58:19 | access to field Field |  |
 | AccessorCalls.cs:58:50:58:53 | this access | AccessorCalls.cs:58:50:58:59 | access to field Field |  |
 | AccessorCalls.cs:58:50:58:59 | access to field Field | AccessorCalls.cs:58:62:58:65 | this access |  |
 | AccessorCalls.cs:58:62:58:65 | this access | AccessorCalls.cs:58:62:58:70 | access to property Prop |  |
@@ -227,6 +232,7 @@
 | AccessorCalls.cs:63:9:63:98 | ...; | AccessorCalls.cs:63:10:63:13 | this access |  |
 | AccessorCalls.cs:63:10:63:13 | this access | AccessorCalls.cs:63:10:63:15 | access to field x |  |
 | AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:24:63:27 | this access |  |
+| AccessorCalls.cs:63:10:63:21 | access to field Field | AccessorCalls.cs:63:24:63:34 | access to property Prop |  |
 | AccessorCalls.cs:63:24:63:27 | this access | AccessorCalls.cs:63:24:63:29 | access to field x |  |
 | AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:41:63:44 | this access |  |
 | AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:41:63:49 | access to indexer |  |
@@ -235,7 +241,7 @@
 | AccessorCalls.cs:63:41:63:46 | access to field x | AccessorCalls.cs:63:48:63:48 | 0 |  |
 | AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:9:63:97 | ... = ... |  |
 | AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:37:63:50 | (..., ...) |  |
-| AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:24:63:34 | access to property Prop |  |
+| AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:10:63:21 | access to field Field |  |
 | AccessorCalls.cs:63:56:63:59 | this access | AccessorCalls.cs:63:56:63:61 | access to field x |  |
 | AccessorCalls.cs:63:56:63:61 | access to field x | AccessorCalls.cs:63:56:63:67 | access to field Field |  |
 | AccessorCalls.cs:63:56:63:67 | access to field Field | AccessorCalls.cs:63:70:63:73 | this access |  |
@@ -847,6 +853,48 @@
 | Assignments.cs:18:5:20:5 | {...} | Assignments.cs:19:16:19:16 | access to parameter x |  |
 | Assignments.cs:19:9:19:17 | return ...; | Assignments.cs:17:40:17:40 | exit + (normal) | return |
 | Assignments.cs:19:16:19:16 | access to parameter x | Assignments.cs:19:9:19:17 | return ...; |  |
+| Assignments.cs:27:10:27:23 | enter SetParamSingle | Assignments.cs:28:5:30:5 | {...} |  |
+| Assignments.cs:27:10:27:23 | exit SetParamSingle (normal) | Assignments.cs:27:10:27:23 | exit SetParamSingle |  |
+| Assignments.cs:28:5:30:5 | {...} | Assignments.cs:29:9:29:15 | ...; |  |
+| Assignments.cs:29:9:29:14 | ... = ... | Assignments.cs:27:10:27:23 | exit SetParamSingle (normal) |  |
+| Assignments.cs:29:9:29:15 | ...; | Assignments.cs:29:13:29:14 | 42 |  |
+| Assignments.cs:29:13:29:14 | 42 | Assignments.cs:29:9:29:14 | ... = ... |  |
+| Assignments.cs:32:10:32:22 | enter SetParamMulti | Assignments.cs:33:5:36:5 | {...} |  |
+| Assignments.cs:32:10:32:22 | exit SetParamMulti (normal) | Assignments.cs:32:10:32:22 | exit SetParamMulti |  |
+| Assignments.cs:33:5:36:5 | {...} | Assignments.cs:34:9:34:15 | ...; |  |
+| Assignments.cs:34:9:34:14 | ... = ... | Assignments.cs:35:9:35:20 | ...; |  |
+| Assignments.cs:34:9:34:15 | ...; | Assignments.cs:34:13:34:14 | 42 |  |
+| Assignments.cs:34:13:34:14 | 42 | Assignments.cs:34:9:34:14 | ... = ... |  |
+| Assignments.cs:35:9:35:19 | ... = ... | Assignments.cs:32:10:32:22 | exit SetParamMulti (normal) |  |
+| Assignments.cs:35:9:35:20 | ...; | Assignments.cs:35:13:35:19 | "Hello" |  |
+| Assignments.cs:35:13:35:19 | "Hello" | Assignments.cs:35:9:35:19 | ... = ... |  |
+| Assignments.cs:38:10:38:11 | enter M2 | Assignments.cs:39:5:45:5 | {...} |  |
+| Assignments.cs:38:10:38:11 | exit M2 (normal) | Assignments.cs:38:10:38:11 | exit M2 |  |
+| Assignments.cs:39:5:45:5 | {...} | Assignments.cs:40:9:40:15 | ... ...; |  |
+| Assignments.cs:40:9:40:15 | ... ...; | Assignments.cs:40:13:40:14 | Int32 x1 |  |
+| Assignments.cs:40:13:40:14 | Int32 x1 | Assignments.cs:41:9:41:31 | ...; |  |
+| Assignments.cs:41:9:41:30 | call to method SetParamSingle | Assignments.cs:42:9:42:37 | ...; |  |
+| Assignments.cs:41:9:41:30 | this access | Assignments.cs:41:9:41:30 | call to method SetParamSingle |  |
+| Assignments.cs:41:9:41:31 | ...; | Assignments.cs:41:9:41:30 | this access |  |
+| Assignments.cs:42:9:42:36 | call to method SetParamSingle | Assignments.cs:43:9:43:56 | ...; |  |
+| Assignments.cs:42:9:42:36 | this access | Assignments.cs:42:28:42:35 | this access |  |
+| Assignments.cs:42:9:42:37 | ...; | Assignments.cs:42:9:42:36 | this access |  |
+| Assignments.cs:42:28:42:35 | access to field IntField | Assignments.cs:42:9:42:36 | call to method SetParamSingle |  |
+| Assignments.cs:42:28:42:35 | this access | Assignments.cs:42:28:42:35 | access to field IntField |  |
+| Assignments.cs:43:9:43:55 | call to method SetParamMulti | Assignments.cs:44:9:44:59 | ...; |  |
+| Assignments.cs:43:9:43:55 | this access | Assignments.cs:43:34:43:37 | null |  |
+| Assignments.cs:43:9:43:56 | ...; | Assignments.cs:43:9:43:55 | this access |  |
+| Assignments.cs:43:34:43:37 | null | Assignments.cs:43:44:43:54 | this access |  |
+| Assignments.cs:43:44:43:54 | access to field StringField | Assignments.cs:43:9:43:55 | call to method SetParamMulti |  |
+| Assignments.cs:43:44:43:54 | this access | Assignments.cs:43:44:43:54 | access to field StringField |  |
+| Assignments.cs:44:9:44:58 | call to method SetParamMulti | Assignments.cs:38:10:38:11 | exit M2 (normal) |  |
+| Assignments.cs:44:9:44:58 | this access | Assignments.cs:44:27:44:34 | this access |  |
+| Assignments.cs:44:9:44:59 | ...; | Assignments.cs:44:9:44:58 | this access |  |
+| Assignments.cs:44:27:44:34 | access to field IntField | Assignments.cs:44:37:44:40 | null |  |
+| Assignments.cs:44:27:44:34 | this access | Assignments.cs:44:27:44:34 | access to field IntField |  |
+| Assignments.cs:44:37:44:40 | null | Assignments.cs:44:47:44:57 | this access |  |
+| Assignments.cs:44:47:44:57 | access to field StringField | Assignments.cs:44:9:44:58 | call to method SetParamMulti |  |
+| Assignments.cs:44:47:44:57 | this access | Assignments.cs:44:47:44:57 | access to field StringField |  |
 | BreakInTry.cs:1:7:1:16 | call to constructor Object | BreakInTry.cs:1:7:1:16 | {...} |  |
 | BreakInTry.cs:1:7:1:16 | call to method <object initializer> | BreakInTry.cs:1:7:1:16 | call to constructor Object |  |
 | BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | this access |  |
@@ -1093,13 +1141,79 @@
 | ConditionalAccess.cs:35:9:35:12 | this access | ConditionalAccess.cs:35:9:35:12 | access to property Prop |  |
 | ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:32:10:32:11 | exit M8 (normal) |  |
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:35:9:35:12 | this access |  |
-| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |  |
-| ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith (normal) | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith |  |
-| ConditionalAccess.cs:41:70:41:71 | access to parameter s1 | ConditionalAccess.cs:41:75:41:78 | ", " |  |
-| ConditionalAccess.cs:41:70:41:78 | ... + ... | ConditionalAccess.cs:41:82:41:83 | access to parameter s2 |  |
-| ConditionalAccess.cs:41:70:41:83 | ... + ... | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith (normal) |  |
-| ConditionalAccess.cs:41:75:41:78 | ", " | ConditionalAccess.cs:41:70:41:78 | ... + ... |  |
-| ConditionalAccess.cs:41:82:41:83 | access to parameter s2 | ConditionalAccess.cs:41:70:41:83 | ... + ... |  |
+| ConditionalAccess.cs:42:9:42:11 | enter get_Item | ConditionalAccess.cs:42:13:42:28 | {...} |  |
+| ConditionalAccess.cs:42:9:42:11 | exit get_Item (normal) | ConditionalAccess.cs:42:9:42:11 | exit get_Item |  |
+| ConditionalAccess.cs:42:13:42:28 | {...} | ConditionalAccess.cs:42:22:42:25 | null |  |
+| ConditionalAccess.cs:42:15:42:26 | return ...; | ConditionalAccess.cs:42:9:42:11 | exit get_Item (normal) | return |
+| ConditionalAccess.cs:42:22:42:25 | null | ConditionalAccess.cs:42:15:42:26 | return ...; |  |
+| ConditionalAccess.cs:43:9:43:11 | enter set_Item | ConditionalAccess.cs:43:13:43:15 | {...} |  |
+| ConditionalAccess.cs:43:9:43:11 | exit set_Item (normal) | ConditionalAccess.cs:43:9:43:11 | exit set_Item |  |
+| ConditionalAccess.cs:43:13:43:15 | {...} | ConditionalAccess.cs:43:9:43:11 | exit set_Item (normal) |  |
+| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:47:5:55:5 | {...} |  |
+| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:46:10:46:11 | exit M9 |  |
+| ConditionalAccess.cs:47:5:55:5 | {...} | ConditionalAccess.cs:48:9:48:26 | ...; |  |
+| ConditionalAccess.cs:48:9:48:10 | access to parameter ca | ConditionalAccess.cs:48:24:48:25 | 42 | non-null |
+| ConditionalAccess.cs:48:9:48:10 | access to parameter ca | ConditionalAccess.cs:49:9:49:33 | ...; | null |
+| ConditionalAccess.cs:48:9:48:20 | access to field IntField | ConditionalAccess.cs:48:12:48:25 | ... = ... |  |
+| ConditionalAccess.cs:48:9:48:26 | ...; | ConditionalAccess.cs:48:9:48:10 | access to parameter ca |  |
+| ConditionalAccess.cs:48:12:48:25 | ... = ... | ConditionalAccess.cs:49:9:49:33 | ...; |  |
+| ConditionalAccess.cs:48:24:48:25 | 42 | ConditionalAccess.cs:48:9:48:20 | access to field IntField |  |
+| ConditionalAccess.cs:49:9:49:10 | access to parameter ca | ConditionalAccess.cs:49:26:49:32 | "Hello" | non-null |
+| ConditionalAccess.cs:49:9:49:10 | access to parameter ca | ConditionalAccess.cs:50:9:50:24 | ...; | null |
+| ConditionalAccess.cs:49:9:49:22 | access to property StringProp | ConditionalAccess.cs:49:12:49:32 | ... = ... |  |
+| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:49:9:49:10 | access to parameter ca |  |
+| ConditionalAccess.cs:49:12:49:32 | ... = ... | ConditionalAccess.cs:50:9:50:24 | ...; |  |
+| ConditionalAccess.cs:49:26:49:32 | "Hello" | ConditionalAccess.cs:49:9:49:22 | access to property StringProp |  |
+| ConditionalAccess.cs:50:9:50:10 | access to parameter ca | ConditionalAccess.cs:50:13:50:13 | 0 | non-null |
+| ConditionalAccess.cs:50:9:50:10 | access to parameter ca | ConditionalAccess.cs:51:9:51:32 | ...; | null |
+| ConditionalAccess.cs:50:9:50:14 | access to indexer | ConditionalAccess.cs:50:12:50:23 | ... = ... |  |
+| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:50:9:50:10 | access to parameter ca |  |
+| ConditionalAccess.cs:50:12:50:23 | ... = ... | ConditionalAccess.cs:51:9:51:32 | ...; |  |
+| ConditionalAccess.cs:50:13:50:13 | 0 | ConditionalAccess.cs:50:18:50:23 | "Set0" |  |
+| ConditionalAccess.cs:50:18:50:23 | "Set0" | ConditionalAccess.cs:50:9:50:14 | access to indexer |  |
+| ConditionalAccess.cs:51:9:51:10 | access to parameter ca | ConditionalAccess.cs:51:9:51:16 | access to property Prop | non-null |
+| ConditionalAccess.cs:51:9:51:10 | access to parameter ca | ConditionalAccess.cs:52:9:52:39 | ...; | null |
+| ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:51:30:51:31 | 84 | non-null |
+| ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:52:9:52:39 | ...; | null |
+| ConditionalAccess.cs:51:9:51:26 | access to field IntField | ConditionalAccess.cs:51:18:51:31 | ... = ... |  |
+| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:9:51:10 | access to parameter ca |  |
+| ConditionalAccess.cs:51:18:51:31 | ... = ... | ConditionalAccess.cs:52:9:52:39 | ...; |  |
+| ConditionalAccess.cs:51:30:51:31 | 84 | ConditionalAccess.cs:51:9:51:26 | access to field IntField |  |
+| ConditionalAccess.cs:52:9:52:10 | access to parameter ca | ConditionalAccess.cs:52:9:52:16 | access to property Prop | non-null |
+| ConditionalAccess.cs:52:9:52:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:26 | ...; | null |
+| ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:32:52:38 | "World" | non-null |
+| ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:53:9:53:26 | ...; | null |
+| ConditionalAccess.cs:52:9:52:28 | access to property StringProp | ConditionalAccess.cs:52:18:52:38 | ... = ... |  |
+| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |  |
+| ConditionalAccess.cs:52:18:52:38 | ... = ... | ConditionalAccess.cs:53:9:53:26 | ...; |  |
+| ConditionalAccess.cs:52:32:52:38 | "World" | ConditionalAccess.cs:52:9:52:28 | access to property StringProp |  |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | non-null |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:20 | access to field IntField | non-null |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:25:53:25 | 1 | null |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:30 | ...; | null |
+| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:12:53:25 | ... = ... |  |
+| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:25:53:25 | 1 |  |
+| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |  |
+| ConditionalAccess.cs:53:12:53:25 | ... - ... | ConditionalAccess.cs:53:9:53:20 | access to field IntField |  |
+| ConditionalAccess.cs:53:12:53:25 | ... = ... | ConditionalAccess.cs:54:9:54:30 | ...; |  |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:12:53:25 | ... - ... |  |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | null |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | non-null |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | non-null |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:27:54:29 | "!" | null |
+| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:12:54:29 | ... = ... |  |
+| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:27:54:29 | "!" |  |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |  |
+| ConditionalAccess.cs:54:12:54:29 | ... + ... | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |  |
+| ConditionalAccess.cs:54:12:54:29 | ... = ... | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |  |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:12:54:29 | ... + ... |  |
+| ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 |  |
+| ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith (normal) | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith |  |
+| ConditionalAccess.cs:60:70:60:71 | access to parameter s1 | ConditionalAccess.cs:60:75:60:78 | ", " |  |
+| ConditionalAccess.cs:60:70:60:78 | ... + ... | ConditionalAccess.cs:60:82:60:83 | access to parameter s2 |  |
+| ConditionalAccess.cs:60:70:60:83 | ... + ... | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith (normal) |  |
+| ConditionalAccess.cs:60:75:60:78 | ", " | ConditionalAccess.cs:60:70:60:78 | ... + ... |  |
+| ConditionalAccess.cs:60:82:60:83 | access to parameter s2 | ConditionalAccess.cs:60:70:60:83 | ... + ... |  |
 | Conditions.cs:1:7:1:16 | call to constructor Object | Conditions.cs:1:7:1:16 | {...} |  |
 | Conditions.cs:1:7:1:16 | call to method <object initializer> | Conditions.cs:1:7:1:16 | call to constructor Object |  |
 | Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | this access |  |
@@ -2007,14 +2121,16 @@
 | Finally.cs:209:25:209:47 | throw ...; | Finally.cs:195:10:195:12 | exit M10 (abnormal) | exception |
 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | Finally.cs:209:25:209:47 | throw ...; |  |
 | Finally.cs:211:13:211:16 | this access | Finally.cs:211:26:211:28 | "0" |  |
+| Finally.cs:211:13:211:22 | access to field Field | Finally.cs:211:13:211:28 | ... = ... |  |
 | Finally.cs:211:13:211:28 | ... = ... | Finally.cs:195:10:195:12 | exit M10 (abnormal) | exception |
 | Finally.cs:211:13:211:28 | ... = ... | Finally.cs:213:9:213:25 | ...; |  |
 | Finally.cs:211:13:211:29 | ...; | Finally.cs:211:13:211:16 | this access |  |
-| Finally.cs:211:26:211:28 | "0" | Finally.cs:211:13:211:28 | ... = ... |  |
+| Finally.cs:211:26:211:28 | "0" | Finally.cs:211:13:211:22 | access to field Field |  |
 | Finally.cs:213:9:213:12 | this access | Finally.cs:213:22:213:24 | "1" |  |
+| Finally.cs:213:9:213:18 | access to field Field | Finally.cs:213:9:213:24 | ... = ... |  |
 | Finally.cs:213:9:213:24 | ... = ... | Finally.cs:195:10:195:12 | exit M10 (normal) |  |
 | Finally.cs:213:9:213:25 | ...; | Finally.cs:213:9:213:12 | this access |  |
-| Finally.cs:213:22:213:24 | "1" | Finally.cs:213:9:213:24 | ... = ... |  |
+| Finally.cs:213:22:213:24 | "1" | Finally.cs:213:9:213:18 | access to field Field |  |
 | Finally.cs:216:10:216:12 | enter M11 | Finally.cs:217:5:231:5 | {...} |  |
 | Finally.cs:216:10:216:12 | exit M11 (normal) | Finally.cs:216:10:216:12 | exit M11 |  |
 | Finally.cs:217:5:231:5 | {...} | Finally.cs:218:9:229:9 | try {...} ... |  |
@@ -2164,10 +2280,11 @@
 | Initializers.cs:3:7:3:18 | exit <object initializer> (normal) | Initializers.cs:3:7:3:18 | exit <object initializer> |  |
 | Initializers.cs:3:7:3:18 | exit Initializers (normal) | Initializers.cs:3:7:3:18 | exit Initializers |  |
 | Initializers.cs:3:7:3:18 | {...} | Initializers.cs:3:7:3:18 | exit Initializers (normal) |  |
+| Initializers.cs:5:9:5:9 | access to field F | Initializers.cs:5:9:5:17 | ... = ... |  |
 | Initializers.cs:5:9:5:9 | this access | Initializers.cs:5:13:5:13 | access to field H |  |
 | Initializers.cs:5:9:5:17 | ... = ... | Initializers.cs:6:9:6:9 | this access |  |
 | Initializers.cs:5:13:5:13 | access to field H | Initializers.cs:5:17:5:17 | 1 |  |
-| Initializers.cs:5:13:5:17 | ... + ... | Initializers.cs:5:9:5:17 | ... = ... |  |
+| Initializers.cs:5:13:5:17 | ... + ... | Initializers.cs:5:9:5:9 | access to field F |  |
 | Initializers.cs:5:17:5:17 | 1 | Initializers.cs:5:13:5:17 | ... + ... |  |
 | Initializers.cs:6:9:6:9 | access to property G | Initializers.cs:6:25:6:31 | ... = ... |  |
 | Initializers.cs:6:9:6:9 | this access | Initializers.cs:6:27:6:27 | access to field H |  |
@@ -2195,8 +2312,9 @@
 | Initializers.cs:14:17:14:53 | object creation of type Initializers | Initializers.cs:14:44:14:44 | 0 |  |
 | Initializers.cs:14:34:14:35 | "" | Initializers.cs:14:17:14:53 | object creation of type Initializers |  |
 | Initializers.cs:14:38:14:53 | { ..., ... } | Initializers.cs:14:13:14:53 | Initializers i = ... |  |
+| Initializers.cs:14:40:14:40 | access to field F | Initializers.cs:14:40:14:44 | ... = ... |  |
 | Initializers.cs:14:40:14:44 | ... = ... | Initializers.cs:14:51:14:51 | 1 |  |
-| Initializers.cs:14:44:14:44 | 0 | Initializers.cs:14:40:14:44 | ... = ... |  |
+| Initializers.cs:14:44:14:44 | 0 | Initializers.cs:14:40:14:40 | access to field F |  |
 | Initializers.cs:14:47:14:47 | access to property G | Initializers.cs:14:47:14:51 | ... = ... |  |
 | Initializers.cs:14:47:14:51 | ... = ... | Initializers.cs:14:38:14:53 | { ..., ... } |  |
 | Initializers.cs:14:51:14:51 | 1 | Initializers.cs:14:47:14:47 | access to property G |  |
@@ -2208,10 +2326,11 @@
 | Initializers.cs:15:39:15:39 | access to local variable i | Initializers.cs:15:59:15:60 | "" |  |
 | Initializers.cs:15:42:15:61 | object creation of type Initializers | Initializers.cs:15:37:15:63 | { ..., ... } |  |
 | Initializers.cs:15:59:15:60 | "" | Initializers.cs:15:42:15:61 | object creation of type Initializers |  |
+| Initializers.cs:18:16:18:16 | access to field H | Initializers.cs:18:16:18:20 | ... = ... |  |
 | Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:20:18:20 | 1 |  |
 | Initializers.cs:18:16:18:16 | exit H (normal) | Initializers.cs:18:16:18:16 | exit H |  |
 | Initializers.cs:18:16:18:20 | ... = ... | Initializers.cs:18:16:18:16 | exit H (normal) |  |
-| Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:20 | ... = ... |  |
+| Initializers.cs:18:20:18:20 | 1 | Initializers.cs:18:16:18:16 | access to field H |  |
 | Initializers.cs:20:11:20:23 | call to constructor Object | Initializers.cs:20:11:20:23 | {...} |  |
 | Initializers.cs:20:11:20:23 | call to method <object initializer> | Initializers.cs:20:11:20:23 | call to constructor Object |  |
 | Initializers.cs:20:11:20:23 | enter <object initializer> | Initializers.cs:22:23:22:23 | this access |  |
@@ -2220,46 +2339,52 @@
 | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) | Initializers.cs:20:11:20:23 | exit NoConstructor |  |
 | Initializers.cs:20:11:20:23 | this access | Initializers.cs:20:11:20:23 | call to method <object initializer> |  |
 | Initializers.cs:20:11:20:23 | {...} | Initializers.cs:20:11:20:23 | exit NoConstructor (normal) |  |
+| Initializers.cs:22:23:22:23 | access to field F | Initializers.cs:22:23:22:27 | ... = ... |  |
 | Initializers.cs:22:23:22:23 | this access | Initializers.cs:22:27:22:27 | 0 |  |
 | Initializers.cs:22:23:22:27 | ... = ... | Initializers.cs:23:23:23:23 | this access |  |
-| Initializers.cs:22:27:22:27 | 0 | Initializers.cs:22:23:22:27 | ... = ... |  |
+| Initializers.cs:22:27:22:27 | 0 | Initializers.cs:22:23:22:23 | access to field F |  |
+| Initializers.cs:23:23:23:23 | access to field G | Initializers.cs:23:23:23:27 | ... = ... |  |
 | Initializers.cs:23:23:23:23 | this access | Initializers.cs:23:27:23:27 | 1 |  |
 | Initializers.cs:23:23:23:27 | ... = ... | Initializers.cs:20:11:20:23 | exit <object initializer> (normal) |  |
-| Initializers.cs:23:27:23:27 | 1 | Initializers.cs:23:23:23:27 | ... = ... |  |
+| Initializers.cs:23:27:23:27 | 1 | Initializers.cs:23:23:23:23 | access to field G |  |
 | Initializers.cs:26:11:26:13 | enter <object initializer> | Initializers.cs:28:13:28:13 | this access |  |
 | Initializers.cs:26:11:26:13 | exit <object initializer> (normal) | Initializers.cs:26:11:26:13 | exit <object initializer> |  |
+| Initializers.cs:28:13:28:13 | access to field H | Initializers.cs:28:13:28:17 | ... = ... |  |
 | Initializers.cs:28:13:28:13 | this access | Initializers.cs:28:17:28:17 | 2 |  |
 | Initializers.cs:28:13:28:17 | ... = ... | Initializers.cs:26:11:26:13 | exit <object initializer> (normal) |  |
-| Initializers.cs:28:17:28:17 | 2 | Initializers.cs:28:13:28:17 | ... = ... |  |
+| Initializers.cs:28:17:28:17 | 2 | Initializers.cs:28:13:28:13 | access to field H |  |
 | Initializers.cs:31:9:31:11 | call to method <object initializer> | Initializers.cs:31:17:31:20 | call to constructor NoConstructor |  |
 | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | this access |  |
 | Initializers.cs:31:9:31:11 | exit Sub (normal) | Initializers.cs:31:9:31:11 | exit Sub |  |
 | Initializers.cs:31:9:31:11 | this access | Initializers.cs:31:9:31:11 | call to method <object initializer> |  |
 | Initializers.cs:31:17:31:20 | call to constructor NoConstructor | Initializers.cs:31:24:31:33 | {...} |  |
 | Initializers.cs:31:24:31:33 | {...} | Initializers.cs:31:26:31:31 | ...; |  |
+| Initializers.cs:31:26:31:26 | access to field I | Initializers.cs:31:26:31:30 | ... = ... |  |
 | Initializers.cs:31:26:31:26 | this access | Initializers.cs:31:30:31:30 | 3 |  |
 | Initializers.cs:31:26:31:30 | ... = ... | Initializers.cs:31:9:31:11 | exit Sub (normal) |  |
 | Initializers.cs:31:26:31:31 | ...; | Initializers.cs:31:26:31:26 | this access |  |
-| Initializers.cs:31:30:31:30 | 3 | Initializers.cs:31:26:31:30 | ... = ... |  |
+| Initializers.cs:31:30:31:30 | 3 | Initializers.cs:31:26:31:26 | access to field I |  |
 | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:22:33:25 | call to constructor Sub |  |
 | Initializers.cs:33:9:33:11 | exit Sub (normal) | Initializers.cs:33:9:33:11 | exit Sub |  |
 | Initializers.cs:33:22:33:25 | call to constructor Sub | Initializers.cs:33:29:33:38 | {...} |  |
 | Initializers.cs:33:29:33:38 | {...} | Initializers.cs:33:31:33:36 | ...; |  |
+| Initializers.cs:33:31:33:31 | access to field I | Initializers.cs:33:31:33:35 | ... = ... |  |
 | Initializers.cs:33:31:33:31 | this access | Initializers.cs:33:35:33:35 | access to parameter i |  |
 | Initializers.cs:33:31:33:35 | ... = ... | Initializers.cs:33:9:33:11 | exit Sub (normal) |  |
 | Initializers.cs:33:31:33:36 | ...; | Initializers.cs:33:31:33:31 | this access |  |
-| Initializers.cs:33:35:33:35 | access to parameter i | Initializers.cs:33:31:33:35 | ... = ... |  |
+| Initializers.cs:33:35:33:35 | access to parameter i | Initializers.cs:33:31:33:31 | access to field I |  |
 | Initializers.cs:35:9:35:11 | call to constructor NoConstructor | Initializers.cs:35:27:35:40 | {...} |  |
 | Initializers.cs:35:9:35:11 | call to method <object initializer> | Initializers.cs:35:9:35:11 | call to constructor NoConstructor |  |
 | Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | this access |  |
 | Initializers.cs:35:9:35:11 | exit Sub (normal) | Initializers.cs:35:9:35:11 | exit Sub |  |
 | Initializers.cs:35:9:35:11 | this access | Initializers.cs:35:9:35:11 | call to method <object initializer> |  |
 | Initializers.cs:35:27:35:40 | {...} | Initializers.cs:35:29:35:38 | ...; |  |
+| Initializers.cs:35:29:35:29 | access to field I | Initializers.cs:35:29:35:37 | ... = ... |  |
 | Initializers.cs:35:29:35:29 | this access | Initializers.cs:35:33:35:33 | access to parameter i |  |
 | Initializers.cs:35:29:35:37 | ... = ... | Initializers.cs:35:9:35:11 | exit Sub (normal) |  |
 | Initializers.cs:35:29:35:38 | ...; | Initializers.cs:35:29:35:29 | this access |  |
 | Initializers.cs:35:33:35:33 | access to parameter i | Initializers.cs:35:37:35:37 | access to parameter j |  |
-| Initializers.cs:35:33:35:37 | ... + ... | Initializers.cs:35:29:35:37 | ... = ... |  |
+| Initializers.cs:35:33:35:37 | ... + ... | Initializers.cs:35:29:35:29 | access to field I |  |
 | Initializers.cs:35:37:35:37 | access to parameter j | Initializers.cs:35:33:35:37 | ... + ... |  |
 | Initializers.cs:39:7:39:23 | call to constructor Object | Initializers.cs:39:7:39:23 | {...} |  |
 | Initializers.cs:39:7:39:23 | call to method <object initializer> | Initializers.cs:39:7:39:23 | call to constructor Object |  |
@@ -2298,8 +2423,9 @@
 | Initializers.cs:57:13:65:9 | Compound compound = ... | Initializers.cs:51:10:51:13 | exit Test (normal) |  |
 | Initializers.cs:57:24:65:9 | object creation of type Compound | Initializers.cs:59:34:59:34 | 0 |  |
 | Initializers.cs:58:9:65:9 | { ..., ... } | Initializers.cs:57:13:65:9 | Compound compound = ... |  |
+| Initializers.cs:59:13:59:27 | access to field DictionaryField | Initializers.cs:59:13:59:76 | ... = ... |  |
 | Initializers.cs:59:13:59:76 | ... = ... | Initializers.cs:60:37:60:37 | 3 |  |
-| Initializers.cs:59:31:59:76 | { ..., ... } | Initializers.cs:59:13:59:76 | ... = ... |  |
+| Initializers.cs:59:31:59:76 | { ..., ... } | Initializers.cs:59:13:59:27 | access to field DictionaryField |  |
 | Initializers.cs:59:33:59:35 | access to indexer | Initializers.cs:59:33:59:44 | ... = ... |  |
 | Initializers.cs:59:33:59:44 | ... = ... | Initializers.cs:59:48:59:48 | 1 |  |
 | Initializers.cs:59:34:59:34 | 0 | Initializers.cs:59:39:59:44 | "Zero" |  |
@@ -2331,52 +2457,62 @@
 | Initializers.cs:60:65:60:69 | ... + ... | Initializers.cs:60:74:60:78 | "One" |  |
 | Initializers.cs:60:69:60:69 | 1 | Initializers.cs:60:65:60:69 | ... + ... |  |
 | Initializers.cs:60:74:60:78 | "One" | Initializers.cs:60:64:60:70 | access to indexer |  |
+| Initializers.cs:61:13:61:22 | access to field ArrayField | Initializers.cs:61:13:61:58 | ... = ... |  |
 | Initializers.cs:61:13:61:58 | ... = ... | Initializers.cs:62:30:62:30 | 0 |  |
-| Initializers.cs:61:26:61:58 | { ..., ... } | Initializers.cs:61:13:61:58 | ... = ... |  |
+| Initializers.cs:61:26:61:58 | { ..., ... } | Initializers.cs:61:13:61:22 | access to field ArrayField |  |
+| Initializers.cs:61:28:61:30 | access to array element | Initializers.cs:61:28:61:39 | ... = ... |  |
 | Initializers.cs:61:28:61:39 | ... = ... | Initializers.cs:61:43:61:43 | access to parameter i |  |
 | Initializers.cs:61:29:61:29 | 0 | Initializers.cs:61:34:61:39 | "Zero" |  |
-| Initializers.cs:61:34:61:39 | "Zero" | Initializers.cs:61:28:61:39 | ... = ... |  |
+| Initializers.cs:61:34:61:39 | "Zero" | Initializers.cs:61:28:61:30 | access to array element |  |
+| Initializers.cs:61:42:61:48 | access to array element | Initializers.cs:61:42:61:56 | ... = ... |  |
 | Initializers.cs:61:42:61:56 | ... = ... | Initializers.cs:61:26:61:58 | { ..., ... } |  |
 | Initializers.cs:61:43:61:43 | access to parameter i | Initializers.cs:61:47:61:47 | 1 |  |
 | Initializers.cs:61:43:61:47 | ... + ... | Initializers.cs:61:52:61:56 | "One" |  |
 | Initializers.cs:61:47:61:47 | 1 | Initializers.cs:61:43:61:47 | ... + ... |  |
-| Initializers.cs:61:52:61:56 | "One" | Initializers.cs:61:42:61:56 | ... = ... |  |
+| Initializers.cs:61:52:61:56 | "One" | Initializers.cs:61:42:61:48 | access to array element |  |
+| Initializers.cs:62:13:62:23 | access to field ArrayField2 | Initializers.cs:62:13:62:60 | ... = ... |  |
 | Initializers.cs:62:13:62:60 | ... = ... | Initializers.cs:63:32:63:32 | 1 |  |
-| Initializers.cs:62:27:62:60 | { ..., ... } | Initializers.cs:62:13:62:60 | ... = ... |  |
+| Initializers.cs:62:27:62:60 | { ..., ... } | Initializers.cs:62:13:62:23 | access to field ArrayField2 |  |
+| Initializers.cs:62:29:62:34 | access to array element | Initializers.cs:62:29:62:40 | ... = ... |  |
 | Initializers.cs:62:29:62:40 | ... = ... | Initializers.cs:62:44:62:44 | 1 |  |
 | Initializers.cs:62:30:62:30 | 0 | Initializers.cs:62:33:62:33 | 1 |  |
 | Initializers.cs:62:33:62:33 | 1 | Initializers.cs:62:38:62:40 | "i" |  |
-| Initializers.cs:62:38:62:40 | "i" | Initializers.cs:62:29:62:40 | ... = ... |  |
+| Initializers.cs:62:38:62:40 | "i" | Initializers.cs:62:29:62:34 | access to array element |  |
+| Initializers.cs:62:43:62:52 | access to array element | Initializers.cs:62:43:62:58 | ... = ... |  |
 | Initializers.cs:62:43:62:58 | ... = ... | Initializers.cs:62:27:62:60 | { ..., ... } |  |
 | Initializers.cs:62:44:62:44 | 1 | Initializers.cs:62:47:62:47 | access to parameter i |  |
 | Initializers.cs:62:47:62:47 | access to parameter i | Initializers.cs:62:51:62:51 | 0 |  |
 | Initializers.cs:62:47:62:51 | ... + ... | Initializers.cs:62:56:62:58 | "1" |  |
 | Initializers.cs:62:51:62:51 | 0 | Initializers.cs:62:47:62:51 | ... + ... |  |
-| Initializers.cs:62:56:62:58 | "1" | Initializers.cs:62:43:62:58 | ... = ... |  |
+| Initializers.cs:62:56:62:58 | "1" | Initializers.cs:62:43:62:52 | access to array element |  |
 | Initializers.cs:63:13:63:25 | access to property ArrayProperty | Initializers.cs:63:13:63:60 | ... = ... |  |
 | Initializers.cs:63:13:63:60 | ... = ... | Initializers.cs:64:33:64:33 | 0 |  |
 | Initializers.cs:63:29:63:60 | { ..., ... } | Initializers.cs:63:13:63:25 | access to property ArrayProperty |  |
+| Initializers.cs:63:31:63:33 | access to array element | Initializers.cs:63:31:63:41 | ... = ... |  |
 | Initializers.cs:63:31:63:41 | ... = ... | Initializers.cs:63:45:63:45 | access to parameter i |  |
 | Initializers.cs:63:32:63:32 | 1 | Initializers.cs:63:37:63:41 | "One" |  |
-| Initializers.cs:63:37:63:41 | "One" | Initializers.cs:63:31:63:41 | ... = ... |  |
+| Initializers.cs:63:37:63:41 | "One" | Initializers.cs:63:31:63:33 | access to array element |  |
+| Initializers.cs:63:44:63:50 | access to array element | Initializers.cs:63:44:63:58 | ... = ... |  |
 | Initializers.cs:63:44:63:58 | ... = ... | Initializers.cs:63:29:63:60 | { ..., ... } |  |
 | Initializers.cs:63:45:63:45 | access to parameter i | Initializers.cs:63:49:63:49 | 2 |  |
 | Initializers.cs:63:45:63:49 | ... + ... | Initializers.cs:63:54:63:58 | "Two" |  |
 | Initializers.cs:63:49:63:49 | 2 | Initializers.cs:63:45:63:49 | ... + ... |  |
-| Initializers.cs:63:54:63:58 | "Two" | Initializers.cs:63:44:63:58 | ... = ... |  |
+| Initializers.cs:63:54:63:58 | "Two" | Initializers.cs:63:44:63:50 | access to array element |  |
 | Initializers.cs:64:13:64:26 | access to property ArrayProperty2 | Initializers.cs:64:13:64:63 | ... = ... |  |
 | Initializers.cs:64:13:64:63 | ... = ... | Initializers.cs:58:9:65:9 | { ..., ... } |  |
 | Initializers.cs:64:30:64:63 | { ..., ... } | Initializers.cs:64:13:64:26 | access to property ArrayProperty2 |  |
+| Initializers.cs:64:32:64:37 | access to array element | Initializers.cs:64:32:64:43 | ... = ... |  |
 | Initializers.cs:64:32:64:43 | ... = ... | Initializers.cs:64:47:64:47 | 1 |  |
 | Initializers.cs:64:33:64:33 | 0 | Initializers.cs:64:36:64:36 | 1 |  |
 | Initializers.cs:64:36:64:36 | 1 | Initializers.cs:64:41:64:43 | "i" |  |
-| Initializers.cs:64:41:64:43 | "i" | Initializers.cs:64:32:64:43 | ... = ... |  |
+| Initializers.cs:64:41:64:43 | "i" | Initializers.cs:64:32:64:37 | access to array element |  |
+| Initializers.cs:64:46:64:55 | access to array element | Initializers.cs:64:46:64:61 | ... = ... |  |
 | Initializers.cs:64:46:64:61 | ... = ... | Initializers.cs:64:30:64:63 | { ..., ... } |  |
 | Initializers.cs:64:47:64:47 | 1 | Initializers.cs:64:50:64:50 | access to parameter i |  |
 | Initializers.cs:64:50:64:50 | access to parameter i | Initializers.cs:64:54:64:54 | 0 |  |
 | Initializers.cs:64:50:64:54 | ... + ... | Initializers.cs:64:59:64:61 | "1" |  |
 | Initializers.cs:64:54:64:54 | 0 | Initializers.cs:64:50:64:54 | ... + ... |  |
-| Initializers.cs:64:59:64:61 | "1" | Initializers.cs:64:46:64:61 | ... = ... |  |
+| Initializers.cs:64:59:64:61 | "1" | Initializers.cs:64:46:64:55 | access to array element |  |
 | LoopUnrolling.cs:5:7:5:19 | call to constructor Object | LoopUnrolling.cs:5:7:5:19 | {...} |  |
 | LoopUnrolling.cs:5:7:5:19 | call to method <object initializer> | LoopUnrolling.cs:5:7:5:19 | call to constructor Object |  |
 | LoopUnrolling.cs:5:7:5:19 | enter LoopUnrolling | LoopUnrolling.cs:5:7:5:19 | this access |  |
@@ -2631,9 +2767,10 @@
 | MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | MultiImplementationA.cs:13:16:13:16 | this access |  |
 | MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | MultiImplementationB.cs:11:16:11:16 | this access |  |
 | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> (normal) | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> |  |
+| MultiImplementationA.cs:13:16:13:16 | access to field F | MultiImplementationA.cs:13:16:13:20 | ... = ... |  |
 | MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:13:20:13:20 | 0 |  |
 | MultiImplementationA.cs:13:16:13:20 | ... = ... | MultiImplementationA.cs:24:16:24:16 | this access |  |
-| MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:13:16:13:20 | ... = ... |  |
+| MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:13:16:13:16 | access to field F |  |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | exit get_Item (normal) |  |
 | MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | access to parameter i |  |
 | MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationB.cs:12:37:12:40 | null |  |
@@ -2666,10 +2803,11 @@
 | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | MultiImplementationA.cs:20:12:20:13 | exit C2 |  |
 | MultiImplementationA.cs:20:12:20:13 | this access | MultiImplementationA.cs:20:12:20:13 | call to method <object initializer> |  |
 | MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:24:20:29 | ...; |  |
+| MultiImplementationA.cs:20:24:20:24 | access to field F | MultiImplementationA.cs:20:24:20:28 | ... = ... |  |
 | MultiImplementationA.cs:20:24:20:24 | this access | MultiImplementationA.cs:20:28:20:28 | access to parameter i |  |
 | MultiImplementationA.cs:20:24:20:28 | ... = ... | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) |  |
 | MultiImplementationA.cs:20:24:20:29 | ...; | MultiImplementationA.cs:20:24:20:24 | this access |  |
-| MultiImplementationA.cs:20:28:20:28 | access to parameter i | MultiImplementationA.cs:20:24:20:28 | ... = ... |  |
+| MultiImplementationA.cs:20:28:20:28 | access to parameter i | MultiImplementationA.cs:20:24:20:24 | access to field F |  |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:24:21:24 | 0 |  |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationB.cs:19:24:19:24 | 1 |  |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 |  |
@@ -2730,9 +2868,10 @@
 | MultiImplementationB.cs:4:34:4:34 | 1 | MultiImplementationB.cs:4:27:4:35 | return ...; |  |
 | MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationA.cs:7:41:7:43 | exit set_P2 (normal) |  |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) |  |
+| MultiImplementationB.cs:11:16:11:16 | access to field F | MultiImplementationB.cs:11:16:11:20 | ... = ... |  |
 | MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:11:20:11:20 | 1 |  |
 | MultiImplementationB.cs:11:16:11:20 | ... = ... | MultiImplementationB.cs:22:16:22:16 | this access |  |
-| MultiImplementationB.cs:11:20:11:20 | 1 | MultiImplementationB.cs:11:16:11:20 | ... = ... |  |
+| MultiImplementationB.cs:11:20:11:20 | 1 | MultiImplementationB.cs:11:16:11:16 | access to field F |  |
 | MultiImplementationB.cs:12:31:12:40 | throw ... | MultiImplementationA.cs:14:31:14:31 | exit get_Item (abnormal) | exception |
 | MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationB.cs:12:31:12:40 | throw ... |  |
 | MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationB.cs:13:48:13:51 | null |  |
@@ -2859,9 +2998,10 @@
 | PartialImplementationA.cs:3:12:3:18 | exit Partial (normal) | PartialImplementationA.cs:3:12:3:18 | exit Partial |  |
 | PartialImplementationA.cs:3:12:3:18 | this access | PartialImplementationA.cs:3:12:3:18 | call to method <object initializer> |  |
 | PartialImplementationA.cs:3:27:3:29 | {...} | PartialImplementationA.cs:3:12:3:18 | exit Partial (normal) |  |
+| PartialImplementationB.cs:3:16:3:16 | access to field F | PartialImplementationB.cs:3:16:3:20 | ... = ... |  |
 | PartialImplementationB.cs:3:16:3:16 | this access | PartialImplementationB.cs:3:20:3:20 | 0 |  |
 | PartialImplementationB.cs:3:16:3:20 | ... = ... | PartialImplementationB.cs:5:16:5:16 | this access |  |
-| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:16:3:20 | ... = ... |  |
+| PartialImplementationB.cs:3:20:3:20 | 0 | PartialImplementationB.cs:3:16:3:16 | access to field F |  |
 | PartialImplementationB.cs:4:12:4:18 | call to constructor Object | PartialImplementationB.cs:4:22:4:24 | {...} |  |
 | PartialImplementationB.cs:4:12:4:18 | call to method <object initializer> | PartialImplementationB.cs:4:12:4:18 | call to constructor Object |  |
 | PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | this access |  |
@@ -3922,20 +4062,22 @@
 | cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:66:127:83 | {...} |  |
 | cflow.cs:127:62:127:64 | exit set_Prop (normal) | cflow.cs:127:62:127:64 | exit set_Prop |  |
 | cflow.cs:127:66:127:83 | {...} | cflow.cs:127:68:127:81 | ...; |  |
+| cflow.cs:127:68:127:72 | access to field Field | cflow.cs:127:68:127:80 | ... = ... |  |
 | cflow.cs:127:68:127:72 | this access | cflow.cs:127:76:127:80 | access to parameter value |  |
 | cflow.cs:127:68:127:80 | ... = ... | cflow.cs:127:62:127:64 | exit set_Prop (normal) |  |
 | cflow.cs:127:68:127:81 | ...; | cflow.cs:127:68:127:72 | this access |  |
-| cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:68:127:80 | ... = ... |  |
+| cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:68:127:72 | access to field Field |  |
 | cflow.cs:129:5:129:15 | call to constructor Object | cflow.cs:130:5:132:5 | {...} |  |
 | cflow.cs:129:5:129:15 | call to method <object initializer> | cflow.cs:129:5:129:15 | call to constructor Object |  |
 | cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | this access |  |
 | cflow.cs:129:5:129:15 | exit ControlFlow (normal) | cflow.cs:129:5:129:15 | exit ControlFlow |  |
 | cflow.cs:129:5:129:15 | this access | cflow.cs:129:5:129:15 | call to method <object initializer> |  |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:131:9:131:18 | ...; |  |
+| cflow.cs:131:9:131:13 | access to field Field | cflow.cs:131:9:131:17 | ... = ... |  |
 | cflow.cs:131:9:131:13 | this access | cflow.cs:131:17:131:17 | access to parameter s |  |
 | cflow.cs:131:9:131:17 | ... = ... | cflow.cs:129:5:129:15 | exit ControlFlow (normal) |  |
 | cflow.cs:131:9:131:18 | ...; | cflow.cs:131:9:131:13 | this access |  |
-| cflow.cs:131:17:131:17 | access to parameter s | cflow.cs:131:9:131:17 | ... = ... |  |
+| cflow.cs:131:17:131:17 | access to parameter s | cflow.cs:131:9:131:13 | access to field Field |  |
 | cflow.cs:134:5:134:15 | enter ControlFlow | cflow.cs:134:31:134:31 | access to parameter i |  |
 | cflow.cs:134:5:134:15 | exit ControlFlow (normal) | cflow.cs:134:5:134:15 | exit ControlFlow |  |
 | cflow.cs:134:26:134:29 | call to constructor ControlFlow | cflow.cs:134:39:134:41 | {...} |  |
@@ -4163,10 +4305,11 @@
 | cflow.cs:209:5:222:5 | {...} | cflow.cs:210:9:221:36 | do ... while (...); |  |
 | cflow.cs:210:9:221:36 | do ... while (...); | cflow.cs:211:9:221:9 | {...} |  |
 | cflow.cs:211:9:221:9 | {...} | cflow.cs:212:13:212:25 | ...; |  |
+| cflow.cs:212:13:212:17 | access to field Field | cflow.cs:212:13:212:24 | ... = ... |  |
 | cflow.cs:212:13:212:17 | access to field Field | cflow.cs:212:22:212:24 | "a" |  |
 | cflow.cs:212:13:212:17 | this access | cflow.cs:212:13:212:17 | access to field Field |  |
 | cflow.cs:212:13:212:17 | this access | cflow.cs:212:13:212:17 | this access |  |
-| cflow.cs:212:13:212:24 | ... + ... | cflow.cs:212:13:212:24 | ... = ... |  |
+| cflow.cs:212:13:212:24 | ... + ... | cflow.cs:212:13:212:17 | access to field Field |  |
 | cflow.cs:212:13:212:24 | ... = ... | cflow.cs:213:13:216:13 | if (...) ... |  |
 | cflow.cs:212:13:212:25 | ...; | cflow.cs:212:13:212:17 | this access |  |
 | cflow.cs:212:22:212:24 | "a" | cflow.cs:212:13:212:24 | ... + ... |  |
@@ -4204,10 +4347,11 @@
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:226:62:226:63 | 10 |  |
 | cflow.cs:226:62:226:63 | 10 | cflow.cs:226:27:226:64 | call to method Repeat<String> |  |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:228:13:228:23 | ...; |  |
+| cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:13:228:22 | ... = ... |  |
 | cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:22:228:22 | access to local variable x |  |
 | cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:17 | access to field Field |  |
 | cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:17 | this access |  |
-| cflow.cs:228:13:228:22 | ... + ... | cflow.cs:228:13:228:22 | ... = ... |  |
+| cflow.cs:228:13:228:22 | ... + ... | cflow.cs:228:13:228:17 | access to field Field |  |
 | cflow.cs:228:13:228:22 | ... = ... | cflow.cs:229:13:232:13 | if (...) ... |  |
 | cflow.cs:228:13:228:23 | ...; | cflow.cs:228:13:228:17 | this access |  |
 | cflow.cs:228:22:228:22 | access to local variable x | cflow.cs:228:13:228:22 | ... + ... |  |

@@ -43,6 +43,10 @@ module SqlInjection {
   /** DEPRECATED: Use `SimpleTypeSanitizer` from semmle.go.security.Sanitizers instead. */
   deprecated class NumericOrBooleanSanitizer = SimpleTypeSanitizer;
 
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, ["nosql-injection", "sql-injection"]) }
+  }
+
   /**
    * A numeric- or boolean-typed node, considered a sanitizer for sql injection.
    */

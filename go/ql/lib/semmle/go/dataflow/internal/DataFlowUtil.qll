@@ -339,6 +339,20 @@ class ContentSet instanceof TContentSet {
  */
 signature predicate guardChecksSig(Node g, Expr e, boolean branch);
 
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(Node g, Expr e, boolean branch, P param);
+}
+
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
  *
@@ -346,12 +360,36 @@ signature predicate guardChecksSig(Node g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private predicate guardChecks(Node g, Expr e, boolean branch, Unit param) {
+    guardChecks(g, e, branch) and exists(param)
+  }
+
+  private module B = ParameterizedBarrierGuard<Unit, guardChecks/4>;
+
   /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
+  Node getABarrierNode() { result = B::getABarrierNode(_) }
+
+  /**
+   * Gets a node that is safely guarded by the given guard check.
+   */
+  Node getABarrierNodeForGuard(Node guardCheck) {
+    result = B::getABarrierNodeForGuard(guardCheck, _)
+  }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) {
     exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var |
       result = pragma[only_bind_out](var).getAUse()
     |
-      guards(_, guard, _, var) and
+      guards(_, guard, _, var, param) and
       pragma[only_bind_out](guard).dominates(result.getBasicBlock())
     )
   }
@@ -359,9 +397,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   /**
    * Gets a node that is safely guarded by the given guard check.
    */
-  Node getABarrierNodeForGuard(Node guardCheck) {
+  Node getABarrierNodeForGuard(Node guardCheck, P param) {
     exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
-      guards(guardCheck, guard, _, var) and
+      guards(guardCheck, guard, _, var, param) and
       guard.dominates(result.getBasicBlock())
     )
   }
@@ -373,22 +411,24 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * This predicate exists to enforce a good join order in `getAGuardedNode`.
    */
   pragma[noinline]
-  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap) {
-    guards(g, guard, nd) and nd = ap.getAUse()
+  private predicate guards(
+    Node g, ControlFlow::ConditionGuardNode guard, Node nd, SsaWithFields ap, P param
+  ) {
+    guards(g, guard, nd, param) and nd = ap.getAUse()
   }
 
   /**
    * Holds if `guard` marks a point in the control-flow graph where `g`
    * is known to validate `nd`.
    */
-  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd) {
+  private predicate guards(Node g, ControlFlow::ConditionGuardNode guard, Node nd, P param) {
     exists(boolean branch |
-      guardChecks(g, nd.asExpr(), branch) and
+      guardChecks(g, nd.asExpr(), branch, param) and
       guard.ensures(g, branch)
     )
     or
     exists(DataFlow::Property p, Node resNode, Node check, boolean outcome |
-      guardingCall(g, _, _, _, p, _, nd, resNode) and
+      guardingCall(g, _, _, _, p, _, nd, resNode, param) and
       p.checkOn(check, outcome, resNode) and
       guard.ensures(pragma[only_bind_into](check), outcome)
     )
@@ -405,9 +445,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   pragma[noinline]
   private predicate guardingCall(
     Node g, Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, CallNode c,
-    Node nd, Node resNode
+    Node nd, Node resNode, P param
   ) {
-    guardingFunction(g, f, inp, outp, p) and
+    guardingFunction(g, f, inp, outp, p, param) and
     c = f.getACall() and
     nd = getInputNode(inp, c) and
     localFlow(getOutputNode(outp, c), resNode)
@@ -438,7 +478,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * `false`, `nil` or a non-`nil` value.)
    */
   private predicate guardingFunction(
-    Node g, Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p
+    Node g, Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p, P param
   ) {
     exists(FuncDecl fd, Node arg, Node ret |
       fd.getFunction() = f and
@@ -446,7 +486,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
         exists(ControlFlow::ConditionGuardNode guard |
-          guards(g, pragma[only_bind_out](guard), arg) and
+          guards(g, pragma[only_bind_out](guard), arg, param) and
           guard.dominates(pragma[only_bind_out](ret).getBasicBlock())
         |
           onlyPossibleReturnSatisfyingProperty(fd, outp, ret, p)
@@ -456,7 +496,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
         // or "return !someBarrierGuard(arg) && otherCond(...)"
         exists(boolean outcome |
           ret = getUniqueOutputNode(fd, outp) and
-          guardChecks(g, arg.asExpr(), outcome) and
+          guardChecks(g, arg.asExpr(), outcome, param) and
           // This predicate's contract is (p holds of ret ==> arg is checked),
           // (and we have (this has outcome ==> arg is checked))
           // but p.checkOn(ret, outcome, this) gives us (ret has outcome ==> p holds of this),
@@ -471,7 +511,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
           DataFlow::Property outpProp
         |
           ret = getUniqueOutputNode(fd, outp) and
-          guardingFunction(g, f2, inp2, outp2, outpProp) and
+          guardingFunction(g, f2, inp2, outp2, outpProp, param) and
           c = f2.getACall() and
           arg = inp2.getNode(c) and
           (

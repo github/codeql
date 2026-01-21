@@ -224,8 +224,8 @@ models
 | 24 | Source: std::env::args; ReturnValue.Element; commandargs |
 | 25 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 26 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 27 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
-| 28 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+| 27 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
+| 28 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
 | 29 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 30 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 | 31 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |

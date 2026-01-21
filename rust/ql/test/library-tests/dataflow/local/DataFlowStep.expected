@@ -11,17 +11,17 @@ localStep
 | main.rs:7:9:7:9 | s | main.rs:7:9:7:9 | s |
 | main.rs:7:9:7:14 | ...: i64 | main.rs:7:9:7:9 | s |
 | main.rs:8:14:8:20 | FormatArgsExpr | main.rs:8:14:8:20 | MacroExpr |
-| main.rs:8:14:8:20 | MacroBlockExpr | main.rs:8:5:8:21 | MacroExpr |
 | main.rs:8:14:8:20 | [post] MacroExpr | main.rs:8:14:8:20 | [post] FormatArgsExpr |
-| main.rs:8:14:8:20 | { ... } | main.rs:8:14:8:20 | MacroBlockExpr |
+| main.rs:8:14:8:20 | { ... } | main.rs:8:5:8:21 | MacroExpr |
+| main.rs:8:14:8:20 | { ... } | main.rs:8:14:8:20 | { ... } |
 | main.rs:11:13:11:14 | [SSA] sr | main.rs:12:20:12:21 | sr |
 | main.rs:11:13:11:14 | sr | main.rs:11:13:11:14 | [SSA] sr |
 | main.rs:11:13:11:14 | sr | main.rs:11:13:11:14 | sr |
 | main.rs:11:13:11:20 | ...: ... | main.rs:11:13:11:14 | sr |
 | main.rs:12:14:12:21 | FormatArgsExpr | main.rs:12:14:12:21 | MacroExpr |
-| main.rs:12:14:12:21 | MacroBlockExpr | main.rs:12:5:12:22 | MacroExpr |
 | main.rs:12:14:12:21 | [post] MacroExpr | main.rs:12:14:12:21 | [post] FormatArgsExpr |
-| main.rs:12:14:12:21 | { ... } | main.rs:12:14:12:21 | MacroBlockExpr |
+| main.rs:12:14:12:21 | { ... } | main.rs:12:5:12:22 | MacroExpr |
+| main.rs:12:14:12:21 | { ... } | main.rs:12:14:12:21 | { ... } |
 | main.rs:23:9:23:9 | [SSA] s | main.rs:24:10:24:10 | s |
 | main.rs:23:9:23:9 | s | main.rs:23:9:23:9 | [SSA] s |
 | main.rs:23:9:23:9 | s | main.rs:23:9:23:9 | s |
@@ -697,9 +697,9 @@ localStep
 | main.rs:500:16:500:16 | s | main.rs:500:16:500:16 | s |
 | main.rs:500:16:500:24 | ...: String | main.rs:500:16:500:16 | s |
 | main.rs:501:14:501:20 | FormatArgsExpr | main.rs:501:14:501:20 | MacroExpr |
-| main.rs:501:14:501:20 | MacroBlockExpr | main.rs:501:5:501:21 | MacroExpr |
 | main.rs:501:14:501:20 | [post] MacroExpr | main.rs:501:14:501:20 | [post] FormatArgsExpr |
-| main.rs:501:14:501:20 | { ... } | main.rs:501:14:501:20 | MacroBlockExpr |
+| main.rs:501:14:501:20 | { ... } | main.rs:501:5:501:21 | MacroExpr |
+| main.rs:501:14:501:20 | { ... } | main.rs:501:14:501:20 | { ... } |
 | main.rs:505:9:505:9 | [SSA] a | main.rs:506:13:506:13 | a |
 | main.rs:505:9:505:9 | a | main.rs:505:9:505:9 | [SSA] a |
 | main.rs:505:9:505:9 | a | main.rs:505:9:505:9 | a |

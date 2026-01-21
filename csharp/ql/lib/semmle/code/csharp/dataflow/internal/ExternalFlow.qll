@@ -97,6 +97,7 @@ private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Private::External
 private import semmle.code.csharp.commons.QualifiedName
+private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
@@ -115,7 +116,9 @@ module ModelValidation {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
     sinkModel(_, _, _, _, _, _, path, _, _, _) or
-    sourceModel(_, _, _, _, _, _, path, _, _, _)
+    sourceModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierGuardModel(_, _, _, _, _, _, path, _, _, _, _)
   }
 
   private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
@@ -127,6 +130,8 @@ module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
+      or
+      barrierGuardModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "barrier guard"
       or
       summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
@@ -150,6 +155,8 @@ module ModelValidation {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
+      barrierModel(_, _, _, _, _, _, output, _, _, _) and pred = "barrier"
+      or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       (
@@ -167,7 +174,13 @@ module ModelValidation {
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
     predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
+    predicate sinkKind(string kind) {
+      sinkModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierGuardModel(_, _, _, _, _, _, _, _, kind, _, _)
+    }
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
@@ -184,6 +197,12 @@ module ModelValidation {
       sourceModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
       sinkModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
+      or
+      barrierModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and
+      pred = "barrier"
+      or
+      barrierGuardModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "barrier guard"
       or
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
@@ -210,6 +229,14 @@ module ModelValidation {
       invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
+    or
+    exists(string acceptingvalue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingvalue, _, _, _) and
+      invalidAcceptingValue(acceptingvalue) and
+      result =
+        "Unrecognized accepting value description \"" + acceptingvalue +
+          "\" in barrier guard model."
+    )
   }
 
   /** Holds if some row in a MaD flow model appears to contain typos. */
@@ -228,6 +255,10 @@ private predicate elementSpec(
   sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
@@ -372,7 +403,9 @@ Declaration interpretElement(
 private predicate relevantExt(string ext) {
   summaryModel(_, _, _, _, _, ext, _, _, _, _, _) or
   sourceModel(_, _, _, _, _, ext, _, _, _, _) or
-  sinkModel(_, _, _, _, _, ext, _, _, _, _)
+  sinkModel(_, _, _, _, _, ext, _, _, _, _) or
+  barrierModel(_, _, _, _, _, ext, _, _, _, _) or
+  barrierGuardModel(_, _, _, _, _, ext, _, _, _, _, _)
 }
 
 private class ExtPath = AccessPathSyntax::AccessPath<relevantExt/1>::AccessPath;
@@ -411,6 +444,53 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private GuardValue convertAcceptingValue(AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
+    or
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(Guard g, Expr e, GuardValue gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, AcceptingValue acceptingvalue, string kind,
+      string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue)
+    |
+      g.(Call).getAnArgument() = e or g.(QualifiableExpr).getQualifier() = e
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+  }
 }
 
 import Cached
@@ -426,6 +506,12 @@ predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
  * model.
  */
 predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(Node node, string kind) { barrierNode(node, kind, _) }
 
 private predicate isOverridableCallable(OverridableCallable c) {
   not exists(Type t, Callable base | c.getOverridee+() = base and t = base.getDeclaringType() |

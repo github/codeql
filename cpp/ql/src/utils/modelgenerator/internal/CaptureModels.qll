@@ -78,7 +78,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
 {
   private module DataFlow = Df::DataFlow;
 
-  class Type = DataFlowPrivate::DataFlowType;
+  class Type = Cpp::Type;
 
   // Note: This also includes `this`
   class Parameter = DataFlow::ParameterNode;

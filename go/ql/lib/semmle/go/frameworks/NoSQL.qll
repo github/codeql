@@ -24,8 +24,8 @@ module NoSql {
      */
     abstract class Range extends DataFlow::Node { }
 
-    private class DefaultQueryString extends Range {
-      DefaultQueryString() {
+    private class ExternalQueryString extends Range {
+      ExternalQueryString() {
         exists(DataFlow::ArgumentNode arg | sinkNode(arg, "nosql-injection") |
           this = arg.getACorrespondingSyntacticArgument()
         )

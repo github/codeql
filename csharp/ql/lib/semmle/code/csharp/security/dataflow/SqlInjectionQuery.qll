@@ -74,9 +74,14 @@ class SqlInjectionExprSink extends Sink {
   SqlInjectionExprSink() { exists(SqlExpr s | this.getExpr() = s.getSql()) }
 }
 
-/** SQL sinks defined through CSV models. */
+/** An SQL sink defined through CSV models. */
 private class ExternalSqlInjectionExprSink extends Sink {
   ExternalSqlInjectionExprSink() { sinkNode(this, "sql-injection") }
+}
+
+/** A sanitizer for SQL injection defined through Models as Data. */
+private class ExternalSqlInjectionSanitizer extends Sanitizer {
+  ExternalSqlInjectionSanitizer() { barrierNode(this, "sql-injection") }
 }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
