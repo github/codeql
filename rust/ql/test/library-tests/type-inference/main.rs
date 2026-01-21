@@ -95,6 +95,17 @@ mod method_impl {
     }
 }
 
+mod struct_self_call {
+    struct ATupleStruct(i64);
+
+    impl Default for ATupleStruct {
+        fn default() -> Self {
+            let n = Default::default(); // $ target=default type=n:i64
+            Self(n)
+        }
+    }
+}
+
 mod trait_impl {
     #[derive(Debug)]
     struct MyThing {
