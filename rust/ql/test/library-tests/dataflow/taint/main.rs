@@ -214,12 +214,12 @@ mod wrapping {
         a = source(7);
         a &= source(8);
         a &= Wrapping(crate::source(9));
-        sink(a); // $ MISSING: hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
+        sink(a); // $ hasTaintFlow=7 hasTaintFlow=8 MISSING: hasTaintFlow=9
         crate::sink(a.0); // $ hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
 
         a = source(10);
         a <<= source_usize(11);
-        sink(a); // $ hasTaintFlow=11 MISSING: hasTaintFlow=10
+        sink(a); // $ hasTaintFlow=11 hasTaintFlow=10
         crate::sink(a.0); // $ hasTaintFlow=11 hasTaintFlow=10
 
         let b: Wrapping<i64> = Wrapping(crate::source(1));
