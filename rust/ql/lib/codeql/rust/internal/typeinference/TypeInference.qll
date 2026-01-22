@@ -3770,12 +3770,12 @@ private module ForIterableSatisfiesConstraintInput implements
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
-  result.getTypeAlias() = any(IteratorTrait t).getItemType()
+  result = getAssociatedTypeTypeParameter(any(IteratorTrait t).getItemType())
 }
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
-  result.getTypeAlias() = any(IntoIteratorTrait t).getItemType()
+  result = getAssociatedTypeTypeParameter(any(IntoIteratorTrait t).getItemType())
 }
 
 pragma[nomagic]
