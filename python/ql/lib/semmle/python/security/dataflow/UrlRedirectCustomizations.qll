@@ -166,7 +166,7 @@ module UrlRedirect {
    */
   class SanitizerFromModel extends Sanitizer {
     SanitizerFromModel() {
-      this = DataFlow::ExternalBarrierGuard::getAnExternalBarrierNode("url-redirection")
+      ModelOutput::barrierNode(this, "url-redirection")
     }
 
     override predicate sanitizes(FlowState state) {
