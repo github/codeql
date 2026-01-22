@@ -60,6 +60,11 @@ module ExternalBarrierGuard {
 
   /**
    * Gets a barrier guard node of the given `kind` defined via models-as-data.
+   *
+   * This only provides external barrier nodes defined as guards. To get all externally defined barrer nodes,
+   * use `ModelOutput::barrierNode(node, kind)`.
+   *
+   * INTERNAL: Do not use.
    */
   DataFlow::Node getAnExternalBarrierNode(string kind) {
     result = MakeStateBarrierGuard<string, BarrierGuard>::getABarrierNode(kind)

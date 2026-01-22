@@ -850,11 +850,15 @@ module ModelOutput {
 
   /**
    * Holds if an external model contributed `barrier` with the given `kind`.
+   *
+   * INTERNAL: Do not use.
    */
   API::Node getABarrierNode(string kind) { result = getABarrierNode(kind, _) }
 
   /**
    * Holds if an external model contributed `barrier-guard` with the given `kind` and `branch`.
+   *
+   * INTERNAL: Do not use.
    */
   API::Node getABarrierGuardNode(string kind, boolean branch) {
     result = getABarrierGuardNode(kind, branch, _)

@@ -1000,7 +1000,14 @@ module ExternalBarrierGuard {
     )
   }
 
-  /** Gets a node that is an external barrier of the given kind. */
+  /**
+   * Gets a node that is an external barrier of the given kind.
+   *
+   * This only provides external barrier nodes defined as guards. To get all externally defined barrer nodes,
+   * use `ModelOutput::barrierNode(node, kind)`.
+   *
+   * INTERNAL: Do not use.
+   */
   ExprNode getAnExternalBarrierNode(string kind) {
     result = ParameterizedBarrierGuard<string, guardCheck/4>::getABarrierNode(kind)
   }
