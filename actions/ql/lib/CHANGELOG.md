@@ -1,3 +1,9 @@
+## 0.4.26
+
+### Major Analysis Improvements
+
+* The query `actions/code-injection/medium` has been updated to include results which were incorrectly excluded while filtering out results that are reported by `actions/code-injection/critical`.
+
 ## 0.4.25
 
 No user-facing changes.

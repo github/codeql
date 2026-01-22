@@ -117,8 +117,6 @@ module SatisfiesBlanketConstraint<
     predicate relevantConstraint(ArgumentTypeAndBlanketOffset ato, Type constraint) {
       relevantConstraint(ato, _, constraint.(TraitType).getTrait())
     }
-
-    predicate useUniversalConditions() { none() }
   }
 
   private module SatisfiesBlanketConstraint =
@@ -126,7 +124,7 @@ module SatisfiesBlanketConstraint<
 
   /**
    * Holds if the argument type `at` satisfies the first non-trivial blanket
-   * constraint of `impl`.
+   * constraint of `impl`, or if there are no non-trivial constraints of `impl`.
    */
   pragma[nomagic]
   predicate satisfiesBlanketConstraint(ArgumentType at, ImplItemNode impl) {
@@ -134,6 +132,11 @@ module SatisfiesBlanketConstraint<
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
       SatisfiesBlanketConstraint::satisfiesConstraintType(ato, TTrait(traitBound), _, _)
+    )
+    or
+    exists(TypeParam blanketTypeParam |
+      hasBlanketCandidate(at, impl, _, blanketTypeParam) and
+      not hasFirstNonTrivialTraitBound(blanketTypeParam, _)
     )
   }
 

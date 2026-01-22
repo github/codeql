@@ -10,11 +10,25 @@ import java.util.List;
 public class ParseResultInfo {
   private int linesOfCode, linesOfComments;
   private List<ParseError> parseErrors;
+  private String skipReason;
 
   public ParseResultInfo(int linesOfCode, int linesOfComments, List<ParseError> parseErrors) {
     this.linesOfCode = linesOfCode;
     this.linesOfComments = linesOfComments;
     this.parseErrors = new ArrayList<>(parseErrors);
+  }
+
+  private ParseResultInfo() {
+    this.linesOfCode = 0;
+    this.linesOfComments = 0;
+    this.parseErrors = new ArrayList<>();
+    this.skipReason = null;
+  }
+
+  public static final ParseResultInfo skipped(String reason) {
+    ParseResultInfo info = new ParseResultInfo();
+    info.skipReason = reason;
+    return info;
   }
 
   public void add(ParseResultInfo that) {
@@ -40,5 +54,12 @@ public class ParseResultInfo {
 
   public List<ParseError> getParseErrors() {
     return parseErrors;
+  }
+
+  /**
+   * If extraction of this file was skipped, gets the reason for skipping it.
+   */
+  public String getSkipReason() {
+    return skipReason;
   }
 }

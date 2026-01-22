@@ -68,6 +68,80 @@ mod fn_once_trait {
     }
 }
 
+mod fn_mut_trait {
+    fn return_type<F: FnMut(bool) -> i64>(mut f: F) {
+        let _return = f(true); // $ type=_return:i64
+    }
+
+    fn return_type_omitted<F: FnMut(bool)>(mut f: F) {
+        let _return = f(true); // $ type=_return:()
+    }
+
+    fn argument_type<F: FnMut(bool) -> i64>(mut f: F) {
+        let arg = Default::default(); // $ target=default type=arg:bool
+        f(arg);
+    }
+
+    fn apply<A, B, F: FnMut(A) -> B>(mut f: F, a: A) -> B {
+        f(a)
+    }
+
+    fn apply_two(mut f: impl FnMut(i64) -> i64) -> i64 {
+        f(2)
+    }
+
+    fn test() {
+        let f = |x: bool| -> i64 {
+            if x {
+                1
+            } else {
+                0
+            }
+        };
+        let _r = apply(f, true); // $ target=apply type=_r:i64
+
+        let f = |x| x + 1; // $ MISSING: type=x:i64 target=add
+        let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
+    }
+}
+
+mod fn_trait {
+    fn return_type<F: Fn(bool) -> i64>(f: F) {
+        let _return = f(true); // $ type=_return:i64
+    }
+
+    fn return_type_omitted<F: Fn(bool)>(f: F) {
+        let _return = f(true); // $ type=_return:()
+    }
+
+    fn argument_type<F: Fn(bool) -> i64>(f: F) {
+        let arg = Default::default(); // $ target=default type=arg:bool
+        f(arg);
+    }
+
+    fn apply<A, B, F: Fn(A) -> B>(f: F, a: A) -> B {
+        f(a)
+    }
+
+    fn apply_two(f: impl Fn(i64) -> i64) -> i64 {
+        f(2)
+    }
+
+    fn test() {
+        let f = |x: bool| -> i64 {
+            if x {
+                1
+            } else {
+                0
+            }
+        };
+        let _r = apply(f, true); // $ target=apply type=_r:i64
+
+        let f = |x| x + 1; // $ MISSING: type=x:i64 target=add
+        let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
+    }
+}
+
 mod dyn_fn_once {
     fn apply_boxed<A, B, F: FnOnce(A) -> B + ?Sized>(f: Box<F>, arg: A) -> B {
         f(arg)

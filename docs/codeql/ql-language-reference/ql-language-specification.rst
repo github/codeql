@@ -776,6 +776,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
+                  |   "overlay" "[" ("local" | "local?" | "global" | "caller" | "caller?" | "discard_entity") "]"
 
 Each simple annotation adds a same-named attribute to the syntactic entity it precedes. For example, if a class is preceded by the ``abstract`` annotation, then the class is said to be abstract.
 
@@ -872,6 +873,26 @@ A predicate may have several different binding sets, which can be stated by usin
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 
 The ``bindingset`` pragma is usable with type signatures and predicate signatures, but not with module signatures.
+
+The parameterized annotation ``overlay`` controls predicate behavior during overlay evaluation, which is a feature for incremental analysis. Overlay annotations apply at the scope level, and are inherited by nested scopes.
+
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| Overlay             | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
++=====================+=========+============+===================+=======================+=========+========+=========+=========+
+| ``local``           | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``local?``          | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``global``          | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``caller``          | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``caller?``         | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``discard_entity``  |         |            |                   | yes                   |         |        |         |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+
+The ``overlay[discard_entity]`` annotation is only valid on unary non-member predicates whose argument is a database type.
 
 QLDoc
 -----

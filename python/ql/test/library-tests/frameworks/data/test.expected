@@ -108,6 +108,7 @@ isSource
 | test.py:119:20:119:30 | ControlFlowNode for getSource() | test-source |
 | test.py:124:1:124:33 | ControlFlowNode for Attribute() | test-source |
 | test.py:126:11:126:43 | ControlFlowNode for Attribute() | test-source |
+| test.py:129:11:129:39 | ControlFlowNode for Attribute() | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

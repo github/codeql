@@ -36,6 +36,9 @@
 | Assignments.cs:3:10:3:10 | M | Assignments.cs:4:5:15:5 | {...} |
 | Assignments.cs:14:18:14:35 | (...) => ... | Assignments.cs:14:33:14:35 | {...} |
 | Assignments.cs:17:40:17:40 | + | Assignments.cs:18:5:20:5 | {...} |
+| Assignments.cs:27:10:27:23 | SetParamSingle | Assignments.cs:28:5:30:5 | {...} |
+| Assignments.cs:32:10:32:22 | SetParamMulti | Assignments.cs:33:5:36:5 | {...} |
+| Assignments.cs:38:10:38:11 | M2 | Assignments.cs:39:5:45:5 | {...} |
 | BreakInTry.cs:1:7:1:16 | BreakInTry | BreakInTry.cs:1:7:1:16 | this access |
 | BreakInTry.cs:3:10:3:11 | M1 | BreakInTry.cs:4:5:18:5 | {...} |
 | BreakInTry.cs:20:10:20:11 | M2 | BreakInTry.cs:21:5:36:5 | {...} |
@@ -58,7 +61,10 @@
 | ConditionalAccess.cs:21:10:21:11 | M7 | ConditionalAccess.cs:22:5:26:5 | {...} |
 | ConditionalAccess.cs:30:10:30:12 | Out | ConditionalAccess.cs:30:32:30:32 | 0 |
 | ConditionalAccess.cs:32:10:32:11 | M8 | ConditionalAccess.cs:33:5:36:5 | {...} |
-| ConditionalAccess.cs:41:26:41:38 | CommaJoinWith | ConditionalAccess.cs:41:70:41:71 | access to parameter s1 |
+| ConditionalAccess.cs:42:9:42:11 | get_Item | ConditionalAccess.cs:42:13:42:28 | {...} |
+| ConditionalAccess.cs:43:9:43:11 | set_Item | ConditionalAccess.cs:43:13:43:15 | {...} |
+| ConditionalAccess.cs:46:10:46:11 | M9 | ConditionalAccess.cs:47:5:55:5 | {...} |
+| ConditionalAccess.cs:60:26:60:38 | CommaJoinWith | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 |
 | Conditions.cs:1:7:1:16 | Conditions | Conditions.cs:1:7:1:16 | this access |
 | Conditions.cs:3:10:3:19 | IncrOrDecr | Conditions.cs:4:5:9:5 | {...} |
 | Conditions.cs:11:9:11:10 | M1 | Conditions.cs:12:5:20:5 | {...} |

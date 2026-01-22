@@ -42,6 +42,7 @@ tools: $(BIN_FILES)
 ../target/release/%$(EXE):
 	cd extractor && cargo build --release
 
+.PHONY:	dbscheme
 dbscheme:
 	cd extractor && cargo build --release
 	../target/release/codeql-extractor-ruby generate --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll

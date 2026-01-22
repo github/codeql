@@ -841,15 +841,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     signature module SatisfiesConstraintInputSig<HasTypeTreeSig HasTypeTree> {
       /** Holds if it is relevant to know if `term` satisfies `constraint`. */
       predicate relevantConstraint(HasTypeTree term, Type constraint);
-
-      /**
-       * Holds if constraints that are satisfied through conditions that are
-       * universally quantified type parameters should be used. Such type
-       * parameters might have type parameter constraints, and these are _not_
-       * checked. Hence using these represent a trade-off between too many
-       * constraints and too few constraints being satisfied.
-       */
-      default predicate useUniversalConditions() { any() }
     }
 
     module SatisfiesConstraint<
@@ -901,12 +892,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
-          useUniversalConditions() and // todo: remove, and instead check constraints
-          not exists(countConstraintImplementations(type, constraint)) and
-          conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-          resolveTypeMentionRoot(condition) = abs.getATypeParameter() and
-          constraint = resolveTypeMentionRoot(constraintMention)
-          or
+          // TODO: Handle universal conditions properly, which means checking type parameter constraints
+          // Also remember to update logic in `hasNotConstraintMention`
+          //
+          // not exists(countConstraintImplementations(type, constraint)) and
+          // conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+          // resolveTypeMentionRoot(condition) = abs.getATypeParameter() and
+          // constraint = resolveTypeMentionRoot(constraintMention)
+          // or
           countConstraintImplementations(type, constraint) > 0 and
           rootTypesSatisfaction(type, constraint, abs, condition, constraintMention) and
           // When there are multiple ways the type could implement the
@@ -936,18 +929,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       pragma[nomagic]
       private predicate hasNotConstraintMention(HasTypeTree tt, Type constraint) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
-          (
-            not useUniversalConditions()
-            or
-            exists(countConstraintImplementations(type, constraint))
-            or
-            forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
-              conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-              resolveTypeMentionRoot(condition) = abs.getATypeParameter()
-            |
-              not constraint = resolveTypeMentionRoot(constraintMention)
-            )
-          ) and
+          // TODO: Handle universal conditions properly, which means taking type parameter constraints into account
+          // (
+          //   exists(countConstraintImplementations(type, constraint))
+          //   or
+          //   forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
+          //     conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+          //     resolveTypeMentionRoot(condition) = abs.getATypeParameter()
+          //   |
+          //     not constraint = resolveTypeMentionRoot(constraintMention)
+          //   )
+          // ) and
           (
             countConstraintImplementations(type, constraint) = 0
             or

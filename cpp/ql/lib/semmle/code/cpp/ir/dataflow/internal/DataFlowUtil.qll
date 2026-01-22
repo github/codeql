@@ -156,7 +156,7 @@ class Node extends TIRDataFlowNode {
    * If `isGLValue()` holds, then the type of this node
    * should be thought of as "pointer to `getType()`".
    */
-  DataFlowType getType() { none() } // overridden in subclasses
+  Type getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
@@ -541,7 +541,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  DataFlowType getTypeBound() { result = this.getType() }
+  Type getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   cached
@@ -585,7 +585,7 @@ private class Node0 extends Node, TNode0 {
 
   override string toStringImpl() { result = node.toString() }
 
-  override DataFlowType getType() { result = node.getType() }
+  override Type getType() { result = node.getType() }
 
   override predicate isGLValue() { node.isGLValue() }
 }
@@ -704,7 +704,7 @@ class SsaSynthNode extends Node, TSsaSynthNode {
 
   override Declaration getFunction() { result = node.getBasicBlock().getEnclosingFunction() }
 
-  override DataFlowType getType() { result = node.getSourceVariable().getType() }
+  override Type getType() { result = node.getSourceVariable().getType() }
 
   override predicate isGLValue() { node.getSourceVariable().isGLValue() }
 
@@ -732,7 +732,7 @@ class SsaIteratorNode extends Node, TSsaIteratorNode {
 
   override Declaration getFunction() { result = node.getFunction() }
 
-  override DataFlowType getType() { result = node.getType() }
+  override Type getType() { result = node.getType() }
 
   final override Location getLocationImpl() { result = node.getLocation() }
 
@@ -792,7 +792,7 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
 
   override Declaration getFunction() { result = globalUse.getIRFunction().getFunction() }
 
-  override DataFlowType getType() {
+  override Type getType() {
     exists(int indirectionIndex |
       indirectionIndex = globalUse.getIndirectionIndex() and
       result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex)
@@ -826,7 +826,7 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 
   final override predicate isGLValue() { globalDef.getIndirectionIndex() = 0 }
 
-  override DataFlowType getType() { result = globalDef.getUnderlyingType() }
+  override Type getType() { result = globalDef.getUnderlyingType() }
 
   final override Location getLocationImpl() { result = globalDef.getLocation() }
 
@@ -853,7 +853,7 @@ class BodyLessParameterNodeImpl extends Node, TBodyLessParameterNodeImpl {
   /** Gets the indirection index of this node. */
   int getIndirectionIndex() { result = indirectionIndex }
 
-  override DataFlowType getType() {
+  override Type getType() {
     result = getTypeImpl(p.getUnderlyingType(), this.getIndirectionIndex())
   }
 
@@ -1117,8 +1117,8 @@ private module RawIndirectNodes {
 
     override predicate isGLValue() { this.getOperand().isGLValue() }
 
-    override DataFlowType getType() {
-      exists(int sub, DataFlowType type, boolean isGLValue |
+    override Type getType() {
+      exists(int sub, Type type, boolean isGLValue |
         type = getOperandType(this.getOperand(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
@@ -1163,8 +1163,8 @@ private module RawIndirectNodes {
 
     override predicate isGLValue() { this.getInstruction().isGLValue() }
 
-    override DataFlowType getType() {
-      exists(int sub, DataFlowType type, boolean isGLValue |
+    override Type getType() {
+      exists(int sub, Type type, boolean isGLValue |
         type = getInstructionType(this.getInstruction(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
@@ -1263,7 +1263,7 @@ class FinalParameterNode extends Node, TFinalParameterNode {
     result.asSourceCallable() = this.getFunction()
   }
 
-  override DataFlowType getType() { result = getTypeImpl(p.getUnderlyingType(), indirectionIndex) }
+  override Type getType() { result = getTypeImpl(p.getUnderlyingType(), indirectionIndex) }
 
   final override Location getLocationImpl() {
     // Parameters can have multiple locations. When there's a unique location we use
@@ -1539,7 +1539,7 @@ abstract class PostUpdateNode extends Node {
    */
   abstract Node getPreUpdateNode();
 
-  final override DataFlowType getType() { result = this.getPreUpdateNode().getType() }
+  final override Type getType() { result = this.getPreUpdateNode().getType() }
 }
 
 /**
@@ -1632,9 +1632,7 @@ class VariableNode extends Node, TGlobalLikeVariableNode {
     result.asSourceCallable() = v
   }
 
-  override DataFlowType getType() {
-    result = getTypeImpl(v.getUnderlyingType(), indirectionIndex - 1)
-  }
+  override Type getType() { result = getTypeImpl(v.getUnderlyingType(), indirectionIndex - 1) }
 
   final override Location getLocationImpl() {
     // Certain variables (such as parameters) can have multiple locations.
@@ -2419,6 +2417,19 @@ class ContentSet instanceof Content {
   }
 }
 
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch, P param);
+}
+
 /**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
@@ -2440,7 +2451,7 @@ private predicate controls(IRGuardCondition g, Node n, boolean edge) {
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
-module BarrierGuard<guardChecksSig/3 guardChecks> {
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
   bindingset[value, n]
   pragma[inline_late]
   private predicate convertedExprHasValueNumber(ValueNumber value, Node n) {
@@ -2450,12 +2461,13 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     )
   }
 
-  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch) {
-    guardChecks(g, n.asOperand().getDef().getConvertedResultExpression(), branch)
+  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch, P p) {
+    guardChecks(g, n.asOperand().getDef().getConvertedResultExpression(), branch, p)
   }
 
   /**
-   * Gets an expression node that is safely guarded by the given guard check.
+   * Gets an expression node that is safely guarded by the given guard check
+   * when the parameter is `p`.
    *
    * For example, given the following code:
    * ```cpp
@@ -2486,19 +2498,27 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
    */
-  Node getABarrierNode() {
+  Node getABarrierNode(P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
       convertedExprHasValueNumber(value, result) and
       guardChecks(g,
-        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
+        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge, p) and
       controls(g, result, edge)
     )
     or
-    result = SsaImpl::BarrierGuard<guardChecksNode/3>::getABarrierNode()
+    result = SsaImpl::BarrierGuard<P, guardChecksNode/4>::getABarrierNode(p)
   }
 
   /**
-   * Gets an indirect expression node that is safely guarded by the given guard check.
+   * Gets an expression node that is safely guarded by the given guard check.
+   *
+   * See `getABarrierNode/1` for examples.
+   */
+  Node getABarrierNode() { result = getABarrierNode(_) }
+
+  /**
+   * Gets an indirect expression node that is safely guarded by the given
+   * guard check with parameter `p`.
    *
    * For example, given the following code:
    * ```cpp
@@ -2530,6 +2550,13 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
+  Node getAnIndirectBarrierNode(P p) { result = getAnIndirectBarrierNode(_, p) }
+
+  /**
+   * Gets an indirect expression node that is safely guarded by the given guard check.
+   *
+   * See `getAnIndirectBarrierNode/1` for examples.
+   */
   Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
 
   bindingset[value, n]
@@ -2544,10 +2571,10 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 
   private predicate guardChecksIndirectNode(
-    IRGuardCondition g, Node n, boolean branch, int indirectionIndex
+    IRGuardCondition g, Node n, boolean branch, int indirectionIndex, P p
   ) {
     guardChecks(g, n.asIndirectOperand(indirectionIndex).getDef().getConvertedResultExpression(),
-      branch)
+      branch, p)
   }
 
   /**
@@ -2584,17 +2611,42 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    *
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
-  Node getAnIndirectBarrierNode(int indirectionIndex) {
+  Node getAnIndirectBarrierNode(int indirectionIndex, P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
       indirectConvertedExprHasValueNumber(indirectionIndex, value, result) and
       guardChecks(g,
-        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
+        pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge, p) and
       controls(g, result, edge)
     )
     or
     result =
-      SsaImpl::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
+      SsaImpl::BarrierGuardWithIntParam<P, guardChecksIndirectNode/5>::getABarrierNode(indirectionIndex,
+        p)
   }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private predicate guardChecks(IRGuardCondition g, Expr e, boolean branch, Unit unit) {
+    guardChecks(g, e, branch) and
+    exists(unit)
+  }
+
+  import ParameterizedBarrierGuard<Unit, guardChecks/4>
+}
+
+private module InstrWithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the instruction `instr` upon evaluating to `branch`.
+   */
+  signature predicate instructionGuardChecksSig(
+    IRGuardCondition g, Instruction instr, boolean branch, P p
+  );
 }
 
 /**
@@ -2608,7 +2660,9 @@ signature predicate instructionGuardChecksSig(IRGuardCondition g, Instruction in
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
-module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+module ParameterizedInstructionBarrierGuard<
+  ParamSig P, InstrWithParam<P>::instructionGuardChecksSig/4 instructionGuardChecks>
+{
   bindingset[value, n]
   pragma[inline_late]
   private predicate operandHasValueNumber(ValueNumber value, Node n) {
@@ -2618,20 +2672,26 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
     )
   }
 
-  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch) {
-    instructionGuardChecks(g, n.asOperand().getDef(), branch)
+  private predicate guardChecksNode(IRGuardCondition g, Node n, boolean branch, P p) {
+    instructionGuardChecks(g, n.asOperand().getDef(), branch, p)
   }
 
-  /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() {
+  /**
+   * Gets a node that is safely guarded by the given guard check with
+   * parameter `p`.
+   */
+  Node getABarrierNode(P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
-      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
+      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge, p) and
       operandHasValueNumber(value, result) and
       controls(g, result, edge)
     )
     or
-    result = SsaImpl::BarrierGuard<guardChecksNode/3>::getABarrierNode()
+    result = SsaImpl::BarrierGuard<P, guardChecksNode/4>::getABarrierNode(p)
   }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode() { result = getABarrierNode(_) }
 
   bindingset[value, n]
   pragma[inline_late]
@@ -2643,25 +2703,52 @@ module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardCheck
   }
 
   private predicate guardChecksIndirectNode(
-    IRGuardCondition g, Node n, boolean branch, int indirectionIndex
+    IRGuardCondition g, Node n, boolean branch, int indirectionIndex, P p
   ) {
-    instructionGuardChecks(g, n.asIndirectOperand(indirectionIndex).getDef(), branch)
+    instructionGuardChecks(g, n.asIndirectOperand(indirectionIndex).getDef(), branch, p)
   }
 
   /**
    * Gets an indirect node with indirection index `indirectionIndex` that is
-   * safely guarded by the given guard check.
+   * safely guarded by the given guard check with parameter `p`.
    */
-  Node getAnIndirectBarrierNode(int indirectionIndex) {
+  Node getAnIndirectBarrierNode(int indirectionIndex, P p) {
     exists(IRGuardCondition g, ValueNumber value, boolean edge |
-      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
+      instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge, p) and
       indirectOperandHasValueNumber(value, indirectionIndex, result) and
       controls(g, result, edge)
     )
     or
     result =
-      SsaImpl::BarrierGuardWithIntParam<guardChecksIndirectNode/4>::getABarrierNode(indirectionIndex)
+      SsaImpl::BarrierGuardWithIntParam<P, guardChecksIndirectNode/5>::getABarrierNode(indirectionIndex,
+        p)
   }
+
+  /**
+   * Gets an indirect node that is safely guarded by the given guard check
+   * with parameter `p`.
+   */
+  Node getAnIndirectBarrierNode(P p) { result = getAnIndirectBarrierNode(_, p) }
+
+  /** Gets an indirect node that is safely guarded by the given guard check. */
+  Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an instruction.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+  private predicate instructionGuardChecks(
+    IRGuardCondition g, Instruction i, boolean branch, Unit unit
+  ) {
+    instructionGuardChecks(g, i, branch) and
+    exists(unit)
+  }
+
+  import ParameterizedInstructionBarrierGuard<Unit, instructionGuardChecks/4>
 }
 
 /**
