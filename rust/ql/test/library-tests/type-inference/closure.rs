@@ -152,3 +152,90 @@ mod dyn_fn_once {
         let _r2 = apply_boxed(Box::new(|_: i64| true), 3); // $ target=apply_boxed target=new type=_r2:bool
     }
 }
+
+mod closure_infer_param {
+    fn apply1<F: Fn(i64) -> i64>(f: F, a: i64) -> i64 {
+        f(a)
+    }
+
+    fn apply2(f: impl Fn(i64) -> i64, a: i64) -> i64 {
+        f(a)
+    }
+
+    fn apply3(f: &dyn Fn(i64) -> i64, a: i64) -> i64 {
+        f(a)
+    }
+
+    fn apply4<F: FnMut(i64) -> i64>(mut f: F, a: i64) -> i64 {
+        f(a)
+    }
+
+    fn apply5(f: &mut dyn FnMut(i64) -> i64, a: i64) -> i64 {
+        f(a)
+    }
+
+    fn apply6<T>(f: impl Fn(T) -> i64, a: T) -> i64 {
+        f(a)
+    }
+
+    fn apply7<T, F: FnMut(T) -> i64>(mut f: F, a: T) -> i64 {
+        f(a)
+    }
+
+    fn test() {
+        let f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply1(f, 1i64); // $ target=apply1
+
+        let f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply2(f, 2i64); // $ target=apply2
+
+        let f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply3(&f, 3i64); // $ target=apply3
+
+        let f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply4(f, 4i64); // $ target=apply4
+
+        let mut f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply5(&mut f, 5i64); // $ target=apply5
+
+        let f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply6(f, 6i64); // $ target=apply6
+
+        let f = |x| x; // $ MISSING: type=x:i64
+        let _r = apply7(f, 7i64); // $ target=apply7
+    }
+}
+
+mod implicit_deref {
+    use std::ops::Deref;
+
+    struct S<T>(T);
+
+    impl<T> Deref for S<T> {
+        type Target = dyn Fn(T) -> bool;
+
+        fn deref(&self) -> &Self::Target {
+            &|_| false
+        }
+    }
+
+    pub fn test() {
+        let x = 0i64;
+        let v = Default::default(); // $ MISSING: type=v:i64 target=default
+        let s = S(v);
+        let _ret = s(x); // $ MISSING: type=_ret:bool
+
+        let x = 0i32;
+        let v = Default::default(); // $ MISSING: type=v:i32 target=default
+        let s = S(v);
+        let s_ref = &s;
+        let _ret = s_ref(x); // $ MISSING: type=_ret:bool
+
+        // The call below is not an implicit deref, instead it will target
+        // `impl<A, F> FnOnce<A> for &F` from
+        // https://doc.rust-lang.org/std/ops/trait.FnOnce.html#impl-FnOnce%3CA%3E-for-%26F
+        // and we currently cannot handle inferring the output type
+        let c = |x| x; // $ MISSING: type=x:i64
+        (&c)(x); // $ MISSING: type=_:i64
+    }
+}
