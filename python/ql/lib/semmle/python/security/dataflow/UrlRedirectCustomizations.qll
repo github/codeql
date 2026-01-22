@@ -165,9 +165,7 @@ module UrlRedirect {
    * A sanitizer defined via models-as-data with kind "url-redirection".
    */
   class SanitizerFromModel extends Sanitizer {
-    SanitizerFromModel() {
-      ModelOutput::barrierNode(this, "url-redirection")
-    }
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "url-redirection") }
 
     override predicate sanitizes(FlowState state) {
       // sanitize all flow states
