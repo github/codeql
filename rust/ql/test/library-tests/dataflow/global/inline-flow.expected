@@ -1,6 +1,6 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
-| 2 | Summary: <_ as core::ops::arith::Mul>::mul; Argument[self]; ReturnValue; taint |
+| 2 | Summary: <_ as core::ops::arith::Mul>::mul; Argument[self,0]; ReturnValue; taint |
 | 3 | Summary: futures_executor::local_pool::block_on; Argument[0]; ReturnValue; value |
 edges
 | main.rs:12:28:14:1 | { ... } | main.rs:17:13:17:23 | get_data(...) | provenance |  |
