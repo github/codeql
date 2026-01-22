@@ -2878,6 +2878,30 @@ mod closure;
 mod dereference;
 mod dyn_type;
 
+mod foo {
+    struct Gen<T>(T);
+
+    trait Container<T> {
+        fn get_input(&self) -> T;
+    }
+
+    fn my_get<T: Container<i64>>(c: &T) -> bool {
+        c.get_input() == 42
+    }
+
+    impl<GT: Copy> Container<GT> for Gen<GT> {
+        fn get_input(&self) -> GT {
+            self.0
+        }
+    }
+
+    fn test() {
+        let v = Default::default(); // $ type=v:i64 target=default
+        let g = Gen(v);
+        let _ = my_get(&g);
+    }
+}
+
 fn main() {
     field_access::f(); // $ target=f
     method_impl::f(); // $ target=f
