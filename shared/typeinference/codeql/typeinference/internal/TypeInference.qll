@@ -343,7 +343,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * ```
      * the type parameter `T` has the constraint `IComparable<T>`.
      */
-    TypeMention getATypeParameterConstraint(TypeParameter tp);
+    Type getATypeParameterConstraint(TypeParameter tp, TypePath path);
 
     /**
      * Holds if
@@ -1451,13 +1451,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           accessDeclarationPositionMatch(apos, dpos) and
           constrainedTp = target.getTypeParameter(_) and
           tp = target.getTypeParameter(_) and
+          tp = getATypeParameterConstraint(constrainedTp, pathToTp) and
           constrainedTp != tp and
           constrainedTp = target.getDeclaredType(dpos, pathToConstrained) and
-          exists(TypeMention tm |
-            tm = getATypeParameterConstraint(constrainedTp) and
-            tm.resolveTypeAt(pathToTp) = tp and
-            constraint = resolveTypeMentionRoot(tm)
-          )
+          constraint = getATypeParameterConstraint(constrainedTp, TypePath::nil())
         )
       }
 
