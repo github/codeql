@@ -215,12 +215,12 @@ mod wrapping {
         a &= source(8);
         a &= Wrapping(crate::source(9));
         sink(a); // $ MISSING: hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
-        crate::sink(a.0); // $ MISSING: hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
+        crate::sink(a.0); // $ hasTaintFlow=7 hasTaintFlow=8 hasTaintFlow=9
 
         a = source(10);
         a <<= source_usize(11);
         sink(a); // $ hasTaintFlow=11 MISSING: hasTaintFlow=10
-        crate::sink(a.0); // $ hasTaintFlow=11 MISSING: hasTaintFlow=10
+        crate::sink(a.0); // $ hasTaintFlow=11 hasTaintFlow=10
 
         let b: Wrapping<i64> = Wrapping(crate::source(1));
         let c: Wrapping<i64> = Wrapping(crate::source(2));
@@ -233,13 +233,13 @@ mod wrapping {
         let v4 = b.neg();
         crate::sink(v4.0); // $ hasTaintFlow=1
         let v5 = !b;
-        crate::sink(v5.0); // $ MISSING: hasTaintFlow=1
+        crate::sink(v5.0); // $ hasTaintFlow=1
         let v6 = b.not();
-        crate::sink(v6.0); // $ MISSING: hasTaintFlow=1
+        crate::sink(v6.0); // $ hasTaintFlow=1
         let v7 = b & c;
-        crate::sink(v7.0); // $ MISSING: hasTaintFlow=1 hasTaintFlow=2
+        crate::sink(v7.0); // $ hasTaintFlow=1 hasTaintFlow=2
         let v8 = b << source_usize(3);
-        crate::sink(v8.0); // $ hasTaintFlow=3 MISSING: hasTaintFlow=1
+        crate::sink(v8.0); // $ hasTaintFlow=1 hasTaintFlow=3
     }
 }
 
