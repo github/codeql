@@ -117,8 +117,6 @@ module SatisfiesBlanketConstraint<
     predicate relevantConstraint(ArgumentTypeAndBlanketOffset ato, Type constraint) {
       relevantConstraint(ato, _, constraint.(TraitType).getTrait())
     }
-
-    predicate useUniversalConditions() { none() }
   }
 
   private module SatisfiesBlanketConstraint =
