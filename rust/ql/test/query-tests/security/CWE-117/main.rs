@@ -127,3 +127,22 @@ mod additional_tests {
         eprintln!("Error for user: {}", user_data); // $ Alert[rust/log-injection]=environment
     }
 }
+
+mod axum_tests {
+    use axum::extract::{Json, Path, Query, Request};
+    use axum::routing::{get, post, put, MethodFilter};
+    use axum::Router;
+
+    async fn my_axum_handler_1(o_path: Option<Path<String>>) -> &'static str {
+        let m_path = o_path.map(|x| x); // $ SPURIOUS: Alert[rust/log-injection]=post_handler
+
+        println!("{:?}", m_path.unwrap()); // $ MISSING: Alert[rust/log-injection]=post_handler
+
+        ""
+    }
+
+    async fn test_axum() {
+        let app = Router::<()>::new()
+            .route("/{a}", get(my_axum_handler_1)); // $ Source=post_handler
+    }
+}
