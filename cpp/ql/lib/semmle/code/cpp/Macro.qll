@@ -239,6 +239,9 @@ class MacroInvocation extends MacroAccess {
     macro_argument_unexpanded(underlyingElement(this), i, result)
   }
 
+  /** Gets the number of arguments for this macro invocation. */
+  int getNumberOfArguments() { result = count(int i | exists(this.getUnexpandedArgument(i)) | i) }
+
   /**
    * Gets the `i`th _expanded_ argument of this macro invocation, where the
    * first argument has `i = 0`. The result has been expanded for macros _and_

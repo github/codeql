@@ -938,6 +938,52 @@ mod patterns {
     }
 }
 
+/// Tests for referring to constructors via `Self`
+mod self_constructors {
+    struct TupleStruct(i32); // $ item=i32
+
+    #[rustfmt::skip]
+    impl TupleStruct { // $ item=TupleStruct
+        #[rustfmt::skip]
+        fn new(x: i32) -> Self { // $ item=i32 item=TupleStruct
+            let _ = Self(0); // $ item=TupleStruct
+            let constructor = Self; // $ item=TupleStruct
+            constructor(x)
+        } // new
+    } // ImplTupleStruct
+
+    struct StructStruct {
+        a: i32, // $ item=i32
+    }
+
+    #[rustfmt::skip]
+    impl StructStruct { // $ item=StructStruct
+        #[rustfmt::skip]
+        fn new(a: i32) -> Self { // $ item=i32 item=StructStruct
+            Self { a } // $ item=StructStruct
+        } // new
+    } // ImplStructStruct
+
+    enum MyEnum {
+        A(
+            i32, // $ item=i32
+        ), // MyEnumA
+    }
+
+    #[rustfmt::skip]
+    impl MyEnum { // $ item=MyEnum
+        fn get(self) -> i32{ // $ item=i32
+            match self {
+                Self::A( // $ item=MyEnumA
+                    x,
+                ) => {
+                    x
+                }
+            }
+        }
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38

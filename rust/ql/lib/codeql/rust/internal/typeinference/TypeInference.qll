@@ -141,17 +141,17 @@ private module Input2 implements InputSig2 {
 
   TypeMention getABaseTypeMention(Type t) { none() }
 
-  TypeMention getATypeParameterConstraint(TypeParameter tp) {
-    result = tp.(TypeParamTypeParameter).getTypeParam().getATypeBound().getTypeRepr()
-    or
-    result = tp.(SelfTypeParameter).getTrait()
-    or
-    result =
-      tp.(ImplTraitTypeTypeParameter)
-          .getImplTraitTypeRepr()
-          .getTypeBoundList()
-          .getABound()
-          .getTypeRepr()
+  Type getATypeParameterConstraint(TypeParameter tp, TypePath path) {
+    exists(TypeMention tm | result = tm.resolveTypeAt(path) |
+      tm = tp.(TypeParamTypeParameter).getTypeParam().getATypeBound().getTypeRepr() or
+      tm = tp.(SelfTypeParameter).getTrait() or
+      tm =
+        tp.(ImplTraitTypeTypeParameter)
+            .getImplTraitTypeRepr()
+            .getTypeBoundList()
+            .getABound()
+            .getTypeRepr()
+    )
   }
 
   /**
@@ -2200,8 +2200,6 @@ private module MethodResolution {
         exists(mc) and
         constraint.(TraitType).getTrait() instanceof DerefTrait
       }
-
-      predicate useUniversalConditions() { none() }
     }
 
     private module MethodCallSatisfiesDerefConstraint =
@@ -3613,8 +3611,6 @@ private module AwaitSatisfiesConstraintInput implements SatisfiesConstraintInput
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FutureTrait
   }
-
-  predicate useUniversalConditions() { none() }
 }
 
 pragma[nomagic]
@@ -3811,18 +3807,16 @@ private module ForIterableSatisfiesConstraintInput implements
       t instanceof IntoIteratorTrait
     )
   }
-
-  predicate useUniversalConditions() { none() }
 }
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
-  result.getTypeAlias() = any(IteratorTrait t).getItemType()
+  result = getAssociatedTypeTypeParameter(any(IteratorTrait t).getItemType())
 }
 
 pragma[nomagic]
 private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
-  result.getTypeAlias() = any(IntoIteratorTrait t).getItemType()
+  result = getAssociatedTypeTypeParameter(any(IntoIteratorTrait t).getItemType())
 }
 
 pragma[nomagic]
@@ -3864,8 +3858,6 @@ private module InvokedClosureSatisfiesConstraintInput implements
     exists(term) and
     constraint.(TraitType).getTrait() instanceof FnOnceTrait
   }
-
-  predicate useUniversalConditions() { none() }
 }
 
 /** Gets the type of `ce` when viewed as an implementation of `FnOnce`. */

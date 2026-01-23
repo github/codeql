@@ -20,7 +20,7 @@ class Stmt extends StmtParent, @stmt {
   predicate hasChild(Element e, int n) { this.getChild(n) = e }
 
   /** Gets the enclosing function of this statement, if any. */
-  Function getEnclosingFunction() { result = stmtEnclosingElement(this) }
+  override Function getEnclosingFunction() { result = stmtEnclosingElement(this) }
 
   /**
    * Gets the nearest enclosing block of this statement in the source, if any.
@@ -159,7 +159,10 @@ private class TStmtParent = @stmt or @expr;
  *
  * This is normally a statement, but may be a `StmtExpr`.
  */
-class StmtParent extends ControlFlowNode, TStmtParent { }
+class StmtParent extends ControlFlowNode, TStmtParent {
+  /** Gets the enclosing function of this element, if any. */
+  Function getEnclosingFunction() { none() }
+}
 
 /**
  * A C/C++ 'expression' statement.
