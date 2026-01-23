@@ -1,2 +1,2 @@
 multipleResolvedTargets
-| main.rs:2860:13:2860:17 | x.f() |
+| main.rs:2871:13:2871:17 | x.f() |
