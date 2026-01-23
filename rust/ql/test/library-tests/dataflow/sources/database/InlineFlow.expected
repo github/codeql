@@ -9,8 +9,8 @@ models
 | 8 | Source: <mysql_common::row::Row>::get_opt; ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]; database |
 | 9 | Source: <mysql_common::row::Row>::take; ReturnValue.Field[core::option::Option::Some(0)]; database |
 | 10 | Source: <mysql_common::row::Row>::take_opt; ReturnValue.Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]; database |
-| 11 | Summary: <_ as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 12 | Summary: <_ as core::ops::arith::Add>::add; Argument[0]; ReturnValue; taint |
+| 11 | Summary: <_ as core::ops::arith::Add>::add; Argument[self,0].Field[core::num::wrapping::Wrapping(0)]; ReturnValue.Field[core::num::wrapping::Wrapping(0)]; taint |
+| 12 | Summary: <_ as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
 | 13 | Summary: <_ as mysql::conn::queryable::Queryable>::query_fold; Argument[2].ReturnValue; ReturnValue.Field[core::result::Result::Ok(0)]; value |
 | 14 | Summary: <_ as mysql_async::queryable::Queryable>::query_fold; Argument[2].ReturnValue; ReturnValue.Future.Field[core::result::Result::Ok(0)]; value |
 | 15 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
@@ -54,15 +54,20 @@ edges
 | test.rs:57:14:57:39 | ...: ... | test.rs:59:22:59:29 | values.1 | provenance |  |
 | test.rs:57:14:57:39 | ...: ... | test.rs:60:22:60:29 | values.2 | provenance |  |
 | test.rs:64:13:64:17 | total | test.rs:68:14:68:18 | total | provenance |  |
+| test.rs:64:13:64:17 | total [Wrapping] | test.rs:68:14:68:18 | total | provenance |  |
+| test.rs:64:21:67:10 | conn.query_fold(...) [Ok, Wrapping] | test.rs:64:21:67:11 | TryExpr [Wrapping] | provenance |  |
 | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | test.rs:64:21:67:11 | TryExpr | provenance |  |
 | test.rs:64:21:67:11 | TryExpr | test.rs:64:13:64:17 | total | provenance |  |
+| test.rs:64:21:67:11 | TryExpr [Wrapping] | test.rs:64:13:64:17 | total [Wrapping] | provenance |  |
 | test.rs:64:26:64:35 | query_fold | test.rs:64:76:64:83 | ...: i64 | provenance | Src:MaD:2  |
 | test.rs:64:76:64:83 | ...: i64 | test.rs:65:18:65:20 | row | provenance |  |
 | test.rs:64:76:64:83 | ...: i64 | test.rs:66:19:66:21 | row | provenance |  |
 | test.rs:64:86:67:9 | { ... } | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | provenance | MaD:13 |
+| test.rs:64:86:67:9 | { ... } [Wrapping] | test.rs:64:21:67:10 | conn.query_fold(...) [Ok, Wrapping] | provenance | MaD:13 |
 | test.rs:66:13:66:21 | ... + ... | test.rs:64:86:67:9 | { ... } | provenance |  |
-| test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... | provenance | MaD:11 |
+| test.rs:66:13:66:21 | ... + ... [Wrapping] | test.rs:64:86:67:9 | { ... } [Wrapping] | provenance |  |
 | test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... | provenance | MaD:12 |
+| test.rs:66:19:66:21 | row | test.rs:66:13:66:21 | ... + ... [Wrapping] | provenance | MaD:11 |
 | test.rs:70:22:70:31 | query_fold | test.rs:70:83:70:105 | ...: ... | provenance | Src:MaD:2  |
 | test.rs:70:83:70:105 | ...: ... | test.rs:71:17:71:18 | id | provenance |  |
 | test.rs:70:83:70:105 | ...: ... | test.rs:72:17:72:20 | name | provenance |  |
@@ -95,16 +100,22 @@ edges
 | test.rs:144:14:144:39 | ...: ... | test.rs:146:22:146:29 | values.1 | provenance |  |
 | test.rs:144:14:144:39 | ...: ... | test.rs:147:22:147:29 | values.2 | provenance |  |
 | test.rs:151:13:151:17 | total | test.rs:155:14:155:18 | total | provenance |  |
+| test.rs:151:13:151:17 | total [Wrapping] | test.rs:155:14:155:18 | total | provenance |  |
+| test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok, Wrapping] | test.rs:151:21:154:16 | await ... [Ok, Wrapping] | provenance |  |
 | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | test.rs:151:21:154:16 | await ... [Ok] | provenance |  |
+| test.rs:151:21:154:16 | await ... [Ok, Wrapping] | test.rs:151:21:154:17 | TryExpr [Wrapping] | provenance |  |
 | test.rs:151:21:154:16 | await ... [Ok] | test.rs:151:21:154:17 | TryExpr | provenance |  |
 | test.rs:151:21:154:17 | TryExpr | test.rs:151:13:151:17 | total | provenance |  |
+| test.rs:151:21:154:17 | TryExpr [Wrapping] | test.rs:151:13:151:17 | total [Wrapping] | provenance |  |
 | test.rs:151:26:151:35 | query_fold | test.rs:151:76:151:83 | ...: i64 | provenance | Src:MaD:4  |
 | test.rs:151:76:151:83 | ...: i64 | test.rs:152:18:152:20 | row | provenance |  |
 | test.rs:151:76:151:83 | ...: i64 | test.rs:153:19:153:21 | row | provenance |  |
 | test.rs:151:86:154:9 | { ... } | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | provenance | MaD:14 |
+| test.rs:151:86:154:9 | { ... } [Wrapping] | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok, Wrapping] | provenance | MaD:14 |
 | test.rs:153:13:153:21 | ... + ... | test.rs:151:86:154:9 | { ... } | provenance |  |
-| test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... | provenance | MaD:11 |
+| test.rs:153:13:153:21 | ... + ... [Wrapping] | test.rs:151:86:154:9 | { ... } [Wrapping] | provenance |  |
 | test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... | provenance | MaD:12 |
+| test.rs:153:19:153:21 | row | test.rs:153:13:153:21 | ... + ... [Wrapping] | provenance | MaD:11 |
 | test.rs:157:22:157:31 | query_fold | test.rs:157:83:157:105 | ...: ... | provenance | Src:MaD:4  |
 | test.rs:157:83:157:105 | ...: ... | test.rs:158:17:158:18 | id | provenance |  |
 | test.rs:157:83:157:105 | ...: ... | test.rs:159:17:159:20 | name | provenance |  |
@@ -160,13 +171,18 @@ nodes
 | test.rs:59:22:59:29 | values.1 | semmle.label | values.1 |
 | test.rs:60:22:60:29 | values.2 | semmle.label | values.2 |
 | test.rs:64:13:64:17 | total | semmle.label | total |
+| test.rs:64:13:64:17 | total [Wrapping] | semmle.label | total [Wrapping] |
+| test.rs:64:21:67:10 | conn.query_fold(...) [Ok, Wrapping] | semmle.label | conn.query_fold(...) [Ok, Wrapping] |
 | test.rs:64:21:67:10 | conn.query_fold(...) [Ok] | semmle.label | conn.query_fold(...) [Ok] |
 | test.rs:64:21:67:11 | TryExpr | semmle.label | TryExpr |
+| test.rs:64:21:67:11 | TryExpr [Wrapping] | semmle.label | TryExpr [Wrapping] |
 | test.rs:64:26:64:35 | query_fold | semmle.label | query_fold |
 | test.rs:64:76:64:83 | ...: i64 | semmle.label | ...: i64 |
 | test.rs:64:86:67:9 | { ... } | semmle.label | { ... } |
+| test.rs:64:86:67:9 | { ... } [Wrapping] | semmle.label | { ... } [Wrapping] |
 | test.rs:65:18:65:20 | row | semmle.label | row |
 | test.rs:66:13:66:21 | ... + ... | semmle.label | ... + ... |
+| test.rs:66:13:66:21 | ... + ... [Wrapping] | semmle.label | ... + ... [Wrapping] |
 | test.rs:66:19:66:21 | row | semmle.label | row |
 | test.rs:68:14:68:18 | total | semmle.label | total |
 | test.rs:70:22:70:31 | query_fold | semmle.label | query_fold |
@@ -208,14 +224,20 @@ nodes
 | test.rs:146:22:146:29 | values.1 | semmle.label | values.1 |
 | test.rs:147:22:147:29 | values.2 | semmle.label | values.2 |
 | test.rs:151:13:151:17 | total | semmle.label | total |
+| test.rs:151:13:151:17 | total [Wrapping] | semmle.label | total [Wrapping] |
+| test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok, Wrapping] | semmle.label | conn.query_fold(...) [future, Ok, Wrapping] |
 | test.rs:151:21:154:10 | conn.query_fold(...) [future, Ok] | semmle.label | conn.query_fold(...) [future, Ok] |
+| test.rs:151:21:154:16 | await ... [Ok, Wrapping] | semmle.label | await ... [Ok, Wrapping] |
 | test.rs:151:21:154:16 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:151:21:154:17 | TryExpr | semmle.label | TryExpr |
+| test.rs:151:21:154:17 | TryExpr [Wrapping] | semmle.label | TryExpr [Wrapping] |
 | test.rs:151:26:151:35 | query_fold | semmle.label | query_fold |
 | test.rs:151:76:151:83 | ...: i64 | semmle.label | ...: i64 |
 | test.rs:151:86:154:9 | { ... } | semmle.label | { ... } |
+| test.rs:151:86:154:9 | { ... } [Wrapping] | semmle.label | { ... } [Wrapping] |
 | test.rs:152:18:152:20 | row | semmle.label | row |
 | test.rs:153:13:153:21 | ... + ... | semmle.label | ... + ... |
+| test.rs:153:13:153:21 | ... + ... [Wrapping] | semmle.label | ... + ... [Wrapping] |
 | test.rs:153:19:153:21 | row | semmle.label | row |
 | test.rs:155:14:155:18 | total | semmle.label | total |
 | test.rs:157:22:157:31 | query_fold | semmle.label | query_fold |
