@@ -51,6 +51,9 @@ module SqlTaintedConfig implements DataFlow::ConfigSig {
       input.isParameterDeref(arg) and
       sql.barrierSqlArgument(input, _)
     )
+    or
+    // barrier defined using models-as-data
+    barrierNode(node, "sql-injection")
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
