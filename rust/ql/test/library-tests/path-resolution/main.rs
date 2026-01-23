@@ -606,6 +606,13 @@ mod trait_visibility {
             // Only the `Foo` trait is visible
             use m::Foo; // $ item=Foo
             X::a_method(&x); // $ item=X_Foo::a_method
+
+            #[rustfmt::skip]
+            impl X { // $ item=X
+                fn test(&self) {
+                    Self::a_method(self); // $ item=X_Foo::a_method
+                }
+            }
         }
         {
             // Only the `Bar` trait is visible
