@@ -938,7 +938,7 @@ mod patterns {
     }
 }
 
-/// Tests for refering to constructors via `Self`
+/// Tests for referring to constructors via `Self`
 mod self_constructors {
     struct TupleStruct(i32); // $ item=i32
 
