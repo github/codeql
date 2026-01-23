@@ -2978,9 +2978,7 @@ open class KotlinFileExtractor(
                     // For Kotlin < 2.3, s.delegate is not-nullable. Cast to be nullable,
                     // as a workaround to silence warnings for kotlin < 2.3 about the elvis
                     // operator being redundant.
-                    // For Kotlin >= 2.3, the cast is redundant, so we need to silence that warning
-                    @Suppress("USELESS_CAST")
-                    val delegate = s.delegate as IrVariable?
+                    val delegate: IrVariable? = cast(s.delegate)
                     val propId = tw.getFreshIdLabel<DbKt_property>()
 
                     if (delegate == null) {

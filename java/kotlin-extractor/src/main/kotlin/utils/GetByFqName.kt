@@ -12,44 +12,28 @@ fun getClassByFqName(pluginContext: IrPluginContext, fqName: FqName): IrClassSym
     return getClassByClassId(pluginContext, id)
 }
 
+fun getClassByFqName(pluginContext: IrPluginContext, fqName: String): IrClassSymbol? {
+    return getClassByFqName(pluginContext, FqName(fqName))
+}
+
 fun getClassByClassId(pluginContext: IrPluginContext, id: ClassId): IrClassSymbol? {
     return pluginContext.referenceClass(id)
 }
 
 fun getFunctionsByFqName(
     pluginContext: IrPluginContext,
-    pkgName: FqName,
-    name: Name
+    pkgName: String,
+    name: String
 ): Collection<IrSimpleFunctionSymbol> {
-    val id = CallableId(pkgName, name)
+    val id = CallableId(FqName(pkgName), Name.identifier(name))
     return pluginContext.referenceFunctions(id)
 }
 
 fun getPropertiesByFqName(
     pluginContext: IrPluginContext,
-    pkgName: FqName,
-    name: Name
+    pkgName: String,
+    name: String
 ): Collection<IrPropertySymbol> {
-    val id = CallableId(pkgName, name)
+    val id = CallableId(FqName(pkgName), Name.identifier(name))
     return pluginContext.referenceProperties(id)
-}
-
-fun getClassByFqName(pluginContext: IrPluginContext, fqName: String): IrClassSymbol? {
-    return getClassByFqName(pluginContext, FqName(fqName))
-}
-
-fun getFunctionsByFqName(
-    pluginContext: IrPluginContext,
-    pkgName: String,
-    name: String
-): Collection<IrSimpleFunctionSymbol> {
-    return getFunctionsByFqName(pluginContext, FqName(pkgName), Name.identifier(name))
-}
-
-fun getPropertiesByFqName(
-    pluginContext: IrPluginContext,
-    pkgName: String,
-    name: String
-): Collection<IrPropertySymbol> {
-    return getPropertiesByFqName(pluginContext, FqName(pkgName), Name.identifier(name))
 }
