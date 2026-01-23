@@ -10,9 +10,9 @@ void test() {
   y = 44; // $ asDefinition="... = ..."
   use(y);
 
-  int x = 43; // $ MISSING: asDefinition=43
-  x = 44; // $ MISSING: asDefinition="... = ..."
+  int x = 43; // $ asDefinition=43
+  x = 44; // $ asDefinition="... = ..."
 
   S s;
-  s.x = 42; // $ MISSING: asDefinition="... = ..."
+  s.x = 42; // $ asDefinition="... = ..."
 }
