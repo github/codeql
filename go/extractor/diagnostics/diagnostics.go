@@ -169,7 +169,7 @@ func plural(n int, singular, plural string) string {
 
 const maxNumPkgPaths = 5
 
-func EmitCannotFindPackages(pkgPaths []string) {
+func EmitCannotFindPackages(writer DiagnosticsWriter, pkgPaths []string) {
 	numPkgPaths := len(pkgPaths)
 
 	numPrinted := numPkgPaths
@@ -216,7 +216,8 @@ func EmitCannotFindPackages(pkgPaths []string) {
 			"If any of the packages are already present in the repository, but were not found, then you may need a [custom build command](https://docs.github.com/en/code-security/how-tos/scan-code-for-vulnerabilities/manage-your-configuration/codeql-code-scanning-for-compiled-languages)."
 	}
 
-	emitDiagnostic(
+	emitDiagnosticTo(
+		writer,
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
 		message,
