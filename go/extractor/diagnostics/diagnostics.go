@@ -65,6 +65,10 @@ type FileDiagnosticsWriter struct {
 }
 
 func (writer *FileDiagnosticsWriter) WriteDiagnostic(d diagnostic) {
+	if writer == nil {
+		return
+	}
+
 	content, err := json.Marshal(d)
 	if err != nil {
 		slog.Error("Failed to encode diagnostic as JSON", slog.Any("err", err))
@@ -142,9 +146,6 @@ func emitDiagnosticTo(writer DiagnosticsWriter, sourceid, sourcename, markdownMe
 
 // Emits a diagnostic using the default `DiagnosticsWriter`.
 func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
-	if DefaultWriter == nil {
-		return
-	}
 	emitDiagnosticTo(DefaultWriter, sourceid, sourcename, markdownMessage, severity, visibility, location)
 }
 
