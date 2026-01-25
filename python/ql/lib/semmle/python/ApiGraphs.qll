@@ -451,6 +451,7 @@ module API {
    * allowing this predicate to be used in a negative
    * context when constructing new nodes.
    */
+  overlay[local]
   predicate moduleImportExists(string m) {
     Impl::isImported(m) and
     // restrict `moduleImport` so it will never give results for a dotted name. Note
@@ -695,6 +696,7 @@ module API {
      *
      * This is determined syntactically.
      */
+    overlay[local]
     cached
     predicate isImported(string name) {
       // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere

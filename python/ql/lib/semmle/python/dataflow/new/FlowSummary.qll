@@ -23,6 +23,7 @@ deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
 deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 /** A callable with a flow summary, identified by a unique string. */
+overlay[local]
 abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
   bindingset[this]
   SummarizedCallable() { any() }
