@@ -565,7 +565,7 @@ func installDependenciesAndBuild() {
 	// Go tooling should install required Go versions as needed.
 	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
 		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
-		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
+		if util.IsActionsWorkflow() {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
 				greatestGoVersion,
