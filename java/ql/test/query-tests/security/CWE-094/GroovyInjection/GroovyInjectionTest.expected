@@ -14,6 +14,7 @@
 | GroovyCompilationUnitTest.java:72:13:72:14 | cu | GroovyCompilationUnitTest.java:70:55:70:84 | getParameter(...) : String | GroovyCompilationUnitTest.java:72:13:72:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:70:55:70:84 | getParameter(...) | user-provided value |
 | GroovyCompilationUnitTest.java:78:13:78:14 | cu | GroovyCompilationUnitTest.java:76:55:76:84 | getParameter(...) : String | GroovyCompilationUnitTest.java:78:13:78:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:76:55:76:84 | getParameter(...) | user-provided value |
 | GroovyCompilationUnitTest.java:89:13:89:14 | cu | GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:89:13:89:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) | user-provided value |
+| GroovyCompilationUnitTest.java:94:13:94:14 | cu | GroovyCompilationUnitTest.java:93:34:93:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:94:13:94:14 | cu | Groovy script depends on a $@. | GroovyCompilationUnitTest.java:93:34:93:63 | getParameter(...) | user-provided value |
 | GroovyEvalTest.java:15:21:15:26 | script | GroovyEvalTest.java:14:29:14:58 | getParameter(...) : String | GroovyEvalTest.java:15:21:15:26 | script | Groovy script depends on a $@. | GroovyEvalTest.java:14:29:14:58 | getParameter(...) | user-provided value |
 | GroovyEvalTest.java:20:39:20:44 | script | GroovyEvalTest.java:19:29:19:58 | getParameter(...) : String | GroovyEvalTest.java:20:39:20:44 | script | Groovy script depends on a $@. | GroovyEvalTest.java:19:29:19:58 | getParameter(...) | user-provided value |
 | GroovyEvalTest.java:25:31:25:36 | script | GroovyEvalTest.java:24:29:24:58 | getParameter(...) : String | GroovyEvalTest.java:25:31:25:36 | script | Groovy script depends on a $@. | GroovyEvalTest.java:24:29:24:58 | getParameter(...) | user-provided value |
@@ -93,6 +94,8 @@ edges
 | GroovyCompilationUnitTest.java:77:26:77:27 | su : SourceUnit | GroovyCompilationUnitTest.java:77:13:77:14 | cu [post update] : CompilationUnit | provenance | Config |
 | GroovyCompilationUnitTest.java:88:13:88:14 | cu [post update] : JavaAwareCompilationUnit | GroovyCompilationUnitTest.java:89:13:89:14 | cu | provenance | Sink:MaD:32 |
 | GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:88:13:88:14 | cu [post update] : JavaAwareCompilationUnit | provenance | Src:MaD:33 Config |
+| GroovyCompilationUnitTest.java:93:13:93:14 | cu [post update] : JavaStubCompilationUnit | GroovyCompilationUnitTest.java:94:13:94:14 | cu | provenance | Sink:MaD:32 |
+| GroovyCompilationUnitTest.java:93:34:93:63 | getParameter(...) : String | GroovyCompilationUnitTest.java:93:13:93:14 | cu [post update] : JavaStubCompilationUnit | provenance | Src:MaD:33 Config |
 | GroovyEvalTest.java:14:29:14:58 | getParameter(...) : String | GroovyEvalTest.java:15:21:15:26 | script | provenance | Src:MaD:33 Sink:MaD:27 |
 | GroovyEvalTest.java:19:29:19:58 | getParameter(...) : String | GroovyEvalTest.java:20:39:20:44 | script | provenance | Src:MaD:33 Sink:MaD:28 |
 | GroovyEvalTest.java:24:29:24:58 | getParameter(...) : String | GroovyEvalTest.java:25:31:25:36 | script | provenance | Src:MaD:33 Sink:MaD:29 |
@@ -246,6 +249,9 @@ nodes
 | GroovyCompilationUnitTest.java:88:13:88:14 | cu [post update] : JavaAwareCompilationUnit | semmle.label | cu [post update] : JavaAwareCompilationUnit |
 | GroovyCompilationUnitTest.java:88:34:88:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | GroovyCompilationUnitTest.java:89:13:89:14 | cu | semmle.label | cu |
+| GroovyCompilationUnitTest.java:93:13:93:14 | cu [post update] : JavaStubCompilationUnit | semmle.label | cu [post update] : JavaStubCompilationUnit |
+| GroovyCompilationUnitTest.java:93:34:93:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| GroovyCompilationUnitTest.java:94:13:94:14 | cu | semmle.label | cu |
 | GroovyEvalTest.java:14:29:14:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | GroovyEvalTest.java:15:21:15:26 | script | semmle.label | script |
 | GroovyEvalTest.java:19:29:19:58 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -325,3 +331,6 @@ nodes
 | TemplateEngineTest.java:24:35:24:49 | (...)... | semmle.label | (...)... |
 | TemplateEngineTest.java:25:35:25:46 | (...)... | semmle.label | (...)... |
 subpaths
+testFailures
+| GroovyCompilationUnitTest.java:93:34:93:63 | getParameter(...) : String | Unexpected result: Source |
+| GroovyCompilationUnitTest.java:94:13:94:14 | cu | Unexpected result: Alert |
