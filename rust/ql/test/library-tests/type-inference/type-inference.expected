@@ -68,13 +68,27 @@ inferCertainType
 | associated_types.rs:136:18:136:23 | "{:?}\\n" | TRef | {EXTERNAL LOCATION} | str |
 | associated_types.rs:136:18:136:32 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:136:18:136:32 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:144:9:144:9 | a |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:145:9:145:9 | b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:146:9:146:9 | c |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:147:9:147:9 | d |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:148:7:153:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:149:13:149:14 | _a |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:149:18:149:18 | a |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:150:13:150:14 | _b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:150:18:150:18 | b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:151:13:151:14 | _c |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:151:18:151:18 | c |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:152:13:152:14 | _d |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:152:18:152:18 | d |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:173:17:173:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:173:17:173:21 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:173:17:173:21 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:173:52:176:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:181:17:181:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:181:17:181:21 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:181:17:181:21 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:181:52:184:9 | { ... } |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:187:19:192:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:188:9:188:34 | using_as(...) |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:188:25:188:28 | true |  | {EXTERNAL LOCATION} | bool |
@@ -186,15 +200,18 @@ inferCertainType
 | associated_types.rs:384:24:384:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:384:24:384:28 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:384:24:384:28 | SelfParam | TRef.T | associated_types.rs:382:10:382:16 | T |
+| associated_types.rs:384:47:386:9 | { ... } |  | associated_types.rs:382:10:382:16 | T |
 | associated_types.rs:385:15:385:18 | self |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:385:15:385:18 | self | TRef | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:385:15:385:18 | self | TRef.T | associated_types.rs:382:10:382:16 | T |
 | associated_types.rs:391:24:391:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:399:24:399:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:404:33:404:36 | item |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:404:33:404:36 | item | TRef | associated_types.rs:404:20:404:30 | T |
 | associated_types.rs:405:9:405:12 | item |  | {EXTERNAL LOCATION} | & |
@@ -4828,24 +4845,48 @@ inferType
 | associated_types.rs:136:26:136:27 | x6 |  | associated_types.rs:13:1:14:10 | S2 |
 | associated_types.rs:136:26:136:32 | x6.m2() |  | associated_types.rs:1:1:2:21 | Wrapper |
 | associated_types.rs:136:26:136:32 | x6.m2() | A | associated_types.rs:13:1:14:10 | S2 |
+| associated_types.rs:144:9:144:9 | a |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:145:9:145:9 | b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:146:9:146:9 | c |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:147:9:147:9 | d |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:148:7:153:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:149:13:149:14 | _a |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:149:18:149:18 | a |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:150:13:150:14 | _b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:150:18:150:18 | b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:151:13:151:14 | _c |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:151:18:151:18 | c |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:152:13:152:14 | _d |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:152:18:152:18 | d |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:173:17:173:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:173:17:173:21 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:173:17:173:21 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:173:52:176:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:174:17:174:17 | x |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:174:21:174:38 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:175:13:175:13 | x |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:181:17:181:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:181:17:181:21 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:181:17:181:21 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:181:52:184:9 | { ... } |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:182:17:182:17 | x |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:182:21:182:38 | ...::default(...) |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:183:13:183:13 | x |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:187:19:192:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:188:9:188:34 | using_as(...) |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:188:18:188:19 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
 | associated_types.rs:188:22:188:22 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:188:25:188:28 | true |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:188:31:188:33 | 'a' |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:190:13:190:14 | _a |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:190:18:190:27 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:190:18:190:27 | Odd(...) | OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:190:18:190:34 | ... .proj() |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:190:22:190:26 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:191:13:191:14 | _b |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:191:18:191:26 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:191:18:191:26 | Odd(...) | OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:191:18:191:33 | ... .proj() |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:191:22:191:25 | true |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:199:30:199:34 | thing |  | associated_types.rs:199:19:199:27 | T |
 | associated_types.rs:200:9:200:13 | thing |  | associated_types.rs:199:19:199:27 | T |
@@ -4900,7 +4941,9 @@ inferType
 | associated_types.rs:268:13:268:14 | _a |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:268:18:268:18 | x |  | associated_types.rs:263:31:263:31 | T |
 | associated_types.rs:268:18:268:24 | x.get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:269:13:269:14 | _b |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:269:18:269:18 | x |  | associated_types.rs:263:31:263:31 | T |
+| associated_types.rs:269:18:269:25 | x.get2() |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:280:19:280:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:280:19:280:23 | SelfParam | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
 | associated_types.rs:280:26:280:26 | a |  | associated_types.rs:280:16:280:16 | A |
@@ -5016,9 +5059,13 @@ inferType
 | associated_types.rs:391:24:391:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:391:24:391:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:393:13:393:30 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:399:24:399:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:399:24:399:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:400:13:400:30 | ...::default(...) |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:404:33:404:36 | item |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:404:33:404:36 | item | TRef | associated_types.rs:404:20:404:30 | T |
 | associated_types.rs:405:9:405:12 | item |  | {EXTERNAL LOCATION} | & |
@@ -5038,8 +5085,10 @@ inferType
 | associated_types.rs:414:21:414:33 | MyType(...) |  | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:414:21:414:33 | MyType(...) | T | {EXTERNAL LOCATION} | i64 |
 | associated_types.rs:414:28:414:32 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:415:13:415:21 | _content1 |  | {EXTERNAL LOCATION} | i64 |
 | associated_types.rs:415:25:415:29 | item1 |  | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:415:25:415:29 | item1 | T | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:415:25:415:43 | item1.get_content() |  | {EXTERNAL LOCATION} | i64 |
 | associated_types.rs:417:13:417:17 | item2 |  | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:417:13:417:17 | item2 | T | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:417:21:417:32 | MyType(...) |  | associated_types.rs:368:5:368:24 | MyType |
@@ -5050,11 +5099,15 @@ inferType
 | associated_types.rs:418:37:418:42 | &item2 | TRef.T | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:418:38:418:42 | item2 |  | associated_types.rs:368:5:368:24 | MyType |
 | associated_types.rs:418:38:418:42 | item2 | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:420:13:420:21 | _content3 |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:420:25:420:34 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:420:25:420:34 | Odd(...) | OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:420:25:420:48 | ... .get_content() |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:420:29:420:33 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:421:13:421:21 | _content4 |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:421:25:421:33 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
 | associated_types.rs:421:25:421:33 | Odd(...) | OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:421:25:421:47 | ... .get_content() |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:421:29:421:32 | true |  | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:435:16:435:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:435:16:435:20 | SelfParam | TRef | associated_types.rs:428:5:428:20 | ST |

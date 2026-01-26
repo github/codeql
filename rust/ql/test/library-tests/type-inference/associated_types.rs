@@ -146,10 +146,10 @@ mod concrete_type_access_associated_type {
         c: <Odd<i32> as GetSet>::Output,
         d: <Odd<bool> as GetSet>::Output,
     ) {
-        let _a = a; // $ MISSING: type=_a:S3
-        let _b = b; // $ MISSING: type=_b:i32
-        let _c = c; // $ MISSING: type=_c:bool
-        let _d = d; // $ MISSING: type=_d:char
+        let _a = a; // $ type=_a:S3
+        let _b = b; // $ type=_b:i32
+        let _c = c; // $ type=_c:bool
+        let _d = d; // $ type=_d:char
     }
 
     // NOTE: The below seems like it should work, but is currently rejected by
@@ -171,24 +171,24 @@ mod concrete_type_access_associated_type {
     impl Odd<i32> {
         // Odd<i32>::proj
         fn proj(&self) -> <Self as GetSet>::Output {
-            let x = Default::default(); // $ MISSING: target=default
-            x // $ MISSING: type=x:bool
+            let x = Default::default(); // $ target=default
+            x // $ type=x:bool
         }
     }
 
     impl Odd<bool> {
         // Odd<bool>::proj
         fn proj(&self) -> <Self as GetSet>::Output {
-            let x = Default::default(); // $ MISSING: target=default
-            x // $ MISSING: type=x:char
+            let x = Default::default(); // $ target=default
+            x // $ type=x:char
         }
     }
 
     pub fn test() {
         using_as(S3, 1, true, 'a'); // $ target=using_as
 
-        let _a = Odd(42i32).proj(); // $ target=Odd<i32>::proj MISSING: type=_a:bool
-        let _b = Odd(true).proj(); // $ target=Odd<bool>::proj MISSING: type=_b:char
+        let _a = Odd(42i32).proj(); // $ target=Odd<i32>::proj type=_a:bool
+        let _b = Odd(true).proj(); // $ target=Odd<bool>::proj type=_b:char
     }
 }
 
@@ -266,7 +266,7 @@ mod equality_on_associated_type {
         T: GetSet<Output = i32>,
     {
         let _a = x.get(); // $ type=_a:i32 target=GetSet::get
-        let _b = x.get2(); // $ target=AssocNameClash::get2 MISSING: type=_b:char
+        let _b = x.get2(); // $ target=AssocNameClash::get2 type=_b:char
     }
 }
 
@@ -390,14 +390,14 @@ mod associated_type_in_supertrait {
         // Odd<i32>::get_content
         fn get_content(&self) -> Self::Output {
             // let _x = Self::get(self);
-            Default::default() // $ MISSING: target=default
+            Default::default() // $ target=default
         }
     }
 
     impl Subtrait for Odd<bool> {
         // Odd<bool>::get_content
         fn get_content(&self) -> Self::Output {
-            Default::default() // $ MISSING: target=default
+            Default::default() // $ target=default
         }
     }
 
@@ -412,13 +412,13 @@ mod associated_type_in_supertrait {
 
     pub fn test() {
         let item1 = MyType(42i64);
-        let _content1 = item1.get_content(); // $ target=MyType::get_content MISSING: type=_content1:i64
+        let _content1 = item1.get_content(); // $ target=MyType::get_content type=_content1:i64
 
         let item2 = MyType(true);
         let _content2 = get_content(&item2); // $ target=get_content MISSING: type=_content2:bool
 
-        let _content3 = Odd(42i32).get_content(); // $ target=Odd<i32>::get_content MISSING: type=_content3:bool
-        let _content4 = Odd(true).get_content(); // $ target=Odd<bool>::get_content MISSING: type=_content4:char
+        let _content3 = Odd(42i32).get_content(); // $ target=Odd<i32>::get_content type=_content3:bool
+        let _content4 = Odd(true).get_content(); // $ target=Odd<bool>::get_content type=_content4:char
     }
 }
 

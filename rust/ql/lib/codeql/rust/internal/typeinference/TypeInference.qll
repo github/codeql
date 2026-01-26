@@ -134,8 +134,8 @@ class TypePath = M1::TypePath;
 
 module TypePath = M1::TypePath;
 
-private module Input2 implements InputSig2<TypeMention> {
-  TypeMention getABaseTypeMention(Type t) { none() }
+private module Input2 implements InputSig2<PreTypeMention> {
+  PreTypeMention getABaseTypeMention(Type t) { none() }
 
   Type getATypeParameterConstraint(TypeParameter tp, TypePath path) {
     exists(TypeMention tm | result = tm.getTypeAt(path) |
@@ -158,7 +158,7 @@ private module Input2 implements InputSig2<TypeMention> {
    * inference module for more information.
    */
   predicate conditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
+    TypeAbstraction abs, PreTypeMention condition, PreTypeMention constraint, boolean transitive
   ) {
     // `impl` blocks implementing traits
     transitive = false and
@@ -208,7 +208,7 @@ private module Input2 implements InputSig2<TypeMention> {
   }
 }
 
-private module M2 = Make2<TypeMention, Input2>;
+private module M2 = Make2<PreTypeMention, Input2>;
 
 import M2
 
@@ -1960,7 +1960,7 @@ private module MethodResolution {
     pragma[nomagic]
     predicate hasTypeQualifiedCandidate(ImplItemNode impl) {
       exists(getCallExprTypeQualifier(this, _)) and
-      CallExprImpl::getResolvedFunction(this) = impl.getASuccessor(_)
+      CallExprImpl::getResolvedFunction(this) = impl.getADescendant()
     }
 
     pragma[nomagic]
