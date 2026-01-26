@@ -7,16 +7,25 @@ using Semmle.Extraction.CSharp.Populators;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
+    // Marker interface for parameter entities.
+    public interface IParameterEntity : IEntity { }
+    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity, IParameterEntity
     {
         protected IEntity? Parent { get; set; }
         protected Parameter Original { get; }
+        private int PositionOffset { get; set; }
 
-        protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
+        private Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original, int positionOffset)
             : base(cx, init)
         {
             Parent = parent;
             Original = original ?? this;
+            PositionOffset = positionOffset;
+        }
+
+        protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
+            : this(cx, init, parent, original, 0)
+        {
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
@@ -32,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
             RefReadOnly = 6
         }
 
-        protected virtual int Ordinal => Symbol.Ordinal;
+        protected virtual int Ordinal => Symbol.Ordinal + PositionOffset;
 
         private Kind ParamKind
         {
@@ -55,29 +64,34 @@ namespace Semmle.Extraction.CSharp.Entities
                         if (Ordinal == 0)
                         {
                             if (Symbol.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
+                            {
                                 return Kind.This;
+                            }
                         }
                         return Kind.None;
                 }
             }
         }
 
-        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null)
+        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null, int positionOffset = 0)
         {
             var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
-            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, parent, original));
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, parent, original, positionOffset));
         }
 
         public static Parameter Create(Context cx, IParameterSymbol param)
         {
             var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
-            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, null, null));
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, null, null, 0));
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
             if (Parent is null)
                 Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
+
+            if (Parent is null && Symbol.ContainingSymbol is INamedTypeSymbol type && type.IsExtension)
+                Parent = Type.Create(Context, type);
 
             if (Parent is null)
                 throw new InternalError(Symbol, "Couldn't get parent of symbol.");
@@ -194,11 +208,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return syntax?.Default;
         }
 
-        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity?, Parameter?), Parameter>
+        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity?, Parameter?, int), Parameter>
         {
             public static ParameterFactory Instance { get; } = new ParameterFactory();
 
-            public override Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public override Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?, int) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3, init.Item4);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
@@ -241,6 +255,111 @@ namespace Semmle.Extraction.CSharp.Entities
 
             public override VarargsType Create(Context cx, string? init) => new VarargsType(cx);
         }
+    }
+
+    /// <summary>
+    /// Synthetic parameter for extension methods declared using the extensions syntax.
+    /// That is, we add a synthetic parameter s to IsValid in the following example:
+    /// extension(string s) {
+    ///   public bool IsValid() { ... }
+    /// }
+    ///
+    /// Note, that we use the characteristics of the parameter of the associated (compiler generated) extension method
+    /// to populate the database.
+    /// </summary>
+    internal class ImplicitExtensionParameter : Parameter
+    {
+        private Method ExtensionMethod { get; init; }
+
+        private ImplicitExtensionParameter(Context cx, Method method)
+#nullable disable warnings
+            : base(cx, method.Symbol.AssociatedExtensionImplementation.Parameters[0], method, null)
+        {
+            ExtensionMethod = method;
+        }
+#nullable restore warnings
+
+        protected override int Ordinal => 0;
+
+        private Kind ParamKind
+        {
+            get
+            {
+                switch (Symbol.RefKind)
+                {
+                    case RefKind.Ref:
+                        return Kind.Ref;
+                    case RefKind.In:
+                        return Kind.In;
+                    case RefKind.RefReadOnlyParameter:
+                        return Kind.RefReadOnly;
+                    default:
+                        return Kind.None;
+                }
+            }
+        }
+
+        private string Name => Symbol.Name;
+
+        public override bool IsSourceDeclaration => ExtensionMethod.Symbol.IsSourceDeclaration();
+
+        /// <summary>
+        /// Bind comments to this symbol.
+        /// Comments are only bound to source declarations.
+        /// </summary>
+        protected override void BindComments()
+        {
+            if (IsSourceDeclaration && Symbol.FromSource())
+                Context.BindComments(this, FullLocation);
+        }
+
+        public override void Populate(TextWriter trapFile)
+        {
+            PopulateAttributes();
+            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
+            PopulateRefKind(trapFile, Symbol.RefKind);
+
+            var type = Type.Create(Context, Symbol.Type);
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, this);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                var locations = Context.GetLocations(Symbol);
+                WriteLocationsToTrap(trapFile.param_location, this, locations);
+            }
+
+            if (!IsSourceDeclaration || !Symbol.FromSource())
+                return;
+
+            BindComments();
+
+            if (IsSourceDeclaration)
+            {
+                foreach (var syntax in Symbol.DeclaringSyntaxReferences
+                    .Select(d => d.GetSyntax())
+                    .OfType<ParameterSyntax>()
+                    .Where(s => s.Type is not null))
+                {
+                    TypeMention.Create(Context, syntax.Type!, this, type);
+                }
+            }
+        }
+
+        public static ImplicitExtensionParameter Create(Context cx, Method method) => ImplicitExtensionParameterFactory.Instance.CreateEntity(cx, typeof(ImplicitExtensionParameter), method);
+
+        private class ImplicitExtensionParameterFactory : CachedEntityFactory<Method, ImplicitExtensionParameter>
+        {
+            public static ImplicitExtensionParameterFactory Instance { get; } = new ImplicitExtensionParameterFactory();
+
+            public override ImplicitExtensionParameter Create(Context cx, Method init) => new ImplicitExtensionParameter(cx, init);
+        }
+
+
     }
 
     internal class VarargsParam : Parameter

@@ -16,7 +16,19 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void PopulateParameters()
         {
+            var positionOffset = 0;
             var originalMethod = OriginalDefinition;
+
+            // Synthesize implicit parameter for extension methods declared using extension(...) syntax.
+            if (Symbol.ContainingSymbol is INamedTypeSymbol type &&
+                type.IsExtension && !string.IsNullOrEmpty(type.ExtensionParameter?.Name) &&
+                Symbol.AssociatedExtensionImplementation is IMethodSymbol associated)
+            {
+                // TODO: Check that this works for generics as well. We might need to also take
+                ImplicitExtensionParameter.Create(Context, this);
+                positionOffset++;
+            }
+
             IEnumerable<IParameterSymbol> parameters = Symbol.Parameters;
             IEnumerable<IParameterSymbol> originalParameters = originalMethod.Symbol.Parameters;
 

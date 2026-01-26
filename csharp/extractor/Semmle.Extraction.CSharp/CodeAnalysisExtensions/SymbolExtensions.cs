@@ -164,6 +164,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Enum:
                     case TypeKind.Delegate:
                     case TypeKind.Error:
+                    case TypeKind.Extension:
                         var named = (INamedTypeSymbol)type;
                         named.BuildNamedTypeId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
                         return;
@@ -391,6 +392,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Enum:
                     case TypeKind.Delegate:
                     case TypeKind.Error:
+                    case TypeKind.Extension:
                         var named = (INamedTypeSymbol)type;
                         named.BuildNamedTypeDisplayName(cx, trapFile, constructUnderlyingTupleType);
                         return;
@@ -481,6 +483,14 @@ namespace Semmle.Extraction.CSharp
                             f.Type.BuildDisplayName(cx, trapFile);
                     });
                 trapFile.Write(")");
+                return;
+            }
+
+            if (namedType.IsExtension)
+            {
+                var type = namedType.ExtensionParameter?.Type.Name;
+                var name = $"extension({type})";
+                trapFile.Write(TrapExtensions.EncodeString(name));
                 return;
             }
 
@@ -595,6 +605,12 @@ namespace Semmle.Extraction.CSharp
                 return property.IsSourceDeclaration();
             return true;
         }
+
+        /// <summary>
+        /// Return true if this method is a compiler-generated extension method.
+        /// </summary>
+        public static bool IsCompilerGeneratedExtensionMethod(this IMethodSymbol method) =>
+            method.IsImplicitlyDeclared && method.IsExtensionMethod;
 
         /// <summary>
         /// Gets the base type of `symbol`. Unlike `symbol.BaseType`, this excludes effective base

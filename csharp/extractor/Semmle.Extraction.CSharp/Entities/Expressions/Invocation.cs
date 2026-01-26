@@ -119,8 +119,28 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var si = SymbolInfo;
 
-                if (si.Symbol is not null)
-                    return si.Symbol as IMethodSymbol;
+                if (si.Symbol is ISymbol symbol)
+                {
+                    var method = symbol as IMethodSymbol;
+                    // Case for compiler-generated extension methods.
+                    if (method is not null &&
+                        method.IsCompilerGeneratedExtensionMethod() &&
+                        method.ContainingSymbol is INamedTypeSymbol containingType)
+                    {
+                        // Extension types are declared within the same type as the generated
+                        // extension method implementation.
+                        var extensions = containingType.GetMembers()
+                            .OfType<INamedTypeSymbol>()
+                            .Where(t => t.IsExtension);
+                        // Find the original extension method that maps to this implementation (if any).
+                        var original = extensions.SelectMany(e => e.GetMembers())
+                            .OfType<IMethodSymbol>()
+                            .FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.AssociatedExtensionImplementation, method));
+                        return original ?? method;
+                    }
+
+                    return method;
+                }
 
                 if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
                 {

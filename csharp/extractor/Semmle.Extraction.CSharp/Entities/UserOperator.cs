@@ -68,6 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns></returns>
         private bool IsImplicitOperator(out ITypeSymbol containingType)
         {
+            // TODO: Do we need to handle extension operators here?
             containingType = Symbol.ContainingType;
             if (containingType is not null)
             {

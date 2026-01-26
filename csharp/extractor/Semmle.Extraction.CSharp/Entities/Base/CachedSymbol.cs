@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Bind comments to this symbol.
         /// Comments are only bound to source declarations.
         /// </summary>
-        protected void BindComments()
+        protected virtual void BindComments()
         {
             if (!Symbol.IsImplicitlyDeclared && IsSourceDeclaration && Symbol.FromSource())
                 Context.BindComments(this, FullLocation);

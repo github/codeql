@@ -103,6 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         trapFile.expr_access(access, this);
                         if (!Symbol.IsStatic)
                         {
+                            // TODO: What about the containing type for extensions?
                             This.CreateImplicit(Context, Symbol.ContainingType, Location, access, -1);
                         }
                     });
