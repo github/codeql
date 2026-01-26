@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from RaisingNode r, Scope s, ClassObject cls
 where r.viableExceptionalExit_objectapi(s, cls)

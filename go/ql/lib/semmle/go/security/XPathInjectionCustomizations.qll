@@ -34,4 +34,7 @@ module XPathInjection {
 
   /** An XPath expression string, considered as a taint sink for XPath injection. */
   class XPathExpressionStringAsSink extends Sink instanceof XPath::XPathExpressionString { }
+
+  /** A sanitizer for XPath injection. */
+  class XPathSanitizer extends Sanitizer instanceof XPath::Sanitizer { }
 }

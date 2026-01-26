@@ -69,7 +69,6 @@
 /LiteralExpr/gen_literal_expr.rs linguist-generated
 /LiteralPat/gen_literal_pat.rs linguist-generated
 /LoopExpr/gen_loop_expr.rs linguist-generated
-/MacroBlockExpr/gen_macro_block_expr.rs linguist-generated
 /MacroCall/gen_macro_call.rs linguist-generated
 /MacroDef/gen_macro_def.rs linguist-generated
 /MacroExpr/gen_macro_expr.rs linguist-generated

@@ -50,7 +50,7 @@ module K8sIoApimachineryPkgRuntime {
     }
   }
 
-  private class DecoderDecode extends Method, UnmarshalingFunction::Range {
+  private class DecoderDecode extends UnmarshalingFunction::Range, Method {
     DecoderDecode() {
       this.implements(packagePath(), "Decoder", "Decode") or
       this.hasQualifiedName(packagePath(), "WithoutVersionDecoder", "Decode")
@@ -95,7 +95,7 @@ module K8sIoApimachineryPkgRuntime {
     }
   }
 
-  private class ParameterCodecDecodeParameters extends Method, UnmarshalingFunction::Range {
+  private class ParameterCodecDecodeParameters extends UnmarshalingFunction::Range, Method {
     ParameterCodecDecodeParameters() {
       this.implements(packagePath(), "ParameterCodec", "DecodeParameters")
     }
@@ -110,7 +110,7 @@ module K8sIoApimachineryPkgRuntime {
     }
   }
 
-  private class ParameterCodecEncodeParameters extends Method, MarshalingFunction::Range {
+  private class ParameterCodecEncodeParameters extends MarshalingFunction::Range, Method {
     ParameterCodecEncodeParameters() {
       this.implements(packagePath(), "ParameterCodec", "EncodeParameters")
     }
@@ -125,7 +125,7 @@ module K8sIoApimachineryPkgRuntime {
     }
   }
 
-  private class ProtobufMarshallerMarshalTo extends Method, MarshalingFunction::Range {
+  private class ProtobufMarshallerMarshalTo extends MarshalingFunction::Range, Method {
     ProtobufMarshallerMarshalTo() {
       this.implements(packagePath(), "ProtobufMarshaller", "MarshalTo") or
       this.implements(packagePath(), "ProtobufReverseMarshaller", "MarshalToSizedBuffer")
@@ -138,7 +138,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
   }
 
-  private class RawExtensionMarshal extends Method, MarshalingFunction::Range {
+  private class RawExtensionMarshal extends MarshalingFunction::Range, Method {
     RawExtensionMarshal() { this.hasQualifiedName(packagePath(), "RawExtension", "Marshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }
@@ -148,7 +148,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
   }
 
-  private class RawExtensionUnmarshal extends Method, UnmarshalingFunction::Range {
+  private class RawExtensionUnmarshal extends UnmarshalingFunction::Range, Method {
     RawExtensionUnmarshal() { this.hasQualifiedName(packagePath(), "RawExtension", "Unmarshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }
@@ -158,7 +158,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
   }
 
-  private class UnknownMarshal extends Method, MarshalingFunction::Range {
+  private class UnknownMarshal extends MarshalingFunction::Range, Method {
     string methodName;
 
     UnknownMarshal() {
@@ -177,7 +177,7 @@ module K8sIoApimachineryPkgRuntime {
     override string getFormat() { result = "protobuf" }
   }
 
-  private class UnknownUnmarshal extends Method, UnmarshalingFunction::Range {
+  private class UnknownUnmarshal extends UnmarshalingFunction::Range, Method {
     UnknownUnmarshal() { this.hasQualifiedName(packagePath(), "Unknown", "Unmarshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }

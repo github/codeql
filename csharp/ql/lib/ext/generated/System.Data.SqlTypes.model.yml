@@ -11,7 +11,7 @@ extensions:
       - ["System.Data.SqlTypes", "SqlBytes", False, "SqlBytes", "(System.IO.Stream)", "", "Argument[0]", "Argument[this].SyntheticField[System.Data.SqlTypes.SqlBytes._stream]", "value", "dfc-generated"]
       - ["System.Data.SqlTypes", "SqlBytes", False, "Write", "(System.Int64,System.Byte[],System.Int32,System.Int32)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Data.SqlTypes", "SqlBytes", False, "get_Buffer", "()", "", "Argument[this].SyntheticField[System.Data.SqlTypes.SqlBytes._rgbBuf]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Data.SqlTypes", "SqlBytes", False, "get_Value", "()", "", "Argument[this].SyntheticField[System.Data.SqlTypes.SqlBytes._stream]", "ReturnValue.Element", "taint", "dfc-generated"]
+      - ["System.Data.SqlTypes", "SqlBytes", False, "get_Value", "()", "", "Argument[this].SyntheticField[System.Data.SqlTypes.SqlBytes._stream]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Data.SqlTypes", "SqlChars", False, "SqlChars", "(System.Char[])", "", "Argument[0]", "Argument[this].SyntheticField[System.Data.SqlTypes.SqlChars._rgchBuf]", "value", "dfc-generated"]
       - ["System.Data.SqlTypes", "SqlChars", False, "get_Buffer", "()", "", "Argument[this].SyntheticField[System.Data.SqlTypes.SqlChars._rgchBuf]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Data.SqlTypes", "SqlDecimal", False, "Abs", "(System.Data.SqlTypes.SqlDecimal)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]

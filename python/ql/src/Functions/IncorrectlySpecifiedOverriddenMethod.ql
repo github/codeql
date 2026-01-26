@@ -14,6 +14,7 @@
 
 import python
 import Expressions.CallArgs
+private import LegacyPointsTo
 
 from Call call, FunctionValue func, FunctionValue overriding, string problem
 where

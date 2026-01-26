@@ -1099,6 +1099,7 @@ module Redux {
      * Used to catch cases where the `connect` function was not recognized by API graphs (usually because of it being
      * wrapped in another function, which API graphs won't look through).
      */
+    overlay[local?]
     private class HeuristicConnectEntryPoint extends API::EntryPoint {
       HeuristicConnectEntryPoint() { this = "react-redux-connect" }
 

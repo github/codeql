@@ -46,7 +46,7 @@ module Impl {
     private predicate isMacroExpansion(AstNode macro, AstNode expansion) {
       expansion = macro.(MacroCall).getMacroCallExpansion()
       or
-      expansion = macro.(Adt).getDeriveMacroExpansion(_)
+      expansion = macro.(TypeItem).getDeriveMacroExpansion(_)
       or
       expansion = macro.(Item).getAttributeMacroExpansion()
     }
@@ -99,10 +99,11 @@ module Impl {
      */
     cached
     predicate isFromMacroExpansion(AstNode n) {
-      exists(AstNode macro |
+      exists(AstNode macro, Location l |
         macro = getImmediatelyEnclosingMacroInvocation(n) and
         not n = getATokenTreeNode(macro) and
-        not isAttributeMacroExpansionSourceLocation(macro, n.getLocation())
+        l = n.getLocation() and
+        not isAttributeMacroExpansionSourceLocation(macro, l)
       )
       or
       isFromMacroExpansion(pragma[only_bind_into](getImmediatelyEnclosingMacroInvocation(n)))

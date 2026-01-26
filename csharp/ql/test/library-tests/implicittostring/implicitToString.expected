@@ -1,3 +1,8 @@
+| implicitToString.cs:3:14:3:33 | call to method <object initializer> | TestImplicitToString |
+| implicitToString.cs:5:18:5:26 | call to method <object initializer> | Container |
+| implicitToString.cs:13:18:13:27 | call to method <object initializer> | Container2 |
+| implicitToString.cs:15:18:15:27 | call to method <object initializer> | Container3 |
+| implicitToString.cs:17:18:17:37 | call to method <object initializer> | FormattableContainer |
 | implicitToString.cs:35:27:35:35 | call to method ToString | Container |
 | implicitToString.cs:37:22:37:30 | call to method ToString | Container |
 | implicitToString.cs:39:22:39:30 | call to method ToString | Container |

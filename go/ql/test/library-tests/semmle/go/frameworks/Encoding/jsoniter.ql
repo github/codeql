@@ -1,5 +1,4 @@
 import go
-import semmle.go.dataflow.ExternalFlow
 import ModelValidation
 import semmle.go.security.CommandInjection
 import codeql.dataflow.test.ProvenancePathGraph
@@ -9,7 +8,7 @@ class UntrustedFunction extends Function {
   UntrustedFunction() { this.getName() = ["getUntrustedString", "getUntrustedBytes"] }
 }
 
-class RemoteSource extends DataFlow::Node, RemoteFlowSource::Range {
+class RemoteSource extends RemoteFlowSource::Range {
   RemoteSource() { this = any(UntrustedFunction f).getACall().getResult() }
 }
 

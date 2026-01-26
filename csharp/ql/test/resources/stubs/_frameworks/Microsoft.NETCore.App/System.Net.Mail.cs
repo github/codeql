@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Mail, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Net.Mail, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Net
@@ -316,6 +316,7 @@ namespace System
                     public const string Xml = default;
                     public const string XmlDtd = default;
                     public const string XmlPatch = default;
+                    public const string Yaml = default;
                     public const string Zip = default;
                 }
                 public static class Font

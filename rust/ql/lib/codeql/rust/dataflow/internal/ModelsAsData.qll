@@ -47,7 +47,6 @@ private import rust
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
 /**
  * Holds if in a call to the function with canonical path `path`, the value referred
@@ -112,23 +111,52 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
-private class SummarizedCallableFromModel extends SummarizedCallable::Range {
-  private string path;
+private predicate summaryModel(
+  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
+  QlBuiltins::ExtensionId madId
+) {
+  exists(string path, Function f0 |
+    summaryModel(path, input, output, kind, provenance, madId) and
+    f0.getCanonicalPath() = path
+  |
+    f = f0 and
+    isInherited = false
+    or
+    f.implements(f0) and
+    isInherited = true
+  )
+}
 
-  SummarizedCallableFromModel() {
-    summaryModel(path, _, _, _, _, _) and
-    this.getCanonicalPath() = path
-  }
+private predicate summaryModelRelevant(
+  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
+  QlBuiltins::ExtensionId madId
+) {
+  summaryModel(f, input, output, kind, provenance, isInherited, madId) and
+  // Only apply generated or inherited models to functions in library code and
+  // when no strictly better model exists
+  if provenance.isGenerated() or isInherited = true
+  then
+    not f.fromSource() and
+    not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
+      provenance.isGenerated() and other.isManual()
+      or
+      provenance = other and isInherited = true
+    )
+  else any()
+}
+
+private class SummarizedCallableFromModel extends SummarizedCallable::Range {
+  SummarizedCallableFromModel() { summaryModelRelevant(this, _, _, _, _, _, _) }
 
   override predicate hasProvenance(Provenance provenance) {
-    summaryModel(path, _, _, _, provenance, _)
+    summaryModelRelevant(this, _, _, _, provenance, _, _)
   }
 
   override predicate propagatesFlow(
     string input, string output, boolean preservesValue, string model
   ) {
     exists(string kind, QlBuiltins::ExtensionId madId |
-      summaryModel(path, input, output, kind, _, madId) and
+      summaryModelRelevant(this, input, output, kind, _, _, madId) and
       model = "MaD:" + madId.toString()
     |
       kind = "value" and
@@ -168,6 +196,59 @@ private class FlowSinkFromModel extends FlowSink::Range {
     exists(QlBuiltins::ExtensionId madId |
       sinkModel(path, input, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
+    )
+  }
+}
+
+private module Debug {
+  private import FlowSummaryImpl
+  private import Private
+  private import Content
+  private import codeql.rust.dataflow.internal.DataFlowImpl
+  private import codeql.rust.internal.typeinference.TypeMention
+  private import codeql.rust.internal.typeinference.Type
+
+  private predicate relevantManualModel(SummarizedCallableImpl sc, string can) {
+    exists(Provenance manual |
+      can = sc.getCanonicalPath() and
+      summaryModelRelevant(sc, _, _, _, manual, false, _) and
+      manual.isManual()
+    )
+  }
+
+  predicate manualModelMissingParameterReference(
+    SummarizedCallableImpl sc, string can, SummaryComponentStack input, ParamBase p
+  ) {
+    exists(RustDataFlow::ParameterPosition pos, TypeMention tm |
+      relevantManualModel(sc, can) and
+      sc.propagatesFlow(input, _, _, _) and
+      input.head() = SummaryComponent::argument(pos) and
+      p = pos.getParameterIn(sc.getParamList()) and
+      tm.resolveType() instanceof RefType and
+      not input.tail().head() = SummaryComponent::content(TSingletonContentSet(TReferenceContent()))
+    |
+      tm = p.getTypeRepr()
+      or
+      tm = getSelfParamTypeMention(p)
+    )
+  }
+
+  predicate manualModelMissingReturnReference(
+    SummarizedCallableImpl sc, string can, SummaryComponentStack output
+  ) {
+    exists(TypeMention tm |
+      relevantManualModel(sc, can) and
+      sc.propagatesFlow(_, output, _, _) and
+      tm.resolveType() instanceof RefType and
+      output.head() = SummaryComponent::return(_) and
+      not output.tail().head() =
+        SummaryComponent::content(TSingletonContentSet(TReferenceContent())) and
+      tm = getReturnTypeMention(sc) and
+      not can =
+        [
+          "<& as core::ops::deref::Deref>::deref",
+          "<&mut as core::ops::deref::Deref>::deref"
+        ]
     )
   }
 }

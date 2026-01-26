@@ -89,7 +89,6 @@
 import python
 private import LegacyPointsTo
 private import semmle.python.pointsto.Filters as Filters
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.dataflow.Implementation
 import semmle.python.dataflow.Configuration
 

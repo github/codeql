@@ -11,17 +11,17 @@ localStep
 | main.rs:7:9:7:9 | s | main.rs:7:9:7:9 | s |
 | main.rs:7:9:7:14 | ...: i64 | main.rs:7:9:7:9 | s |
 | main.rs:8:14:8:20 | FormatArgsExpr | main.rs:8:14:8:20 | MacroExpr |
-| main.rs:8:14:8:20 | MacroBlockExpr | main.rs:8:5:8:21 | MacroExpr |
 | main.rs:8:14:8:20 | [post] MacroExpr | main.rs:8:14:8:20 | [post] FormatArgsExpr |
-| main.rs:8:14:8:20 | { ... } | main.rs:8:14:8:20 | MacroBlockExpr |
+| main.rs:8:14:8:20 | { ... } | main.rs:8:5:8:21 | MacroExpr |
+| main.rs:8:14:8:20 | { ... } | main.rs:8:14:8:20 | { ... } |
 | main.rs:11:13:11:14 | [SSA] sr | main.rs:12:20:12:21 | sr |
 | main.rs:11:13:11:14 | sr | main.rs:11:13:11:14 | [SSA] sr |
 | main.rs:11:13:11:14 | sr | main.rs:11:13:11:14 | sr |
 | main.rs:11:13:11:20 | ...: ... | main.rs:11:13:11:14 | sr |
 | main.rs:12:14:12:21 | FormatArgsExpr | main.rs:12:14:12:21 | MacroExpr |
-| main.rs:12:14:12:21 | MacroBlockExpr | main.rs:12:5:12:22 | MacroExpr |
 | main.rs:12:14:12:21 | [post] MacroExpr | main.rs:12:14:12:21 | [post] FormatArgsExpr |
-| main.rs:12:14:12:21 | { ... } | main.rs:12:14:12:21 | MacroBlockExpr |
+| main.rs:12:14:12:21 | { ... } | main.rs:12:5:12:22 | MacroExpr |
+| main.rs:12:14:12:21 | { ... } | main.rs:12:14:12:21 | { ... } |
 | main.rs:23:9:23:9 | [SSA] s | main.rs:24:10:24:10 | s |
 | main.rs:23:9:23:9 | s | main.rs:23:9:23:9 | [SSA] s |
 | main.rs:23:9:23:9 | s | main.rs:23:9:23:9 | s |
@@ -156,8 +156,6 @@ localStep
 | main.rs:115:9:115:9 | i | main.rs:115:9:115:9 | [SSA] i |
 | main.rs:115:9:115:9 | i | main.rs:115:9:115:9 | i |
 | main.rs:115:13:115:31 | ...::new(...) | main.rs:115:9:115:9 | i |
-| main.rs:116:11:116:11 | [post] receiver for i | main.rs:116:11:116:11 | [post] i |
-| main.rs:116:11:116:11 | i | main.rs:116:11:116:11 | receiver for i |
 | main.rs:123:9:123:9 | [SSA] a | main.rs:124:10:124:10 | a |
 | main.rs:123:9:123:9 | a | main.rs:123:9:123:9 | [SSA] a |
 | main.rs:123:9:123:9 | a | main.rs:123:9:123:9 | a |
@@ -340,32 +338,22 @@ localStep
 | main.rs:278:9:278:10 | s1 | main.rs:278:9:278:10 | [SSA] s1 |
 | main.rs:278:9:278:10 | s1 | main.rs:278:9:278:10 | s1 |
 | main.rs:278:14:278:29 | Some(...) | main.rs:278:9:278:10 | s1 |
-| main.rs:279:10:279:11 | [post] receiver for s1 | main.rs:279:10:279:11 | [post] s1 |
-| main.rs:279:10:279:11 | s1 | main.rs:279:10:279:11 | receiver for s1 |
 | main.rs:283:9:283:10 | [SSA] s1 | main.rs:284:10:284:11 | s1 |
 | main.rs:283:9:283:10 | s1 | main.rs:283:9:283:10 | [SSA] s1 |
 | main.rs:283:9:283:10 | s1 | main.rs:283:9:283:10 | s1 |
 | main.rs:283:14:283:29 | Some(...) | main.rs:283:9:283:10 | s1 |
-| main.rs:284:10:284:11 | [post] receiver for s1 | main.rs:284:10:284:11 | [post] s1 |
-| main.rs:284:10:284:11 | s1 | main.rs:284:10:284:11 | receiver for s1 |
 | main.rs:286:9:286:10 | [SSA] s2 | main.rs:287:10:287:11 | s2 |
 | main.rs:286:9:286:10 | s2 | main.rs:286:9:286:10 | [SSA] s2 |
 | main.rs:286:9:286:10 | s2 | main.rs:286:9:286:10 | s2 |
 | main.rs:286:14:286:20 | Some(...) | main.rs:286:9:286:10 | s2 |
-| main.rs:287:10:287:11 | [post] receiver for s2 | main.rs:287:10:287:11 | [post] s2 |
-| main.rs:287:10:287:11 | s2 | main.rs:287:10:287:11 | receiver for s2 |
 | main.rs:291:9:291:10 | [SSA] s1 | main.rs:292:10:292:11 | s1 |
 | main.rs:291:9:291:10 | s1 | main.rs:291:9:291:10 | [SSA] s1 |
 | main.rs:291:9:291:10 | s1 | main.rs:291:9:291:10 | s1 |
 | main.rs:291:14:291:29 | Some(...) | main.rs:291:9:291:10 | s1 |
-| main.rs:292:10:292:11 | [post] receiver for s1 | main.rs:292:10:292:11 | [post] s1 |
-| main.rs:292:10:292:11 | s1 | main.rs:292:10:292:11 | receiver for s1 |
 | main.rs:294:9:294:10 | [SSA] s2 | main.rs:295:10:295:11 | s2 |
 | main.rs:294:9:294:10 | s2 | main.rs:294:9:294:10 | [SSA] s2 |
 | main.rs:294:9:294:10 | s2 | main.rs:294:9:294:10 | s2 |
 | main.rs:294:14:294:17 | None | main.rs:294:9:294:10 | s2 |
-| main.rs:295:10:295:11 | [post] receiver for s2 | main.rs:295:10:295:11 | [post] s2 |
-| main.rs:295:10:295:11 | s2 | main.rs:295:10:295:11 | receiver for s2 |
 | main.rs:299:9:299:10 | [SSA] s1 | main.rs:301:14:301:15 | s1 |
 | main.rs:299:9:299:10 | s1 | main.rs:299:9:299:10 | [SSA] s1 |
 | main.rs:299:9:299:10 | s1 | main.rs:299:9:299:10 | s1 |
@@ -387,20 +375,12 @@ localStep
 | main.rs:309:9:309:11 | o1a | main.rs:309:9:309:11 | [SSA] o1a |
 | main.rs:309:9:309:11 | o1a | main.rs:309:9:309:11 | o1a |
 | main.rs:309:28:309:29 | [post] r1 | main.rs:310:28:310:29 | r1 |
-| main.rs:309:28:309:29 | [post] receiver for r1 | main.rs:309:28:309:29 | [post] r1 |
-| main.rs:309:28:309:29 | r1 | main.rs:309:28:309:29 | receiver for r1 |
 | main.rs:309:28:309:29 | r1 | main.rs:310:28:310:29 | r1 |
 | main.rs:309:28:309:34 | r1.ok() | main.rs:309:9:309:11 | o1a |
 | main.rs:310:9:310:11 | [SSA] o1b | main.rs:312:10:312:12 | o1b |
 | main.rs:310:9:310:11 | o1b | main.rs:310:9:310:11 | [SSA] o1b |
 | main.rs:310:9:310:11 | o1b | main.rs:310:9:310:11 | o1b |
-| main.rs:310:28:310:29 | [post] receiver for r1 | main.rs:310:28:310:29 | [post] r1 |
-| main.rs:310:28:310:29 | r1 | main.rs:310:28:310:29 | receiver for r1 |
 | main.rs:310:28:310:35 | r1.err() | main.rs:310:9:310:11 | o1b |
-| main.rs:311:10:311:12 | [post] receiver for o1a | main.rs:311:10:311:12 | [post] o1a |
-| main.rs:311:10:311:12 | o1a | main.rs:311:10:311:12 | receiver for o1a |
-| main.rs:312:10:312:12 | [post] receiver for o1b | main.rs:312:10:312:12 | [post] o1b |
-| main.rs:312:10:312:12 | o1b | main.rs:312:10:312:12 | receiver for o1b |
 | main.rs:314:9:314:10 | [SSA] r2 | main.rs:315:28:315:29 | r2 |
 | main.rs:314:9:314:10 | r2 | main.rs:314:9:314:10 | [SSA] r2 |
 | main.rs:314:9:314:10 | r2 | main.rs:314:9:314:10 | r2 |
@@ -409,20 +389,12 @@ localStep
 | main.rs:315:9:315:11 | o2a | main.rs:315:9:315:11 | [SSA] o2a |
 | main.rs:315:9:315:11 | o2a | main.rs:315:9:315:11 | o2a |
 | main.rs:315:28:315:29 | [post] r2 | main.rs:316:28:316:29 | r2 |
-| main.rs:315:28:315:29 | [post] receiver for r2 | main.rs:315:28:315:29 | [post] r2 |
-| main.rs:315:28:315:29 | r2 | main.rs:315:28:315:29 | receiver for r2 |
 | main.rs:315:28:315:29 | r2 | main.rs:316:28:316:29 | r2 |
 | main.rs:315:28:315:34 | r2.ok() | main.rs:315:9:315:11 | o2a |
 | main.rs:316:9:316:11 | [SSA] o2b | main.rs:318:10:318:12 | o2b |
 | main.rs:316:9:316:11 | o2b | main.rs:316:9:316:11 | [SSA] o2b |
 | main.rs:316:9:316:11 | o2b | main.rs:316:9:316:11 | o2b |
-| main.rs:316:28:316:29 | [post] receiver for r2 | main.rs:316:28:316:29 | [post] r2 |
-| main.rs:316:28:316:29 | r2 | main.rs:316:28:316:29 | receiver for r2 |
 | main.rs:316:28:316:35 | r2.err() | main.rs:316:9:316:11 | o2b |
-| main.rs:317:10:317:12 | [post] receiver for o2a | main.rs:317:10:317:12 | [post] o2a |
-| main.rs:317:10:317:12 | o2a | main.rs:317:10:317:12 | receiver for o2a |
-| main.rs:318:10:318:12 | [post] receiver for o2b | main.rs:318:10:318:12 | [post] o2b |
-| main.rs:318:10:318:12 | o2b | main.rs:318:10:318:12 | receiver for o2b |
 | main.rs:322:9:322:10 | [SSA] s1 | main.rs:325:14:325:15 | s1 |
 | main.rs:322:9:322:10 | s1 | main.rs:322:9:322:10 | [SSA] s1 |
 | main.rs:322:9:322:10 | s1 | main.rs:322:9:322:10 | s1 |
@@ -452,22 +424,14 @@ localStep
 | main.rs:335:9:335:10 | s1 | main.rs:335:9:335:10 | [SSA] s1 |
 | main.rs:335:9:335:10 | s1 | main.rs:335:9:335:10 | s1 |
 | main.rs:335:32:335:45 | Ok(...) | main.rs:335:9:335:10 | s1 |
-| main.rs:336:10:336:11 | [post] receiver for s1 | main.rs:336:10:336:11 | [post] s1 |
 | main.rs:336:10:336:11 | [post] s1 | main.rs:337:10:337:11 | s1 |
-| main.rs:336:10:336:11 | s1 | main.rs:336:10:336:11 | receiver for s1 |
 | main.rs:336:10:336:11 | s1 | main.rs:337:10:337:11 | s1 |
-| main.rs:337:10:337:11 | [post] receiver for s1 | main.rs:337:10:337:11 | [post] s1 |
-| main.rs:337:10:337:11 | s1 | main.rs:337:10:337:11 | receiver for s1 |
 | main.rs:339:9:339:10 | [SSA] s2 | main.rs:340:10:340:11 | s2 |
 | main.rs:339:9:339:10 | s2 | main.rs:339:9:339:10 | [SSA] s2 |
 | main.rs:339:9:339:10 | s2 | main.rs:339:9:339:10 | s2 |
 | main.rs:339:32:339:46 | Err(...) | main.rs:339:9:339:10 | s2 |
-| main.rs:340:10:340:11 | [post] receiver for s2 | main.rs:340:10:340:11 | [post] s2 |
 | main.rs:340:10:340:11 | [post] s2 | main.rs:341:10:341:11 | s2 |
-| main.rs:340:10:340:11 | s2 | main.rs:340:10:340:11 | receiver for s2 |
 | main.rs:340:10:340:11 | s2 | main.rs:341:10:341:11 | s2 |
-| main.rs:341:10:341:11 | [post] receiver for s2 | main.rs:341:10:341:11 | [post] s2 |
-| main.rs:341:10:341:11 | s2 | main.rs:341:10:341:11 | receiver for s2 |
 | main.rs:350:9:350:10 | [SSA] s1 | main.rs:352:11:352:12 | s1 |
 | main.rs:350:9:350:10 | s1 | main.rs:350:9:350:10 | [SSA] s1 |
 | main.rs:350:9:350:10 | s1 | main.rs:350:9:350:10 | s1 |
@@ -704,8 +668,6 @@ localStep
 | main.rs:478:39:478:72 | ...: Vec::<...> | main.rs:478:39:478:43 | names |
 | main.rs:479:9:479:20 | default_name | main.rs:479:9:479:20 | [SSA] default_name |
 | main.rs:479:9:479:20 | default_name | main.rs:479:9:479:20 | default_name |
-| main.rs:479:24:479:33 | [post] receiver for source(...) | main.rs:479:24:479:33 | [post] source(...) |
-| main.rs:479:24:479:33 | source(...) | main.rs:479:24:479:33 | receiver for source(...) |
 | main.rs:479:24:479:45 | ... .to_string() | main.rs:479:9:479:20 | default_name |
 | main.rs:479:24:479:45 | ... .to_string() | main.rs:480:9:480:20 | SSA phi read(default_name) |
 | main.rs:480:5:486:5 | for ... in ... { ... } | main.rs:478:75:487:1 | { ... } |
@@ -721,16 +683,10 @@ localStep
 | main.rs:482:17:482:17 | [SSA] n | main.rs:483:18:483:18 | n |
 | main.rs:482:17:482:17 | n | main.rs:482:17:482:17 | [SSA] n |
 | main.rs:482:17:482:17 | n | main.rs:482:17:482:17 | n |
-| main.rs:482:21:482:24 | [post] receiver for name | main.rs:482:21:482:24 | [post] name |
-| main.rs:482:21:482:24 | name | main.rs:482:21:482:24 | receiver for name |
 | main.rs:482:21:482:68 | name.unwrap_or_else(...) | main.rs:482:17:482:17 | n |
 | main.rs:482:41:482:67 | [post] default_name | main.rs:480:9:480:20 | SSA phi read(default_name) |
 | main.rs:482:41:482:67 | closure self in \|...\| ... | main.rs:482:44:482:55 | this |
 | main.rs:482:41:482:67 | default_name | main.rs:480:9:480:20 | SSA phi read(default_name) |
-| main.rs:482:44:482:55 | [post] receiver for default_name | main.rs:482:44:482:55 | [post] default_name |
-| main.rs:482:44:482:55 | default_name | main.rs:482:44:482:55 | receiver for default_name |
-| main.rs:483:18:483:18 | [post] receiver for n | main.rs:483:18:483:18 | [post] n |
-| main.rs:483:18:483:18 | n | main.rs:483:18:483:18 | receiver for n |
 | main.rs:496:9:496:9 | [SSA] s | main.rs:497:10:497:10 | s |
 | main.rs:496:9:496:9 | s | main.rs:496:9:496:9 | [SSA] s |
 | main.rs:496:9:496:9 | s | main.rs:496:9:496:9 | s |
@@ -741,9 +697,9 @@ localStep
 | main.rs:500:16:500:16 | s | main.rs:500:16:500:16 | s |
 | main.rs:500:16:500:24 | ...: String | main.rs:500:16:500:16 | s |
 | main.rs:501:14:501:20 | FormatArgsExpr | main.rs:501:14:501:20 | MacroExpr |
-| main.rs:501:14:501:20 | MacroBlockExpr | main.rs:501:5:501:21 | MacroExpr |
 | main.rs:501:14:501:20 | [post] MacroExpr | main.rs:501:14:501:20 | [post] FormatArgsExpr |
-| main.rs:501:14:501:20 | { ... } | main.rs:501:14:501:20 | MacroBlockExpr |
+| main.rs:501:14:501:20 | { ... } | main.rs:501:5:501:21 | MacroExpr |
+| main.rs:501:14:501:20 | { ... } | main.rs:501:14:501:20 | { ... } |
 | main.rs:505:9:505:9 | [SSA] a | main.rs:506:13:506:13 | a |
 | main.rs:505:9:505:9 | a | main.rs:505:9:505:9 | [SSA] a |
 | main.rs:505:9:505:9 | a | main.rs:505:9:505:9 | a |
@@ -752,29 +708,19 @@ localStep
 | main.rs:506:9:506:9 | b | main.rs:506:9:506:9 | [SSA] b |
 | main.rs:506:9:506:9 | b | main.rs:506:9:506:9 | b |
 | main.rs:506:13:506:13 | [post] a | main.rs:510:10:510:10 | a |
-| main.rs:506:13:506:13 | [post] receiver for a | main.rs:506:13:506:13 | [post] a |
-| main.rs:506:13:506:13 | a | main.rs:506:13:506:13 | receiver for a |
 | main.rs:506:13:506:13 | a | main.rs:510:10:510:10 | a |
 | main.rs:506:13:506:25 | a.to_string() | main.rs:506:9:506:9 | b |
 | main.rs:507:9:507:9 | [SSA] c | main.rs:512:10:512:10 | c |
 | main.rs:507:9:507:9 | c | main.rs:507:9:507:9 | [SSA] c |
 | main.rs:507:9:507:9 | c | main.rs:507:9:507:9 | c |
 | main.rs:507:13:507:13 | [post] b | main.rs:508:18:508:18 | b |
-| main.rs:507:13:507:13 | [post] receiver for b | main.rs:507:13:507:13 | [post] b |
-| main.rs:507:13:507:13 | b | main.rs:507:13:507:13 | receiver for b |
 | main.rs:507:13:507:13 | b | main.rs:508:18:508:18 | b |
-| main.rs:507:13:507:28 | [post] receiver for b.parse() | main.rs:507:13:507:28 | [post] b.parse() |
-| main.rs:507:13:507:28 | b.parse() | main.rs:507:13:507:28 | receiver for b.parse() |
 | main.rs:507:13:507:37 | ... .unwrap() | main.rs:507:9:507:9 | c |
 | main.rs:508:9:508:9 | [SSA] d | main.rs:513:10:513:10 | d |
 | main.rs:508:9:508:9 | d | main.rs:508:9:508:9 | [SSA] d |
 | main.rs:508:9:508:9 | d | main.rs:508:9:508:9 | d |
 | main.rs:508:18:508:18 | [post] b | main.rs:511:17:511:17 | b |
-| main.rs:508:18:508:18 | [post] receiver for b | main.rs:508:18:508:18 | [post] b |
-| main.rs:508:18:508:18 | b | main.rs:508:18:508:18 | receiver for b |
 | main.rs:508:18:508:18 | b | main.rs:511:17:511:17 | b |
-| main.rs:508:18:508:26 | [post] receiver for b.parse() | main.rs:508:18:508:26 | [post] b.parse() |
-| main.rs:508:18:508:26 | b.parse() | main.rs:508:18:508:26 | receiver for b.parse() |
 | main.rs:508:18:508:35 | ... .unwrap() | main.rs:508:9:508:9 | d |
 | main.rs:517:9:517:10 | [SSA] vs | main.rs:519:10:519:11 | vs |
 | main.rs:517:9:517:10 | vs | main.rs:517:9:517:10 | [SSA] vs |
@@ -782,26 +728,10 @@ localStep
 | main.rs:517:14:517:34 | [...] | main.rs:517:9:517:10 | vs |
 | main.rs:519:10:519:11 | [post] vs | main.rs:520:11:520:12 | vs |
 | main.rs:519:10:519:11 | vs | main.rs:520:11:520:12 | vs |
-| main.rs:520:11:520:12 | [post] receiver for vs | main.rs:520:11:520:12 | [post] vs |
 | main.rs:520:11:520:12 | [post] vs | main.rs:521:11:521:12 | vs |
-| main.rs:520:11:520:12 | vs | main.rs:520:11:520:12 | receiver for vs |
 | main.rs:520:11:520:12 | vs | main.rs:521:11:521:12 | vs |
-| main.rs:520:11:520:19 | [post] receiver for vs.iter() | main.rs:520:11:520:19 | [post] vs.iter() |
-| main.rs:520:11:520:19 | vs.iter() | main.rs:520:11:520:19 | receiver for vs.iter() |
-| main.rs:520:11:520:26 | ... .next() | main.rs:520:11:520:26 | receiver for ... .next() |
-| main.rs:520:11:520:26 | [post] receiver for ... .next() | main.rs:520:11:520:26 | [post] ... .next() |
-| main.rs:520:11:520:35 | ... .unwrap() | main.rs:520:11:520:35 | receiver for ... .unwrap() |
-| main.rs:520:11:520:35 | [post] receiver for ... .unwrap() | main.rs:520:11:520:35 | [post] ... .unwrap() |
-| main.rs:521:11:521:12 | [post] receiver for vs | main.rs:521:11:521:12 | [post] vs |
 | main.rs:521:11:521:12 | [post] vs | main.rs:523:14:523:15 | vs |
-| main.rs:521:11:521:12 | vs | main.rs:521:11:521:12 | receiver for vs |
 | main.rs:521:11:521:12 | vs | main.rs:523:14:523:15 | vs |
-| main.rs:521:11:521:19 | [post] receiver for vs.iter() | main.rs:521:11:521:19 | [post] vs.iter() |
-| main.rs:521:11:521:19 | vs.iter() | main.rs:521:11:521:19 | receiver for vs.iter() |
-| main.rs:521:11:521:26 | ... .nth(...) | main.rs:521:11:521:26 | receiver for ... .nth(...) |
-| main.rs:521:11:521:26 | [post] receiver for ... .nth(...) | main.rs:521:11:521:26 | [post] ... .nth(...) |
-| main.rs:521:11:521:35 | ... .unwrap() | main.rs:521:11:521:35 | receiver for ... .unwrap() |
-| main.rs:521:11:521:35 | [post] receiver for ... .unwrap() | main.rs:521:11:521:35 | [post] ... .unwrap() |
 | main.rs:523:9:523:9 | [SSA] v | main.rs:524:14:524:14 | v |
 | main.rs:523:9:523:9 | v | main.rs:523:9:523:9 | [SSA] v |
 | main.rs:523:9:523:9 | v | main.rs:523:9:523:9 | v |
@@ -809,52 +739,32 @@ localStep
 | main.rs:526:10:526:10 | [SSA] v | main.rs:527:14:527:14 | v |
 | main.rs:526:10:526:10 | v | main.rs:526:10:526:10 | [SSA] v |
 | main.rs:526:10:526:10 | v | main.rs:526:10:526:10 | v |
-| main.rs:526:15:526:16 | [post] receiver for vs | main.rs:526:15:526:16 | [post] vs |
 | main.rs:526:15:526:16 | [post] vs | main.rs:530:26:530:27 | vs |
-| main.rs:526:15:526:16 | vs | main.rs:526:15:526:16 | receiver for vs |
 | main.rs:526:15:526:16 | vs | main.rs:530:26:530:27 | vs |
 | main.rs:530:9:530:11 | [SSA] vs2 | main.rs:531:15:531:17 | vs2 |
 | main.rs:530:9:530:11 | vs2 | main.rs:530:9:530:11 | [SSA] vs2 |
 | main.rs:530:9:530:11 | vs2 | main.rs:530:9:530:11 | vs2 |
-| main.rs:530:26:530:27 | [post] receiver for vs | main.rs:530:26:530:27 | [post] vs |
 | main.rs:530:26:530:27 | [post] vs | main.rs:535:5:535:6 | vs |
-| main.rs:530:26:530:27 | vs | main.rs:530:26:530:27 | receiver for vs |
 | main.rs:530:26:530:27 | vs | main.rs:535:5:535:6 | vs |
-| main.rs:530:26:530:34 | [post] receiver for vs.iter() | main.rs:530:26:530:34 | [post] vs.iter() |
-| main.rs:530:26:530:34 | vs.iter() | main.rs:530:26:530:34 | receiver for vs.iter() |
 | main.rs:530:26:530:44 | ... .collect() | main.rs:530:9:530:11 | vs2 |
 | main.rs:531:10:531:10 | [SSA] v | main.rs:532:14:532:14 | v |
 | main.rs:531:10:531:10 | v | main.rs:531:10:531:10 | [SSA] v |
 | main.rs:531:10:531:10 | v | main.rs:531:10:531:10 | v |
-| main.rs:535:5:535:6 | [post] receiver for vs | main.rs:535:5:535:6 | [post] vs |
 | main.rs:535:5:535:6 | [post] vs | main.rs:536:5:536:6 | vs |
-| main.rs:535:5:535:6 | vs | main.rs:535:5:535:6 | receiver for vs |
 | main.rs:535:5:535:6 | vs | main.rs:536:5:536:6 | vs |
-| main.rs:535:5:535:13 | [post] receiver for vs.iter() | main.rs:535:5:535:13 | [post] vs.iter() |
-| main.rs:535:5:535:13 | vs.iter() | main.rs:535:5:535:13 | receiver for vs.iter() |
 | main.rs:535:20:535:20 | ... | main.rs:535:20:535:20 | x |
 | main.rs:535:20:535:20 | [SSA] x | main.rs:535:29:535:29 | x |
 | main.rs:535:20:535:20 | x | main.rs:535:20:535:20 | [SSA] x |
 | main.rs:535:20:535:20 | x | main.rs:535:20:535:20 | x |
-| main.rs:535:29:535:29 | [post] receiver for x | main.rs:535:29:535:29 | [post] x |
-| main.rs:535:29:535:29 | x | main.rs:535:29:535:29 | receiver for x |
-| main.rs:536:5:536:6 | [post] receiver for vs | main.rs:536:5:536:6 | [post] vs |
 | main.rs:536:5:536:6 | [post] vs | main.rs:538:14:538:15 | vs |
-| main.rs:536:5:536:6 | vs | main.rs:536:5:536:6 | receiver for vs |
 | main.rs:536:5:536:6 | vs | main.rs:538:14:538:15 | vs |
-| main.rs:536:5:536:13 | [post] receiver for vs.iter() | main.rs:536:5:536:13 | [post] vs.iter() |
-| main.rs:536:5:536:13 | vs.iter() | main.rs:536:5:536:13 | receiver for vs.iter() |
 | main.rs:536:25:536:25 | ... | main.rs:536:25:536:25 | x |
 | main.rs:536:25:536:25 | [SSA] x | main.rs:536:34:536:34 | x |
 | main.rs:536:25:536:25 | x | main.rs:536:25:536:25 | [SSA] x |
 | main.rs:536:25:536:25 | x | main.rs:536:25:536:25 | x |
-| main.rs:536:34:536:34 | [post] receiver for x | main.rs:536:34:536:34 | [post] x |
-| main.rs:536:34:536:34 | x | main.rs:536:34:536:34 | receiver for x |
 | main.rs:538:9:538:9 | [SSA] v | main.rs:539:14:539:14 | v |
 | main.rs:538:9:538:9 | v | main.rs:538:9:538:9 | [SSA] v |
 | main.rs:538:9:538:9 | v | main.rs:538:9:538:9 | v |
-| main.rs:538:14:538:15 | [post] receiver for vs | main.rs:538:14:538:15 | [post] vs |
-| main.rs:538:14:538:15 | vs | main.rs:538:14:538:15 | receiver for vs |
 | main.rs:542:9:542:18 | mut vs_mut | main.rs:542:13:542:18 | vs_mut |
 | main.rs:542:13:542:18 | [SSA] vs_mut | main.rs:544:10:544:15 | vs_mut |
 | main.rs:542:13:542:18 | vs_mut | main.rs:542:13:542:18 | [SSA] vs_mut |
@@ -865,35 +775,17 @@ localStep
 | main.rs:544:10:544:15 | vs_mut | main.rs:545:11:545:16 | vs_mut |
 | main.rs:545:11:545:16 | [SSA] vs_mut | main.rs:546:11:546:16 | [SSA] vs_mut |
 | main.rs:545:11:545:16 | [SSA] vs_mut | main.rs:546:11:546:16 | vs_mut |
-| main.rs:545:11:545:16 | [post] receiver for vs_mut | main.rs:545:11:545:16 | [post] vs_mut |
 | main.rs:545:11:545:16 | [post] vs_mut | main.rs:546:11:546:16 | [SSA] vs_mut |
 | main.rs:545:11:545:16 | [post] vs_mut | main.rs:546:11:546:16 | vs_mut |
-| main.rs:545:11:545:16 | vs_mut | main.rs:545:11:545:16 | receiver for vs_mut |
 | main.rs:545:11:545:16 | vs_mut | main.rs:546:11:546:16 | [SSA] vs_mut |
 | main.rs:545:11:545:16 | vs_mut | main.rs:546:11:546:16 | vs_mut |
-| main.rs:545:11:545:23 | [post] receiver for vs_mut.iter() | main.rs:545:11:545:23 | [post] vs_mut.iter() |
-| main.rs:545:11:545:23 | vs_mut.iter() | main.rs:545:11:545:23 | receiver for vs_mut.iter() |
-| main.rs:545:11:545:30 | ... .next() | main.rs:545:11:545:30 | receiver for ... .next() |
-| main.rs:545:11:545:30 | [post] receiver for ... .next() | main.rs:545:11:545:30 | [post] ... .next() |
-| main.rs:545:11:545:39 | ... .unwrap() | main.rs:545:11:545:39 | receiver for ... .unwrap() |
-| main.rs:545:11:545:39 | [post] receiver for ... .unwrap() | main.rs:545:11:545:39 | [post] ... .unwrap() |
 | main.rs:546:11:546:16 | [SSA] vs_mut | main.rs:548:19:548:24 | vs_mut |
-| main.rs:546:11:546:16 | [post] receiver for vs_mut | main.rs:546:11:546:16 | [post] vs_mut |
 | main.rs:546:11:546:16 | [post] vs_mut | main.rs:548:19:548:24 | vs_mut |
-| main.rs:546:11:546:16 | vs_mut | main.rs:546:11:546:16 | receiver for vs_mut |
 | main.rs:546:11:546:16 | vs_mut | main.rs:548:19:548:24 | vs_mut |
-| main.rs:546:11:546:23 | [post] receiver for vs_mut.iter() | main.rs:546:11:546:23 | [post] vs_mut.iter() |
-| main.rs:546:11:546:23 | vs_mut.iter() | main.rs:546:11:546:23 | receiver for vs_mut.iter() |
-| main.rs:546:11:546:30 | ... .nth(...) | main.rs:546:11:546:30 | receiver for ... .nth(...) |
-| main.rs:546:11:546:30 | [post] receiver for ... .nth(...) | main.rs:546:11:546:30 | [post] ... .nth(...) |
-| main.rs:546:11:546:39 | ... .unwrap() | main.rs:546:11:546:39 | receiver for ... .unwrap() |
-| main.rs:546:11:546:39 | [post] receiver for ... .unwrap() | main.rs:546:11:546:39 | [post] ... .unwrap() |
 | main.rs:548:5:550:5 | for ... in ... { ... } | main.rs:516:16:551:1 | { ... } |
 | main.rs:548:14:548:14 | [SSA] v | main.rs:549:14:549:14 | v |
 | main.rs:548:14:548:14 | v | main.rs:548:14:548:14 | [SSA] v |
 | main.rs:548:14:548:14 | v | main.rs:548:14:548:14 | v |
-| main.rs:548:19:548:24 | [post] receiver for vs_mut | main.rs:548:19:548:24 | [post] vs_mut |
-| main.rs:548:19:548:24 | vs_mut | main.rs:548:19:548:24 | receiver for vs_mut |
 | main.rs:554:9:554:9 | [SSA] a | main.rs:559:10:559:10 | a |
 | main.rs:554:9:554:9 | a | main.rs:554:9:554:9 | [SSA] a |
 | main.rs:554:9:554:9 | a | main.rs:554:9:554:9 | a |
@@ -912,8 +804,6 @@ localStep
 | main.rs:557:17:557:18 | &c | main.rs:557:9:557:13 | c_ref |
 | main.rs:561:14:561:18 | [post] c_ref | main.rs:562:11:562:15 | c_ref |
 | main.rs:561:14:561:18 | c_ref | main.rs:562:11:562:15 | c_ref |
-| main.rs:562:11:562:15 | [post] receiver for c_ref | main.rs:562:11:562:15 | [post] c_ref |
-| main.rs:562:11:562:15 | c_ref | main.rs:562:11:562:15 | receiver for c_ref |
 | main.rs:566:9:566:9 | [SSA] a | main.rs:568:10:568:10 | a |
 | main.rs:566:9:566:9 | a | main.rs:566:9:566:9 | [SSA] a |
 | main.rs:566:9:566:9 | a | main.rs:566:9:566:9 | a |
@@ -921,8 +811,6 @@ localStep
 | main.rs:568:10:568:10 | [post] a | main.rs:569:10:569:10 | a |
 | main.rs:568:10:568:10 | a | main.rs:569:10:569:10 | a |
 | main.rs:569:10:569:10 | [post] a | main.rs:570:20:570:20 | a |
-| main.rs:569:10:569:10 | [post] receiver for a | main.rs:569:10:569:10 | [post] a |
-| main.rs:569:10:569:10 | a | main.rs:569:10:569:10 | receiver for a |
 | main.rs:569:10:569:10 | a | main.rs:570:20:570:20 | a |
 | main.rs:572:9:572:9 | [SSA] b | main.rs:574:10:574:10 | b |
 | main.rs:572:9:572:9 | b | main.rs:572:9:572:9 | [SSA] b |
@@ -931,16 +819,14 @@ localStep
 | main.rs:574:10:574:10 | [post] b | main.rs:575:10:575:10 | b |
 | main.rs:574:10:574:10 | b | main.rs:575:10:575:10 | b |
 | main.rs:575:10:575:10 | [post] b | main.rs:576:20:576:20 | b |
-| main.rs:575:10:575:10 | [post] receiver for b | main.rs:575:10:575:10 | [post] b |
-| main.rs:575:10:575:10 | b | main.rs:575:10:575:10 | receiver for b |
 | main.rs:575:10:575:10 | b | main.rs:576:20:576:20 | b |
 | main.rs:604:13:604:33 | result_questionmark(...) | main.rs:604:9:604:9 | _ |
 | main.rs:616:36:616:39 | ...::new(...) | main.rs:616:36:616:41 | MacroExpr |
 | main.rs:616:36:616:41 | [post] MacroExpr | main.rs:616:36:616:39 | [post] ...::new(...) |
 readStep
 | main.rs:50:9:50:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:50:14:50:14 | _ |
-| main.rs:116:11:116:11 | [post] receiver for i | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | [post] i |
-| main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:10:116:11 | * ... |
+| main.rs:116:10:116:11 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:116:10:116:11 | * ... |
+| main.rs:116:11:116:11 | [post] i [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | [post] i |
 | main.rs:124:10:124:10 | a | file://:0:0:0:0 | tuple.0 | main.rs:124:10:124:12 | a.0 |
 | main.rs:125:10:125:10 | a | file://:0:0:0:0 | tuple.1 | main.rs:125:10:125:12 | a.1 |
 | main.rs:130:9:130:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:130:10:130:11 | a0 |
@@ -973,9 +859,7 @@ readStep
 | main.rs:210:9:213:9 | Point3D {...} | main.rs:187:5:187:10 | Point3D.z | main.rs:212:13:212:13 | z |
 | main.rs:211:20:211:33 | Point {...} | main.rs:158:5:158:10 | Point.x | main.rs:211:28:211:28 | x |
 | main.rs:211:20:211:33 | Point {...} | main.rs:159:5:159:10 | Point.y | main.rs:211:31:211:31 | y |
-| main.rs:225:10:225:10 | s | file://:0:0:0:0 | tuple.0 | main.rs:225:10:225:12 | s.0 |
 | main.rs:225:10:225:10 | s | main.rs:221:22:221:24 | MyTupleStruct(0) | main.rs:225:10:225:12 | s.0 |
-| main.rs:226:10:226:10 | s | file://:0:0:0:0 | tuple.1 | main.rs:226:10:226:12 | s.1 |
 | main.rs:226:10:226:10 | s | main.rs:221:27:221:29 | MyTupleStruct(1) | main.rs:226:10:226:12 | s.1 |
 | main.rs:229:9:229:27 | MyTupleStruct(...) | main.rs:221:22:221:24 | MyTupleStruct(0) | main.rs:229:23:229:23 | x |
 | main.rs:229:9:229:27 | MyTupleStruct(...) | main.rs:221:27:221:29 | MyTupleStruct(1) | main.rs:229:26:229:26 | y |
@@ -1018,53 +902,71 @@ readStep
 | main.rs:418:28:418:43 | D {...} | main.rs:385:9:385:20 | D | main.rs:418:41:418:41 | n |
 | main.rs:421:9:421:24 | C {...} | main.rs:384:9:384:20 | C | main.rs:421:22:421:22 | n |
 | main.rs:422:9:422:24 | D {...} | main.rs:385:9:385:20 | D | main.rs:422:22:422:22 | n |
-| main.rs:431:14:431:17 | arr1 | file://:0:0:0:0 | element | main.rs:431:14:431:20 | arr1[2] |
-| main.rs:435:14:435:17 | arr2 | file://:0:0:0:0 | element | main.rs:435:14:435:20 | arr2[4] |
-| main.rs:439:14:439:17 | arr3 | file://:0:0:0:0 | element | main.rs:439:14:439:20 | arr3[2] |
+| main.rs:431:14:431:17 | [post] arr1 [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | [post] arr1 |
+| main.rs:431:14:431:20 | arr1[2] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:431:14:431:20 | arr1[2] |
+| main.rs:435:14:435:17 | [post] arr2 [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | [post] arr2 |
+| main.rs:435:14:435:20 | arr2[4] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:435:14:435:20 | arr2[4] |
+| main.rs:439:14:439:17 | [post] arr3 [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | [post] arr3 |
+| main.rs:439:14:439:20 | arr3[2] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:439:14:439:20 | arr3[2] |
 | main.rs:445:15:445:18 | arr1 | file://:0:0:0:0 | element | main.rs:445:9:445:10 | n1 |
 | main.rs:450:15:450:18 | arr2 | file://:0:0:0:0 | element | main.rs:450:9:450:10 | n2 |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:10:458:10 | a |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:13:458:13 | b |
 | main.rs:458:9:458:17 | SlicePat | file://:0:0:0:0 | element | main.rs:458:16:458:16 | c |
-| main.rs:468:10:468:16 | mut_arr | file://:0:0:0:0 | element | main.rs:468:10:468:19 | mut_arr[1] |
-| main.rs:470:5:470:11 | mut_arr | file://:0:0:0:0 | element | main.rs:470:5:470:14 | mut_arr[1] |
-| main.rs:471:13:471:19 | mut_arr | file://:0:0:0:0 | element | main.rs:471:13:471:22 | mut_arr[1] |
-| main.rs:473:10:473:16 | mut_arr | file://:0:0:0:0 | element | main.rs:473:10:473:19 | mut_arr[0] |
-| main.rs:479:24:479:33 | [post] receiver for source(...) | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | [post] source(...) |
+| main.rs:468:10:468:16 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | [post] mut_arr |
+| main.rs:468:10:468:19 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:468:10:468:19 | mut_arr[1] |
+| main.rs:470:5:470:11 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | [post] mut_arr |
+| main.rs:470:5:470:14 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:470:5:470:14 | mut_arr[1] |
+| main.rs:471:13:471:19 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | [post] mut_arr |
+| main.rs:471:13:471:22 | mut_arr[1] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:471:13:471:22 | mut_arr[1] |
+| main.rs:473:10:473:16 | [post] mut_arr [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | [post] mut_arr |
+| main.rs:473:10:473:19 | mut_arr[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:473:10:473:19 | mut_arr[0] |
+| main.rs:479:24:479:33 | [post] source(...) [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | [post] source(...) |
 | main.rs:480:9:480:20 | TuplePat | file://:0:0:0:0 | tuple.0 | main.rs:480:10:480:13 | cond |
 | main.rs:480:9:480:20 | TuplePat | file://:0:0:0:0 | tuple.1 | main.rs:480:16:480:19 | name |
 | main.rs:480:25:480:29 | names | file://:0:0:0:0 | element | main.rs:480:9:480:20 | TuplePat |
 | main.rs:482:41:482:67 | [post] \|...\| ... | main.rs:479:9:479:20 | captured default_name | main.rs:482:41:482:67 | [post] default_name |
-| main.rs:482:44:482:55 | [post] receiver for default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name |
+| main.rs:482:44:482:55 | [post] default_name [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name |
+| main.rs:482:44:482:55 | [post] default_name [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name [implicit deref 0 in state after deref] |
+| main.rs:482:44:482:55 | [post] default_name [implicit deref 0 in state after borrow] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | [post] default_name |
+| main.rs:482:44:482:55 | default_name [implicit deref 0 in state before deref] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit deref 0 in state after deref] |
 | main.rs:482:44:482:55 | this | main.rs:479:9:479:20 | captured default_name | main.rs:482:44:482:55 | default_name |
-| main.rs:483:18:483:18 | [post] receiver for n | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | [post] n |
-| main.rs:506:13:506:13 | [post] receiver for a | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | [post] a |
-| main.rs:519:10:519:11 | vs | file://:0:0:0:0 | element | main.rs:519:10:519:14 | vs[0] |
-| main.rs:520:11:520:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:10:520:35 | * ... |
-| main.rs:520:11:520:35 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | [post] ... .unwrap() |
-| main.rs:521:11:521:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:10:521:35 | * ... |
-| main.rs:521:11:521:35 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | [post] ... .unwrap() |
+| main.rs:483:18:483:18 | [post] n [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | [post] n |
+| main.rs:506:13:506:13 | [post] a [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | [post] a |
+| main.rs:507:13:507:13 | [post] b [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | [post] b [implicit deref 0 in state after deref] |
+| main.rs:507:13:507:13 | [post] b [implicit deref 0 in state after borrow] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | [post] b |
+| main.rs:507:13:507:13 | b [implicit deref 0 in state before deref] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | b [implicit deref 0 in state after deref] |
+| main.rs:508:18:508:18 | [post] b [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | [post] b [implicit deref 0 in state after deref] |
+| main.rs:508:18:508:18 | [post] b [implicit deref 0 in state after borrow] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | [post] b |
+| main.rs:508:18:508:18 | b [implicit deref 0 in state before deref] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | b [implicit deref 0 in state after deref] |
+| main.rs:519:10:519:11 | [post] vs [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | [post] vs |
+| main.rs:519:10:519:14 | vs[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:519:10:519:14 | vs[0] |
+| main.rs:520:10:520:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:520:10:520:35 | * ... |
+| main.rs:520:11:520:35 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | [post] ... .unwrap() |
+| main.rs:521:10:521:35 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:521:10:521:35 | * ... |
+| main.rs:521:11:521:35 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | [post] ... .unwrap() |
 | main.rs:523:14:523:15 | vs | file://:0:0:0:0 | element | main.rs:523:9:523:9 | v |
 | main.rs:526:9:526:10 | &... | file://:0:0:0:0 | &ref | main.rs:526:10:526:10 | v |
 | main.rs:526:15:526:23 | vs.iter() | file://:0:0:0:0 | element | main.rs:526:9:526:10 | &... |
 | main.rs:531:9:531:10 | &... | file://:0:0:0:0 | &ref | main.rs:531:10:531:10 | v |
 | main.rs:531:15:531:17 | vs2 | file://:0:0:0:0 | element | main.rs:531:9:531:10 | &... |
-| main.rs:535:29:535:29 | [post] receiver for x | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | [post] x |
-| main.rs:535:29:535:29 | x | file://:0:0:0:0 | &ref | main.rs:535:28:535:29 | * ... |
-| main.rs:536:34:536:34 | [post] receiver for x | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | [post] x |
-| main.rs:536:34:536:34 | x | file://:0:0:0:0 | &ref | main.rs:536:33:536:34 | * ... |
+| main.rs:535:28:535:29 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:535:28:535:29 | * ... |
+| main.rs:535:29:535:29 | [post] x [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | [post] x |
+| main.rs:536:33:536:34 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:536:33:536:34 | * ... |
+| main.rs:536:34:536:34 | [post] x [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | [post] x |
 | main.rs:538:14:538:27 | vs.into_iter() | file://:0:0:0:0 | element | main.rs:538:9:538:9 | v |
-| main.rs:544:10:544:15 | vs_mut | file://:0:0:0:0 | element | main.rs:544:10:544:18 | vs_mut[0] |
-| main.rs:545:11:545:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:10:545:39 | * ... |
-| main.rs:545:11:545:39 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | [post] ... .unwrap() |
-| main.rs:546:11:546:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:10:546:39 | * ... |
-| main.rs:546:11:546:39 | [post] receiver for ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | [post] ... .unwrap() |
+| main.rs:544:10:544:15 | [post] vs_mut [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | [post] vs_mut |
+| main.rs:544:10:544:18 | vs_mut[0] [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:544:10:544:18 | vs_mut[0] |
+| main.rs:545:10:545:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:545:10:545:39 | * ... |
+| main.rs:545:11:545:39 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | [post] ... .unwrap() |
+| main.rs:546:10:546:39 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:546:10:546:39 | * ... |
+| main.rs:546:11:546:39 | [post] ... .unwrap() [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | [post] ... .unwrap() |
 | main.rs:548:9:548:14 | &mut ... | file://:0:0:0:0 | &ref | main.rs:548:14:548:14 | v |
 | main.rs:548:19:548:35 | vs_mut.iter_mut() | file://:0:0:0:0 | element | main.rs:548:9:548:14 | &mut ... |
-| main.rs:562:11:562:15 | [post] receiver for c_ref | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | [post] c_ref |
-| main.rs:562:11:562:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:562:10:562:15 | * ... |
+| main.rs:562:10:562:15 | * ... [pre-dereferenced] | file://:0:0:0:0 | &ref | main.rs:562:10:562:15 | * ... |
+| main.rs:562:11:562:15 | [post] c_ref [implicit borrow] | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | [post] c_ref |
 storeStep
-| main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | receiver for i |
+| main.rs:116:11:116:11 | i | file://:0:0:0:0 | &ref | main.rs:116:11:116:11 | i [implicit borrow] |
 | main.rs:123:14:123:22 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:123:13:123:26 | TupleExpr |
 | main.rs:123:25:123:25 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:123:13:123:26 | TupleExpr |
 | main.rs:129:14:129:14 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:129:13:129:30 | TupleExpr |
@@ -1126,10 +1028,13 @@ storeStep
 | main.rs:430:17:430:17 | 1 | file://:0:0:0:0 | element | main.rs:430:16:430:33 | [...] |
 | main.rs:430:20:430:20 | 2 | file://:0:0:0:0 | element | main.rs:430:16:430:33 | [...] |
 | main.rs:430:23:430:32 | source(...) | file://:0:0:0:0 | element | main.rs:430:16:430:33 | [...] |
+| main.rs:431:14:431:17 | arr1 | file://:0:0:0:0 | &ref | main.rs:431:14:431:17 | arr1 [implicit borrow] |
 | main.rs:434:17:434:26 | source(...) | file://:0:0:0:0 | element | main.rs:434:16:434:31 | [...; 10] |
+| main.rs:435:14:435:17 | arr2 | file://:0:0:0:0 | &ref | main.rs:435:14:435:17 | arr2 [implicit borrow] |
 | main.rs:438:17:438:17 | 1 | file://:0:0:0:0 | element | main.rs:438:16:438:24 | [...] |
 | main.rs:438:20:438:20 | 2 | file://:0:0:0:0 | element | main.rs:438:16:438:24 | [...] |
 | main.rs:438:23:438:23 | 3 | file://:0:0:0:0 | element | main.rs:438:16:438:24 | [...] |
+| main.rs:439:14:439:17 | arr3 | file://:0:0:0:0 | &ref | main.rs:439:14:439:17 | arr3 [implicit borrow] |
 | main.rs:444:17:444:17 | 1 | file://:0:0:0:0 | element | main.rs:444:16:444:33 | [...] |
 | main.rs:444:20:444:20 | 2 | file://:0:0:0:0 | element | main.rs:444:16:444:33 | [...] |
 | main.rs:444:23:444:32 | source(...) | file://:0:0:0:0 | element | main.rs:444:16:444:33 | [...] |
@@ -1142,27 +1047,40 @@ storeStep
 | main.rs:467:24:467:24 | 1 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
 | main.rs:467:27:467:27 | 2 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
 | main.rs:467:30:467:30 | 3 | file://:0:0:0:0 | element | main.rs:467:23:467:31 | [...] |
+| main.rs:468:10:468:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:468:10:468:16 | mut_arr [implicit borrow] |
+| main.rs:470:5:470:11 | mut_arr | file://:0:0:0:0 | &ref | main.rs:470:5:470:11 | mut_arr [implicit borrow] |
+| main.rs:470:18:470:27 | source(...) | file://:0:0:0:0 | &ref | main.rs:470:5:470:14 | [post] mut_arr[1] [pre-dereferenced] |
 | main.rs:470:18:470:27 | source(...) | file://:0:0:0:0 | element | main.rs:470:5:470:11 | [post] mut_arr |
-| main.rs:479:24:479:33 | source(...) | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | receiver for source(...) |
+| main.rs:471:13:471:19 | mut_arr | file://:0:0:0:0 | &ref | main.rs:471:13:471:19 | mut_arr [implicit borrow] |
+| main.rs:473:10:473:16 | mut_arr | file://:0:0:0:0 | &ref | main.rs:473:10:473:16 | mut_arr [implicit borrow] |
+| main.rs:479:24:479:33 | source(...) | file://:0:0:0:0 | &ref | main.rs:479:24:479:33 | source(...) [implicit borrow] |
 | main.rs:482:41:482:67 | default_name | main.rs:479:9:479:20 | captured default_name | main.rs:482:41:482:67 | \|...\| ... |
-| main.rs:482:44:482:55 | default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | receiver for default_name |
-| main.rs:483:18:483:18 | n | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | receiver for n |
-| main.rs:506:13:506:13 | a | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | receiver for a |
+| main.rs:482:44:482:55 | default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit borrow] |
+| main.rs:482:44:482:55 | default_name | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit deref 0 in state after borrow] |
+| main.rs:482:44:482:55 | default_name [implicit deref 0 in state after deref] | file://:0:0:0:0 | &ref | main.rs:482:44:482:55 | default_name [implicit borrow] |
+| main.rs:483:18:483:18 | n | file://:0:0:0:0 | &ref | main.rs:483:18:483:18 | n [implicit borrow] |
+| main.rs:506:13:506:13 | a | file://:0:0:0:0 | &ref | main.rs:506:13:506:13 | a [implicit borrow] |
+| main.rs:507:13:507:13 | b | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | b [implicit deref 0 in state after borrow] |
+| main.rs:507:13:507:13 | b [implicit deref 0 in state after deref] | file://:0:0:0:0 | &ref | main.rs:507:13:507:13 | b [implicit borrow] |
+| main.rs:508:18:508:18 | b | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | b [implicit deref 0 in state after borrow] |
+| main.rs:508:18:508:18 | b [implicit deref 0 in state after deref] | file://:0:0:0:0 | &ref | main.rs:508:18:508:18 | b [implicit borrow] |
 | main.rs:517:15:517:24 | source(...) | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
 | main.rs:517:27:517:27 | 2 | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
 | main.rs:517:30:517:30 | 3 | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
 | main.rs:517:33:517:33 | 4 | file://:0:0:0:0 | element | main.rs:517:14:517:34 | [...] |
-| main.rs:520:11:520:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | receiver for ... .unwrap() |
-| main.rs:521:11:521:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | receiver for ... .unwrap() |
-| main.rs:535:29:535:29 | x | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | receiver for x |
-| main.rs:536:34:536:34 | x | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | receiver for x |
+| main.rs:519:10:519:11 | vs | file://:0:0:0:0 | &ref | main.rs:519:10:519:11 | vs [implicit borrow] |
+| main.rs:520:11:520:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:520:11:520:35 | ... .unwrap() [implicit borrow] |
+| main.rs:521:11:521:35 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:521:11:521:35 | ... .unwrap() [implicit borrow] |
+| main.rs:535:29:535:29 | x | file://:0:0:0:0 | &ref | main.rs:535:29:535:29 | x [implicit borrow] |
+| main.rs:536:34:536:34 | x | file://:0:0:0:0 | &ref | main.rs:536:34:536:34 | x [implicit borrow] |
 | main.rs:542:23:542:32 | source(...) | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
 | main.rs:542:35:542:35 | 2 | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
 | main.rs:542:38:542:38 | 3 | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
 | main.rs:542:41:542:41 | 4 | file://:0:0:0:0 | element | main.rs:542:22:542:42 | [...] |
-| main.rs:545:11:545:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | receiver for ... .unwrap() |
-| main.rs:546:11:546:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | receiver for ... .unwrap() |
+| main.rs:544:10:544:15 | vs_mut | file://:0:0:0:0 | &ref | main.rs:544:10:544:15 | vs_mut [implicit borrow] |
+| main.rs:545:11:545:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:545:11:545:39 | ... .unwrap() [implicit borrow] |
+| main.rs:546:11:546:39 | ... .unwrap() | file://:0:0:0:0 | &ref | main.rs:546:11:546:39 | ... .unwrap() [implicit borrow] |
 | main.rs:557:18:557:18 | c | file://:0:0:0:0 | &ref | main.rs:557:17:557:18 | &c |
 | main.rs:560:15:560:15 | b | file://:0:0:0:0 | &ref | main.rs:560:14:560:15 | &b |
-| main.rs:562:11:562:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | receiver for c_ref |
+| main.rs:562:11:562:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:562:11:562:15 | c_ref [implicit borrow] |
 | main.rs:583:27:583:27 | 0 | {EXTERNAL LOCATION} | Some | main.rs:583:22:583:28 | Some(...) |

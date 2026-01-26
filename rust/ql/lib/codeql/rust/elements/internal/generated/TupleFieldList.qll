@@ -15,7 +15,7 @@ import codeql.rust.elements.TupleField
  */
 module Generated {
   /**
-   * A list of fields in a tuple struct or tuple enum variant.
+   * A list of fields in a tuple struct or tuple variant.
    *
    * For example:
    * ```rust

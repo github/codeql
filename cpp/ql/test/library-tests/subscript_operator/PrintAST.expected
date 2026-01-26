@@ -1,0 +1,69 @@
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const __va_list_tag &
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] __va_list_tag &&
+test.cpp:
+#    3| [CopyAssignmentOperator] S& S::operator=(S const&)
+#    3|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const S &
+#    3| [MoveAssignmentOperator] S& S::operator=(S&&)
+#    3|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] S &&
+#    5| [MemberFunction] int S::operator[](int, int)
+#    5|   <params>: 
+#    5|     getParameter(0): [Parameter] i
+#    5|         Type = [IntType] int
+#    5|     getParameter(1): [Parameter] j
+#    5|         Type = [IntType] int
+#    5|   getEntryPoint(): [BlockStmt] { ... }
+#    6|     getStmt(0): [ReturnStmt] return ...
+#    6|       getExpr(): [ArrayExpr] access to array
+#    6|           Type = [IntType] int
+#    6|           ValueCategory = prvalue(load)
+#    6|         getArrayBase(): [ArrayExpr] access to array
+#    6|             Type = [ArrayType] int[2]
+#    6|             ValueCategory = lvalue
+#    6|           getArrayBase(): [ImplicitThisFieldAccess,PointerFieldAccess] xs
+#    6|               Type = [ArrayType] int[2][2]
+#    6|               ValueCategory = lvalue
+#    6|             getQualifier(): [ThisExpr] this
+#    6|                 Type = [PointerType] S *
+#    6|                 ValueCategory = prvalue(load)
+#    6|           getArrayOffset(): [VariableAccess] i
+#    6|               Type = [IntType] int
+#    6|               ValueCategory = prvalue(load)
+#-----|           getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#-----|               Type = [PointerType] int(*)[2]
+#-----|               ValueCategory = prvalue
+#    6|         getArrayOffset(): [VariableAccess] j
+#    6|             Type = [IntType] int
+#    6|             ValueCategory = prvalue(load)
+#    6|         getArrayBase().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#    6|             Type = [IntPointerType] int *
+#    6|             ValueCategory = prvalue
+#   10| [TopLevelFunction] int foo(S)
+#   10|   <params>: 
+#   10|     getParameter(0): [Parameter] s
+#   10|         Type = [Struct] S
+#   10|   getEntryPoint(): [BlockStmt] { ... }
+#   11|     getStmt(0): [ReturnStmt] return ...
+#   11|       getExpr(): [OverloadedArrayExpr] call to operator[]
+#   11|           Type = [IntType] int
+#   11|           ValueCategory = prvalue
+#   11|         getArrayBase(): [VariableAccess] s
+#   11|             Type = [Struct] S
+#   11|             ValueCategory = lvalue
+#   11|         getArrayOffset(0): [Literal] 1
+#   11|             Type = [IntType] int
+#   11|             Value = [Literal] 1
+#   11|             ValueCategory = prvalue
+#   11|         getArrayOffset(1): [Literal] 2
+#   11|             Type = [IntType] int
+#   11|             Value = [Literal] 2
+#   11|             ValueCategory = prvalue

@@ -7,12 +7,12 @@ struct GreetingParams {
 
 async fn greet_handler(Query(params): Query<GreetingParams>) -> Html<String> {
     let html_content = format!("<p>Hello, {}!</p>", params.name);
-    Html(html_content) // $ MISSING: Alert[rust/xss]
+    Html(html_content) // $ Alert[rust/xss]=greet
 }
 
 #[tokio::main]
 pub async fn main() {
-    let app = Router::<()>::new().route("/greet", get(greet_handler));
+    let app = Router::<()>::new().route("/greet", get(greet_handler)); // $ Source=greet
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
         .await
         .unwrap();

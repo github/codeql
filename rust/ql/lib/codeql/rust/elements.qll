@@ -6,7 +6,6 @@
 import codeql.files.FileSystem
 import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
-import codeql.rust.elements.Adt
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayListExpr
@@ -38,7 +37,6 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.BoxPat
 import codeql.rust.elements.BreakExpr
 import codeql.rust.elements.CallExpr
-import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Callable
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureExpr
@@ -95,7 +93,6 @@ import codeql.rust.elements.LiteralPat
 import codeql.rust.elements.Locatable
 import codeql.rust.elements.LoopExpr
 import codeql.rust.elements.LoopingExpr
-import codeql.rust.elements.MacroBlockExpr
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.MacroDef
 import codeql.rust.elements.MacroExpr
@@ -174,6 +171,7 @@ import codeql.rust.elements.TypeAlias
 import codeql.rust.elements.TypeArg
 import codeql.rust.elements.TypeBound
 import codeql.rust.elements.TypeBoundList
+import codeql.rust.elements.TypeItem
 import codeql.rust.elements.TypeParam
 import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.UnderscoreExpr

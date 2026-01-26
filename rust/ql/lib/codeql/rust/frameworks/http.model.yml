@@ -1,6 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<http::response::Response>::body", "Argument[self].Reference.Field[http::response::Response::body]", "ReturnValue.Reference", "value", "manual"]
+      - ["<http::response::Response>::body_mut", "Argument[self].Reference.Field[http::response::Response::body]", "ReturnValue.Reference", "value", "manual"]
+      - ["<http::response::Response>::into_body", "Argument[self].Field[http::response::Response::body]", "ReturnValue", "value", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: sourceModel
     data:
       - ["<hyper::client::conn::http1::SendRequest>::send_request", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]

@@ -9,6 +9,7 @@ private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.security.SensitiveData
+private import codeql.rust.dataflow.internal.Node as Node
 
 /**
  * A kind of cryptographic value.
@@ -99,14 +100,44 @@ module HardcodedCryptographicValue {
   }
 
   /**
+   * A heuristic sink for hard-coded cryptographic value vulnerabilities.
+   */
+  private class HeuristicSinks extends Sink {
+    CryptographicValueKind kind;
+
+    HeuristicSinks() {
+      // any argument going to a parameter whose name matches a credential name
+      exists(Call c, Function f, int argIndex, string argName |
+        c.getPositionalArgument(argIndex) = this.asExpr() and
+        c.getStaticTarget() = f and
+        f.getParam(argIndex).getPat().(IdentPat).getName().getText() = argName and
+        (
+          argName = "password" and kind = "password"
+          or
+          argName = "iv" and kind = "iv"
+          or
+          argName = "nonce" and kind = "nonce"
+          or
+          argName = "salt" and kind = "salt"
+          //
+          // note: matching "key" results in too many false positives
+        ) and
+        // don't duplicate modeled sinks
+        not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = c)
+      )
+    }
+
+    override CryptographicValueKind getKind() { result = kind }
+  }
+
+  /**
    * A call to `getrandom` that is a barrier.
    */
   private class GetRandomBarrier extends Barrier {
     GetRandomBarrier() {
-      exists(CallExprBase ce |
-        ce.getStaticTarget().(Addressable).getCanonicalPath() =
-          ["getrandom::fill", "getrandom::getrandom"] and
-        this.asExpr().getParentNode*() = ce.getArgList().getArg(0)
+      exists(Call call |
+        call.getStaticTarget().getCanonicalPath() = ["getrandom::fill", "getrandom::getrandom"] and
+        this.asExpr().getParentNode*() = call.getPositionalArgument(0)
       )
     }
   }

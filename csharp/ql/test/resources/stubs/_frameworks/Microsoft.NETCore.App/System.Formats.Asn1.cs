@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Formats.Asn1, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Formats.Asn1, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Formats
@@ -145,6 +145,9 @@ namespace System
                 public AsnWriter(System.Formats.Asn1.AsnEncodingRules ruleSet, int initialCapacity) => throw null;
                 public byte[] Encode() => throw null;
                 public int Encode(System.Span<byte> destination) => throw null;
+                public TReturn Encode<TReturn>(System.Func<System.ReadOnlySpan<byte>, TReturn> encodeCallback) => throw null;
+                public void Encode<TState>(TState state, System.Action<TState, System.ReadOnlySpan<byte>> encodeCallback) => throw null;
+                public TReturn Encode<TState, TReturn>(TState state, System.Func<TState, System.ReadOnlySpan<byte>, TReturn> encodeCallback) => throw null;
                 public bool EncodedValueEquals(System.Formats.Asn1.AsnWriter other) => throw null;
                 public bool EncodedValueEquals(System.ReadOnlySpan<byte> other) => throw null;
                 public int GetEncodedLength() => throw null;

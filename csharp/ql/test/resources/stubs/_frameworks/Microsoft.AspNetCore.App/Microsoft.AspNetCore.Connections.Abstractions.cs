@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Connections.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Connections.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -250,6 +250,10 @@ namespace Microsoft
             {
                 bool CanBind(System.Net.EndPoint endpoint);
             }
+            public interface IMemoryPoolFactory<T>
+            {
+                System.Buffers.MemoryPool<T> Create(Microsoft.AspNetCore.Connections.MemoryPoolOptions options = default(Microsoft.AspNetCore.Connections.MemoryPoolOptions));
+            }
             public interface IMultiplexedConnectionBuilder
             {
                 System.IServiceProvider ApplicationServices { get; }
@@ -269,6 +273,11 @@ namespace Microsoft
             public interface IMultiplexedConnectionListenerFactory
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.IMultiplexedConnectionListener> BindAsync(System.Net.EndPoint endpoint, Microsoft.AspNetCore.Http.Features.IFeatureCollection features = default(Microsoft.AspNetCore.Http.Features.IFeatureCollection), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+            }
+            public class MemoryPoolOptions
+            {
+                public MemoryPoolOptions() => throw null;
+                public string Owner { get => throw null; set { } }
             }
             public class MultiplexedConnectionBuilder : Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder
             {

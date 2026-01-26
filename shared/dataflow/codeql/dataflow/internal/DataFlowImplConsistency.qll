@@ -74,6 +74,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
   ) {
     none()
   }
+
+  /** Holds if `(n1, n2)` should be excluded from the consistency test `localFlowIsLocal`. */
+  default predicate localFlowIsLocalExclude(DataFlowLang::Node n1, DataFlowLang::Node n2) { none() }
 }
 
 module MakeConsistency<
@@ -169,6 +172,7 @@ module MakeConsistency<
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
     simpleLocalFlowStep(n1, n2, _) and
     nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    not Input::localFlowIsLocalExclude(n1, n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
 
@@ -240,6 +244,13 @@ module MakeConsistency<
 
   private predicate hasPost(Node n) { exists(PostUpdateNode post | post.getPreUpdateNode() = n) }
 
+  /**
+   * Consider code like `a.b.f = source()`. There is flow from `source()` to
+   * `[post] a.b` (with an appropriate access path), but we also want there to
+   * be flow to `[post] a` (with an appropriate access path). The data flow
+   * library is able to infer this step because there is a read step from `a`
+   * to `a.b`, as long as the post-update node for `a` exists.
+   */
   query predicate reverseRead(Node n, string msg) {
     exists(Node n2 | readStep(n, _, n2) and hasPost(n2) and not hasPost(n)) and
     not Input::reverseReadExclude(n) and

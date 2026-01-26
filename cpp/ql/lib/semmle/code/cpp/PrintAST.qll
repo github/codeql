@@ -1050,10 +1050,10 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     expr.(Call).getQualifier() = ele and
     pred = "getQualifier()"
     or
-    // OverloadedArrayExpr::getArrayBase/0 and OverloadedArrayExpr::getArrayOffset/0 also consider arguments, and are already handled below.
+    // OverloadedArrayExpr::getArrayBase/0 and OverloadedArrayExpr::getArrayOffset/1 also consider arguments, and are already handled below.
     exists(int n, Expr arg | expr.(Call).getArgument(n) = arg |
       not expr.(OverloadedArrayExpr).getArrayBase() = arg and
-      not expr.(OverloadedArrayExpr).getArrayOffset() = arg and
+      not expr.(OverloadedArrayExpr).getAnArrayOffset() = arg and
       arg = ele and
       pred = "getArgument(" + n.toString() + ")"
     )
@@ -1062,7 +1062,10 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(OverloadedArrayExpr).getArrayBase() = ele and pred = "getArrayBase()"
     or
-    expr.(OverloadedArrayExpr).getArrayOffset() = ele and pred = "getArrayOffset()"
+    exists(int n |
+      expr.(OverloadedArrayExpr).getArrayOffset(n) = ele and
+      pred = "getArrayOffset(" + n.toString() + ")"
+    )
     or
     // OverloadedPointerDereferenceExpr::getExpr/0 also considers qualifiers, and is already handled above for all Call classes.
     not expr.(OverloadedPointerDereferenceExpr).getQualifier() =

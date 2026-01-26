@@ -224,25 +224,17 @@ signature module InputSig1<LocationSig Location> {
 
 module Make1<LocationSig Location, InputSig1<Location> Input1> {
   private import Input1
+  private import codeql.util.UnboundList as UnboundListImpl
 
-  private module TypeParameter {
-    private import codeql.util.DenseRank
+  private module UnboundListInput implements UnboundListImpl::InputSig<Location> {
+    class Element = TypeParameter;
 
-    private module DenseRankInput implements DenseRankInputSig {
-      class Ranked = TypeParameter;
+    predicate getId = getTypeParameterId/1;
 
-      predicate getRank = getTypeParameterId/1;
-    }
-
-    int getRank(TypeParameter tp) { tp = DenseRank<DenseRankInput>::denseRank(result) }
-
-    string encode(TypeParameter tp) { result = getRank(tp).toString() }
-
-    bindingset[s]
-    TypeParameter decode(string s) { encode(result) = s }
+    predicate getLengthLimit = getTypePathLimit/0;
   }
 
-  final private class String = string;
+  private import UnboundListImpl::Make<Location, UnboundListInput>
 
   /**
    * A path into a type.
@@ -274,101 +266,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
    * implementation uses unique type parameter identifiers, in order to not mix
    * up type parameters from different types.
    */
-  class TypePath extends String {
-    bindingset[this]
-    TypePath() { exists(this) }
-
-    bindingset[this]
-    private TypeParameter getTypeParameter(int i) {
-      result = TypeParameter::decode(this.splitAt(".", i))
-    }
-
-    /** Gets a textual representation of this type path. */
-    bindingset[this]
-    string toString() {
-      result =
-        concat(int i, TypeParameter tp |
-          tp = this.getTypeParameter(i)
-        |
-          tp.toString(), "." order by i
-        )
-    }
-
-    /** Holds if this type path is empty. */
-    predicate isEmpty() { this = "" }
-
-    /** Gets the length of this path. */
-    bindingset[this]
-    pragma[inline_late]
-    int length() {
-      // Same as
-      // `result = count(this.indexOf("."))`
-      // but performs better because it doesn't use an aggregate
-      result = this.regexpReplaceAll("[0-9]+", "").length()
-    }
-
-    /** Gets the path obtained by appending `suffix` onto this path. */
-    bindingset[this, suffix]
-    TypePath append(TypePath suffix) {
-      result = this + suffix and
-      (
-        not exists(getTypePathLimit())
-        or
-        result.length() <= getTypePathLimit()
-      )
-    }
-
-    /**
-     * Gets the path obtained by appending `suffix` onto this path.
-     *
-     * Unlike `append`, this predicate has `result` in the binding set,
-     * so there is no need to check the length of `result`.
-     */
-    bindingset[this, result]
-    TypePath appendInverse(TypePath suffix) { suffix = result.stripPrefix(this) }
-
-    /** Gets the path obtained by removing `prefix` from this path. */
-    bindingset[this, prefix]
-    TypePath stripPrefix(TypePath prefix) { this = prefix + result }
-
-    /** Holds if this path starts with `tp`, followed by `suffix`. */
-    bindingset[this]
-    predicate isCons(TypeParameter tp, TypePath suffix) {
-      exists(string regexp | regexp = "([0-9]+)\\.(.*)" |
-        tp = TypeParameter::decode(this.regexpCapture(regexp, 1)) and
-        suffix = this.regexpCapture(regexp, 2)
-      )
-    }
-
-    /** Holds if this path starts with `prefix`, followed by `tp`. */
-    bindingset[this]
-    predicate isSnoc(TypePath prefix, TypeParameter tp) {
-      exists(string regexp | regexp = "(|.+\\.)([0-9]+)\\." |
-        prefix = this.regexpCapture(regexp, 1) and
-        tp = TypeParameter::decode(this.regexpCapture(regexp, 2))
-      )
-    }
-
-    /** Gets the head of this path, if any. */
-    bindingset[this]
-    TypeParameter getHead() { result = this.getTypeParameter(0) }
-  }
+  class TypePath = UnboundList;
 
   /** Provides predicates for constructing `TypePath`s. */
-  module TypePath {
-    /** Gets the empty type path. */
-    TypePath nil() { result.isEmpty() }
-
-    /** Gets the singleton type path `tp`. */
-    TypePath singleton(TypeParameter tp) { result = TypeParameter::encode(tp) + "." }
-
-    /**
-     * Gets the type path obtained by appending the singleton type path `tp`
-     * onto `suffix`.
-     */
-    bindingset[suffix]
-    TypePath cons(TypeParameter tp, TypePath suffix) { result = singleton(tp).append(suffix) }
-  }
+  module TypePath = UnboundList;
 
   /**
    * A class that has a type tree associated with it.
@@ -600,11 +501,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private TypeParameter getNthTypeParameter(TypeAbstraction abs, int i) {
         result =
-          rank[i + 1](TypeParameter tp |
-            tp = abs.getATypeParameter()
-          |
-            tp order by TypeParameter::getRank(tp)
-          )
+          rank[i + 1](TypeParameter tp | tp = abs.getATypeParameter() | tp order by getRank(tp))
       }
 
       /**
@@ -705,7 +602,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if `app` is _not_ a possible instantiation of `constraint`.
+       * Holds if `app` is _not_ a possible instantiation of `constraint`, because `app`
+       * and `constraint` differ on concrete types at `path`.
        *
        * This is an approximation of `not isInstantiationOf(app, abs, constraint)`, but
        * defined without a negative occurrence of `isInstantiationOf`.
@@ -719,9 +617,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * `isInstantiationOf` nor `isNotInstantiationOf` will hold.
        */
       pragma[nomagic]
-      predicate isNotInstantiationOf(App app, TypeAbstraction abs, Constraint constraint) {
+      predicate isNotInstantiationOf(
+        App app, TypeAbstraction abs, Constraint constraint, TypePath path
+      ) {
         // `app` and `constraint` differ on a concrete type
-        exists(Type t, Type t2, TypePath path |
+        exists(Type t, Type t2 |
           t = resolveTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
           app.getTypeAt(path) = t2 and
@@ -957,10 +857,16 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     {
       private import Input
 
+      pragma[nomagic]
+      private Type getTypeAt(HasTypeTree term, TypePath path) {
+        relevantConstraint(term, _) and
+        result = term.getTypeAt(path)
+      }
+
       /** Holds if the type tree has the type `type` and should satisfy `constraint`. */
       pragma[nomagic]
       private predicate hasTypeConstraint(HasTypeTree term, Type type, Type constraint) {
-        type = term.getTypeAt(TypePath::nil()) and
+        type = getTypeAt(term, TypePath::nil()) and
         relevantConstraint(term, constraint)
       }
 
@@ -983,6 +889,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
       }
 
+      private module SatisfiesConstraintIsInstantiationOf =
+        IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>;
+
       /**
        * Holds if `tt` satisfies `constraint` through `abs`, `sub`, and `constraintMention`.
        */
@@ -1004,10 +913,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // constraint we need to find the right implementation, which is the
           // one where the type instantiates the precondition.
           if multipleConstraintImplementations(type, constraint)
-          then
-            IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(tt,
-              abs, condition)
+          then SatisfiesConstraintIsInstantiationOf::isInstantiationOf(tt, abs, condition)
           else any()
+        )
+      }
+
+      pragma[nomagic]
+      private predicate isNotInstantiationOf(
+        HasTypeTree tt, TypeAbstraction abs, TypeMention condition, Type root
+      ) {
+        exists(TypePath path |
+          SatisfiesConstraintIsInstantiationOf::isNotInstantiationOf(tt, abs, condition, path) and
+          path.isCons(root.getATypeParameter(), _)
         )
       }
 
@@ -1040,8 +957,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             forex(TypeAbstraction abs, TypeMention condition |
               rootTypesSatisfaction(type, constraint, abs, condition, _)
             |
-              IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isNotInstantiationOf(tt,
-                abs, condition)
+              isNotInstantiationOf(tt, abs, condition, type)
             )
           )
         )
@@ -1057,15 +973,39 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      pragma[nomagic]
-      private predicate satisfiesConstraintTypeMention1(
-        HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
+      pragma[inline]
+      private predicate satisfiesConstraintTypeMentionInline(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
+        TypePath pathToTypeParamInSub
       ) {
-        exists(TypeAbstraction abs, TypeMention sub, TypeParameter tp |
+        exists(TypeMention sub, TypeParameter tp |
           satisfiesConstraintTypeMention0(tt, constraint, abs, sub, path, tp) and
           tp = abs.getATypeParameter() and
           sub.resolveTypeAt(pathToTypeParamInSub) = tp
         )
+      }
+
+      pragma[nomagic]
+      private predicate satisfiesConstraintTypeMention(
+        HasTypeTree tt, Type constraint, TypePath path, TypePath pathToTypeParamInSub
+      ) {
+        satisfiesConstraintTypeMentionInline(tt, _, constraint, path, pathToTypeParamInSub)
+      }
+
+      pragma[nomagic]
+      private predicate satisfiesConstraintTypeMentionThrough(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path,
+        TypePath pathToTypeParamInSub
+      ) {
+        satisfiesConstraintTypeMentionInline(tt, abs, constraint, path, pathToTypeParamInSub)
+      }
+
+      pragma[inline]
+      private predicate satisfiesConstraintTypeNonTypeParamInline(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path, Type t
+      ) {
+        satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
+        not t = abs.getATypeParameter()
       }
 
       /**
@@ -1074,19 +1014,33 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       pragma[nomagic]
       predicate satisfiesConstraintType(HasTypeTree tt, Type constraint, TypePath path, Type t) {
-        exists(TypeAbstraction abs |
-          satisfiesConstraintTypeMention0(tt, constraint, abs, _, path, t) and
-          not t = abs.getATypeParameter()
-        )
+        satisfiesConstraintTypeNonTypeParamInline(tt, _, constraint, path, t)
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMention1(tt, constraint, prefix0, pathToTypeParamInSub) and
-          tt.getTypeAt(pathToTypeParamInSub.appendInverse(suffix)) = t and
+          satisfiesConstraintTypeMention(tt, constraint, prefix0, pathToTypeParamInSub) and
+          getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
         or
         hasTypeConstraint(tt, constraint, constraint) and
-        t = tt.getTypeAt(path)
+        t = getTypeAt(tt, path)
+      }
+
+      /**
+       * Holds if the type tree at `tt` satisfies the constraint `constraint`
+       * through `abs` with the type `t` at `path`.
+       */
+      pragma[nomagic]
+      predicate satisfiesConstraintTypeThrough(
+        HasTypeTree tt, TypeAbstraction abs, Type constraint, TypePath path, Type t
+      ) {
+        satisfiesConstraintTypeNonTypeParamInline(tt, abs, constraint, path, t)
+        or
+        exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
+          satisfiesConstraintTypeMentionThrough(tt, abs, constraint, prefix0, pathToTypeParamInSub) and
+          getTypeAt(tt, pathToTypeParamInSub.appendInverse(suffix)) = t and
+          path = prefix0.append(suffix)
+        )
       }
 
       /**

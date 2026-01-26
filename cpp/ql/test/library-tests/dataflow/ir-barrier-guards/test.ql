@@ -13,26 +13,33 @@ predicate instructionGuardChecks(IRGuardCondition gc, Instruction checked, boole
 
 module BarrierGuard = DataFlow::InstructionBarrierGuard<instructionGuardChecks/3>;
 
-predicate indirectBarrierGuard(DataFlow::Node node, int indirectionIndex) {
-  node = BarrierGuard::getAnIndirectBarrierNode(indirectionIndex)
+predicate indirectBarrierGuard(DataFlow::Node node, string s) {
+  node = BarrierGuard::getAnIndirectBarrierNode(_) and
+  if node.isGLValue()
+  then s = "glval<" + node.getType().toString().replaceAll(" ", "") + ">"
+  else s = node.getType().toString().replaceAll(" ", "")
 }
 
-predicate barrierGuard(DataFlow::Node node) { node = BarrierGuard::getABarrierNode() }
+predicate barrierGuard(DataFlow::Node node, string s) {
+  node = BarrierGuard::getABarrierNode() and
+  if node.isGLValue()
+  then s = "glval<" + node.getType().toString().replaceAll(" ", "") + ">"
+  else s = node.getType().toString().replaceAll(" ", "")
+}
 
 module Test implements TestSig {
-  string getARelevantTag() { result = "barrier" }
+  string getARelevantTag() { result = ["barrier", "indirect_barrier"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node node |
-      barrierGuard(node) and
-      value = ""
+    exists(DataFlow::Node node, string s |
+      indirectBarrierGuard(node, s) and
+      value = s and
+      tag = "indirect_barrier"
       or
-      exists(int indirectionIndex |
-        indirectBarrierGuard(node, indirectionIndex) and
-        value = indirectionIndex.toString()
-      )
+      barrierGuard(node, s) and
+      value = s and
+      tag = "barrier"
     |
-      tag = "barrier" and
       element = node.toString() and
       location = node.getLocation()
     )

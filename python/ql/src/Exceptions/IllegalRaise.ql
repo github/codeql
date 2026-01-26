@@ -14,6 +14,7 @@
 import python
 import Raising
 import Exceptions.NotImplemented
+private import LegacyPointsTo
 
 from Raise r, ClassValue t
 where

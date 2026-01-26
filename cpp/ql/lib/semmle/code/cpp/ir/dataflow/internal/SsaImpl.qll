@@ -53,7 +53,7 @@ private module SourceVariables {
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    DataFlowType getType() {
+    Type getType() {
       if this.isGLValue()
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
@@ -1051,12 +1051,12 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
   }
 
   private predicate guardChecksInstr(
-    IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, boolean branch,
+    IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, IRGuards::GuardValue gv,
     int indirectionIndex
   ) {
     exists(Node node |
       nodeHasInstruction(node, instr, indirectionIndex) and
-      guardChecksNode(g, node, branch, indirectionIndex)
+      guardChecksNode(g, node, gv.asBooleanValue(), indirectionIndex)
     )
   }
 
@@ -1064,8 +1064,15 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
     int indirectionIndex
   ) {
-    IRGuards::Guards_v1::ValidationWrapperWithState<int, guardChecksInstr/4>::guardChecksDef(g, def,
-      val, indirectionIndex)
+    exists(Instruction e |
+      IRGuards::Guards_v1::ParameterizedValidationWrapper<int, guardChecksInstr/4>::guardChecks(g,
+        e, val, indirectionIndex)
+    |
+      indirectionIndex = 0 and
+      def.(Definition).getAUse().getDef() = e
+      or
+      def.(Definition).getAnIndirectUse(indirectionIndex).getDef() = e
+    )
   }
 
   Node getABarrierNode(int indirectionIndex) {

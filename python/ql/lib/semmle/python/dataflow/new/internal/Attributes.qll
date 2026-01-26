@@ -1,9 +1,10 @@
 /** This module provides an API for attribute reads and writes. */
 
+private import python
 import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
-private import semmle.python.types.Builtins
+private import semmle.python.dataflow.new.internal.Builtins
 
 /**
  * A data flow node that reads or writes an attribute of an object.
@@ -134,8 +135,12 @@ private class BuiltInCallNode extends CallNode {
 
   BuiltInCallNode() {
     // TODO disallow instances where the name of the built-in may refer to an in-scope variable of that name.
-    exists(NameNode id | this.getFunction() = id and id.getId() = name and id.isGlobal()) and
-    name = any(Builtin b).getName()
+    exists(NameNode id |
+      name = Builtins::getBuiltinName() and
+      this.getFunction() = id and
+      id.getId() = name and
+      id.isGlobal()
+    )
   }
 
   /** Gets the name of the built-in function that is called at this `CallNode` */

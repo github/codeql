@@ -273,6 +273,8 @@ list_fields = {
     ast.Print: ("values",),
     ast.Set: ("elts",),
     ast.Str: ("implicitly_concatenated_parts",),
+    ast.TemplateString: ("values",),
+    ast.JoinedTemplateString: ("strings",),
     ast.TypeAlias: ("type_parameters",),
     ast.Try: ("body", "handlers", "orelse", "finalbody"),
     ast.Tuple: ("elts",),

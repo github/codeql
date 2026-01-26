@@ -1,5 +1,4 @@
 import python
-
 /*
  * Classification of variables. These should be non-overlapping and complete.
  *
@@ -11,6 +10,9 @@ import python
  * Non-escaping globals -- Global variables that have definitions and all of those definitions are in the module scope
  * Escaping globals -- Global variables that have definitions and at least one of those definitions is in another scope.
  */
+
+private import semmle.python.types.ImportTime
+private import semmle.python.essa.SsaDefinitions
 
 /** A source language variable, to be converted into a set of SSA variables. */
 abstract class SsaSourceVariable extends @py_variable {
@@ -272,6 +274,17 @@ class ModuleVariable extends SsaSourceVariable instanceof GlobalVariable {
   }
 
   override CallNode redefinedAtCallSite() { none() }
+}
+
+/** Holds if `f` is an import of the form `from .[...] import ...` and the enclosing scope is an __init__ module */
+private predicate import_from_dot_in_init(ImportExprNode f) {
+  f.getScope() = any(Module m).getInitModule() and
+  (
+    f.getNode().getLevel() = 1 and
+    not exists(f.getNode().getName())
+    or
+    f.getNode().getImportedModuleName() = f.getEnclosingModule().getPackage().getName()
+  )
 }
 
 class NonEscapingGlobalVariable extends ModuleVariable {

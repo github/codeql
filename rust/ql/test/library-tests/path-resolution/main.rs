@@ -381,8 +381,9 @@ mod m16 {
     > {
         fn f(&self) -> T; // $ item=I84
 
-        fn g(&self) -> T // $ item=I84
-        ; // I85
+        fn g(&self) -> T {// $ item=I84
+            self.f() // $ item=f
+        } // I85
 
         fn h(&self) -> T { // $ item=I84
             Self::g(&self); // $ item=I85
@@ -436,8 +437,9 @@ mod m16 {
     > // $ item=I89
       for S { // $ item=I90
         fn f(&self) -> S { // $ item=I90
+            Self::g(&self); // $ item=I92
             println!("m16::<S as Trait2<S>>::f"); // $ item=println
-            Self::c // $ MISSING: item=I95
+            Self::c // $ item=I95
         } // I93
     }
 
@@ -466,6 +468,109 @@ mod m16 {
           > // $ item=I86
         >::c; // $ MISSING: item=I95
     } // I83
+
+    trait Trait3 {
+        type AssocType;
+
+        fn f(&self);
+    }
+
+    trait Trait4 {
+        type AssocType;
+
+        fn g(&self);
+    }
+
+    struct S2;
+
+    #[rustfmt::skip]
+    impl Trait3 for S2 { // $ item=Trait3 item=S2
+        type AssocType = i32 // $ item=i32
+        ; // S2Trait3AssocType
+        
+        fn f(&self) {
+            let x: Self::AssocType = 42; // $ item=S2Trait3AssocType
+        } // S2asTrait3::f
+    }
+
+    #[rustfmt::skip]
+    impl Trait4 for S2 { // $ item=Trait4 item=S2
+        type AssocType = bool // $ item=bool
+        ; // S2Trait4AssocType
+
+        fn g(&self) {
+            Self::f(&self); // $ item=S2asTrait3::f
+            S2::f(&self); // $ item=S2asTrait3::f
+            let x: Self::AssocType = true; // $ item=S2Trait4AssocType
+        }
+    }
+
+    trait Trait5 {
+        type Assoc; // Trait5Assoc
+
+        fn Assoc() -> Self::Assoc; // $ item=Trait5Assoc
+    }
+
+    #[rustfmt::skip]
+    impl Trait5 for S { // $ item=Trait5 item=I90
+        type Assoc = i32 // $ item=i32
+        ; // AssocType
+
+        fn Assoc()
+            -> Self::Assoc { // $ item=AssocType
+            Self::Assoc() + 1 // $ item=AssocFunc
+        } // AssocFunc
+    }
+
+    struct S3<T3>(T3); // $ item=T3
+
+    #[rustfmt::skip]
+    impl Trait5 for S3<i32> { // $ item=Trait5 item=S3 item=i32
+        type Assoc = i32 // $ item=i32
+        ; // S3i32AssocType
+
+        fn Assoc()
+            -> Self::Assoc { // $ item=S3i32AssocType
+            Self::Assoc() + 1 // $ item=S3i32AssocFunc
+        } // S3i32AssocFunc
+    }
+
+    #[rustfmt::skip]
+    impl Trait5 for S3<bool> { // $ item=Trait5 item=S3 item=bool
+        type Assoc = bool // $ item=bool
+        ; // S3boolAssocType
+
+        fn Assoc()
+            -> Self::Assoc { // $ item=S3boolAssocType
+            !Self::Assoc() // $ item=S3boolAssocFunc
+        } // S3boolAssocFunc
+    }
+
+    #[rustfmt::skip]
+    impl S3<i32> { // $ item=S3 item=i32
+        fn f1() -> i32 { // $ item=i32
+            0
+        } // S3i32f1
+    }
+
+    #[rustfmt::skip]
+    impl S3<bool> { // $ item=S3 item=bool
+        fn f1() -> bool { // $ item=bool
+            true
+        } // S3boolf1
+    }
+
+    #[rustfmt::skip]
+    fn foo() {
+        S3::<i32>:: // $ item=i32
+        Assoc(); // $ item=S3i32AssocFunc $ SPURIOUS: item=S3boolAssocFunc
+
+        S3::<bool>:: // $ item=bool
+        f1(); // $ item=S3boolf1 $ SPURIOUS: item=S3i32f1
+        
+        S3::<i32>:: // $ item=i32
+        f1(); // $ item=S3i32f1 $ SPURIOUS: item=S3boolf1
+    }
 }
 
 mod trait_visibility {
@@ -805,7 +910,7 @@ mod patterns {
             N0ne => // local variable
                 N0ne
         }
-    } // patterns::test 
+    } // patterns::test
 
     #[rustfmt::skip]
     fn test2() -> Option<i32> { // $ item=Option $ item=i32
