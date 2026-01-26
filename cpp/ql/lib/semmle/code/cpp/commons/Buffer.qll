@@ -62,11 +62,13 @@ private Class getRootType(FieldAccess fa) {
  * unspecified type of `v` is a `ReferenceType`.
  */
 private int getVariableSize(Variable v) {
-  exists(Type t |
-    t = v.getUnspecifiedType() and
-    not t instanceof ReferenceType and
-    result = t.getSize()
-  )
+  result =
+    unique(Type t |
+      t = v.getUnspecifiedType() and
+      not t instanceof ReferenceType
+    |
+      t.getSize()
+    )
 }
 
 /**
