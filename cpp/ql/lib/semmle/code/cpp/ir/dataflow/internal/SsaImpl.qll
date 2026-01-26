@@ -432,23 +432,7 @@ private class DirectUseImpl extends UseImpl, TDirectUseImpl {
   override string toString() { result = "Use of " + this.getSourceVariable() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    // See the comment in `ssa0`'s `OperandBasedUse` for an explanation of this
-    // predicate's implementation.
-    if this.getBase().getAst() = any(Cpp::PostfixCrementOperation c).getOperand()
-    then
-      exists(Operand op, int indirection, Instruction base |
-        indirection = this.getIndirection() and
-        base = this.getBase() and
-        op =
-          min(Operand cand, int i |
-            isUse(_, cand, base, indirection, indirectionIndex) and
-            block.getInstruction(i) = cand.getUse()
-          |
-            cand order by i
-          ) and
-        block.getInstruction(index) = op.getUse()
-      )
-    else operand.getUse() = block.getInstruction(index)
+    operand.getUse() = block.getInstruction(index)
   }
 
   private BaseSourceVariableInstruction getBase() { isUse(_, operand, result, _, indirectionIndex) }

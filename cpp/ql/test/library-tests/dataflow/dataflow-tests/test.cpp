@@ -1257,11 +1257,11 @@ namespace globals_without_explicit_def {
 void crement_test1() {
   int x = source();
   sink(x++); // $ ir ast
-  sink(x);
+  sink(x); // $ SPURIOUS: ir
 
   x = source();
   sink(x--); // $ ir ast
-  sink(x);
+  sink(x); // $ SPURIOUS: ir
 
   x = source();
   sink(++x); // $ SPURIOUS: ast
@@ -1283,7 +1283,7 @@ void crement_test1() {
 void crement_test2(bool b, int y) {
   int x = source();
   sink(b ? x++ : x--); // $ ir ast
-  sink(x);
+  sink(x); // $ SPURIOUS: ir
 
   x = source();
   sink((b ? x : y)++); // $ ast MISSING: ir
@@ -1307,7 +1307,7 @@ void crement_test2(bool b, int y) {
 
   x = source();
   sink((long)x++); // $ ir ast
-  sink(x);
+  sink(x); // $ SPURIOUS: ir
 
   x = source();
   sink(b ? (long)x++ : 0); // $ ir ast
