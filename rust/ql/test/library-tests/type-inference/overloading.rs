@@ -359,3 +359,44 @@ mod default_type_args {
         }
     }
 }
+
+mod from_default {
+    #[derive(Default)]
+    struct S;
+
+    fn f() -> S {
+        let x = Default::default(); // $ target=default type=x:S
+        From::from(x) // $ target=from
+    }
+
+    struct S1;
+
+    struct S2;
+
+    impl From<S> for S1 {
+        // from1
+        fn from(_: S) -> Self {
+            S1
+        }
+    }
+
+    impl From<S2> for S1 {
+        // from2
+        fn from(_: S2) -> Self {
+            S1
+        }
+    }
+
+    impl From<S> for S2 {
+        // from3
+        fn from(_: S) -> Self {
+            S2
+        }
+    }
+
+    fn g(b: bool) -> S1 {
+        let s = if b { S } else { Default::default() }; // $ target=default type=s:S
+        let x = From::from(s); // $ target=from1 type=x:S1
+        x
+    }
+}

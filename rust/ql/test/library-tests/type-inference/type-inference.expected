@@ -3965,6 +3965,16 @@ inferCertainType
 | overloading.rs:353:21:353:47 | ...::f(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:354:17:354:17 | x |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:354:21:354:61 | ...::f(...) |  | {EXTERNAL LOCATION} | i64 |
+| overloading.rs:367:17:370:5 | { ... } |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:378:17:378:17 | _ |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:378:31:380:9 | { ... } |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:385:17:385:17 | _ |  | overloading.rs:374:5:374:14 | S2 |
+| overloading.rs:385:32:387:9 | { ... } |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:392:17:392:17 | _ |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:392:31:394:9 | { ... } |  | overloading.rs:374:5:374:14 | S2 |
+| overloading.rs:397:10:397:10 | b |  | {EXTERNAL LOCATION} | bool |
+| overloading.rs:397:25:401:5 | { ... } |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:398:20:398:20 | b |  | {EXTERNAL LOCATION} | bool |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:15:5:18:5 | if ... {...} |  | {EXTERNAL LOCATION} | () |
@@ -12463,6 +12473,33 @@ inferType
 | overloading.rs:358:13:358:16 | S(...) | T | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:358:13:358:16 | S(...) | T | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:358:15:358:15 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| overloading.rs:367:17:370:5 | { ... } |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:368:13:368:13 | x |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:368:17:368:34 | ...::default(...) |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:369:9:369:21 | ...::from(...) |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:369:20:369:20 | x |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:378:17:378:17 | _ |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:378:31:380:9 | { ... } |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:379:13:379:14 | S1 |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:385:17:385:17 | _ |  | overloading.rs:374:5:374:14 | S2 |
+| overloading.rs:385:32:387:9 | { ... } |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:386:13:386:14 | S1 |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:392:17:392:17 | _ |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:392:31:394:9 | { ... } |  | overloading.rs:374:5:374:14 | S2 |
+| overloading.rs:393:13:393:14 | S2 |  | overloading.rs:374:5:374:14 | S2 |
+| overloading.rs:397:10:397:10 | b |  | {EXTERNAL LOCATION} | bool |
+| overloading.rs:397:25:401:5 | { ... } |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:398:13:398:13 | s |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:398:17:398:54 | if b {...} else {...} |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:398:20:398:20 | b |  | {EXTERNAL LOCATION} | bool |
+| overloading.rs:398:22:398:26 | { ... } |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:398:24:398:24 | S |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:398:33:398:54 | { ... } |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:398:35:398:52 | ...::default(...) |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:399:13:399:13 | x |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:399:17:399:29 | ...::from(...) |  | overloading.rs:372:5:372:14 | S1 |
+| overloading.rs:399:28:399:28 | s |  | overloading.rs:364:5:365:13 | S |
+| overloading.rs:400:9:400:9 | x |  | overloading.rs:372:5:372:14 | S1 |
 | pattern_matching.rs:13:26:133:1 | { ... } |  | {EXTERNAL LOCATION} | Option |
 | pattern_matching.rs:13:26:133:1 | { ... } | T | {EXTERNAL LOCATION} | () |
 | pattern_matching.rs:14:9:14:13 | value |  | {EXTERNAL LOCATION} | Option |
