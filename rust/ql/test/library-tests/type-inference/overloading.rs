@@ -55,18 +55,18 @@ mod method_call_trait_path_disambig {
 
         let _b1 = FirstTrait::method(&s); // $ type=_b1:bool target=FirstTrait::method
         let _b2 = <S as FirstTrait>::method(&s); // $ type=_b2:bool target=FirstTrait::method
-        let _b3 = <S as FirstTrait>::method(&Default::default()); // $ type=_b3:bool $ MISSING: target=FirstTrait::method target=default
+        let _b3 = <S as FirstTrait>::method(&Default::default()); // $ type=_b3:bool target=FirstTrait::method target=default
         let _b4 = <S as FirstTrait>::method2(&s); // $ type=_b4:bool target=S::method2
-        let _b5 = <S as FirstTrait>::method2(&Default::default()); // $ type=_b5:bool $ MISSING: target=S::method2 target=default
+        let _b5 = <S as FirstTrait>::method2(&Default::default()); // $ type=_b5:bool target=S::method2 target=default
 
         let _n1 = SecondTrait::method(&s); // $ type=_n1:i64 target=SecondTrait::method
         let _n2 = <S as SecondTrait>::method(&s); // $ type=_n2:i64 target=SecondTrait::method
-        let _n3 = <S as SecondTrait>::method(&Default::default()); // $ type=_n3:i64 $ MISSING: target=SecondTrait::method target=default
+        let _n3 = <S as SecondTrait>::method(&Default::default()); // $ type=_n3:i64 target=SecondTrait::method target=default
         let _n4 = <S as SecondTrait>::method2(&s); // $ type=_n4:i64 target=S::method2
-        let _n5 = <S as SecondTrait>::method2(&Default::default()); // $ type=_n5:i64 $ MISSING: target=S::method2 target=default
+        let _n5 = <S as SecondTrait>::method2(&Default::default()); // $ type=_n5:i64 target=S::method2 target=default
 
-        <S as FirstTrait>::function(); // $ MISSING: target=S::function
-        <S2 as FirstTrait>::function(); // $ MISSING: target=S2::function
+        <S as FirstTrait>::function(); // $ target=S::function
+        <S2 as FirstTrait>::function(); // $ target=S2::function
     }
 }
 
@@ -263,10 +263,10 @@ mod impl_overlap2 {
     fn f() {
         let x = 0;
         let y = x.f(0i32); // $ target=f1
-        let z: i32 = x.f(Default::default()); // $ MISSING: target=f1 target=default
+        let z: i32 = x.f(Default::default()); // $ target=f1 target=default
         let z = x.f(0i64); // $ target=f2
-        let z: i64 = x.f(Default::default()); // $ MISSING: target=f2 target=default
-        let z: i64 = x.g(0i32); // $ target=g4 $ SPURIOUS: target=g3
+        let z: i64 = x.f(Default::default()); // $ target=f2 target=default
+        let z: i64 = x.g(0i32); // $ target=g4
     }
 }
 
@@ -312,12 +312,12 @@ mod impl_overlap3 {
     }
 
     fn f() {
-        S::<i32>::Assoc(); // $ target=S3i32AssocFunc $ SPURIOUS: target=S3boolAssocFunc
-        S::<bool>::Assoc(); // $ target=S3boolAssocFunc $ SPURIOUS: target=S3i32AssocFunc
+        S::<i32>::Assoc(); // $ target=S3i32AssocFunc
+        S::<bool>::Assoc(); // $ target=S3boolAssocFunc
 
         // `S::f(true)` results in "multiple applicable items in scope", even though the argument is actually enough to disambiguate
-        S::<bool>::f(true); // $ target=S3boolf $ SPURIOUS: target=S3i32f
-        S::<i32>::f(0); // $ target=S3i32f $ SPURIOUS: target=S3boolf
+        S::<bool>::f(true); // $ target=S3boolf
+        S::<i32>::f(0); // $ target=S3i32f
     }
 }
 
@@ -350,7 +350,7 @@ mod default_type_args {
         type AssocType = S;
 
         fn g(self) -> S {
-            let x = S::f(S(Default::default())); // $ type=x:i64 $ MISSING: target=f target=default
+            let x = S::f(S(Default::default())); // $ target=f target=default type=x:i64
             let x = Self::AssocType::f(S(Default::default())); // $ target=f target=default type=x:i64
             let x = S::<bool>::g(S(Default::default())); // $ target=g target=default type=x:bool
             let x = S::<i64>::g(S(Default::default())); // $ target=g target=default type=x:i64

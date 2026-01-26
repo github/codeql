@@ -564,13 +564,13 @@ mod m16 {
     #[rustfmt::skip]
     fn foo() {
         S3::<i32>:: // $ item=i32
-        Assoc(); // $ item=S3i32AssocFunc $ SPURIOUS: item=S3boolAssocFunc
+        Assoc(); // $ item=S3i32AssocFunc $ SPURIOUS: item=S3boolAssocFunc (the spurious target is later filtered away by type inference)
 
         S3::<bool>:: // $ item=bool
-        f1(); // $ item=S3boolf1 $ SPURIOUS: item=S3i32f1
+        f1(); // $ item=S3boolf1 $ SPURIOUS: item=S3i32f1 (the spurious target is later filtered away by type inference)
         
         S3::<i32>:: // $ item=i32
-        f1(); // $ item=S3i32f1 $ SPURIOUS: item=S3boolf1
+        f1(); // $ item=S3i32f1 $ SPURIOUS: item=S3boolf1 (the spurious target is later filtered away by type inference)
     }
 }
 

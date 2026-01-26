@@ -115,7 +115,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if this list starts with `e`, followed by `suffix`. */
     bindingset[this]
     predicate isCons(Element e, UnboundList suffix) {
-      exists(string regexp | regexp = "([0-9]+)\\.(.*)" |
+      exists(string regexp | regexp = "^([0-9]+)\\.(.*)$" |
         e = decode(this.regexpCapture(regexp, 1)) and
         suffix = this.regexpCapture(regexp, 2)
       )
@@ -124,7 +124,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if this list starts with `prefix`, followed by `e`. */
     bindingset[this]
     predicate isSnoc(UnboundList prefix, Element e) {
-      exists(string regexp | regexp = "(|.+\\.)([0-9]+)\\." |
+      exists(string regexp | regexp = "^(|.+\\.)([0-9]+)\\.$" |
         prefix = this.regexpCapture(regexp, 1) and
         e = decode(this.regexpCapture(regexp, 2))
       )
@@ -133,6 +133,33 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Gets the head of this list, if any. */
     bindingset[this]
     Element getHead() { result = this.getElement(0) }
+
+    /**
+     * Gets the `i`th prefix of this list, if any.
+     *
+     * Only holds when this list is non-empty, and only returns proper prefixes.
+     */
+    bindingset[this]
+    UnboundList getPrefix(int i) {
+      exists(string regexp, int occurrenceOffset | regexp = "[0-9]+\\." |
+        exists(this.regexpFind(regexp, i, occurrenceOffset)) and
+        result = this.prefix(occurrenceOffset)
+      )
+    }
+
+    /**
+     * Gets a prefix of this list, if any.
+     *
+     * Only holds when this list is non-empty, and only returns proper prefixes.
+     */
+    bindingset[this]
+    UnboundList getAPrefix() { result = this.getPrefix(_) }
+
+    /**
+     * Gets a prefix of this list, including the list itself.
+     */
+    bindingset[this]
+    UnboundList getAPrefixOrSelf() { result = [this, this.getAPrefix()] }
   }
 
   /** Provides predicates for constructing `UnboundList`s. */

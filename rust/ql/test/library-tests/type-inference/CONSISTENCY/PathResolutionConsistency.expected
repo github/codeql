@@ -1,7 +1,4 @@
 multipleResolvedTargets
+| main.rs:2223:9:2223:31 | ... .my_add(...) |
+| main.rs:2225:9:2225:29 | ... .my_add(...) |
 | main.rs:2723:13:2723:17 | x.f() |
-| overloading.rs:269:22:269:30 | x.g(...) |
-| overloading.rs:315:9:315:25 | ...::Assoc(...) |
-| overloading.rs:316:9:316:26 | ...::Assoc(...) |
-| overloading.rs:319:9:319:26 | ...::f(...) |
-| overloading.rs:320:9:320:22 | ...::f(...) |

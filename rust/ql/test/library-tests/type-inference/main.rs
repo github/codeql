@@ -2220,9 +2220,9 @@ mod method_determined_by_argument_type {
         x.my_add(&5i64); // $ target=MyAdd<&i64>::my_add
         x.my_add(true); // $ target=MyAdd<bool>::my_add
 
-        S(1i64).my_add(S(2i64)); // $ target=S::my_add1
-        S(1i64).my_add(3i64); // $ MISSING: target=S::my_add2
-        S(1i64).my_add(&3i64); // $ target=S::my_add3
+        S(1i64).my_add(S(2i64)); // $ target=S::my_add1 $ SPURIOUS: target=S::my_add2 -- we do not check the `T: MyAdd` constraint yet
+        S(1i64).my_add(3i64); // $ target=S::my_add2
+        S(1i64).my_add(&3i64); // $ target=S::my_add3 $ SPURIOUS: target=S::my_add2 -- we do not check the `T: MyAdd` constraint yet
 
         let x = i64::my_from(73i64); // $ target=MyFrom<i64>::my_from
         let y = i64::my_from(true); // $ target=MyFrom<bool>::my_from

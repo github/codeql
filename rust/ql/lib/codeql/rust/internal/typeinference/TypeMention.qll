@@ -210,8 +210,6 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       // If a type argument is not given in the path, then we use the default for
       // the type parameter if one exists for the type.
       not exists(getPathTypeArgument(this, i)) and
-      // Defaults only apply to type mentions in type annotations
-      this = any(PathTypeRepr ptp).getPath().getQualifier*() and
       exists(Type ty, TypePath prefix |
         ty = this.resolveRootType().getTypeParameterDefault(i).(TypeMention).getTypeAt(prefix) and
         if not ty = TSelfTypeParameter(resolved)
@@ -226,9 +224,34 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       )
     }
 
+    private predicate isInTypeAnnotation() {
+      this = any(PathTypeRepr ptp).getPath().getQualifier*()
+    }
+
+    /**
+     * Gets the default type for the type parameter `tp` at `path`, if any.
+     *
+     * This predicate is restricted to mentions that are _not_ part of a type
+     * annotation, such as a qualifier in a call, `Vec::new()`, where the
+     * default type for type parameter `A` of `Vec` is `Global`.
+     *
+     * In these cases, whether or not the default type actually applies may
+     * depend on the types of arguments.
+     */
+    pragma[nomagic]
+    Type getDefaultTypeForTypeParameterInNonAnnotationAt(TypeParameter tp, TypePath path) {
+      not this.isInTypeAnnotation() and
+      exists(int i |
+        result = this.getDefaultPositionalTypeArgument(pragma[only_bind_into](i), path) and
+        tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
+      )
+    }
+
     private Type getPositionalTypeArgument(int i, TypePath path) {
       result = getPathTypeArgument(this, i).getTypeAt(path)
       or
+      // Defaults only apply to type mentions in type annotations
+      this.isInTypeAnnotation() and
       result = this.getDefaultPositionalTypeArgument(i, path)
     }
 
@@ -299,7 +322,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
 
     /** Gets the type mention in this path for the type parameter `tp`, if any. */
     pragma[nomagic]
-    private TypeMention getTypeMentionImplForTypeParameter(TypeParameter tp) {
+    private TypeMention getTypeMentionForAssociatedTypeTypeParameter(AssociatedTypeTypeParameter tp) {
       exists(TypeAlias alias, string name |
         result = this.getAssocTypeArg(name) and
         tp = TAssociatedTypeTypeParameter(resolved, alias) and
@@ -352,7 +375,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       exists(TypeParameter tp, TypePath suffix | typePath = TypePath::cons(tp, suffix) |
         result = this.getTypeForTypeParameterAt(tp, suffix)
         or
-        result = this.getTypeMentionImplForTypeParameter(tp).getTypeAt(suffix)
+        result = this.getTypeMentionForAssociatedTypeTypeParameter(tp).getTypeAt(suffix)
       )
       or
       // When the path refers to a trait, then the implicit `Self` type parameter

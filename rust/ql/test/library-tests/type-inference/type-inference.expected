@@ -10712,6 +10712,7 @@ inferType
 | main.rs:2223:26:2223:29 | 2i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2224:9:2224:15 | S(...) |  | main.rs:2107:5:2107:19 | S |
 | main.rs:2224:9:2224:15 | S(...) | T | {EXTERNAL LOCATION} | i64 |
+| main.rs:2224:9:2224:28 | ... .my_add(...) |  | main.rs:2107:5:2107:19 | S |
 | main.rs:2224:11:2224:14 | 1i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2224:24:2224:27 | 3i64 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2225:9:2225:15 | S(...) |  | main.rs:2107:5:2107:19 | S |
@@ -12079,6 +12080,8 @@ inferType
 | overloading.rs:58:13:58:15 | _b3 |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:58:19:58:64 | ...::method(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:58:45:58:63 | &... |  | {EXTERNAL LOCATION} | & |
+| overloading.rs:58:45:58:63 | &... | TRef | overloading.rs:20:5:21:13 | S |
+| overloading.rs:58:46:58:63 | ...::default(...) |  | overloading.rs:20:5:21:13 | S |
 | overloading.rs:59:13:59:15 | _b4 |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:59:19:59:48 | ...::method2(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:59:46:59:47 | &s |  | {EXTERNAL LOCATION} | & |
@@ -12087,6 +12090,8 @@ inferType
 | overloading.rs:60:13:60:15 | _b5 |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:60:19:60:65 | ...::method2(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:60:46:60:64 | &... |  | {EXTERNAL LOCATION} | & |
+| overloading.rs:60:46:60:64 | &... | TRef | overloading.rs:20:5:21:13 | S |
+| overloading.rs:60:47:60:64 | ...::default(...) |  | overloading.rs:20:5:21:13 | S |
 | overloading.rs:62:13:62:15 | _n1 |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:62:19:62:41 | ...::method(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:62:39:62:40 | &s |  | {EXTERNAL LOCATION} | & |
@@ -12100,6 +12105,8 @@ inferType
 | overloading.rs:64:13:64:15 | _n3 |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:64:19:64:65 | ...::method(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:64:46:64:64 | &... |  | {EXTERNAL LOCATION} | & |
+| overloading.rs:64:46:64:64 | &... | TRef | overloading.rs:20:5:21:13 | S |
+| overloading.rs:64:47:64:64 | ...::default(...) |  | overloading.rs:20:5:21:13 | S |
 | overloading.rs:65:13:65:15 | _n4 |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:65:19:65:49 | ...::method2(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:65:47:65:48 | &s |  | {EXTERNAL LOCATION} | & |
@@ -12108,6 +12115,8 @@ inferType
 | overloading.rs:66:13:66:15 | _n5 |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:66:19:66:66 | ...::method2(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:66:47:66:65 | &... |  | {EXTERNAL LOCATION} | & |
+| overloading.rs:66:47:66:65 | &... | TRef | overloading.rs:20:5:21:13 | S |
+| overloading.rs:66:48:66:65 | ...::default(...) |  | overloading.rs:20:5:21:13 | S |
 | overloading.rs:68:9:68:37 | ...::function(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:69:9:69:38 | ...::function(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:78:26:78:29 | SelfParam |  | overloading.rs:77:5:81:5 | Self [trait OverlappingTrait] |
@@ -12372,6 +12381,7 @@ inferType
 | overloading.rs:266:13:266:13 | z |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:266:22:266:22 | x |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:266:22:266:44 | x.f(...) |  | {EXTERNAL LOCATION} | i32 |
+| overloading.rs:266:26:266:43 | ...::default(...) |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:267:13:267:13 | z |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:267:17:267:17 | x |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:267:17:267:25 | x.f(...) |  | {EXTERNAL LOCATION} | i64 |
@@ -12379,9 +12389,9 @@ inferType
 | overloading.rs:268:13:268:13 | z |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:268:22:268:22 | x |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:268:22:268:44 | x.f(...) |  | {EXTERNAL LOCATION} | i64 |
+| overloading.rs:268:26:268:43 | ...::default(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:269:13:269:13 | z |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:269:22:269:22 | x |  | {EXTERNAL LOCATION} | i32 |
-| overloading.rs:269:22:269:30 | x.g(...) |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:269:22:269:30 | x.g(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:269:26:269:29 | 0i32 |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:286:35:288:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
@@ -12395,14 +12405,10 @@ inferType
 | overloading.rs:309:31:311:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:310:13:310:16 | true |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:314:12:321:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| overloading.rs:315:9:315:25 | ...::Assoc(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:315:9:315:25 | ...::Assoc(...) |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:316:9:316:26 | ...::Assoc(...) |  | {EXTERNAL LOCATION} | bool |
-| overloading.rs:316:9:316:26 | ...::Assoc(...) |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:319:9:319:26 | ...::f(...) |  | {EXTERNAL LOCATION} | bool |
-| overloading.rs:319:9:319:26 | ...::f(...) |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:319:22:319:25 | true |  | {EXTERNAL LOCATION} | bool |
-| overloading.rs:320:9:320:22 | ...::f(...) |  | {EXTERNAL LOCATION} | bool |
 | overloading.rs:320:9:320:22 | ...::f(...) |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:320:21:320:21 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | overloading.rs:330:14:330:17 | SelfParam |  | overloading.rs:327:5:331:5 | Self [trait MyTrait] |
@@ -12431,6 +12437,8 @@ inferType
 | overloading.rs:353:17:353:17 | x |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:353:21:353:47 | ...::f(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:353:26:353:46 | S(...) |  | overloading.rs:325:5:325:25 | S |
+| overloading.rs:353:26:353:46 | S(...) | T | {EXTERNAL LOCATION} | i64 |
+| overloading.rs:353:28:353:45 | ...::default(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:354:17:354:17 | x |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:354:21:354:61 | ...::f(...) |  | {EXTERNAL LOCATION} | i64 |
 | overloading.rs:354:40:354:60 | S(...) |  | overloading.rs:325:5:325:25 | S |
