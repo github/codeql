@@ -403,6 +403,33 @@ private module Cached {
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
     }
+
+    bindingset[this]
+    private signature class ParamSig;
+
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(
+        Cfg::CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch, P param
+      );
+    }
+
+    overlay[global]
+    cached // nothing is actually cached
+    module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
+        DataFlowIntegrationInput::GuardValue branch, P param
+      ) {
+        guardChecks(g, e, branch, param)
+      }
+
+      private Node getABarrierNodeImpl(P param) {
+        result =
+          DataFlowIntegrationImpl::BarrierGuardWithState<P, guardChecksAdjTypes/4>::getABarrierNode(param)
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/1;
+    }
   }
 }
 

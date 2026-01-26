@@ -1122,6 +1122,6 @@ module TaintedPath {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "path-injection") }
   }
 }

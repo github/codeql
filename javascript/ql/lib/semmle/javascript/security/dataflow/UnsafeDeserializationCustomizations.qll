@@ -67,6 +67,6 @@ module UnsafeDeserialization {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("unsafe-deserialization").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "unsafe-deserialization") }
   }
 }

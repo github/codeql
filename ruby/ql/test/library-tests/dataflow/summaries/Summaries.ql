@@ -80,7 +80,7 @@ module CustomConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     DefaultFlowConfig::isSink(sink)
     or
-    sink = ModelOutput::getASinkNode("test-sink").asSink()
+    ModelOutput::sinkNode(sink, "test-sink")
   }
 }
 

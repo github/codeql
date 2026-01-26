@@ -30,7 +30,7 @@ import Shared::ModelOutput as ModelOutput
  * A remote flow source originating from a MaD source row.
  */
 private class RemoteFlowSourceFromMaD extends RemoteFlowSource {
-  RemoteFlowSourceFromMaD() { this = ModelOutput::getASourceNode("remote").asSource() }
+  RemoteFlowSourceFromMaD() { ModelOutput::sourceNode(this, "remote") }
 
   override string getSourceType() { result = "Remote flow" }
 }
@@ -39,9 +39,9 @@ private class RemoteFlowSourceFromMaD extends RemoteFlowSource {
  * A threat-model flow source originating from a data extension.
  */
 private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Range {
-  ThreatModelSourceFromDataExtension() { this = ModelOutput::getASourceNode(_).asSource() }
+  ThreatModelSourceFromDataExtension() { ModelOutput::sourceNode(this, _) }
 
-  override string getThreatModel() { this = ModelOutput::getASourceNode(result).asSource() }
+  override string getThreatModel() { ModelOutput::sourceNode(this, result) }
 
   override string getSourceType() {
     result = "Source node (" + this.getThreatModel() + ") [from data-extension]"

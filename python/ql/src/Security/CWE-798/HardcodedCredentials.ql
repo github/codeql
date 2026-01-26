@@ -83,7 +83,7 @@ class CredentialSink extends DataFlow::Node {
   CredentialSink() {
     exists(string s | s.matches("credentials-%") |
       // Actual sink-type will be things like `credentials-password` or `credentials-username`
-      this = ModelOutput::getASinkNode(s).asSink()
+      ModelOutput::sinkNode(this, s)
     )
     or
     exists(string name |

@@ -78,7 +78,7 @@ module LogInjection {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "log-injection") }
   }
 
   /**

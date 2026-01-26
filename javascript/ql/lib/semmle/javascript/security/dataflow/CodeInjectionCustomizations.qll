@@ -436,6 +436,6 @@ module CodeInjection {
   class JsonStringifySanitizer extends Sanitizer, JsonStringifyCall { }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("code-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "code-injection") }
   }
 }
