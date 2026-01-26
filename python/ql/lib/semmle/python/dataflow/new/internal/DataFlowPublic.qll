@@ -339,27 +339,51 @@ abstract class ArgumentNode extends Node {
   final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
+/** Gets an overapproximation of the argument nodes that are included in `getCallArg`. */
+Node getCallArgApproximation() {
+  // pre-update nodes for calls
+  result = any(CallCfgNode c).(PostUpdateNode).getPreUpdateNode()
+  or
+  // self parameters in methods
+  exists(Class c | result.asExpr() = c.getAMethod().getArg(0))
+  or
+  // the object part of an attribute expression (which might be a bound method)
+  result.asCfgNode() = any(AttrNode a).getObject()
+  or
+  // the function part of any call
+  result.asCfgNode() = any(CallNode c).getFunction()
+}
+
+/** Gets the extracted argument nodes that do not rely on `getCallArg`. */
+private Node otherArgs() {
+  // for potential summaries we allow all normal call arguments
+  normalCallArg(_, result, _)
+  or
+  // and self arguments
+  result.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+  or
+  // for comprehensions, we allow the synthetic `iterable` argument
+  result.asExpr() = any(Comp c).getIterable()
+}
+
 /**
  * A data flow node that represents a call argument found in the source code.
  */
 class ExtractedArgumentNode extends ArgumentNode {
   ExtractedArgumentNode() {
-    // for resolved calls, we need to allow all argument nodes
-    getCallArg(_, _, _, this, _)
+    this = getCallArgApproximation()
     or
-    // for potential summaries we allow all normal call arguments
-    normalCallArg(_, this, _)
-    or
-    // and self arguments
-    this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
-    or
-    // for comprehensions, we allow the synthetic `iterable` argument
-    this.asExpr() = any(Comp c).getIterable()
+    this = otherArgs()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this = call.getArgument(pos) and
-    call instanceof ExtractedDataFlowCall
+    call instanceof ExtractedDataFlowCall and
+    (
+      this = otherArgs()
+      or
+      this = getCallArgApproximation() and getCallArg(_, _, _, this, _)
+    )
   }
 }
 
