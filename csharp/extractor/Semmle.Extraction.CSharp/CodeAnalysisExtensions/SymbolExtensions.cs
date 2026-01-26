@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
+using Semmle.Extraction.CSharp.Entities.Statements;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -631,8 +632,30 @@ namespace Semmle.Extraction.CSharp
         /// Return true if this method is a compiler-generated extension method.
         /// </summary>
         public static bool IsCompilerGeneratedExtensionMethod(this IMethodSymbol method) =>
-            method.IsImplicitlyDeclared && method.IsExtensionMethod;
+            method.TryGetExtensionMethod(out _);
 
+        /// <summary>
+        /// Returns true if this method is a compiler-generated extension method,
+        /// and outputs the original extension method declaration.
+        /// </summary>
+        public static bool TryGetExtensionMethod(this IMethodSymbol method, out IMethodSymbol? declaration)
+        {
+            declaration = null;
+            if (method.IsImplicitlyDeclared && method.ContainingSymbol is INamedTypeSymbol containingType)
+            {
+                // Extension types are declared within the same type as the generated
+                // extension method implementation.
+                var extensions = containingType.GetMembers()
+                    .OfType<INamedTypeSymbol>()
+                    .Where(t => t.IsExtension);
+                // Find the original extension method that maps to this implementation (if any).
+                declaration = extensions.SelectMany(e => e.GetMembers())
+                    .OfType<IMethodSymbol>()
+                    .FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.AssociatedExtensionImplementation, method));
+                return declaration is not null;
+            }
+            return false;
+        }
         /// <summary>
         /// Gets the base type of `symbol`. Unlike `symbol.BaseType`, this excludes effective base
         /// types of type parameters as well as `object` base types.

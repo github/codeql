@@ -124,19 +124,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     var method = symbol as IMethodSymbol;
                     // Case for compiler-generated extension methods.
                     if (method is not null &&
-                        method.IsCompilerGeneratedExtensionMethod() &&
-                        method.ContainingSymbol is INamedTypeSymbol containingType)
+                        method.TryGetExtensionMethod(out var original))
                     {
-                        // Extension types are declared within the same type as the generated
-                        // extension method implementation.
-                        var extensions = containingType.GetMembers()
-                            .OfType<INamedTypeSymbol>()
-                            .Where(t => t.IsExtension);
-                        // Find the original extension method that maps to this implementation (if any).
-                        var original = extensions.SelectMany(e => e.GetMembers())
-                            .OfType<IMethodSymbol>()
-                            .FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.AssociatedExtensionImplementation, method));
-                        return original ?? method;
+                        return original;
                     }
 
                     return method;
