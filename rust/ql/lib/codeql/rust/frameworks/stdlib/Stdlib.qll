@@ -1,5 +1,5 @@
 /**
- * Provides classes modeling security-relevant aspects of the standard libraries.
+ * Provides classes modeling relevant aspects of the standard libraries.
  */
 
 private import rust
@@ -10,7 +10,7 @@ private import codeql.rust.internal.PathResolution
 /**
  * A call to the `starts_with` method on a `Path`.
  */
-private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCallExpr {
+private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCall {
   StartswithCall() { this.getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with" }
 
   override predicate checks(Expr e, boolean branch) {
@@ -140,10 +140,7 @@ class FutureTrait extends Trait {
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]
-  TypeAlias getOutputType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Output"
-  }
+  TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
 }
 
 /**
@@ -160,10 +157,7 @@ class FnOnceTrait extends Trait {
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]
-  TypeAlias getOutputType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Output"
-  }
+  TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
 }
 
 /**
@@ -177,10 +171,7 @@ class IteratorTrait extends Trait {
 
   /** Gets the `Item` associated type. */
   pragma[nomagic]
-  TypeAlias getItemType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Item"
-  }
+  TypeAlias getItemType() { result = this.(TraitItemNode).getAssocItem("Item") }
 }
 
 /**
@@ -194,10 +185,7 @@ class IntoIteratorTrait extends Trait {
 
   /** Gets the `Item` associated type. */
   pragma[nomagic]
-  TypeAlias getItemType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Item"
-  }
+  TypeAlias getItemType() { result = this.(TraitItemNode).getAssocItem("Item") }
 }
 
 /**
@@ -224,10 +212,7 @@ class DerefTrait extends Trait {
 
   /** Gets the `Target` associated type. */
   pragma[nomagic]
-  TypeAlias getTargetType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Target"
-  }
+  TypeAlias getTargetType() { result = this.(TraitItemNode).getAssocItem("Target") }
 }
 
 /**
@@ -244,10 +229,20 @@ class IndexTrait extends Trait {
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]
-  TypeAlias getOutputType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Output"
-  }
+  TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
+}
+
+/**
+ * The [`IndexMut` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.IndexMut.html
+ */
+class IndexMutTrait extends Trait {
+  pragma[nomagic]
+  IndexMutTrait() { this.getCanonicalPath() = "core::ops::index::IndexMut" }
+
+  /** Gets the `index_mut` function. */
+  Function getIndexMutFunction() { result = this.(TraitItemNode).getAssocItem("index_mut") }
 }
 
 /**

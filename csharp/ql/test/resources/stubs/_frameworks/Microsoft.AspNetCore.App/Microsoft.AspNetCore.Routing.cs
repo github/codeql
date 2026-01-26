@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Routing, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Routing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -79,6 +79,10 @@ namespace Microsoft
                 public static TBuilder WithMetadata<TBuilder>(this TBuilder builder, params object[] items) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithName<TBuilder>(this TBuilder builder, string endpointName) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
                 public static TBuilder WithOrder<TBuilder>(this TBuilder builder, int order) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+            }
+            public static partial class ValidationEndpointConventionBuilderExtensions
+            {
+                public static TBuilder DisableValidation<TBuilder>(this TBuilder builder) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
             }
         }
         namespace Http

@@ -20,6 +20,9 @@ extensions:
       extensible: summaryModel
     data:
       - ["main::coerce", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["main::snd", "Argument[1]", "ReturnValue", "value", "manual"]
+      # Wrong generated model which should not take effect due to the manual model above
+      - ["main::snd", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["main::get_var_pos", "Argument[0].Field[main::MyPosEnum::A(0)]", "ReturnValue", "value", "manual"]
       - ["main::set_var_pos", "Argument[0]", "ReturnValue.Field[main::MyPosEnum::B(0)]", "value", "manual"]
       - ["main::get_var_field", "Argument[0].Field[main::MyFieldEnum::C::field_c]", "ReturnValue", "value", "manual"]
@@ -33,5 +36,6 @@ extensions:
       - ["main::apply", "Argument[0]", "Argument[1].Parameter[0]", "value", "manual"]
       - ["main::apply", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
       - ["main::get_async_number", "Argument[0]", "ReturnValue.Future", "value", "manual"]
-      - ["<_ as core::cmp::Ord>::max", "Argument[self]", "ReturnValue", "value", "manual"]
       - ["<_ as core::cmp::PartialOrd>::lt", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      # Overwrites the generic trait model for i32
+      - ["<core::i32 as core::cmp::PartialOrd>::lt", "Argument[0]", "ReturnValue", "taint", "manual"]

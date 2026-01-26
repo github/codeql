@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionObject m, FunctionObject n
 where m != n and m.getACallee() = n and n.getACallee() = m

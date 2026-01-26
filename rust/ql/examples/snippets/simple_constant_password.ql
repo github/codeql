@@ -30,11 +30,11 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     // `node` is an argument whose corresponding parameter name matches the pattern "pass%"
-    exists(CallExpr call, Function target, int argIndex, Variable v |
+    exists(Call call, Function target, int argIndex, Variable v |
       call.getStaticTarget() = target and
       v.getParameter() = target.getParam(argIndex) and
       v.getText().matches("pass%") and
-      call.getArg(argIndex) = node.asExpr()
+      call.getPositionalArgument(argIndex) = node.asExpr()
     )
   }
 }

@@ -14,7 +14,7 @@ predicate passwordVarAssign(Variable v, DataFlow::Node nd) {
 module PasswordFlow = DataFlow::Global<PasswordConfig>;
 
 query predicate test_query17(DataFlow::Node sink, string res) {
-  exists(Variable v | PasswordFlow::flow(_, sink) and passwordVarAssign(v, sink) |
+  exists(Variable v | PasswordFlow::flowTo(sink) and passwordVarAssign(v, sink) |
     res = "Password variable " + v.toString() + " is assigned a constant string."
   )
 }

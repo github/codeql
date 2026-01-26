@@ -1,9 +1,9 @@
 private import rust
-private import codeql.rust.internal.TypeInference
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeMention
-private import codeql.rust.elements.Call
+private import Type
+private import TypeAbstraction
+private import TypeMention
+private import TypeInference
 
 private newtype TFunctionPosition =
   TArgumentFunctionPosition(ArgumentPosition pos) or
@@ -195,6 +195,7 @@ class AssocFunctionType extends MkAssocFunctionType {
   Location getLocation() { result = this.getTypeMention().getLocation() }
 }
 
+pragma[nomagic]
 private Trait getALookupTrait(Type t) {
   result = t.(TypeParamTypeParameter).getTypeParam().(TypeParamItemNode).resolveABound()
   or
@@ -209,13 +210,37 @@ private Trait getALookupTrait(Type t) {
  * Gets the type obtained by substituting in relevant traits in which to do function
  * lookup, or `t` itself when no such trait exist.
  */
-bindingset[t]
+pragma[nomagic]
 Type substituteLookupTraits(Type t) {
   not exists(getALookupTrait(t)) and
   result = t
   or
   result = TTrait(getALookupTrait(t))
 }
+
+/**
+ * Gets the `n`th `substituteLookupTraits` type for `t`, per some arbitrary order.
+ */
+pragma[nomagic]
+Type getNthLookupType(Type t, int n) {
+  not exists(getALookupTrait(t)) and
+  result = t and
+  n = 0
+  or
+  result =
+    TTrait(rank[n + 1](Trait trait, int i |
+        trait = getALookupTrait(t) and
+        i = idOfTypeParameterAstNode(trait)
+      |
+        trait order by i
+      ))
+}
+
+/**
+ * Gets the index of the last `substituteLookupTraits` type for `t`.
+ */
+pragma[nomagic]
+int getLastLookupTypeIndex(Type t) { result = max(int n | exists(getNthLookupType(t, n))) }
 
 /**
  * A wrapper around `IsInstantiationOf` which ensures to substitute in lookup
@@ -257,8 +282,10 @@ module ArgIsInstantiationOf<
     ArgSubstIsInstantiationOf::isInstantiationOf(arg, i, constraint)
   }
 
-  predicate argIsNotInstantiationOf(Arg arg, ImplOrTraitItemNode i, AssocFunctionType constraint) {
-    ArgSubstIsInstantiationOf::isNotInstantiationOf(arg, i, constraint)
+  predicate argIsNotInstantiationOf(
+    Arg arg, ImplOrTraitItemNode i, AssocFunctionType constraint, TypePath path
+  ) {
+    ArgSubstIsInstantiationOf::isNotInstantiationOf(arg, i, constraint, path)
   }
 }
 

@@ -2,6 +2,9 @@ import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.ModuleKind
+private import semmle.python.types.Object
+private import semmle.python.types.ClassObject
+private import semmle.python.objects.ObjectAPI
 
 abstract class ModuleObject extends Object {
   ModuleValue theModule() {

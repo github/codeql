@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 ClassObject left_base(ClassObject type, ClassObject base) {
   exists(int i | i > 0 and type.getBaseType(i) = base and result = type.getBaseType(i - 1))

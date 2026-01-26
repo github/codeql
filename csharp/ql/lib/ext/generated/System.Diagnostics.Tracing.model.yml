@@ -4,6 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Diagnostics.Tracing", "DiagnosticCounter", False, "AddMetadata", "(System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Diagnostics.Tracing", "DiagnosticCounter", False, "AddMetadata", "(System.String,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventCounter", False, "ToString", "()", "", "Argument[this].Property[System.Diagnostics.Tracing.DiagnosticCounter.Name]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", False, "DisableEvents", "(System.Diagnostics.Tracing.EventSource)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", False, "EnableEvents", "(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
@@ -11,6 +13,9 @@ extensions:
       - ["System.Diagnostics.Tracing", "EventListener", False, "EnableEvents", "(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[3]", "Argument[0].SyntheticField[System.Diagnostics.Tracing.EventSource.m_deferredCommands].Property[System.Diagnostics.Tracing.EventCommandEventArgs.Arguments]", "value", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventListener", False, "add_EventSourceCreated", "(System.EventHandler<System.Diagnostics.Tracing.EventSourceCreatedEventArgs>)", "", "Argument[this]", "Argument[0].Parameter[0]", "value", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "EventSource", "(System.Diagnostics.Tracing.EventSourceSettings,System.String[])", "", "Argument[1]", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_traits]", "value", "dfc-generated"]
+      - ["System.Diagnostics.Tracing", "EventSource", False, "EventSource", "(System.String,System.Guid,System.Diagnostics.Tracing.EventSourceSettings,System.String[])", "", "Argument[0]", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_name]", "value", "dfc-generated"]
+      - ["System.Diagnostics.Tracing", "EventSource", False, "EventSource", "(System.String,System.Guid,System.Diagnostics.Tracing.EventSourceSettings,System.String[])", "", "Argument[1]", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_guid]", "value", "dfc-generated"]
+      - ["System.Diagnostics.Tracing", "EventSource", False, "EventSource", "(System.String,System.Guid,System.Diagnostics.Tracing.EventSourceSettings,System.String[])", "", "Argument[3]", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_traits]", "value", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "GenerateManifest", "(System.Type,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "GenerateManifest", "(System.Type,System.String,System.Diagnostics.Tracing.EventManifestOptions)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "GetTrait", "(System.String)", "", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_traits].Element", "ReturnValue", "value", "dfc-generated"]
@@ -19,8 +24,8 @@ extensions:
       - ["System.Diagnostics.Tracing", "EventSource", False, "add_EventCommandExecuted", "(System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs>)", "", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_deferredCommands]", "Argument[0].Parameter[1]", "value", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "add_EventCommandExecuted", "(System.EventHandler<System.Diagnostics.Tracing.EventCommandEventArgs>)", "", "Argument[this]", "Argument[0].Parameter[0]", "value", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", False, "get_ConstructionException", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Diagnostics.Tracing", "EventSource", False, "get_Guid", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Diagnostics.Tracing", "EventSource", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Diagnostics.Tracing", "EventSource", False, "get_Guid", "()", "", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_guid]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Diagnostics.Tracing", "EventSource", False, "get_Name", "()", "", "Argument[this].SyntheticField[System.Diagnostics.Tracing.EventSource.m_name]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Diagnostics.Tracing", "EventWrittenEventArgs", False, "get_ActivityId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventWrittenEventArgs", False, "get_RelatedActivityId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Tracing", "IncrementingEventCounter", False, "ToString", "()", "", "Argument[this].Property[System.Diagnostics.Tracing.DiagnosticCounter.Name]", "ReturnValue", "taint", "dfc-generated"]
@@ -30,7 +35,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Diagnostics.Tracing", "DiagnosticCounter", "AddMetadata", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "DiagnosticCounter", "Dispose", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "DiagnosticCounter", "get_EventSource", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "DiagnosticCounter", "get_Name", "()", "summary", "df-generated"]
@@ -55,6 +59,7 @@ extensions:
       - ["System.Diagnostics.Tracing", "EventSource", "EventSource", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", "EventSource", "(System.String,System.Diagnostics.Tracing.EventSourceSettings)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", "EventSource", "(System.String,System.Diagnostics.Tracing.EventSourceSettings,System.String[])", "summary", "df-generated"]
+      - ["System.Diagnostics.Tracing", "EventSource", "EventSource", "(System.String,System.Guid)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", "GetGuid", "(System.Type)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", "GetName", "(System.Type)", "summary", "df-generated"]
       - ["System.Diagnostics.Tracing", "EventSource", "GetSources", "()", "summary", "df-generated"]

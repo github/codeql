@@ -13,6 +13,7 @@ extensions:
       - ["System.Text.Json.Serialization", "JsonStringEnumConverter", False, "JsonStringEnumConverter", "(System.Text.Json.JsonNamingPolicy,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonStringEnumConverter<TEnum>", False, "JsonStringEnumConverter", "(System.Text.Json.JsonNamingPolicy,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.Json.Serialization", "JsonStringEnumMemberNameAttribute", False, "JsonStringEnumMemberNameAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Text.Json.Serialization.JsonStringEnumMemberNameAttribute.Name]", "value", "dfc-generated"]
+      - ["System.Text.Json.Serialization", "ReferenceResolver", True, "GetReference", "(System.Object,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -61,5 +62,4 @@ extensions:
       - ["System.Text.Json.Serialization", "ReferenceHandler", "get_Preserve", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "ReferenceHandler<T>", "CreateResolver", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "ReferenceResolver", "AddReference", "(System.String,System.Object)", "summary", "df-generated"]
-      - ["System.Text.Json.Serialization", "ReferenceResolver", "GetReference", "(System.Object,System.Boolean)", "summary", "df-generated"]
       - ["System.Text.Json.Serialization", "ReferenceResolver", "ResolveReference", "(System.String)", "summary", "df-generated"]

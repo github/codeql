@@ -5,7 +5,7 @@
  * @id rust/diagnostics/type-inference-consistency-counts
  */
 
-private import codeql.rust.internal.TypeInferenceConsistency as Consistency
+private import codeql.rust.internal.typeinference.TypeInferenceConsistency as Consistency
 
 // see also `rust/diagnostics/type-inference-consistency`, which lists the
 // individual inconsistency results.

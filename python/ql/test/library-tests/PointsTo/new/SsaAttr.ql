@@ -1,6 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo
-private import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 import Util
 
 from EssaVariable var, string name, ObjectInternal o, Context ctx

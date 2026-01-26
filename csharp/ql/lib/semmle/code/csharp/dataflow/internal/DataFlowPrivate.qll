@@ -178,12 +178,24 @@ private module ThisFlow {
     cfn = n.(InstanceParameterAccessPreNode).getUnderlyingControlFlowNode()
   }
 
+  private predicate primaryConstructorThisAccess(Node n, BasicBlock bb, int ppos) {
+    exists(Parameter p |
+      n.(PrimaryConstructorThisAccessPreNode).getParameter() = p and
+      bb.getCallable() = p.getCallable() and
+      ppos = p.getPosition()
+    )
+  }
+
+  private int numberOfPrimaryConstructorParameters(BasicBlock bb) {
+    result = strictcount(int primaryParamPos | primaryConstructorThisAccess(_, bb, primaryParamPos))
+  }
+
   private predicate thisAccess(Node n, BasicBlock bb, int i) {
     thisAccess(n, bb.getNode(i))
     or
-    exists(Parameter p | n.(PrimaryConstructorThisAccessPreNode).getParameter() = p |
-      bb.getCallable() = p.getCallable() and
-      i = p.getPosition() + 1
+    exists(int ppos |
+      primaryConstructorThisAccess(n, bb, ppos) and
+      i = ppos - numberOfPrimaryConstructorParameters(bb)
     )
     or
     exists(DataFlowCallable c, ControlFlow::BasicBlocks::EntryBlock entry |
@@ -195,8 +207,11 @@ private module ThisFlow {
         // entry definition. In case `c` doesn't have multiple bodies, the line below
         // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
         // will be in the entry block.
-        bb = succ.getBasicBlock() and
-        i = -1
+        bb = succ.getBasicBlock()
+      |
+        i = -1 - numberOfPrimaryConstructorParameters(bb)
+        or
+        not exists(numberOfPrimaryConstructorParameters(bb)) and i = -1
       )
     )
   }
@@ -3044,8 +3059,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     exists(AssignableDefinition def |
       def.getTargetAccess() = fa and
       nodeFrom.asExpr() = def.getSource() and
-      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeTo = TFlowInsensitiveFieldNode(f)
+    |
       nodeFrom.getEnclosingCallable() instanceof Constructor
+      or
+      nodeFrom.getEnclosingCallable() instanceof ObjectInitMethod
     )
     or
     nodeFrom = TFlowInsensitiveFieldNode(f) and
@@ -3079,6 +3097,9 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(DelegateSelfReferenceNode)
         .getCallable())
+  or
+  // Allow field initializers to access Primary Constructor parameters
+  p.getEnclosingCallable() instanceof ObjectInitMethod
 }
 
 /** An approximated `Content`. */

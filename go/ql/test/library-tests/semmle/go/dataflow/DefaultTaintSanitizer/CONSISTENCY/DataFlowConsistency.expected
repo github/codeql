@@ -1,0 +1,6 @@
+reverseRead
+| Builtin.go:7:2:7:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Builtin.go:13:2:13:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Builtin.go:22:2:22:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Builtin.go:32:2:32:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Builtin.go:39:2:39:10 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

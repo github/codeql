@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Identity, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Identity, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -143,11 +143,32 @@ namespace Microsoft
                 public Microsoft.Extensions.Options.OptionsBuilder<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> TwoFactorRememberMeCookie { get => throw null; set { } }
                 public Microsoft.Extensions.Options.OptionsBuilder<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions> TwoFactorUserIdCookie { get => throw null; set { } }
             }
+            public class IdentityPasskeyOptions
+            {
+                public string AttestationConveyancePreference { get => throw null; set { } }
+                public string AuthenticatorAttachment { get => throw null; set { } }
+                public System.TimeSpan AuthenticatorTimeout { get => throw null; set { } }
+                public int ChallengeSize { get => throw null; set { } }
+                public IdentityPasskeyOptions() => throw null;
+                public System.Func<int, bool> IsAllowedAlgorithm { get => throw null; set { } }
+                public string ResidentKeyRequirement { get => throw null; set { } }
+                public string ServerDomain { get => throw null; set { } }
+                public string UserVerificationRequirement { get => throw null; set { } }
+                public System.Func<Microsoft.AspNetCore.Identity.PasskeyOriginValidationContext, System.Threading.Tasks.ValueTask<bool>> ValidateOrigin { get => throw null; set { } }
+                public System.Func<Microsoft.AspNetCore.Identity.PasskeyAttestationStatementVerificationContext, System.Threading.Tasks.ValueTask<bool>> VerifyAttestationStatement { get => throw null; set { } }
+            }
             public interface IEmailSender<TUser> where TUser : class
             {
                 System.Threading.Tasks.Task SendConfirmationLinkAsync(TUser user, string email, string confirmationLink);
                 System.Threading.Tasks.Task SendPasswordResetCodeAsync(TUser user, string email, string resetCode);
                 System.Threading.Tasks.Task SendPasswordResetLinkAsync(TUser user, string email, string resetLink);
+            }
+            public interface IPasskeyHandler<TUser> where TUser : class
+            {
+                System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyCreationOptionsResult> MakeCreationOptionsAsync(Microsoft.AspNetCore.Identity.PasskeyUserEntity userEntity, Microsoft.AspNetCore.Http.HttpContext httpContext);
+                System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyRequestOptionsResult> MakeRequestOptionsAsync(TUser user, Microsoft.AspNetCore.Http.HttpContext httpContext);
+                System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyAssertionResult<TUser>> PerformAssertionAsync(Microsoft.AspNetCore.Identity.PasskeyAssertionContext context);
+                System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyAttestationResult> PerformAttestationAsync(Microsoft.AspNetCore.Identity.PasskeyAttestationContext context);
             }
             public interface ISecurityStampValidator
             {
@@ -155,6 +176,88 @@ namespace Microsoft
             }
             public interface ITwoFactorSecurityStampValidator : Microsoft.AspNetCore.Identity.ISecurityStampValidator
             {
+            }
+            public sealed class PasskeyAssertionContext
+            {
+                public string AssertionState { get => throw null; set { } }
+                public string CredentialJson { get => throw null; set { } }
+                public PasskeyAssertionContext() => throw null;
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
+            }
+            public sealed class PasskeyAssertionResult<TUser> where TUser : class
+            {
+                public Microsoft.AspNetCore.Identity.PasskeyException Failure { get => throw null; }
+                public Microsoft.AspNetCore.Identity.UserPasskeyInfo Passkey { get => throw null; }
+                public bool Succeeded { get => throw null; }
+                public TUser User { get => throw null; }
+            }
+            public static class PasskeyAssertionResult
+            {
+                public static Microsoft.AspNetCore.Identity.PasskeyAssertionResult<TUser> Fail<TUser>(Microsoft.AspNetCore.Identity.PasskeyException failure) where TUser : class => throw null;
+                public static Microsoft.AspNetCore.Identity.PasskeyAssertionResult<TUser> Success<TUser>(Microsoft.AspNetCore.Identity.UserPasskeyInfo passkey, TUser user) where TUser : class => throw null;
+            }
+            public sealed class PasskeyAttestationContext
+            {
+                public string AttestationState { get => throw null; set { } }
+                public string CredentialJson { get => throw null; set { } }
+                public PasskeyAttestationContext() => throw null;
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
+            }
+            public sealed class PasskeyAttestationResult
+            {
+                public static Microsoft.AspNetCore.Identity.PasskeyAttestationResult Fail(Microsoft.AspNetCore.Identity.PasskeyException failure) => throw null;
+                public Microsoft.AspNetCore.Identity.PasskeyException Failure { get => throw null; }
+                public Microsoft.AspNetCore.Identity.UserPasskeyInfo Passkey { get => throw null; }
+                public bool Succeeded { get => throw null; }
+                public static Microsoft.AspNetCore.Identity.PasskeyAttestationResult Success(Microsoft.AspNetCore.Identity.UserPasskeyInfo passkey, Microsoft.AspNetCore.Identity.PasskeyUserEntity userEntity) => throw null;
+                public Microsoft.AspNetCore.Identity.PasskeyUserEntity UserEntity { get => throw null; }
+            }
+            public sealed class PasskeyAttestationStatementVerificationContext
+            {
+                public System.ReadOnlyMemory<byte> AttestationObject { get => throw null; set { } }
+                public System.ReadOnlyMemory<byte> ClientDataHash { get => throw null; set { } }
+                public PasskeyAttestationStatementVerificationContext() => throw null;
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
+            }
+            public sealed class PasskeyCreationOptionsResult
+            {
+                public string AttestationState { get => throw null; set { } }
+                public string CreationOptionsJson { get => throw null; set { } }
+                public PasskeyCreationOptionsResult() => throw null;
+            }
+            public sealed class PasskeyException : System.Exception
+            {
+                public PasskeyException(string message) => throw null;
+                public PasskeyException(string message, System.Exception innerException) => throw null;
+            }
+            public sealed class PasskeyHandler<TUser> : Microsoft.AspNetCore.Identity.IPasskeyHandler<TUser> where TUser : class
+            {
+                public PasskeyHandler(Microsoft.AspNetCore.Identity.UserManager<TUser> userManager, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Identity.IdentityPasskeyOptions> options) => throw null;
+                public System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyCreationOptionsResult> MakeCreationOptionsAsync(Microsoft.AspNetCore.Identity.PasskeyUserEntity userEntity, Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                public System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyRequestOptionsResult> MakeRequestOptionsAsync(TUser user, Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                public System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyAssertionResult<TUser>> PerformAssertionAsync(Microsoft.AspNetCore.Identity.PasskeyAssertionContext context) => throw null;
+                public System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyAttestationResult> PerformAttestationAsync(Microsoft.AspNetCore.Identity.PasskeyAttestationContext context) => throw null;
+            }
+            public sealed class PasskeyOriginValidationContext
+            {
+                public bool CrossOrigin { get => throw null; set { } }
+                public PasskeyOriginValidationContext() => throw null;
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
+                public string Origin { get => throw null; set { } }
+                public string TopOrigin { get => throw null; set { } }
+            }
+            public sealed class PasskeyRequestOptionsResult
+            {
+                public string AssertionState { get => throw null; set { } }
+                public PasskeyRequestOptionsResult() => throw null;
+                public string RequestOptionsJson { get => throw null; set { } }
+            }
+            public sealed class PasskeyUserEntity
+            {
+                public PasskeyUserEntity() => throw null;
+                public string DisplayName { get => throw null; set { } }
+                public string Id { get => throw null; set { } }
+                public string Name { get => throw null; set { } }
             }
             public class SecurityStampRefreshingPrincipalContext
             {
@@ -209,9 +312,14 @@ namespace Microsoft
                 public virtual System.Threading.Tasks.Task<bool> IsTwoFactorEnabledAsync(TUser user) => throw null;
                 protected virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.SignInResult> LockedOut(TUser user) => throw null;
                 public virtual Microsoft.Extensions.Logging.ILogger Logger { get => throw null; set { } }
+                public virtual System.Threading.Tasks.Task<string> MakePasskeyCreationOptionsAsync(Microsoft.AspNetCore.Identity.PasskeyUserEntity userEntity) => throw null;
+                public virtual System.Threading.Tasks.Task<string> MakePasskeyRequestOptionsAsync(TUser user) => throw null;
                 public Microsoft.AspNetCore.Identity.IdentityOptions Options { get => throw null; set { } }
+                public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.SignInResult> PasskeySignInAsync(string credentialJson) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.SignInResult> PasswordSignInAsync(TUser user, string password, bool isPersistent, bool lockoutOnFailure) => throw null;
                 public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.SignInResult> PasswordSignInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure) => throw null;
+                public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyAssertionResult<TUser>> PerformPasskeyAssertionAsync(string credentialJson) => throw null;
+                public virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.PasskeyAttestationResult> PerformPasskeyAttestationAsync(string credentialJson) => throw null;
                 protected virtual System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.SignInResult> PreSignInCheck(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task RefreshSignInAsync(TUser user) => throw null;
                 public virtual System.Threading.Tasks.Task RememberTwoFactorClientAsync(TUser user) => throw null;

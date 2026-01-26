@@ -120,7 +120,7 @@ module CleartextLogging {
    *
    * This is a source since `log.Print(obj)` will often show the fields of `obj`.
    */
-  private class StructPasswordFieldSource extends DataFlow::Node, Source {
+  private class StructPasswordFieldSource extends Source {
     string name;
 
     StructPasswordFieldSource() {
@@ -137,7 +137,7 @@ module CleartextLogging {
   }
 
   /** An access to a variable or property that might contain a password. */
-  private class ReadPasswordSource extends DataFlow::Node, Source {
+  private class ReadPasswordSource extends Source {
     string name;
 
     ReadPasswordSource() {
@@ -162,7 +162,7 @@ module CleartextLogging {
   }
 
   /** A call that might return a password. */
-  private class CallPasswordSource extends DataFlow::CallNode, Source {
+  private class CallPasswordSource extends Source, DataFlow::CallNode {
     string name;
 
     CallPasswordSource() {

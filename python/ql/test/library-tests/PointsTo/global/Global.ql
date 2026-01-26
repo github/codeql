@@ -1,7 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
-import semmle.python.pointsto.PointsToContext
-import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 
 from ControlFlowNode f, PointsToContext ctx, Value obj, ControlFlowNode orig
 where

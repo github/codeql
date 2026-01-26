@@ -57,25 +57,16 @@ module TaintedPath {
     PathAsSink() { this = any(FileSystemAccess fsa).getAPathArgument() }
   }
 
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "path-injection") }
+  }
+
   /**
    * A numeric- or boolean-typed node, considered a sanitizer for path traversal.
    */
   class NumericOrBooleanSanitizer extends Sanitizer {
     NumericOrBooleanSanitizer() {
       this.getType() instanceof NumericType or this.getType() instanceof BoolType
-    }
-  }
-
-  /**
-   * A call to `filepath.Rel`, considered as a sanitizer for path traversal.
-   */
-  class FilepathRelSanitizer extends Sanitizer {
-    FilepathRelSanitizer() {
-      exists(Function f, FunctionOutput outp |
-        f.hasQualifiedName("path/filepath", "Rel") and
-        outp.isResult(0) and
-        this = outp.getNode(f.getACall())
-      )
     }
   }
 
@@ -109,44 +100,6 @@ module TaintedPath {
             .hasQualifiedName(package("github.com/gorilla/mux", ""), "Router", "SkipClean") and
         f.getArgument(0).getBoolValue() = true
       )
-    }
-  }
-
-  /**
-   * A read from the field `Filename` of the type `mime/multipart.FileHeader`,
-   * considered as a sanitizer for path traversal.
-   *
-   * The only way to create a `mime/multipart.FileHeader` is to create a
-   * `mime/multipart.Form`, which creates the `Filename` field of each
-   * `mime/multipart.FileHeader` by calling `Part.FileName`, which calls
-   * `path/filepath.Base` on its return value. In general `path/filepath.Base`
-   * is not a sanitizer for path traversal, but in this specific case where the
-   * output is going to be used as a filename rather than a directory name, it
-   * is adequate.
-   */
-  class MimeMultipartFileHeaderFilenameSanitizer extends Sanitizer {
-    MimeMultipartFileHeaderFilenameSanitizer() {
-      this.(DataFlow::FieldReadNode)
-          .getField()
-          .hasQualifiedName("mime/multipart", "FileHeader", "Filename")
-    }
-  }
-
-  /**
-   * A call to `mime/multipart.Part.FileName`, considered as a sanitizer
-   * against path traversal.
-   *
-   * `Part.FileName` calls `path/filepath.Base` on its return value. In
-   * general `path/filepath.Base` is not a sanitizer for path traversal, but in
-   * this specific case where the output is going to be used as a filename
-   * rather than a directory name, it is adequate.
-   */
-  class MimeMultipartPartFileNameSanitizer extends Sanitizer {
-    MimeMultipartPartFileNameSanitizer() {
-      this =
-        any(Method m | m.hasQualifiedName("mime/multipart", "Part", "FileName"))
-            .getACall()
-            .getResult()
     }
   }
 

@@ -53,7 +53,7 @@ module StackTraceExposureConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Http::ResponseBody }
 
   predicate isBarrier(DataFlow::Node node) {
-    // Sanitise everything controlled by an is-debug-mode check.
+    // Sanitize everything controlled by an is-debug-mode check.
     // Imprecision: I don't try to guess which arm of a branch is intended
     // to mean debug mode, and which is production mode.
     exists(ControlFlow::ConditionGuardNode cgn |

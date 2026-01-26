@@ -118,7 +118,7 @@ query predicate test15(ConstructedDelegateType d) {
 
 query predicate test16(Class c, Method m) {
   c.hasName("Subtle") and
-  count(c.getAMethod()) = 3 and
+  count(c.getAMethod()) = 4 and
   m = c.getAMethod()
 }
 

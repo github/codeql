@@ -147,7 +147,7 @@ private class PathUse extends Use instanceof NameRef {
 
   override Definition getDefinition() {
     // Our call resolution logic may disambiguate some calls, so only use those
-    result.asItemNode() = this.getCall().getStaticTarget()
+    result.asItemNode() = this.getCall().getResolvedTarget()
     or
     not exists(this.getCall()) and
     result.asItemNode() = resolvePath(path)

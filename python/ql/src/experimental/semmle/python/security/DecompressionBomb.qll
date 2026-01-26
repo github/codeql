@@ -364,6 +364,46 @@ module Lzma {
   }
 }
 
+/** Provides sinks and additional taint steps related to the `zstd` library in Python 3.14+. */
+module Zstd {
+  private API::Node zstdInstance() {
+    result = API::moduleImport("compression").getMember("zstd").getMember(["ZstdFile", "open"])
+  }
+
+  /**
+   * The Decompression Sinks of `zstd` library
+   *
+   * `zstd.open(sink)`
+   * `zstd.ZstdFile(sink)`
+   *
+   * only read mode is sink
+   */
+  class DecompressionSink extends DecompressionBomb::Sink {
+    DecompressionSink() {
+      exists(API::CallNode zstdCall | zstdCall = zstdInstance().getACall() |
+        this = zstdCall.getParameter(0, "file").asSink() and
+        (
+          not exists(
+            zstdCall
+                .getParameter(1, "mode")
+                .getAValueReachingSink()
+                .asExpr()
+                .(StringLiteral)
+                .getText()
+          ) or
+          zstdCall
+              .getParameter(1, "mode")
+              .getAValueReachingSink()
+              .asExpr()
+              .(StringLiteral)
+              .getText()
+              .matches("%r%")
+        )
+      )
+    }
+  }
+}
+
 /**
  * `io.TextIOWrapper(ip, encoding='utf-8')` like following:
  * ```python

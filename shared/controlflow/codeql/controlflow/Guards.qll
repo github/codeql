@@ -1280,39 +1280,38 @@ module Make<
       }
     }
 
-    signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+    signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv);
 
     bindingset[this]
-    signature class StateSig;
+    signature class ParamSig;
 
-    private module WithState<StateSig State> {
-      signature predicate guardChecksSig(Guard g, Expr e, boolean branch, State state);
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv, P par);
     }
 
     /**
      * Extends a `BarrierGuard` input predicate with wrapped invocations.
      */
     module ValidationWrapper<guardChecksSig/3 guardChecks0> {
-      private predicate guardChecksWithState(Guard g, Expr e, boolean branch, Unit state) {
-        guardChecks0(g, e, branch) and exists(state)
+      private predicate guardChecksWithParam(Guard g, Expr e, GuardValue gv, Unit par) {
+        guardChecks0(g, e, gv) and exists(par)
       }
 
-      private module StatefulWrapper = ValidationWrapperWithState<Unit, guardChecksWithState/4>;
+      private module ParameterizedWrapper =
+        ParameterizedValidationWrapper<Unit, guardChecksWithParam/4>;
 
       /**
        * Holds if the guard `g` validates the SSA definition `def` upon evaluating to `val`.
        */
       predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val) {
-        StatefulWrapper::guardChecksDef(g, def, val, _)
+        ParameterizedWrapper::guardChecksDef(g, def, val, _)
       }
     }
 
     /**
      * Extends a `BarrierGuard` input predicate with wrapped invocations.
      */
-    module ValidationWrapperWithState<
-      StateSig State, WithState<State>::guardChecksSig/4 guardChecks0>
-    {
+    module ParameterizedValidationWrapper<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks0> {
       private import WrapperGuard
 
       /**
@@ -1321,12 +1320,12 @@ module Make<
        * parameter has been validated by the given guard.
        */
       private predicate validReturnInValidationWrapper(
-        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, State state
+        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, P par
       ) {
         exists(NonOverridableMethod m, SsaParameterInit param, Guard guard, GuardValue val |
           m.getAReturnExpr() = ret and
           param.getParameter() = m.getParameter(ppos) and
-          guardChecksDef(guard, param, val, state)
+          guardChecksDef(guard, param, val, par)
         |
           guard.valueControls(ret.getBasicBlock(), val) and
           relevantReturnExprValue(m, ret, retval)
@@ -1341,7 +1340,7 @@ module Make<
        * that the argument has been validated by the given guard.
        */
       private NonOverridableMethod validationWrapper(
-        ParameterPosition ppos, GuardValue retval, State state
+        ParameterPosition ppos, GuardValue retval, P par
       ) {
         forex(ReturnExpr ret |
           result.getAReturnExpr() = ret and
@@ -1350,12 +1349,12 @@ module Make<
             disjointValues(notRetval, retval)
           )
         |
-          validReturnInValidationWrapper(ret, ppos, retval, state)
+          validReturnInValidationWrapper(ret, ppos, retval, par)
         )
         or
         exists(SsaParameterInit param, BasicBlock bb, Guard guard, GuardValue val |
           param.getParameter() = result.getParameter(ppos) and
-          guardChecksDef(guard, param, val, state) and
+          guardChecksDef(guard, param, val, par) and
           guard.valueControls(bb, val) and
           normalExitBlock(bb) and
           retval = TException(false)
@@ -1365,12 +1364,12 @@ module Make<
       /**
        * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
        */
-      private predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
-        guardChecks0(g, e, val.asBooleanValue(), state)
+      predicate guardChecks(Guard g, Expr e, GuardValue val, P par) {
+        guardChecks0(g, e, val, par)
         or
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g = call and
-          call.getMethod() = validationWrapper(ppos, val, state) and
+          call.getMethod() = validationWrapper(ppos, val, par) and
           call.getArgument(apos) = e and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
         )
@@ -1379,9 +1378,9 @@ module Make<
       /**
        * Holds if the guard `g` validates the SSA definition `def` upon evaluating to `val`.
        */
-      predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val, State state) {
+      predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val, P par) {
         exists(Expr e |
-          guardChecks(g, e, val, state) and
+          guardChecks(g, e, val, par) and
           guardReadsSsaVar(e, def)
         )
       }
