@@ -98,7 +98,7 @@ private int getSize(VariableAccess va) {
         // };
         // ```
         // Given an object `S2 s2` the size of the buffer `&s2.s.y`
-        // is the size of the base object type (i.e., `S2`) minutes the offset
+        // is the size of the base object type (i.e., `S2`) minus the offset
         // of `y` relative to the type `S2` (i.e., `4`). So the size of the
         // buffer is `12 - 4 = 8`.
         c = getRootType(va) and
