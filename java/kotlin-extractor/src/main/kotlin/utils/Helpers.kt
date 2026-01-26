@@ -11,6 +11,3 @@ fun IrFunction.isLocalFunction(): Boolean {
 
 val IrClass.isInterfaceLike
     get() = kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS
-
-@Suppress("UNCHECKED_CAST")
-fun <T> cast(value: Any?): T = value as T

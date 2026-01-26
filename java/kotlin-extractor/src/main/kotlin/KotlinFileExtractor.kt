@@ -2975,10 +2975,11 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
-                    // For Kotlin < 2.3, s.delegate is not-nullable. Cast to be nullable,
-                    // as a workaround to silence warnings for kotlin < 2.3 about the elvis
-                    // operator being redundant.
-                    val delegate: IrVariable? = cast(s.delegate)
+                    // For Kotlin < 2.3, s.delegate is not-nullable, but for Kotlin >= 2.3
+                    // it is nullable. Cast to nullable to handle both cases uniformly.
+                    // For Kotlin >= 2.3, the cast is redundant, hence the suppress.
+                    @Suppress("USELESS_CAST")
+                    val delegate: IrVariable? = s.delegate as IrVariable?
                     val propId = tw.getFreshIdLabel<DbKt_property>()
 
                     if (delegate == null) {
