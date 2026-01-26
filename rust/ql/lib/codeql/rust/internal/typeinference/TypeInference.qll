@@ -134,12 +134,8 @@ class TypePath = M1::TypePath;
 
 module TypePath = M1::TypePath;
 
-private module Input2 implements InputSig2 {
-  private import TypeMention as TM
-
-  class TypeMention = TM::TypeMention;
-
-  TypeMention getABaseTypeMention(Type t) { none() }
+private module Input2 implements InputSig2<TypeMentionTypeTree> {
+  TypeMentionTypeTree getABaseTypeMention(Type t) { none() }
 
   Type getATypeParameterConstraint(TypeParameter tp, TypePath path) {
     exists(TypeMention tm | result = tm.resolveTypeAt(path) |
@@ -162,7 +158,8 @@ private module Input2 implements InputSig2 {
    * inference module for more information.
    */
   predicate conditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
+    TypeAbstraction abs, TypeMentionTypeTree condition, TypeMentionTypeTree constraint,
+    boolean transitive
   ) {
     // `impl` blocks implementing traits
     transitive = false and
@@ -212,7 +209,7 @@ private module Input2 implements InputSig2 {
   }
 }
 
-private module M2 = Make2<Input2>;
+private module M2 = Make2<TypeMentionTypeTree, Input2>;
 
 import M2
 

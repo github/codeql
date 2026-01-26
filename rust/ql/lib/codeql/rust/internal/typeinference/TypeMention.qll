@@ -18,6 +18,13 @@ abstract class TypeMention extends AstNode {
   final Type resolveType() { result = this.resolveTypeAt(TypePath::nil()) }
 }
 
+final private class FinalTypeMention = TypeMention;
+
+/** An adapter for type mentions to implement `HasTypeTreeSig`. */
+final class TypeMentionTypeTree extends FinalTypeMention {
+  Type getTypeAt(TypePath path) { result = this.resolveTypeAt(path) }
+}
+
 class TupleTypeReprMention extends TypeMention instanceof TupleTypeRepr {
   override Type resolveTypeAt(TypePath path) {
     path.isEmpty() and
