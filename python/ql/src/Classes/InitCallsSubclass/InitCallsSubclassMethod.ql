@@ -15,6 +15,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch
+import semmle.python.dataflow.new.internal.DataFlowPrivate
 
 predicate initSelfCallOverridden(
   Function init, DataFlow::Node self, DataFlow::MethodCallNode call, Function target,
@@ -39,7 +40,7 @@ predicate readsFromSelf(Function method) {
     self.getParameter() = method.getArg(0) and
     DataFlow::localFlow(self, sink)
   |
-    sink instanceof DataFlow::ArgumentNode
+    isArgumentNode(sink, _, _)
     or
     sink = any(DataFlow::AttrRead a).getObject()
   )
