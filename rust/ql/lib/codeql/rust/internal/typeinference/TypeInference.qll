@@ -30,7 +30,7 @@ private newtype TTypeArgumentPosition =
   } or
   TTypeParamTypeArgumentPosition(TypeParam tp)
 
-private module Input1 implements InputSig1<Location> {
+private module Input implements InputSig1<Location>, InputSig2<PreTypeMention> {
   private import Type as T
   private import codeql.rust.elements.internal.generated.Raw
   private import codeql.rust.elements.internal.generated.Synth
@@ -120,21 +120,7 @@ private module Input1 implements InputSig1<Location> {
   }
 
   int getTypePathLimit() { result = 10 }
-}
 
-private import Input1
-
-private module M1 = Make1<Location, Input1>;
-
-import M1
-
-predicate getTypePathLimit = Input1::getTypePathLimit/0;
-
-class TypePath = M1::TypePath;
-
-module TypePath = M1::TypePath;
-
-private module Input2 implements InputSig2<PreTypeMention> {
   PreTypeMention getABaseTypeMention(Type t) { none() }
 
   Type getATypeParameterConstraint(TypeParameter tp, TypePath path) {
@@ -208,7 +194,19 @@ private module Input2 implements InputSig2<PreTypeMention> {
   }
 }
 
-private module M2 = Make2<PreTypeMention, Input2>;
+private import Input
+
+private module M1 = Make1<Location, Input>;
+
+import M1
+
+predicate getTypePathLimit = Input::getTypePathLimit/0;
+
+class TypePath = M1::TypePath;
+
+module TypePath = M1::TypePath;
+
+private module M2 = Make2<PreTypeMention, Input>;
 
 import M2
 
@@ -4152,7 +4150,7 @@ private module Debug {
     TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
   ) {
     abs = getRelevantLocatable() and
-    Input2::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
+    Input::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
   }
 
   predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
