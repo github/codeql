@@ -7,4 +7,5 @@ go_library(
     srcs = ["diagnostics.go"],
     importpath = "github.com/github/codeql-go/extractor/diagnostics",
     visibility = ["//visibility:public"],
+    deps = ["//go/extractor/util"],
 )

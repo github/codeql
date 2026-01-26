@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 type sourceStruct struct {
@@ -154,14 +156,42 @@ func EmitCannotFindPackages(pkgPaths []string) {
 		secondLine += fmt.Sprintf(" and %d more", numPkgPaths-maxNumPkgPaths)
 	}
 
+	message := fmt.Sprintf(
+		"%d package%s could not be found:\n\n%s.\n\n"+
+			"CodeQL is able to analyze your code without those packages, but definitions from them may not be recognized and "+
+			"source files that use them may only be partially analyzed.\n\n"+
+			"To ensure that you have comprehensive alert coverage, check that the paths are correct and make sure any private packages can be accessed by CodeQL. ",
+		numPkgPaths,
+		plural(len(pkgPaths), "", "s"),
+		secondLine,
+	)
+
+	// Depending on the environment we are running in, provide a different message for how to configure access to private registries.
+	if util.IsDynamicActionsWorkflow() {
+		// For GitHub-managed (dynamic) workflows, we offer built-in support for private registries that customers can set up.
+		message = message +
+			"Organizations [can grant access to private registries for GitHub security products](https://docs.github.com/en/code-security/how-tos/secure-at-scale/configure-organization-security/manage-usage-and-access/giving-org-access-private-registries). "
+	} else {
+		if util.IsActionsWorkflow() {
+			// For custom workflows, users can add a workflow step to set up credentials or environment variables.
+			message = message +
+				"To set up access to a private registry, add a step to your workflow which sets up the necessary credentials and environment variables. "
+		} else {
+			// Otherwise, we are running locally or in some other CI system.
+			message = message +
+				"To set up access to private registries, ensure that the necessary credentials and environment variables are set up for `go` to use. "
+		}
+
+		// This should be less likely since we improved Go project discovery. We only include it in the message if we are not running in a
+		// GitHub-managed workflow, since users would not be able to act on this there.
+		message = message +
+			"If any of the packages are already present in the repository, but were not found, then you may need a [custom build command](https://docs.github.com/en/code-security/how-tos/scan-code-for-vulnerabilities/manage-your-configuration/codeql-code-scanning-for-compiled-languages)."
+	}
+
 	emitDiagnostic(
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
-		fmt.Sprintf(
-			"%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
-			numPkgPaths,
-			plural(len(pkgPaths), "", "s"),
-			secondLine),
+		message,
 		severityWarning,
 		fullVisibility,
 		noLocation,
