@@ -89,7 +89,7 @@ module Sqlite3 {
   /**
    * Flow summary for `SQLite3::Database.quote()`.
    */
-  private class QuoteSummary extends SummarizedCallable {
+  private class QuoteSummary extends SummarizedCallable::Range {
     QuoteSummary() { this = "SQLite3::Database.quote()" }
 
     override MethodCall getACall() { result = any(SQLite3QuoteSanitization c).asExpr().getExpr() }

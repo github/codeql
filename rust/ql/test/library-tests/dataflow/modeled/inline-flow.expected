@@ -47,7 +47,6 @@ edges
 | main.rs:26:13:26:22 | source(...) | main.rs:26:9:26:9 | a | provenance |  |
 | main.rs:28:9:28:9 | b | main.rs:29:10:29:10 | b | provenance |  |
 | main.rs:28:9:28:9 | b [&ref] | main.rs:29:10:29:10 | b | provenance |  |
-| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:2 |
 | main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:10 |
 | main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() [&ref] | provenance | MaD:11 |
 | main.rs:28:13:28:21 | a.clone() | main.rs:28:9:28:9 | b | provenance |  |

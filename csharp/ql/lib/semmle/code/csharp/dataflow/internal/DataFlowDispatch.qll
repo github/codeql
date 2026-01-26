@@ -380,10 +380,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
     // we are not able to dispatch to a source declaration.
     exists(boolean static |
       result = this.getATarget(static) and
-      not (
-        result.applyGeneratedModel() and
-        this.hasSourceTarget()
-      )
+      if this.hasSourceTarget() then result.hasManualModel() else any()
     |
       static = false
       or

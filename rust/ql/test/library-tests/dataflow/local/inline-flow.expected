@@ -1,25 +1,23 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
 | 2 | Summary: <_ as alloc::string::ToString>::to_string; Argument[self].Reference; ReturnValue; taint |
-| 3 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 4 | Summary: <_ as core::convert::Into>::into; Argument[self].Element; ReturnValue.Element; taint |
-| 5 | Summary: <_ as core::convert::Into>::into; Argument[self].Reference.Element; ReturnValue.Element; taint |
-| 6 | Summary: <_ as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue.Reference; taint |
-| 7 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
-| 8 | Summary: <alloc::boxed::Box as core::ops::deref::Deref>::deref; Argument[self].Reference.Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
-| 9 | Summary: <alloc::boxed::Box>::new; Argument[0]; ReturnValue.Field[alloc::boxed::Box(0)]; value |
-| 10 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self]; ReturnValue; value |
-| 11 | Summary: <core::i64 as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 12 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
-| 13 | Summary: <core::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
-| 14 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
-| 15 | Summary: <core::option::Option>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
-| 16 | Summary: <core::option::Option>::unwrap_or_else; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
-| 17 | Summary: <core::result::Result>::err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
-| 18 | Summary: <core::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
-| 19 | Summary: <core::result::Result>::expect_err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue; value |
-| 20 | Summary: <core::result::Result>::ok; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
-| 21 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 3 | Summary: <_ as core::convert::Into>::into; Argument[self].Element; ReturnValue.Element; taint |
+| 4 | Summary: <_ as core::convert::Into>::into; Argument[self].Reference.Element; ReturnValue.Element; taint |
+| 5 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
+| 6 | Summary: <alloc::boxed::Box as core::ops::deref::Deref>::deref; Argument[self].Reference.Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
+| 7 | Summary: <alloc::boxed::Box>::new; Argument[0]; ReturnValue.Field[alloc::boxed::Box(0)]; value |
+| 8 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self]; ReturnValue; value |
+| 9 | Summary: <core::i64 as core::convert::From>::from; Argument[0]; ReturnValue; taint |
+| 10 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 11 | Summary: <core::option::Option>::unwrap_or; Argument[0]; ReturnValue; value |
+| 12 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 13 | Summary: <core::option::Option>::unwrap_or_else; Argument[0].ReturnValue; ReturnValue; value |
+| 14 | Summary: <core::option::Option>::unwrap_or_else; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
+| 15 | Summary: <core::result::Result>::err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 16 | Summary: <core::result::Result>::expect; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 17 | Summary: <core::result::Result>::expect_err; Argument[self].Field[core::result::Result::Err(0)]; ReturnValue; value |
+| 18 | Summary: <core::result::Result>::ok; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 19 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
 edges
 | main.rs:23:9:23:9 | s | main.rs:24:10:24:10 | s | provenance |  |
 | main.rs:23:9:23:9 | s | main.rs:26:12:26:12 | x | provenance |  |
@@ -47,8 +45,8 @@ edges
 | main.rs:82:5:82:5 | l | main.rs:83:10:83:10 | l | provenance |  |
 | main.rs:115:9:115:9 | i [Box(0)] | main.rs:116:11:116:11 | i [Box(0)] | provenance |  |
 | main.rs:115:13:115:31 | ...::new(...) [Box(0)] | main.rs:115:9:115:9 | i [Box(0)] | provenance |  |
-| main.rs:115:22:115:30 | source(...) | main.rs:115:13:115:31 | ...::new(...) [Box(0)] | provenance | MaD:9 |
-| main.rs:116:11:116:11 | i [Box(0)] | main.rs:116:10:116:11 | * ... | provenance | MaD:8 |
+| main.rs:115:22:115:30 | source(...) | main.rs:115:13:115:31 | ...::new(...) [Box(0)] | provenance | MaD:7 |
+| main.rs:116:11:116:11 | i [Box(0)] | main.rs:116:10:116:11 | * ... | provenance | MaD:6 |
 | main.rs:123:9:123:9 | a [tuple.0] | main.rs:124:10:124:10 | a [tuple.0] | provenance |  |
 | main.rs:123:13:123:26 | TupleExpr [tuple.0] | main.rs:123:9:123:9 | a [tuple.0] | provenance |  |
 | main.rs:123:14:123:22 | source(...) | main.rs:123:13:123:26 | TupleExpr [tuple.0] | provenance |  |
@@ -131,17 +129,17 @@ edges
 | main.rs:278:9:278:10 | s1 [Some] | main.rs:279:10:279:11 | s1 [Some] | provenance |  |
 | main.rs:278:14:278:29 | Some(...) [Some] | main.rs:278:9:278:10 | s1 [Some] | provenance |  |
 | main.rs:278:19:278:28 | source(...) | main.rs:278:14:278:29 | Some(...) [Some] | provenance |  |
-| main.rs:279:10:279:11 | s1 [Some] | main.rs:279:10:279:20 | s1.unwrap() | provenance | MaD:12 |
+| main.rs:279:10:279:11 | s1 [Some] | main.rs:279:10:279:20 | s1.unwrap() | provenance | MaD:10 |
 | main.rs:283:9:283:10 | s1 [Some] | main.rs:284:10:284:11 | s1 [Some] | provenance |  |
 | main.rs:283:14:283:29 | Some(...) [Some] | main.rs:283:9:283:10 | s1 [Some] | provenance |  |
 | main.rs:283:19:283:28 | source(...) | main.rs:283:14:283:29 | Some(...) [Some] | provenance |  |
-| main.rs:284:10:284:11 | s1 [Some] | main.rs:284:10:284:24 | s1.unwrap_or(...) | provenance | MaD:14 |
-| main.rs:287:23:287:32 | source(...) | main.rs:287:10:287:33 | s2.unwrap_or(...) | provenance | MaD:13 |
+| main.rs:284:10:284:11 | s1 [Some] | main.rs:284:10:284:24 | s1.unwrap_or(...) | provenance | MaD:12 |
+| main.rs:287:23:287:32 | source(...) | main.rs:287:10:287:33 | s2.unwrap_or(...) | provenance | MaD:11 |
 | main.rs:291:9:291:10 | s1 [Some] | main.rs:292:10:292:11 | s1 [Some] | provenance |  |
 | main.rs:291:14:291:29 | Some(...) [Some] | main.rs:291:9:291:10 | s1 [Some] | provenance |  |
 | main.rs:291:19:291:28 | source(...) | main.rs:291:14:291:29 | Some(...) [Some] | provenance |  |
-| main.rs:292:10:292:11 | s1 [Some] | main.rs:292:10:292:32 | s1.unwrap_or_else(...) | provenance | MaD:16 |
-| main.rs:295:31:295:40 | source(...) | main.rs:295:10:295:41 | s2.unwrap_or_else(...) | provenance | MaD:15 |
+| main.rs:292:10:292:11 | s1 [Some] | main.rs:292:10:292:32 | s1.unwrap_or_else(...) | provenance | MaD:14 |
+| main.rs:295:31:295:40 | source(...) | main.rs:295:10:295:41 | s2.unwrap_or_else(...) | provenance | MaD:13 |
 | main.rs:299:9:299:10 | s1 [Some] | main.rs:301:14:301:15 | s1 [Some] | provenance |  |
 | main.rs:299:14:299:29 | Some(...) [Some] | main.rs:299:9:299:10 | s1 [Some] | provenance |  |
 | main.rs:299:19:299:28 | source(...) | main.rs:299:14:299:29 | Some(...) [Some] | provenance |  |
@@ -152,16 +150,16 @@ edges
 | main.rs:308:32:308:45 | Ok(...) [Ok] | main.rs:308:9:308:10 | r1 [Ok] | provenance |  |
 | main.rs:308:35:308:44 | source(...) | main.rs:308:32:308:45 | Ok(...) [Ok] | provenance |  |
 | main.rs:309:9:309:11 | o1a [Some] | main.rs:311:10:311:12 | o1a [Some] | provenance |  |
-| main.rs:309:28:309:29 | r1 [Ok] | main.rs:309:28:309:34 | r1.ok() [Some] | provenance | MaD:20 |
+| main.rs:309:28:309:29 | r1 [Ok] | main.rs:309:28:309:34 | r1.ok() [Some] | provenance | MaD:18 |
 | main.rs:309:28:309:34 | r1.ok() [Some] | main.rs:309:9:309:11 | o1a [Some] | provenance |  |
-| main.rs:311:10:311:12 | o1a [Some] | main.rs:311:10:311:21 | o1a.unwrap() | provenance | MaD:12 |
+| main.rs:311:10:311:12 | o1a [Some] | main.rs:311:10:311:21 | o1a.unwrap() | provenance | MaD:10 |
 | main.rs:314:9:314:10 | r2 [Err] | main.rs:316:28:316:29 | r2 [Err] | provenance |  |
 | main.rs:314:32:314:46 | Err(...) [Err] | main.rs:314:9:314:10 | r2 [Err] | provenance |  |
 | main.rs:314:36:314:45 | source(...) | main.rs:314:32:314:46 | Err(...) [Err] | provenance |  |
 | main.rs:316:9:316:11 | o2b [Some] | main.rs:318:10:318:12 | o2b [Some] | provenance |  |
-| main.rs:316:28:316:29 | r2 [Err] | main.rs:316:28:316:35 | r2.err() [Some] | provenance | MaD:17 |
+| main.rs:316:28:316:29 | r2 [Err] | main.rs:316:28:316:35 | r2.err() [Some] | provenance | MaD:15 |
 | main.rs:316:28:316:35 | r2.err() [Some] | main.rs:316:9:316:11 | o2b [Some] | provenance |  |
-| main.rs:318:10:318:12 | o2b [Some] | main.rs:318:10:318:21 | o2b.unwrap() | provenance | MaD:12 |
+| main.rs:318:10:318:12 | o2b [Some] | main.rs:318:10:318:21 | o2b.unwrap() | provenance | MaD:10 |
 | main.rs:322:9:322:10 | s1 [Ok] | main.rs:325:14:325:15 | s1 [Ok] | provenance |  |
 | main.rs:322:32:322:45 | Ok(...) [Ok] | main.rs:322:9:322:10 | s1 [Ok] | provenance |  |
 | main.rs:322:35:322:44 | source(...) | main.rs:322:32:322:45 | Ok(...) [Ok] | provenance |  |
@@ -171,11 +169,11 @@ edges
 | main.rs:335:9:335:10 | s1 [Ok] | main.rs:336:10:336:11 | s1 [Ok] | provenance |  |
 | main.rs:335:32:335:45 | Ok(...) [Ok] | main.rs:335:9:335:10 | s1 [Ok] | provenance |  |
 | main.rs:335:35:335:44 | source(...) | main.rs:335:32:335:45 | Ok(...) [Ok] | provenance |  |
-| main.rs:336:10:336:11 | s1 [Ok] | main.rs:336:10:336:22 | s1.expect(...) | provenance | MaD:18 |
+| main.rs:336:10:336:11 | s1 [Ok] | main.rs:336:10:336:22 | s1.expect(...) | provenance | MaD:16 |
 | main.rs:339:9:339:10 | s2 [Err] | main.rs:341:10:341:11 | s2 [Err] | provenance |  |
 | main.rs:339:32:339:46 | Err(...) [Err] | main.rs:339:9:339:10 | s2 [Err] | provenance |  |
 | main.rs:339:36:339:45 | source(...) | main.rs:339:32:339:46 | Err(...) [Err] | provenance |  |
-| main.rs:341:10:341:11 | s2 [Err] | main.rs:341:10:341:26 | s2.expect_err(...) | provenance | MaD:19 |
+| main.rs:341:10:341:11 | s2 [Err] | main.rs:341:10:341:26 | s2.expect_err(...) | provenance | MaD:17 |
 | main.rs:350:9:350:10 | s1 [A] | main.rs:352:11:352:12 | s1 [A] | provenance |  |
 | main.rs:350:14:350:39 | ...::A(...) [A] | main.rs:350:9:350:10 | s1 [A] | provenance |  |
 | main.rs:350:29:350:38 | source(...) | main.rs:350:14:350:39 | ...::A(...) [A] | provenance |  |
@@ -224,13 +222,13 @@ edges
 | main.rs:430:16:430:33 | [...] [element] | main.rs:430:9:430:12 | arr1 [element] | provenance |  |
 | main.rs:430:23:430:32 | source(...) | main.rs:430:16:430:33 | [...] [element] | provenance |  |
 | main.rs:431:9:431:10 | n1 | main.rs:432:10:432:11 | n1 | provenance |  |
-| main.rs:431:14:431:17 | arr1 [element] | main.rs:431:14:431:20 | arr1[2] | provenance | MaD:7 |
+| main.rs:431:14:431:17 | arr1 [element] | main.rs:431:14:431:20 | arr1[2] | provenance | MaD:5 |
 | main.rs:431:14:431:20 | arr1[2] | main.rs:431:9:431:10 | n1 | provenance |  |
 | main.rs:434:9:434:12 | arr2 [element] | main.rs:435:14:435:17 | arr2 [element] | provenance |  |
 | main.rs:434:16:434:31 | [...; 10] [element] | main.rs:434:9:434:12 | arr2 [element] | provenance |  |
 | main.rs:434:17:434:26 | source(...) | main.rs:434:16:434:31 | [...; 10] [element] | provenance |  |
 | main.rs:435:9:435:10 | n2 | main.rs:436:10:436:11 | n2 | provenance |  |
-| main.rs:435:14:435:17 | arr2 [element] | main.rs:435:14:435:20 | arr2[4] | provenance | MaD:7 |
+| main.rs:435:14:435:17 | arr2 [element] | main.rs:435:14:435:20 | arr2[4] | provenance | MaD:5 |
 | main.rs:435:14:435:20 | arr2[4] | main.rs:435:9:435:10 | n2 | provenance |  |
 | main.rs:444:9:444:12 | arr1 [element] | main.rs:445:15:445:18 | arr1 [element] | provenance |  |
 | main.rs:444:16:444:33 | [...] [element] | main.rs:444:9:444:12 | arr1 [element] | provenance |  |
@@ -251,9 +249,9 @@ edges
 | main.rs:470:5:470:11 | [post] mut_arr [element] | main.rs:473:10:473:16 | mut_arr [element] | provenance |  |
 | main.rs:470:18:470:27 | source(...) | main.rs:470:5:470:11 | [post] mut_arr [element] | provenance |  |
 | main.rs:471:9:471:9 | d | main.rs:472:10:472:10 | d | provenance |  |
-| main.rs:471:13:471:19 | mut_arr [element] | main.rs:471:13:471:22 | mut_arr[1] | provenance | MaD:7 |
+| main.rs:471:13:471:19 | mut_arr [element] | main.rs:471:13:471:22 | mut_arr[1] | provenance | MaD:5 |
 | main.rs:471:13:471:22 | mut_arr[1] | main.rs:471:9:471:9 | d | provenance |  |
-| main.rs:473:10:473:16 | mut_arr [element] | main.rs:473:10:473:19 | mut_arr[0] | provenance | MaD:7 |
+| main.rs:473:10:473:16 | mut_arr [element] | main.rs:473:10:473:19 | mut_arr[0] | provenance | MaD:5 |
 | main.rs:496:9:496:9 | s | main.rs:497:10:497:10 | s | provenance |  |
 | main.rs:496:25:496:26 | source(...) | main.rs:496:9:496:9 | s | provenance |  |
 | main.rs:505:9:505:9 | a | main.rs:506:13:506:13 | a | provenance |  |
@@ -265,26 +263,24 @@ edges
 | main.rs:506:13:506:13 | a | main.rs:506:13:506:25 | a.to_string() | provenance | MaD:2 |
 | main.rs:506:13:506:25 | a.to_string() | main.rs:506:9:506:9 | b | provenance |  |
 | main.rs:507:9:507:9 | c | main.rs:512:10:512:10 | c | provenance |  |
-| main.rs:507:13:507:13 | b | main.rs:507:13:507:28 | b.parse() [Ok] | provenance | MaD:6 |
-| main.rs:507:13:507:13 | b | main.rs:507:13:507:28 | b.parse() [Ok] | provenance | MaD:10 |
-| main.rs:507:13:507:28 | b.parse() [Ok] | main.rs:507:13:507:37 | ... .unwrap() | provenance | MaD:21 |
+| main.rs:507:13:507:13 | b | main.rs:507:13:507:28 | b.parse() [Ok] | provenance | MaD:8 |
+| main.rs:507:13:507:28 | b.parse() [Ok] | main.rs:507:13:507:37 | ... .unwrap() | provenance | MaD:19 |
 | main.rs:507:13:507:37 | ... .unwrap() | main.rs:507:9:507:9 | c | provenance |  |
 | main.rs:508:9:508:9 | d | main.rs:513:10:513:10 | d | provenance |  |
-| main.rs:508:18:508:18 | b | main.rs:508:18:508:26 | b.parse() [Ok] | provenance | MaD:6 |
-| main.rs:508:18:508:18 | b | main.rs:508:18:508:26 | b.parse() [Ok] | provenance | MaD:10 |
-| main.rs:508:18:508:26 | b.parse() [Ok] | main.rs:508:18:508:35 | ... .unwrap() | provenance | MaD:21 |
+| main.rs:508:18:508:18 | b | main.rs:508:18:508:26 | b.parse() [Ok] | provenance | MaD:8 |
+| main.rs:508:18:508:26 | b.parse() [Ok] | main.rs:508:18:508:35 | ... .unwrap() | provenance | MaD:19 |
 | main.rs:508:18:508:35 | ... .unwrap() | main.rs:508:9:508:9 | d | provenance |  |
 | main.rs:517:9:517:10 | vs [element] | main.rs:519:10:519:11 | vs [element] | provenance |  |
 | main.rs:517:9:517:10 | vs [element] | main.rs:523:14:523:15 | vs [element] | provenance |  |
 | main.rs:517:14:517:34 | [...] [element] | main.rs:517:9:517:10 | vs [element] | provenance |  |
 | main.rs:517:15:517:24 | source(...) | main.rs:517:14:517:34 | [...] [element] | provenance |  |
-| main.rs:519:10:519:11 | vs [element] | main.rs:519:10:519:14 | vs[0] | provenance | MaD:7 |
+| main.rs:519:10:519:11 | vs [element] | main.rs:519:10:519:14 | vs[0] | provenance | MaD:5 |
 | main.rs:523:9:523:9 | v | main.rs:524:14:524:14 | v | provenance |  |
 | main.rs:523:14:523:15 | vs [element] | main.rs:523:9:523:9 | v | provenance |  |
 | main.rs:542:9:542:18 | mut vs_mut [element] | main.rs:544:10:544:15 | vs_mut [element] | provenance |  |
 | main.rs:542:22:542:42 | [...] [element] | main.rs:542:9:542:18 | mut vs_mut [element] | provenance |  |
 | main.rs:542:23:542:32 | source(...) | main.rs:542:22:542:42 | [...] [element] | provenance |  |
-| main.rs:544:10:544:15 | vs_mut [element] | main.rs:544:10:544:18 | vs_mut[0] | provenance | MaD:7 |
+| main.rs:544:10:544:15 | vs_mut [element] | main.rs:544:10:544:18 | vs_mut[0] | provenance | MaD:5 |
 | main.rs:554:9:554:9 | a | main.rs:559:10:559:10 | a | provenance |  |
 | main.rs:554:13:554:22 | source(...) | main.rs:554:9:554:9 | a | provenance |  |
 | main.rs:555:9:555:9 | b | main.rs:560:15:560:15 | b | provenance |  |
@@ -301,17 +297,16 @@ edges
 | main.rs:566:9:566:9 | a | main.rs:569:10:569:10 | a | provenance |  |
 | main.rs:566:9:566:9 | a | main.rs:570:20:570:20 | a | provenance |  |
 | main.rs:566:18:566:27 | source(...) | main.rs:566:9:566:9 | a | provenance |  |
+| main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:3 |
 | main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:4 |
-| main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:5 |
 | main.rs:570:20:570:20 | a | main.rs:570:10:570:21 | ...::from(...) | provenance | ReflexiveFrom |
 | main.rs:572:9:572:9 | b | main.rs:574:10:574:17 | b as i64 | provenance |  |
 | main.rs:572:9:572:9 | b | main.rs:575:10:575:10 | b | provenance |  |
 | main.rs:572:9:572:9 | b | main.rs:576:20:576:20 | b | provenance |  |
 | main.rs:572:18:572:27 | source(...) | main.rs:572:9:572:9 | b | provenance |  |
+| main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:3 |
 | main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:4 |
-| main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:5 |
-| main.rs:576:20:576:20 | b | main.rs:576:10:576:21 | ...::from(...) | provenance | MaD:3 |
-| main.rs:576:20:576:20 | b | main.rs:576:10:576:21 | ...::from(...) | provenance | MaD:11 |
+| main.rs:576:20:576:20 | b | main.rs:576:10:576:21 | ...::from(...) | provenance | MaD:9 |
 nodes
 | main.rs:19:10:19:18 | source(...) | semmle.label | source(...) |
 | main.rs:23:9:23:9 | s | semmle.label | s |

@@ -9,7 +9,7 @@ private import FlowSummaryUtil
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.FlowSummary
 
-private class JsonStringifySummary extends SummarizedCallable {
+private class JsonStringifySummary extends SummarizedCallable::Range {
   JsonStringifySummary() { this = "JSON.stringify" }
 
   override DataFlow::InvokeNode getACall() { result instanceof JsonStringifyCall }
