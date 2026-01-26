@@ -1172,13 +1172,13 @@ private module ContextTyping {
    */
   module CheckContextTyping<inferCallTypeSig/3 inferCallType> {
     pragma[nomagic]
-    private Type inferCallTypeFromContextCand(AstNode n, TypePath path, TypePath prefix) {
+    private Type inferCallTypeFromContextCand(AstNode n, TypePath prefix, TypePath path) {
       result = inferCallType(n, false, path) and
       hasUnknownType(n) and
       prefix = path
       or
       exists(TypePath mid |
-        result = inferCallTypeFromContextCand(n, path, mid) and
+        result = inferCallTypeFromContextCand(n, mid, path) and
         mid.isSnoc(prefix, _)
       )
     }
@@ -1188,7 +1188,7 @@ private module ContextTyping {
       result = inferCallType(n, true, path)
       or
       exists(TypePath prefix |
-        result = inferCallTypeFromContextCand(n, path, prefix) and
+        result = inferCallTypeFromContextCand(n, prefix, path) and
         hasUnknownTypeAt(n, prefix)
       )
     }
@@ -2669,9 +2669,8 @@ private module NonMethodResolution {
       then
         // We only check that the context of the call provides relevant type information
         // when no argument can
-        not exists(FunctionPosition pos0 |
-          FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos0, _, _) and
-          not pos0.isReturn()
+        not exists(FunctionPosition pos0 | not pos0.isReturn() |
+          FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos0, _, _)
           or
           FunctionOverloading::functionResolutionDependsOnArgument(impl, implFunction, pos0, _, _)
         )
@@ -2837,7 +2836,7 @@ private module NonMethodResolution {
     NonMethodFunction resolveTraitFunctionViaPathResolution(TraitItemNode trait) {
       this.hasTrait() and
       result = this.getPathResolutionResolved() and
-      result = trait.getASuccessor(_)
+      result = trait.getAnAssocItem()
     }
   }
 
