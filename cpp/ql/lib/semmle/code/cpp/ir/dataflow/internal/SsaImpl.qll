@@ -232,8 +232,8 @@ abstract class DefImpl extends TDefImpl {
    */
   abstract predicate isCertain();
 
-  /** Gets the value written to the destination variable by this definition. */
-  abstract Node0Impl getValue();
+  /** Gets the value written to the destination variable by this definition, if any. */
+  Node0Impl getValue() { none() }
 
   /** Gets the operand that represents the address of this definition, if any. */
   Operand getAddressOperand() { none() }
@@ -323,8 +323,6 @@ abstract private class DefAddressImpl extends DefImpl, TDefAddressImpl {
   final override int getIndirection() { result = 0 }
 
   final override predicate isCertain() { any() }
-
-  final override Node0Impl getValue() { none() }
 
   override Cpp::Location getLocation() { result = v.getLocation() }
 
@@ -652,8 +650,6 @@ class GlobalDefImpl extends DefImpl, TGlobalDefImpl {
   }
 
   override int getIndirection() { result = indirectionIndex }
-
-  override Node0Impl getValue() { none() }
 
   override predicate isCertain() { any() }
 
