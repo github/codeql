@@ -25,8 +25,8 @@ class DerefImplItemNode extends ImplItemNode {
    */
   pragma[nomagic]
   predicate targetHasTypeParameterAt(TypePath path) {
-    this.getAssocItem("Target").(TypeAlias).getTypeRepr().(TypeMention).resolveTypeAt(path)
-      instanceof TypeParameter
+    this.getAssocItem("Target").(TypeAlias).getTypeRepr().(TypeMention).getTypeAt(path) instanceof
+      TypeParameter
   }
 
   /** Gets the first type parameter of the type being implemented, if any. */

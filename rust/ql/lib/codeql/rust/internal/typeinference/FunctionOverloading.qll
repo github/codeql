@@ -15,7 +15,7 @@ private import FunctionType
 
 pragma[nomagic]
 private Type resolveNonTypeParameterTypeAt(TypeMention tm, TypePath path) {
-  result = tm.resolveTypeAt(path) and
+  result = tm.getTypeAt(path) and
   not result instanceof TypeParameter
 }
 
@@ -32,7 +32,7 @@ private predicate implSiblingCandidate(
 ) {
   trait = impl.(ImplItemNode).resolveTraitTy() and
   selfTy = impl.getSelfTy() and
-  rootType = selfTy.resolveType()
+  rootType = selfTy.getType()
 }
 
 pragma[nomagic]

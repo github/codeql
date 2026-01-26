@@ -47,8 +47,8 @@ predicate isBlanketLike(ImplItemNode i, TypePath blanketSelfPath, TypeParam blan
   exists(TypeMention tm, Type root, TypeParameter tp |
     tm = i.(Impl).getSelfTy() and
     complexSelfRoot(root, tp) and
-    tm.resolveType() = root and
-    tm.resolveTypeAt(blanketSelfPath) = TTypeParamTypeParameter(blanketTypeParam) and
+    tm.getType() = root and
+    tm.getTypeAt(blanketSelfPath) = TTypeParamTypeParameter(blanketTypeParam) and
     blanketSelfPath = TypePath::singleton(tp) and
     hasFirstNonTrivialTraitBound(blanketTypeParam, _)
   )

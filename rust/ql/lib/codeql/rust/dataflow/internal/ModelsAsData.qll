@@ -224,7 +224,7 @@ private module Debug {
       sc.propagatesFlow(input, _, _, _) and
       input.head() = SummaryComponent::argument(pos) and
       p = pos.getParameterIn(sc.getParamList()) and
-      tm.resolveType() instanceof RefType and
+      tm.getType() instanceof RefType and
       not input.tail().head() = SummaryComponent::content(TSingletonContentSet(TReferenceContent()))
     |
       tm = p.getTypeRepr()
@@ -239,7 +239,7 @@ private module Debug {
     exists(TypeMention tm |
       relevantManualModel(sc, can) and
       sc.propagatesFlow(_, output, _, _) and
-      tm.resolveType() instanceof RefType and
+      tm.getType() instanceof RefType and
       output.head() = SummaryComponent::return(_) and
       not output.tail().head() =
         SummaryComponent::content(TSingletonContentSet(TReferenceContent())) and

@@ -103,12 +103,12 @@ Type getAssocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition 
     // No specialization needed when the function is directly in the trait or
     // impl block or the declared type is not a type parameter
     (parent = i or not result instanceof TypeParameter) and
-    result = pos.getTypeMention(f).resolveTypeAt(path)
+    result = pos.getTypeMention(f).getTypeAt(path)
     or
     exists(TypePath prefix, TypePath suffix, TypeParameter tp, TypeMention constraint |
       BaseTypes::rootTypesSatisfaction(_, TTrait(parent), i, _, constraint) and
       path = prefix.append(suffix) and
-      tp = pos.getTypeMention(f).resolveTypeAt(prefix) and
+      tp = pos.getTypeMention(f).getTypeAt(prefix) and
       if tp = TSelfTypeParameter(_)
       then result = resolveImplOrTraitType(i, suffix)
       else result = getTraitConstraintTypeAt(i, constraint, tp, suffix)
