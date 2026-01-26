@@ -3,7 +3,7 @@ package diagnostics
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"strings"
 	"time"
@@ -56,18 +56,65 @@ type diagnostic struct {
 var diagnosticsEmitted, diagnosticsLimit uint = 0, 100
 var noDiagnosticDirPrinted bool = false
 
-func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
+type DiagnosticsWriter interface {
+	WriteDiagnostic(d diagnostic)
+}
+
+type FileDiagnosticsWriter struct {
+	diagnosticDir string
+}
+
+func (writer *FileDiagnosticsWriter) WriteDiagnostic(d diagnostic) {
+	if writer == nil {
+		return
+	}
+
+	content, err := json.Marshal(d)
+	if err != nil {
+		slog.Error("Failed to encode diagnostic as JSON", slog.Any("err", err))
+		return
+	}
+
+	targetFile, err := os.CreateTemp(writer.diagnosticDir, "go-extractor.*.json")
+	if err != nil {
+		slog.Error("Failed to create diagnostic file", slog.Any("err", err))
+		return
+	}
+	defer func() {
+		if err := targetFile.Close(); err != nil {
+			slog.Error("Failed to close diagnostic file", slog.Any("err", err))
+		}
+	}()
+
+	_, err = targetFile.Write(content)
+	if err != nil {
+		slog.Error("Failed to write to diagnostic file", slog.Any("err", err))
+	}
+}
+
+var DefaultWriter *FileDiagnosticsWriter = nil
+
+func NewFileDiagnosticsWriter() *FileDiagnosticsWriter {
+	diagnosticDir := os.Getenv("CODEQL_EXTRACTOR_GO_DIAGNOSTIC_DIR")
+	if diagnosticDir == "" {
+		if !noDiagnosticDirPrinted {
+			slog.Warn("No diagnostic directory set, so not emitting diagnostics")
+			noDiagnosticDirPrinted = true
+		}
+		return nil
+	}
+
+	return &FileDiagnosticsWriter{diagnosticDir}
+}
+
+func init() {
+	DefaultWriter = NewFileDiagnosticsWriter()
+}
+
+// Emits a diagnostic using the specified `DiagnosticsWriter`.
+func emitDiagnosticTo(writer DiagnosticsWriter, sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
 	if diagnosticsEmitted < diagnosticsLimit {
 		diagnosticsEmitted += 1
-
-		diagnosticDir := os.Getenv("CODEQL_EXTRACTOR_GO_DIAGNOSTIC_DIR")
-		if diagnosticDir == "" {
-			if !noDiagnosticDirPrinted {
-				log.Println("No diagnostic directory set, so not emitting diagnostic")
-				noDiagnosticDirPrinted = true
-			}
-			return
-		}
 
 		timestamp := time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z"
 
@@ -93,31 +140,13 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 			}
 		}
 
-		content, err := json.Marshal(d)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		targetFile, err := os.CreateTemp(diagnosticDir, "go-extractor.*.json")
-		if err != nil {
-			log.Println("Failed to create diagnostic file: ")
-			log.Println(err)
-			return
-		}
-		defer func() {
-			if err := targetFile.Close(); err != nil {
-				log.Println("Failed to close diagnostic file:")
-				log.Println(err)
-			}
-		}()
-
-		_, err = targetFile.Write(content)
-		if err != nil {
-			log.Println("Failed to write to diagnostic file: ")
-			log.Println(err)
-		}
+		writer.WriteDiagnostic(d)
 	}
+}
+
+// Emits a diagnostic using the default `DiagnosticsWriter`.
+func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
+	emitDiagnosticTo(DefaultWriter, sourceid, sourcename, markdownMessage, severity, visibility, location)
 }
 
 func EmitPackageDifferentOSArchitecture(pkgPath string) {
@@ -141,7 +170,7 @@ func plural(n int, singular, plural string) string {
 
 const maxNumPkgPaths = 5
 
-func EmitCannotFindPackages(pkgPaths []string) {
+func EmitCannotFindPackages(writer DiagnosticsWriter, pkgPaths []string) {
 	numPkgPaths := len(pkgPaths)
 
 	numPrinted := numPkgPaths
@@ -188,7 +217,8 @@ func EmitCannotFindPackages(pkgPaths []string) {
 			"If any of the packages are already present in the repository, but were not found, then you may need a [custom build command](https://docs.github.com/en/code-security/how-tos/scan-code-for-vulnerabilities/manage-your-configuration/codeql-code-scanning-for-compiled-languages)."
 	}
 
-	emitDiagnostic(
+	emitDiagnosticTo(
+		writer,
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
 		message,

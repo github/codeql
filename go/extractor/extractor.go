@@ -223,7 +223,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 	})
 
 	if len(pkgsNotFound) > 0 {
-		diagnostics.EmitCannotFindPackages(pkgsNotFound)
+		diagnostics.EmitCannotFindPackages(diagnostics.DefaultWriter, pkgsNotFound)
 	}
 
 	for _, pkg := range pkgs {
