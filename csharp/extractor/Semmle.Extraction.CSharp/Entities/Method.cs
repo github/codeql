@@ -22,6 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Synthesize implicit parameter for extension methods declared using extension(...) syntax.
             if (Symbol.ContainingSymbol is INamedTypeSymbol type &&
                 type.IsExtension && !string.IsNullOrEmpty(type.ExtensionParameter?.Name) &&
+                !Symbol.IsStatic &&
                 Symbol.AssociatedExtensionImplementation is IMethodSymbol associated)
             {
                 // TODO: Check that this works for generics as well. We might need to also take
@@ -36,8 +37,8 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam)
                     ? null
-                    : Parameter.Create(Context, p.originalParam, originalMethod);
-                Parameter.Create(Context, p.paramSymbol, this, original);
+                    : Parameter.Create(Context, p.originalParam, originalMethod, null, positionOffset);
+                Parameter.Create(Context, p.paramSymbol, this, original, positionOffset);
             }
 
             if (Symbol.IsVararg)

@@ -8,8 +8,8 @@ using Semmle.Extraction.CSharp.Populators;
 namespace Semmle.Extraction.CSharp.Entities
 {
     // Marker interface for parameter entities.
-    public interface IParameterEntity : IEntity { }
-    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity, IParameterEntity
+    public interface IParameter : IEntity { }
+    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity, IParameter
     {
         protected IEntity? Parent { get; set; }
         protected Parameter Original { get; }
@@ -267,80 +267,86 @@ namespace Semmle.Extraction.CSharp.Entities
     /// Note, that we use the characteristics of the parameter of the associated (compiler generated) extension method
     /// to populate the database.
     /// </summary>
-    internal class ImplicitExtensionParameter : Parameter
+    internal class ImplicitExtensionParameter : FreshEntity, IParameter
     {
-        private Method ExtensionMethod { get; init; }
+        private Method ExtensionMethod { get; }
+        private IParameterSymbol ExtensionParameter { get; }
 
-        private ImplicitExtensionParameter(Context cx, Method method)
-#nullable disable warnings
-            : base(cx, method.Symbol.AssociatedExtensionImplementation.Parameters[0], method, null)
+        private ImplicitExtensionParameter(Context cx, Method method) : base(cx)
         {
             ExtensionMethod = method;
+            ExtensionParameter = method.Symbol.AssociatedExtensionImplementation!.Parameters[0];
         }
-#nullable restore warnings
 
-        protected override int Ordinal => 0;
+        private static int Ordinal => 0;
 
-        private Kind ParamKind
+        private Parameter.Kind ParamKind
         {
             get
             {
-                switch (Symbol.RefKind)
+                switch (ExtensionParameter.RefKind)
                 {
                     case RefKind.Ref:
-                        return Kind.Ref;
+                        return Parameter.Kind.Ref;
                     case RefKind.In:
-                        return Kind.In;
+                        return Parameter.Kind.In;
                     case RefKind.RefReadOnlyParameter:
-                        return Kind.RefReadOnly;
+                        return Parameter.Kind.RefReadOnly;
                     default:
-                        return Kind.None;
+                        return Parameter.Kind.None;
                 }
             }
         }
 
-        private string Name => Symbol.Name;
+        private string Name => ExtensionParameter.Name;
 
-        public override bool IsSourceDeclaration => ExtensionMethod.Symbol.IsSourceDeclaration();
+        private bool IsSourceDeclaration => ExtensionMethod.Symbol.IsSourceDeclaration();
+
+        private void PopulateAttributes()
+        {
+            // Only extract attributes for source declarations
+            if (ReferenceEquals(ExtensionParameter, ExtensionParameter.OriginalDefinition))
+                Attribute.ExtractAttributes(Context, ExtensionParameter, this);
+        }
 
         /// <summary>
         /// Bind comments to this symbol.
         /// Comments are only bound to source declarations.
         /// </summary>
-        protected override void BindComments()
+        private void BindComments()
         {
-            if (IsSourceDeclaration && Symbol.FromSource())
-                Context.BindComments(this, FullLocation);
+            if (IsSourceDeclaration && ExtensionParameter.FromSource())
+                Context.BindComments(this, ExtensionParameter.Locations.BestOrDefault());
         }
 
-        public override void Populate(TextWriter trapFile)
+        protected override void Populate(TextWriter trapFile)
         {
             PopulateAttributes();
-            PopulateNullability(trapFile, Symbol.GetAnnotatedType());
-            PopulateRefKind(trapFile, Symbol.RefKind);
+            PopulateNullability(trapFile, ExtensionParameter.GetAnnotatedType());
+            PopulateRefKind(trapFile, ExtensionParameter.RefKind);
 
-            var type = Type.Create(Context, Symbol.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, this);
+            var type = Type.Create(Context, ExtensionParameter.Type);
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, ExtensionMethod, this);
 
             if (Context.OnlyScaffold)
             {
                 return;
             }
 
-            if (Context.ExtractLocation(Symbol))
+            if (Context.ExtractLocation(ExtensionParameter))
             {
-                var locations = Context.GetLocations(Symbol);
+                var locations = Context.GetLocations(ExtensionParameter);
                 WriteLocationsToTrap(trapFile.param_location, this, locations);
             }
 
-            if (!IsSourceDeclaration || !Symbol.FromSource())
+            if (!IsSourceDeclaration || !ExtensionParameter.FromSource())
                 return;
 
             BindComments();
 
             if (IsSourceDeclaration)
             {
-                foreach (var syntax in Symbol.DeclaringSyntaxReferences
+                foreach (var syntax in ExtensionParameter.DeclaringSyntaxReferences
                     .Select(d => d.GetSyntax())
                     .OfType<ParameterSyntax>()
                     .Where(s => s.Type is not null))
@@ -350,16 +356,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static ImplicitExtensionParameter Create(Context cx, Method method) => ImplicitExtensionParameterFactory.Instance.CreateEntity(cx, typeof(ImplicitExtensionParameter), method);
-
-        private class ImplicitExtensionParameterFactory : CachedEntityFactory<Method, ImplicitExtensionParameter>
+        public static ImplicitExtensionParameter Create(Context cx, Method method)
         {
-            public static ImplicitExtensionParameterFactory Instance { get; } = new ImplicitExtensionParameterFactory();
-
-            public override ImplicitExtensionParameter Create(Context cx, Method init) => new ImplicitExtensionParameter(cx, init);
+            var parameter = new ImplicitExtensionParameter(cx, method);
+            parameter.TryPopulate();
+            return parameter;
         }
-
-
     }
 
     internal class VarargsParam : Parameter

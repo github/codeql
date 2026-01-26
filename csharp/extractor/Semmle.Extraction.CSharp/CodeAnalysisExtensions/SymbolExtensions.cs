@@ -276,6 +276,16 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<IFieldSymbol?> GetTupleElementsMaybeNull(this INamedTypeSymbol type) =>
             type.TupleElements;
 
+        private static string GetExtensionTypeName(this INamedTypeSymbol named, Context cx)
+        {
+            var type = named.ExtensionParameter?.Type.Name;
+            if (type is null)
+            {
+                cx.ModelError(named, "Failed to get extension method type.");
+            }
+            return $"extension({type ?? "unknown"})";
+        }
+
         private static void BuildQualifierAndName(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
         {
             if (named.ContainingType is not null)
@@ -290,8 +300,20 @@ namespace Semmle.Extraction.CSharp
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
-            var name = named.IsFileLocal ? named.MetadataName : named.Name;
-            trapFile.Write(name);
+            if (named.IsFileLocal)
+            {
+                trapFile.Write(named.MetadataName);
+            }
+            else if (named.IsExtension)
+            {
+                var name = GetExtensionTypeName(named, cx);
+                trapFile.Write(name);
+            }
+            else
+            {
+                trapFile.Write(named.Name);
+            }
+
         }
 
         private static void BuildTupleId(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
@@ -488,9 +510,8 @@ namespace Semmle.Extraction.CSharp
 
             if (namedType.IsExtension)
             {
-                var type = namedType.ExtensionParameter?.Type.Name;
-                var name = $"extension({type})";
-                trapFile.Write(TrapExtensions.EncodeString(name));
+                var name = GetExtensionTypeName(namedType, cx);
+                trapFile.Write(name);
                 return;
             }
 
