@@ -940,6 +940,16 @@ module SsaCached {
     SsaImpl::phiHasInputFromBlock(phi, inp, bb)
   }
 
+  cached
+  predicate uncertainWriteDefinitionInput(Definition uncertain, Definition inp) {
+    SsaImpl::uncertainWriteDefinitionInput(uncertain, inp)
+  }
+
+  cached
+  predicate ssaDefReachesEndOfBlock(IRBlock bb, Definition def) {
+    SsaImpl::ssaDefReachesEndOfBlock(bb, def, _)
+  }
+
   predicate variableRead = SsaInput::variableRead/4;
 
   predicate variableWrite = SsaInput::variableWrite/4;
@@ -1159,8 +1169,16 @@ class Definition extends SsaImpl::Definition {
   private Definition getAPhiInputOrPriorDefinition() {
     result = this.(PhiNode).getAnInput()
     or
-    SsaImpl::uncertainWriteDefinitionInput(this, result)
+    uncertainWriteDefinitionInput(this, result)
   }
+
+  /**
+   * Holds if this SSA definition is live at the end of basic block `bb`.
+   * That is, this definition reaches the end of basic block `bb`, at which
+   * point it is still live, without crossing another SSA definition of the
+   * same source variable.
+   */
+  predicate isLiveAtEndOfBlock(IRBlock bb) { ssaDefReachesEndOfBlock(bb, this) }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is
