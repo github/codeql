@@ -314,7 +314,6 @@ namespace Semmle.Extraction.CSharp
             {
                 trapFile.Write(named.Name);
             }
-
         }
 
         private static void BuildTupleId(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)

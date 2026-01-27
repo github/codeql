@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Symbol.ContainingSymbol is INamedTypeSymbol type &&
                 type.IsExtension && !string.IsNullOrEmpty(type.ExtensionParameter?.Name) &&
                 !Symbol.IsStatic &&
-                Symbol.AssociatedExtensionImplementation is IMethodSymbol associated)
+                Symbol.AssociatedExtensionImplementation is not null)
             {
                 // TODO: Check that this works for generics as well. We might need to also take
                 ImplicitExtensionParameter.Create(Context, this);
