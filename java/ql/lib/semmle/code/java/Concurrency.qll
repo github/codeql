@@ -6,12 +6,16 @@ import semmle.code.java.frameworks.Mockito
 
 /**
  * A Java type representing a lock.
- * We identify a lock type as one that has both `lock` and `unlock` methods.
+ *
+ * We exclude types with a name ending in "Pool" as they typically manage a
+ * collection of resources and the `lock` and `unlock` methods typically only
+ * lock one resource at a time.
  */
 class LockType extends RefType {
   LockType() {
     this.getAMethod().hasName("lock") and
-    this.getAMethod().hasName("unlock")
+    this.getAMethod().hasName("unlock") and
+    not this.getName().matches("%Pool")
   }
 
   /** Gets a method that is locking this lock type. */
