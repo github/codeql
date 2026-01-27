@@ -31,7 +31,8 @@ query predicate illFormedTypeMention(TypeMention tm) {
 }
 
 query predicate nonUniqueCertainType(AstNode n, TypePath path) {
-  Consistency::nonUniqueCertainType(n, path, _)
+  Consistency::nonUniqueCertainType(n, path, _) and
+  n.fromSource() // Only include inconsistencies in the source.
 }
 
 int getTypeInferenceInconsistencyCounts(string type) {

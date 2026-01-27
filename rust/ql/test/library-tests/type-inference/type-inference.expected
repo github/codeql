@@ -95,197 +95,213 @@ inferCertainType
 | associated_types.rs:188:31:188:33 | 'a' |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:190:22:190:26 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:191:22:191:25 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:199:30:199:34 | thing |  | associated_types.rs:199:19:199:27 | T |
-| associated_types.rs:200:9:200:13 | thing |  | associated_types.rs:199:19:199:27 | T |
-| associated_types.rs:203:33:203:37 | thing |  | associated_types.rs:203:22:203:30 | T |
-| associated_types.rs:204:9:204:13 | thing |  | associated_types.rs:203:22:203:30 | T |
-| associated_types.rs:207:48:207:52 | thing |  | associated_types.rs:207:33:207:45 | T |
-| associated_types.rs:207:91:212:5 | { ... } |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:208:9:211:9 | TupleExpr |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:209:13:209:17 | thing |  | associated_types.rs:207:33:207:45 | T |
-| associated_types.rs:210:13:210:17 | thing |  | associated_types.rs:207:33:207:45 | T |
-| associated_types.rs:214:19:221:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:217:13:220:9 | TuplePat |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:220:13:220:39 | tp_assoc_from_supertrait(...) |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:228:26:228:26 | x |  | associated_types.rs:228:23:228:23 | T |
-| associated_types.rs:231:5:233:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:232:18:232:18 | x |  | associated_types.rs:228:23:228:23 | T |
-| associated_types.rs:236:24:236:24 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:239:5:243:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:240:19:240:19 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:241:23:241:24 | &x |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:241:24:241:24 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:242:18:242:18 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:246:23:246:23 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:250:5:254:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:251:19:251:19 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:252:23:252:24 | &x |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:252:24:252:24 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:253:18:253:18 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:260:17:260:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:260:17:260:21 | SelfParam | TRef | associated_types.rs:256:5:261:5 | Self [trait AssocNameClash] |
-| associated_types.rs:263:34:263:34 | x |  | associated_types.rs:263:31:263:31 | T |
-| associated_types.rs:267:5:270:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:268:18:268:18 | x |  | associated_types.rs:263:31:263:31 | T |
-| associated_types.rs:269:18:269:18 | x |  | associated_types.rs:263:31:263:31 | T |
-| associated_types.rs:280:19:280:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:280:19:280:23 | SelfParam | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:280:26:280:26 | a |  | associated_types.rs:280:16:280:16 | A |
-| associated_types.rs:283:23:283:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:283:23:283:27 | SelfParam | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:283:30:283:30 | a |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:283:36:283:36 | b |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:283:76:286:9 | { ... } |  | associated_types.rs:277:9:277:52 | GenericAssociatedType[MyTraitAssoc2] |
-| associated_types.rs:284:13:284:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:284:13:284:16 | self | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:284:22:284:22 | a |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:285:13:285:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:285:13:285:16 | self | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:285:22:285:22 | b |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:294:19:294:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:294:19:294:23 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:294:26:294:26 | a |  | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:294:46:296:9 | { ... } |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:294:46:296:9 | { ... } | A | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:295:21:295:21 | a |  | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:299:19:306:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:302:25:302:28 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:305:29:305:32 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:305:35:305:39 | false |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:317:21:317:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:317:21:317:25 | SelfParam | TRef | associated_types.rs:312:5:322:5 | Self [trait TraitMultipleAssoc] |
-| associated_types.rs:319:20:319:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:319:20:319:24 | SelfParam | TRef | associated_types.rs:312:5:322:5 | Self [trait TraitMultipleAssoc] |
-| associated_types.rs:321:20:321:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:321:20:321:24 | SelfParam | TRef | associated_types.rs:312:5:322:5 | Self [trait TraitMultipleAssoc] |
-| associated_types.rs:328:21:328:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:328:21:328:25 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:328:34:330:9 | { ... } |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:332:20:332:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:332:20:332:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:332:43:334:9 | { ... } |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:336:20:336:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:336:20:336:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:336:43:338:9 | { ... } |  | associated_types.rs:13:1:14:10 | S2 |
-| associated_types.rs:341:19:345:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:353:24:353:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:353:24:353:28 | SelfParam | TRef | associated_types.rs:351:5:354:5 | Self [trait Subtrait] |
-| associated_types.rs:362:23:362:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:362:23:362:27 | SelfParam | TRef | associated_types.rs:356:5:366:5 | Self [trait Subtrait2] |
-| associated_types.rs:362:30:362:31 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:362:48:362:49 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:362:66:365:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:363:13:363:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:363:13:363:16 | self | TRef | associated_types.rs:356:5:366:5 | Self [trait Subtrait2] |
-| associated_types.rs:363:22:363:23 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:364:13:364:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:364:13:364:16 | self | TRef | associated_types.rs:356:5:366:5 | Self [trait Subtrait2] |
-| associated_types.rs:364:22:364:23 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:373:16:373:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:373:16:373:20 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:373:16:373:20 | SelfParam | TRef.T | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:373:39:375:9 | { ... } |  | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:374:13:374:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:374:13:374:16 | self | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:374:13:374:16 | self | TRef.T | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:377:16:377:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:377:16:377:20 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:377:16:377:20 | SelfParam | TRef.T | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:377:23:377:30 | _content |  | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:377:47:379:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:378:22:378:42 | "Inserting content: \\n" |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:378:22:378:42 | "Inserting content: \\n" | TRef | {EXTERNAL LOCATION} | str |
-| associated_types.rs:378:22:378:42 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:378:22:378:42 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:384:24:384:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:384:24:384:28 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:384:24:384:28 | SelfParam | TRef.T | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:384:47:386:9 | { ... } |  | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:385:15:385:18 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:385:15:385:18 | self | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:385:15:385:18 | self | TRef.T | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:391:24:391:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:391:24:391:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
-| associated_types.rs:391:24:391:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:24:399:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:399:24:399:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
-| associated_types.rs:399:24:399:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:404:33:404:36 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:404:33:404:36 | item | TRef | associated_types.rs:404:20:404:30 | T |
-| associated_types.rs:405:9:405:12 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:405:9:405:12 | item | TRef | associated_types.rs:404:20:404:30 | T |
-| associated_types.rs:408:35:408:38 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:408:35:408:38 | item | TRef | associated_types.rs:408:21:408:32 | T |
-| associated_types.rs:408:90:411:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:409:9:409:12 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:409:9:409:12 | item | TRef | associated_types.rs:408:21:408:32 | T |
-| associated_types.rs:410:9:410:12 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:410:9:410:12 | item | TRef | associated_types.rs:408:21:408:32 | T |
-| associated_types.rs:413:19:422:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:414:28:414:32 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:417:28:417:31 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:418:37:418:42 | &item2 |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:420:29:420:33 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:421:29:421:32 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:435:16:435:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:435:16:435:20 | SelfParam | TRef | associated_types.rs:428:5:428:20 | ST |
-| associated_types.rs:435:16:435:20 | SelfParam | TRef.T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:435:39:437:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| associated_types.rs:435:39:437:9 | { ... } | E | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:435:39:437:9 | { ... } | T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:436:16:436:19 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:436:16:436:19 | self | TRef | associated_types.rs:428:5:428:20 | ST |
-| associated_types.rs:436:16:436:19 | self | TRef.T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:440:19:442:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:441:21:441:24 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:449:31:449:31 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:449:31:449:31 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:449:31:449:31 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:449:61:457:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:451:21:451:21 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:451:21:451:21 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:451:21:451:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:454:19:454:19 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:454:19:454:19 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:454:19:454:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:456:23:456:23 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:456:23:456:23 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:456:23:456:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:459:36:459:36 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:459:36:459:36 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:459:36:459:36 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:459:36:459:36 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:459:92:465:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:460:21:460:21 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:460:21:460:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:460:21:460:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:460:21:460:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:461:19:461:19 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:461:19:461:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:461:19:461:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:461:19:461:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:462:23:462:23 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:462:23:462:23 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:462:23:462:23 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:462:23:462:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:463:21:463:21 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:463:21:463:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:463:21:463:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:463:21:463:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:464:19:464:19 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:464:19:464:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:464:19:464:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:464:19:464:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:468:15:476:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:469:5:469:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:470:5:470:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:471:5:471:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:472:5:472:35 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:473:5:473:37 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:474:5:474:41 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:475:5:475:46 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:206:20:206:20 | t |  | associated_types.rs:204:17:204:17 | T |
+| associated_types.rs:211:20:211:20 | t |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:211:45:217:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:212:16:212:16 | t |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:222:20:222:20 | t |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:222:44:224:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:223:13:223:13 | t |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:229:23:229:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:229:23:229:27 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:229:30:229:30 | t |  | associated_types.rs:229:20:229:20 | T |
+| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:233:24:233:24 | t |  | associated_types.rs:229:20:229:20 | T |
+| associated_types.rs:237:19:241:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:239:28:239:31 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:248:30:248:34 | thing |  | associated_types.rs:248:19:248:27 | T |
+| associated_types.rs:249:9:249:13 | thing |  | associated_types.rs:248:19:248:27 | T |
+| associated_types.rs:252:33:252:37 | thing |  | associated_types.rs:252:22:252:30 | T |
+| associated_types.rs:253:9:253:13 | thing |  | associated_types.rs:252:22:252:30 | T |
+| associated_types.rs:256:48:256:52 | thing |  | associated_types.rs:256:33:256:45 | T |
+| associated_types.rs:256:91:261:5 | { ... } |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:257:9:260:9 | TupleExpr |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:258:13:258:17 | thing |  | associated_types.rs:256:33:256:45 | T |
+| associated_types.rs:259:13:259:17 | thing |  | associated_types.rs:256:33:256:45 | T |
+| associated_types.rs:263:19:270:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:266:13:269:9 | TuplePat |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:269:13:269:39 | tp_assoc_from_supertrait(...) |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:277:26:277:26 | x |  | associated_types.rs:277:23:277:23 | T |
+| associated_types.rs:280:5:282:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:281:18:281:18 | x |  | associated_types.rs:277:23:277:23 | T |
+| associated_types.rs:285:24:285:24 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:288:5:292:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:289:19:289:19 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:290:23:290:24 | &x |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:290:24:290:24 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:291:18:291:18 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:295:23:295:23 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:299:5:303:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:300:19:300:19 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:301:23:301:24 | &x |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:301:24:301:24 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:302:18:302:18 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:309:17:309:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:309:17:309:21 | SelfParam | TRef | associated_types.rs:305:5:310:5 | Self [trait AssocNameClash] |
+| associated_types.rs:312:34:312:34 | x |  | associated_types.rs:312:31:312:31 | T |
+| associated_types.rs:316:5:319:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:317:18:317:18 | x |  | associated_types.rs:312:31:312:31 | T |
+| associated_types.rs:318:18:318:18 | x |  | associated_types.rs:312:31:312:31 | T |
+| associated_types.rs:329:19:329:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:329:19:329:23 | SelfParam | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:329:26:329:26 | a |  | associated_types.rs:329:16:329:16 | A |
+| associated_types.rs:332:23:332:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:332:23:332:27 | SelfParam | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:332:30:332:30 | a |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:332:36:332:36 | b |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:332:76:335:9 | { ... } |  | associated_types.rs:326:9:326:52 | GenericAssociatedType[MyTraitAssoc2] |
+| associated_types.rs:333:13:333:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:333:13:333:16 | self | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:333:22:333:22 | a |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:334:13:334:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:334:13:334:16 | self | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:334:22:334:22 | b |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:343:19:343:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:343:19:343:23 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:343:26:343:26 | a |  | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:343:46:345:9 | { ... } |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:343:46:345:9 | { ... } | A | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:344:21:344:21 | a |  | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:348:19:355:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:351:25:351:28 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:354:29:354:32 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:354:35:354:39 | false |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:366:21:366:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:366:21:366:25 | SelfParam | TRef | associated_types.rs:361:5:371:5 | Self [trait TraitMultipleAssoc] |
+| associated_types.rs:368:20:368:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:368:20:368:24 | SelfParam | TRef | associated_types.rs:361:5:371:5 | Self [trait TraitMultipleAssoc] |
+| associated_types.rs:370:20:370:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:370:20:370:24 | SelfParam | TRef | associated_types.rs:361:5:371:5 | Self [trait TraitMultipleAssoc] |
+| associated_types.rs:377:21:377:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:377:21:377:25 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:377:34:379:9 | { ... } |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:381:20:381:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:381:20:381:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:381:43:383:9 | { ... } |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:385:20:385:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:385:20:385:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:385:43:387:9 | { ... } |  | associated_types.rs:13:1:14:10 | S2 |
+| associated_types.rs:390:19:394:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:402:24:402:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:402:24:402:28 | SelfParam | TRef | associated_types.rs:400:5:403:5 | Self [trait Subtrait] |
+| associated_types.rs:411:23:411:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:411:23:411:27 | SelfParam | TRef | associated_types.rs:405:5:415:5 | Self [trait Subtrait2] |
+| associated_types.rs:411:30:411:31 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:411:48:411:49 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:411:66:414:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:412:13:412:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:412:13:412:16 | self | TRef | associated_types.rs:405:5:415:5 | Self [trait Subtrait2] |
+| associated_types.rs:412:22:412:23 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:413:13:413:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:413:13:413:16 | self | TRef | associated_types.rs:405:5:415:5 | Self [trait Subtrait2] |
+| associated_types.rs:413:22:413:23 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:422:16:422:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:422:16:422:20 | SelfParam | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:422:16:422:20 | SelfParam | TRef.T | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:422:39:424:9 | { ... } |  | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:423:13:423:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:423:13:423:16 | self | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:423:13:423:16 | self | TRef.T | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:426:16:426:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:426:16:426:20 | SelfParam | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:426:16:426:20 | SelfParam | TRef.T | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:426:23:426:30 | _content |  | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:426:47:428:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:427:22:427:42 | "Inserting content: \\n" |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:427:22:427:42 | "Inserting content: \\n" | TRef | {EXTERNAL LOCATION} | str |
+| associated_types.rs:427:22:427:42 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:427:22:427:42 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:433:24:433:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:433:24:433:28 | SelfParam | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:433:24:433:28 | SelfParam | TRef.T | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:433:47:435:9 | { ... } |  | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:434:15:434:18 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:434:15:434:18 | self | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:434:15:434:18 | self | TRef.T | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:440:24:440:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:440:24:440:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
+| associated_types.rs:440:24:440:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:440:47:443:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:448:24:448:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:448:24:448:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
+| associated_types.rs:448:24:448:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:448:47:450:9 | { ... } |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:453:33:453:36 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:453:33:453:36 | item | TRef | associated_types.rs:453:20:453:30 | T |
+| associated_types.rs:454:9:454:12 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:454:9:454:12 | item | TRef | associated_types.rs:453:20:453:30 | T |
+| associated_types.rs:457:35:457:38 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:457:35:457:38 | item | TRef | associated_types.rs:457:21:457:32 | T |
+| associated_types.rs:457:90:460:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:458:9:458:12 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:458:9:458:12 | item | TRef | associated_types.rs:457:21:457:32 | T |
+| associated_types.rs:459:9:459:12 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:459:9:459:12 | item | TRef | associated_types.rs:457:21:457:32 | T |
+| associated_types.rs:462:19:471:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:463:28:463:32 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:466:28:466:31 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:467:37:467:42 | &item2 |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:469:29:469:33 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:470:29:470:32 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:484:16:484:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:484:16:484:20 | SelfParam | TRef | associated_types.rs:477:5:477:20 | ST |
+| associated_types.rs:484:16:484:20 | SelfParam | TRef.T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:484:39:486:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| associated_types.rs:484:39:486:9 | { ... } | E | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:484:39:486:9 | { ... } | T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:485:16:485:19 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:485:16:485:19 | self | TRef | associated_types.rs:477:5:477:20 | ST |
+| associated_types.rs:485:16:485:19 | self | TRef.T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:489:19:491:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:490:21:490:24 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:498:31:498:31 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:498:31:498:31 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:498:31:498:31 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:498:61:506:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:500:21:500:21 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:500:21:500:21 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:500:21:500:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:503:19:503:19 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:503:19:503:19 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:503:19:503:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:505:23:505:23 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:505:23:505:23 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:505:23:505:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:508:36:508:36 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:508:36:508:36 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:508:36:508:36 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:508:36:508:36 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:508:92:514:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:509:21:509:21 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:509:21:509:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:509:21:509:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:509:21:509:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:510:19:510:19 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:510:19:510:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:510:19:510:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:510:19:510:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:511:23:511:23 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:511:23:511:23 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:511:23:511:23 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:511:23:511:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:512:21:512:21 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:512:21:512:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:512:21:512:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:512:21:512:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:513:19:513:19 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:513:19:513:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:513:19:513:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:513:19:513:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:517:15:526:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:518:5:518:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:519:5:519:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:520:5:520:59 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:521:5:521:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:522:5:522:35 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:523:5:523:37 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:524:5:524:41 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:525:5:525:46 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:15:18:15:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:15:18:15:22 | SelfParam | TRef | blanket_impl.rs:9:5:10:14 | S2 |
 | blanket_impl.rs:15:42:17:9 | { ... } |  | {EXTERNAL LOCATION} | & |
@@ -4888,328 +4904,366 @@ inferType
 | associated_types.rs:191:18:191:26 | Odd(...) | OddT | {EXTERNAL LOCATION} | bool |
 | associated_types.rs:191:18:191:33 | ... .proj() |  | {EXTERNAL LOCATION} | char |
 | associated_types.rs:191:22:191:25 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:199:30:199:34 | thing |  | associated_types.rs:199:19:199:27 | T |
-| associated_types.rs:200:9:200:13 | thing |  | associated_types.rs:199:19:199:27 | T |
-| associated_types.rs:203:33:203:37 | thing |  | associated_types.rs:203:22:203:30 | T |
-| associated_types.rs:204:9:204:13 | thing |  | associated_types.rs:203:22:203:30 | T |
-| associated_types.rs:207:48:207:52 | thing |  | associated_types.rs:207:33:207:45 | T |
-| associated_types.rs:207:91:212:5 | { ... } |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:208:9:211:9 | TupleExpr |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:209:13:209:17 | thing |  | associated_types.rs:207:33:207:45 | T |
-| associated_types.rs:210:13:210:17 | thing |  | associated_types.rs:207:33:207:45 | T |
-| associated_types.rs:214:19:221:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:215:30:215:30 | S |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:216:33:216:33 | S |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:217:13:220:9 | TuplePat |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:220:13:220:39 | tp_assoc_from_supertrait(...) |  | {EXTERNAL LOCATION} | (T_2) |
-| associated_types.rs:220:38:220:38 | S |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:228:26:228:26 | x |  | associated_types.rs:228:23:228:23 | T |
-| associated_types.rs:231:5:233:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:232:13:232:14 | _a |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:232:18:232:18 | x |  | associated_types.rs:228:23:228:23 | T |
-| associated_types.rs:232:18:232:24 | x.get() |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:236:24:236:24 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:239:5:243:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:240:13:240:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:240:19:240:19 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:240:19:240:25 | x.get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:241:13:241:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:241:19:241:25 | get(...) |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:241:23:241:24 | &x |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:241:23:241:24 | &x | TRef | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:241:24:241:24 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:242:13:242:14 | _b |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:242:18:242:18 | x |  | associated_types.rs:236:21:236:21 | T |
-| associated_types.rs:242:18:242:32 | x.get_another() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:246:23:246:23 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:250:5:254:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:251:13:251:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:251:19:251:19 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:251:19:251:25 | x.get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:252:13:252:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:252:19:252:25 | get(...) |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:252:23:252:24 | &x |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:252:23:252:24 | &x | TRef | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:252:24:252:24 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:253:13:253:14 | _b |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:253:18:253:18 | x |  | associated_types.rs:246:20:246:20 | T |
-| associated_types.rs:253:18:253:32 | x.get_another() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:260:17:260:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:260:17:260:21 | SelfParam | TRef | associated_types.rs:256:5:261:5 | Self [trait AssocNameClash] |
-| associated_types.rs:263:34:263:34 | x |  | associated_types.rs:263:31:263:31 | T |
-| associated_types.rs:267:5:270:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:268:13:268:14 | _a |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:268:18:268:18 | x |  | associated_types.rs:263:31:263:31 | T |
-| associated_types.rs:268:18:268:24 | x.get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:269:13:269:14 | _b |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:269:18:269:18 | x |  | associated_types.rs:263:31:263:31 | T |
-| associated_types.rs:269:18:269:25 | x.get2() |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:280:19:280:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:280:19:280:23 | SelfParam | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:280:26:280:26 | a |  | associated_types.rs:280:16:280:16 | A |
-| associated_types.rs:283:23:283:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:283:23:283:27 | SelfParam | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:283:30:283:30 | a |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:283:36:283:36 | b |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:283:76:286:9 | { ... } |  | associated_types.rs:277:9:277:52 | GenericAssociatedType[MyTraitAssoc2] |
-| associated_types.rs:284:13:284:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:284:13:284:16 | self | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:284:13:284:23 | self.put(...) |  | associated_types.rs:277:9:277:52 | GenericAssociatedType[MyTraitAssoc2] |
-| associated_types.rs:284:22:284:22 | a |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:285:13:285:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:285:13:285:16 | self | TRef | associated_types.rs:276:5:287:5 | Self [trait MyTraitAssoc2] |
-| associated_types.rs:285:13:285:23 | self.put(...) |  | associated_types.rs:277:9:277:52 | GenericAssociatedType[MyTraitAssoc2] |
-| associated_types.rs:285:22:285:22 | b |  | associated_types.rs:283:20:283:20 | A |
-| associated_types.rs:294:19:294:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:294:19:294:23 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:294:26:294:26 | a |  | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:294:46:296:9 | { ... } |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:294:46:296:9 | { ... } | A | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:295:13:295:22 | Wrapper(...) |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:295:13:295:22 | Wrapper(...) | A | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:295:21:295:21 | a |  | associated_types.rs:294:16:294:16 | A |
-| associated_types.rs:299:19:306:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:300:13:300:13 | s |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:300:17:300:17 | S |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:302:13:302:15 | _g1 |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:302:13:302:15 | _g1 | A | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:302:19:302:19 | s |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:302:19:302:29 | s.put(...) |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:302:19:302:29 | s.put(...) | A | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:302:25:302:28 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:305:13:305:15 | _g2 |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:305:19:305:19 | s |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:305:19:305:40 | s.put_two(...) |  | associated_types.rs:1:1:2:21 | Wrapper |
-| associated_types.rs:305:29:305:32 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:305:35:305:39 | false |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:317:21:317:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:317:21:317:25 | SelfParam | TRef | associated_types.rs:312:5:322:5 | Self [trait TraitMultipleAssoc] |
-| associated_types.rs:319:20:319:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:319:20:319:24 | SelfParam | TRef | associated_types.rs:312:5:322:5 | Self [trait TraitMultipleAssoc] |
-| associated_types.rs:321:20:321:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:321:20:321:24 | SelfParam | TRef | associated_types.rs:312:5:322:5 | Self [trait TraitMultipleAssoc] |
-| associated_types.rs:328:21:328:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:328:21:328:25 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:328:34:330:9 | { ... } |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:329:13:329:14 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:332:20:332:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:332:20:332:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:332:43:334:9 | { ... } |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:333:13:333:13 | S |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:336:20:336:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:336:20:336:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:336:43:338:9 | { ... } |  | associated_types.rs:13:1:14:10 | S2 |
-| associated_types.rs:337:13:337:14 | S2 |  | associated_types.rs:13:1:14:10 | S2 |
-| associated_types.rs:341:19:345:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:342:13:342:23 | _assoc_zero |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:342:27:342:28 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:342:27:342:39 | S3.get_zero() |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:343:13:343:22 | _assoc_one |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:343:26:343:27 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:343:26:343:37 | S3.get_one() |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:344:13:344:22 | _assoc_two |  | associated_types.rs:13:1:14:10 | S2 |
-| associated_types.rs:344:26:344:27 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
-| associated_types.rs:344:26:344:37 | S3.get_two() |  | associated_types.rs:13:1:14:10 | S2 |
-| associated_types.rs:353:24:353:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:353:24:353:28 | SelfParam | TRef | associated_types.rs:351:5:354:5 | Self [trait Subtrait] |
-| associated_types.rs:362:23:362:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:362:23:362:27 | SelfParam | TRef | associated_types.rs:356:5:366:5 | Self [trait Subtrait2] |
-| associated_types.rs:362:30:362:31 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:362:48:362:49 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:362:66:365:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:363:13:363:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:363:13:363:16 | self | TRef | associated_types.rs:356:5:366:5 | Self [trait Subtrait2] |
-| associated_types.rs:363:13:363:24 | self.set(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:363:22:363:23 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:364:13:364:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:364:13:364:16 | self | TRef | associated_types.rs:356:5:366:5 | Self [trait Subtrait2] |
-| associated_types.rs:364:13:364:24 | self.set(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:364:22:364:23 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
-| associated_types.rs:373:16:373:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:373:16:373:20 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:373:16:373:20 | SelfParam | TRef.T | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:373:39:375:9 | { ... } |  | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:374:13:374:16 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:374:13:374:16 | self | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:374:13:374:16 | self | TRef.T | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:374:13:374:18 | self.0 |  | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:377:16:377:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:377:16:377:20 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:377:16:377:20 | SelfParam | TRef.T | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:377:23:377:30 | _content |  | associated_types.rs:370:10:370:16 | T |
-| associated_types.rs:377:47:379:9 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:378:13:378:43 | MacroExpr |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:378:22:378:42 | "Inserting content: \\n" |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:378:22:378:42 | "Inserting content: \\n" | TRef | {EXTERNAL LOCATION} | str |
-| associated_types.rs:378:22:378:42 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:378:22:378:42 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:378:22:378:42 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:384:24:384:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:384:24:384:28 | SelfParam | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:384:24:384:28 | SelfParam | TRef.T | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:384:47:386:9 | { ... } |  | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:385:13:385:19 | (...) |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:385:13:385:19 | (...) | T | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:385:13:385:21 | ... .0 |  | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:385:14:385:18 | * ... |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:385:14:385:18 | * ... | T | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:385:15:385:18 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:385:15:385:18 | self | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:385:15:385:18 | self | TRef.T | associated_types.rs:382:10:382:16 | T |
-| associated_types.rs:391:24:391:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:391:24:391:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
-| associated_types.rs:391:24:391:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:391:47:394:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:393:13:393:30 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:24:399:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:399:24:399:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
-| associated_types.rs:399:24:399:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:399:47:401:9 | { ... } |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:400:13:400:30 | ...::default(...) |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:404:33:404:36 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:404:33:404:36 | item | TRef | associated_types.rs:404:20:404:30 | T |
-| associated_types.rs:405:9:405:12 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:405:9:405:12 | item | TRef | associated_types.rs:404:20:404:30 | T |
-| associated_types.rs:408:35:408:38 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:408:35:408:38 | item | TRef | associated_types.rs:408:21:408:32 | T |
-| associated_types.rs:408:90:411:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:409:9:409:12 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:409:9:409:12 | item | TRef | associated_types.rs:408:21:408:32 | T |
-| associated_types.rs:409:9:409:20 | item.set(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:410:9:410:12 | item |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:410:9:410:12 | item | TRef | associated_types.rs:408:21:408:32 | T |
-| associated_types.rs:410:9:410:31 | item.insert_two(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:413:19:422:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:414:13:414:17 | item1 |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:414:13:414:17 | item1 | T | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:414:21:414:33 | MyType(...) |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:414:21:414:33 | MyType(...) | T | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:414:28:414:32 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:415:13:415:21 | _content1 |  | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:415:25:415:29 | item1 |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:415:25:415:29 | item1 | T | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:415:25:415:43 | item1.get_content() |  | {EXTERNAL LOCATION} | i64 |
-| associated_types.rs:417:13:417:17 | item2 |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:417:13:417:17 | item2 | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:417:21:417:32 | MyType(...) |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:417:21:417:32 | MyType(...) | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:417:28:417:31 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:418:37:418:42 | &item2 |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:418:37:418:42 | &item2 | TRef | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:418:37:418:42 | &item2 | TRef.T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:418:38:418:42 | item2 |  | associated_types.rs:368:5:368:24 | MyType |
-| associated_types.rs:418:38:418:42 | item2 | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:420:13:420:21 | _content3 |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:420:25:420:34 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
-| associated_types.rs:420:25:420:34 | Odd(...) | OddT | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:420:25:420:48 | ... .get_content() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:420:29:420:33 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:421:13:421:21 | _content4 |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:421:25:421:33 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
-| associated_types.rs:421:25:421:33 | Odd(...) | OddT | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:421:25:421:47 | ... .get_content() |  | {EXTERNAL LOCATION} | char |
-| associated_types.rs:421:29:421:32 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:435:16:435:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:435:16:435:20 | SelfParam | TRef | associated_types.rs:428:5:428:20 | ST |
-| associated_types.rs:435:16:435:20 | SelfParam | TRef.T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:435:39:437:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
-| associated_types.rs:435:39:437:9 | { ... } | E | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:435:39:437:9 | { ... } | T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:436:13:436:22 | Ok(...) |  | {EXTERNAL LOCATION} | Result |
-| associated_types.rs:436:13:436:22 | Ok(...) | E | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:436:13:436:22 | Ok(...) | T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:436:16:436:19 | self |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:436:16:436:19 | self | TRef | associated_types.rs:428:5:428:20 | ST |
-| associated_types.rs:436:16:436:19 | self | TRef.T | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:436:16:436:21 | self.0 |  | associated_types.rs:430:10:430:21 | Output |
-| associated_types.rs:440:19:442:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:441:13:441:14 | _y |  | {EXTERNAL LOCATION} | Result |
-| associated_types.rs:441:13:441:14 | _y | E | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:441:13:441:14 | _y | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:441:18:441:25 | ST(...) |  | associated_types.rs:428:5:428:20 | ST |
-| associated_types.rs:441:18:441:25 | ST(...) | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:441:18:441:31 | ... .get() |  | {EXTERNAL LOCATION} | Result |
-| associated_types.rs:441:18:441:31 | ... .get() | E | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:441:18:441:31 | ... .get() | T | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:441:21:441:24 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:449:31:449:31 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:449:31:449:31 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:449:31:449:31 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:449:61:457:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:451:13:451:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:451:19:451:22 | (...) |  | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:451:19:451:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:451:19:451:28 | ... .get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:451:20:451:21 | * ... |  | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:451:20:451:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:451:21:451:21 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:451:21:451:21 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:451:21:451:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:454:13:454:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:454:19:454:19 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:454:19:454:19 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:454:19:454:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:454:19:454:25 | t.get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:456:13:456:15 | _a3 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:456:19:456:24 | get(...) |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:456:23:456:23 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:456:23:456:23 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
-| associated_types.rs:456:23:456:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:459:36:459:36 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:459:36:459:36 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:459:36:459:36 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:459:36:459:36 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:459:92:465:5 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:460:13:460:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:460:19:460:22 | (...) |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:460:19:460:22 | (...) | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:460:19:460:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:460:19:460:28 | ... .get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:460:20:460:21 | * ... |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:460:20:460:21 | * ... | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:460:20:460:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:460:21:460:21 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:460:21:460:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:460:21:460:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:460:21:460:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:461:13:461:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:461:19:461:19 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:461:19:461:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:461:19:461:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:461:19:461:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:461:19:461:25 | t.get() |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:462:13:462:15 | _a3 |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:462:19:462:24 | get(...) |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:462:23:462:23 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:462:23:462:23 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:462:23:462:23 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:462:23:462:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:463:13:463:15 | _b1 |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:463:19:463:22 | (...) |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:463:19:463:22 | (...) | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:463:19:463:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:463:19:463:36 | ... .get_another() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:463:20:463:21 | * ... |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:463:20:463:21 | * ... | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:463:20:463:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:463:21:463:21 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:463:21:463:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:463:21:463:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:463:21:463:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:464:13:464:15 | _b2 |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:464:19:464:19 | t |  | {EXTERNAL LOCATION} | & |
-| associated_types.rs:464:19:464:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
-| associated_types.rs:464:19:464:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:464:19:464:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:464:19:464:33 | t.get_another() |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:468:15:476:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:469:5:469:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:470:5:470:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:471:5:471:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:472:5:472:35 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:473:5:473:37 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:474:5:474:41 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| associated_types.rs:475:5:475:46 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:206:20:206:20 | t |  | associated_types.rs:204:17:204:17 | T |
+| associated_types.rs:211:20:211:20 | t |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:211:45:217:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:212:13:216:13 | if t {...} else {...} |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:212:16:212:16 | t |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:212:18:214:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:213:17:213:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:214:20:216:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:215:17:215:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:222:20:222:20 | t |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:222:44:224:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:223:13:223:13 | t |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:223:13:223:18 | ... != ... |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:223:18:223:18 | 0 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:229:23:229:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:229:23:229:27 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:229:30:229:30 | t |  | associated_types.rs:229:20:229:20 | T |
+| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:233:13:233:25 | ...::through(...) |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:233:13:233:25 | ...::through(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:233:24:233:24 | t |  | associated_types.rs:229:20:229:20 | T |
+| associated_types.rs:237:19:241:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:238:13:238:13 | s |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:238:17:238:17 | S |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:239:13:239:14 | _a |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:239:13:239:14 | _a |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:239:18:239:18 | s |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:239:18:239:32 | s.convert(...) |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:239:18:239:32 | s.convert(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:239:28:239:31 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:240:13:240:14 | _b |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:240:13:240:14 | _b |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:240:18:240:18 | s |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:240:18:240:30 | s.convert(...) |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:240:18:240:30 | s.convert(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:240:28:240:29 | 42 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:248:30:248:34 | thing |  | associated_types.rs:248:19:248:27 | T |
+| associated_types.rs:249:9:249:13 | thing |  | associated_types.rs:248:19:248:27 | T |
+| associated_types.rs:252:33:252:37 | thing |  | associated_types.rs:252:22:252:30 | T |
+| associated_types.rs:253:9:253:13 | thing |  | associated_types.rs:252:22:252:30 | T |
+| associated_types.rs:256:48:256:52 | thing |  | associated_types.rs:256:33:256:45 | T |
+| associated_types.rs:256:91:261:5 | { ... } |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:257:9:260:9 | TupleExpr |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:258:13:258:17 | thing |  | associated_types.rs:256:33:256:45 | T |
+| associated_types.rs:259:13:259:17 | thing |  | associated_types.rs:256:33:256:45 | T |
+| associated_types.rs:263:19:270:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:264:30:264:30 | S |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:265:33:265:33 | S |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:266:13:269:9 | TuplePat |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:269:13:269:39 | tp_assoc_from_supertrait(...) |  | {EXTERNAL LOCATION} | (T_2) |
+| associated_types.rs:269:38:269:38 | S |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:277:26:277:26 | x |  | associated_types.rs:277:23:277:23 | T |
+| associated_types.rs:280:5:282:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:281:13:281:14 | _a |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:281:18:281:18 | x |  | associated_types.rs:277:23:277:23 | T |
+| associated_types.rs:281:18:281:24 | x.get() |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:285:24:285:24 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:288:5:292:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:289:13:289:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:289:19:289:19 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:289:19:289:25 | x.get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:290:13:290:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:290:19:290:25 | get(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:290:23:290:24 | &x |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:290:23:290:24 | &x | TRef | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:290:24:290:24 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:291:13:291:14 | _b |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:291:18:291:18 | x |  | associated_types.rs:285:21:285:21 | T |
+| associated_types.rs:291:18:291:32 | x.get_another() |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:295:23:295:23 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:299:5:303:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:300:13:300:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:300:19:300:19 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:300:19:300:25 | x.get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:301:13:301:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:301:19:301:25 | get(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:301:23:301:24 | &x |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:301:23:301:24 | &x | TRef | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:301:24:301:24 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:302:13:302:14 | _b |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:302:18:302:18 | x |  | associated_types.rs:295:20:295:20 | T |
+| associated_types.rs:302:18:302:32 | x.get_another() |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:309:17:309:21 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:309:17:309:21 | SelfParam | TRef | associated_types.rs:305:5:310:5 | Self [trait AssocNameClash] |
+| associated_types.rs:312:34:312:34 | x |  | associated_types.rs:312:31:312:31 | T |
+| associated_types.rs:316:5:319:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:317:13:317:14 | _a |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:317:18:317:18 | x |  | associated_types.rs:312:31:312:31 | T |
+| associated_types.rs:317:18:317:24 | x.get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:318:13:318:14 | _b |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:318:18:318:18 | x |  | associated_types.rs:312:31:312:31 | T |
+| associated_types.rs:318:18:318:25 | x.get2() |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:329:19:329:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:329:19:329:23 | SelfParam | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:329:26:329:26 | a |  | associated_types.rs:329:16:329:16 | A |
+| associated_types.rs:332:23:332:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:332:23:332:27 | SelfParam | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:332:30:332:30 | a |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:332:36:332:36 | b |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:332:76:335:9 | { ... } |  | associated_types.rs:326:9:326:52 | GenericAssociatedType[MyTraitAssoc2] |
+| associated_types.rs:333:13:333:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:333:13:333:16 | self | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:333:13:333:23 | self.put(...) |  | associated_types.rs:326:9:326:52 | GenericAssociatedType[MyTraitAssoc2] |
+| associated_types.rs:333:22:333:22 | a |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:334:13:334:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:334:13:334:16 | self | TRef | associated_types.rs:325:5:336:5 | Self [trait MyTraitAssoc2] |
+| associated_types.rs:334:13:334:23 | self.put(...) |  | associated_types.rs:326:9:326:52 | GenericAssociatedType[MyTraitAssoc2] |
+| associated_types.rs:334:22:334:22 | b |  | associated_types.rs:332:20:332:20 | A |
+| associated_types.rs:343:19:343:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:343:19:343:23 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:343:26:343:26 | a |  | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:343:46:345:9 | { ... } |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:343:46:345:9 | { ... } | A | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:344:13:344:22 | Wrapper(...) |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:344:13:344:22 | Wrapper(...) | A | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:344:21:344:21 | a |  | associated_types.rs:343:16:343:16 | A |
+| associated_types.rs:348:19:355:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:349:13:349:13 | s |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:349:17:349:17 | S |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:351:13:351:15 | _g1 |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:351:13:351:15 | _g1 | A | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:351:19:351:19 | s |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:351:19:351:29 | s.put(...) |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:351:19:351:29 | s.put(...) | A | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:351:25:351:28 | 1i32 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:354:13:354:15 | _g2 |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:354:19:354:19 | s |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:354:19:354:40 | s.put_two(...) |  | associated_types.rs:1:1:2:21 | Wrapper |
+| associated_types.rs:354:29:354:32 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:354:35:354:39 | false |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:366:21:366:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:366:21:366:25 | SelfParam | TRef | associated_types.rs:361:5:371:5 | Self [trait TraitMultipleAssoc] |
+| associated_types.rs:368:20:368:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:368:20:368:24 | SelfParam | TRef | associated_types.rs:361:5:371:5 | Self [trait TraitMultipleAssoc] |
+| associated_types.rs:370:20:370:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:370:20:370:24 | SelfParam | TRef | associated_types.rs:361:5:371:5 | Self [trait TraitMultipleAssoc] |
+| associated_types.rs:377:21:377:25 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:377:21:377:25 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:377:34:379:9 | { ... } |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:378:13:378:14 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:381:20:381:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:381:20:381:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:381:43:383:9 | { ... } |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:382:13:382:13 | S |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:385:20:385:24 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:385:20:385:24 | SelfParam | TRef | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:385:43:387:9 | { ... } |  | associated_types.rs:13:1:14:10 | S2 |
+| associated_types.rs:386:13:386:14 | S2 |  | associated_types.rs:13:1:14:10 | S2 |
+| associated_types.rs:390:19:394:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:391:13:391:23 | _assoc_zero |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:391:27:391:28 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:391:27:391:39 | S3.get_zero() |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:392:13:392:22 | _assoc_one |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:392:26:392:27 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:392:26:392:37 | S3.get_one() |  | associated_types.rs:10:1:11:9 | S |
+| associated_types.rs:393:13:393:22 | _assoc_two |  | associated_types.rs:13:1:14:10 | S2 |
+| associated_types.rs:393:26:393:27 | S3 |  | associated_types.rs:16:1:17:10 | S3 |
+| associated_types.rs:393:26:393:37 | S3.get_two() |  | associated_types.rs:13:1:14:10 | S2 |
+| associated_types.rs:402:24:402:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:402:24:402:28 | SelfParam | TRef | associated_types.rs:400:5:403:5 | Self [trait Subtrait] |
+| associated_types.rs:411:23:411:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:411:23:411:27 | SelfParam | TRef | associated_types.rs:405:5:415:5 | Self [trait Subtrait2] |
+| associated_types.rs:411:30:411:31 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:411:48:411:49 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:411:66:414:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:412:13:412:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:412:13:412:16 | self | TRef | associated_types.rs:405:5:415:5 | Self [trait Subtrait2] |
+| associated_types.rs:412:13:412:24 | self.set(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:412:22:412:23 | c1 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:413:13:413:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:413:13:413:16 | self | TRef | associated_types.rs:405:5:415:5 | Self [trait Subtrait2] |
+| associated_types.rs:413:13:413:24 | self.set(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:413:22:413:23 | c2 |  | associated_types.rs:20:5:20:16 | Output[Subtrait2] |
+| associated_types.rs:422:16:422:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:422:16:422:20 | SelfParam | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:422:16:422:20 | SelfParam | TRef.T | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:422:39:424:9 | { ... } |  | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:423:13:423:16 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:423:13:423:16 | self | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:423:13:423:16 | self | TRef.T | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:423:13:423:18 | self.0 |  | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:426:16:426:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:426:16:426:20 | SelfParam | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:426:16:426:20 | SelfParam | TRef.T | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:426:23:426:30 | _content |  | associated_types.rs:419:10:419:16 | T |
+| associated_types.rs:426:47:428:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:427:13:427:43 | MacroExpr |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:427:22:427:42 | "Inserting content: \\n" |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:427:22:427:42 | "Inserting content: \\n" | TRef | {EXTERNAL LOCATION} | str |
+| associated_types.rs:427:22:427:42 | ...::_print(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:427:22:427:42 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:427:22:427:42 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:433:24:433:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:433:24:433:28 | SelfParam | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:433:24:433:28 | SelfParam | TRef.T | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:433:47:435:9 | { ... } |  | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:434:13:434:19 | (...) |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:434:13:434:19 | (...) | T | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:434:13:434:21 | ... .0 |  | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:434:14:434:18 | * ... |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:434:14:434:18 | * ... | T | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:434:15:434:18 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:434:15:434:18 | self | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:434:15:434:18 | self | TRef.T | associated_types.rs:431:10:431:16 | T |
+| associated_types.rs:440:24:440:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:440:24:440:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
+| associated_types.rs:440:24:440:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:440:47:443:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:442:13:442:30 | ...::default(...) |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:448:24:448:28 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:448:24:448:28 | SelfParam | TRef | associated_types.rs:67:1:67:23 | Odd |
+| associated_types.rs:448:24:448:28 | SelfParam | TRef.OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:448:47:450:9 | { ... } |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:449:13:449:30 | ...::default(...) |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:453:33:453:36 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:453:33:453:36 | item | TRef | associated_types.rs:453:20:453:30 | T |
+| associated_types.rs:454:9:454:12 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:454:9:454:12 | item | TRef | associated_types.rs:453:20:453:30 | T |
+| associated_types.rs:457:35:457:38 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:457:35:457:38 | item | TRef | associated_types.rs:457:21:457:32 | T |
+| associated_types.rs:457:90:460:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:458:9:458:12 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:458:9:458:12 | item | TRef | associated_types.rs:457:21:457:32 | T |
+| associated_types.rs:458:9:458:20 | item.set(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:459:9:459:12 | item |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:459:9:459:12 | item | TRef | associated_types.rs:457:21:457:32 | T |
+| associated_types.rs:459:9:459:31 | item.insert_two(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:462:19:471:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:463:13:463:17 | item1 |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:463:13:463:17 | item1 | T | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:463:21:463:33 | MyType(...) |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:463:21:463:33 | MyType(...) | T | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:463:28:463:32 | 42i64 |  | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:464:13:464:21 | _content1 |  | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:464:25:464:29 | item1 |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:464:25:464:29 | item1 | T | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:464:25:464:43 | item1.get_content() |  | {EXTERNAL LOCATION} | i64 |
+| associated_types.rs:466:13:466:17 | item2 |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:466:13:466:17 | item2 | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:466:21:466:32 | MyType(...) |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:466:21:466:32 | MyType(...) | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:466:28:466:31 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:467:37:467:42 | &item2 |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:467:37:467:42 | &item2 | TRef | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:467:37:467:42 | &item2 | TRef.T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:467:38:467:42 | item2 |  | associated_types.rs:417:5:417:24 | MyType |
+| associated_types.rs:467:38:467:42 | item2 | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:469:13:469:21 | _content3 |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:469:25:469:34 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
+| associated_types.rs:469:25:469:34 | Odd(...) | OddT | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:469:25:469:48 | ... .get_content() |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:469:29:469:33 | 42i32 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:470:13:470:21 | _content4 |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:470:25:470:33 | Odd(...) |  | associated_types.rs:67:1:67:23 | Odd |
+| associated_types.rs:470:25:470:33 | Odd(...) | OddT | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:470:25:470:47 | ... .get_content() |  | {EXTERNAL LOCATION} | char |
+| associated_types.rs:470:29:470:32 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:484:16:484:20 | SelfParam |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:484:16:484:20 | SelfParam | TRef | associated_types.rs:477:5:477:20 | ST |
+| associated_types.rs:484:16:484:20 | SelfParam | TRef.T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:484:39:486:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
+| associated_types.rs:484:39:486:9 | { ... } | E | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:484:39:486:9 | { ... } | T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:485:13:485:22 | Ok(...) |  | {EXTERNAL LOCATION} | Result |
+| associated_types.rs:485:13:485:22 | Ok(...) | E | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:485:13:485:22 | Ok(...) | T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:485:16:485:19 | self |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:485:16:485:19 | self | TRef | associated_types.rs:477:5:477:20 | ST |
+| associated_types.rs:485:16:485:19 | self | TRef.T | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:485:16:485:21 | self.0 |  | associated_types.rs:479:10:479:21 | Output |
+| associated_types.rs:489:19:491:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:490:13:490:14 | _y |  | {EXTERNAL LOCATION} | Result |
+| associated_types.rs:490:13:490:14 | _y | E | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:490:13:490:14 | _y | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:490:18:490:25 | ST(...) |  | associated_types.rs:477:5:477:20 | ST |
+| associated_types.rs:490:18:490:25 | ST(...) | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:490:18:490:31 | ... .get() |  | {EXTERNAL LOCATION} | Result |
+| associated_types.rs:490:18:490:31 | ... .get() | E | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:490:18:490:31 | ... .get() | T | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:490:21:490:24 | true |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:498:31:498:31 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:498:31:498:31 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:498:31:498:31 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:498:61:506:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:500:13:500:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:500:19:500:22 | (...) |  | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:500:19:500:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:500:19:500:28 | ... .get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:500:20:500:21 | * ... |  | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:500:20:500:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:500:21:500:21 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:500:21:500:21 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:500:21:500:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:503:13:503:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:503:19:503:19 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:503:19:503:19 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:503:19:503:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:503:19:503:25 | t.get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:505:13:505:15 | _a3 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:505:19:505:24 | get(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:505:23:505:23 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:505:23:505:23 | t | TRef | associated_types.rs:19:1:27:1 | dyn GetSet |
+| associated_types.rs:505:23:505:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:508:36:508:36 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:508:36:508:36 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:508:36:508:36 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:508:36:508:36 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:508:92:514:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:509:13:509:15 | _a1 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:509:19:509:22 | (...) |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:509:19:509:22 | (...) | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:509:19:509:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:509:19:509:28 | ... .get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:509:20:509:21 | * ... |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:509:20:509:21 | * ... | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:509:20:509:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:509:21:509:21 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:509:21:509:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:509:21:509:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:509:21:509:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:510:13:510:15 | _a2 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:510:19:510:19 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:510:19:510:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:510:19:510:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:510:19:510:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:510:19:510:25 | t.get() |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:511:13:511:15 | _a3 |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:511:19:511:24 | get(...) |  | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:511:23:511:23 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:511:23:511:23 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:511:23:511:23 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:511:23:511:23 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:512:13:512:15 | _b1 |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:512:19:512:22 | (...) |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:512:19:512:22 | (...) | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:512:19:512:22 | (...) | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:512:19:512:36 | ... .get_another() |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:512:20:512:21 | * ... |  | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:512:20:512:21 | * ... | dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:512:20:512:21 | * ... | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:512:21:512:21 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:512:21:512:21 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:512:21:512:21 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:512:21:512:21 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:513:13:513:15 | _b2 |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:513:19:513:19 | t |  | {EXTERNAL LOCATION} | & |
+| associated_types.rs:513:19:513:19 | t | TRef | associated_types.rs:33:1:38:1 | dyn AnotherGet |
+| associated_types.rs:513:19:513:19 | t | TRef.dyn(AnotherOutput) | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:513:19:513:19 | t | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| associated_types.rs:513:19:513:33 | t.get_another() |  | {EXTERNAL LOCATION} | bool |
+| associated_types.rs:517:15:526:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:518:5:518:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:519:5:519:48 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:520:5:520:59 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:521:5:521:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:522:5:522:35 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:523:5:523:37 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:524:5:524:41 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| associated_types.rs:525:5:525:46 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
 | blanket_impl.rs:15:18:15:22 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | blanket_impl.rs:15:18:15:22 | SelfParam | TRef | blanket_impl.rs:9:5:10:14 | S2 |
 | blanket_impl.rs:15:42:17:9 | { ... } |  | {EXTERNAL LOCATION} | & |

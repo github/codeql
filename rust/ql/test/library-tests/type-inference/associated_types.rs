@@ -192,6 +192,55 @@ mod concrete_type_access_associated_type {
     }
 }
 
+// Tests a `<Type as Trait>::Assoc` type mention where the `Trait` type mention
+// contains a generic.
+//
+// In `convert` below the type of `<S as Trans<T>>::Output` depends on how
+// `convert` is called and thus the correct type cannot be determined when the
+// `TypeMention` is constructed.
+mod concrete_type_as_generic_access_associated_type {
+    use super::*;
+
+    trait Trans<T> {
+        type Output;
+        fn through(t: T) -> Self::Output;
+    }
+
+    impl Trans<bool> for S {
+        type Output = i32;
+        fn through(t: bool) -> Self::Output {
+            if t {
+                1
+            } else {
+                0
+            }
+        }
+    }
+
+    impl Trans<i32> for S {
+        type Output = bool;
+        fn through(t: i32) -> Self::Output {
+            t != 0 // $ target=ne
+        }
+    }
+
+    impl S {
+        // S::convert
+        fn convert<T>(&self, t: T) -> <S as Trans<T>>::Output
+        where
+            Self: Trans<T>,
+        {
+            S::through(t)
+        }
+    }
+
+    pub fn test() {
+        let s = S;
+        let _a = s.convert(true); // $ target=S::convert type=_a:i32 SPURIOUS: bool
+        let _b = s.convert(42); // $ target=S::convert type=_b:bool SPURIOUS: i32
+    }
+}
+
 // Tests for signatures that access associated types on type parameters
 mod type_param_access_associated_type {
     use super::*;
@@ -468,6 +517,7 @@ mod dyn_trait {
 pub fn test() {
     default_method_using_associated_type::test(); // $ target=test
     concrete_type_access_associated_type::test(); // $ target=test
+    concrete_type_as_generic_access_associated_type::test(); // $ target=test
     type_param_access_associated_type::test(); // $ target=test
     generic_associated_type::test(); // $ target=test
     multiple_associated_types::test(); // $ target=test
