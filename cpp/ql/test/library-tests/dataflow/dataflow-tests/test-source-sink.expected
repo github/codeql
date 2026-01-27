@@ -378,11 +378,8 @@ irFlow
 | test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1224:19:1224:37 | ** ... |
 | test.cpp:1195:10:1195:24 | *call to indirect_source | test.cpp:1227:10:1227:29 | * ... |
 | test.cpp:1258:11:1258:16 | call to source | test.cpp:1259:8:1259:10 | ... ++ |
-| test.cpp:1258:11:1258:16 | call to source | test.cpp:1260:8:1260:8 | x |
 | test.cpp:1262:7:1262:12 | call to source | test.cpp:1263:8:1263:10 | ... -- |
-| test.cpp:1262:7:1262:12 | call to source | test.cpp:1264:8:1264:8 | x |
 | test.cpp:1284:11:1284:16 | call to source | test.cpp:1285:8:1285:20 | ... ? ... : ... |
-| test.cpp:1284:11:1284:16 | call to source | test.cpp:1286:8:1286:8 | x |
 | test.cpp:1288:7:1288:12 | call to source | test.cpp:1290:8:1290:8 | x |
 | test.cpp:1292:7:1292:12 | call to source | test.cpp:1294:8:1294:8 | x |
 | test.cpp:1296:7:1296:12 | call to source | test.cpp:1297:8:1297:18 | ... ? ... : ... |
@@ -391,7 +388,6 @@ irFlow
 | test.cpp:1300:7:1300:12 | call to source | test.cpp:1302:8:1302:8 | x |
 | test.cpp:1304:7:1304:12 | call to source | test.cpp:1306:8:1306:8 | x |
 | test.cpp:1308:7:1308:12 | call to source | test.cpp:1309:8:1309:16 | ... ++ |
-| test.cpp:1308:7:1308:12 | call to source | test.cpp:1310:8:1310:8 | x |
 | test.cpp:1312:7:1312:12 | call to source | test.cpp:1313:8:1313:24 | ... ? ... : ... |
 | test.cpp:1312:7:1312:12 | call to source | test.cpp:1314:8:1314:8 | x |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
