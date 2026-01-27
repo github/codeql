@@ -150,7 +150,7 @@ newtype TContent =
   TFieldContent(string name) {
     // We only use field flow for env, steps and jobs outputs
     // not for accessing other context fields such as matrix or inputs
-    name = any(StepsExpression a).getFieldName() or
+    name = any(StepOutputExpression a).getFieldName() or
     name = any(NeedsExpression a).getFieldName() or
     name = any(JobsExpression a).getFieldName() or
     name = any(EnvExpression a).getFieldName()
@@ -205,7 +205,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  * field name.
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Uses astFrom, StepsExpression astTo |
+  exists(Uses astFrom, StepOutputExpression astTo |
     madSource(nodeFrom, _, "output." + ["*", astTo.getFieldName()]) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
@@ -310,7 +310,7 @@ predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
   exists(SimpleReferenceExpression access |
     (
       access instanceof NeedsExpression or
-      access instanceof StepsExpression or
+      access instanceof StepOutputExpression or
       access instanceof JobsExpression or
       access instanceof EnvExpression
     ) and
