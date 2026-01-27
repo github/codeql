@@ -53,7 +53,7 @@ def contrived_1():
 
     (a, b, c), (d, e, f) = tainted_list, no_taint_list
     ensure_tainted(a, b, c) # $ tainted
-    ensure_not_tainted(d, e, f) # $ SPURIOUS: tainted
+    ensure_not_tainted(d, e, f)
 
 
 def contrived_2():

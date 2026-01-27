@@ -1003,6 +1003,8 @@ predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
   or
   VariableCapture::readStep(nodeFrom, c, nodeTo)
+  or
+  Conversions::readStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -1056,6 +1058,57 @@ TupleElementContent small_tuple() { result.getIndex() <= 7 }
  */
 predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) {
   nodeTo.accesses(nodeFrom, c.getAttribute())
+}
+
+module Conversions {
+  private import semmle.python.Concepts
+
+  predicate decoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    exists(Decoding decoding |
+      nodeFrom = decoding.getAnInput() and
+      nodeTo = decoding.getOutput()
+    ) and
+    (
+      c instanceof TupleElementContent
+      or
+      c instanceof DictionaryElementContent
+    )
+  }
+
+  predicate encoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    exists(Encoding encoding |
+      nodeFrom = encoding.getAnInput() and
+      nodeTo = encoding.getOutput()
+    ) and
+    (
+      c instanceof TupleElementContent
+      or
+      c instanceof DictionaryElementContent
+    )
+  }
+
+  predicate formatReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    // % formatting
+    exists(BinaryExprNode fmt | fmt = nodeTo.asCfgNode() |
+      fmt.getOp() instanceof Mod and
+      fmt.getRight() = nodeFrom.asCfgNode()
+    ) and
+    c instanceof TupleElementContent
+    or
+    // format_map
+    // see https://docs.python.org/3/library/stdtypes.html#str.format_map
+    nodeTo.(MethodCallNode).calls(_, "format_map") and
+    nodeTo.(MethodCallNode).getArg(0) = nodeFrom and
+    c instanceof DictionaryElementContent
+  }
+
+  predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    decoderReadStep(nodeFrom, c, nodeTo)
+    or
+    encoderReadStep(nodeFrom, c, nodeTo)
+    or
+    formatReadStep(nodeFrom, c, nodeTo)
+  }
 }
 
 /**
