@@ -25,8 +25,8 @@ class WeakHashAlgorithmObjectCreation extends DataFlow::ObjectCreationNode {
   }
 }
 
-class WeakHashAlgorithmObjectCreate extends DataFlow::CallNode {
-    WeakHashAlgorithmObjectCreate() {
+class WeakHashAlgorithmCreateCall extends DataFlow::CallNode {
+    WeakHashAlgorithmCreateCall() {
         this = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("md5").getMember("create").asCall() or
         this = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("sha1").getMember("create").asCall() 
   }
@@ -58,6 +58,6 @@ class CreateFromNameSink extends DataFlow::CallNode {
 from DataFlow::Node sink 
 where sink instanceof ComputeHashSink or 
 sink instanceof WeakHashAlgorithmObjectCreation or 
-sink instanceof WeakHashAlgorithmObjectCreate or 
+sink instanceof WeakHashAlgorithmCreateCall or 
 sink instanceof CreateFromNameSink
 select sink, "Use of weak cryptographic hash algorithm."

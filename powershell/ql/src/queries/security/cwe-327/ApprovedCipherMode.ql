@@ -1,57 +1,81 @@
 /**
- * @name Use of a weak cipher mode
- * @description Using weak cipher modes such as ECB or OFB can compromise the security of encrypted data.
- * @kind problem
- * @problem.severity error
- * @security-severity 7.5
- * @precision high
- * @id powershell/weak-cipher-mode
- * @tags security
- *       external/cwe/cwe-327
- */
+* @name Insecure Symmetric cipher mode
+* @description Use of insecure cipher mode
+* @problem.severity error
+* @kind path-problem
+* @security-severity 8.8
+* @precision high
+* @id powershell/microsoft/public/weak-cipher-mode
+* @tags correctness
+*       security
+*       external/cwe/cwe-327
+*/
 
 import powershell
-import semmle.code.powershell.ApiGraphs
-import semmle.code.powershell.dataflow.TaintTracking
 import semmle.code.powershell.dataflow.DataFlow
+import semmle.code.powershell.dataflow.TaintTracking
+import semmle.code.powershell.ApiGraphs
+import WeakEncryptionFlow::PathGraph
 
-class WeakCipherMode extends API::Node {
-    WeakCipherMode() {
-            this = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("ciphermode").getMember("cbc")
-    }
+class AesCreation extends ObjectCreation {
+  AesCreation() {
+    this.getAnArgument().getValue().stringMatches("System.Security.Cryptography.AesManaged")
+  }
 }
 
-module WeakCipherModeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { 
-    exists(WeakCipherMode wcm | source = wcm.asSource())
+class AesModeProperty extends MemberExpr {
+  AesModeProperty() {
+    exists(DataFlow::ObjectCreationNode aesObjectCreation, DataFlow::Node aesObjectAccess |
+      (
+        aesObjectCreation.asExpr().getExpr().(ObjectCreation).getAnArgument().getValue().stringMatches("System.Security.Cryptography.AesManaged") or 
+        aesObjectCreation.(DataFlow::CallNode)= API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("aes").getMember("create").asCall() 
+      )
+      and
+      aesObjectAccess.getALocalSource() = aesObjectCreation and
+      aesObjectAccess.asExpr().getExpr() = this.getQualifier() and
+      this.getLowerCaseMemberName() = "mode"
+    )
+  }
 }
 
-  predicate isSink(DataFlow::Node sink) { any() }
-
-}
-
-module CommandInjectionFlow = TaintTracking::Global<WeakCipherModeConfig>;
-
-
-
-//dataflow from WeakCipherMode to Mode property of System.Security.Cryptography.Aes object!  
-
-from DataFlow::Node mode 
-where mode = API::getTopLevelMember("system")
+class WeakAesMode extends DataFlow::Node {
+  WeakAesMode() {
+    exists(API::Node node, string modeValue |
+      node =
+        API::getTopLevelMember("system")
             .getMember("security")
             .getMember("cryptography")
-            .getMember("aes")
-            .getMember("mode")
-            .asSink()
-// select mode, "mode member of aes"
+            .getMember("ciphermode")
+            .getMember(modeValue) and
+      modeValue = ["ecb", "ofb", "cfb", "ctr", "obc"] and
+      this = node.asSource()
+    ) or 
+    exists(StringConstExpr s | 
+      s.getValueString().toLowerCase() = ["ecb", "ofb", "cfb", "ctr", "obc"] and 
+      this.asExpr().getExpr() = s
+    )
+  }
+}
 
-from API::Node item 
-select item, "node"
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof WeakAesMode }
 
+  predicate isSink(DataFlow::Node sink) {
+    sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() =
+      any(AesModeProperty mode).getQualifier()
+  }
 
-// from API::Node sink
-// where sink = API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("ciphermode").getMember("cbc")
-// select sink, sink.asSource()
+  predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet cs) {
+    isSink(n) and
+    exists(DataFlow::Content::FieldContent fc |
+      cs.isSingleton(fc) and
+      fc.getLowerCaseName() = "mode"
+    )
+  }
+}
 
-// from InvokeEncryptModeArgument a 
-// select a, "Use of weak cipher mode in encryption."
+module WeakEncryptionFlow = TaintTracking::Global<Config>;
+
+from WeakEncryptionFlow::PathNode source, WeakEncryptionFlow::PathNode sink
+where WeakEncryptionFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, ""
