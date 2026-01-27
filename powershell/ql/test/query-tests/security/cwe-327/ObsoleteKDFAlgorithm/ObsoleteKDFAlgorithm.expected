@@ -1,0 +1,2 @@
+| ObsoleteKDFAlgorithm.ps1:27:16:27:65 | Call to cryptderivekey | Use of obsolete Crypto API. Password-based key derivation should use the PBKDF2 algorithm with SHA-2 hashing |
+| ObsoleteKDFAlgorithm.ps1:56:16:56:65 | Call to cryptderivekey | Use of obsolete Crypto API. Password-based key derivation should use the PBKDF2 algorithm with SHA-2 hashing |

@@ -1,0 +1,7 @@
+| WeakSymmetricAlgorithm.ps1:16:11:16:54 | Call to create | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:19:11:19:74 | Call to create | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:22:11:22:59 | Call to create | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:25:11:25:103 | Call to create | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:28:11:28:74 | Call to new-object | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:31:11:31:76 | Call to createfromname | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:67:12:67:75 | Call to new-object | Use of weak symmetric cryptographic algorithm. Consider using AES instead. |
