@@ -9,7 +9,7 @@ module SQL {
   abstract class SqlString extends DataFlow::Node { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
+    SqlStringFromModel() { ModelOutput::sinkNode(this, "sql-injection") }
   }
 
   /**

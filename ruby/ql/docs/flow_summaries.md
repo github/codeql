@@ -19,7 +19,7 @@ to be tainted in the call to `system`.
 have no source code, so we include a flow summary for it:
 
 ```ql
-private class ChompSummary extends SimpleSummarizedCallable {
+private class ChompSummary extends SummarizedCallable::RangeSimple {
   ChompSummary() { this = "chomp" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {

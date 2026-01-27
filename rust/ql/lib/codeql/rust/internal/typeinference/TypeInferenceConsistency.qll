@@ -17,7 +17,7 @@ query predicate illFormedTypeMention(TypeMention tm) {
   not tm =
     any(PathTypeMention ptm |
       exists(ptm.resolvePathTypeAt(TypePath::nil())) and
-      not exists(ptm.resolveType())
+      not exists(ptm.getType())
       or
       ptm.(NonAliasPathTypeMention).getResolved() instanceof TypeAlias
     ) and

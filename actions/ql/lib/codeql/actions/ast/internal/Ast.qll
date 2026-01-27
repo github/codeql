@@ -27,8 +27,8 @@ string getADelimitedExpression(YamlString s, int offset) {
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.getValue()
-        .regexpFind("\\$\\{\\{(?:[^}]|}(?!}))*\\}\\}", _, offset)
-        .regexpCapture("(\\$\\{\\{(?:[^}]|}(?!}))*\\}\\})", 1)
+        .regexpFind("\\$\\{\\{(?:[^}]|}(?!}))*+\\}\\}", _, offset)
+        .regexpCapture("(\\$\\{\\{(?:[^}]|}(?!}))*+\\}\\})", 1)
         .trim()
 }
 

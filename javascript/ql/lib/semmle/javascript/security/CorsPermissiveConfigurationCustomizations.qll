@@ -66,7 +66,7 @@ module CorsPermissiveConfiguration {
    * The value of cors origin when initializing the application.
    */
   class CorsOriginSink extends Sink, DataFlow::ValueNode {
-    CorsOriginSink() { this = ModelOutput::getASinkNode("cors-origin").asSink() }
+    CorsOriginSink() { ModelOutput::sinkNode(this, "cors-origin") }
   }
 
   /**

@@ -96,7 +96,7 @@ module RequestForgery {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "request-forgery") }
 
     override DataFlow::Node getARequest() { result = this }
 

@@ -3,14 +3,14 @@
 | AccessorCalls.cs:5:33:5:35 | enter set_Item | AccessorCalls.cs:5:33:5:35 | exit set_Item | 4 |
 | AccessorCalls.cs:7:32:7:34 | enter add_Event | AccessorCalls.cs:7:32:7:34 | exit add_Event | 4 |
 | AccessorCalls.cs:7:40:7:45 | enter remove_Event | AccessorCalls.cs:7:40:7:45 | exit remove_Event | 4 |
-| AccessorCalls.cs:10:10:10:11 | enter M1 | AccessorCalls.cs:10:10:10:11 | exit M1 | 33 |
-| AccessorCalls.cs:19:10:19:11 | enter M2 | AccessorCalls.cs:19:10:19:11 | exit M2 | 41 |
+| AccessorCalls.cs:10:10:10:11 | enter M1 | AccessorCalls.cs:10:10:10:11 | exit M1 | 34 |
+| AccessorCalls.cs:19:10:19:11 | enter M2 | AccessorCalls.cs:19:10:19:11 | exit M2 | 42 |
 | AccessorCalls.cs:28:10:28:11 | enter M3 | AccessorCalls.cs:28:10:28:11 | exit M3 | 17 |
 | AccessorCalls.cs:35:10:35:11 | enter M4 | AccessorCalls.cs:35:10:35:11 | exit M4 | 20 |
-| AccessorCalls.cs:42:10:42:11 | enter M5 | AccessorCalls.cs:42:10:42:11 | exit M5 | 33 |
-| AccessorCalls.cs:49:10:49:11 | enter M6 | AccessorCalls.cs:49:10:49:11 | exit M6 | 42 |
-| AccessorCalls.cs:56:10:56:11 | enter M7 | AccessorCalls.cs:56:10:56:11 | exit M7 | 24 |
-| AccessorCalls.cs:61:10:61:11 | enter M8 | AccessorCalls.cs:61:10:61:11 | exit M8 | 30 |
+| AccessorCalls.cs:42:10:42:11 | enter M5 | AccessorCalls.cs:42:10:42:11 | exit M5 | 34 |
+| AccessorCalls.cs:49:10:49:11 | enter M6 | AccessorCalls.cs:49:10:49:11 | exit M6 | 43 |
+| AccessorCalls.cs:56:10:56:11 | enter M7 | AccessorCalls.cs:56:10:56:11 | exit M7 | 25 |
+| AccessorCalls.cs:61:10:61:11 | enter M8 | AccessorCalls.cs:61:10:61:11 | exit M8 | 31 |
 | AccessorCalls.cs:66:10:66:11 | enter M9 | AccessorCalls.cs:66:10:66:11 | exit M9 | 58 |
 | ArrayCreation.cs:1:7:1:19 | enter ArrayCreation | ArrayCreation.cs:1:7:1:19 | exit ArrayCreation | 7 |
 | ArrayCreation.cs:3:11:3:12 | enter M1 | ArrayCreation.cs:3:11:3:12 | exit M1 | 5 |
@@ -167,6 +167,9 @@
 | Assignments.cs:3:10:3:10 | enter M | Assignments.cs:3:10:3:10 | exit M | 34 |
 | Assignments.cs:14:18:14:35 | enter (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... | 4 |
 | Assignments.cs:17:40:17:40 | enter + | Assignments.cs:17:40:17:40 | exit + | 6 |
+| Assignments.cs:27:10:27:23 | enter SetParamSingle | Assignments.cs:27:10:27:23 | exit SetParamSingle | 7 |
+| Assignments.cs:32:10:32:22 | enter SetParamMulti | Assignments.cs:32:10:32:22 | exit SetParamMulti | 10 |
+| Assignments.cs:38:10:38:11 | enter M2 | Assignments.cs:38:10:38:11 | exit M2 | 28 |
 | BreakInTry.cs:1:7:1:16 | enter BreakInTry | BreakInTry.cs:1:7:1:16 | exit BreakInTry | 7 |
 | BreakInTry.cs:3:10:3:11 | enter M1 | BreakInTry.cs:7:33:7:36 | access to parameter args | 5 |
 | BreakInTry.cs:3:10:3:11 | exit M1 (normal) | BreakInTry.cs:3:10:3:11 | exit M1 | 2 |
@@ -244,7 +247,30 @@
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | 8 |
 | ConditionalAccess.cs:32:10:32:11 | exit M8 (normal) | ConditionalAccess.cs:32:10:32:11 | exit M8 | 2 |
 | ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:24 | call to method Out | 1 |
-| ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | 8 |
+| ConditionalAccess.cs:42:9:42:11 | enter get_Item | ConditionalAccess.cs:42:9:42:11 | exit get_Item | 6 |
+| ConditionalAccess.cs:43:9:43:11 | enter set_Item | ConditionalAccess.cs:43:9:43:11 | exit set_Item | 4 |
+| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:48:9:48:10 | access to parameter ca | 4 |
+| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:46:10:46:11 | exit M9 | 2 |
+| ConditionalAccess.cs:48:24:48:25 | 42 | ConditionalAccess.cs:48:12:48:25 | ... = ... | 3 |
+| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:49:9:49:10 | access to parameter ca | 2 |
+| ConditionalAccess.cs:49:26:49:32 | "Hello" | ConditionalAccess.cs:49:12:49:32 | ... = ... | 3 |
+| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:50:9:50:10 | access to parameter ca | 2 |
+| ConditionalAccess.cs:50:13:50:13 | 0 | ConditionalAccess.cs:50:12:50:23 | ... = ... | 4 |
+| ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:51:9:51:16 | access to property Prop | 1 |
+| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:9:51:10 | access to parameter ca | 2 |
+| ConditionalAccess.cs:51:30:51:31 | 84 | ConditionalAccess.cs:51:18:51:31 | ... = ... | 3 |
+| ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:9:52:16 | access to property Prop | 1 |
+| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:10 | access to parameter ca | 2 |
+| ConditionalAccess.cs:52:32:52:38 | "World" | ConditionalAccess.cs:52:18:52:38 | ... = ... | 3 |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | 1 |
+| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:9:53:20 | access to field IntField | 1 |
+| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | 2 |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:12:53:25 | ... = ... | 4 |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | 1 |
+| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | 1 |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | 2 |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:12:54:29 | ... = ... | 4 |
+| ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith | 8 |
 | Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | exit Conditions | 7 |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:5:13:5:15 | access to parameter inc | 4 |
 | Conditions.cs:3:10:3:19 | exit IncrOrDecr (normal) | Conditions.cs:3:10:3:19 | exit IncrOrDecr | 2 |
@@ -490,8 +516,8 @@
 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:205:31:205:46 | object creation of type ExceptionB | 1 |
 | Finally.cs:208:13:210:13 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | 3 |
 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | Finally.cs:209:25:209:47 | throw ...; | 2 |
-| Finally.cs:211:13:211:29 | ...; | Finally.cs:211:13:211:28 | ... = ... | 4 |
-| Finally.cs:213:9:213:25 | ...; | Finally.cs:195:10:195:12 | exit M10 (normal) | 5 |
+| Finally.cs:211:13:211:29 | ...; | Finally.cs:211:13:211:28 | ... = ... | 5 |
+| Finally.cs:213:9:213:25 | ...; | Finally.cs:195:10:195:12 | exit M10 (normal) | 6 |
 | Finally.cs:216:10:216:12 | enter M11 | Finally.cs:220:13:220:36 | call to method WriteLine | 7 |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:224:13:224:38 | call to method WriteLine | 5 |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | exit M11 | 9 |
@@ -539,21 +565,21 @@
 | Foreach.cs:36:10:36:11 | exit M6 (normal) | Foreach.cs:36:10:36:11 | exit M6 | 2 |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
-| Initializers.cs:3:7:3:18 | enter <object initializer> | Initializers.cs:3:7:3:18 | exit <object initializer> | 14 |
+| Initializers.cs:3:7:3:18 | enter <object initializer> | Initializers.cs:3:7:3:18 | exit <object initializer> | 15 |
 | Initializers.cs:3:7:3:18 | enter Initializers | Initializers.cs:3:7:3:18 | exit Initializers | 4 |
 | Initializers.cs:8:5:8:16 | enter Initializers | Initializers.cs:8:5:8:16 | exit Initializers | 7 |
 | Initializers.cs:10:5:10:16 | enter Initializers | Initializers.cs:10:5:10:16 | exit Initializers | 7 |
-| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 22 |
-| Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:16:18:16 | exit H | 5 |
-| Initializers.cs:20:11:20:23 | enter <object initializer> | Initializers.cs:20:11:20:23 | exit <object initializer> | 9 |
+| Initializers.cs:12:10:12:10 | enter M | Initializers.cs:12:10:12:10 | exit M | 23 |
+| Initializers.cs:18:16:18:16 | enter H | Initializers.cs:18:16:18:16 | exit H | 6 |
+| Initializers.cs:20:11:20:23 | enter <object initializer> | Initializers.cs:20:11:20:23 | exit <object initializer> | 11 |
 | Initializers.cs:20:11:20:23 | enter NoConstructor | Initializers.cs:20:11:20:23 | exit NoConstructor | 7 |
-| Initializers.cs:26:11:26:13 | enter <object initializer> | Initializers.cs:26:11:26:13 | exit <object initializer> | 6 |
-| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 11 |
-| Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 9 |
-| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 13 |
+| Initializers.cs:26:11:26:13 | enter <object initializer> | Initializers.cs:26:11:26:13 | exit <object initializer> | 7 |
+| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 12 |
+| Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 10 |
+| Initializers.cs:35:9:35:11 | enter Sub | Initializers.cs:35:9:35:11 | exit Sub | 14 |
 | Initializers.cs:39:7:39:23 | enter IndexInitializers | Initializers.cs:39:7:39:23 | exit IndexInitializers | 7 |
 | Initializers.cs:41:11:41:18 | enter Compound | Initializers.cs:41:11:41:18 | exit Compound | 7 |
-| Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | exit Test | 105 |
+| Initializers.cs:51:10:51:13 | enter Test | Initializers.cs:51:10:51:13 | exit Test | 116 |
 | LoopUnrolling.cs:5:7:5:19 | enter LoopUnrolling | LoopUnrolling.cs:5:7:5:19 | exit LoopUnrolling | 7 |
 | LoopUnrolling.cs:7:10:7:11 | enter M1 | LoopUnrolling.cs:9:13:9:28 | ... == ... | 7 |
 | LoopUnrolling.cs:7:10:7:11 | exit M1 (normal) | LoopUnrolling.cs:7:10:7:11 | exit M1 | 2 |
@@ -629,7 +655,7 @@
 | MultiImplementationA.cs:8:29:8:32 | null | MultiImplementationA.cs:8:16:8:16 | exit M (abnormal) | 3 |
 | MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | MultiImplementationA.cs:11:7:11:8 | enter <object initializer> | 1 |
 | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> (normal) | MultiImplementationA.cs:11:7:11:8 | exit <object initializer> | 2 |
-| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:24:32:24:34 | ... = ... | 7 |
+| MultiImplementationA.cs:13:16:13:16 | this access | MultiImplementationA.cs:24:32:24:34 | ... = ... | 8 |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | exit get_Item (normal) | 2 |
 | MultiImplementationA.cs:14:31:14:31 | enter get_Item | MultiImplementationA.cs:14:31:14:31 | enter get_Item | 1 |
 | MultiImplementationA.cs:14:31:14:31 | exit get_Item | MultiImplementationA.cs:14:31:14:31 | exit get_Item | 1 |
@@ -645,7 +671,7 @@
 | MultiImplementationA.cs:18:9:18:22 | enter M2 | MultiImplementationA.cs:18:9:18:22 | exit M2 | 4 |
 | MultiImplementationA.cs:20:12:20:13 | enter C2 | MultiImplementationA.cs:20:12:20:13 | enter C2 | 1 |
 | MultiImplementationA.cs:20:12:20:13 | exit C2 | MultiImplementationA.cs:20:12:20:13 | exit C2 | 1 |
-| MultiImplementationA.cs:20:12:20:13 | this access | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 9 |
+| MultiImplementationA.cs:20:12:20:13 | this access | MultiImplementationA.cs:20:12:20:13 | exit C2 (normal) | 10 |
 | MultiImplementationA.cs:21:12:21:13 | enter C2 | MultiImplementationA.cs:21:12:21:13 | enter C2 | 1 |
 | MultiImplementationA.cs:21:12:21:13 | exit C2 (normal) | MultiImplementationA.cs:21:12:21:13 | exit C2 | 2 |
 | MultiImplementationA.cs:21:24:21:24 | 0 | MultiImplementationA.cs:21:27:21:29 | {...} | 3 |
@@ -671,7 +697,7 @@
 | MultiImplementationB.cs:4:25:4:37 | {...} | MultiImplementationA.cs:7:21:7:23 | exit get_P2 (normal) | 4 |
 | MultiImplementationB.cs:4:43:4:45 | {...} | MultiImplementationA.cs:7:41:7:43 | exit set_P2 (normal) | 2 |
 | MultiImplementationB.cs:5:23:5:23 | 2 | MultiImplementationA.cs:8:16:8:16 | exit M (normal) | 2 |
-| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:22:32:22:34 | ... = ... | 7 |
+| MultiImplementationB.cs:11:16:11:16 | this access | MultiImplementationB.cs:22:32:22:34 | ... = ... | 8 |
 | MultiImplementationB.cs:12:37:12:40 | null | MultiImplementationA.cs:14:31:14:31 | exit get_Item (abnormal) | 3 |
 | MultiImplementationB.cs:13:40:13:54 | {...} | MultiImplementationA.cs:15:36:15:38 | exit get_Item (abnormal) | 4 |
 | MultiImplementationB.cs:13:60:13:62 | {...} | MultiImplementationB.cs:13:60:13:62 | {...} | 1 |
@@ -722,7 +748,7 @@
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:16:17:16:18 | "" | 5 |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:17:13:17:19 | (...) ... | 5 |
 | NullCoalescing.cs:17:13:17:24 | ... ?? ... | NullCoalescing.cs:13:10:13:11 | exit M6 | 4 |
-| PartialImplementationA.cs:1:15:1:21 | enter <object initializer> | PartialImplementationA.cs:1:15:1:21 | exit <object initializer> | 10 |
+| PartialImplementationA.cs:1:15:1:21 | enter <object initializer> | PartialImplementationA.cs:1:15:1:21 | exit <object initializer> | 11 |
 | PartialImplementationA.cs:3:12:3:18 | enter Partial | PartialImplementationA.cs:3:12:3:18 | exit Partial | 7 |
 | PartialImplementationB.cs:4:12:4:18 | enter Partial | PartialImplementationB.cs:4:12:4:18 | exit Partial | 7 |
 | Patterns.cs:3:7:3:14 | enter Patterns | Patterns.cs:3:7:3:14 | exit Patterns | 7 |
@@ -1041,8 +1067,8 @@
 | cflow.cs:127:32:127:57 | ... ? ... : ... | cflow.cs:127:19:127:21 | exit get_Prop | 4 |
 | cflow.cs:127:48:127:49 | "" | cflow.cs:127:48:127:49 | "" | 1 |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | access to field Field | 2 |
-| cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | exit set_Prop | 8 |
-| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 11 |
+| cflow.cs:127:62:127:64 | enter set_Prop | cflow.cs:127:62:127:64 | exit set_Prop | 9 |
+| cflow.cs:129:5:129:15 | enter ControlFlow | cflow.cs:129:5:129:15 | exit ControlFlow | 12 |
 | cflow.cs:134:5:134:15 | enter ControlFlow | cflow.cs:134:5:134:15 | exit ControlFlow | 9 |
 | cflow.cs:136:12:136:22 | enter ControlFlow | cflow.cs:136:12:136:22 | exit ControlFlow | 8 |
 | cflow.cs:138:40:138:40 | enter + | cflow.cs:138:40:138:40 | exit + | 9 |
@@ -1104,7 +1130,7 @@
 | cflow.cs:201:9:205:9 | {...} | cflow.cs:193:10:193:17 | exit Booleans (abnormal) | 5 |
 | cflow.cs:208:10:208:11 | enter Do | cflow.cs:210:9:221:36 | do ... while (...); | 3 |
 | cflow.cs:208:10:208:11 | exit Do (normal) | cflow.cs:208:10:208:11 | exit Do | 2 |
-| cflow.cs:211:9:221:9 | {...} | cflow.cs:213:17:213:32 | ... > ... | 14 |
+| cflow.cs:211:9:221:9 | {...} | cflow.cs:213:17:213:32 | ... > ... | 15 |
 | cflow.cs:214:13:216:13 | {...} | cflow.cs:215:17:215:25 | continue; | 2 |
 | cflow.cs:217:13:220:13 | if (...) ... | cflow.cs:217:17:217:32 | ... < ... | 6 |
 | cflow.cs:218:13:220:13 | {...} | cflow.cs:219:17:219:22 | break; | 2 |
@@ -1112,7 +1138,7 @@
 | cflow.cs:224:10:224:16 | enter Foreach | cflow.cs:226:27:226:64 | call to method Repeat<String> | 5 |
 | cflow.cs:224:10:224:16 | exit Foreach (normal) | cflow.cs:224:10:224:16 | exit Foreach | 2 |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | 1 |
-| cflow.cs:226:22:226:22 | String x | cflow.cs:229:17:229:32 | ... > ... | 15 |
+| cflow.cs:226:22:226:22 | String x | cflow.cs:229:17:229:32 | ... > ... | 16 |
 | cflow.cs:230:13:232:13 | {...} | cflow.cs:231:17:231:25 | continue; | 2 |
 | cflow.cs:233:13:236:13 | if (...) ... | cflow.cs:233:17:233:32 | ... < ... | 6 |
 | cflow.cs:234:13:236:13 | {...} | cflow.cs:235:17:235:22 | break; | 2 |

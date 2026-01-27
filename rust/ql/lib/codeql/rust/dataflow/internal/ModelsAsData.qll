@@ -111,60 +111,38 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
-private predicate summaryModel(
-  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
-  QlBuiltins::ExtensionId madId
-) {
-  exists(string path, Function f0 |
-    summaryModel(path, input, output, kind, provenance, madId) and
-    f0.getCanonicalPath() = path
-  |
-    f = f0 and
-    isInherited = false
-    or
-    f.implements(f0) and
-    isInherited = true
-  )
-}
-
-private predicate summaryModelRelevant(
-  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
-  QlBuiltins::ExtensionId madId
-) {
-  summaryModel(f, input, output, kind, provenance, isInherited, madId) and
-  // Only apply generated or inherited models to functions in library code and
-  // when no strictly better model exists
-  if provenance.isGenerated() or isInherited = true
-  then
-    not f.fromSource() and
-    not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
-      provenance.isGenerated() and other.isManual()
-      or
-      provenance = other and isInherited = true
-    )
-  else any()
-}
-
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
-  SummarizedCallableFromModel() { summaryModelRelevant(this, _, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  boolean isExact_;
+  QlBuiltins::ExtensionId madId;
 
-  override predicate hasProvenance(Provenance provenance) {
-    summaryModelRelevant(this, _, _, _, provenance, _, _)
+  SummarizedCallableFromModel() {
+    exists(string path, Function f, Provenance p |
+      summaryModel(path, input_, output_, kind, p, madId) and
+      f.getCanonicalPath() = path
+    |
+      this = f and isExact_ = true and p_ = p
+      or
+      this.implements(f) and
+      isExact_ = false and
+      // making inherited models generated means that source code definitions and
+      // exact generated models take precedence
+      p_ = "hq-generated"
+    )
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind, QlBuiltins::ExtensionId madId |
-      summaryModelRelevant(this, input, output, kind, _, _, madId) and
-      model = "MaD:" + madId.toString()
-    |
-      kind = "value" and
-      preservesValue = true
-      or
-      kind = "taint" and
-      preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = isExact_ and
+    model = "MaD:" + madId.toString()
   }
 }
 
@@ -211,7 +189,7 @@ private module Debug {
   private predicate relevantManualModel(SummarizedCallableImpl sc, string can) {
     exists(Provenance manual |
       can = sc.getCanonicalPath() and
-      summaryModelRelevant(sc, _, _, _, manual, false, _) and
+      sc.(SummarizedCallableFromModel).propagatesFlow(_, _, _, manual, true, _) and
       manual.isManual()
     )
   }
@@ -221,10 +199,10 @@ private module Debug {
   ) {
     exists(RustDataFlow::ParameterPosition pos, TypeMention tm |
       relevantManualModel(sc, can) and
-      sc.propagatesFlow(input, _, _, _) and
+      sc.propagatesFlow(input, _, _, _, _, _) and
       input.head() = SummaryComponent::argument(pos) and
       p = pos.getParameterIn(sc.getParamList()) and
-      tm.resolveType() instanceof RefType and
+      tm.getType() instanceof RefType and
       not input.tail().head() = SummaryComponent::content(TSingletonContentSet(TReferenceContent()))
     |
       tm = p.getTypeRepr()
@@ -238,8 +216,8 @@ private module Debug {
   ) {
     exists(TypeMention tm |
       relevantManualModel(sc, can) and
-      sc.propagatesFlow(_, output, _, _) and
-      tm.resolveType() instanceof RefType and
+      sc.propagatesFlow(_, output, _, _, _, _) and
+      tm.getType() instanceof RefType and
       output.head() = SummaryComponent::return(_) and
       not output.tail().head() =
         SummaryComponent::content(TSingletonContentSet(TReferenceContent())) and

@@ -91,6 +91,23 @@ conditionBlock
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:25:31:25:31 | access to local variable s | false |
 | ConditionalAccess.cs:24:17:24:37 | call to method ToString | ConditionalAccess.cs:25:31:25:31 | access to local variable s | false |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:9:35:24 | call to method Out | false |
+| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:48:24:48:25 | 42 | false |
+| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:49:26:49:32 | "Hello" | false |
+| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:50:13:50:13 | 0 | false |
+| ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:51:30:51:31 | 84 | false |
+| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:9:51:16 | access to property Prop | false |
+| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:30:51:31 | 84 | false |
+| ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:32:52:38 | "World" | false |
+| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop | false |
+| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" | false |
+| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:20 | access to field IntField | false |
+| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | false |
+| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField | false |
+| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 | false |
+| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | false |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | false |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | false |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" | false |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:6:13:6:16 | ...; | true |
 | Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:13:7:16 | [false] !... | true |
 | Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:13:7:16 | [true] !... | false |

@@ -88,7 +88,7 @@ module PathInjection {
   private import semmle.python.frameworks.data.ModelsAsData
 
   private class DataAsFileSink extends Sink {
-    DataAsFileSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+    DataAsFileSink() { ModelOutput::sinkNode(this, "path-injection") }
   }
 
   /**

@@ -145,6 +145,6 @@ module ReflectedXss {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "html-injection") }
   }
 }

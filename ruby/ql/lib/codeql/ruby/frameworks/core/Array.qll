@@ -41,7 +41,7 @@ module Array {
     not e instanceof RangeLiteral
   }
 
-  private class ArrayLiteralSummary extends SummarizedCallable {
+  private class ArrayLiteralSummary extends SummarizedCallable::Range {
     ArrayLiteralSummary() { this = "Array.[]" }
 
     override MethodCall getACallSimple() { result = getAStaticArrayCall("[]") }
@@ -55,7 +55,7 @@ module Array {
     }
   }
 
-  private class NewSummary extends SummarizedCallable {
+  private class NewSummary extends SummarizedCallable::Range {
     NewSummary() { this = "Array.new" }
 
     override MethodCall getACallSimple() { result = getAStaticArrayCall("new") }
@@ -75,7 +75,7 @@ module Array {
     }
   }
 
-  private class TryConvertSummary extends SummarizedCallable {
+  private class TryConvertSummary extends SummarizedCallable::Range {
     TryConvertSummary() { this = "Array.try_convert" }
 
     override MethodCall getACallSimple() { result = getAStaticArrayCall("try_convert") }
@@ -87,7 +87,7 @@ module Array {
     }
   }
 
-  private class SetIntersectionSummary extends SummarizedCallable {
+  private class SetIntersectionSummary extends SummarizedCallable::Range {
     SetIntersectionSummary() { this = "&" }
 
     override BitwiseAndExpr getACallSimple() { any() }
@@ -99,7 +99,7 @@ module Array {
     }
   }
 
-  private class SetUnionSummary extends SummarizedCallable {
+  private class SetUnionSummary extends SummarizedCallable::Range {
     SetUnionSummary() { this = "|" }
 
     override BitwiseOrExpr getACallSimple() { any() }
@@ -111,7 +111,7 @@ module Array {
     }
   }
 
-  private class RepetitionSummary extends SummarizedCallable {
+  private class RepetitionSummary extends SummarizedCallable::Range {
     RepetitionSummary() { this = "*" }
 
     override MulExpr getACallSimple() { any() }
@@ -123,7 +123,7 @@ module Array {
     }
   }
 
-  private class ConcatenationSummary extends SummarizedCallable {
+  private class ConcatenationSummary extends SummarizedCallable::Range {
     ConcatenationSummary() { this = "+" }
 
     override AddExpr getACallSimple() { any() }
@@ -140,7 +140,7 @@ module Array {
     }
   }
 
-  abstract private class DifferenceSummaryShared extends SummarizedCallable {
+  abstract private class DifferenceSummaryShared extends SummarizedCallable::Range {
     bindingset[this]
     DifferenceSummaryShared() { any() }
 
@@ -158,7 +158,7 @@ module Array {
   }
 
   /** Flow summary for `Array#<<`. For `Array#append`, see `PushSummary`. */
-  private class AppendOperatorSummary extends SummarizedCallable {
+  private class AppendOperatorSummary extends SummarizedCallable::Range {
     AppendOperatorSummary() { this = "<<" }
 
     override LShiftExpr getACallSimple() { any() }
@@ -180,7 +180,7 @@ module Array {
   }
 
   /** A call to `[]`, or its alias, `slice`. */
-  abstract private class ElementReferenceReadSummary extends SummarizedCallable {
+  abstract private class ElementReferenceReadSummary extends SummarizedCallable::Range {
     MethodCall mc;
     ElementReferenceReadMethodName methodName; // adding this as a field helps give a better join order
 
@@ -306,7 +306,7 @@ module Array {
   }
 
   /** A call to `[]=`. */
-  abstract private class ElementReferenceStoreSummary extends SummarizedCallable {
+  abstract private class ElementReferenceStoreSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -381,7 +381,7 @@ module Array {
     }
   }
 
-  private class AssocSummary extends SimpleSummarizedCallable {
+  private class AssocSummary extends SummarizedCallable::RangeSimple {
     AssocSummary() { this = ["assoc", "rassoc"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -391,7 +391,7 @@ module Array {
     }
   }
 
-  abstract private class AtSummary extends SummarizedCallable {
+  abstract private class AtSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -430,7 +430,7 @@ module Array {
     }
   }
 
-  private class BSearchSummary extends SimpleSummarizedCallable {
+  private class BSearchSummary extends SummarizedCallable::RangeSimple {
     BSearchSummary() { this = "bsearch" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -440,7 +440,7 @@ module Array {
     }
   }
 
-  private class BSearchIndexSummary extends SimpleSummarizedCallable {
+  private class BSearchIndexSummary extends SummarizedCallable::RangeSimple {
     BSearchIndexSummary() { this = "bsearch_index" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -450,7 +450,7 @@ module Array {
     }
   }
 
-  private class ClearSummary extends SimpleSummarizedCallable {
+  private class ClearSummary extends SummarizedCallable::RangeSimple {
     ClearSummary() { this = "clear" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -460,7 +460,7 @@ module Array {
     }
   }
 
-  private class CollectBangSummary extends SimpleSummarizedCallable {
+  private class CollectBangSummary extends SummarizedCallable::RangeSimple {
     // `map!` is an alias of `collect!`.
     CollectBangSummary() { this = ["collect!", "map!"] }
 
@@ -475,7 +475,7 @@ module Array {
     }
   }
 
-  private class CombinationSummary extends SimpleSummarizedCallable {
+  private class CombinationSummary extends SummarizedCallable::RangeSimple {
     CombinationSummary() { this = "combination" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -489,7 +489,7 @@ module Array {
     }
   }
 
-  private class CompactBangSummary extends SimpleSummarizedCallable {
+  private class CompactBangSummary extends SummarizedCallable::RangeSimple {
     CompactBangSummary() { this = "compact!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -499,7 +499,7 @@ module Array {
     }
   }
 
-  private class ConcatSummary extends SimpleSummarizedCallable {
+  private class ConcatSummary extends SummarizedCallable::RangeSimple {
     ConcatSummary() { this = "concat" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -509,7 +509,7 @@ module Array {
     }
   }
 
-  private class DeconstructSummary extends SimpleSummarizedCallable {
+  private class DeconstructSummary extends SummarizedCallable::RangeSimple {
     DeconstructSummary() { this = "deconstruct" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -522,7 +522,7 @@ module Array {
     }
   }
 
-  abstract private class DeleteSummary extends SummarizedCallable {
+  abstract private class DeleteSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -604,7 +604,7 @@ module Array {
     }
   }
 
-  abstract private class DeleteAtSummary extends SummarizedCallable {
+  abstract private class DeleteAtSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -667,7 +667,7 @@ module Array {
     }
   }
 
-  private class DeleteIfSummary extends SummarizedCallable {
+  private class DeleteIfSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -691,7 +691,7 @@ module Array {
     }
   }
 
-  private class DifferenceSummary extends DifferenceSummaryShared, SimpleSummarizedCallable {
+  private class DifferenceSummary extends DifferenceSummaryShared, SummarizedCallable::RangeSimple {
     DifferenceSummary() { this = "difference" }
   }
 
@@ -728,7 +728,7 @@ module Array {
       )
   }
 
-  private class DigSummary extends SummarizedCallable {
+  private class DigSummary extends SummarizedCallable::Range {
     private RelevantDigMethodCall dig;
 
     DigSummary() {
@@ -750,7 +750,7 @@ module Array {
     }
   }
 
-  private class EachSummary extends SummarizedCallable {
+  private class EachSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -776,7 +776,7 @@ module Array {
     }
   }
 
-  private class EachIndexSummary extends SimpleSummarizedCallable {
+  private class EachIndexSummary extends SummarizedCallable::RangeSimple {
     EachIndexSummary() { this = ["each_index", "each_key"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -786,7 +786,7 @@ module Array {
     }
   }
 
-  abstract private class FetchSummary extends SummarizedCallable {
+  abstract private class FetchSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -839,7 +839,7 @@ module Array {
     }
   }
 
-  abstract private class FillSummary extends SummarizedCallable {
+  abstract private class FillSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -882,7 +882,7 @@ module Array {
    * Note that we model flow from elements up to 3 levels of nesting
    * (`[[[1],[2]]]`), but not beyond that.
    */
-  private class FlattenSummary extends SimpleSummarizedCallable {
+  private class FlattenSummary extends SummarizedCallable::RangeSimple {
     FlattenSummary() { this = "flatten" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -898,7 +898,7 @@ module Array {
     }
   }
 
-  private class FlattenBangSummary extends SimpleSummarizedCallable {
+  private class FlattenBangSummary extends SummarizedCallable::RangeSimple {
     FlattenBangSummary() { this = "flatten!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -917,7 +917,7 @@ module Array {
     }
   }
 
-  private class IndexSummary extends SimpleSummarizedCallable {
+  private class IndexSummary extends SummarizedCallable::RangeSimple {
     IndexSummary() { this = ["index", "rindex"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -927,7 +927,7 @@ module Array {
     }
   }
 
-  abstract private class InsertSummary extends SummarizedCallable {
+  abstract private class InsertSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -995,7 +995,7 @@ module Array {
     }
   }
 
-  private class IntersectionSummary extends SummarizedCallable {
+  private class IntersectionSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     IntersectionSummary() { this = "intersection" and mc.getMethodName() = this }
@@ -1015,7 +1015,7 @@ module Array {
     override MethodCall getACallSimple() { result = mc }
   }
 
-  private class KeepIfSummary extends SummarizedCallable {
+  private class KeepIfSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -1042,7 +1042,7 @@ module Array {
     }
   }
 
-  abstract private class LastSummary extends SummarizedCallable {
+  abstract private class LastSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1071,7 +1071,7 @@ module Array {
     }
   }
 
-  private class PackSummary extends SimpleSummarizedCallable {
+  private class PackSummary extends SummarizedCallable::RangeSimple {
     PackSummary() { this = "pack" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1081,7 +1081,7 @@ module Array {
     }
   }
 
-  private class PermutationSummary extends SimpleSummarizedCallable {
+  private class PermutationSummary extends SummarizedCallable::RangeSimple {
     PermutationSummary() { this = ["permutation", "repeated_combination", "repeated_permutation"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1096,7 +1096,7 @@ module Array {
     }
   }
 
-  abstract private class PopSummary extends SummarizedCallable {
+  abstract private class PopSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1131,7 +1131,7 @@ module Array {
     }
   }
 
-  private class PrependSummary extends SummarizedCallable {
+  private class PrependSummary extends SummarizedCallable::Range {
     private MethodCall mc;
 
     // `unshift` is an alias for `prepend`
@@ -1169,7 +1169,7 @@ module Array {
     }
   }
 
-  private class ProductSummary extends SimpleSummarizedCallable {
+  private class ProductSummary extends SummarizedCallable::RangeSimple {
     ProductSummary() { this = "product" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1185,7 +1185,7 @@ module Array {
     }
   }
 
-  private class JoinSummary extends SimpleSummarizedCallable {
+  private class JoinSummary extends SummarizedCallable::RangeSimple {
     JoinSummary() { this = ["join"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1195,7 +1195,7 @@ module Array {
     }
   }
 
-  private class PushSummary extends SimpleSummarizedCallable {
+  private class PushSummary extends SummarizedCallable::RangeSimple {
     // `append` is an alias for `push`
     PushSummary() { this = ["push", "append"] }
 
@@ -1213,7 +1213,7 @@ module Array {
     }
   }
 
-  private class RejectBangSummary extends SummarizedCallable {
+  private class RejectBangSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -1237,7 +1237,7 @@ module Array {
     }
   }
 
-  private class ReplaceSummary extends SimpleSummarizedCallable {
+  private class ReplaceSummary extends SummarizedCallable::RangeSimple {
     ReplaceSummary() { this = "replace" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1251,7 +1251,7 @@ module Array {
     }
   }
 
-  private class ReverseSummary extends SimpleSummarizedCallable {
+  private class ReverseSummary extends SummarizedCallable::RangeSimple {
     ReverseSummary() { this = "reverse" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1261,7 +1261,7 @@ module Array {
     }
   }
 
-  private class ReverseBangSummary extends SimpleSummarizedCallable {
+  private class ReverseBangSummary extends SummarizedCallable::RangeSimple {
     ReverseBangSummary() { this = "reverse!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1271,7 +1271,7 @@ module Array {
     }
   }
 
-  abstract private class RotateSummary extends SummarizedCallable {
+  abstract private class RotateSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1322,7 +1322,7 @@ module Array {
     }
   }
 
-  abstract private class RotateBangSummary extends SummarizedCallable {
+  abstract private class RotateBangSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1382,7 +1382,7 @@ module Array {
     }
   }
 
-  private class SelectBangSummary extends SummarizedCallable {
+  private class SelectBangSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -1414,7 +1414,7 @@ module Array {
     }
   }
 
-  abstract private class ShiftSummary extends SummarizedCallable {
+  abstract private class ShiftSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1502,7 +1502,7 @@ module Array {
     }
   }
 
-  private class ShuffleSummary extends SimpleSummarizedCallable {
+  private class ShuffleSummary extends SummarizedCallable::RangeSimple {
     ShuffleSummary() { this = "shuffle" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1512,7 +1512,7 @@ module Array {
     }
   }
 
-  private class ShuffleBangSummary extends SimpleSummarizedCallable {
+  private class ShuffleBangSummary extends SummarizedCallable::RangeSimple {
     ShuffleBangSummary() { this = "shuffle!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1522,7 +1522,7 @@ module Array {
     }
   }
 
-  abstract private class SliceBangSummary extends SummarizedCallable {
+  abstract private class SliceBangSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1684,7 +1684,7 @@ module Array {
     }
   }
 
-  private class SortBangSummary extends SimpleSummarizedCallable {
+  private class SortBangSummary extends SummarizedCallable::RangeSimple {
     SortBangSummary() { this = "sort!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1702,7 +1702,7 @@ module Array {
     }
   }
 
-  private class SortByBangSummary extends SimpleSummarizedCallable {
+  private class SortByBangSummary extends SummarizedCallable::RangeSimple {
     SortByBangSummary() { this = "sort_by!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1717,7 +1717,7 @@ module Array {
     }
   }
 
-  private class TransposeSummary extends SimpleSummarizedCallable {
+  private class TransposeSummary extends SummarizedCallable::RangeSimple {
     TransposeSummary() { this = "transpose" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1742,7 +1742,7 @@ module Array {
     }
   }
 
-  private class UniqBangSummary extends SimpleSummarizedCallable {
+  private class UniqBangSummary extends SummarizedCallable::RangeSimple {
     UniqBangSummary() { this = "uniq!" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1757,7 +1757,7 @@ module Array {
     }
   }
 
-  private class UnionSummary extends SimpleSummarizedCallable {
+  private class UnionSummary extends SummarizedCallable::RangeSimple {
     UnionSummary() { this = "union" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1773,7 +1773,7 @@ module Array {
     }
   }
 
-  abstract private class ValuesAtSummary extends SummarizedCallable {
+  abstract private class ValuesAtSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1829,7 +1829,7 @@ module Array {
  * https://docs.ruby-lang.org/en/3.1/Enumerable.html
  */
 module Enumerable {
-  private class ChunkSummary extends SimpleSummarizedCallable {
+  private class ChunkSummary extends SummarizedCallable::RangeSimple {
     ChunkSummary() { this = "chunk" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1839,7 +1839,7 @@ module Enumerable {
     }
   }
 
-  private class ChunkWhileSummary extends SimpleSummarizedCallable {
+  private class ChunkWhileSummary extends SummarizedCallable::RangeSimple {
     ChunkWhileSummary() { this = "chunk_while" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1849,7 +1849,7 @@ module Enumerable {
     }
   }
 
-  private class CollectSummary extends SimpleSummarizedCallable {
+  private class CollectSummary extends SummarizedCallable::RangeSimple {
     // `map` is an alias of `collect`.
     CollectSummary() { this = ["collect", "map"] }
 
@@ -1865,7 +1865,7 @@ module Enumerable {
     }
   }
 
-  private class CollectConcatSummary extends SimpleSummarizedCallable {
+  private class CollectConcatSummary extends SummarizedCallable::RangeSimple {
     // `flat_map` is an alias of `collect_concat`.
     CollectConcatSummary() { this = ["collect_concat", "flat_map"] }
 
@@ -1880,7 +1880,7 @@ module Enumerable {
     }
   }
 
-  private class CompactSummary extends SimpleSummarizedCallable {
+  private class CompactSummary extends SummarizedCallable::RangeSimple {
     CompactSummary() { this = "compact" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1897,7 +1897,7 @@ module Enumerable {
     }
   }
 
-  private class CountSummary extends SimpleSummarizedCallable {
+  private class CountSummary extends SummarizedCallable::RangeSimple {
     CountSummary() { this = "count" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1907,7 +1907,7 @@ module Enumerable {
     }
   }
 
-  private class CycleSummary extends SimpleSummarizedCallable {
+  private class CycleSummary extends SummarizedCallable::RangeSimple {
     CycleSummary() { this = "cycle" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1917,7 +1917,7 @@ module Enumerable {
     }
   }
 
-  private class DetectSummary extends SimpleSummarizedCallable {
+  private class DetectSummary extends SummarizedCallable::RangeSimple {
     // `find` is an alias of `detect`.
     DetectSummary() { this = ["detect", "find"] }
 
@@ -1933,7 +1933,7 @@ module Enumerable {
     }
   }
 
-  abstract private class DropSummary extends SummarizedCallable {
+  abstract private class DropSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -1978,7 +1978,7 @@ module Enumerable {
     }
   }
 
-  private class DropWhileSummary extends SimpleSummarizedCallable {
+  private class DropWhileSummary extends SummarizedCallable::RangeSimple {
     DropWhileSummary() { this = "drop_while" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1988,7 +1988,7 @@ module Enumerable {
     }
   }
 
-  private class EachConsSummary extends SimpleSummarizedCallable {
+  private class EachConsSummary extends SummarizedCallable::RangeSimple {
     EachConsSummary() { this = "each_cons" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -1998,7 +1998,7 @@ module Enumerable {
     }
   }
 
-  private class EachEntrySummary extends SimpleSummarizedCallable {
+  private class EachEntrySummary extends SummarizedCallable::RangeSimple {
     EachEntrySummary() { this = "each_entry" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2013,7 +2013,7 @@ module Enumerable {
     }
   }
 
-  private class EachSliceSummary extends SimpleSummarizedCallable {
+  private class EachSliceSummary extends SummarizedCallable::RangeSimple {
     EachSliceSummary() { this = "each_slice" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2028,7 +2028,7 @@ module Enumerable {
     }
   }
 
-  private class EachWithIndexSummary extends SimpleSummarizedCallable {
+  private class EachWithIndexSummary extends SummarizedCallable::RangeSimple {
     EachWithIndexSummary() { this = "each_with_index" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2043,7 +2043,7 @@ module Enumerable {
     }
   }
 
-  private class EachWithObjectSummary extends SimpleSummarizedCallable {
+  private class EachWithObjectSummary extends SummarizedCallable::RangeSimple {
     EachWithObjectSummary() { this = "each_with_object" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2058,7 +2058,7 @@ module Enumerable {
     }
   }
 
-  private class FilterMapSummary extends SimpleSummarizedCallable {
+  private class FilterMapSummary extends SummarizedCallable::RangeSimple {
     FilterMapSummary() { this = "filter_map" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2072,7 +2072,7 @@ module Enumerable {
     }
   }
 
-  private class FindIndexSummary extends SimpleSummarizedCallable {
+  private class FindIndexSummary extends SummarizedCallable::RangeSimple {
     FindIndexSummary() { this = "find_index" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2082,7 +2082,7 @@ module Enumerable {
     }
   }
 
-  abstract private class FirstSummary extends SummarizedCallable {
+  abstract private class FirstSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -2141,7 +2141,7 @@ module Enumerable {
     GrepMethodName() { this = ["grep", "grep_v"] }
   }
 
-  abstract private class GrepSummary extends SummarizedCallable {
+  abstract private class GrepSummary extends SummarizedCallable::Range {
     MethodCall mc;
     GrepMethodName methodName; // adding this as a field helps give a better join order
 
@@ -2176,7 +2176,7 @@ module Enumerable {
     }
   }
 
-  private class GroupBySummary extends SimpleSummarizedCallable {
+  private class GroupBySummary extends SummarizedCallable::RangeSimple {
     GroupBySummary() { this = "group_by" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2192,7 +2192,7 @@ module Enumerable {
     InjectMethodName() { this = ["inject", "reduce"] }
   }
 
-  abstract private class InjectSummary extends SummarizedCallable {
+  abstract private class InjectSummary extends SummarizedCallable::Range {
     MethodCall mc;
     InjectMethodName methodName; // adding this as a field helps give a better join order
 
@@ -2245,7 +2245,7 @@ module Enumerable {
     MinOrMaxByMethodName() { this = ["min_by", "max_by"] }
   }
 
-  abstract private class MinOrMaxBySummary extends SummarizedCallable {
+  abstract private class MinOrMaxBySummary extends SummarizedCallable::Range {
     MethodCall mc;
     MinOrMaxByMethodName methodName; // adding this as a field helps give a better join order
 
@@ -2285,7 +2285,7 @@ module Enumerable {
     MinOrMaxMethodName() { this = ["min", "max"] }
   }
 
-  abstract private class MinOrMaxSummary extends SummarizedCallable {
+  abstract private class MinOrMaxSummary extends SummarizedCallable::Range {
     MethodCall mc;
     MinOrMaxMethodName methodName; // adding this as a field helps give a better join order
 
@@ -2352,7 +2352,7 @@ module Enumerable {
     }
   }
 
-  abstract private class MinmaxSummary extends SummarizedCallable {
+  abstract private class MinmaxSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -2388,7 +2388,7 @@ module Enumerable {
     }
   }
 
-  private class MinmaxBySummary extends SimpleSummarizedCallable {
+  private class MinmaxBySummary extends SummarizedCallable::RangeSimple {
     MinmaxBySummary() { this = "minmax_by" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2398,7 +2398,7 @@ module Enumerable {
     }
   }
 
-  private class PartitionSummary extends SimpleSummarizedCallable {
+  private class PartitionSummary extends SummarizedCallable::RangeSimple {
     PartitionSummary() { this = "partition" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2408,7 +2408,7 @@ module Enumerable {
     }
   }
 
-  private class QuerySummary extends SummarizedCallable {
+  private class QuerySummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -2428,7 +2428,7 @@ module Enumerable {
     }
   }
 
-  private class RejectSummary extends SummarizedCallable {
+  private class RejectSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -2452,7 +2452,7 @@ module Enumerable {
     }
   }
 
-  private class SelectSummary extends SummarizedCallable {
+  private class SelectSummary extends SummarizedCallable::Range {
     MethodCall mc;
     int lastBlockParam;
 
@@ -2481,7 +2481,7 @@ module Enumerable {
     }
   }
 
-  private class SliceBeforeAfterSummary extends SimpleSummarizedCallable {
+  private class SliceBeforeAfterSummary extends SummarizedCallable::RangeSimple {
     SliceBeforeAfterSummary() { this = ["slice_before", "slice_after"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2491,7 +2491,7 @@ module Enumerable {
     }
   }
 
-  private class SliceWhenSummary extends SimpleSummarizedCallable {
+  private class SliceWhenSummary extends SummarizedCallable::RangeSimple {
     SliceWhenSummary() { this = "slice_when" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2501,7 +2501,7 @@ module Enumerable {
     }
   }
 
-  private class SortSummary extends SimpleSummarizedCallable {
+  private class SortSummary extends SummarizedCallable::RangeSimple {
     SortSummary() { this = "sort" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2512,7 +2512,7 @@ module Enumerable {
     }
   }
 
-  private class SortBySummary extends SimpleSummarizedCallable {
+  private class SortBySummary extends SummarizedCallable::RangeSimple {
     SortBySummary() { this = "sort_by" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2522,7 +2522,7 @@ module Enumerable {
     }
   }
 
-  private class SumSummary extends SimpleSummarizedCallable {
+  private class SumSummary extends SummarizedCallable::RangeSimple {
     SumSummary() { this = "sum" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2532,7 +2532,7 @@ module Enumerable {
     }
   }
 
-  abstract private class TakeSummary extends SummarizedCallable {
+  abstract private class TakeSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -2579,7 +2579,7 @@ module Enumerable {
     }
   }
 
-  private class TakeWhileSummary extends SimpleSummarizedCallable {
+  private class TakeWhileSummary extends SummarizedCallable::RangeSimple {
     TakeWhileSummary() { this = "take_while" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2596,7 +2596,7 @@ module Enumerable {
     }
   }
 
-  private class ToASummary extends SimpleSummarizedCallable {
+  private class ToASummary extends SummarizedCallable::RangeSimple {
     // `entries` is an alias of `to_a`.
     // `to_ary` works a bit like `to_a` (close enough for our purposes).
     ToASummary() { this = ["to_a", "entries", "to_ary"] }
@@ -2608,7 +2608,7 @@ module Enumerable {
     }
   }
 
-  private class UniqSummary extends SimpleSummarizedCallable {
+  private class UniqSummary extends SummarizedCallable::RangeSimple {
     UniqSummary() { this = "uniq" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -2618,7 +2618,7 @@ module Enumerable {
     }
   }
 
-  abstract private class ZipSummary extends SummarizedCallable {
+  abstract private class ZipSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]

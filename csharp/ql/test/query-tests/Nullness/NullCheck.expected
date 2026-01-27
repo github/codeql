@@ -51,6 +51,7 @@
 | C.cs:229:22:229:30 | ... != ... | C.cs:229:22:229:22 | access to local variable s |
 | C.cs:235:24:235:32 | ... == ... | C.cs:235:24:235:24 | access to local variable s |
 | C.cs:235:24:235:32 | ... == ... | C.cs:235:29:235:32 | null |
+| ConditionalAccess.cs:8:17:8:17 | access to parameter o | ConditionalAccess.cs:8:17:8:17 | access to parameter o |
 | D.cs:28:13:28:25 | ... != ... | D.cs:28:13:28:17 | access to parameter param |
 | D.cs:38:13:38:21 | ... == ... | D.cs:38:13:38:13 | access to parameter x |
 | D.cs:39:16:39:24 | ... == ... | D.cs:39:16:39:16 | access to parameter x |

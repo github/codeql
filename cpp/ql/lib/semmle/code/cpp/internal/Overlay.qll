@@ -45,13 +45,13 @@ private string getSingleLocationFilePath(@element e) {
 overlay[local]
 private string getMultiLocationFilePath(@element e) {
   exists(@location_default loc |
-    exists(@var_decl vd | var_decls(vd, e, _, _, loc))
+    var_decls(_, e, _, _, loc)
     or
-    exists(@fun_decl fd | fun_decls(fd, e, _, _, loc))
+    fun_decls(_, e, _, _, loc)
     or
-    exists(@type_decl td | type_decls(td, e, loc))
+    type_decls(_, e, loc)
     or
-    exists(@namespace_decl nd | namespace_decls(nd, e, loc, _))
+    namespace_decls(_, e, loc, _)
   |
     result = getLocationFilePath(loc)
   )
@@ -62,7 +62,7 @@ private string getMultiLocationFilePath(@element e) {
  * overlay variant.
  */
 overlay[local]
-private predicate holdsInBase() { not isOverlay() }
+private predicate isBase() { not isOverlay() }
 
 /**
  * Discards an element from the base variant if:
@@ -71,7 +71,7 @@ private predicate holdsInBase() { not isOverlay() }
  */
 overlay[discard_entity]
 private predicate discardElement(@element e) {
-  holdsInBase() and
+  isBase() and
   (
     overlayChangedFiles(getSingleLocationFilePath(e))
     or

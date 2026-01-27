@@ -18,7 +18,7 @@ module Arel {
    * Flow summary for `Arel.sql`. This method wraps a SQL string, marking it as
    * safe.
    */
-  private class SqlSummary extends SummarizedCallable {
+  private class SqlSummary extends SummarizedCallable::Range {
     SqlSummary() { this = "Arel.sql" }
 
     override MethodCall getACall() {
@@ -44,7 +44,7 @@ module Arel {
    * Flow summary for `Arel::Nodes::SqlLiteral.new`. This method wraps a SQL string, marking it as
    * safe.
    */
-  private class SqlLiteralNewSummary extends SummarizedCallable {
+  private class SqlLiteralNewSummary extends SummarizedCallable::Range {
     SqlLiteralNewSummary() { this = "Arel::Nodes::SqlLiteral.new" }
 
     override MethodCall getACall() {

@@ -1,8 +1,8 @@
 models
 | 1 | Summary: <& as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue; value |
 | 2 | Summary: <_ as alloc::string::ToString>::to_string; Argument[self].Reference; ReturnValue; taint |
-| 3 | Summary: <_ as core::convert::From>::from; Argument[0]; ReturnValue; taint |
-| 4 | Summary: <_ as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue.Reference; taint |
+| 3 | Summary: <_ as core::convert::Into>::into; Argument[self].Element; ReturnValue.Element; taint |
+| 4 | Summary: <_ as core::convert::Into>::into; Argument[self].Reference.Element; ReturnValue.Element; taint |
 | 5 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
 | 6 | Summary: <alloc::boxed::Box as core::ops::deref::Deref>::deref; Argument[self].Reference.Field[alloc::boxed::Box(0)]; ReturnValue.Reference; value |
 | 7 | Summary: <alloc::boxed::Box>::new; Argument[0]; ReturnValue.Field[alloc::boxed::Box(0)]; value |
@@ -263,12 +263,10 @@ edges
 | main.rs:506:13:506:13 | a | main.rs:506:13:506:25 | a.to_string() | provenance | MaD:2 |
 | main.rs:506:13:506:25 | a.to_string() | main.rs:506:9:506:9 | b | provenance |  |
 | main.rs:507:9:507:9 | c | main.rs:512:10:512:10 | c | provenance |  |
-| main.rs:507:13:507:13 | b | main.rs:507:13:507:28 | b.parse() [Ok] | provenance | MaD:4 |
 | main.rs:507:13:507:13 | b | main.rs:507:13:507:28 | b.parse() [Ok] | provenance | MaD:8 |
 | main.rs:507:13:507:28 | b.parse() [Ok] | main.rs:507:13:507:37 | ... .unwrap() | provenance | MaD:19 |
 | main.rs:507:13:507:37 | ... .unwrap() | main.rs:507:9:507:9 | c | provenance |  |
 | main.rs:508:9:508:9 | d | main.rs:513:10:513:10 | d | provenance |  |
-| main.rs:508:18:508:18 | b | main.rs:508:18:508:26 | b.parse() [Ok] | provenance | MaD:4 |
 | main.rs:508:18:508:18 | b | main.rs:508:18:508:26 | b.parse() [Ok] | provenance | MaD:8 |
 | main.rs:508:18:508:26 | b.parse() [Ok] | main.rs:508:18:508:35 | ... .unwrap() | provenance | MaD:19 |
 | main.rs:508:18:508:35 | ... .unwrap() | main.rs:508:9:508:9 | d | provenance |  |
@@ -296,11 +294,18 @@ edges
 | main.rs:560:15:560:15 | b | main.rs:560:14:560:15 | &b | provenance |  |
 | main.rs:562:11:562:15 | c_ref [&ref] | main.rs:562:10:562:15 | * ... | provenance | MaD:1 |
 | main.rs:566:9:566:9 | a | main.rs:568:10:568:17 | a as i64 | provenance |  |
+| main.rs:566:9:566:9 | a | main.rs:569:10:569:10 | a | provenance |  |
+| main.rs:566:9:566:9 | a | main.rs:570:20:570:20 | a | provenance |  |
 | main.rs:566:18:566:27 | source(...) | main.rs:566:9:566:9 | a | provenance |  |
+| main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:3 |
+| main.rs:569:10:569:10 | a | main.rs:569:10:569:17 | a.into() | provenance | MaD:4 |
+| main.rs:570:20:570:20 | a | main.rs:570:10:570:21 | ...::from(...) | provenance | ReflexiveFrom |
 | main.rs:572:9:572:9 | b | main.rs:574:10:574:17 | b as i64 | provenance |  |
+| main.rs:572:9:572:9 | b | main.rs:575:10:575:10 | b | provenance |  |
 | main.rs:572:9:572:9 | b | main.rs:576:20:576:20 | b | provenance |  |
 | main.rs:572:18:572:27 | source(...) | main.rs:572:9:572:9 | b | provenance |  |
-| main.rs:576:20:576:20 | b | main.rs:576:10:576:21 | ...::from(...) | provenance | MaD:3 |
+| main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:3 |
+| main.rs:575:10:575:10 | b | main.rs:575:10:575:17 | b.into() | provenance | MaD:4 |
 | main.rs:576:20:576:20 | b | main.rs:576:10:576:21 | ...::from(...) | provenance | MaD:9 |
 nodes
 | main.rs:19:10:19:18 | source(...) | semmle.label | source(...) |
@@ -630,9 +635,15 @@ nodes
 | main.rs:566:9:566:9 | a | semmle.label | a |
 | main.rs:566:18:566:27 | source(...) | semmle.label | source(...) |
 | main.rs:568:10:568:17 | a as i64 | semmle.label | a as i64 |
+| main.rs:569:10:569:10 | a | semmle.label | a |
+| main.rs:569:10:569:17 | a.into() | semmle.label | a.into() |
+| main.rs:570:10:570:21 | ...::from(...) | semmle.label | ...::from(...) |
+| main.rs:570:20:570:20 | a | semmle.label | a |
 | main.rs:572:9:572:9 | b | semmle.label | b |
 | main.rs:572:18:572:27 | source(...) | semmle.label | source(...) |
 | main.rs:574:10:574:17 | b as i64 | semmle.label | b as i64 |
+| main.rs:575:10:575:10 | b | semmle.label | b |
+| main.rs:575:10:575:17 | b.into() | semmle.label | b.into() |
 | main.rs:576:10:576:21 | ...::from(...) | semmle.label | ...::from(...) |
 | main.rs:576:20:576:20 | b | semmle.label | b |
 subpaths
@@ -707,5 +718,8 @@ testFailures
 | main.rs:561:14:561:18 | c_ref | main.rs:556:13:556:22 | source(...) | main.rs:561:14:561:18 | c_ref | $@ | main.rs:556:13:556:22 | source(...) | source(...) |
 | main.rs:562:10:562:15 | * ... | main.rs:556:13:556:22 | source(...) | main.rs:562:10:562:15 | * ... | $@ | main.rs:556:13:556:22 | source(...) | source(...) |
 | main.rs:568:10:568:17 | a as i64 | main.rs:566:18:566:27 | source(...) | main.rs:568:10:568:17 | a as i64 | $@ | main.rs:566:18:566:27 | source(...) | source(...) |
+| main.rs:569:10:569:17 | a.into() | main.rs:566:18:566:27 | source(...) | main.rs:569:10:569:17 | a.into() | $@ | main.rs:566:18:566:27 | source(...) | source(...) |
+| main.rs:570:10:570:21 | ...::from(...) | main.rs:566:18:566:27 | source(...) | main.rs:570:10:570:21 | ...::from(...) | $@ | main.rs:566:18:566:27 | source(...) | source(...) |
 | main.rs:574:10:574:17 | b as i64 | main.rs:572:18:572:27 | source(...) | main.rs:574:10:574:17 | b as i64 | $@ | main.rs:572:18:572:27 | source(...) | source(...) |
+| main.rs:575:10:575:17 | b.into() | main.rs:572:18:572:27 | source(...) | main.rs:575:10:575:17 | b.into() | $@ | main.rs:572:18:572:27 | source(...) | source(...) |
 | main.rs:576:10:576:21 | ...::from(...) | main.rs:572:18:572:27 | source(...) | main.rs:576:10:576:21 | ...::from(...) | $@ | main.rs:572:18:572:27 | source(...) | source(...) |

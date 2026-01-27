@@ -281,43 +281,36 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Gets the type at `path` in the type tree. */
     Type getTypeAt(TypePath path);
 
-    /** Gets a textual representation of this type. */
+    /** Gets a textual representation of this type tree. */
     string toString();
 
-    /** Gets the location of this type. */
+    /** Gets the location of this type tree. */
     Location getLocation();
   }
 
-  /** Provides the input to `Make2`. */
-  signature module InputSig2 {
-    /** A type mention, for example a type annotation in a local variable declaration. */
-    class TypeMention {
-      /**
-       * Gets the type being mentioned at `path` inside this type mention.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * C<int> x = ...
-       * ```
-       *
-       * the type mention in the declaration of `x` resolves to the following
-       * types:
-       *
-       * `TypePath` | `Type`
-       * ---------- | -------
-       * `""`       | ``C`1``
-       * `"0"`      | `int`
-       */
-      Type resolveTypeAt(TypePath path);
-
-      /** Gets a textual representation of this type mention. */
-      string toString();
-
-      /** Gets the location of this type mention. */
-      Location getLocation();
-    }
-
+  /**
+   * Provides the input to `Make2`.
+   *
+   * The `TypeMention` parameter is used to build the base type hierarchy based on
+   * `getABaseTypeMention` and to construct the constraint satisfaction
+   * hierarchy based on `conditionSatisfiesConstraint`.
+   *
+   * It will usually be based on syntactic occurrences of types in the source
+   * code. For example, in
+   *
+   * ```csharp
+   * class C<T> : Base<T>, Interface { }
+   * ```
+   *
+   * a type mention would exist for `Base<T>` and resolve to the following
+   * types:
+   *
+   * `TypePath` | `Type`
+   * ---------- | -------
+   * `""`       | ``Base`1``
+   * `"0"`      | `T`
+   */
+  signature module InputSig2<HasTypeTreeSig TypeMention> {
     /**
      * Gets a base type mention of `t`, if any. Example:
      *
@@ -343,7 +336,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * ```
      * the type parameter `T` has the constraint `IComparable<T>`.
      */
-    TypeMention getATypeParameterConstraint(TypeParameter tp);
+    Type getATypeParameterConstraint(TypeParameter tp, TypePath path);
 
     /**
      * Holds if
@@ -394,22 +387,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     );
   }
 
-  module Make2<InputSig2 Input2> {
+  module Make2<HasTypeTreeSig TypeMention, InputSig2<TypeMention> Input2> {
     private import Input2
-
-    final private class FinalTypeMention = TypeMention;
-
-    /** An adapter for type mentions to implement `HasTypeTreeSig`. */
-    final class TypeMentionTypeTree extends FinalTypeMention {
-      Type getTypeAt(TypePath path) { result = this.resolveTypeAt(path) }
-    }
 
     /** Gets the type at the empty path of `tm`. */
     bindingset[tm]
     pragma[inline_late]
-    private Type resolveTypeMentionRoot(TypeMention tm) {
-      result = tm.resolveTypeAt(TypePath::nil())
-    }
+    private Type getTypeMentionRoot(TypeMention tm) { result = tm.getTypeAt(TypePath::nil()) }
 
     /** Provides the input to `IsInstantiationOf`. */
     signature module IsInstantiationOfInputSig<HasTypeTreeSig App, HasTypeTreeSig Constraint> {
@@ -467,17 +451,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
-      private Type resolveTypeAt(App app, TypeAbstraction abs, Constraint constraint, TypePath path) {
+      private Type getTypeAt(App app, TypeAbstraction abs, Constraint constraint, TypePath path) {
         potentialInstantiationOf(app, abs, constraint) and
         result = constraint.getTypeAt(path)
       }
 
       pragma[nomagic]
-      private Type resolveNthTypeAt(
+      private Type getNthTypeAt(
         App app, TypeAbstraction abs, Constraint constraint, int i, TypePath path
       ) {
         path = getNthPath(constraint, i) and
-        result = resolveTypeAt(app, abs, constraint, path)
+        result = getTypeAt(app, abs, constraint, path)
       }
 
       pragma[nomagic]
@@ -485,7 +469,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
         exists(Type t, TypePath path |
-          t = resolveNthTypeAt(app, abs, constraint, i, path) and
+          t = getNthTypeAt(app, abs, constraint, i, path) and
           if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
         ) and
         // Recurse unless we are at the first path
@@ -622,7 +606,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         // `app` and `constraint` differ on a concrete type
         exists(Type t, Type t2 |
-          t = resolveTypeAt(app, abs, constraint, path) and
+          t = getTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
           app.getTypeAt(path) = t2 and
           t2 != t
@@ -645,29 +629,27 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention tm1, TypeMention tm2, TypeParameter tp, TypePath path, Type t
       ) {
         exists(TypePath prefix |
-          tm2.resolveTypeAt(prefix) = tp and t = tm1.resolveTypeAt(prefix.appendInverse(path))
+          tm2.getTypeAt(prefix) = tp and t = tm1.getTypeAt(prefix.appendInverse(path))
         )
       }
 
       private module IsInstantiationOfInput implements
-        IsInstantiationOfInputSig<TypeMentionTypeTree, TypeMentionTypeTree>
+        IsInstantiationOfInputSig<TypeMention, TypeMention>
       {
         pragma[nomagic]
-        private predicate typeCondition(
-          Type type, TypeAbstraction abs, TypeMentionTypeTree condition
-        ) {
+        private predicate typeCondition(Type type, TypeAbstraction abs, TypeMention condition) {
           conditionSatisfiesConstraint(abs, condition, _, _) and
-          type = resolveTypeMentionRoot(condition)
+          type = getTypeMentionRoot(condition)
         }
 
         pragma[nomagic]
-        private predicate typeConstraint(Type type, TypeMentionTypeTree constraint) {
+        private predicate typeConstraint(Type type, TypeMention constraint) {
           conditionSatisfiesConstraint(_, _, constraint, _) and
-          type = resolveTypeMentionRoot(constraint)
+          type = getTypeMentionRoot(constraint)
         }
 
         predicate potentialInstantiationOf(
-          TypeMentionTypeTree constraint, TypeAbstraction abs, TypeMentionTypeTree condition
+          TypeMention constraint, TypeAbstraction abs, TypeMention condition
         ) {
           exists(Type type |
             typeConstraint(type, constraint) and typeCondition(type, abs, condition)
@@ -684,14 +666,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         // base case
         conditionSatisfiesConstraint(abs, condition, constraint, _) and
-        constraint.resolveTypeAt(path) = t
+        constraint.getTypeAt(path) = t
         or
         // recursive case
         exists(TypeAbstraction midAbs, TypeMention midConstraint, TypeMention midCondition |
           conditionSatisfiesConstraint(abs, condition, midConstraint, true) and
           // NOTE: `midAbs` describe the free type variables in `midCondition`, hence
           // we use that for instantiation check.
-          IsInstantiationOf<TypeMentionTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
+          IsInstantiationOf<TypeMention, TypeMention, IsInstantiationOfInput>::isInstantiationOf(midConstraint,
             midAbs, midCondition)
         |
           conditionSatisfiesConstraintTypeAt(midAbs, midCondition, constraint, path, t) and
@@ -716,8 +698,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraint
       ) {
         conditionSatisfiesConstraintTypeAt(abs, condition, constraint, _, _) and
-        conditionRoot = resolveTypeMentionRoot(condition) and
-        constraintRoot = resolveTypeMentionRoot(constraint)
+        conditionRoot = getTypeMentionRoot(condition) and
+        constraintRoot = getTypeMentionRoot(constraint)
       }
 
       /**
@@ -778,10 +760,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         |
           // immediate base class
           baseMention = immediateBaseMention and
-          t = immediateBaseMention.resolveTypeAt(path)
+          t = immediateBaseMention.getTypeAt(path)
           or
           // transitive base class
-          exists(Type immediateBase | immediateBase = resolveTypeMentionRoot(immediateBaseMention) |
+          exists(Type immediateBase | immediateBase = getTypeMentionRoot(immediateBaseMention) |
             baseTypeMentionHasNonTypeParameterAt(immediateBase, baseMention, path, t)
             or
             exists(TypePath path0, TypePath prefix, TypePath suffix, TypeParameter tp |
@@ -811,7 +793,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
                */
 
               baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, tp) and
-              t = immediateBaseMention.resolveTypeAt(path0) and
+              t = immediateBaseMention.getTypeAt(path0) and
               path0.isCons(tp, suffix) and
               path = prefix.append(suffix)
             )
@@ -841,15 +823,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     signature module SatisfiesConstraintInputSig<HasTypeTreeSig HasTypeTree> {
       /** Holds if it is relevant to know if `term` satisfies `constraint`. */
       predicate relevantConstraint(HasTypeTree term, Type constraint);
-
-      /**
-       * Holds if constraints that are satisfied through conditions that are
-       * universally quantified type parameters should be used. Such type
-       * parameters might have type parameter constraints, and these are _not_
-       * checked. Hence using these represent a trade-off between too many
-       * constraints and too few constraints being satisfied.
-       */
-      default predicate useUniversalConditions() { any() }
     }
 
     module SatisfiesConstraint<
@@ -871,11 +844,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       private module IsInstantiationOfInput implements
-        IsInstantiationOfInputSig<HasTypeTree, TypeMentionTypeTree>
+        IsInstantiationOfInputSig<HasTypeTree, TypeMention>
       {
-        predicate potentialInstantiationOf(
-          HasTypeTree tt, TypeAbstraction abs, TypeMentionTypeTree cond
-        ) {
+        predicate potentialInstantiationOf(HasTypeTree tt, TypeAbstraction abs, TypeMention cond) {
           exists(Type constraint, Type type |
             hasTypeConstraint(tt, type, constraint) and
             rootTypesSatisfaction(type, constraint, abs, cond, _) and
@@ -884,13 +855,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
         }
 
-        predicate relevantConstraint(TypeMentionTypeTree constraint) {
+        predicate relevantConstraint(TypeMention constraint) {
           rootTypesSatisfaction(_, _, _, constraint, _)
         }
       }
 
       private module SatisfiesConstraintIsInstantiationOf =
-        IsInstantiationOf<HasTypeTree, TypeMentionTypeTree, IsInstantiationOfInput>;
+        IsInstantiationOf<HasTypeTree, TypeMention, IsInstantiationOfInput>;
 
       /**
        * Holds if `tt` satisfies `constraint` through `abs`, `sub`, and `constraintMention`.
@@ -901,12 +872,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention constraintMention
       ) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
-          useUniversalConditions() and // todo: remove, and instead check constraints
-          not exists(countConstraintImplementations(type, constraint)) and
-          conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-          resolveTypeMentionRoot(condition) = abs.getATypeParameter() and
-          constraint = resolveTypeMentionRoot(constraintMention)
-          or
+          // TODO: Handle universal conditions properly, which means checking type parameter constraints
+          // Also remember to update logic in `hasNotConstraintMention`
+          //
+          // not exists(countConstraintImplementations(type, constraint)) and
+          // conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+          // getTypeMentionRoot(condition) = abs.getATypeParameter() and
+          // constraint = getTypeMentionRoot(constraintMention)
+          // or
           countConstraintImplementations(type, constraint) > 0 and
           rootTypesSatisfaction(type, constraint, abs, condition, constraintMention) and
           // When there are multiple ways the type could implement the
@@ -936,18 +909,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       pragma[nomagic]
       private predicate hasNotConstraintMention(HasTypeTree tt, Type constraint) {
         exists(Type type | hasTypeConstraint(tt, type, constraint) |
-          (
-            not useUniversalConditions()
-            or
-            exists(countConstraintImplementations(type, constraint))
-            or
-            forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
-              conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
-              resolveTypeMentionRoot(condition) = abs.getATypeParameter()
-            |
-              not constraint = resolveTypeMentionRoot(constraintMention)
-            )
-          ) and
+          // TODO: Handle universal conditions properly, which means taking type parameter constraints into account
+          // (
+          //   exists(countConstraintImplementations(type, constraint))
+          //   or
+          //   forall(TypeAbstraction abs, TypeMention condition, TypeMention constraintMention |
+          //     conditionSatisfiesConstraintTypeAt(abs, condition, constraintMention, _, _) and
+          //     getTypeMentionRoot(condition) = abs.getATypeParameter()
+          //   |
+          //     not constraint = getTypeMentionRoot(constraintMention)
+          //   )
+          // ) and
           (
             countConstraintImplementations(type, constraint) = 0
             or
@@ -981,7 +953,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(TypeMention sub, TypeParameter tp |
           satisfiesConstraintTypeMention0(tt, constraint, abs, sub, path, tp) and
           tp = abs.getATypeParameter() and
-          sub.resolveTypeAt(pathToTypeParamInSub) = tp
+          sub.getTypeAt(pathToTypeParamInSub) = tp
         )
       }
 
@@ -1273,7 +1245,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Access a, AccessEnvironment e, AccessPosition apos, TypeMention baseMention,
           TypePath path, Type t
         ) {
-          relevantAccess(a, e, apos, resolveTypeMentionRoot(baseMention)) and
+          relevantAccess(a, e, apos, getTypeMentionRoot(baseMention)) and
           exists(Type sub | sub = a.getInferredType(e, apos, TypePath::nil()) |
             baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
             or
@@ -1359,7 +1331,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       ) {
         exists(TypeMention tm |
           AccessBaseType::hasBaseTypeMention(a, e, apos, tm, path, t) and
-          base = resolveTypeMentionRoot(tm)
+          base = getTypeMentionRoot(tm)
         )
       }
 
@@ -1459,13 +1431,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           accessDeclarationPositionMatch(apos, dpos) and
           constrainedTp = target.getTypeParameter(_) and
           tp = target.getTypeParameter(_) and
+          tp = getATypeParameterConstraint(constrainedTp, pathToTp) and
           constrainedTp != tp and
           constrainedTp = target.getDeclaredType(dpos, pathToConstrained) and
-          exists(TypeMention tm |
-            tm = getATypeParameterConstraint(constrainedTp) and
-            tm.resolveTypeAt(pathToTp) = tp and
-            constraint = resolveTypeMentionRoot(tm)
-          )
+          constraint = getATypeParameterConstraint(constrainedTp, TypePath::nil())
         )
       }
 
@@ -1691,7 +1660,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       query predicate illFormedTypeMention(TypeMention tm) {
-        not exists(tm.resolveTypeAt(TypePath::nil())) and exists(tm.getLocation())
+        not exists(tm.getTypeAt(TypePath::nil())) and exists(tm.getLocation())
       }
     }
   }

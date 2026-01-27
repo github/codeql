@@ -584,10 +584,6 @@ class GuardNode extends ControlFlowNode {
 
 /**
  * Holds if the guard `g` validates `node` upon evaluating to `branch`.
- *
- * The expression `e` is expected to be a syntactic part of the guard `g`.
- * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
- * the argument `x`.
  */
 signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch);
 
@@ -600,12 +596,69 @@ signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean br
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
+    result = ParameterizedBarrierGuard<Unit, extendedGuardChecks/4>::getABarrierNode(_)
+  }
+
+  private predicate extendedGuardChecks(GuardNode g, ControlFlowNode node, boolean branch, Unit u) {
+    guardChecks(g, node, branch) and
+    u = u
+  }
+}
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check with parameter `param`. */
+  ExprNode getABarrierNode(P param) {
     exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
       AdjacentUses::useOfDef(def, node) and
-      guardChecks(g, node, branch) and
+      guardChecks(g, node, branch, param) and
       AdjacentUses::useOfDef(def, result.asCfgNode()) and
       g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
+  }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node as described by an external predicate.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ExternalBarrierGuard {
+  private import semmle.python.ApiGraphs
+
+  private predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
+    exists(API::CallNode call, API::Node parameter |
+      parameter = call.getAParameter() and
+      parameter = ModelOutput::getABarrierGuardNode(kind, branch)
+    |
+      g = call.asCfgNode() and
+      node = parameter.asSink().asCfgNode()
+    )
+  }
+
+  /**
+   * Gets a node that is an external barrier of the given kind.
+   *
+   * This only provides external barrier nodes defined as guards. To get all externally defined barrer nodes,
+   * use `ModelOutput::barrierNode(node, kind)`.
+   *
+   * INTERNAL: Do not use.
+   */
+  ExprNode getAnExternalBarrierNode(string kind) {
+    result = ParameterizedBarrierGuard<string, guardCheck/4>::getABarrierNode(kind)
   }
 }
 

@@ -47,8 +47,8 @@ predicate isBlanketLike(ImplItemNode i, TypePath blanketSelfPath, TypeParam blan
   exists(TypeMention tm, Type root, TypeParameter tp |
     tm = i.(Impl).getSelfTy() and
     complexSelfRoot(root, tp) and
-    tm.resolveType() = root and
-    tm.resolveTypeAt(blanketSelfPath) = TTypeParamTypeParameter(blanketTypeParam) and
+    tm.getType() = root and
+    tm.getTypeAt(blanketSelfPath) = TTypeParamTypeParameter(blanketTypeParam) and
     blanketSelfPath = TypePath::singleton(tp) and
     hasFirstNonTrivialTraitBound(blanketTypeParam, _)
   )
@@ -117,8 +117,6 @@ module SatisfiesBlanketConstraint<
     predicate relevantConstraint(ArgumentTypeAndBlanketOffset ato, Type constraint) {
       relevantConstraint(ato, _, constraint.(TraitType).getTrait())
     }
-
-    predicate useUniversalConditions() { none() }
   }
 
   private module SatisfiesBlanketConstraint =
@@ -126,7 +124,7 @@ module SatisfiesBlanketConstraint<
 
   /**
    * Holds if the argument type `at` satisfies the first non-trivial blanket
-   * constraint of `impl`.
+   * constraint of `impl`, or if there are no non-trivial constraints of `impl`.
    */
   pragma[nomagic]
   predicate satisfiesBlanketConstraint(ArgumentType at, ImplItemNode impl) {
@@ -134,6 +132,11 @@ module SatisfiesBlanketConstraint<
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
       SatisfiesBlanketConstraint::satisfiesConstraintType(ato, TTrait(traitBound), _, _)
+    )
+    or
+    exists(TypeParam blanketTypeParam |
+      hasBlanketCandidate(at, impl, _, blanketTypeParam) and
+      not hasFirstNonTrivialTraitBound(blanketTypeParam, _)
     )
   }
 

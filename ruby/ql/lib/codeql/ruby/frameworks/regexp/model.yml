@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: barrierModel
+    data:
+      - ['Regexp!', 'Method[escape,quote].ReturnValue', 'regexp-injection']

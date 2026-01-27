@@ -674,7 +674,7 @@ module Flask {
    *
    * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.render_template_string
    */
-  private class RenderTemplateStringSummary extends SummarizedCallable {
+  private class RenderTemplateStringSummary extends SummarizedCallable::Range {
     RenderTemplateStringSummary() { this = "flask.render_template_string" }
 
     override DataFlow::CallCfgNode getACall() {
@@ -700,7 +700,7 @@ module Flask {
    *
    * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.stream_template_string
    */
-  private class StreamTemplateStringSummary extends SummarizedCallable {
+  private class StreamTemplateStringSummary extends SummarizedCallable::Range {
     StreamTemplateStringSummary() { this = "flask.stream_template_string" }
 
     override DataFlow::CallCfgNode getACall() {

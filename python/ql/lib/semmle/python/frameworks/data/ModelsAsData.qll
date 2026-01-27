@@ -24,21 +24,25 @@ private import semmle.python.Concepts
  * A threat-model flow source originating from a data extension.
  */
 private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Range {
-  ThreatModelSourceFromDataExtension() { this = ModelOutput::getASourceNode(_).asSource() }
+  ThreatModelSourceFromDataExtension() { ModelOutput::sourceNode(this, _) }
 
-  override string getThreatModel() { this = ModelOutput::getASourceNode(result).asSource() }
+  override string getThreatModel() { ModelOutput::sourceNode(this, result) }
 
   override string getSourceType() {
     result = "Source node (" + this.getThreatModel() + ") [from data-extension]"
   }
 }
 
-private class SummarizedCallableFromModel extends SummarizedCallable {
+private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string type;
   string path;
+  string input_;
+  string output_;
+  string kind;
+  string model_;
 
   SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
+    ModelOutput::relevantSummaryModel(type, path, input_, output_, kind, model_) and
     this = type + ";" + path
   }
 
@@ -52,14 +56,13 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
-      kind = "value" and
-      preservesValue = true
-      or
-      kind = "taint" and
-      preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = "manual" and
+    isExact = true and
+    model = model_
   }
 }

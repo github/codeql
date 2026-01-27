@@ -13,4 +13,9 @@ private module Summaries {
   private import codeql.swift.frameworks.Frameworks
 }
 
-class SummarizedCallable = Impl::Public::SummarizedCallable;
+/** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+module SummarizedCallable {
+  class Range = Impl::Public::SummarizedCallable;
+}
+
+class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;

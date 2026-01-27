@@ -16,13 +16,13 @@ module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.(DataFlow::CallNode).getCalleeName() = "source"
     or
-    source = ModelOutput::getASourceNode("test-source").asSource()
+    ModelOutput::sourceNode(source, "test-source")
   }
 
   predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()
     or
-    sink = ModelOutput::getASinkNode("test-sink").asSink()
+    ModelOutput::sinkNode(sink, "test-sink")
   }
 }
 
@@ -48,9 +48,7 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
   TestFlow::flow(source, sink)
 }
 
-query predicate isSink(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASinkNode(kind).asSink()
-}
+query predicate isSink(DataFlow::Node node, string kind) { ModelOutput::sinkNode(node, kind) }
 
 query predicate syntaxErrors(ApiGraphModels::AccessPath path) { path.hasSyntaxError() }
 

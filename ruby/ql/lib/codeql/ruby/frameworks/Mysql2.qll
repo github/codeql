@@ -13,7 +13,7 @@ module Mysql2 {
   /**
    * Flow summary for `Mysql2::Client.new()`.
    */
-  private class SqlSummary extends SummarizedCallable {
+  private class SqlSummary extends SummarizedCallable::Range {
     SqlSummary() { this = "Mysql2::Client.new()" }
 
     override MethodCall getACall() { result = any(Mysql2Connection c).asExpr().getExpr() }
@@ -61,7 +61,7 @@ module Mysql2 {
   /**
    * Flow summary for `Mysql2::Client.escape()`.
    */
-  private class EscapeSummary extends SummarizedCallable {
+  private class EscapeSummary extends SummarizedCallable::Range {
     EscapeSummary() { this = "Mysql2::Client.escape()" }
 
     override MethodCall getACall() { result = any(Mysql2EscapeSanitization c).asExpr().getExpr() }

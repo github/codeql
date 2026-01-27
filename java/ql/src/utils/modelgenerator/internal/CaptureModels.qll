@@ -187,7 +187,7 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   }
 
   private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.hasManualModel()).asCallable() or
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
   }
 

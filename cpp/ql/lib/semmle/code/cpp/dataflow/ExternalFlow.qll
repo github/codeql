@@ -95,6 +95,7 @@
 
 import cpp
 private import new.DataFlow
+private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import internal.FlowSummaryImpl
@@ -367,6 +368,8 @@ private predicate elementSpec(
 ) {
   sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
@@ -1028,6 +1031,84 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private GuardValue convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
+    or
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    // NOTE: The below cases don't contribute anything currently since the
+    // callers immediately use `.asBooleanValue()` to convert the `GuardValue`
+    // to a boolean. Once we're willing to accept the breaking change of
+    // converting the barrier guard API to use `GuardValue`s instead `Boolean`s
+    // we can remove this restriction.
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(IRGuardCondition g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue).asBooleanValue() and
+      n.asNode().(Private::ArgumentNode).getCall().asCallInstruction() = g
+    )
+  }
+
+  private newtype TKindModelPairIntPair =
+    MkKindModelPairIntPair(TKindModelPair pair, int indirectionIndex) {
+      indirectionIndex > 0 and
+      Private::nodeHasInstruction(_, _, indirectionIndex) and
+      exists(pair)
+    }
+
+  private predicate indirectBarrierGuardChecks(
+    IRGuardCondition g, Expr e, boolean gv, TKindModelPairIntPair kmp
+  ) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode interpretNode,
+      Public::AcceptingValue acceptingvalue, string kind, string model, int indirectionIndex,
+      Private::ArgumentNode arg
+    |
+      isBarrierGuardNode(interpretNode, acceptingvalue, kind, model) and
+      arg = interpretNode.asNode() and
+      arg.asIndirectExpr(indirectionIndex) = e and
+      kmp = MkKindModelPairIntPair(TMkPair(kind, model), indirectionIndex) and
+      gv = convertAcceptingValue(acceptingvalue).asBooleanValue() and
+      arg.getCall().asCallInstruction() = g
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPairIntPair, indirectBarrierGuardChecks/4>::getAnIndirectBarrierNode(MkKindModelPairIntPair(TMkPair(kind,
+          model), _)) = node
+  }
 }
 
 import Cached
@@ -1044,6 +1125,12 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
+
 private predicate interpretSummary(
   Function f, string input, string output, string kind, string provenance, string model
 ) {
@@ -1058,40 +1145,22 @@ private predicate interpretSummary(
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  string model_;
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isGenerated()
-    )
-  }
+  SummarizedCallableAdapter() { interpretSummary(this, input_, output_, kind, p_, model_) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
-  }
-
-  override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = true and
+    model = model_
   }
 }
