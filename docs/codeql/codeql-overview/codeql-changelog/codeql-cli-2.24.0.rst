@@ -194,7 +194,7 @@ Rust
 *   Renamed the :code:`Adt` class to :code:`TypeItem` and moved common predicates from :code:`Struct`, :code:`Enum`, and :code:`Union` to :code:`TypeItem`.
 *   Added models for the Axum web application framework.
 *   Reading content of a value now carries taint if the value itself is tainted. For instance, if :code:`s` is tainted then :code:`s.field` is also tainted. This generally improves taint flow.
-*   The call graph is now more precise for calls that target a trait function with a default implemention. This reduces the number of false positives for data flow queries.
+*   The call graph is now more precise for calls that target a trait function with a default implementation. This reduces the number of false positives for data flow queries.
 *   Improved type inference for raw pointers (:code:`*const` and :code:`*mut`). This includes type inference for the raw borrow operators (:code:`&raw const` and :code:`&raw mut`) and dereferencing of raw pointers.
 
 Deprecated APIs
