@@ -265,3 +265,7 @@ type SEmbedS1AndSEmbedS1 struct {
 	SEmbedS1
 	UniqueFieldSEmbedS1AndSEmbedS1 int // this only exists to make this struct type different from other struct types
 }
+
+type RedefinedP1 P1
+type RedefinedS1 S1
+type RedefinedI1 I1
