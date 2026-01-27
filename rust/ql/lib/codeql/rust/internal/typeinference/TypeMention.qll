@@ -107,8 +107,6 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
     abstract Type resolvePathTypeAt(TypePath typePath);
 
     final override Type getTypeAt(TypePath typePath) {
-      result = getAdditionalPathTypeAt(this, typePath)
-      or
       result = this.resolvePathTypeAt(typePath) and
       (
         not result instanceof TypeParameter
