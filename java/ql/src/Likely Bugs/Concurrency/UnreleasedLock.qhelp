@@ -11,6 +11,11 @@ it multiple times, for example <code>java.util.concurrent.locks.ReentrantLock</c
 then the number of locks must match the number of unlocks in order to fully
 release the lock.
 </p>
+<p>
+Any class that has both <code>lock</code> and <code>unlock</code> methods is
+considered a lock type. However, classes with names ending in "Pool" are excluded,
+as they typically manage a collection of resources.
+</p>
 </overview>
 
 <recommendation>
