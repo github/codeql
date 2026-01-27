@@ -88,6 +88,8 @@
  * ```
  * and thus it falls out that `g3` must be `1`.
  */
+overlay[local]
+module;
 
 import python
 private import semmle.python.internal.CachedStages

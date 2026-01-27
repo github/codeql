@@ -1,6 +1,8 @@
 /**
  * Provides classes representing comments in Python.
  */
+overlay[local]
+module;
 
 import python
 
