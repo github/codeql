@@ -62,7 +62,7 @@ private string getMultiLocationFilePath(@element e) {
  * overlay variant.
  */
 overlay[local]
-private predicate holdsInBase() { not isOverlay() }
+private predicate isBase() { not isOverlay() }
 
 /**
  * Discards an element from the base variant if:
@@ -71,7 +71,7 @@ private predicate holdsInBase() { not isOverlay() }
  */
 overlay[discard_entity]
 private predicate discardElement(@element e) {
-  holdsInBase() and
+  isBase() and
   (
     overlayChangedFiles(getSingleLocationFilePath(e))
     or
