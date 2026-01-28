@@ -75,7 +75,7 @@ abstract class Type extends TType {
   abstract TypeParameter getPositionalTypeParameter(int i);
 
   /** Gets the default type for the `i`th type parameter, if any. */
-  TypeMention getTypeParameterDefault(int i) { none() }
+  TypeRepr getTypeParameterDefault(int i) { none() }
 
   /**
    * Gets a type parameter of this type.
@@ -129,7 +129,7 @@ class DataType extends Type, TDataType {
     result = TTypeParamTypeParameter(typeItem.getGenericParamList().getTypeParam(i))
   }
 
-  override TypeMention getTypeParameterDefault(int i) {
+  override TypeRepr getTypeParameterDefault(int i) {
     result = typeItem.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
@@ -189,7 +189,7 @@ class TraitType extends Type, TTrait {
     result.(SelfTypeParameter).getTrait() = trait
   }
 
-  override TypeMention getTypeParameterDefault(int i) {
+  override TypeRepr getTypeParameterDefault(int i) {
     result = trait.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
