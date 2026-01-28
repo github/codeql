@@ -111,7 +111,7 @@ module KDF {
     }
 
     override predicate requiresSalt() {
-      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT"]
+      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT", "ARGON2"]
     }
 
     override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC"] }
@@ -124,8 +124,11 @@ module KDF {
 
     override DataFlow::Node getSaltConfigSrc() {
       this.requiresSalt() and
+      // ARGON2 variants have it as a keyword-only parameter
+      if this.getAlgorithm().getKDFName() = "ARGON2"
+      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("salt"))
       // SCRYPT has it in arg 1
-      if this.getAlgorithm().getKDFName() = "SCRYPT"
+      else if this.getAlgorithm().getKDFName() = "SCRYPT"
       then result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "salt"))
       else
         // EVERYTHING ELSE that uses salt is in arg 2
