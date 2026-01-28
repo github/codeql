@@ -313,6 +313,9 @@ module ControlFlow {
      */
     Expr getCondition() { result = cond }
 
+    /** Gets the value of the condition that this node corresponds to. */
+    boolean getOutcome() { result = outcome }
+
     override Root getRoot() { result.isRootOf(cond) }
 
     override string toString() { result = cond + " is " + outcome }
@@ -349,5 +352,7 @@ module ControlFlow {
     CFG::isSwitchCaseTestPassingEdge(pred, succ, switchExpr, testExpr)
   }
 }
+
+class ControlFlowNode = ControlFlow::Node;
 
 class Write = ControlFlow::WriteNode;
