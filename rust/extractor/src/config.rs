@@ -26,9 +26,9 @@ use std::path::{Path, PathBuf};
 #[serde(rename_all = "lowercase")]
 #[clap(rename_all = "lowercase")]
 pub enum Compression {
-    #[default] // TODO make gzip default
     None,
     Gzip,
+    #[default]
     Zstd,
 }
 
