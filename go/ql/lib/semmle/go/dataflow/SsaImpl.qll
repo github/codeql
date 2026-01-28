@@ -186,7 +186,7 @@ private module Internal {
    * Holds if `v` is live at the beginning of any successor of basic block `bb`.
    */
   private predicate liveAtSuccEntry(ReachableBasicBlock bb, SsaSourceVariable v) {
-    liveAtEntry(bb.getASuccessor(), v)
+    liveAtEntry(bb.getASuccessor(_), v)
   }
 
   /**
@@ -317,7 +317,7 @@ private module Internal {
       SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock b2
     ) {
       varOccursInBlock(v, b1) and
-      b2 = b1.getASuccessor()
+      b2 = b1.getASuccessor(_)
     }
 
     /**
@@ -335,7 +335,7 @@ private module Internal {
     ) {
       varBlockReaches(v, b1, mid) and
       not varOccursInBlock(v, mid) and
-      b2 = mid.getASuccessor()
+      b2 = mid.getASuccessor(_)
     }
 
     /**

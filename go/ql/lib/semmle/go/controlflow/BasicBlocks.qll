@@ -43,12 +43,6 @@ private module Input implements BB::InputSig<Location> {
 private module BbImpl = BB::Make<Location, Input>;
 
 class BasicBlock extends BbImpl::BasicBlock {
-  /** Gets a basic block succeeding this one. */
-  BasicBlock getASuccessor() { result = this.getASuccessor(_) }
-
-  /** Gets a basic block preceding this one. */
-  BasicBlock getAPredecessor() { result.getASuccessor() = this }
-
   /** Gets the innermost function or file to which this basic block belongs. */
   ControlFlow::Root getRoot() { result = this.getScope() }
 }
@@ -59,7 +53,7 @@ cached
 private predicate reachableBB(BasicBlock bb) {
   bb instanceof EntryBasicBlock
   or
-  exists(BasicBlock predBB | predBB.getASuccessor() = bb | reachableBB(predBB))
+  exists(BasicBlock predBB | predBB.getASuccessor(_) = bb | reachableBB(predBB))
 }
 
 /**

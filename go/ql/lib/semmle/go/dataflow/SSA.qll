@@ -285,7 +285,7 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
  */
 class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   override SsaVariable getAnInput() {
-    result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(), this.getSourceVariable())
+    result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(_), this.getSourceVariable())
   }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
