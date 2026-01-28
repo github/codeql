@@ -353,4 +353,6 @@ module ControlFlow {
   }
 }
 
+class ControlFlowNode = ControlFlow::Node;
+
 class Write = ControlFlow::WriteNode;

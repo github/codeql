@@ -71,7 +71,7 @@ private module Internal {
   private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
     exists(ReachableBasicBlock defbb, SsaDefinition def |
       def.definesAt(defbb, _, v) and
-      bb.inDominanceFrontierOf(defbb)
+      defbb.inDominanceFrontier(bb)
     )
   }
 
