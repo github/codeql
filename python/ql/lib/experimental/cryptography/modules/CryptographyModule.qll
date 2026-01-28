@@ -111,7 +111,7 @@ module KDF {
     }
 
     override predicate requiresSalt() {
-      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF"]
+      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT"]
     }
 
     override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC"] }
