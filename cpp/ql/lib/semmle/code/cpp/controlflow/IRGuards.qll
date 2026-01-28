@@ -684,24 +684,26 @@ final class GuardCondition = GuardConditionImpl;
  */
 private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl instanceof Cpp::BinaryLogicalOperation
 {
+  GuardConditionImpl l;
+  GuardConditionImpl r;
+
+  GuardConditionFromBinaryLogicalOperator() {
+    super.getLeftOperand() = l and
+    super.getRightOperand() = r
+  }
+
   override predicate valueControls(Cpp::BasicBlock controlled, GuardValue v) {
-    exists(Cpp::BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
-      this = binop and
-      lhs = binop.getLeftOperand() and
-      rhs = binop.getRightOperand() and
-      lhs.valueControls(controlled, v) and
-      rhs.valueControls(controlled, v)
-    )
+    // `l || r` does not control `r` even though `l` does.
+    not r.(Cpp::Expr).getBasicBlock() = controlled and
+    l.valueControls(controlled, v)
+    or
+    r.valueControls(controlled, v)
   }
 
   override predicate valueControlsEdge(Cpp::BasicBlock pred, Cpp::BasicBlock succ, GuardValue v) {
-    exists(Cpp::BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
-      this = binop and
-      lhs = binop.getLeftOperand() and
-      rhs = binop.getRightOperand() and
-      lhs.valueControlsEdge(pred, succ, v) and
-      rhs.valueControlsEdge(pred, succ, v)
-    )
+    l.valueControlsEdge(pred, succ, v)
+    or
+    r.valueControlsEdge(pred, succ, v)
   }
 
   pragma[nomagic]
