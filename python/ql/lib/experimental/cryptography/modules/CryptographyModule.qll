@@ -116,6 +116,10 @@ module KDF {
 
     override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "ARGON2"] }
 
+    override predicate requiresLanes() { this.getAlgorithm().getKDFName() in ["ARGON2"] }
+
+    override predicate requiresMemoryCost() { this.getAlgorithm().getKDFName() in ["ARGON2"] }
+
     override DataFlow::Node getIterationSizeSrc() {
       this.requiresIteration() and
       if this.getAlgorithm().getKDFName() = "ARGON2"
@@ -142,6 +146,18 @@ module KDF {
       this.requiresHash() and
       // ASSUMPTION: ONLY EVER in arg 0
       result = Utils::getUltimateSrcFromApiNode(this.getParameter(0, "algorithm"))
+    }
+
+    override DataFlow::Node getLanesConfigSrc() {
+      this.requiresLanes() and 
+      // ASSUMPTION: ONLY EVER in keyword parameter
+      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("lanes"))
+    }
+
+    override DataFlow::Node getMemoryCostConfigSrc() {
+      this.requiresMemoryCost() and
+      // ASSUMPTION: ONLY EVER in keyword parameter
+      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("memory_cost"))
     }
 
     // TODO: get encryption algorithm for CBC-based KDF?
