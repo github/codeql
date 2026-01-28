@@ -114,12 +114,15 @@ module KDF {
       this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT", "ARGON2"]
     }
 
-    override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC"] }
+    override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "ARGON2"] }
 
     override DataFlow::Node getIterationSizeSrc() {
       this.requiresIteration() and
-      // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
-      result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
+      if this.getAlgorithm().getKDFName() = "ARGON2"
+      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("iterations"))
+      else
+        // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
+        result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
     }
 
     override DataFlow::Node getSaltConfigSrc() {
