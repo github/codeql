@@ -42,10 +42,7 @@ private module Input implements BB::InputSig<Location> {
 
 private module BbImpl = BB::Make<Location, Input>;
 
-class BasicBlock extends BbImpl::BasicBlock {
-  /** Gets the innermost function or file to which this basic block belongs. */
-  ControlFlow::Root getRoot() { result = this.getScope() }
-}
+class BasicBlock = BbImpl::BasicBlock;
 
 class EntryBasicBlock = BbImpl::EntryBasicBlock;
 

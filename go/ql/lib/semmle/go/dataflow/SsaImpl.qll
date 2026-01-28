@@ -86,7 +86,7 @@ private module Internal {
 
   /** Holds if the `i`th node of `bb` in function `f` is an entry node. */
   private predicate entryNode(FuncDef f, ReachableBasicBlock bb, int i) {
-    f = bb.getRoot() and
+    f = bb.getScope() and
     bb.getNode(i).isEntryNode()
   }
 
@@ -94,7 +94,7 @@ private module Internal {
    * Holds if the `i`th node of `bb` in function `f` is a function call.
    */
   private predicate callNode(FuncDef f, ReachableBasicBlock bb, int i) {
-    f = bb.getRoot() and
+    f = bb.getScope() and
     bb.getNode(i).(IR::EvalInstruction).getExpr() instanceof CallExpr
   }
 

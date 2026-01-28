@@ -144,7 +144,7 @@ class SsaDefinition extends TSsaDefinition {
   abstract string prettyPrintRef();
 
   /** Gets the innermost function or file to which this SSA definition belongs. */
-  ControlFlow::Root getRoot() { result = this.getBasicBlock().getRoot() }
+  ControlFlow::Root getRoot() { result = this.getBasicBlock().getScope() }
 
   /** Gets a textual representation of this element. */
   string toString() { result = this.prettyPrintDef() }
