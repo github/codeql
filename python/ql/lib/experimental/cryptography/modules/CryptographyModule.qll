@@ -70,10 +70,10 @@ module KDF {
             .getMember(algName) and
       result = algModule.asSource() and
       // https://github.com/pyca/cryptography/tree/main/src/cryptography/hazmat/primitives/kdf
-      member in ["concatkdf", "hkdf", "kbkdf", "pbkdf2", "scrypt", "x963kdf"] and
+      member in ["argon2", "concatkdf", "hkdf", "kbkdf", "pbkdf2", "scrypt", "x963kdf"] and
       algName in [
-          "ConcatKDFHash", "ConcatKDFHMAC", "HKDF", "HKDFExpand", "KBKDFCMAC", "KBKDFHMAC",
-          "PBKDF2HMAC", "Scrypt", "X963KDF"
+          "Argon2d", "Argon2i", "Argon2id", "ConcatKDFHash", "ConcatKDFHMAC", "HKDF",
+          "HKDFExpand", "KBKDFCMAC", "KBKDFHMAC", "PBKDF2HMAC", "Scrypt", "X963KDF"
         ]
     )
   }
