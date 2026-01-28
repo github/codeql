@@ -46,7 +46,9 @@ module KindValidation<KindValidationConfigSig Config> {
           // Go-only currently, but may be shared in the future
           "jwt",
           // CPP-only currently
-          "remote-sink"
+          "remote-sink",
+          // Python-only currently, but may be shared in the future
+          "prompt-injection"
         ]
       or
       this.matches([
