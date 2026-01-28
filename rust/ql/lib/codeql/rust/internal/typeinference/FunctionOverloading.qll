@@ -95,13 +95,8 @@ predicate traitTypeParameterOccurrence(
   tp = trait.(TraitTypeAbstraction).getATypeParameter()
 }
 
-/**
- * Holds if resolving the function `f` in `impl` with the name `functionName`
- * requires inspecting the type of applied _arguments_ at position `pos` in
- * order to determine whether it is the correct resolution.
- */
 pragma[nomagic]
-predicate functionResolutionDependsOnArgument(
+private predicate functionResolutionDependsOnArgument0(
   ImplItemNode impl, Function f, FunctionPosition pos, TypePath path, Type type
 ) {
   /*
@@ -133,7 +128,32 @@ predicate functionResolutionDependsOnArgument(
     implHasSibling(impl, trait) and
     traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
     type = getAssocFunctionTypeAt(f, impl, pos, path) and
-    f = impl.getASuccessor(functionName) and
+    f = impl.getASuccessor(functionName)
+  )
+}
+
+/**
+ * Holds if resolving the function `f` in `impl` requires inspecting the type
+ * of applied _arguments_ at position `pos` (including the return type) in
+ * order to determine whether it is the correct resolution.
+ */
+pragma[nomagic]
+predicate functionResolutionDependsOnArgument(
+  ImplItemNode impl, Function f, FunctionPosition pos, TypePath path, Type type
+) {
+  functionResolutionDependsOnArgument0(impl, f, pos, path, type) and
+  (
     pos.isPosition()
+    or
+    // Only disambiguate based on return type when all other positions are trivially
+    // satisfied for all arguments.
+    pos.isReturn() and
+    forall(FunctionPosition pos0, TypePath path0, Type type0 |
+      pos0.isPosition() and
+      functionResolutionDependsOnArgument0(impl, f, pos0, path0, type0)
+    |
+      path0.isEmpty() and
+      type0.(TypeParamTypeParameter).getTypeParam() = any(TypeParam tp | not tp.hasTypeBound())
+    )
   )
 }

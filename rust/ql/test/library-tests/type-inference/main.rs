@@ -2883,6 +2883,16 @@ mod literal_overlap {
     }
 }
 
+mod from_default {
+    #[derive(Default)]
+    struct S;
+
+    fn f() -> S {
+        let x = Default::default(); // $ target=default type=x:S
+        From::from(x) // $ target=from
+    }
+}
+
 mod associated_types;
 mod blanket_impl;
 mod closure;

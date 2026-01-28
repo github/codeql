@@ -30,7 +30,7 @@ private newtype TTypeArgumentPosition =
   } or
   TTypeParamTypeArgumentPosition(TypeParam tp)
 
-private module Input1 implements InputSig1<Location> {
+private module Input implements InputSig1<Location>, InputSig2<TypeMention> {
   private import Type as T
   private import codeql.rust.elements.internal.generated.Raw
   private import codeql.rust.elements.internal.generated.Synth
@@ -120,21 +120,7 @@ private module Input1 implements InputSig1<Location> {
   }
 
   int getTypePathLimit() { result = 10 }
-}
 
-private import Input1
-
-private module M1 = Make1<Location, Input1>;
-
-import M1
-
-predicate getTypePathLimit = Input1::getTypePathLimit/0;
-
-class TypePath = M1::TypePath;
-
-module TypePath = M1::TypePath;
-
-private module Input2 implements InputSig2<TypeMention> {
   TypeMention getABaseTypeMention(Type t) { none() }
 
   Type getATypeParameterConstraint(TypeParameter tp, TypePath path) {
@@ -208,7 +194,19 @@ private module Input2 implements InputSig2<TypeMention> {
   }
 }
 
-private module M2 = Make2<TypeMention, Input2>;
+private import Input
+
+private module M1 = Make1<Location, Input>;
+
+import M1
+
+predicate getTypePathLimit = Input::getTypePathLimit/0;
+
+class TypePath = M1::TypePath;
+
+module TypePath = M1::TypePath;
+
+private module M2 = Make2<TypeMention, Input>;
 
 import M2
 
@@ -1172,13 +1170,13 @@ private module ContextTyping {
    */
   module CheckContextTyping<inferCallTypeSig/3 inferCallType> {
     pragma[nomagic]
-    private Type inferCallTypeFromContextCand(AstNode n, TypePath path, TypePath prefix) {
+    private Type inferCallTypeFromContextCand(AstNode n, TypePath prefix, TypePath path) {
       result = inferCallType(n, false, path) and
       hasUnknownType(n) and
       prefix = path
       or
       exists(TypePath mid |
-        result = inferCallTypeFromContextCand(n, path, mid) and
+        result = inferCallTypeFromContextCand(n, mid, path) and
         mid.isSnoc(prefix, _)
       )
     }
@@ -1188,7 +1186,7 @@ private module ContextTyping {
       result = inferCallType(n, true, path)
       or
       exists(TypePath prefix |
-        result = inferCallTypeFromContextCand(n, path, prefix) and
+        result = inferCallTypeFromContextCand(n, prefix, path) and
         hasUnknownTypeAt(n, prefix)
       )
     }
@@ -2669,9 +2667,8 @@ private module NonMethodResolution {
       then
         // We only check that the context of the call provides relevant type information
         // when no argument can
-        not exists(FunctionPosition pos0 |
-          FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos0, _, _) and
-          not pos0.isReturn()
+        not exists(FunctionPosition pos0 | not pos0.isReturn() |
+          FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos0, _, _)
           or
           FunctionOverloading::functionResolutionDependsOnArgument(impl, implFunction, pos0, _, _)
         )
@@ -2837,7 +2834,7 @@ private module NonMethodResolution {
     NonMethodFunction resolveTraitFunctionViaPathResolution(TraitItemNode trait) {
       this.hasTrait() and
       result = this.getPathResolutionResolved() and
-      result = trait.getASuccessor(_)
+      result = trait.getAnAssocItem()
     }
   }
 
@@ -4152,7 +4149,7 @@ private module Debug {
     TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
   ) {
     abs = getRelevantLocatable() and
-    Input2::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
+    Input::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
   }
 
   predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
