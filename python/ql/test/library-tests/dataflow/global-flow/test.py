@@ -8,9 +8,9 @@ g = [5] # $writes=g
 
 g1, g2 = [6], [7] # $writes=g1 writes=g2
 
-# Assignment that's only referenced in this scope. This one will not give rise to a `ModuleVariableNode`.
+# Assignment that's only referenced in this scope.
 
-unreferenced_g = [8]
+unreferenced_g = [8] # $writes=unreferenced_g
 print(unreferenced_g)
 
 # Testing modifications of globals
@@ -34,7 +34,7 @@ g_ins.append(75)
 
 # A global with multiple potential definitions
 
-import unknown_module
+import unknown_module # $writes=unknown_module
 if unknown_module.attr:
     g_mult = [200] # $writes=g_mult
 else:
@@ -46,7 +46,7 @@ g_redef = [400] # $writes=g_redef
 if unknown_module.attr:
     g_redef = [500] # $writes=g_redef
 
-def global_access():
+def global_access(): # $writes=global_access
     l = 5
     print(g) # $reads=g
     print(g1) # $reads=g1
@@ -59,12 +59,12 @@ def global_access():
 def print_g_mod(): # $writes=print_g_mod
     print(g_mod) # $reads=g_mod
 
-def global_mod():
+def global_mod(): # $writes=global_mod
     global g_mod
     g_mod += [150] # $reads,writes=g_mod
     print_g_mod() # $reads=print_g_mod
 
-def global_inside_local_function():
+def global_inside_local_function(): # $writes=global_inside_local_function
     def local_function():
         print(g) # $reads=g
     local_function()
@@ -76,21 +76,21 @@ def global_inside_local_function():
 
 import foo_module # $writes=foo_module
 
-def use_foo():
+def use_foo(): # $writes=use_foo
     print(foo_module.attr) # $reads=foo_module
 
 # Partial imports
 
 from bar import baz_attr, quux_attr # $writes=baz_attr writes=quux_attr
 
-def use_partial_import():
+def use_partial_import(): # $writes=use_partial_import
     print(baz_attr, quux_attr) # $reads=baz_attr reads=quux_attr
 
 # Aliased imports
 
 from spam_module import ham_attr as eggs_attr # $writes=eggs_attr
 
-def use_aliased_import():
+def use_aliased_import(): # $writes=use_aliased_import
     print(eggs_attr) # $reads=eggs_attr
 
 # Import star (unlikely to work unless we happen to extract/model the referenced module)
@@ -99,23 +99,23 @@ def use_aliased_import():
 
 from unknown import *
 
-def secretly_use_unknown():
+def secretly_use_unknown(): # $writes=secretly_use_unknown
     print(unknown_attr) # $reads=unknown_attr
 
 # Known modules
 
 from known import *
 
-def secretly_use_known():
+def secretly_use_known(): # $writes=secretly_use_known
     print(known_attr) # $reads=known_attr
 
 # Local import in function
 
-def imports_locally():
+def imports_locally(): # $writes=imports_locally
     import mod1
 
 # Global import hidden in function
 
-def imports_stuff():
+def imports_stuff(): # $writes=imports_stuff
     global mod2
     import mod2 # $writes=mod2
