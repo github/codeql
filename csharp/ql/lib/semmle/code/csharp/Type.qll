@@ -17,7 +17,8 @@ private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
  *
  * Either a value or reference type (`ValueOrRefType`), the `void` type (`VoidType`),
  * a pointer type (`PointerType`), the arglist type (`ArglistType`), an unknown
- * type (`UnknownType`), or a type parameter (`TypeParameter`).
+ * type (`UnknownType`), a type parameter (`TypeParameter`) or
+ * an extension type (`ExtensionType`).
  */
 class Type extends Member, TypeContainer, @type {
   /** Gets the name of this type without additional syntax such as `[]` or `*`. */
@@ -1325,4 +1326,29 @@ class TypeMention extends @type_mention {
 
   /** Gets the location of this type mention. */
   Location getLocation() { type_mention_location(this, result) }
+}
+
+/**
+ * A type extension declaration, for example `extensions(string s) { ... }` in
+ * ```csharp
+ * static class MyExtensions {
+ *  extensions(string s) { ... }
+ * ```
+ */
+class ExtensionType extends Parameterizable, @extension_type {
+  /**
+   * Gets the receiver parameter of this extension type, if any.
+   */
+  Parameter getReceiverParameter() { params(result, _, _, 0, _, this, _) }
+
+  /**
+   * Holds if this extension type has a receiver parameter.
+   */
+  predicate hasReceiverParameter() { exists(this.getReceiverParameter()) }
+
+  /** Gets the type being extended by this extension type. */
+  // TODO: This doesn't handle the case where there is no parameter.
+  Type getExtendedType() { result = this.getReceiverParameter().getType() }
+
+  override string getAPrimaryQlClass() { result = "ExtensionType" }
 }
