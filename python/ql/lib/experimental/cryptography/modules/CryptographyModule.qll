@@ -146,7 +146,9 @@ module KDF {
 
     // TODO: get encryption algorithm for CBC-based KDF?
     override DataFlow::Node getDerivedKeySizeSrc() {
-      if this.getAlgorithm().getKDFName() in ["KBKDFHMAC", "KBKDFCMAC"]
+      if this.getAlgorithm().getKDFName() = "ARGON2"
+      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("length"))
+      else if this.getAlgorithm().getKDFName() in ["KBKDFHMAC", "KBKDFCMAC"]
       then result = Utils::getUltimateSrcFromApiNode(this.getParameter(2, "length"))
       else result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "length"))
     }
