@@ -71,7 +71,7 @@ refTypes
 | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | getter | getter() | No parameters | String | test.kt:1:1:13:1 | Generic | test.kt:7:3:7:26 | getter |
 | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | identity | identity(java.lang.String) | String | String | test.kt:1:1:13:1 | Generic | test.kt:6:3:6:35 | identity |
 | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | identity2 | identity2(java.lang.String) | String | String | test.kt:1:1:13:1 | Generic | test.kt:5:3:5:46 | identity2 |
-| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | privateid | privateid(java.lang.String) | String | String | test.kt:1:1:13:1 | Generic | test.kt:10:3:10:41 | privateid |
+| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | privateid | privateid(java.lang.String) | String | String | test.kt:1:1:13:1 | Generic | test.kt:10:11:10:41 | privateid |
 | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | setStored | setStored(java.lang.String) | String | void | test.kt:1:1:13:1 | Generic | test.kt:3:3:3:12 | setStored |
 | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | setter | setter(java.lang.String) | String | void | test.kt:1:1:13:1 | Generic | test.kt:8:3:8:41 | setter |
 | test.kt:0:0:0:0 | TestKt | test.kt:15:1:28:1 | user | user() | No parameters | void | test.kt:0:0:0:0 | TestKt | test.kt:15:1:28:1 | user |
@@ -81,5 +81,5 @@ refTypes
 | test.kt:1:1:13:1 | Generic | test.kt:6:3:6:35 | identity | identity(java.lang.Object) | T | T | test.kt:1:1:13:1 | Generic | test.kt:6:3:6:35 | identity |
 | test.kt:1:1:13:1 | Generic | test.kt:7:3:7:26 | getter | getter() | No parameters | T | test.kt:1:1:13:1 | Generic | test.kt:7:3:7:26 | getter |
 | test.kt:1:1:13:1 | Generic | test.kt:8:3:8:41 | setter | setter(java.lang.Object) | T | void | test.kt:1:1:13:1 | Generic | test.kt:8:3:8:41 | setter |
-| test.kt:1:1:13:1 | Generic | test.kt:10:3:10:41 | privateid | privateid(java.lang.Object) | T | T | test.kt:1:1:13:1 | Generic | test.kt:10:3:10:41 | privateid |
+| test.kt:1:1:13:1 | Generic | test.kt:10:11:10:41 | privateid | privateid(java.lang.Object) | T | T | test.kt:1:1:13:1 | Generic | test.kt:10:11:10:41 | privateid |
 | test.kt:1:1:13:1 | Generic | test.kt:11:3:11:70 | callPrivateId | callPrivateId(Generic) | Generic<String> | String | test.kt:1:1:13:1 | Generic | test.kt:11:3:11:70 | callPrivateId |

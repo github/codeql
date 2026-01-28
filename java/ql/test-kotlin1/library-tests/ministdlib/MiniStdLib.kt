@@ -26,6 +26,7 @@ public class Int {
     operator fun plus(other: Int): Int { return this.plus(other) }
     operator fun times(other: Int): Int { return this.times(other) }
     infix fun xor(other: Int): Int { return this.xor(other) }
+    infix fun and(other: Int): Int { return this.and(other) }
 }
 
 public object Unit {

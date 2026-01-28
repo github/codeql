@@ -248,9 +248,7 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|             2: [ArrayInit] {...}
 #    0|           3: [VarAccess] DeprecationLevel.HIDDEN
 #    0|             -1: [TypeAccess] DeprecationLevel
-#    0|       1: [FieldDeclaration] SerialDescriptor descriptor;
-#    0|         -1: [TypeAccess] SerialDescriptor
-#    0|       2: [Method] childSerializers
+#    0|       1: [Method] childSerializers
 #-----|         1: (Annotations)
 #    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] KSerializer<?>[]
@@ -260,9 +258,11 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|           0: [ReturnStmt] return ...
 #    7|             0: [ArrayCreationExpr] new KSerializer<?>[]
 #    7|               -2: [ArrayInit] {...}
+#    7|                 0: [VarAccess] INSTANCE
+#    7|                 1: [VarAccess] INSTANCE
 #    7|               -1: [TypeAccess] KSerializer<?>
 #    7|               0: [IntegerLiteral] 2
-#    0|       3: [Method] deserialize
+#    0|       2: [Method] deserialize
 #-----|         1: (Annotations)
 #    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] Project
@@ -404,15 +404,15 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|               1: [VarAccess] tmp4_local0
 #    7|               2: [VarAccess] tmp5_local1
 #    7|               3: [NullLiteral] null
-#    0|       4: [Method] getDescriptor
+#    0|       3: [Method] getDescriptor
 #-----|         1: (Annotations)
 #    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] SerialDescriptor
-#    0|         5: [BlockStmt] { ... }
-#    0|           0: [ReturnStmt] return ...
-#    0|             0: [VarAccess] this.descriptor
-#    0|               -1: [ThisAccess] this
-#    0|       5: [Method] serialize
+#    7|         5: [BlockStmt] { ... }
+#    7|           0: [ReturnStmt] return ...
+#    7|             0: [VarAccess] this.descriptor
+#    7|               -1: [ThisAccess] this
+#    0|       4: [Method] serialize
 #    0|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] encoder
@@ -443,7 +443,7 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|             0: [MethodCall] endStructure(...)
 #    7|               -1: [VarAccess] tmp1_output
 #    7|               0: [VarAccess] tmp0_desc
-#    7|       6: [Constructor] $serializer
+#    7|       5: [Constructor] $serializer
 #    7|         5: [BlockStmt] { ... }
 #    7|           0: [SuperConstructorInvocationStmt] super(...)
 #    7|           1: [BlockStmt] { ... }
@@ -471,6 +471,8 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|                   -1: [ThisAccess] $serializer.this
 #    7|                     0: [TypeAccess] $serializer
 #    7|                 1: [VarAccess] tmp0_serialDesc
+#    7|       6: [FieldDeclaration] PluginGeneratedSerialDescriptor descriptor;
+#    7|         -1: [TypeAccess] PluginGeneratedSerialDescriptor
 #    7|       7: [Method] typeParametersSerializers
 #    7|         3: [TypeAccess] KSerializer<?>[]
 #    7|           0: [TypeAccess] KSerializer<?>
@@ -645,9 +647,7 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|             2: [ArrayInit] {...}
 #    0|           3: [VarAccess] DeprecationLevel.HIDDEN
 #    0|             -1: [TypeAccess] DeprecationLevel
-#    0|       1: [FieldDeclaration] SerialDescriptor descriptor;
-#    0|         -1: [TypeAccess] SerialDescriptor
-#    0|       2: [Method] childSerializers
+#    0|       1: [Method] childSerializers
 #-----|         1: (Annotations)
 #    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] KSerializer<?>[]
@@ -657,9 +657,10 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|           0: [ReturnStmt] return ...
 #   14|             0: [ArrayCreationExpr] new KSerializer<?>[]
 #   14|               -2: [ArrayInit] {...}
+#   14|                 0: [VarAccess] INSTANCE
 #   14|               -1: [TypeAccess] KSerializer<?>
 #   14|               0: [IntegerLiteral] 1
-#    0|       3: [Method] deserialize
+#    0|       2: [Method] deserialize
 #-----|         1: (Annotations)
 #    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] X
@@ -765,15 +766,15 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|               0: [VarAccess] tmp3_bitMask0
 #   14|               1: [VarAccess] tmp4_local0
 #   14|               2: [NullLiteral] null
-#    0|       4: [Method] getDescriptor
+#    0|       3: [Method] getDescriptor
 #-----|         1: (Annotations)
 #    0|           1: [Annotation] NotNull
 #    0|         3: [TypeAccess] SerialDescriptor
-#    0|         5: [BlockStmt] { ... }
-#    0|           0: [ReturnStmt] return ...
-#    0|             0: [VarAccess] this.descriptor
-#    0|               -1: [ThisAccess] this
-#    0|       5: [Method] serialize
+#   14|         5: [BlockStmt] { ... }
+#   14|           0: [ReturnStmt] return ...
+#   14|             0: [VarAccess] this.descriptor
+#   14|               -1: [ThisAccess] this
+#    0|       4: [Method] serialize
 #    0|         3: [TypeAccess] Unit
 #-----|         4: (Parameters)
 #    0|           0: [Parameter] encoder
@@ -804,7 +805,7 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|             0: [MethodCall] endStructure(...)
 #   14|               -1: [VarAccess] tmp1_output
 #   14|               0: [VarAccess] tmp0_desc
-#   14|       6: [Constructor] $serializer
+#   14|       5: [Constructor] $serializer
 #   14|         5: [BlockStmt] { ... }
 #   14|           0: [SuperConstructorInvocationStmt] super(...)
 #   14|           1: [BlockStmt] { ... }
@@ -827,6 +828,8 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|                   -1: [ThisAccess] $serializer.this
 #   14|                     0: [TypeAccess] $serializer
 #   14|                 1: [VarAccess] tmp0_serialDesc
+#   14|       6: [FieldDeclaration] PluginGeneratedSerialDescriptor descriptor;
+#   14|         -1: [TypeAccess] PluginGeneratedSerialDescriptor
 #   14|       7: [Method] typeParametersSerializers
 #   14|         3: [TypeAccess] KSerializer<?>[]
 #   14|           0: [TypeAccess] KSerializer<?>
