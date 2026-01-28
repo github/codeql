@@ -162,17 +162,11 @@
 | test.c:219:9:219:22 | call to __builtin_expect | true | test.c:219:25:221:5 | { ... } |
 | test.cpp:18:8:18:10 | call to get | not null | test.cpp:19:5:19:14 | ExprStmt |
 | test.cpp:18:8:18:10 | call to get | true | test.cpp:19:5:19:14 | ExprStmt |
-| test.cpp:30:22:30:22 | x | -1 | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:30:22:30:22 | x | -1 | test.cpp:31:16:32:21 | { ... } |
-| test.cpp:30:22:30:22 | x | not -1 | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:30:22:30:22 | x | not -1 | test.cpp:34:1:34:1 | return ... |
-| test.cpp:31:7:31:7 | x | -1 | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:31:7:31:7 | x | -1 | test.cpp:31:16:32:21 | { ... } |
-| test.cpp:31:7:31:7 | x | not -1 | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:31:7:31:7 | x | not -1 | test.cpp:34:1:34:1 | return ... |
-| test.cpp:31:7:31:13 | ... == ... | false | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:31:7:31:13 | ... == ... | false | test.cpp:34:1:34:1 | return ... |
-| test.cpp:31:7:31:13 | ... == ... | true | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:31:7:31:13 | ... == ... | true | test.cpp:31:16:32:21 | { ... } |
 | test.cpp:42:13:42:20 | call to getABool | true | test.cpp:43:9:45:23 | { ... } |
 | test.cpp:60:31:60:31 | i | 0 | test.cpp:62:5:64:12 | case ...: |
@@ -408,19 +402,11 @@
 | test.cpp:400:11:400:25 | call to testEnumWrapper | 2 | test.cpp:404:5:406:12 | case ...: |
 | test.cpp:400:27:400:27 | b | false | test.cpp:404:5:406:12 | case ...: |
 | test.cpp:400:27:400:27 | b | true | test.cpp:401:5:403:12 | case ...: |
-| test.cpp:410:26:410:26 | o | not null | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:410:26:410:26 | o | not null | test.cpp:412:1:412:1 | return ... |
-| test.cpp:410:26:410:26 | o | null | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:410:26:410:26 | o | null | test.cpp:411:11:411:18 | ExprStmt |
-| test.cpp:411:7:411:8 | ! ... | false | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:411:7:411:8 | ! ... | false | test.cpp:412:1:412:1 | return ... |
-| test.cpp:411:7:411:8 | ! ... | true | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:411:7:411:8 | ! ... | true | test.cpp:411:11:411:18 | ExprStmt |
-| test.cpp:411:8:411:8 | o | false | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:411:8:411:8 | o | false | test.cpp:411:11:411:18 | ExprStmt |
-| test.cpp:411:8:411:8 | o | not null | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:411:8:411:8 | o | not null | test.cpp:412:1:412:1 | return ... |
-| test.cpp:411:8:411:8 | o | null | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:411:8:411:8 | o | null | test.cpp:411:11:411:18 | ExprStmt |
-| test.cpp:411:8:411:8 | o | true | test.cpp:410:6:410:18 | ensureNotNull |
 | test.cpp:411:8:411:8 | o | true | test.cpp:412:1:412:1 | return ... |
