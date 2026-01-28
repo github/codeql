@@ -1194,6 +1194,8 @@ case @expr.kind of
 | 136 = @collection_expr
 | 137 = @spread_element_expr
 | 138 = @interpolated_string_insert_expr
+/* C# 14.0 */
+| 139 = @accessor_invocation_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
@@ -1268,9 +1270,9 @@ case @expr.kind of
 
 @call = @method_invocation_expr | @constructor_init_expr | @operator_invocation_expr
       | @delegate_invocation_expr | @object_creation_expr | @call_access_expr
-      | @local_function_invocation_expr | @function_pointer_invocation_expr;
+      | @local_function_invocation_expr | @function_pointer_invocation_expr | @accessor_invocation_expr;
 
-@call_access_expr = @property_access_expr | @event_access_expr | @indexer_access_expr;
+@call_access_expr = @property_access_expr | @event_access_expr | @indexer_access_expr | @accessor_invocation_expr;
 
 @late_bindable_expr = @dynamic_element_access_expr | @dynamic_member_access_expr
                     | @object_creation_expr | @method_invocation_expr | @operator_invocation_expr;
@@ -1319,7 +1321,8 @@ dynamic_member_name(
 
 @qualifiable_expr = @member_access_expr
                   | @method_invocation_expr
-                  | @element_access_expr;
+                  | @element_access_expr
+                  | @accessor_invocation_expr;
 
 conditional_access(
   unique int id: @qualifiable_expr ref);

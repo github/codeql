@@ -26,6 +26,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private bool IsOperatorCall() => Kind == ExprKind.OPERATOR_INVOCATION;
 
+        private bool IsAccessorInvocation() => Kind == ExprKind.ACCESSOR_INVOCATION;
+
+        private bool IsValidMemberAccessKind()
+        {
+            return Kind == ExprKind.METHOD_INVOCATION ||
+                IsEventDelegateCall() ||
+                IsExplicitDelegateInvokeCall() ||
+                IsOperatorCall() ||
+                IsAccessorInvocation();
+        }
+
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (IsNameof(Syntax))
@@ -39,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var target = TargetSymbol;
             switch (Syntax.Expression)
             {
-                case MemberAccessExpressionSyntax memberAccess when Kind == ExprKind.METHOD_INVOCATION || IsEventDelegateCall() || IsExplicitDelegateInvokeCall() || IsOperatorCall():
+                case MemberAccessExpressionSyntax memberAccess when IsValidMemberAccessKind():
                     memberName = memberAccess.Name.Identifier.Text;
                     if (Syntax.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
                         // Qualified method call; `x.M()`
@@ -120,6 +131,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return info.SymbolInfo.Symbol is IMethodSymbol method &&
                 method.TryGetExtensionMethod(out var original) &&
                 original!.MethodKind == MethodKind.UserDefinedOperator;
+        }
+
+        private static bool IsAccessorLikeInvocation(ExpressionNodeInfo info)
+        {
+            return info.SymbolInfo.Symbol is IMethodSymbol method &&
+                method.TryGetExtensionMethod(out var original) &&
+                (original!.MethodKind == MethodKind.PropertyGet ||
+                 original!.MethodKind == MethodKind.PropertySet);
         }
 
         public IMethodSymbol? TargetSymbol
@@ -232,6 +251,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (IsOperatorLikeCall(info))
             {
                 return ExprKind.OPERATOR_INVOCATION;
+            }
+            if (IsAccessorLikeInvocation(info))
+            {
+                return ExprKind.ACCESSOR_INVOCATION;
             }
             return ExprKind.METHOD_INVOCATION;
         }
