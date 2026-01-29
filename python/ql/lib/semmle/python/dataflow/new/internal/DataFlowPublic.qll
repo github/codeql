@@ -121,6 +121,20 @@ newtype TNode =
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     exists(TFunction(f))
   } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called.
+   */
+  TSynthCapturedVariablesArgumentNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called, after the output has been computed.
+   */
+  TSynthCapturedVariablesArgumentPostUpdateNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
   /** A synthetic node representing the values of variables captured by a comprehension. */
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
     comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
