@@ -542,6 +542,10 @@ function_pointer_return_type(
     unique int function_pointer_id: @function_pointer_type ref,
     int return_type_id: @type_or_ref ref);
 
+extension_receiver_type(
+  unique int extension: @extension_type ref,
+  int receiver_type_id: @type_or_ref ref);
+
 extend(
   int sub: @type ref,
   int super: @type_or_ref ref);
