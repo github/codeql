@@ -183,7 +183,7 @@ Python
 
 *   When a code-scanning configuration specifies the :code:`paths:` and/or :code:`paths-ignore:` settings, these are now taken into account by the Python extractor's search for YAML files.
 *   The :code:`compression.zstd` library (added in Python 3.14) is now supported by the :code:`py/decompression-bomb` query.
-*   Added taint flow model and type model for :code:`urllib.parseurl`.
+*   Added taint flow model and type model for :code:`urllib.parse`.
 *   Remote flow sources for the :code:`python-socketio` package have been modeled.
 *   Additional models for remote flow sources for :code:`tornado.websocket.WebSocketHandler` have been added.
 
