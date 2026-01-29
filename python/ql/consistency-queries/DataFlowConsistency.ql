@@ -143,6 +143,10 @@ private module Input implements InputSig<Location, PythonDataFlow> {
     // Because of this, we must exclude the cases where we have an approximation but no actual
     // argument node.
     arg = getCallArgApproximation() and not getCallArg(_, _, _, arg, _)
+    or
+    // Likewise, capturing closure arguments do not have corresponding argument nodes in some cases.
+    arg instanceof SynthCapturedVariablesArgumentNode and
+    not arg.argumentOf(_, _)
   }
 }
 
