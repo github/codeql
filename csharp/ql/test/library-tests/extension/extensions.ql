@@ -1,16 +1,5 @@
 import csharp
 
-// - Method should be from source (it looks like it is considered) compiler generated.
-// - It appears that two methods are extracted
-//   - One "generated" (which is what the compiler will generate).
-//   - One "source" method, which reflects the method as it looks in source code.
-//.  - Design decision: Only extract the associated extension implementation.
-// - Make tests for ExtendedType.
-// - Like there are extension methods, we need to declare isExtension for properties.
-// - Make QL classes similar to ExtensionMethod for Properties and Operators.
-// - Make sure we can declare MaD
-// - Check that control flow works as expected.
-// - Check that dataflow works as expected.
 query predicate extensionMethodCallArgument(
   ExtensionMethodCall emc, ExtensionMethod em, Parameter p, int i, Expr e
 ) {
