@@ -100,6 +100,7 @@ module ShowProvenance<
 
   private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
 
+  /** Holds if `model` is the `r`-th pretty-printed model used in the edges relation. */
   additional query predicate models(int r, string model) { Models::models(r, model) }
 
   query predicate edges(PathNode a, PathNode b, string key, string val) {
@@ -119,8 +120,10 @@ module ShowProvenance<
  * the provenance information.
  */
 module TestPostProcessing {
+  /** Holds if a query result exists with the given relation, row, column, and data. */
   external predicate queryResults(string relation, int row, int column, string data);
 
+  /** Holds if the given query relation exists. */
   external predicate queryRelations(string relation);
 
   /** Transforms a `PathGraph` by printing the provenance information. */
@@ -133,6 +136,7 @@ module TestPostProcessing {
 
     private module Models = TranslateModels<interpretModelForTest/2, provenance/1>;
 
+    /** Holds if a result exists with the given relation, row, column, and data. */
     query predicate results(string relation, int row, int column, string data) {
       queryResults(relation, row, column, data) and
       (relation != "edges" or column != provenanceColumn())
@@ -154,6 +158,7 @@ module TestPostProcessing {
       )
     }
 
+    /** Holds if the given result relation exists. */
     query predicate resultRelations(string relation) { queryRelations(relation) }
   }
 }
