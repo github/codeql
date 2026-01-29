@@ -1339,16 +1339,22 @@ class ExtensionType extends Parameterizable, @extension_type {
   /**
    * Gets the receiver parameter of this extension type, if any.
    */
-  Parameter getReceiverParameter() { params(result, _, _, 0, _, this, _) }
+  Parameter getReceiverParameter() { result = this.getParameter(0) }
 
   /**
    * Holds if this extension type has a receiver parameter.
    */
   predicate hasReceiverParameter() { exists(this.getReceiverParameter()) }
 
-  /** Gets the type being extended by this extension type. */
-  // TODO: This doesn't handle the case where there is no parameter.
-  Type getExtendedType() { result = this.getReceiverParameter().getType() }
+  /**
+   * Gets the type being extended by this extension type.
+   */
+  Type getExtendedType() {
+    extension_receiver_type(this, result)
+    or
+    not extension_receiver_type(this, any(Type t)) and
+    extension_receiver_type(this, getTypeRef(result))
+  }
 
   override string getAPrimaryQlClass() { result = "ExtensionType" }
 }
