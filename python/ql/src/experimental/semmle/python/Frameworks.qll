@@ -13,6 +13,7 @@ private import experimental.semmle.python.frameworks.Scrapli
 private import experimental.semmle.python.frameworks.Twisted
 private import experimental.semmle.python.frameworks.JWT
 private import experimental.semmle.python.frameworks.Csv
+private import experimental.semmle.python.frameworks.OpenAI
 private import experimental.semmle.python.libraries.PyJWT
 private import experimental.semmle.python.libraries.Python_JWT
 private import experimental.semmle.python.libraries.Authlib
