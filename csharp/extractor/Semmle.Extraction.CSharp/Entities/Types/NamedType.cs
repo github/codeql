@@ -90,6 +90,20 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 trapFile.anonymous_types(this);
             }
+
+            if (Symbol.IsExtension && Symbol.ExtensionParameter is IParameterSymbol parameter)
+            {
+                // For some reason an extension type has a receiver parameter with an empty name
+                // even when there is no parameter.
+                if (!string.IsNullOrEmpty(parameter.Name))
+                {
+                    Parameter.Create(Context, parameter, this);
+                }
+
+                // Use the parameter type as the receiver type.
+                var receiverType = Type.Create(Context, parameter.Type).TypeRef;
+                trapFile.extension_receiver_type(this, receiverType);
+            }
         }
 
         private readonly Lazy<Type[]> typeArgumentsLazy;
