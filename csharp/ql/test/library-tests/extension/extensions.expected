@@ -1,0 +1,50 @@
+extensionMethodCallArgument
+| extensions.cs:45:19:45:24 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:45:19:45:19 | access to local variable s |
+| extensions.cs:46:19:46:29 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:46:19:46:19 | access to local variable s |
+| extensions.cs:46:19:46:29 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:12:33:12:37 | other | 1 | extensions.cs:46:24:46:28 | "!!!" |
+| extensions.cs:48:19:48:36 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:14:43:14:43 | x | 0 | extensions.cs:48:35:48:35 | access to local variable s |
+| extensions.cs:50:19:50:42 | call to method StaticObjectM2 | extensions.cs:21:27:21:40 | StaticObjectM2 | extensions.cs:21:49:21:49 | s | 0 | extensions.cs:50:41:50:41 | access to local variable s |
+| extensions.cs:56:17:56:22 | call to method M3 | extensions.cs:28:24:28:25 | M3 | extensions.cs:28:39:28:39 | s | 0 | extensions.cs:56:17:56:17 | access to local variable s |
+| extensions.cs:59:9:59:26 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:59:25:59:25 | access to local variable s |
+| extensions.cs:60:9:60:33 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:60:25:60:25 | access to local variable s |
+| extensions.cs:60:9:60:33 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:12:33:12:37 | other | 1 | extensions.cs:60:28:60:32 | "!!!" |
+| extensions.cs:62:9:62:32 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:14:43:14:43 | x | 0 | extensions.cs:62:31:62:31 | access to local variable s |
+| extensions.cs:64:9:64:38 | call to method StaticObjectM2 | extensions.cs:21:27:21:40 | StaticObjectM2 | extensions.cs:21:49:21:49 | s | 0 | extensions.cs:64:37:64:37 | access to local variable s |
+extensionMethodCalls
+| extensions.cs:45:19:45:24 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).M1 |
+| extensions.cs:46:19:46:29 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).M2 |
+| extensions.cs:47:19:47:35 | call to method StaticM1 | extensions.cs:13:27:13:34 | StaticM1 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).StaticM1 |
+| extensions.cs:48:19:48:36 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).StaticM2 |
+| extensions.cs:49:19:49:41 | call to method StaticObjectM1 | extensions.cs:20:27:20:40 | StaticObjectM1 | extensions.cs:18:5:23:5 | extension(Object) | MyExtensions+extension(Object).StaticObjectM1 |
+| extensions.cs:50:19:50:42 | call to method StaticObjectM2 | extensions.cs:21:27:21:40 | StaticObjectM2 | extensions.cs:18:5:23:5 | extension(Object) | MyExtensions+extension(Object).StaticObjectM2 |
+| extensions.cs:56:17:56:22 | call to method M3 | extensions.cs:28:24:28:25 | M3 | extensions.cs:26:21:26:37 | ClassicExtensions | ClassicExtensions.M3 |
+| extensions.cs:59:9:59:26 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).M1 |
+| extensions.cs:60:9:60:33 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).M2 |
+| extensions.cs:61:9:61:31 | call to method StaticM1 | extensions.cs:13:27:13:34 | StaticM1 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).StaticM1 |
+| extensions.cs:62:9:62:32 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).StaticM2 |
+| extensions.cs:63:9:63:37 | call to method StaticObjectM1 | extensions.cs:20:27:20:40 | StaticObjectM1 | extensions.cs:18:5:23:5 | extension(Object) | MyExtensions+extension(Object).StaticObjectM1 |
+| extensions.cs:64:9:64:38 | call to method StaticObjectM2 | extensions.cs:21:27:21:40 | StaticObjectM2 | extensions.cs:18:5:23:5 | extension(Object) | MyExtensions+extension(Object).StaticObjectM2 |
+extensionOperatorCallArgument
+| extensions.cs:15:39:15:39 | * | extensions.cs:53:19:53:23 | call to operator * | extensions.cs:15:45:15:45 | a | 0 | extensions.cs:53:19:53:19 | 3 |
+| extensions.cs:15:39:15:39 | * | extensions.cs:53:19:53:23 | call to operator * | extensions.cs:15:55:15:55 | b | 1 | extensions.cs:53:23:53:23 | access to local variable s |
+| extensions.cs:15:39:15:39 | * | extensions.cs:67:9:67:38 | call to operator * | extensions.cs:15:45:15:45 | a | 0 | extensions.cs:67:34:67:34 | 3 |
+| extensions.cs:15:39:15:39 | * | extensions.cs:67:9:67:38 | call to operator * | extensions.cs:15:55:15:55 | b | 1 | extensions.cs:67:37:67:37 | access to local variable s |
+extensionOperatorCalls
+| extensions.cs:53:19:53:23 | call to operator * | extensions.cs:15:39:15:39 | * | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).op_Multiply |
+| extensions.cs:67:9:67:38 | call to operator * | extensions.cs:15:39:15:39 | * | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).op_Multiply |
+extensionProperty
+| extensions.cs:8:21:8:25 | Prop1 | extensions.cs:6:5:16:5 | extension(String) |
+| extensions.cs:9:21:9:25 | Prop2 | extensions.cs:6:5:16:5 | extension(String) |
+| extensions.cs:10:28:10:38 | StaticProp1 | extensions.cs:6:5:16:5 | extension(String) |
+| extensions.cs:22:28:22:37 | StaticProp | extensions.cs:18:5:23:5 | extension(Object) |
+extensionPropertyCall
+| extensions.cs:38:19:38:25 | access to property Prop1 | extensions.cs:8:21:8:25 | Prop1 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).Prop1 |
+| extensions.cs:39:19:39:25 | access to property Prop2 | extensions.cs:9:21:9:25 | Prop2 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).Prop2 |
+| extensions.cs:40:9:40:15 | access to property Prop2 | extensions.cs:9:21:9:25 | Prop2 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).Prop2 |
+| extensions.cs:41:19:41:36 | access to property StaticProp1 | extensions.cs:10:28:10:38 | StaticProp1 | extensions.cs:6:5:16:5 | extension(String) | MyExtensions+extension(String).StaticProp1 |
+| extensions.cs:42:19:42:35 | access to property StaticProp | extensions.cs:22:28:22:37 | StaticProp | extensions.cs:18:5:23:5 | extension(Object) | MyExtensions+extension(Object).StaticProp |
+extensionAccessorCall
+| extensions.cs:70:9:70:33 | call to extension accessor get_Prop1 | extensions.cs:8:30:8:41 | get_Prop1 | extensions.cs:8:21:8:25 | Prop1 | MyExtensions+extension(String).get_Prop1 |
+| extensions.cs:71:9:71:33 | call to extension accessor get_Prop2 | extensions.cs:9:29:9:31 | get_Prop2 | extensions.cs:9:21:9:25 | Prop2 | MyExtensions+extension(String).get_Prop2 |
+| extensions.cs:72:9:72:40 | call to extension accessor set_Prop2 | extensions.cs:9:50:9:52 | set_Prop2 | extensions.cs:9:21:9:25 | Prop2 | MyExtensions+extension(String).set_Prop2 |
+| extensions.cs:73:9:73:37 | call to extension accessor get_StaticProp | extensions.cs:22:42:22:45 | get_StaticProp | extensions.cs:22:28:22:37 | StaticProp | MyExtensions+extension(Object).get_StaticProp |

@@ -133,6 +133,7 @@ namespace Semmle.Extraction.Kinds
         COLLECTION = 136,
         SPREAD_ELEMENT = 137,
         INTERPOLATED_STRING_INSERT = 138,
+        ACCESSOR_INVOCATION = 139,
         DEFINE_SYMBOL = 999,
     }
 }

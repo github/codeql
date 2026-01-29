@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
+using Semmle.Extraction.CSharp.Entities.Statements;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -164,6 +165,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Enum:
                     case TypeKind.Delegate:
                     case TypeKind.Error:
+                    case TypeKind.Extension:
                         var named = (INamedTypeSymbol)type;
                         named.BuildNamedTypeId(cx, trapFile, symbolBeingDefined, constructUnderlyingTupleType);
                         return;
@@ -275,6 +277,16 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<IFieldSymbol?> GetTupleElementsMaybeNull(this INamedTypeSymbol type) =>
             type.TupleElements;
 
+        private static string GetExtensionTypeName(this INamedTypeSymbol named, Context cx)
+        {
+            var type = named.ExtensionParameter?.Type.Name;
+            if (type is null)
+            {
+                cx.ModelError(named, "Failed to get extension method type.");
+            }
+            return $"extension({type ?? "unknown"})";
+        }
+
         private static void BuildQualifierAndName(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
         {
             if (named.ContainingType is not null)
@@ -289,8 +301,19 @@ namespace Semmle.Extraction.CSharp
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
-            var name = named.IsFileLocal ? named.MetadataName : named.Name;
-            trapFile.Write(name);
+            if (named.IsFileLocal)
+            {
+                trapFile.Write(named.MetadataName);
+            }
+            else if (named.IsExtension)
+            {
+                var name = GetExtensionTypeName(named, cx);
+                trapFile.Write(name);
+            }
+            else
+            {
+                trapFile.Write(named.Name);
+            }
         }
 
         private static void BuildTupleId(INamedTypeSymbol named, Context cx, EscapingTextWriter trapFile, ISymbol symbolBeingDefined)
@@ -391,6 +414,7 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Enum:
                     case TypeKind.Delegate:
                     case TypeKind.Error:
+                    case TypeKind.Extension:
                         var named = (INamedTypeSymbol)type;
                         named.BuildNamedTypeDisplayName(cx, trapFile, constructUnderlyingTupleType);
                         return;
@@ -481,6 +505,13 @@ namespace Semmle.Extraction.CSharp
                             f.Type.BuildDisplayName(cx, trapFile);
                     });
                 trapFile.Write(")");
+                return;
+            }
+
+            if (namedType.IsExtension)
+            {
+                var name = GetExtensionTypeName(namedType, cx);
+                trapFile.Write(name);
                 return;
             }
 
@@ -596,6 +627,34 @@ namespace Semmle.Extraction.CSharp
             return true;
         }
 
+        /// <summary>
+        /// Return true if this method is a compiler-generated extension method.
+        /// </summary>
+        public static bool IsCompilerGeneratedExtensionMethod(this IMethodSymbol method) =>
+            method.TryGetExtensionMethod(out _);
+
+        /// <summary>
+        /// Returns true if this method is a compiler-generated extension method,
+        /// and outputs the original extension method declaration.
+        /// </summary>
+        public static bool TryGetExtensionMethod(this IMethodSymbol method, out IMethodSymbol? declaration)
+        {
+            declaration = null;
+            if (method.IsImplicitlyDeclared && method.ContainingSymbol is INamedTypeSymbol containingType)
+            {
+                // Extension types are declared within the same type as the generated
+                // extension method implementation.
+                var extensions = containingType.GetMembers()
+                    .OfType<INamedTypeSymbol>()
+                    .Where(t => t.IsExtension);
+                // Find the original extension method that maps to this implementation (if any).
+                declaration = extensions.SelectMany(e => e.GetMembers())
+                    .OfType<IMethodSymbol>()
+                    .FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.AssociatedExtensionImplementation, method));
+                return declaration is not null;
+            }
+            return false;
+        }
         /// <summary>
         /// Gets the base type of `symbol`. Unlike `symbol.BaseType`, this excludes effective base
         /// types of type parameters as well as `object` base types.

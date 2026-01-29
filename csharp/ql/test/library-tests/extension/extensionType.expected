@@ -1,0 +1,5 @@
+extensionTypeReceiverParameter
+| extensions.cs:6:5:16:5 | extension(String) | extensions.cs:6:22:6:22 | s |
+extensionTypeExtendedType
+| extensions.cs:6:5:16:5 | extension(String) | string |
+| extensions.cs:18:5:23:5 | extension(Object) | object |
