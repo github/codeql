@@ -856,6 +856,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 allFeeds = GetFeeds(() => dotnet.GetNugetFeedsFromFolder(this.fileProvider.SourceDir.FullName)).ToHashSet();
             }
 
+            // If we have discovered any explicit feeds, then we also expect these to be in the set of all feeds.
+            // Normally, it is a safe assumption to make that `GetNugetFeedsFromFolder` will include the feeds configured
+            // in a NuGet configuration file in the given directory. There is one exception: on a system with case-sensitive
+            // file systems, we may discover a configuration file such as `Nuget.Config` which is not recognised by `dotnet nuget`.
+            // In that case, our call to `GetNugetFeeds` will retrieve the feeds from that file (because it is accepted when
+            // provided explicitly as `--configfile` argument), but the call to `GetNugetFeedsFromFolder` will not.
+            if (explicitFeeds.Count > 0)
+            {
+                allFeeds.UnionWith(explicitFeeds);
+            }
+
             logger.LogInfo($"Found {allFeeds.Count} NuGet feeds (with inherited ones) in nuget.config files: {string.Join(", ", allFeeds.OrderBy(f => f))}");
 
             return (explicitFeeds, allFeeds);
