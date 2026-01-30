@@ -30,6 +30,7 @@ import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
  * Holds if models describing `type` may be relevant for the analysis of this database.
  */
 bindingset[type]
+overlay[local]
 predicate isTypeUsed(string type) {
   // If `type` is a path, then it is the first component that should be imported.
   API::moduleImportExists(type.splitAt(".", 0))
@@ -39,6 +40,7 @@ predicate isTypeUsed(string type) {
  * Holds if `type` can be obtained from an instance of `otherType` due to
  * language semantics modeled by `getExtraNodeFromType`.
  */
+overlay[local]
 predicate hasImplicitTypeModel(string type, string otherType) { none() }
 
 /** Gets a Python-specific interpretation of the `(type, path)` tuple after resolving the first `n` access path tokens. */
