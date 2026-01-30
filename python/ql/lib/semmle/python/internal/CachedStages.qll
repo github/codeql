@@ -177,6 +177,7 @@ module Stages {
      * Always holds.
      * Ensures that a predicate is evaluated as part of the DataFlow stage.
      */
+    overlay[local]
     cached
     predicate ref() { 1 = 1 }
 

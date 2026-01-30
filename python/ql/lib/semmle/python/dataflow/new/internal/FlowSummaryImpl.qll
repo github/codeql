@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
+overlay[local]
+module;
 
 private import python
 private import codeql.dataflow.internal.FlowSummaryImpl
@@ -99,6 +101,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
 private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  overlay[global]
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result =
       TPotentialLibraryCall([
