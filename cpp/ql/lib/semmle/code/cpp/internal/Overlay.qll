@@ -21,7 +21,7 @@ private string getLocationFilePath(@location_default loc) {
  * Gets the file path for an element with a single location.
  */
 overlay[local]
-private string getSingleLocationFilePath(@element e) {
+string getSingleLocationFilePath(@element e) {
   exists(@location_default loc |
     var_decls(e, _, _, _, loc)
     or
@@ -75,7 +75,7 @@ private string getSingleLocationFilePath(@element e) {
  * Gets the file path for an element with potentially multiple locations.
  */
 overlay[local]
-private string getMultiLocationFilePath(@element e) {
+string getMultiLocationFilePath(@element e) {
   exists(@location_default loc |
     exists(@var_decl vd | var_decls(vd, e, _, _, loc))
     or
