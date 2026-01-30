@@ -97,20 +97,19 @@ stmts.kt:
 #   23|             0: [LTExpr] ... < ...
 #   23|               0: [VarAccess] x
 #   23|               1: [IntegerLiteral] 100
-#   23|             1: [BlockStmt] { ... }
-#   24|               0: [BlockStmt] { ... }
-#   24|                 0: [DoStmt] do ... while (...)
-#   26|                   0: [GTExpr] ... > ...
-#   26|                     0: [VarAccess] y
-#   26|                     1: [IntegerLiteral] 100
-#   24|                   1: [BlockStmt] { ... }
-#   25|                     0: [ExprStmt] <Expr>;
-#   25|                       0: [WhenExpr] when ...
-#   25|                         0: [WhenBranch] ... -> ...
-#   25|                           0: [GTExpr] ... > ...
-#   25|                             0: [VarAccess] x
-#   25|                             1: [VarAccess] y
-#   25|                           1: [BreakStmt] break
+#   24|             1: [BlockStmt] { ... }
+#   24|               0: [DoStmt] do ... while (...)
+#   26|                 0: [GTExpr] ... > ...
+#   26|                   0: [VarAccess] y
+#   26|                   1: [IntegerLiteral] 100
+#   24|                 1: [BlockStmt] { ... }
+#   25|                   0: [ExprStmt] <Expr>;
+#   25|                     0: [WhenExpr] when ...
+#   25|                       0: [WhenBranch] ... -> ...
+#   25|                         0: [GTExpr] ... > ...
+#   25|                           0: [VarAccess] x
+#   25|                           1: [VarAccess] y
+#   25|                         1: [BreakStmt] break
 #   28|         1: [WhileStmt] while (...)
 #   28|           0: [GTExpr] ... > ...
 #   28|             0: [VarAccess] x
@@ -137,20 +136,19 @@ stmts.kt:
 #   35|             1: [MethodCall] rangeTo(...)
 #   35|               -1: [VarAccess] x
 #   35|               0: [VarAccess] y
-#   35|             2: [BlockStmt] { ... }
-#   36|               0: [BlockStmt] { ... }
-#   36|                 0: [DoStmt] do ... while (...)
-#   38|                   0: [GTExpr] ... > ...
-#   38|                     0: [VarAccess] y
-#   38|                     1: [IntegerLiteral] 100
-#   36|                   1: [BlockStmt] { ... }
-#   37|                     0: [ExprStmt] <Expr>;
-#   37|                       0: [WhenExpr] when ...
-#   37|                         0: [WhenBranch] ... -> ...
-#   37|                           0: [GTExpr] ... > ...
-#   37|                             0: [VarAccess] x
-#   37|                             1: [VarAccess] y
-#   37|                           1: [BreakStmt] break
+#   36|             2: [BlockStmt] { ... }
+#   36|               0: [DoStmt] do ... while (...)
+#   38|                 0: [GTExpr] ... > ...
+#   38|                   0: [VarAccess] y
+#   38|                   1: [IntegerLiteral] 100
+#   36|                 1: [BlockStmt] { ... }
+#   37|                   0: [ExprStmt] <Expr>;
+#   37|                     0: [WhenExpr] when ...
+#   37|                       0: [WhenBranch] ... -> ...
+#   37|                         0: [GTExpr] ... > ...
+#   37|                           0: [VarAccess] x
+#   37|                           1: [VarAccess] y
+#   37|                         1: [BreakStmt] break
 #   41|         4: [EnhancedForStmt] for (... : ...)
 #-----|           0: (Single Local Variable Declaration)
 #   41|             1: [LocalVariableDeclExpr] <destruct>
