@@ -16,7 +16,7 @@ abstract class CryptographicAlgorithm extends CryptographicArtifact {
 abstract class HashAlgorithm extends CryptographicAlgorithm {
   final string getHashName() {
     if exists(string n | n = this.getName() and isHashingAlgorithm(n))
-    then isHashingAlgorithm(result) and result = this.getName()
+    then result = this.getName()
     else result = unknownAlgorithm()
   }
 }
@@ -24,7 +24,7 @@ abstract class HashAlgorithm extends CryptographicAlgorithm {
 abstract class SymmetricAlgorithm extends CryptographicAlgorithm {
   final string getSymmetricAlgorithmName() {
     if exists(string n | n = this.getName() and isSymmetricAlgorithm(n))
-    then isSymmetricAlgorithm(result) and result = this.getName()
+    then result = this.getName()
     else result = unknownAlgorithm()
   }
 }
@@ -32,7 +32,7 @@ abstract class SymmetricAlgorithm extends CryptographicAlgorithm {
 abstract class BlockMode extends CryptographicAlgorithm {
   final string getBlockModeName() {
     if exists(string n | n = this.getName() and isCipherBlockModeAlgorithm(n))
-    then isCipherBlockModeAlgorithm(result) and result = this.getName()
+    then result = this.getName()
     else result = unknownAlgorithm()
   }
 }

@@ -3,7 +3,7 @@ import semmle.code.powershell.dataflow.DataFlow
 import semmle.code.powershell.ApiGraphs
 import CryptoArtifact
 
-class CryptoAlgorithmObjectCreation extends DataFlow::ObjectCreationNode {
+abstract class CryptoAlgorithmObjectCreation extends DataFlow::ObjectCreationNode {
   string objectName;
 
   CryptoAlgorithmObjectCreation() {
@@ -11,10 +11,9 @@ class CryptoAlgorithmObjectCreation extends DataFlow::ObjectCreationNode {
       this.getExprNode().getExpr().(CallExpr).getAnArgument().getValue().asString().toLowerCase()
   }
 
-  string getObjectName() { result = objectName }
 }
 
-class CryptoAlgorithmCreateCall extends DataFlow::CallNode {
+abstract class CryptoAlgorithmCreateCall extends DataFlow::CallNode {
   string objectName;
 
   CryptoAlgorithmCreateCall() {
@@ -30,7 +29,7 @@ class CryptoAlgorithmCreateCall extends DataFlow::CallNode {
   string getObjectName() { result = objectName }
 }
 
-class CryptoAlgorithmCreateArgCall extends DataFlow::CallNode {
+abstract class CryptoAlgorithmCreateArgCall extends DataFlow::CallNode {
   string objectName;
 
   CryptoAlgorithmCreateArgCall() {
@@ -77,8 +76,8 @@ class HashAlgorithmObjectCreation extends HashAlgorithm, CryptoAlgorithmObjectCr
 
   HashAlgorithmObjectCreation() {
     (
-      this.getObjectName() = "system.security.cryptography." + algName or
-      this.getObjectName() = "system.security.cryptography." + algName + "cryptoserviceprovider"
+      objectName = "system.security.cryptography." + algName or
+      objectName = "system.security.cryptography." + algName + "cryptoserviceprovider"
     ) and
     isHashingAlgorithm(algName)
   }
@@ -90,10 +89,10 @@ class HashAlgorithmCreateCall extends HashAlgorithm, CryptoAlgorithmCreateCall {
   string algName;
 
   HashAlgorithmCreateCall() {
-    isHashingAlgorithm(this.getObjectName()) and
+    isHashingAlgorithm(algName) and
     (
-      this.getObjectName() = algName or
-      this.getObjectName() = "system.security.cryptography." + algName
+      objectName = algName or
+      objectName = "system.security.cryptography." + algName
     )
   }
 
@@ -105,8 +104,8 @@ class HashAlgorithmCreateFromNameCall extends HashAlgorithm, CryptoAlgorithmCrea
 
   HashAlgorithmCreateFromNameCall() {
     (
-      this.getObjectName() = algName or
-      this.getObjectName() = "system.security.cryptography." + algName
+      objectName = algName or
+      objectName = "system.security.cryptography." + algName
     ) and
     isHashingAlgorithm(algName)
   }
@@ -119,9 +118,9 @@ class SymmetricAlgorithmObjectCreation extends SymmetricAlgorithm, CryptoAlgorit
 
   SymmetricAlgorithmObjectCreation() {
     (
-      this.getObjectName() = "system.security.cryptography." + algName or
-      this.getObjectName() = "system.security.cryptography." + algName + "cryptoserviceprovider" or
-      this.getObjectName() = "system.security.cryptography.symmetricalgorithm." + algName
+      objectName = "system.security.cryptography." + algName or
+      objectName = "system.security.cryptography." + algName + "cryptoserviceprovider" or
+      objectName = "system.security.cryptography.symmetricalgorithm." + algName
     ) and
     isSymmetricAlgorithm(algName)
   }
@@ -133,11 +132,11 @@ class SymmetricAlgorithmCreateCall extends SymmetricAlgorithm, CryptoAlgorithmCr
   string algName;
 
   SymmetricAlgorithmCreateCall() {
-    isSymmetricAlgorithm(this.getObjectName()) and
+    isSymmetricAlgorithm(algName) and
     (
-      this.getObjectName() = algName or
-      this.getObjectName() = "system.security.cryptography." + algName or
-      this.getObjectName() = "system.security.cryptography.symmetricalgorithm." + algName
+      objectName = algName or
+      objectName = "system.security.cryptography." + algName or
+      objectName = "system.security.cryptography.symmetricalgorithm." + algName
     )
   }
 
@@ -151,7 +150,7 @@ class SymmetricAlgorithmCreateArgCall extends SymmetricAlgorithm, CryptoAlgorith
     algName = this.getObjectName() and
     isSymmetricAlgorithm(algName)
     or
-    this.getObjectName() = "system.security.cryptography." + algName and
+    objectName = "system.security.cryptography." + algName and
     isSymmetricAlgorithm(algName)
   }
 
@@ -165,9 +164,9 @@ class SymmetricAlgorithmCreateFromNameCall extends SymmetricAlgorithm,
 
   SymmetricAlgorithmCreateFromNameCall() {
     (
-      this.getObjectName() = algName or
-      this.getObjectName() = "system.security.cryptography." + algName or
-      this.getObjectName() = "system.security.cryptography.symmetricalgorithm." + algName
+      objectName = algName or
+      objectName = "system.security.cryptography." + algName or
+      objectName = "system.security.cryptography.symmetricalgorithm." + algName
     ) and
     isSymmetricAlgorithm(algName)
   }
