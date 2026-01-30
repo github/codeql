@@ -31,6 +31,8 @@
  * Note: This hasn't been 100% realized yet, so we don't currently expose a predicate to
  * ask what targets any data-flow node has. But it's still the plan to do this!
  */
+overlay[local?]
+module;
 
 private import python
 private import DataFlowPublic
@@ -39,6 +41,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.internal.CachedStages
 private import semmle.python.dataflow.new.internal.TypeTrackingImpl::CallGraphConstruction as CallGraphConstruction
 
+overlay[local]
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
@@ -84,6 +87,7 @@ newtype TParameterPosition =
   TSynthDictSplatParameterPosition()
 
 /** A parameter position. */
+overlay[local]
 class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
@@ -146,6 +150,7 @@ class ParameterPosition extends TParameterPosition {
   }
 }
 
+overlay[local]
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
@@ -180,6 +185,7 @@ newtype TArgumentPosition =
   TDictSplatArgumentPosition()
 
 /** An argument position. */
+overlay[local]
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self`/`cls` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
@@ -248,6 +254,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * `@staticmethod` decorator or by convention
  * (like a `__new__` method on a class is a classmethod even without the decorator).
  */
+overlay[local]
 predicate isStaticmethod(Function func) {
   exists(NameNode id | id.getId() = "staticmethod" and id.isGlobal() |
     func.getADecorator() = id.getNode()
@@ -259,6 +266,7 @@ predicate isStaticmethod(Function func) {
  * `@classmethod` decorator or by convention
  * (like a `__new__` method on a class is a classmethod even without the decorator).
  */
+overlay[local]
 predicate isClassmethod(Function func) {
   exists(NameNode id | id.getId() = "classmethod" and id.isGlobal() |
     func.getADecorator() = id.getNode()
@@ -275,6 +283,7 @@ predicate isClassmethod(Function func) {
 }
 
 /** Holds if the function `func` has a `property` decorator. */
+overlay[local]
 predicate hasPropertyDecorator(Function func) {
   exists(NameNode id | id.getId() = "property" and id.isGlobal() |
     func.getADecorator() = id.getNode()
@@ -284,6 +293,7 @@ predicate hasPropertyDecorator(Function func) {
 /**
  * Holds if the function `func` has a `contextlib.contextmanager`.
  */
+overlay[local]
 predicate hasContextmanagerDecorator(Function func) {
   exists(ControlFlowNode contextmanager |
     contextmanager.(NameNode).getId() = "contextmanager" and contextmanager.(NameNode).isGlobal()
@@ -298,20 +308,25 @@ predicate hasContextmanagerDecorator(Function func) {
 // Callables
 // =============================================================================
 /** A callable defined in library code, identified by a unique string. */
+overlay[local]
 abstract class LibraryCallable extends string {
   bindingset[this]
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
+  overlay[global]
   abstract CallCfgNode getACall();
 
   /** Same as `getACall` but without referring to the call graph or API graph. */
+  overlay[global]
   CallCfgNode getACallSimple() { none() }
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
+  overlay[global]
   abstract ArgumentNode getACallback();
 }
 
+overlay[local]
 newtype TDataFlowCallable =
   /**
    * Is used as the target for all calls: plain functions, lambdas, methods on classes,
@@ -329,6 +344,7 @@ newtype TDataFlowCallable =
   TLibraryCallable(LibraryCallable callable)
 
 /** A callable. */
+overlay[local]
 abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -350,6 +366,7 @@ abstract class DataFlowCallable extends TDataFlowCallable {
 }
 
 /** A callable function. */
+overlay[local]
 abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   Function func;
 
@@ -370,6 +387,7 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   /** Gets the positional parameter offset, to take into account self/cls parameters. */
   int positionalOffset() { result = 0 }
 
+  overlay[local]
   override ParameterNode getParameter(ParameterPosition ppos) {
     // Do not handle lower bound positions (such as `[1..]`) here
     // they are handled by parameter matching and would create
@@ -408,11 +426,13 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
 }
 
 /** A plain (non-method) function. */
+overlay[local]
 class DataFlowPlainFunction extends DataFlowFunction {
   DataFlowPlainFunction() { not this instanceof DataFlowMethod }
 }
 
 /** A method. */
+overlay[local]
 class DataFlowMethod extends DataFlowFunction {
   Class cls;
 
@@ -431,11 +451,13 @@ class DataFlowMethod extends DataFlowFunction {
 }
 
 /** A classmethod. */
+overlay[local]
 class DataFlowClassmethod extends DataFlowMethod {
   DataFlowClassmethod() { isClassmethod(func) }
 }
 
 /** A staticmethod. */
+overlay[local]
 class DataFlowStaticmethod extends DataFlowMethod, DataFlowFunction {
   DataFlowStaticmethod() { isStaticmethod(func) }
 
@@ -450,6 +472,7 @@ class DataFlowStaticmethod extends DataFlowMethod, DataFlowFunction {
  * A module. This is not actually a callable, but we need this so a
  * `ModuleVariableNode` have an enclosing callable.
  */
+overlay[local]
 class DataFlowModuleScope extends DataFlowCallable, TModule {
   Module mod;
 
@@ -466,6 +489,7 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override ParameterNode getParameter(ParameterPosition ppos) { none() }
 }
 
+overlay[local]
 class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
   LibraryCallable callable;
 
@@ -476,6 +500,7 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
   override string getQualifiedName() { result = callable.toString() }
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
+  overlay[global]
   ArgumentNode getACallback() { result = callable.getACallback() }
 
   override Scope getScope() { none() }
@@ -1210,6 +1235,7 @@ predicate resolveCall(CallNode call, Function target, CallType type) {
  * Holds if the argument of `call` at position `apos` is `arg`. This is just a helper
  * predicate that maps ArgumentPositions to the arguments of the underlying `CallNode`.
  */
+overlay[local]
 cached
 predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
   exists(int index |
@@ -1589,6 +1615,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
+overlay[local]
 abstract class ParameterNodeImpl extends Node {
   /** Gets the `Parameter` this `ParameterNode` represents. */
   abstract Parameter getParameter();
@@ -1610,6 +1637,7 @@ abstract class ParameterNodeImpl extends Node {
  *
  * This is used for tracking flow through captured variables.
  */
+overlay[local]
 class SynthCapturedVariablesParameterNode extends ParameterNodeImpl,
   TSynthCapturedVariablesParameterNode
 {
@@ -1634,6 +1662,7 @@ class SynthCapturedVariablesParameterNode extends ParameterNodeImpl,
 }
 
 /** A parameter for a library callable with a flow summary. */
+overlay[local]
 class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
   SummaryParameterNode() {
     FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
@@ -1684,6 +1713,7 @@ private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
   override ReturnKind getKind() { result = rk }
 }
 
+overlay[global]
 private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
   private SummaryCall call_;
   private ArgumentPosition pos_;
@@ -1737,6 +1767,7 @@ class SynthCapturedVariablesArgumentNode extends Node, TSynthCapturedVariablesAr
 class CapturedVariablesArgumentNodeAsArgumentNode extends ArgumentNode,
   SynthCapturedVariablesArgumentNode
 {
+  overlay[global]
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     exists(CallNode callNode | callNode = this.getCallNode() |
       callNode = call.getNode() and
@@ -1773,6 +1804,7 @@ class SynthCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
 }
 
 /** A synthetic node representing the values of variables captured by a comprehension. */
+overlay[local]
 class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVariablesArgumentNode {
   Comp comp;
 
@@ -1790,6 +1822,7 @@ class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVar
 class SynthCompCapturedVariablesArgumentNodeAsArgumentNode extends SynthCompCapturedVariablesArgumentNode,
   ArgumentNode
 {
+  overlay[global]
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     call.(ComprehensionCall).getComprehension() = comp and
     pos.isLambdaSelf()
@@ -1834,12 +1867,14 @@ DataFlowCallable viableCallable(DataFlowCall call) {
 // =============================================================================
 // Remaining required data-flow things
 // =============================================================================
+overlay[local]
 private newtype TReturnKind = TNormalReturnKind()
 
 /**
  * A return kind. A return kind describes how a value can be returned
  * from a callable. For Python, this is simply a method return.
  */
+overlay[local]
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this element. */
   string toString() { result = "return" }
