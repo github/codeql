@@ -116,6 +116,16 @@ module SystemCommandExecution {
 class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
   DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
+
+  /**
+   * Gets an argument to this file system access that is interpreted as a path
+   * which is vulnerable to path injection.
+   *
+   * By default all path arguments are considered vulnerable, but this can be overridden to
+   * exclude certain arguments that are known to be safe, for example because they are
+   * restricted to a specific directory.
+   */
+  DataFlow::Node getAVulnerablePathArgument() { result = super.getAVulnerablePathArgument() }
 }
 
 /** Provides a class for modeling new file system access APIs. */
@@ -130,6 +140,16 @@ module FileSystemAccess {
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
+
+    /**
+     * Gets an argument to this file system access that is interpreted as a path
+     * which is vulnerable to path injection.
+     *
+     * By default all path arguments are considered vulnerable, but this can be overridden to
+     * exclude certain arguments that are known to be safe, for example because they are
+     * restricted to a specific directory.
+     */
+    DataFlow::Node getAVulnerablePathArgument() { result = this.getAPathArgument() }
   }
 }
 
