@@ -824,7 +824,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 string[] acceptedNugetConfigNames = ["nuget.config", "NuGet.config", "NuGet.Config"];
                 var invalidNugetConfigs = nugetConfigs
-                    .Where(path => acceptedNugetConfigNames.Contains(Path.GetFileName(path)));
+                    .Where(path => !acceptedNugetConfigNames.Contains(Path.GetFileName(path)));
 
                 if (invalidNugetConfigs.Count() > 0)
                 {
