@@ -25,8 +25,6 @@ abstract class CryptoAlgorithmCreateCall extends DataFlow::CallNode {
           .getMember("create")
           .asCall()
   }
-
-  string getObjectName() { result = objectName }
 }
 
 abstract class CryptoAlgorithmCreateArgCall extends DataFlow::CallNode {
@@ -51,7 +49,6 @@ abstract class CryptoAlgorithmCreateArgCall extends DataFlow::CallNode {
     objectName = this.getAnArgument().asExpr().getValue().asString().toLowerCase()
   }
 
-  string getObjectName() { result = objectName }
 }
 
 class CryptoAlgorithmCreateFromNameCall extends DataFlow::CallNode {
@@ -68,14 +65,13 @@ class CryptoAlgorithmCreateFromNameCall extends DataFlow::CallNode {
     objectName = this.getAnArgument().asExpr().getValue().asString().toLowerCase()
   }
 
-  string getObjectName() { result = objectName }
 }
 
 class HashAlgorithmObjectCreation extends HashAlgorithm, CryptoAlgorithmObjectCreation {
   string algName;
 
   HashAlgorithmObjectCreation() {
-    this.getObjectName() = "system.security.cryptography." + algName + ["", "cryptoserviceprovider"] and
+    objectName = "system.security.cryptography." + algName + ["", "cryptoserviceprovider"] and
     isHashingAlgorithm(algName)
   }
 
@@ -87,7 +83,7 @@ class HashAlgorithmCreateCall extends HashAlgorithm, CryptoAlgorithmCreateCall {
 
   HashAlgorithmCreateCall() {
     isHashingAlgorithm(algName) and
-    this.getObjectName() = ["", "system.security.cryptography."] + algName
+    objectName = ["", "system.security.cryptography."] + algName
   }
 
   override string getName() { result = algName }
@@ -97,7 +93,7 @@ class HashAlgorithmCreateFromNameCall extends HashAlgorithm, CryptoAlgorithmCrea
   string algName;
 
   HashAlgorithmCreateFromNameCall() {
-    this.getObjectName() = ["", "system.security.cryptography."] + algName and
+    objectName = ["", "system.security.cryptography."] + algName and
     isHashingAlgorithm(algName)
   }
 
@@ -124,7 +120,7 @@ class SymmetricAlgorithmCreateCall extends SymmetricAlgorithm, CryptoAlgorithmCr
 
   SymmetricAlgorithmCreateCall() {
     isSymmetricAlgorithm(algName) and
-    this.getObjectName() = ["", "system.security.cryptography.", "system.security.cryptography.symmetricalgorithm."] + algName
+    objectName = ["", "system.security.cryptography.", "system.security.cryptography.symmetricalgorithm."] + algName
   }
 
   override string getName() { result = algName }
@@ -134,7 +130,7 @@ class SymmetricAlgorithmCreateArgCall extends SymmetricAlgorithm, CryptoAlgorith
   string algName;
 
   SymmetricAlgorithmCreateArgCall() {
-    algName = ["", "system.security.cryptography."] + this.getObjectName() and
+    objectName = ["", "system.security.cryptography."] + algName and
     isSymmetricAlgorithm(algName)
   }
 
@@ -147,7 +143,7 @@ class SymmetricAlgorithmCreateFromNameCall extends SymmetricAlgorithm,
   string algName;
 
   SymmetricAlgorithmCreateFromNameCall() {
-    this.getObjectName() = ["", "system.security.cryptography.", "system.security.cryptography.symmetricalgorithm."] + algName and
+    objectName = ["", "system.security.cryptography.", "system.security.cryptography.symmetricalgorithm."] + algName and
     isSymmetricAlgorithm(algName)
   }
 
