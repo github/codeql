@@ -57,8 +57,7 @@ module PathInjection {
    */
   class FileSystemAccessAsSink extends Sink {
     FileSystemAccessAsSink() {
-      this = any(FileSystemAccess e).getAPathArgument() and
-      not this = any(FileSystemAccess e).getASafePathArgument() and
+      this = any(FileSystemAccess e).getAVulnerablePathArgument() and
       // since implementation of Path.open in pathlib.py is like
       // ```py
       // def open(self, ...):

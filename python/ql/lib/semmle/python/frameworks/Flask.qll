@@ -625,10 +625,11 @@ module Flask {
       result = this.getArgByName(["directory", "filename"])
     }
 
-    override DataFlow::Node getASafePathArgument() {
-      // as described in the docs, the `filename` argument is restrained to be within
+    override DataFlow::Node getAVulnerablePathArgument() {
+      result = this.getAPathArgument() and
+      // as described in the docs, the `filename` argument is restricted to be within
       // the provided directory, so is not exposed to path-injection.
-      result in [this.getArg(1), this.getArgByName("filename")]
+      not result in [this.getArg(1), this.getArgByName("filename")]
     }
   }
 
