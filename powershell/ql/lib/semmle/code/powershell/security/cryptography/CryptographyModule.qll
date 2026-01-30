@@ -75,10 +75,7 @@ class HashAlgorithmObjectCreation extends HashAlgorithm, CryptoAlgorithmObjectCr
   string algName;
 
   HashAlgorithmObjectCreation() {
-    (
-      objectName = "system.security.cryptography." + algName or
-      objectName = "system.security.cryptography." + algName + "cryptoserviceprovider"
-    ) and
+    this.getObjectName() = "system.security.cryptography." + algName + ["", "cryptoserviceprovider"] and
     isHashingAlgorithm(algName)
   }
 
@@ -90,10 +87,7 @@ class HashAlgorithmCreateCall extends HashAlgorithm, CryptoAlgorithmCreateCall {
 
   HashAlgorithmCreateCall() {
     isHashingAlgorithm(algName) and
-    (
-      objectName = algName or
-      objectName = "system.security.cryptography." + algName
-    )
+    this.getObjectName() = ["", "system.security.cryptography."] + algName
   }
 
   override string getName() { result = algName }
@@ -103,10 +97,7 @@ class HashAlgorithmCreateFromNameCall extends HashAlgorithm, CryptoAlgorithmCrea
   string algName;
 
   HashAlgorithmCreateFromNameCall() {
-    (
-      objectName = algName or
-      objectName = "system.security.cryptography." + algName
-    ) and
+    this.getObjectName() = ["", "system.security.cryptography."] + algName and
     isHashingAlgorithm(algName)
   }
 
@@ -133,11 +124,7 @@ class SymmetricAlgorithmCreateCall extends SymmetricAlgorithm, CryptoAlgorithmCr
 
   SymmetricAlgorithmCreateCall() {
     isSymmetricAlgorithm(algName) and
-    (
-      objectName = algName or
-      objectName = "system.security.cryptography." + algName or
-      objectName = "system.security.cryptography.symmetricalgorithm." + algName
-    )
+    this.getObjectName() = ["", "system.security.cryptography.", "system.security.cryptography.symmetricalgorithm."] + algName
   }
 
   override string getName() { result = algName }
@@ -147,10 +134,7 @@ class SymmetricAlgorithmCreateArgCall extends SymmetricAlgorithm, CryptoAlgorith
   string algName;
 
   SymmetricAlgorithmCreateArgCall() {
-    algName = this.getObjectName() and
-    isSymmetricAlgorithm(algName)
-    or
-    objectName = "system.security.cryptography." + algName and
+    algName = ["", "system.security.cryptography."] + this.getObjectName() and
     isSymmetricAlgorithm(algName)
   }
 
@@ -163,11 +147,7 @@ class SymmetricAlgorithmCreateFromNameCall extends SymmetricAlgorithm,
   string algName;
 
   SymmetricAlgorithmCreateFromNameCall() {
-    (
-      objectName = algName or
-      objectName = "system.security.cryptography." + algName or
-      objectName = "system.security.cryptography.symmetricalgorithm." + algName
-    ) and
+    this.getObjectName() = ["", "system.security.cryptography.", "system.security.cryptography.symmetricalgorithm."] + algName and
     isSymmetricAlgorithm(algName)
   }
 

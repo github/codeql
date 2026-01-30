@@ -29,7 +29,7 @@ class AesModeProperty extends MemberExpr {
             .getAnArgument()
             .getValue()
             .stringMatches("System.Security.Cryptography.AesManaged") or
-        aesObjectCreation.(DataFlow::CallNode) =
+        aesObjectCreation =
           API::getTopLevelMember("system")
               .getMember("security")
               .getMember("cryptography")
@@ -46,8 +46,10 @@ class AesModeProperty extends MemberExpr {
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof BlockMode and
-    not source.(BlockMode).getBlockModeName() = ["cbc", "cts", "xts"]
+    exists(BlockMode blockMode |
+      source = blockMode and
+      not blockMode.getBlockModeName() = ["cbc", "cts", "xts"]
+    )
   }
 
   predicate isSink(DataFlow::Node sink) {
