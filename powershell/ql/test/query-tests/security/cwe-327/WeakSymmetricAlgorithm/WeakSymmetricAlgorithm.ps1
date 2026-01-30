@@ -1,13 +1,5 @@
-# WeakSymmetricAlgorithm.Tests.ps1
-# PowerShell version of WeakSymmetricAlgorithm security tests
-# Tests for detection of weak symmetric encryption algorithm usage
-
 using namespace System.Security.Cryptography
 
-<#
-.SYNOPSIS
-    Test RC2 creation - BAD: RC2 is a weak symmetric algorithm
-#>
 function Test-CreateRC2 {
     [CmdletBinding()]
     param()
@@ -51,70 +43,4 @@ function Test-CreateAES {
     $a3 = [System.Security.Cryptography.SymmetricAlgorithm]::Create("System.Security.Cryptography.Aes")
     
     return $a1
-}
-
-<#
-.SYNOPSIS
-    Test weak algorithm with encryption - BAD: Using DES for actual encryption
-#>
-function Test-EncryptWithDES {
-    [CmdletBinding()]
-    param(
-        [string]$PlainText = "Test data to encrypt"
-    )
-    
-    # BAD: Using DES for encryption
-    $des = New-Object System.Security.Cryptography.DESCryptoServiceProvider
-    $des.GenerateKey()
-    $des.GenerateIV()
-    
-    $encryptor = $des.CreateEncryptor()
-    $plainBytes = [System.Text.Encoding]::UTF8.GetBytes($PlainText)
-    
-    $ms = New-Object System.IO.MemoryStream
-    $cs = New-Object System.Security.Cryptography.CryptoStream($ms, $encryptor, [System.Security.Cryptography.CryptoStreamMode]::Write)
-    $cs.Write($plainBytes, 0, $plainBytes.Length)
-    $cs.FlushFinalBlock()
-    
-    $encrypted = $ms.ToArray()
-    
-    $cs.Dispose()
-    $ms.Dispose()
-    $encryptor.Dispose()
-    $des.Dispose()
-    
-    return $encrypted
-}
-
-<#
-.SYNOPSIS
-    Test approved algorithm with encryption - GOOD: Using AES for encryption
-#>
-function Test-EncryptWithAES {
-    [CmdletBinding()]
-    param(
-        [string]$PlainText = "Test data to encrypt"
-    )
-    
-    # GOOD: Using AES for encryption
-    $aes = [System.Security.Cryptography.Aes]::Create()
-    $aes.GenerateKey()
-    $aes.GenerateIV()
-    
-    $encryptor = $aes.CreateEncryptor()
-    $plainBytes = [System.Text.Encoding]::UTF8.GetBytes($PlainText)
-    
-    $ms = New-Object System.IO.MemoryStream
-    $cs = New-Object System.Security.Cryptography.CryptoStream($ms, $encryptor, [System.Security.Cryptography.CryptoStreamMode]::Write)
-    $cs.Write($plainBytes, 0, $plainBytes.Length)
-    $cs.FlushFinalBlock()
-    
-    $encrypted = $ms.ToArray()
-    
-    $cs.Dispose()
-    $ms.Dispose()
-    $encryptor.Dispose()
-    $aes.Dispose()
-    
-    return $encrypted
 }

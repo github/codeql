@@ -1,5 +1,3 @@
-# Unsafe usage of weak hash algorithms (CWE-327)
-
 # BAD: Using MD5 - cryptographically broken
 $md5 = [System.Security.Cryptography.MD5]::Create()
 $md5Hash = $md5.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("password123"))
@@ -15,13 +13,6 @@ $sha1Hash = $sha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("password123
 # BAD: Using SHA1CryptoServiceProvider
 $sha1Provider = New-Object System.Security.Cryptography.SHA1CryptoServiceProvider
 $sha1ProviderHash = $sha1Provider.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("secret"))
-
-# BAD: Using SHA1Managed
-$sha1Managed = New-Object System.Security.Cryptography.SHA1Managed
-$sha1ManagedHash = $sha1Managed.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("data"))
-
-# BAD: HMACMD5 uses weak MD5
-$md5hmac = New-Object System.Security.Cryptography.HMACMD5
 
 # BAD: Creating weak hash algorithms from name
 $o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("MD5")

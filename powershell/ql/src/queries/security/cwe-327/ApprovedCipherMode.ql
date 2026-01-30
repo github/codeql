@@ -15,13 +15,8 @@ import powershell
 import semmle.code.powershell.dataflow.DataFlow
 import semmle.code.powershell.dataflow.TaintTracking
 import semmle.code.powershell.ApiGraphs
+import semmle.code.powershell.security.cryptography.Concepts
 import WeakEncryptionFlow::PathGraph
-
-class AesCreation extends ObjectCreation {
-  AesCreation() {
-    this.getAnArgument().getValue().stringMatches("System.Security.Cryptography.AesManaged")
-  }
-}
 
 class AesModeProperty extends MemberExpr {
   AesModeProperty() {
@@ -38,27 +33,11 @@ class AesModeProperty extends MemberExpr {
   }
 }
 
-class WeakAesMode extends DataFlow::Node {
-  WeakAesMode() {
-    exists(API::Node node, string modeValue |
-      node =
-        API::getTopLevelMember("system")
-            .getMember("security")
-            .getMember("cryptography")
-            .getMember("ciphermode")
-            .getMember(modeValue) and
-      modeValue = ["ecb", "ofb", "cfb", "ctr", "obc"] and
-      this = node.asSource()
-    ) or 
-    exists(StringConstExpr s | 
-      s.getValueString().toLowerCase() = ["ecb", "ofb", "cfb", "ctr", "obc"] and 
-      this.asExpr().getExpr() = s
-    )
-  }
-}
-
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof WeakAesMode }
+  predicate isSource(DataFlow::Node source) { 
+    source instanceof BlockMode and 
+    not source.(BlockMode).getBlockModeName() = ["cbc","cts","xts"]
+  }
 
   predicate isSink(DataFlow::Node sink) {
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() =
