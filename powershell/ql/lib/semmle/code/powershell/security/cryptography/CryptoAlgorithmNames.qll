@@ -1,5 +1,6 @@
 predicate isHashingAlgorithm(string name) {
-  name = [
+  name =
+    [
       "blake2", "blake2b", "blake2s", "sha2", "sha224", "sha256", "sha384", "sha512", "sha512224",
       "sha512256", "sha3", "sha3224", "sha3256", "sha3384", "sha3512", "shake128", "shake256",
       "sm3", "whirlpool", "poly1305", "havel128", "md2", "md4", "md5", "panama", "ripemd",
@@ -9,7 +10,8 @@ predicate isHashingAlgorithm(string name) {
 }
 
 predicate isSymmetricAlgorithm(string name) {
-  name = [
+  name =
+    [
       "aes", "aes128", "aes192", "aes256", "aria", "blowfish", "bf", "ecies", "cast", "cast5",
       "camellia", "camellia128", "camellia192", "camellia256", "chacha", "chacha20",
       "chacha20poly1305", "gost", "gostr34102001", "gostr341094", "gostr341194", "gost2814789",

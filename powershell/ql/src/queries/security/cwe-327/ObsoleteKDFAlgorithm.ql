@@ -1,6 +1,6 @@
 /**
  * @name Use of obsolete Key Derivation Function (KDF) algorithm
- * @description Do not use obsolete or weak KDF algorithms like PasswordDeriveBytes (PBKDF1) 
+ * @description Do not use obsolete or weak KDF algorithms like PasswordDeriveBytes (PBKDF1)
  *              instead of secure alternatives like Rfc2898DeriveBytes (PBKDF2)
  * @kind problem
  * @problem.severity error
@@ -14,30 +14,32 @@
  */
 
 import powershell
-
 import semmle.code.powershell.ApiGraphs
 import semmle.code.powershell.dataflow.DataFlow
 
 class CryptDeriveKeyCall extends DataFlow::CallNode {
-    CryptDeriveKeyCall() {
-        this = API::getTopLevelMember("system")
-            .getMember("security")
-            .getMember("cryptography")
-            .getMember("passwordderivebytes").getInstance()
-            .getMember("cryptderivekey")
-            .asCall()
-            or 
-        this = API::getTopLevelMember("system")
-            .getMember("security")
-            .getMember("cryptography")
-            .getMember("rfc2898derivebytes").getInstance()
-            .getMember("cryptderivekey")
-            .asCall()
-    }
+  CryptDeriveKeyCall() {
+    this =
+      API::getTopLevelMember("system")
+          .getMember("security")
+          .getMember("cryptography")
+          .getMember("passwordderivebytes")
+          .getInstance()
+          .getMember("cryptderivekey")
+          .asCall()
+    or
+    this =
+      API::getTopLevelMember("system")
+          .getMember("security")
+          .getMember("cryptography")
+          .getMember("rfc2898derivebytes")
+          .getInstance()
+          .getMember("cryptderivekey")
+          .asCall()
+  }
 }
 
-from DataFlow::CallNode cn 
-where
-    cn instanceof CryptDeriveKeyCall
-select cn, "Use of obsolete Crypto API. Password-based key derivation should use the PBKDF2 algorithm with SHA-2 hashing"
-
+from DataFlow::CallNode cn
+where cn instanceof CryptDeriveKeyCall
+select cn,
+  "Use of obsolete Crypto API. Password-based key derivation should use the PBKDF2 algorithm with SHA-2 hashing"

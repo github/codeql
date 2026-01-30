@@ -1,15 +1,15 @@
 /**
-* @name Insecure Symmetric cipher mode
-* @description Use of insecure cipher mode
-* @problem.severity error
-* @kind path-problem
-* @security-severity 8.8
-* @precision high
-* @id powershell/microsoft/public/weak-cipher-mode
-* @tags correctness
-*       security
-*       external/cwe/cwe-327
-*/
+ * @name Insecure Symmetric cipher mode
+ * @description Use of insecure cipher mode
+ * @problem.severity error
+ * @kind path-problem
+ * @security-severity 8.8
+ * @precision high
+ * @id powershell/microsoft/public/weak-cipher-mode
+ * @tags correctness
+ *       security
+ *       external/cwe/cwe-327
+ */
 
 import powershell
 import semmle.code.powershell.dataflow.DataFlow
@@ -22,10 +22,21 @@ class AesModeProperty extends MemberExpr {
   AesModeProperty() {
     exists(DataFlow::ObjectCreationNode aesObjectCreation, DataFlow::Node aesObjectAccess |
       (
-        aesObjectCreation.asExpr().getExpr().(ObjectCreation).getAnArgument().getValue().stringMatches("System.Security.Cryptography.AesManaged") or 
-        aesObjectCreation.(DataFlow::CallNode)= API::getTopLevelMember("system").getMember("security").getMember("cryptography").getMember("aes").getMember("create").asCall() 
-      )
-      and
+        aesObjectCreation
+            .asExpr()
+            .getExpr()
+            .(ObjectCreation)
+            .getAnArgument()
+            .getValue()
+            .stringMatches("System.Security.Cryptography.AesManaged") or
+        aesObjectCreation.(DataFlow::CallNode) =
+          API::getTopLevelMember("system")
+              .getMember("security")
+              .getMember("cryptography")
+              .getMember("aes")
+              .getMember("create")
+              .asCall()
+      ) and
       aesObjectAccess.getALocalSource() = aesObjectCreation and
       aesObjectAccess.asExpr().getExpr() = this.getQualifier() and
       this.getLowerCaseMemberName() = "mode"
@@ -34,9 +45,9 @@ class AesModeProperty extends MemberExpr {
 }
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { 
-    source instanceof BlockMode and 
-    not source.(BlockMode).getBlockModeName() = ["cbc","cts","xts"]
+  predicate isSource(DataFlow::Node source) {
+    source instanceof BlockMode and
+    not source.(BlockMode).getBlockModeName() = ["cbc", "cts", "xts"]
   }
 
   predicate isSink(DataFlow::Node sink) {

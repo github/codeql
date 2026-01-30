@@ -17,6 +17,5 @@ import semmle.code.powershell.dataflow.DataFlow
 import semmle.code.powershell.security.cryptography.Concepts
 
 from HashAlgorithm hashAlg
-where
-  not hashAlg.getHashName() = ["sha256", "sha384", "sha512"]
+where not hashAlg.getHashName() = ["sha256", "sha384", "sha512"]
 select hashAlg, "Use of weak cryptographic hash algorithm: " + hashAlg.getHashName() + "."
