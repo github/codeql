@@ -893,10 +893,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // file systems, we may discover a configuration file such as `Nuget.Config` which is not recognised by `dotnet nuget`.
                 // In that case, our call to `GetNugetFeeds` will retrieve the feeds from that file (because it is accepted when
                 // provided explicitly as `--configfile` argument), but the call to `GetNugetFeedsFromFolder` will not.
-                if (explicitFeeds.Count > 0)
-                {
-                    allFeeds.UnionWith(explicitFeeds);
-                }
+                allFeeds.UnionWith(explicitFeeds);
             }
             else
             {
