@@ -18,28 +18,7 @@
       like PBKDF2, bcrypt, or Argon2.
     </p>
   </recommendation>
-  <example>
-    <p>
-      The following example shows the use of weak hash algorithms:
-    </p>
-    <sample language="powershell">
-# BAD: Using MD5 which is cryptographically broken
-$md5 = [System.Security.Cryptography.MD5]::Create()
-$hash = $md5.ComputeHash($data)
-
-# BAD: Using SHA1 which has known collision vulnerabilities
-$sha1 = [System.Security.Cryptography.SHA1]::Create()
-$hash = $sha1.ComputeHash($data)
-    </sample>
-    <p>
-      The following example shows the recommended approach using SHA-256:
-    </p>
-    <sample language="powershell">
-# GOOD: Using SHA-256 which is a strong cryptographic hash
-$sha256 = [System.Security.Cryptography.SHA256]::Create()
-$hash = $sha256.ComputeHash($data)
-    </sample>
-  </example>
+ 
   <references>
     <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
     <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a>.</li>

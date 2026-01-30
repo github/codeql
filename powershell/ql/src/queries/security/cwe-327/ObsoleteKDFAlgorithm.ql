@@ -18,7 +18,6 @@ import powershell
 import semmle.code.powershell.ApiGraphs
 import semmle.code.powershell.dataflow.DataFlow
 
-
 class CryptDeriveKeyCall extends DataFlow::CallNode {
     CryptDeriveKeyCall() {
         this = API::getTopLevelMember("system")

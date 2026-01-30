@@ -20,25 +20,6 @@
       preferred as it provides both confidentiality and integrity.
     </p>
   </recommendation>
-  <example>
-    <p>
-      The following example shows a weak cipher mode (ECB) being used for encryption:
-    </p>
-    <sample language="powershell">
-# BAD: Using ECB mode which reveals patterns in encrypted data
-$aes = [System.Security.Cryptography.Aes]::Create()
-$aes.Mode = [System.Security.Cryptography.CipherMode]::ECB
-    </sample>
-    <p>
-      The following example shows a recommended approach using CBC mode with a random IV:
-    </p>
-    <sample language="powershell">
-# GOOD: Using CBC mode with a random IV
-$aes = [System.Security.Cryptography.Aes]::Create()
-$aes.Mode = [System.Security.Cryptography.CipherMode]::CBC
-$aes.GenerateIV()
-    </sample>
-  </example>
   <references>
     <li>NIST, SP 800-38A: <a href="https://csrc.nist.gov/publications/detail/sp/800-38a/final">Recommendation for Block Cipher Modes of Operation</a>.</li>
     <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">Cryptographic Storage Cheat Sheet</a>.</li>

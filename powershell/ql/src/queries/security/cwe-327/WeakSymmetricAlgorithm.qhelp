@@ -21,31 +21,7 @@
       AES is the current standard for symmetric encryption and is considered secure when used correctly.
     </p>
   </recommendation>
-  <example>
-    <p>
-      The following examples show the use of weak symmetric algorithms:
-    </p>
-    <sample language="powershell">
-# BAD: Using DES which has a 56-bit key
-$des = [System.Security.Cryptography.DES]::Create()
-
-# BAD: Using Triple DES which is deprecated
-$tdes = [System.Security.Cryptography.TripleDES]::Create()
-
-# BAD: Using RC2 which has known weaknesses
-$rc2 = [System.Security.Cryptography.RC2]::Create()
-    </sample>
-    <p>
-      The following example shows the recommended approach using AES:
-    </p>
-    <sample language="powershell">
-# GOOD: Using AES which is the current standard
-$aes = [System.Security.Cryptography.Aes]::Create()
-$aes.KeySize = 256
-$aes.GenerateKey()
-$aes.GenerateIV()
-    </sample>
-  </example>
+  
   <references>
     <li>NIST, FIPS 197: <a href="https://csrc.nist.gov/publications/detail/fips/197/final">Advanced Encryption Standard (AES)</a>.</li>
     <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
