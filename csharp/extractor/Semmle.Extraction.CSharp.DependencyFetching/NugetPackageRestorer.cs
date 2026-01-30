@@ -814,6 +814,43 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
         {
             var nugetConfigs = fileProvider.NugetConfigs;
+
+            // On systems with case-sensitive file systems (for simplicity, we assume that is Linux), the
+            // filenames of NuGet configuration files must be named correctly. For compatibility with projects
+            // that are typically built on Windows or macOS where this doesn't matter, we accept all variants
+            // of `nuget.config` ourselves. However, `dotnet` does not. If we detect that incorrectly-named
+            // files are present, we emit a diagnostic to warn the user.
+            if (SystemBuildActions.Instance.IsLinux())
+            {
+                string[] acceptedNugetConfigNames = ["nuget.config", "NuGet.config", "NuGet.Config"];
+                var invalidNugetConfigs = nugetConfigs
+                    .Where(path => acceptedNugetConfigNames.Contains(Path.GetFileName(path)));
+
+                if (invalidNugetConfigs.Count() > 0)
+                {
+                    this.logger.LogWarning(string.Format(
+                        "Found incorrectly named NuGet configuration files: {0}",
+                        string.Join(", ", invalidNugetConfigs)
+                    ));
+                    this.diagnosticsWriter.AddEntry(new DiagnosticMessage(
+                        Language.CSharp,
+                        "buildless/case-sensitive-nuget-config",
+                        "Found NuGet configuration files which are not correctly named",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: string.Format(
+                            "On platforms with case-sensitive file systems, NuGet only accepts files with one of the following names: {0}.\n\n" +
+                            "CodeQL found the following files while performing an analysis on a platform with a case-sensitive file system:\n\n" +
+                            "{1}\n\n" +
+                            "To avoid unexpected results, rename these files to match the casing of one of the accepted filenames.",
+                            string.Join(", ", acceptedNugetConfigNames),
+                            string.Join("\n", invalidNugetConfigs.Select(path => string.Format("- `{0}`", path)))
+                        ),
+                        severity: DiagnosticMessage.TspSeverity.Warning
+                    ));
+                }
+            }
+
+            // Find feeds that are explicitly configured in the NuGet configuration files that we found.
             var explicitFeeds = nugetConfigs
                 .SelectMany(config => GetFeeds(() => dotnet.GetNugetFeeds(config)))
                 .ToHashSet();
