@@ -23,16 +23,7 @@ class CryptDeriveKeyCall extends DataFlow::CallNode {
       API::getTopLevelMember("system")
           .getMember("security")
           .getMember("cryptography")
-          .getMember("passwordderivebytes")
-          .getInstance()
-          .getMember("cryptderivekey")
-          .asCall()
-    or
-    this =
-      API::getTopLevelMember("system")
-          .getMember("security")
-          .getMember("cryptography")
-          .getMember("rfc2898derivebytes")
+          .getMember(["passwordderivebytes", "rfc2898derivebytes"])
           .getInstance()
           .getMember("cryptderivekey")
           .asCall()
