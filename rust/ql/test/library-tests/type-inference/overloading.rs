@@ -4,25 +4,69 @@ mod method_call_trait_path_disambig {
         fn method(&self) -> bool {
             true
         }
+
+        fn method2(&self) -> bool;
+
+        fn function() -> bool;
     }
     trait SecondTrait {
         // SecondTrait::method
         fn method(&self) -> i64 {
             1
         }
+
+        fn method2(&self) -> i64;
     }
+    #[derive(Default)]
     struct S;
-    impl FirstTrait for S {}
-    impl SecondTrait for S {}
+    impl FirstTrait for S {
+        // S::method2
+        fn method2(&self) -> bool {
+            true
+        }
+
+        // S::function
+        fn function() -> bool {
+            true
+        }
+    }
+    impl SecondTrait for S {
+        // S::method2
+        fn method2(&self) -> i64 {
+            1
+        }
+    }
+
+    struct S2;
+    impl FirstTrait for S2 {
+        // S2::method2
+        fn method2(&self) -> bool {
+            false
+        }
+
+        // S2::function
+        fn function() -> bool {
+            false
+        }
+    }
 
     fn _test() {
         let s = S;
 
         let _b1 = FirstTrait::method(&s); // $ type=_b1:bool target=FirstTrait::method
         let _b2 = <S as FirstTrait>::method(&s); // $ type=_b2:bool target=FirstTrait::method
+        let _b3 = <S as FirstTrait>::method(&Default::default()); // $ type=_b3:bool $ MISSING: target=FirstTrait::method target=default
+        let _b4 = <S as FirstTrait>::method2(&s); // $ type=_b4:bool target=S::method2
+        let _b5 = <S as FirstTrait>::method2(&Default::default()); // $ type=_b5:bool $ MISSING: target=S::method2 target=default
 
         let _n1 = SecondTrait::method(&s); // $ type=_n1:i64 target=SecondTrait::method
         let _n2 = <S as SecondTrait>::method(&s); // $ type=_n2:i64 target=SecondTrait::method
+        let _n3 = <S as SecondTrait>::method(&Default::default()); // $ type=_n3:i64 $ MISSING: target=SecondTrait::method target=default
+        let _n4 = <S as SecondTrait>::method2(&s); // $ type=_n4:i64 target=S::method2
+        let _n5 = <S as SecondTrait>::method2(&Default::default()); // $ type=_n5:i64 $ MISSING: target=S::method2 target=default
+
+        <S as FirstTrait>::function(); // $ MISSING: target=S::function
+        <S2 as FirstTrait>::function(); // $ MISSING: target=S2::function
     }
 }
 
@@ -176,5 +220,142 @@ pub mod impl_overlap {
         S5::m(&S5(0i32)); // $ target=<S5<i32>_as_MyTrait1>::m
         S5(true).m(); // $ target=MyTrait1::m
         S5::m(&S5(true)); // $ target=MyTrait1::m
+    }
+}
+
+mod impl_overlap2 {
+    trait Trait1<T1> {
+        fn f(self, x: T1) -> T1;
+    }
+
+    impl Trait1<i32> for i32 {
+        // f1
+        fn f(self, x: i32) -> i32 {
+            0
+        }
+    }
+
+    impl Trait1<i64> for i32 {
+        // f2
+        fn f(self, x: i64) -> i64 {
+            0
+        }
+    }
+
+    trait Trait2<T1, T2> {
+        fn g(self, x: T1) -> T2;
+    }
+
+    impl Trait2<i32, i32> for i32 {
+        // g3
+        fn g(self, x: i32) -> i32 {
+            0
+        }
+    }
+
+    impl Trait2<i32, i64> for i32 {
+        // g4
+        fn g(self, x: i32) -> i64 {
+            0
+        }
+    }
+
+    fn f() {
+        let x = 0;
+        let y = x.f(0i32); // $ target=f1
+        let z: i32 = x.f(Default::default()); // $ MISSING: target=f1 target=default
+        let z = x.f(0i64); // $ target=f2
+        let z: i64 = x.f(Default::default()); // $ MISSING: target=f2 target=default
+        let z: i64 = x.g(0i32); // $ target=g4 $ SPURIOUS: target=g3
+    }
+}
+
+mod impl_overlap3 {
+    trait Trait {
+        type Assoc;
+
+        fn Assoc() -> Self::Assoc;
+    }
+
+    struct S<T>(T);
+
+    impl Trait for S<i32> {
+        type Assoc = i32;
+
+        // S3i32AssocFunc
+        fn Assoc() -> Self::Assoc {
+            0
+        }
+    }
+
+    impl Trait for S<bool> {
+        type Assoc = bool;
+
+        // S3boolAssocFunc
+        fn Assoc() -> Self::Assoc {
+            true
+        }
+    }
+
+    impl S<i32> {
+        // S3i32f
+        fn f(x: i32) -> i32 {
+            0
+        }
+    }
+
+    impl S<bool> {
+        // S3boolf
+        fn f(x: bool) -> bool {
+            true
+        }
+    }
+
+    fn f() {
+        S::<i32>::Assoc(); // $ target=S3i32AssocFunc $ SPURIOUS: target=S3boolAssocFunc
+        S::<bool>::Assoc(); // $ target=S3boolAssocFunc $ SPURIOUS: target=S3i32AssocFunc
+
+        // `S::f(true)` results in "multiple applicable items in scope", even though the argument is actually enough to disambiguate
+        S::<bool>::f(true); // $ target=S3boolf $ SPURIOUS: target=S3i32f
+        S::<i32>::f(0); // $ target=S3i32f $ SPURIOUS: target=S3boolf
+    }
+}
+
+mod default_type_args {
+    struct S<T = i64>(T);
+
+    trait MyTrait {
+        type AssocType;
+
+        fn g(self) -> Self::AssocType;
+    }
+
+    impl S {
+        fn f(self) -> i64 {
+            self.0 // $ fieldof=S
+        }
+
+        fn g(self) -> i64 {
+            self.0 // $ fieldof=S
+        }
+    }
+
+    impl S<bool> {
+        fn g(self) -> bool {
+            self.0 // $ fieldof=S
+        }
+    }
+
+    impl<T> MyTrait for S<T> {
+        type AssocType = S;
+
+        fn g(self) -> S {
+            let x = S::f(S(Default::default())); // $ type=x:i64 $ MISSING: target=f target=default
+            let x = Self::AssocType::f(S(Default::default())); // $ target=f target=default type=x:i64
+            let x = S::<bool>::g(S(Default::default())); // $ target=g target=default type=x:bool
+            let x = S::<i64>::g(S(Default::default())); // $ target=g target=default type=x:i64
+            let x = Self::AssocType::g(S(Default::default())); // $ target=g target=default type=x:i64
+            S(0)
+        }
     }
 }
