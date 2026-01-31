@@ -1,0 +1,2 @@
+| SuspiciousRegexpRange.java:11 | expected alert | NOT OK |
+| SuspiciousRegexpRange.java:7:49:7:51 | unexpected alert | Suspicious character range that overlaps with A-Z in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-z]. |
