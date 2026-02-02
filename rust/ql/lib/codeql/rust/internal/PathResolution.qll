@@ -119,6 +119,15 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
     if result.isPublic()
     then kind.isBoth()
     else kind.isInternal()
+  or
+  // `Self` has scoping rules similar to type parameters and can be considered
+  // an implicit type parameter child of the introducing item.
+  // - https://doc.rust-lang.org/stable/reference/paths.html#r-paths.qualifiers.type-self
+  // - https://doc.rust-lang.org/stable/reference/names/scopes.html#r-names.scopes.self
+  (item instanceof TypeItemTypeItemNode or item instanceof ImplOrTraitItemNode) and
+  name = "Self" and
+  kind.isInternal() and
+  result = item
 }
 
 private module UseOption = Option<Use>;
@@ -404,9 +413,6 @@ abstract class ItemNode extends Locatable {
       or
       this instanceof SourceFile and
       builtin(name, result)
-      or
-      name = "Self" and
-      this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
       or
       name = "crate" and
       this = result.(CrateItemNode).getASourceFile()
@@ -718,26 +724,12 @@ class FunctionItemNode extends AssocItemNode, ParameterizableItemNode instanceof
 }
 
 abstract class ImplOrTraitItemNode extends ItemNode {
-  /** Gets an item that may refer to this node using `Self`. */
-  pragma[nomagic]
-  ItemNode getAnItemInSelfScope() {
-    result = this
-    or
-    result.getImmediateParent() = this
-    or
-    exists(ItemNode mid |
-      mid = this.getAnItemInSelfScope() and
-      result.getImmediateParent() = mid and
-      not mid instanceof ImplOrTraitItemNode
-    )
-  }
-
   /** Gets a `Self` path that refers to this item. */
   cached
   Path getASelfPath() {
     Stages::PathResolutionStage::ref() and
     isUnqualifiedSelfPath(result) and
-    result = this.getAnItemInSelfScope().getADescendant()
+    this = unqualifiedPathLookup(result, _, _)
   }
 
   /** Gets an associated item belonging to this trait or `impl` block. */
@@ -1610,11 +1602,7 @@ private predicate unqualifiedPathLookup(ItemNode ancestor, string name, Namespac
   // lookup in an outer scope, but only if the item is not declared in inner scope
   exists(ItemNode mid |
     unqualifiedPathLookup(mid, name, ns, encl) and
-    not declares(mid, ns, name) and
-    not (
-      name = "Self" and
-      mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
-    )
+    not declares(mid, ns, name)
   |
     ancestor = getOuterScope(mid)
     or

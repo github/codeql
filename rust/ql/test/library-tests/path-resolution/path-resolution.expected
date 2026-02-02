@@ -536,12 +536,15 @@ resolvePath
 | main.rs:1062:15:1062:15 | T | main.rs:1061:31:1061:31 | T |
 | main.rs:1063:15:1063:31 | Option::<...> | {EXTERNAL LOCATION} | enum Option |
 | main.rs:1063:22:1063:30 | Box::<...> | {EXTERNAL LOCATION} | struct Box |
+| main.rs:1063:26:1063:29 | Self | main.rs:1061:5:1064:5 | struct NonEmptyListStruct |
 | main.rs:1067:16:1067:16 | T | main.rs:1066:27:1066:27 | T |
 | main.rs:1068:14:1068:14 | T | main.rs:1066:27:1066:27 | T |
 | main.rs:1068:17:1068:25 | Box::<...> | {EXTERNAL LOCATION} | struct Box |
+| main.rs:1068:21:1068:24 | Self | main.rs:1066:5:1069:5 | enum NonEmptyListEnum |
 | main.rs:1075:13:1075:16 | Copy | {EXTERNAL LOCATION} | trait Copy |
 | main.rs:1077:17:1077:17 | T | main.rs:1074:9:1074:9 | T |
 | main.rs:1078:16:1078:16 | T | main.rs:1074:9:1074:9 | T |
+| main.rs:1078:23:1078:26 | Self | main.rs:1071:5:1079:5 | union NonEmptyListUnion |
 | main.rs:1083:5:1083:6 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:1083:5:1083:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
 | main.rs:1083:5:1083:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |

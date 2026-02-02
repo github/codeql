@@ -1060,12 +1060,12 @@ mod self_constructors {
 mod self_types {
     struct NonEmptyListStruct<T> {
         head: T,                 // $ item=T
-        tail: Option<Box<Self>>, // $ item=Option item=Box MISSING: item=NonEmptyListStruct
+        tail: Option<Box<Self>>, // $ item=Option item=Box item=NonEmptyListStruct
     }
 
     enum NonEmptyListEnum<T> {
         Single(T),          // $ item=T
-        Cons(T, Box<Self>), // $ item=T item=Box MISSING: item=NonEmptyListEnum
+        Cons(T, Box<Self>), // $ item=T item=Box item=NonEmptyListEnum
     }
 
     #[rustfmt::skip]
@@ -1075,7 +1075,7 @@ mod self_types {
           : Copy // $ item=Copy
     > {
         single: T,           // $ item=T
-        cons: (T, &'a Self), // $ item=T MISSING: item=NonEmptyListUnion
+        cons: (T, &'a Self), // $ item=T item=NonEmptyListUnion
     }
 }
 
