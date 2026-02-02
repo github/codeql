@@ -568,3 +568,24 @@ func EmitExtractionFailedForProjects(path []string) {
 		noLocation,
 	)
 }
+
+func EmitPrivateRegistryUsed(writer DiagnosticsWriter, configs []string) {
+	lines := []string{}
+
+	for i := range configs {
+		lines = append(lines, fmt.Sprintf("* %s", configs[i]))
+	}
+
+	emitDiagnosticTo(
+		writer,
+		"go/autobuilder/analysis-using-private-registries",
+		"Go extraction used private package registries",
+		fmt.Sprintf(
+			"Go was extracted using the following private package registrie%s:\n\n%s\n",
+			plural(len(lines), "", "s"),
+			strings.Join(lines, "\n")),
+		severityNote,
+		fullVisibility,
+		noLocation,
+	)
+}

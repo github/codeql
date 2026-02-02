@@ -83,3 +83,24 @@ func Test_EmitCannotFindPackages_Actions(t *testing.T) {
 	// Custom build command suggestion
 	assert.Contains(t, d.MarkdownMessage, "If any of the packages are already present in the repository")
 }
+
+func Test_EmitPrivateRegistryUsed(t *testing.T) {
+	writer := newMemoryDiagnosticsWriter()
+
+	testItems := []string{
+		"* https://github.com/github/example (Git Source)",
+		"* https://example.com/goproxy (GOPROXY Server)",
+	}
+
+	EmitPrivateRegistryUsed(writer, testItems)
+
+	assert.Len(t, writer.diagnostics, 1, "Expected one diagnostic to be emitted")
+
+	d := writer.diagnostics[0]
+	assert.Equal(t, d.Source.Id, "go/autobuilder/analysis-using-private-registries")
+	assert.Equal(t, d.Severity, string(severityNote))
+
+	for i := range testItems {
+		assert.Contains(t, d.MarkdownMessage, testItems[i])
+	}
+}
