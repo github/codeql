@@ -6,7 +6,7 @@
 
 ### New Features
 
-* Kotlin versions up to 2.3.0\ *x* are now supported.
+* Kotlin versions up to 2.3.0*x* are now supported.
 
 ### Minor Analysis Improvements
 
@@ -98,7 +98,7 @@ No user-facing changes.
 
 ### New Features
 
-* Kotlin versions up to 2.2.2\ *x* are now supported.
+* Kotlin versions up to 2.2.2*x* are now supported.
 
 ## 7.4.0
 
@@ -139,7 +139,7 @@ No user-facing changes.
 
 ### New Features
 
-* Kotlin versions up to 2.2.0\ *x* are now supported. Support for the Kotlin 1.5.x series is dropped (so the minimum Kotlin version is now 1.6.0).
+* Kotlin versions up to 2.2.0*x* are now supported. Support for the Kotlin 1.5.x series is dropped (so the minimum Kotlin version is now 1.6.0).
 
 ## 7.1.4
 
@@ -276,7 +276,7 @@ No user-facing changes.
 ### New Features
 
 * The Java extractor and QL libraries now support Java 23.
-* Kotlin versions up to 2.1.0\ *x* are now supported.
+* Kotlin versions up to 2.1.0*x* are now supported.
 
 ## 4.0.0
 
