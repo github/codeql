@@ -194,6 +194,7 @@ class ControlFlowNode extends @py_flow_node {
   predicate isNormalExit() { py_scope_flow(this, _, 0) or py_scope_flow(this, _, 2) }
 
   /** Whether this strictly dominates other. */
+  overlay[caller]
   pragma[inline]
   predicate strictlyDominates(ControlFlowNode other) {
     // This predicate is gigantic, so it must be inlined.
@@ -207,6 +208,7 @@ class ControlFlowNode extends @py_flow_node {
    * Whether this dominates other.
    * Note that all nodes dominate themselves.
    */
+  overlay[caller]
   pragma[inline]
   predicate dominates(ControlFlowNode other) {
     // This predicate is gigantic, so it must be inlined.
@@ -216,6 +218,7 @@ class ControlFlowNode extends @py_flow_node {
   }
 
   /** Whether this strictly reaches other. */
+  overlay[caller]
   pragma[inline]
   predicate strictlyReaches(ControlFlowNode other) {
     // This predicate is gigantic, even larger than strictlyDominates,
