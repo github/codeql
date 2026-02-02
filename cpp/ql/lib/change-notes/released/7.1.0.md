@@ -8,7 +8,7 @@
 ### Minor Analysis Improvements
 
 * The `Buffer.qll` library will no longer report incorrect buffer sizes on certain malformed databases. As a result, the queries `cpp/static-buffer-overflow`, `cpp/overflow-buffer`, `cpp/badly-bounded-write`, `cpp/overrunning-write`, `cpp/overrunning-write-with-float`, and `cpp/very-likely-overrunning-write` will report fewer false positives on such databases.
-* Added `taint` summary models and `sql-injection` barrier models for the mySQL `mysql_real_escape_string` and `mysql_real_escape_string_quote` escaping functions.
+* Added `taint` summary models and `sql-injection` barrier models for the MySQL `mysql_real_escape_string` and `mysql_real_escape_string_quote` escaping functions.
 * The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
 
 ### Bug Fixes
