@@ -22,6 +22,19 @@ type RegistryConfig struct {
 	URL  string `json:"url"`
 }
 
+func (config *RegistryConfig) Pretty() string {
+	pretty_type := "other"
+
+	switch config.Type {
+	case GIT_SOURCE:
+		pretty_type = "Git Source"
+	case GOPROXY_SERVER:
+		pretty_type = "GOPROXY Server"
+	}
+
+	return fmt.Sprintf("`%s` (%s)", config.URL, pretty_type)
+}
+
 // The address of the proxy including protocol and port (e.g. http://localhost:1234)
 var proxy_address string
 
@@ -97,18 +110,22 @@ func getEnvVars() []string {
 		if err != nil {
 			slog.Error("Unable to parse proxy configurations", slog.String("error", err.Error()))
 		} else {
+			activeConfigs := []RegistryConfig{}
+
 			// We only care about private registry configurations that are relevant to Go and
 			// filter others out at this point.
 			for _, cfg := range val {
 				if cfg.Type == GOPROXY_SERVER {
 					goproxy_servers = append(goproxy_servers, cfg.URL)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
+					activeConfigs = append(activeConfigs, cfg)
 				} else if cfg.Type == GIT_SOURCE {
 					parsed, err := url.Parse(cfg.URL)
 					if err == nil && parsed.Hostname() != "" {
 						git_source := parsed.Hostname() + parsed.Path + "*"
 						git_sources = append(git_sources, git_source)
 						slog.Info("Found Git source", slog.String("source", git_source))
+						activeConfigs = append(activeConfigs, cfg)
 					} else {
 						slog.Warn("Not a valid URL for Git source", slog.String("url", cfg.URL))
 					}
