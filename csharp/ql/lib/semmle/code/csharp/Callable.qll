@@ -265,7 +265,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     result = Virtualizable.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { method_location(this, result) }
+  override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
 
   /** Holds if this method is an extension method. */
   predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
@@ -281,7 +281,6 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   /** Holds if this method has a `params` parameter. */
   predicate hasParams() { exists(this.getParamsType()) }
 
-  // Remove when `Callable.isOverridden()` is removed
   override predicate fromSource() {
     Callable.super.fromSource() and
     not this.isCompilerGenerated()
@@ -318,6 +317,19 @@ class ExtensionMethod extends Method {
 }
 
 /**
+ * An object initializer method.
+ *
+ * This is an extractor-synthesized method that executes the field
+ * initializers. Note that the AST nodes for the field initializers are nested
+ * directly under the class, and therefore this method has no body in the AST.
+ * On the other hand, this provides the unique enclosing callable for the field
+ * initializers and their control flow graph.
+ */
+class ObjectInitMethod extends Method {
+  ObjectInitMethod() { this.getName() = "<object initializer>" }
+}
+
+/**
  * A constructor, for example `public C() { }` on line 2 in
  *
  * ```csharp
@@ -350,6 +362,9 @@ class Constructor extends Callable, Member, Attributable, @constructor {
    */
   ConstructorInitializer getInitializer() { result = this.getChildExpr(-1) }
 
+  /** Gets the object initializer call of this constructor, if any. */
+  MethodCall getObjectInitializerCall() { result = this.getChildExpr(-2) }
+
   /** Holds if this constructor has an initializer. */
   predicate hasInitializer() { exists(this.getInitializer()) }
 
@@ -357,7 +372,7 @@ class Constructor extends Callable, Member, Attributable, @constructor {
 
   override Constructor getUnboundDeclaration() { constructors(this, _, _, result) }
 
-  override Location getALocation() { constructor_location(this, result) }
+  override Location getALocation() { constructor_location(this.getUnboundDeclaration(), result) }
 
   override predicate fromSource() { Member.super.fromSource() and not this.isCompilerGenerated() }
 
@@ -450,7 +465,7 @@ class Destructor extends Callable, Member, Attributable, @destructor {
 
   override Destructor getUnboundDeclaration() { destructors(this, _, _, result) }
 
-  override Location getALocation() { destructor_location(this, result) }
+  override Location getALocation() { destructor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 
@@ -484,7 +499,7 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
-  override Location getALocation() { operator_location(this, result) }
+  override Location getALocation() { operator_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 

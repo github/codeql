@@ -39,9 +39,9 @@ module InsecureCookieConfig implements DataFlow::ConfigSig {
     node instanceof Sink
   }
 
-  predicate isBarrier(DataFlow::Node node) {
-    // setting the 'secure' attribute to true
-    cookieSetNode(node, "secure", true)
+  predicate isBarrierIn(DataFlow::Node node) {
+    // setting the 'secure' attribute
+    cookieSetNode(node, "secure", _)
     or
     node instanceof Barrier
   }
@@ -74,7 +74,9 @@ module PartitionedCookieConfig implements DataFlow::ConfigSig {
     node instanceof Barrier
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
 }
 
 module InsecureCookieFlow = TaintTracking::Global<InsecureCookieConfig>;
@@ -86,5 +88,5 @@ import InsecureCookieFlow::PathGraph
 from InsecureCookieFlow::PathNode sourceNode, InsecureCookieFlow::PathNode sinkNode
 where
   InsecureCookieFlow::flowPath(sourceNode, sinkNode) and
-  not PartitionedCookieFlow::flow(_, sinkNode.getNode())
+  not PartitionedCookieFlow::flowTo(sinkNode.getNode())
 select sinkNode.getNode(), sourceNode, sinkNode, "Cookie attribute 'Secure' is not set to true."

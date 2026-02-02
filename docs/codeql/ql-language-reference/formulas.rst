@@ -133,13 +133,11 @@ A range check is a formula that looks like:
 
     <expression> in <range>
 
-You can use a range check formula to check whether a numeric expression is in a given 
+It holds if there is at least one value in ``<expression>`` that is also in the given
 :ref:`range <ranges>`. For example, ``x in [2.1 .. 10.5]`` holds if the variable ``x`` is 
 between the values ``2.1`` and ``10.5`` (including ``2.1`` and ``10.5`` themselves).
 
 Note that ``<expression> in <range>`` is equivalent to ``<expression> = <range>``. 
-Both formulas check whether the set of values denoted by ``<expression>`` is the same as the
-set of values denoted by ``<range>``.
 
 .. _calls:
 
@@ -193,7 +191,7 @@ information on cartesian products, see ":ref:`Troubleshooting query performance
 <troubleshooting-query-performance>`".
 
 It is possible to enable warnings about implicit this receivers for `CodeQL packs
-<https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs#warnonimplicitthis>`__
+<https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs#warnonimplicitthis>`__
 through the ``warnOnImplicitThis`` property.
 
 .. _parenthesized-formulas:

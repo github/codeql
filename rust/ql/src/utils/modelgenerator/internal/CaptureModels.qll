@@ -7,12 +7,17 @@ private import codeql.rust.dataflow.internal.Content
 private import codeql.rust.dataflow.FlowSource as FlowSource
 private import codeql.rust.dataflow.FlowSink as FlowSink
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
+private import codeql.rust.dataflow.internal.TaintTrackingImpl as TaintTrackingImpl
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 private import codeql.rust.dataflow.internal.FlowSummaryImpl as FlowSummary
 
 private newtype TCallable =
   TFunction(R::Function api, string path) {
     path = api.getCanonicalPath() and
+    // A canonical path can contain `;` as the syntax for array types use `;`.
+    // This does not work with the shared model generator, so for now we just
+    // exclude canonical paths with `;`s.
+    not exists(api.getCanonicalPath().indexOf(";")) and
     (
       // This excludes closures (these are not exported API endpoints) and
       // functions without a `pub` visibility. A function can be `pub` without
@@ -38,9 +43,15 @@ class QualifiedCallable extends TCallable {
   string getCanonicalPath() { result = path }
 }
 
-module ModelGeneratorCommonInput implements
-  ModelGeneratorCommonInputSig<R::Location, DataFlowImpl::RustDataFlow>
-{
+private module RustDataFlowInput implements DataFlowImpl::RustDataFlowInputSig {
+  predicate includeDynamicTargets() { none() }
+}
+
+module RustDataFlow = DataFlowImpl::RustDataFlowGen<RustDataFlowInput>;
+
+module RustTaintTracking = TaintTrackingImpl::RustTaintTrackingGen<RustDataFlowInput>;
+
+module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<R::Location, RustDataFlow> {
   // NOTE: We are not using type information for now.
   class Type = Unit;
 
@@ -67,7 +78,7 @@ module ModelGeneratorCommonInput implements
 
   string parameterExactAccess(R::ParamBase p) {
     result =
-      "Argument[" + any(DataFlowImpl::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
+      "Argument[" + any(RustDataFlow::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
         "]"
   }
 
@@ -78,12 +89,12 @@ module ModelGeneratorCommonInput implements
   }
 
   bindingset[c]
-  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsApproximateOutput(QualifiedCallable c, RustDataFlow::ParameterPosition pos) {
     result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsExactOutput(QualifiedCallable c, DataFlowImpl::ParameterPosition pos) {
+  string paramReturnNodeAsExactOutput(QualifiedCallable c, RustDataFlow::ParameterPosition pos) {
     result = parameterExactAccess(c.getFunction().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
@@ -93,7 +104,7 @@ module ModelGeneratorCommonInput implements
     result.getFunction() = ret.(Node::Node).getEnclosingCallable().asCfgScope()
   }
 
-  predicate isOwnInstanceAccessNode(DataFlowImpl::RustDataFlow::ReturnNode node) {
+  predicate isOwnInstanceAccessNode(RustDataFlow::ReturnNode node) {
     // This is probably not relevant to implement for Rust, as we only use
     // `captureMixedFlow` which doesn't explicitly distinguish between
     // functions that return `self` and those that don't.
@@ -104,13 +115,15 @@ module ModelGeneratorCommonInput implements
     c.(SingletonContentSet).getContent() instanceof ElementContent
   }
 
+  predicate applyReadStepsAsTaintSteps() { none() }
+
   string partialModelRow(Callable api, int i) { i = 0 and result = api.getCanonicalPath() }
 
   string partialNeutralModelRow(Callable api, int i) { result = partialModelRow(api, i) }
 }
 
 private import ModelGeneratorCommonInput
-private import MakeModelGeneratorFactory<R::Location, DataFlowImpl::RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
+private import MakeModelGeneratorFactory<R::Location, RustDataFlow, RustTaintTracking, ModelGeneratorCommonInput>
 
 private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   class SummaryTargetApi extends QualifiedCallable {
@@ -120,7 +133,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   }
 
   QualifiedCallable getAsExprEnclosingCallable(NodeExtended node) {
-    result.getFunction() = node.asExpr().getScope()
+    result.getFunction() = node.asExpr().getEnclosingCfgScope()
   }
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }

@@ -1,5 +1,4 @@
 import python
-private import semmle.python.pointsto.PointsTo
 private import semmle.python.internal.CachedStages
 private import codeql.controlflow.BasicBlock as BB
 
@@ -144,56 +143,6 @@ class ControlFlowNode extends @py_flow_node {
   /** Whether this flow node is the first in its scope */
   predicate isEntryNode() { py_scope_flow(this, _, -1) }
 
-  /** Gets the value that this ControlFlowNode points-to. */
-  predicate pointsTo(Value value) { this.pointsTo(_, value, _) }
-
-  /** Gets the value that this ControlFlowNode points-to. */
-  Value pointsTo() { this.pointsTo(_, result, _) }
-
-  /** Gets a value that this ControlFlowNode may points-to. */
-  Value inferredValue() { this.pointsTo(_, result, _) }
-
-  /** Gets the value and origin that this ControlFlowNode points-to. */
-  predicate pointsTo(Value value, ControlFlowNode origin) { this.pointsTo(_, value, origin) }
-
-  /** Gets the value and origin that this ControlFlowNode points-to, given the context. */
-  predicate pointsTo(Context context, Value value, ControlFlowNode origin) {
-    PointsTo::pointsTo(this, context, value, origin)
-  }
-
-  /**
-   * Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
-   * analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
-   * precise, but may not provide information for a significant number of flow-nodes.
-   * If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
-   */
-  pragma[nomagic]
-  predicate refersTo(Object obj, ClassObject cls, ControlFlowNode origin) {
-    this.refersTo(_, obj, cls, origin)
-  }
-
-  /** Gets what this expression might "refer-to" in the given `context`. */
-  pragma[nomagic]
-  predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
-    not obj = unknownValue() and
-    not cls = theUnknownType() and
-    PointsTo::points_to(this, context, obj, cls, origin)
-  }
-
-  /**
-   * Whether this flow node might "refer-to" to `value` which is from `origin`
-   * Unlike `this.refersTo(value, _, origin)` this predicate includes results
-   * where the class cannot be inferred.
-   */
-  pragma[nomagic]
-  predicate refersTo(Object obj, ControlFlowNode origin) {
-    not obj = unknownValue() and
-    PointsTo::points_to(this, _, obj, _, origin)
-  }
-
-  /** Equivalent to `this.refersTo(value, _)` */
-  predicate refersTo(Object obj) { this.refersTo(obj, _) }
-
   /** Gets the basic block containing this flow node */
   BasicBlock getBasicBlock() { result.contains(this) }
 
@@ -240,41 +189,6 @@ class ControlFlowNode extends @py_flow_node {
 
   /** Whether this node is a normal (non-exceptional) exit */
   predicate isNormalExit() { py_scope_flow(this, _, 0) or py_scope_flow(this, _, 2) }
-
-  /** Whether it is unlikely that this ControlFlowNode can be reached */
-  predicate unlikelyReachable() {
-    not start_bb_likely_reachable(this.getBasicBlock())
-    or
-    exists(BasicBlock b |
-      start_bb_likely_reachable(b) and
-      not end_bb_likely_reachable(b) and
-      // If there is an unlikely successor edge earlier in the BB
-      // than this node, then this node must be unreachable.
-      exists(ControlFlowNode p, int i, int j |
-        p.(RaisingNode).unlikelySuccessor(_) and
-        p = b.getNode(i) and
-        this = b.getNode(j) and
-        i < j
-      )
-    )
-  }
-
-  /**
-   * Check whether this control-flow node has complete points-to information.
-   * This would mean that the analysis managed to infer an over approximation
-   * of possible values at runtime.
-   */
-  predicate hasCompletePointsToSet() {
-    // If the tracking failed, then `this` will be its own "origin". In that
-    // case, we want to exclude nodes for which there is also a different
-    // origin, as that would indicate that some paths failed and some did not.
-    this.refersTo(_, _, this) and
-    not exists(ControlFlowNode other | other != this and this.refersTo(_, _, other))
-    or
-    // If `this` is a use of a variable, then we must have complete points-to
-    // for that variable.
-    exists(SsaVariable v | v.getAUse() = this | varHasCompletePointsToSet(v))
-  }
 
   /** Whether this strictly dominates other. */
   pragma[inline]
@@ -330,28 +244,6 @@ class ControlFlowNode extends @py_flow_node {
 
 private class AnyNode extends ControlFlowNode {
   override AstNode getNode() { result = super.getNode() }
-}
-
-/**
- * Check whether a SSA variable has complete points-to information.
- * This would mean that the analysis managed to infer an overapproximation
- * of possible values at runtime.
- */
-private predicate varHasCompletePointsToSet(SsaVariable var) {
-  // Global variables may be modified non-locally or concurrently.
-  not var.getVariable() instanceof GlobalVariable and
-  (
-    // If we have complete points-to information on the definition of
-    // this variable, then the variable has complete information.
-    var.getDefinition().(DefinitionNode).getValue().hasCompletePointsToSet()
-    or
-    // If this variable is a phi output, then we have complete
-    // points-to information about it if all phi inputs had complete
-    // information.
-    forex(SsaVariable phiInput | phiInput = var.getAPhiInput() |
-      varHasCompletePointsToSet(phiInput)
-    )
-  )
 }
 
 /** A control flow node corresponding to a call expression, such as `func(...)` */
@@ -991,6 +883,58 @@ class StarredNode extends ControlFlowNode {
   ControlFlowNode getValue() { toAst(result) = toAst(this).(Starred).getValue() }
 }
 
+/** The ControlFlowNode for an 'except' statement. */
+class ExceptFlowNode extends ControlFlowNode {
+  ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
+
+  /**
+   * Gets the type handled by this exception handler.
+   * `ExceptionType` in `except ExceptionType as e:`
+   */
+  ControlFlowNode getType() {
+    exists(ExceptStmt ex |
+      this.getBasicBlock().dominates(result.getBasicBlock()) and
+      ex = this.getNode() and
+      result = ex.getType().getAFlowNode()
+    )
+  }
+
+  /**
+   * Gets the name assigned to the handled exception, if any.
+   * `e` in `except ExceptionType as e:`
+   */
+  ControlFlowNode getName() {
+    exists(ExceptStmt ex |
+      this.getBasicBlock().dominates(result.getBasicBlock()) and
+      ex = this.getNode() and
+      result = ex.getName().getAFlowNode()
+    )
+  }
+}
+
+/** The ControlFlowNode for an 'except*' statement. */
+class ExceptGroupFlowNode extends ControlFlowNode {
+  ExceptGroupFlowNode() { this.getNode() instanceof ExceptGroupStmt }
+
+  /**
+   * Gets the type handled by this exception handler.
+   * `ExceptionType` in `except* ExceptionType as e:`
+   */
+  ControlFlowNode getType() {
+    this.getBasicBlock().dominates(result.getBasicBlock()) and
+    result = this.getNode().(ExceptGroupStmt).getType().getAFlowNode()
+  }
+
+  /**
+   * Gets the name assigned to the handled exception, if any.
+   * `e` in `except* ExceptionType as e:`
+   */
+  ControlFlowNode getName() {
+    this.getBasicBlock().dominates(result.getBasicBlock()) and
+    result = this.getNode().(ExceptGroupStmt).getName().getAFlowNode()
+  }
+}
+
 private module Scopes {
   private predicate fast_local(NameNode n) {
     exists(FastLocalVariable v |
@@ -1094,7 +1038,8 @@ class BasicBlock extends @py_flow_node {
     )
   }
 
-  private ControlFlowNode firstNode() { result = this }
+  /** Gets the first node in this basic block */
+  ControlFlowNode firstNode() { result = this }
 
   /** Gets the last node in this basic block */
   ControlFlowNode getLastNode() {
@@ -1183,15 +1128,6 @@ class BasicBlock extends @py_flow_node {
     )
   }
 
-  /**
-   * Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ.
-   */
-  predicate unlikelySuccessor(BasicBlock succ) {
-    this.getLastNode().(RaisingNode).unlikelySuccessor(succ.firstNode())
-    or
-    not end_bb_likely_reachable(this) and succ = this.getASuccessor()
-  }
-
   /** Holds if this basic block strictly reaches the other. Is the start of other reachable from the end of this. */
   cached
   predicate strictlyReaches(BasicBlock other) {
@@ -1201,11 +1137,6 @@ class BasicBlock extends @py_flow_node {
 
   /** Holds if this basic block reaches the other. Is the start of other reachable from the end of this. */
   predicate reaches(BasicBlock other) { this = other or this.strictlyReaches(other) }
-
-  /**
-   * Whether (as inferred by type inference) this basic block is likely to be reachable.
-   */
-  predicate likelyReachable() { start_bb_likely_reachable(this) }
 
   /**
    * Gets the `ConditionBlock`, if any, that controls this block and
@@ -1232,26 +1163,6 @@ class BasicBlock extends @py_flow_node {
     or
     forex(BasicBlock immsucc | immsucc = this.getASuccessor() | immsucc.alwaysReaches(succ))
   }
-}
-
-private predicate start_bb_likely_reachable(BasicBlock b) {
-  exists(Scope s | s.getEntryNode() = b.getNode(_))
-  or
-  exists(BasicBlock pred |
-    pred = b.getAPredecessor() and
-    end_bb_likely_reachable(pred) and
-    not pred.getLastNode().(RaisingNode).unlikelySuccessor(b)
-  )
-}
-
-private predicate end_bb_likely_reachable(BasicBlock b) {
-  start_bb_likely_reachable(b) and
-  not exists(ControlFlowNode p, ControlFlowNode s |
-    p.(RaisingNode).unlikelySuccessor(s) and
-    p = b.getNode(_) and
-    s = b.getNode(_) and
-    not p = b.getLastNode()
-  )
 }
 
 private class ControlFlowNodeAlias = ControlFlowNode;

@@ -1,5 +1,98 @@
+#select
+| test.go:154:14:154:21 | password | test.go:153:17:153:24 | definition of password | test.go:154:14:154:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:155:17:155:24 | password | test.go:153:17:153:24 | definition of password | test.go:155:17:155:24 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:156:14:156:21 | password | test.go:153:17:153:24 | definition of password | test.go:156:14:156:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:157:18:157:25 | password | test.go:153:17:153:24 | definition of password | test.go:157:18:157:25 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:158:14:158:21 | password | test.go:153:17:153:24 | definition of password | test.go:158:14:158:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:159:13:159:20 | password | test.go:153:17:153:24 | definition of password | test.go:159:13:159:20 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:160:22:160:29 | password | test.go:153:17:153:24 | definition of password | test.go:160:22:160:29 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:161:15:161:22 | password | test.go:153:17:153:24 | definition of password | test.go:161:15:161:22 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:162:14:162:21 | password | test.go:153:17:153:24 | definition of password | test.go:162:14:162:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:163:13:163:20 | password | test.go:153:17:153:24 | definition of password | test.go:163:13:163:20 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:164:16:164:23 | password | test.go:153:17:153:24 | definition of password | test.go:164:16:164:23 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:165:13:165:20 | password | test.go:153:17:153:24 | definition of password | test.go:165:13:165:20 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:166:16:166:23 | password | test.go:153:17:153:24 | definition of password | test.go:166:16:166:23 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:167:13:167:20 | password | test.go:153:17:153:24 | definition of password | test.go:167:13:167:20 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:168:17:168:24 | password | test.go:153:17:153:24 | definition of password | test.go:168:17:168:24 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:169:13:169:20 | password | test.go:153:17:153:24 | definition of password | test.go:169:13:169:20 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:170:12:170:19 | password | test.go:153:17:153:24 | definition of password | test.go:170:12:170:19 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:171:21:171:28 | password | test.go:153:17:153:24 | definition of password | test.go:171:21:171:28 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:172:14:172:21 | password | test.go:153:17:153:24 | definition of password | test.go:172:14:172:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:173:13:173:20 | password | test.go:153:17:153:24 | definition of password | test.go:173:13:173:20 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:174:12:174:19 | password | test.go:153:17:153:24 | definition of password | test.go:174:12:174:19 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:175:15:175:22 | password | test.go:153:17:153:24 | definition of password | test.go:175:15:175:22 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:176:15:176:22 | password | test.go:153:17:153:24 | definition of password | test.go:176:15:176:22 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:177:18:177:25 | password | test.go:153:17:153:24 | definition of password | test.go:177:18:177:25 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:178:15:178:22 | password | test.go:153:17:153:24 | definition of password | test.go:178:15:178:22 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:179:19:179:26 | password | test.go:153:17:153:24 | definition of password | test.go:179:19:179:26 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:180:15:180:22 | password | test.go:153:17:153:24 | definition of password | test.go:180:15:180:22 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:181:14:181:21 | password | test.go:153:17:153:24 | definition of password | test.go:181:14:181:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:182:23:182:30 | password | test.go:153:17:153:24 | definition of password | test.go:182:23:182:30 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:183:16:183:23 | password | test.go:153:17:153:24 | definition of password | test.go:183:16:183:23 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:184:15:184:22 | password | test.go:153:17:153:24 | definition of password | test.go:184:15:184:22 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:185:14:185:21 | password | test.go:153:17:153:24 | definition of password | test.go:185:14:185:21 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:186:17:186:24 | password | test.go:153:17:153:24 | definition of password | test.go:186:17:186:24 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
+| test.go:187:16:187:23 | password | test.go:153:17:153:24 | definition of password | test.go:187:16:187:23 | password | $@ flows to a logging call. | test.go:153:17:153:24 | definition of password | Sensitive data returned by an access to password |
 edges
+| test.go:153:17:153:24 | definition of password | test.go:154:14:154:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:155:17:155:24 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:156:14:156:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:157:18:157:25 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:158:14:158:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:159:13:159:20 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:160:22:160:29 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:161:15:161:22 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:162:14:162:21 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:163:13:163:20 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:164:16:164:23 | password | provenance |  |
+| test.go:153:17:153:24 | definition of password | test.go:165:13:165:20 | password | provenance | Sink:MaD:1 |
+| test.go:153:17:153:24 | definition of password | test.go:166:16:166:23 | password | provenance | Sink:MaD:2 |
+| test.go:153:17:153:24 | definition of password | test.go:167:13:167:20 | password | provenance | Sink:MaD:3 |
+| test.go:153:17:153:24 | definition of password | test.go:168:17:168:24 | password | provenance | Sink:MaD:4 |
+| test.go:153:17:153:24 | definition of password | test.go:169:13:169:20 | password | provenance | Sink:MaD:5 |
+| test.go:153:17:153:24 | definition of password | test.go:170:12:170:19 | password | provenance | Sink:MaD:6 |
+| test.go:153:17:153:24 | definition of password | test.go:171:21:171:28 | password | provenance | Sink:MaD:7 |
+| test.go:153:17:153:24 | definition of password | test.go:172:14:172:21 | password | provenance | Sink:MaD:8 |
+| test.go:153:17:153:24 | definition of password | test.go:173:13:173:20 | password | provenance | Sink:MaD:9 |
+| test.go:153:17:153:24 | definition of password | test.go:174:12:174:19 | password | provenance | Sink:MaD:10 |
+| test.go:153:17:153:24 | definition of password | test.go:175:15:175:22 | password | provenance | Sink:MaD:11 |
+| test.go:153:17:153:24 | definition of password | test.go:176:15:176:22 | password | provenance | Sink:MaD:12 |
+| test.go:153:17:153:24 | definition of password | test.go:177:18:177:25 | password | provenance | Sink:MaD:13 |
+| test.go:153:17:153:24 | definition of password | test.go:178:15:178:22 | password | provenance | Sink:MaD:14 |
+| test.go:153:17:153:24 | definition of password | test.go:179:19:179:26 | password | provenance | Sink:MaD:15 |
+| test.go:153:17:153:24 | definition of password | test.go:180:15:180:22 | password | provenance | Sink:MaD:16 |
+| test.go:153:17:153:24 | definition of password | test.go:181:14:181:21 | password | provenance | Sink:MaD:17 |
+| test.go:153:17:153:24 | definition of password | test.go:182:23:182:30 | password | provenance | Sink:MaD:18 |
+| test.go:153:17:153:24 | definition of password | test.go:183:16:183:23 | password | provenance | Sink:MaD:19 |
+| test.go:153:17:153:24 | definition of password | test.go:184:15:184:22 | password | provenance | Sink:MaD:20 |
+| test.go:153:17:153:24 | definition of password | test.go:185:14:185:21 | password | provenance | Sink:MaD:21 |
+| test.go:153:17:153:24 | definition of password | test.go:186:17:186:24 | password | provenance | Sink:MaD:22 |
+| test.go:153:17:153:24 | definition of password | test.go:187:16:187:23 | password | provenance |  |
+models
+| 1 | Sink: group:beego-logs; ; false; Alert; ; ; Argument[0..1]; log-injection; manual |
+| 2 | Sink: group:beego-logs; ; false; Critical; ; ; Argument[0..1]; log-injection; manual |
+| 3 | Sink: group:beego-logs; ; false; Debug; ; ; Argument[0..1]; log-injection; manual |
+| 4 | Sink: group:beego-logs; ; false; Emergency; ; ; Argument[0..1]; log-injection; manual |
+| 5 | Sink: group:beego-logs; ; false; Error; ; ; Argument[0..1]; log-injection; manual |
+| 6 | Sink: group:beego-logs; ; false; Info; ; ; Argument[0..1]; log-injection; manual |
+| 7 | Sink: group:beego-logs; ; false; Informational; ; ; Argument[0..1]; log-injection; manual |
+| 8 | Sink: group:beego-logs; ; false; Notice; ; ; Argument[0..1]; log-injection; manual |
+| 9 | Sink: group:beego-logs; ; false; Trace; ; ; Argument[0..1]; log-injection; manual |
+| 10 | Sink: group:beego-logs; ; false; Warn; ; ; Argument[0..1]; log-injection; manual |
+| 11 | Sink: group:beego-logs; ; false; Warning; ; ; Argument[0..1]; log-injection; manual |
+| 12 | Sink: group:beego-logs; BeeLogger; true; Alert; ; ; Argument[0..1]; log-injection; manual |
+| 13 | Sink: group:beego-logs; BeeLogger; true; Critical; ; ; Argument[0..1]; log-injection; manual |
+| 14 | Sink: group:beego-logs; BeeLogger; true; Debug; ; ; Argument[0..1]; log-injection; manual |
+| 15 | Sink: group:beego-logs; BeeLogger; true; Emergency; ; ; Argument[0..1]; log-injection; manual |
+| 16 | Sink: group:beego-logs; BeeLogger; true; Error; ; ; Argument[0..1]; log-injection; manual |
+| 17 | Sink: group:beego-logs; BeeLogger; true; Info; ; ; Argument[0..1]; log-injection; manual |
+| 18 | Sink: group:beego-logs; BeeLogger; true; Informational; ; ; Argument[0..1]; log-injection; manual |
+| 19 | Sink: group:beego-logs; BeeLogger; true; Notice; ; ; Argument[0..1]; log-injection; manual |
+| 20 | Sink: group:beego-logs; BeeLogger; true; Trace; ; ; Argument[0..1]; log-injection; manual |
+| 21 | Sink: group:beego-logs; BeeLogger; true; Warn; ; ; Argument[0..1]; log-injection; manual |
+| 22 | Sink: group:beego-logs; BeeLogger; true; Warning; ; ; Argument[0..1]; log-injection; manual |
 nodes
+| test.go:153:17:153:24 | definition of password | semmle.label | definition of password |
 | test.go:154:14:154:21 | password | semmle.label | password |
 | test.go:155:17:155:24 | password | semmle.label | password |
 | test.go:156:14:156:21 | password | semmle.label | password |
@@ -35,38 +128,3 @@ nodes
 | test.go:186:17:186:24 | password | semmle.label | password |
 | test.go:187:16:187:23 | password | semmle.label | password |
 subpaths
-#select
-| test.go:154:14:154:21 | password | test.go:154:14:154:21 | password | test.go:154:14:154:21 | password | $@ flows to a logging call. | test.go:154:14:154:21 | password | Sensitive data returned by an access to password |
-| test.go:155:17:155:24 | password | test.go:155:17:155:24 | password | test.go:155:17:155:24 | password | $@ flows to a logging call. | test.go:155:17:155:24 | password | Sensitive data returned by an access to password |
-| test.go:156:14:156:21 | password | test.go:156:14:156:21 | password | test.go:156:14:156:21 | password | $@ flows to a logging call. | test.go:156:14:156:21 | password | Sensitive data returned by an access to password |
-| test.go:157:18:157:25 | password | test.go:157:18:157:25 | password | test.go:157:18:157:25 | password | $@ flows to a logging call. | test.go:157:18:157:25 | password | Sensitive data returned by an access to password |
-| test.go:158:14:158:21 | password | test.go:158:14:158:21 | password | test.go:158:14:158:21 | password | $@ flows to a logging call. | test.go:158:14:158:21 | password | Sensitive data returned by an access to password |
-| test.go:159:13:159:20 | password | test.go:159:13:159:20 | password | test.go:159:13:159:20 | password | $@ flows to a logging call. | test.go:159:13:159:20 | password | Sensitive data returned by an access to password |
-| test.go:160:22:160:29 | password | test.go:160:22:160:29 | password | test.go:160:22:160:29 | password | $@ flows to a logging call. | test.go:160:22:160:29 | password | Sensitive data returned by an access to password |
-| test.go:161:15:161:22 | password | test.go:161:15:161:22 | password | test.go:161:15:161:22 | password | $@ flows to a logging call. | test.go:161:15:161:22 | password | Sensitive data returned by an access to password |
-| test.go:162:14:162:21 | password | test.go:162:14:162:21 | password | test.go:162:14:162:21 | password | $@ flows to a logging call. | test.go:162:14:162:21 | password | Sensitive data returned by an access to password |
-| test.go:163:13:163:20 | password | test.go:163:13:163:20 | password | test.go:163:13:163:20 | password | $@ flows to a logging call. | test.go:163:13:163:20 | password | Sensitive data returned by an access to password |
-| test.go:164:16:164:23 | password | test.go:164:16:164:23 | password | test.go:164:16:164:23 | password | $@ flows to a logging call. | test.go:164:16:164:23 | password | Sensitive data returned by an access to password |
-| test.go:165:13:165:20 | password | test.go:165:13:165:20 | password | test.go:165:13:165:20 | password | $@ flows to a logging call. | test.go:165:13:165:20 | password | Sensitive data returned by an access to password |
-| test.go:166:16:166:23 | password | test.go:166:16:166:23 | password | test.go:166:16:166:23 | password | $@ flows to a logging call. | test.go:166:16:166:23 | password | Sensitive data returned by an access to password |
-| test.go:167:13:167:20 | password | test.go:167:13:167:20 | password | test.go:167:13:167:20 | password | $@ flows to a logging call. | test.go:167:13:167:20 | password | Sensitive data returned by an access to password |
-| test.go:168:17:168:24 | password | test.go:168:17:168:24 | password | test.go:168:17:168:24 | password | $@ flows to a logging call. | test.go:168:17:168:24 | password | Sensitive data returned by an access to password |
-| test.go:169:13:169:20 | password | test.go:169:13:169:20 | password | test.go:169:13:169:20 | password | $@ flows to a logging call. | test.go:169:13:169:20 | password | Sensitive data returned by an access to password |
-| test.go:170:12:170:19 | password | test.go:170:12:170:19 | password | test.go:170:12:170:19 | password | $@ flows to a logging call. | test.go:170:12:170:19 | password | Sensitive data returned by an access to password |
-| test.go:171:21:171:28 | password | test.go:171:21:171:28 | password | test.go:171:21:171:28 | password | $@ flows to a logging call. | test.go:171:21:171:28 | password | Sensitive data returned by an access to password |
-| test.go:172:14:172:21 | password | test.go:172:14:172:21 | password | test.go:172:14:172:21 | password | $@ flows to a logging call. | test.go:172:14:172:21 | password | Sensitive data returned by an access to password |
-| test.go:173:13:173:20 | password | test.go:173:13:173:20 | password | test.go:173:13:173:20 | password | $@ flows to a logging call. | test.go:173:13:173:20 | password | Sensitive data returned by an access to password |
-| test.go:174:12:174:19 | password | test.go:174:12:174:19 | password | test.go:174:12:174:19 | password | $@ flows to a logging call. | test.go:174:12:174:19 | password | Sensitive data returned by an access to password |
-| test.go:175:15:175:22 | password | test.go:175:15:175:22 | password | test.go:175:15:175:22 | password | $@ flows to a logging call. | test.go:175:15:175:22 | password | Sensitive data returned by an access to password |
-| test.go:176:15:176:22 | password | test.go:176:15:176:22 | password | test.go:176:15:176:22 | password | $@ flows to a logging call. | test.go:176:15:176:22 | password | Sensitive data returned by an access to password |
-| test.go:177:18:177:25 | password | test.go:177:18:177:25 | password | test.go:177:18:177:25 | password | $@ flows to a logging call. | test.go:177:18:177:25 | password | Sensitive data returned by an access to password |
-| test.go:178:15:178:22 | password | test.go:178:15:178:22 | password | test.go:178:15:178:22 | password | $@ flows to a logging call. | test.go:178:15:178:22 | password | Sensitive data returned by an access to password |
-| test.go:179:19:179:26 | password | test.go:179:19:179:26 | password | test.go:179:19:179:26 | password | $@ flows to a logging call. | test.go:179:19:179:26 | password | Sensitive data returned by an access to password |
-| test.go:180:15:180:22 | password | test.go:180:15:180:22 | password | test.go:180:15:180:22 | password | $@ flows to a logging call. | test.go:180:15:180:22 | password | Sensitive data returned by an access to password |
-| test.go:181:14:181:21 | password | test.go:181:14:181:21 | password | test.go:181:14:181:21 | password | $@ flows to a logging call. | test.go:181:14:181:21 | password | Sensitive data returned by an access to password |
-| test.go:182:23:182:30 | password | test.go:182:23:182:30 | password | test.go:182:23:182:30 | password | $@ flows to a logging call. | test.go:182:23:182:30 | password | Sensitive data returned by an access to password |
-| test.go:183:16:183:23 | password | test.go:183:16:183:23 | password | test.go:183:16:183:23 | password | $@ flows to a logging call. | test.go:183:16:183:23 | password | Sensitive data returned by an access to password |
-| test.go:184:15:184:22 | password | test.go:184:15:184:22 | password | test.go:184:15:184:22 | password | $@ flows to a logging call. | test.go:184:15:184:22 | password | Sensitive data returned by an access to password |
-| test.go:185:14:185:21 | password | test.go:185:14:185:21 | password | test.go:185:14:185:21 | password | $@ flows to a logging call. | test.go:185:14:185:21 | password | Sensitive data returned by an access to password |
-| test.go:186:17:186:24 | password | test.go:186:17:186:24 | password | test.go:186:17:186:24 | password | $@ flows to a logging call. | test.go:186:17:186:24 | password | Sensitive data returned by an access to password |
-| test.go:187:16:187:23 | password | test.go:187:16:187:23 | password | test.go:187:16:187:23 | password | $@ flows to a logging call. | test.go:187:16:187:23 | password | Sensitive data returned by an access to password |

@@ -9,6 +9,7 @@
   "fragments": [
     "/*- Compilations -*/",
     "/*- External data -*/",
+    "/*- Overlay support -*/",
     "/*- Files and folders -*/",
     "/*- Diagnostic messages -*/",
     "/*- Diagnostic messages: severity -*/",

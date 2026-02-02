@@ -24,8 +24,8 @@ module NoSql {
      */
     abstract class Range extends DataFlow::Node { }
 
-    private class DefaultQueryString extends Range {
-      DefaultQueryString() {
+    private class ExternalQueryString extends Range {
+      ExternalQueryString() {
         exists(DataFlow::ArgumentNode arg | sinkNode(arg, "nosql-injection") |
           this = arg.getACorrespondingSyntacticArgument()
         )
@@ -38,9 +38,8 @@ module NoSql {
    */
   predicate isAdditionalMongoTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Taint an entry if the `Value` is tainted
-    exists(Write w, DataFlow::Node base, Field f | w.writesField(base, f, pred) |
-      base = succ.(DataFlow::PostUpdateNode).getPreUpdateNode() and
-      base.getType().hasQualifiedName(package("go.mongodb.org/mongo-driver", "bson/primitive"), "E") and
+    exists(Write w, Field f | w.writesField(succ, f, pred) |
+      succ.getType().hasQualifiedName(package("go.mongodb.org/mongo-driver", "bson/primitive"), "E") and
       f.getName() = "Value"
     )
   }

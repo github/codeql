@@ -1,8 +1,21 @@
 // Tests for method resolution targeting blanket trait implementations
 
 mod basic_blanket_impl {
+    use std::ops::Deref;
+
     #[derive(Debug, Copy, Clone)]
     struct S1;
+
+    #[derive(Debug, Copy, Clone)]
+    struct S2;
+
+    impl Deref for S2 {
+        type Target = S1;
+
+        fn deref(&self) -> &Self::Target {
+            &S1
+        }
+    }
 
     trait Clone1 {
         fn clone1(&self) -> Self;
@@ -21,7 +34,7 @@ mod basic_blanket_impl {
         }
     }
 
-    // Blanket implementation for all types that implement Display and Clone
+    // Blanket implementation for all types that implement Clone1
     impl<T: Clone1> Duplicatable for T {
         // Clone1duplicate
         fn duplicate(&self) -> Self {
@@ -30,10 +43,58 @@ mod basic_blanket_impl {
     }
 
     pub fn test_basic_blanket() {
-        let x = S1.clone1(); // $ target=S1::clone1
-        println!("{x:?}");
-        let y = S1.duplicate(); // $ target=Clone1duplicate
-        println!("{y:?}");
+        let x1 = S1.clone1(); // $ target=S1::clone1
+        println!("{x1:?}");
+        let x2 = (&S1).clone1(); // $ target=S1::clone1
+        println!("{x2:?}");
+        let x3 = S1.duplicate(); // $ target=Clone1duplicate
+        println!("{x3:?}");
+        let x4 = (&S1).duplicate(); // $ target=Clone1duplicate
+        println!("{x4:?}");
+        let x5 = S1::duplicate(&S1); // $ target=Clone1duplicate
+        println!("{x5:?}");
+        let x6 = S2.duplicate(); // $ target=Clone1duplicate
+        println!("{x6:?}");
+        let x7 = (&S2).duplicate(); // $ target=Clone1duplicate
+        println!("{x7:?}");
+    }
+}
+
+mod assoc_blanket_impl {
+    #[derive(Debug, Copy, Clone)]
+    struct S1;
+
+    trait Trait1 {
+        fn assoc_func1(x: i64, y: Self) -> Self;
+    }
+
+    trait Trait2 {
+        fn assoc_func2(x: i64, y: Self) -> Self;
+    }
+
+    impl Trait1 for S1 {
+        // S1::assoc_func1
+        fn assoc_func1(x: i64, y: Self) -> Self {
+            y
+        }
+    }
+
+    impl<T: Trait1> Trait2 for T {
+        // Blanket_assoc_func2
+        fn assoc_func2(x: i64, y: Self) -> Self {
+            T::assoc_func1(x, y) // $ target=assoc_func1
+        }
+    }
+
+    pub fn test_assoc_blanket() {
+        let x1 = S1::assoc_func1(1, S1); // $ target=S1::assoc_func1
+        println!("{x1:?}");
+        let x2 = Trait1::assoc_func1(1, S1); // $ target=S1::assoc_func1
+        println!("{x2:?}");
+        let x3 = S1::assoc_func2(1, S1); // $ target=Blanket_assoc_func2
+        println!("{x3:?}");
+        let x4 = Trait2::assoc_func2(1, S1); // $ target=Blanket_assoc_func2
+        println!("{x4:?}");
     }
 }
 
@@ -123,6 +184,85 @@ mod extension_trait_blanket_impl {
     }
 }
 
+mod blanket_like_impl {
+    #[derive(Debug, Copy, Clone)]
+    struct S1;
+
+    #[derive(Debug, Copy, Clone)]
+    struct S2;
+
+    trait MyTrait1 {
+        // MyTrait1::m1
+        fn m1(self);
+    }
+
+    trait MyTrait2 {
+        // MyTrait2::m2
+        fn m2(self);
+    }
+
+    trait MyTrait3 {
+        // MyTrait3::m3
+        fn m3(self);
+    }
+
+    trait MyTrait4a {
+        // MyTrait4a::m4
+        fn m4(self);
+    }
+
+    trait MyTrait4b {
+        // MyTrait4b::m4
+        fn m4(self);
+    }
+
+    impl MyTrait1 for S1 {
+        // S1::m1
+        fn m1(self) {}
+    }
+
+    impl MyTrait3 for S1 {
+        // S1::m3
+        fn m3(self) {}
+    }
+
+    impl<T: MyTrait1 + Copy> MyTrait2 for &T {
+        // MyTrait2Ref::m2
+        fn m2(self) {
+            self.m1() // $ target=MyTrait1::m1
+        }
+    }
+
+    impl MyTrait2 for &&S1 {
+        // MyTrait2RefRefS1::m2
+        fn m2(self) {
+            self.m1() // $ target=S1::m1
+        }
+    }
+
+    impl<T: MyTrait3> MyTrait4a for T {
+        // MyTrait4aBlanket::m4
+        fn m4(self) {
+            self.m3() // $ target=MyTrait3::m3
+        }
+    }
+
+    impl<T> MyTrait4b for &T {
+        // MyTrait4bRef::m4
+        fn m4(self) {}
+    }
+
+    pub fn test_basic_blanket() {
+        let x1 = S1.m1(); // $ target=S1::m1
+        let x2 = (&S1).m2(); // $ target=MyTrait2Ref::m2
+        let x3 = (&&S1).m2(); // $ target=MyTrait2RefRefS1::m2
+        let x4 = S1.m4(); // $ target=MyTrait4aBlanket::m4
+        let x5 = (&S1).m4(); // $ target=MyTrait4bRef::m4
+        let x6 = S2.m4(); // $ target=MyTrait4bRef::m4
+        let x7 = (&S2).m4(); // $ target=MyTrait4bRef::m4
+    }
+}
+
 pub mod sql_exec {
     // a highly simplified model of `MySqlConnection.execute` in SQLx
 
@@ -151,11 +291,11 @@ pub mod sql_exec {
         let c = MySqlConnection {}; // $ certainType=c:MySqlConnection
 
         c.execute1(); // $ target=execute1
-        MySqlConnection::execute1(&c); // $ MISSING: target=execute1
+        MySqlConnection::execute1(&c); // $ target=execute1
 
         c.execute2("SELECT * FROM users"); // $ target=execute2
         c.execute2::<&str>("SELECT * FROM users"); // $ target=execute2
-        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
-        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ MISSING: target=execute2
+        MySqlConnection::execute2(&c, "SELECT * FROM users"); // $ target=execute2
+        MySqlConnection::execute2::<&str>(&c, "SELECT * FROM users"); // $ target=execute2
     }
 }

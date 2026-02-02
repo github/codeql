@@ -1,31 +1,31 @@
-| ConstantCondition.cs:38:18:38:29 | (...) ... | Expression is always 'null'. |
-| ConstantCondition.cs:39:18:39:24 | (...) ... | Expression is never 'null'. |
-| ConstantCondition.cs:46:17:46:26 | (...) ... | Expression is always 'null'. |
-| ConstantCondition.cs:47:17:47:18 | "" | Expression is never 'null'. |
-| ConstantCondition.cs:48:13:48:19 | (...) ... | Expression is never 'null'. |
-| ConstantCondition.cs:49:13:49:14 | "" | Expression is never 'null'. |
-| ConstantCondition.cs:62:18:62:18 | 2 | Pattern never matches. |
-| ConstantCondition.cs:64:18:64:18 | 3 | Pattern always matches. |
-| ConstantCondition.cs:75:18:75:20 | access to type Int32 | Pattern never matches. |
-| ConstantCondition.cs:95:13:95:13 | _ | Pattern always matches. |
-| ConstantCondition.cs:114:13:114:14 | access to parameter b1 | Condition always evaluates to 'true'. |
-| ConstantCondition.cs:114:19:114:20 | access to parameter b2 | Condition always evaluates to 'true'. |
-| ConstantCondition.cs:141:22:141:22 | _ | Pattern always matches. |
-| ConstantConditionBad.cs:5:16:5:20 | ... > ... | Condition always evaluates to 'false'. |
-| ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | Condition always evaluates to 'true'. |
-| ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | Condition always evaluates to 'false'. |
-| ConstantConditionalExpressionCondition.cs:13:21:13:30 | ... == ... | Condition always evaluates to 'true'. |
-| ConstantForCondition.cs:9:29:9:33 | false | Condition always evaluates to 'false'. |
-| ConstantForCondition.cs:11:29:11:34 | ... == ... | Condition always evaluates to 'false'. |
-| ConstantIfCondition.cs:11:17:11:29 | ... == ... | Condition always evaluates to 'true'. |
-| ConstantIfCondition.cs:14:17:14:21 | false | Condition always evaluates to 'false'. |
-| ConstantIfCondition.cs:17:17:17:26 | ... == ... | Condition always evaluates to 'true'. |
-| ConstantIsNullOrEmpty.cs:10:21:10:54 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. |
-| ConstantIsNullOrEmpty.cs:46:21:46:46 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. |
-| ConstantIsNullOrEmpty.cs:50:21:50:44 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. |
-| ConstantIsNullOrEmpty.cs:54:21:54:45 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. |
-| ConstantNullCoalescingLeftHandOperand.cs:11:24:11:34 | access to constant NULL_OBJECT | Expression is never 'null'. |
-| ConstantNullCoalescingLeftHandOperand.cs:12:24:12:27 | null | Expression is always 'null'. |
-| ConstantWhileCondition.cs:12:20:12:32 | ... == ... | Condition always evaluates to 'true'. |
-| ConstantWhileCondition.cs:16:20:16:24 | false | Condition always evaluates to 'false'. |
-| ConstantWhileCondition.cs:24:20:24:29 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantCondition.cs:38:18:38:29 | (...) ... | Expression is always 'null'. | ConstantCondition.cs:38:18:38:29 | (...) ... | dummy |
+| ConstantCondition.cs:39:18:39:24 | (...) ... | Expression is never 'null'. | ConstantCondition.cs:39:18:39:24 | (...) ... | dummy |
+| ConstantCondition.cs:46:17:46:26 | (...) ... | Expression is always 'null'. | ConstantCondition.cs:46:17:46:26 | (...) ... | dummy |
+| ConstantCondition.cs:47:17:47:18 | "" | Expression is never 'null'. | ConstantCondition.cs:47:17:47:18 | "" | dummy |
+| ConstantCondition.cs:48:13:48:19 | (...) ... | Expression is never 'null'. | ConstantCondition.cs:48:13:48:19 | (...) ... | dummy |
+| ConstantCondition.cs:49:13:49:14 | "" | Expression is never 'null'. | ConstantCondition.cs:49:13:49:14 | "" | dummy |
+| ConstantCondition.cs:62:18:62:18 | 2 | Pattern never matches. | ConstantCondition.cs:62:18:62:18 | 2 | dummy |
+| ConstantCondition.cs:64:18:64:18 | 3 | Pattern always matches. | ConstantCondition.cs:64:18:64:18 | 3 | dummy |
+| ConstantCondition.cs:75:18:75:20 | access to type Int32 | Pattern never matches. | ConstantCondition.cs:75:18:75:20 | access to type Int32 | dummy |
+| ConstantCondition.cs:95:13:95:13 | _ | Pattern always matches. | ConstantCondition.cs:95:13:95:13 | _ | dummy |
+| ConstantCondition.cs:114:13:114:14 | access to parameter b1 | Condition is always true because of $@. | ConstantCondition.cs:110:14:110:15 | access to parameter b1 | access to parameter b1 |
+| ConstantCondition.cs:114:19:114:20 | access to parameter b2 | Condition is always true because of $@. | ConstantCondition.cs:112:14:112:15 | access to parameter b2 | access to parameter b2 |
+| ConstantCondition.cs:141:22:141:22 | _ | Pattern always matches. | ConstantCondition.cs:141:22:141:22 | _ | dummy |
+| ConstantConditionBad.cs:5:16:5:20 | ... > ... | Condition always evaluates to 'false'. | ConstantConditionBad.cs:5:16:5:20 | ... > ... | dummy |
+| ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | Condition always evaluates to 'true'. | ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | dummy |
+| ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | Condition always evaluates to 'false'. | ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | dummy |
+| ConstantConditionalExpressionCondition.cs:13:21:13:30 | ... == ... | Condition always evaluates to 'true'. | ConstantConditionalExpressionCondition.cs:13:21:13:30 | ... == ... | dummy |
+| ConstantForCondition.cs:9:29:9:33 | false | Condition always evaluates to 'false'. | ConstantForCondition.cs:9:29:9:33 | false | dummy |
+| ConstantForCondition.cs:11:29:11:34 | ... == ... | Condition always evaluates to 'false'. | ConstantForCondition.cs:11:29:11:34 | ... == ... | dummy |
+| ConstantIfCondition.cs:11:17:11:29 | ... == ... | Condition always evaluates to 'true'. | ConstantIfCondition.cs:11:17:11:29 | ... == ... | dummy |
+| ConstantIfCondition.cs:14:17:14:21 | false | Condition always evaluates to 'false'. | ConstantIfCondition.cs:14:17:14:21 | false | dummy |
+| ConstantIfCondition.cs:17:17:17:26 | ... == ... | Condition always evaluates to 'true'. | ConstantIfCondition.cs:17:17:17:26 | ... == ... | dummy |
+| ConstantIsNullOrEmpty.cs:10:21:10:54 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. | ConstantIsNullOrEmpty.cs:10:21:10:54 | call to method IsNullOrEmpty | dummy |
+| ConstantIsNullOrEmpty.cs:46:21:46:46 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. | ConstantIsNullOrEmpty.cs:46:21:46:46 | call to method IsNullOrEmpty | dummy |
+| ConstantIsNullOrEmpty.cs:50:21:50:44 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. | ConstantIsNullOrEmpty.cs:50:21:50:44 | call to method IsNullOrEmpty | dummy |
+| ConstantIsNullOrEmpty.cs:54:21:54:45 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. | ConstantIsNullOrEmpty.cs:54:21:54:45 | call to method IsNullOrEmpty | dummy |
+| ConstantNullCoalescingLeftHandOperand.cs:11:24:11:34 | access to constant NULL_OBJECT | Expression is never 'null'. | ConstantNullCoalescingLeftHandOperand.cs:11:24:11:34 | access to constant NULL_OBJECT | dummy |
+| ConstantNullCoalescingLeftHandOperand.cs:12:24:12:27 | null | Expression is always 'null'. | ConstantNullCoalescingLeftHandOperand.cs:12:24:12:27 | null | dummy |
+| ConstantWhileCondition.cs:12:20:12:32 | ... == ... | Condition always evaluates to 'true'. | ConstantWhileCondition.cs:12:20:12:32 | ... == ... | dummy |
+| ConstantWhileCondition.cs:16:20:16:24 | false | Condition always evaluates to 'false'. | ConstantWhileCondition.cs:16:20:16:24 | false | dummy |
+| ConstantWhileCondition.cs:24:20:24:29 | ... == ... | Condition always evaluates to 'true'. | ConstantWhileCondition.cs:24:20:24:29 | ... == ... | dummy |

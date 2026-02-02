@@ -178,12 +178,24 @@ private module ThisFlow {
     cfn = n.(InstanceParameterAccessPreNode).getUnderlyingControlFlowNode()
   }
 
+  private predicate primaryConstructorThisAccess(Node n, BasicBlock bb, int ppos) {
+    exists(Parameter p |
+      n.(PrimaryConstructorThisAccessPreNode).getParameter() = p and
+      bb.getCallable() = p.getCallable() and
+      ppos = p.getPosition()
+    )
+  }
+
+  private int numberOfPrimaryConstructorParameters(BasicBlock bb) {
+    result = strictcount(int primaryParamPos | primaryConstructorThisAccess(_, bb, primaryParamPos))
+  }
+
   private predicate thisAccess(Node n, BasicBlock bb, int i) {
     thisAccess(n, bb.getNode(i))
     or
-    exists(Parameter p | n.(PrimaryConstructorThisAccessPreNode).getParameter() = p |
-      bb.getCallable() = p.getCallable() and
-      i = p.getPosition() + 1
+    exists(int ppos |
+      primaryConstructorThisAccess(n, bb, ppos) and
+      i = ppos - numberOfPrimaryConstructorParameters(bb)
     )
     or
     exists(DataFlowCallable c, ControlFlow::BasicBlocks::EntryBlock entry |
@@ -195,8 +207,11 @@ private module ThisFlow {
         // entry definition. In case `c` doesn't have multiple bodies, the line below
         // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
         // will be in the entry block.
-        bb = succ.getBasicBlock() and
-        i = -1
+        bb = succ.getBasicBlock()
+      |
+        i = -1 - numberOfPrimaryConstructorParameters(bb)
+        or
+        not exists(numberOfPrimaryConstructorParameters(bb)) and i = -1
       )
     )
   }
@@ -833,7 +848,7 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
         FlowSummaryImpl::Private::SummarizedCallableImpl sc,
         FlowSummaryImpl::Private::SummaryComponentStack input, ContentSet readSet
       |
-        sc.propagatesFlow(input, _, _, _) and
+        sc.propagatesFlow(input, _, _, _, _, _) and
         input.contains(FlowSummaryImpl::Private::SummaryComponent::content(readSet)) and
         c.getAStoreContent() = readSet.getAReadContent()
       )
@@ -1006,7 +1021,6 @@ private class InstanceCallable extends Callable {
   private Location l;
 
   InstanceCallable() {
-    this = any(DataFlowCallable dfc).asCallable(l) and
     not this.(Modifiable).isStatic() and
     // local functions and delegate capture `this` and should therefore
     // not have a `this` parameter
@@ -1104,6 +1118,7 @@ private module Cached {
       p = c.asCallable(_).(CallableUsedInSource).getAParameter()
     } or
     TInstanceParameterNode(InstanceCallable c, Location l) {
+      c = any(DataFlowCallable dfc).asCallable(l) and
       c instanceof CallableUsedInSource and
       l = c.getARelevantLocation()
     } or
@@ -2583,10 +2598,10 @@ class NodeRegion instanceof ControlFlow::BasicBlock {
  * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
-  exists(ExplicitParameterNode paramNode, Guard guard, ControlFlow::BooleanSuccessor bs |
-    viableConstantBooleanParamArg(paramNode, bs.getValue().booleanNot(), call) and
+  exists(ExplicitParameterNode paramNode, Guard guard, GuardValue val |
+    viableConstantParamArg(paramNode, val.getDualValue(), call) and
     paramNode.getSsaDefinition().getARead() = guard and
-    guard.controlsBlock(nr, bs, _)
+    guard.valueControls(nr, val)
   )
 }
 
@@ -2904,32 +2919,19 @@ class CastNode extends Node {
 
 class DataFlowExpr = Expr;
 
-/** Holds if `e` is an expression that always has the same Boolean value `val`. */
-private predicate constantBooleanExpr(Expr e, boolean val) {
-  e = any(AbstractValues::BooleanValue bv | val = bv.getValue()).getAnExpr()
-  or
-  exists(Ssa::ExplicitDefinition def, Expr src |
-    e = def.getARead() and
-    src = def.getADefinition().getSource() and
-    constantBooleanExpr(src, val)
-  )
-}
+/** An argument that always has the same value. */
+private class ConstantArgumentNode extends ExprNode {
+  ConstantArgumentNode() { Guards::InternalUtil::exprHasValue(this.(ArgumentNode).asExpr(), _) }
 
-/** An argument that always has the same Boolean value. */
-private class ConstantBooleanArgumentNode extends ExprNode {
-  ConstantBooleanArgumentNode() { constantBooleanExpr(this.(ArgumentNode).asExpr(), _) }
-
-  /** Gets the Boolean value of this expression. */
-  boolean getBooleanValue() { constantBooleanExpr(this.getExpr(), result) }
+  /** Gets the value of this expression. */
+  GuardValue getValue() { Guards::InternalUtil::exprHasValue(this.getExpr(), result) }
 }
 
 pragma[noinline]
-private predicate viableConstantBooleanParamArg(
-  ParameterNode paramNode, boolean b, DataFlowCall call
-) {
-  exists(ConstantBooleanArgumentNode arg |
+private predicate viableConstantParamArg(ParameterNode paramNode, GuardValue val, DataFlowCall call) {
+  exists(ConstantArgumentNode arg |
     viableParamArg(call, paramNode, arg) and
-    b = arg.getBooleanValue()
+    val = arg.getValue()
   )
 }
 
@@ -3048,8 +3050,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     exists(AssignableDefinition def |
       def.getTargetAccess() = fa and
       nodeFrom.asExpr() = def.getSource() and
-      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeTo = TFlowInsensitiveFieldNode(f)
+    |
       nodeFrom.getEnclosingCallable() instanceof Constructor
+      or
+      nodeFrom.getEnclosingCallable() instanceof ObjectInitMethod
     )
     or
     nodeFrom = TFlowInsensitiveFieldNode(f) and
@@ -3083,6 +3088,9 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(DelegateSelfReferenceNode)
         .getCallable())
+  or
+  // Allow field initializers to access Primary Constructor parameters
+  p.getEnclosingCallable() instanceof ObjectInitMethod
 }
 
 /** An approximated `Content`. */

@@ -22,16 +22,21 @@ module SafeUrlFlow {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-      // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, node1) and node2 = v.getAUse()
+      // propagate taint to the post-update node of a URL when its host is
+      // assigned to
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(node2, f, node1)
       )
     }
 
     predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this safe value when its host is overwritten
       exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(node.getASuccessor(), f, _)
+        // We sanitize the pre-update node to block flow from previous value.
+        // This fits in with the additional flow step above propagating taint
+        // from the value written to the Host field to the post-update node of
+        // the URL.
+        w.writesFieldPreUpdate(node, f, _)
       )
       or
       node instanceof SanitizerEdge

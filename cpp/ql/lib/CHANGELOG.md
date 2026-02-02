@@ -1,3 +1,69 @@
+## 7.0.0
+
+### Breaking Changes
+
+* The `_Decimal32`, `_Decimal64`, and `_Decimal128` types are no longer exposed as builtin types. Support for these gcc-specific types was incomplete, and are generally not used in C/C++ codebases.
+
+### Deprecated APIs
+
+* The `OverloadedArrayExpr::getArrayOffset/0` predicate has been deprecated. Use `OverloadedArrayExpr::getArrayOffset/1` and `OverloadedArrayExpr::getAnArrayOffset` instead.
+
+### New Features
+
+* Added subclasses of `BuiltInOperations` for the `__is_bitwise_cloneable`, `__is_invocable`, and `__is_nothrow_invocable` builtin operations.
+* Added a `isThisAccess` predicate to `ParamAccessForType` that holds when the access is to the implicit object parameter.
+* Predicates `getArrayOffset/1` and `getAnArrayOffset` have been added to the `OverloadedArrayExpr` class to support C++23 multidimensional subscript operators.
+
+### Minor Analysis Improvements
+
+* Some constants will now be represented by their unfolded expression trees. The `isConstant` predicate of `Expr` will no longer yield a result for those constants.
+
+### Bug Fixes
+
+* Fixed a bug in the `DataFlow::BarrierGuard<...>::getABarrierNode` predicate which caused the predicate to return `DataFlow::Node`s with incorrect indirections. If you use `getABarrierNode` to implement barriers in a dataflow/taint-tracking query it may result in more query results. You can use `DataFlow::BarrierGuard<...>::getAnIndirectBarrierNode` to remove those query results.
+
+## 6.1.4
+
+No user-facing changes.
+
+## 6.1.3
+
+No user-facing changes.
+
+## 6.1.2
+
+No user-facing changes.
+
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* The class `DataFlow::FieldContent` now covers both `union` and `struct`/`class` types. A new predicate `FieldContent.getAField` has been added to access the union members associated with the `FieldContent`. The old `FieldContent` has been renamed to `NonUnionFieldContent`.
+
+## 6.1.0
+
+### New Features
+
+* New predicates `getAnExpandedArgument` and `getExpandedArgument` were added to the `Compilation` class, yielding compilation arguments after expansion of response files.
+
+### Bug Fixes
+
+* Improve performance of the range analysis in cases where it would otherwise take an exorbitant amount of time.
+
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The "Guards" libraries (`semmle.code.cpp.controlflow.Guards` and `semmle.code.cpp.controlflow.IRGuards`) have been totally rewritten to recognize many more guards. The API remains unchanged, but the `GuardCondition` class now extends `Element` instead of `Expr`.
+
+### New Features
+
+* C/C++ `build-mode: none` support is now generally available.
+
 ## 5.6.1
 
 No user-facing changes.

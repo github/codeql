@@ -1,0 +1,166 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      # Builtin deref
+      - ["<& as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
+      - ["<&mut as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue", "value", "manual"]
+      - ["<_ as core::ops::deref::Deref>::deref", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      # Index
+      - ["<_ as core::ops::index::Index>::index", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
+      - ["<_ as core::ops::index::IndexMut>::index_mut", "Argument[self].Reference.Element", "ReturnValue.Reference", "value", "manual"]
+      # Unary operators
+      - ["<_ as core::ops::arith::Neg>::neg", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<core::num::wrapping::Wrapping as core::ops::arith::Neg>::neg", "Argument[self].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::Not>::not", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<core::num::wrapping::Wrapping as core::ops::bit::Not>::not", "Argument[self].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Arithmetic operators
+      - ["<_ as core::ops::arith::Add>::add", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Add>::add", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::Sub>::sub", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Sub>::sub", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::Mul>::mul", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Mul>::mul", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::Div>::div", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Div>::div", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::Rem>::rem", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::arith::Rem>::rem", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Arithmetic assignment expressions
+      - ["<_ as core::ops::arith::AddAssign>::add_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::AddAssign>::add_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::AddAssign>::add_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::AddAssign>::add_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::SubAssign>::sub_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::SubAssign>::sub_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::SubAssign>::sub_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::SubAssign>::sub_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::MulAssign>::mul_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::MulAssign>::mul_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::MulAssign>::mul_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::MulAssign>::mul_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::DivAssign>::div_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::DivAssign>::div_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::DivAssign>::div_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::DivAssign>::div_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::RemAssign>::rem_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::RemAssign>::rem_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::arith::RemAssign>::rem_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::arith::RemAssign>::rem_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Bitwise operators
+      - ["<_ as core::ops::bit::BitAnd>::bitand", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitAnd>::bitand", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitOr>::bitor", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitOr>::bitor", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitXor>::bitxor", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitXor>::bitxor", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Bitwise assignment operators
+      - ["<_ as core::ops::bit::BitAndAssign>::bitand_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitAndAssign>::bitand_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitAndAssign>::bitand_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitAndAssign>::bitand_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitOrAssign>::bitor_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitOrAssign>::bitor_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitOrAssign>::bitor_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitOrAssign>::bitor_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitXorAssign>::bitxor_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitXorAssign>::bitxor_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitXorAssign>::bitxor_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::BitXorAssign>::bitxor_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Shift operators
+      - ["<_ as core::ops::bit::Shl>::shl", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::bit::Shl>::shl", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::Shr>::shr", "Argument[self,0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::ops::bit::Shr>::shr", "Argument[self,0].Field[core::num::wrapping::Wrapping(0)]", "ReturnValue.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Shift assignment operators
+      - ["<_ as core::ops::bit::ShlAssign>::shl_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShlAssign>::shl_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShlAssign>::shl_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShlAssign>::shl_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShrAssign>::shr_assign", "Argument[self].Reference", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShrAssign>::shr_assign", "Argument[0]", "Argument[self].Reference", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShrAssign>::shr_assign", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      - ["<_ as core::ops::bit::ShrAssign>::shr_assign", "Argument[0].Field[core::num::wrapping::Wrapping(0)]", "Argument[self].Reference.Field[core::num::wrapping::Wrapping(0)]", "taint", "manual"]
+      # Clone
+      - ["<_ as core::clone::Clone>::clone", "Argument[self].Reference", "ReturnValue", "value", "manual"]
+      # Conversions
+      - ["<_ as core::convert::Into>::into", "Argument[self].Element", "ReturnValue.Element", "taint", "manual"]
+      - ["<_ as core::convert::Into>::into", "Argument[self].Reference.Element", "ReturnValue.Element", "taint", "manual"]
+      # From
+      - ["<_ as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # Iterator
+      - ["<core::result::Result>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["<_ as value_trait::array::Array>::iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["<core::result::Result>::iter_mut", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["<core::result::Result>::into_iter", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::nth", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::next", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Pin
+      - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
+      # This model is not precise, but helps in cases where a `Pin` is implicitly dereferenced.
+      - ["<core::pin::Pin>::new", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["<core::pin::Pin>::new_unchecked", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
+      - ["<core::pin::Pin>::into_inner", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
+      - ["<core::pin::Pin>::into_inner_unchecked", "Argument[0].Field[core::pin::Pin::pointer]", "ReturnValue", "value", "manual"]
+      - ["<core::pin::Pin>::set", "Argument[0]", "Argument[self].Reference.Field[core::pin::Pin::pointer]", "value", "manual"]
+      # Ptr
+      - ["core::ptr::read", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["core::ptr::read_unaligned", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["core::ptr::read_volatile", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["core::ptr::write", "Argument[1]", "Argument[0].Reference", "value", "manual"]
+      - ["core::ptr::write_unaligned", "Argument[1]", "Argument[0].Reference", "value", "manual"]
+      - ["core::ptr::write_volatile", "Argument[1]", "Argument[0].Reference", "value", "manual"]
+        # https://doc.rust-lang.org/std/pin/struct.Pin.html#impl-Deref-for-Pin%3CPtr%3E, but limited to `Ptr = &` and `Ptr = Box`
+      - ["<core::pin::Pin as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[core::pin::Pin::pointer].Reference", "ReturnValue.Reference", "value", "manual"]
+      - ["<core::pin::Pin as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "ReturnValue.Reference", "value", "manual"]
+      # Str
+      - ["<core::str>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::parse", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::str>::trim", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      # Ord
+      - ["<_ as core::cmp::Ord>::min", "Argument[self,0]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::max", "Argument[self,0]", "ReturnValue", "value", "manual"]
+      - ["<_ as core::cmp::Ord>::clamp", "Argument[self,0,1]", "ReturnValue", "value", "manual"]
+      # Slice
+      - ["<[]>::get", "Argument[self].Reference.Element", "ReturnValue.Field[core::option::Option::Some(0)].Reference", "value", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Mem
+      - ["core::mem::zeroed", "ReturnValue.Element", "constant-source", "manual"]
+      # Ptr
+      - ["core::ptr::drop_in_place", "Argument[0]", "pointer-invalidate", "manual"]
+      - ["core::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["core::ptr::dangling_mut", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["core::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["core::ptr::null_mut", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["v8::primitives::null", "ReturnValue", "pointer-invalidate", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # Ptr
+      - ["core::ptr::read", "Argument[0]", "pointer-access", "manual"]
+      - ["core::ptr::read_unaligned", "Argument[0]", "pointer-access", "manual"]
+      - ["core::ptr::read_volatile", "Argument[0]", "pointer-access", "manual"]
+      - ["core::ptr::write", "Argument[0]", "pointer-access", "manual"]
+      - ["core::ptr::write_bytes", "Argument[0]", "pointer-access", "manual"]
+      - ["core::ptr::write_unaligned", "Argument[0]", "pointer-access", "manual"]
+      - ["core::ptr::write_volatile", "Argument[0]", "pointer-access", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: excludeFieldTaintStep
+    data:
+      - ["core::ops::range::RangeInclusive::start"]
+      - ["core::ops::range::RangeInclusive::end"]
+      - ["core::result::Result::Err(0)"]

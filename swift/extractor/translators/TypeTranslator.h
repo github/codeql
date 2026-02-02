@@ -28,6 +28,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
       const swift::UnarySyntaxSugarType& type);
   codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
   codeql::ArraySliceType translateArraySliceType(const swift::ArraySliceType& type);
+  codeql::InlineArrayType translateInlineArrayType(const swift::InlineArrayType& type);
   codeql::DictionaryType translateDictionaryType(const swift::DictionaryType& type);
   codeql::GenericFunctionType translateGenericFunctionType(const swift::GenericFunctionType& type);
   codeql::GenericTypeParamType translateGenericTypeParamType(
@@ -68,7 +69,8 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::BuiltinIntegerLiteralType translateBuiltinIntegerLiteralType(
       const swift::BuiltinIntegerLiteralType& type);
   codeql::BuiltinIntegerType translateBuiltinIntegerType(const swift::BuiltinIntegerType& type);
-  codeql::OpenedArchetypeType translateOpenedArchetypeType(const swift::OpenedArchetypeType& type);
+  codeql::ExistentialArchetypeType translateExistentialArchetypeType(
+      const swift::ExistentialArchetypeType& type);
   codeql::ModuleType translateModuleType(const swift::ModuleType& type);
   codeql::OpaqueTypeArchetypeType translateOpaqueTypeArchetypeType(
       const swift::OpaqueTypeArchetypeType& type);

@@ -1,108 +1,105 @@
-| ..()(..) | RoutineType |  |  |  |  |
-| ..(*)(..) | FunctionPointerType |  | ..()(..) |  |  |
-| _Complex _Float16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex _Float32 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex _Float32x | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex _Float64 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex _Float64x | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex _Float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex __bf16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex __float128 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex __fp16 | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex float | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex long double | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Complex std::float16_t | BinaryFloatingPointType, ComplexNumberType |  |  |  |  |
-| _Decimal32 | Decimal32Type |  |  |  |  |
-| _Decimal64 | Decimal64Type |  |  |  |  |
-| _Decimal128 | Decimal128Type |  |  |  |  |
-| _Float16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float32 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float32x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float64 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float64x | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Float128 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| _Imaginary double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
-| _Imaginary float | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
-| _Imaginary long double | BinaryFloatingPointType, ImaginaryNumberType |  |  |  |  |
-| __SVCount_t | ScalableVectorCount |  |  |  |  |
-| __bf16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| __float128 | Float128Type |  |  |  |  |
-| __fp16 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| __int128 | Int128Type |  |  |  |  |
-| __mfp8 | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| __va_list_tag | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
-| __va_list_tag & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | __va_list_tag |  |  |
-| __va_list_tag && | PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | __va_list_tag |  |  |
-| address | DirectAccessHolder, MetricClass, Struct, StructLikeClass |  |  |  |  |
-| address & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | address |  |  |
-| address && | PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | address |  |  |
-| auto | AutoType |  |  |  |  |
-| bool | BoolType |  |  |  |  |
-| char | MicrosoftInt8Type, PlainCharType |  |  |  |  |
-| char8_t | Char8Type |  |  |  |  |
-| char16_t | Char16Type |  |  |  |  |
-| char32_t | Char32Type |  |  |  |  |
-| char * | CharPointerType, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | char |  |  |
-| char *[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
-| char *[32] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
-| char *[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
-| char[2] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[5] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[6] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[8] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[9] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[10] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[53] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| char[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
-| const __va_list_tag | SpecifiedType |  | __va_list_tag |  |  |
-| const __va_list_tag & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | const __va_list_tag |  |  |
-| const address | SpecifiedType |  | address |  |  |
-| const address & | LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | const address |  |  |
-| const char | SpecifiedType |  | char |  |  |
-| const char * | IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, PointerType |  | const char |  |  |
-| const char *[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char * | const char * |  |  |
-| const char *[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char * | const char * |  |  |
-| const char[5] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
-| const char[6] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
-| const char[8] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
-| const char[9] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
-| const char[10] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
-| const char[53] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
-| const double | SpecifiedType |  | double |  |  |
-| const int | SpecifiedType |  | int |  |  |
-| decltype(nullptr) | NullPointerType |  |  |  |  |
-| double | DoubleType |  |  |  |  |
-| error | ErroneousType |  |  |  |  |
-| float | FloatType |  |  |  |  |
-| float[3] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | float | float |  |  |
-| int | IntType, MicrosoftInt32Type |  |  |  |  |
-| int * | IntPointerType, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | int |  |  |
-| int[4] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
-| int[8] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
-| int[10] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
-| int[10][20] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int[20] | int[20] |  |  |
-| int[20] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
-| int[] | ArrayType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
-| long | LongType |  |  |  |  |
-| long double | LongDoubleType |  |  |  |  |
-| long long | LongLongType, MicrosoftInt64Type |  |  |  |  |
-| short | MicrosoftInt16Type, ShortType |  |  |  |  |
-| signed __int128 | Int128Type |  |  |  |  |
-| signed char | SignedCharType |  |  |  |  |
-| signed int | IntType |  |  |  |  |
-| signed long | LongType |  |  |  |  |
-| signed long long | LongLongType |  |  |  |  |
-| signed short | ShortType |  |  |  |  |
-| std::float16_t | BinaryFloatingPointType, RealNumberType |  |  |  |  |
-| unknown | UnknownType |  |  |  |  |
-| unsigned __int128 | Int128Type |  |  |  | unsigned integral |
-| unsigned char | UnsignedCharType |  |  |  | unsigned integral |
-| unsigned int | IntType |  |  | unsigned int | unsigned integral |
-| unsigned long | LongType |  |  |  | unsigned integral |
-| unsigned long long | LongLongType |  |  |  | unsigned integral |
-| unsigned short | ShortType |  |  |  | unsigned integral |
-| void | VoidType |  |  |  |  |
-| void * | IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, VoidPointerType |  | void |  |  |
-| wchar_t | Wchar_t, WideCharType |  |  |  |  |
+| ..()(..) | GuardConditionImpl, RoutineType |  |  |  |  |
+| ..(*)(..) | FunctionPointerType, GuardConditionImpl |  | ..()(..) |  |  |
+| _Complex _Float16 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex _Float32 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex _Float32x | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex _Float64 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex _Float64x | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex _Float128 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex __bf16 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex __float128 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex __fp16 | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex double | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex float | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex long double | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Complex std::float16_t | BinaryFloatingPointType, ComplexNumberType, GuardConditionImpl |  |  |  |  |
+| _Float16 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| _Float32 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| _Float32x | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| _Float64 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| _Float64x | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| _Float128 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| _Imaginary double | BinaryFloatingPointType, GuardConditionImpl, ImaginaryNumberType |  |  |  |  |
+| _Imaginary float | BinaryFloatingPointType, GuardConditionImpl, ImaginaryNumberType |  |  |  |  |
+| _Imaginary long double | BinaryFloatingPointType, GuardConditionImpl, ImaginaryNumberType |  |  |  |  |
+| __SVCount_t | GuardConditionImpl, ScalableVectorCount |  |  |  |  |
+| __bf16 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| __float128 | Float128Type, GuardConditionImpl |  |  |  |  |
+| __fp16 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| __int128 | GuardConditionImpl, Int128Type |  |  |  |  |
+| __mfp8 | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| __va_list_tag | DirectAccessHolder, GuardConditionImpl, MetricClass, Struct, StructLikeClass |  |  |  |  |
+| __va_list_tag & | GuardConditionImpl, LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | __va_list_tag |  |  |
+| __va_list_tag && | GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | __va_list_tag |  |  |
+| address | DirectAccessHolder, GuardConditionImpl, MetricClass, Struct, StructLikeClass |  |  |  |  |
+| address & | GuardConditionImpl, LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | address |  |  |
+| address && | GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, RValueReferenceType |  | address |  |  |
+| auto | AutoType, GuardConditionImpl |  |  |  |  |
+| bool | BoolType, GuardConditionImpl |  |  |  |  |
+| char | GuardConditionImpl, MicrosoftInt8Type, PlainCharType |  |  |  |  |
+| char8_t | Char8Type, GuardConditionImpl |  |  |  |  |
+| char16_t | Char16Type, GuardConditionImpl |  |  |  |  |
+| char32_t | Char32Type, GuardConditionImpl |  |  |  |  |
+| char * | CharPointerType, GuardConditionImpl, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | char |  |  |
+| char *[3] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
+| char *[32] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
+| char *[] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char * | char * |  |  |
+| char[2] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[3] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[5] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[6] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[8] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[9] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[10] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[53] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| char[] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | char | char |  |  |
+| const __va_list_tag | GuardConditionImpl, SpecifiedType |  | __va_list_tag |  |  |
+| const __va_list_tag & | GuardConditionImpl, LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | const __va_list_tag |  |  |
+| const address | GuardConditionImpl, SpecifiedType |  | address |  |  |
+| const address & | GuardConditionImpl, LValueReferenceType, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | const address |  |  |
+| const char | GuardConditionImpl, SpecifiedType |  | char |  |  |
+| const char * | GuardConditionImpl, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, PointerType |  | const char |  |  |
+| const char *[3] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char * | const char * |  |  |
+| const char *[] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char * | const char * |  |  |
+| const char[5] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[6] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[8] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[9] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[10] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const char[53] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | const char | const char |  |  |
+| const double | GuardConditionImpl, SpecifiedType |  | double |  |  |
+| const int | GuardConditionImpl, SpecifiedType |  | int |  |  |
+| decltype(nullptr) | GuardConditionImpl, NullPointerType |  |  |  |  |
+| double | DoubleType, GuardConditionImpl |  |  |  |  |
+| error | ErroneousType, GuardConditionImpl |  |  |  |  |
+| float | FloatType, GuardConditionImpl |  |  |  |  |
+| float[3] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | float | float |  |  |
+| int | GuardConditionImpl, IntType, MicrosoftInt32Type |  |  |  |  |
+| int * | GuardConditionImpl, IntPointerType, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection |  | int |  |  |
+| int[4] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[8] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[10] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[10][20] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int[20] | int[20] |  |  |
+| int[20] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| int[] | ArrayType, GuardConditionImpl, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection | int | int |  |  |
+| long | GuardConditionImpl, LongType |  |  |  |  |
+| long double | GuardConditionImpl, LongDoubleType |  |  |  |  |
+| long long | GuardConditionImpl, LongLongType, MicrosoftInt64Type |  |  |  |  |
+| short | GuardConditionImpl, MicrosoftInt16Type, ShortType |  |  |  |  |
+| signed __int128 | GuardConditionImpl, Int128Type |  |  |  |  |
+| signed char | GuardConditionImpl, SignedCharType |  |  |  |  |
+| signed int | GuardConditionImpl, IntType |  |  |  |  |
+| signed long | GuardConditionImpl, LongType |  |  |  |  |
+| signed long long | GuardConditionImpl, LongLongType |  |  |  |  |
+| signed short | GuardConditionImpl, ShortType |  |  |  |  |
+| std::float16_t | BinaryFloatingPointType, GuardConditionImpl, RealNumberType |  |  |  |  |
+| unknown | GuardConditionImpl, UnknownType |  |  |  |  |
+| unsigned __int128 | GuardConditionImpl, Int128Type |  |  |  | unsigned integral |
+| unsigned char | GuardConditionImpl, UnsignedCharType |  |  |  | unsigned integral |
+| unsigned int | GuardConditionImpl, IntType |  |  | unsigned int | unsigned integral |
+| unsigned long | GuardConditionImpl, LongType |  |  |  | unsigned integral |
+| unsigned long long | GuardConditionImpl, LongLongType |  |  |  | unsigned integral |
+| unsigned short | GuardConditionImpl, ShortType |  |  |  | unsigned integral |
+| void | GuardConditionImpl, VoidType |  |  |  |  |
+| void * | GuardConditionImpl, IteratorByPointer, PointerOrArrayOrReferenceType, PointerOrArrayOrReferenceTypeIndirection, VoidPointerType |  | void |  |  |
+| wchar_t | GuardConditionImpl, Wchar_t, WideCharType |  |  |  |  |

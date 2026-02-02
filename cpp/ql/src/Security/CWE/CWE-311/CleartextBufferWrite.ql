@@ -51,7 +51,9 @@ module ToBufferConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(SensitiveBufferWrite w | result = w.getLocation() | isSinkImpl(sink, w))
+    exists(SensitiveBufferWrite w | result = [w.getLocation(), sink.getLocation()] |
+      isSinkImpl(sink, w)
+    )
   }
 }
 

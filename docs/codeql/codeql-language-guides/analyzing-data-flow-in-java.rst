@@ -262,7 +262,7 @@ Exercise 2: Write a query that finds all hard-coded strings used to create a ``j
 
 Exercise 3: Write a class that represents flow sources from ``java.lang.System.getenv(..)``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``getenv`` to ``java.net.URL``. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Answers
 -------
@@ -360,6 +360,54 @@ Exercise 4
    from DataFlow::Node src, DataFlow::Node sink
    where GetenvToURLFlow::flow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
+
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-url
+    */
+
+   import java
+   import semmle.code.java.dataflow.DataFlow
+
+   class GetenvSource extends DataFlow::ExprNode {
+     GetenvSource() {
+       exists(Method m | m = this.asExpr().(MethodCall).getMethod() |
+         m.hasName("getenv") and
+         m.getDeclaringType() instanceof TypeSystem
+       )
+     }
+   }
+
+   module GetenvToURLConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
+       source instanceof GetenvSource
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(Call call |
+         sink.asExpr() = call.getArgument(0) and
+         call.getCallee().(Constructor).getDeclaringType().hasQualifiedName("java.net", "URL")
+       )
+     }
+   }
+
+   module GetenvToURLFlow = DataFlow::Global<GetenvToURLConfig>;
+
+   import GetenvToURLFlow::PathGraph
+
+   from GetenvToURLFlow::PathNode src, GetenvToURLFlow::PathNode sink
+   where GetenvToURLFlow::flowPath(src, sink)
+   select src.getNode(), src, sink, "This environment variable constructs a URL $@.", sink, "here"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------

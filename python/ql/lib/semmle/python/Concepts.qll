@@ -12,6 +12,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Files
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.EncryptionKeySizes
+private import semmle.python.dataflow.new.SensitiveDataSources
 private import codeql.threatmodels.ThreatModels
 private import codeql.concepts.ConceptsShared
 
@@ -115,6 +116,16 @@ module SystemCommandExecution {
 class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
   DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
+
+  /**
+   * Gets an argument to this file system access that is interpreted as a path
+   * which is vulnerable to path injection.
+   *
+   * By default all path arguments are considered vulnerable, but this can be overridden to
+   * exclude certain arguments that are known to be safe, for example because they are
+   * restricted to a specific directory.
+   */
+  DataFlow::Node getAVulnerablePathArgument() { result = super.getAVulnerablePathArgument() }
 }
 
 /** Provides a class for modeling new file system access APIs. */
@@ -129,6 +140,16 @@ module FileSystemAccess {
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
+
+    /**
+     * Gets an argument to this file system access that is interpreted as a path
+     * which is vulnerable to path injection.
+     *
+     * By default all path arguments are considered vulnerable, but this can be overridden to
+     * exclude certain arguments that are known to be safe, for example because they are
+     * restricted to a specific directory.
+     */
+    DataFlow::Node getAVulnerablePathArgument() { result = this.getAPathArgument() }
   }
 }
 
@@ -1289,6 +1310,18 @@ module Http {
        * Gets the argument, if any, specifying the cookie value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /** Holds if the name of this cookie indicates it may contain sensitive information. */
+      predicate isSensitive() {
+        exists(DataFlow::Node name |
+          name = [this.getNameArg(), this.getHeaderArg()] and
+          (
+            DataFlow::localFlow(any(SensitiveDataSource src), name)
+            or
+            name = sensitiveLookupStringConst(_)
+          )
+        )
+      }
 
       /**
        * Holds if the `Secure` flag of the cookie is known to have a value of `b`.

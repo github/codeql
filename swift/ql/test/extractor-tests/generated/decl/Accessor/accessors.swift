@@ -43,4 +43,10 @@ struct Foo {
             return UnsafeMutablePointer<Int>(bitPattern: 0)!
         }
     }
+
+    var hasInit: Int {
+        init { }
+
+        get { 42 }
+    }
 }

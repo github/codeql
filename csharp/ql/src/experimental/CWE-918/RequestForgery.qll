@@ -133,14 +133,14 @@ module RequestForgery {
    * to be a guard for Server Side Request Forgery(SSRF) Vulnerabilities.
    * This guard considers all checks as valid.
    */
-  private predicate baseUriGuard(Guard g, Expr e, AbstractValue v) {
+  private predicate baseUriGuard(Guard g, Expr e, GuardValue v) {
     g.(MethodCall).getTarget().hasFullyQualifiedName("System", "Uri", "IsBaseOf") and
     // we consider any checks against the tainted value to sainitize the taint.
     // This implies any check such as shown below block the taint flow.
     // Uri url = new Uri("whitelist.com")
     // if (url.isBaseOf(`taint1))
     (e = g.(MethodCall).getArgument(0) or e = g.(MethodCall).getQualifier()) and
-    v.(AbstractValues::BooleanValue).getValue() = true
+    v.asBooleanValue() = true
   }
 
   private class BaseUriBarrier extends Barrier {
@@ -152,14 +152,14 @@ module RequestForgery {
    * to be a guard for Server Side Request Forgery(SSRF) Vulnerabilities.
    * This guard considers all checks as valid.
    */
-  private predicate stringStartsWithGuard(Guard g, Expr e, AbstractValue v) {
+  private predicate stringStartsWithGuard(Guard g, Expr e, GuardValue v) {
     g.(MethodCall).getTarget().hasFullyQualifiedName("System", "String", "StartsWith") and
     // Any check such as the ones shown below
     // "https://myurl.com/".startsWith(`taint`)
     // `taint`.startsWith("https://myurl.com/")
     // are assumed to sainitize the taint
     (e = g.(MethodCall).getQualifier() or g.(MethodCall).getArgument(0) = e) and
-    v.(AbstractValues::BooleanValue).getValue() = true
+    v.asBooleanValue() = true
   }
 
   private class StringStartsWithBarrier extends Barrier {

@@ -13,6 +13,7 @@ import (
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
+	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 )
@@ -273,7 +274,7 @@ func createPathTransformerFile(newdir string) *os.File {
 		log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
 	}
 
-	// set up SEMMLE_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
+	// set up CODEQL_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
 	// match the original source location, not the location we moved it to
 	pt, err := os.CreateTemp("", "path-transformer")
 	if err != nil {
@@ -283,7 +284,7 @@ func createPathTransformerFile(newdir string) *os.File {
 }
 
 // Writes the path transformer file
-func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
+func writePathTransformerFile(pt *os.File, realSrc, newdir string) {
 	_, err := pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
 	if err != nil {
 		log.Fatalf("Unable to write path transformer file: %s.", err.Error())
@@ -292,9 +293,9 @@ func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
 	if err != nil {
 		log.Fatalf("Unable to close path transformer file: %s.", err.Error())
 	}
-	err = os.Setenv("SEMMLE_PATH_TRANSFORMER", pt.Name())
+	err = os.Setenv("CODEQL_PATH_TRANSFORMER", pt.Name())
 	if err != nil {
-		log.Fatalf("Unable to set SEMMLE_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
+		log.Fatalf("Unable to set CODEQL_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
 	}
 }
 
@@ -447,7 +448,7 @@ func installDependencies(workspace project.GoWorkspace) {
 }
 
 // Run the extractor.
-func extract(workspace project.GoWorkspace) bool {
+func extract(workspace project.GoWorkspace, sourceRoot string) bool {
 	extractor, err := util.GetExtractorPath()
 	if err != nil {
 		log.Fatalf("Could not determine path of extractor: %v.\n", err)
@@ -456,6 +457,12 @@ func extract(workspace project.GoWorkspace) bool {
 	extractorArgs := []string{}
 	if workspace.DepMode == project.GoGetWithModules {
 		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
+	}
+
+	if util.IsOverlayExtraction() {
+		// When we are extracting an overlay, pass the source root to the extractor so that it knows
+		// how to resolve the relative paths in the list of changed files.
+		extractorArgs = append(extractorArgs, "--source-root", sourceRoot)
 	}
 
 	if len(workspace.Modules) == 0 {
@@ -501,9 +508,6 @@ func installDependenciesAndBuild() {
 
 	srcdir := getSourceDir()
 
-	// we set `SEMMLE_PATH_TRANSFORMER` ourselves in some cases, so blank it out first for consistency
-	os.Setenv("SEMMLE_PATH_TRANSFORMER", "")
-
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	workspaces := project.GetWorkspaceInfo(true)
@@ -534,7 +538,21 @@ func installDependenciesAndBuild() {
 			pt := createPathTransformerFile(paths.newdir)
 			defer os.Remove(pt.Name())
 
-			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+			// We're about to create out own path transformer, so that paths containing the
+			// temporary GOPATH point to the right location. However, if there was already an
+			// incoming path transformer, the right location will be what _it_ wanted to transform
+			// paths to.
+			existingPathTransformer, err := srcarchive.LoadProjectLayoutFromEnv()
+			if err != nil {
+				log.Fatalf("Unable to load path transformer: %s.\n", err.Error())
+			}
+			var realSrc string
+			if existingPathTransformer == nil {
+				realSrc = paths.realSrc
+			} else {
+				realSrc = existingPathTransformer.To
+			}
+			writePathTransformerFile(pt, realSrc, paths.newdir)
 			setGopath(paths.root)
 		}
 	}
@@ -547,7 +565,7 @@ func installDependenciesAndBuild() {
 	// Go tooling should install required Go versions as needed.
 	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
 		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
-		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
+		if util.IsActionsWorkflow() {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
 				greatestGoVersion,
@@ -575,6 +593,12 @@ func installDependenciesAndBuild() {
 		buildWithCustomCommands(inst)
 	}
 
+	// The autobuilder is invoked with its working directory set to the source directory.
+	sourceRoot, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get current working directory: %s\n", err.Error())
+	}
+
 	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
 	for i, workspace := range workspaces {
 		if workspace.ModMode == project.ModVendor {
@@ -595,7 +619,7 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		workspaces[i].Extracted = extract(workspace)
+		workspaces[i].Extracted = extract(workspace, sourceRoot)
 
 		if !workspaces[i].Extracted {
 			unsuccessfulProjects = append(unsuccessfulProjects, workspace.BaseDir)
@@ -620,6 +644,8 @@ func installDependenciesAndBuild() {
 	} else {
 		log.Printf("Success: extraction succeeded for all %d discovered project(s).\n", len(workspaces))
 	}
+
+	util.WriteOverlayBaseMetadata()
 }
 
 func main() {

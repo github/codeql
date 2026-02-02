@@ -36,7 +36,6 @@ extensions:
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfo", False, "CreateJsonTypeInfo<T>", "(System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfo", False, "get_Properties", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfoResolver", False, "Combine", "(System.ReadOnlySpan<System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfoResolver", False, "Combine", "(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -107,4 +106,5 @@ extensions:
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfo", "get_Kind", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfo", "get_Options", "()", "summary", "df-generated"]
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfo", "get_Type", "()", "summary", "df-generated"]
+      - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfoResolver", "Combine", "(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver[])", "summary", "df-generated"]
       - ["System.Text.Json.Serialization.Metadata", "JsonTypeInfoResolver", "WithAddedModifier", "(System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver,System.Action<System.Text.Json.Serialization.Metadata.JsonTypeInfo>)", "summary", "df-generated"]

@@ -130,7 +130,7 @@ class SubstringSanitizer extends Sanitizer {
   }
 }
 
-private predicate stringCheckGuard(Guard g, Expr e, AbstractValue v) {
+private predicate stringCheckGuard(Guard g, Expr e, GuardValue v) {
   g.(MethodCall).getTarget().hasFullyQualifiedName("System", "String", "StartsWith") and
   g.(MethodCall).getQualifier() = e and
   // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
@@ -139,7 +139,7 @@ private predicate stringCheckGuard(Guard g, Expr e, AbstractValue v) {
     combineCall.getTarget().hasFullyQualifiedName("System.IO", "Path", "Combine") and
     DataFlow::localExprFlow(combineCall, e)
   ) and
-  v.(AbstractValues::BooleanValue).getValue() = true
+  v.asBooleanValue() = true
 }
 
 /**

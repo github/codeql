@@ -3,6 +3,8 @@
  *
  * For now, the `URLSearchParams` object is modeled as a `Map` object.
  */
+overlay[local?]
+module;
 
 private import javascript
 
@@ -12,7 +14,7 @@ DataFlow::SourceNode urlSearchParamsConstructorRef() {
   result = DataFlow::globalVarRef("URLSearchParams")
 }
 
-class URLSearchParams extends DataFlow::SummarizedCallable {
+class URLSearchParams extends DataFlow::SummarizedCallable::Range {
   URLSearchParams() { this = "URLSearchParams" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -28,7 +30,7 @@ class URLSearchParams extends DataFlow::SummarizedCallable {
   }
 }
 
-class GetAll extends DataFlow::SummarizedCallable {
+class GetAll extends DataFlow::SummarizedCallable::Range {
   GetAll() { this = "getAll" }
 
   override DataFlow::MethodCallNode getACallSimple() {
@@ -42,7 +44,7 @@ class GetAll extends DataFlow::SummarizedCallable {
   }
 }
 
-class URLConstructor extends DataFlow::SummarizedCallable {
+class URLConstructor extends DataFlow::SummarizedCallable::Range {
   URLConstructor() { this = "URL" }
 
   override DataFlow::InvokeNode getACallSimple() {

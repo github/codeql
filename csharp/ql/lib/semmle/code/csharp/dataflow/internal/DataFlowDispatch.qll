@@ -16,7 +16,7 @@ private import semmle.code.csharp.internal.Location
  */
 Callable getCallableForDataFlow(Callable c) {
   result = c.getUnboundDeclaration() and
-  result.hasBody() and
+  (result.hasBody() or result instanceof ObjectInitMethod) and
   result.getFile().fromSource()
 }
 
@@ -27,6 +27,12 @@ newtype TReturnKind =
 
 private predicate hasMultipleSourceLocations(Callable c) { strictcount(getASourceLocation(c)) > 1 }
 
+private predicate objectInitEntry(ObjectInitMethod m, ControlFlowElement first) {
+  exists(ControlFlow::Nodes::EntryNode en |
+    en.getCallable() = m and first.getControlFlowNode() = en.getASuccessor()
+  )
+}
+
 private module NearestBodyLocationInput implements NearestLocationInputSig {
   class C = ControlFlowElement;
 
@@ -34,7 +40,7 @@ private module NearestBodyLocationInput implements NearestLocationInputSig {
     exists(Callable c |
       hasMultipleSourceLocations(c) and
       l1 = getASourceLocation(c) and
-      body = c.getBody() and
+      (body = c.getBody() or objectInitEntry(c, body)) and
       l2 = body.getLocation()
     )
   }
@@ -207,7 +213,9 @@ class DataFlowCallable extends TDataFlowCallable {
   private ControlFlow::Nodes::ElementNode getAMultiBodyEntryNode(ControlFlow::BasicBlock bb, int i) {
     this.isMultiBodied() and
     exists(ControlFlowElement body, Location l |
-      body = this.asCallable(l).getBody() and
+      body = this.asCallable(l).getBody() or
+      objectInitEntry(this.asCallable(l), body)
+    |
       NearestLocation<NearestBodyLocationInput>::nearestLocation(body, l, _) and
       result = body.getAControlFlowEntryNode()
     ) and
@@ -372,10 +380,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
     // we are not able to dispatch to a source declaration.
     exists(boolean static |
       result = this.getATarget(static) and
-      not (
-        result.applyGeneratedModel() and
-        this.hasSourceTarget()
-      )
+      if this.hasSourceTarget() then result.hasManualModel() else any()
     |
       static = false
       or

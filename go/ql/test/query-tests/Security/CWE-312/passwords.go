@@ -18,7 +18,7 @@ func redact(kind, value string) string {
 
 func test() {
 	name := "user"
-	password := "P@ssw0rd"
+	password := "P@ssw0rd" // $ Source
 	x := "horsebatterystapleincorrect"
 	var o passStruct
 
@@ -27,7 +27,7 @@ func test() {
 	log.Println(getPassword())   // $ Alert
 	log.Println(o.getPassword()) // $ Alert
 
-	myLog(password) // $ Source
+	myLog(password)
 
 	log.Panic(password) // $ Alert
 
@@ -39,16 +39,16 @@ func test() {
 	log.Println(obj1) // $ Alert
 
 	obj2 := xStruct{
-		x: password, // $ Source
+		x: password,
 	}
 	log.Println(obj2) // $ Alert
 
 	var obj3 xStruct
-	log.Println(obj3) // $ SPURIOUS: Alert // caught because of the below line and def-use flow
-	obj3.x = password // $ Source
+	log.Println(obj3)
+	obj3.x = password
 
-	fixed_password := "cowbatterystaplecorrect"
-	log.Println(fixed_password) // $ Alert // Probably OK
+	fixed_password := "cowbatterystaplecorrect" // $ Source
+	log.Println(fixed_password)                 // $ Alert // Probably OK
 
 	log.Println(IncorrectPasswordError) // OK
 
@@ -65,7 +65,8 @@ func test() {
 	log.Println(actually_secure_password)        // OK
 
 	var user1 cryptedStruct
-	user1.cryptedPassword = x
+	x2 := "perhaps sensitive"
+	user1.cryptedPassword = x2
 	log.Println(user1) // OK
 
 	var user2 passStruct
@@ -87,7 +88,7 @@ func test() {
 	}
 	log.Println(utilityObject) // $ Alert
 
-	secret := password           // $ Source
+	secret := password
 	log.Printf("pw: %s", secret) // $ Alert
 
 	log.Println("Password is: " + redact("password", password))
@@ -112,13 +113,14 @@ func test() {
 		log.Println("Password is: " + password) // $ SPURIOUS: Alert
 	}
 
-	var password1 stringable = stringable{"arstneio"}
-	log.Println(name + ", " + password1.String()) // $ Alert
+	var password1 stringable = stringable{"arstneio"} // $ Source
+	log.Println(name + ", " + password1.String())     // $ Alert
 
+	x3 := "sheepbatterystaplecorrect"
 	config := Config{
-		password: x, // $ Source
+		password: x3, // $ Source
 		hostname: "tarski",
-		x:        password,      // $ Source
+		x:        password,
 		y:        getPassword(), // $ Source
 	}
 	log.Println(config.hostname) // OK

@@ -4,11 +4,12 @@
 
 import go
 import UrlConcatenation
-import SafeUrlFlowCustomizations
+private import SafeUrlFlowCustomizations
 import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import semmle.go.dataflow.barrierguardutil.UrlCheck
 import semmle.go.dataflow.ExternalFlow
+private import semmle.go.security.Sanitizers
 
 /** Provides classes and predicates for the request forgery query. */
 module RequestForgery {
@@ -43,10 +44,10 @@ module RequestForgery {
    */
   private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
-  private class DefaultRequestForgerySink extends Sink {
+  private class ExternalRequestForgerySink extends Sink {
     string kind;
 
-    DefaultRequestForgerySink() {
+    ExternalRequestForgerySink() {
       exists(string modelKind | sinkNode(this, modelKind) |
         modelKind = "request-forgery" and kind = "URL"
         or
@@ -93,18 +94,23 @@ module RequestForgery {
     HostnameSanitizer() { hostnameSanitizingPrefixEdge(this, _) }
   }
 
+  private class ExternalRequestForgerySanitizer extends Sanitizer {
+    ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
+  }
+
   /**
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Sanitizer { }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends Sanitizer instanceof RedirectCheckBarrier {
+  }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
+  class RegexpCheckAsBarrierGuard extends Sanitizer instanceof RegexpCheckBarrier { }
 
   /**
    * An equality check comparing a data-flow node against a constant string, considered as
@@ -113,23 +119,13 @@ module RequestForgery {
    * Additionally, a check comparing `url.Hostname()` against a constant string is also
    * considered a barrier guard for `url`.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Sanitizer { }
+  class UrlCheckAsBarrierGuard extends Sanitizer instanceof UrlCheckBarrier { }
+
+  /**
+   * A simple-typed node, considered a sanitizer for request forgery.
+   */
+  private class DefaultSanitizer extends Sanitizer instanceof SimpleTypeSanitizer { }
 }
 
 /** A sink for request forgery, considered as a sink for safe URL flow. */
 private class SafeUrlSink extends SafeUrlFlow::Sink instanceof RequestForgery::Sink { }
-
-/**
- * A read of a field considered unsafe for request forgery, considered as a sanitizer for a safe
- * URL.
- */
-private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
-  UnsafeFieldReadSanitizer() {
-    exists(DataFlow::FieldReadNode frn, string name |
-      (name = "RawQuery" or name = "Fragment" or name = "User") and
-      frn.getField().hasQualifiedName("net/url", "URL")
-    |
-      this = frn.getBase()
-    )
-  }
-}

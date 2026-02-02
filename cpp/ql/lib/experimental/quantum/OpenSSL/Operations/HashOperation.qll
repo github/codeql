@@ -7,6 +7,13 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
+ * A base class for final digest operations.
+ */
+abstract class FinalDigestOperation extends OperationStep {
+  override OperationStepType getStepType() { result = FinalStep() }
+}
+
+/**
  * A call to and EVP digest initializer, such as:
  * - `EVP_DigestInit`
  * - `EVP_DigestInit_ex`
@@ -18,13 +25,13 @@ class EvpDigestInitVariantCalls extends OperationStep instanceof Call {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and
+    result.asDefiningArgument() = this.getArgument(0) and
     type = ContextIO()
   }
 
@@ -38,13 +45,13 @@ class EvpDigestUpdateCall extends OperationStep instanceof Call {
   EvpDigestUpdateCall() { this.getTarget().getName() = "EVP_DigestUpdate" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and
+    result.asDefiningArgument() = this.getArgument(0) and
     type = ContextIO()
   }
 
@@ -52,42 +59,35 @@ class EvpDigestUpdateCall extends OperationStep instanceof Call {
 }
 
 /**
- * A base class for final digest operations.
- */
-abstract class EvpFinalDigestOperationStep extends OperationStep {
-  override OperationStepType getStepType() { result = FinalStep() }
-}
-
-/**
  * A call to `EVP_Q_digest`
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  */
-class EvpQDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
+class EvpQDigestOperation extends FinalDigestOperation instanceof Call {
   EvpQDigestOperation() { this.getTarget().getName() = "EVP_Q_digest" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = PrimaryAlgorithmIO()
     or
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and
+    result.asDefiningArgument() = this.getArgument(0) and
     type = ContextIO()
     or
     result.asDefiningArgument() = this.getArgument(5) and type = DigestIO()
   }
 }
 
-class EvpDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
+class EvpDigestOperation extends FinalDigestOperation instanceof Call {
   EvpDigestOperation() { this.getTarget().getName() = "EVP_Digest" }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(4) and type = PrimaryAlgorithmIO()
+    result.asIndirectExpr() = this.getArgument(4) and type = PrimaryAlgorithmIO()
     or
-    result.asExpr() = this.getArgument(0) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
@@ -98,27 +98,28 @@ class EvpDigestOperation extends EvpFinalDigestOperationStep instanceof Call {
 /**
  * A call to EVP_DigestFinal variants
  */
-class EvpDigestFinalCall extends EvpFinalDigestOperationStep instanceof Call {
+class EvpDigestFinalCall extends FinalDigestOperation instanceof Call {
   EvpDigestFinalCall() {
     this.getTarget().getName() in ["EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"]
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and
+    result.asDefiningArgument() = this.getArgument(0) and
     type = ContextIO()
     or
     result.asDefiningArgument() = this.getArgument(1) and type = DigestIO()
+    //result.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = this.getArgument(1)
   }
 }
 
 /**
  * An openssl digest final hash operation instance
  */
-class EvpDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof EvpFinalDigestOperationStep
+class OpenSslDigestFinalOperationInstance extends Crypto::HashOperationInstance instanceof FinalDigestOperation
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result

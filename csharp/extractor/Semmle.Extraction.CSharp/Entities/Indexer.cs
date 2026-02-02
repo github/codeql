@@ -19,8 +19,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var type = Type.Create(Context, Symbol.Type);
             trapFile.indexers(this, Symbol.GetName(useMetadataName: true), ContainingType!, type.TypeRef, OriginalDefinition);
-            foreach (var l in Locations)
-                trapFile.indexer_location(this, l);
 
             var getter = BodyDeclaringSymbol.GetMethod;
             var setter = BodyDeclaringSymbol.SetMethod;
@@ -40,20 +38,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 Parameter.Create(Context, Symbol.Parameters[i], this, original);
             }
 
-            if (IsSourceDeclaration)
-            {
-                var expressionBody = ExpressionBody;
-                if (expressionBody is not null)
-                {
-                    // The expression may need to reference parameters in the getter.
-                    // So we need to arrange that the expression is populated after the getter.
-                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0).SetType(Symbol.GetAnnotatedType())));
-                }
-            }
-
             PopulateAttributes();
             PopulateModifiers(trapFile);
-            BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
                 ? Symbol.DeclaringSyntaxReferences.
@@ -68,6 +54,28 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.indexer_location, this, Locations);
+            }
+
+            if (IsSourceDeclaration)
+            {
+                var expressionBody = ExpressionBody;
+                if (expressionBody is not null)
+                {
+                    // The expression may need to reference parameters in the getter.
+                    // So we need to arrange that the expression is populated after the getter.
+                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0).SetType(Symbol.GetAnnotatedType())));
+                }
+            }
+
+            BindComments();
 
             foreach (var syntax in declSyntaxReferences)
                 TypeMention.Create(Context, syntax.Type, this, type);

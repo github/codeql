@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from SelfAttributeRead sa, int line, string g, string l
 where

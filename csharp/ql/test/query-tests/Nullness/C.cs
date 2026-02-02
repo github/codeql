@@ -74,7 +74,7 @@ public class C
 
     public void TestNull()
     {
-        object o = null;
+        object o = Maybe() ? null : new object();
         if (IsNotNull(o))
             o.ToString(); // GOOD
 

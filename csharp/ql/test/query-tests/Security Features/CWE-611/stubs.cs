@@ -1,3 +1,9 @@
-namespace System.Web;
+namespace System
+{
+    public class Uri { }
 
-public interface IHtmlString { }
+    namespace Web
+    {
+        public interface IHtmlString { }
+    }
+}

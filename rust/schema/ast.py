@@ -2,7 +2,7 @@
 
 from .prelude import *
 
-class Adt(AstNode, ):
+class TypeItem(AstNode, ):
     pass
 
 class AsmOperand(AstNode, ):
@@ -164,7 +164,7 @@ class CastExpr(Expr, ):
 
 class ClosureExpr(Expr, ):
     attrs: list["Attr"] | child
-    body: optional["Expr"] | child
+    closure_body: optional["Expr"] | child
     for_binder: optional["ForBinder"] | child
     is_async: predicate
     is_const: predicate
@@ -206,7 +206,7 @@ class ContinueExpr(Expr, ):
 class DynTraitTypeRepr(TypeRepr, ):
     type_bound_list: optional["TypeBoundList"] | child
 
-class Enum(Adt, Item, ):
+class Enum(TypeItem, Item, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
@@ -241,7 +241,7 @@ class FieldExpr(Expr, ):
 class Function(AssocItem, ExternItem, Item, ):
     abi: optional["Abi"] | child
     attrs: list["Attr"] | child
-    body: optional["BlockExpr"] | child
+    function_body: optional["BlockExpr"] | child
     generic_param_list: optional["GenericParamList"] | child
     is_async: predicate
     is_const: predicate
@@ -623,7 +623,7 @@ class StmtList(AstNode, ):
     statements: list["Stmt"] | child
     tail_expr: optional["Expr"] | child
 
-class Struct(Adt, Item, ):
+class Struct(TypeItem, Item, ):
     attrs: list["Attr"] | child
     field_list: optional["FieldList"] | child
     generic_param_list: optional["GenericParamList"] | child
@@ -712,7 +712,7 @@ class TypeParam(GenericParam, ):
 class UnderscoreExpr(Expr, ):
     attrs: list["Attr"] | child
 
-class Union(Adt, Item, ):
+class Union(TypeItem, Item, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child

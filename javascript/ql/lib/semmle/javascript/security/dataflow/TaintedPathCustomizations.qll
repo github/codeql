@@ -194,6 +194,7 @@ module TaintedPath {
      * There are currently four flow labels, representing the different combinations of
      * normalization and absoluteness.
      */
+    overlay[global]
     abstract class PosixPath extends DataFlow::FlowLabel {
       Normalization normalization;
       Relativeness relativeness;
@@ -1121,6 +1122,6 @@ module TaintedPath {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "path-injection") }
   }
 }

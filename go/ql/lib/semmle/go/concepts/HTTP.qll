@@ -320,11 +320,11 @@ module Http {
       )
     }
 
-    private class DefaultHttpRedirect extends Range, DataFlow::CallNode {
+    private class ExternalHttpRedirect extends Range, DataFlow::CallNode {
       DataFlow::ArgumentNode url;
       int rw;
 
-      DefaultHttpRedirect() {
+      ExternalHttpRedirect() {
         this = url.getCall() and
         exists(string kind |
           sinkKindInfo(kind, rw) and
@@ -379,5 +379,97 @@ module Http {
   class RequestHandler extends DataFlow::Node instanceof RequestHandler::Range {
     /** Gets a node that is used in a check that is tested before this handler is run. */
     predicate guardedBy(DataFlow::Node check) { super.guardedBy(check) }
+  }
+
+  /** Provides a class for modeling new HTTP response cookie write APIs. */
+  module CookieWrite {
+    /**
+     * A write of an HTTP Cookie to an HTTP response.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::CookieWrite` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the name of the cookie written. */
+      abstract DataFlow::Node getName();
+
+      /** Gets the value of the cookie written. */
+      abstract DataFlow::Node getValue();
+
+      /** Gets the `Secure` attribute of the cookie written. */
+      abstract DataFlow::Node getSecure();
+
+      /** Gets the `HttpOnly` attribute of the cookie written. */
+      abstract DataFlow::Node getHttpOnly();
+    }
+  }
+
+  /**
+   * A write of an HTTP Cookie to an HTTP response.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `HTTP::CookieWrite::Range` instead.
+   */
+  class CookieWrite extends DataFlow::Node instanceof CookieWrite::Range {
+    /** Gets the name of the cookie written. */
+    DataFlow::Node getName() { result = super.getName() }
+
+    /** Gets the value of the cookie written. */
+    DataFlow::Node getValue() { result = super.getValue() }
+
+    /** Gets the `Secure` attribute of the cookie written. */
+    DataFlow::Node getSecure() { result = super.getSecure() }
+
+    /** Gets the `HttpOnly` attribute of the cookie written. */
+    DataFlow::Node getHttpOnly() { result = super.getHttpOnly() }
+  }
+
+  /** Provides a class for modeling the new APIs for writes to options of an HTTP cookie. */
+  module CookieOptionWrite {
+    /**
+     * A write to an option of an HTTP cookie object.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `HTTP::CookieOptionWrite` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /** Gets the node representing the cookie object for the options being set. */
+      abstract DataFlow::Node getCookieOutput();
+
+      /** Gets the name of the cookie represented, if any. */
+      abstract DataFlow::Node getName();
+
+      /** Gets the value of the cookie represented, if any. */
+      abstract DataFlow::Node getValue();
+
+      /** Gets the `Secure` attribute of the cookie represented, if any. */
+      abstract DataFlow::Node getSecure();
+
+      /** Gets the `HttpOnly` attribute of the cookie represented, if any. */
+      abstract DataFlow::Node getHttpOnly();
+    }
+  }
+
+  /**
+   * A write to an option of an HTTP cookie object.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `HTTP::CookieOptionWrite::Range` instead.
+   */
+  class CookieOptionWrite extends DataFlow::Node instanceof CookieOptionWrite::Range {
+    /** Gets the node representing the cookie object for the options being set. */
+    DataFlow::Node getCookieOutput() { result = super.getCookieOutput() }
+
+    /** Gets the name of the cookie represented, if any. */
+    DataFlow::Node getName() { result = super.getName() }
+
+    /** Gets the value of the cookie represented, if any. */
+    DataFlow::Node getValue() { result = super.getValue() }
+
+    /** Gets the `Secure` attribute of the cookie represented, if any. */
+    DataFlow::Node getSecure() { result = super.getSecure() }
+
+    /** Gets the `HttpOnly` attribute of the cookie represented, if any. */
+    DataFlow::Node getHttpOnly() { result = super.getHttpOnly() }
   }
 }

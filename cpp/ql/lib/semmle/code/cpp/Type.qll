@@ -802,15 +802,6 @@ private predicate floatingPointTypeMapping(
   // _Complex __float128
   kind = 39 and base = 2 and domain = TComplexDomain() and realKind = 38 and extended = false
   or
-  // _Decimal32
-  kind = 40 and base = 10 and domain = TRealDomain() and realKind = 40 and extended = false
-  or
-  // _Decimal64
-  kind = 41 and base = 10 and domain = TRealDomain() and realKind = 41 and extended = false
-  or
-  // _Decimal128
-  kind = 42 and base = 10 and domain = TRealDomain() and realKind = 42 and extended = false
-  or
   // _Float32
   kind = 45 and base = 2 and domain = TRealDomain() and realKind = 45 and extended = false
   or
@@ -871,9 +862,8 @@ private predicate floatingPointTypeMapping(
 
 /**
  * The C/C++ floating point types. See 4.5.  This includes `float`, `double` and `long double`, the
- * fixed-size floating-point types like `_Float32`, the extended-precision floating-point types like
- * `_Float64x`, and the decimal floating-point types like `_Decimal32`. It also includes the complex
- * and imaginary versions of all of these types.
+ * fixed-size floating-point types like `_Float32`, and the extended-precision floating-point types
+ * like `_Float64x`. It also includes the complex and imaginary versions of all of these types.
  */
 class FloatingPointType extends ArithmeticType {
   final int base;
@@ -989,42 +979,6 @@ class Float128Type extends RealNumberType, BinaryFloatingPointType {
   Float128Type() { builtintypes(underlyingElement(this), _, 38, _, _, _) }
 
   override string getAPrimaryQlClass() { result = "Float128Type" }
-}
-
-/**
- * The GNU C `_Decimal32` primitive type.  This is not standard C/C++.
- * ```
- * _Decimal32 d32;
- * ```
- */
-class Decimal32Type extends RealNumberType, DecimalFloatingPointType {
-  Decimal32Type() { builtintypes(underlyingElement(this), _, 40, _, _, _) }
-
-  override string getAPrimaryQlClass() { result = "Decimal32Type" }
-}
-
-/**
- * The GNU C `_Decimal64` primitive type.  This is not standard C/C++.
- * ```
- * _Decimal64 d64;
- * ```
- */
-class Decimal64Type extends RealNumberType, DecimalFloatingPointType {
-  Decimal64Type() { builtintypes(underlyingElement(this), _, 41, _, _, _) }
-
-  override string getAPrimaryQlClass() { result = "Decimal64Type" }
-}
-
-/**
- * The GNU C `_Decimal128` primitive type.  This is not standard C/C++.
- * ```
- * _Decimal128 d128;
- * ```
- */
-class Decimal128Type extends RealNumberType, DecimalFloatingPointType {
-  Decimal128Type() { builtintypes(underlyingElement(this), _, 42, _, _, _) }
-
-  override string getAPrimaryQlClass() { result = "Decimal128Type" }
 }
 
 /**
@@ -1146,7 +1100,7 @@ class DerivedType extends Type, @derivedtype {
  * decltype(a) b;
  * ```
  */
-class Decltype extends Type {
+class Decltype extends Type, NameQualifyingElement {
   Decltype() { decltypes(underlyingElement(this), _, 0, _, _) }
 
   override string getAPrimaryQlClass() { result = "Decltype" }
@@ -1187,7 +1141,7 @@ class Decltype extends Type {
 
   override string toString() { result = "decltype(...)" }
 
-  override string getName() { none() }
+  override string getName() { result = "decltype(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -1247,7 +1201,7 @@ class TypeofType extends Type {
 
   override string toString() { result = "typeof(...)" }
 
-  override string getName() { none() }
+  override string getName() { result = "typeof(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 
@@ -1311,8 +1265,6 @@ class TypeofTypeType extends TypeofType {
   Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
 
   override string getAPrimaryQlClass() { result = "TypeofTypeType" }
-
-  override string toString() { result = "typeof(...)" }
 }
 
 /**
@@ -1394,7 +1346,7 @@ class IntrinsicTransformedType extends Type {
 
   override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
 
-  override string getName() { none() }
+  override string getName() { result = this.getIntrinsicName() + "(...)" }
 
   override int getSize() { result = this.getBaseType().getSize() }
 

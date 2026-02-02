@@ -63,7 +63,6 @@ ql/javascript/ql/src/LanguageFeatures/SemicolonInsertion.ql
 ql/javascript/ql/src/LanguageFeatures/SetterReturn.ql
 ql/javascript/ql/src/LanguageFeatures/SpuriousArguments.ql
 ql/javascript/ql/src/LanguageFeatures/StrictModeCallStackIntrospection.ql
-ql/javascript/ql/src/LanguageFeatures/SyntaxError.ql
 ql/javascript/ql/src/LanguageFeatures/TemplateSyntaxInStringLiteral.ql
 ql/javascript/ql/src/LanguageFeatures/ThisBeforeSuper.ql
 ql/javascript/ql/src/LanguageFeatures/UnusedIndexVariable.ql

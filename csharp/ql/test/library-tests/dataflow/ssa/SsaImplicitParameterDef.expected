@@ -28,9 +28,6 @@
 | OutRef.cs:39:35:39:35 | j | OutRef.cs:39:35:39:35 | SSA param(j) | OutRef.cs:39:35:39:35 | j |
 | Properties.cs:61:23:61:23 | i | Properties.cs:61:23:61:23 | SSA param(i) | Properties.cs:61:23:61:23 | i |
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | SSA param(p) | Properties.cs:106:37:106:37 | p |
-| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | SSA param(b) | Splitting.cs:3:18:3:18 | b |
-| Splitting.cs:22:18:22:18 | b | Splitting.cs:22:18:22:18 | SSA param(b) | Splitting.cs:22:18:22:18 | b |
-| Splitting.cs:42:18:42:18 | b | Splitting.cs:42:18:42:18 | SSA param(b) | Splitting.cs:42:18:42:18 | b |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | SSA param(param1) | Test.cs:5:15:5:20 | param1 |
 | Test.cs:5:67:5:72 | param2 | Test.cs:5:67:5:72 | SSA param(param2) | Test.cs:5:67:5:72 | param2 |
 | Test.cs:46:16:46:18 | in | Test.cs:46:16:46:18 | SSA param(in) | Test.cs:46:16:46:18 | in |

@@ -21,6 +21,8 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonObject", False, "Insert", "(System.Int32,System.String,System.Text.Json.Nodes.JsonNode)", "", "Argument[this]", "Argument[2]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", False, "SetAt", "(System.Int32,System.String,System.Text.Json.Nodes.JsonNode)", "", "Argument[this]", "Argument[2]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", False, "SetAt", "(System.Int32,System.Text.Json.Nodes.JsonNode)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonObject", False, "TryAdd", "(System.String,System.Text.Json.Nodes.JsonNode)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonObject", False, "TryAdd", "(System.String,System.Text.Json.Nodes.JsonNode,System.Int32)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonValue", False, "Create<T>", "(T,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Nullable<System.Text.Json.Nodes.JsonNodeOptions>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonValue", True, "TryGetValue<T>", "(T)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
   - addsTo:
@@ -64,6 +66,7 @@ extensions:
       - ["System.Text.Json.Nodes", "JsonObject", "Remove", "(System.String)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", "RemoveAt", "(System.Int32)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", "TryGetPropertyValue", "(System.String,System.Text.Json.Nodes.JsonNode)", "summary", "df-generated"]
+      - ["System.Text.Json.Nodes", "JsonObject", "TryGetPropertyValue", "(System.String,System.Text.Json.Nodes.JsonNode,System.Int32)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", "TryGetValue", "(System.String,System.Text.Json.Nodes.JsonNode)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", "WriteTo", "(System.Text.Json.Utf8JsonWriter,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Text.Json.Nodes", "JsonObject", "get_Count", "()", "summary", "df-generated"]

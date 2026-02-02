@@ -62,11 +62,13 @@ private Class getRootType(FieldAccess fa) {
  * unspecified type of `v` is a `ReferenceType`.
  */
 private int getVariableSize(Variable v) {
-  exists(Type t |
-    t = v.getUnspecifiedType() and
-    not t instanceof ReferenceType and
-    result = t.getSize()
-  )
+  result =
+    unique(Type t |
+      t = v.getUnspecifiedType() and
+      not t instanceof ReferenceType
+    |
+      t.getSize()
+    )
 }
 
 /**
@@ -79,30 +81,32 @@ private int getSize(VariableAccess va) {
     not v instanceof Field and
     result = getVariableSize(v)
     or
-    exists(Class c, int trueSize |
-      // Otherwise, we find the "outermost" object and compute the size
-      // as the difference between the size of the type of the "outermost
-      // object" and the offset of the field relative to that type.
-      // For example, consider the following structs:
-      // ```
-      // struct S {
-      //   uint32_t x;
-      //   uint32_t y;
-      // };
-      // struct S2 {
-      //   S s;
-      //   uint32_t z;
-      // };
-      // ```
-      // Given an object `S2 s2` the size of the buffer `&s2.s.y`
-      // is the size of the base object type (i.e., `S2`) minutes the offset
-      // of `y` relative to the type `S2` (i.e., `4`). So the size of the
-      // buffer is `12 - 4 = 8`.
-      c = getRootType(va) and
-      // we calculate the size based on the last field, to avoid including any padding after it
-      trueSize = max(Field f | | f.getOffsetInClass(c) + getVariableSize(f)) and
-      result = trueSize - v.(Field).getOffsetInClass(c)
-    )
+    result =
+      unique(Class c, int trueSize |
+        // Otherwise, we find the "outermost" object and compute the size
+        // as the difference between the size of the type of the "outermost
+        // object" and the offset of the field relative to that type.
+        // For example, consider the following structs:
+        // ```
+        // struct S {
+        //   uint32_t x;
+        //   uint32_t y;
+        // };
+        // struct S2 {
+        //   S s;
+        //   uint32_t z;
+        // };
+        // ```
+        // Given an object `S2 s2` the size of the buffer `&s2.s.y`
+        // is the size of the base object type (i.e., `S2`) minus the offset
+        // of `y` relative to the type `S2` (i.e., `4`). So the size of the
+        // buffer is `12 - 4 = 8`.
+        c = getRootType(va) and
+        // we calculate the size based on the last field, to avoid including any padding after it
+        trueSize = max(Field f | | f.getOffsetInClass(c) + getVariableSize(f))
+      |
+        trueSize - v.(Field).getOffsetInClass(c)
+      )
   )
 }
 
@@ -116,12 +120,8 @@ private int isSource(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     // buffer is a fixed size array
     exists(bufferVar.getUnspecifiedType().(ArrayType).getSize()) and
-    result =
-      unique(int size | // more generous than .getSize() itself, when the array is a class field or similar.
-        size = getSize(bufferExpr)
-      |
-        size
-      ) and
+    // more generous than .getSize() itself, when the array is a class field or similar.
+    result = getSize(bufferExpr) and
     why = bufferVar and
     not memberMayBeVarSize(_, bufferVar) and
     not exists(BuiltInOperationBuiltInOffsetOf offsetof | offsetof.getAChild*() = bufferExpr) and

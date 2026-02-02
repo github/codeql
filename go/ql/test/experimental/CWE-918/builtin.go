@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 
@@ -16,10 +17,10 @@ import (
 )
 
 func handler(w http.ResponseWriter, req *http.Request) {
-	target := req.FormValue("target")
+	target := req.FormValue("target") // $ Source
 
 	// BAD: `target` is controlled by the attacker
-	_, err := http.Get("https://" + target + ".example.com/data/")
+	_, err := http.Get("https://" + target + ".example.com/data/") // $ Alert
 	if err != nil {
 		// error handling
 	}
@@ -80,12 +81,12 @@ func test() {
 
 	// x net websocket dial bad
 	http.HandleFunc("/ex2", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		origin := "http://localhost/"
 
 		// bad as input is directly passed to dial function
-		ws, _ := websocket.Dial(untrustedInput, "", origin) // SSRF
+		ws, _ := websocket.Dial(untrustedInput, "", origin) // $ Alert
 		var msg = make([]byte, 512)
 		var n int
 		n, _ = ws.Read(msg)
@@ -94,12 +95,12 @@ func test() {
 
 	// x net websocket dialConfig bad
 	http.HandleFunc("/ex3", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		origin := "http://localhost/"
 		// bad as input is directly used
-		config, _ := websocket.NewConfig(untrustedInput, origin) // SSRF
-		ws2, _ := websocket.DialConfig(config)
+		config, _ := websocket.NewConfig(untrustedInput, origin) // $ Sink
+		ws2, _ := websocket.DialConfig(config)                   // $ Alert
 		var msg = make([]byte, 512)
 		var n int
 		n, _ = ws2.Read(msg)
@@ -108,10 +109,10 @@ func test() {
 
 	// gorilla websocket Dialer.Dial bad
 	http.HandleFunc("/ex6", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		dialer := gorilla.Dialer{}
-		dialer.Dial(untrustedInput, r.Header) //SSRF
+		dialer.Dial(untrustedInput, r.Header) // $ Alert
 	})
 
 	// gorilla websocket Dialer.Dial good
@@ -126,10 +127,10 @@ func test() {
 
 	// gorilla websocket Dialer.DialContext bad
 	http.HandleFunc("/ex8", func(w http.ResponseWriter, r *http.Request) {
-		untrustedInput := r.Referer()
+		untrustedInput := r.Referer() // $ Source
 
 		dialer := gorilla.Dialer{}
-		dialer.DialContext(context.TODO(), untrustedInput, r.Header) //SSRF
+		dialer.DialContext(context.TODO(), untrustedInput, r.Header) // $ Alert
 	})
 
 	// gorilla websocket Dialer.DialContext good
@@ -144,4 +145,17 @@ func test() {
 
 	log.Println(http.ListenAndServe(":80", nil))
 
+}
+
+func handler2(w http.ResponseWriter, req *http.Request) {
+	unsafehost := req.FormValue("host") // $ Source
+
+	url, _ := url.Parse("http://example.com/data")
+	url.Host = unsafehost
+	// BAD: `target` is controlled by the attacker
+	_, err := http.Get(url.String()) // $ Alert
+	if err != nil {
+		// error handling
+	}
+	// process request response
 }

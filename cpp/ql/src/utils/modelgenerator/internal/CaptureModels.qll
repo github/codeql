@@ -78,7 +78,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
 {
   private module DataFlow = Df::DataFlow;
 
-  class Type = DataFlowPrivate::DataFlowType;
+  class Type = Cpp::Type;
 
   // Note: This also includes `this`
   class Parameter = DataFlow::ParameterNode;
@@ -190,7 +190,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
   predicate isRelevantType(Type t) { any() }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
-    result = c.(DataFlow::FieldContent).getField().getUnspecifiedType() or
+    result = c.(DataFlow::NonUnionFieldContent).getField().getUnspecifiedType() or
     result = c.(DataFlow::UnionContent).getUnion().getUnspecifiedType()
   }
 
@@ -310,7 +310,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   }
 
   private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.hasManualModel()) or
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
   }
 
@@ -340,12 +340,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
     )
   }
 
-  predicate isField(DataFlow::ContentSet cs) {
-    exists(DataFlow::Content c | cs.isSingleton(c) |
-      c instanceof DataFlow::FieldContent or
-      c instanceof DataFlow::UnionContent
-    )
-  }
+  predicate isField(DataFlow::ContentSet cs) { cs.isSingleton(any(DataFlow::FieldContent fc)) }
 
   predicate isCallback(DataFlow::ContentSet c) { none() }
 

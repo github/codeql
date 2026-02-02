@@ -34,6 +34,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   codeql::EnumDecl translateEnumDecl(const swift::EnumDecl& decl);
   codeql::ProtocolDecl translateProtocolDecl(const swift::ProtocolDecl& decl);
   codeql::EnumCaseDecl translateEnumCaseDecl(const swift::EnumCaseDecl& decl);
+  codeql::UsingDecl translateUsingDecl(const swift::UsingDecl& decl);
   codeql::EnumElementDecl translateEnumElementDecl(const swift::EnumElementDecl& decl);
   codeql::GenericTypeParamDecl translateGenericTypeParamDecl(
       const swift::GenericTypeParamDecl& decl);
@@ -45,7 +46,6 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
   codeql::ModuleDecl translateModuleDecl(const swift::ModuleDecl& decl);
   codeql::OpaqueTypeDecl translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl);
-  codeql::PoundDiagnosticDecl translatePoundDiagnosticDecl(const swift::PoundDiagnosticDecl& decl);
   codeql::MissingMemberDecl translateMissingMemberDecl(const swift::MissingMemberDecl& decl);
   codeql::CapturedDecl translateCapturedValue(const swift::CapturedValue& capture);
   codeql::MacroDecl translateMacroDecl(const swift::MacroDecl& decl);

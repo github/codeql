@@ -6,18 +6,18 @@
 | contenttype.go:79:11:79:14 | data | contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:73:10:73:28 | call to FormValue | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
 | contenttype.go:91:4:91:7 | data | contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:88:10:88:28 | call to FormValue | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
 | contenttype.go:114:50:114:53 | data | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | Cross-site scripting vulnerability due to $@. | contenttype.go:113:10:113:28 | call to FormValue | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
-| reflectedxsstest.go:33:10:33:57 | type conversion | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:33:10:33:57 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
-| reflectedxsstest.go:34:10:34:62 | type conversion | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:10:34:62 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
+| reflectedxsstest.go:33:10:33:57 | type conversion | reflectedxsstest.go:30:2:30:44 | ... := ...[0] | reflectedxsstest.go:33:10:33:57 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:30:2:30:44 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
+| reflectedxsstest.go:34:10:34:62 | type conversion | reflectedxsstest.go:30:2:30:44 | ... := ...[1] | reflectedxsstest.go:34:10:34:62 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:30:2:30:44 | ... := ...[1] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | reflectedxsstest.go:44:10:44:55 | type conversion | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:44:10:44:55 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | reflectedxsstest.go:45:10:45:18 | byteSlice | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:45:10:45:18 | byteSlice | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | reflectedxsstest.go:54:11:54:21 | type conversion | reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:54:11:54:21 | type conversion | Cross-site scripting vulnerability due to $@. | reflectedxsstest.go:51:14:51:18 | selection of URL | user-provided value | reflectedxsstest.go:0:0:0:0 | reflectedxsstest.go |  |
 | tst.go:18:12:18:39 | type conversion | tst.go:14:15:14:20 | selection of Form | tst.go:18:12:18:39 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:14:15:14:20 | selection of Form | user-provided value | tst.go:0:0:0:0 | tst.go |  |
 | tst.go:53:12:53:26 | type conversion | tst.go:48:14:48:19 | selection of Form | tst.go:53:12:53:26 | type conversion | Cross-site scripting vulnerability due to $@. | tst.go:48:14:48:19 | selection of Form | user-provided value | tst.go:0:0:0:0 | tst.go |  |
-| websocketXss.go:32:24:32:27 | xnet | websocketXss.go:30:7:30:10 | definition of xnet | websocketXss.go:32:24:32:27 | xnet | Cross-site scripting vulnerability due to $@. | websocketXss.go:30:7:30:10 | definition of xnet | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
-| websocketXss.go:36:24:36:28 | xnet2 | websocketXss.go:34:3:34:7 | definition of xnet2 | websocketXss.go:36:24:36:28 | xnet2 | Cross-site scripting vulnerability due to $@. | websocketXss.go:34:3:34:7 | definition of xnet2 | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
+| websocketXss.go:32:24:32:27 | xnet | websocketXss.go:31:11:31:14 | xnet [postupdate] | websocketXss.go:32:24:32:27 | xnet | Cross-site scripting vulnerability due to $@. | websocketXss.go:31:11:31:14 | xnet [postupdate] | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
+| websocketXss.go:36:24:36:28 | xnet2 | websocketXss.go:35:21:35:25 | xnet2 [postupdate] | websocketXss.go:36:24:36:28 | xnet2 | Cross-site scripting vulnerability due to $@. | websocketXss.go:35:21:35:25 | xnet2 [postupdate] | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
 | websocketXss.go:41:24:41:29 | nhooyr | websocketXss.go:40:3:40:40 | ... := ...[1] | websocketXss.go:41:24:41:29 | nhooyr | Cross-site scripting vulnerability due to $@. | websocketXss.go:40:3:40:40 | ... := ...[1] | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
-| websocketXss.go:48:24:48:33 | gorillaMsg | websocketXss.go:46:7:46:16 | definition of gorillaMsg | websocketXss.go:48:24:48:33 | gorillaMsg | Cross-site scripting vulnerability due to $@. | websocketXss.go:46:7:46:16 | definition of gorillaMsg | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
-| websocketXss.go:52:24:52:31 | gorilla2 | websocketXss.go:50:3:50:10 | definition of gorilla2 | websocketXss.go:52:24:52:31 | gorilla2 | Cross-site scripting vulnerability due to $@. | websocketXss.go:50:3:50:10 | definition of gorilla2 | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
+| websocketXss.go:48:24:48:33 | gorillaMsg | websocketXss.go:47:26:47:35 | gorillaMsg [postupdate] | websocketXss.go:48:24:48:33 | gorillaMsg | Cross-site scripting vulnerability due to $@. | websocketXss.go:47:26:47:35 | gorillaMsg [postupdate] | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
+| websocketXss.go:52:24:52:31 | gorilla2 | websocketXss.go:51:17:51:24 | gorilla2 [postupdate] | websocketXss.go:52:24:52:31 | gorilla2 | Cross-site scripting vulnerability due to $@. | websocketXss.go:51:17:51:24 | gorilla2 [postupdate] | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
 | websocketXss.go:55:24:55:31 | gorilla3 | websocketXss.go:54:3:54:38 | ... := ...[1] | websocketXss.go:55:24:55:31 | gorilla3 | Cross-site scripting vulnerability due to $@. | websocketXss.go:54:3:54:38 | ... := ...[1] | user-provided value | websocketXss.go:0:0:0:0 | websocketXss.go |  |
 edges
 | ReflectedXss.go:11:15:11:20 | selection of Form | ReflectedXss.go:11:15:11:36 | call to Get | provenance | Src:MaD:6 MaD:18 |
@@ -30,10 +30,11 @@ edges
 | contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data | provenance | Src:MaD:8  |
 | contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data | provenance | Src:MaD:8  |
 | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data | provenance | Src:MaD:8  |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:30:32:33 | file | provenance | Src:MaD:7  |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename | provenance | Src:MaD:7  |
-| reflectedxsstest.go:32:2:32:34 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
-| reflectedxsstest.go:32:30:32:33 | file | reflectedxsstest.go:32:2:32:34 | ... := ...[0] | provenance | MaD:13 |
+| reflectedxsstest.go:30:2:30:44 | ... := ...[0] | reflectedxsstest.go:31:30:31:33 | file | provenance | Src:MaD:7  |
+| reflectedxsstest.go:30:2:30:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename | provenance | Src:MaD:7  |
+| reflectedxsstest.go:31:2:31:34 | ... := ...[0] | reflectedxsstest.go:32:48:32:54 | content | provenance |  |
+| reflectedxsstest.go:31:30:31:33 | file | reflectedxsstest.go:31:2:31:34 | ... := ...[0] | provenance | MaD:13 |
+| reflectedxsstest.go:32:48:32:54 | content | reflectedxsstest.go:33:49:33:55 | content | provenance |  |
 | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion | provenance |  |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | provenance |  |
@@ -48,8 +49,8 @@ edges
 | reflectedxsstest.go:39:16:39:21 | reader | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | provenance | MaD:16 |
 | reflectedxsstest.go:40:14:40:17 | part | reflectedxsstest.go:40:14:40:28 | call to FileName | provenance | MaD:15 |
 | reflectedxsstest.go:40:14:40:28 | call to FileName | reflectedxsstest.go:44:46:44:53 | partName | provenance |  |
-| reflectedxsstest.go:41:2:41:10 | definition of byteSlice | reflectedxsstest.go:45:10:45:18 | byteSlice | provenance |  |
-| reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | provenance | MaD:14 |
+| reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:42:12:42:20 | byteSlice [postupdate] | provenance | MaD:14 |
+| reflectedxsstest.go:42:12:42:20 | byteSlice [postupdate] | reflectedxsstest.go:45:10:45:18 | byteSlice | provenance |  |
 | reflectedxsstest.go:44:17:44:54 | []type{args} [array] | reflectedxsstest.go:44:17:44:54 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:44:17:44:54 | call to Sprintf | reflectedxsstest.go:44:10:44:55 | type conversion | provenance |  |
 | reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | []type{args} [array] | provenance |  |
@@ -62,11 +63,11 @@ edges
 | tst.go:18:32:18:32 | a | tst.go:18:19:18:38 | call to Join | provenance | MaD:19 |
 | tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:34 | call to Get | provenance | Src:MaD:6 MaD:18 |
 | tst.go:48:14:48:34 | call to Get | tst.go:53:12:53:26 | type conversion | provenance |  |
-| websocketXss.go:30:7:30:10 | definition of xnet | websocketXss.go:32:24:32:27 | xnet | provenance | Src:MaD:5  |
-| websocketXss.go:34:3:34:7 | definition of xnet2 | websocketXss.go:36:24:36:28 | xnet2 | provenance | Src:MaD:4  |
+| websocketXss.go:31:11:31:14 | xnet [postupdate] | websocketXss.go:32:24:32:27 | xnet | provenance | Src:MaD:5  |
+| websocketXss.go:35:21:35:25 | xnet2 [postupdate] | websocketXss.go:36:24:36:28 | xnet2 | provenance | Src:MaD:4  |
 | websocketXss.go:40:3:40:40 | ... := ...[1] | websocketXss.go:41:24:41:29 | nhooyr | provenance | Src:MaD:11  |
-| websocketXss.go:46:7:46:16 | definition of gorillaMsg | websocketXss.go:48:24:48:33 | gorillaMsg | provenance | Src:MaD:1  |
-| websocketXss.go:50:3:50:10 | definition of gorilla2 | websocketXss.go:52:24:52:31 | gorilla2 | provenance | Src:MaD:2  |
+| websocketXss.go:47:26:47:35 | gorillaMsg [postupdate] | websocketXss.go:48:24:48:33 | gorillaMsg | provenance | Src:MaD:1  |
+| websocketXss.go:51:17:51:24 | gorilla2 [postupdate] | websocketXss.go:52:24:52:31 | gorilla2 | provenance | Src:MaD:2  |
 | websocketXss.go:54:3:54:38 | ... := ...[1] | websocketXss.go:55:24:55:31 | gorilla3 | provenance | Src:MaD:3  |
 models
 | 1 | Source: github.com/gorilla/websocket; ; false; ReadJSON; ; ; Argument[1]; remote; manual |
@@ -106,10 +107,11 @@ nodes
 | contenttype.go:91:4:91:7 | data | semmle.label | data |
 | contenttype.go:113:10:113:28 | call to FormValue | semmle.label | call to FormValue |
 | contenttype.go:114:50:114:53 | data | semmle.label | data |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[0] | semmle.label | ... := ...[0] |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[1] | semmle.label | ... := ...[1] |
-| reflectedxsstest.go:32:2:32:34 | ... := ...[0] | semmle.label | ... := ...[0] |
-| reflectedxsstest.go:32:30:32:33 | file | semmle.label | file |
+| reflectedxsstest.go:30:2:30:44 | ... := ...[0] | semmle.label | ... := ...[0] |
+| reflectedxsstest.go:30:2:30:44 | ... := ...[1] | semmle.label | ... := ...[1] |
+| reflectedxsstest.go:31:2:31:34 | ... := ...[0] | semmle.label | ... := ...[0] |
+| reflectedxsstest.go:31:30:31:33 | file | semmle.label | file |
+| reflectedxsstest.go:32:48:32:54 | content | semmle.label | content |
 | reflectedxsstest.go:33:10:33:57 | type conversion | semmle.label | type conversion |
 | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | semmle.label | []type{args} [array] |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | semmle.label | call to Sprintf |
@@ -123,8 +125,8 @@ nodes
 | reflectedxsstest.go:39:16:39:21 | reader | semmle.label | reader |
 | reflectedxsstest.go:40:14:40:17 | part | semmle.label | part |
 | reflectedxsstest.go:40:14:40:28 | call to FileName | semmle.label | call to FileName |
-| reflectedxsstest.go:41:2:41:10 | definition of byteSlice | semmle.label | definition of byteSlice |
 | reflectedxsstest.go:42:2:42:5 | part | semmle.label | part |
+| reflectedxsstest.go:42:12:42:20 | byteSlice [postupdate] | semmle.label | byteSlice [postupdate] |
 | reflectedxsstest.go:44:10:44:55 | type conversion | semmle.label | type conversion |
 | reflectedxsstest.go:44:17:44:54 | []type{args} [array] | semmle.label | []type{args} [array] |
 | reflectedxsstest.go:44:17:44:54 | call to Sprintf | semmle.label | call to Sprintf |
@@ -141,16 +143,25 @@ nodes
 | tst.go:48:14:48:19 | selection of Form | semmle.label | selection of Form |
 | tst.go:48:14:48:34 | call to Get | semmle.label | call to Get |
 | tst.go:53:12:53:26 | type conversion | semmle.label | type conversion |
-| websocketXss.go:30:7:30:10 | definition of xnet | semmle.label | definition of xnet |
+| websocketXss.go:31:11:31:14 | xnet [postupdate] | semmle.label | xnet [postupdate] |
 | websocketXss.go:32:24:32:27 | xnet | semmle.label | xnet |
-| websocketXss.go:34:3:34:7 | definition of xnet2 | semmle.label | definition of xnet2 |
+| websocketXss.go:35:21:35:25 | xnet2 [postupdate] | semmle.label | xnet2 [postupdate] |
 | websocketXss.go:36:24:36:28 | xnet2 | semmle.label | xnet2 |
 | websocketXss.go:40:3:40:40 | ... := ...[1] | semmle.label | ... := ...[1] |
 | websocketXss.go:41:24:41:29 | nhooyr | semmle.label | nhooyr |
-| websocketXss.go:46:7:46:16 | definition of gorillaMsg | semmle.label | definition of gorillaMsg |
+| websocketXss.go:47:26:47:35 | gorillaMsg [postupdate] | semmle.label | gorillaMsg [postupdate] |
 | websocketXss.go:48:24:48:33 | gorillaMsg | semmle.label | gorillaMsg |
-| websocketXss.go:50:3:50:10 | definition of gorilla2 | semmle.label | definition of gorilla2 |
+| websocketXss.go:51:17:51:24 | gorilla2 [postupdate] | semmle.label | gorilla2 [postupdate] |
 | websocketXss.go:52:24:52:31 | gorilla2 | semmle.label | gorilla2 |
 | websocketXss.go:54:3:54:38 | ... := ...[1] | semmle.label | ... := ...[1] |
 | websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 subpaths
+testFailures
+| websocketXss.go:30:32:30:60 | comment | Missing result: Source[go/reflected-xss] |
+| websocketXss.go:31:11:31:14 | xnet [postupdate] | Unexpected result: Source |
+| websocketXss.go:34:30:34:58 | comment | Missing result: Source[go/reflected-xss] |
+| websocketXss.go:35:21:35:25 | xnet2 [postupdate] | Unexpected result: Source |
+| websocketXss.go:46:38:46:66 | comment | Missing result: Source[go/reflected-xss] |
+| websocketXss.go:47:26:47:35 | gorillaMsg [postupdate] | Unexpected result: Source |
+| websocketXss.go:50:33:50:61 | comment | Missing result: Source[go/reflected-xss] |
+| websocketXss.go:51:17:51:24 | gorilla2 [postupdate] | Unexpected result: Source |

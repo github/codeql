@@ -19,7 +19,7 @@ predicate isConstantExp(Expr e) {
   // A literal is constant.
   e instanceof Literal
   or
-  e instanceof TypeAccess and not e.(TypeAccess).getType() instanceof ErrorType
+  e instanceof TypeAccess
   or
   e instanceof ArrayTypeAccess
   or
@@ -53,6 +53,7 @@ predicate isConstantExp(Expr e) {
 from Expr e
 where
   isConstantExp(e) and
+  not e.(TypeAccess).getType() instanceof ErrorType and
   exists(Expr child | e.getAChildExpr() = child |
     not isConstantExp(child) and
     not child instanceof Annotation

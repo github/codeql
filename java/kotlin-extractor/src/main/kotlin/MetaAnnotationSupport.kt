@@ -1,6 +1,5 @@
 package com.github.codeql
 
-import com.github.codeql.utils.versions.copyParameterToFunction
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
 import java.lang.annotation.ElementType
 import java.util.HashSet
@@ -21,7 +20,9 @@ import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
+import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.expressions.IrClassReference
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.expressions.IrGetEnumValue
@@ -31,6 +32,7 @@ import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.constructedClass
 import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.copyTo
 import org.jetbrains.kotlin.ir.util.deepCopyWithSymbols
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
@@ -330,7 +332,7 @@ class MetaAnnotationSupport(
                             )
                             return
                         }
-                val newParam = copyParameterToFunction(thisReceiever, this)
+                val newParam = thisReceiever.copyTo(this)
                 dispatchReceiverParameter = newParam
                 body =
                     factory

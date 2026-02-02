@@ -50,7 +50,7 @@ module FullServerSideRequestForgeryFlow = TaintTracking::Global<FullServerSideRe
  */
 predicate fullyControlledRequest(Http::Client::Request request) {
   forall(DataFlow::Node urlPart | urlPart = request.getAUrlPart() |
-    FullServerSideRequestForgeryFlow::flow(_, urlPart)
+    FullServerSideRequestForgeryFlow::flowTo(urlPart)
   )
 }
 
@@ -68,7 +68,8 @@ private module PartialServerSideRequestForgeryConfig implements DataFlow::Config
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    // Note: this query does not select the sink itself
+    result = sink.(Sink).getLocation()
+    or
     result = sink.(Sink).getRequest().getLocation()
   }
 }

@@ -18,6 +18,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { none() }
+
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
   ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }

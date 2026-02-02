@@ -20,33 +20,41 @@
 import csharp
 private import ControlFlow
 private import internal.CallableReturns
-private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.controlflow.Guards as G
-private import semmle.code.csharp.controlflow.Guards::AbstractValues
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.Test
+private import semmle.code.csharp.controlflow.ControlFlowReachability
+
+private Expr maybeNullExpr(Expr reason) {
+  G::Internal::nullValue(result) and reason = result
+  or
+  result instanceof AsExpr and reason = result
+  or
+  result.(AssignExpr).getRValue() = maybeNullExpr(reason)
+  or
+  result.(CastExpr).getExpr() = maybeNullExpr(reason)
+  or
+  result =
+    any(ConditionalExpr ce |
+      ce.getThen() = maybeNullExpr(reason)
+      or
+      ce.getElse() = maybeNullExpr(reason)
+    )
+  or
+  result.(NullCoalescingExpr).getRightOperand() = maybeNullExpr(reason)
+  or
+  result =
+    any(QualifiableExpr qe |
+      qe.isConditional() and
+      reason = qe.getQualifier() and
+      not qe instanceof AssignableWrite
+    )
+}
 
 /** An expression that may be `null`. */
 class MaybeNullExpr extends Expr {
-  MaybeNullExpr() {
-    G::Internal::nullValue(this)
-    or
-    this instanceof AsExpr
-    or
-    this.(AssignExpr).getRValue() instanceof MaybeNullExpr
-    or
-    this.(Cast).getExpr() instanceof MaybeNullExpr
-    or
-    this =
-      any(ConditionalExpr ce |
-        ce.getThen() instanceof MaybeNullExpr
-        or
-        ce.getElse() instanceof MaybeNullExpr
-      )
-    or
-    this.(NullCoalescingExpr).getRightOperand() instanceof MaybeNullExpr
-  }
+  MaybeNullExpr() { this = maybeNullExpr(_) }
 }
 
 /** An expression that is always `null`. */
@@ -116,43 +124,10 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
 }
 
 /**
- * Holds if the `i`th node of basic block `bb` is a dereference `d` of SSA
- * definition `def`.
+ * Holds if `node` is a dereference `d` of SSA definition `def`.
  */
-private predicate dereferenceAt(BasicBlock bb, int i, Ssa::Definition def, Dereference d) {
-  d = def.getAReadAtNode(bb.getNode(i))
-}
-
-/**
- * Holds if `e` having abstract value `vExpr` implies that SSA definition `def`
- * has abstract value `vDef`.
- */
-private predicate exprImpliesSsaDef(
-  G::Guard e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
-) {
-  vExpr = e.getAValue() and
-  vExpr = vDef and
-  (
-    e = def.getARead()
-    or
-    e = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()
-  )
-  or
-  exists(Expr e0, G::AbstractValue vExpr0 |
-    exprImpliesSsaDef(e0, vExpr0, def, vDef) and
-    G::Internal::impliesStep(e, vExpr, e0, vExpr0)
-  )
-}
-
-/**
- * Gets an element that tests whether a given SSA definition, `def`, is
- * `null` or not.
- *
- * If the returned element takes the `s` branch, then `def` is guaranteed to be
- * `null` if `nv.isNull()` holds, and non-`null` otherwise.
- */
-private ControlFlowElement getANullCheck(Ssa::Definition def, ConditionalSuccessor s, NullValue nv) {
-  exists(Expr e, G::AbstractValue v | v.branch(result, s, e) | exprImpliesSsaDef(e, v, def, nv))
+private predicate dereferenceAt(ControlFlow::Node node, Ssa::Definition def, Dereference d) {
+  d = def.getAReadAtNode(node)
 }
 
 private predicate isMaybeNullArgument(Ssa::ImplicitParameterDefinition def, MaybeNullExpr arg) {
@@ -217,15 +192,17 @@ private predicate isNullDefaultArgument(Ssa::ImplicitParameterDefinition def, Al
 }
 
 /** Holds if `def` is an SSA definition that may be `null`. */
-private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) {
+private predicate defMaybeNull(
+  Ssa::Definition def, ControlFlow::Node node, string msg, Element reason
+) {
   not nonNullDef(def) and
   (
     // A variable compared to `null` might be `null`
     exists(G::DereferenceableExpr de | de = def.getARead() |
-      reason = de.getANullCheck(_, true) and
+      de.guardSuggestsMaybeNull(reason) and
       msg = "as suggested by $@ null check" and
+      node = def.getControlFlowNode() and
       not de = any(Ssa::PhiNode phi).getARead() and
-      strictcount(Element e | e = any(Ssa::Definition def0 | de = def0.getARead()).getElement()) = 1 and
       // Don't use a check as reason if there is a `null` assignment
       // or argument
       not def.(Ssa::ExplicitDefinition).getADefinition().getSource() instanceof MaybeNullExpr and
@@ -234,242 +211,33 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
     or
     // A parameter might be `null` if there is a `null` argument somewhere
     isMaybeNullArgument(def, reason) and
+    node = def.getControlFlowNode() and
     (
       if reason instanceof AlwaysNullExpr
       then msg = "because of $@ null argument"
       else msg = "because of $@ potential null argument"
     )
     or
-    isNullDefaultArgument(def, reason) and msg = "because the parameter has a null default value"
+    isNullDefaultArgument(def, reason) and
+    node = def.getControlFlowNode() and
+    msg = "because the parameter has a null default value"
     or
     // If the source of a variable is `null` then the variable may be `null`
     exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |
-      adef.getSource() instanceof MaybeNullExpr and
+      adef.getSource() = maybeNullExpr(node.getAstNode()) and
       reason = adef.getExpr() and
       msg = "because of $@ assignment"
     )
     or
     // A variable of nullable type may be null
-    exists(Dereference d | dereferenceAt(_, _, def, d) |
+    exists(Dereference d | dereferenceAt(_, def, d) |
+      node = def.getControlFlowNode() and
       d.hasNullableType() and
       not def instanceof Ssa::PhiNode and
       reason = def.getSourceVariable().getAssignable() and
       msg = "because it has a nullable type"
     )
   )
-}
-
-pragma[noinline]
-private predicate sourceVariableMaybeNull(Ssa::SourceVariable v) {
-  defMaybeNull(v.getAnSsaDefinition(), _, _)
-}
-
-pragma[noinline]
-private predicate defNullImpliesStep0(
-  Ssa::SourceVariable v, Ssa::Definition def1, BasicBlock bb1, BasicBlock bb2
-) {
-  sourceVariableMaybeNull(v) and
-  def1.getSourceVariable() = v and
-  def1.isLiveAtEndOfBlock(bb1) and
-  bb2 = bb1.getASuccessor()
-}
-
-/**
- * Holds if `def1` being `null` in basic block `bb1` implies that `def2` might
- * be `null` in basic block `bb2`. The SSA definitions share the same source
- * variable.
- */
-private predicate defNullImpliesStep(
-  Ssa::Definition def1, BasicBlock bb1, Ssa::Definition def2, BasicBlock bb2
-) {
-  exists(Ssa::SourceVariable v | defNullImpliesStep0(v, def1, bb1, bb2) |
-    def2.(Ssa::PhiNode).getAnInput() = def1 and
-    bb2 = def2.getBasicBlock()
-    or
-    def2 = def1 and
-    not exists(Ssa::PhiNode phi |
-      phi.getSourceVariable() = v and
-      bb2 = phi.getBasicBlock()
-    )
-  ) and
-  not exists(ConditionalSuccessor s, NullValue nv |
-    bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
-  |
-    bb2 = bb1.getASuccessor(s) and
-    nv.isNonNull()
-  )
-}
-
-/**
- * The transitive closure of `defNullImpliesStep()` originating from `defMaybeNull()`.
- * That is, those basic blocks for which the SSA definition is suspected of being `null`.
- */
-private predicate defMaybeNullInBlock(Ssa::Definition def, BasicBlock bb) {
-  defMaybeNull(def, _, _) and
-  bb = def.getBasicBlock()
-  or
-  exists(BasicBlock mid, Ssa::Definition midDef | defMaybeNullInBlock(midDef, mid) |
-    defNullImpliesStep(midDef, mid, def, bb)
-  )
-}
-
-/**
- * Holds if `v` is a source variable that might reach a potential `null`
- * dereference.
- */
-private predicate nullDerefCandidateVariable(Ssa::SourceVariable v) {
-  exists(Ssa::Definition def, BasicBlock bb | dereferenceAt(bb, _, def, _) |
-    defMaybeNullInBlock(def, bb) and
-    v = def.getSourceVariable()
-  )
-}
-
-private predicate succStep(PathNode pred, Ssa::Definition def, BasicBlock bb) {
-  defNullImpliesStep(pred.getSsaDefinition(), pred.getBasicBlock(), def, bb)
-}
-
-private predicate succNullArgument(SourcePathNode pred, Ssa::Definition def, BasicBlock bb) {
-  pred = TSourcePathNode(def, _, _, true) and
-  bb = def.getBasicBlock()
-}
-
-private predicate succSourceSink(SourcePathNode source, Ssa::Definition def, BasicBlock bb) {
-  source = TSourcePathNode(def, _, _, false) and
-  bb = def.getBasicBlock()
-}
-
-private newtype TPathNode =
-  TSourcePathNode(Ssa::Definition def, string msg, Element reason, boolean isNullArgument) {
-    nullDerefCandidateVariable(def.getSourceVariable()) and
-    defMaybeNull(def, msg, reason) and
-    if isMaybeNullArgument(def, reason) then isNullArgument = true else isNullArgument = false
-  } or
-  TInternalPathNode(Ssa::Definition def, BasicBlock bb) {
-    succStep(_, def, bb)
-    or
-    succNullArgument(_, def, bb)
-  } or
-  TSinkPathNode(Ssa::Definition def, BasicBlock bb, int i, Dereference d) {
-    dereferenceAt(bb, i, def, d) and
-    (
-      succStep(_, def, bb)
-      or
-      succNullArgument(_, def, bb)
-      or
-      succSourceSink(_, def, bb)
-    )
-  }
-
-/**
- * An SSA definition, which may be `null`, augmented with at basic block which can
- * be reached without passing through a `null` check.
- */
-abstract class PathNode extends TPathNode {
-  /** Gets the SSA definition. */
-  abstract Ssa::Definition getSsaDefinition();
-
-  /** Gets the basic block that can be reached without passing through a `null` check. */
-  abstract BasicBlock getBasicBlock();
-
-  /** Gets another node that can be reached from this node. */
-  abstract PathNode getASuccessor();
-
-  /** Gets a textual representation of this node. */
-  abstract string toString();
-
-  /** Gets the location of this node. */
-  abstract Location getLocation();
-}
-
-private class SourcePathNode extends PathNode, TSourcePathNode {
-  private Ssa::Definition def;
-  private string msg;
-  private Element reason;
-  private boolean isNullArgument;
-
-  SourcePathNode() { this = TSourcePathNode(def, msg, reason, isNullArgument) }
-
-  override Ssa::Definition getSsaDefinition() { result = def }
-
-  override BasicBlock getBasicBlock() {
-    isNullArgument = false and
-    result = def.getBasicBlock()
-  }
-
-  string getMessage() { result = msg }
-
-  Element getReason() { result = reason }
-
-  override PathNode getASuccessor() {
-    succStep(this, result.getSsaDefinition(), result.getBasicBlock())
-    or
-    succNullArgument(this, result.getSsaDefinition(), result.getBasicBlock())
-    or
-    result instanceof SinkPathNode and
-    succSourceSink(this, result.getSsaDefinition(), result.getBasicBlock())
-  }
-
-  override string toString() {
-    if isNullArgument = true then result = reason.toString() else result = def.toString()
-  }
-
-  override Location getLocation() {
-    if isNullArgument = true then result = reason.getLocation() else result = def.getLocation()
-  }
-}
-
-private class InternalPathNode extends PathNode, TInternalPathNode {
-  private Ssa::Definition def;
-  private BasicBlock bb;
-
-  InternalPathNode() { this = TInternalPathNode(def, bb) }
-
-  override Ssa::Definition getSsaDefinition() { result = def }
-
-  override BasicBlock getBasicBlock() { result = bb }
-
-  override PathNode getASuccessor() {
-    succStep(this, result.getSsaDefinition(), result.getBasicBlock())
-  }
-
-  override string toString() { result = bb.getFirstNode().toString() }
-
-  override Location getLocation() { result = bb.getFirstNode().getLocation() }
-}
-
-private class SinkPathNode extends PathNode, TSinkPathNode {
-  private Ssa::Definition def;
-  private BasicBlock bb;
-  private int i;
-  private Dereference d;
-
-  SinkPathNode() { this = TSinkPathNode(def, bb, i, d) }
-
-  override Ssa::Definition getSsaDefinition() { result = def }
-
-  override BasicBlock getBasicBlock() { result = bb }
-
-  override PathNode getASuccessor() { none() }
-
-  Dereference getDereference() { result = d }
-
-  override string toString() { result = d.toString() }
-
-  override Location getLocation() { result = d.getLocation() }
-}
-
-/**
- * Provides the query predicates needed to include a graph in a path-problem query
- * for `Dereference::is[First]MaybeNull()`.
- */
-module PathGraph {
-  query predicate nodes(PathNode n) { n.getASuccessor*() instanceof SinkPathNode }
-
-  query predicate edges(PathNode pred, PathNode succ) {
-    nodes(pred) and
-    nodes(succ) and
-    succ = pred.getASuccessor()
-  }
 }
 
 private Ssa::Definition getAPseudoInput(Ssa::Definition def) {
@@ -485,21 +253,44 @@ private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
 
 /**
  * Holds if SSA definition `def` can reach a read at `cfn`, without passing
- * through an intermediate dereference that always (`always = true`) or
- * maybe (`always = false`) throws a null reference exception.
+ * through an intermediate dereference that always throws a null reference
+ * exception.
  */
-private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean always) {
-  exists(def.getAFirstReadAtNode(cfn)) and
-  (always = true or always = false)
+private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn) {
+  exists(def.getAFirstReadAtNode(cfn))
   or
-  exists(ControlFlow::Node mid | defReaches(def, mid, always) |
+  exists(ControlFlow::Node mid | defReaches(def, mid) |
     SsaImpl::adjacentReadPairSameVar(_, mid, cfn) and
-    not mid =
-      any(Dereference d |
-        if always = true
-        then d.isAlwaysNull(def.getSourceVariable())
-        else d.isMaybeNull(def, _, _, _, _)
-      ).getAControlFlowNode()
+    not mid = any(Dereference d | d.isAlwaysNull(def.getSourceVariable())).getAControlFlowNode()
+  )
+}
+
+private module NullnessConfig implements ControlFlowReachability::ConfigSig {
+  predicate source(ControlFlow::Node node, Ssa::Definition def) { defMaybeNull(def, node, _, _) }
+
+  predicate sink(ControlFlow::Node node, Ssa::Definition def) {
+    exists(Dereference d |
+      dereferenceAt(node, def, d) and
+      not d instanceof NonNullExpr
+    )
+  }
+
+  predicate barrierValue(G::GuardValue gv) { gv.isNullness(false) }
+
+  predicate uncertainFlow() { none() }
+}
+
+private module NullnessFlow = ControlFlowReachability::Flow<NullnessConfig>;
+
+predicate maybeNullDeref(Dereference d, Ssa::SourceVariable v, string msg, Element reason) {
+  exists(
+    Ssa::Definition origin, Ssa::Definition ssa, ControlFlow::Node src, ControlFlow::Node sink
+  |
+    defMaybeNull(origin, src, msg, reason) and
+    NullnessFlow::flow(src, origin, sink, ssa) and
+    ssa.getSourceVariable() = v and
+    dereferenceAt(sink, ssa, d) and
+    not d.isAlwaysNull(v)
   )
 }
 
@@ -582,9 +373,9 @@ class Dereference extends G::DereferenceableExpr {
     (
       forex(Ssa::Definition def0 | this = def0.getARead() | this.isAlwaysNull0(def0))
       or
-      exists(NullValue nv |
+      exists(G::GuardValue nv |
         this.(G::GuardedExpr).mustHaveValue(nv) and
-        nv.isNull()
+        nv.isNullValue()
       )
     ) and
     not this instanceof G::NullGuardedExpr
@@ -597,33 +388,6 @@ class Dereference extends G::DereferenceableExpr {
    */
   predicate isFirstAlwaysNull(Ssa::SourceVariable v) {
     this.isAlwaysNull(v) and
-    defReaches(v.getAnSsaDefinition(), this.getAControlFlowNode(), true)
-  }
-
-  /**
-   * Holds if this expression dereferences SSA definition `def`, which may
-   * be `null`.
-   */
-  predicate isMaybeNull(
-    Ssa::Definition def, SourcePathNode source, SinkPathNode sink, string msg, Element reason
-  ) {
-    source.getASuccessor*() = sink and
-    msg = source.getMessage() and
-    reason = source.getReason() and
-    def = sink.getSsaDefinition() and
-    this = sink.getDereference() and
-    not this.isAlwaysNull(def.getSourceVariable())
-  }
-
-  /**
-   * Holds if this expression dereferences SSA definition `def`, which may
-   * be `null`, and this expression can be reached from `def` without passing
-   * through another such dereference.
-   */
-  predicate isFirstMaybeNull(
-    Ssa::Definition def, SourcePathNode source, SinkPathNode sink, string msg, Element reason
-  ) {
-    this.isMaybeNull(def, source, sink, msg, reason) and
-    defReaches(def, this.getAControlFlowNode(), false)
+    defReaches(v.getAnSsaDefinition(), this.getAControlFlowNode())
   }
 }

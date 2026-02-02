@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.CodeAnalysis;
@@ -49,6 +51,22 @@ namespace Semmle.Extraction.CSharp.Entities
                 using var trap = new StringWriter();
                 Populate(trap);
                 return trap.ToString();
+            }
+        }
+
+        protected static void WriteLocationToTrap<T1>(Action<T1, Location> writeAction, T1 entity, Location l)
+        {
+            if (l is not EmptyLocation)
+            {
+                writeAction(entity, l);
+            }
+        }
+
+        protected static void WriteLocationsToTrap<T1>(Action<T1, Location> writeAction, T1 entity, IEnumerable<Location> locations)
+        {
+            foreach (var loc in locations)
+            {
+                WriteLocationToTrap(writeAction, entity, loc);
             }
         }
 

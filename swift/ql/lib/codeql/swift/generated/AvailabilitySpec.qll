@@ -21,5 +21,38 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::AvailabilitySpec` class directly.
    * Use the subclass `AvailabilitySpec`, where the following predicates are available.
    */
-  class AvailabilitySpec extends Synth::TAvailabilitySpec, AstNodeImpl::AstNode { }
+  class AvailabilitySpec extends Synth::TAvailabilitySpec, AstNodeImpl::AstNode {
+    override string getAPrimaryQlClass() { result = "AvailabilitySpec" }
+
+    /**
+     * Gets the platform of this availability spec, if it exists.
+     */
+    string getPlatform() {
+      result = Synth::convertAvailabilitySpecToRaw(this).(Raw::AvailabilitySpec).getPlatform()
+    }
+
+    /**
+     * Holds if `getPlatform()` exists.
+     */
+    final predicate hasPlatform() { exists(this.getPlatform()) }
+
+    /**
+     * Gets the version of this availability spec, if it exists.
+     */
+    string getVersion() {
+      result = Synth::convertAvailabilitySpecToRaw(this).(Raw::AvailabilitySpec).getVersion()
+    }
+
+    /**
+     * Holds if `getVersion()` exists.
+     */
+    final predicate hasVersion() { exists(this.getVersion()) }
+
+    /**
+     * Holds if this availability spec is wildcard.
+     */
+    predicate isWildcard() {
+      Synth::convertAvailabilitySpecToRaw(this).(Raw::AvailabilitySpec).isWildcard()
+    }
+  }
 }

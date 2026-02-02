@@ -1,6 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: barrierModel
+    data:
+      # The RawUrl property is considered to be safe for URL redirects
+      - ["System.Web", "HttpRequest", False, "get_RawUrl", "()", "", "ReturnValue", "url-redirection", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: sinkModel
     data:
       - ["System.Web", "HttpResponse", False, "BinaryWrite", "", "", "Argument[0]", "html-injection", "manual"]

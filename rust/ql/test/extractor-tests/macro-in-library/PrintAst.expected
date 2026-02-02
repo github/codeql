@@ -2,23 +2,23 @@ lib.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Module] mod macro_in_library
 #    1|     getName(): [Name] macro_in_library
-#    1|     getVisibility(): [Visibility] Visibility
+#    1|     getVisibility(): [Visibility] pub
 macro_in_library.rs:
 #    1| [SourceFile] SourceFile
-#    1|   getItem(0): [MacroCall] 
+#    1|   getItem(0): [MacroCall] (item with attribute macro expansion)
 #    2|     getAttributeMacroExpansion(): [MacroItems] MacroItems
 #    2|       getItem(0): [Function] fn foo
 #    2|         getParamList(): [ParamList] ParamList
 #    2|         getName(): [Name] foo
-#    2|         getVisibility(): [Visibility] Visibility
+#    2|         getVisibility(): [Visibility] pub
 #    2|       getItem(1): [Function] fn foo_new
 #    2|         getParamList(): [ParamList] ParamList
 #    2|         getName(): [Name] foo_new
-#    2|         getVisibility(): [Visibility] Visibility
+#    2|         getVisibility(): [Visibility] pub
 #    4|   getItem(1): [Function] fn bar
 #    4|     getParamList(): [ParamList] ParamList
 #    4|     getName(): [Name] bar
-#    4|     getVisibility(): [Visibility] Visibility
+#    4|     getVisibility(): [Visibility] pub
 proc_macro.rs:
 #    1| [SourceFile] SourceFile
 #    1|   getItem(0): [Use] use ...::TokenStream
@@ -60,4 +60,4 @@ proc_macro.rs:
 #    5|         getPath(): [Path] TokenStream
 #    5|           getSegment(): [PathSegment] TokenStream
 #    5|             getIdentifier(): [NameRef] TokenStream
-#    5|     getVisibility(): [Visibility] Visibility
+#    5|     getVisibility(): [Visibility] pub

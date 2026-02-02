@@ -28,12 +28,13 @@ private class SensitiveDataCall extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveDataCall() {
-    exists(CallExprBase call, string name |
-      call = this.asExpr().getExpr() and
+    exists(InvocationExpr call, Addressable target, string name |
+      call = this.asExpr() and
+      target = call.getResolvedTarget() and
       name =
         [
-          call.getStaticTarget().(Function).getName().getText(),
-          call.(CallExpr).getVariant().getName().getText(),
+          target.(Function).getName().getText(),
+          target.(Variant).getName().getText(),
         ] and
       HeuristicNames::nameIndicatesSensitiveData(name, classification)
     )
@@ -50,7 +51,6 @@ private class SensitiveVariableAccess extends SensitiveData {
 
   SensitiveVariableAccess() {
     HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
-          .getExpr()
           .(VariableAccess)
           .getVariable()
           .(Variable)
@@ -69,7 +69,7 @@ private class SensitiveFieldAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveFieldAccess() {
-    exists(FieldExpr fe | fieldExprParentField*(fe) = this.asExpr().getExpr() |
+    exists(FieldExpr fe | fieldExprParentField*(fe) = this.asExpr() |
       HeuristicNames::nameIndicatesSensitiveData(fe.getIdentifier().getText(), classification)
     )
   }

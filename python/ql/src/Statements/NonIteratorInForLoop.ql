@@ -12,8 +12,9 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from For loop, ControlFlowNode iter, Value v, ClassValue t, ControlFlowNode origin
+from For loop, ControlFlowNodeWithPointsTo iter, Value v, ClassValue t, ControlFlowNode origin
 where
   loop.getIter().getAFlowNode() = iter and
   iter.pointsTo(_, v, origin) and

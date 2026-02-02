@@ -1,4 +1,6 @@
 /** Provides classes for modeling program variables. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -62,6 +64,7 @@ class LocalScope extends Scope {
  */
 class ModuleScope extends Scope, @module_scope {
   /** Gets the module that induces this scope. */
+  overlay[global]
   Module getModule() { result = this.getScopeElement() }
 
   override string toString() { result = "module scope" }
@@ -256,6 +259,7 @@ class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
 
   override VarRef getABindingVarRef() { result = this }
 
+  overlay[global]
   override predicate isImpure() { none() }
 
   override Expr getUnderlyingReference() { result = this }
@@ -543,6 +547,7 @@ class ArrayPattern extends DestructuringPattern, @array_pattern {
   /** Holds if this array pattern has an omitted element. */
   predicate hasOmittedElement() { this.elementIsOmitted(_) }
 
+  overlay[global]
   override predicate isImpure() { this.getAnElement().isImpure() }
 
   override VarRef getABindingVarRef() {
@@ -583,6 +588,7 @@ class ObjectPattern extends DestructuringPattern, @object_pattern {
   /** Gets the rest property pattern of this object pattern, if any. */
   override Expr getRest() { result = this.getChildExpr(-1) }
 
+  overlay[global]
   override predicate isImpure() { this.getAPropertyPattern().isImpure() }
 
   override VarRef getABindingVarRef() {
@@ -640,6 +646,7 @@ class PropertyPattern extends @property, AstNode {
   ObjectPattern getObjectPattern() { properties(this, result, _, _, _) }
 
   /** Holds if this pattern is impure, that is, if its evaluation could have side effects. */
+  overlay[global]
   predicate isImpure() {
     this.isComputed() and this.getNameExpr().isImpure()
     or
@@ -844,6 +851,7 @@ class SimpleParameter extends Parameter, VarDecl {
    * Gets a use of this parameter that refers to its initial value as
    * passed in from the caller.
    */
+  overlay[global]
   VarUse getAnInitialUse() {
     exists(SsaDefinition ssa |
       ssa.getAContributingVarDef() = this and

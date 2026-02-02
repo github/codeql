@@ -349,6 +349,18 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
+
+  /**
+   * Holds if the evaluator is currently evaluating with an overlay. The
+   * implementation of this predicate needs to be `overlay[local]`. For a
+   * language with no overlay support, `none()` is a valid implementation.
+   *
+   * When called from a local predicate, this predicate holds if we are in the
+   * overlay-only local evaluation. When called from a global predicate, this
+   * predicate holds if we are evaluating globally with overlay and base both
+   * visible.
+   */
+  default predicate isEvaluatingInOverlay() { none() }
 }
 
 module Configs<LocationSig Location, InputSig<Location> Lang> {
@@ -454,8 +466,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the source itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the source at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the source
+     * itself. For a query that doesn't report the source at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
@@ -465,8 +479,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the sink itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the sink at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the sink
+     * itself. For a query that doesn't report the sink at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
@@ -603,8 +619,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the source itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the source at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the source
+     * itself. For a query that doesn't report the source at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
@@ -614,8 +632,10 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * `observeDiffInformedIncrementalMode`). By default, this is the location
      * of the sink itself, but this predicate should include any locations
      * that are reported as the primary-location of the query or as an
-     * additional location ("$@" interpolation). For a query that doesn't
-     * report the sink at all, this predicate can be `none()`.
+     * additional location ("$@" interpolation). Queries with `@kind path-problem`
+     * that override this predicate should also return the location of the sink
+     * itself. For a query that doesn't report the sink at all, this predicate
+     * should be `none()`.
      */
     default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
@@ -645,10 +665,8 @@ private module PathGraphSigMod {
   }
 }
 
-module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
+private module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
-  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
   import Configs<Location, Lang>
 
   /**
@@ -689,59 +707,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * Holds if data can flow from some source to `sink`.
      */
     predicate flowToExpr(DataFlowExpr sink);
-  }
-
-  /**
-   * Constructs a global data flow computation.
-   */
-  module Global<ConfigSig Config> implements GlobalFlowSig {
-    private module C implements FullStateConfigSig {
-      import DefaultState<Config>
-      import Config
-
-      predicate accessPathLimit = Config::accessPathLimit/0;
-
-      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-    }
-
-    private module Stage1 = ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = Impl<C, Stage1::Stage1NoState>;
-
-    import Flow
-  }
-
-  /**
-   * Constructs a global data flow computation using flow state.
-   */
-  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
-    private module C implements FullStateConfigSig {
-      import Config
-
-      predicate accessPathLimit = Config::accessPathLimit/0;
-
-      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-
-      predicate isAdditionalFlowStep(
-        Node node1, FlowState state1, Node node2, FlowState state2, string model
-      ) {
-        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
-      }
-    }
-
-    private module Stage1 = ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = Impl<C, Stage1::Stage1WithState>;
-
-    import Flow
   }
 
   signature class PathNodeSig {
@@ -1139,5 +1104,137 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
     // Re-export the PathGraph so the user can import a single module and get both PathNode and the query predicates
     import PathGraph
+  }
+}
+
+module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
+  import DataFlowMakeCore<Location, Lang>
+  private import Lang
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+
+  /**
+   * Constructs a global data flow computation.
+   */
+  module Global<ConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import DefaultState<Config>
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global data flow computation using flow state.
+   */
+  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        Node node1, FlowState state1, Node node2, FlowState state2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
+}
+
+module DataFlowMakeOverlay<LocationSig Location, InputSig<Location> Lang> {
+  import DataFlowMake<Location, Lang>
+  private import Lang
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
+
+  /**
+   * Constructs a global data flow computation.
+   */
+  module Global<ConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import DefaultState<Config>
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = OverlayImpl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global data flow computation using flow state.
+   */
+  module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
+    private module C implements FullStateConfigSig {
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        Node node1, FlowState state1, Node node2, FlowState state2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = OverlayImpl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 }

@@ -20,7 +20,7 @@
      - ``python``
    * - Ruby
      - ``ruby``
-     - Rust
+   * - Rust
      - ``rust``
    * - Swift
      - ``swift``

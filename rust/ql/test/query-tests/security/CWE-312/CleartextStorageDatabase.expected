@@ -9,70 +9,40 @@
 | test_storage.rs:204:31:204:37 | prepare | test_storage.rs:190:86:190:103 | get_phone_number(...) | test_storage.rs:204:31:204:37 | prepare | This database operation may read or write unencrypted sensitive data from $@. | test_storage.rs:190:86:190:103 | get_phone_number(...) | get_phone_number(...) |
 edges
 | test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:100:25:100:37 | insert_query2 | provenance |  |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:100:25:100:46 | insert_query2.as_str() | provenance | MaD:8 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:100:25:100:46 | insert_query2.as_str() | provenance | MaD:7 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:100:25:100:46 | insert_query2.as_str() | provenance | MaD:8 |
 | test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:115:27:115:39 | insert_query2 | provenance |  |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:115:27:115:48 | insert_query2.as_str() | provenance | MaD:8 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:115:27:115:48 | insert_query2.as_str() | provenance | MaD:7 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:115:27:115:48 | insert_query2.as_str() | provenance | MaD:8 |
 | test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:119:25:119:37 | insert_query2 | provenance |  |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:119:25:119:46 | insert_query2.as_str() | provenance | MaD:8 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:119:25:119:46 | insert_query2.as_str() | provenance | MaD:7 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:119:25:119:46 | insert_query2.as_str() | provenance | MaD:8 |
 | test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:125:25:125:37 | insert_query2 | provenance |  |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:125:25:125:46 | insert_query2.as_str() | provenance | MaD:8 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:125:25:125:46 | insert_query2.as_str() | provenance | MaD:7 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:125:25:125:46 | insert_query2.as_str() | provenance | MaD:8 |
 | test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:139:25:139:37 | insert_query2 | provenance |  |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:139:25:139:46 | insert_query2.as_str() | provenance | MaD:8 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:139:25:139:46 | insert_query2.as_str() | provenance | MaD:7 |
-| test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:139:25:139:46 | insert_query2.as_str() | provenance | MaD:8 |
-| test_storage.rs:71:25:71:114 | ... + ... | test_storage.rs:71:9:71:21 | insert_query2 | provenance |  |
-| test_storage.rs:71:25:71:114 | ... + ... | test_storage.rs:71:25:71:121 | ... + ... | provenance | MaD:6 |
+| test_storage.rs:71:25:71:114 | ... + ... | test_storage.rs:71:25:71:121 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:71:25:71:121 | ... + ... | test_storage.rs:71:9:71:21 | insert_query2 | provenance |  |
-| test_storage.rs:71:96:71:114 | &... | test_storage.rs:71:9:71:21 | insert_query2 | provenance |  |
-| test_storage.rs:71:96:71:114 | &... | test_storage.rs:71:25:71:114 | ... + ... | provenance |  |
+| test_storage.rs:71:96:71:114 | &... | test_storage.rs:71:25:71:114 | ... + ... | provenance | MaD:6 |
+| test_storage.rs:71:96:71:114 | &... [&ref] | test_storage.rs:71:25:71:114 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:71:97:71:114 | get_phone_number(...) | test_storage.rs:71:96:71:114 | &... | provenance | Config |
+| test_storage.rs:71:97:71:114 | get_phone_number(...) | test_storage.rs:71:96:71:114 | &... [&ref] | provenance |  |
 | test_storage.rs:100:25:100:37 | insert_query2 | test_storage.rs:100:25:100:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:100:25:100:37 | insert_query2 | test_storage.rs:100:25:100:46 | insert_query2.as_str() [&ref] | provenance | MaD:7 |
-| test_storage.rs:100:25:100:37 | insert_query2 | test_storage.rs:100:25:100:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:100:25:100:46 | insert_query2.as_str() | test_storage.rs:100:13:100:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:100:25:100:46 | insert_query2.as_str() [&ref] | test_storage.rs:100:13:100:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:115:27:115:39 | insert_query2 | test_storage.rs:115:27:115:48 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:115:27:115:39 | insert_query2 | test_storage.rs:115:27:115:48 | insert_query2.as_str() [&ref] | provenance | MaD:7 |
-| test_storage.rs:115:27:115:39 | insert_query2 | test_storage.rs:115:27:115:48 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:115:27:115:48 | insert_query2.as_str() | test_storage.rs:115:13:115:25 | ...::raw_sql | provenance | MaD:5 Sink:MaD:5 |
 | test_storage.rs:115:27:115:48 | insert_query2.as_str() [&ref] | test_storage.rs:115:13:115:25 | ...::raw_sql | provenance | MaD:5 Sink:MaD:5 |
 | test_storage.rs:119:25:119:37 | insert_query2 | test_storage.rs:119:25:119:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:119:25:119:37 | insert_query2 | test_storage.rs:119:25:119:46 | insert_query2.as_str() [&ref] | provenance | MaD:7 |
-| test_storage.rs:119:25:119:37 | insert_query2 | test_storage.rs:119:25:119:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:119:25:119:46 | insert_query2.as_str() | test_storage.rs:119:13:119:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:119:25:119:46 | insert_query2.as_str() [&ref] | test_storage.rs:119:13:119:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:125:25:125:37 | insert_query2 | test_storage.rs:125:25:125:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:125:25:125:37 | insert_query2 | test_storage.rs:125:25:125:46 | insert_query2.as_str() [&ref] | provenance | MaD:7 |
-| test_storage.rs:125:25:125:37 | insert_query2 | test_storage.rs:125:25:125:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:125:25:125:46 | insert_query2.as_str() | test_storage.rs:125:13:125:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:125:25:125:46 | insert_query2.as_str() [&ref] | test_storage.rs:125:13:125:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:139:25:139:37 | insert_query2 | test_storage.rs:139:25:139:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:139:25:139:37 | insert_query2 | test_storage.rs:139:25:139:46 | insert_query2.as_str() [&ref] | provenance | MaD:7 |
-| test_storage.rs:139:25:139:37 | insert_query2 | test_storage.rs:139:25:139:46 | insert_query2.as_str() [&ref] | provenance | MaD:8 |
-| test_storage.rs:139:25:139:46 | insert_query2.as_str() | test_storage.rs:139:13:139:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:139:25:139:46 | insert_query2.as_str() [&ref] | test_storage.rs:139:13:139:23 | ...::query | provenance | MaD:4 Sink:MaD:4 |
 | test_storage.rs:189:9:189:24 | insert_query_bad | test_storage.rs:194:25:194:40 | insert_query_bad | provenance |  |
-| test_storage.rs:189:28:189:117 | ... + ... | test_storage.rs:189:9:189:24 | insert_query_bad | provenance |  |
-| test_storage.rs:189:28:189:117 | ... + ... | test_storage.rs:189:28:189:124 | ... + ... | provenance | MaD:6 |
+| test_storage.rs:189:28:189:117 | ... + ... | test_storage.rs:189:28:189:124 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:189:28:189:124 | ... + ... | test_storage.rs:189:9:189:24 | insert_query_bad | provenance |  |
-| test_storage.rs:189:99:189:117 | &... | test_storage.rs:189:9:189:24 | insert_query_bad | provenance |  |
-| test_storage.rs:189:99:189:117 | &... | test_storage.rs:189:28:189:117 | ... + ... | provenance |  |
+| test_storage.rs:189:99:189:117 | &... | test_storage.rs:189:28:189:117 | ... + ... | provenance | MaD:6 |
+| test_storage.rs:189:99:189:117 | &... [&ref] | test_storage.rs:189:28:189:117 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:189:100:189:117 | get_phone_number(...) | test_storage.rs:189:99:189:117 | &... | provenance | Config |
+| test_storage.rs:189:100:189:117 | get_phone_number(...) | test_storage.rs:189:99:189:117 | &... [&ref] | provenance |  |
 | test_storage.rs:190:9:190:24 | select_query_bad | test_storage.rs:196:35:196:50 | select_query_bad | provenance |  |
-| test_storage.rs:190:28:190:103 | ... + ... | test_storage.rs:190:9:190:24 | select_query_bad | provenance |  |
-| test_storage.rs:190:28:190:103 | ... + ... | test_storage.rs:190:28:190:109 | ... + ... | provenance | MaD:6 |
+| test_storage.rs:190:28:190:103 | ... + ... | test_storage.rs:190:28:190:109 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:190:28:190:109 | ... + ... | test_storage.rs:190:9:190:24 | select_query_bad | provenance |  |
-| test_storage.rs:190:85:190:103 | &... | test_storage.rs:190:9:190:24 | select_query_bad | provenance |  |
-| test_storage.rs:190:85:190:103 | &... | test_storage.rs:190:28:190:103 | ... + ... | provenance |  |
+| test_storage.rs:190:85:190:103 | &... | test_storage.rs:190:28:190:103 | ... + ... | provenance | MaD:6 |
+| test_storage.rs:190:85:190:103 | &... [&ref] | test_storage.rs:190:28:190:103 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:190:86:190:103 | get_phone_number(...) | test_storage.rs:190:85:190:103 | &... | provenance | Config |
+| test_storage.rs:190:86:190:103 | get_phone_number(...) | test_storage.rs:190:85:190:103 | &... [&ref] | provenance |  |
 | test_storage.rs:194:24:194:40 | &insert_query_bad | test_storage.rs:194:16:194:22 | execute | provenance | MaD:1 Sink:MaD:1 |
 | test_storage.rs:194:24:194:40 | &insert_query_bad [&ref] | test_storage.rs:194:16:194:22 | execute | provenance | MaD:1 Sink:MaD:1 |
 | test_storage.rs:194:25:194:40 | insert_query_bad | test_storage.rs:194:24:194:40 | &insert_query_bad | provenance | Config |
@@ -92,44 +62,42 @@ models
 | 3 | Sink: <rusqlite::Connection>::query_row; Argument[0]; sql-injection |
 | 4 | Sink: sqlx_core::query::query; Argument[0]; sql-injection |
 | 5 | Sink: sqlx_core::raw_sql::raw_sql; Argument[0]; sql-injection |
-| 6 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; value |
-| 7 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
-| 8 | Summary: <core::str>::as_str; Argument[self]; ReturnValue; value |
+| 6 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
+| 7 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
+| 8 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
 nodes
 | test_storage.rs:71:9:71:21 | insert_query2 | semmle.label | insert_query2 |
 | test_storage.rs:71:25:71:114 | ... + ... | semmle.label | ... + ... |
 | test_storage.rs:71:25:71:121 | ... + ... | semmle.label | ... + ... |
 | test_storage.rs:71:96:71:114 | &... | semmle.label | &... |
+| test_storage.rs:71:96:71:114 | &... [&ref] | semmle.label | &... [&ref] |
 | test_storage.rs:71:97:71:114 | get_phone_number(...) | semmle.label | get_phone_number(...) |
 | test_storage.rs:100:13:100:23 | ...::query | semmle.label | ...::query |
 | test_storage.rs:100:25:100:37 | insert_query2 | semmle.label | insert_query2 |
-| test_storage.rs:100:25:100:46 | insert_query2.as_str() | semmle.label | insert_query2.as_str() |
 | test_storage.rs:100:25:100:46 | insert_query2.as_str() [&ref] | semmle.label | insert_query2.as_str() [&ref] |
 | test_storage.rs:115:13:115:25 | ...::raw_sql | semmle.label | ...::raw_sql |
 | test_storage.rs:115:27:115:39 | insert_query2 | semmle.label | insert_query2 |
-| test_storage.rs:115:27:115:48 | insert_query2.as_str() | semmle.label | insert_query2.as_str() |
 | test_storage.rs:115:27:115:48 | insert_query2.as_str() [&ref] | semmle.label | insert_query2.as_str() [&ref] |
 | test_storage.rs:119:13:119:23 | ...::query | semmle.label | ...::query |
 | test_storage.rs:119:25:119:37 | insert_query2 | semmle.label | insert_query2 |
-| test_storage.rs:119:25:119:46 | insert_query2.as_str() | semmle.label | insert_query2.as_str() |
 | test_storage.rs:119:25:119:46 | insert_query2.as_str() [&ref] | semmle.label | insert_query2.as_str() [&ref] |
 | test_storage.rs:125:13:125:23 | ...::query | semmle.label | ...::query |
 | test_storage.rs:125:25:125:37 | insert_query2 | semmle.label | insert_query2 |
-| test_storage.rs:125:25:125:46 | insert_query2.as_str() | semmle.label | insert_query2.as_str() |
 | test_storage.rs:125:25:125:46 | insert_query2.as_str() [&ref] | semmle.label | insert_query2.as_str() [&ref] |
 | test_storage.rs:139:13:139:23 | ...::query | semmle.label | ...::query |
 | test_storage.rs:139:25:139:37 | insert_query2 | semmle.label | insert_query2 |
-| test_storage.rs:139:25:139:46 | insert_query2.as_str() | semmle.label | insert_query2.as_str() |
 | test_storage.rs:139:25:139:46 | insert_query2.as_str() [&ref] | semmle.label | insert_query2.as_str() [&ref] |
 | test_storage.rs:189:9:189:24 | insert_query_bad | semmle.label | insert_query_bad |
 | test_storage.rs:189:28:189:117 | ... + ... | semmle.label | ... + ... |
 | test_storage.rs:189:28:189:124 | ... + ... | semmle.label | ... + ... |
 | test_storage.rs:189:99:189:117 | &... | semmle.label | &... |
+| test_storage.rs:189:99:189:117 | &... [&ref] | semmle.label | &... [&ref] |
 | test_storage.rs:189:100:189:117 | get_phone_number(...) | semmle.label | get_phone_number(...) |
 | test_storage.rs:190:9:190:24 | select_query_bad | semmle.label | select_query_bad |
 | test_storage.rs:190:28:190:103 | ... + ... | semmle.label | ... + ... |
 | test_storage.rs:190:28:190:109 | ... + ... | semmle.label | ... + ... |
 | test_storage.rs:190:85:190:103 | &... | semmle.label | &... |
+| test_storage.rs:190:85:190:103 | &... [&ref] | semmle.label | &... [&ref] |
 | test_storage.rs:190:86:190:103 | get_phone_number(...) | semmle.label | get_phone_number(...) |
 | test_storage.rs:194:16:194:22 | execute | semmle.label | execute |
 | test_storage.rs:194:24:194:40 | &insert_query_bad | semmle.label | &insert_query_bad |

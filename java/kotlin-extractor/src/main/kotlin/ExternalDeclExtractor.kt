@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.ClassInstanceStack
 import com.github.codeql.utils.isExternalFileClassMember
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
@@ -18,6 +19,7 @@ class ExternalDeclExtractor(
     val compression: Compression,
     val invocationTrapFile: String,
     val sourceFilePath: String,
+    val classInstanceStack: ClassInstanceStack,
     val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState,
@@ -163,6 +165,7 @@ class ExternalDeclExtractor(
                                 binaryPath,
                                 manager,
                                 this,
+                                classInstanceStack,
                                 primitiveTypeMapping,
                                 pluginContext,
                                 KotlinFileExtractor.DeclarationStack(),

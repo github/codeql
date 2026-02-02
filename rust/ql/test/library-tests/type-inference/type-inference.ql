@@ -1,14 +1,26 @@
 import rust
 import utils.test.InlineExpectationsTest
-import codeql.rust.internal.TypeInference as TypeInference
+import codeql.rust.internal.typeinference.Type
+import codeql.rust.internal.typeinference.TypeInference as TypeInference
 import TypeInference
 
-query predicate inferType(AstNode n, TypePath path, Type t) {
-  t = TypeInference::inferType(n, path) and
+private predicate relevantNode(AstNode n) {
   n.fromSource() and
   not n.isFromMacroExpansion() and
   not n instanceof IdentPat and // avoid overlap in the output with the underlying `Name` node
   not n instanceof LiteralPat // avoid overlap in the output with the underlying `Literal` node
+}
+
+query predicate inferCertainType(AstNode n, TypePath path, Type t) {
+  t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
+  t != TUnknownType() and
+  relevantNode(n)
+}
+
+query predicate inferType(AstNode n, TypePath path, Type t) {
+  t = TypeInference::inferType(n, path) and
+  t != TUnknownType() and
+  relevantNode(n)
 }
 
 module ResolveTest implements TestSig {
@@ -36,11 +48,11 @@ module ResolveTest implements TestSig {
       not target.(Function).getName().getText() = ["panic_fmt", "_print", "format", "must_use"] and
       tag = "target"
       or
-      target = resolveStructFieldExpr(source) and
+      target = resolveStructFieldExpr(source, _) and
       any(Struct s | s.getStructField(_) = target).getName().getText() = value and
       tag = "fieldof"
       or
-      target = resolveTupleFieldExpr(source) and
+      target = resolveTupleFieldExpr(source, _) and
       any(Struct s | s.getTupleField(_) = target).getName().getText() = value and
       tag = "fieldof"
     )
@@ -58,9 +70,10 @@ module TypeTest implements TestSig {
     exists(AstNode n, TypePath path, Type t |
       t = TypeInference::inferType(n, path) and
       (
-        if t = TypeInference::CertainTypeInference::inferCertainType(n, path)
-        then tag = "certainType"
-        else tag = "type"
+        tag = "type"
+        or
+        t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
+        tag = "certainType"
       ) and
       location = n.getLocation() and
       (

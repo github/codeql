@@ -1,0 +1,58 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Alloc
+      - ["alloc::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # Alloc
+      - ["alloc::alloc::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["alloc::alloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["alloc::alloc::realloc", "Argument[2]", "alloc-size", "manual"]
+      - ["<_ as core::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["<_ as core::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<_ as core::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
+      - ["<_ as core::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["<_ as core::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
+      - ["<_ as core::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      # Box
+      - ["<alloc::boxed::Box as core::ops::deref::Deref>::deref", "Argument[self].Reference.Field[alloc::boxed::Box(0)]", "ReturnValue.Reference", "value", "manual"]
+      - ["<alloc::boxed::Box>::pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "value", "manual"]
+      - ["<alloc::boxed::Box>::new", "Argument[0]", "ReturnValue.Field[alloc::boxed::Box(0)]", "value", "manual"]
+      - ["<alloc::boxed::Box>::into_pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
+      # Fmt
+      - ["alloc::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # Layout
+      - ["<core::alloc::layout::Layout>::from_size_align", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::from_size_align_unchecked", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::array", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::repeat", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::repeat", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::repeat_packed", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::repeat_packed", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::extend", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::extend", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::extend_packed", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::extend_packed", "Argument[0]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::align_to", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::align_to", "Argument[self].Reference.Element", "ReturnValue.Field[0,1,2].Reference.Element", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::pad_to_align", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      - ["<core::alloc::layout::Layout>::size", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+      # String
+      - ["<alloc::string::String>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<alloc::string::String>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference.Element", "taint", "manual"]
+      - ["<_ as alloc::string::ToString>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
+        # Overwrite generated model
+      - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"]
+      # Vec
+      - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
+      - ["<alloc::vec::Vec as core::ops::deref::Deref>::deref", "Argument[self].Reference.Element", "ReturnValue.Reference.Element", "value", "manual"]

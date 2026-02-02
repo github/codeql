@@ -1,0 +1,83 @@
+models
+edges
+| main.rs:10:20:10:52 | if cond {...} else {...} | main.rs:11:10:11:16 | f(...) | provenance |  |
+| main.rs:10:30:10:39 | source(...) | main.rs:10:20:10:52 | if cond {...} else {...} | provenance |  |
+| main.rs:15:20:15:23 | ... | main.rs:17:18:17:21 | data | provenance |  |
+| main.rs:22:9:22:9 | a | main.rs:23:13:23:13 | a | provenance |  |
+| main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
+| main.rs:23:13:23:13 | a | main.rs:15:20:15:23 | ... | provenance |  |
+| main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | provenance |  |
+| main.rs:28:9:28:9 | a | main.rs:29:21:29:21 | a | provenance |  |
+| main.rs:28:13:28:22 | source(...) | main.rs:28:9:28:9 | a | provenance |  |
+| main.rs:29:9:29:9 | b | main.rs:30:10:30:10 | b | provenance |  |
+| main.rs:29:13:29:22 | f(...) | main.rs:29:9:29:9 | b | provenance |  |
+| main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | provenance |  |
+| main.rs:29:21:29:21 | a | main.rs:29:13:29:22 | f(...) | provenance |  |
+| main.rs:37:16:37:25 | source(...) | main.rs:39:5:39:5 | [post] f [captured capt] | provenance |  |
+| main.rs:39:5:39:5 | [post] f [captured capt] | main.rs:40:10:40:13 | capt | provenance |  |
+| main.rs:39:5:39:5 | [post] f [captured capt] | main.rs:44:5:44:5 | g [captured capt] | provenance |  |
+| main.rs:44:5:44:5 | g [captured capt] | main.rs:42:14:42:17 | capt | provenance |  |
+| main.rs:47:29:49:1 | { ... } | main.rs:57:10:57:12 | f(...) | provenance |  |
+| main.rs:48:5:48:14 | source(...) | main.rs:47:29:49:1 | { ... } | provenance |  |
+| main.rs:51:17:51:25 | ...: i64 | main.rs:52:10:52:13 | data | provenance |  |
+| main.rs:62:9:62:9 | a | main.rs:63:7:63:7 | a | provenance |  |
+| main.rs:62:13:62:22 | source(...) | main.rs:62:9:62:9 | a | provenance |  |
+| main.rs:63:7:63:7 | a | main.rs:51:17:51:25 | ...: i64 | provenance |  |
+| main.rs:66:24:66:32 | ...: i64 | main.rs:66:42:72:1 | { ... } | provenance |  |
+| main.rs:76:9:76:9 | a | main.rs:77:21:77:21 | a | provenance |  |
+| main.rs:76:13:76:22 | source(...) | main.rs:76:9:76:9 | a | provenance |  |
+| main.rs:77:9:77:9 | b | main.rs:78:10:78:10 | b | provenance |  |
+| main.rs:77:13:77:22 | f(...) | main.rs:77:9:77:9 | b | provenance |  |
+| main.rs:77:21:77:21 | a | main.rs:66:24:66:32 | ...: i64 | provenance |  |
+| main.rs:77:21:77:21 | a | main.rs:77:13:77:22 | f(...) | provenance |  |
+nodes
+| main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
+| main.rs:11:10:11:16 | f(...) | semmle.label | f(...) |
+| main.rs:15:20:15:23 | ... | semmle.label | ... |
+| main.rs:17:18:17:21 | data | semmle.label | data |
+| main.rs:22:9:22:9 | a | semmle.label | a |
+| main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
+| main.rs:23:13:23:13 | a | semmle.label | a |
+| main.rs:27:20:27:23 | ... | semmle.label | ... |
+| main.rs:27:26:27:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:28:9:28:9 | a | semmle.label | a |
+| main.rs:28:13:28:22 | source(...) | semmle.label | source(...) |
+| main.rs:29:9:29:9 | b | semmle.label | b |
+| main.rs:29:13:29:22 | f(...) | semmle.label | f(...) |
+| main.rs:29:21:29:21 | a | semmle.label | a |
+| main.rs:30:10:30:10 | b | semmle.label | b |
+| main.rs:37:16:37:25 | source(...) | semmle.label | source(...) |
+| main.rs:39:5:39:5 | [post] f [captured capt] | semmle.label | [post] f [captured capt] |
+| main.rs:40:10:40:13 | capt | semmle.label | capt |
+| main.rs:42:14:42:17 | capt | semmle.label | capt |
+| main.rs:44:5:44:5 | g [captured capt] | semmle.label | g [captured capt] |
+| main.rs:47:29:49:1 | { ... } | semmle.label | { ... } |
+| main.rs:48:5:48:14 | source(...) | semmle.label | source(...) |
+| main.rs:51:17:51:25 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:52:10:52:13 | data | semmle.label | data |
+| main.rs:57:10:57:12 | f(...) | semmle.label | f(...) |
+| main.rs:62:9:62:9 | a | semmle.label | a |
+| main.rs:62:13:62:22 | source(...) | semmle.label | source(...) |
+| main.rs:63:7:63:7 | a | semmle.label | a |
+| main.rs:66:24:66:32 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:66:42:72:1 | { ... } | semmle.label | { ... } |
+| main.rs:76:9:76:9 | a | semmle.label | a |
+| main.rs:76:13:76:22 | source(...) | semmle.label | source(...) |
+| main.rs:77:9:77:9 | b | semmle.label | b |
+| main.rs:77:13:77:22 | f(...) | semmle.label | f(...) |
+| main.rs:77:21:77:21 | a | semmle.label | a |
+| main.rs:78:10:78:10 | b | semmle.label | b |
+subpaths
+| main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | main.rs:29:13:29:22 | f(...) |
+| main.rs:77:21:77:21 | a | main.rs:66:24:66:32 | ...: i64 | main.rs:66:42:72:1 | { ... } | main.rs:77:13:77:22 | f(...) |
+testFailures
+#select
+| main.rs:11:10:11:16 | f(...) | main.rs:10:30:10:39 | source(...) | main.rs:11:10:11:16 | f(...) | $@ | main.rs:10:30:10:39 | source(...) | source(...) |
+| main.rs:17:18:17:21 | data | main.rs:22:13:22:22 | source(...) | main.rs:17:18:17:21 | data | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
+| main.rs:30:10:30:10 | b | main.rs:28:13:28:22 | source(...) | main.rs:30:10:30:10 | b | $@ | main.rs:28:13:28:22 | source(...) | source(...) |
+| main.rs:40:10:40:13 | capt | main.rs:37:16:37:25 | source(...) | main.rs:40:10:40:13 | capt | $@ | main.rs:37:16:37:25 | source(...) | source(...) |
+| main.rs:42:14:42:17 | capt | main.rs:37:16:37:25 | source(...) | main.rs:42:14:42:17 | capt | $@ | main.rs:37:16:37:25 | source(...) | source(...) |
+| main.rs:52:10:52:13 | data | main.rs:62:13:62:22 | source(...) | main.rs:52:10:52:13 | data | $@ | main.rs:62:13:62:22 | source(...) | source(...) |
+| main.rs:57:10:57:12 | f(...) | main.rs:48:5:48:14 | source(...) | main.rs:57:10:57:12 | f(...) | $@ | main.rs:48:5:48:14 | source(...) | source(...) |
+| main.rs:78:10:78:10 | b | main.rs:76:13:76:22 | source(...) | main.rs:78:10:78:10 | b | $@ | main.rs:76:13:76:22 | source(...) | source(...) |

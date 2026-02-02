@@ -3,20 +3,32 @@
 "qhelp.dtd">
 <qhelp>
      <overview>
-          <p>
-               Using broken or weak cryptographic algorithms can leave data
-               vulnerable to being decrypted or forged by an attacker.
-          </p>
+		<p>
+			Using broken or weak cryptographic algorithms may compromise
+			security guarantees such as confidentiality, integrity, and
+			authenticity.
+		</p>
+
+		<p>
+			Many cryptographic algorithms are known to be weak or flawed. The
+			security guarantees of a system often rely on the underlying
+			cryptography, so using a weak algorithm can have severe consequences.
+			For example:
+		</p>
+
+		<ul>
+			<li>
+			If a weak encryption algorithm is used, an attacker may be able to
+			decrypt sensitive data.
+			</li>
+			<li>
+			If a weak algorithm is used for digital signatures, an attacker may
+			be able to forge signatures and impersonate legitimate users.
+			</li>
+		</ul>
 
           <p>
-               Many cryptographic algorithms provided by cryptography
-               libraries are known to be weak, or flawed. Using such an
-               algorithm means that encrypted or hashed data is less
-               secure than it appears to be.
-          </p>
-
-          <p>
-               This query alerts on any use of a weak cryptographic algorithm, that is
+               This query alerts on any use of a weak cryptographic algorithm that is
                not a hashing algorithm. Use of broken or weak cryptographic hash
                functions are handled by the
                <code>rust/weak-sensitive-data-hashing</code> query.

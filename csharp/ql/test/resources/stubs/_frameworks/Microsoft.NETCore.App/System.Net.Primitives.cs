@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Primitives, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -102,6 +102,8 @@ namespace System
         public class CookieException : System.FormatException, System.Runtime.Serialization.ISerializable
         {
             public CookieException() => throw null;
+            public CookieException(string message) => throw null;
+            public CookieException(string message, System.Exception innerException) => throw null;
             protected CookieException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
@@ -232,7 +234,7 @@ namespace System
         {
             System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType);
         }
-        public class IPAddress : System.IFormattable, System.IParsable<System.Net.IPAddress>, System.ISpanFormattable, System.ISpanParsable<System.Net.IPAddress>, System.IUtf8SpanFormattable
+        public class IPAddress : System.IFormattable, System.IParsable<System.Net.IPAddress>, System.ISpanFormattable, System.ISpanParsable<System.Net.IPAddress>, System.IUtf8SpanFormattable, System.IUtf8SpanParsable<System.Net.IPAddress>
         {
             public long Address { get => throw null; set { } }
             public System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
@@ -259,6 +261,8 @@ namespace System
             public bool IsIPv6Teredo { get => throw null; }
             public bool IsIPv6UniqueLocal { get => throw null; }
             public static bool IsLoopback(System.Net.IPAddress address) => throw null;
+            public static bool IsValid(System.ReadOnlySpan<char> ipSpan) => throw null;
+            public static bool IsValidUtf8(System.ReadOnlySpan<byte> utf8Text) => throw null;
             public static readonly System.Net.IPAddress Loopback;
             public System.Net.IPAddress MapToIPv4() => throw null;
             public System.Net.IPAddress MapToIPv6() => throw null;
@@ -268,8 +272,10 @@ namespace System
             public static readonly System.Net.IPAddress None;
             public static System.Net.IPAddress Parse(System.ReadOnlySpan<char> ipSpan) => throw null;
             public static System.Net.IPAddress Parse(string ipString) => throw null;
+            public static System.Net.IPAddress Parse(System.ReadOnlySpan<byte> utf8Text) => throw null;
             static System.Net.IPAddress System.ISpanParsable<System.Net.IPAddress>.Parse(System.ReadOnlySpan<char> s, System.IFormatProvider provider) => throw null;
             static System.Net.IPAddress System.IParsable<System.Net.IPAddress>.Parse(string s, System.IFormatProvider provider) => throw null;
+            static System.Net.IPAddress System.IUtf8SpanParsable<System.Net.IPAddress>.Parse(System.ReadOnlySpan<byte> utf8Text, System.IFormatProvider provider) => throw null;
             public long ScopeId { get => throw null; set { } }
             public override string ToString() => throw null;
             string System.IFormattable.ToString(string format, System.IFormatProvider formatProvider) => throw null;
@@ -279,8 +285,10 @@ namespace System
             bool System.IUtf8SpanFormattable.TryFormat(System.Span<byte> utf8Destination, out int bytesWritten, System.ReadOnlySpan<char> format, System.IFormatProvider provider) => throw null;
             public static bool TryParse(System.ReadOnlySpan<char> ipSpan, out System.Net.IPAddress address) => throw null;
             public static bool TryParse(string ipString, out System.Net.IPAddress address) => throw null;
+            public static bool TryParse(System.ReadOnlySpan<byte> utf8Text, out System.Net.IPAddress result) => throw null;
             static bool System.ISpanParsable<System.Net.IPAddress>.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider provider, out System.Net.IPAddress result) => throw null;
             static bool System.IParsable<System.Net.IPAddress>.TryParse(string s, System.IFormatProvider provider, out System.Net.IPAddress result) => throw null;
+            static bool System.IUtf8SpanParsable<System.Net.IPAddress>.TryParse(System.ReadOnlySpan<byte> utf8Text, System.IFormatProvider provider, out System.Net.IPAddress result) => throw null;
             public bool TryWriteBytes(System.Span<byte> destination, out int bytesWritten) => throw null;
         }
         public class IPEndPoint : System.Net.EndPoint
@@ -302,7 +310,7 @@ namespace System
             public static bool TryParse(System.ReadOnlySpan<char> s, out System.Net.IPEndPoint result) => throw null;
             public static bool TryParse(string s, out System.Net.IPEndPoint result) => throw null;
         }
-        public struct IPNetwork : System.IEquatable<System.Net.IPNetwork>, System.IFormattable, System.IParsable<System.Net.IPNetwork>, System.ISpanFormattable, System.ISpanParsable<System.Net.IPNetwork>, System.IUtf8SpanFormattable
+        public struct IPNetwork : System.IEquatable<System.Net.IPNetwork>, System.IFormattable, System.IParsable<System.Net.IPNetwork>, System.ISpanFormattable, System.ISpanParsable<System.Net.IPNetwork>, System.IUtf8SpanFormattable, System.IUtf8SpanParsable<System.Net.IPNetwork>
         {
             public System.Net.IPAddress BaseAddress { get => throw null; }
             public bool Contains(System.Net.IPAddress address) => throw null;
@@ -314,8 +322,10 @@ namespace System
             public static bool operator !=(System.Net.IPNetwork left, System.Net.IPNetwork right) => throw null;
             public static System.Net.IPNetwork Parse(System.ReadOnlySpan<char> s) => throw null;
             public static System.Net.IPNetwork Parse(string s) => throw null;
+            public static System.Net.IPNetwork Parse(System.ReadOnlySpan<byte> utf8Text) => throw null;
             static System.Net.IPNetwork System.IParsable<System.Net.IPNetwork>.Parse(string s, System.IFormatProvider provider) => throw null;
             static System.Net.IPNetwork System.ISpanParsable<System.Net.IPNetwork>.Parse(System.ReadOnlySpan<char> s, System.IFormatProvider provider) => throw null;
+            static System.Net.IPNetwork System.IUtf8SpanParsable<System.Net.IPNetwork>.Parse(System.ReadOnlySpan<byte> utf8Text, System.IFormatProvider provider) => throw null;
             public int PrefixLength { get => throw null; }
             string System.IFormattable.ToString(string format, System.IFormatProvider provider) => throw null;
             public override string ToString() => throw null;
@@ -325,8 +335,10 @@ namespace System
             public bool TryFormat(System.Span<byte> utf8Destination, out int bytesWritten) => throw null;
             static bool System.IParsable<System.Net.IPNetwork>.TryParse(string s, System.IFormatProvider provider, out System.Net.IPNetwork result) => throw null;
             static bool System.ISpanParsable<System.Net.IPNetwork>.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider provider, out System.Net.IPNetwork result) => throw null;
+            static bool System.IUtf8SpanParsable<System.Net.IPNetwork>.TryParse(System.ReadOnlySpan<byte> utf8Text, System.IFormatProvider provider, out System.Net.IPNetwork result) => throw null;
             public static bool TryParse(System.ReadOnlySpan<char> s, out System.Net.IPNetwork result) => throw null;
             public static bool TryParse(string s, out System.Net.IPNetwork result) => throw null;
+            public static bool TryParse(System.ReadOnlySpan<byte> utf8Text, out System.Net.IPNetwork result) => throw null;
         }
         public interface IWebProxy
         {

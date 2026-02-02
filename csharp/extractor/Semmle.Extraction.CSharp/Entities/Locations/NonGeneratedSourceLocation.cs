@@ -40,8 +40,29 @@ namespace Semmle.Extraction.CSharp.Entities
             get;
         }
 
+        private static void WriteStarId(EscapingTextWriter writer)
+        {
+            writer.Write('*');
+        }
+
+        public sealed override void WriteQuotedId(EscapingTextWriter writer)
+        {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                WriteStarId(writer);
+                return;
+            }
+            base.WriteQuotedId(writer);
+        }
+
         public override void WriteId(EscapingTextWriter trapFile)
         {
+            if (Context.ExtractionContext.IsStandalone)
+            {
+                WriteStarId(trapFile);
+                return;
+            }
+
             trapFile.Write("loc,");
             trapFile.WriteSubId(FileEntity);
             trapFile.Write(',');

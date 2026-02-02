@@ -185,12 +185,6 @@ codeql::ObjCSelectorExpr ExprTranslator::translateObjCSelectorExpr(
   return entry;
 }
 
-codeql::OneWayExpr ExprTranslator::translateOneWayExpr(const swift::OneWayExpr& expr) {
-  auto entry = createExprEntry(expr);
-  entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
-  return entry;
-}
-
 codeql::OpenExistentialExpr ExprTranslator::translateOpenExistentialExpr(
     const swift::OpenExistentialExpr& expr) {
   auto entry = createExprEntry(expr);
@@ -498,7 +492,7 @@ TrapLabel<KeyPathComponentTag> ExprTranslator::emitKeyPathComponent(
     const swift::KeyPathExpr::Component& component) {
   auto entry = dispatcher.createUncachedEntry(component);
   entry.kind = static_cast<int>(component.getKind());
-  if (auto subscript_args = component.getSubscriptArgs()) {
+  if (auto subscript_args = component.getArgs()) {
     for (const auto& arg : *subscript_args) {
       entry.subscript_arguments.push_back(emitArgument(arg));
     }
@@ -544,7 +538,7 @@ void ExprTranslator::fillSelfApplyExpr(const swift::SelfApplyExpr& expr,
 
 void ExprTranslator::fillLookupExpr(const swift::LookupExpr& expr, codeql::LookupExpr& entry) {
   entry.base = dispatcher.fetchLabel(expr.getBase());
-  if (expr.hasDecl()) {
+  if (expr.hasDecl() && !expr.getDecl().getDecl()->isUnavailable()) {
     entry.member = dispatcher.fetchLabel(expr.getDecl().getDecl());
   }
 }
@@ -691,8 +685,8 @@ codeql::CurrentContextIsolationExpr ExprTranslator::translateCurrentContextIsola
 
 codeql::TypeValueExpr ExprTranslator::translateTypeValueExpr(const swift::TypeValueExpr& expr) {
   auto entry = createExprEntry(expr);
-  if (expr.getParamTypeRepr() && expr.getParamType()) {
-    entry.type_repr = dispatcher.fetchLabel(expr.getParamTypeRepr(), expr.getParamType());
+  if (expr.getRepr() && expr.getParamType()) {
+    entry.type_repr = dispatcher.fetchLabel(expr.getRepr(), expr.getParamType());
   }
   return entry;
 }

@@ -35,11 +35,13 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node sourceNode) {
-    exists(SensitiveExpr source | result = source.getLocation() | isSourceImpl(sourceNode, source))
+    exists(SensitiveExpr source | result = [source.getLocation(), sourceNode.getLocation()] |
+      isSourceImpl(sourceNode, source)
+    )
   }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(FileWrite w | result = w.getLocation() | isSinkImpl(sink, w, _))
+    exists(FileWrite w | result = [w.getLocation(), sink.getLocation()] | isSinkImpl(sink, w, _))
   }
 }
 

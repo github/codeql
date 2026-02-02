@@ -1,105 +1,248 @@
 #select
 | klog.go:23:15:23:20 | header | klog.go:21:30:21:37 | selection of Header | klog.go:23:15:23:20 | header | $@ flows to a logging call. | klog.go:21:30:21:37 | selection of Header | Sensitive data returned by HTTP request headers |
 | klog.go:29:13:29:41 | call to Get | klog.go:29:13:29:20 | selection of Header | klog.go:29:13:29:41 | call to Get | $@ flows to a logging call. | klog.go:29:13:29:20 | selection of Header | Sensitive data returned by HTTP request headers |
-| main.go:16:12:16:19 | password | main.go:16:12:16:19 | password | main.go:16:12:16:19 | password | $@ flows to a logging call. | main.go:16:12:16:19 | password | Sensitive data returned by an access to password |
-| main.go:17:19:17:26 | password | main.go:17:19:17:26 | password | main.go:17:19:17:26 | password | $@ flows to a logging call. | main.go:17:19:17:26 | password | Sensitive data returned by an access to password |
-| main.go:18:13:18:20 | password | main.go:18:13:18:20 | password | main.go:18:13:18:20 | password | $@ flows to a logging call. | main.go:18:13:18:20 | password | Sensitive data returned by an access to password |
-| main.go:19:14:19:21 | password | main.go:19:14:19:21 | password | main.go:19:14:19:21 | password | $@ flows to a logging call. | main.go:19:14:19:21 | password | Sensitive data returned by an access to password |
-| main.go:20:12:20:19 | password | main.go:20:12:20:19 | password | main.go:20:12:20:19 | password | $@ flows to a logging call. | main.go:20:12:20:19 | password | Sensitive data returned by an access to password |
-| main.go:21:19:21:26 | password | main.go:21:19:21:26 | password | main.go:21:19:21:26 | password | $@ flows to a logging call. | main.go:21:19:21:26 | password | Sensitive data returned by an access to password |
-| main.go:22:13:22:20 | password | main.go:22:13:22:20 | password | main.go:22:13:22:20 | password | $@ flows to a logging call. | main.go:22:13:22:20 | password | Sensitive data returned by an access to password |
-| main.go:23:14:23:21 | password | main.go:23:14:23:21 | password | main.go:23:14:23:21 | password | $@ flows to a logging call. | main.go:23:14:23:21 | password | Sensitive data returned by an access to password |
-| main.go:24:12:24:19 | password | main.go:24:12:24:19 | password | main.go:24:12:24:19 | password | $@ flows to a logging call. | main.go:24:12:24:19 | password | Sensitive data returned by an access to password |
-| main.go:25:19:25:26 | password | main.go:25:19:25:26 | password | main.go:25:19:25:26 | password | $@ flows to a logging call. | main.go:25:19:25:26 | password | Sensitive data returned by an access to password |
-| main.go:26:13:26:20 | password | main.go:26:13:26:20 | password | main.go:26:13:26:20 | password | $@ flows to a logging call. | main.go:26:13:26:20 | password | Sensitive data returned by an access to password |
-| main.go:27:14:27:21 | password | main.go:27:14:27:21 | password | main.go:27:14:27:21 | password | $@ flows to a logging call. | main.go:27:14:27:21 | password | Sensitive data returned by an access to password |
-| main.go:28:16:28:23 | password | main.go:28:16:28:23 | password | main.go:28:16:28:23 | password | $@ flows to a logging call. | main.go:28:16:28:23 | password | Sensitive data returned by an access to password |
-| main.go:32:10:32:17 | password | main.go:32:10:32:17 | password | main.go:32:10:32:17 | password | $@ flows to a logging call. | main.go:32:10:32:17 | password | Sensitive data returned by an access to password |
-| main.go:33:17:33:24 | password | main.go:33:17:33:24 | password | main.go:33:17:33:24 | password | $@ flows to a logging call. | main.go:33:17:33:24 | password | Sensitive data returned by an access to password |
-| main.go:34:11:34:18 | password | main.go:34:11:34:18 | password | main.go:34:11:34:18 | password | $@ flows to a logging call. | main.go:34:11:34:18 | password | Sensitive data returned by an access to password |
-| main.go:35:12:35:19 | password | main.go:35:12:35:19 | password | main.go:35:12:35:19 | password | $@ flows to a logging call. | main.go:35:12:35:19 | password | Sensitive data returned by an access to password |
-| main.go:36:10:36:17 | password | main.go:36:10:36:17 | password | main.go:36:10:36:17 | password | $@ flows to a logging call. | main.go:36:10:36:17 | password | Sensitive data returned by an access to password |
-| main.go:37:17:37:24 | password | main.go:37:17:37:24 | password | main.go:37:17:37:24 | password | $@ flows to a logging call. | main.go:37:17:37:24 | password | Sensitive data returned by an access to password |
-| main.go:38:11:38:18 | password | main.go:38:11:38:18 | password | main.go:38:11:38:18 | password | $@ flows to a logging call. | main.go:38:11:38:18 | password | Sensitive data returned by an access to password |
-| main.go:39:12:39:19 | password | main.go:39:12:39:19 | password | main.go:39:12:39:19 | password | $@ flows to a logging call. | main.go:39:12:39:19 | password | Sensitive data returned by an access to password |
-| main.go:40:10:40:17 | password | main.go:40:10:40:17 | password | main.go:40:10:40:17 | password | $@ flows to a logging call. | main.go:40:10:40:17 | password | Sensitive data returned by an access to password |
-| main.go:41:17:41:24 | password | main.go:41:17:41:24 | password | main.go:41:17:41:24 | password | $@ flows to a logging call. | main.go:41:17:41:24 | password | Sensitive data returned by an access to password |
-| main.go:42:11:42:18 | password | main.go:42:11:42:18 | password | main.go:42:11:42:18 | password | $@ flows to a logging call. | main.go:42:11:42:18 | password | Sensitive data returned by an access to password |
-| main.go:43:12:43:19 | password | main.go:43:12:43:19 | password | main.go:43:12:43:19 | password | $@ flows to a logging call. | main.go:43:12:43:19 | password | Sensitive data returned by an access to password |
-| main.go:44:14:44:21 | password | main.go:44:14:44:21 | password | main.go:44:14:44:21 | password | $@ flows to a logging call. | main.go:44:14:44:21 | password | Sensitive data returned by an access to password |
-| main.go:47:12:47:19 | password | main.go:47:12:47:19 | password | main.go:47:12:47:19 | password | $@ flows to a logging call. | main.go:47:12:47:19 | password | Sensitive data returned by an access to password |
-| main.go:48:17:48:24 | password | main.go:48:17:48:24 | password | main.go:48:17:48:24 | password | $@ flows to a logging call. | main.go:48:17:48:24 | password | Sensitive data returned by an access to password |
-| main.go:55:35:55:42 | password | main.go:55:35:55:42 | password | main.go:55:35:55:42 | password | $@ flows to a logging call. | main.go:55:35:55:42 | password | Sensitive data returned by an access to password |
-| overrides.go:13:14:13:23 | call to String | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | $@ flows to a logging call. | overrides.go:9:9:9:16 | password | Sensitive data returned by an access to password |
-| passwords.go:9:14:9:14 | x | passwords.go:30:8:30:15 | password | passwords.go:9:14:9:14 | x | $@ flows to a logging call. | passwords.go:30:8:30:15 | password | Sensitive data returned by an access to password |
-| passwords.go:25:14:25:21 | password | passwords.go:25:14:25:21 | password | passwords.go:25:14:25:21 | password | $@ flows to a logging call. | passwords.go:25:14:25:21 | password | Sensitive data returned by an access to password |
+| main.go:19:12:19:19 | password | main.go:17:2:17:9 | definition of password | main.go:19:12:19:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:20:19:20:26 | password | main.go:17:2:17:9 | definition of password | main.go:20:19:20:26 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:21:13:21:20 | password | main.go:17:2:17:9 | definition of password | main.go:21:13:21:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:22:14:22:21 | password | main.go:17:2:17:9 | definition of password | main.go:22:14:22:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:24:13:24:20 | password | main.go:17:2:17:9 | definition of password | main.go:24:13:24:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:27:20:27:27 | password | main.go:17:2:17:9 | definition of password | main.go:27:20:27:27 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:30:14:30:21 | password | main.go:17:2:17:9 | definition of password | main.go:30:14:30:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:33:15:33:22 | password | main.go:17:2:17:9 | definition of password | main.go:33:15:33:22 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:36:13:36:20 | password | main.go:17:2:17:9 | definition of password | main.go:36:13:36:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:39:20:39:27 | password | main.go:17:2:17:9 | definition of password | main.go:39:20:39:27 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:42:14:42:21 | password | main.go:17:2:17:9 | definition of password | main.go:42:14:42:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:45:15:45:22 | password | main.go:17:2:17:9 | definition of password | main.go:45:15:45:22 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:47:16:47:23 | password | main.go:17:2:17:9 | definition of password | main.go:47:16:47:23 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:51:10:51:17 | password | main.go:17:2:17:9 | definition of password | main.go:51:10:51:17 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:52:17:52:24 | password | main.go:17:2:17:9 | definition of password | main.go:52:17:52:24 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:53:11:53:18 | password | main.go:17:2:17:9 | definition of password | main.go:53:11:53:18 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:54:12:54:19 | password | main.go:17:2:17:9 | definition of password | main.go:54:12:54:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:56:11:56:18 | password | main.go:17:2:17:9 | definition of password | main.go:56:11:56:18 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:59:18:59:25 | password | main.go:17:2:17:9 | definition of password | main.go:59:18:59:25 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:62:12:62:19 | password | main.go:17:2:17:9 | definition of password | main.go:62:12:62:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:65:13:65:20 | password | main.go:17:2:17:9 | definition of password | main.go:65:13:65:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:68:11:68:18 | password | main.go:17:2:17:9 | definition of password | main.go:68:11:68:18 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:71:18:71:25 | password | main.go:17:2:17:9 | definition of password | main.go:71:18:71:25 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:74:12:74:19 | password | main.go:17:2:17:9 | definition of password | main.go:74:12:74:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:77:13:77:20 | password | main.go:17:2:17:9 | definition of password | main.go:77:13:77:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:79:14:79:21 | password | main.go:17:2:17:9 | definition of password | main.go:79:14:79:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:82:12:82:19 | password | main.go:17:2:17:9 | definition of password | main.go:82:12:82:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:83:17:83:24 | password | main.go:17:2:17:9 | definition of password | main.go:83:17:83:24 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:87:29:87:34 | fields | main.go:17:2:17:9 | definition of password | main.go:87:29:87:34 | fields | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| main.go:90:35:90:42 | password | main.go:17:2:17:9 | definition of password | main.go:90:35:90:42 | password | $@ flows to a logging call. | main.go:17:2:17:9 | definition of password | Sensitive data returned by an access to password |
+| overrides.go:13:14:13:23 | call to String | overrides.go:8:2:8:9 | definition of password | overrides.go:13:14:13:23 | call to String | $@ flows to a logging call. | overrides.go:8:2:8:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:9:14:9:14 | x | passwords.go:21:2:21:9 | definition of password | passwords.go:9:14:9:14 | x | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:25:14:25:21 | password | passwords.go:21:2:21:9 | definition of password | passwords.go:25:14:25:21 | password | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
 | passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password | $@ flows to a logging call. | passwords.go:26:14:26:23 | selection of password | Sensitive data returned by an access to password |
 | passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword | $@ flows to a logging call. | passwords.go:27:14:27:26 | call to getPassword | Sensitive data returned by a call to getPassword |
 | passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword | $@ flows to a logging call. | passwords.go:28:14:28:28 | call to getPassword | Sensitive data returned by a call to getPassword |
-| passwords.go:32:12:32:19 | password | passwords.go:32:12:32:19 | password | passwords.go:32:12:32:19 | password | $@ flows to a logging call. | passwords.go:32:12:32:19 | password | Sensitive data returned by an access to password |
-| passwords.go:34:14:34:35 | ...+... | passwords.go:34:28:34:35 | password | passwords.go:34:14:34:35 | ...+... | $@ flows to a logging call. | passwords.go:34:28:34:35 | password | Sensitive data returned by an access to password |
+| passwords.go:32:12:32:19 | password | passwords.go:21:2:21:9 | definition of password | passwords.go:32:12:32:19 | password | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:34:14:34:35 | ...+... | passwords.go:21:2:21:9 | definition of password | passwords.go:34:14:34:35 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
 | passwords.go:39:14:39:17 | obj1 | passwords.go:37:13:37:13 | x | passwords.go:39:14:39:17 | obj1 | $@ flows to a logging call. | passwords.go:37:13:37:13 | x | Sensitive data returned by an access to password |
-| passwords.go:44:14:44:17 | obj2 | passwords.go:42:6:42:13 | password | passwords.go:44:14:44:17 | obj2 | $@ flows to a logging call. | passwords.go:42:6:42:13 | password | Sensitive data returned by an access to password |
-| passwords.go:47:14:47:17 | obj3 | passwords.go:48:11:48:18 | password | passwords.go:47:14:47:17 | obj3 | $@ flows to a logging call. | passwords.go:48:11:48:18 | password | Sensitive data returned by an access to password |
-| passwords.go:51:14:51:27 | fixed_password | passwords.go:51:14:51:27 | fixed_password | passwords.go:51:14:51:27 | fixed_password | $@ flows to a logging call. | passwords.go:51:14:51:27 | fixed_password | Sensitive data returned by an access to fixed_password |
-| passwords.go:88:14:88:26 | utilityObject | passwords.go:86:16:86:36 | call to make | passwords.go:88:14:88:26 | utilityObject | $@ flows to a logging call. | passwords.go:86:16:86:36 | call to make | Sensitive data returned by an access to passwordSet |
-| passwords.go:91:23:91:28 | secret | passwords.go:90:12:90:19 | password | passwords.go:91:23:91:28 | secret | $@ flows to a logging call. | passwords.go:90:12:90:19 | password | Sensitive data returned by an access to password |
-| passwords.go:101:15:101:40 | ...+... | passwords.go:101:33:101:40 | password | passwords.go:101:15:101:40 | ...+... | $@ flows to a logging call. | passwords.go:101:33:101:40 | password | Sensitive data returned by an access to password |
-| passwords.go:107:16:107:41 | ...+... | passwords.go:107:34:107:41 | password | passwords.go:107:16:107:41 | ...+... | $@ flows to a logging call. | passwords.go:107:34:107:41 | password | Sensitive data returned by an access to password |
-| passwords.go:112:15:112:40 | ...+... | passwords.go:112:33:112:40 | password | passwords.go:112:15:112:40 | ...+... | $@ flows to a logging call. | passwords.go:112:33:112:40 | password | Sensitive data returned by an access to password |
-| passwords.go:116:14:116:45 | ...+... | passwords.go:116:28:116:36 | password1 | passwords.go:116:14:116:45 | ...+... | $@ flows to a logging call. | passwords.go:116:28:116:36 | password1 | Sensitive data returned by an access to password1 |
-| passwords.go:125:14:125:19 | config | passwords.go:119:13:119:13 | x | passwords.go:125:14:125:19 | config | $@ flows to a logging call. | passwords.go:119:13:119:13 | x | Sensitive data returned by an access to password |
-| passwords.go:125:14:125:19 | config | passwords.go:121:13:121:20 | password | passwords.go:125:14:125:19 | config | $@ flows to a logging call. | passwords.go:121:13:121:20 | password | Sensitive data returned by an access to password |
-| passwords.go:125:14:125:19 | config | passwords.go:122:13:122:25 | call to getPassword | passwords.go:125:14:125:19 | config | $@ flows to a logging call. | passwords.go:122:13:122:25 | call to getPassword | Sensitive data returned by a call to getPassword |
-| passwords.go:126:14:126:21 | selection of x | passwords.go:121:13:121:20 | password | passwords.go:126:14:126:21 | selection of x | $@ flows to a logging call. | passwords.go:121:13:121:20 | password | Sensitive data returned by an access to password |
-| passwords.go:127:14:127:21 | selection of y | passwords.go:122:13:122:25 | call to getPassword | passwords.go:127:14:127:21 | selection of y | $@ flows to a logging call. | passwords.go:122:13:122:25 | call to getPassword | Sensitive data returned by a call to getPassword |
-| protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:12:22:12:29 | password | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:12:22:12:29 | password | Sensitive data returned by an access to password |
+| passwords.go:44:14:44:17 | obj2 | passwords.go:21:2:21:9 | definition of password | passwords.go:44:14:44:17 | obj2 | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:51:14:51:27 | fixed_password | passwords.go:50:2:50:15 | definition of fixed_password | passwords.go:51:14:51:27 | fixed_password | $@ flows to a logging call. | passwords.go:50:2:50:15 | definition of fixed_password | Sensitive data returned by an access to fixed_password |
+| passwords.go:89:14:89:26 | utilityObject | passwords.go:87:16:87:36 | call to make | passwords.go:89:14:89:26 | utilityObject | $@ flows to a logging call. | passwords.go:87:16:87:36 | call to make | Sensitive data returned by an access to passwordSet |
+| passwords.go:92:23:92:28 | secret | passwords.go:21:2:21:9 | definition of password | passwords.go:92:23:92:28 | secret | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:102:15:102:40 | ...+... | passwords.go:21:2:21:9 | definition of password | passwords.go:102:15:102:40 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:108:16:108:41 | ...+... | passwords.go:21:2:21:9 | definition of password | passwords.go:108:16:108:41 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:113:15:113:40 | ...+... | passwords.go:21:2:21:9 | definition of password | passwords.go:113:15:113:40 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:117:14:117:45 | ...+... | passwords.go:116:6:116:14 | definition of password1 | passwords.go:117:14:117:45 | ...+... | $@ flows to a logging call. | passwords.go:116:6:116:14 | definition of password1 | Sensitive data returned by an access to password1 |
+| passwords.go:127:14:127:19 | config | passwords.go:21:2:21:9 | definition of password | passwords.go:127:14:127:19 | config | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:127:14:127:19 | config | passwords.go:121:13:121:14 | x3 | passwords.go:127:14:127:19 | config | $@ flows to a logging call. | passwords.go:121:13:121:14 | x3 | Sensitive data returned by an access to password |
+| passwords.go:127:14:127:19 | config | passwords.go:124:13:124:25 | call to getPassword | passwords.go:127:14:127:19 | config | $@ flows to a logging call. | passwords.go:124:13:124:25 | call to getPassword | Sensitive data returned by a call to getPassword |
+| passwords.go:128:14:128:21 | selection of x | passwords.go:21:2:21:9 | definition of password | passwords.go:128:14:128:21 | selection of x | $@ flows to a logging call. | passwords.go:21:2:21:9 | definition of password | Sensitive data returned by an access to password |
+| passwords.go:129:14:129:21 | selection of y | passwords.go:124:13:124:25 | call to getPassword | passwords.go:129:14:129:21 | selection of y | $@ flows to a logging call. | passwords.go:124:13:124:25 | call to getPassword | Sensitive data returned by a call to getPassword |
+| protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:9:2:9:9 | definition of password | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:9:2:9:9 | definition of password | Sensitive data returned by an access to password |
 edges
 | klog.go:21:3:26:3 | range statement[1] | klog.go:22:27:22:33 | headers | provenance |  |
-| klog.go:21:30:21:37 | selection of Header | klog.go:21:3:26:3 | range statement[1] | provenance | Src:MaD:1 Config |
+| klog.go:21:30:21:37 | selection of Header | klog.go:21:3:26:3 | range statement[1] | provenance | Src:MaD:11 Config |
 | klog.go:22:4:25:4 | range statement[1] | klog.go:23:15:23:20 | header | provenance |  |
 | klog.go:22:27:22:33 | headers | klog.go:22:4:25:4 | range statement[1] | provenance | Config |
-| klog.go:29:13:29:20 | selection of Header | klog.go:29:13:29:41 | call to Get | provenance | Src:MaD:1 Config |
+| klog.go:29:13:29:20 | selection of Header | klog.go:29:13:29:41 | call to Get | provenance | Src:MaD:11 Config |
+| main.go:17:2:17:9 | definition of password | main.go:19:12:19:19 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:20:19:20:26 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:21:13:21:20 | password | provenance | Sink:MaD:6 |
+| main.go:17:2:17:9 | definition of password | main.go:22:14:22:21 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:24:13:24:20 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:27:20:27:27 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:30:14:30:21 | password | provenance | Sink:MaD:3 |
+| main.go:17:2:17:9 | definition of password | main.go:33:15:33:22 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:36:13:36:20 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:39:20:39:27 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:42:14:42:21 | password | provenance | Sink:MaD:5 |
+| main.go:17:2:17:9 | definition of password | main.go:45:15:45:22 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:47:16:47:23 | password | provenance | Sink:MaD:4 |
+| main.go:17:2:17:9 | definition of password | main.go:51:10:51:17 | password | provenance |  |
+| main.go:17:2:17:9 | definition of password | main.go:51:10:51:17 | password | provenance |  |
+| main.go:51:10:51:17 | password | main.go:52:17:52:24 | password | provenance |  |
+| main.go:51:10:51:17 | password | main.go:52:17:52:24 | password | provenance |  |
+| main.go:52:17:52:24 | password | main.go:53:11:53:18 | password | provenance |  |
+| main.go:52:17:52:24 | password | main.go:53:11:53:18 | password | provenance | Sink:MaD:10 |
+| main.go:53:11:53:18 | password | main.go:54:12:54:19 | password | provenance |  |
+| main.go:53:11:53:18 | password | main.go:54:12:54:19 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:56:11:56:18 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:56:11:56:18 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:59:18:59:25 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:59:18:59:25 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:62:12:62:19 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:62:12:62:19 | password | provenance | Sink:MaD:7 |
+| main.go:54:12:54:19 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:54:12:54:19 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:54:12:54:19 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:54:12:54:19 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:59:18:59:25 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:59:18:59:25 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:62:12:62:19 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:62:12:62:19 | password | provenance | Sink:MaD:7 |
+| main.go:56:11:56:18 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:56:11:56:18 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:56:11:56:18 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:56:11:56:18 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:62:12:62:19 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:62:12:62:19 | password | provenance | Sink:MaD:7 |
+| main.go:59:18:59:25 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:59:18:59:25 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:59:18:59:25 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:59:18:59:25 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:65:13:65:20 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:62:12:62:19 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:62:12:62:19 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:62:12:62:19 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:68:11:68:18 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:65:13:65:20 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:65:13:65:20 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:65:13:65:20 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:68:11:68:18 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:68:11:68:18 | password | main.go:71:18:71:25 | password | provenance |  |
+| main.go:68:11:68:18 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:68:11:68:18 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:68:11:68:18 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:68:11:68:18 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:68:11:68:18 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:68:11:68:18 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:71:18:71:25 | password | main.go:74:12:74:19 | password | provenance |  |
+| main.go:71:18:71:25 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
+| main.go:71:18:71:25 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:71:18:71:25 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:71:18:71:25 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:71:18:71:25 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:74:12:74:19 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:74:12:74:19 | password | main.go:77:13:77:20 | password | provenance |  |
+| main.go:74:12:74:19 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:74:12:74:19 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:77:13:77:20 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
+| main.go:77:13:77:20 | password | main.go:80:17:80:24 | password | provenance |  |
+| main.go:80:17:80:24 | password | main.go:82:12:82:19 | password | provenance |  |
+| main.go:80:17:80:24 | password | main.go:83:17:83:24 | password | provenance |  |
+| main.go:80:17:80:24 | password | main.go:86:19:86:26 | password | provenance |  |
+| main.go:86:2:86:7 | fields [postupdate] | main.go:87:29:87:34 | fields | provenance | Sink:MaD:2 |
+| main.go:86:19:86:26 | password | main.go:86:2:86:7 | fields [postupdate] | provenance | Config |
+| main.go:86:19:86:26 | password | main.go:90:35:90:42 | password | provenance | Sink:MaD:1 |
+| overrides.go:8:2:8:9 | definition of password | overrides.go:9:9:9:16 | password | provenance |  |
 | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | provenance |  |
 | passwords.go:8:12:8:12 | definition of x | passwords.go:9:14:9:14 | x | provenance |  |
+| passwords.go:21:2:21:9 | definition of password | passwords.go:25:14:25:21 | password | provenance |  |
+| passwords.go:21:2:21:9 | definition of password | passwords.go:30:8:30:15 | password | provenance |  |
+| passwords.go:21:2:21:9 | definition of password | passwords.go:32:12:32:19 | password | provenance |  |
+| passwords.go:21:2:21:9 | definition of password | passwords.go:34:28:34:35 | password | provenance |  |
 | passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | definition of x | provenance |  |
 | passwords.go:34:28:34:35 | password | passwords.go:34:14:34:35 | ...+... | provenance | Config |
+| passwords.go:34:28:34:35 | password | passwords.go:42:6:42:13 | password | provenance |  |
 | passwords.go:36:10:38:2 | struct literal | passwords.go:39:14:39:17 | obj1 | provenance |  |
 | passwords.go:37:13:37:13 | x | passwords.go:36:10:38:2 | struct literal | provenance | Config |
 | passwords.go:41:10:43:2 | struct literal | passwords.go:44:14:44:17 | obj2 | provenance |  |
 | passwords.go:42:6:42:13 | password | passwords.go:41:10:43:2 | struct literal | provenance | Config |
-| passwords.go:46:6:46:9 | definition of obj3 | passwords.go:47:14:47:17 | obj3 | provenance |  |
-| passwords.go:48:11:48:18 | password | passwords.go:46:6:46:9 | definition of obj3 | provenance | Config |
-| passwords.go:85:19:87:2 | struct literal | passwords.go:88:14:88:26 | utilityObject | provenance |  |
-| passwords.go:86:16:86:36 | call to make | passwords.go:85:19:87:2 | struct literal | provenance | Config |
-| passwords.go:90:12:90:19 | password | passwords.go:91:23:91:28 | secret | provenance |  |
-| passwords.go:101:33:101:40 | password | passwords.go:101:15:101:40 | ...+... | provenance | Config |
-| passwords.go:107:34:107:41 | password | passwords.go:107:16:107:41 | ...+... | provenance | Config |
-| passwords.go:112:33:112:40 | password | passwords.go:112:15:112:40 | ...+... | provenance | Config |
-| passwords.go:116:28:116:36 | password1 | passwords.go:116:28:116:45 | call to String | provenance | Config |
-| passwords.go:116:28:116:45 | call to String | passwords.go:116:14:116:45 | ...+... | provenance | Config |
-| passwords.go:118:12:123:2 | struct literal | passwords.go:125:14:125:19 | config | provenance |  |
-| passwords.go:118:12:123:2 | struct literal [x] | passwords.go:126:14:126:19 | config [x] | provenance |  |
-| passwords.go:118:12:123:2 | struct literal [y] | passwords.go:127:14:127:19 | config [y] | provenance |  |
-| passwords.go:119:13:119:13 | x | passwords.go:118:12:123:2 | struct literal | provenance | Config |
-| passwords.go:121:13:121:20 | password | passwords.go:118:12:123:2 | struct literal | provenance | Config |
-| passwords.go:121:13:121:20 | password | passwords.go:118:12:123:2 | struct literal [x] | provenance |  |
-| passwords.go:122:13:122:25 | call to getPassword | passwords.go:118:12:123:2 | struct literal | provenance | Config |
-| passwords.go:122:13:122:25 | call to getPassword | passwords.go:118:12:123:2 | struct literal [y] | provenance |  |
-| passwords.go:126:14:126:19 | config [x] | passwords.go:126:14:126:21 | selection of x | provenance |  |
-| passwords.go:127:14:127:19 | config [y] | passwords.go:127:14:127:21 | selection of y | provenance |  |
-| protobuf.go:11:2:11:6 | definition of query [pointer, Description] | protobuf.go:12:2:12:6 | query [pointer, Description] | provenance |  |
-| protobuf.go:11:2:11:6 | definition of query [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
-| protobuf.go:12:2:12:6 | implicit dereference [Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | provenance |  |
-| protobuf.go:12:2:12:6 | query [pointer, Description] | protobuf.go:12:2:12:6 | implicit dereference [Description] | provenance |  |
-| protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit dereference [Description] | provenance |  |
+| passwords.go:42:6:42:13 | password | passwords.go:48:11:48:18 | password | provenance |  |
+| passwords.go:48:11:48:18 | password | passwords.go:92:23:92:28 | secret | provenance |  |
+| passwords.go:48:11:48:18 | password | passwords.go:102:33:102:40 | password | provenance |  |
+| passwords.go:48:11:48:18 | password | passwords.go:108:34:108:41 | password | provenance |  |
+| passwords.go:48:11:48:18 | password | passwords.go:113:33:113:40 | password | provenance |  |
+| passwords.go:48:11:48:18 | password | passwords.go:123:13:123:20 | password | provenance |  |
+| passwords.go:50:2:50:15 | definition of fixed_password | passwords.go:51:14:51:27 | fixed_password | provenance |  |
+| passwords.go:86:19:88:2 | struct literal | passwords.go:89:14:89:26 | utilityObject | provenance |  |
+| passwords.go:87:16:87:36 | call to make | passwords.go:86:19:88:2 | struct literal | provenance | Config |
+| passwords.go:102:33:102:40 | password | passwords.go:102:15:102:40 | ...+... | provenance | Config |
+| passwords.go:102:33:102:40 | password | passwords.go:108:34:108:41 | password | provenance |  |
+| passwords.go:102:33:102:40 | password | passwords.go:113:33:113:40 | password | provenance |  |
+| passwords.go:102:33:102:40 | password | passwords.go:123:13:123:20 | password | provenance |  |
+| passwords.go:108:34:108:41 | password | passwords.go:108:16:108:41 | ...+... | provenance | Config |
+| passwords.go:108:34:108:41 | password | passwords.go:113:33:113:40 | password | provenance |  |
+| passwords.go:108:34:108:41 | password | passwords.go:123:13:123:20 | password | provenance |  |
+| passwords.go:113:33:113:40 | password | passwords.go:113:15:113:40 | ...+... | provenance | Config |
+| passwords.go:113:33:113:40 | password | passwords.go:123:13:123:20 | password | provenance |  |
+| passwords.go:116:6:116:14 | definition of password1 | passwords.go:117:28:117:36 | password1 | provenance |  |
+| passwords.go:117:28:117:36 | password1 | passwords.go:117:28:117:45 | call to String | provenance | Config |
+| passwords.go:117:28:117:45 | call to String | passwords.go:117:14:117:45 | ...+... | provenance | Config |
+| passwords.go:120:12:125:2 | struct literal | passwords.go:127:14:127:19 | config | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [x] | passwords.go:128:14:128:19 | config [x] | provenance |  |
+| passwords.go:120:12:125:2 | struct literal [y] | passwords.go:129:14:129:19 | config [y] | provenance |  |
+| passwords.go:121:13:121:14 | x3 | passwords.go:120:12:125:2 | struct literal | provenance | Config |
+| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal | provenance | Config |
+| passwords.go:123:13:123:20 | password | passwords.go:120:12:125:2 | struct literal [x] | provenance |  |
+| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal | provenance | Config |
+| passwords.go:124:13:124:25 | call to getPassword | passwords.go:120:12:125:2 | struct literal [y] | provenance |  |
+| passwords.go:128:14:128:19 | config [x] | passwords.go:128:14:128:21 | selection of x | provenance |  |
+| passwords.go:129:14:129:19 | config [y] | passwords.go:129:14:129:21 | selection of y | provenance |  |
+| protobuf.go:9:2:9:9 | definition of password | protobuf.go:12:22:12:29 | password | provenance |  |
+| protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | provenance |  |
+| protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
+| protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protobuf.go:14:14:14:35 | call to GetDescription | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | provenance |  |
 | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
 | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | provenance |  |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | provenance |  |
 models
-| 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
+| 1 | Sink: group:logrus; ; false; WithField; ; ; Argument[0..1]; log-injection; manual |
+| 2 | Sink: group:logrus; ; false; WithFields; ; ; Argument[0]; log-injection; manual |
+| 3 | Sink: log; ; false; Fatalf; ; ; Argument[0..1]; log-injection; manual |
+| 4 | Sink: log; ; false; Output; ; ; Argument[1]; log-injection; manual |
+| 5 | Sink: log; ; false; Panicf; ; ; Argument[0..1]; log-injection; manual |
+| 6 | Sink: log; ; false; Printf; ; ; Argument[0..1]; log-injection; manual |
+| 7 | Sink: log; Logger; true; Fatalf; ; ; Argument[0..1]; log-injection; manual |
+| 8 | Sink: log; Logger; true; Output; ; ; Argument[1]; log-injection; manual |
+| 9 | Sink: log; Logger; true; Panicf; ; ; Argument[0..1]; log-injection; manual |
+| 10 | Sink: log; Logger; true; Printf; ; ; Argument[0..1]; log-injection; manual |
+| 11 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 nodes
 | klog.go:21:3:26:3 | range statement[1] | semmle.label | range statement[1] |
 | klog.go:21:30:21:37 | selection of Header | semmle.label | selection of Header |
@@ -108,39 +251,58 @@ nodes
 | klog.go:23:15:23:20 | header | semmle.label | header |
 | klog.go:29:13:29:20 | selection of Header | semmle.label | selection of Header |
 | klog.go:29:13:29:41 | call to Get | semmle.label | call to Get |
-| main.go:16:12:16:19 | password | semmle.label | password |
-| main.go:17:19:17:26 | password | semmle.label | password |
-| main.go:18:13:18:20 | password | semmle.label | password |
-| main.go:19:14:19:21 | password | semmle.label | password |
-| main.go:20:12:20:19 | password | semmle.label | password |
-| main.go:21:19:21:26 | password | semmle.label | password |
-| main.go:22:13:22:20 | password | semmle.label | password |
-| main.go:23:14:23:21 | password | semmle.label | password |
-| main.go:24:12:24:19 | password | semmle.label | password |
-| main.go:25:19:25:26 | password | semmle.label | password |
-| main.go:26:13:26:20 | password | semmle.label | password |
-| main.go:27:14:27:21 | password | semmle.label | password |
-| main.go:28:16:28:23 | password | semmle.label | password |
-| main.go:32:10:32:17 | password | semmle.label | password |
-| main.go:33:17:33:24 | password | semmle.label | password |
-| main.go:34:11:34:18 | password | semmle.label | password |
-| main.go:35:12:35:19 | password | semmle.label | password |
-| main.go:36:10:36:17 | password | semmle.label | password |
-| main.go:37:17:37:24 | password | semmle.label | password |
-| main.go:38:11:38:18 | password | semmle.label | password |
-| main.go:39:12:39:19 | password | semmle.label | password |
-| main.go:40:10:40:17 | password | semmle.label | password |
-| main.go:41:17:41:24 | password | semmle.label | password |
-| main.go:42:11:42:18 | password | semmle.label | password |
-| main.go:43:12:43:19 | password | semmle.label | password |
-| main.go:44:14:44:21 | password | semmle.label | password |
-| main.go:47:12:47:19 | password | semmle.label | password |
-| main.go:48:17:48:24 | password | semmle.label | password |
-| main.go:55:35:55:42 | password | semmle.label | password |
+| main.go:17:2:17:9 | definition of password | semmle.label | definition of password |
+| main.go:19:12:19:19 | password | semmle.label | password |
+| main.go:20:19:20:26 | password | semmle.label | password |
+| main.go:21:13:21:20 | password | semmle.label | password |
+| main.go:22:14:22:21 | password | semmle.label | password |
+| main.go:24:13:24:20 | password | semmle.label | password |
+| main.go:27:20:27:27 | password | semmle.label | password |
+| main.go:30:14:30:21 | password | semmle.label | password |
+| main.go:33:15:33:22 | password | semmle.label | password |
+| main.go:36:13:36:20 | password | semmle.label | password |
+| main.go:39:20:39:27 | password | semmle.label | password |
+| main.go:42:14:42:21 | password | semmle.label | password |
+| main.go:45:15:45:22 | password | semmle.label | password |
+| main.go:47:16:47:23 | password | semmle.label | password |
+| main.go:51:10:51:17 | password | semmle.label | password |
+| main.go:51:10:51:17 | password | semmle.label | password |
+| main.go:52:17:52:24 | password | semmle.label | password |
+| main.go:52:17:52:24 | password | semmle.label | password |
+| main.go:53:11:53:18 | password | semmle.label | password |
+| main.go:53:11:53:18 | password | semmle.label | password |
+| main.go:54:12:54:19 | password | semmle.label | password |
+| main.go:54:12:54:19 | password | semmle.label | password |
+| main.go:56:11:56:18 | password | semmle.label | password |
+| main.go:56:11:56:18 | password | semmle.label | password |
+| main.go:59:18:59:25 | password | semmle.label | password |
+| main.go:59:18:59:25 | password | semmle.label | password |
+| main.go:62:12:62:19 | password | semmle.label | password |
+| main.go:62:12:62:19 | password | semmle.label | password |
+| main.go:65:13:65:20 | password | semmle.label | password |
+| main.go:65:13:65:20 | password | semmle.label | password |
+| main.go:68:11:68:18 | password | semmle.label | password |
+| main.go:68:11:68:18 | password | semmle.label | password |
+| main.go:71:18:71:25 | password | semmle.label | password |
+| main.go:71:18:71:25 | password | semmle.label | password |
+| main.go:74:12:74:19 | password | semmle.label | password |
+| main.go:74:12:74:19 | password | semmle.label | password |
+| main.go:77:13:77:20 | password | semmle.label | password |
+| main.go:77:13:77:20 | password | semmle.label | password |
+| main.go:79:14:79:21 | password | semmle.label | password |
+| main.go:80:17:80:24 | password | semmle.label | password |
+| main.go:82:12:82:19 | password | semmle.label | password |
+| main.go:83:17:83:24 | password | semmle.label | password |
+| main.go:86:2:86:7 | fields [postupdate] | semmle.label | fields [postupdate] |
+| main.go:86:19:86:26 | password | semmle.label | password |
+| main.go:87:29:87:34 | fields | semmle.label | fields |
+| main.go:90:35:90:42 | password | semmle.label | password |
+| overrides.go:8:2:8:9 | definition of password | semmle.label | definition of password |
 | overrides.go:9:9:9:16 | password | semmle.label | password |
 | overrides.go:13:14:13:23 | call to String | semmle.label | call to String |
 | passwords.go:8:12:8:12 | definition of x | semmle.label | definition of x |
 | passwords.go:9:14:9:14 | x | semmle.label | x |
+| passwords.go:21:2:21:9 | definition of password | semmle.label | definition of password |
 | passwords.go:25:14:25:21 | password | semmle.label | password |
 | passwords.go:26:14:26:23 | selection of password | semmle.label | selection of password |
 | passwords.go:27:14:27:26 | call to getPassword | semmle.label | call to getPassword |
@@ -155,38 +317,37 @@ nodes
 | passwords.go:41:10:43:2 | struct literal | semmle.label | struct literal |
 | passwords.go:42:6:42:13 | password | semmle.label | password |
 | passwords.go:44:14:44:17 | obj2 | semmle.label | obj2 |
-| passwords.go:46:6:46:9 | definition of obj3 | semmle.label | definition of obj3 |
-| passwords.go:47:14:47:17 | obj3 | semmle.label | obj3 |
 | passwords.go:48:11:48:18 | password | semmle.label | password |
+| passwords.go:50:2:50:15 | definition of fixed_password | semmle.label | definition of fixed_password |
 | passwords.go:51:14:51:27 | fixed_password | semmle.label | fixed_password |
-| passwords.go:85:19:87:2 | struct literal | semmle.label | struct literal |
-| passwords.go:86:16:86:36 | call to make | semmle.label | call to make |
-| passwords.go:88:14:88:26 | utilityObject | semmle.label | utilityObject |
-| passwords.go:90:12:90:19 | password | semmle.label | password |
-| passwords.go:91:23:91:28 | secret | semmle.label | secret |
-| passwords.go:101:15:101:40 | ...+... | semmle.label | ...+... |
-| passwords.go:101:33:101:40 | password | semmle.label | password |
-| passwords.go:107:16:107:41 | ...+... | semmle.label | ...+... |
-| passwords.go:107:34:107:41 | password | semmle.label | password |
-| passwords.go:112:15:112:40 | ...+... | semmle.label | ...+... |
-| passwords.go:112:33:112:40 | password | semmle.label | password |
-| passwords.go:116:14:116:45 | ...+... | semmle.label | ...+... |
-| passwords.go:116:28:116:36 | password1 | semmle.label | password1 |
-| passwords.go:116:28:116:45 | call to String | semmle.label | call to String |
-| passwords.go:118:12:123:2 | struct literal | semmle.label | struct literal |
-| passwords.go:118:12:123:2 | struct literal [x] | semmle.label | struct literal [x] |
-| passwords.go:118:12:123:2 | struct literal [y] | semmle.label | struct literal [y] |
-| passwords.go:119:13:119:13 | x | semmle.label | x |
-| passwords.go:121:13:121:20 | password | semmle.label | password |
-| passwords.go:122:13:122:25 | call to getPassword | semmle.label | call to getPassword |
-| passwords.go:125:14:125:19 | config | semmle.label | config |
-| passwords.go:126:14:126:19 | config [x] | semmle.label | config [x] |
-| passwords.go:126:14:126:21 | selection of x | semmle.label | selection of x |
-| passwords.go:127:14:127:19 | config [y] | semmle.label | config [y] |
-| passwords.go:127:14:127:21 | selection of y | semmle.label | selection of y |
-| protobuf.go:11:2:11:6 | definition of query [pointer, Description] | semmle.label | definition of query [pointer, Description] |
-| protobuf.go:12:2:12:6 | implicit dereference [Description] | semmle.label | implicit dereference [Description] |
-| protobuf.go:12:2:12:6 | query [pointer, Description] | semmle.label | query [pointer, Description] |
+| passwords.go:86:19:88:2 | struct literal | semmle.label | struct literal |
+| passwords.go:87:16:87:36 | call to make | semmle.label | call to make |
+| passwords.go:89:14:89:26 | utilityObject | semmle.label | utilityObject |
+| passwords.go:92:23:92:28 | secret | semmle.label | secret |
+| passwords.go:102:15:102:40 | ...+... | semmle.label | ...+... |
+| passwords.go:102:33:102:40 | password | semmle.label | password |
+| passwords.go:108:16:108:41 | ...+... | semmle.label | ...+... |
+| passwords.go:108:34:108:41 | password | semmle.label | password |
+| passwords.go:113:15:113:40 | ...+... | semmle.label | ...+... |
+| passwords.go:113:33:113:40 | password | semmle.label | password |
+| passwords.go:116:6:116:14 | definition of password1 | semmle.label | definition of password1 |
+| passwords.go:117:14:117:45 | ...+... | semmle.label | ...+... |
+| passwords.go:117:28:117:36 | password1 | semmle.label | password1 |
+| passwords.go:117:28:117:45 | call to String | semmle.label | call to String |
+| passwords.go:120:12:125:2 | struct literal | semmle.label | struct literal |
+| passwords.go:120:12:125:2 | struct literal [x] | semmle.label | struct literal [x] |
+| passwords.go:120:12:125:2 | struct literal [y] | semmle.label | struct literal [y] |
+| passwords.go:121:13:121:14 | x3 | semmle.label | x3 |
+| passwords.go:123:13:123:20 | password | semmle.label | password |
+| passwords.go:124:13:124:25 | call to getPassword | semmle.label | call to getPassword |
+| passwords.go:127:14:127:19 | config | semmle.label | config |
+| passwords.go:128:14:128:19 | config [x] | semmle.label | config [x] |
+| passwords.go:128:14:128:21 | selection of x | semmle.label | selection of x |
+| passwords.go:129:14:129:19 | config [y] | semmle.label | config [y] |
+| passwords.go:129:14:129:21 | selection of y | semmle.label | selection of y |
+| protobuf.go:9:2:9:9 | definition of password | semmle.label | definition of password |
+| protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | semmle.label | implicit dereference [postupdate] [Description] |
+| protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | semmle.label | query [postupdate] [pointer, Description] |
 | protobuf.go:12:22:12:29 | password | semmle.label | password |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | semmle.label | query [pointer, Description] |
 | protobuf.go:14:14:14:35 | call to GetDescription | semmle.label | call to GetDescription |

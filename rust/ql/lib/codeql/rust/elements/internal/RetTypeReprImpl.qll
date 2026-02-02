@@ -17,7 +17,7 @@ module Impl {
    *
    * For example:
    * ```rust
-   * fn foo() -> i32 {}
+   * fn foo() -> i32 { 0 }
    * //       ^^^^^^
    * ```
    */

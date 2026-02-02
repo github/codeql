@@ -69,5 +69,7 @@ module Impl {
       this.getLocation().getStartLine() <= result.getLocation().getStartLine() and
       result.getLocation().getStartLine() <= this.getName().getLocation().getStartLine()
     }
+
+    override BlockExpr getBody() { result = this.getFunctionBody() }
   }
 }

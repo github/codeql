@@ -15,13 +15,13 @@ use ungrammar::Grammar;
 
 fn class_name(type_name: &str) -> String {
     match type_name {
+        "Adt" => "TypeItem".to_owned(),
         "BinExpr" => "BinaryExpr".to_owned(),
         "ElseBranch" => "Expr".to_owned(),
         "Fn" => "Function".to_owned(),
         "Literal" => "LiteralExpr".to_owned(),
         "ArrayExpr" => "ArrayExprInternal".to_owned(),
         "AsmOptions" => "AsmOptionsList".to_owned(),
-        "MacroStmts" => "MacroBlockExpr".to_owned(),
         _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
         _ if type_name.ends_with("Type") => format!("{type_name}Repr"),
         _ => type_name.to_owned(),
@@ -35,7 +35,6 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("MatchExpr", "expr") => "scrutinee",
         ("Variant", "expr") => "discriminant",
         ("FieldExpr", "expr") => "container",
-        ("MacroBlockExpr", "expr") => "tail_expr",
         (_, "name_ref") => "identifier",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
@@ -44,6 +43,8 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("StructField", "expr") => "default",
         ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
+        ("Function", "body") => "function_body",
+        ("ClosureExpr", "body") => "closure_body",
         _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
         _ => field_name,
     };

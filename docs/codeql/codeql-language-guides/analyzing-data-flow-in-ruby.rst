@@ -372,6 +372,43 @@ The following global data-flow query finds calls to ``File.open`` where the file
     select fileOpen, "This call to 'File.open' uses data from $@.", environment,
       "an environment variable"
 
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the taint-tracking example above, converted into a path query:
+
+.. code-block:: ql
+
+    /**
+     * @kind path-problem
+     * @problem.severity warning
+     * @id file-system-access-from-remote-input
+     */
+
+    import codeql.ruby.DataFlow
+    import codeql.ruby.TaintTracking
+    import codeql.ruby.Concepts
+    import codeql.ruby.dataflow.RemoteFlowSources
+
+    module RemoteToFileConfiguration implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+      predicate isSink(DataFlow::Node sink) {
+        sink = any(FileSystemAccess fa).getAPathArgument()
+      }
+    }
+
+    module RemoteToFileFlow = TaintTracking::Global<RemoteToFileConfiguration>;
+
+    import RemoteToFileFlow::PathGraph
+
+    from RemoteToFileFlow::PathNode input, RemoteToFileFlow::PathNode fileAccess
+    where RemoteToFileFlow::flowPath(input, fileAccess)
+    select fileAccess.getNode(), input, fileAccess, "This file access uses data from $@.",
+      input, "user-controllable input."
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 

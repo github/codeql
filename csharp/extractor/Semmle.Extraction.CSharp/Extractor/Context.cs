@@ -29,6 +29,12 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public bool ShouldAddAssemblyTrapPrefix { get; }
 
+        /// <summary>
+        /// Holds if trap only should be created for types and member signatures (and not for expressions and statements).
+        /// This is the case for all unchanged files, when running in overlay mode.
+        /// </summary>
+        public bool OnlyScaffold { get; }
+
         public IList<object> TrapStackSuffix { get; } = new List<object>();
 
         private int GetNewId() => TrapWriter.IdCounter++;
@@ -523,13 +529,16 @@ namespace Semmle.Extraction.CSharp
 
         internal CommentProcessor CommentGenerator { get; } = new CommentProcessor();
 
-        public Context(ExtractionContext extractionContext, Compilation c, TrapWriter trapWriter, IExtractionScope scope, bool shouldAddAssemblyTrapPrefix = false)
+        public Context(ExtractionContext extractionContext, Compilation c, TrapWriter trapWriter, IExtractionScope scope, IOverlayInfo overlayInfo, bool shouldAddAssemblyTrapPrefix = false)
         {
             ExtractionContext = extractionContext;
             TrapWriter = trapWriter;
             ShouldAddAssemblyTrapPrefix = shouldAddAssemblyTrapPrefix;
             Compilation = c;
             this.scope = scope;
+            OnlyScaffold = overlayInfo.IsOverlayMode && (
+                IsAssemblyScope
+                || (scope is SourceScope ss && overlayInfo.OnlyMakeScaffold(ss.SourceTree.FilePath)));
         }
 
         public bool FromSource => scope is SourceScope;
@@ -549,6 +558,26 @@ namespace Semmle.Extraction.CSharp
         public bool Defines(ISymbol symbol) =>
             !SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) ||
             scope.InScope(symbol);
+
+        public bool ExtractLocation(ISymbol symbol) =>
+            SymbolEqualityComparer.Default.Equals(symbol, symbol.OriginalDefinition) &&
+            scope.InScope(symbol) &&
+            !OnlyScaffold;
+
+        /// <summary>
+        /// Gets the locations of the symbol that are either
+        /// (1) In assemblies.
+        /// (2) In the current context.
+        /// </summary>
+        /// <param name="symbol">The symbol</param>
+        /// <returns>List of locations</returns>
+        public IEnumerable<Entities.Location> GetLocations(ISymbol symbol) =>
+            symbol.Locations
+                .Where(l => !l.IsInSource || IsLocationInContext(l))
+                .Select(CreateLocation);
+
+        public bool IsLocationInContext(Location location) =>
+            location.SourceTree == SourceTree;
 
         /// <summary>
         /// Runs the given action <paramref name="a"/>, guarding for trap duplication
@@ -582,14 +611,14 @@ namespace Semmle.Extraction.CSharp
         public Entities.Location CreateLocation()
         {
             return SourceTree is null
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
         public Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
             return (location is null || location.Kind == LocationKind.None)
-                ? Entities.GeneratedLocation.Create(this)
+                ? Entities.EmptyLocation.Create(this)
                 : location.IsInSource
                     ? Entities.NonGeneratedSourceLocation.Create(this, location)
                     : Entities.Assembly.Create(this, location);
@@ -602,6 +631,10 @@ namespace Semmle.Extraction.CSharp
         /// <param name="l">Location of the entity.</param>
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)
         {
+            if (OnlyScaffold)
+            {
+                return;
+            }
             var duplicationGuardKey = GetCurrentTagStackKey();
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }

@@ -1,5 +1,5 @@
 name: codeql/python-all
-version: 4.0.17-dev
+version: 6.0.1-dev
 groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
@@ -19,3 +19,4 @@ dataExtensions:
   - semmle/python/frameworks/**/*.model.yml
   - ext/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true

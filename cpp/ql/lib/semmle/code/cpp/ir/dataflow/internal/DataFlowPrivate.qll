@@ -861,6 +861,10 @@ predicate jumpStep(Node n1, Node n2) {
     n2.(FlowSummaryNode).getSummaryNode())
 }
 
+bindingset[c]
+pragma[inline_late]
+private int getIndirectionIndexLate(Content c) { result = c.getIndirectionIndex() }
+
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
@@ -873,23 +877,17 @@ predicate jumpStep(Node n1, Node n2) {
 predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
   exists(
     PostFieldUpdateNode postFieldUpdate, int indirectionIndex1, int numberOfLoads,
-    StoreInstruction store
+    StoreInstruction store, FieldContent fc
   |
     postFieldUpdate = node2 and
-    nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
+    fc = c and
+    nodeHasInstruction(node1, pragma[only_bind_into](store),
+      pragma[only_bind_into](indirectionIndex1)) and
     postFieldUpdate.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
-      store.getDestinationAddressOperand(), numberOfLoads, certain)
-  |
-    exists(FieldContent fc | fc = c |
-      fc.getField() = postFieldUpdate.getUpdatedField() and
-      fc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
-    )
-    or
-    exists(UnionContent uc | uc = c |
-      uc.getAField() = postFieldUpdate.getUpdatedField() and
-      uc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
-    )
+      store.getDestinationAddressOperand(), numberOfLoads, certain) and
+    fc.getAField() = postFieldUpdate.getUpdatedField() and
+    getIndirectionIndexLate(fc) = 1 + indirectionIndex1 + numberOfLoads
   )
   or
   // models-as-data summarized flow
@@ -965,22 +963,17 @@ predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex)
  * `node2`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
-  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2 |
+  exists(
+    FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2, FieldContent fc
+  |
+    fc = c and
     nodeHasOperand(node2, operand, indirectionIndex2) and
     // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
     // in `storeStep`.
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
-    numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _)
-  |
-    exists(FieldContent fc | fc = c |
-      fc.getField() = fa1.getField() and
-      fc.getIndirectionIndex() = indirectionIndex2 + numberOfLoads
-    )
-    or
-    exists(UnionContent uc | uc = c |
-      uc.getAField() = fa1.getField() and
-      uc.getIndirectionIndex() = indirectionIndex2 + numberOfLoads
-    )
+    numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _) and
+    fc.getAField() = fa1.getField() and
+    getIndirectionIndexLate(fc) = indirectionIndex2 + numberOfLoads
   )
   or
   // models-as-data summarized flow
@@ -1151,7 +1144,7 @@ private newtype TDataFlowCall =
   }
 
 private predicate summarizedCallableIsManual(SummarizedCallable sc) {
-  sc.asSummarizedCallable().applyManualModel()
+  sc.asSummarizedCallable().hasManualModel()
 }
 
 /**
@@ -1574,7 +1567,7 @@ pragma[inline]
 ContentApprox getContentApprox(Content c) {
   exists(string prefix, Field f |
     prefix = result.(FieldApproxContent).getPrefix() and
-    f = c.(FieldContent).getField() and
+    f = c.(NonUnionFieldContent).getField() and
     fieldHasApproxName(f, prefix)
   )
   or

@@ -63,8 +63,9 @@ module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(PermissionsConstruction p |
-      sink.asExpr() = p.getInput() and
+    exists(PermissionsConstruction p | sink.asExpr() = p.getInput() |
+      result = sink.getLocation()
+      or
       result = p.getLocation()
     )
   }

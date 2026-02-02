@@ -3,6 +3,8 @@
  *
  * Contains the raw data type underlying `DataFlow::Node`.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import codeql.util.Boolean

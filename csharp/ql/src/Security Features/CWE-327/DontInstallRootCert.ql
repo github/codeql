@@ -1,5 +1,5 @@
 /**
- * @name Do not add certificates to the system root store.
+ * @name Do not add certificates to the system root store
  * @description Application- or user-specific certificates placed in the system root store could
  *              weaken security for other processing running on the same system.
  * @kind path-problem
@@ -39,8 +39,6 @@ module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSourceLocation(DataFlow::Node sink) { none() }
 }
 
 module AddCertToRootStore = DataFlow::Global<AddCertToRootStoreConfig>;

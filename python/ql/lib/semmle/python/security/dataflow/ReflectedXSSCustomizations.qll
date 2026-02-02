@@ -46,9 +46,7 @@ module ReflectedXss {
    * A data flow sink for "reflected cross-site scripting" vulnerabilities.
    */
   private class SinkFromModel extends Sink {
-    SinkFromModel() {
-      this = ModelOutput::getASinkNode(["html-injection", "js-injection"]).asSink()
-    }
+    SinkFromModel() { ModelOutput::sinkNode(this, ["html-injection", "js-injection"]) }
   }
 
   /**
@@ -86,4 +84,11 @@ module ReflectedXss {
 
   /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer defined via models-as-data with kind "html-injection" or "js-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, ["html-injection", "js-injection"]) }
+  }
 }

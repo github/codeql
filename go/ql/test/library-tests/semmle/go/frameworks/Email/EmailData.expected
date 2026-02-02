@@ -1,5 +1,5 @@
 | mail.go:15:73:15:94 | type conversion |
-| mail.go:18:19:18:23 | definition of write |
+| mail.go:20:17:20:21 | write [postupdate] |
 | mail.go:26:49:26:52 | text |
 | mail.go:26:76:26:79 | text |
 | mail.go:27:20:27:23 | text |

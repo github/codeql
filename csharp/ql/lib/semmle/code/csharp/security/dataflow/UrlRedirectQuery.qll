@@ -56,9 +56,14 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
-/** URL Redirection sinks defined through Models as Data. */
+/** A URL Redirection sink defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {
   ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirection") }
+}
+
+/** A sanitizer for URL redirection defined through Models as Data. */
+private class ExternalUrlRedirectSanitizer extends Sanitizer {
+  ExternalUrlRedirectSanitizer() { barrierNode(this, "url-redirection") }
 }
 
 /**
@@ -111,7 +116,7 @@ class HttpServerTransferSink extends Sink {
   }
 }
 
-private predicate isLocalUrlSanitizerMethodCall(MethodCall guard, Expr e, AbstractValue v) {
+private predicate isLocalUrlSanitizerMethodCall(MethodCall guard, Expr e, GuardValue v) {
   exists(Method m | m = guard.getTarget() |
     m.hasName("IsLocalUrl") and
     e = guard.getArgument(0)
@@ -119,10 +124,10 @@ private predicate isLocalUrlSanitizerMethodCall(MethodCall guard, Expr e, Abstra
     m.hasName("IsUrlLocalToHost") and
     e = guard.getArgument(1)
   ) and
-  v.(AbstractValues::BooleanValue).getValue() = true
+  v.asBooleanValue() = true
 }
 
-private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
+private predicate isLocalUrlSanitizer(Guard g, Expr e, GuardValue v) {
   isLocalUrlSanitizerMethodCall(g, e, v)
 }
 
@@ -137,14 +142,14 @@ class LocalUrlSanitizer extends Sanitizer {
 /**
  * An argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
  */
-private predicate isContainsUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
+private predicate isContainsUrlSanitizer(Guard guard, Expr e, GuardValue v) {
   guard =
     any(MethodCall method |
       exists(Method m | m = method.getTarget() |
         m.hasName("Contains") and
         e = method.getArgument(0)
       ) and
-      v.(AbstractValues::BooleanValue).getValue() = true
+      v.asBooleanValue() = true
     )
 }
 
@@ -161,40 +166,17 @@ class ContainsUrlSanitizer extends Sanitizer {
 }
 
 /**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private predicate isRelativeUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
-  guard =
-    any(PropertyAccess access |
-      access.getProperty().hasFullyQualifiedName("System", "Uri", "IsAbsoluteUri") and
-      e = access.getQualifier() and
-      v.(AbstractValues::BooleanValue).getValue() = false
-    )
-}
-
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-class RelativeUrlSanitizer extends Sanitizer {
-  RelativeUrlSanitizer() {
-    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
-  }
-}
-
-/**
  * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
  * E.g. `url.Host == "example.org"`
  */
-private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v) {
+private predicate isHostComparisonSanitizer(Guard guard, Expr e, GuardValue v) {
   guard =
     any(EqualityOperation comparison |
       exists(PropertyAccess access | access = comparison.getAnOperand() |
         access.getProperty().hasFullyQualifiedName("System", "Uri", "Host") and
         e = access.getQualifier()
       ) and
-      if comparison instanceof EQExpr
-      then v.(AbstractValues::BooleanValue).getValue() = true
-      else v.(AbstractValues::BooleanValue).getValue() = false
+      if comparison instanceof EQExpr then v.asBooleanValue() = true else v.asBooleanValue() = false
     )
 }
 
@@ -204,16 +186,6 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v
 class HostComparisonSanitizer extends Sanitizer {
   HostComparisonSanitizer() {
     this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
-  }
-}
-
-/**
- * A call to the getter of the RawUrl property, whose value is considered to be safe for URL
- * redirects.
- */
-class RawUrlSanitizer extends Sanitizer {
-  RawUrlSanitizer() {
-    this.getExpr() = any(SystemWebHttpRequestClass r).getRawUrlProperty().getGetter().getACall()
   }
 }
 

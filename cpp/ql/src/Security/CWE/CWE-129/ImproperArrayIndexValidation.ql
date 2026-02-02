@@ -26,13 +26,13 @@ predicate isFlowSource(FS::FlowSource source, string sourceType) {
 predicate guardChecks(IRGuardCondition g, Expr e, boolean branch) {
   exists(Operand op | op.getDef().getConvertedResultExpression() = e |
     // `op < k` is true and `k > 0`
-    g.comparesLt(op, any(int k | k > 0), true, any(BooleanValue bv | bv.getValue() = branch))
+    g.comparesLt(op, any(int k | k > 0), true, any(GuardValue bv | bv.asBooleanValue() = branch))
     or
     // `op < _ + k` is true and `k > 0`.
     g.comparesLt(op, _, any(int k | k > 0), true, branch)
     or
     // op == k
-    g.comparesEq(op, _, true, any(BooleanValue bv | bv.getValue() = branch))
+    g.comparesEq(op, _, true, any(GuardValue bv | bv.asBooleanValue() = branch))
     or
     // op == _ + k
     g.comparesEq(op, _, _, true, branch)

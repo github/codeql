@@ -1,3 +1,55 @@
+## 6.2.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.2.3.
+* Upgraded to allow analysis of Swift 6.2.2.
+
+## 6.1.4
+
+No user-facing changes.
+
+## 6.1.3
+
+No user-facing changes.
+
+## 6.1.2
+
+No user-facing changes.
+
+## 6.1.1
+
+No user-facing changes.
+
+## 6.1.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.2.1.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The `OpenedArchetypeType` class has been renamed as `ExistentialArchetypeType`.
+* The `OtherAvailabilitySpec` class has been removed. Use `AvailabilitySpec::isWildcard` instead.
+* The `PlatformVersionAvailabilitySpec` has been removed. Use `AvailabilitySpec::getPlatform` and `AvailabilitySpec::getVersion` instead.
+
+### New Features
+
+* Added AST nodes `UsingDecl`, `UnsafeExpr`, and `InlineArrayType` that correspond to new nodes in Swift 6.2.
+* Added new predicates `isDistributedGet`, `isRead2`, `isModify2`, and `isInit` to the `Accessor` class that correspond to new accessors in Swift 6.2.
+* Added a new predicate `isApply` to the `KeyPathComponent` class that corresponds to method and initializer key path components in Swift 6.2.
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.2.
+* Support for experimental Embedded Swift has been dropped.
+
+## 5.0.9
+
+No user-facing changes.
+
 ## 5.0.8
 
 No user-facing changes.

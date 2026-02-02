@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { exists(c.getBlock()) }
+
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
   ReturnKind getStandardReturnValueKind() { result = getReturnValueKind("") }
@@ -144,6 +146,30 @@ module SourceSinkInterpretationInput implements
       string package, string type, boolean subtypes, string name, string signature, string ext
     |
       sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, model) and
+      e = interpretElement(package, type, subtypes, name, signature, ext)
+    )
+  }
+
+  predicate barrierElement(
+    Element e, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
+      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+    )
+  }
+
+  predicate barrierGuardElement(
+    Element e, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext
+    |
+      barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingvalue, kind,
+        provenance, model) and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }

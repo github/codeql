@@ -10,11 +10,11 @@ extensions:
       - ["System.Configuration.Provider", "ProviderBase", True, "get_Name", "()", "", "Argument[this].SyntheticField[System.Configuration.Provider.ProviderBase._name]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", False, "CopyTo", "(System.Configuration.Provider.ProviderBase[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "dfc-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", False, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Configuration.Provider", "ProviderCollection", True, "Add", "(System.Configuration.Provider.ProviderBase)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Configuration.Provider", "ProviderCollection", "Add", "(System.Configuration.Provider.ProviderBase)", "summary", "df-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", "Remove", "(System.String)", "summary", "df-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", "SetReadOnly", "()", "summary", "df-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", "get_Count", "()", "summary", "df-generated"]

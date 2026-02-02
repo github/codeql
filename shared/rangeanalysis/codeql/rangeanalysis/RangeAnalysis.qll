@@ -923,17 +923,18 @@ module RangeStage<
   }
 
   /**
-   * Holds if `b + delta` is a valid bound for `inp` when used as an input to
-   * `phi` along `edge`.
+   * Holds if `b + delta` is a valid bound for the input `inp` to `phi` along
+   * the edge with rank `rix`.
    * - `upper = true`  : `inp <= b + delta`
    * - `upper = false` : `inp >= b + delta`
    */
   private predicate boundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, SemBound b,
-    D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    Sem::SsaPhiNode phi, int rix, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
   ) {
-    edge.phiInput(phi, inp) and
-    exists(D::Delta d, boolean fromBackEdge0 |
+    exists(
+      D::Delta d, boolean fromBackEdge0, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
+    |
       boundedSsa(inp, b, d, edge, upper, fromBackEdge0, origdelta, reason)
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
@@ -945,6 +946,7 @@ module RangeStage<
       origdelta = D::fromFloat(0) and
       reason = TSemNoReason()
     |
+      rankedPhiInput(phi, inp, edge, rix) and
       if backEdge(phi, inp, edge)
       then
         fromBackEdge = true and
@@ -963,33 +965,30 @@ module RangeStage<
   }
 
   /**
-   * Holds if `b + delta` is a valid bound for `inp` when used as an input to
-   * `phi` along `edge`.
+   * Holds if `b + delta` is a valid bound for the input `inp` to `phi` along
+   * the edge with rank `rix`.
    * - `upper = true`  : `inp <= b + delta`
    * - `upper = false` : `inp >= b + delta`
    *
-   * Equivalent to `boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)`.
+   * Equivalent to `boundedPhiInp(phi, rix, b, delta, upper, _, _, _)`.
    */
   pragma[noinline]
   private predicate boundedPhiInp1(
-    Sem::SsaPhiNode phi, SemBound b, boolean upper, Sem::SsaVariable inp,
-    SsaReadPositionPhiInputEdge edge, D::Delta delta
+    Sem::SsaPhiNode phi, SemBound b, boolean upper, int rix, D::Delta delta
   ) {
-    boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)
+    boundedPhiInp(phi, rix, b, delta, upper, _, _, _)
   }
 
   /**
-   * Holds if `phi` is a valid bound for `inp` when used as an input to `phi`
-   * along `edge`.
+   * Holds if `phi` is a valid bound for the input `inp` to `phi` along the
+   * edge with rank `rix`.
    * - `upper = true`  : `inp <= phi`
    * - `upper = false` : `inp >= phi`
    */
-  private predicate selfBoundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper
-  ) {
+  private predicate selfBoundedPhiInp(Sem::SsaPhiNode phi, int rix, boolean upper) {
     exists(D::Delta d, SemSsaBound phibound |
       phibound.getVariable() = phi and
-      boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
+      boundedPhiInp(phi, rix, phibound, d, upper, _, _, _) and
       (
         upper = true and D::toFloat(d) <= 0
         or
@@ -1009,33 +1008,34 @@ module RangeStage<
     Sem::SsaPhiNode phi, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
+    boundedPhiInp(phi, _, b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
   /**
    * Holds if the candidate bound `b + delta` for `phi` is valid for the phi input
-   * `inp` along `edge`.
+   * along the edge with rank `rix`.
    */
   private predicate boundedPhiCandValidForEdge(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
+    D::Delta origdelta, SemReason reason, int rix
   ) {
     boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
     (
-      exists(D::Delta d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
+      exists(D::Delta d | boundedPhiInp1(phi, b, upper, rix, d) |
         upper = true and D::toFloat(d) <= D::toFloat(delta)
       )
       or
-      exists(D::Delta d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
+      exists(D::Delta d | boundedPhiInp1(phi, b, upper, rix, d) |
         upper = false and D::toFloat(d) >= D::toFloat(delta)
       )
       or
-      selfBoundedPhiInp(phi, inp, edge, upper)
+      selfBoundedPhiInp(phi, rix, upper)
     )
   }
 
   /**
-   * Holds if `b + delta` is a valid bound for `phi`'s `rix`th input edge.
+   * Holds if `b + delta` is a valid bound for `phi` when accounting for the
+   * input edges ranked 1 through `rix`.
    * - `upper = true`  : `phi <= b + delta`
    * - `upper = false` : `phi >= b + delta`
    */
@@ -1044,10 +1044,8 @@ module RangeStage<
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason, int rix
   ) {
-    exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
-      rankedPhiInput(phi, inp, edge, rix) and
-      boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
-    |
+    boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix) and
+    (
       rix = 1
       or
       boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)

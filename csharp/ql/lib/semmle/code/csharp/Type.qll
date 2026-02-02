@@ -394,6 +394,8 @@ class NestedType extends ValueOrRefType {
   NestedType() { nested_types(this, _, _) }
 
   override ValueOrRefType getDeclaringType() { nested_types(this, result, _) }
+
+  override Location getALocation() { type_location(this.getUnboundDeclaration(), result) }
 }
 
 /**

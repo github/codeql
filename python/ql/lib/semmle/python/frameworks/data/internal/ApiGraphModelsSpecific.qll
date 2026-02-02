@@ -142,15 +142,13 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // `DataFlow::DictionaryElementContent` just from seeing a subscript read, so we would
   // need to add that. (also need to handle things like `DictionaryElementAny` which
   // doesn't have any value for .getAnArgument())
-  (
-    token.getName() = "DictionaryElement" and
-    result = node.getSubscript(token.getAnArgument())
-    or
-    token.getName() = "DictionaryElementAny" and
-    result = node.getASubscript() and
-    not exists(token.getAnArgument())
-    // TODO: ListElement/SetElement/TupleElement
-  )
+  token.getName() = "DictionaryElement" and
+  result = node.getSubscript(token.getAnArgument())
+  or
+  token.getName() in ["DictionaryElementAny", "ListElement"] and
+  result = node.getASubscript() and
+  not exists(token.getAnArgument())
+  // TODO: SetElement/TupleElement
   // Some features don't have MaD tokens yet, they would need to be added to API-graphs first.
   // - decorators ("DecoratedClass", "DecoratedMember", "DecoratedParameter")
 }
@@ -261,7 +259,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
   name =
     [
       "Member", "Instance", "Awaited", "Call", "Method", "Subclass", "DictionaryElement",
-      "DictionaryElementAny"
+      "DictionaryElementAny", "ListElement"
     ]
 }
 
@@ -270,7 +268,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "Awaited", "Call", "Subclass", "DictionaryElementAny"]
+  name = ["Instance", "Awaited", "Call", "Subclass", "DictionaryElementAny", "ListElement"]
 }
 
 /**

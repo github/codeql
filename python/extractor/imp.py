@@ -17,8 +17,15 @@ except ImportError:
     # Platform doesn't support dynamic loading.
     create_dynamic = None
 
-from importlib._bootstrap import _ERR_MSG, _exec, _load, _builtin_from_name
+from importlib._bootstrap import _exec, _load, _builtin_from_name
 from importlib._bootstrap_external import SourcelessFileLoader
+
+# In Python 3.14, `_ERR_MSG` was removed in favor of `_ERR_MSG_PREFIX`.
+try:
+    from importlib._bootstrap import _ERR_MSG
+except ImportError:
+    from importlib._bootstrap import _ERR_MSG_PREFIX
+    _ERR_MSG = _ERR_MSG_PREFIX + '{!r}'
 
 from importlib import machinery
 from importlib import util

@@ -1,9 +1,7 @@
 import python
-import semmle.python.types.Exceptions
-private import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 private import semmle.python.objects.Callables
 private import semmle.python.libraries.Zope
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 
 /** A function object, whether written in Python or builtin */
@@ -32,27 +30,31 @@ abstract class FunctionObject extends Object {
   abstract string descriptiveString();
 
   /** Gets a call-site from where this function is called as a function */
-  CallNode getAFunctionCall() { result.getFunction().inferredValue() = this.theCallable() }
+  CallNode getAFunctionCall() {
+    result.getFunction().(ControlFlowNodeWithPointsTo).inferredValue() = this.theCallable()
+  }
 
   /** Gets a call-site from where this function is called as a method */
   CallNode getAMethodCall() {
     exists(BoundMethodObjectInternal bm |
-      result.getFunction().inferredValue() = bm and
+      result.getFunction().(ControlFlowNodeWithPointsTo).inferredValue() = bm and
       bm.getFunction() = this.theCallable()
     )
   }
 
   /** Gets a call-site from where this function is called */
-  ControlFlowNode getACall() { result = this.theCallable().getACall() }
+  ControlFlowNodeWithPointsTo getACall() { result = this.theCallable().getACall() }
 
   /** Gets a call-site from where this function is called, given the `context` */
-  ControlFlowNode getACall(Context context) { result = this.theCallable().getACall(context) }
+  ControlFlowNodeWithPointsTo getACall(Context context) {
+    result = this.theCallable().getACall(context)
+  }
 
   /**
    * Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.
    * This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
    */
-  ControlFlowNode getArgumentForCall(CallNode call, int n) {
+  ControlFlowNodeWithPointsTo getArgumentForCall(CallNode call, int n) {
     result = this.theCallable().getArgumentForCall(call, n)
   }
 
@@ -60,7 +62,7 @@ abstract class FunctionObject extends Object {
    * Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
    * This predicate will correctly handle `x.y()`, treating `x` as the self argument.
    */
-  ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
+  ControlFlowNodeWithPointsTo getNamedArgumentForCall(CallNode call, string name) {
     result = this.theCallable().getNamedArgumentForCall(call, name)
   }
 
@@ -134,7 +136,9 @@ class PyFunctionObject extends FunctionObject {
   override predicate raisesUnknownType() { scope_raises_unknown(this.getFunction()) }
 
   /** Gets a control flow node corresponding to the value of a return statement */
-  ControlFlowNode getAReturnedNode() { result = this.getFunction().getAReturnValueFlowNode() }
+  ControlFlowNodeWithPointsTo getAReturnedNode() {
+    result = this.getFunction().getAReturnValueFlowNode()
+  }
 
   override string descriptiveString() {
     if this.getFunction().isMethod()
@@ -216,7 +220,7 @@ abstract class BuiltinCallable extends FunctionObject {
 
   abstract override string getQualifiedName();
 
-  override ControlFlowNode getArgumentForCall(CallNode call, int n) {
+  override ControlFlowNodeWithPointsTo getArgumentForCall(CallNode call, int n) {
     call = this.getACall() and result = call.getArg(n)
   }
 }

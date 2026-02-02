@@ -31,8 +31,6 @@ module DecompressionTaintConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
-
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(FunctionCall fc | result = [sink.getLocation(), fc.getLocation()] | isSink(fc, sink))
   }

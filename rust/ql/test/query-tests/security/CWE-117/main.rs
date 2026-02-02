@@ -5,29 +5,29 @@ fn main() {
     env_logger::init();
 
     // Sources of user input
-    let args: Vec<String> = env::args().collect();
-    let username = args.get(1).unwrap_or(&String::from("Guest")).clone(); // $ MISSING: Source=commandargs
+    let args: Vec<String> = env::args().collect(); // $ Source=commandargs
+    let username = args.get(1).unwrap_or(&String::from("Guest")).clone();
     let user_input = std::env::var("USER_INPUT").unwrap_or("default".to_string()); // $ Source=environment
     let remote_data = reqwest::blocking::get("http://example.com/user") // $ Source=remote
         .unwrap().text().unwrap_or("remote_user".to_string());
 
     // BAD: Direct logging of user input
-    info!("User login: {}", username); // $ MISSING: Alert[rust/log-injection]
+    info!("User login: {}", username); // $ Alert[rust/log-injection]=commandargs
     warn!("Warning for user: {}", user_input); // $ Alert[rust/log-injection]=environment
     error!("Error processing: {}", remote_data); // $ Alert[rust/log-injection]=remote
-    debug!("Debug info: {}", username); // $ MISSING: Alert[rust/log-injection]
+    debug!("Debug info: {}", username); // $ Alert[rust/log-injection]=commandargs
     trace!("Trace data: {}", user_input); // $ Alert[rust/log-injection]=environment
 
     // BAD: Formatted strings with user input
     let formatted_msg = format!("Processing user: {}", username);
-    info!("{}", formatted_msg); // $ MISSING: Alert[rust/log-injection]
+    info!("{}", formatted_msg); // $ Alert[rust/log-injection]=commandargs
 
     // BAD: String concatenation with user input
     let concat_msg = "User activity: ".to_string() + &username;
-    info!("{}", concat_msg); // $ MISSING: Alert[rust/log-injection]
+    info!("{}", concat_msg); // $ Alert[rust/log-injection]=commandargs
 
     // BAD: Complex formatting
-    info!("User {} accessed resource at {}", username, remote_data); // $ Alert[rust/log-injection]=remote
+    info!("User {} accessed resource at {}", username, remote_data); // $ Alert[rust/log-injection]=remote Alert[rust/log-injection]=commandargs
 
     // GOOD: Sanitized input
     let sanitized_username = username.replace('\n', "").replace('\r', "");
@@ -40,9 +40,13 @@ fn main() {
     let system_time = std::time::SystemTime::now();
     info!("Current time: {:?}", system_time);
 
-    // GOOD: Numeric data derived from user input (not directly logged)
+    // GOOD: Numeric data derived from user input (indirectly)
     let user_id = username.len();
     info!("User ID length: {}", user_id);
+
+    // GOOD: Numeric data derived from user input (directly)
+    let number = remote_data.parse::<u64>().unwrap_or(0);
+    info!("Number: {}", number);
 
     // More complex test cases
     test_complex_scenarios(&username, &user_input);
@@ -59,7 +63,7 @@ fn test_complex_scenarios(username: &str, user_input: &str) {
 
     // BAD: Through struct fields
     let user_info = UserInfo { name: username.to_string() };
-    info!("User info: {}", user_info.name); // $ MISSING: Alert[rust/log-injection]
+    info!("User info: {}", user_info.name); // $ Alert[rust/log-injection]=commandargs
 
     // GOOD: After sanitization
     let clean_input = sanitize_input(user_input);

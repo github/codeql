@@ -108,8 +108,9 @@
 | patterns.cs:125:13:125:38 | MyStruct s = ... | patterns.cs:126:9:132:10 | ... ...; | semmle.label | successor |
 | patterns.cs:125:17:125:38 | object creation of type MyStruct | patterns.cs:125:36:125:36 | 0 | semmle.label | successor |
 | patterns.cs:125:30:125:38 | { ..., ... } | patterns.cs:125:13:125:38 | MyStruct s = ... | semmle.label | successor |
+| patterns.cs:125:32:125:32 | access to field X | patterns.cs:125:32:125:36 | ... = ... | semmle.label | successor |
 | patterns.cs:125:32:125:36 | ... = ... | patterns.cs:125:30:125:38 | { ..., ... } | semmle.label | successor |
-| patterns.cs:125:36:125:36 | 0 | patterns.cs:125:32:125:36 | ... = ... | semmle.label | successor |
+| patterns.cs:125:36:125:36 | 0 | patterns.cs:125:32:125:32 | access to field X | semmle.label | successor |
 | patterns.cs:126:9:132:10 | ... ...; | patterns.cs:126:17:126:17 | access to local variable s | semmle.label | successor |
 | patterns.cs:126:13:132:9 | Int32 r = ... | patterns.cs:134:9:148:9 | try {...} ... | semmle.label | successor |
 | patterns.cs:126:17:126:17 | access to local variable s | patterns.cs:128:13:128:20 | access to type MyStruct | semmle.label | successor |
@@ -162,9 +163,9 @@
 | patterns.cs:136:17:143:13 | ... switch { ... } | patterns.cs:136:13:143:13 | ... = ... | semmle.label | successor |
 | patterns.cs:138:17:138:17 | 1 | patterns.cs:138:28:138:50 | object creation of type ArgumentException | semmle.label | match |
 | patterns.cs:138:17:138:17 | 1 | patterns.cs:139:17:139:17 | 2 | semmle.label | no-match |
-| patterns.cs:138:22:138:50 | throw ... | patterns.cs:145:9:148:9 | [exception: ArgumentException] catch (...) {...} | semmle.label | exception |
+| patterns.cs:138:22:138:50 | throw ... | patterns.cs:145:9:148:9 | catch (...) {...} | semmle.label | exception |
 | patterns.cs:138:28:138:50 | object creation of type ArgumentException | patterns.cs:138:22:138:50 | throw ... | semmle.label | successor |
-| patterns.cs:138:28:138:50 | object creation of type ArgumentException | patterns.cs:145:9:148:9 | [exception: Exception] catch (...) {...} | semmle.label | exception |
+| patterns.cs:138:28:138:50 | object creation of type ArgumentException | patterns.cs:145:9:148:9 | catch (...) {...} | semmle.label | exception |
 | patterns.cs:139:17:139:17 | 2 | patterns.cs:139:22:139:22 | 3 | semmle.label | match |
 | patterns.cs:139:17:139:17 | 2 | patterns.cs:140:17:140:24 | Object y | semmle.label | no-match |
 | patterns.cs:139:17:139:22 | ... => ... | patterns.cs:136:17:143:13 | ... switch { ... } | semmle.label | successor |
@@ -187,20 +188,17 @@
 | patterns.cs:142:17:142:24 | access to type MyStruct | patterns.cs:142:17:142:36 | [no-match] { ... } | semmle.label | no-match |
 | patterns.cs:142:17:142:24 | access to type MyStruct | patterns.cs:142:31:142:32 | 10 | semmle.label | match |
 | patterns.cs:142:17:142:36 | [match] { ... } | patterns.cs:142:41:142:41 | 6 | semmle.label | match |
-| patterns.cs:142:17:142:36 | [match] { ... } | patterns.cs:145:9:148:9 | [exception: InvalidOperationException] catch (...) {...} | semmle.label | exception |
-| patterns.cs:142:17:142:36 | [no-match] { ... } | patterns.cs:145:9:148:9 | [exception: InvalidOperationException] catch (...) {...} | semmle.label | exception |
+| patterns.cs:142:17:142:36 | [match] { ... } | patterns.cs:145:9:148:9 | catch (...) {...} | semmle.label | exception |
+| patterns.cs:142:17:142:36 | [no-match] { ... } | patterns.cs:145:9:148:9 | catch (...) {...} | semmle.label | exception |
 | patterns.cs:142:17:142:41 | ... => ... | patterns.cs:136:17:143:13 | ... switch { ... } | semmle.label | successor |
 | patterns.cs:142:26:142:34 | [match] { ... } | patterns.cs:142:17:142:36 | [match] { ... } | semmle.label | match |
 | patterns.cs:142:26:142:34 | [no-match] { ... } | patterns.cs:142:17:142:36 | [no-match] { ... } | semmle.label | no-match |
 | patterns.cs:142:31:142:32 | 10 | patterns.cs:142:26:142:34 | [match] { ... } | semmle.label | match |
 | patterns.cs:142:31:142:32 | 10 | patterns.cs:142:26:142:34 | [no-match] { ... } | semmle.label | no-match |
 | patterns.cs:142:41:142:41 | 6 | patterns.cs:142:17:142:41 | ... => ... | semmle.label | successor |
-| patterns.cs:145:9:148:9 | [exception: ArgumentException] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | semmle.label | exception |
-| patterns.cs:145:9:148:9 | [exception: Exception] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | semmle.label | exception |
-| patterns.cs:145:9:148:9 | [exception: Exception] catch (...) {...} | patterns.cs:145:41:145:42 | [exception: Exception] InvalidOperationException ex | semmle.label | match |
-| patterns.cs:145:9:148:9 | [exception: InvalidOperationException] catch (...) {...} | patterns.cs:145:41:145:42 | [exception: InvalidOperationException] InvalidOperationException ex | semmle.label | match |
-| patterns.cs:145:41:145:42 | [exception: Exception] InvalidOperationException ex | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
-| patterns.cs:145:41:145:42 | [exception: InvalidOperationException] InvalidOperationException ex | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
+| patterns.cs:145:9:148:9 | catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 (abnormal) | semmle.label | exception |
+| patterns.cs:145:9:148:9 | catch (...) {...} | patterns.cs:145:41:145:42 | InvalidOperationException ex | semmle.label | match |
+| patterns.cs:145:41:145:42 | InvalidOperationException ex | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
 | patterns.cs:146:9:148:9 | {...} | patterns.cs:147:13:147:51 | ...; | semmle.label | successor |
 | patterns.cs:147:13:147:50 | call to method WriteLine | patterns.cs:123:10:123:21 | exit Expressions2 (normal) | semmle.label | successor |
 | patterns.cs:147:13:147:51 | ...; | patterns.cs:147:31:147:49 | "Invalid operation" | semmle.label | successor |

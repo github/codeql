@@ -63,5 +63,27 @@ module Generated {
     predicate isUnsafeMutableAddress() {
       Synth::convertAccessorToRaw(this).(Raw::Accessor).isUnsafeMutableAddress()
     }
+
+    /**
+     * Holds if this accessor is a distributed getter.
+     */
+    predicate isDistributedGet() {
+      Synth::convertAccessorToRaw(this).(Raw::Accessor).isDistributedGet()
+    }
+
+    /**
+     * Holds if this accessor is a `read` coroutine, yielding a borrowed value of the property.
+     */
+    predicate isRead2() { Synth::convertAccessorToRaw(this).(Raw::Accessor).isRead2() }
+
+    /**
+     * Holds if this accessor is a `modify` coroutine, yielding an inout value of the property.
+     */
+    predicate isModify2() { Synth::convertAccessorToRaw(this).(Raw::Accessor).isModify2() }
+
+    /**
+     * Holds if this accessor is an `init` accessor.
+     */
+    predicate isInit() { Synth::convertAccessorToRaw(this).(Raw::Accessor).isInit() }
   }
 }

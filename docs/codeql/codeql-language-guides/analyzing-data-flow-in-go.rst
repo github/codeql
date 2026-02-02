@@ -224,7 +224,7 @@ The resulting module has an identical signature to the one obtained from ``DataF
 Flow sources
 ~~~~~~~~~~~~
 
-The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` (defined in ``semmle.code.java.dataflow.FlowSources``) represents data flow sources that may be controlled by a remote user, which is useful for finding security problems.
+The data flow library contains some predefined flow sources. The class ``RemoteFlowSource`` represents data flow sources that may be controlled by a remote user, which is useful for finding security problems.
 
 Examples
 ~~~~~~~~
@@ -252,7 +252,7 @@ Exercise 2: Write a query that finds all hard-coded strings used to create a ``u
 
 Exercise 3: Write a class that represents flow sources from ``os.Getenv(..)``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``os.Getenv`` to ``url.URL``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``os.Getenv`` to ``url.URL``. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Answers
 -------
@@ -312,7 +312,7 @@ Exercise 3
 
    import go
 
-   class GetenvSource extends CallExpr {
+   class GetenvSource extends DataFlow::CallNode {
      GetenvSource() {
        exists(Function m | m = this.getTarget() |
          m.hasQualifiedName("os", "Getenv")
@@ -327,7 +327,7 @@ Exercise 4
 
    import go
 
-   class GetenvSource extends CallExpr {
+   class GetenvSource extends DataFlow::CallNode {
      GetenvSource() {
        exists(Function m | m = this.getTarget() |
          m.hasQualifiedName("os", "Getenv")
@@ -350,7 +350,6 @@ Exercise 4
          sink.asExpr() = call.getArgument(0)
        )
      }
-     }
    }
 
    module GetenvToURLFlow = DataFlow::Global<GetenvToURLConfig>;
@@ -358,6 +357,56 @@ Exercise 4
    from DataFlow::Node src, DataFlow::Node sink
    where GetenvToURLFlow::flow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
+
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-url
+    */
+
+   import go
+
+   class GetenvSource extends DataFlow::CallNode {
+     GetenvSource() {
+       exists(Function m | m = this.getTarget() |
+         m.hasQualifiedName("os", "Getenv")
+       )
+     }
+   }
+
+   module GetenvToURLConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node source) {
+       source instanceof GetenvSource
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(Function urlParse, CallExpr call |
+         (
+           urlParse.hasQualifiedName("url", "Parse") or
+           urlParse.hasQualifiedName("url", "ParseRequestURI")
+         ) and
+         call.getTarget() = urlParse and
+         sink.asExpr() = call.getArgument(0)
+       )
+     }
+   }
+
+   module GetenvToURLFlow = DataFlow::Global<GetenvToURLConfig>;
+
+   import GetenvToURLFlow::PathGraph
+
+   from GetenvToURLFlow::PathNode src, GetenvToURLFlow::PathNode sink
+   where GetenvToURLFlow::flowPath(src, sink)
+   select src.getNode(), src, sink, "This environment variable constructs a URL $@.", sink, "here"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------

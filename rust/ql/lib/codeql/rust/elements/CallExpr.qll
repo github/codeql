@@ -4,16 +4,20 @@
  */
 
 private import internal.CallExprImpl
-import codeql.rust.elements.CallExprBase
+import codeql.rust.elements.ArgList
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**
- * A function call expression. For example:
+ * NOTE: Consider using `Call` instead, as that excludes call expressions that are
+ * instantiations of tuple structs and tuple variants.
+ *
+ * A call expression. For example:
  * ```rust
  * foo(42);
  * foo::<u32, u64>(42);
  * foo[0](42);
- * foo(1) = 4;
+ * Option::Some(42); // tuple variant instantiation
  * ```
  */
 final class CallExpr = Impl::CallExpr;

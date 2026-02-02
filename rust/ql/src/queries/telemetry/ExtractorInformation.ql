@@ -54,7 +54,10 @@ where
     CallTargetStatsReport::percentageOfOk(key, value) or
     MacroCallTargetStatsReport::numberOfOk(key, value) or
     MacroCallTargetStatsReport::numberOfNotOk(key, value) or
-    MacroCallTargetStatsReport::percentageOfOk(key, value)
+    MacroCallTargetStatsReport::percentageOfOk(key, value) or
+    ExprTypeStatsReport::numberOfOk(key, value) or
+    ExprTypeStatsReport::numberOfNotOk(key, value) or
+    ExprTypeStatsReport::percentageOfOk(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and

@@ -483,3 +483,28 @@ class EmailSender extends DataFlow::Node instanceof EmailSender::Range {
    */
   DataFlow::Node getABody() { result in [super.getPlainTextBody(), super.getHtmlBody()] }
 }
+
+/**
+ * A data-flow node that prompts an AI model.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `AIPrompt::Range` instead.
+ */
+class AIPrompt extends DataFlow::Node instanceof AIPrompt::Range {
+  /** Gets an input that is used as AI prompt. */
+  DataFlow::Node getAPrompt() { result = super.getAPrompt() }
+}
+
+/** Provides a class for modeling new AI prompting mechanisms. */
+module AIPrompt {
+  /**
+   * A data-flow node that prompts an AI model.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `AIPrompt` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets an input that is used as AI prompt. */
+    abstract DataFlow::Node getAPrompt();
+  }
+}

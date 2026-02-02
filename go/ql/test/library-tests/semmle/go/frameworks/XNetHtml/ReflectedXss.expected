@@ -44,28 +44,20 @@ edges
 | test.go:39:23:39:77 | call to NewTokenizerFragment | test.go:40:15:40:31 | tokenizerFragment | provenance |  |
 | test.go:39:49:39:60 | selection of Body | test.go:39:23:39:77 | call to NewTokenizerFragment | provenance | Src:MaD:1 MaD:4 |
 | test.go:40:15:40:31 | tokenizerFragment | test.go:40:15:40:42 | call to Buffered | provenance | MaD:12 |
-| test.go:42:6:42:14 | definition of cleanNode | test.go:45:22:45:31 | &... | provenance |  |
-| test.go:42:6:42:14 | definition of cleanNode | test.go:45:22:45:31 | &... | provenance |  |
-| test.go:42:6:42:14 | definition of cleanNode | test.go:45:23:45:31 | cleanNode | provenance |  |
 | test.go:43:2:43:43 | ... := ...[0] | test.go:44:24:44:34 | taintedNode | provenance |  |
 | test.go:43:31:43:42 | selection of Body | test.go:43:2:43:43 | ... := ...[0] | provenance | Src:MaD:1 MaD:5 |
-| test.go:44:24:44:34 | taintedNode | test.go:42:6:42:14 | definition of cleanNode | provenance | MaD:10 |
-| test.go:45:22:45:31 | &... | test.go:45:23:45:31 | cleanNode | provenance |  |
+| test.go:44:2:44:10 | cleanNode [postupdate] | test.go:45:22:45:31 | &... | provenance |  |
+| test.go:44:2:44:10 | cleanNode [postupdate] | test.go:45:23:45:31 | cleanNode | provenance |  |
+| test.go:44:24:44:34 | taintedNode | test.go:44:2:44:10 | cleanNode [postupdate] | provenance | MaD:10 |
 | test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
-| test.go:45:22:45:31 | &... [pointer] | test.go:45:22:45:31 | &... | provenance |  |
-| test.go:45:22:45:31 | &... [pointer] | test.go:45:23:45:31 | cleanNode | provenance |  |
 | test.go:45:23:45:31 | cleanNode | test.go:45:22:45:31 | &... | provenance |  |
 | test.go:45:23:45:31 | cleanNode | test.go:45:22:45:31 | &... [pointer] | provenance |  |
-| test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
-| test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
-| test.go:47:6:47:15 | definition of cleanNode2 | test.go:50:23:50:32 | cleanNode2 | provenance |  |
 | test.go:48:2:48:44 | ... := ...[0] | test.go:49:26:49:37 | taintedNode2 | provenance |  |
 | test.go:48:32:48:43 | selection of Body | test.go:48:2:48:44 | ... := ...[0] | provenance | Src:MaD:1 MaD:5 |
-| test.go:49:26:49:37 | taintedNode2 | test.go:47:6:47:15 | definition of cleanNode2 | provenance | MaD:11 |
-| test.go:50:22:50:32 | &... | test.go:50:23:50:32 | cleanNode2 | provenance |  |
+| test.go:49:2:49:11 | cleanNode2 [postupdate] | test.go:50:22:50:32 | &... | provenance |  |
+| test.go:49:2:49:11 | cleanNode2 [postupdate] | test.go:50:23:50:32 | cleanNode2 | provenance |  |
+| test.go:49:26:49:37 | taintedNode2 | test.go:49:2:49:11 | cleanNode2 [postupdate] | provenance | MaD:11 |
 | test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
-| test.go:50:22:50:32 | &... [pointer] | test.go:50:22:50:32 | &... | provenance |  |
-| test.go:50:22:50:32 | &... [pointer] | test.go:50:23:50:32 | cleanNode2 | provenance |  |
 | test.go:50:23:50:32 | cleanNode2 | test.go:50:22:50:32 | &... | provenance |  |
 | test.go:50:23:50:32 | cleanNode2 | test.go:50:22:50:32 | &... [pointer] | provenance |  |
 models
@@ -125,19 +117,17 @@ nodes
 | test.go:39:49:39:60 | selection of Body | semmle.label | selection of Body |
 | test.go:40:15:40:31 | tokenizerFragment | semmle.label | tokenizerFragment |
 | test.go:40:15:40:42 | call to Buffered | semmle.label | call to Buffered |
-| test.go:42:6:42:14 | definition of cleanNode | semmle.label | definition of cleanNode |
 | test.go:43:2:43:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:43:31:43:42 | selection of Body | semmle.label | selection of Body |
+| test.go:44:2:44:10 | cleanNode [postupdate] | semmle.label | cleanNode [postupdate] |
 | test.go:44:24:44:34 | taintedNode | semmle.label | taintedNode |
-| test.go:45:22:45:31 | &... | semmle.label | &... |
 | test.go:45:22:45:31 | &... | semmle.label | &... |
 | test.go:45:22:45:31 | &... [pointer] | semmle.label | &... [pointer] |
 | test.go:45:23:45:31 | cleanNode | semmle.label | cleanNode |
-| test.go:47:6:47:15 | definition of cleanNode2 | semmle.label | definition of cleanNode2 |
 | test.go:48:2:48:44 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:48:32:48:43 | selection of Body | semmle.label | selection of Body |
+| test.go:49:2:49:11 | cleanNode2 [postupdate] | semmle.label | cleanNode2 [postupdate] |
 | test.go:49:26:49:37 | taintedNode2 | semmle.label | taintedNode2 |
-| test.go:50:22:50:32 | &... | semmle.label | &... |
 | test.go:50:22:50:32 | &... | semmle.label | &... |
 | test.go:50:22:50:32 | &... [pointer] | semmle.label | &... [pointer] |
 | test.go:50:23:50:32 | cleanNode2 | semmle.label | cleanNode2 |

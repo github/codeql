@@ -621,24 +621,15 @@ module Flask {
     }
 
     override DataFlow::Node getAPathArgument() {
-      result in [
-          this.getArg(0), this.getArgByName("directory"),
-          // as described in the docs, the `filename` argument is restrained to be within
-          // the provided directory, so is not exposed to path-injection. (but is still a
-          // path-argument).
-          this.getArg(1), this.getArgByName("filename")
-        ]
+      result = this.getArg([0, 1]) or
+      result = this.getArgByName(["directory", "filename"])
     }
-  }
 
-  /**
-   * To exclude `filename` argument to `flask.send_from_directory` as a path-injection sink.
-   */
-  private class FlaskSendFromDirectoryCallFilenameSanitizer extends PathInjection::Sanitizer {
-    FlaskSendFromDirectoryCallFilenameSanitizer() {
-      this = any(FlaskSendFromDirectoryCall c).getArg(1)
-      or
-      this = any(FlaskSendFromDirectoryCall c).getArgByName("filename")
+    override DataFlow::Node getAVulnerablePathArgument() {
+      result = this.getAPathArgument() and
+      // as described in the docs, the `filename` argument is restricted to be within
+      // the provided directory, so is not exposed to path-injection.
+      not result in [this.getArg(1), this.getArgByName("filename")]
     }
   }
 
@@ -674,7 +665,7 @@ module Flask {
    *
    * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.render_template_string
    */
-  private class RenderTemplateStringSummary extends SummarizedCallable {
+  private class RenderTemplateStringSummary extends SummarizedCallable::Range {
     RenderTemplateStringSummary() { this = "flask.render_template_string" }
 
     override DataFlow::CallCfgNode getACall() {
@@ -700,7 +691,7 @@ module Flask {
    *
    * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.stream_template_string
    */
-  private class StreamTemplateStringSummary extends SummarizedCallable {
+  private class StreamTemplateStringSummary extends SummarizedCallable::Range {
     StreamTemplateStringSummary() { this = "flask.stream_template_string" }
 
     override DataFlow::CallCfgNode getACall() {

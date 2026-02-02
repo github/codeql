@@ -1,0 +1,34 @@
+#select
+| main.rs:25:5:25:13 | ...::new | main.rs:8:1:8:18 | to | main.rs:25:5:25:13 | ...::new | Cross-site scripting vulnerability due to a $@. | main.rs:8:1:8:18 | to | user-provided value |
+edges
+| main.rs:8:1:8:18 | to | main.rs:9:29:9:51 | ...: ...::Path::<...> | provenance | Src:MaD:2  |
+| main.rs:9:29:9:51 | ...: ...::Path::<...> | main.rs:10:22:10:25 | path | provenance |  |
+| main.rs:10:9:10:18 | user_input | main.rs:13:9:22:18 | MacroExpr | provenance |  |
+| main.rs:10:22:10:25 | path | main.rs:10:22:10:38 | path.into_inner() | provenance | MaD:3 |
+| main.rs:10:22:10:38 | path.into_inner() | main.rs:10:9:10:18 | user_input | provenance |  |
+| main.rs:12:9:12:12 | html | main.rs:25:15:25:18 | html | provenance |  |
+| main.rs:13:9:22:18 | ...::format(...) | main.rs:13:9:22:18 | { ... } | provenance |  |
+| main.rs:13:9:22:18 | ...::must_use(...) | main.rs:12:9:12:12 | html | provenance |  |
+| main.rs:13:9:22:18 | MacroExpr | main.rs:13:9:22:18 | ...::format(...) | provenance | MaD:4 |
+| main.rs:13:9:22:18 | { ... } | main.rs:13:9:22:18 | ...::must_use(...) | provenance | MaD:5 |
+| main.rs:25:15:25:18 | html | main.rs:25:5:25:13 | ...::new | provenance | MaD:1 Sink:MaD:1 |
+models
+| 1 | Sink: <actix_web::types::html::Html>::new; Argument[0]; html-injection |
+| 2 | Source: <actix_web::resource::Resource>::to; Argument[0].Parameter[0..7]; remote |
+| 3 | Summary: <actix_web::types::path::Path>::into_inner; Argument[self]; ReturnValue; taint |
+| 4 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 5 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+nodes
+| main.rs:8:1:8:18 | to | semmle.label | to |
+| main.rs:9:29:9:51 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
+| main.rs:10:9:10:18 | user_input | semmle.label | user_input |
+| main.rs:10:22:10:25 | path | semmle.label | path |
+| main.rs:10:22:10:38 | path.into_inner() | semmle.label | path.into_inner() |
+| main.rs:12:9:12:12 | html | semmle.label | html |
+| main.rs:13:9:22:18 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:13:9:22:18 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:13:9:22:18 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:13:9:22:18 | { ... } | semmle.label | { ... } |
+| main.rs:25:5:25:13 | ...::new | semmle.label | ...::new |
+| main.rs:25:15:25:18 | html | semmle.label | html |
+subpaths

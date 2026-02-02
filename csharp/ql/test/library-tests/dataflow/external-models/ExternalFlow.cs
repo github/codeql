@@ -215,9 +215,9 @@ namespace My.Qltest
             Sink(Library.GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
         }
 
-        object GeneratedFlow(object o) => throw null;
+        object GeneratedFlow(object o) => null;
 
-        object GeneratedFlowArgs(object o1, object o2) => throw null;
+        object GeneratedFlowArgs(object o1, object o2) => null;
 
         static void Sink(object o) { }
     }

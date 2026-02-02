@@ -62,6 +62,8 @@
  * should be prefixed with a tilde character (`~`). For example, `~Bar` can be used to indicate that
  * the type is not intended to match a static type.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Unit
 private import ApiGraphModelsSpecific as Specific
@@ -342,6 +344,26 @@ private predicate sinkModel(string type, string path, string kind, string model)
   )
 }
 
+/** Holds if a barrier model exists for the given parameters. */
+private predicate barrierModel(string type, string path, string kind, string model) {
+  // No deprecation adapter for barrier models, they were not around back then.
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::barrierModel(type, path, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
+/** Holds if a barrier guard model exists for the given parameters. */
+private predicate barrierGuardModel(
+  string type, string path, string branch, string kind, string model
+) {
+  // No deprecation adapter for barrier models, they were not around back then.
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::barrierGuardModel(type, path, branch, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
 /** Holds if a summary model `row` exists for the given parameters. */
 private predicate summaryModel(
   string type, string path, string input, string output, string kind, string model
@@ -398,6 +420,8 @@ predicate isRelevantType(string type) {
   (
     sourceModel(type, _, _, _) or
     sinkModel(type, _, _, _) or
+    barrierModel(type, _, _, _) or
+    barrierGuardModel(type, _, _, _, _) or
     summaryModel(type, _, _, _, _, _) or
     typeModel(_, type, _)
   ) and
@@ -425,6 +449,8 @@ predicate isRelevantFullPath(string type, string path) {
   (
     sourceModel(type, path, _, _) or
     sinkModel(type, path, _, _) or
+    barrierModel(type, path, _, _) or
+    barrierGuardModel(type, path, _, _, _) or
     summaryModel(type, path, _, _, _, _) or
     typeModel(_, type, path)
   )
@@ -490,6 +516,7 @@ private predicate invocationMatchesCallSiteFilter(
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
 
+overlay[local?]
 private class TypeModelUseEntry extends API::EntryPoint {
   private string type;
 
@@ -503,6 +530,7 @@ private class TypeModelUseEntry extends API::EntryPoint {
   API::Node getNodeForType(string type_) { type = type_ and result = this.getANode() }
 }
 
+overlay[local?]
 private class TypeModelDefEntry extends API::EntryPoint {
   private string type;
 
@@ -744,6 +772,32 @@ module ModelOutput {
     }
 
     /**
+     * Holds if a barrier model contributed `barrier` with the given `kind`.
+     */
+    cached
+    API::Node getABarrierNode(string kind, string model) {
+      exists(string type, string path |
+        barrierModel(type, path, kind, model) and
+        result = getNodeFromPath(type, path)
+      )
+    }
+
+    /**
+     * Holds if a barrier model contributed `barrier` with the given `kind` for the given `branch`.
+     */
+    cached
+    API::Node getABarrierGuardNode(string kind, boolean branch, string model) {
+      exists(string type, string path, string branch_str |
+        branch = true and branch_str = "true"
+        or
+        branch = false and branch_str = "false"
+      |
+        barrierGuardModel(type, path, branch_str, kind, model) and
+        result = getNodeFromPath(type, path)
+      )
+    }
+
+    /**
      * Holds if a relevant summary exists for these parameters.
      */
     cached
@@ -785,14 +839,49 @@ module ModelOutput {
   private import codeql.mad.ModelValidation as SharedModelVal
 
   /**
-   * Holds if a CSV source model contributed `source` with the given `kind`.
+   * Holds if an external model contributed `source` with the given `kind`.
    */
   API::Node getASourceNode(string kind) { result = getASourceNode(kind, _) }
 
   /**
-   * Holds if a CSV sink model contributed `sink` with the given `kind`.
+   * Holds if an external model contributed `sink` with the given `kind`.
    */
   API::Node getASinkNode(string kind) { result = getASinkNode(kind, _) }
+
+  /**
+   * Holds if an external model contributed `barrier` with the given `kind`.
+   *
+   * INTERNAL: Do not use.
+   */
+  API::Node getABarrierNode(string kind) { result = getABarrierNode(kind, _) }
+
+  /**
+   * Holds if an external model contributed `barrier-guard` with the given `kind` and `branch`.
+   *
+   * INTERNAL: Do not use.
+   */
+  API::Node getABarrierGuardNode(string kind, boolean branch) {
+    result = getABarrierGuardNode(kind, branch, _)
+  }
+
+  /**
+   * Holds if `node` is specified as a source with the given kind in an external model.
+   */
+  predicate sourceNode(DataFlow::Node node, string kind) { node = getASourceNode(kind).asSource() }
+
+  /**
+   * Holds if `node` is specified as a sink with the given kind in an external model.
+   */
+  predicate sinkNode(DataFlow::Node node, string kind) { node = getASinkNode(kind).asSink() }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in an external model.
+   */
+  predicate barrierNode(DataFlow::Node node, string kind) {
+    node = getABarrierNode(kind).asSource()
+    or
+    node = DataFlow::ExternalBarrierGuard::getAnExternalBarrierNode(kind)
+  }
 
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
     predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind, _) }

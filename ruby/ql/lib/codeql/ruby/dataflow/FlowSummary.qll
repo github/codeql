@@ -15,65 +15,64 @@ private module Summaries {
   private import codeql.ruby.frameworks.data.ModelsAsData
 }
 
-deprecated class SummaryComponent = Impl::Private::SummaryComponent;
+class Provenance = Impl::Public::Provenance;
 
-deprecated module SummaryComponent = Impl::Private::SummaryComponent;
+/** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+module SummarizedCallable {
+  /** A callable with a flow summary, identified by a unique string. */
+  abstract class Range extends LibraryCallable, Impl::Public::SummarizedCallable {
+    bindingset[this]
+    Range() { any() }
 
-deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
+    override predicate propagatesFlow(
+      string input, string output, boolean preservesValue, Provenance p, boolean isExact,
+      string model
+    ) {
+      this.propagatesFlow(input, output, preservesValue) and
+      p = "manual" and
+      isExact = true and
+      model = ""
+    }
 
-deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
+    /**
+     * Holds if data may flow from `input` to `output` through this callable.
+     *
+     * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
+     */
+    predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
+
+    /**
+     * Gets the synthesized parameter that results from an input specification
+     * that starts with `Argument[s]` for this library callable.
+     */
+    DataFlow::ParameterNode getParameter(string s) {
+      exists(ParameterPosition pos |
+        DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
+        s = Impl::Input::encodeParameterPosition(pos)
+      )
+    }
+  }
+
+  /**
+   * A callable with a flow summary, identified by a unique string, where all
+   * calls to a method with the same name are considered relevant.
+   */
+  abstract class RangeSimple extends Range {
+    MethodCall mc;
+
+    bindingset[this]
+    RangeSimple() { mc.getMethodName() = this }
+
+    final override MethodCall getACallSimple() { result = mc }
+  }
+}
+
+final private class SummarizedCallableFinal = SummarizedCallable::Range;
 
 /** A callable with a flow summary, identified by a unique string. */
-abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
-  bindingset[this]
-  SummarizedCallable() { any() }
-
-  /**
-   * DEPRECATED: Use `propagatesFlow` instead.
-   */
-  deprecated predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    this.propagatesFlow(input, output, preservesValue, _)
-  }
-
-  override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
-  ) {
-    this.propagatesFlow(input, output, preservesValue) and model = ""
-  }
-
-  /**
-   * Holds if data may flow from `input` to `output` through this callable.
-   *
-   * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
-   */
-  predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
-
-  /**
-   * Gets the synthesized parameter that results from an input specification
-   * that starts with `Argument[s]` for this library callable.
-   */
-  DataFlow::ParameterNode getParameter(string s) {
-    exists(ParameterPosition pos |
-      DataFlowImplCommon::parameterNode(result, TLibraryCallable(this), pos) and
-      s = Impl::Input::encodeParameterPosition(pos)
-    )
-  }
-}
-
-/**
- * A callable with a flow summary, identified by a unique string, where all
- * calls to a method with the same name are considered relevant.
- */
-abstract class SimpleSummarizedCallable extends SummarizedCallable {
-  MethodCall mc;
-
-  bindingset[this]
-  SimpleSummarizedCallable() { mc.getMethodName() = this }
-
-  final override MethodCall getACallSimple() { result = mc }
-}
-
-deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;
+final class SummarizedCallable extends SummarizedCallableFinal,
+  Impl::Public::RelevantSummarizedCallable
+{ }
 
 /**
  * Provides a set of special flow summaries to ensure that callbacks passed into
@@ -103,7 +102,7 @@ private module LibraryCallbackSummaries {
     )
   }
 
-  private class LibraryLambdaMethod extends SummarizedCallable {
+  private class LibraryLambdaMethod extends SummarizedCallable::Range {
     LibraryLambdaMethod() { this = "<library method accepting a callback>" }
 
     final override MethodCall getACall() {
@@ -114,7 +113,8 @@ private module LibraryCallbackSummaries {
     }
 
     override predicate propagatesFlow(
-      string input, string output, boolean preservesValue, string model
+      string input, string output, boolean preservesValue, Provenance p, boolean isExact,
+      string model
     ) {
       (
         input = "Argument[block]" and
@@ -127,6 +127,8 @@ private module LibraryCallbackSummaries {
         )
       ) and
       preservesValue = true and
+      p = "hq-generated" and
+      isExact = true and
       model = "heuristic-callback"
     }
   }

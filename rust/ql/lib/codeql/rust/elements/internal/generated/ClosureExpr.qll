@@ -38,17 +38,19 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ClosureExpr" }
 
     /**
-     * Gets the body of this closure expression, if it exists.
+     * Gets the closure body of this closure expression, if it exists.
      */
-    Expr getBody() {
+    Expr getClosureBody() {
       result =
-        Synth::convertExprFromRaw(Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).getBody())
+        Synth::convertExprFromRaw(Synth::convertClosureExprToRaw(this)
+              .(Raw::ClosureExpr)
+              .getClosureBody())
     }
 
     /**
-     * Holds if `getBody()` exists.
+     * Holds if `getClosureBody()` exists.
      */
-    final predicate hasBody() { exists(this.getBody()) }
+    final predicate hasClosureBody() { exists(this.getClosureBody()) }
 
     /**
      * Gets the for binder of this closure expression, if it exists.

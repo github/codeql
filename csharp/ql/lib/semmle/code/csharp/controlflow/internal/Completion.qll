@@ -390,11 +390,6 @@ private predicate invalidCastCandidate(CastExpr ce) {
   ce.getExpr().getType() = getACastExprBaseType(ce)
 }
 
-private predicate assertion(Assertion a, int i, AssertMethod am, Expr e) {
-  e = a.getExpr(i) and
-  am = a.getAssertMethod()
-}
-
 /** Gets a valid completion when argument `i` fails in assertion `a`. */
 Completion assertionCompletion(Assertion a, int i) {
   exists(AssertMethod am | am = a.getAssertMethod() |
@@ -428,11 +423,6 @@ private predicate inBooleanContext(Expr e) {
   e = any(Case c).getCondition()
   or
   e = any(SpecificCatchClause scc).getFilterClause()
-  or
-  exists(BooleanAssertMethod m, int i |
-    assertion(_, i, m, e) and
-    i = m.getAnAssertionIndex(_)
-  )
   or
   e = any(LogicalNotExpr lne | inBooleanContext(lne)).getAnOperand()
   or
@@ -480,11 +470,6 @@ private predicate inNullnessContext(Expr e) {
   e = any(NullCoalescingExpr nce).getLeftOperand()
   or
   exists(QualifiableExpr qe | qe.isConditional() | e = qe.getChildExpr(-1))
-  or
-  exists(NullnessAssertMethod m, int i |
-    assertion(_, i, m, e) and
-    i = m.getAnAssertionIndex(_)
-  )
   or
   exists(ConditionalExpr ce | inNullnessContext(ce) | (e = ce.getThen() or e = ce.getElse()))
   or

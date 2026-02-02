@@ -1,10 +1,11 @@
 import python
+private import LegacyPointsTo
 
 from ClassValue cls, string res
 where
   exists(CallNode call |
     call.getFunction().(NameNode).getId() = "test" and
-    call.getAnArg().pointsTo(cls)
+    call.getAnArg().(ControlFlowNodeWithPointsTo).pointsTo(cls)
   ) and
   (
     cls.isSequence() and

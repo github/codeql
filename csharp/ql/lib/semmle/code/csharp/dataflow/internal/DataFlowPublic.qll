@@ -173,7 +173,7 @@ abstract class NonLocalJumpNode extends Node {
  * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
  * the argument `x`.
  */
-signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
+signature predicate guardChecksSig(Guard g, Expr e, GuardValue v);
 
 /**
  * Provides a set of barrier nodes for a guard that validates an expression.
@@ -190,8 +190,44 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     SsaFlow::asNode(result) =
       SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
     or
-    exists(Guard g, Expr e, AbstractValue v |
+    exists(Guard g, Expr e, GuardValue v |
       guardChecks(g, e, v) and
+      g.controlsNode(result.getControlFlowNode(), e, v)
+    )
+  }
+}
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `gv`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  private import SsaImpl as SsaImpl
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  pragma[nomagic]
+  Node getABarrierNode(P param) {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::ParameterizedBarrierGuard<P, guardChecks/4>::getABarrierNode(param)
+    or
+    exists(Guard g, Expr e, GuardValue v |
+      guardChecks(g, e, v, param) and
       g.controlsNode(result.getControlFlowNode(), e, v)
     )
   }

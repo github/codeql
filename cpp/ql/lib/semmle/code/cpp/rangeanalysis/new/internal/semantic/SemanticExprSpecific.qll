@@ -259,7 +259,7 @@ module SemanticExprConfig {
   }
 
   predicate guardHasBranchEdge(Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch) {
-    guard.controlsEdge(bb1, bb2, branch)
+    guard.controlsBranchEdge(bb1, bb2, branch)
   }
 
   Guard comparisonGuard(Expr e) { getSemanticExpr(result) = e }

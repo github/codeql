@@ -31,7 +31,7 @@ assert hasattr(arguments, "ignore_missing_query_packs")
 
 # Define which languages and query packs to consider
 languages = [ "actions", "cpp", "csharp", "go", "java", "javascript", "python", "ruby", "rust", "swift" ]
-packs = [ "code-scanning", "security-and-quality", "security-extended", "security-experimental", "code-quality"]
+packs = [ "code-scanning", "security-and-quality", "security-extended", "security-experimental", "code-quality", "code-quality-extended"]
 
 class CodeQL:
     def __init__(self):
@@ -184,8 +184,8 @@ with CodeQL() as codeql:
                         sys.exit("You can use '--ignore-missing-query-packs' to ignore this error")
 
                 # Exception for the code-quality suites, which might be empty, but must be resolvable.
-                if pack == 'code-quality' and queries_subp == '':
-                    print(f'Warning: skipping empty suite code-quality', file=sys.stderr)
+                if pack in ['code-quality', 'code-quality-extended'] and queries_subp == '':
+                    print(f'Warning: skipping empty suite {pack}', file=sys.stderr)
                     continue
 
                 # Investigate metadata for every query by using 'codeql resolve metadata'

@@ -1,8 +1,0 @@
-multipleCallTargets
-| proc_macro.rs:15:5:15:10 | ...::new(...) |
-| proc_macro.rs:25:5:25:10 | ...::new(...) |
-| proc_macro.rs:41:5:41:10 | ...::new(...) |
-| proc_macro.rs:41:5:41:10 | ...::new(...) |
-| proc_macro.rs:41:5:41:10 | ...::new(...) |
-| proc_macro.rs:41:5:41:10 | ...::new(...) |
-| proc_macro.rs:44:27:44:30 | ...::to_tokens(...) |

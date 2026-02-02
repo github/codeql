@@ -278,6 +278,45 @@ The following global taint-tracking query finds places where a value from a remo
    where SqlInjectionFlow::flow(sourceNode, sinkNode)
    select sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
 
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the string literal example above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id sql-injection
+    */
+
+   import swift
+   import codeql.swift.dataflow.DataFlow
+   import codeql.swift.dataflow.TaintTracking
+   import codeql.swift.dataflow.FlowSources
+
+   module SqlInjectionConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
+
+     predicate isSink(DataFlow::Node node) {
+       exists(CallExpr call |
+         call.getStaticTarget().(Method).hasQualifiedName("Connection", "execute(_:)") and
+         call.getArgument(0).getExpr() = node.asExpr()
+       )
+     }
+   }
+
+   module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
+
+   import SqlInjectionFlow::PathGraph
+
+   from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
+   where SqlInjectionFlow::flowPath(sourceNode, sinkNode)
+   select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 

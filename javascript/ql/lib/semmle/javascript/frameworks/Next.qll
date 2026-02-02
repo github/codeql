@@ -13,20 +13,40 @@ module NextJS {
    */
   PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
 
+  private Folder packageRoot() { result = getANextPackage().getFile().getParentContainer() }
+
+  private Folder srcRoot() { result = [packageRoot(), packageRoot().getFolder("src")] }
+
+  private Folder appRoot() { result = srcRoot().getFolder("app") }
+
+  private Folder pagesRoot() { result = [srcRoot(), appRoot()].getFolder("pages") }
+
+  private Folder apiRoot() { result = [pagesRoot(), appRoot()].getFolder("api") }
+
+  private Folder appFolder() {
+    result = appRoot()
+    or
+    result = appFolder().getAFolder()
+  }
+
+  private Folder pagesFolder() {
+    result = pagesRoot()
+    or
+    result = pagesFolder().getAFolder()
+  }
+
   /**
    * Gets a "pages" folder in a `Next.js` application.
    * JavaScript files inside these folders are mapped to routes.
    */
-  Folder getAPagesFolder() {
-    result = getANextPackage().getFile().getParentContainer().getFolder("pages")
-    or
-    result = getAPagesFolder().getAFolder()
-  }
+  deprecated predicate getAPagesFolder = pagesFolder/0;
 
   /**
-   * Gets a module corrosponding to a `Next.js` page.
+   * Gets a module corresponding to a `Next.js` page.
    */
-  Module getAPagesModule() { result.getFile().getParentContainer() = getAPagesFolder() }
+  Module getAPagesModule() {
+    result.getFile() = [pagesFolder().getAFile(), appFolder().getJavaScriptFile("page")]
+  }
 
   /**
    * Gets a module inside a "pages" folder where `fallback` from `getStaticPaths` is not set to false.
@@ -217,8 +237,7 @@ module NextJS {
    * the App Router (`app/api/`) Next.js 13+ structures.
    */
   Folder apiFolder() {
-    result =
-      getANextPackage().getFile().getParentContainer().getFolder(["pages", "app"]).getFolder("api") or
+    result = apiRoot() or
     result = apiFolder().getAFolder()
   }
 
@@ -282,11 +301,17 @@ module NextJS {
   class NextAppRouteHandler extends DataFlow::FunctionNode, Http::Servers::StandardRouteHandler {
     NextAppRouteHandler() {
       exists(Module mod |
-        mod.getFile().getParentContainer() = apiFolder() or
-        mod.getFile().getStem() = "middleware"
+        (
+          mod.getFile().getParentContainer() = apiFolder()
+          or
+          mod.getFile().getStem() = "middleware"
+          or
+          mod.getFile().getStem() = "route" and mod.getFile().getParentContainer() = appFolder()
+        )
       |
         this =
-          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue()
+          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware", "proxy"])
+              .getAFunctionValue()
       )
     }
 

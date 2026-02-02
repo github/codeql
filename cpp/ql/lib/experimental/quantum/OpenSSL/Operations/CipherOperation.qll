@@ -4,23 +4,47 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 import EVPPKeyCtxInitializer
 
 /**
+ * A base class for all final cipher operation steps.
+ */
+abstract class FinalCipherOperationStep extends OperationStep {
+  override OperationStepType getStepType() { result = FinalStep() }
+}
+
+/**
+ * A base configuration for all EVP cipher operations.
+ */
+abstract class EvpCipherOperationFinalStep extends FinalCipherOperationStep {
+  override DataFlow::Node getInput(IOType type) {
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
+  }
+
+  override DataFlow::Node getOutput(IOType type) {
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
+  }
+}
+
+/**
  * A base class for all EVP cipher operations.
  */
 abstract class EvpCipherInitializer extends OperationStep {
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and
+    result.asIndirectExpr() = this.getArgument(1) and
     type = PrimaryAlgorithmIO() and
     // Constants that are not equal to zero or
     // non-constants (e.g., variable accesses, which require data-flow to determine the value)
     // A zero (null) value typically indicates use of this operation step to initialize
     // other out parameters in a multi-step initialization.
-    (exists(result.asExpr().getValue()) implies result.asExpr().getValue().toInt() != 0)
+    (
+      exists(result.asIndirectExpr().getValue())
+      implies
+      result.asIndirectExpr().getValue().toInt() != 0
+    )
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -38,11 +62,15 @@ abstract class EvpEXInitializer extends EvpCipherInitializer {
       // non-constants (e.g., variable accesses, which require data-flow to determine the value)
       // A zero (null) value typically indicates use of this operation step to initialize
       // other out parameters in a multi-step initialization.
-      result.asExpr() = this.getArgument(3) and type = KeyIO()
+      result.asIndirectExpr() = this.getArgument(3) and type = KeyIO()
       or
-      result.asExpr() = this.getArgument(4) and type = IVorNonceIO()
+      result.asIndirectExpr() = this.getArgument(4) and type = IVorNonceIO()
     ) and
-    (exists(result.asExpr().getValue()) implies result.asExpr().getValue().toInt() != 0)
+    (
+      exists(result.asIndirectExpr().getValue())
+      implies
+      result.asIndirectExpr().getValue().toInt() != 0
+    )
   }
 }
 
@@ -53,9 +81,9 @@ abstract class EvpEX2Initializer extends EvpCipherInitializer {
   override DataFlow::Node getInput(IOType type) {
     result = super.getInput(type)
     or
-    result.asExpr() = this.getArgument(2) and type = KeyIO()
+    result.asIndirectExpr() = this.getArgument(2) and type = KeyIO()
     or
-    result.asExpr() = this.getArgument(3) and type = IVorNonceIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = IVorNonceIO()
   }
 }
 
@@ -90,6 +118,7 @@ class Evp_Cipher_EX2_or_Simple_Init_Call extends EvpEX2Initializer {
     result = super.getInput(type)
     or
     this.getTarget().getName().toLowerCase().matches("%cipherinit%") and
+    // the key op subtype is an int, use asExpr
     result.asExpr() = this.getArgument(4) and
     type = KeyOperationSubtypeIO()
   }
@@ -107,13 +136,13 @@ class EvpPkeyEncryptDecryptInit extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(1) and type = OsslParamIO()
+    result.asIndirectExpr() = this.getArgument(1) and type = OsslParamIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = InitializerStep() }
@@ -125,6 +154,7 @@ class EvpCipherInitSKeyCall extends EvpEX2Initializer {
   override DataFlow::Node getInput(IOType type) {
     result = super.getInput(type)
     or
+    // the key op subtype is an int, use asExpr
     result.asExpr() = this.getArgument(5) and
     type = KeyOperationSubtypeIO()
   }
@@ -141,33 +171,18 @@ class EvpCipherUpdateCall extends OperationStep {
   }
 
   override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asIndirectExpr() = this.getArgument(0) and type = ContextIO()
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(1) and type = CiphertextIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = CiphertextIO()
     or
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
+    result.asDefiningArgument() = this.getArgument(0) and type = ContextIO()
   }
 
   override OperationStepType getStepType() { result = UpdateStep() }
-}
-
-/**
- * A base configuration for all EVP cipher operations.
- */
-abstract class EvpCipherOperationFinalStep extends OperationStep {
-  override DataFlow::Node getInput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
-
-  override DataFlow::Node getOutput(IOType type) {
-    result.asExpr() = this.getArgument(0) and type = ContextIO()
-  }
-
-  override OperationStepType getStepType() { result = FinalStep() }
 }
 
 /**
@@ -179,13 +194,13 @@ class EvpCipherCall extends EvpCipherOperationFinalStep {
   override DataFlow::Node getInput(IOType type) {
     super.getInput(type) = result
     or
-    result.asExpr() = this.getArgument(2) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(2) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
     super.getOutput(type) = result
     or
-    result.asExpr() = this.getArgument(1) and type = CiphertextIO()
+    result.asDefiningArgument() = this.getArgument(1) and type = CiphertextIO()
   }
 }
 
@@ -216,20 +231,42 @@ class EvpCipherFinalCall extends EvpCipherOperationFinalStep {
  */
 class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
   EvpPKeyCipherOperation() {
-    this.getTarget().getName() in ["EVP_PKEY_encrypt", "EVP_PKEY_decrypt"]
+    this.getTarget().getName() in ["EVP_PKEY_encrypt", "EVP_PKEY_decrypt"] and
+    // TODO: for now ignore this operation entirely if it is setting the cipher text to null
+    // this needs to be re-evalauted if this scenario sets other values worth tracking
+    (
+      exists(this.(Call).getArgument(1).getValue())
+      implies
+      this.(Call).getArgument(1).getValue().toInt() != 0
+    )
   }
 
   override DataFlow::Node getInput(IOType type) {
     super.getInput(type) = result
     or
-    result.asExpr() = this.getArgument(3) and type = PlaintextIO()
+    result.asIndirectExpr() = this.getArgument(3) and type = PlaintextIO()
   }
 
   override DataFlow::Node getOutput(IOType type) {
     super.getOutput(type) = result
     or
-    result.asExpr() = this.getArgument(1) and type = CiphertextIO()
+    result.asDefiningArgument() = this.getArgument(1) and
+    type = CiphertextIO() and
+    this.getStepType() = FinalStep()
     // TODO: could indicate text lengths here, as well
+  }
+
+  override OperationStepType getStepType() {
+    // When the output buffer is null, the step is not a final step
+    // it is used to get the buffer size, if 0 consider it an initialization step
+    // NOTE/TODO: not tracing 0 to the arg, just looking for 0 directly in param
+    // the assumption is this is the common case, but we may want to make this more
+    // robust and support a dataflow.
+    result = FinalStep() and
+    (exists(super.getArgument(1).getValue()) implies super.getArgument(1).getValue().toInt() != 0)
+    or
+    result = InitializerStep() and
+    super.getArgument(1).getValue().toInt() = 0
   }
 }
 
@@ -237,7 +274,7 @@ class EvpPKeyCipherOperation extends EvpCipherOperationFinalStep {
  * An EVP cipher operation instance.
  * Any operation step that is a final operation step for EVP cipher operation steps.
  */
-class EvpCipherOperationInstance extends Crypto::KeyOperationInstance instanceof EvpCipherOperationFinalStep
+class OpenSslCipherOperationInstance extends Crypto::KeyOperationInstance instanceof FinalCipherOperationStep
 {
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     super.getPrimaryAlgorithmValueConsumer() = result

@@ -7,6 +7,7 @@ set -eu
     --include-extension=.csproj \
     --include-extension=.props \
     --include-extension=.xml \
+    --also-match-lgtm-index-filters \
     --size-limit 10m \
     --language xml \
     --working-dir=. \

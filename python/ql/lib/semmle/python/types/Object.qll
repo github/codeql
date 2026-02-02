@@ -1,5 +1,5 @@
 import python
-private import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
 
@@ -41,7 +41,7 @@ class Object extends @py_object {
    * for a control flow node 'f'
    */
   ClassObject getAnInferredType() {
-    exists(ControlFlowNode somewhere | somewhere.refersTo(this, result, _))
+    exists(ControlFlowNodeWithPointsTo somewhere | somewhere.refersTo(this, result, _))
     or
     this.asBuiltin().getClass() = result.asBuiltin() and not this = unknownValue()
     or
@@ -327,7 +327,7 @@ abstract class SequenceObject extends Object {
   Object getInferredElement(int n) {
     result = this.getBuiltinElement(n)
     or
-    this.getSourceElement(n).refersTo(result)
+    this.getSourceElement(n).(ControlFlowNodeWithPointsTo).refersTo(result)
   }
 }
 
@@ -438,7 +438,8 @@ class SuperBoundMethod extends Object {
   string name;
 
   SuperBoundMethod() {
-    this.(AttrNode).getObject(name).inferredValue().getClass() = Value::named("super")
+    this.(AttrNode).getObject(name).(ControlFlowNodeWithPointsTo).inferredValue().getClass() =
+      Value::named("super")
   }
 
   override string toString() { result = "super()." + name }
@@ -446,7 +447,7 @@ class SuperBoundMethod extends Object {
   Object getFunction(string fname) {
     fname = name and
     exists(SuperInstance sup, BoundMethodObjectInternal m |
-      sup = this.(AttrNode).getObject(name).inferredValue() and
+      sup = this.(AttrNode).getObject(name).(ControlFlowNodeWithPointsTo).inferredValue() and
       sup.attribute(name, m, _) and
       result = m.getFunction().getSource()
     )

@@ -87,6 +87,7 @@ class ElementBase extends @element {
  */
 class Element extends ElementBase {
   /** Gets the primary file where this element occurs. */
+  pragma[nomagic]
   File getFile() { result = this.getLocation().getFile() }
 
   /**
@@ -190,6 +191,15 @@ class Element extends ElementBase {
    * this is a super-set of `isInMacroExpansion`.
    */
   predicate isAffectedByMacro() { affectedByMacro(this) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if this element is affected by the expansion of `mi`.
+   */
+  predicate isAffectedByMacro(MacroInvocation mi) {
+    affectedbymacroexpansion(underlyingElement(this), unresolveElement(mi))
+  }
 
   private Element getEnclosingElementPref() {
     enclosingfunction(underlyingElement(this), unresolveElement(result)) or

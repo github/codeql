@@ -11,9 +11,10 @@
  */
 
 import python
+private import LegacyPointsTo
+private import semmle.python.types.ImportTime
 import Variables.MonkeyPatched
 import Loop
-import semmle.python.pointsto.PointsTo
 
 predicate guarded_against_name_error(Name u) {
   exists(Try t | t.getBody().getAnItem().contains(u) |
@@ -61,7 +62,7 @@ predicate undefined_use_in_function(Name u) {
   not u.getEnclosingModule().(ImportTimeScope).definesName(u.getId()) and
   not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId())) and
   not globallyDefinedName(u.getId()) and
-  not exists(SsaVariable var | var.getAUse().getNode() = u and not var.maybeUndefined()) and
+  not exists(SsaVariableWithPointsTo var | var.getAUse().getNode() = u and not var.maybeUndefined()) and
   not guarded_against_name_error(u) and
   not (u.getEnclosingModule().isPackageInit() and u.getId() = "__path__")
 }
@@ -69,7 +70,7 @@ predicate undefined_use_in_function(Name u) {
 predicate undefined_use_in_class_or_module(Name u) {
   exists(GlobalVariable v | u.uses(v)) and
   not u.getScope().getScope*() instanceof Function and
-  exists(SsaVariable var | var.getAUse().getNode() = u | var.maybeUndefined()) and
+  exists(SsaVariableWithPointsTo var | var.getAUse().getNode() = u | var.maybeUndefined()) and
   not guarded_against_name_error(u) and
   not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId())) and
   not (u.getEnclosingModule().isPackageInit() and u.getId() = "__path__") and
@@ -95,7 +96,7 @@ predicate undefined_use(Name u) {
   not contains_unknown_import_star(u.getEnclosingModule()) and
   not use_of_exec(u.getEnclosingModule()) and
   not exists(u.getVariable().getAStore()) and
-  not u.pointsTo(_) and
+  not u.(ExprWithPointsTo).pointsTo(_) and
   not probably_defined_in_loop(u)
 }
 

@@ -172,7 +172,8 @@ module AsyncPackage {
     DataFlow::FunctionNode getFinalCallback() { result = this.getCallback(finalCallbackIndex) }
   }
 
-  private class IterationCallFlowSummary extends DataFlow::SummarizedCallable {
+  overlay[local?]
+  private class IterationCallFlowSummary extends DataFlow::SummarizedCallable::Range {
     private int callbackArgIndex;
 
     IterationCallFlowSummary() {
@@ -219,7 +220,8 @@ module AsyncPackage {
    *
    * For example: `data -> result` in `async.sortBy(data, orderingFn, (err, result) => {})`.
    */
-  private class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable {
+  overlay[local?]
+  private class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable::Range {
     IterationPreserveTaintStepFlowSummary() { this = "async.sortBy" }
 
     override DataFlow::InvokeNode getACallSimple() {

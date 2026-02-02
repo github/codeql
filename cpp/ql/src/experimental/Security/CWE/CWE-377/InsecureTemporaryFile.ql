@@ -1,5 +1,5 @@
 /**
- * @name Insecure generation of filenames.
+ * @name Insecure generation of filenames
  * @description Using a predictable filename when creating a temporary file can lead to an attacker-controlled input.
  * @kind problem
  * @id cpp/insecure-generation-of-filename

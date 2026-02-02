@@ -9,10 +9,10 @@ private import codeql.controlflow.BasicBlock as BB
 private import codeql.util.Location
 private import codeql.util.Unit
 
-signature class BasicBlockSig;
+private signature class TypSig;
 
 /** Provides the input specification of the SSA implementation. */
-signature module InputSig<LocationSig Location, BasicBlockSig BasicBlock> {
+signature module InputSig<LocationSig Location, TypSig BasicBlock> {
   /** A variable that can be SSA converted. */
   class SourceVariable {
     /** Gets a textual representation of this variable. */
@@ -40,6 +40,203 @@ signature module InputSig<LocationSig Location, BasicBlockSig BasicBlock> {
    * the argument.
    */
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain);
+}
+
+/**
+ * Provides classes and predicates for the SSA representation of variables.
+ *
+ * Class hierarchy:
+ * ```text
+ * SsaDefinition
+ *  |- SsaWriteDefinition
+ *  |   |- SsaExplicitWrite
+ *  |   |   \- SsaParameterInit
+ *  |   |- SsaImplicitWrite
+ *  |   |   \- SsaImplicitEntryDefinition
+ *  |   \- SsaUncertainWrite (overlaps SsaImplicitWrite and potentially SsaExplicitWrite)
+ *  \- SsaPhiDefinition
+ * ```
+ */
+signature module SsaSig<
+  LocationSig Location, TypSig ControlFlowNode, TypSig BasicBlock, TypSig Expr, TypSig Parameter,
+  TypSig VariableWrite>
+{
+  /** A variable that can be SSA converted. */
+  class SourceVariable {
+    /** Gets a textual representation of this variable. */
+    string toString();
+
+    /** Gets the location of this variable. */
+    Location getLocation();
+  }
+
+  /** A static single assignment (SSA) definition. */
+  class SsaDefinition {
+    /** Gets the source variable underlying this SSA definition. */
+    SourceVariable getSourceVariable();
+
+    /**
+     * Holds if this SSA definition defines `v` at index `i` in basic block `bb`.
+     * Phi definitions are considered to be at index `-1`, while normal variable writes
+     * are at the index of the control flow node they wrap.
+     */
+    predicate definesAt(SourceVariable v, BasicBlock bb, int i);
+
+    /** Gets the basic block to which this SSA definition belongs. */
+    BasicBlock getBasicBlock();
+
+    /**
+     * Gets the control flow node of this SSA definition.
+     *
+     * For SSA definitions occurring at the beginning of a basic block, such as
+     * phi definitions, this will get the first control flow node of the basic block.
+     */
+    ControlFlowNode getControlFlowNode();
+
+    /** Gets a read of this SSA definition. */
+    Expr getARead();
+
+    /**
+     * Holds if this SSA definition is live at the end of basic block `bb`.
+     * That is, this definition reaches the end of basic block `bb`, at which
+     * point it is still live, without crossing another SSA definition of the
+     * same source variable.
+     */
+    predicate isLiveAtEndOfBlock(BasicBlock bb);
+
+    /**
+     * Gets a definition that ultimately defines this SSA definition and is
+     * not itself a phi definition.
+     *
+     * Example:
+     *
+     * ```rb
+     * def m b
+     *   i = 0        # defines i_0
+     *   if b
+     *     i = 1      # defines i_1
+     *   else
+     *     i = 2      # defines i_2
+     *   end
+     *                # defines i_3 = phi(i_1, i_2); ultimate definitions are i_1 and i_2
+     *   puts i
+     * end
+     * ```
+     */
+    SsaDefinition getAnUltimateDefinition();
+
+    /** Gets a textual representation of this SSA definition. */
+    string toString();
+
+    /** Gets the location of this SSA definition. */
+    Location getLocation();
+  }
+
+  /**
+   * A write definition. This includes every definition that is not a phi
+   * definition.
+   */
+  class SsaWriteDefinition extends SsaDefinition;
+
+  /**
+   * An SSA definition that corresponds to an explicit variable update or
+   * declaration.
+   */
+  class SsaExplicitWrite extends SsaWriteDefinition {
+    /** Gets the write underlying this SSA definition. */
+    VariableWrite getDefinition();
+
+    /**
+     * Gets the expression representing this write, if any. This is equivalent
+     * to `getDefinition().asExpr()`.
+     */
+    Expr getDefiningExpr();
+
+    /**
+     * Gets the expression with the value being written, if any. This is
+     * equivalent to `getDefinition().getValue()`.
+     */
+    Expr getValue();
+  }
+
+  /**
+   * An SSA definition representing the initialization of a parameter at the
+   * beginning of a callable.
+   */
+  class SsaParameterInit extends SsaExplicitWrite {
+    /**
+     * Gets the parameter that this definition represents. This is equivalent
+     * to `getDefinition().isParameterInit(result)`
+     */
+    Parameter getParameter();
+  }
+
+  /**
+   * An SSA definition that does not correspond to an explicit variable
+   * update or declaration.
+   *
+   * This includes implicit entry definitions for fields and captured
+   * variables, as well as field updates through side-effects and implicit
+   * definitions for fields whenever the qualifier is updated.
+   */
+  class SsaImplicitWrite extends SsaWriteDefinition;
+
+  /**
+   * An SSA definition representing the implicit initialization of a variable
+   * at the beginning of a callable. This includes fields and captured
+   * variables, but excludes parameters as they have explicit declarations.
+   */
+  class SsaImplicitEntryDefinition extends SsaImplicitWrite;
+
+  /** An SSA definition that represents an uncertain variable update. */
+  class SsaUncertainWrite extends SsaWriteDefinition {
+    /**
+     * Gets the immediately preceding definition. Since this update is uncertain,
+     * the value from the preceding definition might still be valid.
+     */
+    SsaDefinition getPriorDefinition();
+  }
+
+  /**
+   * An SSA phi definition, that is, a pseudo definition for a variable at a
+   * point in the flow graph where otherwise two or more definitions for the
+   * variable would be visible.
+   *
+   * For example, in
+   * ```rb
+   * if b
+   *   x = 0
+   * else
+   *   x = 1
+   * end
+   * puts x
+   * ```
+   * a phi definition for `x` is inserted just before the call `puts x`.
+   */
+  class SsaPhiDefinition extends SsaDefinition {
+    /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
+    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb);
+
+    /**
+     * Gets an input of this phi definition.
+     *
+     * Example:
+     *
+     * ```rb
+     * def m b
+     *   i = 0        # defines i_0
+     *   if b
+     *     i = 1      # defines i_1
+     *   else
+     *     i = 2      # defines i_2
+     *   end
+     *                # defines i_3 = phi(i_1, i_2); inputs are i_1 and i_2
+     *   puts i
+     * end
+     * ```
+     */
+    SsaDefinition getAnInput();
+  }
 }
 
 /**
@@ -1319,6 +1516,288 @@ module Make<
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
 
+  signature module SsaInputSig {
+    class Expr {
+      ControlFlowNode getControlFlowNode();
+
+      /** Gets a textual representation of this expression. */
+      string toString();
+
+      /** Gets the location of this expression. */
+      Location getLocation();
+    }
+
+    class Parameter;
+
+    class VariableWrite {
+      /** Gets the expression representing this write, if any. */
+      Expr asExpr();
+
+      /**
+       * Gets the expression with the value being written, if any.
+       *
+       * This can be the same expression as returned by `asExpr()`, which is the
+       * case for, for example, `++x` and `x += e`. For simple assignments like
+       * `x = e`, `asExpr()` gets the whole assignment expression while
+       * `getValue()` gets the right-hand side `e`. Post-crement operations like
+       * `x++` do not have an expression with the value being written.
+       */
+      Expr getValue();
+
+      /** Holds if this write is an initialization of parameter `p`. */
+      predicate isParameterInit(Parameter p);
+
+      /** Gets a textual representation of this write. */
+      string toString();
+
+      /** Gets the location of this write. */
+      Location getLocation();
+    }
+
+    predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SourceVariable v);
+  }
+
+  module MakeSsa<SsaInputSig SsaInput> implements
+    SsaSig<Location, ControlFlowNode, BasicBlock, SsaInput::Expr, SsaInput::Parameter, SsaInput::VariableWrite>
+  {
+    class SourceVariable = Input::SourceVariable;
+
+    private import SsaInput
+    private import Cached
+
+    cached
+    private module Cached {
+      cached
+      predicate ssaDefReachesCertainRead(Definition def, Expr e) {
+        exists(SourceVariable v, BasicBlock bb, int i |
+          ssaDefReachesRead(v, def, bb, i) and
+          variableRead(bb, i, v, true) and
+          e.getControlFlowNode() = bb.getNode(i)
+        )
+      }
+
+      cached
+      predicate ssaDefReachesUncertainRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
+        ssaDefReachesRead(v, def, bb, i) and
+        variableRead(bb, i, v, false)
+      }
+
+      cached
+      predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
+        ssaDefReachesEndOfBlock(bb, def, _)
+      }
+
+      cached
+      predicate phiHasInputFromBlockCached(PhiNode phi, Definition inp, BasicBlock bb) {
+        phiHasInputFromBlock(phi, inp, bb)
+      }
+
+      cached
+      predicate uncertainWriteDefinitionInputCached(UncertainWriteDefinition def, Definition inp) {
+        uncertainWriteDefinitionInput(def, inp)
+      }
+
+      cached
+      predicate explicitWrite(WriteDefinition def, VariableWrite write) {
+        exists(BasicBlock bb, int i, SourceVariable v |
+          def.definesAt(v, bb, i) and
+          explicitWrite(write, bb, i, v)
+        )
+      }
+
+      cached
+      predicate parameterInit(WriteDefinition def, Parameter p) {
+        exists(VariableWrite write | explicitWrite(def, write) and write.isParameterInit(p))
+      }
+    }
+
+    additional predicate ssaDefReachesUncertainRead = Cached::ssaDefReachesUncertainRead/4;
+
+    final private class FinalDefinition = Definition;
+
+    /** A static single assignment (SSA) definition. */
+    class SsaDefinition extends FinalDefinition {
+      /** Gets a textual representation of this SSA definition. */
+      string toString() { result = super.toString() }
+
+      /**
+       * Gets the control flow node of this SSA definition.
+       *
+       * For SSA definitions occurring at the beginning of a basic block, such as
+       * phi nodes, this will get the first control flow node of the basic block.
+       */
+      ControlFlowNode getControlFlowNode() {
+        exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(0.maximum(i)))
+      }
+
+      /** Gets a read of this SSA definition. */
+      Expr getARead() { ssaDefReachesCertainRead(this, result) }
+
+      /**
+       * Holds if this SSA definition is live at the end of basic block `bb`.
+       * That is, this definition reaches the end of basic block `bb`, at which
+       * point it is still live, without crossing another SSA definition of the
+       * same source variable.
+       */
+      predicate isLiveAtEndOfBlock(BasicBlock bb) { isLiveAtEndOfBlock(this, bb) }
+
+      /**
+       * Gets an SSA definition whose value can flow to this one in one step. This
+       * includes inputs to phi definitions, the prior definition of uncertain writes,
+       * and the captured ssa definition for a closure definition.
+       */
+      private SsaDefinition getAPhiInputOrPriorDefinition() {
+        result = this.(SsaPhiDefinition).getAnInput() or
+        result = this.(SsaUncertainWrite).getPriorDefinition()
+      }
+
+      /**
+       * Gets a definition that ultimately defines this SSA definition and is
+       * not itself a phi definition.
+       *
+       * Example:
+       *
+       * ```rb
+       * def m b
+       *   i = 0        # defines i_0
+       *   if b
+       *     i = 1      # defines i_1
+       *   else
+       *     i = 2      # defines i_2
+       *   end
+       *                # defines i_3 = phi(i_1, i_2); ultimate definitions are i_1 and i_2
+       *   puts i
+       * end
+       * ```
+       */
+      SsaDefinition getAnUltimateDefinition() {
+        result = this.getAPhiInputOrPriorDefinition*() and not result instanceof SsaPhiDefinition
+      }
+    }
+
+    /**
+     * A write definition. This includes every definition that is not a phi
+     * definition.
+     */
+    class SsaWriteDefinition extends SsaDefinition instanceof WriteDefinition { }
+
+    /**
+     * An SSA definition that corresponds to an explicit variable update or
+     * declaration.
+     */
+    class SsaExplicitWrite extends SsaWriteDefinition {
+      SsaExplicitWrite() { explicitWrite(this, _) }
+
+      /** Gets the write underlying this SSA definition. */
+      VariableWrite getDefinition() { explicitWrite(this, result) }
+
+      /**
+       * Gets the expression representing this write, if any. This is equivalent
+       * to `getDefinition().asExpr()`.
+       */
+      Expr getDefiningExpr() { result = this.getDefinition().asExpr() }
+
+      /**
+       * Gets the expression with the value being written, if any. This is
+       * equivalent to `getDefinition().getValue()`.
+       */
+      Expr getValue() { result = this.getDefinition().getValue() }
+    }
+
+    /**
+     * An SSA definition representing the initialization of a parameter at the
+     * beginning of a callable.
+     */
+    class SsaParameterInit extends SsaExplicitWrite {
+      SsaParameterInit() { parameterInit(this, _) }
+
+      override string toString() { result = "SSA param(" + this.getSourceVariable() + ")" }
+
+      /**
+       * Gets the parameter that this definition represents. This is equivalent
+       * to `getDefinition().isParameterInit(result)`
+       */
+      Parameter getParameter() { parameterInit(this, result) }
+    }
+
+    /**
+     * An SSA definition that does not correspond to an explicit variable
+     * update or declaration.
+     *
+     * This includes implicit entry definitions for fields and captured
+     * variables, as well as field updates through side-effects and implicit
+     * definitions for fields whenever the qualifier is updated.
+     */
+    class SsaImplicitWrite extends SsaWriteDefinition {
+      SsaImplicitWrite() { not explicitWrite(this, _) }
+
+      override string toString() { result = "SSA implicit def(" + this.getSourceVariable() + ")" }
+    }
+
+    /**
+     * An SSA definition representing the implicit initialization of a variable
+     * at the beginning of a callable. This includes fields and captured
+     * variables, but excludes parameters as they have explicit declarations.
+     */
+    class SsaImplicitEntryDefinition extends SsaImplicitWrite {
+      SsaImplicitEntryDefinition() { this.definesAt(_, any(EntryBasicBlock bb), -1) }
+
+      override string toString() { result = "SSA entry def(" + this.getSourceVariable() + ")" }
+    }
+
+    /** An SSA definition that represents an uncertain variable update. */
+    class SsaUncertainWrite extends SsaWriteDefinition instanceof UncertainWriteDefinition {
+      /**
+       * Gets the immediately preceding definition. Since this update is uncertain,
+       * the value from the preceding definition might still be valid.
+       */
+      SsaDefinition getPriorDefinition() { uncertainWriteDefinitionInputCached(this, result) }
+    }
+
+    /**
+     * An SSA phi definition, that is, a pseudo definition for a variable at a
+     * point in the flow graph where otherwise two or more definitions for the
+     * variable would be visible.
+     *
+     * For example, in
+     * ```rb
+     * if b
+     *   x = 0
+     * else
+     *   x = 1
+     * end
+     * puts x
+     * ```
+     * a phi definition for `x` is inserted just before the call `puts x`.
+     */
+    class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
+      /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
+      predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
+        phiHasInputFromBlockCached(this, inp, bb)
+      }
+
+      /**
+       * Gets an input of this phi definition.
+       *
+       * Example:
+       *
+       * ```rb
+       * def m b
+       *   i = 0        # defines i_0
+       *   if b
+       *     i = 1      # defines i_1
+       *   else
+       *     i = 2      # defines i_2
+       *   end
+       *                # defines i_3 = phi(i_1, i_2); inputs are i_1 and i_2
+       *   puts i
+       * end
+       * ```
+       */
+      SsaDefinition getAnInput() { this.hasInputFromBlock(result, _) }
+    }
+  }
+
   /** Provides a set of consistency queries. */
   module Consistency {
     /** Holds if a read can be reached from multiple definitions. */
@@ -1602,6 +2081,41 @@ module Make<
       )
     }
 
+    pragma[nomagic]
+    private predicate phiInputHasRead(SsaPhiExt phi, BasicBlock input) {
+      exists(DfInput::getARead(getAPhiInputDef(phi, input)))
+    }
+
+    /** Holds if `bb` is the target end of a branch edge of a guard and the guard controls `bb`. */
+    pragma[nomagic]
+    private predicate guardControlledBranchTarget(BasicBlock bb) {
+      exists(BasicBlock guard |
+        any(DfInput::Guard g).hasValueBranchEdge(guard, bb, _) and
+        dominatingEdge(guard, bb)
+      )
+    }
+
+    private BasicBlock getGuardEquivalentImmediateDominator(BasicBlock bb) {
+      result = bb.getImmediateDominator() and
+      not guardControlledBranchTarget(bb)
+    }
+
+    /**
+     * Holds if the immediately preceding reference to the input to `phi` from
+     * the block `input` is guard-equivalent with `input` in the sense that the
+     * set of guards controlling the preceding reference is the same as the set
+     * of guards controlling `input`.
+     *
+     * This is restricted to phi inputs that are actually read.
+     */
+    private predicate phiInputIsGuardEquivalentWithPreviousRef(SsaPhiExt phi, BasicBlock input) {
+      exists(BasicBlock prev |
+        phiInputHasRead(phi, input) and
+        AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(), phi.getSourceVariable()) and
+        prev = getGuardEquivalentImmediateDominator*(input)
+      )
+    }
+
     /**
      * Holds if the input to `phi` from the block `input` might be relevant for
      * barrier guards as a separately synthesized `TSsaInputNode`.
@@ -1616,7 +2130,7 @@ module Make<
       or
       DfInput::supportBarrierGuardsOnPhiEdges() and
       // If the input isn't explicitly read then a guard cannot check it.
-      exists(DfInput::getARead(getAPhiInputDef(phi, input))) and
+      phiInputHasRead(phi, input) and
       (
         // The input node is relevant either if it sits directly on a branch
         // edge for a guard,
@@ -1635,15 +2149,19 @@ module Make<
         // }
         // // phi-read node for `x`
         // ```
-        exists(BasicBlock prev |
-          AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
-            phi.getSourceVariable()) and
-          prev != input and
-          exists(DfInput::Guard g, DfInput::GuardValue val |
-            DfInput::guardDirectlyControlsBlock(g, input, val) and
-            not DfInput::guardDirectlyControlsBlock(g, prev, val)
-          )
-        )
+        not phiInputIsGuardEquivalentWithPreviousRef(phi, input)
+        // An equivalent, but less performant, way to express this is as follows:
+        // ```
+        // exists(BasicBlock prev |
+        //   AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
+        //     phi.getSourceVariable()) and
+        //   prev != input and
+        //   exists(DfInput::Guard g, DfInput::GuardValue val |
+        //     DfInput::guardDirectlyControlsBlock(g, input, val) and
+        //     not DfInput::guardDirectlyControlsBlock(g, prev, val)
+        //   )
+        // )
+        // ```
       )
     }
 

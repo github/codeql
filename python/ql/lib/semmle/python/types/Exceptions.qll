@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 /** The subset of ControlFlowNodes which might raise an exception */
 class RaisingNode extends ControlFlowNode {
@@ -30,7 +31,9 @@ class RaisingNode extends ControlFlowNode {
     )
   }
 
-  private predicate quits() { this.(CallNode).getFunction().refersTo(Object::quitter(_)) }
+  private predicate quits() {
+    this.(CallNode).getFunction().(ControlFlowNodeWithPointsTo).refersTo(Object::quitter(_))
+  }
 
   /**
    * Gets the type of an exception that may be raised
@@ -68,7 +71,7 @@ class RaisingNode extends ControlFlowNode {
   private ClassObject localRaisedType_objectapi() {
     result.isSubclassOf(theBaseExceptionType()) and
     (
-      exists(ControlFlowNode ex |
+      exists(ControlFlowNodeWithPointsTo ex |
         ex = this.getExceptionNode() and
         (ex.refersTo(result) or ex.refersTo(_, result, _))
       )
@@ -77,7 +80,7 @@ class RaisingNode extends ControlFlowNode {
       or
       this.getNode() instanceof Print and result = theIOErrorType()
       or
-      exists(ExceptFlowNode except |
+      exists(ExceptFlowNodeWithPointsTo except |
         except = this.getAnExceptionalSuccessor() and
         except.handles_objectapi(result) and
         result = this.innateException_objectapi()
@@ -95,7 +98,7 @@ class RaisingNode extends ControlFlowNode {
   private ClassValue localRaisedType() {
     result.getASuperType() = ClassValue::baseException() and
     (
-      exists(ControlFlowNode ex |
+      exists(ControlFlowNodeWithPointsTo ex |
         ex = this.getExceptionNode() and
         (ex.pointsTo(result) or ex.pointsTo().getClass() = result)
       )
@@ -104,7 +107,7 @@ class RaisingNode extends ControlFlowNode {
       or
       this.getNode() instanceof Print and result = ClassValue::ioError()
       or
-      exists(ExceptFlowNode except |
+      exists(ExceptFlowNodeWithPointsTo except |
         except = this.getAnExceptionalSuccessor() and
         except.handles(result) and
         result = this.innateException()
@@ -153,7 +156,9 @@ class RaisingNode extends ControlFlowNode {
       /* Call to an unknown object */
       this.getNode() instanceof Call and
       not exists(FunctionObject func | this = func.getACall()) and
-      not exists(ClassObject known | this.(CallNode).getFunction().refersTo(known))
+      not exists(ClassObject known |
+        this.(CallNode).getFunction().(ControlFlowNodeWithPointsTo).refersTo(known)
+      )
       or
       this.getNode() instanceof Exec
       or
@@ -195,8 +200,8 @@ class RaisingNode extends ControlFlowNode {
     succ = this.getAnExceptionalSuccessor() and
     (
       /* An 'except' that handles raised and there is no more previous handler */
-      succ.(ExceptFlowNode).handles_objectapi(raised) and
-      not exists(ExceptFlowNode other, StmtList s, int i, int j |
+      succ.(ExceptFlowNodeWithPointsTo).handles_objectapi(raised) and
+      not exists(ExceptFlowNodeWithPointsTo other, StmtList s, int i, int j |
         not other = succ and
         other.handles_objectapi(raised) and
         s.getItem(i) = succ.getNode() and
@@ -206,7 +211,7 @@ class RaisingNode extends ControlFlowNode {
       )
       or
       /* Any successor that is not an 'except', provided that 'raised' is not handled by a different successor. */
-      not this.getAnExceptionalSuccessor().(ExceptFlowNode).handles_objectapi(raised) and
+      not this.getAnExceptionalSuccessor().(ExceptFlowNodeWithPointsTo).handles_objectapi(raised) and
       not succ instanceof ExceptFlowNode
     )
   }
@@ -218,8 +223,8 @@ class RaisingNode extends ControlFlowNode {
     succ = this.getAnExceptionalSuccessor() and
     (
       /* An 'except' that handles raised and there is no more previous handler */
-      succ.(ExceptFlowNode).handles(raised) and
-      not exists(ExceptFlowNode other, StmtList s, int i, int j |
+      succ.(ExceptFlowNodeWithPointsTo).handles(raised) and
+      not exists(ExceptFlowNodeWithPointsTo other, StmtList s, int i, int j |
         not other = succ and
         other.handles(raised) and
         s.getItem(i) = succ.getNode() and
@@ -229,7 +234,7 @@ class RaisingNode extends ControlFlowNode {
       )
       or
       /* Any successor that is not an 'except', provided that 'raised' is not handled by a different successor. */
-      not this.getAnExceptionalSuccessor().(ExceptFlowNode).handles(raised) and
+      not this.getAnExceptionalSuccessor().(ExceptFlowNodeWithPointsTo).handles(raised) and
       not succ instanceof ExceptFlowNode
     )
   }
@@ -243,7 +248,7 @@ class RaisingNode extends ControlFlowNode {
     raised.isLegalExceptionType() and
     raised = this.getARaisedType_objectapi() and
     this.isExceptionalExit(s) and
-    not this.getAnExceptionalSuccessor().(ExceptFlowNode).handles_objectapi(raised)
+    not this.getAnExceptionalSuccessor().(ExceptFlowNodeWithPointsTo).handles_objectapi(raised)
   }
 
   /**
@@ -255,7 +260,7 @@ class RaisingNode extends ControlFlowNode {
     raised.isLegalExceptionType() and
     raised = this.getARaisedType() and
     this.isExceptionalExit(s) and
-    not this.getAnExceptionalSuccessor().(ExceptFlowNode).handles(raised)
+    not this.getAnExceptionalSuccessor().(ExceptFlowNodeWithPointsTo).handles(raised)
   }
 }
 
@@ -363,36 +368,10 @@ predicate scope_raises_unknown(Scope s) {
   )
 }
 
-/** The ControlFlowNode for an 'except' statement. */
-class ExceptFlowNode extends ControlFlowNode {
-  ExceptFlowNode() { this.getNode() instanceof ExceptStmt }
-
-  /**
-   * Gets the type handled by this exception handler.
-   * `ExceptionType` in `except ExceptionType as e:`
-   */
-  ControlFlowNode getType() {
-    exists(ExceptStmt ex |
-      this.getBasicBlock().dominates(result.getBasicBlock()) and
-      ex = this.getNode() and
-      result = ex.getType().getAFlowNode()
-    )
-  }
-
-  /**
-   * Gets the name assigned to the handled exception, if any.
-   * `e` in `except ExceptionType as e:`
-   */
-  ControlFlowNode getName() {
-    exists(ExceptStmt ex |
-      this.getBasicBlock().dominates(result.getBasicBlock()) and
-      ex = this.getNode() and
-      result = ex.getName().getAFlowNode()
-    )
-  }
-
+/** An extension of `ExceptFlowNode` that provides points-to related methods. */
+class ExceptFlowNodeWithPointsTo extends ExceptFlowNode {
   private predicate handledObject_objectapi(Object obj, ClassObject cls, ControlFlowNode origin) {
-    this.getType().refersTo(obj, cls, origin)
+    this.getType().(ControlFlowNodeWithPointsTo).refersTo(obj, cls, origin)
     or
     exists(Object tup | this.handledObject_objectapi(tup, theTupleType(), _) |
       element_from_tuple_objectapi(tup).refersTo(obj, cls, origin)
@@ -402,7 +381,7 @@ class ExceptFlowNode extends ControlFlowNode {
   private predicate handledObject(Value val, ClassValue cls, ControlFlowNode origin) {
     val.getClass() = cls and
     (
-      this.getType().pointsTo(val, origin)
+      this.getType().(ControlFlowNodeWithPointsTo).pointsTo(val, origin)
       or
       exists(TupleValue tup | this.handledObject(tup, ClassValue::tuple(), _) |
         val = tup.getItem(_) and origin = val.getOrigin()
@@ -447,30 +426,7 @@ class ExceptFlowNode extends ControlFlowNode {
   }
 }
 
-/** The ControlFlowNode for an 'except*' statement. */
-class ExceptGroupFlowNode extends ControlFlowNode {
-  ExceptGroupFlowNode() { this.getNode() instanceof ExceptGroupStmt }
-
-  /**
-   * Gets the type handled by this exception handler.
-   * `ExceptionType` in `except* ExceptionType as e:`
-   */
-  ControlFlowNode getType() {
-    this.getBasicBlock().dominates(result.getBasicBlock()) and
-    result = this.getNode().(ExceptGroupStmt).getType().getAFlowNode()
-  }
-
-  /**
-   * Gets the name assigned to the handled exception, if any.
-   * `e` in `except* ExceptionType as e:`
-   */
-  ControlFlowNode getName() {
-    this.getBasicBlock().dominates(result.getBasicBlock()) and
-    result = this.getNode().(ExceptGroupStmt).getName().getAFlowNode()
-  }
-}
-
-private ControlFlowNode element_from_tuple_objectapi(Object tuple) {
+private ControlFlowNodeWithPointsTo element_from_tuple_objectapi(Object tuple) {
   exists(Tuple t | t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode())
 }
 

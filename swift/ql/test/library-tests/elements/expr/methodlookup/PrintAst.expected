@@ -151,14 +151,16 @@ methodlookup.swift:
 #   30|             getMethodRef(): [DeclRefExpr] staticMethod()
 #   33| [TopLevelCodeDecl] { ... }
 #   33|   getBody(): [BraceStmt] { ... }
-#   33|     getElement(0): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-#   33|       getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   33|     getElement(0): [CallExpr] call to Task<Success, Never>.init(name:priority:operation:)
+#   33|       getFunction(): [MethodLookupExpr] Task<Success, Never>.init(name:priority:operation:)
 #   33|         getBase(): [TypeExpr] Task<(), Never>.Type
 #   33|           getTypeRepr(): [TypeRepr] Task<(), Never>
-#   33|         getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
-#   33|       getArgument(0): [Argument] priority: default priority
+#   33|         getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(name:priority:operation:)
+#   33|       getArgument(0): [Argument] name: default name
+#   33|         getExpr(): [DefaultArgumentExpr] default name
+#   33|       getArgument(1): [Argument] priority: default priority
 #   33|         getExpr(): [DefaultArgumentExpr] default priority
-#   33|       getArgument(1): [Argument] operation: { ... }
+#   33|       getArgument(2): [Argument] operation: { ... }
 #   33|         getExpr(): [ExplicitClosureExpr] { ... }
 #   33|           getBody(): [BraceStmt] { ... }
 #   34|             getVariable(0): [ConcreteVarDecl] bar
@@ -189,18 +191,21 @@ methodlookup.swift:
 #   40|                 getMethodRef(): [DeclRefExpr] staticMethod()
 #   33|         getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   33| [NilLiteralExpr] nil
+#   33| [NilLiteralExpr] nil
 #   38| [Comment] // Bar.instanceMethod(bar2)() // error: actor-isolated instance method 'instanceMethod()' can not be referenced from a non-isolated context
 #   38| 
 #   43| [TopLevelCodeDecl] { ... }
 #   43|   getBody(): [BraceStmt] { ... }
-#   43|     getElement(0): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-#   43|       getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   43|     getElement(0): [CallExpr] call to Task<Success, Never>.init(name:priority:operation:)
+#   43|       getFunction(): [MethodLookupExpr] Task<Success, Never>.init(name:priority:operation:)
 #   43|         getBase(): [TypeExpr] Task<(), Never>.Type
 #   43|           getTypeRepr(): [TypeRepr] Task<(), Never>
-#   43|         getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
-#   43|       getArgument(0): [Argument] priority: default priority
+#   43|         getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(name:priority:operation:)
+#   43|       getArgument(0): [Argument] name: default name
+#   43|         getExpr(): [DefaultArgumentExpr] default name
+#   43|       getArgument(1): [Argument] priority: default priority
 #   43|         getExpr(): [DefaultArgumentExpr] default priority
-#   43|       getArgument(1): [Argument] operation: { ... }
+#   43|       getArgument(2): [Argument] operation: { ... }
 #   43|         getExpr(): [ExplicitClosureExpr] { ... }
 #   43|           getBody(): [BraceStmt] { ... }
 #   44|             getVariable(0): [ConcreteVarDecl] baz
@@ -264,6 +269,7 @@ methodlookup.swift:
 #   51|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
 #   51|             getElement(5).getFullyConverted(): [AwaitExpr] await ...
 #   43|         getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
+#   43| [NilLiteralExpr] nil
 #   43| [NilLiteralExpr] nil
 #   47| [Comment] // DotSyntaxCallExpr
 #   47| 

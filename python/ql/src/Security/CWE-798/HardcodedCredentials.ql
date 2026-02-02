@@ -83,7 +83,7 @@ class CredentialSink extends DataFlow::Node {
   CredentialSink() {
     exists(string s | s.matches("credentials-%") |
       // Actual sink-type will be things like `credentials-password` or `credentials-username`
-      this = ModelOutput::getASinkNode(s).asSink()
+      ModelOutput::sinkNode(this, s)
     )
     or
     exists(string name |
@@ -105,6 +105,15 @@ class CredentialSink extends DataFlow::Node {
   }
 }
 
+class CredentialSanitizer extends DataFlow::Node {
+  CredentialSanitizer() {
+    exists(string s | s.matches("credentials-%") |
+      // Whatever the string, this will sanitize flow to all credential sinks.
+      ModelOutput::barrierNode(this, s)
+    )
+  }
+}
+
 /**
  * Gets a regular expression for matching names of locations (variables, parameters, keys) that
  * indicate the value being held is a credential.
@@ -119,6 +128,8 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof CredentialSanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 }

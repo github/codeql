@@ -57,13 +57,26 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
+            // In this case, we don't extract the attribute again, as it was extracted using * ID
+            // originally and we re-use that.
+            if (Context.OnlyScaffold && (ReportingLocation is null || !ReportingLocation.IsInSource))
+            {
+                return;
+            }
+
             var type = Type.Create(Context, Symbol.AttributeClass);
             trapFile.attributes(this, kind, type.TypeRef, entity);
-            trapFile.attribute_location(this, Location);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            WriteLocationToTrap(trapFile.attribute_location, this, Location);
 
             if (attributeSyntax is not null)
             {
-                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(Context));
+                WriteLocationToTrap(trapFile.attribute_location, this, Assembly.CreateOutputAssembly(Context));
 
                 TypeMention.Create(Context, attributeSyntax.Name, this, type);
             }

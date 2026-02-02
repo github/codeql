@@ -51,7 +51,7 @@ module Kernel {
 
   /**
    * Holds if `method` is a name of a private method in the `Kernel` module.
-   * These can be be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
+   * These can be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
    * ```ruby
    * puts "hello world"
    * Kernel.puts "hello world"
@@ -195,7 +195,7 @@ module Kernel {
     override predicate runsArbitraryCode() { none() }
   }
 
-  private class TapSummary extends SimpleSummarizedCallable {
+  private class TapSummary extends SummarizedCallable::RangeSimple {
     TapSummary() { this = "tap" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -226,7 +226,7 @@ module Kernel {
    * A call to `Array()`, that converts it's singular argument to an array.
    * This summary is based on https://ruby-doc.org/3.2.1/Kernel.html#method-i-Array
    */
-  private class KernelArraySummary extends SummarizedCallable {
+  private class KernelArraySummary extends SummarizedCallable::Range {
     KernelArraySummary() { this = "Array()" }
 
     override MethodCall getACallSimple() {

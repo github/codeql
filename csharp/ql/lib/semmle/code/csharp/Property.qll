@@ -196,7 +196,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
 
   override PropertyAccess getAnAccess() { result.getTarget() = this }
 
-  override Location getALocation() { property_location(this, result) }
+  override Location getALocation() { property_location(this.getUnboundDeclaration(), result) }
 
   override Expr getAnAssignedValue() {
     result = DeclarationWithGetSetAccessors.super.getAnAssignedValue()
@@ -328,7 +328,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { indexer_location(this, result) }
+  override Location getALocation() { indexer_location(this.getUnboundDeclaration(), result) }
 
   override string toStringWithTypes() {
     result = this.getName() + "[" + this.parameterTypesToString() + "]"
@@ -408,7 +408,7 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
 
   override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }
 
-  override Location getALocation() { accessor_location(this, result) }
+  override Location getALocation() { accessor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = this.getName() }
 }

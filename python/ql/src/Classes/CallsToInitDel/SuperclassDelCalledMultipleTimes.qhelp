@@ -16,7 +16,7 @@ If a superclass finalizer is called multiple times, this may lead to errors such
 cleaned up properly as expected. 
 </p>
 
-<p>There are a number of ways that a <code>__del__</code> method may be be called more than once.</p>
+<p>There are a number of ways that a <code>__del__</code> method may be called more than once.</p>
 <ul>
     <li>There may be more than one explicit call to the method in the hierarchy of <code>__del__</code> methods.</li>
     <li>In situations involving multiple inheritance, an finalization method may call the finalizers of each of its base types,

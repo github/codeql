@@ -33,7 +33,7 @@ module ShellCommandInjectionFromEnvironmentConfig implements DataFlow::ConfigSig
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(DataFlow::Node node |
       isSinkWithHighlight(sink, node) and
-      result = node.getLocation()
+      result = [node.getLocation(), sink.getLocation()]
     )
   }
 }

@@ -45,7 +45,7 @@ private module Impl {
   ) {
     exists(int n, int nSpec |
       n = 0 and
-      nSpec = n + 1 + max(int i | i = -1 or exists(e.getSpec(i)) | i) and
+      nSpec = n + e.getNumberOfSpecs() and
       (
         none()
         or
@@ -55,12 +55,18 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAvailabilitySpec(
+    AvailabilitySpec e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
   private Element getImmediateChildOfKeyPathComponent(
     KeyPathComponent e, int index, string partialPredicateCall
   ) {
     exists(int n, int nSubscriptArgument |
       n = 0 and
-      nSubscriptArgument = n + 1 + max(int i | i = -1 or exists(e.getSubscriptArgument(i)) | i) and
+      nSubscriptArgument = n + e.getNumberOfSubscriptArguments() and
       (
         none()
         or
@@ -89,24 +95,12 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfOtherAvailabilitySpec(
-    OtherAvailabilitySpec e, int index, string partialPredicateCall
-  ) {
-    none()
-  }
-
-  private Element getImmediateChildOfPlatformVersionAvailabilitySpec(
-    PlatformVersionAvailabilitySpec e, int index, string partialPredicateCall
-  ) {
-    none()
-  }
-
   private Element getImmediateChildOfCapturedDecl(
     CapturedDecl e, int index, string partialPredicateCall
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -121,7 +115,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -136,8 +130,8 @@ private module Impl {
   ) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -155,7 +149,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -168,7 +162,7 @@ private module Impl {
   private Element getImmediateChildOfImportDecl(ImportDecl e, int index, string partialPredicateCall) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -183,7 +177,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -198,7 +192,7 @@ private module Impl {
   ) {
     exists(int n, int nMember, int nInit, int nPattern |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       nInit = nMember + 1 + max(int i | i = -1 or exists(e.getImmediateInit(i)) | i) and
       nPattern = nInit + 1 + max(int i | i = -1 or exists(e.getImmediatePattern(i)) | i) and
       (
@@ -221,7 +215,7 @@ private module Impl {
   ) {
     exists(int n, int nMember, int nMessage |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       nMessage = nMember + 1 and
       (
         none()
@@ -239,7 +233,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -254,7 +248,7 @@ private module Impl {
   ) {
     exists(int n, int nMember, int nBody |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       nBody = nMember + 1 and
       (
         none()
@@ -267,13 +261,26 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUsingDecl(UsingDecl e, int index, string partialPredicateCall) {
+    exists(int n, int nMember |
+      n = 0 and
+      nMember = n + e.getNumberOfMembers() and
+      (
+        none()
+        or
+        result = e.getMember(index - n) and
+        partialPredicateCall = "Member(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfEnumElementDecl(
     EnumElementDecl e, int index, string partialPredicateCall
   ) {
     exists(int n, int nMember, int nParam |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
-      nParam = nMember + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
+      nParam = nMember + e.getNumberOfParams() and
       (
         none()
         or
@@ -291,7 +298,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -304,8 +311,8 @@ private module Impl {
   private Element getImmediateChildOfMacroDecl(MacroDecl e, int index, string partialPredicateCall) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -323,7 +330,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -338,7 +345,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -355,12 +362,12 @@ private module Impl {
       int n, int nGenericTypeParam, int nMember, int nSelfParam, int nParam, int nBody, int nCapture
     |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       nSelfParam = nMember + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = nSelfParam + e.getNumberOfParams() and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      nCapture = nBody + e.getNumberOfCaptures() and
       (
         none()
         or
@@ -390,12 +397,12 @@ private module Impl {
       int n, int nGenericTypeParam, int nMember, int nSelfParam, int nParam, int nBody, int nCapture
     |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       nSelfParam = nMember + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = nSelfParam + e.getNumberOfParams() and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      nCapture = nBody + e.getNumberOfCaptures() and
       (
         none()
         or
@@ -421,7 +428,7 @@ private module Impl {
   private Element getImmediateChildOfModuleDecl(ModuleDecl e, int index, string partialPredicateCall) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -436,11 +443,10 @@ private module Impl {
   ) {
     exists(int n, int nMember, int nAccessor, int nGenericTypeParam, int nParam |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
-      nAccessor = nMember + 1 + max(int i | i = -1 or exists(e.getAccessor(i)) | i) and
-      nGenericTypeParam =
-        nAccessor + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nParam = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
+      nAccessor = nMember + e.getNumberOfAccessors() and
+      nGenericTypeParam = nAccessor + e.getNumberOfGenericTypeParams() and
+      nParam = nGenericTypeParam + e.getNumberOfParams() and
       (
         none()
         or
@@ -464,12 +470,12 @@ private module Impl {
       int n, int nGenericTypeParam, int nMember, int nSelfParam, int nParam, int nBody, int nCapture
     |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       nSelfParam = nMember + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = nSelfParam + e.getNumberOfParams() and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      nCapture = nBody + e.getNumberOfCaptures() and
       (
         none()
         or
@@ -497,7 +503,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -516,8 +522,8 @@ private module Impl {
       int nPropertyWrapperProjectionVar
     |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
-      nAccessor = nMember + 1 + max(int i | i = -1 or exists(e.getAccessor(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
+      nAccessor = nMember + e.getNumberOfAccessors() and
       nPropertyWrapperBackingVarBinding = nAccessor + 1 and
       nPropertyWrapperBackingVar = nPropertyWrapperBackingVarBinding + 1 and
       nPropertyWrapperProjectionVarBinding = nPropertyWrapperBackingVar + 1 and
@@ -555,7 +561,7 @@ private module Impl {
   ) {
     exists(int n, int nMember |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
       (
         none()
         or
@@ -572,12 +578,12 @@ private module Impl {
       int n, int nGenericTypeParam, int nMember, int nSelfParam, int nParam, int nBody, int nCapture
     |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       nSelfParam = nMember + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = nSelfParam + e.getNumberOfParams() and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      nCapture = nBody + e.getNumberOfCaptures() and
       (
         none()
         or
@@ -605,8 +611,8 @@ private module Impl {
   ) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -627,8 +633,8 @@ private module Impl {
       int nPropertyWrapperLocalWrappedVar
     |
       n = 0 and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
-      nAccessor = nMember + 1 + max(int i | i = -1 or exists(e.getAccessor(i)) | i) and
+      nMember = n + e.getNumberOfMembers() and
+      nAccessor = nMember + e.getNumberOfAccessors() and
       nPropertyWrapperBackingVarBinding = nAccessor + 1 and
       nPropertyWrapperBackingVar = nPropertyWrapperBackingVarBinding + 1 and
       nPropertyWrapperProjectionVarBinding = nPropertyWrapperBackingVar + 1 and
@@ -676,8 +682,8 @@ private module Impl {
   ) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -693,8 +699,8 @@ private module Impl {
   private Element getImmediateChildOfClassDecl(ClassDecl e, int index, string partialPredicateCall) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -710,8 +716,8 @@ private module Impl {
   private Element getImmediateChildOfEnumDecl(EnumDecl e, int index, string partialPredicateCall) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -729,8 +735,8 @@ private module Impl {
   ) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -746,8 +752,8 @@ private module Impl {
   private Element getImmediateChildOfStructDecl(StructDecl e, int index, string partialPredicateCall) {
     exists(int n, int nGenericTypeParam, int nMember |
       n = 0 and
-      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
-      nMember = nGenericTypeParam + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
+      nGenericTypeParam = n + e.getNumberOfGenericTypeParams() and
+      nMember = nGenericTypeParam + e.getNumberOfMembers() and
       (
         none()
         or
@@ -820,8 +826,8 @@ private module Impl {
   ) {
     exists(int n, int nBindingDecl, int nVariable, int nClosureBody |
       n = 0 and
-      nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getBindingDecl(i)) | i) and
-      nVariable = nBindingDecl + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nBindingDecl = n + e.getNumberOfBindingDecls() and
+      nVariable = nBindingDecl + e.getNumberOfVariables() and
       nClosureBody = nVariable + 1 and
       (
         none()
@@ -1033,7 +1039,7 @@ private module Impl {
     exists(int n, int nRoot, int nComponent |
       n = 0 and
       nRoot = n + 1 and
-      nComponent = nRoot + 1 + max(int i | i = -1 or exists(e.getComponent(i)) | i) and
+      nComponent = nRoot + e.getNumberOfComponents() and
       (
         none()
         or
@@ -1486,9 +1492,9 @@ private module Impl {
     exists(int n, int nSelfParam, int nParam, int nBody, int nCapture |
       n = 0 and
       nSelfParam = n + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = nSelfParam + e.getNumberOfParams() and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      nCapture = nBody + e.getNumberOfCaptures() and
       (
         none()
         or
@@ -1521,7 +1527,7 @@ private module Impl {
     exists(int n, int nFunction, int nArgument |
       n = 0 and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nFunction + e.getNumberOfArguments() and
       (
         none()
         or
@@ -1577,7 +1583,7 @@ private module Impl {
     exists(int n, int nFunction, int nArgument |
       n = 0 and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nFunction + e.getNumberOfArguments() and
       (
         none()
         or
@@ -1790,9 +1796,9 @@ private module Impl {
     exists(int n, int nSelfParam, int nParam, int nBody, int nCapture |
       n = 0 and
       nSelfParam = n + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
+      nParam = nSelfParam + e.getNumberOfParams() and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
+      nCapture = nBody + e.getNumberOfCaptures() and
       (
         none()
         or
@@ -2007,7 +2013,7 @@ private module Impl {
   ) {
     exists(int n, int nArgument |
       n = 0 and
-      nArgument = n + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = n + e.getNumberOfArguments() and
       (
         none()
         or
@@ -2063,7 +2069,7 @@ private module Impl {
     exists(int n, int nFunction, int nArgument |
       n = 0 and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nFunction + e.getNumberOfArguments() and
       (
         none()
         or
@@ -2081,7 +2087,7 @@ private module Impl {
     exists(int n, int nFunction, int nArgument |
       n = 0 and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nFunction + e.getNumberOfArguments() and
       (
         none()
         or
@@ -2133,7 +2139,7 @@ private module Impl {
     exists(int n, int nBase, int nArgument |
       n = 0 and
       nBase = n + 1 and
-      nArgument = nBase + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nBase + e.getNumberOfArguments() and
       (
         none()
         or
@@ -2241,6 +2247,18 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnsafeExpr(UnsafeExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nSubExpr |
+      n = 0 and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfBooleanLiteralExpr(
     BooleanLiteralExpr e, int index, string partialPredicateCall
   ) {
@@ -2267,7 +2285,7 @@ private module Impl {
     exists(int n, int nFunction, int nArgument |
       n = 0 and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nFunction + e.getNumberOfArguments() and
       (
         none()
         or
@@ -2327,7 +2345,7 @@ private module Impl {
     exists(int n, int nFunction, int nArgument |
       n = 0 and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
+      nArgument = nFunction + e.getNumberOfArguments() and
       (
         none()
         or
@@ -2559,7 +2577,7 @@ private module Impl {
   ) {
     exists(int n, int nElement |
       n = 0 and
-      nElement = n + 1 + max(int i | i = -1 or exists(e.getElement(i)) | i) and
+      nElement = n + e.getNumberOfElements() and
       (
         none()
         or
@@ -2572,7 +2590,7 @@ private module Impl {
   private Element getImmediateChildOfBraceStmt(BraceStmt e, int index, string partialPredicateCall) {
     exists(int n, int nVariable, int nElement |
       n = 0 and
-      nVariable = n + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nVariable = n + e.getNumberOfVariables() and
       nElement = nVariable + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
       (
         none()
@@ -2593,8 +2611,8 @@ private module Impl {
   private Element getImmediateChildOfCaseStmt(CaseStmt e, int index, string partialPredicateCall) {
     exists(int n, int nLabel, int nVariable, int nBody |
       n = 0 and
-      nLabel = n + 1 + max(int i | i = -1 or exists(e.getLabel(i)) | i) and
-      nVariable = nLabel + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nLabel = n + e.getNumberOfLabels() and
+      nVariable = nLabel + e.getNumberOfVariables() and
       nBody = nVariable + 1 and
       (
         none()
@@ -2713,7 +2731,7 @@ private module Impl {
     exists(int n, int nBody, int nCatch |
       n = 0 and
       nBody = n + 1 and
-      nCatch = nBody + 1 + max(int i | i = -1 or exists(e.getCatch(i)) | i) and
+      nCatch = nBody + e.getNumberOfCatches() and
       (
         none()
         or
@@ -2744,7 +2762,7 @@ private module Impl {
       int n, int nVariable, int nPattern, int nWhere, int nIteratorVar, int nNextCall, int nBody
     |
       n = 0 and
-      nVariable = n + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nVariable = n + e.getNumberOfVariables() and
       nPattern = nVariable + 1 and
       nWhere = nPattern + 1 and
       nIteratorVar = nWhere + 1 and
@@ -2794,7 +2812,7 @@ private module Impl {
     exists(int n, int nExpr, int nCase |
       n = 0 and
       nExpr = n + 1 and
-      nCase = nExpr + 1 + max(int i | i = -1 or exists(e.getCase(i)) | i) and
+      nCase = nExpr + e.getNumberOfCases() and
       (
         none()
         or
@@ -3084,6 +3102,12 @@ private module Impl {
     none()
   }
 
+  private Element getImmediateChildOfInlineArrayType(
+    InlineArrayType e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
   private Element getImmediateChildOfOpaqueTypeArchetypeType(
     OpaqueTypeArchetypeType e, int index, string partialPredicateCall
   ) {
@@ -3140,8 +3164,8 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfOpenedArchetypeType(
-    OpenedArchetypeType e, int index, string partialPredicateCall
+  private Element getImmediateChildOfExistentialArchetypeType(
+    ExistentialArchetypeType e, int index, string partialPredicateCall
   ) {
     none()
   }
@@ -3188,15 +3212,13 @@ private module Impl {
     or
     result = getImmediateChildOfAvailabilityInfo(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAvailabilitySpec(e, index, partialAccessor)
+    or
     result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroRole(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfPlatformVersionAvailabilitySpec(e, index, partialAccessor)
     or
     result = getImmediateChildOfCapturedDecl(e, index, partialAccessor)
     or
@@ -3217,6 +3239,8 @@ private module Impl {
     result = getImmediateChildOfPrecedenceGroupDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfTopLevelCodeDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUsingDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
     or
@@ -3478,6 +3502,8 @@ private module Impl {
     or
     result = getImmediateChildOfUnsafeCastExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfUnsafeExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfConditionalCheckedCastExpr(e, index, partialAccessor)
@@ -3654,6 +3680,8 @@ private module Impl {
     or
     result = getImmediateChildOfDictionaryType(e, index, partialAccessor)
     or
+    result = getImmediateChildOfInlineArrayType(e, index, partialAccessor)
+    or
     result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfPackArchetypeType(e, index, partialAccessor)
@@ -3674,7 +3702,7 @@ private module Impl {
     or
     result = getImmediateChildOfEnumType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
+    result = getImmediateChildOfExistentialArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfOptionalType(e, index, partialAccessor)
     or

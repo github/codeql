@@ -35,7 +35,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var ns = Namespace.Create(Context, @namespace);
             trapFile.namespace_declarations(this, ns);
-            trapFile.namespace_declaration_location(this, Context.CreateLocation(node.Name.GetLocation()));
 
             var visitor = new Populators.TypeOrNamespaceVisitor(Context, trapFile, this);
 
@@ -48,6 +47,12 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 trapFile.parent_namespace_declaration(this, parent);
             }
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+            WriteLocationToTrap(trapFile.namespace_declaration_location, this, Context.CreateLocation(node.Name.GetLocation()));
         }
 
         public static NamespaceDeclaration Create(Context cx, BaseNamespaceDeclarationSyntax decl, NamespaceDeclaration parent)

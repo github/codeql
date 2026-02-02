@@ -5,10 +5,8 @@
 import csharp
 import semmle.code.csharp.controlflow.Guards
 
-private predicate stringConstCompare(Guard guard, Expr testedNode, AbstractValue value) {
-  guard
-      .isEquality(any(StringLiteral lit), testedNode,
-        value.(AbstractValues::BooleanValue).getValue())
+private predicate stringConstCompare(Guard guard, Expr testedNode, GuardValue value) {
+  guard.isEquality(any(StringLiteral lit), testedNode, value.asBooleanValue())
 }
 
 class StringConstCompareBarrier extends DataFlow::Node {

@@ -6,7 +6,13 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
+private import semmle.python.pointsto.Context
 private import semmle.python.internal.CachedStages
+private import semmle.python.types.Object
+private import semmle.python.types.FunctionObject
+private import semmle.python.types.ClassObject
+private import semmle.python.pointsto.Base
+private import semmle.python.types.ImportTime
 
 /* Use this version for speed */
 class CfgOrigin extends @py_object {
@@ -709,7 +715,7 @@ private module InterModulePointsTo {
       i.getImportedModuleName() = name and
       PointsToInternal::module_imported_as(value, name) and
       origin = f and
-      context.appliesTo(f)
+      context.appliesTo(pragma[only_bind_into](f))
     )
   }
 

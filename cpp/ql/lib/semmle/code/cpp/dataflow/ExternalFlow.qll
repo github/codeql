@@ -15,16 +15,17 @@
  * reading.
  * 1. The `namespace` column selects a namespace.
  * 2. The `type` column selects a type within that namespace. This column can
- *    introduce template names that can be mentioned in the `signature` column.
+ *    introduce template type names that can be mentioned in the `signature` column.
  *    For example, `vector<T,Allocator>` introduces the template names `T` and
- *    `Allocator`.
+ *    `Allocator`. Non-type template parameters cannot be specified.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
- *    Like the `type` column, this column can introduce template names that can
- *    be mentioned in the `signature` column. For example, `insert<InputIt>`
- *    introduces the template name `InputIt`.
+ *    Like the `type` column, this column can introduce template type names
+ *    that can be mentioned in the `signature` column. For example,
+ *    `insert<InputIt>` introduces the template name `InputIt`. Non-type
+ *    template parameters cannot be specified.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
  *    signature is a comma-separated list of types enclosed in parentheses. The
@@ -94,15 +95,17 @@
 
 import cpp
 private import new.DataFlow
+private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
 /**
  * A unit class for adding additional source model rows.
@@ -143,134 +146,81 @@ predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 /** Holds if `row` is a summary model. */
 predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, string model
-) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = output and
-    row.splitAt(";", 7) = kind
-  ) and
-  provenance = "manual" and
-  model = ""
-  or
-  exists(QlBuiltins::ExtensionId madId |
-    Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId) and
-    model = "MaD:" + madId.toString()
-  )
+private module MadInput implements SharedMaD::InputSig {
+  /** Holds if a source model exists for the given parameters. */
+  predicate additionalSourceModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(string row |
+      sourceModel(row) and
+      row.splitAt(";", 0) = namespace and
+      row.splitAt(";", 1) = type and
+      row.splitAt(";", 2) = subtypes.toString() and
+      subtypes = [true, false] and
+      row.splitAt(";", 3) = name and
+      row.splitAt(";", 4) = signature and
+      row.splitAt(";", 5) = ext and
+      row.splitAt(";", 6) = output and
+      row.splitAt(";", 7) = kind
+    ) and
+    provenance = "manual" and
+    model = ""
+  }
+
+  /** Holds if a sink model exists for the given parameters. */
+  predicate additionalSinkModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    exists(string row |
+      sinkModel(row) and
+      row.splitAt(";", 0) = namespace and
+      row.splitAt(";", 1) = type and
+      row.splitAt(";", 2) = subtypes.toString() and
+      subtypes = [true, false] and
+      row.splitAt(";", 3) = name and
+      row.splitAt(";", 4) = signature and
+      row.splitAt(";", 5) = ext and
+      row.splitAt(";", 6) = input and
+      row.splitAt(";", 7) = kind
+    ) and
+    provenance = "manual" and
+    model = ""
+  }
+
+  /**
+   * Holds if a summary model exists for the given parameters.
+   *
+   * This predicate does not expand `@` to `*`s.
+   */
+  predicate additionalSummaryModel(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    exists(string row |
+      summaryModel(row) and
+      row.splitAt(";", 0) = namespace and
+      row.splitAt(";", 1) = type and
+      row.splitAt(";", 2) = subtypes.toString() and
+      subtypes = [true, false] and
+      row.splitAt(";", 3) = name and
+      row.splitAt(";", 4) = signature and
+      row.splitAt(";", 5) = ext and
+      row.splitAt(";", 6) = input and
+      row.splitAt(";", 7) = output and
+      row.splitAt(";", 8) = kind
+    ) and
+    provenance = "manual" and
+    model = ""
+  }
+
+  string namespaceSegmentSeparator() { result = "::" }
 }
 
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, string model
-) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = kind
-  ) and
-  provenance = "manual" and
-  model = ""
-  or
-  exists(QlBuiltins::ExtensionId madId |
-    Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId) and
-    model = "MaD:" + madId.toString()
-  )
-}
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
-/**
- * Holds if a summary model exists for the given parameters.
- *
- * This predicate does not expand `@` to `*`s.
- */
-private predicate summaryModel0(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, string model
-) {
-  exists(string row |
-    summaryModel(row) and
-    row.splitAt(";", 0) = namespace and
-    row.splitAt(";", 1) = type and
-    row.splitAt(";", 2) = subtypes.toString() and
-    subtypes = [true, false] and
-    row.splitAt(";", 3) = name and
-    row.splitAt(";", 4) = signature and
-    row.splitAt(";", 5) = ext and
-    row.splitAt(";", 6) = input and
-    row.splitAt(";", 7) = output and
-    row.splitAt(";", 8) = kind
-  ) and
-  provenance = "manual" and
-  model = ""
-  or
-  exists(QlBuiltins::ExtensionId madId |
-    Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId) and
-    model = "MaD:" + madId.toString()
-  )
-}
-
-/**
- * Holds if the given extension tuple `madId` should pretty-print as `model`.
- *
- * This predicate should only be used in tests.
- */
-predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId)
-  |
-    model =
-      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
-        + ext + "; " + output + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId)
-  |
-    model =
-      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId)
-  |
-    model =
-      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
-        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
-  )
-}
+import MaD
 
 /**
  * Holds if `input` is `input0`, but with all occurrences of `@` replaced
@@ -293,66 +243,10 @@ predicate summaryModel(
   string input, string output, string kind, string provenance, string model
 ) {
   exists(string input0, string output0 |
-    summaryModel0(namespace, type, subtypes, name, signature, ext, input0, output0, kind,
+    MaD::summaryModel(namespace, type, subtypes, name, signature, ext, input0, output0, kind,
       provenance, model) and
     expandInputAndOutput(input0, input, output0, output,
       [0 .. Private::getMaxElementContentIndirectionIndex() - 1])
-  )
-}
-
-private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
-}
-
-private predicate namespaceLink(string shortns, string longns) {
-  relevantNamespace(shortns) and
-  relevantNamespace(longns) and
-  longns.prefix(longns.indexOf("::")) = shortns
-}
-
-private predicate canonicalNamespace(string namespace) {
-  relevantNamespace(namespace) and not namespaceLink(_, namespace)
-}
-
-private predicate canonicalNamespaceLink(string namespace, string subns) {
-  canonicalNamespace(namespace) and
-  (subns = namespace or namespaceLink(namespace, subns))
-}
-
-/**
- * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
- * `namespace` which have MaD framework coverage (including `namespace`
- * itself).
- */
-predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
-  namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance, string model |
-        canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance, model)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance, string model |
-        canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance, model)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
-        canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
-      )
   )
 }
 
@@ -474,6 +368,8 @@ private predicate elementSpec(
 ) {
   sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
@@ -634,33 +530,79 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canon
 }
 
 /**
+ * Gets the largest index of a template parameter of `templateFunction` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateFunctionParameterIndex(Function templateFunction) {
+  result =
+    max(int index | templateFunction.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
+/** Gets the number of supported template parameters for `templateFunction`. */
+private int getNumberOfSupportedFunctionTemplateArguments(Function templateFunction) {
+  result = count(int i | exists(getSupportedFunctionTemplateArgument(templateFunction, i)) | i)
+}
+
+/** Gets the `i`'th supported template parameter for `templateFunction`. */
+private Locatable getSupportedFunctionTemplateArgument(Function templateFunction, int i) {
+  result = templateFunction.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateFunctionParameterIndex(templateFunction)
+}
+
+/**
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `func:N` (where `N` is the index of the template).
  */
 private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
   exists(Function templateFunction |
     templateFunction = getFullyTemplatedFunction(f) and
-    remaining = templateFunction.getNumberOfTemplateArguments() and
+    remaining = getNumberOfSupportedFunctionTemplateArguments(templateFunction) and
     result = getParameterTypeWithoutTemplateArguments(templateFunction, n, _)
   )
   or
   exists(string mid, TypeTemplateParameter tp, Function templateFunction |
     mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
     templateFunction = getFullyTemplatedFunction(f) and
-    tp = templateFunction.getTemplateArgument(remaining) and
+    tp = getSupportedFunctionTemplateArgument(templateFunction, remaining)
+  |
     result = mid.replaceAll(tp.getName(), "func:" + remaining.toString())
   )
+}
+
+/**
+ * Gets the largest index of a template parameter of `templateClass` that
+ * is a type template parameter.
+ */
+private int getLastTypeTemplateClassParameterIndex(Class templateClass) {
+  result =
+    max(int index | templateClass.getTemplateArgument(index) instanceof TypeTemplateParameter)
+}
+
+/** Gets the `i`'th supported template parameter for `templateClass`. */
+private Locatable getSupportedClassTemplateArgument(Class templateClass, int i) {
+  result = templateClass.getTemplateArgument(i) and
+  // We don't yet support non-type template parameters in the middle of a
+  // template parameter list
+  i <= getLastTypeTemplateClassParameterIndex(templateClass)
+}
+
+/** Gets the number of supported template parameters for `templateClass`. */
+private int getNumberOfSupportedClassTemplateArguments(Class templateClass) {
+  result = count(int i | exists(getSupportedClassTemplateArgument(templateClass, i)) | i)
 }
 
 /**
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `class:N` (where `N` is the index of the template).
  */
+pragma[nomagic]
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
     isClassConstructedFrom(f.getDeclaringType(), template) and
-    remaining = template.getNumberOfTemplateArguments() and
+    remaining = getNumberOfSupportedClassTemplateArguments(template) and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
   or
@@ -672,7 +614,8 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   exists(string mid, TypeTemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
     isClassConstructedFrom(f.getDeclaringType(), template) and
-    tp = template.getTemplateArgument(remaining) and
+    tp = getSupportedClassTemplateArgument(template, remaining)
+  |
     result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
   )
 }
@@ -727,6 +670,7 @@ private string getSignatureWithoutClassTemplateNames(
  * - The `remaining` number of template arguments in `partiallyNormalizedSignature`
  * with their index in `nameArgs`.
  */
+pragma[nomagic]
 private string getSignatureWithoutFunctionTemplateNames(
   string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
 ) {
@@ -770,6 +714,7 @@ private string getSignatureWithoutFunctionTemplateNames(
  * ```
  * In this case, `normalizedSignature` will be `"(const func:0 &,int,class:1,class:0 *)"`.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments(
   string signature, string type, string name, string normalizedSignature, string typeArgs,
   string nameArgs
@@ -786,6 +731,35 @@ private string getSignatureParameterName(string signature, string type, string n
   exists(string normalizedSignature |
     elementSpecWithArguments(signature, type, name, normalizedSignature, _, _) and
     result = getAtIndex(normalizedSignature, n)
+  )
+}
+
+/**
+ * Gets a `Function` identified by the `(namespace, type, name)` components.
+ *
+ * If `subtypes` is `true` then the result may be an override of the function
+ * identified by the components.
+ */
+pragma[nomagic]
+private Function getFunction(string namespace, string type, boolean subtypes, string name) {
+  elementSpec(namespace, type, subtypes, name, _, _) and
+  (
+    funcHasQualifiedName(result, namespace, name) and
+    subtypes = false and
+    type = ""
+    or
+    exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
+    |
+      // member declared in the named type or a subtype of it
+      subtypes = true and
+      classWithMethod = namedClass.getADerivedClass*()
+      or
+      // member declared directly in the named type
+      subtypes = false and
+      classWithMethod = namedClass
+    )
   )
 }
 
@@ -812,13 +786,17 @@ private string getSignatureParameterName(string signature, string type, string n
  * is `func:n` then the signature name is compared with the `n`'th name
  * in `name`.
  */
-private predicate signatureMatches(Function func, string signature, string type, string name, int i) {
+pragma[nomagic]
+private predicate signatureMatches(
+  Function func, string namespace, string signature, string type, string name, int i
+) {
+  func = getFunction(namespace, type, _, name) and
   exists(string s |
     s = getSignatureParameterName(signature, type, name, i) and
     s = getParameterTypeName(func, i)
   ) and
   if exists(getParameterTypeName(func, i + 1))
-  then signatureMatches(func, signature, type, name, i + 1)
+  then signatureMatches(func, namespace, signature, type, name, i + 1)
   else i = count(signature.indexOf(","))
 }
 
@@ -833,7 +811,7 @@ module ExternalFlowDebug {
    *
    * Exposed for testing purposes.
    */
-  predicate signatureMatches_debug = signatureMatches/5;
+  predicate signatureMatches_debug = signatureMatches/6;
 
   /**
    * INTERNAL: Do not use.
@@ -883,6 +861,7 @@ private predicate parseParens(string s, string betweenParens) { s = "(" + betwee
  * - `signatureWithoutParens` equals `signature`, but with the surrounding
  *    parentheses removed.
  */
+pragma[nomagic]
 private predicate elementSpecWithArguments0(
   string signature, string type, string name, string signatureWithoutParens, string typeArgs,
   string nameArgs
@@ -909,7 +888,7 @@ private predicate elementSpecMatchesSignature(
 ) {
   elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
     pragma[only_bind_into](signature), _) and
-  signatureMatches(func, signature, type, name, 0)
+  signatureMatches(func, namespace, signature, type, name, 0)
 }
 
 /**
@@ -953,7 +932,7 @@ private predicate funcHasQualifiedName(Function func, string namespace, string n
  * Holds if `namedClass` is in namespace `namespace` and has
  * name `type` (excluding any template parameters).
  */
-bindingset[type, namespace]
+bindingset[type]
 pragma[inline_late]
 private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
   exists(string typeWithoutArgs |
@@ -969,17 +948,14 @@ private predicate classHasQualifiedName(Class namedClass, string namespace, stri
  *    are also returned.
  * 3. The element has name `name`
  * 4. If `signature` is non-empty, then the element has a list of parameter types described by `signature`.
- *
- * NOTE: `namespace` is currently not used (since we don't properly extract modules yet).
  */
 pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
+  result = getFunction(namespace, type, subtypes, name) and
   (
     // Non-member functions
-    funcHasQualifiedName(result, namespace, name) and
-    subtypes = false and
     type = "" and
     (
       elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
@@ -989,52 +965,36 @@ private Element interpretElement0(
     )
     or
     // Member functions
-    exists(Class namedClass, Class classWithMethod |
-      hasClassAndName(classWithMethod, result, name) and
-      classHasQualifiedName(namedClass, namespace, type)
-    |
-      (
-        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
-        or
-        signature = "" and
-        elementSpec(namespace, type, subtypes, name, "", _)
-      ) and
-      (
-        // member declared in the named type or a subtype of it
-        subtypes = true and
-        classWithMethod = namedClass.getADerivedClass*()
-        or
-        // member declared directly in the named type
-        subtypes = false and
-        classWithMethod = namedClass
-      )
-    )
+    elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
     or
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    // Member variables
     signature = "" and
-    exists(Class namedClass, Class classWithMember, MemberVariable member |
-      member.getName() = name and
-      member = classWithMember.getAMember() and
-      namedClass.hasQualifiedName(namespace, type) and
-      result = member
-    |
-      // field declared in the named type or a subtype of it (or an extension of any)
-      subtypes = true and
-      classWithMember = namedClass.getADerivedClass*()
-      or
-      // field declared directly in the named type (or an extension of it)
-      subtypes = false and
-      classWithMember = namedClass
-    )
-    or
-    // Global or namespace variables
-    elementSpec(namespace, type, subtypes, name, signature, _) and
-    signature = "" and
-    type = "" and
-    subtypes = false and
-    result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
+    elementSpec(namespace, type, subtypes, name, signature, _)
   )
+  or
+  // Member variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  exists(Class namedClass, Class classWithMember, MemberVariable member |
+    member.getName() = name and
+    member = classWithMember.getAMember() and
+    namedClass.hasQualifiedName(namespace, type) and
+    result = member
+  |
+    // field declared in the named type or a subtype of it (or an extension of any)
+    subtypes = true and
+    classWithMember = namedClass.getADerivedClass*()
+    or
+    // field declared directly in the named type (or an extension of it)
+    subtypes = false and
+    classWithMember = namedClass
+  )
+  or
+  // Global or namespace variables
+  elementSpec(namespace, type, subtypes, name, signature, _) and
+  signature = "" and
+  type = "" and
+  subtypes = false and
+  result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
 }
 
 cached
@@ -1071,6 +1031,84 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private GuardValue convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
+    or
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    // NOTE: The below cases don't contribute anything currently since the
+    // callers immediately use `.asBooleanValue()` to convert the `GuardValue`
+    // to a boolean. Once we're willing to accept the breaking change of
+    // converting the barrier guard API to use `GuardValue`s instead `Boolean`s
+    // we can remove this restriction.
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(IRGuardCondition g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue).asBooleanValue() and
+      n.asNode().(Private::ArgumentNode).getCall().asCallInstruction() = g
+    )
+  }
+
+  private newtype TKindModelPairIntPair =
+    MkKindModelPairIntPair(TKindModelPair pair, int indirectionIndex) {
+      indirectionIndex > 0 and
+      Private::nodeHasInstruction(_, _, indirectionIndex) and
+      exists(pair)
+    }
+
+  private predicate indirectBarrierGuardChecks(
+    IRGuardCondition g, Expr e, boolean gv, TKindModelPairIntPair kmp
+  ) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode interpretNode,
+      Public::AcceptingValue acceptingvalue, string kind, string model, int indirectionIndex,
+      Private::ArgumentNode arg
+    |
+      isBarrierGuardNode(interpretNode, acceptingvalue, kind, model) and
+      arg = interpretNode.asNode() and
+      arg.asIndirectExpr(indirectionIndex) = e and
+      kmp = MkKindModelPairIntPair(TMkPair(kind, model), indirectionIndex) and
+      gv = convertAcceptingValue(acceptingvalue).asBooleanValue() and
+      arg.getCall().asCallInstruction() = g
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPairIntPair, indirectBarrierGuardChecks/4>::getAnIndirectBarrierNode(MkKindModelPairIntPair(TMkPair(kind,
+          model), _)) = node
+  }
 }
 
 import Cached
@@ -1087,6 +1125,12 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
+
 private predicate interpretSummary(
   Function f, string input, string output, string kind, string provenance, string model
 ) {
@@ -1101,40 +1145,22 @@ private predicate interpretSummary(
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  string model_;
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isGenerated()
-    )
-  }
+  SummarizedCallableAdapter() { interpretSummary(this, input_, output_, kind, p_, model_) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
-  }
-
-  override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = true and
+    model = model_
   }
 }

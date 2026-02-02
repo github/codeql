@@ -7,8 +7,6 @@ import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 
 /**
  * Provides default sources, sinks and barriers for detecting uncontrolled
@@ -45,23 +43,37 @@ module UncontrolledAllocationSize {
 
   /**
    * Holds if comparison `g` having result `branch` indicates an upper bound for the sub-expression
-   * `node`. For example when the comparison `x < 10` is true, we have an upper bound for `x`.
+   * `e`. For example when the comparison `x < 10` is true, we have an upper bound for `x`.
    */
-  private predicate isUpperBoundCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
-    exists(BinaryExpr cmp | g = cmp.getACfgNode() |
-      node = cmp.(RelationalOperation).getLesserOperand().getACfgNode() and
-      branch = true
-      or
-      node = cmp.(RelationalOperation).getGreaterOperand().getACfgNode() and
-      branch = false
-      or
-      cmp instanceof EqualsOperation and
-      [cmp.getLhs(), cmp.getRhs()].getACfgNode() = node and
-      branch = true
-      or
-      cmp instanceof NotEqualsOperation and
-      [cmp.getLhs(), cmp.getRhs()].getACfgNode() = node and
-      branch = false
-    )
+  private predicate isUpperBoundCheck(AstNode g, Expr e, boolean branch) {
+    g =
+      any(BinaryExpr cmp |
+        e = cmp.(RelationalOperation).getLesserOperand() and
+        branch = true
+        or
+        e = cmp.(RelationalOperation).getGreaterOperand() and
+        branch = false
+        or
+        cmp instanceof EqualsOperation and
+        [cmp.getLhs(), cmp.getRhs()] = e and
+        branch = true
+        or
+        cmp instanceof NotEqualsOperation and
+        [cmp.getLhs(), cmp.getRhs()] = e and
+        branch = false
+      )
+  }
+
+  /**
+   * A barrier for uncontrolled allocation size flow into particular functions.
+   */
+  private class ModeledBarrier extends Barrier {
+    ModeledBarrier() {
+      exists(MethodCall c |
+        c.getStaticTarget().getCanonicalPath() =
+          ["<alloc::string::String>::split_off", "<alloc::vec::Vec>::split_off"] and
+        this.asExpr() = c.getAnArgument()
+      )
+    }
   }
 }

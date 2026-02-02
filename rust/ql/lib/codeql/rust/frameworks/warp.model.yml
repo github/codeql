@@ -6,3 +6,8 @@ extensions:
       - ["<_ as warp::filter::Filter>::then", "Argument[0].Parameter[0..7]", "remote", "manual"]
       - ["<_ as warp::filter::Filter>::map", "Argument[0].Parameter[0..7]", "remote", "manual"]
       - ["<_ as warp::filter::Filter>::and_then", "Argument[0].Parameter[0..7]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+        - ["warp::reply::html", "Argument[0]", "html-injection", "manual"]

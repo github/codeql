@@ -41,16 +41,20 @@ namespace Semmle.Extraction.CSharp
 
         public IPathCache PathCache { get; }
 
+        public IOverlayInfo OverlayInfo { get; }
+
         protected Analyser(
             IProgressMonitor pm,
             ILogger logger,
             PathTransformer pathTransformer,
             IPathCache pathCache,
+            IOverlayInfo overlayInfo,
             bool addAssemblyTrapPrefix)
         {
             Logger = logger;
             PathTransformer = pathTransformer;
             PathCache = pathCache;
+            OverlayInfo = overlayInfo;
             this.addAssemblyTrapPrefix = addAssemblyTrapPrefix;
             this.progressMonitor = pm;
 
@@ -158,7 +162,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (compilation.GetAssemblyOrModuleSymbol(r) is IAssemblySymbol assembly)
                     {
-                        var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                        var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), OverlayInfo, addAssemblyTrapPrefix);
 
                         foreach (var module in assembly.Modules)
                         {
@@ -195,7 +199,7 @@ namespace Semmle.Extraction.CSharp
                 var currentTaskId = IncrementTaskCount();
                 ReportProgressTaskStarted(currentTaskId, sourcePath);
 
-                var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), addAssemblyTrapPrefix);
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new SourceScope(tree), OverlayInfo, addAssemblyTrapPrefix);
                 // Ensure that the file itself is populated in case the source file is totally empty
                 var root = tree.GetRoot();
                 Entities.File.Create(cx, root.SyntaxTree.FilePath);
@@ -234,9 +238,12 @@ namespace Semmle.Extraction.CSharp
                 var assembly = compilation.Assembly;
                 var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
                 compilationTrapFile = trapWriter;  // Dispose later
-                var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+                var cx = new Context(ExtractionContext, compilation, trapWriter, new AssemblyScope(assembly, assemblyPath), OverlayInfo, addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
+
+                // Ensure that the empty location is always created.
+                Entities.EmptyLocation.Create(cx);
 
                 ExtractionContext.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
 
@@ -353,5 +360,22 @@ namespace Semmle.Extraction.CSharp
                 return versionString.InformationalVersion;
             }
         }
+
+        private static readonly HashSet<string> errorsToIgnore = new HashSet<string>
+        {
+            "CS7027",   // Code signing failure
+            "CS1589",   // XML referencing not supported
+            "CS1569"    // Error writing XML documentation
+        };
+
+        /// <summary>
+        /// Retrieves the diagnostics from the compilation, filtering out those that should be ignored.
+        /// </summary>
+        protected List<Diagnostic> GetFilteredDiagnostics() =>
+            compilation is not null
+                ? compilation.GetDiagnostics()
+                    .Where(e => e.Severity >= DiagnosticSeverity.Error && !errorsToIgnore.Contains(e.Id))
+                    .ToList()
+                : [];
     }
 }

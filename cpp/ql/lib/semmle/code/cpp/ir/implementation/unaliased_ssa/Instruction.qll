@@ -1084,6 +1084,12 @@ class BinaryInstruction extends Instruction {
     or
     op1 = this.getRightOperand() and op2 = this.getLeftOperand()
   }
+
+  /**
+   * Gets the instruction whose result provides the value of the left or right
+   * operand of this binary instruction.
+   */
+  Instruction getAnInput() { result = this.getLeft() or result = this.getRight() }
 }
 
 /**

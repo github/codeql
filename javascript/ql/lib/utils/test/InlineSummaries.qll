@@ -1,7 +1,8 @@
 import javascript
 import semmle.javascript.dataflow.FlowSummary
 
-class MkSummary extends SummarizedCallable {
+overlay[local?]
+class MkSummary extends SummarizedCallable::Range {
   private CallExpr mkSummary;
 
   MkSummary() {

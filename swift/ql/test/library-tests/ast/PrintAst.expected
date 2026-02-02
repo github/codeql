@@ -222,7 +222,7 @@ cfg.swift:
 #   40|                           getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #   40|                             getBase(): [DeclRefExpr] $interpolation
 #   40|                             getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#   40|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #   40|                           getArgument(0): [Argument] : Unknown error 
 #   40|                             getExpr(): [StringLiteralExpr] Unknown error 
 #   40|                         getElement(1): [CallExpr] call to appendInterpolation(_:)
@@ -236,7 +236,7 @@ cfg.swift:
 #   40|                           getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #   40|                             getBase(): [DeclRefExpr] $interpolation
 #   40|                             getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#   40|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #   40|                           getArgument(0): [Argument] : 
 #   40|                             getExpr(): [StringLiteralExpr] 
 #   40|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
@@ -717,13 +717,13 @@ cfg.swift:
 #  138|                 getExpr(): [IntegerLiteralExpr] 0
 #  138|               getArgument(1): [Argument] : 10
 #  138|                 getExpr(): [IntegerLiteralExpr] 10
-#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#  138|             getMethodRef(): [DeclRefExpr] makeIterator()
 #  138|         getPattern(0): [NamedPattern] $generator
 #  138|       getNextCall(): [CallExpr] call to next()
 #  138|         getFunction(): [MethodLookupExpr] .next()
 #  138|           getBase(): [DeclRefExpr] $generator
 #  138|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
+#  138|           getMethodRef(): [DeclRefExpr] next()
 #  138|       getBody(): [BraceStmt] { ... }
 #  140|     getElement(1): [SwitchStmt] switch x { ... }
 #  140|       getExpr(): [DeclRefExpr] x
@@ -1462,7 +1462,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] : 
 #  263|                 getExpr(): [StringLiteralExpr] 
 #  263|             getElement(1): [CallExpr] call to appendInterpolation(_:)
@@ -1476,7 +1476,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  + 
 #  263|                 getExpr(): [StringLiteralExpr]  + 
 #  263|             getElement(3): [CallExpr] call to appendInterpolation(_:)
@@ -1490,7 +1490,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  is equal to 
 #  263|                 getExpr(): [StringLiteralExpr]  is equal to 
 #  263|             getElement(5): [CallExpr] call to appendInterpolation(_:)
@@ -1512,7 +1512,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  and here is a zero: 
 #  263|                 getExpr(): [StringLiteralExpr]  and here is a zero: 
 #  263|             getElement(7): [CallExpr] call to appendInterpolation(_:)
@@ -1527,7 +1527,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] : 
 #  263|                 getExpr(): [StringLiteralExpr] 
 #  266| [NamedFunction] testSubscriptExpr()
@@ -3128,8 +3128,8 @@ cfg.swift:
 #  499|       getCondition(): [StmtCondition] StmtCondition
 #  499|         getElement(0): [ConditionElement] #available
 #  499|           getAvailability(): [AvailabilityInfo] #available
-#  499|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 10
-#  499|             getSpec(1): [OtherAvailabilitySpec] *
+#  499|             getSpec(0): [AvailabilitySpec] macOS 10
+#  499|             getSpec(1): [AvailabilitySpec] *
 #  499|       getThen(): [BraceStmt] { ... }
 #  500|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  500|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3145,8 +3145,8 @@ cfg.swift:
 #  503|       getCondition(): [StmtCondition] StmtCondition
 #  503|         getElement(0): [ConditionElement] #available
 #  503|           getAvailability(): [AvailabilityInfo] #available
-#  503|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 10.13
-#  503|             getSpec(1): [OtherAvailabilitySpec] *
+#  503|             getSpec(0): [AvailabilitySpec] macOS 10.13
+#  503|             getSpec(1): [AvailabilitySpec] *
 #  503|       getThen(): [BraceStmt] { ... }
 #  504|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  504|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3162,9 +3162,9 @@ cfg.swift:
 #  507|       getCondition(): [StmtCondition] StmtCondition
 #  507|         getElement(0): [ConditionElement] #unavailable
 #  507|           getAvailability(): [AvailabilityInfo] #unavailable
-#  507|             getSpec(0): [PlatformVersionAvailabilitySpec] iOS 10
-#  507|             getSpec(1): [PlatformVersionAvailabilitySpec] watchOS 10
-#  507|             getSpec(2): [PlatformVersionAvailabilitySpec] macOS 10
+#  507|             getSpec(0): [AvailabilitySpec] iOS 10
+#  507|             getSpec(1): [AvailabilitySpec] watchOS 10
+#  507|             getSpec(2): [AvailabilitySpec] macOS 10
 #  507|       getThen(): [BraceStmt] { ... }
 #  508|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  508|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3180,8 +3180,8 @@ cfg.swift:
 #  511|       getCondition(): [StmtCondition] StmtCondition
 #  511|         getElement(0): [ConditionElement] #available
 #  511|           getAvailability(): [AvailabilityInfo] #available
-#  511|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 12
-#  511|             getSpec(1): [OtherAvailabilitySpec] *
+#  511|             getSpec(0): [AvailabilitySpec] macOS 12
+#  511|             getSpec(1): [AvailabilitySpec] *
 #  511|       getBody(): [BraceStmt] { ... }
 #  512|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  512|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3197,12 +3197,12 @@ cfg.swift:
 #  515|       getCondition(): [StmtCondition] StmtCondition
 #  515|         getElement(0): [ConditionElement] #available
 #  515|           getAvailability(): [AvailabilityInfo] #available
-#  515|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 12
-#  515|             getSpec(1): [OtherAvailabilitySpec] *
+#  515|             getSpec(0): [AvailabilitySpec] macOS 12
+#  515|             getSpec(1): [AvailabilitySpec] *
 #  515|         getElement(1): [ConditionElement] #available
 #  515|           getAvailability(): [AvailabilityInfo] #available
-#  515|             getSpec(0): [PlatformVersionAvailabilitySpec] iOS 12
-#  515|             getSpec(1): [OtherAvailabilitySpec] *
+#  515|             getSpec(0): [AvailabilitySpec] iOS 12
+#  515|             getSpec(1): [AvailabilitySpec] *
 #  515|       getThen(): [BraceStmt] { ... }
 #  516|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  516|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3245,14 +3245,16 @@ cfg.swift:
 #  524|             getParam(0): [ParamDecl] continuation
 #  524|                 Type = AsyncStream<Int>.Continuation
 #  523|             getBody(): [BraceStmt] { ... }
-#  525|               getElement(0): [CallExpr] call to detached(priority:operation:)
-#  525|                 getFunction(): [MethodLookupExpr] .detached(priority:operation:)
+#  525|               getElement(0): [CallExpr] call to detached(name:priority:operation:)
+#  525|                 getFunction(): [MethodLookupExpr] .detached(name:priority:operation:)
 #  525|                   getBase(): [TypeExpr] Task<(), Never>.Type
 #  525|                     getTypeRepr(): [TypeRepr] Task<(), Never>
-#  525|                   getMethodRef(): [DeclRefExpr] detached(priority:operation:)
-#  525|                 getArgument(0): [Argument] priority: default priority
+#  525|                   getMethodRef(): [DeclRefExpr] detached(name:priority:operation:)
+#  525|                 getArgument(0): [Argument] name: default name
+#  525|                   getExpr(): [DefaultArgumentExpr] default name
+#  525|                 getArgument(1): [Argument] priority: default priority
 #  525|                   getExpr(): [DefaultArgumentExpr] default priority
-#  525|                 getArgument(1): [Argument] operation: { ... }
+#  525|                 getArgument(2): [Argument] operation: { ... }
 #  525|                   getExpr(): [ExplicitClosureExpr] { ... }
 #  525|                     getBody(): [BraceStmt] { ... }
 #  526|                       getElement(0): [ForEachStmt] for ... in ... { ... }
@@ -3273,13 +3275,13 @@ cfg.swift:
 #  526|                                   getExpr(): [IntegerLiteralExpr] 1
 #  526|                                 getArgument(1): [Argument] : 100
 #  526|                                   getExpr(): [IntegerLiteralExpr] 100
-#-----|                               getMethodRef(): [DeclRefExpr] makeIterator()
+#  526|                               getMethodRef(): [DeclRefExpr] makeIterator()
 #  526|                           getPattern(0): [NamedPattern] $i$generator
 #  526|                         getNextCall(): [CallExpr] call to next()
 #  526|                           getFunction(): [MethodLookupExpr] .next()
 #  526|                             getBase(): [DeclRefExpr] $i$generator
 #  526|                             getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                             getMethodRef(): [DeclRefExpr] next()
+#  526|                             getMethodRef(): [DeclRefExpr] next()
 #  526|                         getBody(): [BraceStmt] { ... }
 #  527|                           getElement(0): [CallExpr] call to yield(_:)
 #  527|                             getFunction(): [MethodLookupExpr] .yield(_:)
@@ -3305,13 +3307,13 @@ cfg.swift:
 #  533|           getFunction(): [MethodLookupExpr] .makeAsyncIterator()
 #  533|             getBase(): [DeclRefExpr] stream
 #  533|             getBase().getFullyConverted(): [LoadExpr] (AsyncStream<Int>) ...
-#-----|             getMethodRef(): [DeclRefExpr] makeAsyncIterator()
+#  533|             getMethodRef(): [DeclRefExpr] makeAsyncIterator()
 #  533|         getPattern(0): [NamedPattern] $i$generator
 #  533|       getNextCall(): [CallExpr] call to next(isolation:)
 #  533|         getFunction(): [MethodLookupExpr] .next(isolation:)
 #  533|           getBase(): [DeclRefExpr] $i$generator
 #  533|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next(isolation:)
+#  533|           getMethodRef(): [DeclRefExpr] next(isolation:)
 #  533|         getArgument(0): [Argument] isolation: CurrentContextIsolationExpr
 #  533|           getExpr(): [CurrentContextIsolationExpr] CurrentContextIsolationExpr
 #  533|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
@@ -3327,6 +3329,7 @@ cfg.swift:
 #  534|             getExpr(): [DefaultArgumentExpr] default separator
 #  534|           getArgument(2): [Argument] terminator: default terminator
 #  534|             getExpr(): [DefaultArgumentExpr] default terminator
+#  525| [NilLiteralExpr] nil
 #  525| [NilLiteralExpr] nil
 #  533| [NilLiteralExpr] nil
 #  538| [NamedFunction] testNilCoalescing(x:)
@@ -4568,7 +4571,7 @@ declarations.swift:
 #   81|         Type = Int
 #   81|     getParam(5): [ParamDecl] hasBoth
 #   81|         Type = Int
-#   89| [Comment] // A field can be marked as read-only by dirctly implementing
+#   89| [Comment] // A field can be marked as read-only by directly implementing
 #   89| 
 #   90| [Comment] // the getter between the braces.
 #   90| 
@@ -4819,7 +4822,7 @@ expressions.swift:
 #    7|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #    7|                 getBase(): [DeclRefExpr] $interpolation
 #    7|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#    7|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #    7|               getArgument(0): [Argument] : hello 
 #    7|                 getExpr(): [StringLiteralExpr] hello 
 #    7|             getElement(1): [CallExpr] call to appendInterpolation(_:)
@@ -4833,7 +4836,7 @@ expressions.swift:
 #    7|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #    7|                 getBase(): [DeclRefExpr] $interpolation
 #    7|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#    7|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #    7|               getArgument(0): [Argument] : 
 #    7|                 getExpr(): [StringLiteralExpr] 
 #    7|       getPattern(0): [NamedPattern] s1
@@ -7027,13 +7030,13 @@ statements.swift:
 #    2|                 getExpr(): [IntegerLiteralExpr] 1
 #    2|               getArgument(1): [Argument] : 5
 #    2|                 getExpr(): [IntegerLiteralExpr] 5
-#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#    2|             getMethodRef(): [DeclRefExpr] makeIterator()
 #    2|         getPattern(0): [NamedPattern] $i$generator
 #    2|       getNextCall(): [CallExpr] call to next()
 #    2|         getFunction(): [MethodLookupExpr] .next()
 #    2|           getBase(): [DeclRefExpr] $i$generator
 #    2|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
+#    2|           getMethodRef(): [DeclRefExpr] next()
 #    2|       getBody(): [BraceStmt] { ... }
 #    3|         getElement(0): [IfStmt] if ... then { ... } else { ... }
 #    3|           getCondition(): [StmtCondition] StmtCondition
@@ -7471,13 +7474,13 @@ statements.swift:
 #   71|         getInit(0): [CallExpr] call to makeIterator()
 #   71|           getFunction(): [MethodLookupExpr] .makeIterator()
 #   71|             getBase(): [DeclRefExpr] numbers
-#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#   71|             getMethodRef(): [DeclRefExpr] makeIterator()
 #   71|         getPattern(0): [NamedPattern] $number$generator
 #   71|       getNextCall(): [CallExpr] call to next()
 #   71|         getFunction(): [MethodLookupExpr] .next()
 #   71|           getBase(): [DeclRefExpr] $number$generator
 #   71|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
+#   71|           getMethodRef(): [DeclRefExpr] next()
 #   71|       getBody(): [BraceStmt] { ... }
 #   74| [StructDecl] HasModifyAccessorDecl
 #   75|   getMember(0): [PatternBindingDecl] var ... = ...
@@ -7559,8 +7562,8 @@ statements.swift:
 #   87|       getCondition(): [StmtCondition] StmtCondition
 #   87|         getElement(0): [ConditionElement] #available
 #   87|           getAvailability(): [AvailabilityInfo] #available
-#   87|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 155
-#   87|             getSpec(1): [OtherAvailabilitySpec] *
+#   87|             getSpec(0): [AvailabilitySpec] macOS 155
+#   87|             getSpec(1): [AvailabilitySpec] *
 #   87|       getThen(): [BraceStmt] { ... }
 #   88|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   88|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -7579,7 +7582,7 @@ statements.swift:
 #   91|       getCondition(): [StmtCondition] StmtCondition
 #   91|         getElement(0): [ConditionElement] #unavailable
 #   91|           getAvailability(): [AvailabilityInfo] #unavailable
-#   91|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 42
+#   91|             getSpec(0): [AvailabilitySpec] macOS 42
 #   91|       getThen(): [BraceStmt] { ... }
 #   92|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   92|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)

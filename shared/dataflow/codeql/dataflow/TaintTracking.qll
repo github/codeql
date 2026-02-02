@@ -47,16 +47,16 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
 /**
  * Construct the modules for taint-tracking analyses.
  */
-module TaintFlowMake<
+private module TaintFlowMakeCore<
   LocationSig Location, DF::InputSig<Location> DataFlowLang,
   InputSig<Location, DataFlowLang> TaintTrackingLang>
 {
-  private import TaintTrackingLang
-  private import DF::DataFlowMake<Location, DataFlowLang> as DataFlow
-  private import MakeImpl<Location, DataFlowLang> as DataFlowInternal
-  private import MakeImplStage1<Location, DataFlowLang> as DataFlowInternalStage1
+  import TaintTrackingLang
+  import DF::DataFlowMake<Location, DataFlowLang> as DataFlow
+  import MakeImpl<Location, DataFlowLang> as DataFlowInternal
+  import MakeImplStage1<Location, DataFlowLang> as DataFlowInternalStage1
 
-  private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
+  module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
     DataFlowInternal::FullStateConfigSig
   {
     import Config
@@ -83,71 +83,9 @@ module TaintFlowMake<
     }
   }
 
-  /**
-   * Constructs a global taint tracking computation.
-   */
-  module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
-    private module Config0 implements DataFlowInternal::FullStateConfigSig {
-      import DataFlowInternal::DefaultState<Config>
-      import Config
-
-      predicate isAdditionalFlowStep(
-        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
-      ) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-    }
-
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<Config0>
-    }
-
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
-
-    import Flow
-  }
-
-  /**
-   * Constructs a global taint tracking computation using flow state.
-   */
-  module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
-    private module Config0 implements DataFlowInternal::FullStateConfigSig {
-      import Config
-
-      predicate isAdditionalFlowStep(
-        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
-      ) {
-        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
-      }
-
-      predicate isAdditionalFlowStep(
-        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
-        string model
-      ) {
-        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
-      }
-    }
-
-    private module C implements DataFlowInternal::FullStateConfigSig {
-      import AddTaintDefaults<Config0>
-    }
-
-    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
-
-    import Stage1::PartialFlow
-
-    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
-
-    import Flow
-  }
-
   signature int speculationLimitSig();
 
-  private module AddSpeculativeTaintSteps<
+  module AddSpeculativeTaintSteps<
     DataFlowInternal::FullStateConfigSig Config, speculationLimitSig/0 speculationLimit> implements
     DataFlowInternal::FullStateConfigSig
   {
@@ -215,6 +153,79 @@ module TaintFlowMake<
       state1.getState() = state2.getState()
     }
   }
+}
+
+module TaintFlowMake<
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  InputSig<Location, DataFlowLang> TaintTrackingLang>
+{
+  private import TaintFlowMakeCore<Location, DataFlowLang, TaintTrackingLang>
+
+  /**
+   * Constructs a global taint tracking computation.
+   */
+  module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<Config0>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global taint tracking computation using flow state.
+   */
+  module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
+        string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<Config0>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
 
   /**
    * Constructs a global taint tracking computation that also allows a given
@@ -232,6 +243,8 @@ module TaintFlowMake<
       ) {
         Config::isAdditionalFlowStep(node1, node2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -270,6 +283,8 @@ module TaintFlowMake<
       ) {
         Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
       }
+
+      predicate observeOverlayInformedIncrementalMode() { none() }
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -281,6 +296,160 @@ module TaintFlowMake<
     import Stage1::PartialFlow
 
     private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
+}
+
+module TaintFlowMakeOverlay<
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  InputSig<Location, DataFlowLang> TaintTrackingLang>
+{
+  private import TaintFlowMakeCore<Location, DataFlowLang, TaintTrackingLang>
+
+  /**
+   * Constructs a global taint tracking computation.
+   */
+  module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<Config0>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::OverlayImpl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global taint tracking computation using flow state.
+   */
+  module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
+        string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<Config0>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::OverlayImpl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global taint tracking computation that also allows a given
+   * maximum number of speculative taint steps.
+   */
+  module SpeculativeGlobal<DataFlow::ConfigSig Config, speculationLimitSig/0 speculationLimit>
+    implements DataFlow::GlobalFlowSig
+  {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::OverlayImpl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
+
+  /**
+   * Constructs a global taint tracking computation using flow state that also
+   * allows a given maximum number of speculative taint steps.
+   */
+  module SpeculativeGlobalWithState<
+    DataFlow::StateConfigSig Config, speculationLimitSig/0 speculationLimit> implements
+    DataFlow::GlobalFlowSig
+  {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, FlowState state1, DataFlowLang::Node node2, FlowState state2,
+        string model
+      ) {
+        Config::isAdditionalFlowStep(node1, state1, node2, state2) and model = "Config"
+      }
+
+      predicate observeOverlayInformedIncrementalMode() {
+        not Config::observeDiffInformedIncrementalMode()
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::OverlayImpl<C, Stage1::Stage1WithState>;
 
     import Flow
   }

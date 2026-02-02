@@ -677,7 +677,7 @@ Type inheritsMatchingMethodExceptThrows(SessionEjb ejb, Method m) {
 }
 
 /**
- * Holds if `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `m`.
+ * Holds if `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `icm`.
  * (Ignores `throws` clauses.)
  */
 predicate inheritsMatchingCreateMethodIgnoreThrows(
@@ -704,7 +704,7 @@ predicate inheritsMatchingCreateMethodIgnoreThrows(
 }
 
 /**
- * If `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `m` except for the `throws` clause,
+ * If `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `icm` except for the `throws` clause,
  * then return any type in the `throws` clause that does not match.
  */
 Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEjb ejb, EjbInterfaceCreateMethod icm) {

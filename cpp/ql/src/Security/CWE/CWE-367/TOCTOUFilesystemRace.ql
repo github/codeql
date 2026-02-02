@@ -115,7 +115,7 @@ predicate checksPath(Expr check, Expr checkPath) {
 
 pragma[nomagic]
 predicate checkPathControlsUse(Expr check, Expr checkPath, Expr use) {
-  exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
+  exists(GuardCondition guard | referenceTo(check, guard.(Expr).getAChild*()) |
     guard.controls(use.getBasicBlock(), _)
   ) and
   checksPath(pragma[only_bind_into](check), checkPath)
@@ -123,7 +123,7 @@ predicate checkPathControlsUse(Expr check, Expr checkPath, Expr use) {
 
 pragma[nomagic]
 predicate fileNameOperationControlsUse(Expr check, Expr checkPath, Expr use) {
-  exists(GuardCondition guard | referenceTo(check, guard.getAChild*()) |
+  exists(GuardCondition guard | referenceTo(check, guard.(Expr).getAChild*()) |
     guard.controls(use.getBasicBlock(), _)
   ) and
   pragma[only_bind_into](check) = filenameOperation(checkPath)

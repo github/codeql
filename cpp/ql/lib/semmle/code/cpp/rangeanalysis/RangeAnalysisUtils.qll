@@ -1,10 +1,10 @@
 import cpp
 
 /**
- * Describes whether a relation is 'strict' (that is, a `<` or `>`
+ * The strictness of a relation. Either 'strict' (that is, a `<` or `>`
  * relation) or 'non-strict' (a `<=` or `>=` relation).
  */
-newtype RelationStrictness =
+newtype TRelationStrictness =
   /**
    * Represents that a relation is 'strict' (that is, a `<` or `>` relation).
    */
@@ -13,6 +13,19 @@ newtype RelationStrictness =
    * Represents that a relation is 'non-strict' (that is, a `<=` or `>=` relation)
    */
   Nonstrict()
+
+/**
+ * The strictness of a relation. Either 'strict' (that is, a `<` or `>`
+ * relation) or 'non-strict' (a `<=` or `>=` relation).
+ */
+class RelationStrictness extends TRelationStrictness {
+  /** Gets the string representation of this relation strictness. */
+  string toString() {
+    this = Strict() and result = "strict"
+    or
+    this = Nonstrict() and result = "non-strict"
+  }
+}
 
 /**
  * Describes whether a relation is 'greater' (that is, a `>` or `>=`
@@ -105,10 +118,10 @@ predicate relOpWithSwap(
  *
  * This allows for the relation to be either as written, or with its
  * arguments reversed; for example, if `rel` is `x < 5` then
- * `relOpWithSwapAndNegate(rel, x, 5, Lesser(), Strict(), true)`,
- * `relOpWithSwapAndNegate(rel, 5, x, Greater(), Strict(), true)`,
- * `relOpWithSwapAndNegate(rel, x, 5, Greater(), Nonstrict(), false)` and
- * `relOpWithSwapAndNegate(rel, 5, x, Lesser(), Nonstrict(), false)` hold.
+ * - `relOpWithSwapAndNegate(rel, x, 5, Lesser(), Strict(), true)`,
+ * - `relOpWithSwapAndNegate(rel, 5, x, Greater(), Strict(), true)`,
+ * - `relOpWithSwapAndNegate(rel, x, 5, Greater(), Nonstrict(), false)` and
+ * - `relOpWithSwapAndNegate(rel, 5, x, Lesser(), Nonstrict(), false)` hold.
  */
 predicate relOpWithSwapAndNegate(
   RelationalOperation rel, Expr a, Expr b, RelationDirection dir, RelationStrictness strict,

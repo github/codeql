@@ -249,7 +249,9 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(NetworkSendRecv networkSendRecv | result = networkSendRecv.getLocation() |
+    exists(NetworkSendRecv networkSendRecv |
+      result = [networkSendRecv.getLocation(), sink.getLocation()]
+    |
       isSinkSendRecv(sink, networkSendRecv)
     )
   }
@@ -261,7 +263,7 @@ module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
  * A taint flow configuration for flow from a sensitive expression to an encryption operation.
  */
 module ToEncryptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::flow(source, _) }
+  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::flowFrom(source) }
 
   predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
 
@@ -309,7 +311,7 @@ where
   FromSensitiveFlow::flowPath(source, sink) and
   isSinkSendRecv(sink.getNode(), networkSendRecv) and
   // no flow from sensitive -> evidence of encryption
-  not ToEncryptionFlow::flow(source.getNode(), _) and
+  not ToEncryptionFlow::flowFrom(source.getNode()) and
   not FromEncryptionFlow::flowTo(sink.getNode()) and
   // construct result
   if networkSendRecv instanceof NetworkSend

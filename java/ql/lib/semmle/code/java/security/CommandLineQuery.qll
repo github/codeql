@@ -37,6 +37,10 @@ private class DefaultCommandInjectionSink extends CommandInjectionSink {
   DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
 }
 
+private class ExternalCommandInjectionSanitizer extends CommandInjectionSanitizer {
+  ExternalCommandInjectionSanitizer() { barrierNode(this, "command-injection") }
+}
+
 private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
   DefaultCommandInjectionSanitizer() {
     this instanceof SimpleTypeSanitizer
@@ -63,10 +67,14 @@ module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
   // only to prevent overlapping results between two queries.
   predicate observeDiffInformedIncrementalMode() { any() }
 
-  // All queries use the argument as the primary location and do not use the
-  // sink as an associated location.
+  // ExecTainted.ql queries use the argument as the primary location;
+  // ExecUnescaped.ql does not (used to prevent overlapping results).
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(Expr argument | argumentToExec(argument, sink) | result = argument.getLocation())
+    exists(Expr argument | argumentToExec(argument, sink) |
+      result = argument.getLocation()
+      or
+      result = sink.getLocation()
+    )
   }
 }
 

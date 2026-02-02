@@ -20,7 +20,10 @@ class Struts2ActionClass extends Class {
     // If there are no XML files present, then we assume we any class that extends a struts 2
     // action must be reflectively constructed, as we have no better indication.
     not exists(XmlFile xmlFile) and
-    this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
+    (
+      this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action") or
+      this.getAnAncestor().hasQualifiedName("org.apache.struts2.action", "Action")
+    )
     or
     // If there is a struts.xml file, then any class that is specified as an action is considered
     // to be reflectively constructed.
@@ -40,12 +43,7 @@ class Struts2ActionClass extends Class {
       getStrutsMapperClass(this) = "org.apache.struts2.dispatcher.mapper.RestfulActionMapper"
     then
       // The "Restful" action mapper maps rest APIs to specific methods
-      result.hasName("index") or
-      result.hasName("create") or
-      result.hasName("editNew") or
-      result.hasName("view") or
-      result.hasName("remove") or
-      result.hasName("update")
+      result.hasName(["index", "create", "editNew", "view", "remove", "update"])
     else
       if
         getStrutsMapperClass(this) = "org.apache.struts2.rest.RestActionMapper" or
@@ -53,13 +51,7 @@ class Struts2ActionClass extends Class {
       then
         // The "Rest" action mapper is provided with the rest plugin, and maps rest APIs to specific
         // methods based on a "ruby-on-rails" style.
-        result.hasName("index") or
-        result.hasName("show") or
-        result.hasName("edit") or
-        result.hasName("editNew") or
-        result.hasName("create") or
-        result.hasName("update") or
-        result.hasName("destroy")
+        result.hasName(["index", "show", "edit", "editNew", "create", "update", "destroy"])
       else
         if exists(getStrutsMapperClass(this))
         then
@@ -89,7 +81,8 @@ class Struts2ActionClass extends Class {
    * Holds if this action class extends the preparable interface.
    */
   predicate isPreparable() {
-    this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Preparable")
+    this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Preparable") or
+    this.getAnAncestor().hasQualifiedName("org.apache.struts2", "Preparable")
   }
 
   /**
@@ -133,7 +126,8 @@ class Struts2PrepareMethod extends Method {
  */
 class Struts2ActionSupportClass extends Class {
   Struts2ActionSupportClass() {
-    this.getASourceSupertype+().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport")
+    this.getASourceSupertype+().hasQualifiedName("com.opensymphony.xwork2", "ActionSupport") or
+    this.getASourceSupertype+().hasQualifiedName("org.apache.struts2", "ActionSupport")
   }
 
   /**

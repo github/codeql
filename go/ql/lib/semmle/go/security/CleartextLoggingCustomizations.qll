@@ -55,6 +55,8 @@ module CleartextLogging {
       |
         this.asExpr().(Ident).getName() = name
         or
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
+        or
         this.(DataFlow::FieldReadNode).getFieldName() = name
         or
         this.(DataFlow::CallNode).getCalleeName() = name
@@ -118,7 +120,7 @@ module CleartextLogging {
    *
    * This is a source since `log.Print(obj)` will often show the fields of `obj`.
    */
-  private class StructPasswordFieldSource extends DataFlow::Node, Source {
+  private class StructPasswordFieldSource extends Source {
     string name;
 
     StructPasswordFieldSource() {
@@ -135,7 +137,7 @@ module CleartextLogging {
   }
 
   /** An access to a variable or property that might contain a password. */
-  private class ReadPasswordSource extends DataFlow::Node, Source {
+  private class ReadPasswordSource extends Source {
     string name;
 
     ReadPasswordSource() {
@@ -143,7 +145,7 @@ module CleartextLogging {
       not this instanceof NonCleartextPassword and
       name.regexpMatch(maybePassword()) and
       (
-        this.asExpr().(Ident).getName() = name
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
         or
         exists(DataFlow::FieldReadNode fn |
           fn = this and
@@ -160,7 +162,7 @@ module CleartextLogging {
   }
 
   /** A call that might return a password. */
-  private class CallPasswordSource extends DataFlow::CallNode, Source {
+  private class CallPasswordSource extends Source, DataFlow::CallNode {
     string name;
 
     CallPasswordSource() {

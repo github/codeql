@@ -8,7 +8,9 @@ query predicate instances(
   string isSetter, string isWillSet__label, string isWillSet, string isDidSet__label,
   string isDidSet, string isRead__label, string isRead, string isModify__label, string isModify,
   string isUnsafeAddress__label, string isUnsafeAddress, string isUnsafeMutableAddress__label,
-  string isUnsafeMutableAddress
+  string isUnsafeMutableAddress, string isDistributedGet__label, string isDistributedGet,
+  string isRead2__label, string isRead2, string isModify2__label, string isModify2,
+  string isInit__label, string isInit
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -31,9 +33,19 @@ query predicate instances(
   isUnsafeAddress__label = "isUnsafeAddress:" and
   (if x.isUnsafeAddress() then isUnsafeAddress = "yes" else isUnsafeAddress = "no") and
   isUnsafeMutableAddress__label = "isUnsafeMutableAddress:" and
-  if x.isUnsafeMutableAddress()
-  then isUnsafeMutableAddress = "yes"
-  else isUnsafeMutableAddress = "no"
+  (
+    if x.isUnsafeMutableAddress()
+    then isUnsafeMutableAddress = "yes"
+    else isUnsafeMutableAddress = "no"
+  ) and
+  isDistributedGet__label = "isDistributedGet:" and
+  (if x.isDistributedGet() then isDistributedGet = "yes" else isDistributedGet = "no") and
+  isRead2__label = "isRead2:" and
+  (if x.isRead2() then isRead2 = "yes" else isRead2 = "no") and
+  isModify2__label = "isModify2:" and
+  (if x.isModify2() then isModify2 = "yes" else isModify2 = "no") and
+  isInit__label = "isInit:" and
+  if x.isInit() then isInit = "yes" else isInit = "no"
 }
 
 query predicate getGenericTypeParam(Accessor x, int index, GenericTypeParamDecl getGenericTypeParam) {

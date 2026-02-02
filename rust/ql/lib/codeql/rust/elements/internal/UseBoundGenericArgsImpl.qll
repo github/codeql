@@ -17,7 +17,7 @@ module Impl {
    *
    * For example:
    * ```rust
-   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+   * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> { 0 }
    * //                                                        ^^^^^^^^
    * ```
    */

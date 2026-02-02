@@ -23,20 +23,20 @@ func HandlerGin(c *gin.Context) {
 		safe    string `binding:"alphanum"`
 	}
 
-	err := c.ShouldBindJSON(&body)
+	err := c.ShouldBindJSON(&body) // $ Source
 
 	http.Get(fmt.Sprintf("http://example.com/%d", body.integer)) // OK
 	http.Get(fmt.Sprintf("http://example.com/%v", body.float))   // OK
 	http.Get(fmt.Sprintf("http://example.com/%v", body.boolean)) // OK
-	http.Get(fmt.Sprintf("http://example.com/%s", body.word))    // SSRF
-	http.Get(fmt.Sprintf("http://example.com/%s", body.safe))    // SSRF
+	http.Get(fmt.Sprintf("http://example.com/%s", body.word))    // $ Alert
+	http.Get(fmt.Sprintf("http://example.com/%s", body.safe))    // $ Alert
 
 	if err == nil {
-		http.Get(fmt.Sprintf("http://example.com/%s", body.word)) // SSRF
+		http.Get(fmt.Sprintf("http://example.com/%s", body.word)) // $ Alert
 		http.Get(fmt.Sprintf("http://example.com/%s", body.safe)) // OK
 	}
 
-	taintedParam := c.Param("id")
+	taintedParam := c.Param("id") // $ Source
 
 	validate := validator.New()
 	err = validate.Var(taintedParam, "alpha")
@@ -44,10 +44,10 @@ func HandlerGin(c *gin.Context) {
 		http.Get("http://example.com/" + taintedParam) // OK
 	}
 
-	http.Get("http://example.com/" + taintedParam) //SSRF
+	http.Get("http://example.com/" + taintedParam) // $ Alert
 
-	taintedQuery := c.Query("id")
-	http.Get("http://example.com/" + taintedQuery) //SSRF
+	taintedQuery := c.Query("id")                  // $ Source
+	http.Get("http://example.com/" + taintedQuery) // $ Alert
 }
 
 func HandlerHttp(req *http.Request) {
@@ -59,41 +59,41 @@ func HandlerHttp(req *http.Request) {
 		word    string
 		safe    string `validate:"alphanum"`
 	}
-	reqBody, _ := ioutil.ReadAll(req.Body)
+	reqBody, _ := ioutil.ReadAll(req.Body) // $ Source
 	json.Unmarshal(reqBody, &body)
 
 	http.Get(fmt.Sprintf("http://example.com/%d", body.integer)) // OK
 	http.Get(fmt.Sprintf("http://example.com/%v", body.float))   // OK
 	http.Get(fmt.Sprintf("http://example.com/%v", body.boolean)) // OK
-	http.Get(fmt.Sprintf("http://example.com/%s", body.word))    // SSRF
-	http.Get(fmt.Sprintf("http://example.com/%s", body.safe))    // SSRF
+	http.Get(fmt.Sprintf("http://example.com/%s", body.word))    // $ Alert
+	http.Get(fmt.Sprintf("http://example.com/%s", body.safe))    // $ Alert
 
 	validate := validator.New()
 	err := validate.Struct(body)
 	if err == nil {
-		http.Get(fmt.Sprintf("http://example.com/%s", body.word)) // SSRF
+		http.Get(fmt.Sprintf("http://example.com/%s", body.word)) // $ Alert
 		http.Get(fmt.Sprintf("http://example.com/%s", body.safe)) // OK
 	}
 
-	taintedQuery := req.URL.Query().Get("param1")
-	http.Get("http://example.com/" + taintedQuery) // SSRF
+	taintedQuery := req.URL.Query().Get("param1")  // $ Source
+	http.Get("http://example.com/" + taintedQuery) // $ Alert
 
-	taintedParam := strings.TrimPrefix(req.URL.Path, "/example-path/")
-	http.Get("http://example.com/" + taintedParam) // SSRF
+	taintedParam := strings.TrimPrefix(req.URL.Path, "/example-path/") // $ Source
+	http.Get("http://example.com/" + taintedParam)                     // $ Alert
 }
 
 func HandlerMux(r *http.Request) {
-	vars := mux.Vars(r)
+	vars := mux.Vars(r) // $ Source
 	taintedParam := vars["id"]
-	http.Get("http://example.com/" + taintedParam) // SSRF
+	http.Get("http://example.com/" + taintedParam) // $ Alert
 
 	numericID, _ := strconv.Atoi(taintedParam)
 	http.Get(fmt.Sprintf("http://example.com/%d", numericID)) // OK
 }
 
 func HandlerChi(r *http.Request) {
-	taintedParam := chi.URLParam(r, "articleID")
-	http.Get("http://example.com/" + taintedParam) // SSRF
+	taintedParam := chi.URLParam(r, "articleID")   // $ Source
+	http.Get("http://example.com/" + taintedParam) // $ Alert
 
 	b, _ := strconv.ParseBool(taintedParam)
 	http.Get(fmt.Sprintf("http://example.com/%t", b)) // OK

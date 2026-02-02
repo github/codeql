@@ -104,7 +104,11 @@ newtype TInstructionTag =
   } or
   SizeofVlaDimensionTag(int index) {
     exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
-  }
+  } or
+  AssertionVarAddressTag() or
+  AssertionVarLoadTag() or
+  AssertionOpTag() or
+  AssertionBranchTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = getInstructionTagId(this) }
@@ -296,4 +300,12 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CoAwaitBranchTag() and result = "CoAwaitBranch"
   or
   tag = BoolToIntConversionTag() and result = "BoolToIntConversion"
+  or
+  tag = AssertionVarAddressTag() and result = "AssertionVarAddress"
+  or
+  tag = AssertionVarLoadTag() and result = "AssertionVarLoad"
+  or
+  tag = AssertionOpTag() and result = "AssertionOp"
+  or
+  tag = AssertionBranchTag() and result = "AssertionBranch"
 }

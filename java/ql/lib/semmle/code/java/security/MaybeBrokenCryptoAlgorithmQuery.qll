@@ -81,7 +81,9 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(CryptoAlgoSpec c | result = c.getLocation() | sink.asExpr() = c.getAlgoSpec())
+    exists(CryptoAlgoSpec c | result = sink.getLocation() or result = c.getLocation() |
+      sink.asExpr() = c.getAlgoSpec()
+    )
   }
 }
 

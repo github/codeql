@@ -118,25 +118,8 @@ private class ContainsUrlSanitizer extends RequestForgerySanitizer {
   }
 }
 
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private predicate isRelativeUrlSanitizer(Guard guard, Expr e, boolean branch) {
-  guard =
-    any(MethodCall call |
-      call.getMethod().hasQualifiedName("java.net", "URI", "isAbsolute") and
-      e = call.getQualifier() and
-      branch = false
-    )
-}
-
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private class RelativeUrlSanitizer extends RequestForgerySanitizer {
-  RelativeUrlSanitizer() {
-    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
-  }
+private class ExternalRequestForgerySanitizer extends RequestForgerySanitizer {
+  ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
 }
 
 /**
@@ -164,3 +147,9 @@ private class HostComparisonSanitizer extends RequestForgerySanitizer {
     this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
   }
 }
+
+/**
+ * A comparison with a regular expression that is a sanitizer for URL redirects.
+ */
+private class RegexpCheckRequestForgerySanitizer extends RequestForgerySanitizer instanceof RegexpCheckBarrier
+{ }

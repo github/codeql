@@ -82,13 +82,6 @@ private module TrackedVariablesImpl {
 
 private import TrackedVariablesImpl
 
-private predicate untrackedFieldWrite(BasicBlock bb, int i, SsaSourceVariable v) {
-  v =
-    any(SsaSourceField nf |
-      bb.getNode(i + 1) = nf.getAnAccess().(FieldRead).getControlFlowNode() and not trackField(nf)
-    )
-}
-
 /** Gets the definition point of a nested class in the parent scope. */
 private ControlFlowNode parentDef(NestedClass nc) {
   nc.(AnonymousClass).getClassInstanceExpr().getControlFlowNode() = result or
@@ -171,7 +164,7 @@ private predicate uncertainVariableUpdateImpl(TrackedVar v, ControlFlowNode n, B
 predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) =
   forceLocal(uncertainVariableUpdateImpl/4)(v, n, b, i)
 
-private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = SsaSourceVariable;
 
   /**
@@ -184,11 +177,8 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
     certainVariableUpdate(v, _, bb, i) and
     certain = true
     or
-    untrackedFieldWrite(bb, i, v) and
-    certain = true
-    or
     hasEntryDef(v, bb) and
-    i = 0 and
+    i = -1 and
     certain = true
     or
     uncertainVariableUpdate(v, _, bb, i) and
@@ -204,7 +194,10 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
     hasDominanceInformation(bb) and
     (
       exists(VarRead use |
-        v.getAnAccess() = use and bb.getNode(i) = use.getControlFlowNode() and certain = true
+        v instanceof TrackedVar and
+        v.getAnAccess() = use and
+        bb.getNode(i) = use.getControlFlowNode() and
+        certain = true
       )
       or
       variableCapture(v, _, bb, i) and
@@ -213,7 +206,35 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
   }
 }
 
-import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
+
+private module SsaInput implements Impl::SsaInputSig {
+  private import java as J
+
+  class Expr = J::Expr;
+
+  class Parameter = J::Parameter;
+
+  class VariableWrite = J::VariableWrite;
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaSourceVariable v) {
+    exists(VariableUpdate upd |
+      upd = w.asExpr() and
+      certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
+      getDestVar(upd) = v
+    )
+    or
+    exists(Parameter p, Callable c |
+      c = p.getCallable() and
+      v = TLocalVar(c, p) and
+      w.isParameterInit(p) and
+      c.getBody().getBasicBlock() = bb and
+      i = -1
+    )
+  }
+}
+
+module Ssa = Impl::MakeSsa<SsaInput>;
 
 final class Definition = Impl::Definition;
 
@@ -223,14 +244,51 @@ final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
 final class PhiNode = Impl::PhiNode;
 
-class UntrackedDef extends Definition {
-  private VarRead read;
+deprecated predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
+    getDestVar(upd) = def.getSourceVariable()
+  )
+}
 
-  UntrackedDef() { ssaUntrackedDef(this, read) }
+deprecated predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    uncertainVariableUpdate(v, _, bb, i)
+  )
+}
 
-  string toString() { result = read.toString() }
+deprecated predicate ssaImplicitInit(WriteDefinition def) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    hasEntryDef(v, bb) and
+    i = -1
+  )
+}
 
-  Location getLocation() { result = read.getLocation() }
+/**
+ * Holds if the SSA definition of `v` at `def` reaches `redef` without crossing another
+ * SSA definition of `v`.
+ */
+deprecated predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
+  Impl::uncertainWriteDefinitionInput(redef, def)
+}
+
+deprecated VarRead getAUse(Definition def) {
+  exists(SsaSourceVariable v, BasicBlock bb, int i |
+    Impl::ssaDefReachesRead(v, def, bb, i) and
+    result.getControlFlowNode() = bb.getNode(i) and
+    result = v.getAnAccess()
+  )
+}
+
+deprecated predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
+  Impl::ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+deprecated predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
+  Impl::phiHasInputFromBlock(phi, inp, bb)
 }
 
 cached
@@ -245,24 +303,6 @@ private module Cached {
     )
     or
     result.getAnAccess() = upd.(UnaryAssignExpr).getExpr()
-  }
-
-  cached
-  predicate ssaExplicitUpdate(SsaUpdate def, VariableUpdate upd) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      certainVariableUpdate(v, upd.getControlFlowNode(), bb, i) and
-      getDestVar(upd) = def.getSourceVariable()
-    )
-  }
-
-  cached
-  predicate ssaUntrackedDef(Definition def, VarRead read) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      untrackedFieldWrite(bb, i, v) and
-      read.getControlFlowNode() = bb.getNode(i + 1)
-    )
   }
 
   /*
@@ -484,44 +524,18 @@ private module Cached {
 
   overlay[global]
   cached
-  predicate defUpdatesNamedField(SsaImplicitUpdate def, TrackedField f, Callable setter) {
-    f = def.getSourceVariable() and
-    updatesNamedField0(def.getCfgNode().asCall(), f, setter)
-  }
-
-  cached
-  predicate ssaUncertainImplicitUpdate(SsaImplicitUpdate def) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      uncertainVariableUpdate(v, _, bb, i)
-    )
-  }
-
-  cached
-  predicate ssaImplicitInit(WriteDefinition def) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      hasEntryDef(v, bb) and
-      i = 0
-    )
+  predicate defUpdatesNamedField(SsaImplicitWrite calldef, TrackedField f, Callable setter) {
+    f = calldef.getSourceVariable() and
+    updatesNamedField0(calldef.getControlFlowNode().asCall(), f, setter)
   }
 
   /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
   cached
-  predicate captures(SsaImplicitInit init, SsaVariable capturedvar) {
+  predicate captures(SsaImplicitEntryDefinition init, SsaDefinition capturedvar) {
     exists(BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(_, capturedvar, bb, i) and
+      Ssa::ssaDefReachesUncertainRead(_, capturedvar, bb, i) and
       variableCapture(capturedvar.getSourceVariable(), init.getSourceVariable(), bb, i)
     )
-  }
-
-  /**
-   * Holds if the SSA definition of `v` at `def` reaches `redef` without crossing another
-   * SSA definition of `v`.
-   */
-  cached
-  predicate ssaDefReachesUncertainDef(TrackedSsaDef def, SsaUncertainImplicitUpdate redef) {
-    Impl::uncertainWriteDefinitionInput(redef, def)
   }
 
   /**
@@ -534,25 +548,6 @@ private module Cached {
       Impl::firstUse(def, bb, i, _) and
       use.getControlFlowNode() = bb.getNode(i)
     )
-  }
-
-  cached
-  VarRead getAUse(Definition def) {
-    exists(SsaSourceVariable v, BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(v, def, bb, i) and
-      result.getControlFlowNode() = bb.getNode(i) and
-      result = v.getAnAccess()
-    )
-  }
-
-  cached
-  predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def) {
-    Impl::ssaDefReachesEndOfBlock(bb, def, _)
-  }
-
-  cached
-  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, inp, bb)
   }
 
   cached
@@ -569,12 +564,14 @@ private module Cached {
       DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
-    signature predicate guardChecksSig(Guards::Guard g, Expr e, boolean branch);
+    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue gv);
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(Guards::Guards_v3::Guard g, Expr e, boolean branch) {
-        guardChecks(g, e, branch)
+      private predicate guardChecksAdjTypes(
+        Guards::Guards_v3::Guard g, Expr e, Guards::GuardValue gv
+      ) {
+        guardChecks(g, e, gv)
       }
 
       private predicate guardChecksWithWrappers(
@@ -590,6 +587,36 @@ private module Cached {
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
+
+    bindingset[this]
+    private signature class ParamSig;
+
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue gv, P param);
+    }
+
+    cached // nothing is actually cached
+    module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        Guards::Guards_v3::Guard g, Expr e, Guards::GuardValue gv, P param
+      ) {
+        guardChecks(g, e, gv, param)
+      }
+
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, P param
+      ) {
+        Guards::Guards_v3::ParameterizedValidationWrapper<P, guardChecksAdjTypes/4>::guardChecksDef(g,
+          def, val, param)
+      }
+
+      private Node getABarrierNodeImpl(P param) {
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/1;
     }
   }
 
@@ -664,14 +691,12 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     }
   }
 
-  Expr getARead(Definition def) { result = getAUse(def) }
+  Expr getARead(Definition def) { result = def.(SsaDefinition).getARead() }
 
-  predicate ssaDefHasSource(WriteDefinition def) {
-    def instanceof SsaExplicitUpdate or def.(SsaImplicitInit).isParameterDefinition(_)
-  }
+  predicate ssaDefHasSource(WriteDefinition def) { def instanceof SsaExplicitWrite }
 
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    def instanceof SsaUncertainImplicitUpdate
+    def instanceof SsaUncertainWrite
   }
 
   class GuardValue = Guards::GuardValue;

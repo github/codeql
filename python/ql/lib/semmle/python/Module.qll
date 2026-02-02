@@ -1,5 +1,4 @@
 import python
-private import semmle.python.objects.Modules
 private import semmle.python.internal.CachedStages
 
 /**
@@ -66,15 +65,6 @@ class Module extends Module_, Scope, AstNode {
   /** Whether this module is a package initializer */
   predicate isPackageInit() { this.getName().matches("%\\_\\_init\\_\\_") and not this.isPackage() }
 
-  /** Gets a name exported by this module, that is the names that will be added to a namespace by 'from this-module import *' */
-  string getAnExport() {
-    py_exports(this, result)
-    or
-    exists(ModuleObjectInternal mod | mod.getSource() = this.getEntryNode() |
-      mod.(ModuleValue).exports(result)
-    )
-  }
-
   /** Gets the source file for this module */
   File getFile() { py_module_path(this, result) }
 
@@ -95,9 +85,6 @@ class Module extends Module_, Scope, AstNode {
     this.getName().matches("%.%") and
     result = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
-
-  /** Gets the metrics for this module */
-  ModuleMetrics getMetrics() { result = this }
 
   string getAnImportedModuleName() {
     exists(Import i | i.getEnclosingModule() = this | result = i.getAnImportedModuleName())

@@ -22,7 +22,7 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
         t instanceof SliceType
       ) and
       (
-        exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), _, node1))
+        exists(Write w | w.writesElement(node2, _, node1))
         or
         node1 = node2.(ImplicitVarargsSlice).getCallNode().getAnImplicitVarargsArgument()
         or
@@ -36,17 +36,19 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
     )
     or
     c instanceof CollectionContent and
-    exists(SendStmt send |
-      send.getChannel() = node2.(ExprNode).asExpr() and send.getValue() = node1.(ExprNode).asExpr()
+    exists(SendStmt send, Node channelExprNode |
+      send.getChannel() = channelExprNode.(ExprNode).asExpr() and
+      node2.(PostUpdateNode).getPreUpdateNode() = channelExprNode and
+      send.getValue() = node1.(ExprNode).asExpr()
     )
     or
     c instanceof MapKeyContent and
     t instanceof MapType and
-    exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), node1, _))
+    exists(Write w | w.writesElement(node2, node1, _))
     or
     c instanceof MapValueContent and
     t instanceof MapType and
-    exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), _, node1))
+    exists(Write w | w.writesElement(node2, _, node1))
   )
 }
 

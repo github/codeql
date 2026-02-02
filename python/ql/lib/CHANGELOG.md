@@ -1,3 +1,60 @@
+## 6.0.0
+
+### Breaking Changes
+
+* All modules that depend on the points-to analysis have now been removed from the top level `python.qll` module. To access the points-to functionality, import the new `LegacyPointsTo` module. This also means that some predicates have been removed from various classes, for instance `Function.getFunctionObject()`. To access these predicates, import the `LegacyPointsTo` module and use the `FunctionWithPointsTo` class instead. Most cases follow this pattern, but there are a few exceptions:
+  * The `getLiteralObject` method on `ImmutableLiteral` subclasses has been replaced with a predicate `getLiteralObject(ImmutableLiteral l)` in the `LegacyPointsTo` module.
+  * The `getMetrics` method on `Function`, `Class`, and `Module` has been removed. To access metrics, import `LegacyPointsTo` and use the classes `FunctionMetrics`, etc. instead.
+
+### New Features
+
+* The extractor now supports the new, relaxed syntax `except A, B, C: ...` (which would previously have to be written as `except (A, B, C): ...`) as defined in [PEP-758](https://peps.python.org/pep-0758/). This may cause changes in results for code that uses Python 2-style exception binding (`except Foo, e: ...`). The more modern format, `except Foo as e: ...` (available since Python 2.6) is unaffected.
+* The Python extractor now supports template strings as defined in [PEP-750](https://peps.python.org/pep-0750/), through the classes `TemplateString` and `JoinedTemplateString`.
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Python extractor's search for YAML files.
+* The `compression.zstd` library (added in Python 3.14) is now supported by the `py/decompression-bomb` query.
+* Added taint flow model and type model for `urllib.parse`.
+* Remote flow sources for the `python-socketio` package have been modeled.
+* Additional models for remote flow sources for `tornado.websocket.WebSocketHandler` have been added.
+
+## 5.0.4
+
+No user-facing changes.
+
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+No user-facing changes.
+
+## 5.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the Python extractor's import handling where failing to find an import in `find_module` would cause a `KeyError` to be raised. (Contributed by @akoeplinger.)
+
+## 5.0.0
+
+### Breaking Changes
+
+- The classes `ControlFlowNode`, `Expr`, and `Module` no longer expose predicates that invoke the points-to analysis. To access these predicates, import the module `LegacyPointsTo` and follow the instructions given therein.
+
+## 4.1.0
+
+### New Features
+
+* Initial support for incremental Python databases via `codeql database create --overlay-base`/`--overlay-changes`.
+
+## 4.0.17
+
+### Bug Fixes
+
+* The Python extractor no longer crashes with an `ImportError` when run using Python 3.14.
+
 ## 4.0.16
 
 ### Minor Analysis Improvements

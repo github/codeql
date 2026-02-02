@@ -1,0 +1,37 @@
+#select
+| BadMacUse.java:56:42:56:50 | plaintext | BadMacUse.java:50:28:50:53 | doFinal(...) : byte[] | BadMacUse.java:56:42:56:50 | plaintext | Incorrect decryption and MAC order: decryption output plaintext flows to MAC message input. |
+| BadMacUse.java:124:42:124:51 | ciphertext | BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | BadMacUse.java:124:42:124:51 | ciphertext | Incorrect decryption and MAC order: decryption output plaintext flows to MAC message input. |
+edges
+| BadMacUse.java:27:29:27:53 | doFinal(...) : byte[] | BadMacUse.java:32:42:32:51 | ciphertext | provenance |  |
+| BadMacUse.java:50:28:50:53 | doFinal(...) : byte[] | BadMacUse.java:56:42:56:50 | plaintext | provenance |  |
+| BadMacUse.java:84:83:84:91 | iv : byte[] | BadMacUse.java:90:63:90:64 | iv : byte[] | provenance |  |
+| BadMacUse.java:90:43:90:65 | new IvParameterSpec(...) : IvParameterSpec | BadMacUse.java:91:42:91:56 | ivParameterSpec | provenance | Sink:MaD:1 |
+| BadMacUse.java:90:63:90:64 | iv : byte[] | BadMacUse.java:90:43:90:65 | new IvParameterSpec(...) : IvParameterSpec | provenance | Config |
+| BadMacUse.java:90:63:90:64 | iv : byte[] | BadMacUse.java:90:43:90:65 | new IvParameterSpec(...) : IvParameterSpec | provenance | MaD:2 |
+| BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | BadMacUse.java:118:29:118:106 | cipherOperationWrapper(...) : byte[] | provenance |  |
+| BadMacUse.java:117:38:117:39 | iv : byte[] | BadMacUse.java:118:83:118:84 | iv : byte[] | provenance |  |
+| BadMacUse.java:118:29:118:106 | cipherOperationWrapper(...) : byte[] | BadMacUse.java:124:42:124:51 | ciphertext | provenance |  |
+| BadMacUse.java:118:83:118:84 | iv : byte[] | BadMacUse.java:84:83:84:91 | iv : byte[] | provenance |  |
+models
+| 1 | Sink: javax.crypto; Cipher; true; init; (int,Key,AlgorithmParameterSpec); ; Argument[2]; encryption-iv; manual |
+| 2 | Summary: javax.crypto.spec; IvParameterSpec; true; IvParameterSpec; ; ; Argument[0]; Argument[this]; taint; manual |
+nodes
+| BadMacUse.java:27:29:27:53 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| BadMacUse.java:32:42:32:51 | ciphertext | semmle.label | ciphertext |
+| BadMacUse.java:50:28:50:53 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| BadMacUse.java:56:42:56:50 | plaintext | semmle.label | plaintext |
+| BadMacUse.java:84:83:84:91 | iv : byte[] | semmle.label | iv : byte[] |
+| BadMacUse.java:90:43:90:65 | new IvParameterSpec(...) : IvParameterSpec | semmle.label | new IvParameterSpec(...) : IvParameterSpec |
+| BadMacUse.java:90:63:90:64 | iv : byte[] | semmle.label | iv : byte[] |
+| BadMacUse.java:91:42:91:56 | ivParameterSpec | semmle.label | ivParameterSpec |
+| BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
+| BadMacUse.java:117:38:117:39 | iv : byte[] | semmle.label | iv : byte[] |
+| BadMacUse.java:118:29:118:106 | cipherOperationWrapper(...) : byte[] | semmle.label | cipherOperationWrapper(...) : byte[] |
+| BadMacUse.java:118:83:118:84 | iv : byte[] | semmle.label | iv : byte[] |
+| BadMacUse.java:124:42:124:51 | ciphertext | semmle.label | ciphertext |
+subpaths
+testFailures
+| BadMacUse.java:63:118:63:127 | // $Source | Missing result: Source |
+| BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | Unexpected result: Source |
+| BadMacUse.java:124:42:124:51 | ciphertext | Unexpected result: Alert |
+| BadMacUse.java:146:95:146:104 | // $Source | Missing result: Source |

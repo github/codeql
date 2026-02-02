@@ -1,3 +1,65 @@
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* The `Deref` trait is now considered during method resolution. This means that method calls on receivers implementing the `Deref` trait will correctly resolve to methods defined on the target type. This may result in additional query results, especially for data flow queries.
+* Renamed the `Adt` class to `TypeItem` and moved common predicates from `Struct`, `Enum`, and `Union` to `TypeItem`.
+* Added models for the Axum web application framework.
+* Reading content of a value now carries taint if the value itself is tainted. For instance, if `s` is tainted then `s.field` is also tainted. This generally improves taint flow.
+* The call graph is now more precise for calls that target a trait function with a default implemention. This reduces the number of false positives for data flow queries.
+* Improved type inference for raw pointers (`*const` and `*mut`). This includes type inference for the raw borrow operators (`&raw const` and `&raw mut`) and dereferencing of raw pointers.
+
+## 0.2.3
+
+No user-facing changes.
+
+## 0.2.2
+
+No user-facing changes.
+
+## 0.2.1
+
+No user-facing changes.
+
+## 0.2.0
+
+### Breaking Changes
+
+* The type `DataFlow::Node` is now based directly on the AST instead of the CFG, which means that predicates like `asExpr()` return AST nodes instead of CFG nodes.
+
+### Minor Analysis Improvements
+
+* Added more detailed models for `std::fs` and `std::path`.
+
+## 0.1.20
+
+### Minor Analysis Improvements
+
+* Added models for cookie methods in the `poem` crate.
+
+## 0.1.19
+
+### Major Analysis Improvements
+
+* Resolution of calls to functions has been improved in a number of ways, to make it more aligned with the behavior of the Rust compiler. This may impact queries that rely on call resolution, such as data flow queries.
+* Added basic models for the `actix-web` web framework.
+
+### Minor Analysis Improvements
+
+* Added `ExtractedFile::hasSemantics` and `ExtractedFile::isSkippedByCompilation` predicates.
+* Generalized some existing models to improve data flow.
+* Added models for the `mysql` and `mysql_async` libraries.
+
+## 0.1.18
+
+### New Features
+
+* Rust analysis is now Generally Available (GA).
+
+### Minor Analysis Improvements
+
+* Improve data flow through functions being passed as function pointers. 
+
 ## 0.1.17
 
 ### New Features

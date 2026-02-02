@@ -65,24 +65,32 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     else nodeTo.asInstruction() = evalAssert
   )
   or
-  // Instruction -> SSA
+  // Instruction -> SSA defn
   exists(IR::Instruction pred, SsaExplicitDefinition succ |
     succ.getRhs() = pred and
-    nodeFrom = instructionNode(pred) and
-    nodeTo = ssaNode(succ)
+    (
+      nodeFrom = instructionNode(pred) or
+      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
+    ) and
+    nodeTo = ssaNode(succ.getVariable())
   )
   or
-  // SSA -> SSA
-  exists(SsaDefinition pred, SsaPseudoDefinition succ | succ.getAnInput() = pred |
-    nodeFrom = ssaNode(pred) and
-    nodeTo = ssaNode(succ)
-  )
-  or
-  // SSA -> Instruction
-  exists(SsaDefinition pred, IR::Instruction succ |
-    succ = pred.getVariable().getAUse() and
-    nodeFrom = ssaNode(pred) and
+  // SSA defn -> first SSA use
+  exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
+    (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
+    nodeFrom = ssaNode(pred.getVariable()) and
     nodeTo = instructionNode(succ)
+  )
+  or
+  // SSA use -> successive SSA use
+  // Note this case includes Phi node traversal
+  exists(IR::Instruction pred, IR::Instruction succ | succ = getAnAdjacentUse(pred) |
+    (
+      nodeFrom = instructionNode(pred) or
+      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
+    ) and
+    nodeTo = instructionNode(succ) and
+    nodeTo != nodeFrom
   )
   or
   // GlobalFunctionNode -> use
@@ -95,6 +103,10 @@ private Field getASparselyUsedChannelTypedField() {
   result.getType() instanceof ChanType and
   count(result.getARead()) = 2
 }
+
+bindingset[v]
+pragma[inline_late]
+private predicate isValueEntityRead(ValueEntity v, Node n) { n = v.getARead() }
 
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
@@ -110,14 +122,22 @@ predicate jumpStep(Node n1, Node n2) {
       or
       n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
     ) and
-    n2 = v.getARead()
+    isValueEntityRead(v, n2)
   )
   or
-  exists(SsaDefinition pred, SsaDefinition succ |
-    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable()
-  |
-    n1 = ssaNode(pred) and
+  exists(SsaExplicitDefinition def, SsaVariableCapture succ |
+    succ.getSourceVariable() = def.getSourceVariable() and
     n2 = ssaNode(succ)
+  |
+    not exists(def.getAFirstUse()) and n1 = ssaNode(def)
+    or
+    exists(IR::Instruction lastUse |
+      lastUse = getAnAdjacentUse*(def.getAFirstUse()) and
+      not exists(getAnAdjacentUse(lastUse))
+    |
+      n1 = instructionNode(lastUse) or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = instructionNode(lastUse)
+    )
   )
   or
   // If a channel-typed field is referenced exactly once in the context of
@@ -145,15 +165,17 @@ predicate jumpStep(Node n1, Node n2) {
  */
 predicate storeStep(Node node1, ContentSet cs, Node node2) {
   exists(Content c | cs.asOneContent() = c |
-    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
-    // which in turn flows into the pointer content of `p`
+    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of the
+    // post-update node of `(*p)`, which in turn flows into the pointer content of the post-update
+    // node of `p`
     exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
       node1 = rhs and
-      node2.(PostUpdateNode).getPreUpdateNode() = base and
+      node2 = base and
       c = any(DataFlow::FieldContent fc | fc.getField() = f)
       or
       node1 = base and
-      node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+      node2.(PostUpdateNode).getPreUpdateNode() =
+        node1.(PostUpdateNode).getPreUpdateNode().(PointerDereferenceNode).getOperand() and
       c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
     )
     or

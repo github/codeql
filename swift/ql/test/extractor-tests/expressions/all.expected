@@ -6,12 +6,13 @@
 | expressions.swift:6:9:6:9 | hello world | StringLiteralExpr |
 | expressions.swift:7:10:7:10 | "..." | InterpolatedStringLiteralExpr |
 | expressions.swift:7:10:7:10 | OpaqueValueExpr | OpaqueValueExpr |
+| expressions.swift:7:10:7:10 | appendLiteral(_:) | DeclRefExpr |
 | expressions.swift:7:10:7:10 | hello  | StringLiteralExpr |
 | expressions.swift:7:10:7:21 | TapExpr | TapExpr |
-| expressions.swift:7:11:7:10 | call to appendLiteral(_:) | CallExpr |
 | expressions.swift:7:11:7:11 | $interpolation | DeclRefExpr |
 | expressions.swift:7:11:7:11 | &... | InOutExpr |
 | expressions.swift:7:11:7:11 | .appendLiteral(_:) | MethodLookupExpr |
+| expressions.swift:7:11:7:11 | call to appendLiteral(_:) | CallExpr |
 | expressions.swift:7:18:7:18 | $interpolation | DeclRefExpr |
 | expressions.swift:7:18:7:18 | &... | InOutExpr |
 | expressions.swift:7:18:7:18 | .appendInterpolation(_:) | MethodLookupExpr |
@@ -22,6 +23,7 @@
 | expressions.swift:7:21:7:21 | $interpolation | DeclRefExpr |
 | expressions.swift:7:21:7:21 | &... | InOutExpr |
 | expressions.swift:7:21:7:21 | .appendLiteral(_:) | MethodLookupExpr |
+| expressions.swift:7:21:7:21 | appendLiteral(_:) | DeclRefExpr |
 | expressions.swift:7:21:7:21 | call to appendLiteral(_:) | CallExpr |
 | expressions.swift:8:15:8:15 | nil | NilLiteralExpr |
 | expressions.swift:15:9:15:9 | x | DeclRefExpr |

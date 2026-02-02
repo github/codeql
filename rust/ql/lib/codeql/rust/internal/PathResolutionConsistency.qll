@@ -9,8 +9,8 @@ private import PathResolution
 query predicate multiplePathResolutions(Path p, ItemNode i) {
   p.fromSource() and
   i = resolvePath(p) and
-  // known limitation for `$crate`
-  not p.getQualifier*().(RelevantPath).isUnqualified("$crate") and
+  // `panic` is defined in both `std` and `core`; both are included in the prelude
+  not p.getText() = "panic" and
   // `use foo::bar` may use both a type `bar` and a value `bar`
   not p =
     any(UseTree use |
@@ -24,10 +24,10 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
   strictcount(ItemNode i0 | i0 = resolvePath(p) and not i0 instanceof Crate) > 1
 }
 
-/** Holds if `call` has multiple static call targets including `target`. */
-query predicate multipleCallTargets(CallExprBase call, Callable target) {
-  target = call.getStaticTarget() and
-  strictcount(call.getStaticTarget()) > 1
+/** Holds if `ie` has multiple resolved targets including `target`. */
+query predicate multipleResolvedTargets(InvocationExpr ie, Addressable target) {
+  target = ie.getResolvedTarget() and
+  strictcount(ie.getResolvedTarget()) > 1
 }
 
 /** Holds if `fe` resolves to multiple record fields including `field`. */
@@ -55,8 +55,8 @@ int getPathResolutionInconsistencyCounts(string type) {
   type = "Multiple path resolutions" and
   result = count(Path p | multiplePathResolutions(p, _) | p)
   or
-  type = "Multiple static call targets" and
-  result = count(CallExprBase call | multipleCallTargets(call, _) | call)
+  type = "Multiple resolved targets" and
+  result = count(InvocationExpr ie | multipleResolvedTargets(ie, _) | ie)
   or
   type = "Multiple record fields" and
   result = count(FieldExpr fe | multipleStructFields(fe, _) | fe)

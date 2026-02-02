@@ -1,3 +1,80 @@
+## 5.4.5
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the C# extractor's search for `.config`, `.props`, XML and project files.
+* Updated the generated .NET “models as data” runtime models to cover .NET 10.
+* C# 14: Support for *implicit* span conversions in the QL library.
+* Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and `build mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+* Added autobuilder and `build-mode: none` support for `.slnx` solution files.
+* In `build mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
+* Added implicit reads of `System.Collections.Generic.KeyValuePair.Value` at taint-tracking sinks and at inputs to additional taint steps. As a result, taint-tracking queries will now produce more results when a container is tainted.
+
+### Bug Fixes
+
+* Fixed two issues affecting build mode `none`:
+  * Corrected version sorting logic when detecting the newest .NET framework to use.
+  * Improved stability for .NET 10 compatibility.
+* Fixed an issue where compiler-generated files were not being extracted. The extractor now runs after compilation completes to ensure all generated files are properly analyzed.
+
+## 5.4.4
+
+No user-facing changes.
+
+## 5.4.3
+
+No user-facing changes.
+
+## 5.4.2
+
+No user-facing changes.
+
+## 5.4.1
+
+### Minor Analysis Improvements
+
+* Improved stability when downloading .NET versions by setting appropriate environment variables for `dotnet` commands. The correct architecture-specific version of .NET is now downloaded on ARM runners.
+* Compilation errors are now included in the debug log when using build-mode none.
+* Added a new extractor option to specify a custom directory for dependency downloads in buildless mode. Use `-O buildless_dependency_dir=<path>` to configure the target directory.
+
+## 5.4.0
+
+### Deprecated APIs
+
+* `ControlFlowElement.controlsBlock` has been deprecated in favor of the Guards library.
+
+### New Features
+
+* Initial support for incremental C# databases via `codeql database create --overlay-base`/`--overlay-changes`.
+
+### Minor Analysis Improvements
+
+* Updated *roslyn* and *binlog* dependencies in the extractor, which may improve database and analysis quality.
+
+## 5.3.0
+
+### Deprecated APIs
+
+* The class `AbstractValue` in the `Guards` library has been deprecated and replaced with the class `GuardValue`.
+
+### Major Analysis Improvements
+
+* The representation of the C# control-flow graph has been significantly changed. This has minor effects on a wide range of queries including both minor improvements and minor regressions. For example, improved precision has been observed for `cs/inefficient-containskey` and `cs/stringbuilder-creation-in-loop`. Two queries stand out as being significantly affected with great improvements: `cs/dereferenced-value-may-be-null` has been completely rewritten which removes a very significant number of false positives. Furthermore, `cs/constant-condition` has been updated to report many new results - these new results are primarily expected to be true positives, but a few new false positives are expected as well. As part of these changes, `cs/dereferenced-value-may-be-null` has been changed from a `path-problem` query to a `problem` query, so paths are no longer reported for this query.
+
+### Minor Analysis Improvements
+
+* Added tracer support for macOS and Linux when the .NET CLI (`dotnet`) directly invokes the C# compiler (`csc`). This enhancement provides basic tracing and extraction capabilities for .NET 10 RC2 on these platforms.
+* The extraction of location information for source code entities has been updated to use star IDs (`*` IDs). This change should be transparent to end-users but may improve extraction performance in some cases by reducing TRAP file size and eliminating overhead from location de-duplication.
+
+## 5.2.6
+
+### Minor Analysis Improvements
+
+* The extraction of location information for parameters, fields, constructors, destructors and user operators has been optimized. Previously, location information was extracted multiple times for each bound generic. Now, only the location of the unbound generic declaration is extracted during the extraction phase, and the QL library explicitly reuses this location for all bound instances of the same generic.
+* The extraction of location information for type parameters and tuples types has been optimized. Previously, location information was extracted multiple times for each type when it was declared across multiple files. Now, the extraction context is respected during the extraction phase, ensuring locations are only extracted within the appropriate context. This change should be transparent to end-users but may improve extraction performance in some cases.
+* The extraction of location information for named types (classes, structs, etc.) has been optimized. Previously, location information was extracted multiple times for each type when it was declared across multiple files. Now, the extraction context is respected during the extraction phase, ensuring locations are only extracted within the appropriate context. This change should be transparent to end-users but may improve extraction performance in some cases.
+* The extraction of the location for bound generic entities (methods, accessors, indexers, properties, and events) has been optimized. Previously, location information was extracted multiple times for each bound generic. Now, only the location of the unbound generic declaration is extracted during the extraction phase, and the QL library explicitly reuses this location for all bound instances of the same generic.
+
 ## 5.2.5
 
 No user-facing changes.

@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.ClassInstanceStack
 import com.github.codeql.utils.versions.usesK2
 import com.semmle.util.files.FileUtil
 import com.semmle.util.trap.pathtransformers.PathTransformer
@@ -151,6 +152,7 @@ class KotlinExtractorExtension(
             }
             val compression = getCompression(logger)
 
+            val classInstanceStack = ClassInstanceStack()
             val primitiveTypeMapping = PrimitiveTypeMapping(logger, pluginContext)
             // FIXME: FileUtil expects a static global logger
             // which should be provided by SLF4J's factory facility. For now we set it here.
@@ -182,6 +184,7 @@ class KotlinExtractorExtension(
                     trapDir,
                     srcDir,
                     file,
+                    classInstanceStack,
                     primitiveTypeMapping,
                     pluginContext,
                     globalExtensionState
@@ -358,6 +361,7 @@ private fun doFile(
     dbTrapDir: File,
     dbSrcDir: File,
     srcFile: IrFile,
+    classInstanceStack: ClassInstanceStack,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
     globalExtensionState: KotlinExtractorGlobalState
@@ -415,6 +419,7 @@ private fun doFile(
                         compression,
                         invocationTrapFile,
                         srcFilePath,
+                        classInstanceStack,
                         primitiveTypeMapping,
                         pluginContext,
                         globalExtensionState,
@@ -429,6 +434,7 @@ private fun doFile(
                         srcFilePath,
                         null,
                         externalDeclExtractor,
+                        classInstanceStack,
                         primitiveTypeMapping,
                         pluginContext,
                         KotlinFileExtractor.DeclarationStack(),

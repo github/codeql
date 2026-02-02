@@ -85,7 +85,7 @@ module CommandInjection {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("command-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "command-injection") }
   }
 
   /**
@@ -95,4 +95,11 @@ module CommandInjection {
 
   /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer defined via models-as-data with kind "command-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "command-injection") }
+  }
 }

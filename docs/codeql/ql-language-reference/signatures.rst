@@ -10,6 +10,10 @@ Signatures
 Parameterized modules use signatures as a type system for their parameters.
 There are three categories of signatures: **predicate signatures**, **type signatures**, and **module signatures**.
 
+.. index:: predicate signature
+
+.. _predicate-signatures:
+
 Predicate signatures
 ====================
 
@@ -35,6 +39,10 @@ For example:
 .. code-block:: ql
 
     signature int operator(int lhs, int rhs);
+
+.. index:: type signature
+
+.. _type-signatures:
 
 Type signatures
 ===============
@@ -65,6 +73,10 @@ For example:
     signature class CanBePrinted {
       string toString();
     }
+
+.. index:: module signature
+
+.. _module-signatures:
 
 Module signatures
 =================

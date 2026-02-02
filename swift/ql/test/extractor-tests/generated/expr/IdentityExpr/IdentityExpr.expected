@@ -8,6 +8,8 @@ instances
 | identity_expressions.swift:15:5:15:21 | await ... | AwaitExpr | getSubExpr: | identity_expressions.swift:15:11:15:21 | call to process() |
 | identity_expressions.swift:15:11:15:19 | (...) | ParenExpr | getSubExpr: | identity_expressions.swift:15:12:15:12 | process() |
 | identity_expressions.swift:18:9:18:17 | BorrowExpr | BorrowExpr | getSubExpr: | identity_expressions.swift:18:17:18:17 | x |
+| identity_expressions.swift:23:33:23:40 | UnsafeExpr | UnsafeExpr | getSubExpr: | identity_expressions.swift:23:40:23:40 | y |
+| identity_expressions.swift:24:13:24:20 | UnsafeExpr | UnsafeExpr | getSubExpr: | identity_expressions.swift:24:20:24:20 | x |
 getType
 | identity_expressions.swift:5:9:5:14 | .self | A |
 | identity_expressions.swift:5:9:5:21 | .self | @lvalue Int |
@@ -18,3 +20,5 @@ getType
 | identity_expressions.swift:15:5:15:21 | await ... | () |
 | identity_expressions.swift:15:11:15:19 | (...) | () async -> () |
 | identity_expressions.swift:18:9:18:17 | BorrowExpr | Int |
+| identity_expressions.swift:23:33:23:40 | UnsafeExpr | UnsafeType |
+| identity_expressions.swift:24:13:24:20 | UnsafeExpr | UnsafeType |

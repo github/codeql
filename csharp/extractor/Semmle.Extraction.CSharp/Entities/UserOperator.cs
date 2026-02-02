@@ -26,8 +26,18 @@ namespace Semmle.Extraction.CSharp.Entities
                 returnType.TypeRef,
                 (UserOperator)OriginalDefinition);
 
-            foreach (var l in Locations)
-                trapFile.operator_location(this, l);
+            ContainingType.PopulateGenerics();
+            Overrides(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.operator_location, this, Locations);
+            }
 
             if (IsSourceDeclaration)
             {
@@ -37,9 +47,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var declaration in declSyntaxReferences.OfType<ConversionOperatorDeclarationSyntax>())
                     TypeMention.Create(Context, declaration.Type, this, returnType);
             }
-
-            ContainingType.PopulateGenerics();
-            Overrides(trapFile);
         }
 
         public override bool NeedsPopulation => Context.Defines(Symbol) || IsImplicitOperator(out _);

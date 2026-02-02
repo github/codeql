@@ -5,9 +5,9 @@
 import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
-private import semmle.code.csharp.controlflow.internal.PreSsa
 private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
   class SourceVariable = Ssa::SourceVariable;
@@ -783,7 +783,7 @@ cached
 private module Cached {
   cached
   newtype TSourceVariable =
-    TLocalVar(Callable c, PreSsa::SimpleLocalScopeVariable v) {
+    TLocalVar(Callable c, BaseSsa::SimpleLocalScopeVariable v) {
       c = v.getCallable()
       or
       // Local scope variables can be captured
@@ -963,25 +963,59 @@ private module Cached {
       DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
-    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::AbstractValue v);
+    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue v);
 
     cached // nothing is actually cached
     module BarrierGuard<guardChecksSig/3 guardChecks> {
-      private predicate guardChecksAdjTypes(
-        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e,
-        DataFlowIntegrationInput::GuardValue branch
+      private import codeql.util.Unit
+
+      private predicate guardChecksAdjTypes(Guards::Guards::Guard g, Expr e, Guards::GuardValue v) {
+        guardChecks(g, e, v)
+      }
+
+      private predicate guardChecksWithWrappers(
+        Guards::Guard g, Definition def, Guards::GuardValue val, Unit state
       ) {
-        exists(Guards::AbstractValues::BooleanValue v |
-          guardChecks(g, e.getAstNode(), v) and
-          branch = v.getValue()
-        )
+        Guards::Guards::ValidationWrapper<guardChecksAdjTypes/3>::guardChecksDef(g, def, val) and
+        exists(state)
       }
 
       private Node getABarrierNodeImpl() {
-        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<Unit, guardChecksWithWrappers/4>::getABarrierNode(_)
       }
 
       predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
+
+    bindingset[this]
+    private signature class ParamSig;
+
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::GuardValue gv, P param);
+    }
+
+    cached // nothing is actually cached
+    module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        Guards::Guards::Guard g, Expr e, Guards::GuardValue gv, P param
+      ) {
+        guardChecks(g, e, gv, param)
+      }
+
+      private predicate guardChecksWithWrappers(
+        DataFlowIntegrationInput::Guard g, Definition def, Guards::GuardValue val, P param
+      ) {
+        Guards::Guards::ParameterizedValidationWrapper<P, guardChecksAdjTypes/4>::guardChecksDef(g,
+          def, val, param)
+      }
+
+      private Node getABarrierNodeImpl(P param) {
+        result =
+          DataFlowIntegrationImpl::BarrierGuardDefWithState<P, guardChecksWithWrappers/4>::getABarrierNode(param)
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/1;
     }
   }
 }
@@ -1037,38 +1071,18 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
       )
   }
 
-  class GuardValue = Boolean;
+  class GuardValue = Guards::GuardValue;
 
-  class Guard extends Guards::Guard {
-    /**
-     * Holds if the evaluation of this guard to `branch` corresponds to the edge
-     * from `bb1` to `bb2`.
-     */
-    predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
-      exists(ControlFlow::ConditionalSuccessor s |
-        this.getAControlFlowNode() = bb1.getLastNode() and
-        bb2 = bb1.getASuccessor(s) and
-        s.getValue() = branch
-      )
-    }
+  class Guard = Guards::Guard;
 
-    /**
-     * Holds if this guard evaluating to `branch` controls the control-flow
-     * branch edge from `bb1` to `bb2`. That is, following the edge from
-     * `bb1` to `bb2` implies that this guard evaluated to `branch`.
-     */
-    predicate valueControlsBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue branch) {
-      this.hasValueBranchEdge(bb1, bb2, branch)
-    }
+  /** Holds if the guard `guard` directly controls block `bb` upon evaluating to `val`. */
+  predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.directlyValueControls(bb, val)
   }
 
-  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardDirectlyControlsBlock(Guard guard, ControlFlow::BasicBlock bb, GuardValue branch) {
-    exists(ConditionBlock conditionBlock, ControlFlow::ConditionalSuccessor s |
-      guard.getAControlFlowNode() = conditionBlock.getLastNode() and
-      s.getValue() = branch and
-      conditionBlock.edgeDominates(bb, s)
-    )
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `val`. */
+  predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue val) {
+    guard.valueControls(bb, val)
   }
 }
 

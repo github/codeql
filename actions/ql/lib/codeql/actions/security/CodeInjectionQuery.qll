@@ -19,12 +19,7 @@ class CodeInjectionSink extends DataFlow::Node {
 Event getRelevantCriticalEventForSink(DataFlow::Node sink) {
   inPrivilegedContext(sink.asExpr(), result) and
   not exists(ControlCheck check | check.protects(sink.asExpr(), result, "code-injection")) and
-  // exclude cases where the sink is a JS script and the expression uses toJson
-  not exists(UsesStep script |
-    script.getCallee() = "actions/github-script" and
-    script.getArgumentExpr("script") = sink.asExpr() and
-    exists(getAToJsonReferenceExpression(sink.asExpr().(Expression).getExpression(), _))
-  )
+  not isGithubScriptUsingToJson(sink.asExpr())
 }
 
 /**
@@ -80,8 +75,6 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
-
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     result = sink.getLocation()
     or
@@ -93,3 +86,38 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a code script. */
 module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
+
+/**
+ * Holds if there is a code injection flow from `source` to `sink` with
+ * critical severity, linked by `event`.
+ */
+predicate criticalSeverityCodeInjection(
+  CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event event
+) {
+  CodeInjectionFlow::flowPath(source, sink) and
+  event = getRelevantCriticalEventForSink(sink.getNode()) and
+  source.getNode().(RemoteFlowSource).getEventName() = event.getName()
+}
+
+/**
+ * Holds if there is a code injection flow from `source` to `sink` with medium severity.
+ */
+predicate mediumSeverityCodeInjection(
+  CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+) {
+  CodeInjectionFlow::flowPath(source, sink) and
+  not criticalSeverityCodeInjection(source, sink, _) and
+  not isGithubScriptUsingToJson(sink.getNode().asExpr())
+}
+
+/**
+ * Holds if `expr` is the `script` input to `actions/github-script` and it uses
+ * `toJson`.
+ */
+predicate isGithubScriptUsingToJson(Expression expr) {
+  exists(UsesStep script |
+    script.getCallee() = "actions/github-script" and
+    script.getArgumentExpr("script") = expr and
+    exists(getAToJsonReferenceExpression(expr.getExpression(), _))
+  )
+}

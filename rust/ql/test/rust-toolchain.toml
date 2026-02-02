@@ -2,6 +2,6 @@
 # IMPORTANT: this can also have an impact on QL test results
 
 [toolchain]
-channel = "1.86"
+channel = "1.90"
 profile = "minimal"
 components = [ "rust-src" ]

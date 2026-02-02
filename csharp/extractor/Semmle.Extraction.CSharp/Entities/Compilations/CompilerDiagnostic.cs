@@ -21,6 +21,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             var key = diagnostic.Id;
             var messageCount = compilation.messageCounts.AddOrUpdate(key, 1, (_, c) => c + 1);
             if (messageCount > limit)

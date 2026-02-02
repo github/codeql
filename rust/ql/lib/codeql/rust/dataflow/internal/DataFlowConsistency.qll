@@ -19,27 +19,12 @@ private module Input implements InputSig<Location, RustDataFlow> {
   predicate postWithInFlowExclude(RustDataFlow::Node n) {
     n instanceof Node::FlowSummaryNode
     or
-    // We allow flow into post-update node for receiver expressions (from the
-    // synthetic post receiever node).
-    n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = any(Node::ReceiverNode r).getReceiver()
-    or
     n.(Node::PostUpdateNode).getPreUpdateNode().asExpr() = getPostUpdateReverseStep(_, _)
     or
     FlowSummaryImpl::Private::Steps::sourceLocalStep(_, n, _)
   }
 
   predicate missingLocationExclude(RustDataFlow::Node n) { not exists(n.asExpr().getLocation()) }
-
-  predicate multipleArgumentCallExclude(Node::ArgumentNode arg, DataFlowCall call) {
-    // An argument such as `x` in `if !x { ... }` has two successors (and hence
-    // two calls); one for each Boolean outcome of `x`.
-    exists(CfgNodes::ExprCfgNode n |
-      arg.isArgumentOf(call, _) and
-      n = call.asCallCfgNode() and
-      arg.asExpr().getASuccessor(any(ConditionalSuccessor c)).getASuccessor*() = n and
-      n.getASplit() instanceof ConditionalCompletionSplitting::ConditionalCompletionSplit
-    )
-  }
 }
 
 import MakeConsistency<Location, RustDataFlow, RustTaintTracking, Input>

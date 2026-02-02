@@ -12,7 +12,8 @@ private newtype TNode =
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
   MkSliceElementNode(SliceExpr se) or
-  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -760,18 +761,27 @@ module Public {
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
   }
 
-  private Node getADirectlyWrittenNode() {
-    exists(Write w | w.writesComponent(result, _)) or
-    result = DataFlow::exprNode(any(SendStmt s).getChannel())
-  }
-
-  private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
-    result = node.(PointerDereferenceNode).getOperand()
+  private IR::Instruction getADirectlyWrittenInsn() {
+    exists(Write w | w.writesComponentInstruction(result, _))
     or
-    result = node.(ComponentReadNode).getBase()
+    result = IR::evalExprInstruction(any(SendStmt s).getChannel())
   }
 
-  private Node getAWrittenNode() { result = getAccessPathPredecessor*(getADirectlyWrittenNode()) }
+  private IR::Instruction getAccessPathPredecessorInsn(IR::Instruction insn) {
+    exists(Expr e1, Expr e2 |
+      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2)
+    |
+      e2 = e1.(DerefExpr).getOperand() or e2 = e1.(StarExpr).getBase()
+    )
+    or
+    exists(Expr e | insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e))
+    or
+    result = insn.(IR::ComponentReadInstruction).getBase()
+  }
+
+  private IR::Instruction getAWrittenInsn() {
+    result = getAccessPathPredecessorInsn*(getADirectlyWrittenInsn())
+  }
 
   /**
    * Holds if `tp` is a type that may (directly or indirectly) reference a memory location.
@@ -807,31 +817,55 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
-  private class DefaultPostUpdateNode extends PostUpdateNode {
+  /** Holds if the node corresponding to `insn` has a post-update node. */
+  predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
+      e instanceof AddressExpr or
+      e = any(AddressExpr ae).getOperand() or
+      e = any(StarExpr ae).getBase() or
+      e = any(DerefExpr ae).getOperand() or
+      e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
+    )
+    or
+    exists(CallExpr ce |
+      ce.getArgument(0).getType() instanceof TupleType and
+      insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
+      or
+      not ce.getArgument(0).getType() instanceof TupleType and
+      insn = IR::evalExprInstruction(ce.getAnArgument())
+      or
+      // Receiver of a method call
+      exists(IR::MethodReadInstruction mri |
+        ce.getTarget() instanceof Method and
+        mri = IR::evalExprInstruction(ce.getCalleeExpr()) and
+        // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
+        // then mri.getReceiver() will give us the implicit field read a.b.c
+        // and we want to have post-update nodes for a, the implicit field
+        // read a.b and the implicit field read a.b.c.
+        insn = IR::lookThroughImplicitFieldRead*(mri.getReceiver())
+      )
+    ) and
+    mutableType(insn.getResultType())
+    or
+    insn = getAWrittenInsn()
+  }
+
+  private class DefaultPostUpdateNode extends PostUpdateNode, MkDefaultPostUpdateNode {
     Node preupd;
 
-    DefaultPostUpdateNode() {
-      (
-        preupd instanceof AddressOperationNode
-        or
-        preupd = any(AddressOperationNode addr).getOperand()
-        or
-        preupd = any(PointerDereferenceNode deref).getOperand()
-        or
-        preupd = getAWrittenNode()
-        or
-        preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
-        mutableType(preupd.getType())
-      ) and
-      (
-        preupd = this.(SsaNode).getAUse()
-        or
-        preupd = this and
-        not basicLocalFlowStep(_, this)
-      )
-    }
+    DefaultPostUpdateNode() { this = MkDefaultPostUpdateNode(preupd.asInstruction()) }
 
     override Node getPreUpdateNode() { result = preupd }
+
+    override ControlFlow::Root getRoot() { result = preupd.getRoot() }
+
+    override Type getType() { result = preupd.getType() }
+
+    override string getNodeKind() { result = "post-update node" }
+
+    override string toString() { result = preupd.toString() + " [postupdate]" }
+
+    override Location getLocation() { result = preupd.getLocation() }
   }
 
   /**
@@ -866,7 +900,7 @@ module Public {
     int getPosition() { result = i }
 
     /**
-     * Gets a data-flow node for a syntactic argument corresponding this this
+     * Gets a data-flow node for a syntactic argument corresponding to this
      * argument. If this argument is not an implicit varargs slice then this
      * will just be the argument itself. If this argument is an implicit
      * varargs slice then this will be a data-flow node that for an argument
@@ -1317,7 +1351,6 @@ module Public {
   }
 }
 
-private import Private
 private import Public
 
 class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {

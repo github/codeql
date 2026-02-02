@@ -12,7 +12,7 @@ tree-sitter = ">= 0.23.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
 rayon = "1.11.0"
-regex = "1.11.2"
+regex = "1.11.3"
 encoding = "0.2"
 lazy_static = "1.5.0"
 serde = { version = "1.0", features = ["derive"] }

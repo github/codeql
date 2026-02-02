@@ -12,13 +12,13 @@ class EvpSignatureAlgorithmValueConsumer extends SignatureAlgorithmValueConsumer
   DataFlow::Node resultNode;
 
   EvpSignatureAlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asIndirectExpr() = this and
     (
       // EVP_SIGNATURE
       this.(Call).getTarget().getName() = "EVP_SIGNATURE_fetch" and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
       // EVP_PKEY_get1_DSA, EVP_PKEY_get1_RSA
-      // DSA_SIG_new, DSA_SIG_get0, RSA_sign ?
+      // DSA_SIG_new, DSA_SIG_get0 ?
     )
   }
 

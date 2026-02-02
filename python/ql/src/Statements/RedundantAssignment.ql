@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate assignment(AssignStmt a, Expr left, Expr right) {
   a.getATarget() = left and a.getValue() = right
@@ -35,7 +36,7 @@ predicate same_value(Expr left, Expr right) {
 }
 
 predicate maybe_defined_in_outer_scope(Name n) {
-  exists(SsaVariable v | v.getAUse().getNode() = n | v.maybeUndefined())
+  exists(SsaVariableWithPointsTo v | v.getAUse().getNode() = n | v.maybeUndefined())
 }
 
 /*
@@ -57,7 +58,9 @@ predicate same_name(Name n1, Name n2) {
   not maybe_defined_in_outer_scope(n2)
 }
 
-ClassValue value_type(Attribute a) { a.getObject().pointsTo().getClass() = result }
+ClassValue value_type(Attribute a) {
+  a.getObject().(ExprWithPointsTo).pointsTo().getClass() = result
+}
 
 predicate is_property_access(Attribute a) {
   value_type(a).lookup(a.getName()) instanceof PropertyValue
@@ -87,7 +90,7 @@ predicate pyflakes_commented(AssignStmt assignment) {
 
 predicate side_effecting_lhs(Attribute lhs) {
   exists(ClassValue cls, ClassValue decl |
-    lhs.getObject().pointsTo().getClass() = cls and
+    lhs.getObject().(ExprWithPointsTo).pointsTo().getClass() = cls and
     decl = cls.getASuperType() and
     not decl.isBuiltin()
   |

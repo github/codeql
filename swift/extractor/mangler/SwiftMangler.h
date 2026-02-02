@@ -93,7 +93,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitTypeAliasType(const swift::TypeAliasType* type);
   SwiftMangledName visitArchetypeType(const swift::ArchetypeType* type);
   SwiftMangledName visitOpaqueTypeArchetypeType(const swift::OpaqueTypeArchetypeType* type);
-  SwiftMangledName visitOpenedArchetypeType(const swift::OpenedArchetypeType* type);
+  SwiftMangledName visitExistentialArchetypeType(const swift::ExistentialArchetypeType* type);
   SwiftMangledName visitProtocolCompositionType(const swift::ProtocolCompositionType* type);
   SwiftMangledName visitLValueType(const swift::LValueType* type);
   SwiftMangledName visitDynamicSelfType(const swift::DynamicSelfType* type);
@@ -106,14 +106,26 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitPackExpansionType(const swift::PackExpansionType* type);
 
  private:
-  std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;
+  enum class ExtensionKind : bool {
+    swift,
+    clang,
+  };
+
+  struct ExtensionIndex {
+    const ExtensionKind kind : 1;
+    const uint32_t index : 31;
+  };
+
+  static std::unordered_map<const swift::Decl*, ExtensionIndex> preloadedExtensionIndexes;
 
   virtual SwiftMangledName fetch(const swift::Decl* decl) = 0;
   virtual SwiftMangledName fetch(const swift::TypeBase* type) = 0;
   SwiftMangledName fetch(swift::Type type) { return fetch(type.getPointer()); }
 
   void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
-  unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
+  void indexClangExtensions(const clang::Module* clangModule,
+                            swift::ClangModuleLoader* moduleLoader);
+  ExtensionIndex getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
   SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);

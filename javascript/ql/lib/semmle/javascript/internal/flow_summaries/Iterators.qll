@@ -1,6 +1,8 @@
 /**
  * Contains flow summaries and steps modeling flow through iterators.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode
@@ -8,7 +10,7 @@ private import semmle.javascript.dataflow.FlowSummary
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import FlowSummaryUtil
 
-class IteratorNext extends SummarizedCallable {
+class IteratorNext extends SummarizedCallable::Range {
   IteratorNext() { this = "Iterator#next" }
 
   override DataFlow::MethodCallNode getACallSimple() {

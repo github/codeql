@@ -231,6 +231,46 @@ The following global taint-tracking query finds places where a string literal is
     where ConstantPasswordFlow::flow(sourceNode, sinkNode)
     select sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
 
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the taint-tracking example above, converted into a path query:
+
+.. code-block:: ql
+
+    /**
+     * @kind path-problem
+     * @problem.severity warning
+     * @id constant-password
+     */
+
+    import rust
+    import codeql.rust.dataflow.DataFlow
+    import codeql.rust.dataflow.TaintTracking
+
+    module ConstantPasswordConfig implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node node) { node.asExpr().getExpr() instanceof StringLiteralExpr }
+
+      predicate isSink(DataFlow::Node node) {
+        // any argument going to a parameter called `password`
+        exists(Function f, CallExpr call, int index |
+          call.getArg(index) = node.asExpr().getExpr() and
+          call.getStaticTarget() = f and
+          f.getParam(index).getPat().(IdentPat).getName().getText() = "password"
+        )
+      }
+    }
+
+    module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
+
+    import ConstantPasswordFlow::PathGraph
+
+    from ConstantPasswordFlow::PathNode sourceNode, ConstantPasswordFlow::PathNode sinkNode
+    where ConstantPasswordFlow::flowPath(sourceNode, sinkNode)
+    select sinkNode.getNode(), sourceNode, sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 
 Further reading
 ---------------

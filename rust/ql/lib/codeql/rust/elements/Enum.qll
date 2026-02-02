@@ -4,13 +4,8 @@
  */
 
 private import internal.EnumImpl
-import codeql.rust.elements.Adt
-import codeql.rust.elements.Attr
-import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.Name
+import codeql.rust.elements.TypeItem
 import codeql.rust.elements.VariantList
-import codeql.rust.elements.Visibility
-import codeql.rust.elements.WhereClause
 
 /**
  * An enum declaration.

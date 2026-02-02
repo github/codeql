@@ -254,4 +254,15 @@ public class C {
       xs[0] = 42; // OK
     }
   }
+
+  public void ex19(Object t, Object x) {
+    boolean b = t != null || x != null;
+    if (b) {
+      if (t != null) {
+        t.hashCode(); // OK
+      } else {
+        x.hashCode(); // OK
+      }
+    }
+  }
 }

@@ -1,7 +1,7 @@
 pub mod nested2; // I8
 
 fn g() {
-    println!("my2/mod.rs::g");
+    println!("my2/mod.rs::g"); // $ item=println
     nested2::nested3::nested4::f(); // $ item=I12
 } // I9
 

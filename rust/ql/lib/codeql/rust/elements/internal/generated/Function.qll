@@ -54,17 +54,19 @@ module Generated {
     final predicate hasAbi() { exists(this.getAbi()) }
 
     /**
-     * Gets the body of this function, if it exists.
+     * Gets the function body of this function, if it exists.
      */
-    BlockExpr getBody() {
+    BlockExpr getFunctionBody() {
       result =
-        Synth::convertBlockExprFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getBody())
+        Synth::convertBlockExprFromRaw(Synth::convertFunctionToRaw(this)
+              .(Raw::Function)
+              .getFunctionBody())
     }
 
     /**
-     * Holds if `getBody()` exists.
+     * Holds if `getFunctionBody()` exists.
      */
-    final predicate hasBody() { exists(this.getBody()) }
+    final predicate hasFunctionBody() { exists(this.getFunctionBody()) }
 
     /**
      * Gets the generic parameter list of this function, if it exists.

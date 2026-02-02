@@ -9,13 +9,14 @@ module SQL {
   abstract class SqlString extends DataFlow::Node { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
+    SqlStringFromModel() { ModelOutput::sinkNode(this, "sql-injection") }
   }
 
   /**
    * An dataflow node that sanitizes a string to make it safe to embed into
    * a SQL command.
    */
+  overlay[global]
   abstract class SqlSanitizer extends DataFlow::Node {
     DataFlow::Node input;
     DataFlow::Node output;

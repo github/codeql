@@ -13,7 +13,7 @@ module Erb {
   /**
    * Flow summary for `ERB.new`. This method wraps a template string, compiling it.
    */
-  private class TemplateSummary extends SummarizedCallable {
+  private class TemplateSummary extends SummarizedCallable::Range {
     TemplateSummary() { this = "ERB.new" }
 
     override MethodCall getACall() { result = any(ErbTemplateNewCall c).asExpr().getExpr() }

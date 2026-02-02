@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
+import codeql.rust.elements.Expr
 import codeql.rust.elements.Param
 import codeql.rust.elements.ParamList
 
@@ -69,5 +70,15 @@ module Generated {
      * Gets the number of parameters of this callable.
      */
     final int getNumberOfParams() { result = count(int i | exists(this.getParam(i))) }
+
+    /**
+     * Gets the body of this callable, if it exists.
+     */
+    Expr getBody() { none() }
+
+    /**
+     * Holds if `getBody()` exists.
+     */
+    final predicate hasBody() { exists(this.getBody()) }
   }
 }

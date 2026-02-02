@@ -10,14 +10,16 @@ ql/rust/ql/src/queries/diagnostics/UnextractedElements.ql
 ql/rust/ql/src/queries/diagnostics/UnresolvedMacroCalls.ql
 ql/rust/ql/src/queries/security/CWE-020/RegexInjection.ql
 ql/rust/ql/src/queries/security/CWE-022/TaintedPath.ql
+ql/rust/ql/src/queries/security/CWE-079/XSS.ql
 ql/rust/ql/src/queries/security/CWE-089/SqlInjection.ql
 ql/rust/ql/src/queries/security/CWE-117/LogInjection.ql
+ql/rust/ql/src/queries/security/CWE-295/DisabledCertificateCheck.ql
 ql/rust/ql/src/queries/security/CWE-311/CleartextTransmission.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextLogging.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextStorageDatabase.ql
 ql/rust/ql/src/queries/security/CWE-319/UseOfHttp.ql
 ql/rust/ql/src/queries/security/CWE-327/BrokenCryptoAlgorithm.ql
-ql/rust/ql/src/queries/security/CWE-328/WeakSensitiveDataHashing.ql
+ql/rust/ql/src/queries/security/CWE-327/WeakSensitiveDataHashing.ql
 ql/rust/ql/src/queries/security/CWE-614/InsecureCookie.ql
 ql/rust/ql/src/queries/security/CWE-696/BadCtorInitialization.ql
 ql/rust/ql/src/queries/security/CWE-770/UncontrolledAllocationSize.ql

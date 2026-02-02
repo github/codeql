@@ -287,7 +287,7 @@ Exercise 2: Find all hard-coded strings passed to ``System.Uri``, using global d
 
 Exercise 3: Define a class that represents flow sources from ``System.Environment.GetEnvironmentVariable``. (`Answer <#exercise-3>`__)
 
-Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__)
+Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flow paths from ``System.Environment.GetEnvironmentVariable`` to ``System.Uri``. (`Answer <#exercise-4>`__ `Answer as a path query <#path-query-example>`__)
 
 Extending library data flow
 ---------------------------
@@ -536,6 +536,48 @@ This can be adapted from the ``SystemUriFlow`` class:
        p = getAProperty() and p.hasName("Message")
      }
    }
+
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the answer to exercise 4 above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id getenv-to-gethostbyname
+    */
+
+   import csharp
+
+   class EnvironmentVariableFlowSource extends DataFlow::ExprNode {
+     EnvironmentVariableFlowSource() {
+       this.getExpr().(MethodCall).getTarget().hasQualifiedName("System.Environment.GetEnvironmentVariable")
+     }
+   }
+
+   module EnvironmentToUriConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node src) {
+       src instanceof EnvironmentVariableFlowSource
+     }
+
+     predicate isSink(DataFlow::Node sink) {
+       exists(Call c | c.getTarget().(Constructor).getDeclaringType().hasQualifiedName("System.Uri")
+       and sink.asExpr()=c.getArgument(0))
+     }
+   }
+
+   module EnvironmentToUriFlow = DataFlow::Global<EnvironmentToUriConfig>;
+
+   import EnvironmentToUriFlow::PathGraph
+
+   from EnvironmentToUriFlow::PathNode src, EnvironmentToUriFlow::PathNode sink
+   where EnvironmentToUriFlow::flowPath(src, sink)
+   select src.getNode(), src, sink, "This environment variable constructs a 'System.Uri' $@.", sink, "here"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------

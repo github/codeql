@@ -625,15 +625,19 @@ abstract deprecated class LabeledBarrierGuardNode extends BarrierGuardNode {
  *
  * For use with load/store steps in `DataFlow::SharedFlowStep` and TypeTracking.
  */
+overlay[local?]
 module PseudoProperties {
   /** Holds if `s` is a pseudo-property. */
   bindingset[s]
+  overlay[caller?]
   predicate isPseudoProperty(string s) { s.matches("$%$") }
 
   bindingset[s]
+  overlay[caller?]
   private string pseudoProperty(string s) { result = "$" + s + "$" }
 
   bindingset[s, v]
+  overlay[caller?]
   private string pseudoProperty(string s, string v) { result = "$" + s + "|" + v + "$" }
 
   /**
@@ -680,6 +684,7 @@ module PseudoProperties {
    * Gets a pseudo-property for the location of a map value where the key is `key`.
    * The string value of the `key` is encoded in the result, and there is only a result if the string value of `key` is known.
    */
+  overlay[caller?]
   pragma[inline]
   string mapValueKnownKey(DataFlow::Node key) {
     result = mapValueKey(any(string s | key.mayHaveStringValue(s)))
@@ -689,17 +694,20 @@ module PseudoProperties {
    * Gets a pseudo-property for the location of a map value where the key is `key`.
    */
   bindingset[key]
+  overlay[caller?]
   string mapValueKey(string key) { result = pseudoProperty("mapValue", key) }
 
   /**
    * Holds if `prop` equals `mapValueKey(key)` for some value of `key`.
    */
   bindingset[prop]
+  overlay[caller?]
   predicate isMapValueKey(string prop) { prop.matches("$mapValue|%$") }
 
   /**
    * Gets a pseudo-property for the location of a map value where the key is `key`.
    */
+  overlay[caller?]
   pragma[inline]
   string mapValue(DataFlow::Node key) {
     result = mapValueKnownKey(key)

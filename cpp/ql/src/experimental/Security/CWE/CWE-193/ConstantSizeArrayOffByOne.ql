@@ -129,7 +129,7 @@ module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefC
 
 predicate pointerArithOverflow(PointerArithmeticInstruction pai, int delta) {
   pointerArithOverflow0(pai, delta) and
-  PointerArithmeticToDerefFlow::flow(DataFlow::instructionNode(pai), _)
+  PointerArithmeticToDerefFlow::flowFrom(DataFlow::instructionNode(pai))
 }
 
 bindingset[v]
@@ -187,12 +187,14 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSourceLocation(DataFlow::Node source) {
-    exists(Variable v | result = v.getLocation() | isSourceImpl(source, v))
+    exists(Variable v | result = v.getLocation() or result = source.getLocation() |
+      isSourceImpl(source, v)
+    )
   }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
     exists(PointerArithmeticInstruction pai, Instruction deref |
-      result = [pai, deref].getLocation() and
+      result = [[pai, deref].getLocation(), sink.getLocation()] and
       isInvalidPointerDerefSink2(sink, deref, _) and
       isSink(sink, ArrayAddressToDerefConfig::TOverflowArithmetic(pai))
     )

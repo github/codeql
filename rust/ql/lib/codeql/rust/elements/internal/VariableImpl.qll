@@ -1,8 +1,9 @@
 private import rust
 private import codeql.rust.controlflow.ControlFlowGraph
+private import codeql.rust.internal.PathResolution as PathResolution
 private import codeql.rust.elements.internal.generated.ParentChild as ParentChild
+private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.elements.internal.PathImpl::Impl as PathImpl
-private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
@@ -15,21 +16,12 @@ module Impl {
 
   class BlockExprScope extends VariableScope, BlockExpr { }
 
-  abstract class MatchArmScope extends VariableScope {
-    MatchArm arm;
-
-    bindingset[arm]
-    MatchArmScope() { exists(arm) }
-
-    Pat getPat() { result = arm.getPat() }
+  class MatchArmExprScope extends VariableScope {
+    MatchArmExprScope() { this = any(MatchArm arm).getExpr() }
   }
 
-  class MatchArmExprScope extends MatchArmScope {
-    MatchArmExprScope() { this = arm.getExpr() }
-  }
-
-  class MatchArmGuardScope extends MatchArmScope {
-    MatchArmGuardScope() { this = arm.getGuard() }
+  class MatchArmGuardScope extends VariableScope {
+    MatchArmGuardScope() { this = any(MatchArm arm).getGuard() }
   }
 
   class ClosureBodyScope extends VariableScope {
@@ -41,7 +33,7 @@ module Impl {
    *
    * Such variables are only available in the body guarded by the condition.
    */
-  class ConditionScope extends VariableScope, Expr {
+  class ConditionScope extends VariableScope {
     private AstNode parent;
     private AstNode body;
 
@@ -56,6 +48,12 @@ module Impl {
         any(WhileExpr we |
           this = we.getCondition() and
           body = we.getLoopBody()
+        )
+      or
+      parent =
+        any(MatchArm ma |
+          this = ma.getGuard() and
+          body = ma.getExpr()
         )
     }
 
@@ -101,7 +99,7 @@ module Impl {
    * pattern.
    */
   cached
-  private predicate variableDecl(AstNode definingNode, Name name, string text) {
+  predicate variableDecl(AstNode definingNode, Name name, string text) {
     Cached::ref() and
     exists(SelfParam sp |
       name = sp.getName() and
@@ -120,11 +118,7 @@ module Impl {
         not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
       ) and
       text = name.getText() and
-      // exclude for now anything starting with an uppercase character, which may be a reference to
-      // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-      // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-      // naming guidelines, which they generally do, but they're not enforced.
-      not text.charAt(0).isUppercase() and
+      not PathResolution::identPatIsResolvable(pat) and
       // exclude parameters from functions without a body as these are trait method declarations
       // without implementations
       not exists(Function f | not f.hasBody() and f.getAParam().getPat() = pat) and
@@ -309,7 +303,7 @@ module Impl {
   private predicate parameterDeclInScope(Variable v, VariableScope scope) {
     exists(Callable f |
       v.getParameter() = f.getParamList().getAParamBase() and
-      scope = [f.(Function).getBody(), f.(ClosureExpr).getBody()]
+      scope = f.getBody()
     )
   }
 
@@ -417,11 +411,14 @@ module Impl {
       ord = getPreOrderNumbering(scope, scope)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |
-        scope =
-          any(MatchArmScope arm |
-            arm.getPat() = pat and
-            ord = getPreOrderNumbering(scope, arm)
-          )
+        exists(MatchArm arm |
+          pat = arm.getPat() and
+          ord = getPreOrderNumbering(scope, scope)
+        |
+          scope = arm.getGuard()
+          or
+          not arm.hasGuard() and scope = arm.getExpr()
+        )
         or
         exists(LetStmt let |
           let.getPat() = pat and
@@ -460,7 +457,12 @@ module Impl {
     VariableAccessCand cand, VariableScope scope, string name, int nestLevel, int ord
   ) {
     name = cand.getName() and
-    scope = [cand.(VariableScope), getEnclosingScope(cand)] and
+    (
+      scope = cand
+      or
+      not cand instanceof VariableScope and
+      scope = getEnclosingScope(cand)
+    ) and
     ord = getPreOrderNumbering(scope, cand) and
     nestLevel = 0
     or
@@ -661,7 +663,7 @@ module Impl {
   }
 
   /** A variable access. */
-  class VariableAccess extends PathExprBaseImpl::PathExprBase {
+  class VariableAccess extends PathExprBase {
     private string name;
     private Variable v;
 
@@ -672,18 +674,14 @@ module Impl {
 
     /** Holds if this access is a capture. */
     predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
-
-    override string toStringImpl() { result = name }
-
-    override string getAPrimaryQlClass() { result = "VariableAccess" }
   }
 
-  /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
-  private predicate assignmentExprDescendant(AssignmentExpr ae, Expr e) {
-    e = ae.getLhs()
+  /** Holds if `e` occurs in the LHS of an assignment operation. */
+  predicate assignmentOperationDescendant(AssignmentOperation ao, Expr e) {
+    e = ao.getLhs()
     or
     exists(Expr mid |
-      assignmentExprDescendant(ae, mid) and
+      assignmentOperationDescendant(ao, mid) and
       getImmediateParentAdj(e) = mid and
       not mid instanceof DerefExpr and
       not mid instanceof FieldExpr and
@@ -698,7 +696,7 @@ module Impl {
     cached
     VariableWriteAccess() {
       Cached::ref() and
-      assignmentExprDescendant(ae, this)
+      assignmentOperationDescendant(ae, this)
     }
 
     /** Gets the assignment expression that has this write access in the left-hand side. */
@@ -717,7 +715,7 @@ module Impl {
   }
 
   /** A nested function access. */
-  class NestedFunctionAccess extends PathExprBaseImpl::PathExprBase {
+  class NestedFunctionAccess extends PathExprBase {
     private Function f;
 
     NestedFunctionAccess() { nestedFunctionAccess(_, f, this) }

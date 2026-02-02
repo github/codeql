@@ -1,6 +1,8 @@
 /**
  * Contains flow summaries and steps modeling flow through `Map` objects.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
@@ -8,7 +10,7 @@ private import FlowSummaryUtil
 
 private DataFlow::SourceNode mapConstructorRef() { result = DataFlow::globalVarRef("Map") }
 
-class MapConstructor extends SummarizedCallable {
+class MapConstructor extends SummarizedCallable::Range {
   MapConstructor() { this = "Map constructor" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -78,7 +80,7 @@ class MapSetStep extends DataFlow::AdditionalFlowStep {
   }
 }
 
-class MapGet extends SummarizedCallable {
+class MapGet extends SummarizedCallable::Range {
   MapGet() { this = "Map#get" }
 
   override DataFlow::MethodCallNode getACallSimple() {
@@ -94,7 +96,7 @@ class MapGet extends SummarizedCallable {
   }
 }
 
-class MapSet extends SummarizedCallable {
+class MapSet extends SummarizedCallable::Range {
   MapSet() { this = "Map#set" }
 
   override DataFlow::MethodCallNode getACallSimple() {
@@ -119,7 +121,7 @@ class MapSet extends SummarizedCallable {
   }
 }
 
-class MapGroupBy extends SummarizedCallable {
+class MapGroupBy extends SummarizedCallable::Range {
   MapGroupBy() { this = "Map#groupBy" }
 
   override DataFlow::CallNode getACallSimple() {

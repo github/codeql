@@ -35,7 +35,7 @@ fn string_add() {
     let s4 = s1 + s3;
     let s5 = s2 + s3;
 
-    sink(s4); // $ SPURIOUS: hasValueFlow=83 MISSING: hasTaintFlow=83
+    sink(s4); // $ hasTaintFlow=83
     sink(s5);
 }
 
@@ -43,7 +43,7 @@ fn string_add_reference() {
     let s1 = source(37);
     let s2 = "1".to_string();
 
-    sink("Hello ".to_string() + &s1); // $ MISSING: hasTaintFlow=37
+    sink("Hello ".to_string() + &s1); // $ hasTaintFlow=37
     sink("Hello ".to_string() + &s2);
 }
 
@@ -56,12 +56,12 @@ fn string_from() {
 fn string_to_string() {
     let s1 = source_slice(22);
     let s2 = s1.to_string();
-    sink(s2); // $ MISSING: hasTaintFlow=22 - we are not currently able to resolve the `to_string` call above, which comes from `impl<T: fmt::Display + ?Sized> ToString for T`
+    sink(s2); // $ hasTaintFlow=22
 }
 
 fn as_str() {
     let s = source(67);
-    sink_slice(s.as_str()); // $ hasValueFlow=67
+    sink_slice(s.as_str()); // $ hasTaintFlow=67 -- `s.as_str()` has type `&str`, so an implicit deref is needed at the sink
 }
 
 fn format_args_built_in() {

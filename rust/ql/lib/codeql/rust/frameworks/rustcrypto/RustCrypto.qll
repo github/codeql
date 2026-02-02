@@ -5,8 +5,8 @@
 private import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.internal.TypeInference
-private import codeql.rust.internal.Type
+private import codeql.rust.internal.typeinference.TypeInference
+private import codeql.rust.internal.typeinference.Type
 
 bindingset[algorithmName]
 private string simplifyAlgorithmName(string algorithmName) {
@@ -24,15 +24,14 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
   StreamCipherInit() {
     // a call to `cipher::KeyInit::new`, `cipher::KeyInit::new_from_slice`,
     // `cipher::KeyIvInit::new`, `cipher::KeyIvInit::new_from_slices`, `rc2::Rc2::new_with_eff_key_len` or similar.
-    exists(CallExprBase ce, string rawAlgorithmName |
-      ce = this.asExpr().getExpr() and
-      ce.getStaticTarget().getName().getText() =
-        ["new", "new_from_slice", "new_with_eff_key_len", "new_from_slices"] and
+    exists(Call call, string rawAlgorithmName |
+      call = this.asExpr() and
+      call.getTargetName() = ["new", "new_from_slice", "new_with_eff_key_len", "new_from_slices"] and
       // extract the algorithm name from the type of `ce` or its receiver.
       exists(Type t, TypePath tp |
-        t = inferType([ce, ce.(MethodCallExpr).getReceiver()], tp) and
+        t = inferType([call, call.(MethodCall).getReceiver()], tp) and
         rawAlgorithmName =
-          t.(StructType).asItemNode().(Addressable).getCanonicalPath().splitAt("::")
+          t.(StructType).getTypeItem().(Addressable).getCanonicalPath().splitAt("::")
       ) and
       algorithmName = simplifyAlgorithmName(rawAlgorithmName) and
       // only match a known cryptographic algorithm

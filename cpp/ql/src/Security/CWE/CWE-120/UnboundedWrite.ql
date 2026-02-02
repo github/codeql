@@ -122,13 +122,14 @@ module Config implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     // Block flow if the node is guarded by any <, <= or = operations.
-    node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
+    node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode() or
+    node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getAnIndirectBarrierNode()
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
 
   Location getASelectedSinkLocation(DataFlow::Node sink) {
-    exists(BufferWrite bw | result = bw.getLocation() | isSink(sink, bw, _))
+    exists(BufferWrite bw | result = [bw.getLocation(), sink.getLocation()] | isSink(sink, bw, _))
   }
 }
 

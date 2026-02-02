@@ -488,7 +488,7 @@ macro_rules! use_value {
 fn macros1() {
     let a: u16;
     let b: u16 = 2;
-    set_value!(a, 1);
+    set_value!(a, 1); // $ Alert[rust/unused-value]
     use_value!(b);
 
     match std::env::args().nth(1).unwrap().parse::<u16>() {
@@ -513,13 +513,7 @@ fn macros2() {
 
 fn macros3() {
     let x;
-    println!(
-        "The value of x is {}",
-        ({
-            x = 10; // $ MISSING: Alert[rust/unused-value]
-            10
-        })
-    );
+    println!("The value of x is {}", ({ x = 10; 10 })); // $ Alert[rust/unused-value]
 }
 
 macro_rules! let_in_macro {

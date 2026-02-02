@@ -29,13 +29,6 @@ namespace Semmle.Extraction.CSharp.Entities
             ContainingType!.PopulateGenerics();
 
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
-            trapFile.constructor_location(this, Location);
-
-            if (MakeSynthetic)
-            {
-                // Create a synthetic empty body for primary and default constructors.
-                Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
-            }
 
             if (Symbol.IsImplicitlyDeclared)
             {
@@ -43,6 +36,23 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.numlines(this, lineCounts);
             }
             ExtractCompilerGenerated(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            if (MakeSynthetic)
+            {
+                // Create a synthetic empty body for primary and default constructors.
+                Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
+            }
+
+            if (Context.ExtractLocation(Symbol) && (!IsDefault || IsBestSourceLocation))
+            {
+                WriteLocationToTrap(trapFile.constructor_location, this, Location);
+            }
+
         }
 
         protected override void ExtractInitializers(TextWriter trapFile)
@@ -50,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Do not extract initializers for constructed types.
             // Extract initializers for constructors with a body, primary constructors
             // and default constructors for classes and structs declared in source code.
-            if (Block is null && ExpressionBody is null && !MakeSynthetic)
+            if (Block is null && ExpressionBody is null && !MakeSynthetic || Context.OnlyScaffold)
             {
                 return;
             }
@@ -64,6 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     case SyntaxKind.BaseConstructorInitializer:
                         initializerType = Symbol.ContainingType.BaseType!;
+                        ExtractObjectInitCall(trapFile);
                         break;
                     case SyntaxKind.ThisConstructorInitializer:
                         initializerType = Symbol.ContainingType;
@@ -80,10 +91,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 var primaryInfo = Context.GetSymbolInfo(primaryInitializer);
                 var primarySymbol = primaryInfo.Symbol;
 
+                ExtractObjectInitCall(trapFile);
                 ExtractSourceInitializer(trapFile, primarySymbol?.ContainingType, (IMethodSymbol?)primarySymbol, primaryInitializer.ArgumentList, primaryInitializer.GetLocation());
             }
             else if (Symbol.MethodKind is MethodKind.Constructor)
             {
+                ExtractObjectInitCall(trapFile);
                 var baseType = Symbol.ContainingType.BaseType;
                 if (baseType is null)
                 {
@@ -103,6 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
 
                 var baseConstructorTarget = Create(Context, baseConstructor);
+
                 var info = new ExpressionInfo(Context,
                     AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
                     Location,
@@ -114,6 +128,27 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 trapFile.expr_call(new Expression(info), baseConstructorTarget);
             }
+        }
+
+        private void ExtractObjectInitCall(TextWriter trapFile)
+        {
+            var target = ObjectInitMethod.Create(Context, ContainingType!);
+
+            var type = Context.Compilation.GetSpecialType(SpecialType.System_Void);
+
+            var info = new ExpressionInfo(Context,
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                Location,
+                Kinds.ExprKind.METHOD_INVOCATION,
+                this,
+                -2,
+                isCompilerGenerated: true,
+                null);
+            var obinitCall = new Expression(info);
+
+            trapFile.expr_call(obinitCall, target);
+
+            Expressions.This.CreateImplicit(Context, Symbol.ContainingType, Location, obinitCall, -1);
         }
 
         private void ExtractSourceInitializer(TextWriter trapFile, ITypeSymbol? type, IMethodSymbol? symbol, ArgumentListSyntax arguments, Microsoft.CodeAnalysis.Location location)
@@ -168,7 +203,15 @@ namespace Semmle.Extraction.CSharp.Entities
             Symbol.ContainingType.IsSourceDeclaration() &&
             !Symbol.ContainingType.IsAnonymousType;
 
-        private bool MakeSynthetic => IsPrimary || IsDefault;
+        /// <summary>
+        /// Returns true if we consider the reporting location of this constructor entity the best
+        /// location of the constructor.
+        /// For partial classes with default constructors, Roslyn consider each partial class declaration
+        /// as the possible location for the implicit default constructor.
+        /// </summary>
+        private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
+
+        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
@@ -222,7 +265,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (Symbol.IsImplicitlyDeclared)
                 {
-                    return ContainingType!.ReportingLocation;
+                    var best = Symbol.Locations.Where(l => l.IsInSource).BestOrDefault();
+                    return best ?? ContainingType!.ReportingLocation;
                 }
 
                 return Symbol.ContainingType.Locations.FirstOrDefault();

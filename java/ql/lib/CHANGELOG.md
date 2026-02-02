@@ -1,3 +1,45 @@
+## 7.8.4
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Java extractor's search for XML and properties files.
+* Additional remote flow sources from the `org.springframework.web.socket` package have been modeled. 
+* A sanitizer has been added to `java/ssrf` to remove alerts when a regular expression check is used to verify that the value is safe.
+* URI template variables of all Spring `RestTemplate` methods are now considered as request forgery sinks. Previously only the `getForObject` method was considered. This may lead to more alerts for the query `java/ssrf`.
+* Added more dataflow models of `org.apache.commons.fileupload.FileItem`, `javax/jakarta.servlet.http.Part` and  `org.apache.commons.fileupload.util.Streams`.
+
+## 7.8.3
+
+No user-facing changes.
+
+## 7.8.2
+
+No user-facing changes.
+
+## 7.8.1
+
+No user-facing changes.
+
+## 7.8.0
+
+### Deprecated APIs
+
+* The SSA interface has been updated and all classes and several predicates have been renamed. See the qldoc for more specific migration information.
+
+## 7.7.4
+
+No user-facing changes.
+
+## 7.7.3
+
+No user-facing changes.
+
+## 7.7.2
+
+### Minor Analysis Improvements
+
+* Fields of certain objects are considered tainted if the object is tainted. This holds, for example, for objects that occur directly as sources in the active threat model (for instance, a remote flow source). This has now been amended to also include array types, such that if an array like `MyPojo[]` is a source, then fields of a tainted `MyPojo` are now also considered tainted.
+
 ## 7.7.1
 
 No user-facing changes.

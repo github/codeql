@@ -1,3 +1,37 @@
+## 1.5.5
+
+No user-facing changes.
+
+## 1.5.4
+
+No user-facing changes.
+
+## 1.5.3
+
+No user-facing changes.
+
+## 1.5.2
+
+No user-facing changes.
+
+## 1.5.1
+
+No user-facing changes.
+
+## 1.5.0
+
+### Query Metadata Changes
+
+* Reduced the `security-severity` score of the `rb/overly-large-range` query from 5.0 to 4.0 to better reflect its impact. 
+
+## 1.4.8
+
+No user-facing changes.
+
+## 1.4.7
+
+No user-facing changes.
+
 ## 1.4.6
 
 No user-facing changes.

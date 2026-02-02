@@ -19,7 +19,7 @@ class ProjectLayoutUseTest(ExtractorTest):
 
     def test_invalid_layout(self):
         try:
-            with environment("SEMMLE_PATH_TRANSFORMER", "nonsuch/project-layout"):
+            with environment("CODEQL_PATH_TRANSFORMER", "nonsuch/project-layout"):
                 self.run_extractor("-R", self.src_path)
         except subprocess.CalledProcessError as ex:
             self.assertEqual(ex.returncode, 2)

@@ -12,9 +12,10 @@
  */
 
 import python
+private import LegacyPointsTo
 import Exceptions.NotImplemented
 
-from Call c, Value v, ClassValue t, Expr f, AstNode origin
+from Call c, Value v, ClassValue t, ExprWithPointsTo f, AstNode origin
 where
   f = c.getFunc() and
   f.pointsTo(v, origin) and

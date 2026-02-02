@@ -1,0 +1,4 @@
+nonUniqueCertainType
+| test.rs:131:30:131:39 | ...::get(...) |  |
+| test.rs:132:34:132:43 | ...::get(...) |  |
+| test.rs:133:30:133:39 | ...::get(...) |  |

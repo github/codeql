@@ -30,9 +30,9 @@ func gogf_Core(g gdb.Core) {
 	g.GetStruct(&v7, "SELECT user from users") // $ source
 	sink(v7)                                   // $ hasTaintFlow="v7"
 
-	var v8 []User // $ source
-	g.GetStructs(v8, "SELECT user from users")
-	sink(v8) // $ hasTaintFlow="v8"
+	var v8 []User
+	g.GetStructs(v8, "SELECT user from users") // $ source
+	sink(v8)                                   // $ hasTaintFlow="v8"
 
 	v9, _ := g.GetValue("SELECT user from users") // $ source
 	sink(v9)                                      // $ hasTaintFlow="v9"
@@ -132,9 +132,9 @@ func gogf_TX(g gdb.TX) {
 	g.GetStruct(&v4, "SELECT user from users") // $ source
 	sink(v4)                                   // $ hasTaintFlow="v4"
 
-	var v5 []User // $ source
-	g.GetStructs(v5, "SELECT user from users")
-	sink(v5) // $ hasTaintFlow="v5"
+	var v5 []User
+	g.GetStructs(v5, "SELECT user from users") // $ source
+	sink(v5)                                   // $ hasTaintFlow="v5"
 
 	v6, _ := g.GetValue("SELECT user from users") // $ source
 	sink(v6)                                      // $ hasTaintFlow="v6"

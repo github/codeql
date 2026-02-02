@@ -14,6 +14,8 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.DerefChain
 private import Node as Node
 private import DataFlowImpl
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -35,17 +37,17 @@ class NodePublic extends TNode {
   /**
    * Gets the expression that corresponds to this node, if any.
    */
-  final ExprCfgNode asExpr() { this = TExprNode(result) }
+  final Expr asExpr() { this = TExprNode(result) }
 
   /**
    * Gets the parameter that corresponds to this node, if any.
    */
-  ParamBase asParameter() { result = this.(SourceParameterNode).getParameter().getParamBase() }
+  ParamBase asParameter() { result = this.(SourceParameterNode).getParameter() }
 
   /**
    * Gets the pattern that corresponds to this node, if any.
    */
-  final PatCfgNode asPat() { this = TPatNode(result) }
+  final Pat asPat() { this = TPatNode(result) }
 }
 
 abstract class Node extends NodePublic {
@@ -56,9 +58,9 @@ abstract class Node extends NodePublic {
   abstract CfgScope getCfgScope();
 
   /**
-   * Gets the control flow node that corresponds to this data flow node.
+   * Gets the AST node that corresponds to this data flow node, if any.
    */
-  CfgNode getCfgNode() { none() }
+  AstNode getAstNode() { none() }
 }
 
 /** A data flow node used to model flow summaries. */
@@ -118,17 +120,17 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 }
 
-/** A data flow node that corresponds directly to a CFG node for an AST node. */
-abstract class AstCfgFlowNode extends Node {
-  AstCfgNode n;
+/** A data flow node that corresponds directly to an AST node. */
+abstract class AstNodeNode extends Node {
+  AstNode n;
 
-  final override CfgNode getCfgNode() { result = n }
+  final override AstNode getAstNode() { result = n }
 
-  final override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+  final override CfgScope getCfgScope() { result = n.getEnclosingCfgScope() }
 
-  final override Location getLocation() { result = n.getAstNode().getLocation() }
+  final override Location getLocation() { result = n.getLocation() }
 
-  final override string toString() { result = n.getAstNode().toString() }
+  final override string toString() { result = n.toString() }
 }
 
 /**
@@ -139,25 +141,25 @@ abstract class AstCfgFlowNode extends Node {
  * to multiple `ExprNode`s, just like it may correspond to multiple
  * `ControlFlow::Node`s.
  */
-class ExprNode extends AstCfgFlowNode, TExprNode {
-  override ExprCfgNode n;
+class ExprNode extends AstNodeNode, TExprNode {
+  override Expr n;
 
   ExprNode() { this = TExprNode(n) }
 }
 
-final class PatNode extends AstCfgFlowNode, TPatNode {
-  override PatCfgNode n;
+final class PatNode extends AstNodeNode, TPatNode {
+  override Pat n;
 
   PatNode() { this = TPatNode(n) }
 }
 
 /** A data flow node that corresponds to a name node in the CFG. */
-final class NameNode extends AstCfgFlowNode, TNameNode {
-  override NameCfgNode n;
+final class NameNode extends AstNodeNode, TNameNode {
+  override Name n;
 
   NameNode() { this = TNameNode(n) }
 
-  NameCfgNode asName() { result = n }
+  Name getName() { result = n }
 }
 
 /**
@@ -166,34 +168,34 @@ final class NameNode extends AstCfgFlowNode, TNameNode {
  */
 abstract class ParameterNode extends Node {
   /** Holds if this node is a parameter of `c` at position `pos`. */
-  abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
+  abstract predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos);
 }
 
-final class SourceParameterNode extends AstCfgFlowNode, ParameterNode, TSourceParameterNode {
-  override ParamBaseCfgNode n;
+final class SourceParameterNode extends AstNodeNode, ParameterNode, TSourceParameterNode {
+  override ParamBase n;
 
   SourceParameterNode() { this = TSourceParameterNode(n) }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    n.getAstNode() = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
+  override predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos) {
+    n = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
   }
 
   /** Get the parameter position of this parameter. */
-  ParameterPosition getPosition() { this.isParameterOf(_, result) }
+  RustDataFlow::ParameterPosition getPosition() { this.isParameterOf(_, result) }
 
   /** Gets the parameter in the CFG that this node corresponds to. */
-  ParamBaseCfgNode getParameter() { result = n }
+  ParamBase getParameter() { result = n }
 }
 
 /** A parameter for a library callable with a flow summary. */
 final class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
-  private ParameterPosition pos_;
+  private RustDataFlow::ParameterPosition pos_;
 
   SummaryParameterNode() {
     FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), pos_)
   }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+  override predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos) {
     this.getSummarizedCallable() = c.asSummarizedCallable() and pos = pos_
   }
 }
@@ -209,7 +211,7 @@ final class ClosureParameterNode extends ParameterNode, TClosureSelfReferenceNod
 
   final override CfgScope getCfgScope() { result = cfgScope }
 
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+  override predicate isParameterOf(DataFlowCallable c, RustDataFlow::ParameterPosition pos) {
     cfgScope = c.asCfgScope() and pos.isClosureSelf()
   }
 
@@ -223,38 +225,196 @@ abstract class ArgumentNode extends Node {
 }
 
 final class ExprArgumentNode extends ArgumentNode, ExprNode {
-  private CallCfgNode call_;
+  private Call call_;
   private RustDataFlow::ArgumentPosition pos_;
 
-  ExprArgumentNode() { isArgumentForCall(n, call_, pos_) }
+  ExprArgumentNode() {
+    isArgumentForCall(n, call_, pos_) and
+    not TypeInference::implicitDerefChainBorrow(n, _, _)
+  }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCallCfgNode() = call_ and pos = pos_
+    call.asCall() = call_ and pos = pos_
+  }
+}
+
+private newtype TImplicitDerefNodeState =
+  TImplicitDerefNodeAfterBorrowState() or
+  TImplicitDerefNodeBeforeDerefState() or
+  TImplicitDerefNodeAfterDerefState()
+
+/**
+ * A state used to represent the flow steps involved in implicit dereferencing.
+ *
+ * For example, if there is an implicit dereference in a call like `x.m()`,
+ * then that desugars into `(*Deref::deref(&x)).m()`, and
+ *
+ * - `TImplicitDerefNodeAfterBorrowState` represents the `&x` part,
+ * - `TImplicitDerefNodeBeforeDerefState` represents the `Deref::deref(&x)` part, and
+ * - `TImplicitDerefNodeAfterDerefState` represents the entire `*Deref::deref(&x)` part.
+ *
+ * When the targeted `deref` function is from `impl<T> Deref for &(mut) T`, we optimize
+ * away the call, skipping the `TImplicitDerefNodeAfterBorrowState` state, and instead
+ * add a local step directly from `x` to the `TImplicitDerefNodeBeforeDerefState` state.
+ */
+class ImplicitDerefNodeState extends TImplicitDerefNodeState {
+  string toString() {
+    this = TImplicitDerefNodeAfterBorrowState() and result = "after borrow"
+    or
+    this = TImplicitDerefNodeBeforeDerefState() and result = "before deref"
+    or
+    this = TImplicitDerefNodeAfterDerefState() and result = "after deref"
   }
 }
 
 /**
- * The receiver of a method call _after_ any implicit borrow or dereferencing
- * has taken place.
+ * A node used to represent implicit dereferencing or borrowing.
  */
-final class ReceiverNode extends ArgumentNode, TReceiverNode {
-  private CallCfgNode n;
+abstract class ImplicitDerefBorrowNode extends Node {
+  /**
+   * Gets the node that should be the predecessor in a reference store-step into this
+   * node, if any.
+   */
+  abstract Node getBorrowInputNode();
 
-  ReceiverNode() { this = TReceiverNode(n, false) }
+  abstract Expr getExpr();
 
-  ExprCfgNode getReceiver() { result = n.getReceiver() }
+  override CfgScope getCfgScope() { result = this.getExpr().getEnclosingCfgScope() }
 
-  MethodCallExprCfgNode getMethodCall() { result = n }
+  override Location getLocation() { result = this.getExpr().getLocation() }
+}
 
-  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCallCfgNode() = n and pos = TSelfParameterPosition()
+/**
+ * A node used to represent implicit dereferencing.
+ *
+ * Each node is tagged with its position in a `DerefChain` and the
+ * `ImplicitDerefNodeState` state that the corresponding implicit deference
+ * is in.
+ */
+class ImplicitDerefNode extends ImplicitDerefBorrowNode, TImplicitDerefNode {
+  Expr e;
+  DerefChain derefChain;
+  ImplicitDerefNodeState state;
+  int i;
+
+  ImplicitDerefNode() { this = TImplicitDerefNode(e, derefChain, state, i, false) }
+
+  override Expr getExpr() { result = e }
+
+  private predicate isBuiltinDeref() { derefChain.isBuiltinDeref(i) }
+
+  private Node getInputNode() {
+    // The first implicit deref has the underlying AST node as input
+    i = 0 and
+    result.asExpr() = e
+    or
+    // Subsequent implicit derefs have the previous implicit deref as input
+    result = TImplicitDerefNode(e, derefChain, TImplicitDerefNodeAfterDerefState(), i - 1, false)
   }
 
-  override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+  /**
+   * Gets the node that should be the predecessor in a local flow step into this
+   * node, if any.
+   */
+  Node getLocalInputNode() {
+    this.isBuiltinDeref() and
+    state = TImplicitDerefNodeBeforeDerefState() and
+    result = this.getInputNode()
+  }
 
-  override Location getLocation() { result = this.getReceiver().getLocation() }
+  override Node getBorrowInputNode() {
+    not this.isBuiltinDeref() and
+    state = TImplicitDerefNodeAfterBorrowState() and
+    result = this.getInputNode()
+  }
 
-  override string toString() { result = "receiver for " + this.getReceiver() }
+  /**
+   * Gets the node that should be the successor in a reference read-step out of this
+   * node, if any.
+   */
+  Node getDerefOutputNode() {
+    state = TImplicitDerefNodeBeforeDerefState() and
+    result = TImplicitDerefNode(e, derefChain, TImplicitDerefNodeAfterDerefState(), i, false)
+  }
+
+  /**
+   * Holds if this node represents the last implicit deref in the underlying chain.
+   */
+  predicate isLast(Expr expr) {
+    expr = e and
+    state = TImplicitDerefNodeAfterDerefState() and
+    i = derefChain.length() - 1
+  }
+
+  override string toString() { result = e + " [implicit deref " + i + " in state " + state + "]" }
+}
+
+final class ImplicitDerefArgNode extends ImplicitDerefNode, ArgumentNode {
+  private DataFlowCall call_;
+  private RustDataFlow::ArgumentPosition pos_;
+
+  ImplicitDerefArgNode() {
+    not derefChain.isBuiltinDeref(i) and
+    state = TImplicitDerefNodeAfterBorrowState() and
+    call_.isImplicitDerefCall(e, derefChain, i, _) and
+    pos_.isSelf()
+    or
+    this.isLast(_) and
+    TypeInference::implicitDerefChainBorrow(e, derefChain, false) and
+    isArgumentForCall(e, call_.asCall(), pos_)
+  }
+
+  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+    call = call_ and pos = pos_
+  }
+}
+
+private class ImplicitDerefOutNode extends ImplicitDerefNode, OutNode {
+  private DataFlowCall call;
+
+  ImplicitDerefOutNode() {
+    not derefChain.isBuiltinDeref(i) and
+    state = TImplicitDerefNodeBeforeDerefState()
+  }
+
+  override DataFlowCall getCall(ReturnKind kind) {
+    result.isImplicitDerefCall(e, derefChain, i, _) and
+    kind = TNormalReturnKind()
+  }
+}
+
+/**
+ * A node that represents the value of an expression _after_ implicit borrowing.
+ */
+class ImplicitBorrowNode extends ImplicitDerefBorrowNode, TImplicitBorrowNode {
+  Expr e;
+  DerefChain derefChain;
+
+  ImplicitBorrowNode() { this = TImplicitBorrowNode(e, derefChain, false) }
+
+  override Expr getExpr() { result = e }
+
+  override Node getBorrowInputNode() {
+    result =
+      TImplicitDerefNode(e, derefChain, TImplicitDerefNodeAfterDerefState(),
+        derefChain.length() - 1, false)
+    or
+    derefChain.isEmpty() and
+    result.(AstNodeNode).getAstNode() = e
+  }
+
+  override string toString() { result = e + " [implicit borrow]" }
+}
+
+final class ImplicitBorrowArgNode extends ImplicitBorrowNode, ArgumentNode {
+  private DataFlowCall call_;
+  private RustDataFlow::ArgumentPosition pos_;
+
+  ImplicitBorrowArgNode() { isArgumentForCall(e, call_.asCall(), pos_) }
+
+  override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+    call = call_ and pos = pos_
+  }
 }
 
 final class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
@@ -275,13 +435,12 @@ final class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
  * passed into the closure body at an invocation.
  */
 final class ClosureArgumentNode extends ArgumentNode, ExprNode {
-  private CallExprCfgNode call_;
+  private Call call_;
 
   ClosureArgumentNode() { lambdaCallExpr(call_, _, this.asExpr()) }
 
   override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
-    call.asCallCfgNode() = call_ and
-    pos.isClosureSelf()
+    call.asCall() = call_ and pos.isClosureSelf()
   }
 }
 
@@ -309,7 +468,7 @@ abstract class ReturnNode extends Node {
 }
 
 final class ExprReturnNode extends ExprNode, ReturnNode {
-  ExprReturnNode() { this.getCfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
+  ExprReturnNode() { n.getACfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
 
   override ReturnKind getKind() { result = TNormalReturnKind() }
 }
@@ -329,13 +488,71 @@ abstract class OutNode extends Node {
 }
 
 final private class ExprOutNode extends ExprNode, OutNode {
-  ExprOutNode() { this.asExpr() instanceof CallCfgNode }
+  ExprOutNode() {
+    exists(Call call |
+      call = this.asExpr() and
+      not call instanceof DerefExpr and // Handled by `DerefOutNode`
+      not call instanceof IndexExpr // Handled by `IndexOutNode`
+    )
+  }
 
-  /** Gets the underlying call CFG node that includes this out node. */
+  /** Gets the underlying call node that includes this out node. */
   override DataFlowCall getCall(ReturnKind kind) {
-    result.asCallCfgNode() = this.getCfgNode() and
+    result.asCall() = n and
     kind = TNormalReturnKind()
   }
+}
+
+/**
+ * A node that represents the value of a `*` expression _before_ implicit
+ * dereferencing:
+ *
+ * `*v` equivalent to `*Deref::deref(&v)`, and this node represents the
+ * `Deref::deref(&v)` part.
+ */
+class DerefOutNode extends OutNode, TDerefOutNode {
+  DerefExpr de;
+
+  DerefOutNode() { this = TDerefOutNode(de, false) }
+
+  DerefExpr getDerefExpr() { result = de }
+
+  override CfgScope getCfgScope() { result = de.getEnclosingCfgScope() }
+
+  override DataFlowCall getCall(ReturnKind kind) {
+    result.asCall() = de and
+    kind = TNormalReturnKind()
+  }
+
+  override Location getLocation() { result = de.getLocation() }
+
+  override string toString() { result = de.toString() + " [pre-dereferenced]" }
+}
+
+/**
+ * A node that represents the value of a `x[y]` expression _before_ implicit
+ * dereferencing:
+ *
+ * `x[y]` equivalent to `*x.index(y)`, and this node represents the
+ * `x.index(y)` part.
+ */
+class IndexOutNode extends OutNode, TIndexOutNode {
+  IndexExpr ie;
+
+  IndexOutNode() { this = TIndexOutNode(ie, false) }
+
+  IndexExpr getIndexExpr() { result = ie }
+
+  override CfgScope getCfgScope() { result = ie.getEnclosingCfgScope() }
+
+  override DataFlowCall getCall(ReturnKind kind) {
+    result.asCall() = ie and
+    kind = TNormalReturnKind()
+  }
+
+  override Location getLocation() { result = ie.getLocation() }
+
+  override string toString() { result = ie.toString() + " [pre-dereferenced]" }
 }
 
 final class SummaryOutNode extends FlowSummaryNode, OutNode {
@@ -391,27 +608,71 @@ abstract class PostUpdateNode extends PostUpdateNodePublic, Node {
 }
 
 final class ExprPostUpdateNode extends PostUpdateNode, TExprPostUpdateNode {
-  private ExprCfgNode n;
+  private Expr e;
 
-  ExprPostUpdateNode() { this = TExprPostUpdateNode(n) }
+  ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
-  override Node getPreUpdateNode() { result = TExprNode(n) }
+  override Node getPreUpdateNode() { result = TExprNode(e) }
 
-  override CfgScope getCfgScope() { result = n.getScope() }
+  override CfgScope getCfgScope() { result = e.getEnclosingCfgScope() }
+
+  override Location getLocation() { result = e.getLocation() }
+}
+
+final class ImplicitDerefPostUpdateNode extends PostUpdateNode, TImplicitDerefNode {
+  AstNode n;
+  DerefChain derefChain;
+  ImplicitDerefNodeState state;
+  int i;
+
+  ImplicitDerefPostUpdateNode() { this = TImplicitDerefNode(n, derefChain, state, i, true) }
+
+  override ImplicitDerefNode getPreUpdateNode() {
+    result = TImplicitDerefNode(n, derefChain, state, i, false)
+  }
+
+  override CfgScope getCfgScope() { result = n.getEnclosingCfgScope() }
 
   override Location getLocation() { result = n.getLocation() }
 }
 
-final class ReceiverPostUpdateNode extends PostUpdateNode, TReceiverNode {
-  private CallCfgNode n;
+final class ImplicitBorrowPostUpdateNode extends PostUpdateNode, TImplicitBorrowNode {
+  AstNode n;
+  DerefChain derefChain;
 
-  ReceiverPostUpdateNode() { this = TReceiverNode(n, true) }
+  ImplicitBorrowPostUpdateNode() { this = TImplicitBorrowNode(n, derefChain, true) }
 
-  override Node getPreUpdateNode() { result = TReceiverNode(n, false) }
+  override ImplicitBorrowNode getPreUpdateNode() {
+    result = TImplicitBorrowNode(n, derefChain, false)
+  }
 
-  override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+  override CfgScope getCfgScope() { result = n.getEnclosingCfgScope() }
 
-  override Location getLocation() { result = n.getReceiver().getLocation() }
+  override Location getLocation() { result = n.getLocation() }
+}
+
+class DerefOutPostUpdateNode extends PostUpdateNode, TDerefOutNode {
+  DerefExpr de;
+
+  DerefOutPostUpdateNode() { this = TDerefOutNode(de, true) }
+
+  override DerefOutNode getPreUpdateNode() { result = TDerefOutNode(de, false) }
+
+  override CfgScope getCfgScope() { result = de.getEnclosingCfgScope() }
+
+  override Location getLocation() { result = de.getLocation() }
+}
+
+class IndexOutPostUpdateNode extends PostUpdateNode, TIndexOutNode {
+  IndexExpr ie;
+
+  IndexOutPostUpdateNode() { this = TIndexOutNode(ie, true) }
+
+  override IndexOutNode getPreUpdateNode() { result = TIndexOutNode(ie, false) }
+
+  override CfgScope getCfgScope() { result = ie.getEnclosingCfgScope() }
+
+  override Location getLocation() { result = ie.getLocation() }
 }
 
 final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
@@ -445,38 +706,53 @@ final class CastNode extends ExprNode {
 
 cached
 newtype TNode =
-  TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
-  TSourceParameterNode(ParamBaseCfgNode p) or
-  TPatNode(PatCfgNode p) or
-  TNameNode(NameCfgNode n) { n.getName() = any(Variable v).getName() } or
-  TExprPostUpdateNode(ExprCfgNode e) {
-    isArgumentForCall(e, _, _)
-    or
-    lambdaCallExpr(_, _, e)
-    or
-    lambdaCreationExpr(e.getExpr(), _)
-    or
-    // Whenever `&mut e` has a post-update node we also create one for `e`.
-    // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
-    e = any(RefExprCfgNode ref | ref.isMut() and exists(TExprPostUpdateNode(ref))).getExpr()
-    or
-    e =
-      [
-        any(IndexExprCfgNode i).getBase(), //
-        any(FieldExprCfgNode access).getContainer(), //
-        any(TryExprCfgNode try).getExpr(), //
-        any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr(), //
-        any(AwaitExprCfgNode a).getExpr(), //
-        any(MethodCallExprCfgNode mc).getReceiver(), //
-        getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
-      ]
+  TExprNode(Expr e) { e.hasEnclosingCfgScope() and Stages::DataFlowStage::ref() } or
+  TSourceParameterNode(ParamBase p) { p.hasEnclosingCfgScope() } or
+  TPatNode(Pat p) { p.hasEnclosingCfgScope() } or
+  TNameNode(Name n) { n = any(Variable v).getName() and n.hasEnclosingCfgScope() } or
+  TExprPostUpdateNode(Expr e) {
+    e.hasEnclosingCfgScope() and
+    (
+      isArgumentForCall(e, _, _) and
+      // For compound assignments into variables like `x += y`, we do not want flow into
+      // `[post] x`, as that would create spurious flow when `x` is a parameter.
+      not (e = any(CompoundAssignmentExpr cae).getLhs() and e instanceof VariableAccess)
+      or
+      lambdaCallExpr(_, _, e)
+      or
+      lambdaCreationExpr(e)
+      or
+      // Whenever `&mut e` has a post-update node we also create one for `e`.
+      // E.g., for `e` in `f(..., &mut e, ...)` or `*(&mut e) = ...`.
+      e = any(RefExpr ref | ref.isMut() and exists(TExprPostUpdateNode(ref))).getExpr()
+      or
+      e =
+        [
+          any(FieldExpr access).getContainer(), //
+          any(TryExpr try).getExpr(), //
+          any(AwaitExpr a).getExpr(), //
+          getPostUpdateReverseStep(any(PostUpdateNode n).getPreUpdateNode().asExpr(), _)
+        ]
+    )
   } or
-  TReceiverNode(CallCfgNode mc, Boolean isPost) {
-    mc.getCall().receiverImplicitlyBorrowed() and
-    // TODO: Handle index expressions as calls in data flow.
-    not mc.getCall() instanceof IndexExpr
+  TImplicitDerefNode(
+    Expr e, DerefChain derefChain, ImplicitDerefNodeState state, int i, Boolean isPost
+  ) {
+    e.hasEnclosingCfgScope() and
+    TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
+    i in [0 .. derefChain.length() - 1]
   } or
+  TImplicitBorrowNode(Expr e, DerefChain derefChain, Boolean isPost) {
+    e.hasEnclosingCfgScope() and
+    TypeInference::implicitDerefChainBorrow(e, derefChain, true)
+  } or
+  TDerefOutNode(DerefExpr de, Boolean isPost) or
+  TIndexOutNode(IndexExpr ie, Boolean isPost) or
   TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
-  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
+    forall(AstNode n | n = sn.getSinkElement() or n = sn.getSourceElement() |
+      n.hasEnclosingCfgScope()
+    )
+  } or
+  TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c) } or
   TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)

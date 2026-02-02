@@ -11,6 +11,7 @@ from semmle.extractors import SuperExtractor, ModulePrinter, SkippedBuiltin
 from semmle.profiling import get_profiler
 from semmle.path_rename import renamer_from_options_and_env
 from semmle.logging import WARN, recursion_error_message, internal_error_message, Logger
+from semmle.util import FileExtractable, FolderExtractable
 
 class ExtractorFailure(Exception):
     'Generic exception representing the failure of an extractor.'
@@ -19,17 +20,32 @@ class ExtractorFailure(Exception):
 
 class ModuleImportGraph(object):
 
-    def __init__(self, max_depth):
+    def __init__(self, max_depth, logger: Logger):
         self.modules = {}
         self.succ = defaultdict(set)
         self.todo = set()
         self.done = set()
         self.max_depth = max_depth
+        self.logger = logger
+
+        # During overlay extraction, only traverse the files that were changed.
+        self.overlay_changes = None
+        if 'CODEQL_EXTRACTOR_PYTHON_OVERLAY_CHANGES' in os.environ:
+            overlay_changes_file = os.environ['CODEQL_EXTRACTOR_PYTHON_OVERLAY_CHANGES']
+            logger.info("Overlay extraction mode: only extracting files changed according to '%s'", overlay_changes_file)
+            try:
+                with open(overlay_changes_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    changed_paths = data.get('changes', [])
+                    self.overlay_changes = { os.path.abspath(p) for p in changed_paths }
+            except (IOError, ValueError) as e:
+                logger.warn("Failed to read overlay changes from '%s' (falling back to full extraction): %s", overlay_changes_file, e)
+                self.overlay_changes = None
 
     def add_root(self, mod):
         self.modules[mod] = 0
         if mod not in self.done:
-            self.todo.add(mod)
+            self.add_todo(mod)
 
     def add_import(self, mod, imported):
         assert mod in self.modules
@@ -39,7 +55,7 @@ class ModuleImportGraph(object):
                 self._reduce_depth(imported, self.modules[mod] + 1)
         else:
             if self.modules[mod] < self.max_depth and imported not in self.done:
-                self.todo.add(imported)
+                self.add_todo(imported)
             self.modules[imported] = self.modules[mod] + 1
 
     def _reduce_depth(self, mod, depth):
@@ -48,7 +64,7 @@ class ModuleImportGraph(object):
         if depth > self.max_depth:
             return
         if mod not in self.done:
-            self.todo.add(mod)
+            self.add_todo(mod)
         self.modules[mod] = depth
         for imp in self.succ[mod]:
             self._reduce_depth(imp, depth+1)
@@ -61,10 +77,24 @@ class ModuleImportGraph(object):
 
     def push_back(self, mod):
         self.done.remove(mod)
-        self.todo.add(mod)
+        self.add_todo(mod)
 
     def empty(self):
         return not self.todo
+
+    def add_todo(self, mod):
+        if not self._module_in_overlay_changes(mod):
+            self.logger.debug("Skipping module '%s' as it was not changed in overlay extraction.", mod)
+            return
+        self.todo.add(mod)
+
+    def _module_in_overlay_changes(self, mod):
+        if self.overlay_changes is not None:
+            if isinstance(mod, FileExtractable):
+                return mod.path in self.overlay_changes
+            if isinstance(mod, FolderExtractable):
+                return mod.path + '/__init__.py' in self.overlay_changes
+        return True
 
 class ExtractorPool(object):
     '''Pool of worker processes running extractors'''
@@ -90,7 +120,7 @@ class ExtractorPool(object):
         self.enqueued = set()
         self.done = set()
         self.requirements = {}
-        self.import_graph = ModuleImportGraph(options.max_import_depth)
+        self.import_graph = ModuleImportGraph(options.max_import_depth, logger)
         logger.debug("Source archive: %s", archive)
         self.logger = logger
         DiagnosticsWriter.create_output_dir()
@@ -162,6 +192,10 @@ class ExtractorPool(object):
             self.module_queue.put(None)
         for p in self.procs:
             p.join()
+        if 'CODEQL_EXTRACTOR_PYTHON_OVERLAY_BASE_METADATA_OUT' in os.environ:
+            with open(os.environ['CODEQL_EXTRACTOR_PYTHON_OVERLAY_BASE_METADATA_OUT'], 'w', encoding='utf-8') as f:
+                metadata = {}
+                json.dump(metadata, f)
         self.logger.info("Processed %d modules in %0.2fs", len(self.import_graph.done), time.time() - self.start_time)
 
     def stop(self, timeout=2.0):

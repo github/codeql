@@ -62,6 +62,7 @@ open class KotlinFileExtractor(
     val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalDeclExtractor,
+    classInstanceStack: ClassInstanceStack,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
     val declarationStack: DeclarationStack,
@@ -72,6 +73,7 @@ open class KotlinFileExtractor(
         tw,
         dependencyCollector,
         externalClassExtractor,
+        classInstanceStack,
         primitiveTypeMapping,
         pluginContext,
         globalExtensionState
@@ -413,6 +415,7 @@ open class KotlinFileExtractor(
 
     private fun extractClassModifiers(c: IrClass, id: Label<out DbClassorinterface>) {
         with("class modifiers", c) {
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (c.modality) {
                 Modality.FINAL -> addModifiers(id, "final")
                 Modality.SEALED -> addModifiers(id, "sealed")
@@ -496,12 +499,17 @@ open class KotlinFileExtractor(
             }
 
             extractClassModifiers(c, id)
-            extractClassSupertypes(
-                c,
-                id,
-                if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw
-                else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
-            )
+            classInstanceStack.push(c)
+            try {
+                extractClassSupertypes(
+                    c,
+                    id,
+                    if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw
+                    else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
+                )
+            } finally {
+                classInstanceStack.pop()
+            }
 
             val locId = getLocation(c, argsIncludingOuterClasses)
             tw.writeHasLocation(id, locId)
@@ -1335,7 +1343,7 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames =
-                isUnderscoreParameter(vp) ||
+                vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER ||
                     ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             val javaParameter =
                 when (val callable = (vp.parent as? IrFunction)?.let { getJavaCallable(it) }) {
@@ -1637,7 +1645,7 @@ open class KotlinFileExtractor(
         extractMethodAndParameterTypeAccesses: Boolean,
         typeSubstitution: TypeSubstitution?,
         classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-    ) =
+    ) : Label<out DbCallable> =
         forceExtractFunction(
                 f,
                 parentId,
@@ -2794,6 +2802,7 @@ open class KotlinFileExtractor(
 
     private fun extractBody(b: IrBody, callable: Label<out DbCallable>) {
         with("body", b) {
+            @Suppress("REDUNDANT_ELSE_IN_WHEN")
             when (b) {
                 is IrBlockBody -> extractBlockBody(b, callable)
                 is IrSyntheticBody -> extractSyntheticBody(b, callable)
@@ -2827,7 +2836,7 @@ open class KotlinFileExtractor(
             when {
                 kind == IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
                 kind == IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
-                kind == kind_ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
+                kind == IrSyntheticBodyKind.ENUM_ENTRIES -> tw.writeKtSyntheticBody(callable, 3)
                 else -> {
                     logger.errorElement("Unhandled synthetic body kind " + kind, b)
                 }
@@ -2966,13 +2975,22 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
-                    extractVariable(s.delegate, callable, blockId, 0)
-
+                    // For Kotlin < 2.3, s.delegate is not-nullable, but for Kotlin >= 2.3
+                    // it is nullable. Cast to nullable to handle both cases uniformly.
+                    // For Kotlin >= 2.3, the cast is redundant, hence the suppress.
+                    @Suppress("USELESS_CAST")
+                    val delegate: IrVariable? = s.delegate as IrVariable?
                     val propId = tw.getFreshIdLabel<DbKt_property>()
-                    tw.writeKtProperties(propId, s.name.asString())
-                    tw.writeHasLocation(propId, locId)
-                    tw.writeKtPropertyDelegates(propId, useVariable(s.delegate))
 
+                    if (delegate == null) {
+                        // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
+                        logger.errorElement("Local delegated property is missing delegate", s)
+                    } else {
+                        extractVariable(delegate, callable, blockId, 0)
+                        tw.writeKtProperties(propId, s.name.asString())
+                        tw.writeHasLocation(propId, locId)
+                        tw.writeKtPropertyDelegates(propId, useVariable(delegate))
+                    }
                     // Getter:
                     extractStatement(s.getter, callable, blockId, 1)
                     val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
@@ -3325,7 +3343,7 @@ open class KotlinFileExtractor(
         // that specified the default values, which will in turn dynamically dispatch back to the
         // relevant override.
         val overriddenCallTarget =
-            (callTarget as? IrSimpleFunction)?.allOverriddenIncludingSelf()?.firstOrNull {
+            (callTarget as? IrSimpleFunction)?.allOverridden(includeSelf = true)?.firstOrNull {
                 it.overriddenSymbols.isEmpty() &&
                     it.valueParameters.any { p -> p.defaultValue != null }
             } ?: callTarget

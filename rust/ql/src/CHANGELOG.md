@@ -1,3 +1,54 @@
+## 0.1.25
+
+### Minor Analysis Improvements
+
+* Fixed common false positives for the `rust/unused-variable` and `rust/unused-value` queries.
+* Fixed false positives from the `rust/access-invalid-pointer` query, by only considering dereferences of raw pointers as sinks.
+* Fixed false positives from the `rust/access-after-lifetime-ended` query, involving calls to trait methods.
+* The `rust/hard-coded-cryptographic-value` query has been extended with new heuristic sinks identifying passwords, initialization vectors, nonces and salts.
+
+## 0.1.24
+
+No user-facing changes.
+
+## 0.1.23
+
+No user-facing changes.
+
+## 0.1.22
+
+No user-facing changes.
+
+## 0.1.21
+
+### New Queries
+
+* Added a new query `rust/xss`, to detect cross-site scripting security vulnerabilities.
+* Added a new query `rust/disabled-certificate-check`, to detect disabled TLS certificate checks.
+* Added three example queries (`rust/examples/empty-if`, `rust/examples/simple-sql-injection` and `rust/examples/simple-constant-password`) to help developers learn to write CodeQL queries for Rust.
+
+### Minor Analysis Improvements
+
+* The `rust/access-invalid-pointer` query has been improved with new flow sources and barriers.
+
+## 0.1.20
+
+### Minor Analysis Improvements
+
+* Taint flow barriers have been added to the `rust/regex-injection`, `rust/sql-injection` and `rust/log-injection`, reducing the frequency of false positive results for these queries.
+
+## 0.1.19
+
+### Minor Analysis Improvements
+
+* The "Low Rust analysis quality" query (`rust/diagnostic/database-quality`), used by the tool status page, has been extended with a measure of successful type inference.
+
+## 0.1.18
+
+### New Queries
+
+* Added a new query, `rust/insecure-cookie`, to detect cookies created without the 'Secure' attribute.
+
 ## 0.1.17
 
 ### New Queries

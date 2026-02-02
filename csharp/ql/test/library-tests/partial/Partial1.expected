@@ -10,3 +10,5 @@
 | Partial.cs:28:9:28:11 | set_Item |
 | Partial.cs:32:15:32:33 | OnePartPartialClass |
 | Partial.cs:34:18:34:42 | PartialMethodWithoutBody2 |
+| PartialMultipleFiles1.cs:1:22:1:41 | PartialMultipleFiles |
+| PartialMultipleFiles2.cs:1:22:1:41 | PartialMultipleFiles |

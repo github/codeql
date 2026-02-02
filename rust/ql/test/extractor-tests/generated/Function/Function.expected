@@ -8,8 +8,10 @@ getParamList
 getAttr
 getParam
 | gen_function.rs:3:1:4:38 | fn foo | 0 | gen_function.rs:4:8:4:13 | ...: u32 |
-getAbi
 getBody
+| gen_function.rs:3:1:4:38 | fn foo | gen_function.rs:4:23:4:38 | { ... } |
+getAbi
+getFunctionBody
 | gen_function.rs:3:1:4:38 | fn foo | gen_function.rs:4:23:4:38 | { ... } |
 getGenericParamList
 getName

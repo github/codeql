@@ -29,7 +29,6 @@ edges
 | Capture.cs:29:26:29:32 | access to parameter tainted : String | Capture.cs:29:17:29:22 | access to local variable sink29 : String | provenance |  |
 | Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | MaD:3 |
 | Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | MaD:4 |
-| Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | heuristic-callback |
 | Capture.cs:50:50:50:55 | sink39 : String | Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | provenance |  |
@@ -40,7 +39,6 @@ edges
 | Capture.cs:81:13:81:13 | [post] access to local function M : M [captured sink31] : String | Capture.cs:83:9:83:19 | [post] access to local function CaptureOut2 : CaptureOut2 [captured sink31] : String | provenance |  |
 | Capture.cs:83:9:83:19 | [post] access to local function CaptureOut2 : CaptureOut2 [captured sink31] : String | Capture.cs:84:15:84:20 | access to local variable sink31 | provenance |  |
 | Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance |  |
-| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | heuristic-callback |
 | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | Capture.cs:93:15:93:20 | access to local variable sink32 | provenance |  |
 | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | Capture.cs:123:9:123:33 | [post] access to local function CaptureOutMultipleLambdas : CaptureOutMultipleLambdas [captured sink40] : String | provenance |  |
 | Capture.cs:116:26:116:39 | "taint source" : String | Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | provenance |  |
@@ -62,10 +60,8 @@ edges
 | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | Capture.cs:156:15:156:20 | access to local variable sink35 | provenance |  |
 | Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | MaD:3 |
 | Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | MaD:4 |
-| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | heuristic-callback |
 | Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | MaD:3 |
 | Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | MaD:4 |
-| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | heuristic-callback |
 | Capture.cs:162:13:162:18 | access to local variable sink36 : String | Capture.cs:163:15:163:20 | access to local variable sink36 | provenance |  |
 | Capture.cs:162:22:162:36 | access to local function CaptureThrough4 : CaptureThrough4 [captured tainted] : String | Capture.cs:160:20:160:26 | access to parameter tainted : String | provenance |  |
 | Capture.cs:162:22:162:36 | access to local function CaptureThrough4 : CaptureThrough4 [captured tainted] : String | Capture.cs:162:22:162:38 | call to local function CaptureThrough4 : String | provenance |  |
@@ -94,10 +90,8 @@ edges
 | Capture.cs:228:17:228:30 | "taint source" : String | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
 | Capture.cs:228:17:228:30 | "taint source" : String | Capture.cs:234:15:234:15 | access to local variable x | provenance |  |
 | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | MaD:1 |
-| Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | heuristic-callback |
 | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | Capture.cs:234:15:234:15 | access to local variable x | provenance |  |
 | Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance |  |
-| Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance | heuristic-callback |
 | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | Capture.cs:249:9:249:9 | access to local variable a : Action [captured c, field Field] : String | provenance |  |
 | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | Capture.cs:251:15:251:15 | access to local variable c : Capture [field Field] : String | provenance |  |
 | Capture.cs:242:19:242:32 | "taint source" : String | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | provenance |  |
@@ -464,17 +458,12 @@ edges
 | MultiImplementationA.cs:7:27:7:27 | x : String | MultiImplementationA.cs:7:39:7:39 | access to parameter x | provenance |  |
 | MultiImplementationB.cs:3:28:3:41 | "taint source" : String | MultiImplementationB.cs:5:27:5:27 | x : String | provenance |  |
 | MultiImplementationB.cs:5:27:5:27 | x : String | MultiImplementationB.cs:5:39:5:39 | access to parameter x | provenance |  |
-| Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | provenance |  |
-| Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | provenance |  |
-| Splitting.cs:8:13:8:13 | access to local variable x : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | provenance |  |
-| Splitting.cs:8:13:8:13 | access to local variable x : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | provenance |  |
+| Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | access to parameter tainted : String | provenance |  |
+| Splitting.cs:8:13:8:13 | access to local variable x : String | Splitting.cs:9:15:9:15 | access to local variable x | provenance |  |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | Splitting.cs:11:19:11:19 | access to local variable x | provenance |  |
-| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | Splitting.cs:8:13:8:13 | access to local variable x : String | provenance |  |
-| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String | Splitting.cs:8:13:8:13 | access to local variable x : String | provenance |  |
-| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | provenance |  |
-| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | provenance |  |
-| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String | provenance |  |
-| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | provenance |  |
+| Splitting.cs:8:17:8:31 | call to method Return<String> : String | Splitting.cs:8:13:8:13 | access to local variable x : String | provenance |  |
+| Splitting.cs:8:24:8:30 | access to parameter tainted : String | Splitting.cs:8:17:8:31 | call to method Return<String> : String | provenance |  |
+| Splitting.cs:8:24:8:30 | access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | provenance |  |
 | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | provenance |  |
 | Splitting.cs:18:24:18:24 | s : String | Splitting.cs:20:29:20:29 | access to parameter s : String | provenance |  |
 | Splitting.cs:20:29:20:29 | access to parameter s : String | Splitting.cs:16:26:16:26 | x : String | provenance |  |
@@ -482,23 +471,17 @@ edges
 | Splitting.cs:21:9:21:11 | value : String | Splitting.cs:21:28:21:32 | access to parameter value : String | provenance |  |
 | Splitting.cs:21:28:21:32 | access to parameter value : String | Splitting.cs:16:26:16:26 | x : String | provenance |  |
 | Splitting.cs:21:28:21:32 | access to parameter value : String | Splitting.cs:21:21:21:33 | call to method Return<String> | provenance |  |
-| Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:30:17:30:23 | [b (line 24): false] access to parameter tainted : String | provenance |  |
-| Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:30:17:30:23 | [b (line 24): true] access to parameter tainted : String | provenance |  |
-| Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | provenance |  |
-| Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | provenance |  |
-| Splitting.cs:30:17:30:23 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:21:9:21:11 | value : String | provenance |  |
-| Splitting.cs:30:17:30:23 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:21:9:21:11 | value : String | provenance |  |
-| Splitting.cs:31:13:31:13 | access to local variable x : String | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | provenance |  |
-| Splitting.cs:31:13:31:13 | access to local variable x : String | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | provenance |  |
+| Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:30:17:30:23 | access to parameter tainted : String | provenance |  |
+| Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:31:19:31:25 | access to parameter tainted : String | provenance |  |
+| Splitting.cs:30:17:30:23 | access to parameter tainted : String | Splitting.cs:21:9:21:11 | value : String | provenance |  |
+| Splitting.cs:31:13:31:13 | access to local variable x : String | Splitting.cs:32:15:32:15 | access to local variable x | provenance |  |
 | Splitting.cs:31:13:31:13 | access to local variable x : String | Splitting.cs:34:19:34:19 | access to local variable x | provenance |  |
-| Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String | Splitting.cs:31:13:31:13 | access to local variable x : String | provenance |  |
-| Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String | Splitting.cs:31:13:31:13 | access to local variable x : String | provenance |  |
-| Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | provenance |  |
-| Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String | provenance |  |
-| Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | provenance |  |
-| Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String | provenance |  |
+| Splitting.cs:31:17:31:26 | dynamic access to element : String | Splitting.cs:31:13:31:13 | access to local variable x : String | provenance |  |
+| Splitting.cs:31:19:31:25 | access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | provenance |  |
+| Splitting.cs:31:19:31:25 | access to parameter tainted : String | Splitting.cs:31:17:31:26 | dynamic access to element : String | provenance |  |
 | Splitting.cs:39:13:39:13 | access to local variable s : String | Splitting.cs:41:19:41:19 | access to local variable s | provenance |  |
-| Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:39:13:39:13 | access to local variable s : String | provenance |  |
+| Splitting.cs:39:13:39:13 | access to local variable s : String | Splitting.cs:43:19:43:19 | access to local variable s | provenance |  |
+| Splitting.cs:39:21:39:34 | "taint source" : String | Splitting.cs:39:13:39:13 | access to local variable s : String | provenance |  |
 | Splitting.cs:48:13:48:13 | access to local variable s : String | Splitting.cs:50:19:50:19 | access to local variable s | provenance |  |
 | Splitting.cs:48:13:48:13 | access to local variable s : String | Splitting.cs:52:19:52:19 | access to local variable s | provenance |  |
 | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:48:13:48:13 | access to local variable s : String | provenance |  |
@@ -919,13 +902,9 @@ nodes
 | MultiImplementationB.cs:5:39:5:39 | access to parameter x | semmle.label | access to parameter x |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | semmle.label | access to local variable x : String |
-| Splitting.cs:8:13:8:13 | access to local variable x : String | semmle.label | access to local variable x : String |
-| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | semmle.label | [b (line 3): false] call to method Return<String> : String |
-| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String | semmle.label | [b (line 3): true] call to method Return<String> : String |
-| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | semmle.label | [b (line 3): false] access to parameter tainted : String |
-| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | semmle.label | [b (line 3): true] access to parameter tainted : String |
-| Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | semmle.label | [b (line 3): false] access to local variable x |
-| Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | semmle.label | [b (line 3): true] access to local variable x |
+| Splitting.cs:8:17:8:31 | call to method Return<String> : String | semmle.label | call to method Return<String> : String |
+| Splitting.cs:8:24:8:30 | access to parameter tainted : String | semmle.label | access to parameter tainted : String |
+| Splitting.cs:9:15:9:15 | access to local variable x | semmle.label | access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | semmle.label | access to local variable x |
 | Splitting.cs:16:26:16:26 | x : String | semmle.label | x : String |
 | Splitting.cs:16:32:16:32 | access to parameter x : String | semmle.label | access to parameter x : String |
@@ -936,20 +915,16 @@ nodes
 | Splitting.cs:21:21:21:33 | call to method Return<String> | semmle.label | call to method Return<String> |
 | Splitting.cs:21:28:21:32 | access to parameter value : String | semmle.label | access to parameter value : String |
 | Splitting.cs:24:28:24:34 | tainted : String | semmle.label | tainted : String |
-| Splitting.cs:30:17:30:23 | [b (line 24): false] access to parameter tainted : String | semmle.label | [b (line 24): false] access to parameter tainted : String |
-| Splitting.cs:30:17:30:23 | [b (line 24): true] access to parameter tainted : String | semmle.label | [b (line 24): true] access to parameter tainted : String |
+| Splitting.cs:30:17:30:23 | access to parameter tainted : String | semmle.label | access to parameter tainted : String |
 | Splitting.cs:31:13:31:13 | access to local variable x : String | semmle.label | access to local variable x : String |
-| Splitting.cs:31:13:31:13 | access to local variable x : String | semmle.label | access to local variable x : String |
-| Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String | semmle.label | [b (line 24): false] dynamic access to element : String |
-| Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String | semmle.label | [b (line 24): true] dynamic access to element : String |
-| Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | semmle.label | [b (line 24): false] access to parameter tainted : String |
-| Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | semmle.label | [b (line 24): true] access to parameter tainted : String |
-| Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | semmle.label | [b (line 24): false] access to local variable x |
-| Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | semmle.label | [b (line 24): true] access to local variable x |
+| Splitting.cs:31:17:31:26 | dynamic access to element : String | semmle.label | dynamic access to element : String |
+| Splitting.cs:31:19:31:25 | access to parameter tainted : String | semmle.label | access to parameter tainted : String |
+| Splitting.cs:32:15:32:15 | access to local variable x | semmle.label | access to local variable x |
 | Splitting.cs:34:19:34:19 | access to local variable x | semmle.label | access to local variable x |
 | Splitting.cs:39:13:39:13 | access to local variable s : String | semmle.label | access to local variable s : String |
-| Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | semmle.label | [b (line 37): true] "taint source" : String |
+| Splitting.cs:39:21:39:34 | "taint source" : String | semmle.label | "taint source" : String |
 | Splitting.cs:41:19:41:19 | access to local variable s | semmle.label | access to local variable s |
+| Splitting.cs:43:19:43:19 | access to local variable s | semmle.label | access to local variable s |
 | Splitting.cs:48:13:48:13 | access to local variable s : String | semmle.label | access to local variable s : String |
 | Splitting.cs:48:36:48:49 | "taint source" : String | semmle.label | "taint source" : String |
 | Splitting.cs:50:19:50:19 | access to local variable s | semmle.label | access to local variable s |
@@ -984,17 +959,11 @@ subpaths
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | GlobalDataFlow.cs:300:33:300:34 | access to parameter x0 : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String |
-| Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String |
-| Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String |
+| Splitting.cs:8:24:8:30 | access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | call to method Return<String> : String |
 | Splitting.cs:20:29:20:29 | access to parameter s : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String |
 | Splitting.cs:21:28:21:32 | access to parameter value : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:21:21:21:33 | call to method Return<String> |
-| Splitting.cs:31:19:31:25 | [b (line 24): false] access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element : String |
-| Splitting.cs:31:19:31:25 | [b (line 24): true] access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element : String |
+| Splitting.cs:31:19:31:25 | access to parameter tainted : String | Splitting.cs:18:24:18:24 | s : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String | Splitting.cs:31:17:31:26 | dynamic access to element : String |
 #select
-| Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x | [b (line 24): false] access to local variable x |
-| Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x | [b (line 24): true] access to local variable x |
-| Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
-| Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | Capture.cs:246:19:246:25 | access to field Field | Capture.cs:242:19:242:32 | "taint source" : String | Capture.cs:246:19:246:25 | access to field Field | access to field Field |
 | Capture.cs:251:15:251:21 | access to field Field | Capture.cs:242:19:242:32 | "taint source" : String | Capture.cs:251:15:251:21 | access to field Field | access to field Field |
 | Capture.cs:251:15:251:21 | access to field Field | Capture.cs:247:23:247:36 | "taint source" : String | Capture.cs:251:15:251:21 | access to field Field | access to field Field |
@@ -1016,7 +985,8 @@ subpaths
 | GlobalDataFlow.cs:533:15:533:21 | access to field field | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:533:15:533:21 | access to field field | access to field field |
 | GlobalDataFlow.cs:539:15:539:22 | access to field field | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:539:15:539:22 | access to field field | access to field field |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:547:15:547:21 | access to field field | access to field field |
-| Splitting.cs:41:19:41:19 | access to local variable s | Splitting.cs:39:21:39:34 | [b (line 37): true] "taint source" : String | Splitting.cs:41:19:41:19 | access to local variable s | access to local variable s |
+| Splitting.cs:41:19:41:19 | access to local variable s | Splitting.cs:39:21:39:34 | "taint source" : String | Splitting.cs:41:19:41:19 | access to local variable s | access to local variable s |
+| Splitting.cs:43:19:43:19 | access to local variable s | Splitting.cs:39:21:39:34 | "taint source" : String | Splitting.cs:43:19:43:19 | access to local variable s | access to local variable s |
 | Splitting.cs:50:19:50:19 | access to local variable s | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:50:19:50:19 | access to local variable s | access to local variable s |
 | Splitting.cs:52:19:52:19 | access to local variable s | Splitting.cs:48:36:48:49 | "taint source" : String | Splitting.cs:52:19:52:19 | access to local variable s | access to local variable s |
 | GlobalDataFlow.cs:72:15:72:19 | access to local variable sink0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:72:15:72:19 | access to local variable sink0 | access to local variable sink0 |
@@ -1068,7 +1038,9 @@ subpaths
 | Capture.cs:319:19:319:19 | access to local variable x | Capture.cs:318:17:318:30 | "taint source" : String | Capture.cs:319:19:319:19 | access to local variable x | access to local variable x |
 | Capture.cs:330:47:330:47 | access to local variable x | Capture.cs:328:17:328:30 | "taint source" : String | Capture.cs:330:47:330:47 | access to local variable x | access to local variable x |
 | Capture.cs:341:45:341:45 | access to local variable x | Capture.cs:339:17:339:30 | "taint source" : String | Capture.cs:341:45:341:45 | access to local variable x | access to local variable x |
+| Splitting.cs:9:15:9:15 | access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | access to local variable x | access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |
+| Splitting.cs:32:15:32:15 | access to local variable x | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:32:15:32:15 | access to local variable x | access to local variable x |
 | Splitting.cs:34:19:34:19 | access to local variable x | Splitting.cs:24:28:24:34 | tainted : String | Splitting.cs:34:19:34:19 | access to local variable x | access to local variable x |
 | Capture.cs:206:19:206:19 | access to parameter s | Capture.cs:211:21:211:34 | "taint source" : String | Capture.cs:206:19:206:19 | access to parameter s | access to parameter s |
 | Capture.cs:217:19:217:19 | access to parameter s | Capture.cs:221:21:221:34 | "taint source" : String | Capture.cs:217:19:217:19 | access to parameter s | access to parameter s |

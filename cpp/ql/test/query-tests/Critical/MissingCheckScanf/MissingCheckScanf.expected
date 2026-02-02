@@ -15,7 +15,6 @@ edges
 | test.cpp:141:19:141:20 | scanf output argument | test.cpp:143:8:143:8 | i | provenance |  |
 | test.cpp:150:23:150:24 | scanf output argument | test.cpp:154:9:154:9 | i | provenance |  |
 | test.cpp:181:19:181:20 | scanf output argument | test.cpp:185:8:185:8 | i | provenance |  |
-| test.cpp:193:19:193:20 | scanf output argument | test.cpp:197:8:197:8 | i | provenance |  |
 | test.cpp:211:22:211:23 | scanf output argument | test.cpp:213:8:213:8 | i | provenance |  |
 | test.cpp:221:22:221:23 | scanf output argument | test.cpp:223:8:223:8 | i | provenance |  |
 | test.cpp:221:26:221:27 | scanf output argument | test.cpp:224:8:224:8 | j | provenance |  |
@@ -89,8 +88,6 @@ nodes
 | test.cpp:154:9:154:9 | i | semmle.label | i |
 | test.cpp:181:19:181:20 | scanf output argument | semmle.label | scanf output argument |
 | test.cpp:185:8:185:8 | i | semmle.label | i |
-| test.cpp:193:19:193:20 | scanf output argument | semmle.label | scanf output argument |
-| test.cpp:197:8:197:8 | i | semmle.label | i |
 | test.cpp:211:22:211:23 | scanf output argument | semmle.label | scanf output argument |
 | test.cpp:213:8:213:8 | i | semmle.label | i |
 | test.cpp:221:22:221:23 | scanf output argument | semmle.label | scanf output argument |

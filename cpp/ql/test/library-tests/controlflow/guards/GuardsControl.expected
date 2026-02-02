@@ -43,16 +43,36 @@
 | test.c:44:12:44:16 | ... > ... | true | test.c:45:13:45:20 | if (...) ...  |
 | test.c:44:12:44:16 | ... > ... | true | test.c:45:23:47:22 | { ... } |
 | test.c:45:16:45:20 | ... > ... | true | test.c:45:23:47:22 | { ... } |
+| test.c:58:9:58:9 | x | not 0 | test.c:58:19:58:23 | y |
+| test.c:58:9:58:9 | x | not 0 | test.c:62:9:62:16 | return ... |
 | test.c:58:9:58:14 | ... == ... | false | test.c:58:19:58:23 | y |
 | test.c:58:9:58:14 | ... == ... | false | test.c:62:9:62:16 | return ... |
 | test.c:58:9:58:23 | ... \|\| ... | false | test.c:62:9:62:16 | return ... |
 | test.c:58:19:58:23 | ... < ... | false | test.c:62:9:62:16 | return ... |
+| test.c:70:15:70:15 | x | 0 | test.c:75:17:77:14 | { ... } |
+| test.c:70:15:70:15 | x | 0 | test.c:85:18:85:23 | y |
+| test.c:70:15:70:15 | x | 0 | test.c:86:9:86:14 | ExprStmt |
+| test.c:70:15:70:15 | x | not 0 | test.c:78:12:79:14 | { ... } |
+| test.c:75:9:75:9 | x | 0 | test.c:75:17:77:14 | { ... } |
+| test.c:75:9:75:9 | x | not 0 | test.c:78:12:79:14 | { ... } |
 | test.c:75:9:75:14 | ... == ... | false | test.c:78:12:79:14 | { ... } |
 | test.c:75:9:75:14 | ... == ... | true | test.c:75:17:77:14 | { ... } |
+| test.c:85:8:85:8 | x | 0 | test.c:85:18:85:23 | y |
+| test.c:85:8:85:8 | x | 0 | test.c:86:9:86:14 | ExprStmt |
 | test.c:85:8:85:13 | ... == ... | true | test.c:85:18:85:23 | y |
 | test.c:85:8:85:13 | ... == ... | true | test.c:86:9:86:14 | ExprStmt |
 | test.c:85:8:85:23 | ... && ... | true | test.c:86:9:86:14 | ExprStmt |
+| test.c:85:18:85:18 | y | not 0 | test.c:86:9:86:14 | ExprStmt |
 | test.c:85:18:85:23 | ... != ... | true | test.c:86:9:86:14 | ExprStmt |
+| test.c:94:11:94:11 | x | 0 | test.c:70:5:70:9 | test2 |
+| test.c:94:11:94:11 | x | 0 | test.c:99:5:102:13 | ExprStmt |
+| test.c:94:11:94:11 | x | 0 | test.c:102:16:102:21 | j |
+| test.c:94:11:94:11 | x | 0 | test.c:102:29:102:26 | { ... } |
+| test.c:94:11:94:11 | x | 0 | test.c:107:5:109:14 | ExprStmt |
+| test.c:94:11:94:11 | x | 0 | test.c:109:19:109:23 | y |
+| test.c:94:11:94:11 | x | 0 | test.c:109:26:117:12 | { ... } |
+| test.c:94:11:94:11 | x | 0 | test.c:113:9:113:16 | return ... |
+| test.c:94:11:94:11 | x | not 0 | test.c:94:19:96:11 | { ... } |
 | test.c:94:11:94:16 | ... != ... | false | test.c:70:5:70:9 | test2 |
 | test.c:94:11:94:16 | ... != ... | false | test.c:99:5:102:13 | ExprStmt |
 | test.c:94:11:94:16 | ... != ... | false | test.c:102:16:102:21 | j |
@@ -68,98 +88,185 @@
 | test.c:102:16:102:21 | ... < ... | false | test.c:109:26:117:12 | { ... } |
 | test.c:102:16:102:21 | ... < ... | false | test.c:113:9:113:16 | return ... |
 | test.c:102:16:102:21 | ... < ... | true | test.c:102:29:102:26 | { ... } |
+| test.c:109:9:109:9 | x | not 0 | test.c:109:19:109:23 | y |
+| test.c:109:9:109:9 | x | not 0 | test.c:113:9:113:16 | return ... |
 | test.c:109:9:109:14 | ... == ... | false | test.c:109:19:109:23 | y |
 | test.c:109:9:109:14 | ... == ... | false | test.c:113:9:113:16 | return ... |
 | test.c:109:9:109:23 | ... \|\| ... | false | test.c:113:9:113:16 | return ... |
 | test.c:109:19:109:23 | ... < ... | false | test.c:113:9:113:16 | return ... |
+| test.c:126:7:126:7 | 1 | not 0 | test.c:126:12:126:26 | call to test3_condition |
+| test.c:126:7:126:7 | 1 | not 0 | test.c:126:31:128:16 | { ... } |
+| test.c:126:7:126:7 | 1 | not 0 | test.c:131:3:131:7 | if (...) ...  |
+| test.c:126:7:126:7 | 1 | not 0 | test.c:131:10:132:16 | { ... } |
+| test.c:126:7:126:7 | 1 | not 0 | test.c:134:1:123:10 | return ... |
 | test.c:126:7:126:7 | 1 | true | test.c:126:12:126:26 | call to test3_condition |
 | test.c:126:7:126:7 | 1 | true | test.c:126:31:128:16 | { ... } |
 | test.c:126:7:126:7 | 1 | true | test.c:131:3:131:7 | if (...) ...  |
 | test.c:126:7:126:7 | 1 | true | test.c:131:10:132:16 | { ... } |
 | test.c:126:7:126:7 | 1 | true | test.c:134:1:123:10 | return ... |
+| test.c:126:7:126:28 | ... && ... | not 0 | test.c:126:31:128:16 | { ... } |
+| test.c:126:7:126:28 | ... && ... | not 0 | test.c:131:3:131:7 | if (...) ...  |
+| test.c:126:7:126:28 | ... && ... | not 0 | test.c:131:10:132:16 | { ... } |
+| test.c:126:7:126:28 | ... && ... | not 0 | test.c:134:1:123:10 | return ... |
 | test.c:126:7:126:28 | ... && ... | true | test.c:126:31:128:16 | { ... } |
+| test.c:126:7:126:28 | ... && ... | true | test.c:131:3:131:7 | if (...) ...  |
+| test.c:126:7:126:28 | ... && ... | true | test.c:131:10:132:16 | { ... } |
+| test.c:126:7:126:28 | ... && ... | true | test.c:134:1:123:10 | return ... |
+| test.c:126:12:126:26 | call to test3_condition | not 0 | test.c:126:31:128:16 | { ... } |
+| test.c:126:12:126:26 | call to test3_condition | not 0 | test.c:131:10:132:16 | { ... } |
 | test.c:126:12:126:26 | call to test3_condition | true | test.c:126:31:128:16 | { ... } |
+| test.c:126:12:126:26 | call to test3_condition | true | test.c:131:10:132:16 | { ... } |
+| test.c:127:9:127:9 | 1 | not 0 | test.c:131:10:132:16 | { ... } |
+| test.c:131:7:131:7 | b | not 0 | test.c:131:10:132:16 | { ... } |
 | test.c:131:7:131:7 | b | true | test.c:131:10:132:16 | { ... } |
 | test.c:137:7:137:7 | 0 | false | test.c:142:3:136:10 | return ... |
+| test.c:145:16:145:16 | x | 0 | test.c:146:11:147:9 | { ... } |
 | test.c:146:7:146:8 | ! ... | true | test.c:146:11:147:9 | { ... } |
+| test.c:146:8:146:8 | x | 0 | test.c:146:11:147:9 | { ... } |
 | test.c:146:8:146:8 | x | false | test.c:146:11:147:9 | { ... } |
+| test.c:151:18:151:18 | p | not null | test.c:152:11:154:5 | { ... } |
+| test.c:152:8:152:8 | p | not null | test.c:152:11:154:5 | { ... } |
 | test.c:152:8:152:8 | p | true | test.c:152:11:154:5 | { ... } |
+| test.c:157:18:157:18 | p | null | test.c:158:12:160:5 | { ... } |
 | test.c:158:8:158:9 | ! ... | true | test.c:158:12:160:5 | { ... } |
 | test.c:158:9:158:9 | p | false | test.c:158:12:160:5 | { ... } |
+| test.c:158:9:158:9 | p | null | test.c:158:12:160:5 | { ... } |
+| test.c:163:18:163:18 | s | not 0 | test.c:164:11:166:5 | { ... } |
+| test.c:164:8:164:8 | s | not 0 | test.c:164:11:166:5 | { ... } |
 | test.c:164:8:164:8 | s | true | test.c:164:11:166:5 | { ... } |
+| test.c:169:18:169:18 | s | 0 | test.c:170:12:172:5 | { ... } |
 | test.c:170:8:170:9 | ! ... | true | test.c:170:12:172:5 | { ... } |
+| test.c:170:9:170:9 | s | 0 | test.c:170:12:172:5 | { ... } |
 | test.c:170:9:170:9 | s | false | test.c:170:12:172:5 | { ... } |
 | test.c:176:8:176:15 | ! ... | true | test.c:176:18:178:5 | { ... } |
+| test.c:176:10:176:14 | ... < ... | 0 | test.c:176:18:178:5 | { ... } |
 | test.c:176:10:176:14 | ... < ... | false | test.c:176:18:178:5 | { ... } |
 | test.c:182:8:182:34 | ! ... | true | test.c:182:37:184:5 | { ... } |
 | test.c:182:10:182:20 | ... >= ... | true | test.c:181:25:182:20 | { ... } |
 | test.c:182:10:182:20 | ... >= ... | true | test.c:182:25:182:33 | foo |
+| test.c:182:10:182:33 | ... && ... | 0 | test.c:182:37:184:5 | { ... } |
 | test.c:182:10:182:33 | ... && ... | false | test.c:182:37:184:5 | { ... } |
 | test.c:182:10:182:33 | ... && ... | true | test.c:181:25:182:20 | { ... } |
 | test.c:182:25:182:33 | ... < ... | true | test.c:181:25:182:20 | { ... } |
+| test.c:188:11:188:16 | ... != ... | 0 | test.c:190:11:192:3 | { ... } |
 | test.c:190:7:190:8 | ! ... | true | test.c:190:11:192:3 | { ... } |
+| test.c:190:8:190:8 | c | 0 | test.c:190:11:192:3 | { ... } |
 | test.c:190:8:190:8 | c | false | test.c:190:11:192:3 | { ... } |
+| test.c:196:11:196:16 | ... > ... | 0 | test.c:198:11:200:3 | { ... } |
 | test.c:198:7:198:8 | ! ... | true | test.c:198:11:200:3 | { ... } |
+| test.c:198:8:198:8 | b | 0 | test.c:198:11:200:3 | { ... } |
 | test.c:198:8:198:8 | b | false | test.c:198:11:200:3 | { ... } |
+| test.c:204:11:204:15 | ... > ... | 0 | test.c:206:11:208:3 | { ... } |
 | test.c:206:7:206:8 | ! ... | true | test.c:206:11:208:3 | { ... } |
+| test.c:206:8:206:8 | c | 0 | test.c:206:11:208:3 | { ... } |
 | test.c:206:8:206:8 | c | false | test.c:206:11:208:3 | { ... } |
+| test.c:215:6:215:18 | call to __builtin_expect | not 0 | test.c:215:21:217:5 | { ... } |
 | test.c:215:6:215:18 | call to __builtin_expect | true | test.c:215:21:217:5 | { ... } |
+| test.c:219:9:219:22 | call to __builtin_expect | not 0 | test.c:219:25:221:5 | { ... } |
 | test.c:219:9:219:22 | call to __builtin_expect | true | test.c:219:25:221:5 | { ... } |
+| test.cpp:18:8:18:10 | call to get | not null | test.cpp:19:5:19:14 | ExprStmt |
 | test.cpp:18:8:18:10 | call to get | true | test.cpp:19:5:19:14 | ExprStmt |
-| test.cpp:31:7:31:13 | ... == ... | false | test.cpp:30:6:30:16 | doSomething |
+| test.cpp:30:22:30:22 | x | -1 | test.cpp:31:16:32:21 | { ... } |
+| test.cpp:30:22:30:22 | x | not -1 | test.cpp:34:1:34:1 | return ... |
+| test.cpp:31:7:31:7 | x | -1 | test.cpp:31:16:32:21 | { ... } |
+| test.cpp:31:7:31:7 | x | not -1 | test.cpp:34:1:34:1 | return ... |
 | test.cpp:31:7:31:13 | ... == ... | false | test.cpp:34:1:34:1 | return ... |
-| test.cpp:31:7:31:13 | ... == ... | true | test.cpp:30:6:30:16 | doSomething |
 | test.cpp:31:7:31:13 | ... == ... | true | test.cpp:31:16:32:21 | { ... } |
 | test.cpp:42:13:42:20 | call to getABool | true | test.cpp:43:9:45:23 | { ... } |
-| test.cpp:61:10:61:10 | i | Case[0] | test.cpp:62:5:64:12 | case ...: |
-| test.cpp:61:10:61:10 | i | Case[1] | test.cpp:65:5:66:10 | case ...: |
-| test.cpp:74:10:74:10 | i | Case[0..10] | test.cpp:75:5:77:12 | case ...: |
-| test.cpp:74:10:74:10 | i | Case[11..20] | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:60:31:60:31 | i | 0 | test.cpp:62:5:64:12 | case ...: |
+| test.cpp:60:31:60:31 | i | 1 | test.cpp:65:5:66:10 | case ...: |
+| test.cpp:61:10:61:10 | i | 0 | test.cpp:62:5:64:12 | case ...: |
+| test.cpp:61:10:61:10 | i | 1 | test.cpp:65:5:66:10 | case ...: |
+| test.cpp:73:30:73:30 | i | Lower bound 0 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:73:30:73:30 | i | Lower bound 11 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:73:30:73:30 | i | Upper bound 10 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:73:30:73:30 | i | Upper bound 20 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:74:10:74:10 | i | Lower bound 0 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:74:10:74:10 | i | Lower bound 11 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:74:10:74:10 | i | Upper bound 10 | test.cpp:75:5:77:12 | case ...: |
+| test.cpp:74:10:74:10 | i | Upper bound 20 | test.cpp:78:5:79:10 | case ...: |
+| test.cpp:92:31:92:31 | c | not null | test.cpp:93:9:94:7 | { ... } |
+| test.cpp:93:6:93:6 | c | not null | test.cpp:93:9:94:7 | { ... } |
 | test.cpp:93:6:93:6 | c | true | test.cpp:93:9:94:7 | { ... } |
 | test.cpp:99:6:99:6 | f | true | test.cpp:99:9:100:7 | { ... } |
 | test.cpp:105:6:105:14 | ... != ... | true | test.cpp:105:17:106:7 | { ... } |
 | test.cpp:111:6:111:14 | ... != ... | true | test.cpp:111:17:112:7 | { ... } |
+| test.cpp:119:16:119:16 | b | true | test.cpp:123:5:125:20 | { ... } |
+| test.cpp:119:16:119:16 | b | true | test.cpp:125:23:125:29 | return ... |
 | test.cpp:122:9:122:9 | b | true | test.cpp:123:5:125:20 | { ... } |
 | test.cpp:122:9:122:9 | b | true | test.cpp:125:23:125:29 | return ... |
 | test.cpp:125:13:125:20 | ! ... | true | test.cpp:125:23:125:29 | return ... |
 | test.cpp:125:14:125:17 | call to safe | false | test.cpp:125:23:125:29 | return ... |
+| test.cpp:131:6:131:21 | call to __builtin_expect | not 0 | test.cpp:131:40:132:9 | { ... } |
 | test.cpp:131:6:131:21 | call to __builtin_expect | true | test.cpp:131:40:132:9 | { ... } |
+| test.cpp:135:6:135:21 | call to __builtin_expect | not 0 | test.cpp:135:40:136:9 | { ... } |
 | test.cpp:135:6:135:21 | call to __builtin_expect | true | test.cpp:135:40:136:9 | { ... } |
+| test.cpp:141:6:141:21 | call to __builtin_expect | not 0 | test.cpp:141:36:142:9 | { ... } |
 | test.cpp:141:6:141:21 | call to __builtin_expect | true | test.cpp:141:36:142:9 | { ... } |
+| test.cpp:145:6:145:21 | call to __builtin_expect | not 0 | test.cpp:145:36:146:9 | { ... } |
 | test.cpp:145:6:145:21 | call to __builtin_expect | true | test.cpp:145:36:146:9 | { ... } |
+| test.cpp:151:8:151:13 | ... < ... | false | test.cpp:152:11:153:9 | { ... } |
 | test.cpp:152:7:152:8 | ! ... | true | test.cpp:152:11:153:9 | { ... } |
 | test.cpp:152:8:152:8 | b | false | test.cpp:152:11:153:9 | { ... } |
+| test.cpp:158:12:158:17 | ... != ... | false | test.cpp:160:11:162:3 | { ... } |
 | test.cpp:160:7:160:8 | ! ... | true | test.cpp:160:11:162:3 | { ... } |
 | test.cpp:160:8:160:8 | c | false | test.cpp:160:11:162:3 | { ... } |
+| test.cpp:166:12:166:17 | ... > ... | false | test.cpp:168:11:170:3 | { ... } |
 | test.cpp:168:7:168:8 | ! ... | true | test.cpp:168:11:170:3 | { ... } |
 | test.cpp:168:8:168:8 | b | false | test.cpp:168:11:170:3 | { ... } |
+| test.cpp:174:12:174:16 | ... > ... | false | test.cpp:176:11:178:3 | { ... } |
 | test.cpp:176:7:176:8 | ! ... | true | test.cpp:176:11:178:3 | { ... } |
 | test.cpp:176:8:176:8 | c | false | test.cpp:176:11:178:3 | { ... } |
+| test.cpp:181:28:181:29 | b1 | true | test.cpp:181:41:182:9 | { ... } |
+| test.cpp:181:28:181:29 | b1 | true | test.cpp:182:14:182:15 | b2 |
+| test.cpp:181:28:181:29 | b1 | true | test.cpp:185:10:188:7 | { ... } |
+| test.cpp:181:37:181:38 | b2 | true | test.cpp:181:41:182:9 | { ... } |
+| test.cpp:181:37:181:38 | b2 | true | test.cpp:185:10:188:7 | { ... } |
 | test.cpp:182:6:182:16 | ! ... | false | test.cpp:185:10:188:7 | { ... } |
 | test.cpp:182:6:182:16 | ! ... | true | test.cpp:182:19:184:7 | { ... } |
 | test.cpp:182:8:182:9 | b1 | true | test.cpp:181:41:182:9 | { ... } |
 | test.cpp:182:8:182:9 | b1 | true | test.cpp:182:14:182:15 | b2 |
+| test.cpp:182:8:182:9 | b1 | true | test.cpp:185:10:188:7 | { ... } |
 | test.cpp:182:8:182:15 | ... && ... | false | test.cpp:182:19:184:7 | { ... } |
 | test.cpp:182:8:182:15 | ... && ... | true | test.cpp:181:41:182:9 | { ... } |
 | test.cpp:182:8:182:15 | ... && ... | true | test.cpp:185:10:188:7 | { ... } |
 | test.cpp:182:14:182:15 | b2 | true | test.cpp:181:41:182:9 | { ... } |
+| test.cpp:182:14:182:15 | b2 | true | test.cpp:185:10:188:7 | { ... } |
+| test.cpp:192:27:192:28 | b1 | false | test.cpp:192:40:193:9 | { ... } |
+| test.cpp:192:27:192:28 | b1 | false | test.cpp:193:14:193:15 | b2 |
+| test.cpp:192:27:192:28 | b1 | false | test.cpp:193:19:196:7 | { ... } |
+| test.cpp:192:36:192:37 | b2 | false | test.cpp:192:40:193:9 | { ... } |
+| test.cpp:192:36:192:37 | b2 | false | test.cpp:193:19:196:7 | { ... } |
 | test.cpp:193:6:193:16 | ! ... | false | test.cpp:197:10:199:7 | { ... } |
 | test.cpp:193:6:193:16 | ! ... | true | test.cpp:193:19:196:7 | { ... } |
 | test.cpp:193:8:193:9 | b1 | false | test.cpp:192:40:193:9 | { ... } |
 | test.cpp:193:8:193:9 | b1 | false | test.cpp:193:14:193:15 | b2 |
+| test.cpp:193:8:193:9 | b1 | false | test.cpp:193:19:196:7 | { ... } |
 | test.cpp:193:8:193:15 | ... \|\| ... | false | test.cpp:192:40:193:9 | { ... } |
 | test.cpp:193:8:193:15 | ... \|\| ... | false | test.cpp:193:19:196:7 | { ... } |
 | test.cpp:193:8:193:15 | ... \|\| ... | true | test.cpp:197:10:199:7 | { ... } |
 | test.cpp:193:14:193:15 | b2 | false | test.cpp:192:40:193:9 | { ... } |
+| test.cpp:193:14:193:15 | b2 | false | test.cpp:193:19:196:7 | { ... } |
+| test.cpp:208:28:208:29 | sc | 0 | test.cpp:211:18:212:13 | { ... } |
+| test.cpp:208:28:208:29 | sc | 0 | test.cpp:214:20:215:13 | { ... } |
+| test.cpp:208:46:208:47 | ul | 0 | test.cpp:217:18:218:13 | { ... } |
+| test.cpp:208:74:208:74 | b | 0 | test.cpp:229:17:230:13 | { ... } |
+| test.cpp:208:74:208:74 | b | 0 | test.cpp:232:21:233:13 | { ... } |
+| test.cpp:211:9:211:10 | sc | 0 | test.cpp:211:18:212:13 | { ... } |
 | test.cpp:211:9:211:15 | ... == ... | true | test.cpp:211:18:212:13 | { ... } |
+| test.cpp:214:9:214:10 | sc | 0 | test.cpp:214:20:215:13 | { ... } |
 | test.cpp:214:9:214:17 | ... == ... | true | test.cpp:214:20:215:13 | { ... } |
+| test.cpp:217:9:217:10 | ul | 0 | test.cpp:217:18:218:13 | { ... } |
 | test.cpp:217:9:217:15 | ... == ... | true | test.cpp:217:18:218:13 | { ... } |
 | test.cpp:220:9:220:14 | ... == ... | true | test.cpp:220:17:221:13 | { ... } |
 | test.cpp:223:9:223:16 | ... == ... | true | test.cpp:223:19:224:13 | { ... } |
 | test.cpp:226:9:226:14 | ... == ... | true | test.cpp:226:17:227:13 | { ... } |
+| test.cpp:229:9:229:9 | b | 0 | test.cpp:229:17:230:13 | { ... } |
 | test.cpp:229:9:229:14 | ... == ... | true | test.cpp:229:17:230:13 | { ... } |
+| test.cpp:232:9:232:9 | b | 0 | test.cpp:232:21:233:13 | { ... } |
 | test.cpp:232:9:232:18 | ... == ... | true | test.cpp:232:21:233:13 | { ... } |
 | test.cpp:235:9:235:17 | ... == ... | true | test.cpp:235:20:236:13 | { ... } |
+| test.cpp:235:12:235:12 | i | 0 | test.cpp:235:20:236:13 | { ... } |
 | test.cpp:238:9:238:17 | ... == ... | true | test.cpp:238:20:239:13 | { ... } |
 | test.cpp:241:9:241:17 | ... == ... | true | test.cpp:241:22:241:30 | ms |
 | test.cpp:241:9:241:17 | ... == ... | true | test.cpp:241:35:241:43 | ms |
@@ -167,30 +274,143 @@
 | test.cpp:241:9:241:30 | ... && ... | true | test.cpp:241:35:241:43 | ms |
 | test.cpp:241:9:241:30 | ... && ... | true | test.cpp:241:46:242:13 | { ... } |
 | test.cpp:241:9:241:43 | ... && ... | true | test.cpp:241:46:242:13 | { ... } |
+| test.cpp:241:12:241:12 | i | 0 | test.cpp:241:22:241:30 | ms |
+| test.cpp:241:12:241:12 | i | 0 | test.cpp:241:35:241:43 | ms |
+| test.cpp:241:12:241:12 | i | 0 | test.cpp:241:46:242:13 | { ... } |
 | test.cpp:241:22:241:30 | ... == ... | true | test.cpp:241:35:241:43 | ms |
 | test.cpp:241:22:241:30 | ... == ... | true | test.cpp:241:46:242:13 | { ... } |
 | test.cpp:241:35:241:43 | ... == ... | true | test.cpp:241:46:242:13 | { ... } |
+| test.cpp:241:38:241:38 | i | 0 | test.cpp:241:46:242:13 | { ... } |
 | test.cpp:247:6:247:18 | ... == ... | false | test.cpp:249:10:251:3 | { ... } |
 | test.cpp:247:6:247:18 | ... == ... | true | test.cpp:247:21:249:3 | { ... } |
+| test.cpp:247:7:247:12 | ... == ... | 0 | test.cpp:247:21:249:3 | { ... } |
+| test.cpp:247:7:247:12 | ... == ... | not 0 | test.cpp:249:10:251:3 | { ... } |
 | test.cpp:253:6:253:18 | ... != ... | false | test.cpp:255:10:257:3 | { ... } |
 | test.cpp:253:6:253:18 | ... != ... | true | test.cpp:253:21:255:3 | { ... } |
+| test.cpp:253:7:253:12 | ... == ... | 0 | test.cpp:255:10:257:3 | { ... } |
+| test.cpp:253:7:253:12 | ... == ... | not 0 | test.cpp:253:21:255:3 | { ... } |
 | test.cpp:260:6:260:18 | ... == ... | false | test.cpp:262:10:264:3 | { ... } |
 | test.cpp:260:6:260:18 | ... == ... | true | test.cpp:260:21:262:3 | { ... } |
+| test.cpp:260:7:260:12 | ... != ... | 0 | test.cpp:260:21:262:3 | { ... } |
+| test.cpp:260:7:260:12 | ... != ... | not 0 | test.cpp:262:10:264:3 | { ... } |
 | test.cpp:266:6:266:18 | ... != ... | false | test.cpp:268:10:270:3 | { ... } |
 | test.cpp:266:6:266:18 | ... != ... | true | test.cpp:266:21:268:3 | { ... } |
+| test.cpp:266:7:266:12 | ... != ... | 0 | test.cpp:268:10:270:3 | { ... } |
+| test.cpp:266:7:266:12 | ... != ... | not 0 | test.cpp:266:21:268:3 | { ... } |
 | test.cpp:273:6:273:17 | ... == ... | false | test.cpp:275:10:277:3 | { ... } |
 | test.cpp:273:6:273:17 | ... == ... | true | test.cpp:273:20:275:3 | { ... } |
+| test.cpp:273:7:273:11 | ... < ... | 0 | test.cpp:273:20:275:3 | { ... } |
+| test.cpp:273:7:273:11 | ... < ... | not 0 | test.cpp:275:10:277:3 | { ... } |
 | test.cpp:279:6:279:17 | ... != ... | false | test.cpp:281:10:283:3 | { ... } |
 | test.cpp:279:6:279:17 | ... != ... | true | test.cpp:279:20:281:3 | { ... } |
+| test.cpp:279:7:279:11 | ... < ... | 0 | test.cpp:281:10:283:3 | { ... } |
+| test.cpp:279:7:279:11 | ... < ... | not 0 | test.cpp:279:20:281:3 | { ... } |
 | test.cpp:287:6:287:19 | ... == ... | false | test.cpp:289:10:291:3 | { ... } |
 | test.cpp:287:6:287:19 | ... == ... | true | test.cpp:287:22:289:3 | { ... } |
+| test.cpp:287:7:287:13 | ... == ... | 0 | test.cpp:287:22:289:3 | { ... } |
+| test.cpp:287:7:287:13 | ... == ... | not 0 | test.cpp:289:10:291:3 | { ... } |
 | test.cpp:293:6:293:19 | ... != ... | false | test.cpp:295:10:297:3 | { ... } |
 | test.cpp:293:6:293:19 | ... != ... | true | test.cpp:293:22:295:3 | { ... } |
+| test.cpp:293:7:293:13 | ... == ... | 0 | test.cpp:295:10:297:3 | { ... } |
+| test.cpp:293:7:293:13 | ... == ... | not 0 | test.cpp:293:22:295:3 | { ... } |
 | test.cpp:300:6:300:19 | ... == ... | false | test.cpp:302:10:304:3 | { ... } |
 | test.cpp:300:6:300:19 | ... == ... | true | test.cpp:300:22:302:3 | { ... } |
+| test.cpp:300:7:300:13 | ... != ... | 0 | test.cpp:300:22:302:3 | { ... } |
+| test.cpp:300:7:300:13 | ... != ... | not 0 | test.cpp:302:10:304:3 | { ... } |
 | test.cpp:306:6:306:19 | ... != ... | false | test.cpp:308:10:310:3 | { ... } |
 | test.cpp:306:6:306:19 | ... != ... | true | test.cpp:306:22:308:3 | { ... } |
+| test.cpp:306:7:306:13 | ... != ... | 0 | test.cpp:308:10:310:3 | { ... } |
+| test.cpp:306:7:306:13 | ... != ... | not 0 | test.cpp:306:22:308:3 | { ... } |
 | test.cpp:312:6:312:18 | ... == ... | false | test.cpp:314:10:316:3 | { ... } |
 | test.cpp:312:6:312:18 | ... == ... | true | test.cpp:312:21:314:3 | { ... } |
+| test.cpp:312:7:312:12 | ... < ... | 0 | test.cpp:312:21:314:3 | { ... } |
+| test.cpp:312:7:312:12 | ... < ... | not 0 | test.cpp:314:10:316:3 | { ... } |
 | test.cpp:318:6:318:18 | ... != ... | false | test.cpp:320:10:322:3 | { ... } |
 | test.cpp:318:6:318:18 | ... != ... | true | test.cpp:318:21:320:3 | { ... } |
+| test.cpp:318:7:318:12 | ... < ... | 0 | test.cpp:320:10:322:3 | { ... } |
+| test.cpp:318:7:318:12 | ... < ... | not 0 | test.cpp:318:21:320:3 | { ... } |
+| test.cpp:327:46:327:46 | b | true | test.cpp:331:3:332:10 | { ... } |
+| test.cpp:330:7:330:7 | b | true | test.cpp:331:3:332:10 | { ... } |
+| test.cpp:334:11:334:11 | x | Lower bound 40 | test.cpp:336:3:338:7 | case ...: |
+| test.cpp:334:11:334:11 | x | Upper bound 50 | test.cpp:336:3:338:7 | case ...: |
+| test.cpp:348:25:348:25 | y | not null | test.cpp:349:29:349:30 | 42 |
+| test.cpp:348:25:348:25 | y | not null | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:348:25:348:25 | y | null | test.cpp:349:34:349:34 | 0 |
+| test.cpp:349:11:349:22 | call to testNotNull1 | false | test.cpp:349:34:349:34 | 0 |
+| test.cpp:349:11:349:22 | call to testNotNull1 | true | test.cpp:349:29:349:30 | 42 |
+| test.cpp:349:11:349:22 | call to testNotNull1 | true | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:349:11:349:34 | ... ? ... : ... | not 0 | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:349:24:349:24 | y | not null | test.cpp:349:29:349:30 | 42 |
+| test.cpp:349:24:349:24 | y | not null | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:349:24:349:24 | y | null | test.cpp:349:34:349:34 | 0 |
+| test.cpp:349:29:349:30 | 42 | not 0 | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:350:7:350:7 | x | not 0 | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:350:7:350:12 | ... != ... | true | test.cpp:350:15:351:7 | { ... } |
+| test.cpp:355:25:355:29 | input | not null | test.cpp:357:3:357:13 | return ... |
+| test.cpp:355:25:355:29 | input | null | test.cpp:356:25:356:36 | return ... |
+| test.cpp:356:7:356:11 | input | not null | test.cpp:357:3:357:13 | return ... |
+| test.cpp:356:7:356:11 | input | null | test.cpp:356:25:356:36 | return ... |
+| test.cpp:356:7:356:22 | ... == ... | false | test.cpp:357:3:357:13 | return ... |
+| test.cpp:356:7:356:22 | ... == ... | true | test.cpp:356:25:356:36 | return ... |
+| test.cpp:360:26:360:31 | number | not null | test.cpp:361:35:361:40 | number |
+| test.cpp:360:26:360:31 | number | null | test.cpp:361:30:361:30 | 0 |
+| test.cpp:361:10:361:15 | number | not null | test.cpp:361:35:361:40 | number |
+| test.cpp:361:10:361:15 | number | null | test.cpp:361:30:361:30 | 0 |
+| test.cpp:361:10:361:26 | ... == ... | false | test.cpp:361:35:361:40 | number |
+| test.cpp:361:10:361:26 | ... == ... | true | test.cpp:361:30:361:30 | 0 |
+| test.cpp:364:33:364:34 | s1 | not null | test.cpp:365:15:365:16 | s2 |
+| test.cpp:364:33:364:34 | s1 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:364:43:364:44 | s2 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:7:365:9 | ! ... | false | test.cpp:365:15:365:16 | s2 |
+| test.cpp:365:7:365:9 | ! ... | false | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:7:365:16 | ... \|\| ... | false | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:8:365:9 | s1 | not null | test.cpp:365:15:365:16 | s2 |
+| test.cpp:365:8:365:9 | s1 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:8:365:9 | s1 | true | test.cpp:365:15:365:16 | s2 |
+| test.cpp:365:8:365:9 | s1 | true | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:14:365:16 | ! ... | false | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:15:365:16 | s2 | not null | test.cpp:366:3:366:12 | return ... |
+| test.cpp:365:15:365:16 | s2 | true | test.cpp:366:3:366:12 | return ... |
+| test.cpp:371:29:371:32 | flag | false | test.cpp:372:35:372:49 | FAILURE |
+| test.cpp:371:29:371:32 | flag | true | test.cpp:372:17:372:31 | SUCCESS |
+| test.cpp:372:10:372:13 | flag | false | test.cpp:372:35:372:49 | FAILURE |
+| test.cpp:372:10:372:13 | flag | true | test.cpp:372:17:372:31 | SUCCESS |
+| test.cpp:375:25:375:25 | p | not null | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:375:25:375:25 | p | not null | test.cpp:382:24:383:7 | { ... } |
+| test.cpp:375:25:375:25 | p | null | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:375:25:375:25 | p | null | test.cpp:384:10:385:7 | { ... } |
+| test.cpp:375:33:375:33 | i | not null | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:375:42:375:42 | s | not null | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:375:50:375:50 | b | false | test.cpp:404:5:406:12 | case ...: |
+| test.cpp:375:50:375:50 | b | true | test.cpp:401:5:403:12 | case ...: |
+| test.cpp:376:7:376:18 | call to testNotNull1 | false | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:376:7:376:18 | call to testNotNull1 | true | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:376:20:376:20 | p | not null | test.cpp:376:24:377:7 | { ... } |
+| test.cpp:376:20:376:20 | p | null | test.cpp:378:10:379:7 | { ... } |
+| test.cpp:382:7:382:18 | call to testNotNull2 | false | test.cpp:384:10:385:7 | { ... } |
+| test.cpp:382:7:382:18 | call to testNotNull2 | true | test.cpp:382:24:383:7 | { ... } |
+| test.cpp:382:20:382:20 | p | not null | test.cpp:382:24:383:7 | { ... } |
+| test.cpp:382:20:382:20 | p | null | test.cpp:384:10:385:7 | { ... } |
+| test.cpp:388:7:388:29 | ... == ... | false | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:388:7:388:29 | ... == ... | true | test.cpp:388:32:389:7 | { ... } |
+| test.cpp:388:12:388:26 | call to getNumOrDefault | 0 | test.cpp:388:32:389:7 | { ... } |
+| test.cpp:388:12:388:26 | call to getNumOrDefault | not 0 | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:388:28:388:28 | i | not null | test.cpp:390:10:391:7 | { ... } |
+| test.cpp:394:7:394:47 | ... == ... | false | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:394:7:394:47 | ... == ... | true | test.cpp:394:50:395:7 | { ... } |
+| test.cpp:394:15:394:34 | call to returnAIfNoneAreNull | 0 | test.cpp:394:50:395:7 | { ... } |
+| test.cpp:394:15:394:34 | call to returnAIfNoneAreNull | not 0 | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:394:36:394:36 | s | not null | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:394:39:394:46 | suffix | not null | test.cpp:396:10:397:7 | { ... } |
+| test.cpp:400:11:400:25 | call to testEnumWrapper | 1 | test.cpp:401:5:403:12 | case ...: |
+| test.cpp:400:11:400:25 | call to testEnumWrapper | 2 | test.cpp:404:5:406:12 | case ...: |
+| test.cpp:400:27:400:27 | b | false | test.cpp:404:5:406:12 | case ...: |
+| test.cpp:400:27:400:27 | b | true | test.cpp:401:5:403:12 | case ...: |
+| test.cpp:410:26:410:26 | o | not null | test.cpp:412:1:412:1 | return ... |
+| test.cpp:410:26:410:26 | o | null | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:7:411:8 | ! ... | false | test.cpp:412:1:412:1 | return ... |
+| test.cpp:411:7:411:8 | ! ... | true | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:8:411:8 | o | false | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:8:411:8 | o | not null | test.cpp:412:1:412:1 | return ... |
+| test.cpp:411:8:411:8 | o | null | test.cpp:411:11:411:18 | ExprStmt |
+| test.cpp:411:8:411:8 | o | true | test.cpp:412:1:412:1 | return ... |

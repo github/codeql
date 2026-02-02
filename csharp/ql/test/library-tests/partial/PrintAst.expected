@@ -1,19 +1,19 @@
 Partial.cs:
 #    1| [Class] TwoPartClass
-#    4|   5: [Method] PartialMethodWithoutBody1
+#    4|   6: [Method] PartialMethodWithoutBody1
 #    4|     -1: [TypeMention] Void
-#    5|   6: [Method] Method2
+#    5|   7: [Method] Method2
 #    5|     -1: [TypeMention] Void
 #    5|     4: [BlockStmt] {...}
-#   14|   7: [Method] PartialMethodWithBody1
+#   14|   8: [Method] PartialMethodWithBody1
 #    3|     -1: [TypeMention] Void
 #   14|     4: [BlockStmt] {...}
-#   15|   8: [Method] Method3
+#   15|   9: [Method] Method3
 #   15|     -1: [TypeMention] Void
 #   15|     4: [BlockStmt] {...}
-#   16|   9: [Field] _backingField
+#   16|   10: [Field] _backingField
 #   16|     -1: [TypeMention] object
-#   18|   10: [Property] PartialProperty1
+#   18|   11: [Property] PartialProperty1
 #    7|     -1: [TypeMention] object
 #   18|     -1: [TypeMention] object
 #   20|     3: [Getter] get_PartialProperty1
@@ -28,10 +28,10 @@ Partial.cs:
 #   21|           0: [AssignExpr] ... = ...
 #   21|             0: [FieldAccess] access to field _backingField
 #   21|             1: [ParameterAccess] access to parameter value
-#   23|   11: [Field] _backingArray
+#   23|   12: [Field] _backingArray
 #   23|     -1: [TypeMention] Object[]
 #   23|       1: [TypeMention] object
-#   25|   12: [Indexer] Item
+#   25|   13: [Indexer] Item
 #    9|     -1: [TypeMention] object
 #   25|     -1: [TypeMention] object
 #-----|     1: (Parameters)
@@ -58,22 +58,22 @@ Partial.cs:
 #   28|               0: [ParameterAccess] access to parameter index
 #   28|             1: [ParameterAccess] access to parameter value
 #   32| [Class] OnePartPartialClass
-#   34|   5: [Method] PartialMethodWithoutBody2
+#   34|   6: [Method] PartialMethodWithoutBody2
 #   34|     -1: [TypeMention] Void
-#   35|   6: [Method] Method4
+#   35|   7: [Method] Method4
 #   35|     -1: [TypeMention] Void
 #   35|     4: [BlockStmt] {...}
 #   38| [Class] NonPartialClass
-#   40|   5: [Method] Method5
+#   40|   6: [Method] Method5
 #   40|     -1: [TypeMention] Void
 #   40|     4: [BlockStmt] {...}
-#   41|   6: [Property] Property
+#   41|   7: [Property] Property
 #   41|     -1: [TypeMention] object
 #   41|     3: [Getter] get_Property
 #   41|     4: [Setter] set_Property
 #-----|       2: (Parameters)
 #   41|         0: [Parameter] value
-#   42|   7: [Indexer] Item
+#   42|   8: [Indexer] Item
 #   42|     -1: [TypeMention] object
 #-----|     1: (Parameters)
 #   42|       0: [Parameter] index
@@ -89,3 +89,7 @@ Partial.cs:
 #   42|         0: [Parameter] index
 #   45|         1: [Parameter] value
 #   45|       4: [BlockStmt] {...}
+PartialMultipleFiles1.cs:
+#    1| [Class] PartialMultipleFiles
+PartialMultipleFiles2.cs:
+#    1| [Class] PartialMultipleFiles

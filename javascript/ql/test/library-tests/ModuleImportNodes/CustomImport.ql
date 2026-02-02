@@ -1,5 +1,6 @@
 import javascript
 
+overlay[local]
 class CustomImport extends DataFlow::ModuleImportNode::Range, DataFlow::CallNode {
   CustomImport() { this.getCalleeName() = "customImport" }
 

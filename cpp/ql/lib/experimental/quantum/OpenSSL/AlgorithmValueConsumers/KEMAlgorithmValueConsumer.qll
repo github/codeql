@@ -11,10 +11,10 @@ class EvpKemAlgorithmValueConsumer extends KemAlgorithmValueConsumer {
   DataFlow::Node resultNode;
 
   EvpKemAlgorithmValueConsumer() {
-    resultNode.asExpr() = this and
+    resultNode.asIndirectExpr() = this and
     (
       this.(Call).getTarget().getName() = "EVP_KEM_fetch" and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
+      valueArgNode.asIndirectExpr() = this.(Call).getArgument(1)
     )
   }
 
