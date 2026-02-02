@@ -1151,10 +1151,14 @@ inferCertainType
 | main.rs:207:13:207:15 | _b1 |  | {EXTERNAL LOCATION} | bool |
 | main.rs:207:19:207:40 | ...::method(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:207:38:207:39 | &s |  | {EXTERNAL LOCATION} | & |
+| main.rs:208:13:208:15 | _b2 |  | {EXTERNAL LOCATION} | bool |
+| main.rs:208:19:208:47 | ...::method(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:208:45:208:46 | &s |  | {EXTERNAL LOCATION} | & |
 | main.rs:210:13:210:15 | _n1 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:210:19:210:41 | ...::method(...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:210:39:210:40 | &s |  | {EXTERNAL LOCATION} | & |
+| main.rs:211:13:211:15 | _n2 |  | {EXTERNAL LOCATION} | i64 |
+| main.rs:211:19:211:48 | ...::method(...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:211:46:211:47 | &s |  | {EXTERNAL LOCATION} | & |
 | main.rs:228:15:228:18 | SelfParam |  | main.rs:216:5:219:5 | MyThing |
 | main.rs:228:15:228:18 | SelfParam | A | main.rs:221:5:222:14 | S1 |
@@ -6895,9 +6899,7 @@ inferType
 | main.rs:207:38:207:39 | &s | TRef | main.rs:200:5:200:13 | S |
 | main.rs:207:39:207:39 | s |  | main.rs:200:5:200:13 | S |
 | main.rs:208:13:208:15 | _b2 |  | {EXTERNAL LOCATION} | bool |
-| main.rs:208:13:208:15 | _b2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:208:19:208:47 | ...::method(...) |  | {EXTERNAL LOCATION} | bool |
-| main.rs:208:19:208:47 | ...::method(...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:208:45:208:46 | &s |  | {EXTERNAL LOCATION} | & |
 | main.rs:208:45:208:46 | &s | TRef | main.rs:200:5:200:13 | S |
 | main.rs:208:46:208:46 | s |  | main.rs:200:5:200:13 | S |
@@ -6906,9 +6908,7 @@ inferType
 | main.rs:210:39:210:40 | &s |  | {EXTERNAL LOCATION} | & |
 | main.rs:210:39:210:40 | &s | TRef | main.rs:200:5:200:13 | S |
 | main.rs:210:40:210:40 | s |  | main.rs:200:5:200:13 | S |
-| main.rs:211:13:211:15 | _n2 |  | {EXTERNAL LOCATION} | bool |
 | main.rs:211:13:211:15 | _n2 |  | {EXTERNAL LOCATION} | i64 |
-| main.rs:211:19:211:48 | ...::method(...) |  | {EXTERNAL LOCATION} | bool |
 | main.rs:211:19:211:48 | ...::method(...) |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:211:46:211:47 | &s |  | {EXTERNAL LOCATION} | & |
 | main.rs:211:46:211:47 | &s | TRef | main.rs:200:5:200:13 | S |

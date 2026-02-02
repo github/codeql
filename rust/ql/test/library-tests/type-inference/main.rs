@@ -205,10 +205,10 @@ mod method_call_trait_path_disambig {
         let s = S;
 
         let _b1 = FirstTrait::method(&s); // $ type=_b1:bool target=FirstTrait::method
-        let _b2 = <S as FirstTrait>::method(&s); // $ type=_b2:bool target=FirstTrait::method SPURIOUS: target=SecondTrait::method
+        let _b2 = <S as FirstTrait>::method(&s); // $ type=_b2:bool target=FirstTrait::method
 
         let _n1 = SecondTrait::method(&s); // $ type=_n1:i64 target=SecondTrait::method
-        let _n2 = <S as SecondTrait>::method(&s); // $ type=_n2:i64 target=SecondTrait::method SPURIOUS: target=FirstTrait::method
+        let _n2 = <S as SecondTrait>::method(&s); // $ type=_n2:i64 target=SecondTrait::method
     }
 }
 

@@ -194,7 +194,7 @@ mod m8 {
         <MyStruct as // $ item=I50
          MyTrait // $ item=I47
         > // $ MISSING: item=52
-        ::f(&x); // $ MISSING: item=I53
+        ::f(&x); // $ item=I48
         let x = MyStruct {}; // $ item=I50
         x.f(); // $ item=I53
         let x = MyStruct {}; // $ item=I50
@@ -365,10 +365,10 @@ mod m15 {
         let x = S; // $ item=I81
         <S // $ item=I81
           as Trait1 // $ item=I79
-        >::f(&x); // $ MISSING: item=I76
+        >::f(&x); // $ item=Trait1::f
         <S // $ item=I81
           as Trait2 // $ item=I82
-        >::f(&x); // $ MISSING: item=I78
+        >::f(&x); // $ item=Trait2::f
         S::g(&x); // $ item=I77
         x.g(); // $ item=I77
     } // I75
@@ -452,12 +452,12 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::f(&x); // $ MISSING: item=I91
+        >::f(&x); // $ item=Trait1::f
         <S // $ item=I90
           as Trait2<
             S // $ item=I90
           > // $ item=I89
-        >::f(&x); // $ MISSING: item=I93
+        >::f(&x); // $ item=Trait2::f
         S::g(&x); // $ item=I92
         x.g(); // $ item=I92
         S::h(&x); // $ item=I96
@@ -467,7 +467,7 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::c; // $ MISSING: item=I95
+        >::c; // $ item=I94
     } // I83
 
     trait Trait3 {
@@ -945,10 +945,10 @@ mod associated_types_subtrait {
     #[rustfmt::skip]
     impl S<bool> { // $ item=S item=bool
         fn _test() {
-            let _c: <S<i32> as Super>::Out = 'a'; // $ item=S item=i32 item=Super MISSING: item=SuperAssoc
-            let _i: <S<bool> as Super>::Out = 1; // $ item=S item=bool item=Super MISSING: item=SuperAssoc
+            let _c: <S<i32> as Super>::Out = 'a'; // $ item=S item=i32 item=Super item=SuperAssoc
+            let _i: <S<bool> as Super>::Out = 1; // $ item=S item=bool item=Super item=SuperAssoc
 
-            let _b: <S<bool> as SuperAlt>::Out = true; // $ item=S item=bool item=SuperAlt MISSING: item=SuperAltAssoc
+            let _b: <S<bool> as SuperAlt>::Out = true; // $ item=S item=bool item=SuperAlt item=SuperAltAssoc
         }
     }
 }
