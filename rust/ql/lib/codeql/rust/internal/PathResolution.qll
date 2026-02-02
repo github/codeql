@@ -110,7 +110,7 @@ pragma[nomagic]
 private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind kind) {
   item = result.getImmediateParent() and
   name = result.getName() and
-  // Associated types in `impl` and `trait` blocks are handled elsewhere
+  // Associated items in `impl` and `trait` blocks are handled elsewhere
   not (item instanceof ImplOrTraitItemNode and result instanceof AssocItem) and
   // type parameters are only available inside the declaring item
   if result instanceof TypeParam
@@ -324,13 +324,14 @@ abstract class ItemNode extends Locatable {
       )
     )
     or
-    exists(TraitItemNodeImpl trait | this = trait |
-      result = trait.getAssocItem(name)
-      or
-      // a trait has access to the associated items of its supertraits
-      not trait.hasAssocItem(name) and
-      result = trait.resolveABoundCand().getASuccessor(name).(AssocItemNode)
-    ) and
+    this =
+      any(TraitItemNodeImpl trait |
+        result = trait.getAssocItem(name)
+        or
+        // a trait has access to the associated items of its supertraits
+        not trait.hasAssocItem(name) and
+        result = trait.resolveABoundCand().getASuccessor(name).(AssocItemNode)
+      ) and
     kind.isExternal() and
     useOpt.isNone()
     or
@@ -1788,6 +1789,8 @@ private ItemNode resolvePathCand0(PathExt path, Namespace ns) {
   exists(ItemNode res |
     res = unqualifiedPathLookup(path, ns, _) and
     if
+      // `Self` paths that are not used as qualifiers (for instance `Self` in
+      // `fn(..) -> Self`) should resolve to the type being implemented.
       not any(PathExt parent).getQualifier() = path and
       isUnqualifiedSelfPath(path) and
       res instanceof ImplItemNode
@@ -2191,7 +2194,7 @@ private predicate externCrateEdge(
 
 /**
  * Holds if `typeItem` is the implementing type of `impl` and the implementation
- * makes `assoc` available as `name` at `kind`.
+ * makes `assoc` available as `name`.
  */
 private predicate typeImplEdge(
   TypeItemNode typeItem, ImplItemNodeImpl impl, string name, AssocItemNode assoc
@@ -2201,7 +2204,7 @@ private predicate typeImplEdge(
   // Functions in `impl` blocks are made available on the implementing type
   // (e.g., `S::fun` is valid) but associated types are not (e.g., `S::Output`
   // is invalid).
-  (assoc instanceof FunctionItemNode or assoc instanceof ConstItemNode)
+  not assoc instanceof TypeAlias
 }
 
 pragma[nomagic]
