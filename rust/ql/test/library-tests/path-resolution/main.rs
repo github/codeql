@@ -606,6 +606,13 @@ mod trait_visibility {
             // Only the `Foo` trait is visible
             use m::Foo; // $ item=Foo
             X::a_method(&x); // $ item=X_Foo::a_method
+
+            #[rustfmt::skip]
+            impl X { // $ item=X
+                fn test(&self) {
+                    Self::a_method(self); // $ item=X_Foo::a_method
+                }
+            }
         }
         {
             // Only the `Bar` trait is visible
@@ -722,7 +729,7 @@ mod m23 {
         fn f(&self) {
             println!("m23::<S as Trait1<S>>::f"); // $ item=println
         } // I5
-    }
+    } // implTrait1forS
 
     #[rustfmt::skip]
     pub fn f() {
@@ -866,6 +873,71 @@ mod associated_types {
             Self::Error // $ item=IErrorAssociated
         > { // $ item=Result
             item
+        }
+    }
+}
+
+mod associated_types_subtrait {
+    trait Super {
+        type Out; // SuperAssoc
+    } // Super
+
+    trait Sub: Super // $ item=Super
+    {
+        fn f() -> Self::Out // $ item=SuperAssoc
+        ; // Sub_f
+    } // Sub
+
+    struct S<ST>(
+        ST, // $ item=ST
+    );
+
+    #[rustfmt::skip]
+    impl Super for S<i32> { // $ item=Super item=S item=i32
+        type Out = char // $ item=char
+        ; // S<i32>::Out
+    }
+
+    #[rustfmt::skip]
+    impl Super for S<bool> { // $ item=Super item=S item=bool
+        type Out = i64 // $ item=i64
+        ; // S<bool>::Out
+    }
+
+    #[rustfmt::skip]
+    impl Sub for S<i32> { // $ item=Sub item=S item=i32
+        fn f() -> Self::Out { // $ item=SuperAssoc
+            'a'
+        }
+    }
+
+    #[rustfmt::skip]
+    impl Sub for S<bool> { // $ item=Sub item=S item=bool
+        fn f() -> Self::Out { // $ item=SuperAssoc
+            1
+        }
+    }
+
+    trait SuperAlt {
+        type Out; // SuperAltAssoc
+    } // SuperAlt
+
+    trait SubAlt: SuperAlt // $ item=SuperAlt
+    {
+        fn f(self) -> Self::Out // $ item=SuperAltAssoc
+        ; // SubAlt_f
+    } // SubAlt
+
+    #[rustfmt::skip]
+    impl<A> SuperAlt for S<A> { // $ item=SuperAlt item=S item=A
+        type Out = A // $ item=A
+        ; // S<A>::Out
+    }
+
+    #[rustfmt::skip]
+    impl<A> SubAlt for S<A> { // $ item=SubAlt item=S item=A
+        fn f(self) -> Self::Out { // $ item=SuperAltAssoc
+            self.0
         }
     }
 }
