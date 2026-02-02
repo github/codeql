@@ -323,7 +323,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
         this = impl.getTraitPath() and
         alias = impl.getASuccessor(name) and
         result = alias.getTypeRepr() and
-        tp = TAssociatedTypeTypeParameter(resolved, getTraitAssocType(resolved, name))
+        tp = TAssociatedTypeTypeParameter(resolved, resolved.(TraitItemNode).getAssocItem(name))
       )
     }
 
