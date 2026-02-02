@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/github/codeql-go/extractor/diagnostics"
 )
 
 const PROXY_HOST = "CODEQL_PROXY_HOST"
@@ -132,6 +134,18 @@ func getEnvVars() []string {
 				}
 			}
 
+			// Emit a diagnostic to make it easy for users to see that private registry
+			// configurations were picked up by the Go analysis.
+			if len(activeConfigs) > 0 {
+				prettyConfigs := []string{}
+				for i := range activeConfigs {
+					prettyConfigs = append(prettyConfigs, activeConfigs[i].Pretty())
+				}
+
+				diagnostics.EmitPrivateRegistryUsed(diagnostics.DefaultWriter, prettyConfigs)
+			}
+
+			// Assemble environment variables for Go.
 			goprivate := []string{}
 
 			if len(goproxy_servers) > 0 {
