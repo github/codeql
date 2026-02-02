@@ -1,3 +1,10 @@
+## 0.2.5
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* Added type inference support for the `FnMut(..) -> ..` and `Fn(..) -> ..` traits. They now work in type parameter bounds and are implemented by closures.
+
 ## 0.2.4
 
 ### Minor Analysis Improvements
@@ -6,7 +13,7 @@
 * Renamed the `Adt` class to `TypeItem` and moved common predicates from `Struct`, `Enum`, and `Union` to `TypeItem`.
 * Added models for the Axum web application framework.
 * Reading content of a value now carries taint if the value itself is tainted. For instance, if `s` is tainted then `s.field` is also tainted. This generally improves taint flow.
-* The call graph is now more precise for calls that target a trait function with a default implemention. This reduces the number of false positives for data flow queries.
+* The call graph is now more precise for calls that target a trait function with a default implementation. This reduces the number of false positives for data flow queries.
 * Improved type inference for raw pointers (`*const` and `*mut`). This includes type inference for the raw borrow operators (`&raw const` and `&raw mut`) and dereferencing of raw pointers.
 
 ## 0.2.3
