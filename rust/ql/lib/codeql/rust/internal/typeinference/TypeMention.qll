@@ -685,7 +685,8 @@ private module PathSatisfiesConstraintInput implements SatisfiesConstraintInputS
   }
 }
 
-module PathSatisfiesConstraint = SatisfiesConstraint<PreTypeMention, PathSatisfiesConstraintInput>;
+private module PathSatisfiesConstraint =
+  SatisfiesConstraint<PreTypeMention, PathSatisfiesConstraintInput>;
 
 /**
  * Gets the type of `path` at `typePath` when `path` accesses an associated type
