@@ -88,7 +88,7 @@ func Test_EmitPrivateRegistryUsed_Single(t *testing.T) {
 	writer := newMemoryDiagnosticsWriter()
 
 	testItems := []string{
-		"* https://github.com/github/example (Git Source)",
+		"https://github.com/github/example (Git Source)",
 	}
 
 	EmitPrivateRegistryUsed(writer, testItems)
@@ -109,8 +109,8 @@ func Test_EmitPrivateRegistryUsed_Multiple(t *testing.T) {
 	writer := newMemoryDiagnosticsWriter()
 
 	testItems := []string{
-		"* https://github.com/github/example (Git Source)",
-		"* https://example.com/goproxy (GOPROXY Server)",
+		"https://github.com/github/example (Git Source)",
+		"https://example.com/goproxy (GOPROXY Server)",
 	}
 
 	EmitPrivateRegistryUsed(writer, testItems)
