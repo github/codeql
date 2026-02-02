@@ -581,8 +581,8 @@ func EmitPrivateRegistryUsed(writer DiagnosticsWriter, configs []string) {
 		"go/autobuilder/analysis-using-private-registries",
 		"Go extraction used private package registries",
 		fmt.Sprintf(
-			"Go was extracted using the following private package registrie%s:\n\n%s\n",
-			plural(len(lines), "", "s"),
+			"Go was extracted using the following private package registr%s:\n\n%s\n",
+			plural(len(lines), "y", "ies"),
 			strings.Join(lines, "\n")),
 		severityNote,
 		fullVisibility,

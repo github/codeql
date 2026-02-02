@@ -84,7 +84,28 @@ func Test_EmitCannotFindPackages_Actions(t *testing.T) {
 	assert.Contains(t, d.MarkdownMessage, "If any of the packages are already present in the repository")
 }
 
-func Test_EmitPrivateRegistryUsed(t *testing.T) {
+func Test_EmitPrivateRegistryUsed_Single(t *testing.T) {
+	writer := newMemoryDiagnosticsWriter()
+
+	testItems := []string{
+		"* https://github.com/github/example (Git Source)",
+	}
+
+	EmitPrivateRegistryUsed(writer, testItems)
+
+	assert.Len(t, writer.diagnostics, 1, "Expected one diagnostic to be emitted")
+
+	d := writer.diagnostics[0]
+	assert.Equal(t, d.Source.Id, "go/autobuilder/analysis-using-private-registries")
+	assert.Equal(t, d.Severity, string(severityNote))
+	assert.Contains(t, d.MarkdownMessage, "following private package registry")
+
+	for i := range testItems {
+		assert.Contains(t, d.MarkdownMessage, testItems[i])
+	}
+}
+
+func Test_EmitPrivateRegistryUsed_Multiple(t *testing.T) {
 	writer := newMemoryDiagnosticsWriter()
 
 	testItems := []string{
@@ -99,6 +120,7 @@ func Test_EmitPrivateRegistryUsed(t *testing.T) {
 	d := writer.diagnostics[0]
 	assert.Equal(t, d.Source.Id, "go/autobuilder/analysis-using-private-registries")
 	assert.Equal(t, d.Severity, string(severityNote))
+	assert.Contains(t, d.MarkdownMessage, "following private package registries")
 
 	for i := range testItems {
 		assert.Contains(t, d.MarkdownMessage, testItems[i])
