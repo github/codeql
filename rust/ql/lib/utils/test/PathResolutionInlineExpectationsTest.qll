@@ -46,9 +46,17 @@ private module ResolveTest implements TestSig {
       element = n.toString() and
       tag = "item"
     |
-      item(resolvePath(n), value)
-      or
-      item(n.(MethodCallExpr).getStaticTarget(), value)
+      exists(ItemNode i | item(i, value) |
+        i = resolvePath(n) and
+        not n = any(CallExpr ce).getFunction().(PathExpr).getPath()
+        or
+        exists(CallExpr ce |
+          n = ce.getFunction().(PathExpr).getPath() and
+          i = ce.getResolvedTarget()
+        )
+        or
+        i = n.(MethodCallExpr).getStaticTarget()
+      )
     )
   }
 }

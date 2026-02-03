@@ -189,12 +189,12 @@ mod m8 {
     #[rustfmt::skip]
     pub fn g() {
         let x = MyStruct {}; // $ item=I50
-        MyTrait::f(&x); // $ item=I48
+        MyTrait::f(&x); // $ item=I53
         MyStruct::f(&x); // $ item=I53
         <MyStruct as // $ item=I50
          MyTrait // $ item=I47
         > // $ MISSING: item=52
-        ::f(&x); // $ MISSING: item=I53
+        ::f(&x); // $ item=I53
         let x = MyStruct {}; // $ item=I50
         x.f(); // $ item=I53
         let x = MyStruct {}; // $ item=I50
@@ -365,10 +365,10 @@ mod m15 {
         let x = S; // $ item=I81
         <S // $ item=I81
           as Trait1 // $ item=I79
-        >::f(&x); // $ MISSING: item=I76
+        >::f(&x); // $ item=I76 $ SPURIOUS item=I78
         <S // $ item=I81
           as Trait2 // $ item=I82
-        >::f(&x); // $ MISSING: item=I78
+        >::f(&x); // $ item=I78 $ SPURIOUS item=I76
         S::g(&x); // $ item=I77
         x.g(); // $ item=I77
     } // I75
@@ -386,7 +386,7 @@ mod m16 {
         } // I85
 
         fn h(&self) -> T { // $ item=I84
-            Self::g(&self); // $ item=I85
+            Self::g(&self); // $ MISSING: item=I85
             self.g() // $ item=I85
         } // I96
 
@@ -451,12 +451,12 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::f(&x); // $ MISSING: item=I91
+        >::f(&x); // $ item=I91 $ SPURIOUS: item=I93
         <S // $ item=I90
           as Trait2<
             S // $ item=I90
           > // $ item=I89
-        >::f(&x); // $ MISSING: item=I93
+        >::f(&x); // $ item=I93 $ SPURIOUS: item=I91
         S::g(&x); // $ item=I92
         x.g(); // $ item=I92
         S::h(&x); // $ item=I96
@@ -627,7 +627,7 @@ mod trait_visibility {
         {
             // The `Bar` trait is not visible, but we can refer to its method
             // with a full path.
-            m::Bar::a_method(&x); // $ item=Bar::a_method
+            m::Bar::a_method(&x); // $ item=X_Bar::a_method
         }
     } // trait_visibility::f
 }
