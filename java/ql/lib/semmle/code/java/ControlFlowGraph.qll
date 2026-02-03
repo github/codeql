@@ -1775,3 +1775,17 @@ class ConditionNode extends ControlFlow::Node {
   /** Gets the condition of this `ConditionNode`. */
   ExprParent getCondition() { result = this.asExpr() or result = this.asStmt() }
 }
+
+private import codeql.controlflow.PrintGraph as PrintGraph
+
+private module PrintGraphInput implements PrintGraph::InputSig<Location> {
+  private import java as J
+
+  class Callable = J::Callable;
+
+  class ControlFlowNode = J::ControlFlowNode;
+
+  ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) { result = n.getASuccessor(t) }
+}
+
+import PrintGraph::PrintGraph<Location, PrintGraphInput>
