@@ -140,7 +140,7 @@ mod axum_tests {
     use axum::Router;
 
     async fn my_axum_handler_1(o_path: Option<Path<String>>) -> &'static str {
-        let m_path = o_path.map(|x| x); // $ SPURIOUS: Alert[rust/log-injection]=post_handler
+        let m_path = o_path.map(|x| x);
 
         println!("{:?}", m_path.unwrap()); // $ MISSING: Alert[rust/log-injection]=post_handler
 
@@ -149,6 +149,6 @@ mod axum_tests {
 
     async fn test_axum() {
         let app = Router::<()>::new()
-            .route("/{a}", get(my_axum_handler_1)); // $ Source=post_handler
+            .route("/{a}", get(my_axum_handler_1)); // $ MISSING: Source=post_handler
     }
 }

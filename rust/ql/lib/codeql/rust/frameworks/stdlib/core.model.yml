@@ -159,6 +159,11 @@ extensions:
       - ["core::ptr::write_volatile", "Argument[0]", "pointer-access", "manual"]
   - addsTo:
       pack: codeql/rust-all
+      extensible: neutralModel
+    data:
+      - ["<core::option::Option>::map", "sink", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: excludeFieldTaintStep
     data:
       - ["core::ops::range::RangeInclusive::start"]
