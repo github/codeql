@@ -1069,6 +1069,14 @@ mod self_types {
     }
 
     #[rustfmt::skip]
+    impl NonEmptyListEnum<i32> { // $ item=NonEmptyListEnum item=i32
+        fn new_single(value: i32) -> Self { // $ item=i32 item=NonEmptyListEnum
+            use NonEmptyListEnum::*; // $ item=NonEmptyListEnum
+            Self::Single(value) // $ item=Single
+        }
+    }
+
+    #[rustfmt::skip]
     union NonEmptyListUnion<
         'a,
         T // T
