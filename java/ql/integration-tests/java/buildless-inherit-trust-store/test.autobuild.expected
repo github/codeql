@@ -1,0 +1,4 @@
+diagnostics
+| file://:0:0:0:0 | Appending source destination directory target/generated-sources/annotations to sourcepath |
+#select
+| DepClass |
