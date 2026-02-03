@@ -255,31 +255,31 @@ void test_BodyStream() {
   {
     unsigned char buffer[1024];
     resp->Read(buffer, sizeof(buffer));
-    sink(*buffer); // $ MISSING: ir
+    sink(*buffer); // $ ir
   }
   {
     unsigned char buffer[1024];
     resp->ReadToCount(buffer, sizeof(buffer));
-    sink(*buffer); // $ MISSING: ir
+    sink(*buffer); // $ ir
   }
   {
     std::vector<unsigned char> vec = resp->ReadToEnd();
-    sink(vec); // $ MISSING: ir
+    sink(vec); // $ ir
   }
 }
 
 void test_RawResponse(Azure::Core::Http::RawResponse& resp) {
   {
     std::map<std::string, std::string> body = resp.GetHeaders();
-    sink(body["Content-Type"]); // $ MISSING: ir
+    sink(body["Content-Type"]); // $ ir
   }
   {
     std::vector<uint8_t> body = resp.GetBody();
-    sink(body); // $ MISSING: ir
+    sink(body); // $ ir
   }
   {
     std::unique_ptr<Azure::Core::IO::BodyStream> bodyStream = resp.ExtractBodyStream();
-    sink(bodyStream.get()->ReadToEnd()); // $ MISSING: ir
+    sink(bodyStream.get()->ReadToEnd()); // $ ir
   }
 }
 
@@ -287,11 +287,11 @@ void test_GetHeader() {
   Azure::Core::Http::Request request(Azure::Core::Http::Get, Azure::Core::Url("http://example.com"));
   {
     auto headerValue = request.GetHeader("Content-Type").Value();
-    sink(headerValue); // $ MISSING: ir
+    sink(headerValue); // $ ir
   }
   {
     std::map<std::string, std::string> headers = request.GetHeaders();
     std::string contentType = headers["Content-Type"];
-    sink(contentType); // $ MISSING: ir
+    sink(contentType); // $ ir
   }
 }

@@ -643,21 +643,21 @@ void test_winhttp(HINTERNET hRequest) {
     DWORD bytesRead;
     BOOL result = WinHttpReadData(hRequest, buffer, sizeof(buffer), &bytesRead);
     sink(buffer);
-    sink(*buffer); // $ MISSING: ir
+    sink(*buffer); // $ ir
   }
   {
     char buffer[1024];
     DWORD bytesRead;
     DWORD result = WinHttpReadDataEx(hRequest, buffer, sizeof(buffer), &bytesRead, 0, 0, nullptr);
     sink(buffer);
-    sink(*buffer); // $ MISSING: ir
+    sink(*buffer); // $ ir
   }
   {
     char buffer[1024];
     DWORD bufferLength = sizeof(buffer);
     DWORD result = WinHttpQueryHeaders(hRequest, 0, nullptr, buffer, &bufferLength, nullptr);
     sink(buffer);
-    sink(*buffer); // $ MISSING: ir
+    sink(*buffer); // $ ir
   }
   {
     char buffer[1024];
@@ -667,7 +667,7 @@ void test_winhttp(HINTERNET hRequest) {
     PWINHTTP_HEADER_NAME headerName;
     DWORD result = WinHttpQueryHeadersEx(hRequest, 0, 0, 0, nullptr, headerName, buffer, &bufferLength, &headers, &headersCount);
     sink(buffer);
-    sink(*buffer); // $ MISSING: ir
+    sink(*buffer); // $ ir
     sink(headerName->pszName);
     sink(*headerName->pszName); // $ MISSING: ir
     sink(headers->pszValue);
