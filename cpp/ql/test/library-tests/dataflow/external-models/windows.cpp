@@ -669,9 +669,9 @@ void test_winhttp(HINTERNET hRequest) {
     sink(buffer);
     sink(*buffer); // $ ir
     sink(headerName->pszName);
-    sink(*headerName->pszName); // $ MISSING: ir
+    sink(*headerName->pszName); // $ ir
     sink(headers->pszValue);
-    sink(*headers->pszValue); // $ MISSING: ir
+    sink(*headers->pszValue); // $ ir
   }
 }
 
@@ -728,10 +728,10 @@ void test_winhttp_crack_url() {
     x[0] = (wchar_t)source();
     BOOL result = WinHttpCrackUrl(x, 0, 0, &urlComponents);
     sink(urlComponents.lpszHostName);
-    sink(*urlComponents.lpszHostName); // $ MISSING: ir
+    sink(*urlComponents.lpszHostName); // $ ir
     sink(urlComponents.lpszUrlPath);
-    sink(*urlComponents.lpszUrlPath); // $ MISSING: ir
+    sink(*urlComponents.lpszUrlPath); // $ ir
     sink(urlComponents.lpszExtraInfo);
-    sink(*urlComponents.lpszExtraInfo); // $ MISSING: ir
+    sink(*urlComponents.lpszExtraInfo); // $ ir
   }
 }
