@@ -2135,7 +2135,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
         checkQualifiedVisibility(use, item, kind1, useOpt) and
         // glob imports can be shadowed
         not declares(encl, ns, name) and
-        not name = ["super", "self"]
+        not name = ["super", "self", "Self"]
       )
     else (
       item = used and

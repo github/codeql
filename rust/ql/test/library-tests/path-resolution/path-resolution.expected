@@ -546,7 +546,6 @@ resolvePath
 | main.rs:1073:30:1073:32 | i32 | {EXTERNAL LOCATION} | struct i32 |
 | main.rs:1073:38:1073:41 | Self | main.rs:1066:5:1069:5 | enum NonEmptyListEnum |
 | main.rs:1074:17:1074:32 | NonEmptyListEnum | main.rs:1066:5:1069:5 | enum NonEmptyListEnum |
-| main.rs:1075:13:1075:16 | Self | main.rs:1066:5:1069:5 | enum NonEmptyListEnum |
 | main.rs:1075:13:1075:16 | Self | main.rs:1071:5:1077:5 | impl NonEmptyListEnum::<...> { ... } |
 | main.rs:1075:13:1075:24 | ...::Single | main.rs:1067:9:1067:17 | Single |
 | main.rs:1083:13:1083:16 | Copy | {EXTERNAL LOCATION} | trait Copy |

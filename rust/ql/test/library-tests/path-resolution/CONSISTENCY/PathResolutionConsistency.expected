@@ -7,5 +7,3 @@ multipleResolvedTargets
 | main.rs:565:9:566:15 | ...::Assoc(...) |
 | main.rs:568:9:569:12 | ...::f1(...) |
 | main.rs:571:9:572:12 | ...::f1(...) |
-multiplePathResolutions
-| main.rs:1075:13:1074:16 | Self |
