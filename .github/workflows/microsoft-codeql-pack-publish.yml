@@ -96,7 +96,11 @@ jobs:
 
         # Publish pack
         cat "$LANGUAGE/ql/lib/qlpack.yml"
-        gh codeql pack publish "$LANGUAGE/ql/lib"
+        DRY_RUN_FLAG=""
+        if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+          DRY_RUN_FLAG="--dry-run"
+        fi
+        gh codeql pack publish $DRY_RUN_FLAG "$LANGUAGE/ql/lib"
       env:
         LANGUAGE: ${{ matrix.language }}
         GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
@@ -106,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell', 'iac']
+        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell']
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
