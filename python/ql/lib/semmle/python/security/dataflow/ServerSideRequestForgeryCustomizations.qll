@@ -185,15 +185,14 @@ module ServerSideRequestForgery {
   import semmle.python.dataflow.new.internal.DataFlowPublic
 
   private predicate uri_validator(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
-    exists(DataFlow::CallCfgNode call, Node n, string funcs |
+    exists(DataFlow::CallCfgNode call, string funcs |
       funcs in ["in_domain", "in_azure_keyvault_domain", "in_azure_storage_domain"]
     |
       call = API::moduleImport("AntiSSRF").getMember("URIValidator").getMember(funcs).getACall() and
       call.getArg(0).asCfgNode() = node and
-      n.getALocalSource() = call and
       (
         // validator used in a comparison
-        exists(CompareNode cn, Cmpop op | cn = g |
+        exists(CompareNode cn, Cmpop op, Node n | cn = g and n.getALocalSource() = call |
           (
             // validator == true or validator == false or validator is True or validator is False
             (op instanceof Eq or op instanceof Is) and
