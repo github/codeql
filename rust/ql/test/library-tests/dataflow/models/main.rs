@@ -434,10 +434,10 @@ fn test_neutrals() {
     // generated and a neutral model, should not have flow.
 
     sink(generated_source(1)); // $ hasValueFlow=1
-    sink(neutral_generated_source(2)); // $ SPURIOUS: hasValueFlow=2
+    sink(neutral_generated_source(2));
     sink(neutral_manual_source(3)); // $ hasValueFlow=3
     generated_sink(source(4)); // $ hasValueFlow=4
-    neutral_generated_sink(source(5)); // $ SPURIOUS: hasValueFlow=5
+    neutral_generated_sink(source(5));
     neutral_manual_sink(source(6)); // $ hasValueFlow=6
 }
 

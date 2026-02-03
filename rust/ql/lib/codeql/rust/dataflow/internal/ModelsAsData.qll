@@ -90,6 +90,15 @@ extensible predicate summaryModel(
 );
 
 /**
+ * Holds if a neutral model of kind `kind` exists for the function with canonical path `path`.  The
+ * only effect of a neutral model is to prevent generated and inherited models of the corresponding
+ * `kind` (`source`, `sink` or `summary`) from being applied.
+ */
+extensible predicate neutralModel(
+  string path, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
  *
  * This predicate should only be used in tests.
@@ -108,6 +117,11 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   exists(string path, string input, string output, string kind |
     summaryModel(path, input, output, kind, _, madId) and
     model = "Summary: " + path + "; " + input + "; " + output + "; " + kind
+  )
+  or
+  exists(string path, string kind |
+    neutralModel(path, kind, _, madId) and
+    model = "Neutral: " + path + "; " + kind
   )
 }
 
@@ -133,16 +147,19 @@ private predicate summaryModelRelevant(
 ) {
   summaryModel(f, input, output, kind, provenance, isInherited, madId) and
   // Only apply generated or inherited models to functions in library code and
-  // when no strictly better model exists
-  if provenance.isGenerated() or isInherited = true
-  then
-    not f.fromSource() and
-    not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
-      provenance.isGenerated() and other.isManual()
-      or
-      provenance = other and isInherited = true
-    )
-  else any()
+  // when no strictly better model (or neutral model) exists
+  (
+    if provenance.isGenerated() or isInherited = true
+    then
+      not f.fromSource() and
+      not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
+        provenance.isGenerated() and other.isManual()
+        or
+        provenance = other and isInherited = true
+      ) and
+      not neutralModel(f.getCanonicalPath(), "summary", _, _)
+    else any()
+  )
 }
 
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
@@ -180,6 +197,11 @@ private class FlowSourceFromModel extends FlowSource::Range {
     exists(QlBuiltins::ExtensionId madId |
       sourceModel(path, output, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
+    ) and
+    // Only apply generated models when no neutral model exists
+    not (
+      provenance.isGenerated() and
+      neutralModel(path, "source", _, _)
     )
   }
 }
@@ -196,6 +218,11 @@ private class FlowSinkFromModel extends FlowSink::Range {
     exists(QlBuiltins::ExtensionId madId |
       sinkModel(path, input, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
+    ) and
+    // Only apply generated models when no neutral model exists
+    not (
+      provenance.isGenerated() and
+      neutralModel(path, "sink", _, _)
     )
   }
 }
