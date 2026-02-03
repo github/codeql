@@ -369,7 +369,7 @@ Node getCallArgApproximation() {
 }
 
 /** Gets the extracted argument nodes that do not rely on `getCallArg`. */
-private Node otherArgs() {
+private Node implicitArgumentNode() {
   // for potential summaries we allow all normal call arguments
   normalCallArg(_, result, _)
   or
@@ -387,14 +387,14 @@ class ExtractedArgumentNode extends ArgumentNode {
   ExtractedArgumentNode() {
     this = getCallArgApproximation()
     or
-    this = otherArgs()
+    this = implicitArgumentNode()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this = call.getArgument(pos) and
     call instanceof ExtractedDataFlowCall and
     (
-      this = otherArgs()
+      this = implicitArgumentNode()
       or
       this = getCallArgApproximation() and getCallArg(_, _, _, this, _)
     )
