@@ -112,7 +112,7 @@ func getEnvVars() []string {
 		if err != nil {
 			slog.Error("Unable to parse proxy configurations", slog.String("error", err.Error()))
 		} else {
-			activeConfigs := []RegistryConfig{}
+			activeConfigs := make([]RegistryConfig, 0, len(val))
 
 			// We only care about private registry configurations that are relevant to Go and
 			// filter others out at this point.

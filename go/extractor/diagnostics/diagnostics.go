@@ -570,10 +570,11 @@ func EmitExtractionFailedForProjects(path []string) {
 }
 
 func EmitPrivateRegistryUsed(writer DiagnosticsWriter, configs []string) {
-	lines := []string{}
+	n := len(configs)
+	lines := make([]string, n)
 
 	for i := range configs {
-		lines = append(lines, fmt.Sprintf("* %s", configs[i]))
+		lines[i] = fmt.Sprintf("* %s", configs[i])
 	}
 
 	emitDiagnosticTo(
@@ -582,7 +583,7 @@ func EmitPrivateRegistryUsed(writer DiagnosticsWriter, configs []string) {
 		"Go extraction used private package registries",
 		fmt.Sprintf(
 			"Go was extracted using the following private package registr%s:\n\n%s\n",
-			plural(len(lines), "y", "ies"),
+			plural(n, "y", "ies"),
 			strings.Join(lines, "\n")),
 		severityNote,
 		fullVisibility,
