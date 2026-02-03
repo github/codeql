@@ -5,10 +5,10 @@ int global_var;
 void test_address_null_comparison(int param_var) {
     int local_var;
 
-    if (&global_var == NULL) {}  // $ MISSING: VariableAddress=global_var
-    if (&global_var != NULL) {}  // $ MISSING: VariableAddress=global_var
+    if (&global_var == NULL) {}  // $ VariableAddress=global_var
+    if (&global_var != NULL) {}  // $ VariableAddress=global_var
     if (&global_var) {}          // $ VariableAddress=global_var
-    if (!&global_var) {}         // $ MISSING: VariableAddress=global_var
+    if (!&global_var) {}         // $ VariableAddress=global_var
 
     if (&local_var == NULL) {}   // $ VariableAddress=local_var
     if (&local_var != NULL) {}   // $ VariableAddress=local_var
