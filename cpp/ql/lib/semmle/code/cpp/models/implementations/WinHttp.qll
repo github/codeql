@@ -2,12 +2,12 @@ private import cpp
 private import semmle.code.cpp.ir.dataflow.FlowSteps
 private import semmle.code.cpp.dataflow.new.DataFlow
 
-/** The `WINHTTP_HEADER_NAME` classes from `winhttp.h`. */
+/** The `WINHTTP_HEADER_NAME` class from `winhttp.h`. */
 class WinHttpHeaderName extends Class {
   WinHttpHeaderName() { this.hasGlobalName("_WINHTTP_HEADER_NAME") }
 }
 
-/** The `WINHTTP_EXTENDED_HEADER` classes from `winhttp.h`. */
+/** The `WINHTTP_EXTENDED_HEADER` class from `winhttp.h`. */
 class WinHttpExtendedHeader extends Class {
   WinHttpExtendedHeader() { this.hasGlobalName("_WINHTTP_EXTENDED_HEADER") }
 }
@@ -32,6 +32,7 @@ private class WinHttpHeaderNameInheritingContent extends TaintInheritingContent,
   }
 }
 
+/** The `URL_COMPONENTS` class from `winhttp.h`. */
 class WinHttpUrlComponents extends Class {
   WinHttpUrlComponents() { this.hasGlobalName("_WINHTTP_URL_COMPONENTS") }
 }

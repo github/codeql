@@ -26,9 +26,9 @@
 | windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | local |
 | windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | local |
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | local |
-| windows.cpp:644:45:644:50 | WinHttpReadData output argument | remote |
-| windows.cpp:651:48:651:53 | WinHttpReadDataEx output argument | remote |
-| windows.cpp:658:62:658:67 | WinHttpQueryHeaders output argument | remote |
-| windows.cpp:668:70:668:79 | WinHttpQueryHeadersEx output argument | remote |
-| windows.cpp:668:82:668:87 | WinHttpQueryHeadersEx output argument | remote |
-| windows.cpp:668:105:668:112 | WinHttpQueryHeadersEx output argument | remote |
+| windows.cpp:645:45:645:50 | WinHttpReadData output argument | remote |
+| windows.cpp:652:48:652:53 | WinHttpReadDataEx output argument | remote |
+| windows.cpp:659:47:659:52 | WinHttpQueryHeaders output argument | remote |
+| windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | remote |
+| windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | remote |
+| windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | remote |

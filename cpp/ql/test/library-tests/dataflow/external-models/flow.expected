@@ -315,12 +315,12 @@ edges
 | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | windows.cpp:574:10:574:23 | access to array | provenance |  |
 | windows.cpp:573:40:573:41 | *& ... | windows.cpp:521:17:521:37 | [summary param] *1 in RtlMoveVolatileMemory | provenance |  |
 | windows.cpp:573:40:573:41 | *& ... | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | provenance | MaD:42 |
-| windows.cpp:644:45:644:50 | WinHttpReadData output argument | windows.cpp:646:10:646:16 | * ... | provenance | Src:MaD:20  |
-| windows.cpp:651:48:651:53 | WinHttpReadDataEx output argument | windows.cpp:653:10:653:16 | * ... | provenance | Src:MaD:21  |
-| windows.cpp:658:62:658:67 | WinHttpQueryHeaders output argument | windows.cpp:660:10:660:16 | * ... | provenance | Src:MaD:16  |
-| windows.cpp:668:70:668:79 | WinHttpQueryHeadersEx output argument | windows.cpp:672:10:672:29 | * ... | provenance | Src:MaD:18  |
-| windows.cpp:668:82:668:87 | WinHttpQueryHeadersEx output argument | windows.cpp:670:10:670:16 | * ... | provenance | Src:MaD:19  |
-| windows.cpp:668:105:668:112 | WinHttpQueryHeadersEx output argument | windows.cpp:674:10:674:27 | * ... | provenance | Src:MaD:17  |
+| windows.cpp:645:45:645:50 | WinHttpReadData output argument | windows.cpp:647:10:647:16 | * ... | provenance | Src:MaD:20  |
+| windows.cpp:652:48:652:53 | WinHttpReadDataEx output argument | windows.cpp:654:10:654:16 | * ... | provenance | Src:MaD:21  |
+| windows.cpp:659:47:659:52 | WinHttpQueryHeaders output argument | windows.cpp:661:10:661:16 | * ... | provenance | Src:MaD:16  |
+| windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | windows.cpp:673:10:673:29 | * ... | provenance | Src:MaD:18  |
+| windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | windows.cpp:671:10:671:16 | * ... | provenance | Src:MaD:19  |
+| windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | windows.cpp:675:10:675:27 | * ... | provenance | Src:MaD:17  |
 | windows.cpp:714:6:714:20 | [summary param] *0 in WinHttpCrackUrl | windows.cpp:714:6:714:20 | [summary param] *3 in WinHttpCrackUrl [Return] | provenance | MaD:43 |
 | windows.cpp:728:5:728:28 | ... = ... | windows.cpp:729:35:729:35 | *x | provenance |  |
 | windows.cpp:728:12:728:28 | call to source | windows.cpp:728:5:728:28 | ... = ... | provenance |  |
@@ -615,18 +615,18 @@ nodes
 | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | semmle.label | RtlMoveVolatileMemory output argument |
 | windows.cpp:573:40:573:41 | *& ... | semmle.label | *& ... |
 | windows.cpp:574:10:574:23 | access to array | semmle.label | access to array |
-| windows.cpp:644:45:644:50 | WinHttpReadData output argument | semmle.label | WinHttpReadData output argument |
-| windows.cpp:646:10:646:16 | * ... | semmle.label | * ... |
-| windows.cpp:651:48:651:53 | WinHttpReadDataEx output argument | semmle.label | WinHttpReadDataEx output argument |
-| windows.cpp:653:10:653:16 | * ... | semmle.label | * ... |
-| windows.cpp:658:62:658:67 | WinHttpQueryHeaders output argument | semmle.label | WinHttpQueryHeaders output argument |
-| windows.cpp:660:10:660:16 | * ... | semmle.label | * ... |
-| windows.cpp:668:70:668:79 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
-| windows.cpp:668:82:668:87 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
-| windows.cpp:668:105:668:112 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
-| windows.cpp:670:10:670:16 | * ... | semmle.label | * ... |
-| windows.cpp:672:10:672:29 | * ... | semmle.label | * ... |
-| windows.cpp:674:10:674:27 | * ... | semmle.label | * ... |
+| windows.cpp:645:45:645:50 | WinHttpReadData output argument | semmle.label | WinHttpReadData output argument |
+| windows.cpp:647:10:647:16 | * ... | semmle.label | * ... |
+| windows.cpp:652:48:652:53 | WinHttpReadDataEx output argument | semmle.label | WinHttpReadDataEx output argument |
+| windows.cpp:654:10:654:16 | * ... | semmle.label | * ... |
+| windows.cpp:659:47:659:52 | WinHttpQueryHeaders output argument | semmle.label | WinHttpQueryHeaders output argument |
+| windows.cpp:661:10:661:16 | * ... | semmle.label | * ... |
+| windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
+| windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
+| windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
+| windows.cpp:671:10:671:16 | * ... | semmle.label | * ... |
+| windows.cpp:673:10:673:29 | * ... | semmle.label | * ... |
+| windows.cpp:675:10:675:27 | * ... | semmle.label | * ... |
 | windows.cpp:714:6:714:20 | [summary param] *0 in WinHttpCrackUrl | semmle.label | [summary param] *0 in WinHttpCrackUrl |
 | windows.cpp:714:6:714:20 | [summary param] *3 in WinHttpCrackUrl [Return] | semmle.label | [summary param] *3 in WinHttpCrackUrl [Return] |
 | windows.cpp:728:5:728:28 | ... = ... | semmle.label | ... = ... |

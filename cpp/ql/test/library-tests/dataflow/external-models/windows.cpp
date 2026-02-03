@@ -577,7 +577,6 @@ void test_copy_and_move_memory() {
 
 using HINTERNET = void*;
 using ULONGLONG = unsigned long long;
-using LPCWSTR = const wchar_t*;
 using UINT = unsigned int;
 using PDWORD = DWORD*;
 using PCSTR = const char*;
@@ -612,6 +611,8 @@ DWORD WinHttpReadDataEx(
   DWORD     cbProperty,
   PVOID     pvProperty
 );
+
+using LPCWSTR = const wchar_t*;
 
 BOOL WinHttpQueryHeaders(
   HINTERNET hRequest,
@@ -655,7 +656,7 @@ void test_winhttp(HINTERNET hRequest) {
   {
     char buffer[1024];
     DWORD bufferLength = sizeof(buffer);
-    DWORD result = WinHttpQueryHeaders(hRequest, 0, nullptr, buffer, &bufferLength, nullptr);
+    WinHttpQueryHeaders(hRequest, 0, nullptr, buffer, &bufferLength, nullptr);
     sink(buffer);
     sink(*buffer); // $ ir
   }
@@ -691,7 +692,6 @@ using INTERNET_SCHEME = enum {
   INTERNET_SCHEME_LAST = 10
 };
 using INTERNET_PORT = unsigned short;
-using LPCWSTR = const wchar_t*;
 
 typedef struct _WINHTTP_URL_COMPONENTS {
   DWORD           dwStructSize;
