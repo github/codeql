@@ -54,9 +54,9 @@ def test_autobuild_merge_trust_store(codeql, java, cwd, check_diagnostics):
     """
     Test that autobuild merges system truststore with CODEQL_PROXY_CA_CERTIFICATE.
 
-    This tests the fix for github/codeql-team#4482 where autobuild was overriding
-    JAVA_TOOL_OPTIONS truststore with a new one containing only the proxy CA,
-    causing PKIX failures when connecting to internal HTTPS servers.
+    This tests the fix for a bug where autobuild was overriding JAVA_TOOL_OPTIONS
+    truststore with a new one containing only the proxy CA, causing PKIX failures
+    when connecting to internal HTTPS servers.
     """
     # Use autobuild-specific expected file suffix
     check_diagnostics.expected_suffix = ".autobuild.expected"
