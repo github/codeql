@@ -142,13 +142,13 @@ mod axum_tests {
     async fn my_axum_handler_1(o_path: Option<Path<String>>) -> &'static str {
         let m_path = o_path.map(|x| x);
 
-        println!("{:?}", m_path.unwrap()); // $ MISSING: Alert[rust/log-injection]=post_handler
+        println!("{:?}", m_path.unwrap()); // $ Alert[rust/log-injection]=post_handler
 
         ""
     }
 
     async fn test_axum() {
         let app = Router::<()>::new()
-            .route("/{a}", get(my_axum_handler_1)); // $ MISSING: Source=post_handler
+            .route("/{a}", get(my_axum_handler_1)); // $ Source=post_handler
     }
 }

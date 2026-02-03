@@ -102,6 +102,8 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Option
+      - ["<core::option::Option>::map", "Argument[self]", "ReturnValue", "taint", "manual"]
       # Pin
       - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
       # This model is not precise, but helps in cases where a `Pin` is implicitly dereferenced.
