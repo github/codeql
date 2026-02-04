@@ -257,7 +257,7 @@ private class PpUnaryExpr extends PpAst, UnaryExpr {
     i = 2 and result = "--" and this instanceof PostDecExpr
   }
 
-  override PpAst getChild(int i) { i = 1 and result = this.getExpr() }
+  override PpAst getChild(int i) { i = 1 and result = this.getOperand() }
 }
 
 private class PpCastExpr extends PpAst, CastExpr {

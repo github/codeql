@@ -98,9 +98,9 @@ where
     or
     conditionalWithBool(e, pattern, rewrite)
     or
-    e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
+    e.(LogNotExpr).getOperand().(ComparisonOrEquality).negate(pattern, rewrite)
     or
-    e.(LogNotExpr).getExpr() instanceof LogNotExpr and
+    e.(LogNotExpr).getOperand() instanceof LogNotExpr and
     pattern = "!!A" and
     rewrite = "A"
   )

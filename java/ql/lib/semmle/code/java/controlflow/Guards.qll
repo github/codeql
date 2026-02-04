@@ -279,9 +279,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     }
   }
 
-  class NotExpr extends Expr instanceof J::LogNotExpr {
-    Expr getOperand() { result = this.(J::LogNotExpr).getExpr() }
-  }
+  class NotExpr = J::LogNotExpr;
 
   class IdExpr extends Expr {
     IdExpr() { this instanceof AssignExpr or this instanceof CastExpr }

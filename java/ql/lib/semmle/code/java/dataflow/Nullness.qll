@@ -64,7 +64,7 @@ private predicate unboxed(Expr e) {
       bin.getType() instanceof PrimitiveType
     )
     or
-    exists(UnaryExpr un | un.getExpr() = e)
+    exists(UnaryExpr un | un.getOperand() = e)
     or
     exists(ChooseExpr cond | cond.getType() instanceof PrimitiveType | cond.getAResultExpr() = e)
     or

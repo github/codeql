@@ -827,7 +827,7 @@ private module ControlFlowGraphImpl {
         index = 1 and result = e.getRightOperand()
       )
       or
-      index = 0 and result = this.(UnaryExpr).getExpr()
+      index = 0 and result = this.(UnaryExpr).getOperand()
       or
       index = 0 and result = this.(CastingExpr).getExpr()
       or
@@ -1044,7 +1044,7 @@ private module ControlFlowGraphImpl {
     or
     // The last node of a `LogNotExpr` is in its sub-expression with an inverted boolean completion
     // (or a `normalCompletion`).
-    exists(Completion subcompletion | last(n.(LogNotExpr).getExpr(), last, subcompletion) |
+    exists(Completion subcompletion | last(n.(LogNotExpr).getOperand(), last, subcompletion) |
       subcompletion = NormalCompletion() and
       completion = NormalCompletion() and
       not inBooleanContext(n)
@@ -1356,7 +1356,7 @@ private module ControlFlowGraphImpl {
     (
       result = first(n.asExpr().(AndLogicalExpr).getLeftOperand()) or
       result = first(n.asExpr().(OrLogicalExpr).getLeftOperand()) or
-      result = first(n.asExpr().(LogNotExpr).getExpr()) or
+      result = first(n.asExpr().(LogNotExpr).getOperand()) or
       result = first(n.asExpr().(ConditionalExpr).getCondition())
     )
     or

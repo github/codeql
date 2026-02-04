@@ -22,7 +22,7 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
   boolean calculateBooleanValue(Expr e) {
     // No casts relevant to booleans.
     // `!` is the only unary operator that evaluates to a boolean.
-    result = getBoolVal(e.(LogNotExpr).getExpr()).booleanNot()
+    result = getBoolVal(e.(LogNotExpr).getOperand()).booleanNot()
     or
     // Handle binary expressions that have integer operands and a boolean result.
     exists(BinaryExpr b, int left, int right |
@@ -115,11 +115,11 @@ module CalculateConstants<getBoolValSig/1 getBoolVal, getIntValSig/1 getIntVal> 
             else result = val
       )
       or
-      result = getIntVal(e.(PlusExpr).getExpr())
+      result = getIntVal(e.(PlusExpr).getOperand())
       or
-      result = -getIntVal(e.(MinusExpr).getExpr())
+      result = -getIntVal(e.(MinusExpr).getOperand())
       or
-      result = getIntVal(e.(BitNotExpr).getExpr()).bitNot()
+      result = getIntVal(e.(BitNotExpr).getOperand()).bitNot()
       or
       // No `int` value for `LogNotExpr`.
       exists(BinaryExpr b, int v1, int v2 |

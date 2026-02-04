@@ -184,7 +184,7 @@ class ForStmt extends ConditionalStmt, @forstmt {
   Variable getAnIterationVariable() {
     // Check that the variable is assigned to, incremented or decremented in the update expression, and...
     exists(Expr update | update = this.getAnUpdate().getAChildExpr*() |
-      update.(UnaryAssignExpr).getExpr() = result.getAnAccess() or
+      update.(UnaryAssignExpr).getOperand() = result.getAnAccess() or
       update = result.getAnAssignedValue()
     ) and
     // ...that it is checked or used in the condition.

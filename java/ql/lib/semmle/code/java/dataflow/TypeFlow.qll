@@ -137,7 +137,7 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
     or
     n2.asSsa().(Base::SsaCapturedDefinition).captures(n1.asSsa())
     or
-    n2.asExpr().(NotNullExpr).getExpr() = n1.asExpr()
+    n2.asExpr().(NotNullExpr).getOperand() = n1.asExpr()
   }
 
   /**

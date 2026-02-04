@@ -113,7 +113,7 @@ class Expr extends ExprParent, @expr {
     if this instanceof CastingExpr or this instanceof NotNullExpr
     then
       result = this.(CastingExpr).getExpr().getUnderlyingExpr() or
-      result = this.(NotNullExpr).getExpr().getUnderlyingExpr()
+      result = this.(NotNullExpr).getOperand().getUnderlyingExpr()
     else result = this
   }
 }
@@ -144,13 +144,13 @@ class CompileTimeConstantExpr extends Expr {
       this.(CastingExpr).getExpr().isCompileTimeConstant()
       or
       // The unary operators `+`, `-`, `~`, and `!` (but not `++` or `--`).
-      this.(PlusExpr).getExpr().isCompileTimeConstant()
+      this.(PlusExpr).getOperand().isCompileTimeConstant()
       or
-      this.(MinusExpr).getExpr().isCompileTimeConstant()
+      this.(MinusExpr).getOperand().isCompileTimeConstant()
       or
-      this.(BitNotExpr).getExpr().isCompileTimeConstant()
+      this.(BitNotExpr).getOperand().isCompileTimeConstant()
       or
-      this.(LogNotExpr).getExpr().isCompileTimeConstant()
+      this.(LogNotExpr).getOperand().isCompileTimeConstant()
       or
       // The multiplicative operators `*`, `/`, and `%`,
       // the additive operators `+` and `-`,
@@ -943,7 +943,7 @@ class LogicExpr extends Expr {
   /** Gets an operand of this logical expression. */
   Expr getAnOperand() {
     this.(BinaryExpr).getAnOperand() = result or
-    this.(UnaryExpr).getExpr() = result
+    this.(UnaryExpr).getOperand() = result
   }
 }
 
@@ -1039,8 +1039,15 @@ class ReferenceEqualityTest extends EqualityTest {
 
 /** A common super-class that represents unary operator expressions. */
 class UnaryExpr extends Expr, @unaryexpr {
+  /**
+   * DEPRECATED: Use getOperand() instead.
+   *
+   * Gets the operand expression.
+   */
+  deprecated Expr getExpr() { result.getParent() = this }
+
   /** Gets the operand expression. */
-  Expr getExpr() { result.getParent() = this }
+  Expr getOperand() { result.getParent() = this }
 }
 
 /**
@@ -1773,14 +1780,14 @@ class VariableUpdate extends Expr {
   VariableUpdate() {
     this.(Assignment).getDest() instanceof VarAccess or
     this instanceof LocalVariableDeclExpr or
-    this.(UnaryAssignExpr).getExpr() instanceof VarAccess
+    this.(UnaryAssignExpr).getOperand() instanceof VarAccess
   }
 
   /** Gets the destination of this variable update. */
   Variable getDestVar() {
     result.getAnAccess() = this.(Assignment).getDest() or
     result = this.(LocalVariableDeclExpr).getVariable() or
-    result.getAnAccess() = this.(UnaryAssignExpr).getExpr()
+    result.getAnAccess() = this.(UnaryAssignExpr).getOperand()
   }
 }
 
@@ -1970,7 +1977,7 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isVarWrite() {
     exists(Assignment a | a.getDest() = this) or
-    exists(UnaryAssignExpr e | e.getExpr() = this)
+    exists(UnaryAssignExpr e | e.getOperand() = this)
   }
 
   /**
