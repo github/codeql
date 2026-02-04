@@ -1427,7 +1427,7 @@ private module ControlFlowGraphImpl {
       condentry = first(for.getCondition())
       or
       // ...or the body if the for doesn't include a condition.
-      not exists(for.getCondition()) and condentry = first(for.getStmt())
+      not exists(for.getCondition()) and condentry = first(for.getBody())
     |
       // From the entry point, which is the for statement itself, control goes to either the first init expression...
       n.asStmt() = for and result = first(for.getInit(0)) and completion = NormalCompletion()
@@ -1448,7 +1448,7 @@ private module ControlFlowGraphImpl {
       // The true-successor of the condition is the body of the for loop.
       last(for.getCondition(), n, completion) and
       completion = BooleanCompletion(true, _) and
-      result = first(for.getStmt())
+      result = first(for.getBody())
       or
       // The updates execute sequentially, after which control is transferred to the condition.
       exists(int i | last(for.getUpdate(i), n, completion) and completion = NormalCompletion() |
@@ -1458,7 +1458,7 @@ private module ControlFlowGraphImpl {
       )
       or
       // The back edge of the loop: control goes to either the first update or the condition if no updates exist.
-      last(for.getStmt(), n, completion) and
+      last(for.getBody(), n, completion) and
       continues(completion, for) and
       (
         result = first(for.getUpdate(0))
@@ -1479,11 +1479,11 @@ private module ControlFlowGraphImpl {
       or
       // ...and then control goes to the body of the loop.
       n.asExpr() = for.getVariable() and
-      result = first(for.getStmt()) and
+      result = first(for.getBody()) and
       completion = NormalCompletion()
       or
       // Finally, the back edge of the loop goes to reassign the variable.
-      last(for.getStmt(), n, completion) and
+      last(for.getBody(), n, completion) and
       continues(completion, for) and
       result.asExpr() = for.getVariable()
     )
@@ -1492,7 +1492,7 @@ private module ControlFlowGraphImpl {
     result = first(n.asStmt().(WhileStmt).getCondition()) and completion = NormalCompletion()
     or
     // ...and do-while loops start at the body.
-    result = first(n.asStmt().(DoStmt).getStmt()) and completion = NormalCompletion()
+    result = first(n.asStmt().(DoStmt).getBody()) and completion = NormalCompletion()
     or
     exists(LoopStmt loop | loop instanceof WhileStmt or loop instanceof DoStmt |
       // Control goes from the condition via a true-completion to the body...
