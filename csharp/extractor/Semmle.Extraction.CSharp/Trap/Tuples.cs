@@ -202,6 +202,9 @@ namespace Semmle.Extraction.CSharp
         internal static void extend(this TextWriter trapFile, Type type, Type super) =>
             trapFile.WriteTuple("extend", type, super);
 
+        internal static void extension_receiver_type(this TextWriter trapFile, Type @extension, Type receiverType) =>
+            trapFile.WriteTuple("extension_receiver_type", extension, receiverType);
+
         internal static void anonymous_types(this TextWriter trapFile, Type type) =>
             trapFile.WriteTuple("anonymous_types", type);
 
