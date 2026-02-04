@@ -410,6 +410,37 @@ fn test_trait_model<T: Ord>(x: T) {
     sink(x7);
 }
 
+pub fn generated_source(i: i64) -> i64 {
+    0
+}
+
+pub fn neutral_generated_source(i: i64) -> i64 {
+    0
+}
+
+pub fn neutral_manual_source(i: i64) -> i64 {
+    0
+}
+
+pub fn generated_sink(i: i64) {}
+
+pub fn neutral_generated_sink(i: i64) {}
+
+pub fn neutral_manual_sink(i: i64) {}
+
+fn test_neutrals() {
+    // neutral models should cause corresponding generated models to be ignored.
+    // Thus, the `neutral_generated_*` source/sink, which have both a
+    // generated and a neutral model, should not have flow.
+
+    sink(generated_source(1)); // $ hasValueFlow=1
+    sink(neutral_generated_source(2)); // $ SPURIOUS: hasValueFlow=2
+    sink(neutral_manual_source(3)); // $ hasValueFlow=3
+    generated_sink(source(4)); // $ hasValueFlow=4
+    neutral_generated_sink(source(5)); // $ SPURIOUS: hasValueFlow=5
+    neutral_manual_sink(source(6)); // $ hasValueFlow=6
+}
+
 #[tokio::main]
 async fn main() {
     test_identify();
@@ -431,5 +462,6 @@ async fn main() {
     test_simple_sink();
     test_get_async_number().await;
     test_arg_source();
+    test_neutrals();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }
