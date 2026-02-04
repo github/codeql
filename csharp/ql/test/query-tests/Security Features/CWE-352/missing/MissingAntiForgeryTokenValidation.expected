@@ -1,1 +1,2 @@
 | MissingAntiForgeryTokenValidation.cs:7:25:7:29 | Login | Method 'Login' handles a POST request without performing CSRF token validation. |
+| MissingAntiForgeryTokenValidation.cs:47:25:47:47 | NoInheritedValidation | Method 'NoInheritedValidation' handles a POST request without performing CSRF token validation. |
