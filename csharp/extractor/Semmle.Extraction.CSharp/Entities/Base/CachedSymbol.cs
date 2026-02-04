@@ -32,32 +32,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 Attribute.ExtractAttributes(Context, Symbol, this);
         }
 
-        protected void PopulateNullability(TextWriter trapFile, AnnotatedTypeSymbol type)
-        {
-            var n = NullabilityEntity.Create(Context, Nullability.Create(type));
-            if (!type.HasObliviousNullability())
-            {
-                trapFile.type_nullability(this, n);
-            }
-        }
-
-        protected void PopulateRefKind(TextWriter trapFile, RefKind kind)
-        {
-            switch (kind)
-            {
-                case RefKind.Out:
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Out);
-                    break;
-                case RefKind.Ref:
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
-                    break;
-                case RefKind.RefReadOnly:
-                case RefKind.RefReadOnlyParameter:
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
-                    break;
-            }
-        }
-
         protected void PopulateScopedKind(TextWriter trapFile, ScopedKind kind)
         {
             switch (kind)
