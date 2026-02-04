@@ -627,8 +627,15 @@ class SynchronizedStmt extends Stmt, @synchronizedstmt {
 
 /** A `return` statement. */
 class ReturnStmt extends Stmt, @returnstmt {
+  /**
+   * DEPRECATED: Use getExpr() instead.
+   *
+   * Gets the expression returned by this `return` statement, if any.
+   */
+  deprecated Expr getResult() { result.getParent() = this }
+
   /** Gets the expression returned by this `return` statement, if any. */
-  Expr getResult() { result.getParent() = this }
+  Expr getExpr() { result.getParent() = this }
 
   override string pp() { result = "return ..." }
 

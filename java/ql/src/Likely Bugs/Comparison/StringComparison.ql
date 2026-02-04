@@ -38,7 +38,7 @@ class StringValue extends Expr {
     or
     // Method accesses whose results are all interned.
     forex(ReturnStmt rs | rs.getEnclosingCallable() = this.(MethodCall).getMethod() |
-      rs.getResult().(StringValue).isInterned()
+      rs.getExpr().(StringValue).isInterned()
     )
   }
 }

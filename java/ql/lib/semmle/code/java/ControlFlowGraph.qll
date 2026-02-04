@@ -849,7 +849,7 @@ private module ControlFlowGraphImpl {
       or
       index = 0 and result = this.(ClassExpr).getExpr()
       or
-      index = 0 and result = this.(ReturnStmt).getResult()
+      index = 0 and result = this.(ReturnStmt).getExpr()
       or
       index = 0 and result = this.(ThrowStmt).getExpr()
       or

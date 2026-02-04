@@ -349,7 +349,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     GuardsInput::Expr getAReturnExpr() {
       exists(ReturnStmt ret |
         this = ret.getEnclosingCallable() and
-        ret.getResult() = result
+        ret.getExpr() = result
       )
     }
   }

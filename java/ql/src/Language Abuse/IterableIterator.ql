@@ -30,7 +30,7 @@ class EmptyIterableIterator extends IterableIterator {
           .(SingletonBlock)
           .getStmt()
           .(ReturnStmt)
-          .getResult()
+          .getExpr()
           .(BooleanLiteral)
           .getBooleanValue() = false
     )

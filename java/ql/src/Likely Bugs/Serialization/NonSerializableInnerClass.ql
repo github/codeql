@@ -32,7 +32,7 @@ predicate castTo(ClassInstanceExpr cie, RefType to) {
   or
   exists(Call call, int n | call.getArgument(n) = cie | to = call.getCallee().getParameterType(n))
   or
-  exists(ReturnStmt ret | ret.getResult() = cie | to = ret.getEnclosingCallable().getReturnType())
+  exists(ReturnStmt ret | ret.getExpr() = cie | to = ret.getEnclosingCallable().getReturnType())
   or
   exists(ArrayCreationExpr ace | ace.getInit().getAnInit() = cie |
     to = ace.getType().(Array).getComponentType()

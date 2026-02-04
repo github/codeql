@@ -12,7 +12,7 @@ class Iterable extends Class {
     exists(Method m |
       m.getDeclaringType().getSourceDeclaration() = this and
       m.getName() = "iterator" and
-      m.getBody().(SingletonBlock).getStmt().(ReturnStmt).getResult() = result
+      m.getBody().(SingletonBlock).getStmt().(ReturnStmt).getExpr() = result
     )
   }
 }

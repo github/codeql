@@ -854,7 +854,7 @@ private class PpSynchronizedStmt extends PpAst, SynchronizedStmt {
 
 private class PpReturnStmt extends PpAst, ReturnStmt {
   override string getPart(int i) {
-    if exists(this.getResult())
+    if exists(this.getExpr())
     then
       i = 0 and result = "return "
       or
@@ -864,7 +864,7 @@ private class PpReturnStmt extends PpAst, ReturnStmt {
     )
   }
 
-  override PpAst getChild(int i) { i = 1 and result = this.getResult() }
+  override PpAst getChild(int i) { i = 1 and result = this.getExpr() }
 }
 
 private class PpThrowStmt extends PpAst, ThrowStmt {

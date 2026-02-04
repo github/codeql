@@ -138,7 +138,7 @@ ThisAccess forbiddenThisUse(Callable c) {
   result.getEnclosingCallable() = c and
   (
     exists(MethodCall ma | ma.getAnArgument() = result) or
-    exists(ReturnStmt rs | rs.getResult() = result)
+    exists(ReturnStmt rs | rs.getExpr() = result)
   )
 }
 

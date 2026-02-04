@@ -1312,7 +1312,7 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
 
   /** Gets the body of this lambda expression, if it is an expression. */
   Expr getExprBody() {
-    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getResult()
+    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getExpr()
   }
 
   /** Gets the body of this lambda expression, if it is a statement. */
@@ -1347,7 +1347,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
     exists(Stmt stmt |
       stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
       (
-        result = stmt.(ReturnStmt).getResult()
+        result = stmt.(ReturnStmt).getExpr()
         or
         // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
         result = stmt.(ExprStmt).getExpr()
