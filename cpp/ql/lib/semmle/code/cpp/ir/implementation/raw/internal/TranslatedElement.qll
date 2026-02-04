@@ -62,12 +62,20 @@ private predicate ignoreConstantValue(Operation op) {
   op instanceof BitwiseXorExpr
 }
 
+/** Holds if `expr` contains an address-of expression that EDG may have constant-folded. */
+private predicate containsAddressOf(Expr expr) {
+  expr instanceof AddressOfExpr
+  or
+  containsAddressOf(expr.getAChild())
+}
+
 /**
  * Holds if `expr` is a constant of a type that can be replaced directly with
  * its value in the IR. This does not include address constants as we have no
  * means to express those as QL values.
  */
 predicate isIRConstant(Expr expr) {
+  not containsAddressOf(expr) and
   exists(expr.getValue()) and
   // We avoid constant folding certain operations since it's often useful to
   // mark one of those as a source in dataflow, and if the operation is
