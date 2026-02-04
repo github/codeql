@@ -14,7 +14,7 @@ private import semmle.python.frameworks.data.ModelsAsData
  */
 module SsrfMaDModel {
   /**
-   * An HTTP request modeled from `ssrf` sinks, modeled using MaD.
+   * An HTTP request modeled from `request-forgery` sinks, modeled using MaD.
    */
   class SsrfSink extends Http::Client::Request::Range instanceof API::CallNode {
     DataFlow::Node urlArg;
@@ -25,7 +25,7 @@ module SsrfMaDModel {
         or
         this.getArgByName(_) = urlArg
       ) and
-      urlArg = ModelOutput::getASinkNode("ssrf").asSink()
+      ModelOutput::sinkNode(urlArg, "request-forgery")
     }
 
     override DataFlow::Node getAUrlPart() { result = urlArg }
