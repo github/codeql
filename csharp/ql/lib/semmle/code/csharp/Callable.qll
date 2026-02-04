@@ -221,6 +221,23 @@ class Callable extends Parameterizable, ExprOrStmtParent, @callable {
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
+
+  /** Holds if this callable is declared in an extension type. */
+  predicate isInExtension() { this.getDeclaringType() instanceof ExtensionType }
+}
+
+/**
+ * A callable that is declared as an extension.
+ *
+ * Either an extension method (`ExtensionMethod`), an extension operator
+ * (`ExtensionOperator`) or an extension accessor (`ExtensionAccessor`).
+ */
+abstract class ExtensionCallable extends Callable {
+  /** Gets the type being extended by this method. */
+  pragma[noinline]
+  Type getExtendedType() { result = this.getDeclaringType().(ExtensionType).getExtendedType() }
+
+  override string getAPrimaryQlClass() { result = "ExtensionCallable" }
 }
 
 /**
@@ -267,8 +284,11 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
 
+  /** Holds if this method is a classic extension method. */
+  predicate isClassicExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
+
   /** Holds if this method is an extension method. */
-  predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
+  predicate isExtensionMethod() { this.isClassicExtensionMethod() or this.isInExtension() }
 
   /** Gets the type of the `params` parameter of this method, if any. */
   Type getParamsType() {
@@ -296,7 +316,17 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 }
 
 /**
- * An extension method, for example
+ * An extension method.
+ *
+ * Either a classic extension method (`ClassicExtensionMethod`) or an extension
+ * type extension method (`ExtensionTypeExtensionMethod`).
+ */
+abstract class ExtensionMethod extends ExtensionCallable, Method {
+  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
+}
+
+/**
+ *  An extension method, for example
  *
  * ```csharp
  * static bool IsDefined(this Widget w) {
@@ -304,16 +334,28 @@ class Method extends Callable, Virtualizable, Attributable, @method {
  * }
  * ```
  */
-class ExtensionMethod extends Method {
-  ExtensionMethod() { this.isExtensionMethod() }
+class ClassicExtensionMethod extends ExtensionMethod {
+  ClassicExtensionMethod() { this.isClassicExtensionMethod() }
+
+  pragma[noinline]
+  override Type getExtendedType() { result = this.getParameter(0).getType() }
 
   override predicate isStatic() { any() }
+}
 
-  /** Gets the type being extended by this method. */
-  pragma[noinline]
-  Type getExtendedType() { result = this.getParameter(0).getType() }
-
-  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
+/**
+ * An extension method declared in an extension type, for example `IsNullOrEmpty` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public bool IsNullOrEmpty() { ... }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionTypeExtensionMethod extends ExtensionMethod {
+  ExtensionTypeExtensionMethod() { this.isInExtension() }
 }
 
 /**
@@ -534,6 +576,21 @@ class RecordCloneMethod extends Method {
     result.getNumberOfParameters() = 1 and
     result.getParameter(0).getType() = this.getDeclaringType()
   }
+}
+
+/**
+ * An extension operator, for example `*` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public static string operator *(int s1, string s2) { ... }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionOperator extends ExtensionCallable, Operator {
+  ExtensionOperator() { this.isInExtension() }
 }
 
 /**
