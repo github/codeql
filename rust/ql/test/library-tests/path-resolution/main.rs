@@ -1056,6 +1056,37 @@ mod self_constructors {
     }
 }
 
+/// Tests for using `Self` in type definitions.
+mod self_types {
+    struct NonEmptyListStruct<T> {
+        head: T,                 // $ item=T
+        tail: Option<Box<Self>>, // $ item=Option item=Box item=NonEmptyListStruct
+    }
+
+    enum NonEmptyListEnum<T> {
+        Single(T),          // $ item=T
+        Cons(T, Box<Self>), // $ item=T item=Box item=NonEmptyListEnum
+    }
+
+    #[rustfmt::skip]
+    impl NonEmptyListEnum<i32> { // $ item=NonEmptyListEnum item=i32
+        fn new_single(value: i32) -> Self { // $ item=i32 item=NonEmptyListEnum
+            use NonEmptyListEnum::*; // $ item=NonEmptyListEnum
+            Self::Single(value) // $ item=Single
+        }
+    }
+
+    #[rustfmt::skip]
+    union NonEmptyListUnion<
+        'a,
+        T // T
+          : Copy // $ item=Copy
+    > {
+        single: T,           // $ item=T
+        cons: (T, &'a Self), // $ item=T item=NonEmptyListUnion
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
