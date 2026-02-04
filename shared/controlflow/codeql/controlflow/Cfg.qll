@@ -1122,6 +1122,9 @@ module MakeWithSplitting<
     /** Gets the scope of this node. */
     CfgScope getScope() { result = getNodeCfgScope(this) }
 
+    /** Gets the enclosing callable of this node. */
+    CfgScope getEnclosingCallable() { result = this.getScope() }
+
     /** Gets a successor node of a given type, if any. */
     Node getASuccessor(SuccessorType t) { result = getASuccessor(this, t) }
 
@@ -1315,9 +1318,7 @@ module MakeWithSplitting<
   private module PrintGraphInput implements Pp::InputSig<Location> {
     class Callable = CfgScope;
 
-    class ControlFlowNode extends Node {
-      Callable getEnclosingCallable() { result = this.getScope() }
-    }
+    class ControlFlowNode = Node;
 
     ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) {
       result = n.getASuccessor(t)

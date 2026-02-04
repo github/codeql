@@ -102,13 +102,13 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
 
   /** Provides the input to `ViewCfgQuery`. */
   signature module ViewCfgQueryInputSig<FileSig File> {
-    /** The source file selected in the IDE. Should be an `external` predicate. */
+    /** Gets the source file selected in the IDE. Should be an `external` predicate. */
     string selectedSourceFile();
 
-    /** The source line selected in the IDE. Should be an `external` predicate. */
+    /** Gets the source line selected in the IDE. Should be an `external` predicate. */
     int selectedSourceLine();
 
-    /** The source column selected in the IDE. Should be an `external` predicate. */
+    /** Gets the source column selected in the IDE. Should be an `external` predicate. */
     int selectedSourceColumn();
 
     /**
