@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/github/codeql-go/extractor/registries"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -140,7 +141,7 @@ func SupportsWorkspaces() bool {
 // Constructs a `*exec.Cmd` for `go` with the specified arguments.
 func GoCommand(arg ...string) *exec.Cmd {
 	cmd := exec.Command("go", arg...)
-	util.ApplyProxyEnvVars(cmd)
+	registries.ApplyProxyEnvVars(cmd)
 	return cmd
 }
 

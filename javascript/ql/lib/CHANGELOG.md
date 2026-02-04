@@ -1,3 +1,9 @@
+## 2.6.21
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
 ## 2.6.20
 
 ### Minor Analysis Improvements
