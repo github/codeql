@@ -315,13 +315,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     )
   }
 
-  class ConditionalExpr extends Expr instanceof J::ConditionalExpr {
-    Expr getCondition() { result = super.getCondition() }
-
-    Expr getThen() { result = super.getTrueExpr() }
-
-    Expr getElse() { result = super.getFalseExpr() }
-  }
+  class ConditionalExpr = J::ConditionalExpr;
 
   class Parameter = J::Parameter;
 

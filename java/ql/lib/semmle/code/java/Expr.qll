@@ -166,8 +166,8 @@ class CompileTimeConstantExpr extends Expr {
       // The ternary conditional operator ` ? : `.
       exists(ConditionalExpr e | this = e |
         e.getCondition().isCompileTimeConstant() and
-        e.getTrueExpr().isCompileTimeConstant() and
-        e.getFalseExpr().isCompileTimeConstant()
+        e.getThen().isCompileTimeConstant() and
+        e.getElse().isCompileTimeConstant()
       )
       or
       // Access to a final variable initialized by a compile-time constant.
@@ -1464,26 +1464,42 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
   /**
+   * DEPRECATED: Use getThen() instead.
+   *
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `true`.
    */
-  Expr getTrueExpr() { result.isNthChildOf(this, 1) }
+  deprecated Expr getTrueExpr() { result.isNthChildOf(this, 1) }
+
+  /**
+   * DEPRECATED: Use getElse() instead.
+   *
+   * Gets the expression that is evaluated if the condition of this
+   * conditional expression evaluates to `false`.
+   */
+  deprecated Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+
+  /**
+   * Gets the expression that is evaluated if the condition of this
+   * conditional expression evaluates to `true`.
+   */
+  Expr getThen() { result.isNthChildOf(this, 1) }
 
   /**
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `false`.
    */
-  Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+  Expr getElse() { result.isNthChildOf(this, 2) }
 
   /**
    * Gets the expression that is evaluated by the specific branch of this
-   * conditional expression. If `true` that is `getTrueExpr()`, if `false`
-   * it is `getFalseExpr()`.
+   * conditional expression. If `true` that is `getThen()`, if `false`
+   * it is `getElse()`.
    */
   Expr getBranchExpr(boolean branch) {
-    branch = true and result = this.getTrueExpr()
+    branch = true and result = this.getThen()
     or
-    branch = false and result = this.getFalseExpr()
+    branch = false and result = this.getElse()
   }
 
   /**

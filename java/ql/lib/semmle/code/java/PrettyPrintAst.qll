@@ -351,9 +351,9 @@ private class PpConditionalExpr extends PpAst, ConditionalExpr {
   override PpAst getChild(int i) {
     i = 0 and result = this.getCondition()
     or
-    i = 2 and result = this.getTrueExpr()
+    i = 2 and result = this.getThen()
     or
-    i = 4 and result = this.getFalseExpr()
+    i = 4 and result = this.getElse()
   }
 }
 
