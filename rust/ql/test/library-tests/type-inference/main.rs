@@ -1748,7 +1748,7 @@ mod overloadable_operators {
         let i64_mul = 17i64 * 18i64; // $ type=i64_mul:i64 target=mul
         let i64_div = 19i64 / 20i64; // $ type=i64_div:i64 target=div
         let i64_rem = 21i64 % 22i64; // $ type=i64_rem:i64 target=rem
-        let i64_param_add = param_add(1i64, 2i64); // $ target=param_add $ MISSING: type=i64_param_add:i64
+        let i64_param_add = param_add(1i64, 2i64); // $ target=param_add $ type=i64_param_add:i64
 
         // Arithmetic assignment operators
         let mut i64_add_assign = 23i64;
@@ -2053,7 +2053,7 @@ mod indexers {
         let xs: [S; 1] = [S];
         let x = xs[0].foo(); // $ target=foo type=x:S target=index
 
-        let y = param_index(vec, 0); // $ target=param_index $ MISSING: type=y:S
+        let y = param_index(vec, 0); // $ target=param_index $ type=y:S
 
         analyze_slice(&xs); // $ target=analyze_slice
     }
