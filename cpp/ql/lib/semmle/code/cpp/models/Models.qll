@@ -57,3 +57,4 @@ private import implementations.CAtlFile
 private import implementations.CAtlFileMapping
 private import implementations.CAtlTemporaryFile
 private import implementations.CRegKey
+private import implementations.WinHttp
