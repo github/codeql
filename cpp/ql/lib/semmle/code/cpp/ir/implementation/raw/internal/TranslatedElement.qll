@@ -62,10 +62,16 @@ private predicate ignoreConstantValue(Operation op) {
   op instanceof BitwiseXorExpr
 }
 
-/** Holds if `expr` contains an address-of expression that EDG may have constant-folded. */
+/**
+ * Holds if `expr` contains an address-of expression that EDG may have constant-folded.
+ * We don't recurse into `sizeof` or `alignof` since they don't evaluate their operands,
+ * so any address-of inside them doesn't affect actual execution.
+ */
 private predicate containsAddressOf(Expr expr) {
   expr instanceof AddressOfExpr
   or
+  not expr instanceof SizeofOperator and
+  not expr instanceof AlignofOperator and
   containsAddressOf(expr.getAChild())
 }
 
