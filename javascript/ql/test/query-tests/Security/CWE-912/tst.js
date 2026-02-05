@@ -27,11 +27,11 @@ try {
     });
     response.on('error', () => 
     { 
-	fs.writeFile("/tmp/test", "error occured"); // OK - static data written to file
+	fs.writeFile("/tmp/test", "error occurred"); // OK - static data written to file
     });
   }).on('error', () => 
   { 
-      let error = "error occured";
+      let error = "error occurred";
       let writeStream = fs.createWriteStream('/usr/good/errorlog.txt');
       writeStream.write(error);  // OK - static data written to file stream
       writeStream.end();
