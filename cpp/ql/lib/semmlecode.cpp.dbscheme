@@ -236,6 +236,34 @@ extractor_version(
     string frontend_version: string ref
 )
 
+/**
+ * Gives the TRAP filename that `trap` is associated with.
+ * For debugging only.
+ */
+trap_filename(
+    int trap: @trap,
+    string filename: string ref
+);
+
+/**
+ * In `build-mode: none` overlay mode, indicates that `source_file`
+ * (`/path/to/foo.c`) uses the TRAP file `trap_file`; i.e. it is the
+ * TRAP file corresponding to `foo.c`, something it transitively
+ * includes, or a template instantiation it transitively uses.
+ */
+source_file_uses_trap(
+    string source_file: string ref,
+    int trap_file: @trap ref
+);
+
+/**
+ * Holds if there is a definition of `element` in TRAP file `trap_file`.
+ */
+in_trap(
+    int element: @element ref,
+    int trap_file: @trap ref
+);
+
 pch_uses(
     int pch: @pch ref,
     int compilation: @compilation ref,
