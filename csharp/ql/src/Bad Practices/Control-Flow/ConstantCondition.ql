@@ -54,11 +54,6 @@ predicate constantGuard(
   Guards::Guards::Guard g, string msg, Guards::Guards::Guard reason, string reasonMsg
 ) {
   ConstCondImpl::problems(g, msg, reason, reasonMsg) and
-  // conditional qualified expressions sit at an akward place in the CFG, which
-  // leads to FPs
-  not g.(QualifiableExpr).getQualifier() = reason and
-  // and if they're extension method calls, the syntactic qualifier is actually argument 0
-  not g.(ExtensionMethodCall).getArgument(0) = reason and
   // if a logical connective is constant, one of its operands is constant, so
   // we report that instead
   not g instanceof LogicalNotExpr and
