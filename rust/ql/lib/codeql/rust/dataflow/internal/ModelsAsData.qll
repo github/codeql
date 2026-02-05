@@ -125,41 +125,6 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
-private predicate summaryModel(
-  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
-  QlBuiltins::ExtensionId madId
-) {
-  exists(string path, Function f0 |
-    summaryModel(path, input, output, kind, provenance, madId) and
-    f0.getCanonicalPath() = path
-  |
-    f = f0 and
-    isInherited = false
-    or
-    f.implements(f0) and
-    isInherited = true
-  )
-}
-
-private predicate summaryModelRelevant(
-  Function f, string input, string output, string kind, Provenance provenance, boolean isInherited,
-  QlBuiltins::ExtensionId madId
-) {
-  summaryModel(f, input, output, kind, provenance, isInherited, madId) and
-  // Only apply generated or inherited models to functions in library code and
-  // when no strictly better model (or neutral model) exists
-  if provenance.isGenerated() or isInherited = true
-  then
-    not f.fromSource() and
-    not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
-      provenance.isGenerated() and other.isManual()
-      or
-      provenance = other and isInherited = true
-    ) and
-    not neutralModel(f.getCanonicalPath(), "summary", _, _)
-  else any()
-}
-
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string input_;
   string output_;
@@ -179,7 +144,12 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
       isExact_ = false and
       // making inherited models generated means that source code definitions and
       // exact generated models take precedence
-      p_ = "hq-generated"
+      p_ = "hq-generated" and
+      // Only apply generated models (including inherited models) when no neutral model exists
+      not (
+        p_.isGenerated() and
+        neutralModel(path, "summary", _, _)
+      )
     )
   }
 
