@@ -646,7 +646,7 @@ class ReturnStmt extends Stmt, @returnstmt {
    *
    * Gets the expression returned by this `return` statement, if any.
    */
-  deprecated Expr getResult() { result.getParent() = this }
+  Expr getResult() { result.getParent() = this }
 
   /** Gets the expression returned by this `return` statement, if any. */
   Expr getExpr() { result.getParent() = this }
