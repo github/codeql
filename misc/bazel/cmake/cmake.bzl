@@ -1,3 +1,5 @@
+load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
+
 CmakeInfo = provider(
     fields = {
         "name": "",
