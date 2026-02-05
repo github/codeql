@@ -312,3 +312,16 @@ func IsGolangVendorDirectory(dirPath string) bool {
 			fileExists(filepath.Join(dirPath, "../Gopkg.lock")) ||
 			fileExists(filepath.Join(dirPath, "../vendor.conf")))
 }
+
+// Returns true if the `GITHUB_ACTIONS` environment variable is set to `true`.
+// This is the case in GitHub Actions workflows.
+func IsActionsWorkflow() bool {
+	return os.Getenv("GITHUB_ACTIONS") == "true"
+}
+
+// Returns true if the `GITHUB_EVENT_NAME` environment variable is set and suggests that
+// we are running in a GitHub Actions workflow that was triggered by the `dynamic` event.
+// This is the case for e.g. Default Setup.
+func IsDynamicActionsWorkflow() bool {
+	return os.Getenv("GITHUB_EVENT_NAME") == "dynamic"
+}

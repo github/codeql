@@ -302,7 +302,7 @@ private module Cached {
       result = TLocalVar(v.getCallable(), v)
     )
     or
-    result.getAnAccess() = upd.(UnaryAssignExpr).getExpr()
+    result.getAnAccess() = upd.(UnaryAssignExpr).getOperand()
   }
 
   /*

@@ -380,20 +380,23 @@ private Declaration interpretExt(Declaration d, ExtPath ext) {
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 pragma[nomagic]
 Declaration interpretElement(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  boolean isExact
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
   exists(Declaration base, Declaration d |
     base = interpretBaseDeclaration(namespace, type, name, signature) and
     (
-      d = base
+      d = base and
+      isExact = true
       or
       subtypes = true and
       (
         d.(UnboundCallable).overridesOrImplementsUnbound(base)
         or
         d = base.(UnboundValueOrRefType).getASubTypeUnbound+()
-      )
+      ) and
+      isExact = false
     )
   |
     result = interpretExt(d, ext)
@@ -586,71 +589,47 @@ string getSignature(UnboundCallable c) {
 }
 
 private predicate interpretSummary(
-  UnboundCallable c, string input, string output, string kind, string provenance, string model
+  UnboundCallable c, string input, string output, string kind, string provenance, boolean isExact,
+  string model
 ) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
       model) and
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c = interpretElement(namespace, type, subtypes, name, signature, ext, isExact)
   )
 }
 
-predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
+predicate interpretNeutral(UnboundCallable c, string kind, string provenance, boolean isExact) {
   exists(string namespace, string type, string name, string signature |
     Extensions::neutralModel(namespace, type, name, signature, kind, provenance) and
-    c = interpretElement(namespace, type, true, name, signature, "")
+    c = interpretElement(namespace, type, true, name, signature, "", isExact)
   )
 }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  boolean isExact_;
+  string model_;
+
   SummarizedCallableAdapter() {
-    exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
-      not this.fromSource()
-      or
-      this.fromSource() and provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isGenerated()
-    ) and
-    not exists(Provenance provenance |
-      interpretNeutral(this, "summary", provenance) and
-      provenance.isManual()
-    )
+    interpretSummary(this, input_, output_, kind, p_, isExact_, model_)
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
-  }
-
-  override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = isExact_ and
+    model = model_
   }
 }
 

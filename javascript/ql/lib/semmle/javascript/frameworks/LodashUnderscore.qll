@@ -186,7 +186,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashEach extends DataFlow::SummarizedCallable {
+  private class LodashEach extends DataFlow::SummarizedCallable::Range {
     LodashEach() { this = "_.each-like" }
 
     overlay[global]
@@ -202,7 +202,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashMap extends DataFlow::SummarizedCallable {
+  private class LodashMap extends DataFlow::SummarizedCallable::Range {
     LodashMap() { this = "_.map" }
 
     overlay[global]
@@ -221,7 +221,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashFlatMap extends DataFlow::SummarizedCallable {
+  private class LodashFlatMap extends DataFlow::SummarizedCallable::Range {
     LodashFlatMap() { this = "_.flatMap" }
 
     overlay[global]
@@ -243,7 +243,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashFlatMapDeep extends DataFlow::SummarizedCallable {
+  private class LodashFlatMapDeep extends DataFlow::SummarizedCallable::Range {
     LodashFlatMapDeep() { this = "_.flatMapDeep" }
 
     overlay[global]
@@ -267,7 +267,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashReduce extends DataFlow::SummarizedCallable {
+  private class LodashReduce extends DataFlow::SummarizedCallable::Range {
     LodashReduce() { this = "_.reduce-like" }
 
     overlay[global]
@@ -286,7 +286,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LoashSortBy extends DataFlow::SummarizedCallable {
+  private class LoashSortBy extends DataFlow::SummarizedCallable::Range {
     LoashSortBy() { this = "_.sortBy-like" }
 
     overlay[global]
@@ -304,7 +304,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashMinMaxBy extends DataFlow::SummarizedCallable {
+  private class LodashMinMaxBy extends DataFlow::SummarizedCallable::Range {
     LodashMinMaxBy() { this = "_.minBy / _.maxBy" }
 
     overlay[global]
@@ -318,7 +318,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashPartition extends DataFlow::SummarizedCallable {
+  private class LodashPartition extends DataFlow::SummarizedCallable::Range {
     LodashPartition() { this = "_.partition" }
 
     overlay[global]
@@ -332,7 +332,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class UnderscoreMapObject extends DataFlow::SummarizedCallable {
+  private class UnderscoreMapObject extends DataFlow::SummarizedCallable::Range {
     UnderscoreMapObject() { this = "_.mapObject" }
 
     overlay[global]
@@ -353,7 +353,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashTap extends DataFlow::SummarizedCallable {
+  private class LodashTap extends DataFlow::SummarizedCallable::Range {
     LodashTap() { this = "_.tap" }
 
     overlay[global]
@@ -367,7 +367,7 @@ module LodashUnderscore {
   }
 
   overlay[local?]
-  private class LodashGroupBy extends DataFlow::SummarizedCallable {
+  private class LodashGroupBy extends DataFlow::SummarizedCallable::Range {
     LodashGroupBy() { this = "_.groupBy" }
 
     override DataFlow::CallNode getACall() { result = member("groupBy").getACall() }

@@ -1,3 +1,16 @@
+## 6.1.0
+
+### New Features
+
+* It is now possible to refer to list elements in the Python models-as-data language, via the `ListElement` path.
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* Added experimental query `py/prompt-injection` to detect potential prompt injection vulnerabilities in code using LLMs.
+* Added taint flow model and type model for `agents` and `openai` modules.
+* Remote flow sources for the `websockets` package have been modeled.
+
 ## 6.0.0
 
 ### Breaking Changes
@@ -15,7 +28,7 @@
 
 * When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Python extractor's search for YAML files.
 * The `compression.zstd` library (added in Python 3.14) is now supported by the `py/decompression-bomb` query.
-* Added taint flow model and type model for `urllib.parseurl`.
+* Added taint flow model and type model for `urllib.parse`.
 * Remote flow sources for the `python-socketio` package have been modeled.
 * Additional models for remote flow sources for `tornado.websocket.WebSocketHandler` have been added.
 

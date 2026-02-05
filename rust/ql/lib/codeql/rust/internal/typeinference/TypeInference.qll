@@ -134,15 +134,11 @@ class TypePath = M1::TypePath;
 
 module TypePath = M1::TypePath;
 
-private module Input2 implements InputSig2 {
-  private import TypeMention as TM
-
-  class TypeMention = TM::TypeMention;
-
-  TypeMention getABaseTypeMention(Type t) { none() }
+private module Input2 implements InputSig2<PreTypeMention> {
+  PreTypeMention getABaseTypeMention(Type t) { none() }
 
   Type getATypeParameterConstraint(TypeParameter tp, TypePath path) {
-    exists(TypeMention tm | result = tm.resolveTypeAt(path) |
+    exists(TypeMention tm | result = tm.getTypeAt(path) |
       tm = tp.(TypeParamTypeParameter).getTypeParam().getATypeBound().getTypeRepr() or
       tm = tp.(SelfTypeParameter).getTrait() or
       tm =
@@ -162,7 +158,7 @@ private module Input2 implements InputSig2 {
    * inference module for more information.
    */
   predicate conditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
+    TypeAbstraction abs, PreTypeMention condition, PreTypeMention constraint, boolean transitive
   ) {
     // `impl` blocks implementing traits
     transitive = false and
@@ -212,7 +208,7 @@ private module Input2 implements InputSig2 {
   }
 }
 
-private module M2 = Make2<Input2>;
+private module M2 = Make2<PreTypeMention, Input2>;
 
 import M2
 
@@ -231,7 +227,7 @@ module Consistency {
     // mention for the self type has multiple types for a path.
     not exists(ImplItemNode impl, TypePath selfTypePath |
       n = impl.getAnAssocItem().(Function).getSelfParam() and
-      strictcount(impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(selfTypePath)) > 1
+      strictcount(impl.(Impl).getSelfTy().(TypeMention).getTypeAt(selfTypePath)) > 1
     )
   }
 }
@@ -297,7 +293,7 @@ private class FunctionDeclaration extends Function {
       result = getAssocFunctionTypeAt(this, i.asSome(), pos, path)
       or
       i.isNone() and
-      result = this.getParam(pos.asPosition()).getTypeRepr().(TypeMention).resolveTypeAt(path)
+      result = this.getParam(pos.asPosition()).getTypeRepr().(TypeMention).getTypeAt(path)
     )
   }
 
@@ -308,7 +304,7 @@ private class FunctionDeclaration extends Function {
         getAssocFunctionTypeAt(this, i.asSome(), any(FunctionPosition pos | pos.isReturn()), path)
       or
       i.isNone() and
-      result = getReturnTypeMention(this).resolveTypeAt(path)
+      result = getReturnTypeMention(this).getTypeAt(path)
     )
   }
 
@@ -352,12 +348,12 @@ private TypeMention getCallExprTypeMentionArgument(CallExpr ce, TypeArgumentPosi
 
 pragma[nomagic]
 private Type getCallExprTypeArgument(CallExpr ce, TypeArgumentPosition apos, TypePath path) {
-  result = getCallExprTypeMentionArgument(ce, apos).resolveTypeAt(path)
+  result = getCallExprTypeMentionArgument(ce, apos).getTypeAt(path)
   or
   // Handle constructions that use `Self(...)` syntax
   exists(Path p, TypePath path0 |
     p = CallExprImpl::getFunctionPath(ce) and
-    result = p.(TypeMention).resolveTypeAt(path0) and
+    result = p.(TypeMention).getTypeAt(path0) and
     path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
   )
 }
@@ -380,16 +376,16 @@ private TypeMention getTypeAnnotation(AstNode n) {
 /** Gets the type of `n`, which has an explicit type annotation. */
 pragma[nomagic]
 private Type inferAnnotatedType(AstNode n, TypePath path) {
-  result = getTypeAnnotation(n).resolveTypeAt(path)
+  result = getTypeAnnotation(n).getTypeAt(path)
   or
-  result = n.(ShorthandSelfParameterMention).resolveTypeAt(path)
+  result = n.(ShorthandSelfParameterMention).getTypeAt(path)
 }
 
 pragma[nomagic]
 private Type inferFunctionBodyType(AstNode n, TypePath path) {
   exists(Function f |
     n = f.getFunctionBody() and
-    result = getReturnTypeMention(f).resolveTypeAt(path) and
+    result = getReturnTypeMention(f).getTypeAt(path) and
     not exists(ImplTraitReturnType i | i.getFunction() = f |
       result = i or result = i.getATypeParameter()
     )
@@ -433,7 +429,7 @@ module CertainTypeInference {
   private TypePath getPathToImplSelfTypeParam(TypeParam tp) {
     exists(ImplItemNode impl |
       tp = impl.getTypeParam(_) and
-      TTypeParamTypeParameter(tp) = impl.(Impl).getSelfTy().(TypeMention).resolveTypeAt(result)
+      TTypeParamTypeParameter(tp) = impl.(Impl).getSelfTy().(TypeMention).getTypeAt(result)
     )
   }
 
@@ -449,7 +445,7 @@ module CertainTypeInference {
         // and the path `Foo<i64>::bar` we must resolve `A` to `i64`.
         exists(TypePath pathToTp |
           pathToTp = getPathToImplSelfTypeParam(tp) and
-          result = p.getQualifier().(TypeMention).resolveTypeAt(pathToTp.appendInverse(suffix))
+          result = p.getQualifier().(TypeMention).getTypeAt(pathToTp.appendInverse(suffix))
         )
         or
         // For type parameters of the function we must resolve their
@@ -465,11 +461,11 @@ module CertainTypeInference {
   }
 
   private Type inferCertainStructExprType(StructExpr se, TypePath path) {
-    result = se.getPath().(TypeMention).resolveTypeAt(path)
+    result = se.getPath().(TypeMention).getTypeAt(path)
   }
 
   private Type inferCertainStructPatType(StructPat sp, TypePath path) {
-    result = sp.getPath().(TypeMention).resolveTypeAt(path)
+    result = sp.getPath().(TypeMention).getTypeAt(path)
   }
 
   predicate certainTypeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
@@ -905,7 +901,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
       // type of a field
       exists(TypeMention tp |
         tp = this.getField(dpos.asFieldPos()).getTypeRepr() and
-        result = tp.resolveTypeAt(path)
+        result = tp.getTypeAt(path)
       )
       or
       // type parameter of the struct itself
@@ -958,7 +954,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
       // Handle constructions that use `Self {...}` syntax
       exists(TypeMention tm, TypePath path0 |
         tm = this.getStructPath() and
-        result = tm.resolveTypeAt(path0) and
+        result = tm.getTypeAt(path0) and
         path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
       )
     }
@@ -1068,7 +1064,7 @@ pragma[nomagic]
 private Type getCallExprTypeQualifier(CallExpr ce, TypePath path) {
   exists(TypeMention tm |
     tm = getCallExprPathQualifier(ce) and
-    result = tm.resolveTypeAt(path) and
+    result = tm.getTypeAt(path) and
     not resolvePath(tm) instanceof Trait
   )
 }
@@ -1964,7 +1960,7 @@ private module MethodResolution {
     pragma[nomagic]
     predicate hasTypeQualifiedCandidate(ImplItemNode impl) {
       exists(getCallExprTypeQualifier(this, _)) and
-      CallExprImpl::getResolvedFunction(this) = impl.getASuccessor(_)
+      CallExprImpl::getResolvedFunction(this) = impl.getADescendant()
     }
 
     pragma[nomagic]
@@ -2330,11 +2326,11 @@ private module MethodResolution {
    * instance of the type being implemented.
    */
   private module TypeQualifierIsInstantiationOfImplSelfInput implements
-    IsInstantiationOfInputSig<MethodCallCallExpr, TypeMentionTypeTree>
+    IsInstantiationOfInputSig<MethodCallCallExpr, TypeMention>
   {
     pragma[nomagic]
     private predicate potentialInstantiationOf0(
-      MethodCallCallExpr ce, ImplItemNode impl, TypeMentionTypeTree constraint
+      MethodCallCallExpr ce, ImplItemNode impl, TypeMention constraint
     ) {
       ce.hasTypeQualifiedCandidate(impl) and
       constraint = impl.getSelfPath()
@@ -2342,7 +2338,7 @@ private module MethodResolution {
 
     pragma[nomagic]
     predicate potentialInstantiationOf(
-      MethodCallCallExpr ce, TypeAbstraction abs, TypeMentionTypeTree constraint
+      MethodCallCallExpr ce, TypeAbstraction abs, TypeMention constraint
     ) {
       potentialInstantiationOf0(ce, abs, constraint) and
       if abs.(Impl).hasTrait()
@@ -2353,14 +2349,13 @@ private module MethodResolution {
       else any()
     }
 
-    predicate relevantConstraint(TypeMentionTypeTree constraint) {
+    predicate relevantConstraint(TypeMention constraint) {
       potentialInstantiationOf0(_, _, constraint)
     }
   }
 
   private module TypeQualifierIsInstantiationOfImplSelf =
-    IsInstantiationOf<MethodCallCallExpr, TypeMentionTypeTree,
-      TypeQualifierIsInstantiationOfImplSelfInput>;
+    IsInstantiationOf<MethodCallCallExpr, TypeMention, TypeQualifierIsInstantiationOfImplSelfInput>;
 
   /**
    * A configuration for anti-matching the type of a receiver against the type of
@@ -2481,7 +2476,7 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
             .getGenericArgList()
             .getTypeArg(apos.asMethodTypeArgumentPosition())
             .(TypeMention)
-            .resolveTypeAt(path)
+            .getTypeAt(path)
       or
       result = getCallExprTypeArgument(this, apos, path)
     }
@@ -3012,7 +3007,7 @@ abstract private class TupleLikeConstructor extends Addressable {
   }
 
   Type getParameterType(FunctionPosition pos, TypePath path) {
-    result = this.getTupleField(pos.asPosition()).getTypeRepr().(TypeMention).resolveTypeAt(path)
+    result = this.getTupleField(pos.asPosition()).getTypeRepr().(TypeMention).getTypeAt(path)
   }
 }
 
@@ -3367,7 +3362,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       )
       or
       dpos.isField() and
-      result = this.getTypeRepr().(TypeMention).resolveTypeAt(path)
+      result = this.getTypeRepr().(TypeMention).getTypeAt(path)
     }
 
     override string toString() { result = this.getAstNode().toString() }
@@ -3719,7 +3714,7 @@ private module StructPatMatchingInput implements MatchingInputSig {
       // The struct/enum type is supplied explicitly as a type qualifier, e.g.
       // `let Foo<Bar>::Variant { ... } = ...`.
       apos.isStructPos() and
-      result = this.getPath().(TypeMention).resolveTypeAt(path)
+      result = this.getPath().(TypeMention).getTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -3769,7 +3764,7 @@ private module TupleStructPatMatchingInput implements MatchingInputSig {
       // The struct/enum type is supplied explicitly as a type qualifier, e.g.
       // `let Option::<Foo>::Some(x) = ...`.
       apos.isSelf() and
-      result = this.getPath().(TypeMention).resolveTypeAt(path)
+      result = this.getPath().(TypeMention).getTypeAt(path)
     }
 
     Declaration getTarget() { result = resolvePath(this.getPath()) }
@@ -3958,13 +3953,13 @@ private Type inferClosureExprType(AstNode n, TypePath path) {
     or
     // Propagate return type annotation to body
     n = ce.getClosureBody() and
-    result = ce.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+    result = ce.getRetType().getTypeRepr().(TypeMention).getTypeAt(path)
   )
 }
 
 pragma[nomagic]
 private Type inferCastExprType(CastExpr ce, TypePath path) {
-  result = ce.getTypeRepr().(TypeMention).resolveTypeAt(path)
+  result = ce.getTypeRepr().(TypeMention).getTypeAt(path)
 }
 
 cached
@@ -4162,7 +4157,7 @@ private module Debug {
 
   predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
     self = getRelevantLocatable() and
-    t = self.resolveTypeAt(path)
+    t = self.getTypeAt(path)
   }
 
   predicate debugInferMethodCallType(AstNode n, TypePath path, Type t) {
@@ -4177,7 +4172,7 @@ private module Debug {
 
   predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
     tm = getRelevantLocatable() and
-    tm.resolveTypeAt(path) = type
+    tm.getTypeAt(path) = type
   }
 
   Type debugInferAnnotatedType(AstNode n, TypePath path) {

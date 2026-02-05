@@ -10,7 +10,7 @@ private import codeql.ruby.dataflow.FlowSummary
  */
 module Utils {
   /** Flow summary for `Rack::Utils.parse_query`, which parses a query string. */
-  private class ParseQuerySummary extends SummarizedCallable {
+  private class ParseQuerySummary extends SummarizedCallable::Range {
     ParseQuerySummary() { this = "Rack::Utils.parse_query" }
 
     override MethodCall getACall() {

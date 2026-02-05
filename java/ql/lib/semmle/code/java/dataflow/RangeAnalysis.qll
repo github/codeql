@@ -173,23 +173,23 @@ module Sem implements Semantic<Location> {
   }
 
   class NegateExpr extends UnaryExpr instanceof MinusExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = MinusExpr.super.getOperand() }
   }
 
   class PreIncExpr extends UnaryExpr instanceof J::PreIncExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PreIncExpr.super.getOperand() }
   }
 
   class PreDecExpr extends UnaryExpr instanceof J::PreDecExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PreDecExpr.super.getOperand() }
   }
 
   class PostIncExpr extends UnaryExpr instanceof J::PostIncExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PostIncExpr.super.getOperand() }
   }
 
   class PostDecExpr extends UnaryExpr instanceof J::PostDecExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PostDecExpr.super.getOperand() }
   }
 
   class CopyValueExpr extends UnaryExpr {
@@ -200,7 +200,7 @@ module Sem implements Semantic<Location> {
     }
 
     override Expr getOperand() {
-      result = this.(J::PlusExpr).getExpr() or
+      result = this.(J::PlusExpr).getOperand() or
       result = this.(J::AssignExpr).getSource() or
       result = this.(J::LocalVariableDeclExpr).getInit()
     }

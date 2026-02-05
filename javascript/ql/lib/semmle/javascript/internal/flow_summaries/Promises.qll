@@ -23,7 +23,7 @@ DataFlow::SourceNode promiseConstructorRef() {
 // Note that the 'Awaited' token has a special interpretation.
 // See a write-up here: https://github.com/github/codeql-javascript-team/issues/423
 //
-private class PromiseConstructor extends SummarizedCallable {
+private class PromiseConstructor extends SummarizedCallable::Range {
   PromiseConstructor() { this = "new Promise()" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -53,7 +53,7 @@ private class PromiseConstructor extends SummarizedCallable {
  * for callbacks.
  */
 module PromiseConstructorWorkaround {
-  class ResolveSummary extends SummarizedCallable {
+  class ResolveSummary extends SummarizedCallable::Range {
     ResolveSummary() { this = "new Promise() resolve callback" }
 
     override DataFlow::InvokeNode getACallSimple() {
@@ -68,7 +68,7 @@ module PromiseConstructorWorkaround {
     }
   }
 
-  class RejectCallback extends SummarizedCallable {
+  class RejectCallback extends SummarizedCallable::Range {
     RejectCallback() { this = "new Promise() reject callback" }
 
     override DataFlow::InvokeNode getACallSimple() {
@@ -83,7 +83,7 @@ module PromiseConstructorWorkaround {
     }
   }
 
-  class ConstructorSummary extends SummarizedCallable {
+  class ConstructorSummary extends SummarizedCallable::Range {
     ConstructorSummary() { this = "new Promise() workaround" }
 
     override DataFlow::InvokeNode getACallSimple() {
@@ -106,7 +106,7 @@ module PromiseConstructorWorkaround {
   }
 }
 
-private class PromiseThen2Arguments extends SummarizedCallable {
+private class PromiseThen2Arguments extends SummarizedCallable::Range {
   PromiseThen2Arguments() { this = "Promise#then() with 2 arguments" }
 
   override InstanceCall getACallSimple() {
@@ -128,7 +128,7 @@ private class PromiseThen2Arguments extends SummarizedCallable {
   }
 }
 
-private class PromiseThen1Argument extends SummarizedCallable {
+private class PromiseThen1Argument extends SummarizedCallable::Range {
   PromiseThen1Argument() { this = "Promise#then() with 1 argument" }
 
   override InstanceCall getACallSimple() {
@@ -150,7 +150,7 @@ private class PromiseThen1Argument extends SummarizedCallable {
   }
 }
 
-private class PromiseCatch extends SummarizedCallable {
+private class PromiseCatch extends SummarizedCallable::Range {
   PromiseCatch() { this = "Promise#catch()" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "catch" }
@@ -169,7 +169,7 @@ private class PromiseCatch extends SummarizedCallable {
   }
 }
 
-private class PromiseFinally extends SummarizedCallable {
+private class PromiseFinally extends SummarizedCallable::Range {
   PromiseFinally() { this = "Promise#finally()" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "finally" }
@@ -186,7 +186,7 @@ private class PromiseFinally extends SummarizedCallable {
   }
 }
 
-private class PromiseResolve extends SummarizedCallable {
+private class PromiseResolve extends SummarizedCallable::Range {
   PromiseResolve() { this = "Promise.resolve()" }
 
   override InstanceCall getACallSimple() {
@@ -200,7 +200,7 @@ private class PromiseResolve extends SummarizedCallable {
   }
 }
 
-private class PromiseReject extends SummarizedCallable {
+private class PromiseReject extends SummarizedCallable::Range {
   PromiseReject() { this = "Promise.reject()" }
 
   override InstanceCall getACallSimple() {
@@ -261,7 +261,7 @@ private class PromiseAllStep extends SharedTypeTrackingStep {
   }
 }
 
-private class PromiseAll extends SummarizedCallable {
+private class PromiseAll extends SummarizedCallable::Range {
   PromiseAll() { this = "Promise.all()" }
 
   override DataFlow::InvokeNode getACallSimple() { result instanceof PromiseAllCall }
@@ -283,7 +283,7 @@ private class PromiseAll extends SummarizedCallable {
   }
 }
 
-private class PromiseAnyLike extends SummarizedCallable {
+private class PromiseAnyLike extends SummarizedCallable::Range {
   PromiseAnyLike() { this = "Promise.any() or Promise.race()" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -297,7 +297,7 @@ private class PromiseAnyLike extends SummarizedCallable {
   }
 }
 
-private class PromiseAllSettled extends SummarizedCallable {
+private class PromiseAllSettled extends SummarizedCallable::Range {
   PromiseAllSettled() { this = "Promise.allSettled()" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -318,7 +318,7 @@ private class PromiseAllSettled extends SummarizedCallable {
   }
 }
 
-private class BluebirdMapSeries extends SummarizedCallable {
+private class BluebirdMapSeries extends SummarizedCallable::Range {
   BluebirdMapSeries() { this = "bluebird.mapSeries" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -351,7 +351,7 @@ private class BluebirdMapSeries extends SummarizedCallable {
  * - `goog.Closure.withResolver()` (non-plural spelling)
  * - `bluebird.Promise.defer()`
  */
-private class PromiseWithResolversLike extends SummarizedCallable {
+private class PromiseWithResolversLike extends SummarizedCallable::Range {
   PromiseWithResolversLike() { this = "Promise.withResolvers()" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -371,7 +371,7 @@ private class PromiseWithResolversLike extends SummarizedCallable {
   }
 }
 
-class PromiseTry extends DataFlow::SummarizedCallable {
+class PromiseTry extends DataFlow::SummarizedCallable::Range {
   PromiseTry() { this = "Promise.try()" }
 
   override DataFlow::CallNode getACallSimple() {

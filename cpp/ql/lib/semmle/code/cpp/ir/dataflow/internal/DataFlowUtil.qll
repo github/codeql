@@ -312,6 +312,13 @@ class Node extends TIRDataFlowNode {
    */
   Expr asDefinition() { result = this.asDefinition(_) }
 
+  private predicate isCertainStore() {
+    exists(SsaImpl::Definition def |
+      SsaImpl::defToNode(this, def, _) and
+      def.isCertain()
+    )
+  }
+
   /**
    * Gets the definition associated with this node, if any.
    *
@@ -361,11 +368,10 @@ class Node extends TIRDataFlowNode {
    * pointed to by `p`.
    */
   Expr asDefinition(boolean uncertain) {
-    exists(StoreInstruction store, SsaImpl::Definition def |
+    exists(StoreInstruction store |
       store = this.asInstruction() and
       result = asDefinitionImpl(store) and
-      SsaImpl::defToNode(this, def, _) and
-      if def.isCertain() then uncertain = false else uncertain = true
+      if this.isCertainStore() then uncertain = false else uncertain = true
     )
   }
 

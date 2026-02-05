@@ -13,7 +13,7 @@ module NoSql {
   }
 
   private class QueryFromModel extends Query {
-    QueryFromModel() { this = ModelOutput::getASinkNode("nosql-injection").asSink() }
+    QueryFromModel() { ModelOutput::sinkNode(this, "nosql-injection") }
   }
 }
 
@@ -46,7 +46,7 @@ private module MongoDB {
 
     override DataFlow::Node getAQueryArgument() {
       result = [this.getAnArgument(), this.getOptionArgument(_, _)] and
-      result = ModelOutput::getASinkNode("mongodb.sink").asSink()
+      ModelOutput::sinkNode(result, "mongodb.sink")
     }
 
     override DataFlow::Node getAResult() {

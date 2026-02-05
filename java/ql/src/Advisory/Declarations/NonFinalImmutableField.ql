@@ -32,7 +32,7 @@ class AnyAssignment extends Expr {
   /** The expression modified by this assignment. */
   Expr getDest() {
     this.(Assignment).getDest() = result or
-    this.(UnaryAssignExpr).getExpr() = result
+    this.(UnaryAssignExpr).getOperand() = result
   }
 }
 

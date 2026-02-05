@@ -1,10 +1,18 @@
 # generated running `bazel run //go/gazelle`, do not edit
 
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "diagnostics",
     srcs = ["diagnostics.go"],
     importpath = "github.com/github/codeql-go/extractor/diagnostics",
     visibility = ["//visibility:public"],
+    deps = ["//go/extractor/util"],
+)
+
+go_test(
+    name = "diagnostics_test",
+    srcs = ["diagnostics_test.go"],
+    embed = [":diagnostics"],
+    deps = ["@com_github_stretchr_testify//assert"],
 )

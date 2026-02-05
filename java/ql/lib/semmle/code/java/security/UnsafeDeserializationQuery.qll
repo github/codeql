@@ -95,7 +95,7 @@ private module SafeKryoConfig implements DataFlow::ConfigSig {
   ) {
     exists(ConstructorCall cc, FunctionalExpr fe |
       cc.getConstructedType() instanceof KryoPoolBuilder and
-      fe.asMethod().getBody().getAStmt().(ReturnStmt).getResult() = node1.asExpr() and
+      fe.asMethod().getBody().getAStmt().(ReturnStmt).getExpr() = node1.asExpr() and
       node2.asExpr() = cc and
       cc.getArgument(0) = fe
     )

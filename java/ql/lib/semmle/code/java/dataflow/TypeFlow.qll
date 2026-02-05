@@ -110,7 +110,7 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
     n2.asSsa().(Base::SsaPhiDefinition).getAnUltimateDefinition() = n1.asSsa()
     or
     exists(ReturnStmt ret |
-      n2.asMethod() = ret.getEnclosingCallable() and ret.getResult() = n1.asExpr()
+      n2.asMethod() = ret.getEnclosingCallable() and ret.getExpr() = n1.asExpr()
     )
     or
     viableImpl_v1(n2.asExpr()) = n1.asMethod()
@@ -137,7 +137,7 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
     or
     n2.asSsa().(Base::SsaCapturedDefinition).captures(n1.asSsa())
     or
-    n2.asExpr().(NotNullExpr).getExpr() = n1.asExpr()
+    n2.asExpr().(NotNullExpr).getOperand() = n1.asExpr()
   }
 
   /**

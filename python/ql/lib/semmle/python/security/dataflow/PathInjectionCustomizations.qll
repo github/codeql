@@ -57,7 +57,7 @@ module PathInjection {
    */
   class FileSystemAccessAsSink extends Sink {
     FileSystemAccessAsSink() {
-      this = any(FileSystemAccess e).getAPathArgument() and
+      this = any(FileSystemAccess e).getAVulnerablePathArgument() and
       // since implementation of Path.open in pathlib.py is like
       // ```py
       // def open(self, ...):
@@ -88,7 +88,7 @@ module PathInjection {
   private import semmle.python.frameworks.data.ModelsAsData
 
   private class DataAsFileSink extends Sink {
-    DataAsFileSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+    DataAsFileSink() { ModelOutput::sinkNode(this, "path-injection") }
   }
 
   /**
@@ -98,4 +98,11 @@ module PathInjection {
 
   /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer defined via models-as-data with kind "path-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "path-injection") }
+  }
 }

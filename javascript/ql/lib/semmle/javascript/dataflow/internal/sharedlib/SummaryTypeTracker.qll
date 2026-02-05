@@ -69,7 +69,7 @@ private module SummaryFlowConfig implements Input {
     predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      super.propagatesFlow(input, output, preservesValue, _)
+      super.propagatesFlow(input, output, preservesValue, _, _, _)
     }
 
     string toString() { result = super.toString() }

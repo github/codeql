@@ -1,8 +1,12 @@
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer |
+| azure.cpp:252:79:252:98 | call to string | azure.cpp:252:62:252:99 | call to Url |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument |
+| azure.cpp:287:79:287:98 | call to string | azure.cpp:287:62:287:99 | call to Url |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value |
 | test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual |
 | test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
 | test.cpp:28:35:28:35 | 0 | test.cpp:28:11:28:33 | call to ymlStepManual_with_body |
-| test.cpp:32:38:32:38 | 0 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
-| test.cpp:35:38:35:38 | x | test.cpp:35:11:35:36 | call to ymlStepGenerated_with_body |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA |
+| windows.cpp:729:35:729:35 | *x | windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument |

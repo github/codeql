@@ -38,7 +38,7 @@ class LoggingSink extends Sink {
 }
 
 private class ExternalLogInjectionSink extends Sink {
-  ExternalLogInjectionSink() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+  ExternalLogInjectionSink() { ModelOutput::sinkNode(this, "log-injection") }
 }
 
 /**

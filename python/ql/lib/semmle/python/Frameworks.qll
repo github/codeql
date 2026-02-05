@@ -90,6 +90,7 @@ private import semmle.python.frameworks.TRender
 private import semmle.python.frameworks.Twisted
 private import semmle.python.frameworks.Ujson
 private import semmle.python.frameworks.Urllib3
+private import semmle.python.frameworks.Websockets
 private import semmle.python.frameworks.Xmltodict
 private import semmle.python.frameworks.Yaml
 private import semmle.python.frameworks.Yarl

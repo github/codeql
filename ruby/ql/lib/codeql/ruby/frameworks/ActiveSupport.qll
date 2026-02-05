@@ -45,7 +45,7 @@ module ActiveSupport {
       /**
        * Flow summary for methods which transform the receiver in some way, possibly preserving taint.
        */
-      private class StringTransformSummary extends SummarizedCallable {
+      private class StringTransformSummary extends SummarizedCallable::Range {
         // We're modeling a lot of different methods, so we make up a name for this summary.
         StringTransformSummary() { this = "ActiveSupportStringTransform" }
 
@@ -72,7 +72,7 @@ module ActiveSupport {
      */
     module Object {
       /** Flow summary for methods which can return the receiver. */
-      private class IdentitySummary extends SimpleSummarizedCallable {
+      private class IdentitySummary extends SummarizedCallable::RangeSimple {
         IdentitySummary() { this = ["presence", "deep_dup"] }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -106,7 +106,7 @@ module ActiveSupport {
       }
 
       /** Flow summary for `Object#to_json`, which serializes the receiver as a JSON string. */
-      private class ToJsonSummary extends SimpleSummarizedCallable {
+      private class ToJsonSummary extends SummarizedCallable::RangeSimple {
         ToJsonSummary() { this = "to_json" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -124,7 +124,7 @@ module ActiveSupport {
       /**
        * Flow summary for `reverse_merge`, and its alias `with_defaults`.
        */
-      private class ReverseMergeSummary extends SimpleSummarizedCallable {
+      private class ReverseMergeSummary extends SummarizedCallable::RangeSimple {
         ReverseMergeSummary() { this = ["reverse_merge", "with_defaults"] }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -137,7 +137,7 @@ module ActiveSupport {
       /**
        * Flow summary for `reverse_merge!`, and its aliases `with_defaults!` and `reverse_update`.
        */
-      private class ReverseMergeBangSummary extends SimpleSummarizedCallable {
+      private class ReverseMergeBangSummary extends SummarizedCallable::RangeSimple {
         ReverseMergeBangSummary() { this = ["reverse_merge!", "with_defaults!", "reverse_update"] }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -147,7 +147,7 @@ module ActiveSupport {
         }
       }
 
-      private class TransformSummary extends SimpleSummarizedCallable {
+      private class TransformSummary extends SummarizedCallable::RangeSimple {
         TransformSummary() {
           this =
             [
@@ -188,7 +188,7 @@ module ActiveSupport {
        * mentioned in the arguments to an element in `self`, including elements
        * at unknown keys.
        */
-      private class ExtractSummary extends SummarizedCallable {
+      private class ExtractSummary extends SummarizedCallable::Range {
         MethodCall mc;
 
         ExtractSummary() {
@@ -232,7 +232,7 @@ module ActiveSupport {
         ArrayIndex() { this = any(DataFlow::Content::KnownElementContent c).getIndex().getInt() }
       }
 
-      private class CompactBlankSummary extends SimpleSummarizedCallable {
+      private class CompactBlankSummary extends SummarizedCallable::RangeSimple {
         CompactBlankSummary() { this = "compact_blank" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -242,7 +242,7 @@ module ActiveSupport {
         }
       }
 
-      private class ExcludingSummary extends SimpleSummarizedCallable {
+      private class ExcludingSummary extends SummarizedCallable::RangeSimple {
         ExcludingSummary() { this = ["excluding", "without"] }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -252,7 +252,7 @@ module ActiveSupport {
         }
       }
 
-      private class InOrderOfSummary extends SimpleSummarizedCallable {
+      private class InOrderOfSummary extends SummarizedCallable::RangeSimple {
         InOrderOfSummary() { this = "in_order_of" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -265,7 +265,7 @@ module ActiveSupport {
       /**
        * Like `Array#push` but doesn't update the receiver.
        */
-      private class IncludingSummary extends SimpleSummarizedCallable {
+      private class IncludingSummary extends SummarizedCallable::RangeSimple {
         IncludingSummary() { this = "including" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -287,7 +287,7 @@ module ActiveSupport {
         }
       }
 
-      private class IndexBySummary extends SimpleSummarizedCallable {
+      private class IndexBySummary extends SummarizedCallable::RangeSimple {
         IndexBySummary() { this = "index_by" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -297,7 +297,7 @@ module ActiveSupport {
         }
       }
 
-      private class IndexWithSummary extends SimpleSummarizedCallable {
+      private class IndexWithSummary extends SummarizedCallable::RangeSimple {
         IndexWithSummary() { this = "index_with" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -316,7 +316,7 @@ module ActiveSupport {
         result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
       }
 
-      private class PickSingleSummary extends SummarizedCallable {
+      private class PickSingleSummary extends SummarizedCallable::Range {
         private MethodCall mc;
         private string key;
 
@@ -336,7 +336,7 @@ module ActiveSupport {
         }
       }
 
-      private class PickMultipleSummary extends SummarizedCallable {
+      private class PickMultipleSummary extends SummarizedCallable::Range {
         private MethodCall mc;
 
         PickMultipleSummary() {
@@ -370,7 +370,7 @@ module ActiveSupport {
         }
       }
 
-      private class PluckSingleSummary extends SummarizedCallable {
+      private class PluckSingleSummary extends SummarizedCallable::Range {
         private MethodCall mc;
         private string key;
 
@@ -390,7 +390,7 @@ module ActiveSupport {
         }
       }
 
-      private class PluckMultipleSummary extends SummarizedCallable {
+      private class PluckMultipleSummary extends SummarizedCallable::Range {
         private MethodCall mc;
 
         PluckMultipleSummary() {
@@ -424,7 +424,7 @@ module ActiveSupport {
         }
       }
 
-      private class SoleSummary extends SimpleSummarizedCallable {
+      private class SoleSummary extends SummarizedCallable::RangeSimple {
         SoleSummary() { this = "sole" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -458,7 +458,7 @@ module ActiveSupport {
      * `ActiveSupport::ERB::Util`
      */
     module Util {
-      private class JsonEscapeSummary extends SimpleSummarizedCallable {
+      private class JsonEscapeSummary extends SummarizedCallable::RangeSimple {
         JsonEscapeSummary() { this = "json_escape" }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {

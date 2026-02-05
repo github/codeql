@@ -45,13 +45,13 @@ predicate castFlow(ArrayCast ce, Variable v) {
 }
 
 predicate returnedFrom(ArrayCast ce, Method m) {
-  exists(ReturnStmt ret | ret.getEnclosingCallable() = m | ret.getResult() = ce)
+  exists(ReturnStmt ret | ret.getEnclosingCallable() = m | ret.getExpr() = ce)
   or
   exists(Variable v | castFlow(ce, v) | returnedVariableFrom(v, m))
 }
 
 predicate returnedVariableFrom(Variable v, Method m) {
-  exists(ReturnStmt ret | ret.getResult() = v.getAnAccess() and ret.getEnclosingCallable() = m)
+  exists(ReturnStmt ret | ret.getExpr() = v.getAnAccess() and ret.getEnclosingCallable() = m)
 }
 
 predicate rawTypeConversion(RawType source, ParameterizedType target) {

@@ -120,4 +120,16 @@ class Test {
 			}
 		}
 	}
+
+	static class TestPool {
+		void lock() {}
+		void unlock() {}
+	}
+
+	void good11() {
+		TestPool pool = new TestPool();
+		pool.lock(); // Should be excluded because of "Pool" suffix
+		f();
+		pool.unlock();
+	}
 }

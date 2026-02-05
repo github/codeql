@@ -27,12 +27,12 @@ private import codeql.ruby.dataflow.FlowSummary
  * A remote flow source originating from a CSV source row.
  */
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
+  RemoteFlowSourceFromCsv() { ModelOutput::sourceNode(this, "remote") }
 
   override string getSourceType() { result = "Remote flow (from model)" }
 }
 
-private class SummarizedCallableFromModel extends SummarizedCallable {
+private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string type;
   string path;
 
@@ -49,9 +49,13 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) and
+      p = "manual" and
+      isExact = true
+    |
       kind = "value" and
       preservesValue = true
       or

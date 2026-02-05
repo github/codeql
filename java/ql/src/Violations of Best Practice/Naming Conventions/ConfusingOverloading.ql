@@ -126,7 +126,7 @@ private predicate delegate(Method caller, Method callee) {
   exists(MethodCall ma | ma.getMethod() = callee |
     exists(Stmt stmt | stmt = caller.getBody().(SingletonBlock).getStmt() |
       wrappedAccess(stmt.(ExprStmt).getExpr(), ma) or
-      wrappedAccess(stmt.(ReturnStmt).getResult(), ma)
+      wrappedAccess(stmt.(ReturnStmt).getExpr(), ma)
     ) and
     forex(Parameter p, int i, Expr arg | p = caller.getParameter(i) and ma.getArgument(i) = arg |
       // The parameter is propagated without modification.

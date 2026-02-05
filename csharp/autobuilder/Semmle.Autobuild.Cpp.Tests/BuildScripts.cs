@@ -146,6 +146,10 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
+        public bool IsLinux { get; set; }
+
+        bool IBuildActions.IsLinux() => IsLinux;
+
         public bool IsRunningOnAppleSilicon { get; set; }
 
         bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;

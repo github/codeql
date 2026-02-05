@@ -55,6 +55,6 @@ module PathInjection {
   { }
 
   private class ExternalPathInjectionSink extends Sink {
-    ExternalPathInjectionSink() { this = ModelOutput::getASinkNode("path-injection").asSink() }
+    ExternalPathInjectionSink() { ModelOutput::sinkNode(this, "path-injection") }
   }
 }

@@ -33,6 +33,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
 
   class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
+  predicate callableFromSource(SummarizedCallableBase sc) {
+    sc.asCallable() = any(Callable c | c.fromSource() and not c.isStub())
+  }
+
   class SourceBase = Void;
 
   class SinkBase = Void;

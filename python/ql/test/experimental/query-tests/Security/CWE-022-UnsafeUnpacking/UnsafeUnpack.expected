@@ -1,3 +1,17 @@
+#select
+| UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:34:23:34:38 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:33:50:33:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:34:23:34:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:48:23:48:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:47:20:47:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:48:23:48:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:52:23:52:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:51:19:51:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:52:23:52:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:66:23:66:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:65:19:65:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:66:23:66:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:87:23:87:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:79:16:79:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:87:23:87:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:105:35:105:42 | ControlFlowNode for savepath | UnsafeUnpack.py:103:32:103:44 | ControlFlowNode for Attribute | UnsafeUnpack.py:105:35:105:42 | ControlFlowNode for savepath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | UnsafeUnpack.py:108:22:108:34 | ControlFlowNode for Attribute | UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | UnsafeUnpack.py:116:27:116:39 | ControlFlowNode for Attribute | UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | UnsafeUnpack.py:140:23:140:35 | ControlFlowNode for Attribute | UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | UnsafeUnpack.py:158:32:158:44 | ControlFlowNode for Attribute | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | UnsafeUnpack.py:79:16:79:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | Unsafe extraction from a malicious tarball retrieved from a remote location. |
+| UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 edges
 | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for request | provenance |  |
 | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for request | UnsafeUnpack.py:11:18:11:24 | ControlFlowNode for request | provenance |  |
@@ -75,7 +89,7 @@ edges
 | UnsafeUnpack.py:161:19:161:21 | ControlFlowNode for tar | UnsafeUnpack.py:163:33:163:35 | ControlFlowNode for tar | provenance |  |
 | UnsafeUnpack.py:161:25:161:46 | ControlFlowNode for Attribute() | UnsafeUnpack.py:161:19:161:21 | ControlFlowNode for tar | provenance |  |
 | UnsafeUnpack.py:161:38:161:45 | ControlFlowNode for savepath | UnsafeUnpack.py:161:25:161:46 | ControlFlowNode for Attribute() | provenance | Config |
-| UnsafeUnpack.py:161:38:161:45 | ControlFlowNode for savepath | UnsafeUnpack.py:161:25:161:46 | ControlFlowNode for Attribute() | provenance | MaD:69 |
+| UnsafeUnpack.py:161:38:161:45 | ControlFlowNode for savepath | UnsafeUnpack.py:161:25:161:46 | ControlFlowNode for Attribute() | provenance | MaD:1 |
 | UnsafeUnpack.py:163:23:163:28 | ControlFlowNode for member | UnsafeUnpack.py:166:37:166:42 | ControlFlowNode for member | provenance |  |
 | UnsafeUnpack.py:163:33:163:35 | ControlFlowNode for tar | UnsafeUnpack.py:163:23:163:28 | ControlFlowNode for member | provenance |  |
 | UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | provenance |  |
@@ -92,6 +106,8 @@ edges
 | UnsafeUnpack.py:176:17:176:23 | ControlFlowNode for tarpath | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | provenance | Config |
 | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | UnsafeUnpack.py:201:29:201:31 | ControlFlowNode for tmp | provenance |  |
 | UnsafeUnpack.py:201:29:201:31 | ControlFlowNode for tmp | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | provenance | Config |
+models
+| 1 | Summary: tarfile; Member[open]; Argument[0,name:,2,fileobj:]; ReturnValue; taint |
 nodes
 | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -188,17 +204,3 @@ nodes
 | UnsafeUnpack.py:201:29:201:31 | ControlFlowNode for tmp | semmle.label | ControlFlowNode for tmp |
 | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 subpaths
-#select
-| UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:34:23:34:38 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:33:50:33:65 | ControlFlowNode for local_ziped_path | UnsafeUnpack.py:34:23:34:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:48:23:48:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:47:20:47:34 | ControlFlowNode for compressed_file | UnsafeUnpack.py:48:23:48:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:52:23:52:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:51:19:51:36 | ControlFlowNode for Attribute() | UnsafeUnpack.py:52:23:52:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:66:23:66:37 | ControlFlowNode for compressed_file | UnsafeUnpack.py:65:19:65:31 | ControlFlowNode for Attribute | UnsafeUnpack.py:66:23:66:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:87:23:87:29 | ControlFlowNode for tarpath | UnsafeUnpack.py:79:16:79:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:87:23:87:29 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:105:35:105:42 | ControlFlowNode for savepath | UnsafeUnpack.py:103:32:103:44 | ControlFlowNode for Attribute | UnsafeUnpack.py:105:35:105:42 | ControlFlowNode for savepath | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | UnsafeUnpack.py:108:22:108:34 | ControlFlowNode for Attribute | UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | UnsafeUnpack.py:116:27:116:39 | ControlFlowNode for Attribute | UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | UnsafeUnpack.py:140:23:140:35 | ControlFlowNode for Attribute | UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | UnsafeUnpack.py:158:32:158:44 | ControlFlowNode for Attribute | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | UnsafeUnpack.py:79:16:79:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | Unsafe extraction from a malicious tarball retrieved from a remote location. |

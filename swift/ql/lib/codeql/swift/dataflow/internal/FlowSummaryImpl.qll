@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { c.hasBody() }
+
   ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
   ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }

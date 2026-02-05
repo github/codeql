@@ -67,6 +67,13 @@ module SqlInjection {
 
   /** A sink for sql-injection from model data. */
   private class DataAsSqlSink extends Sink {
-    DataAsSqlSink() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
+    DataAsSqlSink() { ModelOutput::sinkNode(this, "sql-injection") }
+  }
+
+  /**
+   * A sanitizer defined via models-as-data with kind "sql-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "sql-injection") }
   }
 }

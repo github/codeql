@@ -423,7 +423,7 @@ private module ClosureLibraryUri {
 }
 
 overlay[local?]
-private class QueryStringStringification extends DataFlow::SummarizedCallable {
+private class QueryStringStringification extends DataFlow::SummarizedCallable::Range {
   QueryStringStringification() { this = "query-string stringification" }
 
   overlay[global]

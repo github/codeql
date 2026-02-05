@@ -424,7 +424,7 @@ private class JaxRSXssSink extends XssSink {
     exists(JaxRsResourceMethod resourceMethod, ReturnStmt rs |
       resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod() and
       rs.getEnclosingCallable() = resourceMethod and
-      this.asExpr() = rs.getResult()
+      this.asExpr() = rs.getExpr()
     |
       not exists(resourceMethod.getProducesAnnotation())
       or

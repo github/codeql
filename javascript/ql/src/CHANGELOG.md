@@ -1,3 +1,7 @@
+## 2.3.1
+
+No user-facing changes.
+
 ## 2.3.0
 
 ### Major Analysis Improvements

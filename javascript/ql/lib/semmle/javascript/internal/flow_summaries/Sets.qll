@@ -10,7 +10,7 @@ private import FlowSummaryUtil
 
 private DataFlow::SourceNode setConstructorRef() { result = DataFlow::globalVarRef("Set") }
 
-class SetConstructor extends SummarizedCallable {
+class SetConstructor extends SummarizedCallable::Range {
   SetConstructor() { this = "Set constructor" }
 
   override DataFlow::InvokeNode getACallSimple() {
@@ -32,7 +32,7 @@ class SetConstructor extends SummarizedCallable {
   }
 }
 
-class SetAdd extends SummarizedCallable {
+class SetAdd extends SummarizedCallable::Range {
   SetAdd() { this = "Set#add" }
 
   override DataFlow::MethodCallNode getACallSimple() {
