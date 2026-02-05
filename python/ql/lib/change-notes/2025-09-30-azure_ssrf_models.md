@@ -1,5 +1,5 @@
 ---
 category: minorAnalysis
 ---
-* Added `ssrf` MaD for the azure SDK
-* Added MaD `ssrf` to `Http::Client::Request`
+* Added request forgery sink models for the Azure SDK.
+* Made it so that models-as-data sinks with the kind `request-forgery` contribute to the class `Http::Client::Request` which represents HTTP client requests.
