@@ -3,6 +3,8 @@
  * CFG" query. Also provides modules for printing control flow graphs in tests
  * and as Mermaid diagrams.
  */
+overlay[local?]
+module;
 
 private import codeql.util.FileSystem
 private import codeql.util.Location
@@ -22,6 +24,7 @@ signature module InputSig<LocationSig Location> {
   ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t);
 }
 
+/** Provides modules for printing control flow graphs. */
 module PrintGraph<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
