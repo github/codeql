@@ -168,7 +168,7 @@ class ForStmt extends ConditionalStmt, LoopStmtImpl, @forstmt {
   }
 
   /**
-   * DEPRECATED: Use getBody() instead.
+   * DEPRECATED: Use `getBody()` instead.
    *
    * Gets the body of this `for` loop.
    */
@@ -216,7 +216,7 @@ class EnhancedForStmt extends LoopStmtImpl, @enhancedforstmt {
   Expr getExpr() { result.isNthChildOf(this, 1) }
 
   /**
-   * DEPRECATED: Use getBody() instead.
+   * DEPRECATED: Use `getBody()` instead.
    *
    * Gets the body of this enhanced `for` loop.
    */
@@ -240,7 +240,7 @@ class WhileStmt extends ConditionalStmt, LoopStmtImpl, @whilestmt {
   override Expr getCondition() { result.getParent() = this }
 
   /**
-   * DEPRECATED: Use getBody() instead.
+   * DEPRECATED: Use `getBody()` instead.
    *
    * Gets the body of this `while` loop.
    */
@@ -264,7 +264,7 @@ class DoStmt extends ConditionalStmt, LoopStmtImpl, @dostmt {
   override Expr getCondition() { result.getParent() = this }
 
   /**
-   * DEPRECATED: Use getBody() instead.
+   * DEPRECATED: Use `getBody()` instead.
    *
    * Gets the body of this `do` loop.
    */
@@ -642,7 +642,7 @@ class SynchronizedStmt extends Stmt, @synchronizedstmt {
 /** A `return` statement. */
 class ReturnStmt extends Stmt, @returnstmt {
   /**
-   * DEPRECATED: Use getExpr() instead.
+   * DEPRECATED: Use `getExpr()` instead.
    *
    * Gets the expression returned by this `return` statement, if any.
    */

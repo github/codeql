@@ -1040,7 +1040,7 @@ class ReferenceEqualityTest extends EqualityTest {
 /** A common super-class that represents unary operator expressions. */
 class UnaryExpr extends Expr, @unaryexpr {
   /**
-   * DEPRECATED: Use getOperand() instead.
+   * DEPRECATED: Use `getOperand()` instead.
    *
    * Gets the operand expression.
    */
@@ -1464,7 +1464,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
   /**
-   * DEPRECATED: Use getThen() instead.
+   * DEPRECATED: Use `getThen()` instead.
    *
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `true`.
@@ -1472,7 +1472,7 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   deprecated Expr getTrueExpr() { result.isNthChildOf(this, 1) }
 
   /**
-   * DEPRECATED: Use getElse() instead.
+   * DEPRECATED: Use `getElse()` instead.
    *
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `false`.
