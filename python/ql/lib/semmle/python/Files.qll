@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local]
+module;
 
 import python
 private import codeql.util.FileSystem
@@ -178,6 +180,7 @@ class Container extends Impl::Container {
 
   override Container getParentContainer() { result = super.getParentContainer() }
 
+  overlay[global]
   Container getChildContainer(string baseName) {
     result = this.getAChildContainer() and
     result.getBaseName() = baseName

@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 private import semmle.python.dataflow.new.internal.ImportResolution
 
@@ -6,6 +9,7 @@ private import semmle.python.dataflow.new.internal.ImportResolution
  *
  * This aims to be the same as m.getAnExport(), but without using the points-to machinery.
  */
+overlay[global]
 private string getAModuleExport(Module m) {
   py_exports(m, result)
   or
@@ -76,6 +80,7 @@ class Scope extends Scope_ {
   predicate isTopLevel() { this.getEnclosingModule() = this.getEnclosingScope() }
 
   /** Holds if this scope is deemed to be public */
+  overlay[global]
   predicate isPublic() {
     /* Not inside a function */
     not this.getEnclosingScope() instanceof Function and
