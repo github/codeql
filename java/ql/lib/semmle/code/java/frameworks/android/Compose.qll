@@ -44,7 +44,7 @@ class LiveLiteralMethod extends Method {
 
 private predicate methodReturns(Method m, Expr res) {
   exists(ReturnStmt r |
-    r.getResult() = res and
+    r.getExpr() = res and
     r.getEnclosingCallable() = m
   )
 }

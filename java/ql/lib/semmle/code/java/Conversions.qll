@@ -69,7 +69,7 @@ class AssignmentConversionContext extends ConversionSite {
 class ReturnConversionSite extends ConversionSite {
   ReturnStmt r;
 
-  ReturnConversionSite() { this = r.getResult() }
+  ReturnConversionSite() { this = r.getExpr() }
 
   override Type getConversionTarget() { result = r.getEnclosingCallable().getReturnType() }
 

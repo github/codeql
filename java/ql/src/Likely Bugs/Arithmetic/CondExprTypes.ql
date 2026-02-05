@@ -25,5 +25,5 @@ where
     t instanceof PrimitiveType and
     not t instanceof CharType
   )
-select ce, "Mismatch between types of branches: $@ and $@.", ce.getTrueExpr(),
-  ce.getTrueExpr().getType().getName(), ce.getFalseExpr(), ce.getFalseExpr().getType().getName()
+select ce, "Mismatch between types of branches: $@ and $@.", ce.getThen(),
+  ce.getThen().getType().getName(), ce.getElse(), ce.getElse().getType().getName()

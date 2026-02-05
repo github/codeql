@@ -3,7 +3,7 @@ import java
 predicate getterFor(Method m, Field f) {
   m.getName().matches("get%") and
   m.getDeclaringType() = f.getDeclaringType() and
-  exists(ReturnStmt ret | ret.getEnclosingCallable() = m and ret.getResult() = f.getAnAccess())
+  exists(ReturnStmt ret | ret.getEnclosingCallable() = m and ret.getExpr() = f.getAnAccess())
 }
 
 predicate setterFor(Method m, Field f) {

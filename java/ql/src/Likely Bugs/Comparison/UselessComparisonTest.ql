@@ -134,8 +134,8 @@ Expr overFlowCand() {
   result.(LocalVariableDeclExpr).getInit() = overFlowCand()
   or
   exists(ConditionalExpr c | c = result |
-    c.getTrueExpr() = overFlowCand() and
-    c.getFalseExpr() = overFlowCand()
+    c.getThen() = overFlowCand() and
+    c.getElse() = overFlowCand()
   )
 }
 

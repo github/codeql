@@ -58,9 +58,9 @@ private class HttpResponseGetDescriptionStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
     exists(ReturnStmt s, GenerateResponseMethod m |
       s.getEnclosingCallable() instanceof HudsonWebMethod and
-      boundOrStaticType(s.getResult(), m.getDeclaringType().getADescendant())
+      boundOrStaticType(s.getExpr(), m.getDeclaringType().getADescendant())
     |
-      n1.asExpr() = s.getResult() and
+      n1.asExpr() = s.getExpr() and
       n2.(DataFlow::InstanceParameterNode).getCallable() = m
     )
   }
