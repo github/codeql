@@ -99,7 +99,7 @@ rust_library(
     version = "0.2.0",
     deps = [
         "@vendor_ts__lazy_static-1.5.0//:lazy_static",
-        "@vendor_ts__tracing-0.1.41//:tracing",
-        "@vendor_ts__tracing-subscriber-0.3.20//:tracing_subscriber",
+        "@vendor_ts__tracing-0.1.44//:tracing",
+        "@vendor_ts__tracing-subscriber-0.3.22//:tracing_subscriber",
     ],
 )

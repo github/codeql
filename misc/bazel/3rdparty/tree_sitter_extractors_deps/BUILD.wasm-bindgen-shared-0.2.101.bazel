@@ -98,7 +98,7 @@ rust_library(
     }),
     version = "0.2.101",
     deps = [
-        "@vendor_ts__unicode-ident-1.0.19//:unicode_ident",
+        "@vendor_ts__unicode-ident-1.0.22//:unicode_ident",
         "@vendor_ts__wasm-bindgen-shared-0.2.101//:build_script_build",
     ],
 )
