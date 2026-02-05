@@ -194,7 +194,7 @@ mod m8 {
         <MyStruct as // $ item=I50
          MyTrait // $ item=I47
         > // $ MISSING: item=52
-        ::f(&x); // $ MISSING: item=I53
+        ::f(&x); // $ item=I48
         let x = MyStruct {}; // $ item=I50
         x.f(); // $ item=I53
         let x = MyStruct {}; // $ item=I50
@@ -305,7 +305,7 @@ mod m13 {
 
 mod m15 {
     trait Trait1 {
-        fn f(&self);
+        fn f(&self); // Trait1::f
 
         fn g(&self); // I80
     } // I79
@@ -317,7 +317,7 @@ mod m15 {
             println!("m15::Trait2::f"); // $ item=println
             Self::g(self); // $ item=I80
             self.g(); // $ item=I80
-        }
+        } // Trait2::f
     } // I82
 
     #[rustfmt::skip]
@@ -365,10 +365,10 @@ mod m15 {
         let x = S; // $ item=I81
         <S // $ item=I81
           as Trait1 // $ item=I79
-        >::f(&x); // $ MISSING: item=I76
+        >::f(&x); // $ item=Trait1::f
         <S // $ item=I81
           as Trait2 // $ item=I82
-        >::f(&x); // $ MISSING: item=I78
+        >::f(&x); // $ item=Trait2::f
         S::g(&x); // $ item=I77
         x.g(); // $ item=I77
     } // I75
@@ -379,10 +379,11 @@ mod m16 {
     trait Trait1<
       T // I84
     > {
-        fn f(&self) -> T; // $ item=I84
+        fn f(&self) -> T  // $ item=I84
+        ; // Trait1::f
 
         fn g(&self) -> T {// $ item=I84
-            self.f() // $ item=f
+            self.f() // $ item=Trait1::f
         } // I85
 
         fn h(&self) -> T { // $ item=I84
@@ -406,7 +407,7 @@ mod m16 {
             Self::g(self); // $ item=I85
             self.g(); // $ item=I85
             Self::c // $ item=I94
-        }
+        } // Trait2::f
     } // I89
 
     struct S; // I90
@@ -451,12 +452,12 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::f(&x); // $ MISSING: item=I91
+        >::f(&x); // $ item=Trait1::f
         <S // $ item=I90
           as Trait2<
             S // $ item=I90
           > // $ item=I89
-        >::f(&x); // $ MISSING: item=I93
+        >::f(&x); // $ item=Trait2::f
         S::g(&x); // $ item=I92
         x.g(); // $ item=I92
         S::h(&x); // $ item=I96
@@ -466,7 +467,7 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::c; // $ MISSING: item=I95
+        >::c; // $ item=I94
     } // I83
 
     trait Trait3 {
@@ -938,6 +939,16 @@ mod associated_types_subtrait {
     impl<A> SubAlt for S<A> { // $ item=SubAlt item=S item=A
         fn f(self) -> Self::Out { // $ item=SuperAltAssoc
             self.0
+        }
+    }
+
+    #[rustfmt::skip]
+    impl S<bool> { // $ item=S item=bool
+        fn _test() {
+            let _c: <S<i32> as Super>::Out = 'a'; // $ item=S item=i32 item=Super item=SuperAssoc
+            let _i: <S<bool> as Super>::Out = 1; // $ item=S item=bool item=Super item=SuperAssoc
+
+            let _b: <S<bool> as SuperAlt>::Out = true; // $ item=S item=bool item=SuperAlt item=SuperAltAssoc
         }
     }
 }

@@ -129,6 +129,9 @@ mod trait_impl {
 
         let y = MyThing { field: false };
         let b = MyTrait::trait_method(y); // $ type=b:bool target=MyThing::trait_method
+
+        let z = MyThing { field: false };
+        let c = <MyThing as MyTrait<bool>>::trait_method(z); // $ type=c:bool target=MyThing::trait_method
     }
 }
 
@@ -178,6 +181,34 @@ mod trait_visibility {
             Foo::a_method(&x); // $ target=Foo::a_method
             Bar::a_method(&x); // $ target=Bar::a_method
         }
+    }
+}
+
+mod method_call_trait_path_disambig {
+    trait FirstTrait {
+        // FirstTrait::method
+        fn method(&self) -> bool {
+            true
+        }
+    }
+    trait SecondTrait {
+        // SecondTrait::method
+        fn method(&self) -> i64 {
+            1
+        }
+    }
+    struct S;
+    impl FirstTrait for S {}
+    impl SecondTrait for S {}
+
+    fn _test() {
+        let s = S;
+
+        let _b1 = FirstTrait::method(&s); // $ type=_b1:bool target=FirstTrait::method
+        let _b2 = <S as FirstTrait>::method(&s); // $ type=_b2:bool target=FirstTrait::method
+
+        let _n1 = SecondTrait::method(&s); // $ type=_n1:i64 target=SecondTrait::method
+        let _n2 = <S as SecondTrait>::method(&s); // $ type=_n2:i64 target=SecondTrait::method
     }
 }
 

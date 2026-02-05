@@ -1548,7 +1548,8 @@ private class PathExtPath extends PathExt instanceof Path {
       tree.hasPath() and
       this = getAUseTreeUseTree(tree).getPath().getQualifier*()
     ) and
-    name = Path.super.getText()
+    // For a `<Type as Trait>` path we resolve the trait name
+    name = [Path.super.getText(), Path.super.getSegment().getTraitTypeRepr().getPath().getText()]
   }
 
   override Path getQualifier() { result = Path.super.getQualifier() }
