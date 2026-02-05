@@ -1,3 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
 cc_library(
     name = "lib",
     srcs = [
@@ -28,7 +30,7 @@ cc_test(
     linkstatic = True,  # required to build the test in the internal repo
     deps = [
         ":lib",
-        "@bazel_tools//tools/cpp/runfiles",
         "@googletest//:gtest_main",
+        "@rules_cc//cc/runfiles",
     ],
 )
