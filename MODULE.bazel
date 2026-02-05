@@ -190,6 +190,15 @@ pip.parse(
 )
 use_repo(pip, "codegen_deps")
 
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    is_default = True,
+    python_version = "3.12",
+)
+use_repo(python, "python_3_12", "python_versions")
+
+register_toolchains("@python_versions//3.12:all")
+
 swift_deps = use_extension("//swift/third_party:load.bzl", "swift_deps")
 
 # following list can be kept in sync with `bazel mod tidy`
