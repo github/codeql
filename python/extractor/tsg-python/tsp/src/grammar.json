@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "python",
   "word": "identifier",
   "rules": {
@@ -6292,8 +6293,15 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": ":"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "STRING",
+              "value": ":"
+            }
+          }
         },
         {
           "type": "REPEAT",
@@ -6860,6 +6868,6 @@
     "primary_expression",
     "pattern",
     "parameter"
-  ]
+  ],
+  "reserved": {}
 }
-
