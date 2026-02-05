@@ -430,8 +430,8 @@ pub fn neutral_manual_sink(i: i64) {}
 
 fn test_neutrals() {
     // neutral models should cause corresponding generated models to be ignored.
-    // Thus, the `neutral_generated_*` source/sink, which have both a
-    // generated and a neutral model, should not have flow.
+    // Thus, the `neutral_generated_source` and `neutral_generated_sink`, which
+    // have both a generated and a neutral model, should not have flow.
 
     sink(generated_source(1)); // $ hasValueFlow=1
     sink(neutral_generated_source(2));

@@ -90,9 +90,9 @@ extensible predicate summaryModel(
 );
 
 /**
- * Holds if a neutral model of kind `kind` exists for the function with canonical path `path`.  The
- * only effect of a neutral model is to prevent generated and inherited models of the corresponding
- * `kind` (`source`, `sink` or `summary`) from being applied.
+ * Holds if a neutral model exists for the function with canonical path `path`.  The only
+ * effect of a neutral model is to prevent generated and inherited models of the corresponding
+ * `kind` (`source`, `sink` or `summary`) from being applied to that function.
  */
 extensible predicate neutralModel(
   string path, string kind, string provenance, QlBuiltins::ExtensionId madId
@@ -148,18 +148,16 @@ private predicate summaryModelRelevant(
   summaryModel(f, input, output, kind, provenance, isInherited, madId) and
   // Only apply generated or inherited models to functions in library code and
   // when no strictly better model (or neutral model) exists
-  (
-    if provenance.isGenerated() or isInherited = true
-    then
-      not f.fromSource() and
-      not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
-        provenance.isGenerated() and other.isManual()
-        or
-        provenance = other and isInherited = true
-      ) and
-      not neutralModel(f.getCanonicalPath(), "summary", _, _)
-    else any()
-  )
+  if provenance.isGenerated() or isInherited = true
+  then
+    not f.fromSource() and
+    not exists(Provenance other | summaryModel(f, _, _, _, other, false, _) |
+      provenance.isGenerated() and other.isManual()
+      or
+      provenance = other and isInherited = true
+    ) and
+    not neutralModel(f.getCanonicalPath(), "summary", _, _)
+  else any()
 }
 
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
