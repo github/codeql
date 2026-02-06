@@ -8,6 +8,9 @@ extensions:
       - ["<main::MyFieldEnum>::source", "ReturnValue.Field[main::MyFieldEnum::C::field_c]", "test-source", "manual"]
       - ["main::arg_source", "Argument[0]", "test-source", "manual"]
       - ["main::source_into_function::pass_source", "Argument[1].Parameter[0]", "test-source", "manual"]
+      - ["main::external_file::generated_source", "ReturnValue", "test-source", "dfc-generated"] # not actually generated, but we want to test behaviour of generated models here.
+      - ["main::external_file::neutral_generated_source", "ReturnValue", "test-source", "dfc-generated"]
+      - ["main::external_file::neutral_manual_source", "ReturnValue", "test-source", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
@@ -15,6 +18,9 @@ extensions:
       - ["main::simple_sink", "Argument[0]", "test-sink", "manual"]
       - ["main::enum_sink", "Argument[0].Field[main::MyFieldEnum::C::field_c]", "test-sink", "manual"]
       - ["<main::MyFieldEnum>::sink", "Argument[self].Field[main::MyFieldEnum::D::field_d]", "test-sink", "manual"]
+      - ["main::external_file::generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
+      - ["main::external_file::neutral_generated_sink", "Argument[0]", "test-sink", "dfc-generated"]
+      - ["main::external_file::neutral_manual_sink", "Argument[0]", "test-sink", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
@@ -39,3 +45,21 @@ extensions:
       - ["<_ as core::cmp::PartialOrd>::lt", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
       # Overwrites the generic trait model for i32
       - ["<core::i32 as core::cmp::PartialOrd>::lt", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["main::external_file::generated_summary", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["main::external_file::neutral_generated_summary", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["main::external_file::neutral_manual_summary", "Argument[0]", "ReturnValue", "value", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: neutralModel
+    data:
+      - ["main::external_file::neutral_generated_source", "source", "manual"]
+      - ["main::external_file::neutral_manual_source", "source", "manual"]
+      - ["main::external_file::neutral_generated_sink", "sink", "manual"]
+      - ["main::external_file::neutral_manual_sink", "sink", "manual"]
+      - ["main::external_file::neutral_generated_summary", "summary", "manual"]
+      - ["main::external_file::neutral_manual_summary", "summary", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: additionalExternalFile
+    data:
+      - ["external_file.rs"]
