@@ -15,6 +15,8 @@ private import semmle.python.security.internal.EncryptionKeySizes
 private import semmle.python.dataflow.new.SensitiveDataSources
 private import codeql.threatmodels.ThreatModels
 private import codeql.concepts.ConceptsShared
+private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 private module ConceptsShared = ConceptsMake<Location, PythonDataFlow>;
 
@@ -1656,8 +1658,35 @@ module Http {
   }
 
   import ConceptsShared::Http::Client as Client
+
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
+  /**
+   * An HTTP request modeled from `request-forgery` sinks, modeled using MaD.
+   */
+  class HttpClientRequestFromModel extends Http::Client::Request::Range instanceof API::CallNode {
+    DataFlow::Node urlArg;
+
+    HttpClientRequestFromModel() {
+      (
+        this.getArg(_) = urlArg
+        or
+        this.getArgByName(_) = urlArg
+      ) and
+      ModelOutput::sinkNode(urlArg, "request-forgery")
+    }
+
+    override DataFlow::Node getAUrlPart() { result = urlArg }
+
+    override string getFramework() { result = "MaD" }
+
+    override predicate disablesCertificateValidation(
+      DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+    ) {
+      // NOTE: if you need to define this, you have to special case it for every possible API in MaD
+      none()
+    }
+  }
 }
 
 /**
