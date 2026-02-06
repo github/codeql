@@ -9,9 +9,9 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "tools/cpp/runfiles/runfiles.h"
+#include "rules_cc/cc/runfiles/runfiles.h"
 
-using bazel::tools::cpp::runfiles::Runfiles;
+using rules_cc::cc::runfiles::Runfiles;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
