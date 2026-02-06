@@ -29,10 +29,10 @@ use_repo(
     "com_github_google_ksp",
     "com_github_jetbrains_kotlin",
     "com_github_pinterest_ktlint",
+    "kotlin_build_tools_impl",
     "kotlinx_serialization_core_jvm",
     "kotlinx_serialization_json",
     "kotlinx_serialization_json_jvm",
-    "kotlin_build_tools_impl",
 )
 
 register_toolchains("//kotlin/internal:default_toolchain")
