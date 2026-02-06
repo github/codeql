@@ -260,13 +260,26 @@ mod type_param_access_associated_type {
         )
     }
 
+    // Associated type accessed on a type parameter of an impl block
+    impl<TI> Wrapper<TI>
+    where
+        TI: GetSet,
+    {
+        fn extract(&self) -> TI::Output {
+            self.0.get() // $ fieldof=Wrapper target=GetSet::get
+        }
+    }
+
     pub fn test() {
-        let _o1 = tp_with_as(S); // $ target=tp_with_as MISSING: type=_o1:S3
-        let _o2 = tp_without_as(S); // $ target=tp_without_as MISSING: type=_o2:S3
+        let _o1 = tp_with_as(S); // $ target=tp_with_as type=_o1:S3
+        let _o2 = tp_without_as(S); // $ target=tp_without_as type=_o2:S3
         let (
             _o3, // $ MISSING: type=_o3:S3
-            _o4, // $ MISSING: type=_o4:bool
+            _o4, // $ type=_o4:bool
         ) = tp_assoc_from_supertrait(S); // $ target=tp_assoc_from_supertrait
+
+        let w = Wrapper(S);
+        let _extracted = w.extract(); // $ target=extract type=_extracted:S3
     }
 }
 
