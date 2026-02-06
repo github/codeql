@@ -1,1 +1,2 @@
-Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql
+query: Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
