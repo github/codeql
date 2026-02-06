@@ -132,7 +132,7 @@ private module BaseSsaImpl {
       inner != outer and
       inner.getDeclaringType() = innerclass and
       result = parentDef(desugaredGetEnclosingType*(innerclass)) and
-      result.getEnclosingStmt().getEnclosingCallable() = outer and
+      result.getEnclosingCallable() = outer and
       capturedvar = TLocalVar(outer, v) and
       closurevar = TLocalVar(inner, v)
     )
