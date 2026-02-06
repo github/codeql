@@ -1,1 +1,2 @@
-Security/CWE-918/FullServerSideRequestForgery.ql
+query: Security/CWE-918/FullServerSideRequestForgery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

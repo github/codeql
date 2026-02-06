@@ -176,4 +176,48 @@ module ServerSideRequestForgery {
       strNode = [call.getArg(0), call.getArgByName("string")]
     )
   }
+
+  /** A validation that a string does not contain certain characters, considered as a sanitizer. */
+  private class UriValidator extends FullUrlControlSanitizer {
+    UriValidator() { this = DataFlow::BarrierGuard<uri_validator/3>::getABarrierNode() }
+  }
+
+  import semmle.python.dataflow.new.internal.DataFlowPublic
+
+  private predicate uri_validator(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    exists(DataFlow::CallCfgNode call, string funcs |
+      funcs in ["in_domain", "in_azure_keyvault_domain", "in_azure_storage_domain"]
+    |
+      call = API::moduleImport("AntiSSRF").getMember("URIValidator").getMember(funcs).getACall() and
+      call.getArg(0).asCfgNode() = node and
+      (
+        // validator used in a comparison
+        exists(CompareNode cn, Cmpop op, Node n | cn = g and n.getALocalSource() = call |
+          (
+            // validator == true or validator == false or validator is True or validator is False
+            (op instanceof Eq or op instanceof Is) and
+            exists(ControlFlowNode l, boolean bool |
+              l.getNode().(BooleanLiteral).booleanValue() = bool and
+              bool in [true, false] and
+              branch = bool and
+              cn.operands(n.asCfgNode(), op, l)
+            )
+            or
+            // validator != false or validator != true or validator is not True or validator is not False
+            (op instanceof NotEq or op instanceof IsNot) and
+            exists(ControlFlowNode l, boolean bool |
+              l.getNode().(BooleanLiteral).booleanValue() = bool and
+              bool in [true, false] and
+              branch = bool.booleanNot() and
+              cn.operands(n.asCfgNode(), op, l)
+            )
+          )
+        )
+        or
+        // validator call directly (e.g., if URIValidator.in_domain(...) )
+        g = call.asCfgNode() and
+        branch = true
+      )
+    )
+  }
 }
