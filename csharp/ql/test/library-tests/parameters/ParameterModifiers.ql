@@ -1,7 +1,12 @@
 import csharp
 
 class TestParameter extends Parameter {
-  TestParameter() { this.getFile().getBaseName() = "ParameterModifiers.cs" }
+  TestParameter() {
+    this.getFile().getBaseName() = "ParameterModifiers.cs"
+    or
+    this.getFile().getBaseName() = "LambdaParameterModifiers.cs" and
+    this.getCallable() instanceof LambdaExpr
+  }
 }
 
 query predicate parameterModifier(TestParameter p, int kind) { params(p, _, _, _, kind, _, _) }
