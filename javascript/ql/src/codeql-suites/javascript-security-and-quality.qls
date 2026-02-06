@@ -102,6 +102,7 @@
       - js/react/unused-or-undefined-state-property
       - js/react/direct-state-mutation
       - js/react/inconsistent-state-update
+      - js/unhandled-error-in-stream-pipeline
       - js/diagnostics/extraction-errors
       - js/diagnostics/successfully-extracted-files
       - js/summary/lines-of-code
