@@ -35,6 +35,17 @@ edges
 | full_partial_test.py:75:5:75:7 | ControlFlowNode for url | full_partial_test.py:76:18:76:20 | ControlFlowNode for url | provenance |  |
 | full_partial_test.py:78:5:78:7 | ControlFlowNode for url | full_partial_test.py:79:18:79:20 | ControlFlowNode for url | provenance |  |
 | full_partial_test.py:81:5:81:7 | ControlFlowNode for url | full_partial_test.py:82:18:82:20 | ControlFlowNode for url | provenance |  |
+| test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | test_azure_client.py:7:19:7:25 | ControlFlowNode for request | provenance |  |
+| test_azure_client.py:7:19:7:25 | ControlFlowNode for request | test_azure_client.py:10:18:10:24 | ControlFlowNode for request | provenance |  |
+| test_azure_client.py:7:19:7:25 | ControlFlowNode for request | test_azure_client.py:11:19:11:25 | ControlFlowNode for request | provenance |  |
+| test_azure_client.py:10:18:10:24 | ControlFlowNode for request | test_azure_client.py:11:5:11:15 | ControlFlowNode for user_input2 | provenance | AdditionalTaintStep |
+| test_azure_client.py:11:5:11:15 | ControlFlowNode for user_input2 | test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | provenance |  |
+| test_azure_client.py:11:19:11:25 | ControlFlowNode for request | test_azure_client.py:11:5:11:15 | ControlFlowNode for user_input2 | provenance | AdditionalTaintStep |
+| test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | test_azure_client.py:17:32:17:39 | ControlFlowNode for full_url | provenance | Sink:MaD:15 |
+| test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | test_azure_client.py:19:39:19:46 | ControlFlowNode for full_url | provenance | Sink:MaD:38 |
+| test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | test_azure_client.py:21:19:21:26 | ControlFlowNode for full_url | provenance | Sink:MaD:14 |
+| test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | test_azure_client.py:23:58:23:65 | ControlFlowNode for full_url | provenance | Sink:MaD:26 |
+| test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | test_azure_client.py:32:18:32:25 | ControlFlowNode for full_url | provenance | Sink:MaD:27 |
 | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | test_http_client.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
 | test_http_client.py:1:26:1:32 | ControlFlowNode for request | test_http_client.py:9:19:9:25 | ControlFlowNode for request | provenance |  |
 | test_http_client.py:1:26:1:32 | ControlFlowNode for request | test_http_client.py:10:19:10:25 | ControlFlowNode for request | provenance |  |
@@ -89,6 +100,17 @@ nodes
 | full_partial_test.py:79:18:79:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:81:5:81:7 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
 | full_partial_test.py:82:18:82:20 | ControlFlowNode for url | semmle.label | ControlFlowNode for url |
+| test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| test_azure_client.py:7:19:7:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_azure_client.py:10:18:10:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_azure_client.py:11:5:11:15 | ControlFlowNode for user_input2 | semmle.label | ControlFlowNode for user_input2 |
+| test_azure_client.py:11:19:11:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| test_azure_client.py:14:5:14:12 | ControlFlowNode for full_url | semmle.label | ControlFlowNode for full_url |
+| test_azure_client.py:17:32:17:39 | ControlFlowNode for full_url | semmle.label | ControlFlowNode for full_url |
+| test_azure_client.py:19:39:19:46 | ControlFlowNode for full_url | semmle.label | ControlFlowNode for full_url |
+| test_azure_client.py:21:19:21:26 | ControlFlowNode for full_url | semmle.label | ControlFlowNode for full_url |
+| test_azure_client.py:23:58:23:65 | ControlFlowNode for full_url | semmle.label | ControlFlowNode for full_url |
+| test_azure_client.py:32:18:32:25 | ControlFlowNode for full_url | semmle.label | ControlFlowNode for full_url |
 | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test_http_client.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test_http_client.py:9:5:9:15 | ControlFlowNode for unsafe_host | semmle.label | ControlFlowNode for unsafe_host |
@@ -122,6 +144,11 @@ subpaths
 | full_partial_test.py:76:5:76:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:76:18:76:20 | ControlFlowNode for url | The full URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 | full_partial_test.py:79:5:79:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:79:18:79:20 | ControlFlowNode for url | The full URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 | full_partial_test.py:82:5:82:21 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:82:18:82:20 | ControlFlowNode for url | The full URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_azure_client.py:17:9:17:63 | ControlFlowNode for SecretClient() | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | test_azure_client.py:17:32:17:39 | ControlFlowNode for full_url | The full URL of this request depends on a $@. | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_azure_client.py:19:9:19:47 | ControlFlowNode for Attribute() | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | test_azure_client.py:19:39:19:46 | ControlFlowNode for full_url | The full URL of this request depends on a $@. | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_azure_client.py:21:9:21:39 | ControlFlowNode for KeyClient() | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | test_azure_client.py:21:19:21:26 | ControlFlowNode for full_url | The full URL of this request depends on a $@. | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_azure_client.py:23:9:23:89 | ControlFlowNode for Attribute() | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | test_azure_client.py:23:58:23:65 | ControlFlowNode for full_url | The full URL of this request depends on a $@. | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_azure_client.py:31:5:36:5 | ControlFlowNode for download_blob_from_url() | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | test_azure_client.py:32:18:32:25 | ControlFlowNode for full_url | The full URL of this request depends on a $@. | test_azure_client.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 | test_http_client.py:14:5:14:36 | ControlFlowNode for Attribute() | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | test_http_client.py:13:27:13:37 | ControlFlowNode for unsafe_host | The full URL of this request depends on a $@. | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test_http_client.py:14:5:14:36 | ControlFlowNode for Attribute() | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | test_http_client.py:14:25:14:35 | ControlFlowNode for unsafe_path | The full URL of this request depends on a $@. | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | test_http_client.py:19:5:19:36 | ControlFlowNode for Attribute() | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | test_http_client.py:18:27:18:37 | ControlFlowNode for unsafe_host | The full URL of this request depends on a $@. | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
