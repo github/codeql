@@ -46,6 +46,7 @@ class SafeTimeGatheringFunction extends Function {
 
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
+  not trf.isAutoLeapYearCorrecting() and
   fcall = trf.getACallToThisFunction() and
   fcall instanceof ExprInVoidContext and
   var.getUnderlyingType() instanceof UnpackedTimeType and
