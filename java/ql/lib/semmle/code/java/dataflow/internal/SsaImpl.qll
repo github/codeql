@@ -115,7 +115,7 @@ private ControlFlowNode captureNode(TrackedVar capturedvar, TrackedVar closureva
     inner != outer and
     inner.getDeclaringType() = innerclass and
     result = parentDef(desugaredGetEnclosingType*(innerclass)) and
-    result.getEnclosingStmt().getEnclosingCallable() = outer and
+    result.getEnclosingCallable() = outer and
     capturedvar = TLocalVar(outer, v) and
     closurevar = TLocalVar(inner, v)
   )
