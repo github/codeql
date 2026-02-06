@@ -162,12 +162,6 @@ module ControlFlow {
     /** Gets the expression this `Node` corresponds to, if any. */
     Expr asExpr() { this = TExprNode(result) }
 
-    /** Gets the call this `Node` corresponds to, if any. */
-    Call asCall() {
-      result = this.asExpr() or
-      result = this.asStmt()
-    }
-
     /** Gets a textual representation of this element. */
     string toString() { none() }
 
