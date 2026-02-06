@@ -44,23 +44,9 @@ class SafeTimeGatheringFunction extends Function {
   }
 }
 
-/**
- * This list of APIs should check for the return value to detect problems during the conversion.
- */
-class TimeConversionFunction extends Function {
-  TimeConversionFunction() {
-    this.getQualifiedName() =
-      [
-        "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
-        "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
-        "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
-        "RtlTimeToSecondsSince1970", "_mkgmtime"
-      ]
-  }
-}
-
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
+  not trf.isAutoLeapYearCorrecting() and
   fcall = trf.getACallToThisFunction() and
   fcall instanceof ExprInVoidContext and
   var.getUnderlyingType() instanceof UnpackedTimeType and
