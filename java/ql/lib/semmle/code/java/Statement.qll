@@ -61,7 +61,7 @@ class Stmt extends StmtParent, ExprParent, @stmt {
 }
 
 /** A statement parent is any element that can have a statement as its child. */
-class StmtParent extends @stmtparent, Top { }
+class StmtParent extends @stmtparent, ExprParent { }
 
 /**
  * An error statement.
