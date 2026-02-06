@@ -11,6 +11,7 @@
 | test.cpp:1077:2:1077:11 | ... ++ | test.cpp:1077:2:1077:11 | ... ++ | test.cpp:1077:2:1077:11 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:1097:16:1097:23 | increment_arg output argument | test.cpp:1085:2:1085:4 | ... ++ | test.cpp:1097:16:1097:23 | increment_arg output argument | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:1101:27:1101:35 | increment_arg_by_pointer output argument | test.cpp:1089:2:1089:7 | ... ++ | test.cpp:1101:27:1101:35 | increment_arg_by_pointer output argument | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1155:2:1155:26 | ... = ... | test.cpp:1155:14:1155:26 | ... - ... | test.cpp:1155:2:1155:26 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:1206:2:1206:19 | ... = ... | test.cpp:1204:2:1204:15 | ... += ... | test.cpp:1206:2:1206:19 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:1245:2:1245:28 | ... = ... | test.cpp:1245:16:1245:28 | ... + ... | test.cpp:1245:2:1245:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:1260:2:1260:28 | ... = ... | test.cpp:1260:16:1260:28 | ... + ... | test.cpp:1260:2:1260:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
@@ -39,6 +40,7 @@ edges
 | test.cpp:1085:2:1085:4 | ... ++ | test.cpp:1084:26:1084:26 | *x | provenance |  |
 | test.cpp:1088:37:1088:37 | *x | test.cpp:1101:27:1101:35 | increment_arg_by_pointer output argument | provenance |  |
 | test.cpp:1089:2:1089:7 | ... ++ | test.cpp:1088:37:1088:37 | *x | provenance |  |
+| test.cpp:1155:14:1155:26 | ... - ... | test.cpp:1155:2:1155:26 | ... = ... | provenance |  |
 | test.cpp:1204:2:1204:15 | ... += ... | test.cpp:1206:2:1206:19 | ... = ... | provenance |  |
 | test.cpp:1245:16:1245:28 | ... + ... | test.cpp:1245:2:1245:28 | ... = ... | provenance |  |
 | test.cpp:1260:16:1260:28 | ... + ... | test.cpp:1260:2:1260:28 | ... = ... | provenance |  |
@@ -89,6 +91,8 @@ nodes
 | test.cpp:1089:2:1089:7 | ... ++ | semmle.label | ... ++ |
 | test.cpp:1097:16:1097:23 | increment_arg output argument | semmle.label | increment_arg output argument |
 | test.cpp:1101:27:1101:35 | increment_arg_by_pointer output argument | semmle.label | increment_arg_by_pointer output argument |
+| test.cpp:1155:2:1155:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1155:14:1155:26 | ... - ... | semmle.label | ... - ... |
 | test.cpp:1204:2:1204:15 | ... += ... | semmle.label | ... += ... |
 | test.cpp:1206:2:1206:19 | ... = ... | semmle.label | ... = ... |
 | test.cpp:1245:2:1245:28 | ... = ... | semmle.label | ... = ... |
@@ -139,5 +143,3 @@ nodes
 | test.cpp:1723:2:1723:22 | ... += ... | semmle.label | ... += ... |
 | test.cpp:1799:2:1799:22 | ... += ... | semmle.label | ... += ... |
 subpaths
-testFailures
-| test.cpp:1155:29:1155:98 | // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification] | Missing result: Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification] |
