@@ -1128,6 +1128,14 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthCaptureNode
   or
   n instanceof SynthCapturedVariablesParameterNode
+  or
+  n instanceof SynthCapturedVariablesArgumentNode
+  or
+  n instanceof SynthCapturedVariablesArgumentPostUpdateNode
+  or
+  n instanceof SynthCompCapturedVariablesArgumentNode
+  or
+  n instanceof SynthCompCapturedVariablesArgumentPostUpdateNode
 }
 
 class LambdaCallKind = Unit;

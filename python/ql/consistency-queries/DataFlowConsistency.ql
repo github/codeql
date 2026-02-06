@@ -26,6 +26,8 @@ private module Input implements InputSig<Location, PythonDataFlow> {
     or
     // TODO: Implement post-updates for **kwargs, see tests added in https://github.com/github/codeql/pull/14936
     exists(ArgumentPosition apos | n.argumentOf(_, apos) and apos.isDictSplat())
+    or
+    missingArgumentCallExclude(n)
   }
 
   predicate reverseReadExclude(Node n) {
@@ -133,6 +135,18 @@ private module Input implements InputSig<Location, PythonDataFlow> {
       arg = other.getArgument(any(ArgumentPosition p | p.isSelf())) and
       other.getNode().getScope() = f
     )
+  }
+
+  predicate missingArgumentCallExclude(ArgumentNode arg) {
+    // We overapproximate the argument nodes in order to not rely on the global `getCallArg`
+    // predicate.
+    // Because of this, we must exclude the cases where we have an approximation but no actual
+    // argument node.
+    arg = getCallArgApproximation() and not getCallArg(_, _, _, arg, _)
+    or
+    // Likewise, capturing closure arguments do not have corresponding argument nodes in some cases.
+    arg instanceof SynthCapturedVariablesArgumentNode and
+    not arg.argumentOf(_, _)
   }
 }
 

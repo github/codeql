@@ -114,6 +114,12 @@ private Flow::ClosureNode asClosureNode(Node n) {
     result.(Flow::ExprNode).getExpr().getNode() = comp
   )
   or
+  // For captured variable argument nodes (and their post-update variants), we use the closure node
+  // for the underlying node.
+  result = asClosureNode(n.(SynthCapturedVariablesArgumentNode).getUnderlyingNode())
+  or
+  result = asClosureNode(n.(SynthCapturedVariablesArgumentPostUpdateNode).getUnderlyingNode())
+  or
   // TODO: Should the `Comp`s above be excluded here?
   result.(Flow::ExprNode).getExpr() = n.(CfgNode).getNode()
   or
