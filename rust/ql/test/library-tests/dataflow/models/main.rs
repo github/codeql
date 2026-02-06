@@ -426,7 +426,7 @@ fn test_neutrals() {
     neutral_generated_sink(source(5));
     neutral_manual_sink(source(6)); // $ hasValueFlow=6
     sink(generated_summary(source(7))); // $ hasValueFlow=7
-    sink(neutral_generated_summary(source(8))); // $ SPURIOUS: hasValueFlow=8
+    sink(neutral_generated_summary(source(8)));
     sink(neutral_manual_summary(source(9))); // $ hasValueFlow=9
 }
 

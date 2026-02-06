@@ -138,18 +138,22 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
       summaryModel(path, input_, output_, kind, p, madId) and
       f.getCanonicalPath() = path
     |
-      this = f and isExact_ = true and p_ = p
+      this = f and
+      isExact_ = true and
+      p_ = p and
+      // Do not apply generated models where there is a neutral model
+      not (
+        p_.isGenerated() and
+        neutralModel(path, "summary", _, _)
+      )
       or
       this.implements(f) and
       isExact_ = false and
       // making inherited models generated means that source code definitions and
       // exact generated models take precedence
       p_ = "hq-generated" and
-      // Only apply generated models (including inherited models) when no neutral model exists
-      not (
-        p_.isGenerated() and
-        neutralModel(path, "summary", _, _)
-      )
+      // Do not apply inherited models where there is a neutral model
+      not neutralModel(path, "summary", _, _)
     )
   }
 
