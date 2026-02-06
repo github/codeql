@@ -27,7 +27,7 @@ VarAccess valueAccess(EnumConstant e) {
     or
     exists(Assignment a | a.getSource() = valueFlow+(result))
     or
-    exists(ReturnStmt r | r.getResult() = valueFlow+(result))
+    exists(ReturnStmt r | r.getExpr() = valueFlow+(result))
     or
     exists(LocalVariableDeclExpr v | v.getInit() = valueFlow+(result))
     or

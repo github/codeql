@@ -28,8 +28,8 @@ predicate nonEmptyArrayLiteralOrNull(Expr e) {
   e instanceof NullLiteral
   or
   exists(ConditionalExpr cond | cond = e |
-    nonEmptyArrayLiteralOrNull(cond.getTrueExpr()) and
-    nonEmptyArrayLiteralOrNull(cond.getFalseExpr())
+    nonEmptyArrayLiteralOrNull(cond.getThen()) and
+    nonEmptyArrayLiteralOrNull(cond.getElse())
   )
 }
 

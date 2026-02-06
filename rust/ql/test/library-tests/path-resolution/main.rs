@@ -194,7 +194,7 @@ mod m8 {
         <MyStruct as // $ item=I50
          MyTrait // $ item=I47
         > // $ MISSING: item=52
-        ::f(&x); // $ MISSING: item=I53
+        ::f(&x); // $ item=I48
         let x = MyStruct {}; // $ item=I50
         x.f(); // $ item=I53
         let x = MyStruct {}; // $ item=I50
@@ -305,7 +305,7 @@ mod m13 {
 
 mod m15 {
     trait Trait1 {
-        fn f(&self);
+        fn f(&self); // Trait1::f
 
         fn g(&self); // I80
     } // I79
@@ -317,7 +317,7 @@ mod m15 {
             println!("m15::Trait2::f"); // $ item=println
             Self::g(self); // $ item=I80
             self.g(); // $ item=I80
-        }
+        } // Trait2::f
     } // I82
 
     #[rustfmt::skip]
@@ -365,10 +365,10 @@ mod m15 {
         let x = S; // $ item=I81
         <S // $ item=I81
           as Trait1 // $ item=I79
-        >::f(&x); // $ MISSING: item=I76
+        >::f(&x); // $ item=Trait1::f
         <S // $ item=I81
           as Trait2 // $ item=I82
-        >::f(&x); // $ MISSING: item=I78
+        >::f(&x); // $ item=Trait2::f
         S::g(&x); // $ item=I77
         x.g(); // $ item=I77
     } // I75
@@ -379,10 +379,11 @@ mod m16 {
     trait Trait1<
       T // I84
     > {
-        fn f(&self) -> T; // $ item=I84
+        fn f(&self) -> T  // $ item=I84
+        ; // Trait1::f
 
         fn g(&self) -> T {// $ item=I84
-            self.f() // $ item=f
+            self.f() // $ item=Trait1::f
         } // I85
 
         fn h(&self) -> T { // $ item=I84
@@ -406,7 +407,7 @@ mod m16 {
             Self::g(self); // $ item=I85
             self.g(); // $ item=I85
             Self::c // $ item=I94
-        }
+        } // Trait2::f
     } // I89
 
     struct S; // I90
@@ -451,12 +452,12 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::f(&x); // $ MISSING: item=I91
+        >::f(&x); // $ item=Trait1::f
         <S // $ item=I90
           as Trait2<
             S // $ item=I90
           > // $ item=I89
-        >::f(&x); // $ MISSING: item=I93
+        >::f(&x); // $ item=Trait2::f
         S::g(&x); // $ item=I92
         x.g(); // $ item=I92
         S::h(&x); // $ item=I96
@@ -466,7 +467,7 @@ mod m16 {
           as Trait1<
             S // $ item=I90
           > // $ item=I86
-        >::c; // $ MISSING: item=I95
+        >::c; // $ item=I94
     } // I83
 
     trait Trait3 {
@@ -606,6 +607,13 @@ mod trait_visibility {
             // Only the `Foo` trait is visible
             use m::Foo; // $ item=Foo
             X::a_method(&x); // $ item=X_Foo::a_method
+
+            #[rustfmt::skip]
+            impl X { // $ item=X
+                fn test(&self) {
+                    Self::a_method(self); // $ item=X_Foo::a_method
+                }
+            }
         }
         {
             // Only the `Bar` trait is visible
@@ -722,7 +730,7 @@ mod m23 {
         fn f(&self) {
             println!("m23::<S as Trait1<S>>::f"); // $ item=println
         } // I5
-    }
+    } // implTrait1forS
 
     #[rustfmt::skip]
     pub fn f() {
@@ -870,6 +878,81 @@ mod associated_types {
     }
 }
 
+mod associated_types_subtrait {
+    trait Super {
+        type Out; // SuperAssoc
+    } // Super
+
+    trait Sub: Super // $ item=Super
+    {
+        fn f() -> Self::Out // $ item=SuperAssoc
+        ; // Sub_f
+    } // Sub
+
+    struct S<ST>(
+        ST, // $ item=ST
+    );
+
+    #[rustfmt::skip]
+    impl Super for S<i32> { // $ item=Super item=S item=i32
+        type Out = char // $ item=char
+        ; // S<i32>::Out
+    }
+
+    #[rustfmt::skip]
+    impl Super for S<bool> { // $ item=Super item=S item=bool
+        type Out = i64 // $ item=i64
+        ; // S<bool>::Out
+    }
+
+    #[rustfmt::skip]
+    impl Sub for S<i32> { // $ item=Sub item=S item=i32
+        fn f() -> Self::Out { // $ item=SuperAssoc
+            'a'
+        }
+    }
+
+    #[rustfmt::skip]
+    impl Sub for S<bool> { // $ item=Sub item=S item=bool
+        fn f() -> Self::Out { // $ item=SuperAssoc
+            1
+        }
+    }
+
+    trait SuperAlt {
+        type Out; // SuperAltAssoc
+    } // SuperAlt
+
+    trait SubAlt: SuperAlt // $ item=SuperAlt
+    {
+        fn f(self) -> Self::Out // $ item=SuperAltAssoc
+        ; // SubAlt_f
+    } // SubAlt
+
+    #[rustfmt::skip]
+    impl<A> SuperAlt for S<A> { // $ item=SuperAlt item=S item=A
+        type Out = A // $ item=A
+        ; // S<A>::Out
+    }
+
+    #[rustfmt::skip]
+    impl<A> SubAlt for S<A> { // $ item=SubAlt item=S item=A
+        fn f(self) -> Self::Out { // $ item=SuperAltAssoc
+            self.0
+        }
+    }
+
+    #[rustfmt::skip]
+    impl S<bool> { // $ item=S item=bool
+        fn _test() {
+            let _c: <S<i32> as Super>::Out = 'a'; // $ item=S item=i32 item=Super item=SuperAssoc
+            let _i: <S<bool> as Super>::Out = 1; // $ item=S item=bool item=Super item=SuperAssoc
+
+            let _b: <S<bool> as SuperAlt>::Out = true; // $ item=S item=bool item=SuperAlt item=SuperAltAssoc
+        }
+    }
+}
+
 use std::{self as ztd}; // $ item=std
 
 fn use_ztd(x: ztd::string::String) {} // $ item=String
@@ -981,6 +1064,37 @@ mod self_constructors {
                 }
             }
         }
+    }
+}
+
+/// Tests for using `Self` in type definitions.
+mod self_types {
+    struct NonEmptyListStruct<T> {
+        head: T,                 // $ item=T
+        tail: Option<Box<Self>>, // $ item=Option item=Box item=NonEmptyListStruct
+    }
+
+    enum NonEmptyListEnum<T> {
+        Single(T),          // $ item=T
+        Cons(T, Box<Self>), // $ item=T item=Box item=NonEmptyListEnum
+    }
+
+    #[rustfmt::skip]
+    impl NonEmptyListEnum<i32> { // $ item=NonEmptyListEnum item=i32
+        fn new_single(value: i32) -> Self { // $ item=i32 item=NonEmptyListEnum
+            use NonEmptyListEnum::*; // $ item=NonEmptyListEnum
+            Self::Single(value) // $ item=Single
+        }
+    }
+
+    #[rustfmt::skip]
+    union NonEmptyListUnion<
+        'a,
+        T // T
+          : Copy // $ item=Copy
+    > {
+        single: T,           // $ item=T
+        cons: (T, &'a Self), // $ item=T item=NonEmptyListUnion
     }
 }
 

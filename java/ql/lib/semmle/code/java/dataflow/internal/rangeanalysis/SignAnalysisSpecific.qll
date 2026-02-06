@@ -69,10 +69,10 @@ module Private {
 
     /** Returns the operand of this expression. */
     Expr getOperand() {
-      result = this.(J::PreIncExpr).getExpr() or
-      result = this.(J::PreDecExpr).getExpr() or
-      result = this.(J::MinusExpr).getExpr() or
-      result = this.(J::BitNotExpr).getExpr()
+      result = this.(J::PreIncExpr).getOperand() or
+      result = this.(J::PreDecExpr).getOperand() or
+      result = this.(J::MinusExpr).getOperand() or
+      result = this.(J::BitNotExpr).getOperand()
     }
 
     /** Returns the operation representing this expression. */
@@ -258,12 +258,12 @@ private module Impl {
 
   /** Returns the operand of the operation if `e` is a decrement. */
   Expr getDecrementOperand(Element e) {
-    result = e.(PostDecExpr).getExpr() or result = e.(PreDecExpr).getExpr()
+    result = e.(PostDecExpr).getOperand() or result = e.(PreDecExpr).getOperand()
   }
 
   /** Returns the operand of the operation if `e` is an increment. */
   Expr getIncrementOperand(Element e) {
-    result = e.(PostIncExpr).getExpr() or result = e.(PreIncExpr).getExpr()
+    result = e.(PostIncExpr).getOperand() or result = e.(PreIncExpr).getOperand()
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
@@ -287,14 +287,14 @@ private module Impl {
 
   /** Holds if `f` is accessed in an increment operation. */
   predicate fieldIncrementOperationOperand(Field f) {
-    any(PostIncExpr inc).getExpr() = f.getAnAccess() or
-    any(PreIncExpr inc).getExpr() = f.getAnAccess()
+    any(PostIncExpr inc).getOperand() = f.getAnAccess() or
+    any(PreIncExpr inc).getOperand() = f.getAnAccess()
   }
 
   /** Holds if `f` is accessed in a decrement operation. */
   predicate fieldDecrementOperationOperand(Field f) {
-    any(PostDecExpr dec).getExpr() = f.getAnAccess() or
-    any(PreDecExpr dec).getExpr() = f.getAnAccess()
+    any(PostDecExpr dec).getOperand() = f.getAnAccess() or
+    any(PreDecExpr dec).getOperand() = f.getAnAccess()
   }
 
   /** Returns possible signs of `f` based on the declaration. */
@@ -316,9 +316,9 @@ private module Impl {
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
   Expr getASubExprWithSameSign(Expr e) {
     result = e.(AssignExpr).getSource() or
-    result = e.(PlusExpr).getExpr() or
-    result = e.(PostIncExpr).getExpr() or
-    result = e.(PostDecExpr).getExpr() or
+    result = e.(PlusExpr).getOperand() or
+    result = e.(PostIncExpr).getOperand() or
+    result = e.(PostDecExpr).getOperand() or
     result = e.(ChooseExpr).getAResultExpr() or
     result = e.(CastingExpr).getExpr()
   }

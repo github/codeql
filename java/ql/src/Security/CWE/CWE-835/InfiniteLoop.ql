@@ -49,7 +49,7 @@ predicate subCondition(Expr cond, Expr subcond, boolean negated) {
   or
   subCondition(cond.(OrLogicalExpr).getAnOperand(), subcond, negated)
   or
-  subCondition(cond.(LogNotExpr).getExpr(), subcond, negated.booleanNot())
+  subCondition(cond.(LogNotExpr).getOperand(), subcond, negated.booleanNot())
 }
 
 from

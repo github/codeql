@@ -113,7 +113,7 @@ predicate upcastToWiderType(Expr e) {
     or
     exists(CastingExpr c | c.getExpr() = e and t2 = c.getType())
     or
-    exists(ReturnStmt ret | ret.getResult() = e and t2 = ret.getEnclosingCallable().getReturnType())
+    exists(ReturnStmt ret | ret.getExpr() = e and t2 = ret.getEnclosingCallable().getReturnType())
     or
     exists(Parameter p | p.getAnArgument() = e and t2 = p.getType())
     or
