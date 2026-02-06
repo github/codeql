@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 /*
  * Classification of variables. These should be non-overlapping and complete.

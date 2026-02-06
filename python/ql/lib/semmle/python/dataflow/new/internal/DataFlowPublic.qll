@@ -1,6 +1,8 @@
 /**
  * Provides Python-specific definitions for use in the data flow library.
  */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPrivate
@@ -22,6 +24,7 @@ private import semmle.python.frameworks.data.ModelsAsData
  * - Module variable nodes: These represent global variables and act as canonical targets for reads and writes of these.
  * - Synthetic nodes: These handle flow in various special cases.
  */
+overlay[local]
 newtype TNode =
   /** A node corresponding to a control flow node. */
   TCfgNode(ControlFlowNode node) {
@@ -76,15 +79,7 @@ newtype TNode =
     node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) {
-    v.getScope() = m and
-    (
-      v.escapes()
-      or
-      isAccessedThroughImportStar(m) and
-      ImportStar::globalNameDefinedInModule(v.getId(), m)
-    )
-  } or
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
@@ -129,6 +124,20 @@ newtype TNode =
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     exists(TFunction(f))
   } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called.
+   */
+  TSynthCapturedVariablesArgumentNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called, after the output has been computed.
+   */
+  TSynthCapturedVariablesArgumentPostUpdateNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
   /** A synthetic node representing the values of variables captured by a comprehension. */
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
     comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
@@ -151,6 +160,7 @@ private import semmle.python.internal.CachedStages
  * An element, viewed as a node in a data flow graph. Either an SSA variable
  * (`EssaNode`) or a control flow node (`CfgNode`).
  */
+overlay[local]
 class Node extends TNode {
   /** Gets a textual representation of this element. */
   cached
@@ -318,6 +328,7 @@ class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
+overlay[local]
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
@@ -339,6 +350,7 @@ class LocalSourceParameterNode extends ExtractedParameterNode, LocalSourceNode {
 ExtractedParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
+overlay[global]
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
@@ -347,27 +359,52 @@ abstract class ArgumentNode extends Node {
   final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
+/** Gets an overapproximation of the argument nodes that are included in `getCallArg`. */
+Node getCallArgApproximation() {
+  // pre-update nodes for calls
+  result = any(CallCfgNode c).(PostUpdateNode).getPreUpdateNode()
+  or
+  // self parameters in methods
+  exists(Class c | result.asExpr() = c.getAMethod().getArg(0))
+  or
+  // the object part of an attribute expression (which might be a bound method)
+  result.asCfgNode() = any(AttrNode a).getObject()
+  or
+  // the function part of any call
+  result.asCfgNode() = any(CallNode c).getFunction()
+}
+
+/** Gets the extracted argument nodes that do not rely on `getCallArg`. */
+private Node otherArgs() {
+  // for potential summaries we allow all normal call arguments
+  normalCallArg(_, result, _)
+  or
+  // and self arguments
+  result.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+  or
+  // for comprehensions, we allow the synthetic `iterable` argument
+  result.asExpr() = any(Comp c).getIterable()
+}
+
 /**
  * A data flow node that represents a call argument found in the source code.
  */
+overlay[global]
 class ExtractedArgumentNode extends ArgumentNode {
   ExtractedArgumentNode() {
-    // for resolved calls, we need to allow all argument nodes
-    getCallArg(_, _, _, this, _)
+    this = getCallArgApproximation()
     or
-    // for potential summaries we allow all normal call arguments
-    normalCallArg(_, this, _)
-    or
-    // and self arguments
-    this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
-    or
-    // for comprehensions, we allow the synthetic `iterable` argument
-    this.asExpr() = any(Comp c).getIterable()
+    this = otherArgs()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this = call.getArgument(pos) and
-    call instanceof ExtractedDataFlowCall
+    call instanceof ExtractedDataFlowCall and
+    (
+      this = otherArgs()
+      or
+      this = getCallArgApproximation() and getCallArg(_, _, _, this, _)
+    )
   }
 }
 
@@ -439,12 +476,17 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   GlobalVariable getVariable() { result = var }
 
   /** Gets a node that reads this variable. */
+  overlay[global]
   Node getARead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
-    // Ignore reads that happen when the module is imported. These are only executed once.
-    not result.getScope() = mod
+    result = this.getALocalRead()
     or
     this = import_star_read(result)
+  }
+
+  /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
+  Node getALocalRead() {
+    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    not result.getScope() = mod
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
@@ -466,12 +508,12 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Location getLocation() { result = mod.getLocation() }
 }
 
-private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
-
+overlay[global]
 private ModuleVariableNode import_star_read(Node n) {
   resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
 }
 
+overlay[global]
 pragma[nomagic]
 private predicate resolved_import_star_module(Module m, string name, Node n) {
   exists(NameNode nn | nn = n.asCfgNode() |
@@ -593,6 +635,7 @@ signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean br
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
+overlay[global]
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
@@ -620,6 +663,7 @@ private module WithParam<ParamSig P> {
  */
 module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check with parameter `param`. */
+  overlay[global]
   ExprNode getABarrierNode(P param) {
     exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
       AdjacentUses::useOfDef(def, node) and
@@ -639,6 +683,7 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
 module ExternalBarrierGuard {
   private import semmle.python.ApiGraphs
 
+  overlay[global]
   private predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
     exists(API::CallNode call, API::Node parameter |
       parameter = call.getAParameter() and
@@ -657,6 +702,7 @@ module ExternalBarrierGuard {
    *
    * INTERNAL: Do not use.
    */
+  overlay[global]
   ExprNode getAnExternalBarrierNode(string kind) {
     result = ParameterizedBarrierGuard<string, guardCheck/4>::getABarrierNode(kind)
   }
@@ -666,6 +712,7 @@ module ExternalBarrierGuard {
  * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
  */
+overlay[local]
 newtype TContent =
   /** An element of a list. */
   TListElementContent() or
@@ -737,6 +784,7 @@ newtype TContent =
  * If the value is a collection, it can have elements,
  * if it is an object, it can have attribute values.
  */
+overlay[local]
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }

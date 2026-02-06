@@ -50,6 +50,8 @@
  * keyword arguments using the `__match_args__` attribute on the class. We do not
  * currently model this.
  */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPublic
