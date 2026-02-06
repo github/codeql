@@ -34,7 +34,7 @@ abstract class ActionConfiguration extends string {
 private BasicBlock actionBlock(ActionConfiguration conf) {
   exists(ControlFlowNode node | result = node.getBasicBlock() |
     conf.isAction(node) or
-    callAlwaysPerformsAction(node.asCall(), conf)
+    callAlwaysPerformsAction(any(Call call | call.getControlFlowNode() = node), conf)
   )
 }
 
