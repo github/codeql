@@ -7,10 +7,10 @@ license = "MIT"
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 ungrammar = "1.16.1"
-proc-macro2 = "1.0.101"
-quote = "1.0.41"
+proc-macro2 = "1.0.106"
+quote = "1.0.44"
 either = "1.15.0"
-stdx = {package = "ra_ap_stdx", version = "0.0.301"}
+stdx = {package = "ra_ap_stdx", version = "0.0.318"}
 itertools = "0.14.0"
 mustache = "0.9.0"
 serde = { version = "1.0.228", features = ["derive"] }

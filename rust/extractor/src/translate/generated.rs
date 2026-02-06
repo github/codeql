@@ -226,7 +226,6 @@ impl Translator<'_> {
             ast::Item::Static(inner) => self.emit_static(inner).map(Into::into),
             ast::Item::Struct(inner) => self.emit_struct(inner).map(Into::into),
             ast::Item::Trait(inner) => self.emit_trait(inner).map(Into::into),
-            ast::Item::TraitAlias(inner) => self.emit_trait_alias(inner).map(Into::into),
             ast::Item::TypeAlias(inner) => self.emit_type_alias(inner).map(Into::into),
             ast::Item::Union(inner) => self.emit_union(inner).map(Into::into),
             ast::Item::Use(inner) => self.emit_use(inner).map(Into::into),
@@ -1105,13 +1104,26 @@ impl Translator<'_> {
         &mut self,
         node: &ast::FormatArgsArg,
     ) -> Option<Label<generated::FormatArgsArg>> {
+        let arg_name = node
+            .arg_name()
+            .and_then(|x| self.emit_format_args_arg_name(&x));
         let expr = node.expr().and_then(|x| self.emit_expr(&x));
-        let name = node.name().and_then(|x| self.emit_name(&x));
         let label = self.trap.emit(generated::FormatArgsArg {
             id: TrapId::Star,
+            arg_name,
             expr,
-            name,
         });
+        self.emit_location(label, node);
+        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
+        Some(label)
+    }
+    pub(crate) fn emit_format_args_arg_name(
+        &mut self,
+        node: &ast::FormatArgsArgName,
+    ) -> Option<Label<generated::FormatArgsArgName>> {
+        let label = self
+            .trap
+            .emit(generated::FormatArgsArgName { id: TrapId::Star });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
@@ -2548,36 +2560,6 @@ impl Translator<'_> {
             generic_param_list,
             is_auto,
             is_unsafe,
-            name,
-            type_bound_list,
-            visibility,
-            where_clause,
-        });
-        self.emit_location(label, node);
-        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
-        Some(label)
-    }
-    pub(crate) fn emit_trait_alias(
-        &mut self,
-        node: &ast::TraitAlias,
-    ) -> Option<Label<generated::TraitAlias>> {
-        if self.should_be_excluded(node) {
-            return None;
-        }
-        let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
-        let generic_param_list = node
-            .generic_param_list()
-            .and_then(|x| self.emit_generic_param_list(&x));
-        let name = node.name().and_then(|x| self.emit_name(&x));
-        let type_bound_list = node
-            .type_bound_list()
-            .and_then(|x| self.emit_type_bound_list(&x));
-        let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
-        let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(&x));
-        let label = self.trap.emit(generated::TraitAlias {
-            id: TrapId::Star,
-            attrs,
-            generic_param_list,
             name,
             type_bound_list,
             visibility,
