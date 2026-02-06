@@ -153,7 +153,7 @@ private predicate hasEntryDef(TrackedVar v, BasicBlock b) {
 overlay[global]
 pragma[nomagic]
 private predicate uncertainVariableUpdateImpl(TrackedVar v, ControlFlowNode n, BasicBlock b, int i) {
-  exists(Call c | c = n.asCall() | updatesNamedField(c, v, _)) and
+  exists(Call c | c.getControlFlowNode() = n | updatesNamedField(c, v, _)) and
   b.getNode(i) = n and
   hasDominanceInformation(b)
   or
@@ -525,8 +525,11 @@ private module Cached {
   overlay[global]
   cached
   predicate defUpdatesNamedField(SsaImplicitWrite calldef, TrackedField f, Callable setter) {
-    f = calldef.getSourceVariable() and
-    updatesNamedField0(calldef.getControlFlowNode().asCall(), f, setter)
+    exists(Call call |
+      f = calldef.getSourceVariable() and
+      call.getControlFlowNode() = calldef.getControlFlowNode() and
+      updatesNamedField0(call, f, setter)
+    )
   }
 
   /** Holds if `init` is a closure variable that captures the value of `capturedvar`. */
