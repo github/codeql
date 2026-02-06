@@ -980,6 +980,11 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         not t = abs.getATypeParameter()
       }
 
+      pragma[nomagic]
+      private predicate hasTypeConstraint(HasTypeTree term, Type constraint) {
+        hasTypeConstraint(term, constraint, constraint)
+      }
+
       /**
        * Holds if the type tree at `tt` satisfies the constraint `constraint`
        * with the type `t` at `path`.
@@ -994,7 +999,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           path = prefix0.append(suffix)
         )
         or
-        hasTypeConstraint(tt, constraint, constraint) and
+        hasTypeConstraint(tt, constraint) and
         t = getTypeAt(tt, path)
       }
 

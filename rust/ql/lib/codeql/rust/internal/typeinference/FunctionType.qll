@@ -82,7 +82,9 @@ private newtype TAssocFunctionType =
     // through `i`. This ensures that `parent` is either a supertrait of `i` or
     // `i` in an `impl` block implementing `parent`.
     (parent = i or BaseTypes::rootTypesSatisfaction(_, TTrait(parent), i, _, _)) and
-    exists(pos.getTypeMention(f))
+    // We always include the `self` position, even for non-methods, where it is used
+    // to match type qualifiers against the `impl` or trait type, such as in `Vec::new`.
+    (exists(pos.getTypeMention(f)) or pos.isSelf())
   }
 
 bindingset[abs, constraint, tp]
@@ -114,6 +116,22 @@ Type getAssocFunctionTypeAt(Function f, ImplOrTraitItemNode i, FunctionPosition 
       else result = getTraitConstraintTypeAt(i, constraint, tp, suffix)
     )
   )
+}
+
+/**
+ * Same as `getAssocFunctionTypeAt`, but also includes types at the `self` position
+ * for non-methods.
+ */
+pragma[nomagic]
+Type getAssocFunctionTypeInclNonMethodSelfAt(
+  Function f, ImplOrTraitItemNode i, FunctionPosition pos, TypePath path
+) {
+  result = getAssocFunctionTypeAt(f, i, pos, path)
+  or
+  f = i.getASuccessor(_) and
+  not f.hasSelfParam() and
+  pos.isSelf() and
+  result = resolveImplOrTraitType(i, path)
 }
 
 /**
@@ -174,7 +192,7 @@ class AssocFunctionType extends MkAssocFunctionType {
   Type getTypeAt(TypePath path) {
     exists(Function f, FunctionPosition pos, ImplOrTraitItemNode i, Type t |
       this.appliesTo(f, i, pos) and
-      t = getAssocFunctionTypeAt(f, i, pos, path)
+      t = getAssocFunctionTypeInclNonMethodSelfAt(f, i, pos, path)
     |
       not t instanceof SelfTypeParameter and
       result = t
@@ -183,16 +201,19 @@ class AssocFunctionType extends MkAssocFunctionType {
     )
   }
 
-  private TypeMention getTypeMention() {
-    exists(Function f, FunctionPosition pos |
-      this.appliesTo(f, _, pos) and
+  private AstNode getIdentifyingNode() {
+    exists(Function f, ImplOrTraitItemNode i, FunctionPosition pos | this.appliesTo(f, i, pos) |
       result = pos.getTypeMention(f)
+      or
+      pos.isSelf() and
+      not f.hasSelfParam() and
+      result = [i.(Impl).getSelfTy().(AstNode), i.(Trait).getName()]
     )
   }
 
-  string toString() { result = this.getTypeMention().toString() }
+  string toString() { result = this.getIdentifyingNode().toString() }
 
-  Location getLocation() { result = this.getTypeMention().getLocation() }
+  Location getLocation() { result = this.getIdentifyingNode().getLocation() }
 }
 
 pragma[nomagic]
@@ -294,10 +315,15 @@ module ArgIsInstantiationOf<
  */
 signature module ArgsAreInstantiationsOfInputSig {
   /**
-   * Holds if types need to be matched against the type `t` at position `pos` of
-   * `f` inside `i`.
+   * Holds if `f` inside `i` needs to have the type corresponding to type parameter
+   * `tp` checked.
+   *
+   * If `i` is an inherent implementation, `tp` is a type parameter of the type being
+   * implemented, otherwise `tp` is a type parameter of the trait (being implemented).
+   *
+   * `pos` is one of the positions in `f` in which the relevant type occours.
    */
-  predicate toCheck(ImplOrTraitItemNode i, Function f, FunctionPosition pos, AssocFunctionType t);
+  predicate toCheck(ImplOrTraitItemNode i, Function f, TypeParameter tp, FunctionPosition pos);
 
   /** A call whose argument types are to be checked. */
   class Call {
@@ -318,21 +344,25 @@ signature module ArgsAreInstantiationsOfInputSig {
  */
 module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   pragma[nomagic]
-  private predicate toCheckRanked(ImplOrTraitItemNode i, Function f, FunctionPosition pos, int rnk) {
-    Input::toCheck(i, f, pos, _) and
-    pos =
-      rank[rnk + 1](FunctionPosition pos0, int j |
-        Input::toCheck(i, f, pos0, _) and
-        (
-          j = pos0.asPosition()
-          or
-          pos0.isSelf() and j = -1
-          or
-          pos0.isReturn() and j = -2
-        )
+  private predicate toCheckRanked(
+    ImplOrTraitItemNode i, Function f, TypeParameter tp, FunctionPosition pos, int rnk
+  ) {
+    Input::toCheck(i, f, tp, pos) and
+    tp =
+      rank[rnk + 1](TypeParameter tp0, int j |
+        Input::toCheck(i, f, tp0, _) and
+        j = getTypeParameterId(tp0)
       |
-        pos0 order by j
+        tp0 order by j
       )
+  }
+
+  pragma[nomagic]
+  private predicate toCheck(
+    ImplOrTraitItemNode i, Function f, TypeParameter tp, FunctionPosition pos, AssocFunctionType t
+  ) {
+    Input::toCheck(i, f, tp, pos) and
+    t.appliesTo(f, i, pos)
   }
 
   private newtype TCallAndPos =
@@ -356,26 +386,26 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     string toString() { result = call.toString() + " [arg " + pos + "]" }
   }
 
+  pragma[nomagic]
+  private predicate potentialInstantiationOf0(
+    CallAndPos cp, Input::Call call, TypeParameter tp, FunctionPosition pos, Function f,
+    TypeAbstraction abs, AssocFunctionType constraint
+  ) {
+    cp = MkCallAndPos(call, pragma[only_bind_into](pos)) and
+    call.hasTargetCand(abs, f) and
+    toCheck(abs, f, tp, pragma[only_bind_into](pos), constraint)
+  }
+
   private module ArgIsInstantiationOfToIndexInput implements
     IsInstantiationOfInputSig<CallAndPos, AssocFunctionType>
   {
     pragma[nomagic]
-    private predicate potentialInstantiationOf0(
-      CallAndPos cp, Input::Call call, FunctionPosition pos, int rnk, Function f,
-      TypeAbstraction abs, AssocFunctionType constraint
-    ) {
-      cp = MkCallAndPos(call, pragma[only_bind_into](pos)) and
-      call.hasTargetCand(abs, f) and
-      toCheckRanked(abs, f, pragma[only_bind_into](pos), rnk) and
-      Input::toCheck(abs, f, pragma[only_bind_into](pos), constraint)
-    }
-
-    pragma[nomagic]
     predicate potentialInstantiationOf(
       CallAndPos cp, TypeAbstraction abs, AssocFunctionType constraint
     ) {
-      exists(Input::Call call, int rnk, Function f |
-        potentialInstantiationOf0(cp, call, _, rnk, f, abs, constraint)
+      exists(Input::Call call, TypeParameter tp, FunctionPosition pos, int rnk, Function f |
+        potentialInstantiationOf0(cp, call, tp, pos, f, abs, constraint) and
+        toCheckRanked(abs, f, tp, pos, rnk)
       |
         rnk = 0
         or
@@ -383,9 +413,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
       )
     }
 
-    predicate relevantConstraint(AssocFunctionType constraint) {
-      Input::toCheck(_, _, _, constraint)
-    }
+    predicate relevantConstraint(AssocFunctionType constraint) { toCheck(_, _, _, _, constraint) }
   }
 
   private module ArgIsInstantiationOfToIndex =
@@ -398,39 +426,63 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     exists(FunctionPosition pos |
       ArgIsInstantiationOfToIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
       call.hasTargetCand(i, f) and
-      toCheckRanked(i, f, pos, rnk)
+      toCheckRanked(i, f, _, pos, rnk)
+    |
+      rnk = 0
+      or
+      argsAreInstantiationsOfToIndex(call, i, f, rnk - 1)
     )
   }
 
   /**
    * Holds if all arguments of `call` have types that are instantiations of the
    * types of the corresponding parameters of `f` inside `i`.
+   *
+   * TODO: Check type parameter constraints as well.
    */
   pragma[nomagic]
   predicate argsAreInstantiationsOf(Input::Call call, ImplOrTraitItemNode i, Function f) {
     exists(int rnk |
       argsAreInstantiationsOfToIndex(call, i, f, rnk) and
-      rnk = max(int r | toCheckRanked(i, f, _, r))
+      rnk = max(int r | toCheckRanked(i, f, _, _, r))
     )
   }
+
+  private module ArgsAreNotInstantiationOfInput implements
+    IsInstantiationOfInputSig<CallAndPos, AssocFunctionType>
+  {
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      CallAndPos cp, TypeAbstraction abs, AssocFunctionType constraint
+    ) {
+      potentialInstantiationOf0(cp, _, _, _, _, abs, constraint)
+    }
+
+    predicate relevantConstraint(AssocFunctionType constraint) { toCheck(_, _, _, _, constraint) }
+  }
+
+  private module ArgsAreNotInstantiationOf =
+    ArgIsInstantiationOf<CallAndPos, ArgsAreNotInstantiationOfInput>;
 
   pragma[nomagic]
   private predicate argsAreNotInstantiationsOf0(
     Input::Call call, FunctionPosition pos, ImplOrTraitItemNode i
   ) {
-    ArgIsInstantiationOfToIndex::argIsNotInstantiationOf(MkCallAndPos(call, pos), i, _, _)
+    ArgsAreNotInstantiationOf::argIsNotInstantiationOf(MkCallAndPos(call, pos), i, _, _)
   }
 
   /**
    * Holds if _some_ argument of `call` has a type that is not an instantiation of the
    * type of the corresponding parameter of `f` inside `i`.
+   *
+   * TODO: Check type parameter constraints as well.
    */
   pragma[nomagic]
   predicate argsAreNotInstantiationsOf(Input::Call call, ImplOrTraitItemNode i, Function f) {
     exists(FunctionPosition pos |
       argsAreNotInstantiationsOf0(call, pos, i) and
       call.hasTargetCand(i, f) and
-      Input::toCheck(i, f, pos, _)
+      Input::toCheck(i, f, _, pos)
     )
   }
 }

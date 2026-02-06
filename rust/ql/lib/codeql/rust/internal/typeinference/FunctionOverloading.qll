@@ -77,32 +77,23 @@ pragma[nomagic]
 private predicate implHasSibling(ImplItemNode impl, Trait trait) { implSiblings(trait, impl, _) }
 
 /**
- * Holds if type parameter `tp` of `trait` occurs in the function `f` with the name
- * `functionName` at position `pos` and path `path`.
- *
- * Note that `pos` can also be the special `return` position, which is sometimes
- * needed to disambiguate associated function calls like `Default::default()`
- * (in this case, `tp` is the special `Self` type parameter).
- */
-bindingset[trait]
-pragma[inline_late]
-predicate traitTypeParameterOccurrence(
-  TraitItemNode trait, Function f, string functionName, FunctionPosition pos, TypePath path,
-  TypeParameter tp
-) {
-  f = trait.getASuccessor(functionName) and
-  tp = getAssocFunctionTypeAt(f, trait, pos, path) and
-  tp = trait.(TraitTypeAbstraction).getATypeParameter()
-}
-
-/**
- * Holds if resolving the function `f` in `impl` with the name `functionName`
- * requires inspecting the type of applied _arguments_ at position `pos` in
- * order to determine whether it is the correct resolution.
+ * Holds if `f` is a function declared inside `trait`, and the type of `f` at
+ * `pos` and `path` is `traitTp`, which is a type parameter of `trait`.
  */
 pragma[nomagic]
-predicate functionResolutionDependsOnArgument(
-  ImplItemNode impl, Function f, FunctionPosition pos, TypePath path, Type type
+predicate traitTypeParameterOccurrence(
+  TraitItemNode trait, Function f, string functionName, FunctionPosition pos, TypePath path,
+  TypeParameter traitTp
+) {
+  f = trait.getAssocItem(functionName) and
+  traitTp = getAssocFunctionTypeInclNonMethodSelfAt(f, trait, pos, path) and
+  traitTp = trait.(TraitTypeAbstraction).getATypeParameter()
+}
+
+pragma[nomagic]
+private predicate functionResolutionDependsOnArgumentCand(
+  ImplItemNode impl, Function f, string functionName, TypeParameter traitTp, FunctionPosition pos,
+  TypePath path
 ) {
   /*
    * As seen in the example below, when an implementation has a sibling for a
@@ -129,11 +120,114 @@ predicate functionResolutionDependsOnArgument(
    * method. In that case we will still resolve several methods.
    */
 
-  exists(TraitItemNode trait, string functionName |
+  exists(TraitItemNode trait |
     implHasSibling(impl, trait) and
-    traitTypeParameterOccurrence(trait, _, functionName, pos, path, _) and
-    type = getAssocFunctionTypeAt(f, impl, pos, path) and
+    traitTypeParameterOccurrence(trait, _, functionName, pos, path, traitTp) and
     f = impl.getASuccessor(functionName) and
+    not pos.isSelf()
+  )
+}
+
+private predicate functionResolutionDependsOnPositionalArgumentCand(
+  ImplItemNode impl, Function f, string functionName, TypeParameter traitTp
+) {
+  exists(FunctionPosition pos |
+    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, _) and
     pos.isPosition()
+  )
+}
+
+pragma[nomagic]
+private Type getAssocFunctionNonTypeParameterTypeAt(
+  ImplItemNode impl, Function f, FunctionPosition pos, TypePath path
+) {
+  result = getAssocFunctionTypeInclNonMethodSelfAt(f, impl, pos, path) and
+  not result instanceof TypeParameter
+}
+
+/**
+ * Holds if `f` inside `impl` has a sibling implementation inside `sibling`, where
+ * those two implementations agree on the instantiation of `traitTp`, which occurs
+ * in a positional position inside `f`.
+ */
+pragma[nomagic]
+private predicate hasEquivalentPositionalSibling(
+  ImplItemNode impl, ImplItemNode sibling, Function f, TypeParameter traitTp
+) {
+  exists(string functionName, FunctionPosition pos, TypePath path |
+    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, path) and
+    pos.isPosition()
+  |
+    exists(Function f1 |
+      implSiblings(_, impl, sibling) and
+      f1 = sibling.getASuccessor(functionName)
+    |
+      forall(TypePath path0, Type t |
+        t = getAssocFunctionNonTypeParameterTypeAt(impl, f, pos, path0) and
+        path = path0.getAPrefixOrSelf()
+      |
+        t = getAssocFunctionNonTypeParameterTypeAt(sibling, f1, pos, path0)
+      ) and
+      forall(TypePath path0, Type t |
+        t = getAssocFunctionNonTypeParameterTypeAt(sibling, f1, pos, path0) and
+        path = path0.getAPrefixOrSelf()
+      |
+        t = getAssocFunctionNonTypeParameterTypeAt(impl, f, pos, path0)
+      )
+    )
+  )
+}
+
+/**
+ * Holds if resolving the function `f` in `impl` requires inspecting the type
+ * of applied _arguments_ or possibly knowing the return type.
+ *
+ * `traitTp` is a type parameter of the trait being implemented by `impl`, and
+ * we need to check that the type of `f` corresponding to `traitTp` is satisfied
+ * at any one of the positions `pos` in which that type occurs in `f`.
+ *
+ * Type parameters that only occur in return positions are only included when
+ * all other type parameters that occur in a positional position are insufficient
+ * to disambiguate.
+ *
+ * Example:
+ *
+ * ```rust
+ * trait Trait1<T1> {
+ *   fn f(self, x: T1) -> T1;
+ * }
+ *
+ * impl Trait1<i32> for i32 {
+ *   fn f(self, x: i32) -> i32 { 0 } // f1
+ * }
+ *
+ * impl Trait1<i64> for i32 {
+ *   fn f(self, x: i64) -> i64 { 0 } // f2
+ * }
+ * ```
+ *
+ * The type for `T1` above occurs in both a positional position and a return position
+ * in `f`, so both may be used to disambiguate between `f1` and `f2`. That is, `f(0i32)`
+ * is sufficient to resolve to `f1`, and so is `let y: i64 = f(Default::default())`.
+ */
+pragma[nomagic]
+predicate functionResolutionDependsOnArgument(
+  ImplItemNode impl, Function f, TypeParameter traitTp, FunctionPosition pos
+) {
+  exists(string functionName |
+    functionResolutionDependsOnArgumentCand(impl, f, functionName, traitTp, pos, _)
+  |
+    if functionResolutionDependsOnPositionalArgumentCand(impl, f, functionName, traitTp)
+    then any()
+    else
+      // `traitTp` only occurs in return position; check that it is indeed needed for disambiguation
+      exists(ImplItemNode sibling |
+        implSiblings(_, impl, sibling) and
+        forall(TypeParameter otherTraitTp |
+          functionResolutionDependsOnPositionalArgumentCand(impl, f, functionName, otherTraitTp)
+        |
+          hasEquivalentPositionalSibling(impl, sibling, f, otherTraitTp)
+        )
+      )
   )
 }
