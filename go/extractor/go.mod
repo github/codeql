@@ -1,8 +1,8 @@
 module github.com/github/codeql-go/extractor
 
-go 1.25
+go 1.26
 
-toolchain go1.25.0
+toolchain go1.26rc2
 
 // when updating this, run
 //    bazel run @rules_go//go -- mod tidy
