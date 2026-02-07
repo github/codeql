@@ -54,22 +54,6 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected static void WriteLocationToTrap<T1>(Action<T1, Location> writeAction, T1 entity, Location l)
-        {
-            if (l is not EmptyLocation)
-            {
-                writeAction(entity, l);
-            }
-        }
-
-        protected static void WriteLocationsToTrap<T1>(Action<T1, Location> writeAction, T1 entity, IEnumerable<Location> locations)
-        {
-            foreach (var loc in locations)
-            {
-                WriteLocationToTrap(writeAction, entity, loc);
-            }
-        }
-
         public override bool NeedsPopulation { get; }
 
         public override int GetHashCode() => Symbol is null ? 0 : Symbol.GetHashCode();

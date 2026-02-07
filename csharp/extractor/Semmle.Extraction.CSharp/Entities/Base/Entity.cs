@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Entities;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -24,7 +26,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteUnescaped('\"');
         }
 
-        public abstract Location? ReportingLocation { get; }
+        public abstract Microsoft.CodeAnalysis.Location? ReportingLocation { get; }
 
         public abstract TrapStackBehaviour TrapStackBehaviour { get; }
 
@@ -64,6 +66,48 @@ namespace Semmle.Extraction.CSharp
             return writer.ToString();
         }
 #endif
+
+        protected void PopulateRefKind(TextWriter trapFile, RefKind kind)
+        {
+            switch (kind)
+            {
+                case RefKind.Out:
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Out);
+                    break;
+                case RefKind.Ref:
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
+                    break;
+                case RefKind.RefReadOnly:
+                case RefKind.RefReadOnlyParameter:
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
+                    break;
+            }
+        }
+
+        protected void PopulateNullability(TextWriter trapFile, AnnotatedTypeSymbol type)
+        {
+            var n = NullabilityEntity.Create(Context, Nullability.Create(type));
+            if (!type.HasObliviousNullability())
+            {
+                trapFile.type_nullability(this, n);
+            }
+        }
+
+        protected static void WriteLocationToTrap<T1>(Action<T1, Entities.Location> writeAction, T1 entity, Entities.Location l)
+        {
+            if (l is not EmptyLocation)
+            {
+                writeAction(entity, l);
+            }
+        }
+
+        protected static void WriteLocationsToTrap<T1>(Action<T1, Entities.Location> writeAction, T1 entity, IEnumerable<Entities.Location> locations)
+        {
+            foreach (var loc in locations)
+            {
+                WriteLocationToTrap(writeAction, entity, loc);
+            }
+        }
 
         public override string ToString() => Label.ToString();
     }

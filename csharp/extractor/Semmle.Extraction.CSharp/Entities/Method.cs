@@ -14,9 +14,28 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
+        private SyntheticExtensionParameter? SyntheticParameter { get; set; }
+
+        private int SynthesizeExtensionParameter()
+        {
+            // Synthesize implicit parameter for extension methods declared using extension(...) syntax.
+            if (Symbol.ContainingSymbol is INamedTypeSymbol type &&
+                type.IsExtension && type.ExtensionParameter is IParameterSymbol parameter &&
+                !string.IsNullOrEmpty(parameter.Name) && !Symbol.IsStatic)
+            {
+                var originalSyntheticParam = OriginalDefinition.SyntheticParameter;
+                SyntheticParameter = SyntheticExtensionParameter.Create(Context, this, parameter, originalSyntheticParam);
+                return 1;
+            }
+
+            return 0;
+        }
+
         protected void PopulateParameters()
         {
             var originalMethod = OriginalDefinition;
+            var positionOffset = SynthesizeExtensionParameter();
+
             IEnumerable<IParameterSymbol> parameters = Symbol.Parameters;
             IEnumerable<IParameterSymbol> originalParameters = originalMethod.Symbol.Parameters;
 
@@ -24,8 +43,8 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 var original = SymbolEqualityComparer.Default.Equals(p.paramSymbol, p.originalParam)
                     ? null
-                    : Parameter.Create(Context, p.originalParam, originalMethod);
-                Parameter.Create(Context, p.paramSymbol, this, original);
+                    : Parameter.Create(Context, p.originalParam, originalMethod, null, positionOffset);
+                Parameter.Create(Context, p.paramSymbol, this, original, positionOffset);
             }
 
             if (Symbol.IsVararg)
@@ -302,9 +321,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Whether this method has unbound type parameters.
         /// </summary>
-        public bool IsUnboundGeneric => IsGeneric && SymbolEqualityComparer.Default.Equals(Symbol.ConstructedFrom, Symbol);
+        public bool IsUnboundGeneric => Symbol.IsUnboundGenericMethod();
 
-        public bool IsBoundGeneric => IsGeneric && !IsUnboundGeneric;
+        public bool IsBoundGeneric => Symbol.IsBoundGenericMethod();
 
         protected IMethodSymbol ConstructedFromSymbol => Symbol.ConstructedFrom;
 

@@ -261,6 +261,21 @@ class Property extends DeclarationWithGetSetAccessors, @property {
 }
 
 /**
+ * An extension property, for example `FirstChar` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionProperty extends Property {
+  ExtensionProperty() { this.getDeclaringType() instanceof ExtensionType }
+}
+
+/**
  * An indexer, for example `string this[int i]` on line 2 in
  *
  * ```csharp
@@ -411,6 +426,22 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
   override Location getALocation() { accessor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = this.getName() }
+}
+
+/**
+ *  An extension accessor. Either a getter (`Getter`) or a setter (`Setter`) of an
+ *  extension property, for example `get` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionAccessor extends ExtensionCallable, Accessor {
+  ExtensionAccessor() { this.getDeclaringType() instanceof ExtensionType }
 }
 
 /**
