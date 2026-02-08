@@ -196,42 +196,42 @@ def test_comparison_with_bool():
     s = TAINTED_STRING
 
     if is_safe(s) == True:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
     else:
         ensure_tainted(s) # $ tainted
 
     if is_safe(s) == False:
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
     if is_safe(s) != True:
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
     if is_safe(s) != False:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
     else:
         ensure_tainted(s) # $ tainted
 
     if is_safe(s) is True:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
     else:
         ensure_tainted(s) # $ tainted
 
     if is_safe(s) is False:
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
     if is_safe(s) is not True:
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
     if is_safe(s) is not False:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
     else:
         ensure_tainted(s) # $ tainted   
 
