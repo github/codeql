@@ -140,7 +140,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Only holds when this list is non-empty, and only returns proper prefixes.
      */
     bindingset[this]
-    UnboundList getPrefix(int i) {
+    UnboundList getProperPrefix(int i) {
       exists(string regexp, int occurrenceOffset | regexp = "[0-9]+\\." |
         exists(this.regexpFind(regexp, i, occurrenceOffset)) and
         result = this.prefix(occurrenceOffset)
@@ -153,13 +153,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Only holds when this list is non-empty, and only returns proper prefixes.
      */
     bindingset[this]
-    UnboundList getAPrefix() { result = this.getPrefix(_) }
+    UnboundList getAProperPrefix() { result = this.getProperPrefix(_) }
 
     /**
      * Gets a prefix of this list, including the list itself.
      */
     bindingset[this]
-    UnboundList getAPrefixOrSelf() { result = [this, this.getAPrefix()] }
+    UnboundList getAPrefix() { result = [this, this.getAProperPrefix()] }
   }
 
   /** Provides predicates for constructing `UnboundList`s. */

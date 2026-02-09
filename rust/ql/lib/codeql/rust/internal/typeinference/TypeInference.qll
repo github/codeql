@@ -1185,7 +1185,7 @@ private module ContextTyping {
     private Type inferCallTypeFromContextCand(AstNode n, TypePath prefix, TypePath path) {
       result = inferCallType(n, false, path) and
       hasUnknownType(n) and
-      prefix = path.getAPrefixOrSelf()
+      prefix = path.getAPrefix()
     }
 
     pragma[nomagic]
@@ -2704,10 +2704,9 @@ private module NonMethodResolution {
     // For inherent implementations of generic types, we also need to check the type being
     // implemented. We arbitrarily choose the first type parameter of the type being implemented
     // to represent this case.
-    f = impl.getASuccessor(_) and
+    f = impl.getAnAssocItem() and
     not impl.(Impl).hasTrait() and
     tp = TTypeParamTypeParameter(impl.resolveSelfTy().getTypeParam(0)) and
-    not f.hasSelfParam() and
     pos.isSelf()
   }
 
@@ -2813,8 +2812,7 @@ private module NonMethodResolution {
     pragma[nomagic]
     NonMethodFunction resolveCallTargetNonBlanketCand(ImplItemNode i) {
       not this.hasTrait() and
-      result = this.getPathResolutionResolved() and
-      result = i.getASuccessor(_) and
+      result = this.getPathResolutionResolved(i) and
       not exists(this.resolveCallTargetViaPathResolution()) and
       functionResolutionDependsOnArgument(i, result, _, _)
     }

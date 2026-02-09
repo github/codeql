@@ -164,13 +164,13 @@ private predicate hasEquivalentPositionalSibling(
     |
       forall(TypePath path0, Type t |
         t = getAssocFunctionNonTypeParameterTypeAt(impl, f, pos, path0) and
-        path = path0.getAPrefixOrSelf()
+        path = path0.getAPrefix()
       |
         t = getAssocFunctionNonTypeParameterTypeAt(sibling, f1, pos, path0)
       ) and
       forall(TypePath path0, Type t |
         t = getAssocFunctionNonTypeParameterTypeAt(sibling, f1, pos, path0) and
-        path = path0.getAPrefixOrSelf()
+        path = path0.getAPrefix()
       |
         t = getAssocFunctionNonTypeParameterTypeAt(impl, f, pos, path0)
       )

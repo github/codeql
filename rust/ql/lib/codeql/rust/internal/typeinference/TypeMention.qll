@@ -206,6 +206,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       exists(TypeParamItemNode tp | this = tp.getABoundPath() and result = tp)
     }
 
+    pragma[nomagic]
     private Type getDefaultPositionalTypeArgument(int i, TypePath path) {
       // If a type argument is not given in the path, then we use the default for
       // the type parameter if one exists for the type.
@@ -228,6 +229,11 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       this = any(PathTypeRepr ptp).getPath().getQualifier*()
     }
 
+    pragma[nomagic]
+    private TypeParameter getPositionalTypeParameter(int i) {
+      result = this.resolveRootType().getPositionalTypeParameter(i)
+    }
+
     /**
      * Gets the default type for the type parameter `tp` at `path`, if any.
      *
@@ -242,17 +248,14 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
     Type getDefaultTypeForTypeParameterInNonAnnotationAt(TypeParameter tp, TypePath path) {
       not this.isInTypeAnnotation() and
       exists(int i |
-        result = this.getDefaultPositionalTypeArgument(pragma[only_bind_into](i), path) and
-        tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
+        result = this.getDefaultPositionalTypeArgument(i, path) and
+        tp = this.getPositionalTypeParameter(i)
       )
     }
 
+    pragma[nomagic]
     private Type getPositionalTypeArgument(int i, TypePath path) {
       result = getPathTypeArgument(this, i).getTypeAt(path)
-      or
-      // Defaults only apply to type mentions in type annotations
-      this.isInTypeAnnotation() and
-      result = this.getDefaultPositionalTypeArgument(i, path)
     }
 
     /**
@@ -260,9 +263,12 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
      * type parameter does not correspond directly to a type mention.
      */
     private Type getTypeForTypeParameterAt(TypeParameter tp, TypePath path) {
-      exists(int i |
-        result = this.getPositionalTypeArgument(pragma[only_bind_into](i), path) and
-        tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
+      exists(int i | tp = this.getPositionalTypeParameter(i) |
+        result = this.getPositionalTypeArgument(i, path)
+        or
+        // Defaults only apply to type mentions in type annotations
+        this.isInTypeAnnotation() and
+        result = this.getDefaultPositionalTypeArgument(i, path)
       )
       or
       // Handle the special syntactic sugar for function traits. The syntactic

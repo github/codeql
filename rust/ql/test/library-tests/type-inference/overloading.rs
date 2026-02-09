@@ -20,7 +20,7 @@ mod method_call_trait_path_disambig {
     #[derive(Default)]
     struct S;
     impl FirstTrait for S {
-        // S::method2
+        // S_as_FirstTrait::method2
         fn method2(&self) -> bool {
             true
         }
@@ -31,7 +31,7 @@ mod method_call_trait_path_disambig {
         }
     }
     impl SecondTrait for S {
-        // S::method2
+        // S_as_SecondTrait::method2
         fn method2(&self) -> i64 {
             1
         }
@@ -56,14 +56,14 @@ mod method_call_trait_path_disambig {
         let _b1 = FirstTrait::method(&s); // $ type=_b1:bool target=FirstTrait::method
         let _b2 = <S as FirstTrait>::method(&s); // $ type=_b2:bool target=FirstTrait::method
         let _b3 = <S as FirstTrait>::method(&Default::default()); // $ type=_b3:bool target=FirstTrait::method target=default
-        let _b4 = <S as FirstTrait>::method2(&s); // $ type=_b4:bool target=S::method2
-        let _b5 = <S as FirstTrait>::method2(&Default::default()); // $ type=_b5:bool target=S::method2 target=default
+        let _b4 = <S as FirstTrait>::method2(&s); // $ type=_b4:bool target=S_as_FirstTrait::method2
+        let _b5 = <S as FirstTrait>::method2(&Default::default()); // $ type=_b5:bool target=S_as_FirstTrait::method2 target=default
 
         let _n1 = SecondTrait::method(&s); // $ type=_n1:i64 target=SecondTrait::method
         let _n2 = <S as SecondTrait>::method(&s); // $ type=_n2:i64 target=SecondTrait::method
         let _n3 = <S as SecondTrait>::method(&Default::default()); // $ type=_n3:i64 target=SecondTrait::method target=default
-        let _n4 = <S as SecondTrait>::method2(&s); // $ type=_n4:i64 target=S::method2
-        let _n5 = <S as SecondTrait>::method2(&Default::default()); // $ type=_n5:i64 target=S::method2 target=default
+        let _n4 = <S as SecondTrait>::method2(&s); // $ type=_n4:i64 target=S_as_SecondTrait::method2
+        let _n5 = <S as SecondTrait>::method2(&Default::default()); // $ type=_n5:i64 target=S_as_SecondTrait::method2 target=default
 
         <S as FirstTrait>::function(); // $ target=S::function
         <S2 as FirstTrait>::function(); // $ target=S2::function
