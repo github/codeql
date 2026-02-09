@@ -41,36 +41,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected virtual int Ordinal => Symbol.Ordinal + PositionOffset;
 
-        private Kind ParamKind
-        {
-            get
-            {
-                switch (Symbol.RefKind)
-                {
-                    case RefKind.Out:
-                        return Kind.Out;
-                    case RefKind.Ref:
-                        return Kind.Ref;
-                    case RefKind.In:
-                        return Kind.In;
-                    case RefKind.RefReadOnlyParameter:
-                        return Kind.RefReadOnly;
-                    default:
-                        if (Symbol.IsParams)
-                            return Kind.Params;
-
-                        if (Ordinal == 0)
-                        {
-                            if (Symbol.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
-                            {
-                                return Kind.This;
-                            }
-                        }
-                        return Kind.None;
-                }
-            }
-        }
-
         public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null, int positionOffset = 0)
         {
             var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
@@ -125,7 +95,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.ModelError(Symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, Symbol.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
+            var kind = Symbol.GetParameterKind();
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, kind, Parent!, Original);
 
             if (Context.OnlyScaffold)
             {

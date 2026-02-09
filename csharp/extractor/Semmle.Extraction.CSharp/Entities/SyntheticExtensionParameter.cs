@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     /// <summary>
     /// Synthetic parameter for extension methods declared using the extension syntax.
-    /// That is, we add a synthetic parameter s to IsValid in the following example:
+    /// That is, we add a synthetic parameter `s` to `IsValid` in the following example:
     /// extension(string s) {
     ///   public bool IsValid() { ... }
     /// }
@@ -30,24 +30,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private static int Ordinal => 0;
 
-        private Parameter.Kind ParamKind
-        {
-            get
-            {
-                switch (ExtensionParameter.RefKind)
-                {
-                    case RefKind.Ref:
-                        return Parameter.Kind.Ref;
-                    case RefKind.In:
-                        return Parameter.Kind.In;
-                    case RefKind.RefReadOnlyParameter:
-                        return Parameter.Kind.RefReadOnly;
-                    default:
-                        return Parameter.Kind.None;
-                }
-            }
-        }
-
         private string Name => ExtensionParameter.Name;
 
         private bool IsSourceDeclaration => ExtensionMethod.Symbol.IsSourceDeclaration();
@@ -58,7 +40,8 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateRefKind(trapFile, ExtensionParameter.RefKind);
 
             var type = Type.Create(Context, ExtensionParameter.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, ExtensionMethod, Original);
+            var kind = ExtensionParameter.GetParameterKind();
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, kind, ExtensionMethod, Original);
 
             if (Context.OnlyScaffold)
             {

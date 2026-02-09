@@ -126,8 +126,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private static bool IsOperatorLikeCall(ExpressionNodeInfo info)
         {
             return info.SymbolInfo.Symbol is IMethodSymbol method &&
-                method.TryGetExtensionMethod(out var original) &&
-                original!.MethodKind == MethodKind.UserDefinedOperator;
+                method.TryGetExtensionMethod()?.MethodKind == MethodKind.UserDefinedOperator;
         }
 
         public IMethodSymbol? TargetSymbol
@@ -140,13 +139,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     var method = symbol as IMethodSymbol;
                     // Case for compiler-generated extension methods.
-                    if (method is not null &&
-                        method.TryGetExtensionMethod(out var original))
-                    {
-                        return original;
-                    }
-
-                    return method;
+                    return method?.TryGetExtensionMethod() ?? method;
                 }
 
                 if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)

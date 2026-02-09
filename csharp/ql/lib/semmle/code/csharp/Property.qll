@@ -6,6 +6,7 @@ import Member
 import Stmt
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import TypeRef
 
 /**
@@ -272,7 +273,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
  * ```
  */
 class ExtensionProperty extends Property {
-  ExtensionProperty() { this.getDeclaringType() instanceof ExtensionType }
+  ExtensionProperty() { this.isInExtension() }
 }
 
 /**
@@ -440,8 +441,8 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
  * }
  * ```
  */
-class ExtensionAccessor extends ExtensionCallable, Accessor {
-  ExtensionAccessor() { this.getDeclaringType() instanceof ExtensionType }
+class ExtensionAccessor extends ExtensionCallableImpl, Accessor {
+  ExtensionAccessor() { this.isInExtension() }
 }
 
 /**

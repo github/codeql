@@ -222,7 +222,7 @@ overlayChangedFiles(
          | @using_directive | @type_parameter_constraints | @externalDataElement
          | @xmllocatable | @asp_element | @namespace | @preprocessor_directive;
 
-@declaration = @callable | @generic | @assignable | @namespace | @extension_type;
+@declaration = @callable | @generic | @assignable | @namespace;
 
 @named_element = @namespace | @declaration;
 

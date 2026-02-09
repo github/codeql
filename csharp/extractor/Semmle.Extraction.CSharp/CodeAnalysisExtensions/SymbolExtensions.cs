@@ -647,15 +647,13 @@ namespace Semmle.Extraction.CSharp
         /// Return true if this method is a compiler-generated extension method.
         /// </summary>
         public static bool IsCompilerGeneratedExtensionMethod(this IMethodSymbol method) =>
-            method.TryGetExtensionMethod(out _);
+            method.TryGetExtensionMethod() is not null;
 
         /// <summary>
-        /// Returns true if this method is a compiler-generated extension method,
-        /// and outputs the original extension method declaration.
+        /// Returns the extension method corresponding to this compiler-generated extension method, if it exists.
         /// </summary>
-        public static bool TryGetExtensionMethod(this IMethodSymbol method, out IMethodSymbol? declaration)
+        public static IMethodSymbol? TryGetExtensionMethod(this IMethodSymbol method)
         {
-            declaration = null;
             if (method.IsImplicitlyDeclared && method.ContainingSymbol is INamedTypeSymbol containingType)
             {
                 // Extension types are declared within the same type as the generated
@@ -688,23 +686,22 @@ namespace Semmle.Extraction.CSharp
                             .First(c => SymbolEqualityComparer.Default.Equals(c.OriginalDefinition, unboundDeclaration));
 
                         // If the extension declaration is unbound apply the remaning type arguments and construct it.
-                        declaration = extensionDeclaration.IsUnboundGenericMethod()
+                        return extensionDeclaration.IsUnboundGenericMethod()
                             ? extensionDeclaration.Construct(extensionMethodArguments.ToArray())
                             : extensionDeclaration;
                     }
                     catch
                     {
                         // If anything goes wrong, fall back to the unbound declaration.
-                        declaration = unboundDeclaration;
+                        return unboundDeclaration;
                     }
                 }
                 else
                 {
-                    declaration = unboundDeclaration;
+                    return unboundDeclaration;
                 }
-
             }
-            return declaration is not null;
+            return null;
         }
 
         /// <summary>
@@ -820,5 +817,35 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<T> ExtractionCandidates<T>(this IEnumerable<T> symbols) where T : ISymbol =>
             symbols.Where(symbol => symbol.ShouldExtractSymbol());
+
+        /// <summary>
+        /// Returns the parameter kind for this parameter symbol, e.g. `ref`, `out`, `params`, etc.
+        /// </summary>
+        public static Parameter.Kind GetParameterKind(this IParameterSymbol parameter)
+        {
+            switch (parameter.RefKind)
+            {
+                case RefKind.Out:
+                    return Parameter.Kind.Out;
+                case RefKind.Ref:
+                    return Parameter.Kind.Ref;
+                case RefKind.In:
+                    return Parameter.Kind.In;
+                case RefKind.RefReadOnlyParameter:
+                    return Parameter.Kind.RefReadOnly;
+                default:
+                    if (parameter.IsParams)
+                        return Parameter.Kind.Params;
+
+                    if (parameter.Ordinal == 0)
+                    {
+                        if (parameter.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
+                        {
+                            return Parameter.Kind.This;
+                        }
+                    }
+                    return Parameter.Kind.None;
+            }
+        }
     }
 }

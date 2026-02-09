@@ -236,10 +236,8 @@ class ParameterAccess extends LocalScopeVariableAccess, @parameter_access_expr {
  * ```
  */
 class SyntheticExtensionParameterAccess extends ParameterAccess {
-  private Parameter p;
-
   SyntheticExtensionParameterAccess() {
-    exists(ExtensionType et |
+    exists(ExtensionType et, Parameter p |
       p = et.getReceiverParameter() and
       expr_access(this, p)
     )

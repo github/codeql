@@ -102,6 +102,9 @@ class Declaration extends NamedElement, @declaration {
    * implicit constructors or accessors.
    */
   predicate isCompilerGenerated() { compiler_generated(this) }
+
+  /** Holds if this declaration is in an extension type. */
+  predicate isInExtension() { this.getDeclaringType() instanceof ExtensionType }
 }
 
 /** A declaration that can have a modifier. */

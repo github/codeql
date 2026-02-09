@@ -10,6 +10,7 @@ import exprs.Call
 private import commons.QualifiedName
 private import commons.Collections
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
 
@@ -221,24 +222,9 @@ class Callable extends Parameterizable, ExprOrStmtParent, @callable {
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
-
-  /** Holds if this callable is declared in an extension type. */
-  predicate isInExtension() { this.getDeclaringType() instanceof ExtensionType }
 }
 
-/**
- * A callable that is declared as an extension.
- *
- * Either an extension method (`ExtensionMethod`), an extension operator
- * (`ExtensionOperator`) or an extension accessor (`ExtensionAccessor`).
- */
-abstract class ExtensionCallable extends Callable {
-  /** Gets the type being extended by this method. */
-  pragma[noinline]
-  Type getExtendedType() { result = this.getDeclaringType().(ExtensionType).getExtendedType() }
-
-  override string getAPrimaryQlClass() { result = "ExtensionCallable" }
-}
+final class ExtensionCallable = ExtensionCallableImpl;
 
 /**
  * A method, for example
@@ -315,15 +301,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override string getAPrimaryQlClass() { result = "Method" }
 }
 
-/**
- * An extension method.
- *
- * Either a classic extension method (`ClassicExtensionMethod`) or an extension
- * type extension method (`ExtensionTypeExtensionMethod`).
- */
-abstract class ExtensionMethod extends ExtensionCallable, Method {
-  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
-}
+final class ExtensionMethod = ExtensionMethodImpl;
 
 /**
  *  An extension method, for example
@@ -334,7 +312,7 @@ abstract class ExtensionMethod extends ExtensionCallable, Method {
  * }
  * ```
  */
-class ClassicExtensionMethod extends ExtensionMethod {
+class ClassicExtensionMethod extends ExtensionMethodImpl {
   ClassicExtensionMethod() { this.isClassicExtensionMethod() }
 
   pragma[noinline]
@@ -354,7 +332,7 @@ class ClassicExtensionMethod extends ExtensionMethod {
  * }
  * ```
  */
-class ExtensionTypeExtensionMethod extends ExtensionMethod {
+class ExtensionTypeExtensionMethod extends ExtensionMethodImpl {
   ExtensionTypeExtensionMethod() { this.isInExtension() }
 }
 
@@ -589,7 +567,7 @@ class RecordCloneMethod extends Method {
  * }
  * ```
  */
-class ExtensionOperator extends ExtensionCallable, Operator {
+class ExtensionOperator extends ExtensionCallableImpl, Operator {
   ExtensionOperator() { this.isInExtension() }
 }
 
