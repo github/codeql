@@ -25,7 +25,7 @@ class IsValidFragmentMethod extends Method {
   predicate isUnsafe() {
     this.getDeclaringType().(AndroidActivity).isExported() and
     forex(ReturnStmt retStmt | retStmt.getEnclosingCallable() = this |
-      retStmt.getResult().(BooleanLiteral).getBooleanValue() = true
+      retStmt.getExpr().(BooleanLiteral).getBooleanValue() = true
     )
   }
 }

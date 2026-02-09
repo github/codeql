@@ -11,7 +11,7 @@ import java
 
 from ConditionalExpr e
 where
-  e.getTrueExpr().getType() != e.getFalseExpr().getType() and
-  not e.getTrueExpr().getType() instanceof NullType and
-  not e.getFalseExpr().getType() instanceof NullType
+  e.getThen().getType() != e.getElse().getType() and
+  not e.getThen().getType() instanceof NullType and
+  not e.getElse().getType() instanceof NullType
 select e

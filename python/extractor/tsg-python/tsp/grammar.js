@@ -1168,7 +1168,7 @@ module.exports = grammar({
     _not_escape_sequence: $ => token.immediate('\\'),
 
     format_specifier: $ => seq(
-      ':',
+      token(prec(1,':')),
       repeat(choice(
         token(prec(1, /[^{}\n]+/)),
         alias($.interpolation, $.format_expression)

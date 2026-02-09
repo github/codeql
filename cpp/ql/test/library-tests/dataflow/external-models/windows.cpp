@@ -574,3 +574,164 @@ void test_copy_and_move_memory() {
     sink(dest_buffer[0]); // $ ir
   }
 }
+
+using HINTERNET = void*;
+using ULONGLONG = unsigned long long;
+using UINT = unsigned int;
+using PDWORD = DWORD*;
+using PCSTR = const char*;
+typedef union _WINHTTP_HEADER_NAME {
+  PCWSTR pwszName;
+  PCSTR  pszName;
+} WINHTTP_HEADER_NAME, *PWINHTTP_HEADER_NAME;
+typedef struct _WINHTTP_EXTENDED_HEADER {
+  union {
+    PCWSTR pwszName;
+    PCSTR  pszName;
+  };
+  union {
+    PCWSTR pwszValue;
+    PCSTR  pszValue;
+  };
+} WINHTTP_EXTENDED_HEADER, *PWINHTTP_EXTENDED_HEADER;
+
+BOOL WinHttpReadData(
+  HINTERNET hRequest,
+  LPVOID    lpBuffer,
+  DWORD     dwNumberOfBytesToRead,
+  LPDWORD   lpdwNumberOfBytesRead
+);
+
+DWORD WinHttpReadDataEx(
+  HINTERNET hRequest,
+  LPVOID    lpBuffer,
+  DWORD     dwNumberOfBytesToRead,
+  LPDWORD   lpdwNumberOfBytesRead,
+  ULONGLONG ullFlags,
+  DWORD     cbProperty,
+  PVOID     pvProperty
+);
+
+using LPCWSTR = const wchar_t*;
+
+BOOL WinHttpQueryHeaders(
+  HINTERNET hRequest,
+  DWORD     dwInfoLevel,
+  LPCWSTR   pwszName,
+  LPVOID    lpBuffer,
+  LPDWORD   lpdwBufferLength,
+  LPDWORD   lpdwIndex
+);
+
+DWORD WinHttpQueryHeadersEx(
+  HINTERNET                hRequest,
+  DWORD                    dwInfoLevel,
+  ULONGLONG                ullFlags,
+  UINT                     uiCodePage,
+  PDWORD                   pdwIndex,
+  PWINHTTP_HEADER_NAME     pHeaderName,
+  PVOID                    pBuffer,
+  PDWORD                   pdwBufferLength,
+  PWINHTTP_EXTENDED_HEADER *ppHeaders,
+  PDWORD                   pdwHeadersCount
+);
+
+void sink(PCSTR);
+
+void test_winhttp(HINTERNET hRequest) {
+  {
+    char buffer[1024];
+    DWORD bytesRead;
+    BOOL result = WinHttpReadData(hRequest, buffer, sizeof(buffer), &bytesRead);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    char buffer[1024];
+    DWORD bytesRead;
+    DWORD result = WinHttpReadDataEx(hRequest, buffer, sizeof(buffer), &bytesRead, 0, 0, nullptr);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    char buffer[1024];
+    DWORD bufferLength = sizeof(buffer);
+    WinHttpQueryHeaders(hRequest, 0, nullptr, buffer, &bufferLength, nullptr);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    char buffer[1024];
+    DWORD bufferLength = sizeof(buffer);
+    PWINHTTP_EXTENDED_HEADER headers;
+    DWORD headersCount;
+    PWINHTTP_HEADER_NAME headerName;
+    DWORD result = WinHttpQueryHeadersEx(hRequest, 0, 0, 0, nullptr, headerName, buffer, &bufferLength, &headers, &headersCount);
+    sink(buffer);
+    sink(*buffer); // $ ir
+    sink(headerName->pszName);
+    sink(*headerName->pszName); // $ ir
+    sink(headers->pszValue);
+    sink(*headers->pszValue); // $ ir
+  }
+}
+
+using LPWSTR = wchar_t*;
+using INTERNET_SCHEME = enum {
+  INTERNET_SCHEME_INVALID = -1,
+  INTERNET_SCHEME_UNKNOWN = 0,
+  INTERNET_SCHEME_HTTP = 1,
+  INTERNET_SCHEME_HTTPS = 2,
+  INTERNET_SCHEME_FTP = 3,
+  INTERNET_SCHEME_FILE = 4,
+  INTERNET_SCHEME_NEWS = 5,
+  INTERNET_SCHEME_MAILTO = 6,
+  INTERNET_SCHEME_SNEWS = 7,
+  INTERNET_SCHEME_SOCKS = 8,
+  INTERNET_SCHEME_WAIS = 9,
+  INTERNET_SCHEME_LAST = 10
+};
+using INTERNET_PORT = unsigned short;
+
+typedef struct _WINHTTP_URL_COMPONENTS {
+  DWORD           dwStructSize;
+  LPWSTR          lpszScheme;
+  DWORD           dwSchemeLength;
+  INTERNET_SCHEME nScheme;
+  LPWSTR          lpszHostName;
+  DWORD           dwHostNameLength;
+  INTERNET_PORT   nPort;
+  LPWSTR          lpszUserName;
+  DWORD           dwUserNameLength;
+  LPWSTR          lpszPassword;
+  DWORD           dwPasswordLength;
+  LPWSTR          lpszUrlPath;
+  DWORD           dwUrlPathLength;
+  LPWSTR          lpszExtraInfo;
+  DWORD           dwExtraInfoLength;
+} URL_COMPONENTS, *LPURL_COMPONENTS;
+
+BOOL WinHttpCrackUrl(
+  LPCWSTR          pwszUrl,
+  DWORD            dwUrlLength,
+  DWORD            dwFlags,
+  LPURL_COMPONENTS lpUrlComponents
+);
+
+void sink(LPWSTR);
+
+void test_winhttp_crack_url() {
+  {
+    URL_COMPONENTS urlComponents;
+    urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
+    wchar_t x[256];
+    x[0] = (wchar_t)source();
+    BOOL result = WinHttpCrackUrl(x, 0, 0, &urlComponents);
+    sink(urlComponents.lpszHostName);
+    sink(*urlComponents.lpszHostName); // $ ir
+    sink(urlComponents.lpszUrlPath);
+    sink(*urlComponents.lpszUrlPath); // $ ir
+    sink(urlComponents.lpszExtraInfo);
+    sink(*urlComponents.lpszExtraInfo); // $ ir
+  }
+}

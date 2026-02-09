@@ -279,9 +279,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     }
   }
 
-  class NotExpr extends Expr instanceof J::LogNotExpr {
-    Expr getOperand() { result = this.(J::LogNotExpr).getExpr() }
-  }
+  class NotExpr = J::LogNotExpr;
 
   class IdExpr extends Expr {
     IdExpr() { this instanceof AssignExpr or this instanceof CastExpr }
@@ -317,13 +315,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     )
   }
 
-  class ConditionalExpr extends Expr instanceof J::ConditionalExpr {
-    Expr getCondition() { result = super.getCondition() }
-
-    Expr getThen() { result = super.getTrueExpr() }
-
-    Expr getElse() { result = super.getFalseExpr() }
-  }
+  class ConditionalExpr = J::ConditionalExpr;
 
   class Parameter = J::Parameter;
 
@@ -357,7 +349,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     GuardsInput::Expr getAReturnExpr() {
       exists(ReturnStmt ret |
         this = ret.getEnclosingCallable() and
-        ret.getResult() = result
+        ret.getExpr() = result
       )
     }
   }

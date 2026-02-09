@@ -52,7 +52,7 @@ private class SpringXssSink extends XSS::XssSink {
   SpringXssSink() {
     exists(SpringRequestMappingMethod requestMappingMethod, ReturnStmt rs |
       requestMappingMethod = rs.getEnclosingCallable() and
-      this.asExpr() = rs.getResult() and
+      this.asExpr() = rs.getExpr() and
       (
         not specifiesContentType(requestMappingMethod) or
         isXssVulnerableContentTypeExpr(requestMappingMethod.getAProducesExpr())

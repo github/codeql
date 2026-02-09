@@ -86,8 +86,8 @@ Expr clearlyNotNullExpr(Expr reason) {
   or
   exists(ConditionalExpr c, Expr r1, Expr r2 |
     c = result and
-    c.getTrueExpr() = clearlyNotNullExpr(r1) and
-    c.getFalseExpr() = clearlyNotNullExpr(r2) and
+    c.getThen() = clearlyNotNullExpr(r1) and
+    c.getElse() = clearlyNotNullExpr(r2) and
     (reason = r1 or reason = r2)
   )
   or

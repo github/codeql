@@ -113,7 +113,7 @@ class Expr extends ExprParent, @expr {
     if this instanceof CastingExpr or this instanceof NotNullExpr
     then
       result = this.(CastingExpr).getExpr().getUnderlyingExpr() or
-      result = this.(NotNullExpr).getExpr().getUnderlyingExpr()
+      result = this.(NotNullExpr).getOperand().getUnderlyingExpr()
     else result = this
   }
 }
@@ -144,13 +144,13 @@ class CompileTimeConstantExpr extends Expr {
       this.(CastingExpr).getExpr().isCompileTimeConstant()
       or
       // The unary operators `+`, `-`, `~`, and `!` (but not `++` or `--`).
-      this.(PlusExpr).getExpr().isCompileTimeConstant()
+      this.(PlusExpr).getOperand().isCompileTimeConstant()
       or
-      this.(MinusExpr).getExpr().isCompileTimeConstant()
+      this.(MinusExpr).getOperand().isCompileTimeConstant()
       or
-      this.(BitNotExpr).getExpr().isCompileTimeConstant()
+      this.(BitNotExpr).getOperand().isCompileTimeConstant()
       or
-      this.(LogNotExpr).getExpr().isCompileTimeConstant()
+      this.(LogNotExpr).getOperand().isCompileTimeConstant()
       or
       // The multiplicative operators `*`, `/`, and `%`,
       // the additive operators `+` and `-`,
@@ -166,8 +166,8 @@ class CompileTimeConstantExpr extends Expr {
       // The ternary conditional operator ` ? : `.
       exists(ConditionalExpr e | this = e |
         e.getCondition().isCompileTimeConstant() and
-        e.getTrueExpr().isCompileTimeConstant() and
-        e.getFalseExpr().isCompileTimeConstant()
+        e.getThen().isCompileTimeConstant() and
+        e.getElse().isCompileTimeConstant()
       )
       or
       // Access to a final variable initialized by a compile-time constant.
@@ -943,7 +943,7 @@ class LogicExpr extends Expr {
   /** Gets an operand of this logical expression. */
   Expr getAnOperand() {
     this.(BinaryExpr).getAnOperand() = result or
-    this.(UnaryExpr).getExpr() = result
+    this.(UnaryExpr).getOperand() = result
   }
 }
 
@@ -1039,8 +1039,15 @@ class ReferenceEqualityTest extends EqualityTest {
 
 /** A common super-class that represents unary operator expressions. */
 class UnaryExpr extends Expr, @unaryexpr {
+  /**
+   * DEPRECATED: Use `getOperand()` instead.
+   *
+   * Gets the operand expression.
+   */
+  deprecated Expr getExpr() { result.getParent() = this }
+
   /** Gets the operand expression. */
-  Expr getExpr() { result.getParent() = this }
+  Expr getOperand() { result.getParent() = this }
 }
 
 /**
@@ -1305,7 +1312,7 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
 
   /** Gets the body of this lambda expression, if it is an expression. */
   Expr getExprBody() {
-    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getResult()
+    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getExpr()
   }
 
   /** Gets the body of this lambda expression, if it is a statement. */
@@ -1340,7 +1347,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
     exists(Stmt stmt |
       stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
       (
-        result = stmt.(ReturnStmt).getResult()
+        result = stmt.(ReturnStmt).getExpr()
         or
         // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
         result = stmt.(ExprStmt).getExpr()
@@ -1457,26 +1464,42 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
   /**
+   * DEPRECATED: Use `getThen()` instead.
+   *
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `true`.
    */
-  Expr getTrueExpr() { result.isNthChildOf(this, 1) }
+  deprecated Expr getTrueExpr() { result.isNthChildOf(this, 1) }
+
+  /**
+   * DEPRECATED: Use `getElse()` instead.
+   *
+   * Gets the expression that is evaluated if the condition of this
+   * conditional expression evaluates to `false`.
+   */
+  deprecated Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+
+  /**
+   * Gets the expression that is evaluated if the condition of this
+   * conditional expression evaluates to `true`.
+   */
+  Expr getThen() { result.isNthChildOf(this, 1) }
 
   /**
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `false`.
    */
-  Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+  Expr getElse() { result.isNthChildOf(this, 2) }
 
   /**
    * Gets the expression that is evaluated by the specific branch of this
-   * conditional expression. If `true` that is `getTrueExpr()`, if `false`
-   * it is `getFalseExpr()`.
+   * conditional expression. If `true` that is `getThen()`, if `false`
+   * it is `getElse()`.
    */
   Expr getBranchExpr(boolean branch) {
-    branch = true and result = this.getTrueExpr()
+    branch = true and result = this.getThen()
     or
-    branch = false and result = this.getFalseExpr()
+    branch = false and result = this.getElse()
   }
 
   /**
@@ -1773,14 +1796,14 @@ class VariableUpdate extends Expr {
   VariableUpdate() {
     this.(Assignment).getDest() instanceof VarAccess or
     this instanceof LocalVariableDeclExpr or
-    this.(UnaryAssignExpr).getExpr() instanceof VarAccess
+    this.(UnaryAssignExpr).getOperand() instanceof VarAccess
   }
 
   /** Gets the destination of this variable update. */
   Variable getDestVar() {
     result.getAnAccess() = this.(Assignment).getDest() or
     result = this.(LocalVariableDeclExpr).getVariable() or
-    result.getAnAccess() = this.(UnaryAssignExpr).getExpr()
+    result.getAnAccess() = this.(UnaryAssignExpr).getOperand()
   }
 }
 
@@ -1970,7 +1993,7 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isVarWrite() {
     exists(Assignment a | a.getDest() = this) or
-    exists(UnaryAssignExpr e | e.getExpr() = this)
+    exists(UnaryAssignExpr e | e.getOperand() = this)
   }
 
   /**

@@ -390,7 +390,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   override TranslatedElement getLastChild() { result = this.getChild(this.getChildCount() - 1) }
 
-  private int getChildCount() { result = count(this.getDeclarationEntry(_)) }
+  private int getChildCount() { result = count(int i | exists(this.getDeclarationEntry(i))) }
 
   IRDeclarationEntry getIRDeclarationEntry(int index) {
     result.hasIndex(index) and

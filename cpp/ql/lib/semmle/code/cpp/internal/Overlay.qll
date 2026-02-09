@@ -65,16 +65,26 @@ overlay[local]
 private predicate isBase() { not isOverlay() }
 
 /**
+ * Holds if `path` was extracted in the overlay database.
+ */
+overlay[local]
+private predicate overlayHasFile(string path) {
+  isOverlay() and
+  files(_, path) and
+  path != ""
+}
+
+/**
  * Discards an element from the base variant if:
- * - It has a single location in a changed file, or
- * - All of its locations are in changed files.
+ * - It has a single location in a file extracted in the overlay, or
+ * - All of its locations are in files extracted in the overlay.
  */
 overlay[discard_entity]
 private predicate discardElement(@element e) {
   isBase() and
   (
-    overlayChangedFiles(getSingleLocationFilePath(e))
+    overlayHasFile(getSingleLocationFilePath(e))
     or
-    forex(string path | path = getMultiLocationFilePath(e) | overlayChangedFiles(path))
+    forex(string path | path = getMultiLocationFilePath(e) | overlayHasFile(path))
   )
 }
