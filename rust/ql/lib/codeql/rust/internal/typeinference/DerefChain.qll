@@ -20,13 +20,12 @@ class DerefImplItemNode extends ImplItemNode {
   Type resolveSelfTypeAt(TypePath path) { result = resolveImplSelfTypeAt(this, path) }
 
   /**
-   * Holds if the target type of the dereference implemention mentions a type
-   * parameter at `path`.
+   * Holds if the target type of the dereference implemention mentions type
+   * parameter `tp` at `path`.
    */
   pragma[nomagic]
-  predicate targetHasTypeParameterAt(TypePath path) {
-    this.getAssocItem("Target").(TypeAlias).getTypeRepr().(TypeMention).getTypeAt(path) instanceof
-      TypeParameter
+  predicate targetHasTypeParameterAt(TypePath path, TypeParameter tp) {
+    tp = this.getAssocItem("Target").(TypeAlias).getTypeRepr().(TypeMention).getTypeAt(path)
   }
 
   /** Gets the first type parameter of the type being implemented, if any. */
