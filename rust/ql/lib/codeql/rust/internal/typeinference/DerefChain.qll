@@ -20,7 +20,7 @@ class DerefImplItemNode extends ImplItemNode {
   Type resolveSelfTypeAt(TypePath path) { result = resolveImplSelfTypeAt(this, path) }
 
   /**
-   * Holds if the target type of the dereference implemention mentions type
+   * Holds if the target type of the dereference implementation mentions type
    * parameter `tp` at `path`.
    */
   pragma[nomagic]
