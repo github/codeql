@@ -274,20 +274,21 @@ private class FunctionDeclaration extends Function {
     this = i.asSome().getAnAssocItem()
   }
 
+  TypeParam getTypeParam(ImplOrTraitItemNodeOption i) {
+    i = parent and
+    result = [this.getGenericParamList().getATypeParam(), i.asSome().getTypeParam(_)]
+  }
+
   TypeParameter getTypeParameter(ImplOrTraitItemNodeOption i, TypeParameterPosition ppos) {
+    typeParamMatchPosition(this.getTypeParam(i), result, ppos)
+    or
+    // For every `TypeParam` of this function, any associated types accessed on
+    // the type parameter are also type parameters.
+    ppos.isImplicit() and
+    result.(TypeParamAssociatedTypeTypeParameter).getTypeParam() = this.getTypeParam(i)
+    or
     i = parent and
     (
-      exists(TypeParam tp |
-        tp = [this.getGenericParamList().getATypeParam(), i.asSome().getTypeParam(_)]
-      |
-        typeParamMatchPosition(tp, result, ppos)
-        or
-        // If `tp` is a type parameter for this function, then any associated
-        // types accessed on `tp` are also type parameters.
-        ppos.isImplicit() and
-        result.(TypeParamAssociatedTypeTypeParameter).getTypeParam() = tp
-      )
-      or
       ppos.isImplicit() and result = TSelfTypeParameter(i.asSome())
       or
       ppos.isImplicit() and result.(AssociatedTypeTypeParameter).getTrait() = i.asSome()
