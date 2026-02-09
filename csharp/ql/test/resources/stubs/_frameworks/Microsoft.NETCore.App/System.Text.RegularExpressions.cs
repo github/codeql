@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Text.RegularExpressions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Text.RegularExpressions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Text
@@ -232,17 +232,23 @@ namespace System
                 protected bool UseOptionC() => throw null;
                 protected bool UseOptionR() => throw null;
                 protected static void ValidateMatchTimeout(System.TimeSpan matchTimeout) => throw null;
-                public struct ValueMatchEnumerator
+                public struct ValueMatchEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Text.RegularExpressions.ValueMatch>, System.Collections.IEnumerator
                 {
                     public System.Text.RegularExpressions.ValueMatch Current { get => throw null; }
+                    object System.Collections.IEnumerator.Current { get => throw null; }
+                    void System.IDisposable.Dispose() => throw null;
                     public System.Text.RegularExpressions.Regex.ValueMatchEnumerator GetEnumerator() => throw null;
                     public bool MoveNext() => throw null;
+                    void System.Collections.IEnumerator.Reset() => throw null;
                 }
-                public struct ValueSplitEnumerator
+                public struct ValueSplitEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Range>, System.Collections.IEnumerator
                 {
                     public System.Range Current { get => throw null; }
+                    object System.Collections.IEnumerator.Current { get => throw null; }
+                    void System.IDisposable.Dispose() => throw null;
                     public System.Text.RegularExpressions.Regex.ValueSplitEnumerator GetEnumerator() => throw null;
                     public bool MoveNext() => throw null;
+                    void System.Collections.IEnumerator.Reset() => throw null;
                 }
             }
             public class RegexCompilationInfo

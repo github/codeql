@@ -12,5 +12,6 @@ codeql_csharp_library(
     deps = [
         "//csharp/extractor/Semmle.Util",
         "@paket.main//microsoft.build",
+        "@paket.main//microsoft.visualstudio.solutionpersistence",
     ],
 )

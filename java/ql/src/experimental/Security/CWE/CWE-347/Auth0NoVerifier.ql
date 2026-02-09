@@ -17,7 +17,7 @@ deprecated import JwtAuth0 as JwtAuth0
 deprecated module JwtDecodeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    not FlowToJwtVerify::flow(source, _)
+    not FlowToJwtVerify::flowFrom(source)
   }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(JwtAuth0::GetPayload a) }

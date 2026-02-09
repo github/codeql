@@ -1,4 +1,4 @@
-// semmle-extractor-options: --clang --clang_version 190000
+// semmle-extractor-options: --clang --clang_version 210000
 
 struct S {
     void f() {}
@@ -121,3 +121,11 @@ bool b_is_scoped_enum2 = __is_scoped_enum(int);
 
 bool b_is_trivially_relocatable1 = __is_trivially_relocatable(int);
 bool b_is_trivially_relocatable2 = __is_trivially_relocatable(void);
+
+struct S3{
+    S3(S3 &);
+    S3& operator=(S3&);
+};
+
+bool bok_is_bitwise_cloneable1 = __is_bitwise_cloneable(int);
+bool bok_is_bitwise_cloneable2 = __is_bitwise_cloneable(S3);

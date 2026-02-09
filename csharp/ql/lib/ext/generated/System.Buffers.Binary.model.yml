@@ -4,6 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReadBFloat16BigEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "ReadBFloat16LittleEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReadDoubleBigEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReadDoubleLittleEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReadHalfBigEndian", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
@@ -52,6 +54,8 @@ extensions:
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UInt32)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UInt64)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "ReverseEndianness", "(System.UIntPtr)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadBFloat16BigEndian", "(System.ReadOnlySpan<System.Byte>,System.Numerics.BFloat16)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadBFloat16LittleEndian", "(System.ReadOnlySpan<System.Byte>,System.Numerics.BFloat16)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadDoubleBigEndian", "(System.ReadOnlySpan<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadDoubleLittleEndian", "(System.ReadOnlySpan<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadHalfBigEndian", "(System.ReadOnlySpan<System.Byte>,System.Half)", "summary", "df-generated"]
@@ -78,6 +82,8 @@ extensions:
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadUInt64LittleEndian", "(System.ReadOnlySpan<System.Byte>,System.UInt64)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadUIntPtrBigEndian", "(System.ReadOnlySpan<System.Byte>,System.UIntPtr)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryReadUIntPtrLittleEndian", "(System.ReadOnlySpan<System.Byte>,System.UIntPtr)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteBFloat16BigEndian", "(System.Span<System.Byte>,System.Numerics.BFloat16)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteBFloat16LittleEndian", "(System.Span<System.Byte>,System.Numerics.BFloat16)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteDoubleBigEndian", "(System.Span<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteDoubleLittleEndian", "(System.Span<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteHalfBigEndian", "(System.Span<System.Byte>,System.Half)", "summary", "df-generated"]
@@ -104,6 +110,8 @@ extensions:
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteUInt64LittleEndian", "(System.Span<System.Byte>,System.UInt64)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteUIntPtrBigEndian", "(System.Span<System.Byte>,System.UIntPtr)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "TryWriteUIntPtrLittleEndian", "(System.Span<System.Byte>,System.UIntPtr)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "WriteBFloat16BigEndian", "(System.Span<System.Byte>,System.Numerics.BFloat16)", "summary", "df-generated"]
+      - ["System.Buffers.Binary", "BinaryPrimitives", "WriteBFloat16LittleEndian", "(System.Span<System.Byte>,System.Numerics.BFloat16)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "WriteDoubleBigEndian", "(System.Span<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "WriteDoubleLittleEndian", "(System.Span<System.Byte>,System.Double)", "summary", "df-generated"]
       - ["System.Buffers.Binary", "BinaryPrimitives", "WriteHalfBigEndian", "(System.Span<System.Byte>,System.Half)", "summary", "df-generated"]

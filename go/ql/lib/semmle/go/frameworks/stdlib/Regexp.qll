@@ -39,10 +39,10 @@ module Regexp {
     )
   }
 
-  private class DefaultRegexpPattern extends RegexpPattern::Range, DataFlow::ArgumentNode {
+  private class ExternalRegexpPattern extends RegexpPattern::Range, DataFlow::ArgumentNode {
     int strArg;
 
-    DefaultRegexpPattern() {
+    ExternalRegexpPattern() {
       exists(string kind |
         regexSinkKindInfo(kind, strArg) and
         sinkNode(this, kind)
@@ -61,12 +61,12 @@ module Regexp {
     }
   }
 
-  private class DefaultRegexpMatchFunction extends RegexpMatchFunction::Range, Function {
+  private class ExternalRegexpMatchFunction extends RegexpMatchFunction::Range {
     int patArg;
     int strArg;
 
-    DefaultRegexpMatchFunction() {
-      exists(DefaultRegexpPattern drp, string kind |
+    ExternalRegexpMatchFunction() {
+      exists(ExternalRegexpPattern drp, string kind |
         drp.getCall() = this.getACall() and
         sinkNode(drp, kind)
       |

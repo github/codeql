@@ -49,6 +49,11 @@ async def bomb(file_path):
     gzip.open(file_path)  # $ result=BAD
     gzip.GzipFile(file_path)  # $ result=BAD
 
+    from compression import zstd
+
+    zstd.open(file_path)  # $ result=BAD
+    zstd.ZstdFile(file_path).read()  # $ result=BAD
+
     import pandas
 
     pandas.read_csv(filepath_or_buffer=file_path)  # $ result=BAD

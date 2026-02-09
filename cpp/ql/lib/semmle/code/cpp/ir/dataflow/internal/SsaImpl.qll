@@ -53,7 +53,7 @@ private module SourceVariables {
      * the type of this source variable should be thought of as "pointer
      * to `getType()`".
      */
-    DataFlowType getType() {
+    Type getType() {
       if this.isGLValue()
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
@@ -940,6 +940,16 @@ module SsaCached {
     SsaImpl::phiHasInputFromBlock(phi, inp, bb)
   }
 
+  cached
+  predicate uncertainWriteDefinitionInput(Definition uncertain, Definition inp) {
+    SsaImpl::uncertainWriteDefinitionInput(uncertain, inp)
+  }
+
+  cached
+  predicate ssaDefReachesEndOfBlock(IRBlock bb, Definition def) {
+    SsaImpl::ssaDefReachesEndOfBlock(bb, def, _)
+  }
+
   predicate variableRead = SsaInput::variableRead/4;
 
   predicate variableWrite = SsaInput::variableWrite/4;
@@ -1051,12 +1061,12 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
   }
 
   private predicate guardChecksInstr(
-    IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, boolean branch,
+    IRGuards::Guards_v1::Guard g, IRGuards::GuardsInput::Expr instr, IRGuards::GuardValue gv,
     int indirectionIndex
   ) {
     exists(Node node |
       nodeHasInstruction(node, instr, indirectionIndex) and
-      guardChecksNode(g, node, branch, indirectionIndex)
+      guardChecksNode(g, node, gv.asBooleanValue(), indirectionIndex)
     )
   }
 
@@ -1064,8 +1074,15 @@ module BarrierGuardWithIntParam<guardChecksNodeSig/4 guardChecksNode> {
     DataFlowIntegrationInput::Guard g, SsaImpl::Definition def, IRGuards::GuardValue val,
     int indirectionIndex
   ) {
-    IRGuards::Guards_v1::ValidationWrapperWithState<int, guardChecksInstr/4>::guardChecksDef(g, def,
-      val, indirectionIndex)
+    exists(Instruction e |
+      IRGuards::Guards_v1::ParameterizedValidationWrapper<int, guardChecksInstr/4>::guardChecks(g,
+        e, val, indirectionIndex)
+    |
+      indirectionIndex = 0 and
+      def.(Definition).getAUse().getDef() = e
+      or
+      def.(Definition).getAnIndirectUse(indirectionIndex).getDef() = e
+    )
   }
 
   Node getABarrierNode(int indirectionIndex) {
@@ -1152,8 +1169,16 @@ class Definition extends SsaImpl::Definition {
   private Definition getAPhiInputOrPriorDefinition() {
     result = this.(PhiNode).getAnInput()
     or
-    SsaImpl::uncertainWriteDefinitionInput(this, result)
+    uncertainWriteDefinitionInput(this, result)
   }
+
+  /**
+   * Holds if this SSA definition is live at the end of basic block `bb`.
+   * That is, this definition reaches the end of basic block `bb`, at which
+   * point it is still live, without crossing another SSA definition of the
+   * same source variable.
+   */
+  predicate isLiveAtEndOfBlock(IRBlock bb) { ssaDefReachesEndOfBlock(bb, this) }
 
   /**
    * Gets a definition that ultimately defines this SSA definition and is

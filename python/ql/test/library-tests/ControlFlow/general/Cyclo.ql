@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
-from Function func
-select func.toString(), func.getMetrics().getCyclomaticComplexity()
+from FunctionMetrics func
+select func.toString(), func.getCyclomaticComplexity()

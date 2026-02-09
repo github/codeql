@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Web, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -167,6 +167,13 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.Forms.IBrowserFile File { get => throw null; }
                     public int FileCount { get => throw null; }
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> GetMultipleFiles(int maximumFileCount = default(int)) => throw null;
+                }
+                public class InputHidden : Microsoft.AspNetCore.Components.Forms.InputBase<string>
+                {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public InputHidden() => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set { } }
+                    protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage) => throw null;
                 }
                 public class InputNumber<TValue> : Microsoft.AspNetCore.Components.Forms.InputBase<TValue>
                 {
@@ -349,6 +356,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.Routing.NavLinkMatch Match { get => throw null; set { } }
                     protected override void OnInitialized() => throw null;
                     protected override void OnParametersSet() => throw null;
+                    protected virtual bool ShouldMatch(string uriAbsolute) => throw null;
                 }
                 public enum NavLinkMatch
                 {
@@ -493,6 +501,7 @@ namespace Microsoft
                     public interface IInternalWebJSInProcessRuntime
                     {
                         string InvokeJS(string identifier, string argsJson, Microsoft.JSInterop.JSCallResultType resultType, long targetInstanceId);
+                        virtual string InvokeJS(in Microsoft.JSInterop.Infrastructure.JSInvocationInfo invocationInfo) => throw null;
                     }
                 }
                 public static partial class JSComponentConfigurationExtensions

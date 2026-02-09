@@ -613,40 +613,32 @@ module JCAModel {
 
     module GetInstanceToInitToUseFlow = DataFlow::GlobalWithState<GetInstanceToInitToUseConfig>;
 
-    GetInstance getInstantiationFromUse(
-      Use use, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-    ) {
-      src.getNode().asExpr() = result and
-      sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
-      GetInstanceToInitToUseFlow::flowPath(src, sink)
+    GetInstance getInstantiationFromUse(Use use, DataFlow::Node src, DataFlow::Node sink) {
+      src.asExpr() = result and
+      sink.asExpr() = use.(MethodCall).getQualifier() and
+      GetInstanceToInitToUseFlow::flow(src, sink)
     }
 
-    GetInstance getInstantiationFromInit(
-      Init init, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-    ) {
-      src.getNode().asExpr() = result and
-      sink.getNode().asExpr() = init.(MethodCall).getQualifier() and
-      GetInstanceToInitToUseFlow::flowPath(src, sink)
+    GetInstance getInstantiationFromInit(Init init, DataFlow::Node src, DataFlow::Node sink) {
+      src.asExpr() = result and
+      sink.asExpr() = init.(MethodCall).getQualifier() and
+      GetInstanceToInitToUseFlow::flow(src, sink)
     }
 
-    Init getInitFromUse(
-      Use use, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-    ) {
-      src.getNode().asExpr() = result.(MethodCall).getQualifier() and
-      sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
-      GetInstanceToInitToUseFlow::flowPath(src, sink)
+    Init getInitFromUse(Use use, DataFlow::Node src, DataFlow::Node sink) {
+      src.asExpr() = result.(MethodCall).getQualifier() and
+      sink.asExpr() = use.(MethodCall).getQualifier() and
+      GetInstanceToInitToUseFlow::flow(src, sink)
     }
 
     predicate hasInit(Use use) { exists(getInitFromUse(use, _, _)) }
 
-    Use getAnIntermediateUseFromFinalUse(
-      Use final, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-    ) {
+    Use getAnIntermediateUseFromFinalUse(Use final, DataFlow::Node src, DataFlow::Node sink) {
       not final.isIntermediate() and
       result.isIntermediate() and
-      src.getNode().asExpr() = result.(MethodCall).getQualifier() and
-      sink.getNode().asExpr() = final.(MethodCall).getQualifier() and
-      GetInstanceToInitToUseFlow::flowPath(src, sink)
+      src.asExpr() = result.(MethodCall).getQualifier() and
+      sink.asExpr() = final.(MethodCall).getQualifier() and
+      GetInstanceToInitToUseFlow::flow(src, sink)
     }
   }
 

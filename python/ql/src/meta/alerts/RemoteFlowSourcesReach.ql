@@ -38,5 +38,5 @@ module RemoteFlowSourceReachConfig implements DataFlow::ConfigSig {
 module RemoteFlowSourceReachFlow = TaintTracking::Global<RemoteFlowSourceReachConfig>;
 
 from DataFlow::Node reachable
-where RemoteFlowSourceReachFlow::flow(_, reachable)
+where RemoteFlowSourceReachFlow::flowTo(reachable)
 select reachable, prettyNode(reachable)

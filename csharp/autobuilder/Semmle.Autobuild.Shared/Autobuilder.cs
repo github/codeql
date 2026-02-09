@@ -182,8 +182,16 @@ namespace Semmle.Autobuild.Shared
                 if (ret is not null)
                     return ret;
 
+                // Then look for language specific solution files, e.g. `.slnx` files
+                if (Options.Language.SolutionExtension is string solutionExtension)
+                {
+                    ret = FindFiles(solutionExtension, f => new Solution<TAutobuildOptions>(this, f, false))?.ToList();
+                    if (ret is not null)
+                        return ret;
+                }
+
                 // Finally look for language specific project files, e.g. `.csproj` files
-                ret = FindFiles(this.Options.Language.ProjectExtension, f => new Project<TAutobuildOptions>(this, f))?.ToList();
+                ret = FindFiles(Options.Language.ProjectExtension, f => new Project<TAutobuildOptions>(this, f))?.ToList();
                 return ret ?? new List<IProjectOrSolution>();
             });
 

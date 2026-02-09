@@ -1070,6 +1070,25 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
+    exists(int n, int nArgList, int nAttr, int nFunction |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nFunction = nAttr + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
+        or
+        result = e.getAttr(index - nArgList) and
+        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
+        or
+        index = nAttr and result = e.getFunction() and partialPredicateCall = "Function()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfCastExpr(CastExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr, int nTypeRepr |
       n = 0 and
@@ -1486,24 +1505,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfMacroBlockExpr(
-    MacroBlockExpr e, int index, string partialPredicateCall
-  ) {
-    exists(int n, int nStatement, int nTailExpr |
-      n = 0 and
-      nStatement = n + e.getNumberOfStatements() and
-      nTailExpr = nStatement + 1 and
-      (
-        none()
-        or
-        result = e.getStatement(index - n) and
-        partialPredicateCall = "Statement(" + (index - n).toString() + ")"
-        or
-        index = nStatement and result = e.getTailExpr() and partialPredicateCall = "TailExpr()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfMacroExpr(MacroExpr e, int index, string partialPredicateCall) {
     exists(int n, int nMacroCall |
       n = 0 and
@@ -1559,6 +1560,37 @@ private module Impl {
         index = nScrutinee and
         result = e.getMatchArmList() and
         partialPredicateCall = "MatchArmList()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMethodCallExpr(
+    MethodCallExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
+      n = 0 and
+      nArgList = n + 1 and
+      nAttr = nArgList + e.getNumberOfAttrs() and
+      nGenericArgList = nAttr + 1 and
+      nIdentifier = nGenericArgList + 1 and
+      nReceiver = nIdentifier + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
+        or
+        result = e.getAttr(index - nArgList) and
+        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
+        or
+        index = nAttr and
+        result = e.getGenericArgList() and
+        partialPredicateCall = "GenericArgList()"
+        or
+        index = nGenericArgList and
+        result = e.getIdentifier() and
+        partialPredicateCall = "Identifier()"
+        or
+        index = nIdentifier and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -2228,25 +2260,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nArgList, int nAttr, int nFunction |
-      n = 0 and
-      nArgList = n + 1 and
-      nAttr = nArgList + e.getNumberOfAttrs() and
-      nFunction = nAttr + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
-        or
-        result = e.getAttr(index - nArgList) and
-        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
-        or
-        index = nAttr and result = e.getFunction() and partialPredicateCall = "Function()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfExternBlock(
     ExternBlock e, int index, string partialPredicateCall
   ) {
@@ -2417,37 +2430,6 @@ private module Impl {
         index = nName and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
         or
         index = nTokenTree and result = e.getVisibility() and partialPredicateCall = "Visibility()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfMethodCallExpr(
-    MethodCallExpr e, int index, string partialPredicateCall
-  ) {
-    exists(int n, int nArgList, int nAttr, int nGenericArgList, int nIdentifier, int nReceiver |
-      n = 0 and
-      nArgList = n + 1 and
-      nAttr = nArgList + e.getNumberOfAttrs() and
-      nGenericArgList = nAttr + 1 and
-      nIdentifier = nGenericArgList + 1 and
-      nReceiver = nIdentifier + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getArgList() and partialPredicateCall = "ArgList()"
-        or
-        result = e.getAttr(index - nArgList) and
-        partialPredicateCall = "Attr(" + (index - nArgList).toString() + ")"
-        or
-        index = nAttr and
-        result = e.getGenericArgList() and
-        partialPredicateCall = "GenericArgList()"
-        or
-        index = nGenericArgList and
-        result = e.getIdentifier() and
-        partialPredicateCall = "Identifier()"
-        or
-        index = nIdentifier and result = e.getReceiver() and partialPredicateCall = "Receiver()"
       )
     )
   }
@@ -2656,7 +2638,7 @@ private module Impl {
   private Element getImmediateChildOfEnum(Enum e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
-      int nGenericParamList, int nName, int nVariantList, int nVisibility, int nWhereClause
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nVariantList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -2664,9 +2646,9 @@ private module Impl {
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
-      nVariantList = nName + 1 and
-      nVisibility = nVariantList + 1 and
+      nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nVariantList = nWhereClause + 1 and
       (
         none()
         or
@@ -2687,15 +2669,15 @@ private module Impl {
         or
         index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
         or
-        index = nName and result = e.getVariantList() and partialPredicateCall = "VariantList()"
-        or
-        index = nVariantList and
-        result = e.getVisibility() and
-        partialPredicateCall = "Visibility()"
+        index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
         or
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+        or
+        index = nWhereClause and
+        result = e.getVariantList() and
+        partialPredicateCall = "VariantList()"
       )
     )
   }
@@ -2862,18 +2844,18 @@ private module Impl {
 
   private Element getImmediateChildOfStruct(Struct e, int index, string partialPredicateCall) {
     exists(
-      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr, int nFieldList,
-      int nGenericParamList, int nName, int nVisibility, int nWhereClause
+      int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nFieldList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
       nDeriveMacroExpansion = nAttributeMacroExpansion + e.getNumberOfDeriveMacroExpansions() and
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
-      nFieldList = nAttr + 1 and
-      nGenericParamList = nFieldList + 1 and
+      nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
       nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nFieldList = nWhereClause + 1 and
       (
         none()
         or
@@ -2888,9 +2870,7 @@ private module Impl {
         result = e.getAttr(index - nDeriveMacroExpansion) and
         partialPredicateCall = "Attr(" + (index - nDeriveMacroExpansion).toString() + ")"
         or
-        index = nAttr and result = e.getFieldList() and partialPredicateCall = "FieldList()"
-        or
-        index = nFieldList and
+        index = nAttr and
         result = e.getGenericParamList() and
         partialPredicateCall = "GenericParamList()"
         or
@@ -2901,6 +2881,8 @@ private module Impl {
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+        or
+        index = nWhereClause and result = e.getFieldList() and partialPredicateCall = "FieldList()"
       )
     )
   }
@@ -2955,7 +2937,7 @@ private module Impl {
   private Element getImmediateChildOfUnion(Union e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nDeriveMacroExpansion, int nAttr,
-      int nGenericParamList, int nName, int nStructFieldList, int nVisibility, int nWhereClause
+      int nGenericParamList, int nName, int nVisibility, int nWhereClause, int nStructFieldList
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -2963,9 +2945,9 @@ private module Impl {
       nAttr = nDeriveMacroExpansion + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nName = nGenericParamList + 1 and
-      nStructFieldList = nName + 1 and
-      nVisibility = nStructFieldList + 1 and
+      nVisibility = nName + 1 and
       nWhereClause = nVisibility + 1 and
+      nStructFieldList = nWhereClause + 1 and
       (
         none()
         or
@@ -2986,17 +2968,15 @@ private module Impl {
         or
         index = nGenericParamList and result = e.getName() and partialPredicateCall = "Name()"
         or
-        index = nName and
-        result = e.getStructFieldList() and
-        partialPredicateCall = "StructFieldList()"
-        or
-        index = nStructFieldList and
-        result = e.getVisibility() and
-        partialPredicateCall = "Visibility()"
+        index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
         or
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+        or
+        index = nWhereClause and
+        result = e.getStructFieldList() and
+        partialPredicateCall = "StructFieldList()"
       )
     )
   }
@@ -3167,6 +3147,8 @@ private module Impl {
     or
     result = getImmediateChildOfBreakExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfCastExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
@@ -3217,8 +3199,6 @@ private module Impl {
     or
     result = getImmediateChildOfLiteralPat(e, index, partialAccessor)
     or
-    result = getImmediateChildOfMacroBlockExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfMacroExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroPat(e, index, partialAccessor)
@@ -3226,6 +3206,8 @@ private module Impl {
     result = getImmediateChildOfMacroTypeRepr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfNameRef(e, index, partialAccessor)
     or
@@ -3311,8 +3293,6 @@ private module Impl {
     or
     result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfExternBlock(e, index, partialAccessor)
     or
     result = getImmediateChildOfExternCrate(e, index, partialAccessor)
@@ -3324,8 +3304,6 @@ private module Impl {
     result = getImmediateChildOfMacroDef(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroRules(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfModule(e, index, partialAccessor)
     or

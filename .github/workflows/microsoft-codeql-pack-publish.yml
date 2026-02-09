@@ -2,6 +2,12 @@ name: Microsoft CodeQL Pack Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "When true, run publish with --dry-run (no changes pushed)"
+        type: boolean
+        required: false
+        default: true
 
 jobs:
   check-branch:
@@ -90,7 +96,11 @@ jobs:
 
         # Publish pack
         cat "$LANGUAGE/ql/lib/qlpack.yml"
-        gh codeql pack publish "$LANGUAGE/ql/lib"
+        DRY_RUN_FLAG=""
+        if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+          DRY_RUN_FLAG="--dry-run"
+        fi
+        gh codeql pack publish $DRY_RUN_FLAG "$LANGUAGE/ql/lib"
       env:
         LANGUAGE: ${{ matrix.language }}
         GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
@@ -100,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell', 'iac']
+        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell']
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -144,8 +154,12 @@ jobs:
         EOF
 
         # Publish pack
-        cat "$LANGUAGE/ql/src/qlpack.yml"
-        gh codeql pack publish "$LANGUAGE/ql/src"
+        cat "$LANGUAGE/ql/src/qlpack.yml"      
+        DRY_RUN_FLAG=""
+        if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+          DRY_RUN_FLAG="--dry-run"
+        fi
+        gh codeql pack publish $DRY_RUN_FLAG "$LANGUAGE/ql/src"
       env:
         LANGUAGE: ${{ matrix.language }}
         GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}

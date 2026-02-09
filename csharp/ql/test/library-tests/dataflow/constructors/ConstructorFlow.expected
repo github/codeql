@@ -1,27 +1,30 @@
 models
 edges
-| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:3:18:3:26 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:3:18:3:26 | [post] this access : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:9:23:9:23 | access to local variable c : C_no_ctor [field s1] : Object | Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | Constructors.cs:9:23:9:23 | access to local variable c : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | access to field s1 | provenance |  |
-| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | Constructors.cs:29:16:29:26 | [post] this access : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:25:25:25:25 | access to local variable c : C_with_ctor [field s1] : Object | Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | Constructors.cs:25:25:25:25 | access to local variable c : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | provenance |  |
+| Constructors.cs:29:16:29:26 | [post] this access : C_with_ctor [field s1] : Object | Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | access to field s1 | provenance |  |
 | Constructors.cs:41:26:41:26 | o : Object | Constructors.cs:41:38:41:38 | access to parameter o : Object | provenance |  |
 | Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | Constructors.cs:41:16:41:17 | this [Return] : C1 [field Obj] : Object | provenance |  |
 | Constructors.cs:41:38:41:38 | access to parameter o : Object | Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | provenance |  |
-| Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | provenance |  |
-| Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:46:31:46:38 | access to parameter o21param : Object | provenance |  |
+| Constructors.cs:44:18:44:19 | [post] this access : C2 [field Obj21] : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:44:18:44:19 | this access : C2 [parameter o21param] : Object | Constructors.cs:44:18:44:19 | [post] this access : C2 [field Obj21] : Object | provenance |  |
+| Constructors.cs:44:18:44:19 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | provenance |  |
+| Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:44:18:44:19 | this access : C2 [parameter o21param] : Object | provenance |  |
 | Constructors.cs:44:45:44:52 | o22param : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [parameter o22param] : Object | provenance |  |
-| Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | provenance |  |
 | Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:31:46:38 | access to parameter o21param : Object | provenance |  |
 | Constructors.cs:46:31:46:38 | access to parameter o21param : Object | Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | provenance |  |
 | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | provenance |  |
@@ -120,6 +123,7 @@ edges
 | Constructors.cs:144:14:144:15 | access to local variable r1 : R1 [property Obj1] : Object | Constructors.cs:144:14:144:20 | access to property Obj1 | provenance |  |
 | Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | Constructors.cs:145:14:145:20 | access to property Obj2 | provenance |  |
 nodes
+| Constructors.cs:3:18:3:26 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
 | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
 | Constructors.cs:9:23:9:23 | access to local variable c : C_no_ctor [field s1] : Object | semmle.label | access to local variable c : C_no_ctor [field s1] : Object |
@@ -133,6 +137,7 @@ nodes
 | Constructors.cs:25:25:25:25 | access to local variable c : C_with_ctor [field s1] : Object | semmle.label | access to local variable c : C_with_ctor [field s1] : Object |
 | Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | semmle.label | object creation of type C_with_ctor : C_with_ctor [field s1] : Object |
 | Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | semmle.label | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:29:16:29:26 | [post] this access : C_with_ctor [field s1] : Object | semmle.label | [post] this access : C_with_ctor [field s1] : Object |
 | Constructors.cs:29:16:29:26 | this [Return] : C_with_ctor [field s1] : Object | semmle.label | this [Return] : C_with_ctor [field s1] : Object |
 | Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | semmle.label | this : C_with_ctor [field s1] : Object |
 | Constructors.cs:33:18:33:19 | access to field s1 | semmle.label | access to field s1 |
@@ -141,8 +146,10 @@ nodes
 | Constructors.cs:41:26:41:26 | o : Object | semmle.label | o : Object |
 | Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | semmle.label | [post] this access : C1 [field Obj] : Object |
 | Constructors.cs:41:38:41:38 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Constructors.cs:44:18:44:19 | [post] this access : C2 [field Obj21] : Object | semmle.label | [post] this access : C2 [field Obj21] : Object |
 | Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | semmle.label | this [Return] : C2 [field Obj21] : Object |
 | Constructors.cs:44:18:44:19 | this [Return] : C2 [parameter o22param] : Object | semmle.label | this [Return] : C2 [parameter o22param] : Object |
+| Constructors.cs:44:18:44:19 | this access : C2 [parameter o21param] : Object | semmle.label | this access : C2 [parameter o21param] : Object |
 | Constructors.cs:44:28:44:35 | o21param : Object | semmle.label | o21param : Object |
 | Constructors.cs:44:45:44:52 | o22param : Object | semmle.label | o22param : Object |
 | Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | semmle.label | [post] this access : C2 [field Obj21] : Object |
@@ -249,6 +256,7 @@ nodes
 | Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | semmle.label | access to local variable r1 : R1 [property Obj2] : Object |
 | Constructors.cs:145:14:145:20 | access to property Obj2 | semmle.label | access to property Obj2 |
 subpaths
+| Constructors.cs:44:18:44:19 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | Constructors.cs:44:18:44:19 | [post] this access : C2 [field Obj21] : Object |
 | Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:57:54:57:55 | o2 : Object | Constructors.cs:59:13:59:14 | access to parameter o1 : Object | Constructors.cs:64:27:64:34 | access to parameter o22param : Object |
 | Constructors.cs:71:25:71:25 | access to local variable o : Object | Constructors.cs:41:26:41:26 | o : Object | Constructors.cs:41:16:41:17 | this [Return] : C1 [field Obj] : Object | Constructors.cs:71:18:71:26 | object creation of type C1 : C1 [field Obj] : Object |
 | Constructors.cs:79:25:79:27 | access to local variable o21 : Object | Constructors.cs:44:28:44:35 | o21param : Object | Constructors.cs:44:18:44:19 | this [Return] : C2 [field Obj21] : Object | Constructors.cs:79:18:79:33 | object creation of type C2 : C2 [field Obj21] : Object |

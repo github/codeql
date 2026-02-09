@@ -1,54 +1,126 @@
 models
-| 1 | Summary: <core::i64 as core::ops::arith::Neg>::neg; Argument[self]; ReturnValue; taint |
+| 1 | Summary: <_ as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
+| 2 | Summary: <_ as core::ops::arith::AddAssign>::add_assign; Argument[0].Reference; Argument[self].Reference; taint |
+| 3 | Summary: <_ as core::ops::arith::AddAssign>::add_assign; Argument[0]; Argument[self].Reference; taint |
+| 4 | Summary: <_ as core::ops::arith::AddAssign>::add_assign; Argument[self].Reference; Argument[self].Reference; taint |
+| 5 | Summary: <_ as core::ops::arith::Neg>::neg; Argument[self]; ReturnValue; taint |
+| 6 | Summary: <_ as core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |
 edges
-| main.rs:12:9:12:9 | a | main.rs:13:10:13:14 | ... + ... | provenance |  |
+| main.rs:12:9:12:9 | a | main.rs:13:10:13:10 | a | provenance |  |
 | main.rs:12:13:12:22 | source(...) | main.rs:12:9:12:9 | a | provenance |  |
-| main.rs:17:9:17:9 | a | main.rs:18:10:18:11 | - ... | provenance |  |
-| main.rs:17:9:17:9 | a | main.rs:18:11:18:11 | a | provenance |  |
-| main.rs:17:13:17:22 | source(...) | main.rs:17:9:17:9 | a | provenance |  |
-| main.rs:18:11:18:11 | a | main.rs:18:10:18:11 | - ... | provenance | MaD:1 |
-| main.rs:22:9:22:9 | a | main.rs:23:9:23:9 | b | provenance |  |
-| main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
-| main.rs:23:9:23:9 | b | main.rs:24:10:24:17 | b as i64 | provenance |  |
-| main.rs:37:13:37:13 | s | main.rs:38:23:38:29 | s[...] | provenance |  |
-| main.rs:37:17:37:26 | source(...) | main.rs:37:13:37:13 | s | provenance |  |
-| main.rs:38:13:38:18 | sliced [&ref] | main.rs:39:14:39:19 | sliced | provenance |  |
-| main.rs:38:22:38:29 | &... [&ref] | main.rs:38:13:38:18 | sliced [&ref] | provenance |  |
-| main.rs:38:23:38:29 | s[...] | main.rs:38:22:38:29 | &... [&ref] | provenance |  |
-| main.rs:53:13:53:15 | arr | main.rs:54:14:54:19 | arr[1] | provenance |  |
-| main.rs:53:19:53:28 | source(...) | main.rs:53:13:53:15 | arr | provenance |  |
-| main.rs:69:9:69:12 | [post] arr2 [element] | main.rs:70:14:70:17 | arr2 | provenance |  |
-| main.rs:69:19:69:28 | source(...) | main.rs:69:9:69:12 | [post] arr2 [element] | provenance |  |
+| main.rs:13:10:13:10 | a | main.rs:13:10:13:14 | ... + ... | provenance | MaD:1 |
+| main.rs:15:9:15:13 | mut b | main.rs:16:5:16:5 | b | provenance |  |
+| main.rs:15:17:15:26 | source(...) | main.rs:15:9:15:13 | mut b | provenance |  |
+| main.rs:16:5:16:5 | b | main.rs:17:10:17:10 | b | provenance | MaD:4 |
+| main.rs:20:10:20:19 | source(...) | main.rs:21:10:21:10 | c | provenance | MaD:2 |
+| main.rs:20:10:20:19 | source(...) | main.rs:21:10:21:10 | c | provenance | MaD:3 |
+| main.rs:25:9:25:9 | a | main.rs:26:11:26:11 | a | provenance |  |
+| main.rs:25:13:25:22 | source(...) | main.rs:25:9:25:9 | a | provenance |  |
+| main.rs:26:11:26:11 | a | main.rs:26:10:26:11 | - ... | provenance | MaD:5 |
+| main.rs:30:9:30:9 | a | main.rs:31:9:31:9 | b | provenance |  |
+| main.rs:30:13:30:22 | source(...) | main.rs:30:9:30:9 | a | provenance |  |
+| main.rs:31:9:31:9 | b | main.rs:32:10:32:17 | b as i64 | provenance |  |
+| main.rs:45:13:45:13 | s | main.rs:46:23:46:23 | s | provenance |  |
+| main.rs:45:13:45:13 | s | main.rs:46:23:46:29 | s[...] | provenance |  |
+| main.rs:45:17:45:26 | source(...) | main.rs:45:13:45:13 | s | provenance |  |
+| main.rs:46:13:46:18 | sliced [&ref] | main.rs:47:14:47:19 | sliced | provenance |  |
+| main.rs:46:22:46:29 | &... [&ref] | main.rs:46:13:46:18 | sliced [&ref] | provenance |  |
+| main.rs:46:23:46:23 | s | main.rs:46:23:46:29 | s[...] | provenance | MaD:6 |
+| main.rs:46:23:46:29 | s[...] | main.rs:46:22:46:29 | &... [&ref] | provenance |  |
+| main.rs:61:13:61:15 | arr | main.rs:62:14:62:16 | arr | provenance |  |
+| main.rs:61:19:61:28 | source(...) | main.rs:61:13:61:15 | arr | provenance |  |
+| main.rs:62:14:62:16 | arr | main.rs:62:14:62:19 | arr[1] | provenance | MaD:6 |
+| main.rs:77:9:77:12 | [post] arr2 [element] | main.rs:78:14:78:17 | arr2 | provenance |  |
+| main.rs:77:19:77:28 | source(...) | main.rs:77:9:77:12 | [post] arr2 [element] | provenance |  |
+| main.rs:98:14:98:47 | TupleExpr [tuple.0] | main.rs:98:14:98:49 | ... .0 | provenance |  |
+| main.rs:98:15:98:30 | source_string(...) | main.rs:98:14:98:47 | TupleExpr [tuple.0] | provenance |  |
+| main.rs:102:14:102:28 | source_tuple(...) | main.rs:102:14:102:30 | ... .0 | provenance |  |
+| main.rs:103:14:103:28 | source_tuple(...) | main.rs:103:14:103:30 | ... .1 | provenance |  |
+| main.rs:108:14:108:83 | TupleExpr [tuple.0, tuple.1] | main.rs:108:14:108:85 | ... .0 [tuple.1] | provenance |  |
+| main.rs:108:14:108:85 | ... .0 [tuple.1] | main.rs:108:14:108:87 | ... .1 | provenance |  |
+| main.rs:108:15:108:48 | TupleExpr [tuple.1] | main.rs:108:14:108:83 | TupleExpr [tuple.0, tuple.1] | provenance |  |
+| main.rs:108:32:108:47 | source_string(...) | main.rs:108:15:108:48 | TupleExpr [tuple.1] | provenance |  |
+| main.rs:114:14:114:64 | TupleExpr [tuple.0] | main.rs:114:14:114:66 | ... .0 | provenance |  |
+| main.rs:114:15:114:29 | source_tuple(...) | main.rs:114:14:114:64 | TupleExpr [tuple.0] | provenance |  |
+| main.rs:115:14:115:64 | TupleExpr [tuple.0] | main.rs:115:14:115:66 | ... .0 | provenance |  |
+| main.rs:115:14:115:66 | ... .0 | main.rs:115:14:115:68 | ... .0 | provenance |  |
+| main.rs:115:15:115:29 | source_tuple(...) | main.rs:115:14:115:64 | TupleExpr [tuple.0] | provenance |  |
+| main.rs:116:14:116:64 | TupleExpr [tuple.0] | main.rs:116:14:116:66 | ... .0 | provenance |  |
+| main.rs:116:14:116:66 | ... .0 | main.rs:116:14:116:68 | ... .1 | provenance |  |
+| main.rs:116:15:116:29 | source_tuple(...) | main.rs:116:14:116:64 | TupleExpr [tuple.0] | provenance |  |
 nodes
 | main.rs:12:9:12:9 | a | semmle.label | a |
 | main.rs:12:13:12:22 | source(...) | semmle.label | source(...) |
+| main.rs:13:10:13:10 | a | semmle.label | a |
 | main.rs:13:10:13:14 | ... + ... | semmle.label | ... + ... |
-| main.rs:17:9:17:9 | a | semmle.label | a |
-| main.rs:17:13:17:22 | source(...) | semmle.label | source(...) |
-| main.rs:18:10:18:11 | - ... | semmle.label | - ... |
-| main.rs:18:11:18:11 | a | semmle.label | a |
-| main.rs:22:9:22:9 | a | semmle.label | a |
-| main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
-| main.rs:23:9:23:9 | b | semmle.label | b |
-| main.rs:24:10:24:17 | b as i64 | semmle.label | b as i64 |
-| main.rs:37:13:37:13 | s | semmle.label | s |
-| main.rs:37:17:37:26 | source(...) | semmle.label | source(...) |
-| main.rs:38:13:38:18 | sliced [&ref] | semmle.label | sliced [&ref] |
-| main.rs:38:22:38:29 | &... [&ref] | semmle.label | &... [&ref] |
-| main.rs:38:23:38:29 | s[...] | semmle.label | s[...] |
-| main.rs:39:14:39:19 | sliced | semmle.label | sliced |
-| main.rs:53:13:53:15 | arr | semmle.label | arr |
-| main.rs:53:19:53:28 | source(...) | semmle.label | source(...) |
-| main.rs:54:14:54:19 | arr[1] | semmle.label | arr[1] |
-| main.rs:69:9:69:12 | [post] arr2 [element] | semmle.label | [post] arr2 [element] |
-| main.rs:69:19:69:28 | source(...) | semmle.label | source(...) |
-| main.rs:70:14:70:17 | arr2 | semmle.label | arr2 |
+| main.rs:15:9:15:13 | mut b | semmle.label | mut b |
+| main.rs:15:17:15:26 | source(...) | semmle.label | source(...) |
+| main.rs:16:5:16:5 | b | semmle.label | b |
+| main.rs:17:10:17:10 | b | semmle.label | b |
+| main.rs:20:10:20:19 | source(...) | semmle.label | source(...) |
+| main.rs:21:10:21:10 | c | semmle.label | c |
+| main.rs:25:9:25:9 | a | semmle.label | a |
+| main.rs:25:13:25:22 | source(...) | semmle.label | source(...) |
+| main.rs:26:10:26:11 | - ... | semmle.label | - ... |
+| main.rs:26:11:26:11 | a | semmle.label | a |
+| main.rs:30:9:30:9 | a | semmle.label | a |
+| main.rs:30:13:30:22 | source(...) | semmle.label | source(...) |
+| main.rs:31:9:31:9 | b | semmle.label | b |
+| main.rs:32:10:32:17 | b as i64 | semmle.label | b as i64 |
+| main.rs:45:13:45:13 | s | semmle.label | s |
+| main.rs:45:17:45:26 | source(...) | semmle.label | source(...) |
+| main.rs:46:13:46:18 | sliced [&ref] | semmle.label | sliced [&ref] |
+| main.rs:46:22:46:29 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:46:23:46:23 | s | semmle.label | s |
+| main.rs:46:23:46:29 | s[...] | semmle.label | s[...] |
+| main.rs:47:14:47:19 | sliced | semmle.label | sliced |
+| main.rs:61:13:61:15 | arr | semmle.label | arr |
+| main.rs:61:19:61:28 | source(...) | semmle.label | source(...) |
+| main.rs:62:14:62:16 | arr | semmle.label | arr |
+| main.rs:62:14:62:19 | arr[1] | semmle.label | arr[1] |
+| main.rs:77:9:77:12 | [post] arr2 [element] | semmle.label | [post] arr2 [element] |
+| main.rs:77:19:77:28 | source(...) | semmle.label | source(...) |
+| main.rs:78:14:78:17 | arr2 | semmle.label | arr2 |
+| main.rs:98:14:98:47 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:98:14:98:49 | ... .0 | semmle.label | ... .0 |
+| main.rs:98:15:98:30 | source_string(...) | semmle.label | source_string(...) |
+| main.rs:101:14:101:28 | source_tuple(...) | semmle.label | source_tuple(...) |
+| main.rs:102:14:102:28 | source_tuple(...) | semmle.label | source_tuple(...) |
+| main.rs:102:14:102:30 | ... .0 | semmle.label | ... .0 |
+| main.rs:103:14:103:28 | source_tuple(...) | semmle.label | source_tuple(...) |
+| main.rs:103:14:103:30 | ... .1 | semmle.label | ... .1 |
+| main.rs:108:14:108:83 | TupleExpr [tuple.0, tuple.1] | semmle.label | TupleExpr [tuple.0, tuple.1] |
+| main.rs:108:14:108:85 | ... .0 [tuple.1] | semmle.label | ... .0 [tuple.1] |
+| main.rs:108:14:108:87 | ... .1 | semmle.label | ... .1 |
+| main.rs:108:15:108:48 | TupleExpr [tuple.1] | semmle.label | TupleExpr [tuple.1] |
+| main.rs:108:32:108:47 | source_string(...) | semmle.label | source_string(...) |
+| main.rs:114:14:114:64 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:114:14:114:66 | ... .0 | semmle.label | ... .0 |
+| main.rs:114:15:114:29 | source_tuple(...) | semmle.label | source_tuple(...) |
+| main.rs:115:14:115:64 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:115:14:115:66 | ... .0 | semmle.label | ... .0 |
+| main.rs:115:14:115:68 | ... .0 | semmle.label | ... .0 |
+| main.rs:115:15:115:29 | source_tuple(...) | semmle.label | source_tuple(...) |
+| main.rs:116:14:116:64 | TupleExpr [tuple.0] | semmle.label | TupleExpr [tuple.0] |
+| main.rs:116:14:116:66 | ... .0 | semmle.label | ... .0 |
+| main.rs:116:14:116:68 | ... .1 | semmle.label | ... .1 |
+| main.rs:116:15:116:29 | source_tuple(...) | semmle.label | source_tuple(...) |
 subpaths
 testFailures
 #select
 | main.rs:13:10:13:14 | ... + ... | main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | $@ | main.rs:12:13:12:22 | source(...) | source(...) |
-| main.rs:18:10:18:11 | - ... | main.rs:17:13:17:22 | source(...) | main.rs:18:10:18:11 | - ... | $@ | main.rs:17:13:17:22 | source(...) | source(...) |
-| main.rs:24:10:24:17 | b as i64 | main.rs:22:13:22:22 | source(...) | main.rs:24:10:24:17 | b as i64 | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
-| main.rs:39:14:39:19 | sliced | main.rs:37:17:37:26 | source(...) | main.rs:39:14:39:19 | sliced | $@ | main.rs:37:17:37:26 | source(...) | source(...) |
-| main.rs:54:14:54:19 | arr[1] | main.rs:53:19:53:28 | source(...) | main.rs:54:14:54:19 | arr[1] | $@ | main.rs:53:19:53:28 | source(...) | source(...) |
-| main.rs:70:14:70:17 | arr2 | main.rs:69:19:69:28 | source(...) | main.rs:70:14:70:17 | arr2 | $@ | main.rs:69:19:69:28 | source(...) | source(...) |
+| main.rs:17:10:17:10 | b | main.rs:15:17:15:26 | source(...) | main.rs:17:10:17:10 | b | $@ | main.rs:15:17:15:26 | source(...) | source(...) |
+| main.rs:21:10:21:10 | c | main.rs:20:10:20:19 | source(...) | main.rs:21:10:21:10 | c | $@ | main.rs:20:10:20:19 | source(...) | source(...) |
+| main.rs:26:10:26:11 | - ... | main.rs:25:13:25:22 | source(...) | main.rs:26:10:26:11 | - ... | $@ | main.rs:25:13:25:22 | source(...) | source(...) |
+| main.rs:32:10:32:17 | b as i64 | main.rs:30:13:30:22 | source(...) | main.rs:32:10:32:17 | b as i64 | $@ | main.rs:30:13:30:22 | source(...) | source(...) |
+| main.rs:47:14:47:19 | sliced | main.rs:45:17:45:26 | source(...) | main.rs:47:14:47:19 | sliced | $@ | main.rs:45:17:45:26 | source(...) | source(...) |
+| main.rs:62:14:62:19 | arr[1] | main.rs:61:19:61:28 | source(...) | main.rs:62:14:62:19 | arr[1] | $@ | main.rs:61:19:61:28 | source(...) | source(...) |
+| main.rs:78:14:78:17 | arr2 | main.rs:77:19:77:28 | source(...) | main.rs:78:14:78:17 | arr2 | $@ | main.rs:77:19:77:28 | source(...) | source(...) |
+| main.rs:98:14:98:49 | ... .0 | main.rs:98:15:98:30 | source_string(...) | main.rs:98:14:98:49 | ... .0 | $@ | main.rs:98:15:98:30 | source_string(...) | source_string(...) |
+| main.rs:101:14:101:28 | source_tuple(...) | main.rs:101:14:101:28 | source_tuple(...) | main.rs:101:14:101:28 | source_tuple(...) | $@ | main.rs:101:14:101:28 | source_tuple(...) | source_tuple(...) |
+| main.rs:102:14:102:30 | ... .0 | main.rs:102:14:102:28 | source_tuple(...) | main.rs:102:14:102:30 | ... .0 | $@ | main.rs:102:14:102:28 | source_tuple(...) | source_tuple(...) |
+| main.rs:103:14:103:30 | ... .1 | main.rs:103:14:103:28 | source_tuple(...) | main.rs:103:14:103:30 | ... .1 | $@ | main.rs:103:14:103:28 | source_tuple(...) | source_tuple(...) |
+| main.rs:108:14:108:87 | ... .1 | main.rs:108:32:108:47 | source_string(...) | main.rs:108:14:108:87 | ... .1 | $@ | main.rs:108:32:108:47 | source_string(...) | source_string(...) |
+| main.rs:114:14:114:66 | ... .0 | main.rs:114:15:114:29 | source_tuple(...) | main.rs:114:14:114:66 | ... .0 | $@ | main.rs:114:15:114:29 | source_tuple(...) | source_tuple(...) |
+| main.rs:115:14:115:68 | ... .0 | main.rs:115:15:115:29 | source_tuple(...) | main.rs:115:14:115:68 | ... .0 | $@ | main.rs:115:15:115:29 | source_tuple(...) | source_tuple(...) |
+| main.rs:116:14:116:68 | ... .1 | main.rs:116:15:116:29 | source_tuple(...) | main.rs:116:14:116:68 | ... .1 | $@ | main.rs:116:15:116:29 | source_tuple(...) | source_tuple(...) |

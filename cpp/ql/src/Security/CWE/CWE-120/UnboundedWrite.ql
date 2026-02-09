@@ -122,7 +122,8 @@ module Config implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     // Block flow if the node is guarded by any <, <= or = operations.
-    node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode()
+    node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getABarrierNode() or
+    node = DataFlow::BarrierGuard<lessThanOrEqual/3>::getAnIndirectBarrierNode()
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

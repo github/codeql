@@ -5,12 +5,12 @@
 
 import go
 
-private class DefaultSystemCommandExecution extends SystemCommandExecution::Range,
+private class ExternalSystemCommandExecution extends SystemCommandExecution::Range,
   DataFlow::CallNode
 {
   DataFlow::ArgumentNode commandName;
 
-  DefaultSystemCommandExecution() {
+  ExternalSystemCommandExecution() {
     sinkNode(commandName, "command-injection") and
     this = commandName.getCall()
   }

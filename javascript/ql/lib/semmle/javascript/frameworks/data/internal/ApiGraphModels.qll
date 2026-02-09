@@ -492,6 +492,7 @@ private predicate invocationMatchesCallSiteFilter(
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
 
+overlay[local?]
 private class TypeModelUseEntry extends API::EntryPoint {
   private string type;
 
@@ -505,6 +506,7 @@ private class TypeModelUseEntry extends API::EntryPoint {
   API::Node getNodeForType(string type_) { type = type_ and result = this.getANode() }
 }
 
+overlay[local?]
 private class TypeModelDefEntry extends API::EntryPoint {
   private string type;
 

@@ -115,7 +115,7 @@ fn test_pin() {
         sink(*Pin::into_inner(pin1)); // $ hasValueFlow=40
         sink(*pin2); // $ hasValueFlow=40
         sink(*pin3); // $ hasValueFlow=40
-        sink(*pin4); // $ hasTaintFlow=40
+        sink(*pin4); // $ hasValueFlow=40
     }
 
     {
@@ -149,10 +149,29 @@ fn test_pin() {
     }
 }
 
+fn test_ord() {
+    let a = source(50);
+    let b = source(51);
+    let c = a.min(b);
+    sink(c); // $ hasValueFlow=50 hasValueFlow=51
+
+    let d = source(52);
+    let e = source(53);
+    let f = d.max(e);
+    sink(f); // $ hasValueFlow=52 hasValueFlow=53
+
+    let g = source(54);
+    let h = source(55);
+    let i = source(56);
+    let j = g.clamp(h, i);
+    sink(j); // $ hasValueFlow=54 hasValueFlow=55 hasValueFlow=56
+}
+
 fn main() {
     option_clone();
     result_clone();
     i64_clone();
     my_clone::wrapper_clone();
     test_pin();
+    test_ord();
 }

@@ -26,7 +26,7 @@ bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
 bazel_dep(name = "rules_kotlin", version = "2.1.3-codeql.1")
 bazel_dep(name = "gazelle", version = "0.40.0")
-bazel_dep(name = "rules_dotnet", version = "0.19.2-codeql.1")
+bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.66.0")
 bazel_dep(name = "zstd", version = "1.5.5.bcr.1")
@@ -172,7 +172,7 @@ http_archive(
 )
 
 dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
-dotnet.toolchain(dotnet_version = "9.0.300")
+dotnet.toolchain(dotnet_version = "10.0.100")
 use_repo(dotnet, "dotnet_toolchains")
 
 register_toolchains("@dotnet_toolchains//:all")
@@ -274,11 +274,11 @@ ripunzip_archive = use_repo_rule("//misc/ripunzip:ripunzip.bzl", "ripunzip_archi
 # go to https://github.com/GoogleChrome/ripunzip/releases to find latest version and corresponding sha256s
 ripunzip_archive(
     name = "ripunzip",
-    sha256_linux = "ee0e8a957687a5dc3a66b2a4b25883bf762df4c9c07f0651af527a32a405054b",
-    sha256_macos_arm = "8a88eea54eac232d162a72a42065e0429b82dbf4f05e9642915dff9d7a81f846",
-    sha256_macos_intel = "4457a18bfcc5feabe09f5ea3d1157128e07b4873392cb404a870e611924abf64",
-    sha256_windows = "66d0c1375301bf5ab815348048f43b110631d3fa7200acd50d50a8ed8655ca62",
-    version = "2.0.3",
+    sha256_linux = "71482d7a7e4ea9176d5596161c49250c34b136b157c45f632b1111323fbfc0de",
+    sha256_macos_arm = "604194ab13f0aba3972995d995f11002b8fc285c8170401fcd46655065df20c9",
+    sha256_macos_intel = "65367b94fd579d93d46f2d2595cc4c9a60cfcf497e3c824f9d1a7b80fa8bd38a",
+    sha256_windows = "ac3874075def2b9e5074a3b5945005ab082cc6e689e1de658da8965bc23e643e",
+    version = "2.0.4",
 )
 
 register_toolchains(

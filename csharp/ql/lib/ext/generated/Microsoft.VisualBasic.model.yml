@@ -10,11 +10,9 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.VisualBasic", "Collection", "Add", "(System.Object,System.String,System.Object,System.Object)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "Collection", "Contains", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "Contains", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "IndexOf", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "Remove", "(System.Int32)", "summary", "df-generated"]
-      - ["Microsoft.VisualBasic", "Collection", "Remove", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "Remove", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "RemoveAt", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.VisualBasic", "Collection", "get_Count", "()", "summary", "df-generated"]

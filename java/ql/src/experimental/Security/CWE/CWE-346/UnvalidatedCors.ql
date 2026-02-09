@@ -50,7 +50,7 @@ private Expr getAccessControlAllowOriginHeaderName() {
  * A taint-tracking configuration for flow from a source node to CorsProbableCheckAccess methods.
  */
 module CorsSourceReachesCheckConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { CorsOriginFlow::flow(source, _) }
+  predicate isSource(DataFlow::Node source) { CorsOriginFlow::flowFrom(source) }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(CorsProbableCheckAccess check).getAnArgument()
@@ -86,7 +86,7 @@ deprecated query predicate problems(
   string message1, DataFlow::Node sourceNode, string message2
 ) {
   CorsOriginFlow::flowPath(source, sink) and
-  not CorsSourceReachesCheckFlow::flow(sourceNode, _) and
+  not CorsSourceReachesCheckFlow::flowFrom(sourceNode) and
   sinkNode = sink.getNode() and
   message1 = "CORS header is being set using user controlled value $@." and
   sourceNode = source.getNode() and

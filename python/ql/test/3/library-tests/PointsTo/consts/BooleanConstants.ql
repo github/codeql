@@ -1,5 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 from ControlFlowNode f, Context c, boolean b
 where

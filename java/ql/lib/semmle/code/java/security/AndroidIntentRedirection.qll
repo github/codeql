@@ -35,6 +35,11 @@ private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
   DefaultIntentRedirectionSink() { sinkNode(this, "intent-redirection") }
 }
 
+/** An external sanitizer for Intent redirection vulnerabilities. */
+private class ExternalIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
+  ExternalIntentRedirectionSanitizer() { barrierNode(this, "intent-redirection") }
+}
+
 /**
  * A default sanitizer for `Intent` nodes dominated by calls to `ComponentName.getPackageName`
  * and `ComponentName.getClassName`. These are used to check whether the origin or destination

@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # 'credentials-username' sinks
+      - ["com.couchbase.client.java", "Cluster", true, "connect", "(String,String,String)", "", "Argument[1]", "credentials-username", "manual"]
+      - ["com.couchbase.client.java", "ClusterOptions", true, "clusterOptions", "(String,String)", "", "Argument[0]", "credentials-username", "manual"]
+      # 'credentials-password' sinks
+      - ["com.couchbase.client.java", "Cluster", true, "connect", "(String,String,String)", "", "Argument[2]", "credentials-password", "manual"]
+      - ["com.couchbase.client.java", "ClusterOptions", true, "clusterOptions", "(String,String)", "", "Argument[1]", "credentials-password", "manual"]
+      # 'sql-injection' sinks
+      - ["com.couchbase.client.java", "Cluster", true, "analyticsQuery", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "analyticsQuery", "(String,AnalyticsOptions)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "query", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "query", "(String,QueryOptions)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "queryStreaming", "(String,Consumer)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["com.couchbase.client.java", "Cluster", true, "queryStreaming", "(String,QueryOptions,Consumer)", "", "Argument[0]", "sql-injection", "manual"]

@@ -1,12 +1,14 @@
 /**
  * Provides database quality statistics that are reported by
  * `rust/telemetry/extractor-information`
- * and perhaps warned about by `rust/diagnostics/database-quality`.
+ * and perhaps warned about by `rust/diagnostic/database-quality`.
  */
 
 import rust
 import codeql.util.ReportStats
-import codeql.rust.internal.TypeInference as TypeInference
+import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+import codeql.rust.internal.typeinference.TypeInference as TypeInference
+import codeql.rust.internal.typeinference.Type
 
 /**
  * A file that is included in the quality statistics.
@@ -19,25 +21,26 @@ private class RelevantFile extends File {
 }
 
 module CallTargetStats implements StatsSig {
-  int getNumberOfOk() {
-    result =
-      count(CallExprBase c | c.getFile() instanceof RelevantFile and exists(c.getStaticTarget()))
+  /**
+   * A call-like expression that is relevant for call target statistics.
+   *
+   * Note that this also includes tuple struct instantiations and tuple
+   * variant instantiations.
+   */
+  private class RelevantInvocationExpr extends InvocationExpr {
+    RelevantInvocationExpr() {
+      this.getFile() instanceof RelevantFile and
+      not this instanceof CallExprImpl::DynamicCallExpr and
+      not this = any(Operation o | not o.isOverloaded(_, _, _)) and
+      not this = any(DerefExpr de | TypeInference::inferType(de.getExpr()) instanceof PtrType)
+    }
   }
 
-  private predicate isLambdaCall(CallExpr call) {
-    exists(Expr receiver | receiver = call.getFunction() |
-      // All calls to complex expressions and local variable accesses are lambda calls
-      receiver instanceof PathExpr implies receiver = any(Variable v).getAnAccess()
-    )
-  }
+  int getNumberOfOk() { result = count(RelevantInvocationExpr e | exists(e.getResolvedTarget())) }
 
-  additional predicate isNotOkCall(CallExprBase c) {
-    c.getFile() instanceof RelevantFile and
-    not exists(c.getStaticTarget()) and
-    not isLambdaCall(c)
-  }
+  additional predicate isNotOkCall(RelevantInvocationExpr e) { not exists(e.getResolvedTarget()) }
 
-  int getNumberOfNotOk() { result = count(CallExprBase c | isNotOkCall(c)) }
+  int getNumberOfNotOk() { result = count(RelevantInvocationExpr e | isNotOkCall(e)) }
 
   string getOkText() { result = "calls with call target" }
 

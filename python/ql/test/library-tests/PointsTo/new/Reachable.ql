@@ -1,5 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 import Util
 
 from ControlFlowNode f, Context ctx

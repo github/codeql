@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.HttpOverrides, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.HttpOverrides, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -25,6 +25,7 @@ namespace Microsoft
                 public string ForwardedPrefixHeaderName { get => throw null; set { } }
                 public string ForwardedProtoHeaderName { get => throw null; set { } }
                 public int? ForwardLimit { get => throw null; set { } }
+                public System.Collections.Generic.IList<System.Net.IPNetwork> KnownIPNetworks { get => throw null; }
                 public System.Collections.Generic.IList<Microsoft.AspNetCore.HttpOverrides.IPNetwork> KnownNetworks { get => throw null; }
                 public System.Collections.Generic.IList<System.Net.IPAddress> KnownProxies { get => throw null; }
                 public string OriginalForHeaderName { get => throw null; set { } }

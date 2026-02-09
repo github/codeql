@@ -6,6 +6,7 @@ class LabelableExpr(Expr):
     """
     The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
     """
+
     label: optional[Label] | child
 
 
@@ -13,15 +14,22 @@ class LoopingExpr(LabelableExpr):
     """
     The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
     """
+
     loop_body: optional["BlockExpr"] | child
 
 
-@annotate(Adt, replace_bases={AstNode: Item})
+@annotate(TypeItem, replace_bases={AstNode: Item})
 class _:
     """
-    An ADT (Abstract Data Type) definition, such as `Struct`, `Enum`, or `Union`.
+    An item that defines a type. Either a `Struct`, `Enum`, or `Union`.
     """
+
     derive_macro_expansions: list[MacroItems] | child | rust.detach
+    attrs: list["Attr"] | child
+    generic_param_list: optional["GenericParamList"] | child
+    name: optional["Name"] | child
+    visibility: optional["Visibility"] | child
+    where_clause: optional["WhereClause"] | child
 
 
 @annotate(Module)
@@ -95,8 +103,8 @@ class _:
     foo::bar;
     ```
     """
-    segment: _ | ql.db_table_name("path_segments_") | doc(
-        "last segment of this path")
+
+    segment: _ | ql.db_table_name("path_segments_") | doc("last segment of this path")
 
 
 @annotate(GenericArgList)
@@ -132,7 +140,9 @@ class PathExprBase(Expr):
     """
 
 
-@annotate(PathExpr, replace_bases={Expr: PathExprBase}, add_bases=(PathAstNode,), cfg=True)
+@annotate(
+    PathExpr, replace_bases={Expr: PathExprBase}, add_bases=(PathAstNode,), cfg=True
+)
 @qltest.test_with(Path)
 class _:
     """
@@ -144,6 +154,7 @@ class _:
     let z = <TypeRepr as Trait>::foo;
     ```
     """
+
     path: drop
 
 
@@ -195,6 +206,7 @@ class _:
     }
     ```
     """
+
     label: drop
 
 
@@ -224,45 +236,40 @@ class _:
     };
     ```
     """
+
     label: drop
     loop_body: drop
 
 
-class CallExprBase(Expr):
-    """
-    A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
-    """
-    arg_list: optional["ArgList"] | child
-    attrs: list["Attr"] | child
-    args: list["Expr"] | synth
-
-
-@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(CallExpr, cfg=True)
 class _:
     """
-    A function call expression. For example:
+    NOTE: Consider using `Call` instead, as that excludes call expressions that are
+    instantiations of tuple structs and tuple variants.
+
+    A call expression. For example:
     ```rust
     foo(42);
     foo::<u32, u64>(42);
     foo[0](42);
-    foo(1) = 4;
+    Option::Some(42); // tuple variant instantiation
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
+@annotate(MethodCallExpr, cfg=True)
 class _:
     """
+    NOTE: Consider using `MethodCall` instead, as that also includes calls to methods using
+    call syntax (such as `Foo::method(x)`), operation syntax (such as `x + y`), and
+    indexing syntax (such as `x[y]`).
+
     A method call expression. For example:
     ```rust
     x.foo(42);
     x.foo::<u32, u64>(42);
     ```
     """
-    arg_list: drop
-    attrs: drop
 
 
 @annotate(MatchArm)
@@ -303,8 +310,10 @@ class _:
     }
     ```
     """
+
     scrutinee: _ | doc(
-        "scrutinee (the expression being matched) of this match expression")
+        "scrutinee (the expression being matched) of this match expression"
+    )
 
 
 @annotate(ContinueExpr, cfg=True)
@@ -354,7 +363,7 @@ class _:
         0;
     };
     ```
-  """
+    """
 
 
 @annotate(ReturnExpr, cfg=True)
@@ -438,6 +447,7 @@ class _:
     Foo { a: m, .. } = second;
     ```
     """
+
     path: drop
 
 
@@ -585,6 +595,7 @@ class ArrayExpr(Expr):
     [1; 10];
     ```
     """
+
     exprs: list[Expr] | child
     attrs: list[Attr] | child
 
@@ -597,6 +608,7 @@ class ArrayListExpr(ArrayExpr):
     [1, 2, 3];
     ```
     """
+
     __cfg__ = True
 
 
@@ -608,6 +620,7 @@ class ArrayRepeatExpr(ArrayExpr):
     [1; 10];
     ```
     """
+
     __cfg__ = True
 
     repeat_operand: Expr | child
@@ -747,6 +760,7 @@ class _:
     }
     ```
     """
+
     path: drop
 
 
@@ -790,6 +804,7 @@ class _:
     }
     ```
     """
+
     path: drop
 
 
@@ -837,6 +852,7 @@ class _:
     };
     ```
     """
+
     path: drop
 
 
@@ -999,10 +1015,18 @@ class _:
     const X: i32 = 42;
     ```
     """
-    has_implementation: predicate | doc("this constant has an implementation") | desc("""
+
+    has_implementation: (
+        predicate
+        | doc("this constant has an implementation")
+        | desc(
+            """
       This is the same as `hasBody` for source code, but for library code (for which we always skip
       the body), this will hold when the body was present in the original code.
-    """) | rust.detach
+    """
+        )
+        | rust.detach
+    )
 
 
 @annotate(ConstArg)
@@ -1044,7 +1068,7 @@ class _:
     """
 
 
-@annotate(Enum, replace_bases={Item: None})  # still an Item via Adt
+@annotate(Enum, replace_bases={Item: None})
 class _:
     """
     An enum declaration.
@@ -1054,6 +1078,12 @@ class _:
     enum E {A, B(i32), C {x: i32}}
     ```
     """
+
+    attrs: drop
+    generic_param_list: drop
+    name: drop
+    visibility: drop
+    where_clause: drop
 
 
 @annotate(ExternBlock)
@@ -1152,6 +1182,7 @@ class _:
     }
     ```
     """
+
     label: drop
     loop_body: drop
 
@@ -1167,6 +1198,7 @@ class _:
     //              ^^^^^^^^^^^^^^^^^^^^^^^^^^
     ```
     """
+
 
 @annotate(FormatArgsArg, cfg=True)
 @qltest.test_with(FormatArgsExpr)
@@ -1191,6 +1223,7 @@ class _:
     format_args!("{x}, {y}");
     ```
     """
+
     formats: list["Format"] | child | synth
 
 
@@ -1285,6 +1318,7 @@ class _:
     enum E {}
     ```
     """
+
     attribute_macro_expansion: optional[MacroItems] | child | rust.detach
 
 
@@ -1367,6 +1401,7 @@ class _:
     println!("Hello, world!");
     ```
     """
+
     macro_call_expansion: optional[AstNode] | child | rust.detach
 
 
@@ -1403,27 +1438,6 @@ class _:
     }
     ```
     """
-
-
-class MacroBlockExpr(Expr):
-    """
-    A sequence of statements generated by a `MacroCall`. For example:
-    ```rust
-    macro_rules! my_macro {
-        () => {
-            let mut x = 40;
-            x += 2;
-            x
-        };
-    }
-
-    my_macro!();  // this macro expands to a sequence of statements (and an expression)
-    ```
-    """
-    __cfg__ = True
-
-    statements: list[Stmt] | child
-    tail_expr: optional[Expr] | child
 
 
 @annotate(MacroTypeRepr)
@@ -1536,6 +1550,7 @@ class ParamBase(AstNode):
     """
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
+
     attrs: list["Attr"] | child
     type_repr: optional["TypeRepr"] | child
 
@@ -1555,6 +1570,7 @@ class _:
     }
     ```
     """
+
     attrs: drop
     type_repr: drop
 
@@ -1609,6 +1625,7 @@ class _:
     - `widgets(..)`
     - `<T as Iterator>`
     """
+
     type_repr: optional["TypeRepr"] | child | rust.detach
     trait_type_repr: optional["PathTypeRepr"] | child | rust.detach
 
@@ -1783,6 +1800,7 @@ class _:
     }
     ```
     """
+
     attrs: drop
     type_repr: drop
 
@@ -1841,16 +1859,30 @@ class _:
     //  ^^^^^^^^^
     ```
     """
-    statements: _ | doc("statements of this statement list") | desc("""
+
+    statements: (
+        _
+        | doc("statements of this statement list")
+        | desc(
+            """
       The statements of a `StmtList` do not include any tail expression, which
       can be accessed with predicates such as `getTailExpr`.
-    """)
-    tail_expr: _ | doc("tail expression of this statement list") | desc("""
+    """
+        )
+    )
+    tail_expr: (
+        _
+        | doc("tail expression of this statement list")
+        | desc(
+            """
       The tail expression is the expression at the end of a block, that
       determines the block's value.
-    """)
+    """
+        )
+    )
 
-@annotate(Struct, replace_bases={Item: None})  # still an Item via Adt
+
+@annotate(Struct, replace_bases={Item: None})
 class _:
     """
     A Struct. For example:
@@ -1861,7 +1893,13 @@ class _:
     }
     ```
     """
+
     field_list: _ | ql.db_table_name("struct_field_lists_")
+    attrs: drop
+    generic_param_list: drop
+    name: drop
+    visibility: drop
+    where_clause: drop
 
 
 @annotate(TokenTree)
@@ -1926,7 +1964,7 @@ class _:
 @annotate(TupleField)
 class _:
     """
-    A field in a tuple struct or tuple enum variant.
+    A field in a tuple struct or tuple variant.
 
     For example:
     ```rust
@@ -1939,7 +1977,7 @@ class _:
 @annotate(TupleFieldList)
 class _:
     """
-    A list of fields in a tuple struct or tuple enum variant.
+    A list of fields in a tuple struct or tuple variant.
 
     For example:
     ```rust
@@ -2031,7 +2069,7 @@ class _:
     """
 
 
-@annotate(Union, replace_bases={Item: None})  # still an Item via Adt
+@annotate(Union, replace_bases={Item: None})
 class _:
     """
     A union declaration.
@@ -2041,6 +2079,12 @@ class _:
     union U { f1: u32, f2: f32 }
     ```
     """
+
+    attrs: drop
+    generic_param_list: drop
+    name: drop
+    visibility: drop
+    where_clause: drop
 
 
 @annotate(Use)
@@ -2158,6 +2202,7 @@ class _:
     }
     ```
     """
+
     label: drop
     loop_body: drop
 
@@ -2166,10 +2211,17 @@ class _:
 class _:
     param_list: drop
     attrs: drop
-    has_implementation: predicate | doc("this function has an implementation") | desc("""
+    has_implementation: (
+        predicate
+        | doc("this function has an implementation")
+        | desc(
+            """
       This is the same as `hasBody` for source code, but for library code (for which we always skip
       the body), this will hold when the body was present in the original code.
-    """) | rust.detach
+    """
+        )
+        | rust.detach
+    )
 
 
 @annotate(ClosureExpr, add_bases=[Callable])
@@ -2197,35 +2249,61 @@ class Format(Locatable):
     println!("Value {value:#width$.precision$}");
     ```
     """
+
     parent: FormatArgsExpr
     index: int
-    argument_ref: optional["FormatArgument"] | child | desc("""
+    argument_ref: (
+        optional["FormatArgument"]
+        | child
+        | desc(
+            """
         For example `name` and `0` in:
         ```rust
         let name = "Alice";
         println!("{name} in wonderland");
         println!("{0} in wonderland", name);
         ```
-    """)
-    width_argument: optional["FormatArgument"] | child | desc("""
+    """
+        )
+    )
+    width_argument: (
+        optional["FormatArgument"]
+        | child
+        | desc(
+            """
         For example `width` and `1` in:
         ```rust
         let width = 6;
         println!("{:width$}", PI);
         println!("{:1$}", PI, width);
         ```
-    """)
-    precision_argument: optional["FormatArgument"] | child | desc("""
+    """
+        )
+    )
+    precision_argument: (
+        optional["FormatArgument"]
+        | child
+        | desc(
+            """
         For example `prec` and `1` in:
         ```rust
         let prec = 6;
         println!("{:.prec$}", PI);
         println!("{:.1$}", PI, prec);
         ```
-    """)
+    """
+        )
+    )
 
 
-@synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)
+@synth.on_arguments(
+    parent=FormatArgsExpr,
+    index=int,
+    kind=int,
+    name=string,
+    positional=boolean,
+    offset=int,
+)
 @qltest.test_with(FormatArgsExpr)
 class FormatArgument(Locatable):
     """
@@ -2238,6 +2316,7 @@ class FormatArgument(Locatable):
     println!("Value {0:#1$.2$}", value, width, precision);
     ```
     """
+
     parent: Format
     variable: optional[FormatTemplateVariableAccess] | child
 

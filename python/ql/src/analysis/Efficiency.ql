@@ -5,8 +5,6 @@
 
 import python
 private import LegacyPointsTo
-import semmle.python.pointsto.PointsTo
-import semmle.python.pointsto.PointsToContext
 
 predicate trivial(ControlFlowNode f) {
   f.getNode() instanceof Parameter

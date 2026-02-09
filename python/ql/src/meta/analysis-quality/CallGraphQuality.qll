@@ -5,6 +5,7 @@
 
 import python
 import meta.MetaMetrics
+private import LegacyPointsTo
 
 newtype TTarget =
   TFunction(Function func) or
