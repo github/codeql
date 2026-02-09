@@ -822,16 +822,13 @@ void test(int x)
  * Positive AntiPattern 1 NOTE: historically considered positive but mktime checks year validity, needs re-assessment
  * Year field is modified but via an intermediary variable.
 */
-bool tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
+void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 {
 	struct tm tm_parsed;
-	bool timestamp_found = false;
 
 	struct tm tm_now;
 	time_t t_now;
 	int year;
-
-	timestamp_found = true;
 
 	/*
 	 * As the timestamp does not contain the year
@@ -1000,26 +997,6 @@ bool tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 		}
 	}
 
-	struct tm ltime(void)
-	{
-		SYSTEMTIME st;
-		struct tm tm;
-		bool isLeapYear;
-
-		GetLocalTime(&st);
-		tm.tm_sec=st.wSecond;
-		tm.tm_min=st.wMinute;
-		tm.tm_hour=st.wHour;
-		tm.tm_mday=st.wDay;
-		tm.tm_mon=st.wMonth-1;
-		tm.tm_year=(st.wYear>=1900?st.wYear-1900:0);
-
-		// Check for leap year, and adjust the date accordingly
-		isLeapYear = tm.tm_year % 4 == 0 && (tm.tm_year % 100 != 0 || tm.tm_year % 400 == 0);
-		tm.tm_mday = tm.tm_mon == 2 && tm.tm_mday == 29 && !isLeapYear ? 28 : tm.tm_mday;
-		return tm;
-	}
-
 /**
 * Negative Case - Anti-pattern 1: [year ±n, month, day]
 * Modification of SYSTEMTIME struct by copying from another struct, but no arithmetic is performed.
@@ -1038,29 +1015,6 @@ FMAPITimeToSysTimeW(LPCWSTR wszTime, SYSTEMTIME *psystime)
 	psystime->wHour = (WORD)_wtoi(wszTime+11);
 	psystime->wMinute = (WORD)_wtoi(wszTime+14);
 	return true;
-}
-
-/**
-* Negative Case - Anti-pattern 1: [year ±n, month, day]
-* Modification of SYSTEMTIME struct by copying from another struct, but no arithmetic is performed.
-*/
-bool
-ATime_HrGetSysTime(SYSTEMTIME *pst)
-{
-	// if (!FValidSysTime())
-	// 	{
-	// 	TrapSzTag("ATime cannot be converted to SYSTEMTIME", 0x1e14f5c3 /* tag_4fpxd */);
-	// 	CORgTag(E_FAIL, 0x6c373230 /* tag_l720 */);
-	// 	}
-	
-	// pst->wYear = static_cast<WORD>(m_lYear);
-	// pst->wMonth = static_cast<WORD>(m_lMonth);
-	// //pst->wDayOfWeek = ???;
-	// pst->wDay = static_cast<WORD>(m_lDay);
-	// pst->wHour = static_cast<WORD>(m_lHour);
-	// pst->wMinute = static_cast<WORD>(m_lMinute);
-	// pst->wSecond = static_cast<WORD>(m_lSecond);
-	// pst->wMilliseconds = 0;
 }
 
 /**
@@ -1413,7 +1367,7 @@ void constant_month_on_year_modification2(WORD year, WORD offset, WORD month){
 
 	
 	if(month++ > 12){
-		// some hueristics to detect a false positive here rely on variable names
+		// some heuristics to detect a false positive here rely on variable names
 		// which is often consistent in the wild. 
 		// This variant uses the variable names yeartmp and monthtmp
 		WORD yeartmp;

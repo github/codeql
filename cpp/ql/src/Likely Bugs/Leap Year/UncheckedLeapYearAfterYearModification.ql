@@ -12,8 +12,6 @@
 import cpp
 import LeapYear
 import semmle.code.cpp.controlflow.IRGuards
-import semmle.code.cpp.ir.IR
-import semmle.code.cpp.commons.DateTime
 
 /**
  * Functions whose operations should never be considered a
@@ -92,11 +90,11 @@ abstract class IgnorableOperation extends Expr { }
 class IgnorableExprRem extends IgnorableOperation instanceof RemExpr { }
 
 /**
- * Anything involving an operation with 10, 100, 1000, 10000 is often a sign of conversion
+ * An operation with 10, 100, 1000, 10000 as an operand is often a sign of conversion
  * or atoi.
  */
-class IgnorableExpr10MulipleComponent extends IgnorableOperation {
-  IgnorableExpr10MulipleComponent() {
+class IgnorableExpr10MultipleComponent extends IgnorableOperation {
+  IgnorableExpr10MultipleComponent() {
     this.(Operation).getAnOperand().getValue().toInt() in [10, 100, 1000, 10000]
     or
     exists(AssignOperation a | a.getRValue() = this |
@@ -106,7 +104,7 @@ class IgnorableExpr10MulipleComponent extends IgnorableOperation {
 }
 
 /**
- * Anything involving a sub expression with char literal 48, ignore as a likely string conversion
+ * An operation involving a sub expression with char literal 48, ignore as a likely string conversion
  * e.g., X - '0'
  */
 class IgnorableExpr48Mapping extends IgnorableOperation {
@@ -118,7 +116,7 @@ class IgnorableExpr48Mapping extends IgnorableOperation {
 }
 
 /**
- * A binary or arithemtic operation whereby one of the components is textual or a string.
+ * A binary or arithmetic operation whereby one of the components is textual or a string.
  */
 class IgnorableCharLiteralArithmetic extends IgnorableOperation {
   IgnorableCharLiteralArithmetic() {
@@ -170,7 +168,7 @@ predicate isLikelyConversionConstant(int c) {
 }
 
 /**
- * Some constants indicate conversion that are ignorable, e.g.,
+ * An `isLikelyConversionConstant` constant indicates conversion that is ignorable, e.g.,
  * julian to gregorian conversion or conversions from linux time structs
  * that start at 1900, etc.
  */
@@ -208,7 +206,7 @@ class OperationAsArgToIgnorableFunction extends IgnorableOperation {
 }
 
 /**
- * Literal OP literal means the result is constant/known
+ * A Literal OP literal means the result is constant/known
  * and the operation is basically ignorable (it's not a real operation but
  * probably one visual simplicity what it means).
  */
@@ -228,7 +226,7 @@ class IgnorableAssignmentBitwiseOperation extends IgnorableOperation instanceof 
 { }
 
 /**
- * Any arithmetic operation where one of the operands is a pointer or char type, ignore it
+ * An arithmetic operation where one of the operands is a pointer or char type, ignore it
  */
 class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
   IgnorablePointerOrCharArithmetic() {
@@ -267,7 +265,7 @@ class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
 }
 
 /**
- * An expression that is a candidate source for an dataflow configuration for an Operation that could flow to a Year field.
+ * Holds for an expression that is a operation that could flow to a Year field.
  */
 predicate isOperationSourceCandidate(Expr e) {
   not e instanceof IgnorableOperation and
@@ -397,8 +395,8 @@ module OperationToYearAssignmentConfig implements DataFlow::ConfigSig {
     // This is assuming a user would have done this all on one line though.
     // setting a variable for the conversion and passing that separately would be more difficult to track
     // considering this approach good enough for current observed false positives
-    exists(Call c, Expr arg |
-      isLeapYearCheckCall(c, arg) and arg.getAChild*() = [n.asExpr(), n.asIndirectExpr()]
+    exists(Expr arg |
+      isLeapYearCheckCall(_, arg) and arg.getAChild*() = [n.asExpr(), n.asIndirectExpr()]
     )
     or
     // If as the flow progresses, the value holding a dangerous operation result
@@ -503,9 +501,10 @@ class MonthEqualityCheckGuard extends GuardCondition, FinalMonthEqualityCheck { 
 bindingset[e]
 pragma[inline_late]
 predicate isControlledByMonthEqualityCheckNonFebruary(Expr e) {
-  exists(MonthEqualityCheckGuard monthGuard |
+  exists(MonthEqualityCheckGuard monthGuard, Expr compared |
     monthGuard.controls(e.getBasicBlock(), true) and
-    not monthGuard.getExprCompared().getValueText() = "2"
+    compared = monthGuard.getExprCompared() and
+    not compared.getValue().toInt() = 2
   )
 }
 
@@ -641,7 +640,7 @@ class LeapYearGuardCondition extends GuardCondition {
       LogicalAndExpr andExpr, LogicalOrExpr orExpr, GuardCondition div4Check,
       GuardCondition div100Check, GuardCondition div400Check, GuardValue gv
     |
-      // Cannonical case:
+      // canonical case:
       // form: `(year % 4 == 0) && (year % 100 != 0 || year % 400 == 0)`
       //    `!((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0))`
       //    `!(year % 4) && (year % 100 || !(year % 400))`
@@ -733,7 +732,7 @@ class LeapYearGuardCondition extends GuardCondition {
   Expr getYearSinkDiv400() { result = yearSinkDiv400 }
 
   /**
-   * The variable access that is used in all 3 components of the leap year check
+   * Gets the variable access that is used in all 3 components of the leap year check
    * e.g., see getYearSinkDiv4/100/400..
    * If a field access is used, the qualifier and the field access are both returned
    * in checked condition.
@@ -802,7 +801,7 @@ module CandidateConstantToDayOrMonthAssignmentFlow =
   DataFlow::Global<CandidateConstantToDayOrMonthAssignmentConfig>;
 
 /**
- * The value that the assignment resolves to doesn't represent February,
+ * Holds if value the assignment `a` resolves to (`dayOrMonthValSrcExpr`) doesn't represent February,
  * and/or if it represents a day, is a 'safe' day (meaning the 27th or prior).
  */
 bindingset[dayOrMonthValSrcExpr]
