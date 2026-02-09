@@ -571,6 +571,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       /** Gets the AST node with which this control flow node is associated. */
       abstract AstNode getAstNode();
 
+      /**
+       * INTERNAL: Do not use.
+       *
+       * Gets a tag such that the pair `(getAstNode(), getIdTag())` uniquely
+       * identifies this node.
+       */
+      abstract string getIdTag();
+
       /** Gets a textual representation of this node. */
       abstract string toString();
 
@@ -587,6 +595,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override AstNode getAstNode() { result = n }
 
+      override string getIdTag() { result = "before" }
+
       override string toString() {
         if postOrInOrder(n) then result = "Before " + n.toString() else result = n.toString()
       }
@@ -599,6 +609,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override AstNode getAstNode() { result = n }
 
+      override string getIdTag() { result = "ast" }
+
       override string toString() { result = n.toString() }
     }
 
@@ -610,6 +622,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override AstNode getAstNode() { result = n }
 
+      override string getIdTag() {
+        t.getValue() = true and result = "after-true"
+        or
+        t.getValue() = false and result = "after-false"
+      }
+
       override string toString() { result = "After " + n.toString() + " [" + t.toString() + "]" }
     }
 
@@ -619,6 +637,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       AfterNode() { this = TAfterNode(n) }
 
       override AstNode getAstNode() { result = n }
+
+      override string getIdTag() { result = "after" }
 
       override string toString() { result = "After " + n.toString() }
     }
@@ -633,6 +653,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       NormalSuccessor getSuccessorType() { additionalNode(n, tag, result) }
 
+      override string getIdTag() { result = "add. " + tag }
+
       override string toString() { result = tag + " " + n.toString() }
     }
 
@@ -644,6 +666,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       override Callable getEnclosingCallable() { result = c }
 
       override AstNode getAstNode() { result = c }
+
+      override string getIdTag() { result = "entry" }
 
       override string toString() { result = "Entry" }
     }
@@ -658,6 +682,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       override Callable getEnclosingCallable() { result = c }
 
       override AstNode getAstNode() { result = c }
+
+      override string getIdTag() {
+        normal = true and result = "exit-normal"
+        or
+        normal = false and result = "exit-exc"
+      }
 
       override string toString() {
         normal = true and result = "Normal Exit"
@@ -685,6 +715,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       override Callable getEnclosingCallable() { result = c }
 
       override AstNode getAstNode() { result = c }
+
+      override string getIdTag() { result = "exit" }
 
       override string toString() { result = "Exit" }
     }
