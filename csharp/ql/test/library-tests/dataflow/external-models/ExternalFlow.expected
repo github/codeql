@@ -32,10 +32,10 @@ models
 | 31 | Summary: My.Qltest; Library; false; GetValue; (); ; Argument[this].SyntheticField[X]; ReturnValue; value; dfc-generated |
 | 32 | Summary: My.Qltest; Library; false; MixedFlowArgs; (System.Object,System.Object); ; Argument[1]; ReturnValue; value; manual |
 | 33 | Summary: My.Qltest; Library; false; SetValue; (System.Object); ; Argument[0]; Argument[this].SyntheticField[X]; value; dfc-generated |
-| 34 | Summary: My.Qltest; TestExtensions+extension(Object); false; Method1; (System.Object); ; Argument[0]; ReturnValue; value; manual |
-| 35 | Summary: My.Qltest; TestExtensions+extension(Object); false; StaticMethod1; (System.Object); ; Argument[0]; ReturnValue; value; manual |
-| 36 | Summary: My.Qltest; TestExtensions+extension(Object); false; get_Property1; (System.Object); ; Argument[0].SyntheticField[TestExtensions.Property1]; ReturnValue; value; manual |
-| 37 | Summary: My.Qltest; TestExtensions+extension(Object); false; set_Property1; (System.Object,System.Object); ; Argument[1]; Argument[0].SyntheticField[TestExtensions.Property1]; value; manual |
+| 34 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; Method1; (System.Object); ; Argument[0]; ReturnValue; value; manual |
+| 35 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; StaticMethod1; (System.Object); ; Argument[0]; ReturnValue; value; manual |
+| 36 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; get_Property1; (System.Object); ; Argument[0].SyntheticField[TestExtensions.Property1]; ReturnValue; value; manual |
+| 37 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; set_Property1; (System.Object,System.Object); ; Argument[1]; Argument[0].SyntheticField[TestExtensions.Property1]; value; manual |
 | 38 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; GenericMethod1; (T); ; Argument[0]; ReturnValue; value; manual |
 | 39 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; GenericStaticMethod1; (T); ; Argument[0]; ReturnValue; value; manual |
 | 40 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; get_GenericProperty1; (T); ; Argument[0].SyntheticField[TestExtensions.GenericProperty1]; ReturnValue; value; manual |
