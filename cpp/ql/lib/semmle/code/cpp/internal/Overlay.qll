@@ -21,7 +21,7 @@ private string getLocationFilePath(@location_default loc) {
  * Gets the file path for an element with a single location.
  */
 overlay[local]
-private string getSingleLocationFilePath(@element e) {
+string getSingleLocationFilePath(@element e) {
   exists(@location_default loc |
     var_decls(e, _, _, _, loc)
     or
@@ -34,6 +34,38 @@ private string getSingleLocationFilePath(@element e) {
     macroinvocations(e, _, loc, _)
     or
     preprocdirects(e, _, loc)
+    or
+    diagnostics(e, _, _, _, _, loc)
+    or
+    usings(e, _, loc, _)
+    or
+    static_asserts(e, _, _, loc, _)
+    or
+    derivations(e, _, _, _, loc)
+    or
+    frienddecls(e, _, _, loc)
+    or
+    comments(e, _, loc)
+    or
+    exprs(e, _, loc)
+    or
+    stmts(e, _, loc)
+    or
+    initialisers(e, _, _, loc)
+    or
+    attributes(e, _, _, _, loc)
+    or
+    attribute_args(e, _, _, _, loc)
+    or
+    namequalifiers(e, _, _, loc)
+    or
+    enumconstants(e, _, _, _, _, loc)
+    or
+    type_mentions(e, _, loc, _)
+    or
+    lambda_capture(e, _, _, _, _, _, loc)
+    or
+    concept_templates(e, _, loc)
   |
     result = getLocationFilePath(loc)
   )
@@ -43,7 +75,7 @@ private string getSingleLocationFilePath(@element e) {
  * Gets the file path for an element with potentially multiple locations.
  */
 overlay[local]
-private string getMultiLocationFilePath(@element e) {
+string getMultiLocationFilePath(@element e) {
   exists(@location_default loc |
     var_decls(_, e, _, _, loc)
     or
