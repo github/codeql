@@ -2669,6 +2669,21 @@ private predicate inferMethodCallType =
  * "calls" to tuple variants and tuple structs.
  */
 private module NonMethodResolution {
+  pragma[nomagic]
+  private predicate traitFunctionResolutionDependsOnArgument0(
+    TraitItemNode trait, NonMethodFunction traitFunction, FunctionPosition pos, ImplItemNode impl,
+    NonMethodFunction implFunction, TypePath path, TypeParameter traitTp
+  ) {
+    implFunction = impl.getAnAssocItem() and
+    implFunction.implements(traitFunction) and
+    FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos, path, traitTp) and
+    (
+      traitTp = TSelfTypeParameter(trait)
+      or
+      FunctionOverloading::functionResolutionDependsOnArgument(impl, implFunction, traitTp, pos)
+    )
+  }
+
   /**
    * Holds if resolving the function `implFunction` in `impl` requires inspecting
    * the type of applied _arguments_ or possibly knowing the return type.
@@ -2685,13 +2700,44 @@ private module NonMethodResolution {
     TraitItemNode trait, NonMethodFunction traitFunction, FunctionPosition pos, ImplItemNode impl,
     NonMethodFunction implFunction, TypePath path, TypeParameter traitTp
   ) {
-    implFunction = impl.getAnAssocItem() and
-    implFunction.implements(traitFunction) and
-    FunctionOverloading::traitTypeParameterOccurrence(trait, traitFunction, _, pos, path, traitTp) and
-    (
-      traitTp = TSelfTypeParameter(trait)
+    traitFunctionResolutionDependsOnArgument0(trait, traitFunction, pos, impl, implFunction, path,
+      traitTp) and
+    // Exclude functions where we cannot resolve all relevant type mentions; this allows
+    // for blanket implementations to be applied in those cases
+    forall(TypeParameter traitTp0 |
+      traitFunctionResolutionDependsOnArgument0(trait, traitFunction, _, impl, implFunction, _,
+        traitTp0)
+    |
+      exists(FunctionPosition pos0, TypePath path0 |
+        traitFunctionResolutionDependsOnArgument0(trait, traitFunction, pos0, impl, implFunction,
+          path0, traitTp0) and
+        exists(getAssocFunctionTypeInclNonMethodSelfAt(implFunction, impl, pos0, path0))
+      )
+    )
+  }
+
+  /**
+   * Holds if `f` inside `i` either implements trait function `traitFunction` inside `trait`
+   * or is equal to `traitFunction`, and the type of `f` at `pos` and `path` is `t`, which
+   * corresponds to the `Self` type parameter of `trait`.
+   */
+  pragma[nomagic]
+  private predicate traitFunctionHasSelfType(
+    TraitItemNode trait, NonMethodFunction traitFunction, FunctionPosition pos, TypePath path,
+    Type t, ImplOrTraitItemNode i, NonMethodFunction f
+  ) {
+    exists(ImplItemNode impl, NonMethodFunction implFunction, AssocFunctionType aft |
+      traitFunctionResolutionDependsOnArgument(trait, traitFunction, pos, impl, implFunction, path,
+        TSelfTypeParameter(trait)) and
+      aft.appliesTo(f, i, pos) and
+      t = aft.getTypeAt(path)
+    |
+      i = trait and
+      f = traitFunction
       or
-      FunctionOverloading::functionResolutionDependsOnArgument(impl, implFunction, traitTp, pos)
+      i = impl and
+      f = implFunction and
+      not BlanketImplementation::isBlanketLike(i, _, _)
     )
   }
 
@@ -2848,10 +2894,25 @@ private module NonMethodResolution {
     predicate hasNoCompatibleNonBlanketTarget() {
       this.resolveCallTargetBlanketLikeCand(_, _, _, _) and
       not exists(this.resolveCallTargetViaPathResolution()) and
-      forall(ImplOrTraitItemNode i, Function f |
-        this.(NonMethodArgsAreInstantiationsOfNonBlanketInput::Call).hasTargetCand(i, f)
-      |
+      forall(ImplOrTraitItemNode i, Function f | f = this.resolveCallTargetNonBlanketCand(i) |
         NonMethodArgsAreInstantiationsOfNonBlanket::argsAreNotInstantiationsOf(this, i, f)
+      ) and
+      (
+        not this.hasTraitResolved(_, _)
+        or
+        exists(
+          TraitItemNode trait, NonMethodFunction resolved, FunctionPosition pos, TypePath path,
+          Type t
+        |
+          this.(NonMethodArgsAreInstantiationsOfNonBlanketInput::Call)
+              .hasTraitResolvedSelfType(trait, resolved, pos, path, t)
+        |
+          forall(ImplOrTraitItemNode i, Function f |
+            traitFunctionHasSelfType(trait, resolved, pos, path, t, i, f)
+          |
+            NonMethodArgsAreInstantiationsOfNonBlanket::argsAreNotInstantiationsOf(this, i, f)
+          )
+        )
       )
     }
 
@@ -2994,29 +3055,30 @@ private module NonMethodResolution {
         result = getArgType(this, pos, path, _)
       }
 
+      /**
+       * Holds if this call is of the form `Trait::function(args)`, and the type at `pos` and
+       * `path` matches the `Self` type parameter of `Trait`.
+       */
+      pragma[nomagic]
+      predicate hasTraitResolvedSelfType(
+        TraitItemNode trait, NonMethodFunction function, FunctionPosition pos, TypePath path, Type t
+      ) {
+        this.hasTraitResolved(trait, function) and
+        FunctionOverloading::traitTypeParameterOccurrence(trait, function, _, pos, path,
+          TSelfTypeParameter(trait)) and
+        t = substituteLookupTraits(this.getArgType(pos, path)) and
+        t != TUnknownType()
+      }
+
       predicate hasTargetCand(ImplOrTraitItemNode i, Function f) {
         f = this.resolveCallTargetNonBlanketCand(i)
         or
-        exists(TraitItemNode trait, NonMethodFunction resolved, ImplItemNode i1, Function f1 |
-          this.hasTraitResolved(trait, resolved) and
-          traitFunctionResolutionDependsOnArgument(trait, resolved, _, i1, f1, _, _) and
-          not BlanketImplementation::isBlanketLike(i, _, _)
+        exists(
+          TraitItemNode trait, NonMethodFunction resolved, FunctionPosition pos, TypePath path,
+          Type t
         |
-          f = resolved and
-          i = trait
-          or
-          f = f1 and
-          i = i1 and
-          // Exclude functions where we cannot resolve all relevant type mentions; this allows
-          // for blanket implementations to be applied in those cases
-          forall(TypeParameter traitTp |
-            traitFunctionResolutionDependsOnArgument(trait, resolved, _, i1, f1, _, traitTp)
-          |
-            exists(FunctionPosition pos, TypePath path |
-              traitFunctionResolutionDependsOnArgument(trait, resolved, pos, i1, f1, path, traitTp) and
-              exists(getAssocFunctionTypeInclNonMethodSelfAt(f, i, pos, path))
-            )
-          )
+          this.hasTraitResolvedSelfType(trait, resolved, pos, path, t) and
+          traitFunctionHasSelfType(trait, resolved, pos, path, t, i, f)
         )
       }
     }
