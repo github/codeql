@@ -5,7 +5,7 @@
  *              operations are excluded.
  * @kind metric
  * @id rust/summary/query-sink-counts
- * @tags summary
+ * @tags summary telemetry
  */
 
 import rust
