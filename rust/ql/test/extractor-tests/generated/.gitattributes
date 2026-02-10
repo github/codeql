@@ -127,7 +127,6 @@
 /StructPatFieldList/gen_struct_pat_field_list.rs linguist-generated
 /TokenTree/gen_token_tree.rs linguist-generated
 /Trait/gen_trait.rs linguist-generated
-/TraitAlias/gen_trait_alias.rs linguist-generated
 /TryExpr/gen_try_expr.rs linguist-generated
 /TupleExpr/gen_tuple_expr.rs linguist-generated
 /TupleField/gen_tuple_field.rs linguist-generated
