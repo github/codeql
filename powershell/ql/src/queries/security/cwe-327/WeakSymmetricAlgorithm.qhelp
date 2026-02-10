@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Symmetric encryption algorithms are used to protect data confidentiality. Using broken
+      or weak cryptographic algorithms can compromise the security of encrypted data.
+    </p>
+    <p>
+      The DES, Triple DES (3DES), RC2, and Rijndael algorithms are considered weak or deprecated:
+    </p>
+    <ul>
+      <li>DES has a 56-bit key which is too short and can be broken with modern hardware.</li>
+      <li>Triple DES (3DES) is deprecated due to its small block size (64 bits) which makes it vulnerable to birthday attacks.</li>
+      <li>RC2 has known weaknesses and uses variable key sizes that may not provide adequate security.</li>
+      <li>Rijndael is the original name for AES but should be accessed through the AES class for standardized behavior.</li>
+    </ul>
+  </overview>
+  <recommendation>
+    <p>
+      Use the AES (Advanced Encryption Standard) algorithm with a key size of 128, 192, or 256 bits.
+      AES is the current standard for symmetric encryption and is considered secure when used correctly.
+    </p>
+  </recommendation>
+  
+  <references>
+    <li>NIST, FIPS 197: <a href="https://csrc.nist.gov/publications/detail/fips/197/final">Advanced Encryption Standard (AES)</a>.</li>
+    <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+    <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#rule---use-strong-approved-authenticated-encryption">Rule - Use strong approved cryptographic algorithms</a>.</li>
+    <li>CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>.</li>
+  </references>
+</qhelp>

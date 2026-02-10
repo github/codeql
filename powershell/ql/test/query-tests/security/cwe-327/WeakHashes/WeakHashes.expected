@@ -1,0 +1,8 @@
+| test.ps1:2:8:2:51 | Call to create | Use of weak cryptographic hash algorithm: md5. |
+| test.ps1:6:16:6:79 | Call to new-object | Use of weak cryptographic hash algorithm: md5. |
+| test.ps1:10:9:10:53 | Call to create | Use of weak cryptographic hash algorithm: sha1. |
+| test.ps1:14:17:14:81 | Call to new-object | Use of weak cryptographic hash algorithm: sha1. |
+| test.ps1:18:6:18:71 | Call to createfromname | Use of weak cryptographic hash algorithm: md5. |
+| test.ps1:19:6:19:100 | Call to createfromname | Use of weak cryptographic hash algorithm: md5. |
+| test.ps1:20:6:20:72 | Call to createfromname | Use of weak cryptographic hash algorithm: sha1. |
+| test.ps1:21:6:21:101 | Call to createfromname | Use of weak cryptographic hash algorithm: sha1. |

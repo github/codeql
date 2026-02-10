@@ -1,0 +1,20 @@
+edges
+| Test.ps1:7:1:7:8 | badMode | Test.ps1:9:20:9:27 | badMode | provenance |  |
+| Test.ps1:7:12:7:57 | ecb | Test.ps1:7:1:7:8 | badMode | provenance |  |
+| Test.ps1:9:20:9:27 | badMode | Test.ps1:9:1:9:11 | [post] aesManaged | provenance |  |
+| Test.ps1:12:20:12:65 | ecb | Test.ps1:12:1:12:11 | [post] aesManaged | provenance |  |
+| Test.ps1:16:20:16:24 | ecb | Test.ps1:16:1:16:11 | [post] aesManaged | provenance |  |
+nodes
+| Test.ps1:7:1:7:8 | badMode | semmle.label | badMode |
+| Test.ps1:7:12:7:57 | ecb | semmle.label | ecb |
+| Test.ps1:9:1:9:11 | [post] aesManaged | semmle.label | [post] aesManaged |
+| Test.ps1:9:20:9:27 | badMode | semmle.label | badMode |
+| Test.ps1:12:1:12:11 | [post] aesManaged | semmle.label | [post] aesManaged |
+| Test.ps1:12:20:12:65 | ecb | semmle.label | ecb |
+| Test.ps1:16:1:16:11 | [post] aesManaged | semmle.label | [post] aesManaged |
+| Test.ps1:16:20:16:24 | ecb | semmle.label | ecb |
+subpaths
+#select
+| Test.ps1:9:1:9:11 | [post] aesManaged | Test.ps1:7:12:7:57 | ecb | Test.ps1:9:1:9:11 | [post] aesManaged |  |
+| Test.ps1:12:1:12:11 | [post] aesManaged | Test.ps1:12:20:12:65 | ecb | Test.ps1:12:1:12:11 | [post] aesManaged |  |
+| Test.ps1:16:1:16:11 | [post] aesManaged | Test.ps1:16:20:16:24 | ecb | Test.ps1:16:1:16:11 | [post] aesManaged |  |

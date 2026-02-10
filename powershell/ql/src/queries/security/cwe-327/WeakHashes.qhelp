@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Cryptographic hash functions are used to verify data integrity and for password storage.
+      Using weak or broken cryptographic hash algorithms can compromise security.
+    </p>
+    <p>
+      The MD5 and SHA-1 hash algorithms are considered cryptographically weak and should not
+      be used for security-sensitive purposes. MD5 has known collision vulnerabilities, and
+      SHA-1 has been demonstrated to be vulnerable to practical collision attacks.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Use a strong cryptographic hash algorithm from the SHA-2 family, such as SHA-256, SHA-384,
+      or SHA-512. For password hashing, consider using a specialized password hashing function
+      like PBKDF2, bcrypt, or Argon2.
+    </p>
+  </recommendation>
+ 
+  <references>
+    <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+    <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a>.</li>
+    <li>CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>.</li>
+    <li>CWE-328: <a href="https://cwe.mitre.org/data/definitions/328.html">Use of Weak Hash</a>.</li>
+  </references>
+</qhelp>
