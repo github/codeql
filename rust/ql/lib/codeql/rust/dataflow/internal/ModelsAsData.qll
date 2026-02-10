@@ -90,6 +90,15 @@ extensible predicate summaryModel(
 );
 
 /**
+ * Holds if a neutral model exists for the function with canonical path `path`.  The only
+ * effect of a neutral model is to prevent generated and inherited models of the corresponding
+ * `kind` (`source`, `sink` or `summary`) from being applied to that function.
+ */
+extensible predicate neutralModel(
+  string path, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
  *
  * This predicate should only be used in tests.
@@ -109,6 +118,11 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     summaryModel(path, input, output, kind, _, madId) and
     model = "Summary: " + path + "; " + input + "; " + output + "; " + kind
   )
+  or
+  exists(string path, string kind |
+    neutralModel(path, kind, _, madId) and
+    model = "Neutral: " + path + "; " + kind
+  )
 }
 
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
@@ -124,13 +138,22 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
       summaryModel(path, input_, output_, kind, p, madId) and
       f.getCanonicalPath() = path
     |
-      this = f and isExact_ = true and p_ = p
+      this = f and
+      isExact_ = true and
+      p_ = p and
+      // Do not apply generated models where there is a neutral model
+      not (
+        p_.isGenerated() and
+        neutralModel(path, "summary", _, _)
+      )
       or
       this.implements(f) and
       isExact_ = false and
       // making inherited models generated means that source code definitions and
       // exact generated models take precedence
-      p_ = "hq-generated"
+      p_ = "hq-generated" and
+      // Do not apply inherited models where there is a neutral model
+      not neutralModel(path, "summary", _, _)
     )
   }
 
@@ -158,6 +181,11 @@ private class FlowSourceFromModel extends FlowSource::Range {
     exists(QlBuiltins::ExtensionId madId |
       sourceModel(path, output, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
+    ) and
+    // Only apply generated models when no neutral model exists
+    not (
+      provenance.isGenerated() and
+      neutralModel(path, "source", _, _)
     )
   }
 }
@@ -174,6 +202,11 @@ private class FlowSinkFromModel extends FlowSink::Range {
     exists(QlBuiltins::ExtensionId madId |
       sinkModel(path, input, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
+    ) and
+    // Only apply generated models when no neutral model exists
+    not (
+      provenance.isGenerated() and
+      neutralModel(path, "sink", _, _)
     )
   }
 }
