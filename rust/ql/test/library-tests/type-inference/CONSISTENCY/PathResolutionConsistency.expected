@@ -1,2 +1,4 @@
 multipleResolvedTargets
-| main.rs:2902:13:2902:17 | x.f() |
+| main.rs:2223:9:2223:31 | ... .my_add(...) |
+| main.rs:2225:9:2225:29 | ... .my_add(...) |
+| main.rs:2723:13:2723:17 | x.f() |

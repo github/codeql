@@ -1,5 +1,2 @@
 multipleResolvedTargets
 | main.rs:126:9:126:11 | f(...) |
-| main.rs:566:9:567:15 | ...::Assoc(...) |
-| main.rs:569:9:570:12 | ...::f1(...) |
-| main.rs:572:9:573:12 | ...::f1(...) |
