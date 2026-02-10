@@ -254,11 +254,11 @@ use_repo(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.25.0")
+go_sdk.download(version = "1.25.7")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")
-use_repo(go_deps, "org_golang_x_mod", "org_golang_x_tools")
+use_repo(go_deps, "com_github_stretchr_testify", "org_golang_x_mod", "org_golang_x_tools")
 
 ripunzip_archive = use_repo_rule("//misc/ripunzip:ripunzip.bzl", "ripunzip_archive")
 
