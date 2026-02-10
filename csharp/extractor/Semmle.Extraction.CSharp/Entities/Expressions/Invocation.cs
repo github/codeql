@@ -24,6 +24,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private bool IsExplicitDelegateInvokeCall() => Kind == ExprKind.DELEGATE_INVOCATION && Context.GetModel(Syntax.Expression).GetSymbolInfo(Syntax.Expression).Symbol is IMethodSymbol m && m.MethodKind == MethodKind.DelegateInvoke;
 
+        private bool IsOperatorCall() => Kind == ExprKind.OPERATOR_INVOCATION;
+
+        private bool IsValidMemberAccessKind()
+        {
+            return Kind == ExprKind.METHOD_INVOCATION ||
+                IsEventDelegateCall() ||
+                IsExplicitDelegateInvokeCall() ||
+                IsOperatorCall();
+        }
+
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (IsNameof(Syntax))
@@ -37,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var target = TargetSymbol;
             switch (Syntax.Expression)
             {
-                case MemberAccessExpressionSyntax memberAccess when Kind == ExprKind.METHOD_INVOCATION || IsEventDelegateCall() || IsExplicitDelegateInvokeCall():
+                case MemberAccessExpressionSyntax memberAccess when IsValidMemberAccessKind():
                     memberName = memberAccess.Name.Identifier.Text;
                     if (Syntax.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
                         // Qualified method call; `x.M()`
@@ -113,14 +123,24 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public SymbolInfo SymbolInfo => info.SymbolInfo;
 
+        private static bool IsOperatorLikeCall(ExpressionNodeInfo info)
+        {
+            return info.SymbolInfo.Symbol is IMethodSymbol method &&
+                method.TryGetExtensionMethod()?.MethodKind == MethodKind.UserDefinedOperator;
+        }
+
         public IMethodSymbol? TargetSymbol
         {
             get
             {
                 var si = SymbolInfo;
 
-                if (si.Symbol is not null)
-                    return si.Symbol as IMethodSymbol;
+                if (si.Symbol is ISymbol symbol)
+                {
+                    var method = symbol as IMethodSymbol;
+                    // Case for compiler-generated extension methods.
+                    return method?.TryGetExtensionMethod() ?? method;
+                }
 
                 if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
                 {
@@ -196,15 +216,25 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static ExprKind GetKind(ExpressionNodeInfo info)
         {
-            return IsNameof((InvocationExpressionSyntax)info.Node)
-                ? ExprKind.NAMEOF
-                : IsDelegateLikeCall(info)
-                    ? IsDelegateInvokeCall(info)
-                        ? ExprKind.DELEGATE_INVOCATION
-                        : ExprKind.FUNCTION_POINTER_INVOCATION
-                    : IsLocalFunctionInvocation(info)
-                        ? ExprKind.LOCAL_FUNCTION_INVOCATION
-                        : ExprKind.METHOD_INVOCATION;
+            if (IsNameof((InvocationExpressionSyntax)info.Node))
+            {
+                return ExprKind.NAMEOF;
+            }
+            if (IsDelegateLikeCall(info))
+            {
+                return IsDelegateInvokeCall(info)
+                    ? ExprKind.DELEGATE_INVOCATION
+                    : ExprKind.FUNCTION_POINTER_INVOCATION;
+            }
+            if (IsLocalFunctionInvocation(info))
+            {
+                return ExprKind.LOCAL_FUNCTION_INVOCATION;
+            }
+            if (IsOperatorLikeCall(info))
+            {
+                return ExprKind.OPERATOR_INVOCATION;
+            }
+            return ExprKind.METHOD_INVOCATION;
         }
 
         private static bool IsNameof(InvocationExpressionSyntax syntax)

@@ -10,6 +10,7 @@ import exprs.Call
 private import commons.QualifiedName
 private import commons.Collections
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
 
@@ -223,6 +224,8 @@ class Callable extends Parameterizable, ExprOrStmtParent, @callable {
   Call getACall() { this = result.getTarget() }
 }
 
+final class ExtensionCallable = ExtensionCallableImpl;
+
 /**
  * A method, for example
  *
@@ -267,8 +270,11 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
 
+  /** Holds if this method is a classic extension method. */
+  predicate isClassicExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
+
   /** Holds if this method is an extension method. */
-  predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
+  predicate isExtensionMethod() { this.isClassicExtensionMethod() or this.isInExtension() }
 
   /** Gets the type of the `params` parameter of this method, if any. */
   Type getParamsType() {
@@ -295,8 +301,10 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override string getAPrimaryQlClass() { result = "Method" }
 }
 
+final class ExtensionMethod = ExtensionMethodImpl;
+
 /**
- * An extension method, for example
+ *  An extension method, for example
  *
  * ```csharp
  * static bool IsDefined(this Widget w) {
@@ -304,16 +312,28 @@ class Method extends Callable, Virtualizable, Attributable, @method {
  * }
  * ```
  */
-class ExtensionMethod extends Method {
-  ExtensionMethod() { this.isExtensionMethod() }
+class ClassicExtensionMethod extends ExtensionMethodImpl {
+  ClassicExtensionMethod() { this.isClassicExtensionMethod() }
+
+  pragma[noinline]
+  override Type getExtendedType() { result = this.getParameter(0).getType() }
 
   override predicate isStatic() { any() }
+}
 
-  /** Gets the type being extended by this method. */
-  pragma[noinline]
-  Type getExtendedType() { result = this.getParameter(0).getType() }
-
-  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
+/**
+ * An extension method declared in an extension type, for example `IsNullOrEmpty` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public bool IsNullOrEmpty() { ... }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionTypeExtensionMethod extends ExtensionMethodImpl {
+  ExtensionTypeExtensionMethod() { this.isInExtension() }
 }
 
 /**
@@ -534,6 +554,21 @@ class RecordCloneMethod extends Method {
     result.getNumberOfParameters() = 1 and
     result.getParameter(0).getType() = this.getDeclaringType()
   }
+}
+
+/**
+ * An extension operator, for example `*` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public static string operator *(int s1, string s2) { ... }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionOperator extends ExtensionCallableImpl, Operator {
+  ExtensionOperator() { this.isInExtension() }
 }
 
 /**

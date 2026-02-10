@@ -16,11 +16,13 @@ import ql
  *
  * For most languages this is just the name of `c`, but QL for Swift implements
  * the `getAPrimaryQlClass` predicate for a class `Foo` in another class `FooBase`.
+ * We also allow `Impl` classes (e.g., `FooImpl`) to return `Foo`. This pattern is used
+ * to avoid exposing abstract classes.
  */
 string getAnAllowedResultForClass(Class c) {
   result = c.getName()
   or
-  c.getName() = result + "Base"
+  c.getName() = result + ["Base", "Impl"]
 }
 
 from ClassPredicate pred, String constant, Class c
