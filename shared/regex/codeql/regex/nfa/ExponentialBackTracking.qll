@@ -95,7 +95,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       )
     }
 
-    string toString() { result = this.(InfiniteRepetitionQuantifier).toString() }
+    string toString() { result = super.toString() }
   }
 
   /**
