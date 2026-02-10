@@ -56,8 +56,8 @@ def urivalidator_path_in_azure_storage_domain_validation(credential):
 def complex_urivalidator_checks(credential, trusted_domain):
     user_input = request.args['untrusted_input']
     # Focus on in_domain only here for simplicity
-    # It assumed the logic underlying checking paths would apply 
-    # similarly other validator methods
+    # It is assumed that the logic underlying path checking would apply
+    # similarly to other validator methods.
     url = f"https://{user_input}"
 
     if not URIValidator.in_domain(url, trusted_domain):
