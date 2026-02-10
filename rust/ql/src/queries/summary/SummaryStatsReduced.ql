@@ -4,7 +4,7 @@
  *              has been found to be noisy on tests removed.
  * @kind metric
  * @id rust/summary/reduced-summary-statistics
- * @tags summary
+ * @tags summary telemetry
  */
 
 import rust
