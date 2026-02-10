@@ -87,7 +87,8 @@ private module Internal {
     newtype TDispatchCall =
       TDispatchMethodCall(MethodCall mc) {
         not isReflectionCall(mc, _, _, _, _) and
-        not mc.isLateBound()
+        not mc.isLateBound() and
+        not isExtensionAccessorCall(mc)
       } or
       TDispatchAccessorCall(AccessorCall ac) or
       TDispatchOperatorCall(OperatorCall oc) { not oc.isLateBound() } or
@@ -110,7 +111,8 @@ private module Internal {
         c instanceof ConstructorInitializer
         or
         c instanceof LocalFunctionCall
-      }
+      } or
+      TDispatchExtensionAccessorCall(MethodCall mc) { isExtensionAccessorCall(mc) }
 
     cached
     Expr getCall(DispatchCall dc) { result = dc.(DispatchCallImpl).getCall() }
@@ -141,6 +143,8 @@ private module Internal {
   }
 
   import Cached
+
+  private predicate isExtensionAccessorCall(MethodCall mc) { exists(mc.getTargetAccessor()) }
 
   /**
    * Holds if `mc` is a reflection call to a method named `name`, where
@@ -817,6 +821,33 @@ private module Internal {
     override Expr getQualifier() { result = this.getCall().getQualifier() }
 
     override Method getAStaticTarget() { result = this.getCall().getTarget() }
+  }
+
+  /**
+   * A call to an extension accessor method.
+   */
+  private class DispatchExtensionAccessorCall extends DispatchCallImpl,
+    TDispatchExtensionAccessorCall
+  {
+    override MethodCall getCall() { this = TDispatchExtensionAccessorCall(result) }
+
+    private Expr getArgumentForParameter(Parameter p) {
+      this.getCall().getTargetAccessor().getAParameter() = p and
+      result = this.getCall().getArgument(p.getPosition())
+    }
+
+    override Expr getArgument(int i) {
+      exists(MethodCall call, Parameter p | call = this.getCall() |
+        p = call.getTargetAccessor().getParameter(i) and
+        result = this.getArgumentForParameter(p)
+      )
+    }
+
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
+
+    override Accessor getAStaticTarget() { result = this.getCall().getTargetAccessor() }
+
+    override RuntimeCallable getADynamicTarget() { result = this.getAStaticTarget() }
   }
 
   /**

@@ -23,7 +23,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 ? Symbol.ContainingType.GetSymbolLocation()
                 : BodyDeclaringSymbol.GetSymbolLocation();
 
-        public override bool NeedsPopulation => base.NeedsPopulation || IsCompilerGeneratedDelegate();
+        public override bool NeedsPopulation =>
+            (base.NeedsPopulation || IsCompilerGeneratedDelegate()) &&
+            // Exclude compiler-generated extension methods. A call to such a method
+            // is replaced by a call to the defining extension method.
+            !Symbol.IsCompilerGeneratedExtensionMethod();
 
         public override void Populate(TextWriter trapFile)
         {

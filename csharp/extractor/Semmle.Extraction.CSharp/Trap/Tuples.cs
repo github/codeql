@@ -202,6 +202,9 @@ namespace Semmle.Extraction.CSharp
         internal static void extend(this TextWriter trapFile, Type type, Type super) =>
             trapFile.WriteTuple("extend", type, super);
 
+        internal static void extension_receiver_type(this TextWriter trapFile, Type @extension, Type receiverType) =>
+            trapFile.WriteTuple("extension_receiver_type", extension, receiverType);
+
         internal static void anonymous_types(this TextWriter trapFile, Type type) =>
             trapFile.WriteTuple("anonymous_types", type);
 
@@ -292,10 +295,10 @@ namespace Semmle.Extraction.CSharp
         internal static void overrides(this TextWriter trapFile, Method overriding, Method overridden) =>
             trapFile.WriteTuple("overrides", overriding, overridden);
 
-        internal static void param_location(this TextWriter trapFile, Parameter param, Location location) =>
+        internal static void param_location(this TextWriter trapFile, IParameter param, Location location) =>
             trapFile.WriteTuple("param_location", param, location);
 
-        internal static void @params(this TextWriter trapFile, Parameter param, string name, Type type, int child, Parameter.Kind mode, IEntity method, Parameter originalDefinition) =>
+        internal static void @params(this TextWriter trapFile, IParameter param, string name, Type type, int child, Parameter.Kind mode, IEntity method, IParameter originalDefinition) =>
             trapFile.WriteTuple("params", param, name, type, child, (int)mode, method, originalDefinition);
 
         internal static void parent_namespace(this TextWriter trapFile, IEntity type, Namespace parent) =>

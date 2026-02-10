@@ -492,7 +492,6 @@ case @type.kind of
 | 32 = @tuple_type
 | 33 = @function_pointer_type
 | 34 = @inline_array_type
-| 35 = @extension_type
   ;
 
 @simple_type = @bool_type | @char_type | @integral_type | @floating_point_type | @decimal_type;
@@ -503,7 +502,7 @@ case @type.kind of
 @value_type = @simple_type | @enum_type | @struct_type | @nullable_type | @int_ptr_type
             | @uint_ptr_type | @tuple_type | @void_type | @inline_array_type;
 @ref_type = @class_type | @interface_type | @array_type | @delegate_type | @null_type
-          | @dynamic_type | @extension_type;
+          | @dynamic_type;
 @value_or_ref_type = @value_type | @ref_type;
 
 typerefs(
@@ -541,10 +540,6 @@ delegate_return_type(
 function_pointer_return_type(
     unique int function_pointer_id: @function_pointer_type ref,
     int return_type_id: @type_or_ref ref);
-
-extension_receiver_type(
-  unique int extension: @extension_type ref,
-  int receiver_type_id: @type_or_ref ref);
 
 extend(
   int sub: @type ref,
@@ -908,7 +903,7 @@ localvar_location(
   unique int id: @local_variable ref,
   int loc: @location ref);
 
-@parameterizable = @callable | @delegate_type | @indexer | @function_pointer_type | @extension_type;
+@parameterizable = @callable | @delegate_type | @indexer | @function_pointer_type;
 
 #keyset[name, parent_id]
 #keyset[index, parent_id]

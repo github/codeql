@@ -45,6 +45,14 @@ extensions:
       - ["My.Qltest", "K", false, "GetMyFieldOnSyntheticField", "()", "", "Argument[this].SyntheticField[My.Qltest.K.MySyntheticField2].Field[My.Qltest.K.MyField]", "ReturnValue", "value", "manual"]
       - ["My.Qltest", "Library", false, "SetValue", "(System.Object)", "", "Argument[0]", "Argument[this].SyntheticField[X]", "value", "dfc-generated"]
       - ["My.Qltest", "Library", false, "GetValue", "()", "", "Argument[this].SyntheticField[X]", "ReturnValue", "value", "dfc-generated"]
+      - ["My.Qltest", "TestExtensions+extension(System.Object)", false, "Method1", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(System.Object)", false, "StaticMethod1", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(System.Object)", false, "get_Property1", "(System.Object)", "", "Argument[0].SyntheticField[TestExtensions.Property1]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(System.Object)", false, "set_Property1", "(System.Object,System.Object)", "", "Argument[1]", "Argument[0].SyntheticField[TestExtensions.Property1]", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "GenericMethod1", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "GenericStaticMethod1", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "get_GenericProperty1", "(T)", "", "Argument[0].SyntheticField[TestExtensions.GenericProperty1]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "set_GenericProperty1", "(T,T)", "", "Argument[1]", "Argument[0].SyntheticField[TestExtensions.GenericProperty1]", "value", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all

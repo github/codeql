@@ -38,5 +38,6 @@ namespace Semmle.Extraction.Kinds
         TUPLE = 32,
         FUNCTION_POINTER = 33,
         INLINE_ARRAY = 34,
+        EXTENSION = 35
     }
 }
