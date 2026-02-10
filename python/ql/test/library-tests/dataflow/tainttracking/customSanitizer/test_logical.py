@@ -233,7 +233,7 @@ def test_comparison_with_bool():
     if is_safe(s) is not False:
         ensure_not_tainted(s)
     else:
-        ensure_tainted(s) # $ tainted   
+        ensure_tainted(s) # $ tainted
 
 # Make tests runable
 
