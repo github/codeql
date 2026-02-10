@@ -46,19 +46,11 @@ predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
     guard = mc and
     branch = true
   |
-    // `String.matches` and other `matches` methods.
+    e = mc.(RegexExecutionExpr::Range).getString()
+    or
+    // Other `matches` methods.
     method.getName() = "matches" and
     e = mc.getQualifier()
-    or
-    method instanceof PatternMatchesMethod and
-    e = mc.getArgument(1)
-    or
-    method instanceof MatcherMatchesMethod and
-    exists(MethodCall matcherCall |
-      matcherCall.getMethod() instanceof PatternMatcherMethod and
-      e = matcherCall.getArgument(0) and
-      DataFlow::localExprFlow(matcherCall, mc.getQualifier())
-    )
   )
 }
 
