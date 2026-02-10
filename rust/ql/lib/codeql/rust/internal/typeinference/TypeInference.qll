@@ -2477,10 +2477,10 @@ private module MethodCallMatchingInput implements MatchingWithEnvironmentInputSi
   additional predicate decodeDerefChainBorrow(
     string derefChainBorrow, DerefChain derefChain, BorrowKind borrow
   ) {
-    exists(string regexp |
-      regexp = "^(.*);(.*)$" and
-      derefChain = derefChainBorrow.regexpCapture(regexp, 1) and
-      borrow.toString() = derefChainBorrow.regexpCapture(regexp, 2)
+    exists(int i |
+      i = derefChainBorrow.indexOf(";") and
+      derefChain = derefChainBorrow.prefix(i) and
+      borrow.toString() = derefChainBorrow.suffix(i + 1)
     )
   }
 
