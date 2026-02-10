@@ -41,7 +41,7 @@
 | test_path_validation.py:132:9:132:58 | ControlFlowNode for SecretClient() | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | test_path_validation.py:132:32:132:34 | ControlFlowNode for url | The full URL of this request depends on a $@. | test_path_validation.py:5:19:5:25 | ControlFlowNode for ImportMember | user-provided value |
 | test_requests.py:9:5:9:28 | ControlFlowNode for Attribute() | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | test_requests.py:9:18:9:27 | ControlFlowNode for user_input | The full URL of this request depends on a $@. | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 | test_requests.py:17:5:17:27 | ControlFlowNode for Attribute() | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | test_requests.py:17:17:17:26 | ControlFlowNode for user_input | The full URL of this request depends on a $@. | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
-| test_requests.py:22:16:22:55 | ControlFlowNode for Attribute() | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | test_requests.py:22:45:22:54 | ControlFlowNode for user_input | The full URL of this request depends on a $@. | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
+| test_requests.py:22:5:22:44 | ControlFlowNode for Attribute() | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | test_requests.py:22:34:22:43 | ControlFlowNode for user_input | The full URL of this request depends on a $@. | test_requests.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |
 edges
 | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:1:19:1:25 | ControlFlowNode for request | provenance |  |
 | full_partial_test.py:1:19:1:25 | ControlFlowNode for request | full_partial_test.py:7:18:7:24 | ControlFlowNode for request | provenance |  |
@@ -146,7 +146,7 @@ edges
 | test_requests.py:7:18:7:24 | ControlFlowNode for request | test_requests.py:7:5:7:14 | ControlFlowNode for user_input | provenance | AdditionalTaintStep |
 | test_requests.py:14:5:14:14 | ControlFlowNode for user_input | test_requests.py:17:17:17:26 | ControlFlowNode for user_input | provenance |  |
 | test_requests.py:14:18:14:24 | ControlFlowNode for request | test_requests.py:14:5:14:14 | ControlFlowNode for user_input | provenance | AdditionalTaintStep |
-| test_requests.py:20:5:20:14 | ControlFlowNode for user_input | test_requests.py:22:45:22:54 | ControlFlowNode for user_input | provenance |  |
+| test_requests.py:20:5:20:14 | ControlFlowNode for user_input | test_requests.py:22:34:22:43 | ControlFlowNode for user_input | provenance |  |
 | test_requests.py:20:18:20:24 | ControlFlowNode for request | test_requests.py:20:5:20:14 | ControlFlowNode for user_input | provenance | AdditionalTaintStep |
 nodes
 | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
@@ -253,5 +253,5 @@ nodes
 | test_requests.py:17:17:17:26 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 | test_requests.py:20:5:20:14 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 | test_requests.py:20:18:20:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| test_requests.py:22:45:22:54 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
+| test_requests.py:22:34:22:43 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 subpaths
