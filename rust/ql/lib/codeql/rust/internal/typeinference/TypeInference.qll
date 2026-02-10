@@ -2604,27 +2604,30 @@ private Type inferMethodCallTypeNonSelf(AstNode n, boolean isReturn, TypePath pa
 }
 
 /**
- * Gets the type of `n` at `path` after applying `derefChain` and `borrow`,
- * where `n` is the `self` argument of a method call.
+ * Gets the type of `n` at `path` after applying `derefChain`, where `n` is the
+ * `self` argument of a method call.
  *
  * The predicate recursively pops the head of `derefChain` until it becomes
  * empty, at which point the inferred type can be applied back to `n`.
  */
 pragma[nomagic]
-private Type inferMethodCallTypeSelf(
-  AstNode n, DerefChain derefChain, BorrowKind borrow, TypePath path
-) {
-  exists(MethodCallMatchingInput::AccessPosition apos, string derefChainBorrow |
-    result = inferMethodCallType0(_, apos, n, derefChainBorrow, path) and
+private Type inferMethodCallTypeSelf(AstNode n, DerefChain derefChain, TypePath path) {
+  exists(
+    MethodCallMatchingInput::AccessPosition apos, string derefChainBorrow, BorrowKind borrow,
+    TypePath path0
+  |
+    result = inferMethodCallType0(_, apos, n, derefChainBorrow, path0) and
     apos.isSelf() and
     MethodCallMatchingInput::decodeDerefChainBorrow(derefChainBorrow, derefChain, borrow)
-  )
-  or
-  // adjust for implicit borrow
-  exists(TypePath path0, BorrowKind borrow0 |
-    result = inferMethodCallTypeSelf(n, derefChain, borrow0, path0) and
-    path0.isCons(borrow0.getRefType().getPositionalTypeParameter(0), path) and
-    borrow.isNoBorrow()
+  |
+    borrow.isNoBorrow() and
+    path = path0
+    or
+    // adjust for implicit borrow
+    exists(TypePath prefix |
+      prefix = TypePath::singleton(borrow.getRefType().getPositionalTypeParameter(0)) and
+      path0 = prefix.appendInverse(path)
+    )
   )
   or
   // adjust for implicit deref
@@ -2632,9 +2635,8 @@ private Type inferMethodCallTypeSelf(
     DerefChain derefChain0, Type t0, TypePath path0, DerefImplItemNode impl, Type selfParamType,
     TypePath selfPath
   |
-    t0 = inferMethodCallTypeSelf(n, derefChain0, borrow, path0) and
+    t0 = inferMethodCallTypeSelf(n, derefChain0, path0) and
     derefChain0.isCons(impl, derefChain) and
-    borrow.isNoBorrow() and
     selfParamType = impl.resolveSelfTypeAt(selfPath)
   |
     result = selfParamType and
@@ -2653,7 +2655,7 @@ private Type inferMethodCallTypeSelf(
 private Type inferMethodCallTypePreCheck(AstNode n, boolean isReturn, TypePath path) {
   result = inferMethodCallTypeNonSelf(n, isReturn, path)
   or
-  result = inferMethodCallTypeSelf(n, DerefChain::nil(), TNoBorrowKind(), path) and
+  result = inferMethodCallTypeSelf(n, DerefChain::nil(), path) and
   isReturn = false
 }
 
