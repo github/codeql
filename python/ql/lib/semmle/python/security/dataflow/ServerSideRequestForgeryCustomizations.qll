@@ -177,7 +177,7 @@ module ServerSideRequestForgery {
     )
   }
 
-  /** A validation that a string does not contain certain characters, considered as a sanitizer. */
+  /** A validation of a URI using the `AntiSSRF` library, considered as a full-ssrf sanitizer. */
   private class UriValidator extends FullUrlControlSanitizer {
     UriValidator() { this = DataFlow::BarrierGuard<uri_validator/3>::getABarrierNode() }
   }

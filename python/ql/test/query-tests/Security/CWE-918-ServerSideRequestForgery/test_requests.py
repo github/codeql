@@ -1,4 +1,4 @@
-from flask import request # $ Source
+from flask import request # $ Source[py/full-ssrf]
 from AntiSSRF import AntiSSRFPolicy
 
 import requests
@@ -36,7 +36,8 @@ def ssrf_test_with_policy2():
     # this makes the session unsafe again
     session.mount("http://", requests.adapters.HTTPAdapter())
     # NOT OK -- dangerous user input is no longer filtered by AntiSSRFPolicy
-    response = session.get(user_input) # $ Alert[py/full-ssrf]
+    # TODO: not currently a scenario we detect. 
+    session.get(user_input) # $ MISSING: Alert[py/full-ssrf]
 
 def ssrf_test_with_policy3(adapter):
     user_input = request.args['untrusted_input']
@@ -46,4 +47,5 @@ def ssrf_test_with_policy3(adapter):
     # this could make the session unsafe again
     session.mount("http://", adapter)
     # NOT OK -- dangerous user input is no longer filtered by AntiSSRFPolicy
-    response = session.get(user_input) # $ Alert[py/full-ssrf]
+    # TODO: not currently a scenario we detect. 
+    session.get(user_input) # $ MISSING: Alert[py/full-ssrf]

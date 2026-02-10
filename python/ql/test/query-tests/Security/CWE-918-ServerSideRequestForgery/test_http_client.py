@@ -14,7 +14,7 @@ def ssrf_test():
     # NOT OK -- user has full control
     conn.request("GET", unsafe_path) # $ Alert[py/full-ssrf]
 
-    # Full SSRF variant, where there is AlSO made a request with fixed URL on the same
+    # Full SSRF variant, where there is also a request with fixed URL on the same
     # connection later on. This should not change anything on the overall SSRF alerts.
     conn = HTTPConnection(unsafe_host) # $ Sink
     # NOT OK -- user has full control

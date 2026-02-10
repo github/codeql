@@ -1,6 +1,6 @@
 from flask import request # $ Source
 
-import requests 
+import requests
 import re
 
 def full_ssrf():
@@ -122,7 +122,7 @@ def partial_ssrf_4():
     user_input = request.args['untrusted_input']
 
     url = "https://example.com/foo#{}".format(user_input)
-    # NOT OK -- user contollred fragment
+    # NOT OK -- user controlled fragment
     requests.get(url)  # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_5():
@@ -132,7 +132,7 @@ def partial_ssrf_5():
     # controlled
 
     url = "https://example.com/foo#%s" % user_input
-    # NOT OK -- user contollred fragment
+    # NOT OK -- user controlled fragment
     requests.get(url)  # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_6():
