@@ -19,14 +19,14 @@ def ssrf_test2():
 def ssrf_test3():
     user_input = request.args['untrusted_input']
     # NOT OK -- user has full control
-    response = requests.request('<method>', user_input)  # $ Alert[py/full-ssrf]
+    requests.request('<method>', user_input)  # $ Alert[py/full-ssrf]
 
 def ssrf_test_with_policy1():
     user_input = request.args['untrusted_input']
     policy = AntiSSRFPolicy()
     session = policy.get_antissrf_session()
     # OK -- dangerous user input is filtered by AntiSSRFPolicy
-    response = session.get(user_input)
+    session.get(user_input)
 
 def ssrf_test_with_policy2():
     user_input = request.args['untrusted_input']
