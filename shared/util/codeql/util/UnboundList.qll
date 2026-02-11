@@ -78,6 +78,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if this list is empty. */
     predicate isEmpty() { this = "" }
 
+    bindingset[this]
+    private int stringLength() { result = super.length() }
+
     /** Gets the length of this list. */
     bindingset[this]
     pragma[inline_late]
@@ -115,19 +118,23 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if this list starts with `e`, followed by `suffix`. */
     bindingset[this]
     predicate isCons(Element e, UnboundList suffix) {
-      exists(string regexp | regexp = "^([0-9]+)\\.(.*)$" |
-        e = decode(this.regexpCapture(regexp, 1)) and
-        suffix = this.regexpCapture(regexp, 2)
+      exists(string elem |
+        // it is more efficient to not create a capture group for the suffix, since
+        // `regexpCapture` will then always join in both groups, only to afterwards filter
+        // based on the requested group (the group number is not part of the binding set
+        // of `regexpCapture`)
+        elem = this.regexpCapture("^([0-9]+)\\..*$", 1) and
+        e = decode(elem) and
+        suffix = this.suffix(elem.length() + 1)
       )
     }
 
     /** Holds if this list starts with `prefix`, followed by `e`. */
     bindingset[this]
     predicate isSnoc(UnboundList prefix, Element e) {
-      exists(string regexp | regexp = "^(|.+\\.)([0-9]+)\\.$" |
-        prefix = this.regexpCapture(regexp, 1) and
-        e = decode(this.regexpCapture(regexp, 2))
-      )
+      // same remark as above about not using multiple capture groups
+      prefix = this.regexpCapture("^(|.+\\.)[0-9]+\\.$", 1) and
+      e = decode(this.substring(prefix.stringLength(), this.stringLength() - 1))
     }
 
     /** Gets the head of this list, if any. */
